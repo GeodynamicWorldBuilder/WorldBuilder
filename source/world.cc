@@ -55,22 +55,15 @@ namespace WorldBuilder
     ptree property_tree;
     boost::property_tree::json_parser::read_json (json_input_stream, property_tree);
     this->read(property_tree);
-    std::cout << "features size = " << features.size() << std::endl;
   }
 
   World::~World()
   {
-	  std::cout << "Deleting " << std::endl;
-
-	  //delete coordinate_system;
-
-	  std::cout << "deleted coord system " << std::endl;
-	  std::cout << "features.size() = " << features.size() << std::endl;
+	  delete coordinate_system;
 
 	  for(unsigned int i = 0; i < features.size(); ++i)
 	  {
-		  std::cout << "delete " << i << std::endl;
-		  //delete features[i];
+		  delete features[i];
 	  }
 
   }
@@ -89,7 +82,6 @@ namespace WorldBuilder
     if (child)
       {
         dim = 2;
-        std::cout << "set dim to 2: " << dim << std::endl;
         for (boost::property_tree::ptree::const_iterator it = child.get().begin(); it != child.get().end(); ++it)
           {
             std::vector<double> tmp;
