@@ -1,1 +1,1 @@
-language: C++
+script: make && make test
