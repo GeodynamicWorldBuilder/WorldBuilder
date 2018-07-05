@@ -1,6 +1,6 @@
 
 cmake_minimum_required (VERSION 2.6)
-project(WorldBuilder)
+project(WorldBuilder C CXX Fortran)
 
 # load in version info and export it
 FILE(STRINGS "${CMAKE_SOURCE_DIR}/VERSION" ASPECT_PACKAGE_VERSION LIMIT_COUNT 1)
@@ -39,10 +39,10 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/source/version.cc.in" "${PROJECT_SOU
 
 
 # Add include directory
-include_directories("include/" "include/engine/") # "include/")
+include_directories("include/") 
 
 # Add source directory
-file(GLOB_RECURSE SOURCES "source/*.cc")
+file(GLOB_RECURSE SOURCES "source/*.cc" "source/*.f90")
 
 
 #add Boost
