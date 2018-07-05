@@ -1,6 +1,4 @@
-addons:
-  apt:
-    packages: ['gfortran','libboost-all-dev']
+language: c++
 
     matrix:
   include:
@@ -47,6 +45,9 @@ addons:
             - g++-7
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+addons:
+  apt:
+    packages: ['gfortran','libboost-all-dev']
 
 before_install:
     - eval "${MATRIX_EVAL}"
