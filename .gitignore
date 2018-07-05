@@ -6,3 +6,4 @@ examples/fortran/Makefile
 examples/fortran/CMakeCache.txt
 examples/fortran/CMakeFiles
 source/version.cc
+tests/bin/
