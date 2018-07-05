@@ -1,1 +1,5 @@
+addons:
+  apt:
+    packages: ['gfortran','libboost-all-dev']
+
 script: cmake . && make && make test
