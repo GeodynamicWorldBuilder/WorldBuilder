@@ -1,4 +1,5 @@
 build/
 .project
 fortran/a.out
+fortran/worldbuilder.mod
 source/version.cc

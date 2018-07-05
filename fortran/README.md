@@ -1,0 +1,1 @@
+This is a fortran example, showing how to use the fortran wrapper for the World builder. It can be compiled with: gfortran example.f90 -L/home/menno/Documents/PhD/code/aspect/world_builder/world_builder/build/ -lWorldBuilder -lstdc++ -I/home/menno/Documents/PhD/code/aspect/world_builder/world_builder/build/

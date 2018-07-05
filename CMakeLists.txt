@@ -49,7 +49,20 @@ file(GLOB_RECURSE SOURCES "source/*.cc" "source/*.f90")
 find_package(Boost REQUIRED COMPONENTS program_options)
 include_directories(${Boost_INCLUDE_DIR})
 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/mod)
 
 add_library(WorldBuilder ${SOURCES})
 add_executable(WorldBuilderApp "${CMAKE_CURRENT_SOURCE_DIR}/app/main.cc")
 target_link_libraries (WorldBuilderApp WorldBuilder ${Boost_LIBRARIES})
+# binary:
+install (TARGETS WorldBuilder EXPORT WorldBuilder  DESTINATION bin)
+install (DIRECTORY ${CMAKE_Fortran_MODULE_DIRECTORY}/ DESTINATION include)
+install (EXPORT WorldBuilder  DESTINATION bin)
+# headers:
+INSTALL(DIRECTORY include/
+  DESTINATION include
+  COMPONENT includes
+  FILES_MATCHING PATTERN "*.h")

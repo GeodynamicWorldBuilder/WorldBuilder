@@ -4,8 +4,6 @@ use WorldBuilder
 IMPLICIT NONE
 
   ! Declare the types which will be needed.
-
-  TYPE(C_PTR) :: cworld
   REAL*8 :: temperature,x=120e3,y=500e3,z=0,depth=0,gravity = 10
   INTEGER :: composition_number = 3
   LOGICAL*1 :: composition
