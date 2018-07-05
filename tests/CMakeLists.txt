@@ -12,7 +12,12 @@ foreach(test_source ${TEST_SOURCES})
         add_executable(${test_name} ${test_source})
 
 	# Link executable to Boost libraries and the World Builder
-	target_link_libraries(${test_name} ${Boost_LIBRARIES} WorldBuilder)
+	#if (COVERAGE)
+	#target_compile_options(${test_name} PRIVATE --coverage)
+	#target_link_libraries(${test_name} PRIVATE --coverage ${Boost_LIBRARIES} WorldBuilder)
+	#else()
+    target_link_libraries(${test_name} ${Boost_LIBRARIES} WorldBuilder)
+    #endif()
 
 	# Move testing binaries into a testBin directory
         set_target_properties(${test_name} PROPERTIES

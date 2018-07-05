@@ -33,14 +33,11 @@ fi
 
 # collect all header and source files and process them in batches of 50 files
 # with up to 10 in parallel
-echo "flag 0"
 
 find include source \( -name '*.cc' -o -name '*.h' \) -print | xargs -n 50 -P 10 astyle --options=doc/astyle-2.04.rc
-echo "flag 1"
 # remove execute permission on source files:
 find include source \( -name '*.cc' -o -name '*.h' -o -name '*.prm' \) -print | xargs -n 50 -P 10 chmod -x
 
-echo "flag 2"
 # convert dos formatted files to unix file format by stripping out
 # carriage returns (15=0x0D):
 dos_to_unix()
@@ -51,7 +48,5 @@ dos_to_unix()
     rm -f $f.tmp
 }
 export -f dos_to_unix
-echo "flag 3"
 find include source \( -name '*.cc' -o -name '*.h' -o -name '*.prm' \) -print | xargs -n 1 -P 10 -I {} bash -c 'dos_to_unix "$@"' _ {}
-echo "flag 4"
 
