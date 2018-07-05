@@ -1,1 +1,1 @@
-script: make && make test
+script: cmake . && make && make test
