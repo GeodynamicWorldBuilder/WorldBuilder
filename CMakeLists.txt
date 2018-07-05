@@ -49,6 +49,14 @@ file(GLOB_RECURSE SOURCES "source/*.cc" "source/*.f90")
 find_package(Boost REQUIRED COMPONENTS program_options)
 include_directories(${Boost_INCLUDE_DIR})
 
+# Provide "indent" target for indenting all headers and source files
+ADD_CUSTOM_TARGET(indent
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND ./doc/indent
+  COMMENT "Indenting all the World Builder header and source files..."
+  )
+
+
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)

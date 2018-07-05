@@ -46,7 +46,7 @@ namespace WorldBuilder
   {
     // Get world builder file and check wether it exists
     WBAssertThrow(access( filename.c_str(), F_OK ) != -1,
-                "Could not find the world builder file at the specified location: " + filename);
+                  "Could not find the world builder file at the specified location: " + filename);
 
 
     // Now read in the world builder file into a file stream and
@@ -59,12 +59,12 @@ namespace WorldBuilder
 
   World::~World()
   {
-	  delete coordinate_system;
+    delete coordinate_system;
 
-	  for(unsigned int i = 0; i < features.size(); ++i)
-	  {
-		  delete features[i];
-	  }
+    for (unsigned int i = 0; i < features.size(); ++i)
+      {
+        delete features[i];
+      }
 
   }
 
@@ -92,16 +92,16 @@ namespace WorldBuilder
                 tmp.push_back(stod(it2->second.get<std::string>("")));
               }
             WBAssertThrow (tmp.size() == 2, "Cross section: These represent 2d coordinates, but there are " <<
-                         tmp.size() <<
-                         " coordinates specified.");
+                           tmp.size() <<
+                           " coordinates specified.");
 
             std::array<double,2> tmp_array;
             std::copy(tmp.begin(), tmp.end(), tmp_array.begin());
             cross_section.push_back(tmp_array);
           }
         WBAssertThrow (cross_section.size() == 2, "Cross section: This feature requires at exactly 2 coordinates, but " <<
-                     cross_section.size() <<
-                     " where provided.");
+                       cross_section.size() <<
+                       " where provided.");
 
         /**
          * pre-compute stuff for the cross section
@@ -126,7 +126,7 @@ namespace WorldBuilder
       {
         child = tree.get_child("Surface rotation point");
         WBAssertThrow (child, "Entry undeclared:  Surface rotation point. "
-                     "Need a surface rotation point when rotation the surface.");
+                       "Need a surface rotation point when rotation the surface.");
         for (boost::property_tree::ptree::const_iterator it = child.get().begin(); it != child.get().end(); ++it)
           {
             surface_rotation_point.push_back(Utilities::string_to_double(it->second.get<std::string>("")));
@@ -171,7 +171,7 @@ namespace WorldBuilder
   {
     // turn it into a 3d coordinate and call the 3d temperature function
     WBAssertThrow(dim == 2, "This function can only be called when the cross section "
-                "variable in the world builder file has been set. Dim is " << dim << ".");
+                  "variable in the world builder file has been set. Dim is " << dim << ".");
 
     Point<3> coord_3d(cross_section[0][0] + point[0] * surface_coord_conversions[0],
                       cross_section[0][1] + point[0] * surface_coord_conversions[1],
@@ -198,7 +198,7 @@ namespace WorldBuilder
   {
     // turn it into a 3d coordinate and call the 3d temperature function
     WBAssertThrow(dim == 2, "This function can only be called when the cross section "
-                "variable in the world builder file has been set.");
+                  "variable in the world builder file has been set.");
 
     Point<3> coord_3d(cross_section[0][0] + point[0] * surface_coord_conversions[0],
                       cross_section[0][1] + point[0] * surface_coord_conversions[1],
