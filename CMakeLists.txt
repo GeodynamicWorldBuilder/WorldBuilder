@@ -46,7 +46,7 @@ file(GLOB_RECURSE SOURCES "source/*.cc" "source/*.f90")
 
 
 #add Boost
-find_package(Boost REQUIRED COMPONENTS program_options)
+find_package(Boost REQUIRED COMPONENTS program_options unit_test_framework REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 
 # Provide "indent" target for indenting all headers and source files
@@ -74,3 +74,6 @@ INSTALL(DIRECTORY include/
   DESTINATION include
   COMPONENT includes
   FILES_MATCHING PATTERN "*.h")
+
+enable_testing()
+add_subdirectory(tests)
