@@ -21,7 +21,6 @@ extern "C" {
     	WorldBuilder::World* a = reinterpret_cast<WorldBuilder::World*>(ptr_ptr_world);
     	std::array<double,2> position = {x,z};
     	*temperature = a->temperature(position,depth,gravity);
-         std::cout << " temperature from c = " << std::setprecision(16) <<  *temperature << std::endl;
     }
 
     /**
@@ -33,7 +32,6 @@ extern "C" {
     	WorldBuilder::World* a = reinterpret_cast<WorldBuilder::World*>(ptr_ptr_world);
     	std::array<double,3> position = {x,y,z};
     	*temperature = a->temperature(position,depth,gravity);
-         std::cout << " temperature from c = " << std::setprecision(16) <<  *temperature << std::endl;
     }
 
 
@@ -47,7 +45,6 @@ extern "C" {
     	WorldBuilder::World* a = reinterpret_cast<WorldBuilder::World*>(ptr_ptr_world);
     	std::array<double,2> position = {x,z};
     	*composition = a->composition(position,depth,composition_number);
-         std::cout << " composition from c = " << std::setprecision(16) <<  *composition << std::endl;
     }
 
     /**
@@ -59,7 +56,6 @@ extern "C" {
     	WorldBuilder::World* a = reinterpret_cast<WorldBuilder::World*>(ptr_ptr_world);
     	std::array<double,3> position = {x,y,z};
     	*composition = a->composition(position,depth,composition_number);
-         std::cout << " composition from c = " << std::setprecision(16) <<  *composition << std::endl;
     }
 
     /**
