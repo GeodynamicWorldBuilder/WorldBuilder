@@ -1,5 +1,8 @@
 build/
 .project
-fortran/a.out
-fortran/worldbuilder.mod
+Makefile
+examples/fortran/a.out
+examples/fortran/Makefile
+examples/fortran/CMakeCache.txt
+examples/fortran/CMakeFiles
 source/version.cc

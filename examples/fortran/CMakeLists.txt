@@ -1,0 +1,6 @@
+cmake_minimum_required (VERSION 2.6)
+project(WorldBuidlerFortranExample Fortran)
+file("example.f90")
+find_package(WorldBuilder)
+add_executable(WorldBuilderFortranExample "${CMAKE_CURRENT_SOURCE_DIR}/fortran.f90")
+target_link_libraries(WorldBuilderFortranExample Worldbuilder)
