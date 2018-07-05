@@ -47,7 +47,7 @@ language: c++
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 addons:
   apt:
-    packages: ['gfortran','libboost-all-dev']
+    packages: ['gfortran','libboost-program_options-dev' 'libboost-unit_test_framework-dev']
 
 before_install:
     - eval "${MATRIX_EVAL}"
