@@ -376,7 +376,7 @@ namespace WorldBuilder
         }
       catch (const boost::bad_lexical_cast &e)
         {
-          WBAssertThrow(false, "Conversion of \"" << string << "\" to double failed (bad cast): " << e.what() << std::endl);
+          WBAssertThrow(false, "Conversion of \"" << string << "\" to int failed (bad cast): " << e.what() << std::endl);
         }
 
       return d;
@@ -400,7 +400,7 @@ namespace WorldBuilder
         }
       catch (const boost::bad_lexical_cast &e)
         {
-          WBAssertThrow(false, "Conversion of \"" << string << "\" to double failed (bad cast): " << e.what() << std::endl);
+          WBAssertThrow(false, "Conversion of \"" << string << "\" to unsigned int failed (bad cast): " << e.what() << std::endl);
         }
 
       return d;

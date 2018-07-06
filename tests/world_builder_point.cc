@@ -130,30 +130,69 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
 
 }
 
-TEST_CASE("WorldBuilder Utilities: string to number and point to array conversion")
+TEST_CASE("WorldBuilder Utilities: string to conversions")
 {
+	// Test string to number conversion
 	REQUIRE(Utilities::string_to_double("1") == 1.0);
-	REQUIRE(Utilities::string_to_int("2") == 2);
-	REQUIRE(Utilities::string_to_unsigned_int("3") == 3);
+	REQUIRE(Utilities::string_to_double(" 1 ") == 1.0);
+	REQUIRE(Utilities::string_to_double(" 1.01 ") == 1.01);
 
+	REQUIRE_THROWS_WITH(Utilities::string_to_double("1a"),
+			            Contains("Conversion of \"1a\" to double failed (bad cast): "));
+	REQUIRE_THROWS_WITH(Utilities::string_to_double("a1"),
+			            Contains("Conversion of \"a1\" to double failed (bad cast): "));
+	REQUIRE_THROWS_WITH(Utilities::string_to_double("a"),
+			            Contains("Conversion of \"a\" to double failed (bad cast): "));
+
+	REQUIRE(Utilities::string_to_int("2") == 2);
+	REQUIRE(Utilities::string_to_int(" 2 ") == 2);
+
+	REQUIRE_THROWS_WITH(Utilities::string_to_int(" 2.02 "),
+			            Contains("Conversion of \" 2.02 \" to int failed (bad cast): "));
+	REQUIRE_THROWS_WITH(Utilities::string_to_int("2b"),
+			            Contains("Conversion of \"2b\" to int failed (bad cast): "));
+	REQUIRE_THROWS_WITH(Utilities::string_to_int("b2"),
+			            Contains("Conversion of \"b2\" to int failed (bad cast): "));
+	REQUIRE_THROWS_WITH(Utilities::string_to_int("b"),
+			            Contains("Conversion of \"b\" to int failed (bad cast): "));
+
+	REQUIRE(Utilities::string_to_unsigned_int("3") == 3);
+	REQUIRE(Utilities::string_to_unsigned_int(" 3 ") == 3);
+
+	REQUIRE_THROWS_WITH(Utilities::string_to_unsigned_int(" 3.03 "),
+				        Contains("Conversion of \" 3.03 \" to unsigned int failed (bad cast): "));
+	REQUIRE_THROWS_WITH(Utilities::string_to_unsigned_int("3c"),
+			            Contains("Conversion of \"3c\" to unsigned int failed (bad cast): "));
+	REQUIRE_THROWS_WITH(Utilities::string_to_unsigned_int("c3"),
+			            Contains("Conversion of \"c3\" to unsigned int failed (bad cast): "));
+	REQUIRE_THROWS_WITH(Utilities::string_to_unsigned_int("c"),
+			            Contains("Conversion of \"c\" to unsigned int failed (bad cast): "));
+
+	// Test point to array conversion
 	const Point<2> p2(1,2);
 	const Point<3> p3(1,2,3);
+
 	REQUIRE(Utilities::convert_point_to_array(p2) == std::array<double,2>{1,2});
 	REQUIRE(Utilities::convert_point_to_array(p3) == std::array<double,3>{1,2,3});
+
+	// Test coordinate system
+	REQUIRE(Utilities::string_to_coordinate_system("cartesian") == CoordinateSystem::cartesian);
+	REQUIRE(Utilities::string_to_coordinate_system("spherical") == CoordinateSystem::spherical);
+	REQUIRE_THROWS_WITH(Utilities::string_to_coordinate_system("other"), Contains("Coordinate system not implemented."));
 }
 
 TEST_CASE("WorldBuilder Utilities: Point in polygon")
 {
-	std::vector<Point<2> > point_list1(4);
-	point_list1[0] = Point<2>(0,0);
-	point_list1[1] = Point<2>(5,0);
-	point_list1[2] = Point<2>(5,5);
-	point_list1[3] = Point<2>(0,5);
+	std::vector<Point<2> > point_list_4_elements(4);
+	point_list_4_elements[0] = Point<2>(0,0);
+	point_list_4_elements[1] = Point<2>(5,0);
+	point_list_4_elements[2] = Point<2>(5,5);
+	point_list_4_elements[3] = Point<2>(0,5);
 
-	std::vector<Point<2> > point_list2(3);
-	point_list2[0] = Point<2>(10,10);
-	point_list2[1] = Point<2>(10,15);
-	point_list2[2] = Point<2>(15,15);
+	std::vector<Point<2> > point_list_3_elements(3);
+	point_list_3_elements[0] = Point<2>(10,10);
+	point_list_3_elements[1] = Point<2>(10,15);
+	point_list_3_elements[2] = Point<2>(15,15);
 
 	std::vector<Point<2> > check_points(9);
 	check_points[0] = Point<2>(-1,-1);
@@ -177,12 +216,37 @@ TEST_CASE("WorldBuilder Utilities: Point in polygon")
 	awnsers[7] = {false,false};
 	awnsers[8] = {false,true};
 
+	std::vector<std::array<double,2> > awnsers_signed_distance(9);
+	awnsers_signed_distance[0] = {-std::sqrt(2), -std::sqrt(11 * 11 + 11 * 11)};
+	awnsers_signed_distance[1] = {0,-std::sqrt(10 * 10 + 10 * 10)};
+	awnsers_signed_distance[2] = {0,-std::sqrt(125)};
+	awnsers_signed_distance[3] = {0,-std::sqrt(125)};
+	awnsers_signed_distance[4] = {0,-std::sqrt(50)};
+	awnsers_signed_distance[5] = {-std::sqrt(0.01 * 0.01),-std::sqrt(5 * 5 + 4.99 * 4.99)};
+	awnsers_signed_distance[6] = {1,-std::sqrt(9 * 9 + 9 * 9)};
+	awnsers_signed_distance[7] = {-10.2591422643,-0.3535533906};
+	awnsers_signed_distance[8] = {-9.5524865873,0.3535533906};
+
 	for(unsigned int i = 0; i < check_points.size(); ++i)
 	{
 		INFO("checking point " << i << " = (" << check_points[i][0] << ":" << check_points[i][1] << ")");
-		REQUIRE(Utilities::polygon_contains_point(point_list1,check_points[i]) == awnsers[i][0]);
-		REQUIRE(Utilities::polygon_contains_point(point_list2,check_points[i]) == awnsers[i][1]);
+		REQUIRE(Utilities::polygon_contains_point(point_list_4_elements,check_points[i]) == awnsers[i][0]);
+		REQUIRE(Utilities::polygon_contains_point(point_list_3_elements,check_points[i]) == awnsers[i][1]);
+		REQUIRE(Utilities::signed_distance_to_polygon(point_list_4_elements,check_points[i]) == Approx(awnsers_signed_distance[i][0]));
+		REQUIRE(Utilities::signed_distance_to_polygon(point_list_3_elements,check_points[i]) == Approx(awnsers_signed_distance[i][1]));
 	}
+
+	std::vector<Point<2> > point_list_2_elements(2);
+	REQUIRE_THROWS_WITH(Utilities::signed_distance_to_polygon(point_list_2_elements,check_points[0]),
+			                                                  Contains("Not enough polygon points were specified."));
+
+	std::vector<Point<2> > point_list_1_elements(1);
+	REQUIRE_THROWS_WITH(Utilities::signed_distance_to_polygon(point_list_1_elements,check_points[0]),
+			                                                  Contains("Not enough polygon points were specified."));
+
+	std::vector<Point<2> > point_list_0_elements(0);
+	REQUIRE_THROWS_WITH(Utilities::signed_distance_to_polygon(point_list_0_elements,check_points[0]),
+			                                                  Contains("Not enough polygon points were specified."));
 }
 
 
@@ -201,8 +265,9 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
 	REQUIRE(ncp1.get_depth_coordinate() == 3);
 }
 
-TEST_CASE("WorldBuilder Utilities: Spherical to Cartesian and back")
+TEST_CASE("WorldBuilder Utilities: Coordinate systems transformations")
 {
+	// Test coordinate system transformation
 	Point<3> cartesian(3,4,5);
 
 	Point<3> spherical(Utilities::cartesian_to_spherical_coordinates(cartesian.get_array()), CoordinateSystem::spherical);
@@ -215,6 +280,14 @@ TEST_CASE("WorldBuilder Utilities: Spherical to Cartesian and back")
 	compare_vectors_approx(std::vector<double>(std::begin(cartesian_back.get_array()), std::end(cartesian_back.get_array())),
 			               std::vector<double>{3,4,5});
 
+
 }
 
-
+TEST_CASE("WorldBuilder Utilities: ptree function")
+{
+	ptree tree;
+	tree.put("value", 3.14159);
+	REQUIRE(Utilities::string_to_double(Utilities::get_from_ptree(tree, "pi", "value", ".")) == Approx(3.14159));
+	REQUIRE_THROWS_WITH(Utilities::get_from_ptree(tree, "pi", "value_pi", "."),
+			            Contains("Entry undeclared: pi.value_pi"));
+}
