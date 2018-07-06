@@ -39,7 +39,7 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/source/version.cc.in" "${PROJECT_SOU
 
 
 # Add include directory
-include_directories("include/") 
+include_directories("include/" "tests/") 
 
 # Add source directory
 file(GLOB_RECURSE SOURCES "source/*.cc" "source/*.f90")
