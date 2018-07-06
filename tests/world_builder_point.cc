@@ -9,6 +9,22 @@ using namespace WorldBuilder;
 
 using Catch::Matchers::Contains;
 
+/**
+ * Compare the given two std::vector<double> entries with an epsilon (using Catch::Approx)
+ */
+inline void compare_vectors_approx(
+  const std::vector<double> &computed,
+  const std::vector<double> &expected)
+{
+  REQUIRE(computed.size() == expected.size());
+  for (unsigned int i=0; i< computed.size(); ++i)
+    {
+      INFO("vector index i=" << i << ": ");
+      REQUIRE(computed[i] == Approx(expected[i]));
+    }
+}
+
+
 TEST_CASE("WorldBuilder Point: Testing initialize and operators")
 {
 	// Test initialization of the Point class
@@ -114,11 +130,16 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
 
 }
 
-TEST_CASE("WorldBuilder Utilities: string to number conversion")
+TEST_CASE("WorldBuilder Utilities: string to number and point to array conversion")
 {
 	REQUIRE(Utilities::string_to_double("1") == 1.0);
 	REQUIRE(Utilities::string_to_int("2") == 2);
 	REQUIRE(Utilities::string_to_unsigned_int("3") == 3);
+
+	const Point<2> p2(1,2);
+	const Point<3> p3(1,2,3);
+	REQUIRE(Utilities::convert_point_to_array(p2) == std::array<double,2>{1,2});
+	REQUIRE(Utilities::convert_point_to_array(p3) == std::array<double,3>{1,2,3});
 }
 
 TEST_CASE("WorldBuilder Utilities: Point in polygon")
@@ -179,3 +200,21 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
 	REQUIRE(ncp1.get_surface_coordinates() == std::array<double,2>{1,2});
 	REQUIRE(ncp1.get_depth_coordinate() == 3);
 }
+
+TEST_CASE("WorldBuilder Utilities: Spherical to Cartesian and back")
+{
+	Point<3> cartesian(3,4,5);
+
+	Point<3> spherical(Utilities::cartesian_to_spherical_coordinates(cartesian.get_array()), CoordinateSystem::spherical);
+
+	compare_vectors_approx(std::vector<double>(std::begin(spherical.get_array()), std::end(spherical.get_array())),
+			               std::vector<double>{std::sqrt(3*3+4*4+5*5),0.927295218001613,0.7853982});
+
+	Point<3> cartesian_back(Utilities::spherical_to_cartesian_coordinates(spherical.get_array()), CoordinateSystem::cartesian);
+
+	compare_vectors_approx(std::vector<double>(std::begin(cartesian_back.get_array()), std::end(cartesian_back.get_array())),
+			               std::vector<double>{3,4,5});
+
+}
+
+
