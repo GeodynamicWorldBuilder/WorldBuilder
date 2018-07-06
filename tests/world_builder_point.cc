@@ -259,7 +259,7 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
 	REQUIRE(nca1.get_surface_coordinates() == std::array<double,2>{1,2});
 	REQUIRE(nca1.get_depth_coordinate() == 3);
 
-	Utilities::NaturalCoordinate ncp1(std::array<double,3>{1,2,3},*cartesian);
+	Utilities::NaturalCoordinate ncp1(Point<3>(1,2,3),*cartesian);
 	REQUIRE(ncp1.get_coordinates() == std::array<double,3>{1,2,3});
 	REQUIRE(ncp1.get_surface_coordinates() == std::array<double,2>{1,2});
 	REQUIRE(ncp1.get_depth_coordinate() == 3);
