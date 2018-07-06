@@ -123,20 +123,23 @@ namespace WorldBuilder
   }
 
   template<int dim>
-  Point<dim> Point<dim>::operator+(const Point<dim> &point_) const
+  Point<dim>
+  Point<dim>::operator+(const Point<dim> &point_) const
   {
-    Point<dim> point;
-    point += point_;
-    return point;
+    Point<dim> point_tmp(point);
+    point_tmp += point_;
+
+    return point_tmp;
   }
 
   template<int dim>
-  Point<dim> Point<dim>::operator-(const Point<dim> &point_) const
+  Point<dim>
+  Point<dim>::operator-(const Point<dim> &point_) const
   {
-    std::array<double,dim> array = point_.get_array();
-    for (unsigned int i = 0; i < dim; ++i)
-      array[i] -= point[i];
-    return Point<dim>(array);
+    Point<dim> point_tmp(point);
+    point_tmp -= point_;
+
+    return point_tmp;
   }
 
 
@@ -219,14 +222,14 @@ namespace WorldBuilder
   double
   Point<2>::norm_square() const
   {
-    return point[0] * point[0] + point[1] * point[1];
+    return (point[0] * point[0]) + (point[1] * point[1]);
   }
 
   template<>
   double
   Point<3>::norm_square() const
   {
-    return point[0] * point[0] + point[1] * point[1] + point[2] * point[2];
+    return (point[0] * point[0]) + (point[1] * point[1]) + (point[2] * point[2]);
   }
 
 
