@@ -3,6 +3,7 @@
 #include <world_builder/point.h>
 #include <world_builder/utilities.h>
 #include <world_builder/coordinate_systems/interface.h>
+#include <world_builder/coordinate_systems/cartesian.h>
 
 using namespace WorldBuilder;
 
@@ -163,3 +164,18 @@ TEST_CASE("WorldBuilder Utilities: Point in polygon")
 	}
 }
 
+
+TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
+{
+	CoordinateSystems::Interface* cartesian = new CoordinateSystems::Cartesian;
+
+	Utilities::NaturalCoordinate nca1(std::array<double,3>{1,2,3},*cartesian);
+	REQUIRE(nca1.get_coordinates() == std::array<double,3>{1,2,3});
+	REQUIRE(nca1.get_surface_coordinates() == std::array<double,2>{1,2});
+	REQUIRE(nca1.get_depth_coordinate() == 3);
+
+	Utilities::NaturalCoordinate ncp1(std::array<double,3>{1,2,3},*cartesian);
+	REQUIRE(ncp1.get_coordinates() == std::array<double,3>{1,2,3});
+	REQUIRE(ncp1.get_surface_coordinates() == std::array<double,2>{1,2});
+	REQUIRE(ncp1.get_depth_coordinate() == 3);
+}
