@@ -34,4 +34,4 @@ script:
     - make test
 
 after_success:
-        - coveralls --root . --gcov-options '\-lp' 
+        - coveralls -i source -i app --gcov-options '\-lp' 
