@@ -149,7 +149,7 @@ namespace WorldBuilder
       }
 
 
-    child = tree.get_child("Coordinate system");
+    child = tree.get_child_optional("Coordinate system");
     if (child)
       {
         const boost::optional<std::string> value = child.get().get_optional<std::string>("name");
@@ -171,7 +171,8 @@ namespace WorldBuilder
   {
     // turn it into a 3d coordinate and call the 3d temperature function
     WBAssertThrow(dim == 2, "This function can only be called when the cross section "
-                  "variable in the world builder file has been set. Dim is " << dim << ".");
+                  "variable in the world builder file has been set. Dim is "
+                  << dim << ".");
 
     Point<3> coord_3d(cross_section[0][0] + point[0] * surface_coord_conversions[0],
                       cross_section[0][1] + point[0] * surface_coord_conversions[1],
@@ -198,7 +199,8 @@ namespace WorldBuilder
   {
     // turn it into a 3d coordinate and call the 3d temperature function
     WBAssertThrow(dim == 2, "This function can only be called when the cross section "
-                  "variable in the world builder file has been set.");
+                  "variable in the world builder file has been set. Dim is "
+                  << dim << ".");
 
     Point<3> coord_3d(cross_section[0][0] + point[0] * surface_coord_conversions[0],
                       cross_section[0][1] + point[0] * surface_coord_conversions[1],

@@ -42,7 +42,7 @@ namespace WorldBuilder
       if (feature_name == "continental plate")
         return new Features::ContinentalPlate(world);
       else
-        WBAssertThrow(false, "Plugin not implemented.");
+        WBAssertThrow(false, "Feature not implemented.");
 
       return NULL;
     }

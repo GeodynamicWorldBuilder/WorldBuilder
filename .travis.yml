@@ -31,7 +31,7 @@ script:
     - export CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Coverage"
     - cmake . ${CMAKE_EXTRA_ARGS}
     - make
-    - make test
+    - ctest -VV
 
 after_success:
         - coveralls -i source -i app --gcov-options '\-lp' 
