@@ -28,8 +28,10 @@ before_script:
     - gcov --version
 
 script:
+    - mkdir build
+    - cd build
     - export CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Coverage"
-    - cmake . ${CMAKE_EXTRA_ARGS}
+    - cmake .. ${CMAKE_EXTRA_ARGS}
     - make
     - ctest -VV
 

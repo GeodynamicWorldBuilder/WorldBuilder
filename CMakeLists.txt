@@ -48,10 +48,10 @@ file(GLOB_RECURSE SOURCES "source/*.cc" "source/*.f90")
 
 # Pass down the source directory to the sources. This can be used
 # to hard-code the location of data files.
-FOREACH(_source_file ${TARGET_SRC})
-  SET_PROPERTY(SOURCE ${_source_file}
-	  APPEND PROPERTY COMPILE_DEFINITIONS WORLD_BUILDER_SOURCE_DIR="${PROJECT_SOURCE_DIR}")
-ENDFOREACH()
+#FOREACH(_source_file ${TARGET_SRC})
+#  SET_PROPERTY(SOURCE ${_source_file}
+#	  APPEND PROPERTY COMPILE_DEFINITIONS WORLD_BUILDER_SOURCE_DIR="${PROJECT_SOURCE_DIR}")
+#ENDFOREACH()
 
 
 #add Boost

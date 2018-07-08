@@ -19,6 +19,8 @@
 
 #define CATCH_CONFIG_MAIN
 
+#include <iostream>
+
 #include <boost/property_tree/json_parser.hpp>
 
 #include <catch2.h>
