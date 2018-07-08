@@ -33,9 +33,11 @@ execute_process(COMMAND
   OUTPUT_VARIABLE GIT_COMMIT_SUBJECT
   ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
 
+set (WORLD_BUILDER_SOURCE_DIR ${PROJECT_SOURCE_DIR})
+
 
 # generate version.cc
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/source/version.cc.in" "${PROJECT_SOURCE_DIR}/source/version.cc" @ONLY)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/source/config.cc.in" "${PROJECT_SOURCE_DIR}/source/config.cc" @ONLY)
 
 
 # Add include directory
@@ -43,6 +45,13 @@ include_directories("include/" "tests/")
 
 # Add source directory
 file(GLOB_RECURSE SOURCES "source/*.cc" "source/*.f90")
+
+# Pass down the source directory to the sources. This can be used
+# to hard-code the location of data files.
+#FOREACH(_source_file ${TARGET_SRC})
+#  SET_PROPERTY(SOURCE ${_source_file}
+#	  APPEND PROPERTY COMPILE_DEFINITIONS WORLD_BUILDER_SOURCE_DIR="${PROJECT_SOURCE_DIR}")
+#ENDFOREACH()
 
 
 #add Boost

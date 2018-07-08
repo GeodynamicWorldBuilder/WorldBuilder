@@ -1,0 +1,8 @@
+
+TODO: Write description how to use this.
+
+Allowed options:
+  --help                produce help message
+  --files arg           list of files, starting with the World Builder file and
+                        data file(s) after it.
+

@@ -5,5 +5,5 @@ examples/fortran/a.out
 examples/fortran/Makefile
 examples/fortran/CMakeCache.txt
 examples/fortran/CMakeFiles
-source/version.cc
+source/config.cc
 tests/bin/

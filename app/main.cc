@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include <boost/program_options.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
 #include <world_builder/assert.h>
 #include <world_builder/utilities.h>
@@ -25,8 +26,6 @@ int main(int argc, char** argv)
 	    po::options_description desc("Allowed options");
 	    desc.add_options()
 	        ("help", "produce help message")
-			("dim", po::value<unsigned int>(), "dimension of the data file.")
-			("compositions", po::value<unsigned int>(), "compositions in the data output.")
 			("files", po::value<std::vector<std::string> >(), "list of files, starting with the World Builder "
      			                                              "file and data file(s) after it.");
 
@@ -42,16 +41,6 @@ int main(int argc, char** argv)
 	    	std::cout << desc << "\n";
 	        return 0;
 	      }
-
-	    if(vm.count("dim"))
-	    {
-	    	dim = vm["dim"].as<unsigned int>();
-	    }
-
-	    if(vm.count("compositions"))
-	    {
-	    	compositions = vm["compositions"].as<unsigned int>();
-	    }
 
 	    if(!vm.count("files"))
 	    {
@@ -75,7 +64,6 @@ int main(int argc, char** argv)
 
 	    data_file = file_names[1];
 	    // Todo: Is it useful to check whether the string is empty?
-
 
 	}
 	    catch(std::exception& e) {
@@ -103,9 +91,31 @@ int main(int argc, char** argv)
 	    return 1;
 	    }
 
+
 	    /**
 	     * Read the data from the data files
 	     */
+	    // if config file is available, parse it
+	  /*  if(config_file != "")
+	    {
+	    	// Get world builder file and check wether it exists
+	    	WBAssertThrow(access( config_file.c_str(), F_OK ) != -1,
+	    			"Could not find the provided convig file at the specified location: " + config_file);
+
+
+	    	// Now read in the world builder file into a file stream and
+	    	// put it into a boost property tree.
+	    	//std::ifstream json_input_stream(config_file.c_str());
+	    	ptree tree;
+	    	tree.read_json(config_file, tree);
+
+	    	if(boost::optional<unsigned int> value = tree.get_optional<unsigned int>("dim"))
+	    			dim = value.get();
+
+	    	if(boost::optional<unsigned int> value = tree.get_optional<unsigned int>("compositions"))
+	    			compositions = value.get();
+
+	    }*/
 	    std::string line;
 	    std::ifstream data_stream(data_file);
 
@@ -126,14 +136,37 @@ int main(int argc, char** argv)
 	        data.push_back(line);
 	    }
 
+	    // Read config from data if pressent
+	    for(unsigned int i = 0; i < data.size(); ++i)
+	    {
+	    	if(data[i][0] == "#" && data[i][1] == "dim" && data[i][2] == "=" && data[i][2] == "=")
+	    	{
+	    		dim = string_to_unsigned_int(data[i][3]);
+	    	}
+
+	    	if(data[i][0] == "#" && data[i][1] == "compositions" && data[i][2] == "=")
+	    		compositions = string_to_unsigned_int(data[i][3]);
+
+	    }
+
 	    switch(dim)
 	    {
 	    case 2:
+    	    // set the header
+	    	std::cout << "# x z d T ";
+
+		    for(unsigned int c = 0; c < compositions; ++c)
+		    	std::cout << "c" << c << " ";
+
+		    std::cout <<std::endl;
+
+		    // set the values
 		    for(unsigned int i = 0; i < data.size(); ++i)
 		    	if(data[i][0] != "#")
 		    		{
+
 		    		WBAssertThrow(data[i].size() == dim + 2, "The file needs to contain dim + 2 entries, but contains " << data[i].size() << " entries "
-		    				                                 " on line " << i+1 << " of the data file.");
+		    				                                 " on line " << i+1 << " of the data file.  Dim is " << dim << ".");
 
 		    			std::array<double,2> coords = {string_to_double(data[i][0]),
 		    					                       string_to_double(data[i][1])};
@@ -149,11 +182,20 @@ int main(int argc, char** argv)
 		    		}
 		    break;
 	    case 3:
+    	    // set the header
+	    	std::cout << "# x y z d T ";
+
+		    for(unsigned int c = 0; c < compositions; ++c)
+		    	std::cout << "c" << c << " ";
+
+		    std::cout <<std::endl;
+
+		    // set the values
 		    for(unsigned int i = 0; i < data.size(); ++i)
 		    	if(data[i][0] != "#")
 		    		{
 	    			    WBAssertThrow(data[i].size() == dim + 2, "The file needs to contain dim + 2 entries, but contains " << data[i].size() << " entries "
-		    				                                      " on line " << i+1 << " of the data file.");
+		    				                                      " on line " << i+1 << " of the data file. Dim is " << dim << ".");
 		    			std::array<double,3> coords = {string_to_double(data[i][0]),
 		    					                       string_to_double(data[i][1]),
 								                       string_to_double(data[i][3])};
@@ -170,8 +212,8 @@ int main(int argc, char** argv)
 		    		}
 		    break;
 	    default:
-	                std::cout << "The World Builder can only be run in 2d and 3d but a different space dimension " << std::endl;
-	                		     "is given.";
+	                std::cout << "The World Builder can only be run in 2d and 3d but a different space dimension " << std::endl
+	                		  << "is given: dim = " << dim << ".";
 	                		     return 0;
 	    }
 

@@ -17,35 +17,21 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <boost/algorithm/string.hpp>
+#ifndef _world_builder_wrapper_c_h
+#define _world_builder_wrapper_c_h
 
-#include <world_builder/coordinate_systems/interface.h>
-#include <world_builder/coordinate_systems/cartesian.h>
-#include <world_builder/assert.h>
+extern "C" {
+  void create_world(void **ptr_ptr_world, const char *world_builder_file);
 
+  void temperature_2d(void *ptr_ptr_world, double x, double z, double depth, double gravity, double *temperature);
 
-namespace WorldBuilder
-{
-  namespace CoordinateSystems
-  {
-    Interface::Interface()
-    {}
+  void temperature_3d(void *ptr_ptr_world, double x, double y, double z, double depth, double gravity, double *temperature);
 
-    Interface::~Interface ()
-    {}
+  void composition_2d(void *ptr_ptr_world, double x, double z, double depth, unsigned int composition_number, bool *composition);
 
-    Interface *
-    create_coordinate_system(const std::string name)
-    {
-      std::string feature_name = boost::algorithm::to_lower_copy(name);
-      boost::algorithm::trim(feature_name);
-      if (feature_name == "cartesian")
-        return new CoordinateSystems::Cartesian();
-      else
-        WBAssertThrow(false, "Coordinate system not implemented.");
+  void composition_3d(void *ptr_ptr_world, double x, double y, double z, double depth, unsigned int composition_number, bool *composition);
 
-      return NULL;
-    }
-  }
+  void release_world(void *ptr_ptr_world);
 }
 
+#endif

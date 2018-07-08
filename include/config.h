@@ -17,35 +17,32 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <boost/algorithm/string.hpp>
+#ifndef WORLD_BUILDER_CONFIG_H_
+#define WORLD_BUILDER_CONFIG_H_
 
-#include <world_builder/coordinate_systems/interface.h>
-#include <world_builder/coordinate_systems/cartesian.h>
-#include <world_builder/assert.h>
 
+#include <string>
 
 namespace WorldBuilder
 {
-  namespace CoordinateSystems
+  struct Version
   {
-    Interface::Interface()
-    {}
+    static const std::string MAJOR;
+    static const std::string MINOR;
+    static const std::string PATCH;
 
-    Interface::~Interface ()
-    {}
+    static const std::string GIT_SHA1;
+    static const std::string GIT_BRANCH;
+    static const std::string GIT_DATE;
+    static const std::string GIT_COMMIT_SUBJECT;
+  };
 
-    Interface *
-    create_coordinate_system(const std::string name)
-    {
-      std::string feature_name = boost::algorithm::to_lower_copy(name);
-      boost::algorithm::trim(feature_name);
-      if (feature_name == "cartesian")
-        return new CoordinateSystems::Cartesian();
-      else
-        WBAssertThrow(false, "Coordinate system not implemented.");
-
-      return NULL;
-    }
-  }
+  struct Data
+  {
+    static const std::string WORLD_BUILDER_SOURCE_DIR;
+  };
 }
+
+
+#endif /* WORLD_BUILDER_CONFIG_H_ */
 
