@@ -26,8 +26,6 @@ int main(int argc, char** argv)
 	    po::options_description desc("Allowed options");
 	    desc.add_options()
 	        ("help", "produce help message")
-			("dim", po::value<unsigned int>(), "dimension of the data file.")
-			("compositions", po::value<unsigned int>(), "compositions in the data output.")
 			("files", po::value<std::vector<std::string> >(), "list of files, starting with the World Builder "
      			                                              "file and data file(s) after it.");
 
@@ -43,16 +41,6 @@ int main(int argc, char** argv)
 	    	std::cout << desc << "\n";
 	        return 0;
 	      }
-
-	    if(vm.count("dim"))
-	    {
-	    	dim = vm["dim"].as<unsigned int>();
-	    }
-
-	    if(vm.count("compositions"))
-	    {
-	    	compositions = vm["compositions"].as<unsigned int>();
-	    }
 
 	    if(!vm.count("files"))
 	    {
@@ -161,28 +149,22 @@ int main(int argc, char** argv)
 
 	    }
 
-	    // set the header
-	    std::cout << "# x ";
-
-	    if(dim == 2)
-	    	std::cout << "z ";
-	    else
-	    	std::cout << "y z ";
-
-	    std::cout << "d T ";
-
-	    for(unsigned int c = 0; c < compositions; ++c)
-	    	std::cout << "c" << c << " ";
-
-	    std::cout <<std::endl;
-
-	    // set the values
 	    switch(dim)
 	    {
 	    case 2:
+    	    // set the header
+	    	std::cout << "# x z d T ";
+
+		    for(unsigned int c = 0; c < compositions; ++c)
+		    	std::cout << "c" << c << " ";
+
+		    std::cout <<std::endl;
+
+		    // set the values
 		    for(unsigned int i = 0; i < data.size(); ++i)
 		    	if(data[i][0] != "#")
 		    		{
+
 		    		WBAssertThrow(data[i].size() == dim + 2, "The file needs to contain dim + 2 entries, but contains " << data[i].size() << " entries "
 		    				                                 " on line " << i+1 << " of the data file.  Dim is " << dim << ".");
 
@@ -200,6 +182,15 @@ int main(int argc, char** argv)
 		    		}
 		    break;
 	    case 3:
+    	    // set the header
+	    	std::cout << "# x y z d T ";
+
+		    for(unsigned int c = 0; c < compositions; ++c)
+		    	std::cout << "c" << c << " ";
+
+		    std::cout <<std::endl;
+
+		    // set the values
 		    for(unsigned int i = 0; i < data.size(); ++i)
 		    	if(data[i][0] != "#")
 		    		{
@@ -221,8 +212,8 @@ int main(int argc, char** argv)
 		    		}
 		    break;
 	    default:
-	                std::cout << "The World Builder can only be run in 2d and 3d but a different space dimension " << std::endl;
-	                		     "is given.";
+	                std::cout << "The World Builder can only be run in 2d and 3d but a different space dimension " << std::endl
+	                		  << "is given: dim = " << dim << ".";
 	                		     return 0;
 	    }
 
