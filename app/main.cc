@@ -161,6 +161,22 @@ int main(int argc, char** argv)
 
 	    }
 
+	    // set the header
+	    std::cout << "# x ";
+
+	    if(dim == 2)
+	    	std::cout << "z ";
+	    else
+	    	std::cout << "y z ";
+
+	    std::cout << "d T ";
+
+	    for(unsigned int c = 0; c < compositions; ++c)
+	    	std::cout << "c" << c << " ";
+
+	    std::cout <<std::endl;
+
+	    // set the values
 	    switch(dim)
 	    {
 	    case 2:

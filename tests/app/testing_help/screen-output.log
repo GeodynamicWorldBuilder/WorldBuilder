@@ -1,0 +1,10 @@
+
+TODO: Write description how to use this.
+
+Allowed options:
+  --help                produce help message
+  --dim arg             dimension of the data file.
+  --compositions arg    compositions in the data output.
+  --files arg           list of files, starting with the World Builder file and
+                        data file(s) after it.
+
