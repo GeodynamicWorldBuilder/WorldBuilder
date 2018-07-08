@@ -26,6 +26,8 @@ addons:
       name: "GeodynamicWorldBuilder/WorldBuilder"
       description: "World Builder: A geodynamic initial contitions generator."
     notification_email: menno.fraters@outlook.com
+    build_command_prepend: "export CMAKE_EXTRA_ARGS=\"${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Coverage\" cmake . ${CMAKE_EXTRA_ARGS}"
+    build_command: "make"
     branch_pattern: coverity_scan
 
 before_install:
