@@ -103,7 +103,7 @@ namespace WorldBuilder
     {
       if (temperature_submodule_name == "constant")
         {
-          WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,world->get_coordinate_system());
+          WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,*(world->parameters.coordinate_system));
           // The constant temperature module should be used for this.
           if (depth <= temperature_submodule_depth &&
               Utilities::polygon_contains_point(coordinates, natural_coordinate.get_surface_coordinates()))
@@ -133,7 +133,7 @@ namespace WorldBuilder
     {
       if (composition_submodule_name == "constant")
         {
-          WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,world->get_coordinate_system());
+          WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,*(world->parameters.coordinate_system));
           // The constant temperature module should be used for this.
           if (depth <= composition_submodule_depth &&
               Utilities::polygon_contains_point(coordinates, natural_coordinate.get_surface_coordinates()))

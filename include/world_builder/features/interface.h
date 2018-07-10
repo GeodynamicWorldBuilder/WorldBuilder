@@ -95,7 +95,7 @@ namespace WorldBuilder
     /**
      * factory function
      */
-    Interface *
+    std::shared_ptr<Interface>
     create_feature(const std::string name, WorldBuilder::World &world);
 
   }

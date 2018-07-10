@@ -16,35 +16,31 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
-#include <boost/algorithm/string.hpp>
-
-#include <world_builder/coordinate_systems/interface.h>
-#include <world_builder/coordinate_systems/cartesian.h>
+#include <world_builder/types/list.h>
 #include <world_builder/assert.h>
-
 
 namespace WorldBuilder
 {
-  namespace CoordinateSystems
+  namespace Types
   {
-    Interface::Interface()
-    {}
+  List::List(const Interface& type, std::string description)
+  :
+  		inner_type(type.clone()),
+			description(description)
+  {
+    this->type_name = type::List;
+    std::cout << "Constructing a list" << std::endl;
+  }
 
-    Interface::~Interface ()
+
+  List::~List ()
     {}
 
     std::shared_ptr<Interface>
-    create_coordinate_system(const std::string name)
+    List::clone() const
     {
-      std::string feature_name = boost::algorithm::to_lower_copy(name);
-      boost::algorithm::trim(feature_name);
-      if (feature_name == "cartesian")
-        return std::make_shared<CoordinateSystems::Cartesian>();
-      else
-        WBAssertThrow(false, "Coordinate system not implemented.");
-
-      return NULL;
+    	std::cout << "cloning an list" << std::endl;
+    	return std::unique_ptr<Interface>(new List(*inner_type, description));
     }
   }
 }

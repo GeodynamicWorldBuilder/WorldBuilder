@@ -186,7 +186,27 @@ namespace WorldBuilder
     get_from_ptree(const ptree &tree,
                    const std::string &path,
                    const std::string &key,
+                   const bool required = true,
                    const std::string &path_separator = ".");
+
+
+    /**
+     * Returns a value from the property tree and asserts with
+     * the path and value in the error message when the value
+     * was not present.
+     */
+    std::string
+    get_from_ptree_abs(const ptree &tree,
+                   const std::string &path,
+                   const std::string &key,
+                   const bool required = true,
+                   const std::string &path_separator = ".");
+
+    std::string
+	escape_string(std::string &original);
+
+    std::string indent(int level);
+    void print_tree (const ptree &pt, int level);
   }
 }
 

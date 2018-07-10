@@ -16,35 +16,38 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
-#include <boost/algorithm/string.hpp>
-
-#include <world_builder/coordinate_systems/interface.h>
-#include <world_builder/coordinate_systems/cartesian.h>
+#include <world_builder/types/array.h>
 #include <world_builder/assert.h>
-
 
 namespace WorldBuilder
 {
-  namespace CoordinateSystems
+  namespace Types
   {
-    Interface::Interface()
-    {}
+  Array::Array(const Interface& type, std::string description)
+  :
+  		inner_type(type.clone()),
+			description(description)
+  {
+    this->type_name = type::Array;
+    std::cout << "construcuting an array" << std::endl;
+  }
 
-    Interface::~Interface ()
+    /*Array::Array(Interface* type, std::string description)
+    :
+    		inner_type(type),
+			description(description)
+    {
+      this->type_name = type::Array;
+    }*/
+
+    Array::~Array ()
     {}
 
     std::shared_ptr<Interface>
-    create_coordinate_system(const std::string name)
+    Array::clone() const
     {
-      std::string feature_name = boost::algorithm::to_lower_copy(name);
-      boost::algorithm::trim(feature_name);
-      if (feature_name == "cartesian")
-        return std::make_shared<CoordinateSystems::Cartesian>();
-      else
-        WBAssertThrow(false, "Coordinate system not implemented.");
-
-      return NULL;
+    	std::cout << "cloning an array" << std::endl;
+    	return std::unique_ptr<Interface>(new Array(*inner_type, description));
     }
   }
 }

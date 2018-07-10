@@ -16,35 +16,41 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
-#include <boost/algorithm/string.hpp>
-
-#include <world_builder/coordinate_systems/interface.h>
-#include <world_builder/coordinate_systems/cartesian.h>
+#include <world_builder/types/double.h>
 #include <world_builder/assert.h>
-
+#include <world_builder/utilities.h>
 
 namespace WorldBuilder
 {
-  namespace CoordinateSystems
+  namespace Types
   {
-    Interface::Interface()
-    {}
+    Double::Double( std::string default_value, std::string description)
+    :
+		default_value(default_value),
+		description(description)
+    {
+      this->type_name = type::Double;
+      //TODO: Think about what should happen when the default value is empty
+      if(default_value != "")
+    	  value = Utilities::string_to_double(default_value);
+      std::cout << "constructing a double" << std::endl;
+    }
 
-    Interface::~Interface ()
+    Double::~Double ()
     {}
 
     std::shared_ptr<Interface>
-    create_coordinate_system(const std::string name)
+    Double::clone() const
     {
-      std::string feature_name = boost::algorithm::to_lower_copy(name);
-      boost::algorithm::trim(feature_name);
-      if (feature_name == "cartesian")
-        return std::make_shared<CoordinateSystems::Cartesian>();
-      else
-        WBAssertThrow(false, "Coordinate system not implemented.");
+    	std::cout << "cloning a double" << std::endl;
+    	return std::unique_ptr<Interface>(new Double(std::to_string(value), description));
+    }
 
-      return NULL;
+    void
+	Double::set_value(std::string value_)
+    {
+    	value = Utilities::string_to_double(value_);
+    	std::cout << "set value of double to: " << value << std::endl;
     }
   }
 }

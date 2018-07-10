@@ -34,15 +34,15 @@ namespace WorldBuilder
     Interface::~Interface ()
     {}
 
-    Interface *
+    std::shared_ptr<Interface>
     create_feature(const std::string name, World &world)
     {
       std::string feature_name = boost::algorithm::to_lower_copy(name);
       boost::algorithm::trim(feature_name);
       if (feature_name == "continental plate")
-        return new Features::ContinentalPlate(world);
+        return std::make_shared<Features::ContinentalPlate>(world);
       else
-        WBAssertThrow(false, "Feature not implemented.");
+        WBAssertThrow(false, "Feature " << feature_name << " not implemented.");
 
       return NULL;
     }

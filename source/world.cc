@@ -19,13 +19,16 @@
 
 #include <sstream>
 
-#include <boost/property_tree/json_parser.hpp>
 
 #include <world_builder/world.h>
 #include <world_builder/utilities.h>
 #include <world_builder/assert.h>
 #include <world_builder/point.h>
 #include <world_builder/nan.h>
+#include <world_builder/parameters.h>
+#include <world_builder/types/interface.h>
+#include <world_builder/types/feature.h>
+#include <world_builder/types/coordinate_system.h>
 
 
 namespace WorldBuilder
@@ -42,42 +45,57 @@ namespace WorldBuilder
     potential_mantle_temperature(1600),
     thermal_expansion_coefficient_alpha(3.5e-5),
     specific_heat_Cp(1250),
-    coordinate_system(NULL)
+    parameters(filename,*this)
   {
-    // Get world builder file and check wether it exists
-    WBAssertThrow(access( filename.c_str(), F_OK ) != -1,
-                  "Could not find the world builder file at the specified location: " + filename);
-
-
-    // Now read in the world builder file into a file stream and
-    // put it into a boost property tree.
-    std::ifstream json_input_stream(filename.c_str());
-    ptree property_tree;
-    boost::property_tree::json_parser::read_json (json_input_stream, property_tree);
-    this->read(property_tree);
+	  std::cout << "flag c1" << std::endl;
+	  this->declare_and_parse(parameters);
+	  std::cout << "flag c2" << std::endl;
   }
 
   World::~World()
   {
-    delete coordinate_system;
+    //delete coordinate_system;
 
-    for (unsigned int i = 0; i < features.size(); ++i)
+    /*for (unsigned int i = 0; i < features.size(); ++i)
       {
         delete features[i];
-      }
+      }*/
 
+  }
+
+  void World::declare_and_parse(Parameters parameters)
+  {
+	  std::string sra = "Surface rotation angle";
+	  parameters.declare_entry(sra, false, Types::Double("0","test"));
+	  std::cout << parameters.vector_double[parameters.string_to_type_map["Surface rotation angle"].second].value << std::endl;
+	  /*parameters.enter_subsection("Coordinate system");
+		{
+		  parameters.declare_entry("name", true, Types::String("lala", "description"));
+		  std::cout << parameters.vector_string[parameters.string_to_type_map["name"].second].value << std::endl;
+		}
+		parameters.leave_subsection();*/
+
+		parameters.declare_entry("Coordinate system", true, Types::CoordinateSystem("cartesian","description"));
+
+		parameters.declare_entry("Surface rotation point", true, Types::Array(Types::Double("0", "descp double"),"descp srp"));
+		parameters.declare_entry("Cross section", true, Types::Array(
+				                                            Types::Array(
+				                                        		Types::Double("0","desciption double"),
+															"desciption point array"),
+														"description points array"));
+		parameters.declare_entry("Surface objects", true, Types::List(
+				                                               Types::Feature("These are the features"), "description of list"));
   }
 
   void
   World::read(ptree &tree)
   {
-
-    //todo: wrap this into a convenient function
+    /*//todo: wrap this into a convenient function
     boost::optional<ptree &> child;
 
-    /**
+    / **
      * get the cross section
-     */
+     * /
     child = tree.get_child_optional("Cross section");
     if (child)
       {
@@ -103,9 +121,9 @@ namespace WorldBuilder
                        cross_section.size() <<
                        " where provided.");
 
-        /**
+        / **
          * pre-compute stuff for the cross section
-         */
+         * /
         const Point<2> diff_points = Point<2>(cross_section[0])-Point<2>(cross_section[1]);
         const double one_over_cross_section_length = 1/(diff_points.norm());
         surface_coord_conversions = {diff_points[0] *one_over_cross_section_length,diff_points[1] *one_over_cross_section_length};
@@ -119,9 +137,9 @@ namespace WorldBuilder
     // Get the rotation angle
     surface_rotation_angle = string_to_double(get_from_ptree(tree, "", "Surface rotation angle"));
 
-    /**
+    / **
      * Get the point to rotate about when the rotation angle is not zero.
-     */
+     * /
     if (std::abs(surface_rotation_angle) < std::numeric_limits<double>::epsilon())
       {
         child = tree.get_child("Surface rotation point");
@@ -162,7 +180,7 @@ namespace WorldBuilder
         coordinate_system = CoordinateSystems::create_coordinate_system("cartesian");
       }
 
-
+*/
 
   }
 
@@ -186,7 +204,7 @@ namespace WorldBuilder
   {
     Point<3> point(point_);
     double temperature = potential_mantle_temperature + (((potential_mantle_temperature * thermal_expansion_coefficient_alpha * gravity_norm) / specific_heat_Cp) * 1000.0) * ((depth) / 1000.0);;
-    for (std::vector<Features::Interface *>::const_iterator it = features.begin(); it != features.end(); ++it)
+    for (std::vector<std::shared_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
       {
         temperature = (*it)->temperature(point,depth,gravity_norm,temperature);
       }
@@ -214,7 +232,7 @@ namespace WorldBuilder
   {
     Point<3> point(point_);
     double composition = 0;
-    for (std::vector<Features::Interface *>::const_iterator it = features.begin(); it != features.end(); ++it)
+    for (std::vector<std::shared_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
       {
         composition = (*it)->composition(point,depth,composition_number, composition);
       }
@@ -222,10 +240,10 @@ namespace WorldBuilder
     return composition;
   }
 
-  WorldBuilder::CoordinateSystems::Interface &
+  /*WorldBuilder::CoordinateSystems::Interface &
   World::get_coordinate_system() const
   {
     return *coordinate_system;
-  }
+  }*/
 }
 

@@ -16,35 +16,35 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
-#include <boost/algorithm/string.hpp>
-
-#include <world_builder/coordinate_systems/interface.h>
-#include <world_builder/coordinate_systems/cartesian.h>
+#include <world_builder/types/coordinate_system.h>
 #include <world_builder/assert.h>
-
+//#include <world_builder/coordinate_systems/interface.h>
 
 namespace WorldBuilder
 {
-  namespace CoordinateSystems
+  namespace Types
   {
-    Interface::Interface()
+  CoordinateSystem::CoordinateSystem(std::string default_value, std::string description)
+  :
+		default_value(default_value),
+		description(description)
+    {
+      this->type_name = type::CoordinateSystem;
+    }
+
+  CoordinateSystem::~CoordinateSystem ()
     {}
 
-    Interface::~Interface ()
-    {}
+    void
+	CoordinateSystem::set_value(std::string value_)
+    {
+    	value = CoordinateSystems::create_coordinate_system(value_);
+    }
 
     std::shared_ptr<Interface>
-    create_coordinate_system(const std::string name)
+    CoordinateSystem::clone() const
     {
-      std::string feature_name = boost::algorithm::to_lower_copy(name);
-      boost::algorithm::trim(feature_name);
-      if (feature_name == "cartesian")
-        return std::make_shared<CoordinateSystems::Cartesian>();
-      else
-        WBAssertThrow(false, "Coordinate system not implemented.");
-
-      return NULL;
+    	return std::make_shared<CoordinateSystem>(CoordinateSystem(default_value, description));
     }
   }
 }
