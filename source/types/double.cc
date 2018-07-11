@@ -25,14 +25,14 @@ namespace WorldBuilder
   namespace Types
   {
     Double::Double( std::string default_value, std::string description)
-    :
-		default_value(default_value),
-		description(description)
+      :
+      default_value(default_value),
+      description(description)
     {
       this->type_name = type::Double;
       //TODO: Think about what should happen when the default value is empty
-      if(default_value != "")
-    	  value = Utilities::string_to_double(default_value);
+      if (default_value != "")
+        value = Utilities::string_to_double(default_value);
       std::cout << "constructing a double" << std::endl;
     }
 
@@ -42,15 +42,15 @@ namespace WorldBuilder
     std::shared_ptr<Interface>
     Double::clone() const
     {
-    	std::cout << "cloning a double" << std::endl;
-    	return std::unique_ptr<Interface>(new Double(std::to_string(value), description));
+      std::cout << "cloning a double" << std::endl;
+      return std::unique_ptr<Interface>(new Double(std::to_string(value), description));
     }
 
     void
-	Double::set_value(std::string value_)
+    Double::set_value(std::string value_)
     {
-    	value = Utilities::string_to_double(value_);
-    	std::cout << "set value of double to: " << value << std::endl;
+      value = Utilities::string_to_double(value_);
+      std::cout << "set value of double to: " << value << std::endl;
     }
   }
 }

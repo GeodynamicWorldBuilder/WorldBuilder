@@ -57,7 +57,7 @@ namespace WorldBuilder
       /**
        * read in the world builder file
        */
-      void declare_and_parse(Parameters& parameters);
+      void declare_and_parse(Parameters &parameters);
 
       double temperature(const std::array<double, 2> &point, const double depth, const double gravity_norm) const;
 

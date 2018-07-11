@@ -41,7 +41,7 @@ namespace WorldBuilder
         /**
          * constructor
          */
-        ContinentalPlate(WorldBuilder::World* world);
+        ContinentalPlate(WorldBuilder::World *world);
 
         /**
          * Destructor

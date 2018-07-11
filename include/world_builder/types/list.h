@@ -40,7 +40,7 @@ namespace WorldBuilder
         /**
          * Constructor
          */
-    	List(const Interface& type, std::string description);
+        List(const Interface &type, std::string description);
 
 
         /**

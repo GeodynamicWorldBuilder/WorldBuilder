@@ -420,60 +420,66 @@ namespace WorldBuilder
 
     boost::optional<std::string>
     get_from_ptree_abs(const ptree &tree,
-                   const std::string &path,
-                   const std::string &key,
-                   const bool required,
-                   const std::string &path_separator)
+                       const std::string &path,
+                       const std::string &key,
+                       const bool required,
+                       const std::string &path_separator)
     {
-    	std::string use_path = path == "" ? key : path + path_separator + key;
-    	std::cout << "path = \'" << use_path << "\'" << std::endl;
+      std::string use_path = path == "" ? key : path + path_separator + key;
+      std::cout << "path = \'" << use_path << "\'" << std::endl;
       boost::optional<std::string> value  = tree.get_optional<std::string> (use_path);
       WBAssertThrow ((value && required == true) || required == false, "Entry undeclared: " + use_path);
       return value;
     }
 
     std::string
-	escape_string(std::string &original)
+    escape_string(std::string &original)
     {
-    	// first escape the escape character. Lets say we start with  "abc &amp;[ ]"
-    	//std::replace( s.begin(), s.end(), '&', '&amp');
-    	// This now became "abc &ampamp[ ]". Escape the other characters:
-    	//std::replace( s.begin(), s.end(), ' ', '&spa');
-    	// This now became "abc&spa&ampamp[&spa]"
-    	//std::replace( s.begin(), s.end(), '[', 'lsqb');
+      // first escape the escape character. Lets say we start with  "abc &amp;[ ]"
+      //std::replace( s.begin(), s.end(), '&', '&amp');
+      // This now became "abc &ampamp[ ]". Escape the other characters:
+      //std::replace( s.begin(), s.end(), ' ', '&spa');
+      // This now became "abc&spa&ampamp[&spa]"
+      //std::replace( s.begin(), s.end(), '[', 'lsqb');
     }
 
-    std::string indent(int level) {
+    std::string indent(int level)
+    {
       std::string s;
       for (int i=0; i<level; i++) s += "  ";
       return s;
     }
 
-    void print_tree (const ptree &pt, int level) {
-      if (pt.empty()) {
-        std::cout << "\""<< pt.data()<< "\"";
-      }
-
-      else {
-        if (level) std::cout << std::endl;
-
-        std::cout << indent(level) << "{" << std::endl;
-
-        for (ptree::const_iterator pos = pt.begin(); pos != pt.end();) {
-        	std::cout << indent(level+1) << "\"" << pos->first << "\": ";
-
-          print_tree(pos->second, level + 1);
-          ++pos;
-          if (pos != pt.end()) {
-        	  std::cout << ",";
-          }
-          std::cout << std::endl;
+    void print_tree (const ptree &pt, int level)
+    {
+      if (pt.empty())
+        {
+          std::cout << "\""<< pt.data()<< "\"";
         }
-        std::cout << indent(level) << " }";
-         }
 
-         return;
-       }
+      else
+        {
+          if (level) std::cout << std::endl;
+
+          std::cout << indent(level) << "{" << std::endl;
+
+          for (ptree::const_iterator pos = pt.begin(); pos != pt.end();)
+            {
+              std::cout << indent(level+1) << "\"" << pos->first << "\": ";
+
+              print_tree(pos->second, level + 1);
+              ++pos;
+              if (pos != pt.end())
+                {
+                  std::cout << ",";
+                }
+              std::cout << std::endl;
+            }
+          std::cout << indent(level) << " }";
+        }
+
+      return;
+    }
 
     template const std::array<double,2> convert_point_to_array<2>(const Point<2> &point_);
     template const std::array<double,3> convert_point_to_array<3>(const Point<3> &point_);

@@ -43,17 +43,17 @@ using boost::property_tree::ptree;
 namespace WorldBuilder
 {
 
-namespace Features
-{
-class Interface;
-}
+  namespace Features
+  {
+    class Interface;
+  }
 
-namespace CoordinateSystems
-{
-class Interface;
-}
+  namespace CoordinateSystems
+  {
+    class Interface;
+  }
 
-class World;
+  class World;
 
   class Parameters
   {
@@ -61,31 +61,31 @@ class World;
       /**
        * Constructor
        */
-      Parameters(std::string& filename, World&);
+      Parameters(std::string &filename, World &);
 
       /**
        * Destructor
        */
       ~Parameters();
 
-      bool load_entry(const std::string& name, const bool required, const Types::Interface& type);
+      bool load_entry(const std::string &name, const bool required, const Types::Interface &type);
 
-      bool set_entry(const std::string& name, const Types::Interface& type)
+      bool set_entry(const std::string &name, const Types::Interface &type)
 
       void enter_subsection(const std::string name);
 
       void leave_subsection();
 
-      double get_double(const std::string& name);
+      double get_double(const std::string &name);
 
-      std::string get_string(const std::string& name);
+      std::string get_string(const std::string &name);
 
       // get_array(const std::string& name);
 
       template<int dim>
-      Point<dim> get_point(const std::string& name);
+      Point<dim> get_point(const std::string &name);
 
-      World& world;
+      World &world;
 
       /**
        * These are the top level parameters
@@ -100,9 +100,9 @@ class World;
       const std::string path_seperator = ".";
       std::vector<std::string> path;
       ptree tree;
-      ptree* local_tree;
+      ptree *local_tree;
 
-      std::unordered_map<std::string, std::pair<Types::Interface*, unsigned int> > string_to_type_map;
+      std::unordered_map<std::string, std::pair<Types::Interface *, unsigned int> > string_to_type_map;
       std::vector<Types::Double> vector_double;
       std::vector<Types::String> vector_string;
       std::vector<Types::Array> vector_array;
@@ -124,19 +124,19 @@ class World;
       std::string get_current_path_without_arrays();
 
     private:
-      bool load_entry(std::vector<std::string> path, const std::string& name, const bool required, const Types::Interface& type);
+      bool load_entry(std::vector<std::string> path, const std::string &name, const bool required, const Types::Interface &type);
 
 
 
       /**
        * No reference, but copy to be able to change it locally
        */
-      std::string get_current_path(std::vector<std::string>& path);
+      std::string get_current_path(std::vector<std::string> &path);
 
       /**
        * No reference, but copy to be able to change it locally
        */
-      std::string get_current_path_without_arrays(std::vector<std::string>& path);
+      std::string get_current_path_without_arrays(std::vector<std::string> &path);
   };
 }
 #endif

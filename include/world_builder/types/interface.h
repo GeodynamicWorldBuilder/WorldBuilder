@@ -56,7 +56,7 @@ namespace WorldBuilder
          * clone
          */
         virtual
-		std::shared_ptr<Interface> clone() const = 0;
+        std::shared_ptr<Interface> clone() const = 0;
 
         /**
          * read in the world builder file

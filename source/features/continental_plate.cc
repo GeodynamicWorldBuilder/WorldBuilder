@@ -31,7 +31,7 @@ namespace WorldBuilder
 
   namespace Features
   {
-    ContinentalPlate::ContinentalPlate(WorldBuilder::World* world_)
+    ContinentalPlate::ContinentalPlate(WorldBuilder::World *world_)
       :
       temperature_submodule_depth(NaN::DSNAN),
       temperature_submodule_temperature(NaN::DSNAN),
@@ -46,65 +46,66 @@ namespace WorldBuilder
 
 
     void
-	ContinentalPlate::decare_entries(std::string &path)
+    ContinentalPlate::decare_entries(std::string &path)
     {
-    	std::cout << "path in here is = " << &(this->world->parameters) << ", path= \'" << path << "\'" << std::endl;
-   	  std::cout << "!!!!!!!!!!!!!!!!!!!!! printing feature local_tree (" << this->world->parameters.local_tree << ") !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-    	  Utilities::print_tree(*this->world->parameters.local_tree, 0);
-    	  std::cout << std::endl << "!!!!!!!!!!!!!!!!!!!!! printing feature local_tree !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+      std::cout << "path in here is = " << &(this->world->parameters) << ", path= \'" << path << "\'" << std::endl;
+      std::cout << "!!!!!!!!!!!!!!!!!!!!! printing feature local_tree (" << this->world->parameters.local_tree << ") !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+      Utilities::print_tree(*this->world->parameters.local_tree, 0);
+      std::cout << std::endl << "!!!!!!!!!!!!!!!!!!!!! printing feature local_tree !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
 
-    	this->world->parameters.load_entry("name", true, Types::String("","description string in CP"));
+      this->world->parameters.load_entry("name", true, Types::String("","description string in CP"));
     }
 
     void
     ContinentalPlate::read(const ptree &tree, std::string &path)
-    {/*
-      name = boost::algorithm::to_lower_copy(get_from_ptree(tree,path,"name"));
-      boost::algorithm::trim(name);
+    {
+      /*
+       name = boost::algorithm::to_lower_copy(get_from_ptree(tree,path,"name"));
+       boost::algorithm::trim(name);
 
-      boost::optional<const ptree &> child = tree.get_child("coordinates");
-      WBAssertThrow (child, "Entry undeclared: " + path + World::path_seperator +"coordinates");
-      for (boost::property_tree::ptree::const_iterator it = child.get().begin(); it != child.get().end(); ++it)
-        {
-          std::vector<double> tmp;
-          boost::optional<const ptree &> child2 = it->second.get_child("");
-          WBAssertThrow (child, path + World::path_seperator + "coordinates: This should be a 2d array, but only one dimension found.");
-          for (boost::property_tree::ptree::const_iterator it2 = child2.get().begin(); it2 != child2.get().end(); ++it2)
-            {
-              tmp.push_back(stod(it2->second.get<std::string>("")));
-            }
-          WBAssertThrow (tmp.size() == 2, path + World::path_seperator + "coordinates: These represent 2d coordinates, but there are " <<
-                         tmp.size() <<
-                         " coordinates specified.");
+       boost::optional<const ptree &> child = tree.get_child("coordinates");
+       WBAssertThrow (child, "Entry undeclared: " + path + World::path_seperator +"coordinates");
+       for (boost::property_tree::ptree::const_iterator it = child.get().begin(); it != child.get().end(); ++it)
+         {
+           std::vector<double> tmp;
+           boost::optional<const ptree &> child2 = it->second.get_child("");
+           WBAssertThrow (child, path + World::path_seperator + "coordinates: This should be a 2d array, but only one dimension found.");
+           for (boost::property_tree::ptree::const_iterator it2 = child2.get().begin(); it2 != child2.get().end(); ++it2)
+             {
+               tmp.push_back(stod(it2->second.get<std::string>("")));
+             }
+           WBAssertThrow (tmp.size() == 2, path + World::path_seperator + "coordinates: These represent 2d coordinates, but there are " <<
+                          tmp.size() <<
+                          " coordinates specified.");
 
-          std::array<double,2> tmp_array;
-          std::copy(tmp.begin(), tmp.end(), tmp_array.begin());
-          coordinates.push_back(tmp_array);
-        }
-      WBAssertThrow (coordinates.size() > 2, path + World::path_seperator + "coordinates: This feature requires at least 3 coordinates, but only " <<
-                     coordinates.size() <<
-                     " where provided.");
+           std::array<double,2> tmp_array;
+           std::copy(tmp.begin(), tmp.end(), tmp_array.begin());
+           coordinates.push_back(tmp_array);
+         }
+       WBAssertThrow (coordinates.size() > 2, path + World::path_seperator + "coordinates: This feature requires at least 3 coordinates, but only " <<
+                      coordinates.size() <<
+                      " where provided.");
 
-      // Temperature submodule parameters
-      temperature_submodule_name = boost::algorithm::to_lower_copy(get_from_ptree(tree,path,"temperature submodule.name"));
-      boost::algorithm::trim(temperature_submodule_name);
+       // Temperature submodule parameters
+       temperature_submodule_name = boost::algorithm::to_lower_copy(get_from_ptree(tree,path,"temperature submodule.name"));
+       boost::algorithm::trim(temperature_submodule_name);
 
 
-      if (temperature_submodule_name == "constant")
-        {
-          temperature_submodule_depth = Utilities::string_to_double(get_from_ptree(tree,path,"temperature submodule.depth"));
-          temperature_submodule_temperature = Utilities::string_to_double(get_from_ptree(tree,path,"temperature submodule.temperature"));
-        }
+       if (temperature_submodule_name == "constant")
+         {
+           temperature_submodule_depth = Utilities::string_to_double(get_from_ptree(tree,path,"temperature submodule.depth"));
+           temperature_submodule_temperature = Utilities::string_to_double(get_from_ptree(tree,path,"temperature submodule.temperature"));
+         }
 
-      // Composition submodule parameters
-      composition_submodule_name = boost::algorithm::to_lower_copy(get_from_ptree(tree,path,"composition submodule.name"));
-      boost::algorithm::trim(composition_submodule_name);
+       // Composition submodule parameters
+       composition_submodule_name = boost::algorithm::to_lower_copy(get_from_ptree(tree,path,"composition submodule.name"));
+       boost::algorithm::trim(composition_submodule_name);
 
-      if (composition_submodule_name == "constant")
-        {
-          composition_submodule_depth = Utilities::string_to_double(get_from_ptree(tree,path,"composition submodule.depth"));
-          composition_submodule_composition = Utilities::string_to_unsigned_int(get_from_ptree(tree,path,"composition submodule.composition"));
-        }*/
+       if (composition_submodule_name == "constant")
+         {
+           composition_submodule_depth = Utilities::string_to_double(get_from_ptree(tree,path,"composition submodule.depth"));
+           composition_submodule_composition = Utilities::string_to_unsigned_int(get_from_ptree(tree,path,"composition submodule.composition"));
+         }*/
     }
 
     double

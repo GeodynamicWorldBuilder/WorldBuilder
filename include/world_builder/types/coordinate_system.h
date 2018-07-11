@@ -41,7 +41,7 @@ namespace WorldBuilder
         /**
          * constructor
          */
-    	CoordinateSystem(std::string default_value, std::string description);
+        CoordinateSystem(std::string default_value, std::string description);
 
         /**
          * Destructor

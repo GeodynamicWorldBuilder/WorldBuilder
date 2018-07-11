@@ -197,13 +197,13 @@ namespace WorldBuilder
      */
     boost::optional<std::string>
     get_from_ptree_abs(const ptree &tree,
-                   const std::string &path,
-                   const std::string &key,
-                   const bool required = true,
-                   const std::string &path_separator = ".");
+                       const std::string &path,
+                       const std::string &key,
+                       const bool required = true,
+                       const std::string &path_separator = ".");
 
     std::string
-	escape_string(std::string &original);
+    escape_string(std::string &original);
 
     std::string indent(int level);
     void print_tree (const ptree &pt, int level);

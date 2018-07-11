@@ -35,14 +35,14 @@ namespace WorldBuilder
      * the returned temperature or composition of the temperature and composition
      * functions of this class will be.
      */
-  template <int dim>
+    template <int dim>
     class Point : public Interface
     {
       public:
         /**
          * Constructor
          */
-    	Point(const WorldBuilder::Point<dim>& default_value, const std::string& description);
+        Point(const WorldBuilder::Point<dim> &default_value, const std::string &description);
 
 
         /**
@@ -72,7 +72,7 @@ namespace WorldBuilder
         /**
          * A private constructor used for cloning
          */
-        Point(const WorldBuilder::Point<dim>& value, const WorldBuilder::Point<dim>& default_value, const std::string& description);
+        Point(const WorldBuilder::Point<dim> &value, const WorldBuilder::Point<dim> &default_value, const std::string &description);
 
     };
   }

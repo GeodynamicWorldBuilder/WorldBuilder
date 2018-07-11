@@ -23,19 +23,19 @@ namespace WorldBuilder
 {
   namespace Types
   {
-  Array::Array(const Interface& type, std::string description)
-  :
-  		inner_type(type.clone()),
-			description(description)
-  {
-    this->type_name = type::Array;
-    std::cout << "construcuting an array" << std::endl;
-  }
+    Array::Array(const Interface &type, std::string description)
+      :
+      inner_type(type.clone()),
+      description(description)
+    {
+      this->type_name = type::Array;
+      std::cout << "construcuting an array" << std::endl;
+    }
 
     /*Array::Array(Interface* type, std::string description)
     :
-    		inner_type(type),
-			description(description)
+        inner_type(type),
+      description(description)
     {
       this->type_name = type::Array;
     }*/
@@ -46,8 +46,8 @@ namespace WorldBuilder
     std::shared_ptr<Interface>
     Array::clone() const
     {
-    	std::cout << "cloning an array" << std::endl;
-    	return std::unique_ptr<Interface>(new Array(*inner_type, description));
+      std::cout << "cloning an array" << std::endl;
+      return std::unique_ptr<Interface>(new Array(*inner_type, description));
     }
   }
 }

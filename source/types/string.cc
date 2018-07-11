@@ -33,15 +33,15 @@ namespace WorldBuilder
     {}
 
     void
-	String::set_value(std::string value_)
+    String::set_value(std::string value_)
     {
-    	value = value_;
+      value = value_;
     }
 
     std::shared_ptr<Interface>
     String::clone() const
     {
-    	return std::unique_ptr<Interface>(new String(value, description));
+      return std::unique_ptr<Interface>(new String(value, description));
     }
   }
 }

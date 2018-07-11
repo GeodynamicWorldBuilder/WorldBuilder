@@ -24,27 +24,27 @@ namespace WorldBuilder
 {
   namespace Types
   {
-  CoordinateSystem::CoordinateSystem(std::string default_value, std::string description)
-  :
-		default_value(default_value),
-		description(description)
+    CoordinateSystem::CoordinateSystem(std::string default_value, std::string description)
+      :
+      default_value(default_value),
+      description(description)
     {
       this->type_name = type::CoordinateSystem;
     }
 
-  CoordinateSystem::~CoordinateSystem ()
+    CoordinateSystem::~CoordinateSystem ()
     {}
 
     void
-	CoordinateSystem::set_value(std::string value_)
+    CoordinateSystem::set_value(std::string value_)
     {
-    	value = CoordinateSystems::create_coordinate_system(value_);
+      value = CoordinateSystems::create_coordinate_system(value_);
     }
 
     std::shared_ptr<Interface>
     CoordinateSystem::clone() const
     {
-    	return std::make_shared<CoordinateSystem>(CoordinateSystem(default_value, description));
+      return std::make_shared<CoordinateSystem>(CoordinateSystem(default_value, description));
     }
   }
 }

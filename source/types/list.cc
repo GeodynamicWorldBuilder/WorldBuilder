@@ -23,24 +23,24 @@ namespace WorldBuilder
 {
   namespace Types
   {
-  List::List(const Interface& type, std::string description)
-  :
-  		inner_type(type.clone()),
-			description(description)
-  {
-    this->type_name = type::List;
-    std::cout << "Constructing a list" << std::endl;
-  }
+    List::List(const Interface &type, std::string description)
+      :
+      inner_type(type.clone()),
+      description(description)
+    {
+      this->type_name = type::List;
+      std::cout << "Constructing a list" << std::endl;
+    }
 
 
-  List::~List ()
+    List::~List ()
     {}
 
     std::shared_ptr<Interface>
     List::clone() const
     {
-    	std::cout << "cloning an list" << std::endl;
-    	return std::unique_ptr<Interface>(new List(*inner_type, description));
+      std::cout << "cloning an list" << std::endl;
+      return std::unique_ptr<Interface>(new List(*inner_type, description));
     }
   }
 }
