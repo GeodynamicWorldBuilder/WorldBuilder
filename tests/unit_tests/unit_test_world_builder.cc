@@ -458,10 +458,10 @@ TEST_CASE("WorldBuilder Features: Interface")
 {
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb1.json";
   WorldBuilder::World world(file_name);
-  REQUIRE_THROWS_WITH(Features::create_feature("!not_implemented_feature!", world),
+  REQUIRE_THROWS_WITH(Features::create_feature("!not_implemented_feature!", &world),
                       Contains("Feature not implemented."));
 
-  Features::Interface *interface = new Features::ContinentalPlate(world);
+  Features::Interface *interface = new Features::ContinentalPlate(&world);
 
   delete interface;
 }
@@ -470,7 +470,7 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
 {
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb1.json";
   WorldBuilder::World world1(file_name);
-  Features::ContinentalPlate *continental_plate = new Features::ContinentalPlate(world1);
+  Features::ContinentalPlate *continental_plate = new Features::ContinentalPlate(&world1);
 
   delete continental_plate;
 }

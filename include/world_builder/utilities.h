@@ -182,7 +182,7 @@ namespace WorldBuilder
      * the path and value in the error message when the value
      * was not present.
      */
-    std::string
+    boost::optional<std::string>
     get_from_ptree(const ptree &tree,
                    const std::string &path,
                    const std::string &key,
@@ -195,7 +195,7 @@ namespace WorldBuilder
      * the path and value in the error message when the value
      * was not present.
      */
-    std::string
+    boost::optional<std::string>
     get_from_ptree_abs(const ptree &tree,
                    const std::string &path,
                    const std::string &key,

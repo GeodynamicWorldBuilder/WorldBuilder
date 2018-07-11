@@ -29,6 +29,7 @@
 #include <world_builder/types/interface.h>
 #include <world_builder/types/double.h>
 #include <world_builder/types/string.h>
+#include <world_builder/types/point.h>
 #include <world_builder/types/array.h>
 #include <world_builder/types/list.h>
 
@@ -67,23 +68,47 @@ class World;
        */
       ~Parameters();
 
-      void declare_entry(const std::string& name, const bool required, const Types::Interface& type);
+      bool load_entry(const std::string& name, const bool required, const Types::Interface& type);
+
+      bool set_entry(const std::string& name, const Types::Interface& type)
 
       void enter_subsection(const std::string name);
 
       void leave_subsection();
 
+      double get_double(const std::string& name);
+
+      std::string get_string(const std::string& name);
+
+      // get_array(const std::string& name);
+
+      template<int dim>
+      Point<dim> get_point(const std::string& name);
+
       World& world;
 
+      /**
+       * These are the top level parameters
+       */
+      unsigned int dim;
+      //std::vector<std::array<double,2> > cross_section;
+      //std::vector<double> surface_coord_conversions;
+      //std::vector<double> surface_rotation_point;
+      //double surface_rotation_angle;
+      //unsigned int minimum_parts_per_distance_unit;
+      //double minimum_distance_points;
       const std::string path_seperator = ".";
       std::vector<std::string> path;
       ptree tree;
+      ptree* local_tree;
 
       std::unordered_map<std::string, std::pair<Types::Interface*, unsigned int> > string_to_type_map;
       std::vector<Types::Double> vector_double;
       std::vector<Types::String> vector_string;
       std::vector<Types::Array> vector_array;
       std::vector<Types::List> vector_list;
+      std::vector<Types::Point<2> > vector_2dpoint;
+      std::vector<Types::Point<3> > vector_3dpoint;
 
 
       /**
@@ -94,12 +119,14 @@ class World;
       // coordinate system
       std::shared_ptr<WorldBuilder::CoordinateSystems::Interface> coordinate_system;
 
-    private:
-      void declare_entry(const ptree& tree, std::vector<std::string> path, const std::string& name, const bool required, const Types::Interface& type);
-
       std::string get_current_path();
 
       std::string get_current_path_without_arrays();
+
+    private:
+      bool load_entry(std::vector<std::string> path, const std::string& name, const bool required, const Types::Interface& type);
+
+
 
       /**
        * No reference, but copy to be able to change it locally

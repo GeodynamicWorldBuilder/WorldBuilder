@@ -406,7 +406,7 @@ namespace WorldBuilder
       return d;
     }
 
-    std::string
+    boost::optional<std::string>
     get_from_ptree(const ptree &tree,
                    const std::string &path,
                    const std::string &key,
@@ -414,11 +414,11 @@ namespace WorldBuilder
                    const std::string &path_separator)
     {
       boost::optional<std::string> value  = tree.get_optional<std::string> (key);
-      WBAssertThrow (value, "Entry undeclared: " + path + path_separator + key);
-      return value.get();
+      WBAssertThrow ((value && required == true) || required == false, "Entry undeclared: " + path + path_separator + key);
+      return value;
     }
 
-    std::string
+    boost::optional<std::string>
     get_from_ptree_abs(const ptree &tree,
                    const std::string &path,
                    const std::string &key,
@@ -428,8 +428,8 @@ namespace WorldBuilder
     	std::string use_path = path == "" ? key : path + path_separator + key;
     	std::cout << "path = \'" << use_path << "\'" << std::endl;
       boost::optional<std::string> value  = tree.get_optional<std::string> (use_path);
-      WBAssertThrow (value, "Entry undeclared: " + use_path);
-      return value.get();
+      WBAssertThrow ((value && required == true) || required == false, "Entry undeclared: " + use_path);
+      return value;
     }
 
     std::string

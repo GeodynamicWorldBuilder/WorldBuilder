@@ -41,12 +41,18 @@ namespace WorldBuilder
         /**
          * constructor
          */
-        ContinentalPlate(WorldBuilder::World &world);
+        ContinentalPlate(WorldBuilder::World* world);
 
         /**
          * Destructor
          */
         ~ContinentalPlate();
+
+        /**
+         * declare and read in the world builder file into the parameters class
+         */
+        virtual
+        void decare_entries(std::string &path);
 
         /**
          * Read in the world builder file

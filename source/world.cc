@@ -39,16 +39,16 @@ namespace WorldBuilder
   World::World(std::string filename)
     :
     dim(NaN::ISNAN),
-    surface_rotation_angle(0.0),
-    minimum_parts_per_distance_unit(NaN::ISNAN),
-    minimum_distance_points(NaN::ISNAN),
-    potential_mantle_temperature(1600),
-    thermal_expansion_coefficient_alpha(3.5e-5),
-    specific_heat_Cp(1250),
+    //surface_rotation_angle(0.0),
+   // minimum_parts_per_distance_unit(NaN::ISNAN),
+    //minimum_distance_points(NaN::ISNAN),
+    //potential_mantle_temperature(1600),
+    //thermal_expansion_coefficient_alpha(3.5e-5),
     parameters(filename,*this)
+    //specific_heat_Cp(1250)
   {
 	  std::cout << "flag c1" << std::endl;
-	  this->declare_and_parse(parameters);
+      this->declare_and_parse(parameters);
 	  std::cout << "flag c2" << std::endl;
   }
 
@@ -63,10 +63,10 @@ namespace WorldBuilder
 
   }
 
-  void World::declare_and_parse(Parameters parameters)
+  void World::declare_and_parse(Parameters& parameters)
   {
 	  std::string sra = "Surface rotation angle";
-	  parameters.declare_entry(sra, false, Types::Double("0","test"));
+	  parameters.load_entry(sra, false, Types::Double("0","test"));
 	  std::cout << parameters.vector_double[parameters.string_to_type_map["Surface rotation angle"].second].value << std::endl;
 	  /*parameters.enter_subsection("Coordinate system");
 		{
@@ -75,15 +75,20 @@ namespace WorldBuilder
 		}
 		parameters.leave_subsection();*/
 
-		parameters.declare_entry("Coordinate system", true, Types::CoordinateSystem("cartesian","description"));
+		parameters.load_entry("Coordinate system", true, Types::CoordinateSystem("cartesian","description"));
 
-		parameters.declare_entry("Surface rotation point", true, Types::Array(Types::Double("0", "descp double"),"descp srp"));
-		parameters.declare_entry("Cross section", true, Types::Array(
-				                                            Types::Array(
-				                                        		Types::Double("0","desciption double"),
-															"desciption point array"),
-														"description points array"));
-		parameters.declare_entry("Surface objects", true, Types::List(
+		//parameters.declare_entry("Surface rotation point", true, Types::Array(Types::Double("0", "descp double"),"descp srp"));
+		parameters.load_entry("Surface rotation point", true, Types::Point<2>(Point<2>(2,3), "descp double"));
+		bool set = parameters.load_entry("Cross section", true,
+				                 Types::Array(
+				                		 Types::Point<2>(Point<2>(3,4),"desciption point cross section"),
+								 "description points array"));
+		if(set)
+			dim = 2;
+		else
+			dim = 3;
+
+		parameters.load_entry("Surface objects", true, Types::List(
 				                                               Types::Feature("These are the features"), "description of list"));
   }
 
@@ -192,9 +197,10 @@ namespace WorldBuilder
                   "variable in the world builder file has been set. Dim is "
                   << dim << ".");
 
-    Point<3> coord_3d(cross_section[0][0] + point[0] * surface_coord_conversions[0],
-                      cross_section[0][1] + point[0] * surface_coord_conversions[1],
-                      point[1]);
+    Point<3> coord_3d(parameters.get_point<2>("Cross section"));
+    //Point<3> coord_3d(cross_section[0][0] + point[0] * surface_coord_conversions[0],
+      //                cross_section[0][1] + point[0] * surface_coord_conversions[1],
+        //              point[1]);
 
     return temperature(coord_3d.get_array(), depth, gravity_norm);
   }
@@ -220,8 +226,9 @@ namespace WorldBuilder
                   "variable in the world builder file has been set. Dim is "
                   << dim << ".");
 
-    Point<3> coord_3d(cross_section[0][0] + point[0] * surface_coord_conversions[0],
-                      cross_section[0][1] + point[0] * surface_coord_conversions[1],
+    Point<2> cross_section(parameters.get_point<2>("Cross section.[0]"));
+    Point<3> coord_3d(cross_section[0] + point[0] * surface_coord_conversions[0],
+                      cross_section[1] + point[0] * surface_coord_conversions[1],
                       point[1]);
 
     return composition(coord_3d.get_array(), depth, composition_number);

@@ -57,7 +57,7 @@ namespace WorldBuilder
       /**
        * read in the world builder file
        */
-      void declare_and_parse(Parameters parameters);
+      void declare_and_parse(Parameters& parameters);
 
       double temperature(const std::array<double, 2> &point, const double depth, const double gravity_norm) const;
 
@@ -82,16 +82,7 @@ namespace WorldBuilder
       Parameters parameters;
 
     private:
-      /**
-       * These are the top level parameters
-       */
       unsigned int dim;
-      std::vector<std::array<double,2> > cross_section;
-      std::vector<double> surface_coord_conversions;
-      std::vector<double> surface_rotation_point;
-      double surface_rotation_angle;
-      unsigned int minimum_parts_per_distance_unit;
-      double minimum_distance_points;
 
       //Parameters parameters;
 
@@ -99,9 +90,9 @@ namespace WorldBuilder
       /**
        * adiabatic parameters
        */
-      double potential_mantle_temperature;
-      double thermal_expansion_coefficient_alpha;
-      double specific_heat_Cp;
+      //double potential_mantle_temperature;
+      //double thermal_expansion_coefficient_alpha;
+      //double specific_heat_Cp;
 
 
 

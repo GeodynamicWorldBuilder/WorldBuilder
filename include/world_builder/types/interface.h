@@ -35,7 +35,7 @@ namespace WorldBuilder
 
     enum class type
     {
-      None,String,Double,Int,UnsignedInt,Array,List,CoordinateSystem,Feature
+      None,String,Double,Int,UnsignedInt,Array,List,Point,CoordinateSystem,Feature
     };
 
     class Interface
@@ -63,6 +63,7 @@ namespace WorldBuilder
          */
         virtual
         type get_type() const;
+
 
         /**
          * read in the world builder file

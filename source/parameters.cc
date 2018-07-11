@@ -40,11 +40,12 @@ namespace WorldBuilder
     WBAssertThrow(access( filename.c_str(), F_OK ) != -1,
                   "Could not find the world builder file at the specified location: " + filename);
 
-
+std::cout << "create parameters!" << std::endl;
     // Now read in the world builder file into a file stream and
     // put it into a boost property tree.
     std::ifstream json_input_stream(filename.c_str());
     boost::property_tree::json_parser::read_json (json_input_stream, tree);
+    local_tree = &tree;
 
 	  Utilities::print_tree(tree, 0);
   }
@@ -52,142 +53,65 @@ namespace WorldBuilder
   Parameters::~Parameters()
   {}
 
-  void
-  Parameters::declare_entry(const std::string& name, const bool required, const Types::Interface& type)
+  bool
+  Parameters::load_entry(const std::string& name, const bool required, const Types::Interface& type)
   {
-	  this->declare_entry(tree, path, name, required, type);
-	  /*const std::string path_plus_name = (get_current_path() == "") ? name : (get_current_path() + path_seperator + name);
-	  std::cout << "path_plus_name = " << path_plus_name << std::endl;
-    if (type.get_type() == Types::type::Double)
-      {
-    	std::cout << "I am a double!" << std::endl;
-    	const Types::Double& natural_type = dynamic_cast<const Types::Double&>(type);
-    	vector_double.push_back(Types::Double(natural_type.default_value,natural_type.description));
-    	vector_double[vector_double.size()-1].set_value(Utilities::get_from_ptree_abs(tree, get_current_path_without_arrays(), (name.front() == '[' && name.back() == ']' ? "" : name), required, path_seperator));
-        string_to_type_map[path_plus_name] = std::make_pair(&vector_double[vector_double.size()-1], vector_double.size()-1);
-      }
-    else if (type.get_type() == Types::type::String)
-      {
-    	std::cout << "I am a string!" << std::endl;
-    	const Types::String& natural_type = dynamic_cast<const Types::String&>(type);
-    	vector_string.push_back(Types::String(natural_type.default_value,natural_type.description));
-    	vector_string[vector_string.size()-1].set_value(Utilities::get_from_ptree_abs(tree, get_current_path_without_arrays(), (name.front() == '[' && name.back() == ']' ? "" : name), required, path_seperator));
-        string_to_type_map[path_plus_name] = std::make_pair(&vector_string[vector_string.size()-1], vector_string.size()-1);
-      }
-    else if (type.get_type() == Types::type::CoordinateSystem)
-      {
-    	std::cout << "I am a CoordinateSystem!" << std::endl;
-    	const Types::CoordinateSystem& natural_type = dynamic_cast<const Types::CoordinateSystem&>(type);
-    	const std::string path_tmp = (get_current_path() == "") ? name : (get_current_path() + path_seperator + name);
-    	std::cout << "current path = \'" << get_current_path() << "\', path_tmp = \'" << path_tmp << "\'" << std::endl;
-        boost::optional<ptree &> child = tree.get_child_optional(path_tmp);
-        WBAssertThrow((child && required == true) || required == false, "Could not find " + path_tmp + ", while it is set as required.");
-        if (child)
-          {
-        	// only one entry allowed. For now we take the first one
-        	// Todo: assert when there are more entries
-        	std::string system = child.get().begin()->first;
-        	coordinate_system = CoordinateSystems::create_coordinate_system(system);
-          }
-
-      }
-    else if (type.get_type() == Types::type::List)
-      {
-        this->enter_subsection(name);
-	{
-    	std::cout << "I am an List!" << std::endl;
-        boost::optional<ptree &> child = tree.get_child_optional(get_current_path_without_arrays());
-        WBAssertThrow((child && required == true) || required == false, "Could not find " + get_current_path() + ", while it is set as required.");
-        if (child)
-          {
-        	std::cout << "I am a child of list!" << std::endl;
-        	const Types::List& natural_type = dynamic_cast<const Types::List&>(type);
-        	vector_list.push_back(Types::List(*natural_type.inner_type,natural_type.description));
-            string_to_type_map[get_current_path() + path_seperator + name] = std::make_pair(&vector_list[vector_list.size()-1], vector_list.size()-1);
-
-
-            unsigned int current_size = 0;
-            for (boost::property_tree::ptree::const_iterator it = child.get().begin(); it != child.get().end(); ++it)
-              {
-                //TODO add a mangle for the name
-                this->declare_entry(it->second, path, name, required, *(natural_type.inner_type));
-                current_size++;
-              }
-
-          }
-        this->leave_subsection();
-          }
-      }
-    else if (type.get_type() == Types::type::Array)
-      {
-        this->enter_subsection((name.front() == '[' && name.back() == ']' ? "" : name));
-	{
-    	std::cout << "I am an array!" << std::endl;
-        boost::optional<ptree &> child = tree.get_child_optional(get_current_path_without_arrays() + path_seperator + "");
-        WBAssertThrow((child && required == true) || required == false, "Could not find " + get_current_path() + path_seperator + "name" + ", while it is set as required.");
-        if (child)
-          {
-        	std::cout << "I am a child of array!" << std::endl;
-        	const Types::Array& natural_type = dynamic_cast<const Types::Array&>(type);
-        	vector_array.push_back(Types::Array(*natural_type.inner_type,natural_type.description));
-            string_to_type_map[get_current_path() + path_seperator + name] = std::make_pair(&vector_array[vector_array.size()-1], vector_array.size()-1);
-
-
-            unsigned int current_size = 0;
-            for (boost::property_tree::ptree::const_iterator it = child.get().begin(); it != child.get().end(); ++it)
-              {
-                //TODO add a mangle for the name
-                this->declare_entry(it->second, path, "["+ std::to_string(current_size) + "]", required, *(natural_type.inner_type));
-                current_size++;
-              }
-
-          }
-        this->leave_subsection();
-          }
-      }
-    else
-    {
-    	WBAssertThrow(false,"Type not defined.");
-    }*/
+	  this->load_entry(path, name, required, type);
   }
 
-  void
-  Parameters::declare_entry(const ptree& tree, std::vector<std::string> local_path, const std::string& name, const bool required, const Types::Interface& type)
+  bool
+  Parameters::load_entry(std::vector<std::string> local_path, const std::string& name, const bool required, const Types::Interface& type)
   {
 	  if(local_path.size() > 0)
 	    local_path.erase(local_path.begin());
-	  const std::string path_plus_name = (get_current_path() == "") ? name : (get_current_path() + path_seperator + name);
-	  std::cout << "path_plus_name = " << path_plus_name << std::endl;
 
-	  std::cout << "!!!!!!!!!!!!!!!!!!!!! printing current tree !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-	  Utilities::print_tree(tree, 0);
-	  std::cout << std::endl << "!!!!!!!!!!!!!!!!!!!!! printing current tree !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+	  const std::string path_plus_name = (get_current_path() == "") ? name : (get_current_path() + path_seperator + name);
 
 	if (type.get_type() == Types::type::Double)
       {
-    	std::cout << "I am a double with name " << name << "!" << std::endl;
+    	// First check wheter the value is in the tree. If not Assert when the value is required,
+    	// otherwise return false.
+    	boost::optional<std::string> value = Utilities::get_from_ptree_abs(*local_tree,
+    			                         get_current_path_without_arrays(local_path),
+										 (name.front() == '[' && name.back() == ']' ? "" : name), required, path_seperator);
+
+    	WBAssertThrow((value && required == true) || required == false, "Could not find " + get_current_path(local_path) + ", while it is set as required.");
+    	if(!value)
+    		return false;
+
+    	// The value is present and we have retrieved it. Now store it
     	const Types::Double& natural_type = dynamic_cast<const Types::Double&>(type);
     	vector_double.push_back(Types::Double(natural_type.default_value,natural_type.description));
-    	vector_double[vector_double.size()-1].set_value(Utilities::get_from_ptree_abs(tree, get_current_path_without_arrays(local_path), (name.front() == '[' && name.back() == ']' ? "" : name), required, path_seperator));
+    	vector_double[vector_double.size()-1].set_value(value.get());
         string_to_type_map[path_plus_name] = std::make_pair(&vector_double[vector_double.size()-1], vector_double.size()-1);
-        std::cout << "The value of this double is: " << vector_double[vector_double.size()-1].value << std::endl;
       }
     else if (type.get_type() == Types::type::String)
       {
-    	std::cout << "I am a string with name " << name << "!" << std::endl;
+    	// First check wheter the value is in the tree. If not Assert when the value is required,
+    	// otherwise return false.
+    	boost::optional<std::string> value = Utilities::get_from_ptree_abs(*local_tree,
+    	    			                         get_current_path_without_arrays(local_path),
+    											 (name.front() == '[' && name.back() == ']' ? "" : name), required, path_seperator);
+
+    	WBAssertThrow((value && required == true) || required == false, "Could not find " + get_current_path(local_path) + ", while it is set as required.");
+    	if(!value)
+    		return false;
+
+    	// The value is present and we have retrieved it. Now store it
     	const Types::String& natural_type = dynamic_cast<const Types::String&>(type);
     	vector_string.push_back(Types::String(natural_type.default_value,natural_type.description));
-    	vector_string[vector_string.size()-1].set_value(Utilities::get_from_ptree_abs(tree, get_current_path_without_arrays(local_path), (name.front() == '[' && name.back() == ']' ? "" : name), required, path_seperator));
+
+    	vector_string[vector_string.size()-1].set_value(value.get());
         string_to_type_map[path_plus_name] = std::make_pair(&vector_string[vector_string.size()-1], vector_string.size()-1);
-        std::cout << "The value of this string is: " << vector_string[vector_string.size()-1].value << std::endl;
+
+        return true;
       }
     else if (type.get_type() == Types::type::CoordinateSystem)
       {
-    	std::cout << "I am a CoordinateSystem!" << std::endl;
     	const Types::CoordinateSystem& natural_type = dynamic_cast<const Types::CoordinateSystem&>(type);
     	const std::string path_tmp = (get_current_path() == "") ? name : (get_current_path() + path_seperator + name);
-    	std::cout << "current path = \'" << get_current_path() << "\', path_tmp = \'" << path_tmp << "\'" << std::endl;
-        boost::optional<const ptree &> child = tree.get_child_optional(path_tmp);
+
+        boost::optional<ptree &> child = local_tree->get_child_optional(path_tmp);
         WBAssertThrow((child && required == true) || required == false, "Could not find " + path_tmp + ", while it is set as required.");
         if (child)
           {
@@ -195,61 +119,44 @@ namespace WorldBuilder
         	// Todo: assert when there are more entries
         	std::string system = child.get().begin()->first;
         	coordinate_system = CoordinateSystems::create_coordinate_system(system);
-        	std::cout << "Coord system = " << system << std::endl;
           }
-
+        else
+        	return false;
       }
 
     else if (type.get_type() == Types::type::Feature)
       {
-    	std::cout << "I am a Feature!" << std::endl;
     	const Types::Feature& natural_type = dynamic_cast<const Types::Feature&>(type);
-    	const std::string path_tmp = (get_current_path() == "") ? name : (get_current_path() + path_seperator + name);
-    	std::cout << "current path = \'" << get_current_path() << "\', path_tmp = \'" << path_tmp << "\'" << std::endl;
-        //boost::optional<const ptree &> child = tree.get_child_optional(path_tmp);
-        //WBAssertThrow((child && required == true) || required == false, "Could not find " + path_tmp + ", while it is set as required.");
-        //if (child)
-          //{
-        	// only one entry allowed. For now we take the first one
-        	// Todo: assert when there are more entries
-        	//std::string system = child.get().begin()->first;
-        	//for (boost::property_tree::ptree::const_iterator it = tree.begin(); it != tree.end(); ++it)
-        	//{
-                features.push_back(Features::create_feature(name, world));
-                std::string path = "Surface objects" + World::path_seperator + name;
-                //features.back()->read(it->second,path);
-        	//}
-          //}
+    	std::string path_tmp = (get_current_path() == "") ? name : (get_current_path() + path_seperator + name);
 
+                features.push_back(Features::create_feature(name, &world));
+                std::string path_tmp2 = "Surface objects" + World::path_seperator + name;
+
+                features.back()->decare_entries(path_tmp);
       }
     else if (type.get_type() == Types::type::List)
       {
     	  const std::string path_plus_name_without_arrays = ((get_current_path_without_arrays() == "") ? name : (get_current_path_without_arrays() + path_seperator + name));
-      	std::cout << "I am an list with name " << name << ", and path: \'" << path_plus_name_without_arrays << "\'!"  << std::endl;
-          boost::optional<const ptree &> child = tree.get_child_optional(path_plus_name_without_arrays);
+
+          boost::optional<ptree &> child = local_tree->get_child_optional(path_plus_name_without_arrays);
           WBAssertThrow((child && required == true) || required == false, "Could not find " + get_current_path() + path_seperator + name + ", while it is set as required.");
           if (child)
             {
-          	std::cout << "I am a child of list!" << std::endl;
-        	  std::cout << "!!!!!!!!!!!!!!!!!!!!! printing child !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-        	  Utilities::print_tree(child.get(), 0);
-        	  std::cout << std::endl << "!!!!!!!!!!!!!!!!!!!!! printing child !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-
           	const Types::List& natural_type = dynamic_cast<const Types::List&>(type);
           	vector_list.push_back(Types::List(*natural_type.inner_type,natural_type.description));
               string_to_type_map[get_current_path() + path_seperator + name] = std::make_pair(&vector_list[vector_list.size()-1],
-            		                                                                          vector_list.size()-1);
-
 
               unsigned int current_size = 0;
-              for (boost::property_tree::ptree::const_iterator it = child.get().begin(); it != child.get().end(); ++it)
+              for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
                 {
                   //TODO add a mangle for the name
               	std::cout << "processing: " << it->first << std::endl;
-                  this->declare_entry(it->second, local_path,  it->first, required, *(natural_type.inner_type));
+              	ptree* parent = local_tree;
+              	local_tree = &(it->second);
+              	this->load_entry(local_path,  it->first, required, *(natural_type.inner_type));
+              	local_tree = parent;
                   current_size++;
                 }
-              std::cout << "The size of this list was: " << current_size << std::endl;
             }
       }
     else if (type.get_type() == Types::type::Array)
@@ -257,26 +164,23 @@ namespace WorldBuilder
   	  const std::string path_plus_name_without_arrays = ((get_current_path_without_arrays() == "") ? "" : (get_current_path_without_arrays() + path_seperator + ""))
   			                                            + (name.front() == '[' && name.back() == ']' ? "" : name);
     	std::cout << "I am an array with name " << name << ", and path: \'" << path_plus_name_without_arrays << "\'!"  << std::endl;
-        boost::optional<const ptree &> child = tree.get_child_optional(path_plus_name_without_arrays);
+        boost::optional<ptree &> child = local_tree->get_child_optional(path_plus_name_without_arrays);
         WBAssertThrow((child && required == true) || required == false, "Could not find " + get_current_path() + path_seperator + name + ", while it is set as required.");
         if (child)
           {
-        	std::cout << "I am a child of array!" << std::endl;
-      	  std::cout << "!!!!!!!!!!!!!!!!!!!!! printing child !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-      	  Utilities::print_tree(child.get(), 0);
-      	  std::cout << std::endl << "!!!!!!!!!!!!!!!!!!!!! printing child !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-
         	const Types::Array& natural_type = dynamic_cast<const Types::Array&>(type);
         	vector_array.push_back(Types::Array(*natural_type.inner_type,natural_type.description));
             string_to_type_map[get_current_path() + path_seperator + name] = std::make_pair(&vector_array[vector_array.size()-1], vector_array.size()-1);
 
 
             unsigned int current_size = 0;
-            for (boost::property_tree::ptree::const_iterator it = child.get().begin(); it != child.get().end(); ++it)
+            for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
               {
                 //TODO add a mangle for the name
-            	std::cout << "processing: " << it->first << std::endl;
-                this->declare_entry(it->second, local_path, "["+ std::to_string(current_size) + "]", required, *(natural_type.inner_type));
+            	ptree* parent = local_tree;
+            	local_tree = &(it->second);
+                this->load_entry(local_path, "["+ std::to_string(current_size) + "]", required, *(natural_type.inner_type));
+                local_tree = parent;
                 current_size++;
               }
             std::cout << "The size of this array was: " << current_size << std::endl;
@@ -299,6 +203,28 @@ namespace WorldBuilder
   Parameters::leave_subsection()
   {
 	  path.pop_back();
+  }
+
+  double
+  Parameters::get_double(const std::string& name)
+  {
+	  return vector_double[string_to_type_map[get_current_path() + path_seperator + name].second].value;
+  }
+
+  std::string
+  Parameters::get_string(const std::string& name)
+  {
+	  return vector_string[string_to_type_map[get_current_path() + path_seperator + name].second].value;
+  }
+
+  template<int dim>
+  Point<dim>
+  Parameters::get_point(const std::string& name)
+  {
+	  if(dim == 2)
+		  return vector_2dpoint[string_to_type_map[get_current_path() + path_seperator + name].second].value;
+	  else if(dim == 3)
+		  return vector_3dpoint[string_to_type_map[get_current_path() + path_seperator + name].second].value;
   }
 
   std::string

@@ -31,22 +31,34 @@ namespace WorldBuilder
 
   namespace Features
   {
-    ContinentalPlate::ContinentalPlate(WorldBuilder::World &world_)
+    ContinentalPlate::ContinentalPlate(WorldBuilder::World* world_)
       :
       temperature_submodule_depth(NaN::DSNAN),
       temperature_submodule_temperature(NaN::DSNAN),
       composition_submodule_depth(NaN::DSNAN),
       composition_submodule_composition(NaN::ISNAN)
     {
-      this->world = &world_;
+      this->world = world_;
     }
 
     ContinentalPlate::~ContinentalPlate()
     { }
 
+
+    void
+	ContinentalPlate::decare_entries(std::string &path)
+    {
+    	std::cout << "path in here is = " << &(this->world->parameters) << ", path= \'" << path << "\'" << std::endl;
+   	  std::cout << "!!!!!!!!!!!!!!!!!!!!! printing feature local_tree (" << this->world->parameters.local_tree << ") !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+    	  Utilities::print_tree(*this->world->parameters.local_tree, 0);
+    	  std::cout << std::endl << "!!!!!!!!!!!!!!!!!!!!! printing feature local_tree !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+
+    	this->world->parameters.load_entry("name", true, Types::String("","description string in CP"));
+    }
+
     void
     ContinentalPlate::read(const ptree &tree, std::string &path)
-    {
+    {/*
       name = boost::algorithm::to_lower_copy(get_from_ptree(tree,path,"name"));
       boost::algorithm::trim(name);
 
@@ -92,7 +104,7 @@ namespace WorldBuilder
         {
           composition_submodule_depth = Utilities::string_to_double(get_from_ptree(tree,path,"composition submodule.depth"));
           composition_submodule_composition = Utilities::string_to_unsigned_int(get_from_ptree(tree,path,"composition submodule.composition"));
-        }
+        }*/
     }
 
     double

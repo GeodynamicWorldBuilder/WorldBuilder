@@ -25,6 +25,7 @@
 #include <boost/property_tree/ptree.hpp>
 
 #include <world_builder/world.h>
+#include <world_builder/parameters.h>
 #include <world_builder/point.h>
 
 
@@ -55,6 +56,12 @@ namespace WorldBuilder
          */
         virtual
         ~Interface();
+
+        /**
+         * declare and read in the world builder file into the parameters class
+         */
+        virtual
+        void decare_entries(std::string &path) = 0;
 
         /**
          * read in the world builder file
@@ -96,7 +103,7 @@ namespace WorldBuilder
      * factory function
      */
     std::shared_ptr<Interface>
-    create_feature(const std::string name, WorldBuilder::World &world);
+    create_feature(const std::string name, WorldBuilder::World* world);
 
   }
 }
