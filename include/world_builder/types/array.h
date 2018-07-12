@@ -40,12 +40,33 @@ namespace WorldBuilder
         /**
          * Constructor
          */
-        Array(const Interface &type, std::string description);
+        Array(const Interface &type, const std::string &description);
 
         /**
          * Constructor
          */
-        //Array(Interface* type, std::string description);
+        Array(const Array &type);
+
+        /**
+         * Constructor. This class will not be responisble for the type it
+         * points at. Ask for a raw pointer.
+         */
+        Array(const std::vector<unsigned int> &inner_type_index, const Types::type inner_type, const std::string &description);
+
+
+        /**
+         * access index (const)
+         */
+        //template<class T>
+        //const T &operator[](const unsigned int index) const;
+
+
+        /**
+         * access index
+         */
+        //Types::Interface
+        //T &operator[](const unsigned int index);
+
 
         /**
          * Destructor
@@ -54,12 +75,34 @@ namespace WorldBuilder
 
 
         /**
-         * clone
+         * Clone. The caller will be responsible for the liftime of this
+         * object, return a unique pointer. This clone can only be used
+         * when inner_type.size() == 0.
          */
         virtual
-        std::shared_ptr<Interface> clone() const;
+        std::unique_ptr<Interface>   clone() const;
 
-        std::shared_ptr<Interface> inner_type;
+        /**
+         * This class is sometimes responsible for the object it points to, but
+         * sometimes it is not responsible for the object is points to.
+         * When it is responsible the unique_inner_type points to it and the
+         * inner_type should have size zero. When it is not responsible,
+         * unique_inner_type should point to the nullptr and inner_type should
+         * have a size larger then zero.
+         */
+        std::unique_ptr<Interface> inner_type_ptr;
+
+        /**
+         * This class is sometimes responsible for the object it points to, but
+         * sometimes it is not responsible for the object is points to.
+         * When it is responsible the unique_inner_type points to it and the
+         * inner_type should have size zero. When it is not responsible,
+         * unique_inner_type should point to the nullptr and inner_type should
+         * have a size larger then zero.
+         */
+        Types::type inner_type;
+        std::vector<unsigned int> inner_type_index;
+
         std::string description;
 
     };

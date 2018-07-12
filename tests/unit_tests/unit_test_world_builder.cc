@@ -335,8 +335,8 @@ TEST_CASE("WorldBuilder Utilities: ptree function")
 {
   ptree tree;
   tree.put("value", 3.14159);
-  REQUIRE(Utilities::string_to_double(Utilities::get_from_ptree(tree, "pi", "value", ".")) == Approx(3.14159));
-  REQUIRE_THROWS_WITH(Utilities::get_from_ptree(tree, "pi", "value_pi", "."),
+  REQUIRE(Utilities::string_to_double(Utilities::get_from_ptree(tree, "pi", "value", true, ".").get()) == Approx(3.14159));
+  REQUIRE_THROWS_WITH(Utilities::get_from_ptree(tree, "pi", "value_pi", true, "."),
                       Contains("Entry undeclared: pi.value_pi"));
 }
 

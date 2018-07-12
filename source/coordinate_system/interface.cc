@@ -34,13 +34,13 @@ namespace WorldBuilder
     Interface::~Interface ()
     {}
 
-    std::shared_ptr<Interface>
+    std::unique_ptr<Interface>
     create_coordinate_system(const std::string name)
     {
       std::string feature_name = boost::algorithm::to_lower_copy(name);
       boost::algorithm::trim(feature_name);
       if (feature_name == "cartesian")
-        return std::make_shared<CoordinateSystems::Cartesian>();
+        return std::make_unique<CoordinateSystems::Cartesian>();
       else
         WBAssertThrow(false, "Coordinate system not implemented.");
 

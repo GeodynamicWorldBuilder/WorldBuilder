@@ -85,7 +85,7 @@ namespace WorldBuilder
     /**
      * factory function
      */
-    std::shared_ptr<Interface>
+    std::unique_ptr<Interface>
     create_coordinate_system(const std::string name);
 
   }

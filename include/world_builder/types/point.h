@@ -40,10 +40,14 @@ namespace WorldBuilder
     {
       public:
         /**
-         * Constructor
+         * A constructor used for the load_entry function
          */
         Point(const WorldBuilder::Point<dim> &default_value, const std::string &description);
 
+        /**
+         * A constructor used for cloning and the set_entry function
+         */
+        Point(const WorldBuilder::Point<dim> &value, const WorldBuilder::Point<dim> &default_value, const std::string &description);
 
         /**
          * Destructor
@@ -54,7 +58,40 @@ namespace WorldBuilder
          * clone
          */
         virtual
-        std::shared_ptr<Interface> clone() const;
+        std::unique_ptr<Interface> clone() const;
+
+        /**
+         * dot product
+         */
+        double operator*(const Point<dim> &point) const;
+
+
+        /**
+         * Multiply the vector with a scalar
+         */
+        WorldBuilder::Point<dim> operator*(const double scalar) const;
+
+        /**
+         * add two points
+         */
+        WorldBuilder::Point<dim> operator+(const Point<dim> &point) const;
+
+
+        /**
+         * Substract two points
+         */
+        WorldBuilder::Point<dim> operator-(const Point<dim> &point) const;
+
+        /**
+         * access index (const)
+         */
+        const double &operator[](const unsigned int index) const;
+
+
+        /**
+         * access index
+         */
+        double &operator[](const unsigned int index);
 
 
         /**
@@ -69,10 +106,6 @@ namespace WorldBuilder
         std::string description;
 
       private:
-        /**
-         * A private constructor used for cloning
-         */
-        Point(const WorldBuilder::Point<dim> &value, const WorldBuilder::Point<dim> &default_value, const std::string &description);
 
     };
   }

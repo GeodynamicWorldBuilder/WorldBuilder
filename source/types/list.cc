@@ -23,24 +23,48 @@ namespace WorldBuilder
 {
   namespace Types
   {
-    List::List(const Interface &type, std::string description)
+    List::List(const Interface &type, const std::string &description)
       :
-      inner_type(type.clone()),
+      inner_type_ptr(type.clone()),
+      inner_type(type.get_type()),
       description(description)
     {
       this->type_name = type::List;
+
       std::cout << "Constructing a list" << std::endl;
+    }
+
+    List::List(const List &type)
+      :
+      name(type.name),
+      inner_type(type.get_type()),
+      //unique_inner_type(std::move(type.unique_inner_type)),
+      description(type.description)
+    {
+      this->type_name = type::List;
+    }
+
+    List::List(const std::string &name, const std::vector<unsigned int> &inner_type_index, const Types::type inner_type, const std::string &description)
+      :
+      name(name),
+      inner_type_index(inner_type_index),
+      inner_type(inner_type),
+      description(description)
+    {
+      this->type_name = type::List;
+      //for (unsigned int i = 0; i < type.size(); ++i)
+      //inner_type.push_back(type[i]);
     }
 
 
     List::~List ()
     {}
 
-    std::shared_ptr<Interface>
+    std::unique_ptr<Interface>
     List::clone() const
     {
       std::cout << "cloning an list" << std::endl;
-      return std::unique_ptr<Interface>(new List(*inner_type, description));
+      return std::unique_ptr<Interface>(new List(name,inner_type_index, inner_type, description));
     }
   }
 }

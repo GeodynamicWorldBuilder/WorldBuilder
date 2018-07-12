@@ -38,9 +38,20 @@ namespace WorldBuilder
     {
       public:
         /**
+         * Constructor for load
+         */
+        List(const Interface &type, const std::string &description);
+
+
+        /**
          * Constructor
          */
-        List(const Interface &type, std::string description);
+        List(const List &type);
+
+        /**
+         * Constructor for set
+         */
+        List(const std::string &name, const std::vector<unsigned int> &inner_type_index, const Types::type inner_type, const std::string &description);
 
 
         /**
@@ -53,9 +64,14 @@ namespace WorldBuilder
          * clone
          */
         virtual
-        std::shared_ptr<Interface> clone() const;
+        std::unique_ptr<Interface> clone() const;
 
-        std::shared_ptr<Interface> inner_type;
+        std::string name;
+
+
+        std::unique_ptr<Interface> inner_type_ptr;
+        Types::type inner_type;
+        std::vector<unsigned int> inner_type_index;
         std::string description;
 
     };

@@ -65,9 +65,11 @@ namespace WorldBuilder
 
   void World::declare_and_parse(Parameters &parameters)
   {
-    std::string sra = "Surface rotation angle";
-    parameters.load_entry(sra, false, Types::Double("0","test"));
-    std::cout << parameters.vector_double[parameters.string_to_type_map["Surface rotation angle"].second].value << std::endl;
+    parameters.load_entry("Potential mantle temperature", false, Types::Double(1600,"test"));
+    parameters.load_entry("Thermal expansion coefficient alpha", false, Types::Double(3.5e-5,"test"));
+    parameters.load_entry("specific heat Cp", false, Types::Double(1250,"test"));
+    parameters.load_entry("Surface rotation angle", false, Types::Double(0,"test"));
+
     /*parameters.enter_subsection("Coordinate system");
     {
       parameters.declare_entry("name", true, Types::String("lala", "description"));
@@ -79,17 +81,58 @@ namespace WorldBuilder
 
     //parameters.declare_entry("Surface rotation point", true, Types::Array(Types::Double("0", "descp double"),"descp srp"));
     parameters.load_entry("Surface rotation point", true, Types::Point<2>(Point<2>(2,3), "descp double"));
+
     bool set = parameters.load_entry("Cross section", true,
                                      Types::Array(
                                        Types::Point<2>(Point<2>(3,4),"desciption point cross section"),
                                        "description points array"));
+
     if (set)
-      dim = 2;
+      {
+        dim = 2;
+
+        // Todo: check that there are exactly two points
+        // Todo: merge this into one line
+        const Types::Array &cross_section_natural = this->parameters.get_array("Cross section");
+        std::vector<Types::Point<2> > cross_section;
+        for (unsigned int i = 0; i < cross_section_natural.inner_type_index.size(); ++i)
+          cross_section.push_back(this->parameters.vector_point_2d[cross_section_natural.inner_type_index[i]]);
+
+        WBAssertThrow(cross_section.size() == 2, "The cross section should contain two points, but it contains "
+                      << cross_section.size() << " points." << cross_section_natural.inner_type_index.size()
+                      << ", child location = " );
+
+        std::cout << "loaded the cross section." << std::endl;
+        /**
+         * pre-compute stuff for the cross section
+         */
+
+        Point<2> surface_coord_conversions = (cross_section[0]-cross_section[1]);
+        surface_coord_conversions *= 1/(surface_coord_conversions.norm());
+        parameters.set_entry("Surface coordinate conversions",
+                             Types::Point<2>(surface_coord_conversions, surface_coord_conversions, "description"));
+
+        //const Point<2> diff_points = cross_section[0]-cross_section[1];
+        //const double one_over_cross_section_length = 1/(diff_points.norm());
+
+        //std::vector<std::unique_ptr<Types::Double> > double_vector {std::make_shared<Types::Double>(diff_points[0] * one_over_cross_section_length, ""),
+        //                                                          std::make_shared<Types::Double>(diff_points[1] * one_over_cross_section_length, "")};
+        //parameters.set_entry("Surface coordinate conversions",
+        //                    Types::Array(std::vector<std::unique_ptr<Types::Interface> >{double_vector.begin(), double_vector.end()}, "description"));
+      }
     else
-      dim = 3;
+      {
+        dim = 3;
+
+        std::cout << "=============== set dim to 3" << std::endl;
+      }
 
     parameters.load_entry("Surface objects", true, Types::List(
                             Types::Feature("These are the features"), "description of list"));
+
+
+    std::cout << "=============== set Surface objects" << std::endl;
+
   }
 
   void
@@ -197,10 +240,22 @@ namespace WorldBuilder
                   "variable in the world builder file has been set. Dim is "
                   << dim << ".");
 
-    Point<3> coord_3d(parameters.get_point<2>("Cross section"));
-    //Point<3> coord_3d(cross_section[0][0] + point[0] * surface_coord_conversions[0],
-    //                cross_section[0][1] + point[0] * surface_coord_conversions[1],
-    //              point[1]);
+    // Todo: merge this into one line
+    const Types::Array &cross_section_natural = parameters.get_array("Cross section");
+
+    WBAssert(cross_section_natural.inner_type_index.size() == 2, "Internal error: Cross section natural should contain two points, but it contains " << cross_section_natural.inner_type_index.size() <<  " points.");
+
+    std::vector<Types::Point<2> > cross_section;
+    for (unsigned int i = 0; i < cross_section_natural.inner_type_index.size(); ++i)
+      cross_section.push_back(parameters.vector_point_2d[cross_section_natural.inner_type_index[i]]);
+
+    WBAssert(cross_section.size() == 2, "Internal error: Cross section should contain two points, but it contains " << cross_section.size() <<  " points.");
+
+    const WorldBuilder::Point<2> &surface_coord_conversions = this->parameters.get_point<2>("Surface coordinate conversions");
+
+    Point<3> coord_3d(cross_section[0][0] + point[0] * surface_coord_conversions[0],
+                      cross_section[0][1] + point[0] * surface_coord_conversions[1],
+                      point[1]);
 
     return temperature(coord_3d.get_array(), depth, gravity_norm);
   }
@@ -209,8 +264,13 @@ namespace WorldBuilder
   World::temperature(const std::array<double,3> &point_, const double depth, const double gravity_norm) const
   {
     Point<3> point(point_);
-    double temperature = potential_mantle_temperature + (((potential_mantle_temperature * thermal_expansion_coefficient_alpha * gravity_norm) / specific_heat_Cp) * 1000.0) * ((depth) / 1000.0);;
-    for (std::vector<std::shared_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
+
+    double temperature = this->parameters.get_double("Potential mantle temperature") +
+                         (((this->parameters.get_double("Potential mantle temperature") * this->parameters.get_double("Thermal expansion coefficient alpha") * gravity_norm) /
+                           this->parameters.get_double("specific heat Cp")) * 1000.0) * ((depth) / 1000.0);
+
+
+    for (std::vector<std::unique_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
       {
         temperature = (*it)->temperature(point,depth,gravity_norm,temperature);
       }
@@ -226,9 +286,18 @@ namespace WorldBuilder
                   "variable in the world builder file has been set. Dim is "
                   << dim << ".");
 
-    Point<2> cross_section(parameters.get_point<2>("Cross section.[0]"));
-    Point<3> coord_3d(cross_section[0] + point[0] * surface_coord_conversions[0],
-                      cross_section[1] + point[0] * surface_coord_conversions[1],
+    // Todo: merge this into one line
+    const Types::Array &cross_section_natural = this->parameters.get_array("Cross section");
+    std::vector<Types::Point<2> > cross_section;
+    for (unsigned int i = 0; i < cross_section_natural.inner_type_index.size(); ++i)
+      cross_section.push_back(this->parameters.vector_point_2d[cross_section_natural.inner_type_index[i]]);
+
+    WBAssert(cross_section.size() == 2, "Internal error: Cross section should contain two points, but it contains " << cross_section.size() <<  " points.");
+
+    const WorldBuilder::Point<2> &surface_coord_conversions = this->parameters.get_point<2>("Surface coordinate conversions");
+
+    Point<3> coord_3d(cross_section[0][0] + point[0] * surface_coord_conversions[0],
+                      cross_section[0][1] + point[0] * surface_coord_conversions[1],
                       point[1]);
 
     return composition(coord_3d.get_array(), depth, composition_number);
@@ -239,7 +308,7 @@ namespace WorldBuilder
   {
     Point<3> point(point_);
     double composition = 0;
-    for (std::vector<std::shared_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
+    for (std::vector<std::unique_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
       {
         composition = (*it)->composition(point,depth,composition_number, composition);
       }

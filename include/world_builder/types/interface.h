@@ -35,7 +35,7 @@ namespace WorldBuilder
 
     enum class type
     {
-      None,String,Double,Int,UnsignedInt,Array,List,Point,CoordinateSystem,Feature
+      None,String,Double,Int,UnsignedInt,Array,List,Point2D,Point3D,CoordinateSystem,Feature
     };
 
     class Interface
@@ -56,7 +56,7 @@ namespace WorldBuilder
          * clone
          */
         virtual
-        std::shared_ptr<Interface> clone() const = 0;
+        std::unique_ptr<Interface> clone() const = 0;
 
         /**
          * read in the world builder file

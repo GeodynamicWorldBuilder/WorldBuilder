@@ -49,11 +49,21 @@ namespace WorldBuilder
     ContinentalPlate::decare_entries(std::string &path)
     {
       std::cout << "path in here is = " << &(this->world->parameters) << ", path= \'" << path << "\'" << std::endl;
-      std::cout << "!!!!!!!!!!!!!!!!!!!!! printing feature local_tree (" << this->world->parameters.local_tree << ") !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-      Utilities::print_tree(*this->world->parameters.local_tree, 0);
-      std::cout << std::endl << "!!!!!!!!!!!!!!!!!!!!! printing feature local_tree !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+      //std::cout << "!!!!!!!!!!!!!!!!!!!!! printing feature local_tree (" << this->world->parameters.local_tree << ") !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+      //Utilities::print_tree(*this->world->parameters.local_tree, 0);
+      //std::cout << std::endl << "!!!!!!!!!!!!!!!!!!!!! printing feature local_tree !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
 
       this->world->parameters.load_entry("name", true, Types::String("","description string in CP"));
+      this->world->parameters.load_entry("coordinates", true, Types::Array(
+                                           Types::Point<2>(Point<2>(3,4),"desciption point cross section"),
+                                           "description points array"));
+      std::cout << "parameters = " << &this->world->parameters << std::endl;
+      this->world->parameters.enter_subsection("temperature submodule");
+      {
+        this->world->parameters.load_entry("name", true, Types::String("","description string in CP"));
+      }
+      std::cout << "parameters = " << &this->world->parameters << std::endl;
+      this->world->parameters.leave_subsection();
     }
 
     void

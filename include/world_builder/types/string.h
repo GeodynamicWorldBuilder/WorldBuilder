@@ -51,7 +51,7 @@ namespace WorldBuilder
          * clone
          */
         virtual
-        std::shared_ptr<Interface> clone() const;
+        std::unique_ptr<Interface> clone() const;
 
         /**
          * Set value

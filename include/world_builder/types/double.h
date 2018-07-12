@@ -38,9 +38,14 @@ namespace WorldBuilder
     {
       public:
         /**
-         * constructor
+         * A constructor for the load_entry function
          */
-        Double(std::string default_value, std::string description);
+        Double(double default_value, std::string description);
+
+        /**
+         * A constructor for the clone and set_entry function
+         */
+        Double(double value, double default_value, std::string description);
 
         /**
          * Destructor
@@ -48,19 +53,20 @@ namespace WorldBuilder
         ~Double();
 
         /**
-         * clone
+         * Clone. The caller of clone is responsible for the lifetime of it,
+         * so return a unique pionter.
          */
         virtual
-        std::shared_ptr<Interface> clone() const;
+        std::unique_ptr<Interface> clone() const;
 
         /**
          * Set value
          */
         virtual
-        void set_value(std::string value);
+        void set_value(double value);
 
         double value;
-        std::string default_value;
+        double default_value;
         std::string description;
 
       private:

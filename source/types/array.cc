@@ -23,32 +23,71 @@ namespace WorldBuilder
 {
   namespace Types
   {
-    Array::Array(const Interface &type, std::string description)
+    Array::Array(const Interface &type, const std::string &description)
       :
-      inner_type(type.clone()),
+      inner_type_ptr(type.clone()),
+      inner_type(type.get_type()),
       description(description)
     {
       this->type_name = type::Array;
-      std::cout << "construcuting an array" << std::endl;
+
+
+      //inner_type.push_back(type.clone());
+      // std::cout << "Flag 1: construcuting an array of type " << (int)(*type.clone()).get_type() << std::endl;
     }
 
-    /*Array::Array(Interface* type, std::string description)
-    :
-        inner_type(type),
+    Array::Array(const Array &type)
+      :
+      inner_type_index(type.inner_type_index),
+      inner_type(type.get_type()),
+      //inner_type_ptr(std::move(type.inner_type_ptr)),
+      description(type.description)
+    {
+      this->type_name = type::Array;
+    }
+
+    Array::Array(const std::vector<unsigned int> &inner_type_index, const Types::type inner_type, const std::string &description)
+      :
+      inner_type_index(inner_type_index),
+      inner_type(inner_type),
       description(description)
     {
       this->type_name = type::Array;
-    }*/
+
+      /*for (unsigned int i = 0; i < type.size(); ++i)
+      {
+        inner_type.push_back(type[i]);
+
+        //std::cout << "Flag 3: " << i << ", construcuting an array of type " << (int)type[i].get()->clone()->get_type() << std::endl;
+        //std::cout << "Flag 4: inner_type = " << (int)inner_type[i]->get_type() << ", at location: " << inner_type[i] << std::endl;
+      }*/
+    }
 
     Array::~Array ()
     {}
 
-    std::shared_ptr<Interface>
+    std::unique_ptr<Interface>
     Array::clone() const
     {
-      std::cout << "cloning an array" << std::endl;
-      return std::unique_ptr<Interface>(new Array(*inner_type, description));
+      return std::unique_ptr<Interface>(new Array(inner_type_index, inner_type, description));
     }
+
+    /*
+    template<class T>
+    const T &
+    Array::operator[](const unsigned int index) const
+    {
+      return value[index];
+    }
+
+
+    template<class T>
+    T &
+    Array::operator[](const unsigned int index)
+    {
+      return value[index];
+    }*/
+
   }
 }
 

@@ -52,7 +52,7 @@ namespace WorldBuilder
          * clone
          */
         virtual
-        std::shared_ptr<Interface> clone() const;
+        std::unique_ptr<Interface> clone() const;
 
         /**
          * Set value
@@ -61,7 +61,7 @@ namespace WorldBuilder
         void set_value(std::string value);
 
         //std::string value;
-        std::shared_ptr<::WorldBuilder::CoordinateSystems::Interface> value;
+        std::unique_ptr<::WorldBuilder::CoordinateSystems::Interface> value;
         std::string default_value;
         std::string description;
 

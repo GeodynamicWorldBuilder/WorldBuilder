@@ -37,7 +37,7 @@ namespace WorldBuilder
       value = value_;
     }
 
-    std::shared_ptr<Interface>
+    std::unique_ptr<Interface>
     Feature::clone() const
     {
       return std::unique_ptr<Interface>(new Feature(description));

@@ -41,10 +41,10 @@ namespace WorldBuilder
       value = CoordinateSystems::create_coordinate_system(value_);
     }
 
-    std::shared_ptr<Interface>
+    std::unique_ptr<Interface>
     CoordinateSystem::clone() const
     {
-      return std::make_shared<CoordinateSystem>(CoordinateSystem(default_value, description));
+      return std::unique_ptr<CoordinateSystem>(new CoordinateSystem(default_value, description));
     }
   }
 }

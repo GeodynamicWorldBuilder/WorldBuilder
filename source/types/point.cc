@@ -30,8 +30,8 @@ namespace WorldBuilder
       default_value(default_value),
       description(description)
     {
-      this->type_name = type::Point;
-      std::cout << "constructing a double" << std::endl;
+      this->type_name = dim == 2 ? type::Point2D : type::Point3D;
+      std::cout << "constructing a point" << std::endl;
     }
 
     template <int dim>
@@ -41,8 +41,9 @@ namespace WorldBuilder
       default_value(default_value),
       description(description)
     {
-      this->type_name = type::Point;
-      std::cout << "constructing a Point" << std::endl;
+      this->type_name = dim == 2 ? type::Point2D : type::Point3D;
+      std::cout << "constructing a point" << std::endl;
+      std::cout << "constructing a Point of type: " << (int) this->type_name << std::endl;
     }
 
     template <int dim>
@@ -50,11 +51,75 @@ namespace WorldBuilder
     {}
 
     template <int dim>
-    std::shared_ptr<Interface>
+    std::unique_ptr<Interface>
     Point<dim>::clone() const
     {
       std::cout << "cloning a Point" << std::endl;
       return std::unique_ptr<Interface>(new Point(value, default_value, description));
+    }
+
+
+    template<int dim>
+    double Point<dim>::operator*(const Point<dim> &point_) const
+    {
+      const std::array<double,dim> array = point_.value.get_array();
+      double dot_product = 0;
+      for (unsigned int i = 0; i < dim; ++i)
+        dot_product += value[i] * array[i];
+      return dot_product;
+    }
+
+
+    template<int dim>
+    WorldBuilder::Point<dim>
+    Point<dim>::operator*(const double scalar) const
+    {
+      // initialize the array to zero.
+      std::array<double,dim> array = WorldBuilder::Point<dim>().get_array();
+      for (unsigned int i = 0; i < dim; ++i)
+        array[i] += value[i] * scalar;
+      return WorldBuilder::Point<dim>(array);
+    }
+
+    template<int dim>
+    WorldBuilder::Point<dim>
+    Point<dim>::operator+(const Point<dim> &point_) const
+    {
+      WorldBuilder::Point<dim> point_tmp(value);
+      point_tmp += point_.value;
+
+      return point_tmp;
+    }
+
+    template<int dim>
+    WorldBuilder::Point<dim>
+    Point<dim>::operator-(const Point<dim> &point_) const
+    {
+      WorldBuilder::Point<dim> point_tmp(value);
+      point_tmp -= point_.value;
+
+      return point_tmp;
+    }
+
+    /**
+     * access index
+     */
+    template<int dim>
+    const double &
+    Point<dim>::operator[](const unsigned int index) const
+    {
+      return value[index];
+    }
+
+
+    /**
+     * access index
+     */
+    template<int dim>
+    double &
+    Point<dim>::operator[](const unsigned int index)
+    {
+      return value[index];
     }
 
     template <int dim>
