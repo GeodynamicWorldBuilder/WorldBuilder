@@ -426,7 +426,6 @@ namespace WorldBuilder
                        const std::string &path_separator)
     {
       std::string use_path = path == "" ? key : path + path_separator + key;
-      std::cout << "path = \'" << path << "\'" << ", use_path = \'" << use_path << "\'" << std::endl;
       boost::optional<std::string> value  = tree.get_optional<std::string> (use_path);
       WBAssertThrow ((value && required == true) || required == false, "Entry undeclared: " + use_path);
       return value;

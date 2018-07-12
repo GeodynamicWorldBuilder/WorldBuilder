@@ -39,17 +39,9 @@ namespace WorldBuilder
   World::World(std::string filename)
     :
     dim(NaN::ISNAN),
-    //surface_rotation_angle(0.0),
-    // minimum_parts_per_distance_unit(NaN::ISNAN),
-    //minimum_distance_points(NaN::ISNAN),
-    //potential_mantle_temperature(1600),
-    //thermal_expansion_coefficient_alpha(3.5e-5),
     parameters(filename,*this)
-    //specific_heat_Cp(1250)
   {
-    std::cout << "flag c1" << std::endl;
     this->declare_and_parse(parameters);
-    std::cout << "flag c2" << std::endl;
   }
 
   World::~World()
@@ -70,37 +62,29 @@ namespace WorldBuilder
     parameters.load_entry("specific heat Cp", false, Types::Double(1250,"test"));
     parameters.load_entry("Surface rotation angle", false, Types::Double(0,"test"));
 
-    /*parameters.enter_subsection("Coordinate system");
-    {
-      parameters.declare_entry("name", true, Types::String("lala", "description"));
-      std::cout << parameters.vector_string[parameters.string_to_type_map["name"].second].value << std::endl;
-    }
-    parameters.leave_subsection();*/
-
     parameters.load_entry("Coordinate system", false, Types::CoordinateSystem("cartesian","description"));
 
     //parameters.declare_entry("Surface rotation point", true, Types::Array(Types::Double("0", "descp double"),"descp srp"));
     parameters.load_entry("Surface rotation point", true, Types::Point<2>(Point<2>(2,3), "descp double"));
 
-    bool set = false;
+    bool set = true;
     // TODO: Improve this.
     try
-    {
-    parameters.load_entry("Cross section", true,
-                                     Types::Array(
-                                       Types::Point<2>(Point<2>(0,0),"desciption point cross section"),
-                                       "description points array"));
-    }
-    catch(...)
-	{
-    	set = false;
-	}
+      {
+        parameters.load_entry("Cross section", true,
+                              Types::Array(
+                                Types::Point<2>(Point<2>(0,0),"desciption point cross section"),
+                                "description points array"));
+      }
+    catch (...)
+      {
+        set = false;
+      }
 
     if (set)
       {
         dim = 2;
 
-        std::cout << "dim =2" << std::endl;
         // Todo: check that there are exactly two points
         // Todo: merge this into one line
         const Types::Array &cross_section_natural = this->parameters.get_array("Cross section");
@@ -111,11 +95,9 @@ namespace WorldBuilder
         WBAssertThrow(cross_section.size() == 2, "The cross section should contain two points, but it contains "
                       << cross_section.size() << " points.");
 
-        std::cout << "loaded the cross section." << std::endl;
         /**
          * pre-compute stuff for the cross section
          */
-
         Point<2> surface_coord_conversions = (cross_section[0]-cross_section[1]);
         surface_coord_conversions *= 1/(surface_coord_conversions.norm());
         parameters.set_entry("Surface coordinate conversions",
@@ -297,7 +279,8 @@ namespace WorldBuilder
     for (unsigned int i = 0; i < cross_section_natural.inner_type_index.size(); ++i)
       cross_section.push_back(this->parameters.vector_point_2d[cross_section_natural.inner_type_index[i]]);
 
-    WBAssert(cross_section.size() == 2, "Internal error: Cross section should contain two points, but it contains " << cross_section.size() <<  " points.");
+    WBAssert(cross_section.size() == 2, "Internal error: Cross section should contain two points, but it contains "
+             << cross_section.size() <<  " points.");
 
     const WorldBuilder::Point<2> &surface_coord_conversions = this->parameters.get_point<2>("Surface coordinate conversions");
 

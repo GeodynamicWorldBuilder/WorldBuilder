@@ -69,11 +69,6 @@ namespace WorldBuilder
       bool composition(const std::array<double, 3> &point, const double depth, const unsigned int composition_number) const;
 
       /**
-       * returs a pointer to the coordinate system
-       */
-      //WorldBuilder::CoordinateSystems::Interface &get_coordinate_system() const;
-
-      /**
        * Stores the path separtor used for the property tree.
        */
       static const char path_seperator = '.';
@@ -83,16 +78,6 @@ namespace WorldBuilder
 
     private:
       unsigned int dim;
-
-      //Parameters parameters;
-
-
-      /**
-       * adiabatic parameters
-       */
-      //double potential_mantle_temperature;
-      //double thermal_expansion_coefficient_alpha;
-      //double specific_heat_Cp;
 
 
 

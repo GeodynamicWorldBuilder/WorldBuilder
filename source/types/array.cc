@@ -30,22 +30,15 @@ namespace WorldBuilder
       description(description)
     {
       this->type_name = type::Array;
-
-      std::cout << "!!!!! 1 constructing an array with inner type: " << (int) this->inner_type << std::endl;
-
-      //inner_type.push_back(type.clone());
-      // std::cout << "Flag 1: construcuting an array of type " << (int)(*type.clone()).get_type() << std::endl;
     }
 
     Array::Array(const Array &type)
       :
       inner_type_index(type.inner_type_index),
       inner_type(type.inner_type),
-      //inner_type_ptr(std::move(type.inner_type_ptr)),
       description(type.description)
     {
       this->type_name = type::Array;
-      std::cout << "!!!! 2 constructing an array with inner type: " << (int) this->inner_type << std::endl;
     }
 
     Array::Array(const std::vector<unsigned int> &inner_type_index, const Types::type inner_type, const std::string &description)
@@ -55,15 +48,6 @@ namespace WorldBuilder
       description(description)
     {
       this->type_name = type::Array;
-      std::cout << "!!!! 3 constructing an array with inner type: " << (int) this->inner_type << std::endl;
-
-      /*for (unsigned int i = 0; i < type.size(); ++i)
-      {
-        inner_type.push_back(type[i]);
-
-        //std::cout << "Flag 3: " << i << ", construcuting an array of type " << (int)type[i].get()->clone()->get_type() << std::endl;
-        //std::cout << "Flag 4: inner_type = " << (int)inner_type[i]->get_type() << ", at location: " << inner_type[i] << std::endl;
-      }*/
     }
 
     Array::~Array ()
@@ -74,23 +58,6 @@ namespace WorldBuilder
     {
       return std::unique_ptr<Interface>(new Array(inner_type_index, inner_type, description));
     }
-
-    /*
-    template<class T>
-    const T &
-    Array::operator[](const unsigned int index) const
-    {
-      return value[index];
-    }
-
-
-    template<class T>
-    T &
-    Array::operator[](const unsigned int index)
-    {
-      return value[index];
-    }*/
-
   }
 }
 

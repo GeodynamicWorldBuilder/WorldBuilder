@@ -31,7 +31,6 @@ namespace WorldBuilder
       description(description)
     {
       this->type_name = dim == 2 ? type::Point2D : type::Point3D;
-      std::cout << "constructing a point" << std::endl;
     }
 
     template <int dim>
@@ -42,8 +41,6 @@ namespace WorldBuilder
       description(description)
     {
       this->type_name = dim == 2 ? type::Point2D : type::Point3D;
-      std::cout << "constructing a point" << std::endl;
-      std::cout << "constructing a Point of type: " << (int) this->type_name << std::endl;
     }
 
     template <int dim>
@@ -54,7 +51,6 @@ namespace WorldBuilder
     std::unique_ptr<Interface>
     Point<dim>::clone() const
     {
-      std::cout << "cloning a Point" << std::endl;
       return std::unique_ptr<Interface>(new Point(value, default_value, description));
     }
 
@@ -127,7 +123,6 @@ namespace WorldBuilder
     Point<dim>::set_value(WorldBuilder::Point<dim> value_)
     {
       value = value_;
-      //std::cout << "set value of double to: " << value << std::endl;
     }
 
     template class Point<2>;

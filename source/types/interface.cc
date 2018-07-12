@@ -47,26 +47,6 @@ namespace WorldBuilder
       return type_name;
     }
 
-    /**
-     * read in the world builder file
-     *
-    Interface*
-    Interface::get_inner_type() const
-    {
-      WBAssert("false", "This type doesn't have an inner type.");
-      return NULL;
-    }
-
-    /**
-     * read in the world builder file
-     *
-    Interface*
-    Interface::set_inner_type()
-    {
-      WBAssert("false", "This type doesn't have an inner type.");
-      return NULL;
-    }*/
-
     /*Interface *
     create_type(const std::string name, std::string description, std::string default_value, Interface *type = NULL)
     {

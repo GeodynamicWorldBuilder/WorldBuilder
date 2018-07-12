@@ -30,15 +30,12 @@ namespace WorldBuilder
       description(description)
     {
       this->type_name = type::List;
-
-      std::cout << "Constructing a list" << std::endl;
     }
 
     List::List(const List &type)
       :
       name(type.name),
       inner_type(type.get_type()),
-      //unique_inner_type(std::move(type.unique_inner_type)),
       description(type.description)
     {
       this->type_name = type::List;
@@ -52,8 +49,6 @@ namespace WorldBuilder
       description(description)
     {
       this->type_name = type::List;
-      //for (unsigned int i = 0; i < type.size(); ++i)
-      //inner_type.push_back(type[i]);
     }
 
 
@@ -63,7 +58,6 @@ namespace WorldBuilder
     std::unique_ptr<Interface>
     List::clone() const
     {
-      std::cout << "cloning an list" << std::endl;
       return std::unique_ptr<Interface>(new List(name,inner_type_index, inner_type, description));
     }
   }

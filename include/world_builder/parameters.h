@@ -101,7 +101,7 @@ namespace WorldBuilder
       const Types::Array &get_array(const std::string &name) const;
 
       template<class T>
-      const std::vector<T*> get_array(const std::string &name) const;
+      const std::vector<T *> get_array(const std::string &name) const;
 
       World &world;
 

@@ -459,7 +459,7 @@ TEST_CASE("WorldBuilder Features: Interface")
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb1.json";
   WorldBuilder::World world(file_name);
   REQUIRE_THROWS_WITH(Features::create_feature("!not_implemented_feature!", &world),
-                      Contains("Feature not implemented."));
+                      Contains("Feature !not_implemented_feature! not implemented."));
 
   Features::Interface *interface = new Features::ContinentalPlate(&world);
 

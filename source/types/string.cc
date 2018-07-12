@@ -24,9 +24,10 @@ namespace WorldBuilder
   namespace Types
   {
     String::String(std::string default_value, std::string description)
+      :
+      value(default_value)
     {
       this->type_name = type::String;
-      value = default_value;
     }
 
     String::~String ()
