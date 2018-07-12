@@ -96,6 +96,7 @@ namespace WorldBuilder
   template<int dim>
   Point<dim> &Point<dim>::operator=(const Point<dim> &point_)
   {
+	  std::cout << "point_ = " << &point_ << std::endl;
     for (unsigned int i = 0; i < dim; ++i)
       point[i] = point_[i];
     return *this;

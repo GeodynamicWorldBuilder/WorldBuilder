@@ -27,6 +27,7 @@
 #include <boost/property_tree/ptree.hpp>
 
 #include <world_builder/types/interface.h>
+#include <world_builder/types/unsigned_int.h>
 #include <world_builder/types/double.h>
 #include <world_builder/types/string.h>
 #include <world_builder/types/point.h>
@@ -76,6 +77,8 @@ namespace WorldBuilder
 
       void leave_subsection();
 
+      unsigned int get_unsigned_int(const std::string &name) const;
+
       double get_double(const std::string &name) const;
 
       std::string get_string(const std::string &name) const;
@@ -96,6 +99,9 @@ namespace WorldBuilder
        * vector or has ownership on them. So give raw pointers.
        */
       const Types::Array &get_array(const std::string &name) const;
+
+      template<class T>
+      const std::vector<T*> get_array(const std::string &name) const;
 
       World &world;
 
@@ -124,6 +130,7 @@ namespace WorldBuilder
       ptree *local_tree;
 
       std::unordered_map<std::string,unsigned int> string_to_type_map;
+      std::vector<Types::UnsignedInt> vector_unsigned_int;
       std::vector<Types::Double> vector_double;
       std::vector<Types::String> vector_string;
       std::vector<Types::Array> vector_array;

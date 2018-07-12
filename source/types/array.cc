@@ -31,6 +31,7 @@ namespace WorldBuilder
     {
       this->type_name = type::Array;
 
+      std::cout << "!!!!! 1 constructing an array with inner type: " << (int) this->inner_type << std::endl;
 
       //inner_type.push_back(type.clone());
       // std::cout << "Flag 1: construcuting an array of type " << (int)(*type.clone()).get_type() << std::endl;
@@ -39,11 +40,12 @@ namespace WorldBuilder
     Array::Array(const Array &type)
       :
       inner_type_index(type.inner_type_index),
-      inner_type(type.get_type()),
+      inner_type(type.inner_type),
       //inner_type_ptr(std::move(type.inner_type_ptr)),
       description(type.description)
     {
       this->type_name = type::Array;
+      std::cout << "!!!! 2 constructing an array with inner type: " << (int) this->inner_type << std::endl;
     }
 
     Array::Array(const std::vector<unsigned int> &inner_type_index, const Types::type inner_type, const std::string &description)
@@ -53,6 +55,7 @@ namespace WorldBuilder
       description(description)
     {
       this->type_name = type::Array;
+      std::cout << "!!!! 3 constructing an array with inner type: " << (int) this->inner_type << std::endl;
 
       /*for (unsigned int i = 0; i < type.size(); ++i)
       {

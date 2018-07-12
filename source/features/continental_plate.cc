@@ -48,22 +48,72 @@ namespace WorldBuilder
     void
     ContinentalPlate::decare_entries(std::string &path)
     {
-      std::cout << "path in here is = " << &(this->world->parameters) << ", path= \'" << path << "\'" << std::endl;
+    	this->world->parameters.enter_subsection("continental plate");
+    	{
+      //std::cout << "path in here is = " << &(this->world->parameters) << ", path= \'" << path << "\'" << std::endl;
       //std::cout << "!!!!!!!!!!!!!!!!!!!!! printing feature local_tree (" << this->world->parameters.local_tree << ") !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
       //Utilities::print_tree(*this->world->parameters.local_tree, 0);
       //std::cout << std::endl << "!!!!!!!!!!!!!!!!!!!!! printing feature local_tree !!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
 
       this->world->parameters.load_entry("name", true, Types::String("","description string in CP"));
+      name = this->world->parameters.get_string("name");
       this->world->parameters.load_entry("coordinates", true, Types::Array(
                                            Types::Point<2>(Point<2>(3,4),"desciption point cross section"),
                                            "description points array"));
-      std::cout << "parameters = " << &this->world->parameters << std::endl;
+
+      std::vector<const Types::Point<2>* > typed_coordinates =  this->world->parameters.get_array<const Types::Point<2> >("coordinates");
+
+      //std::vector<Point<2> > coordinates;
+      coordinates.resize(typed_coordinates.size());
+      std::cout << "typed_coordinates.size() = " << typed_coordinates.size() << std::endl;
+      for(unsigned int i = 0; i < typed_coordinates.size(); ++i)
+      {
+
+          std::cout << "typed_coordinates[i]->value[0] = " << typed_coordinates[i]->value[0] << std::endl;
+    	  coordinates[i] = typed_coordinates[i]->value;
+      }
+
       this->world->parameters.enter_subsection("temperature submodule");
       {
+    	  std::cout << " cp = " << this->world->parameters.get_current_path() << std::endl;;
         this->world->parameters.load_entry("name", true, Types::String("","description string in CP"));
+        temperature_submodule_name = this->world->parameters.get_string("name");
+
+        if (temperature_submodule_name == "constant")
+          {
+        	this->world->parameters.load_entry("depth", true, Types::Double(NaN::DSNAN,"description string in CP"));
+            temperature_submodule_depth = this->world->parameters.get_double("depth");
+
+
+        	this->world->parameters.load_entry("temperature", true, Types::Double(0,"description string in CP"));
+            temperature_submodule_temperature = this->world->parameters.get_double("temperature");
+          }
+
       }
-      std::cout << "parameters = " << &this->world->parameters << std::endl;
       this->world->parameters.leave_subsection();
+
+      this->world->parameters.enter_subsection("composition submodule");
+      {
+    	  std::cout << " cp = " << this->world->parameters.get_current_path() << std::endl;;
+        this->world->parameters.load_entry("name", true, Types::String("","description string in CP"));
+        composition_submodule_name = this->world->parameters.get_string("name");
+
+        if (composition_submodule_name == "constant")
+          {
+        	this->world->parameters.load_entry("depth", true, Types::Double(NaN::DSNAN,"description string in CP"));
+            composition_submodule_depth = this->world->parameters.get_double("depth");
+
+            std::cout << "flag 0" << std::endl;
+        	this->world->parameters.load_entry("composition", true, Types::UnsignedInt(0,"description string in CP"));
+        	std::cout << "flag 1" << std::endl;
+        	composition_submodule_composition = this->world->parameters.get_unsigned_int("composition");
+        	std::cout << "flag 2" << std::endl;
+          }
+      }
+      this->world->parameters.leave_subsection();
+
+    }
+    	this->world->parameters.leave_subsection();
     }
 
     void

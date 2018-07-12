@@ -77,20 +77,30 @@ namespace WorldBuilder
     }
     parameters.leave_subsection();*/
 
-    parameters.load_entry("Coordinate system", true, Types::CoordinateSystem("cartesian","description"));
+    parameters.load_entry("Coordinate system", false, Types::CoordinateSystem("cartesian","description"));
 
     //parameters.declare_entry("Surface rotation point", true, Types::Array(Types::Double("0", "descp double"),"descp srp"));
     parameters.load_entry("Surface rotation point", true, Types::Point<2>(Point<2>(2,3), "descp double"));
 
-    bool set = parameters.load_entry("Cross section", true,
+    bool set = false;
+    // TODO: Improve this.
+    try
+    {
+    parameters.load_entry("Cross section", true,
                                      Types::Array(
-                                       Types::Point<2>(Point<2>(3,4),"desciption point cross section"),
+                                       Types::Point<2>(Point<2>(0,0),"desciption point cross section"),
                                        "description points array"));
+    }
+    catch(...)
+	{
+    	set = false;
+	}
 
     if (set)
       {
         dim = 2;
 
+        std::cout << "dim =2" << std::endl;
         // Todo: check that there are exactly two points
         // Todo: merge this into one line
         const Types::Array &cross_section_natural = this->parameters.get_array("Cross section");
@@ -99,8 +109,7 @@ namespace WorldBuilder
           cross_section.push_back(this->parameters.vector_point_2d[cross_section_natural.inner_type_index[i]]);
 
         WBAssertThrow(cross_section.size() == 2, "The cross section should contain two points, but it contains "
-                      << cross_section.size() << " points." << cross_section_natural.inner_type_index.size()
-                      << ", child location = " );
+                      << cross_section.size() << " points.");
 
         std::cout << "loaded the cross section." << std::endl;
         /**
@@ -123,15 +132,11 @@ namespace WorldBuilder
     else
       {
         dim = 3;
-
-        std::cout << "=============== set dim to 3" << std::endl;
       }
 
     parameters.load_entry("Surface objects", true, Types::List(
                             Types::Feature("These are the features"), "description of list"));
 
-
-    std::cout << "=============== set Surface objects" << std::endl;
 
   }
 
