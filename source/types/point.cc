@@ -27,6 +27,7 @@ namespace WorldBuilder
     template <int dim>
     Point<dim>::Point(const WorldBuilder::Point<dim> &default_value, const std::string &description)
       :
+      value(default_value),
       default_value(default_value),
       description(description)
     {

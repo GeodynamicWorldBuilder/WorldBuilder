@@ -34,8 +34,10 @@ namespace WorldBuilder
 
     List::List(const List &type)
       :
+      inner_type_ptr(nullptr),
       name(type.name),
-      inner_type(type.get_type()),
+      inner_type(type.inner_type),
+      inner_type_index(type.inner_type_index),
       description(type.description)
     {
       this->type_name = type::List;
@@ -43,6 +45,7 @@ namespace WorldBuilder
 
     List::List(const std::string &name, const std::vector<unsigned int> &inner_type_index, const Types::type inner_type, const std::string &description)
       :
+      inner_type_ptr(nullptr),
       name(name),
       inner_type_index(inner_type_index),
       inner_type(inner_type),

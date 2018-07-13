@@ -52,11 +52,6 @@ namespace WorldBuilder
       return std::unique_ptr<Interface>(new Double(value, default_value, description));
     }
 
-    void
-    Double::set_value(double value_)
-    {
-      value = value_;
-    }
   }
 }
 

@@ -42,6 +42,12 @@ namespace WorldBuilder
          */
         String(std::string default_value, std::string description);
 
+
+        /**
+         * A constructor for the clone and set_entry function
+         */
+        String(std::string value, std::string default_value, std::string description);
+
         /**
          * Destructor
          */

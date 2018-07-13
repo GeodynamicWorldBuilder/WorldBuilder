@@ -50,15 +50,15 @@ namespace WorldBuilder
     void
     ContinentalPlate::decare_entries(std::string &path)
     {
-      Parameters& prm = this->world->parameters;
+      Parameters &prm = this->world->parameters;
       prm.enter_subsection("continental plate");
       {
 
         prm.load_entry("name", true, Types::String("","The name which the user has given to the feature."));
         name = prm.get_string("name");
         bool set = prm.load_entry("coordinates", true, Types::Array(
-                                                           Types::Point<2>(Point<2>(0,0),"desciption point cross section"),
-                                                       "An array of Points representing an array of coordinates where the feature is located."));
+                                    Types::Point<2>(Point<2>(0,0),"desciption point cross section"),
+                                    "An array of Points representing an array of coordinates where the feature is located."));
 
         WBAssertThrow(set == true, "A list of coordinates is required for every feature.");
 

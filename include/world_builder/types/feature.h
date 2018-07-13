@@ -39,7 +39,12 @@ namespace WorldBuilder
         /**
          * constructor
          */
-        Feature(std::string description);
+        Feature(const std::string &description);
+
+        /**
+         * Copy constructor
+         */
+        Feature(Feature &feature);
 
         /**
          * Destructor
@@ -55,12 +60,12 @@ namespace WorldBuilder
         /**
          * Set value
          */
-        virtual
-        void set_value(std::string value);
+        //virtual
+        //void set_value(std::string value);
 
-        std::string value;
+        //std::string value;
         //std::unique_ptr<::WorldBuilder::Features::Interface> value;
-        std::string default_value;
+        //std::string default_value;
         std::string description;
 
       private:

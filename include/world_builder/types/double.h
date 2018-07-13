@@ -56,12 +56,6 @@ namespace WorldBuilder
         virtual
         std::unique_ptr<Interface> clone() const;
 
-        /**
-         * Set value
-         */
-        virtual
-        void set_value(double value);
-
         double value;
         double default_value;
         std::string description;

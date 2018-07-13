@@ -34,6 +34,7 @@ namespace WorldBuilder
 
     Array::Array(const Array &type)
       :
+      inner_type_ptr(nullptr),
       inner_type_index(type.inner_type_index),
       inner_type(type.inner_type),
       description(type.description)
@@ -43,6 +44,7 @@ namespace WorldBuilder
 
     Array::Array(const std::vector<unsigned int> &inner_type_index, const Types::type inner_type, const std::string &description)
       :
+      inner_type_ptr(nullptr),
       inner_type_index(inner_type_index),
       inner_type(inner_type),
       description(description)

@@ -91,7 +91,7 @@ namespace WorldBuilder
         Point<2> surface_coord_conversions = (*cross_section[0]-*cross_section[1]);
         surface_coord_conversions *= 1/(surface_coord_conversions.norm());
         prm.set_entry("Surface coordinate conversions",
-                             Types::Point<2>(surface_coord_conversions, surface_coord_conversions, "An internal value which is precomputed."));
+                      Types::Point<2>(surface_coord_conversions, surface_coord_conversions, "An internal value which is precomputed."));
       }
     else
       {

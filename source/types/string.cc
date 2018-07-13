@@ -25,7 +25,18 @@ namespace WorldBuilder
   {
     String::String(std::string default_value, std::string description)
       :
-      value(default_value)
+      value(default_value),
+      default_value(default_value),
+      description(description)
+    {
+      this->type_name = type::String;
+    }
+
+    String::String(std::string value, std::string default_value, std::string description)
+      :
+      value(value),
+      default_value(default_value),
+      description(description)
     {
       this->type_name = type::String;
     }
@@ -42,7 +53,7 @@ namespace WorldBuilder
     std::unique_ptr<Interface>
     String::clone() const
     {
-      return std::unique_ptr<Interface>(new String(value, description));
+      return std::unique_ptr<Interface>(new String(value, default_value, description));
     }
   }
 }
