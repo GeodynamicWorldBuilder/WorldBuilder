@@ -1102,6 +1102,22 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK(prm.get_point<2>("2d point").get_array() == std::array<double,2>{10,11});
   CHECK(prm.get_point<3>("3d point").get_array() == std::array<double,3>{12,13,14});
 
+  // Test the Array functions
+  CHECK_THROWS_WITH(prm.load_entry("non existent string", true, Types::Array(Types::Double("1","description"),"description")),
+		            Contains("Entry undeclared: non existent string"));
+
+  CHECK_THROWS_WITH(prm.get_array("non existent string"),
+		  Contains("Could not find entry 'non existent string' not found. Make sure it is loaded or set"));
+
+  CHECK(prm.load_entry("non exitent string", false, Types::Array("1","description")) == false);
+  CHECK(prm.get_string("non exitent string") == "1");
+
+  prm.set_entry("new string", Types::String("2","description"));
+  CHECK(prm.get_string("new string") == "2");
+
+  prm.load_entry("string", true, Types::String("3","description"));
+  CHECK(prm.get_string("string") == "mystring 0");
+
   // Test the enter_subsection and leave_subsection functions
   prm.enter_subsection("subsection 1");
   {
