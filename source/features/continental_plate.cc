@@ -39,6 +39,7 @@ namespace WorldBuilder
       composition_submodule_composition(NaN::ISNAN)
     {
       this->world = world_;
+      this->name = "continental plate"
     }
 
     ContinentalPlate::~ContinentalPlate()
@@ -48,6 +49,7 @@ namespace WorldBuilder
     void
     ContinentalPlate::decare_entries(std::string &path)
     {
+      //const Parameters prm = this->world->parameters;
       this->world->parameters.enter_subsection("continental plate");
       {
 

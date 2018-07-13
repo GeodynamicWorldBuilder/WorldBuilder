@@ -202,10 +202,19 @@ namespace WorldBuilder
                        const bool required = true,
                        const std::string &path_separator = ".");
 
-    std::string
-    escape_string(std::string &original);
+    //std::string
+    //escape_string(std::string &original);
 
+    /**
+     * This is a helper function for print tree which helps with indenting the
+     * entries based on their nesting level
+     */
     std::string indent(int level);
+
+    /**
+     * This function prints a boost property tree as a json type file to the
+     * screen.
+     */
     void print_tree (const ptree &pt, int level);
   }
 }

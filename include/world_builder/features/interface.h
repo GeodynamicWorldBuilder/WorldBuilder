@@ -89,11 +89,29 @@ namespace WorldBuilder
 
 
       protected:
+        /**
+         * A pointer to the world class to retrieve variables.
+         */
         WorldBuilder::World *world;
 
+        /**
+         * The name of the feature type.
+         */
         std::string name;
+
+        /**
+         * The coordinates at the surface of the feature
+         */
         std::vector<Point<2> > coordinates;
+
+        /**
+         * The name of the temperature submodule used by this feature.
+         */
         std::string temperature_submodule_name;
+
+        /**
+         * The name of the composition submodule used by this feature.
+         */
         std::string composition_submodule_name;
 
     };

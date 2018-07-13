@@ -60,9 +60,21 @@ namespace WorldBuilder
         virtual
         void set_value(std::string value);
 
-        //std::string value;
+        /**
+         * This class is responsible for storing the CoordinateSystem when it
+         * is created at runtime. Therefore we store it as a unique pointer.
+         */
         std::unique_ptr<::WorldBuilder::CoordinateSystems::Interface> value;
+
+        /**
+         * This variable stores the default value for the coordinate system
+         */
         std::string default_value;
+
+        /**
+         * The description of what this coordinate system represent.
+         * This is meant for documentation purposes.
+         */
         std::string description;
 
       private:

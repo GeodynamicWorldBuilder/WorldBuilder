@@ -45,52 +45,42 @@ namespace WorldBuilder
   }
 
   World::~World()
+  {}
+
+  void World::declare_and_parse(Parameters &prm)
   {
-    //delete coordinate_system;
+    /**
+     * Temperature parameters.
+     */
+    prm.load_entry("Potential mantle temperature", false,
+                   Types::Double(1600,"The potential temperature of the mantle at the surface in Kelvin"));
+    prm.load_entry("Thermal expansion coefficient alpha", false,
+                   Types::Double(3.5e-5,"The thermal expansion coefficient alpha. TODO: expand add units"));
+    prm.load_entry("specific heat Cp", false, Types::Double(1250,"The specific heat Cp.  TODO: expand and add units"));
 
-    /*for (unsigned int i = 0; i < features.size(); ++i)
-      {
-        delete features[i];
-      }*/
+    /**
+     * Model rotation parameters.
+     */
+    prm.load_entry("Surface rotation angle", false,
+                   Types::Double(0,"The angle with which the model should be rotated around the Surface rotation point."));
+    prm.load_entry("Surface rotation point", false,
+                   Types::Point<2>(Point<2>(0,0), "The point where should be rotated around."));
 
-  }
+    /**
+     * Coordinate system parameters.
+     */
+    prm.load_entry("Coordinate system", false, Types::CoordinateSystem("cartesian","This determines the coordinate system"));
 
-  void World::declare_and_parse(Parameters &parameters)
-  {
-    parameters.load_entry("Potential mantle temperature", false, Types::Double(1600,"test"));
-    parameters.load_entry("Thermal expansion coefficient alpha", false, Types::Double(3.5e-5,"test"));
-    parameters.load_entry("specific heat Cp", false, Types::Double(1250,"test"));
-    parameters.load_entry("Surface rotation angle", false, Types::Double(0,"test"));
 
-    parameters.load_entry("Coordinate system", false, Types::CoordinateSystem("cartesian","description"));
-
-    //parameters.declare_entry("Surface rotation point", true, Types::Array(Types::Double("0", "descp double"),"descp srp"));
-    parameters.load_entry("Surface rotation point", true, Types::Point<2>(Point<2>(2,3), "descp double"));
-
-    bool set = true;
-    // TODO: Improve this.
-    try
-      {
-        parameters.load_entry("Cross section", true,
+    bool set = prm.load_entry("Cross section", false,
                               Types::Array(
-                                Types::Point<2>(Point<2>(0,0),"desciption point cross section"),
-                                "description points array"));
-      }
-    catch (...)
-      {
-        set = false;
-      }
+                                Types::Point<2>(Point<2>(0,0),"A point in the cross section."),
+                                "This is an array of two points along where the cross section is taken"));
 
     if (set)
       {
         dim = 2;
-
-        // Todo: check that there are exactly two points
-        // Todo: merge this into one line
-        const Types::Array &cross_section_natural = this->parameters.get_array("Cross section");
-        std::vector<Types::Point<2> > cross_section;
-        for (unsigned int i = 0; i < cross_section_natural.inner_type_index.size(); ++i)
-          cross_section.push_back(this->parameters.vector_point_2d[cross_section_natural.inner_type_index[i]]);
+        std::vector<const Types::Point<2>* > cross_section = prm.get_array<const Types::Point<2> >("Cross section");
 
         WBAssertThrow(cross_section.size() == 2, "The cross section should contain two points, but it contains "
                       << cross_section.size() << " points.");
@@ -98,27 +88,18 @@ namespace WorldBuilder
         /**
          * pre-compute stuff for the cross section
          */
-        Point<2> surface_coord_conversions = (cross_section[0]-cross_section[1]);
+        Point<2> surface_coord_conversions = (*cross_section[0]-*cross_section[1]);
         surface_coord_conversions *= 1/(surface_coord_conversions.norm());
-        parameters.set_entry("Surface coordinate conversions",
+        prmameters.set_entry("Surface coordinate conversions",
                              Types::Point<2>(surface_coord_conversions, surface_coord_conversions, "description"));
-
-        //const Point<2> diff_points = cross_section[0]-cross_section[1];
-        //const double one_over_cross_section_length = 1/(diff_points.norm());
-
-        //std::vector<std::unique_ptr<Types::Double> > double_vector {std::make_shared<Types::Double>(diff_points[0] * one_over_cross_section_length, ""),
-        //                                                          std::make_shared<Types::Double>(diff_points[1] * one_over_cross_section_length, "")};
-        //parameters.set_entry("Surface coordinate conversions",
-        //                    Types::Array(std::vector<std::unique_ptr<Types::Interface> >{double_vector.begin(), double_vector.end()}, "description"));
       }
     else
       {
         dim = 3;
       }
 
-    parameters.load_entry("Surface objects", true, Types::List(
-                            Types::Feature("These are the features"), "description of list"));
-
+    prm.load_entry("Surface objects", true, Types::List(
+                     Types::Feature("These are the features"), "A list of features."));
 
   }
 

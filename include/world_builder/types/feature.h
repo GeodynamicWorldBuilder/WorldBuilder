@@ -30,10 +30,8 @@ namespace WorldBuilder
   {
 
     /**
-     * This class represents a continental plate and can implement submodules
-     * for temperature and composition. These submodules determine what
-     * the returned temperature or composition of the temperature and composition
-     * functions of this class will be.
+     * This class represents a plate tectonic feature class, such as the
+     * continental plate class, oceanic plate class and subduction zone class.
      */
     class Feature : public Interface
     {

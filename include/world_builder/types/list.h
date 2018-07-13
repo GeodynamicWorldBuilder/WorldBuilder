@@ -27,12 +27,15 @@ namespace WorldBuilder
 {
   namespace Types
   {
-
     /**
-     * This class represents a continental plate and can implement submodules
-     * for temperature and composition. These submodules determine what
-     * the returned temperature or composition of the temperature and composition
-     * functions of this class will be.
+     * This class represents an list of values which can be of any Types. It
+     * stores the type of values it is holding and an vector of indices where
+     * the values are actually stored in the parameters vector which hold all
+     * the values of that type. This type can also hold a unique pointer to
+     * the type is should hold. This is used for declaring types. The difference
+     * between an array and a list is that the array holds the values retrievable
+     * by index, and a list holds the values strictly ordered, only accessible
+     * an iterator. An other difference it that lists have a name.
      */
     class List : public Interface
     {
@@ -44,7 +47,7 @@ namespace WorldBuilder
 
 
         /**
-         * Constructor
+         * Copy constructor. Does not copy the inner_type_ptr.
          */
         List(const List &type);
 
@@ -66,12 +69,43 @@ namespace WorldBuilder
         virtual
         std::unique_ptr<Interface> clone() const;
 
+        /**
+         * The name of the list
+         */
         std::string name;
 
-
-        std::unique_ptr<Interface> inner_type_ptr;
+        /**
+         * An enum of the type which this class points to
+         * @see Types::type
+         */
         Types::type inner_type;
+
+        /**
+         * This class is sometimes responsible for the object it points to, but
+         * sometimes it is not responsible for the object is points to.
+         * When it is responsible the unique_inner_type points to it and the
+         * inner_type should have size zero. When it is not responsible,
+         * unique_inner_type should point to the nullptr and inner_type should
+         * have a size larger then zero.
+         * @see inner_type_index
+         */
+        std::unique_ptr<Interface> inner_type_ptr;
+
+        /**
+         * This class is sometimes responsible for the object it points to, but
+         * sometimes it is not responsible for the object is points to.
+         * When it is responsible the unique_inner_type points to it and the
+         * inner_type should have size zero. When it is not responsible,
+         * unique_inner_type should point to the nullptr and inner_type should
+         * have a size larger then zero.
+         * @see inner_type_ptr
+         */
         std::vector<unsigned int> inner_type_index;
+
+        /**
+         * The description of what this array and the values within represent.
+         * This is meant for documentation pruposes.
+         */
         std::string description;
 
     };

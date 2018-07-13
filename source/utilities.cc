@@ -431,7 +431,7 @@ namespace WorldBuilder
       return value;
     }
 
-    std::string
+    /*std::string
     escape_string(std::string &original)
     {
       // first escape the escape character. Lets say we start with  "abc &amp;[ ]"
@@ -440,7 +440,7 @@ namespace WorldBuilder
       //std::replace( s.begin(), s.end(), ' ', '&spa');
       // This now became "abc&spa&ampamp[&spa]"
       //std::replace( s.begin(), s.end(), '[', 'lsqb');
-    }
+    }*/
 
     std::string indent(int level)
     {
