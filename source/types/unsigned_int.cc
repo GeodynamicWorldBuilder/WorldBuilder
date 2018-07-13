@@ -52,11 +52,6 @@ namespace WorldBuilder
       return std::unique_ptr<Interface>(new UnsignedInt(value, default_value, description));
     }
 
-    void
-    UnsignedInt::set_value(unsigned int value_)
-    {
-      value = value_;
-    }
   }
 }
 

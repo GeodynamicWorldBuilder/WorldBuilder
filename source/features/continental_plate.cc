@@ -51,7 +51,7 @@ namespace WorldBuilder
     ContinentalPlate::decare_entries(std::string &path)
     {
       Parameters &prm = this->world->parameters;
-      prm.enter_subsection("continental plate");
+      //prm.enter_subsection("continental plate");
       {
 
         prm.load_entry("name", true, Types::String("","The name which the user has given to the feature."));
@@ -89,7 +89,7 @@ namespace WorldBuilder
 
         prm.enter_subsection("composition submodule");
         {
-          prm.load_entry("name", true, Types::String("",""));
+          prm.load_entry("name", true, Types::String("","The name of the composition submodule used."));
           composition_submodule_name = prm.get_string("name");
 
           if (composition_submodule_name == "constant")
@@ -104,7 +104,7 @@ namespace WorldBuilder
         prm.leave_subsection();
 
       }
-      prm.leave_subsection();
+      //prm.leave_subsection();
     }
 
 

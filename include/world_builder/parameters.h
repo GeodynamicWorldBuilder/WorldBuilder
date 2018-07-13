@@ -209,6 +209,7 @@ namespace WorldBuilder
        */
       std::vector<std::string> path;
 
+
       /**
        * The boost property tree, used to read in the data from a json file.
        */
@@ -319,15 +320,15 @@ namespace WorldBuilder
        * as a string.
        * \return std::string
        */
-      std::string get_current_path() const;
+      std::string get_full_path() const;
 
       /**
        * This function return the current path as stored in the path variable
-       * as a string, but the arrays are striped. This is usefull for working
+       * as a string, but the arrays are striped. This is useful for working
        * with the boost property tree.
        * \return std::string
        */
-      std::string get_current_path_without_arrays() const;
+      std::string get_full_path_without_arrays() const;
 
     private:
       /**
@@ -335,30 +336,35 @@ namespace WorldBuilder
        * This used to keep the input for the public load_entry function simple.
        * @see load_entry()
        */
-      bool load_entry(std::vector<std::string> &path, const std::string &name, const bool required, const Types::Interface &type, unsigned int &location);
+      bool load_entry(const std::string &name, const bool required, const Types::Interface &type, unsigned int &location);
 
       /**
        * A helper function which performs the actual work for set_entry(). This
        * used to keep the input for the public load_entry function simple.
        * @see load_entry()
        */
-      bool set_entry(std::vector<std::string> &path, const std::string &name, const Types::Interface &type, unsigned int &location);
-
+      bool set_entry(const std::string &name, const Types::Interface &type, unsigned int &location);
 
 
       /**
-       * A function which returns the current path based on the proved
-       * std::vector<std::string>.
+       * This is used for the get relative path functions. It stores how many
+       * top entries of the path should be ignored.
+       */
+      unsigned int path_level;
+
+      /**
+       * A function which returns the relative path, which is the full path
+       * minus the path_level top entries..
        * @see get_current_path()
        */
-      std::string get_current_path(std::vector<std::string> &path) const;
+      std::string get_relative_path() const;
 
       /**
-       * A function which returns the current path based on the proved
-       * std::vector<std::string>, without names for the arrays.
+       * A function which returns the relative path, which is the full path
+       * minus the path_level top entries., without names for the arrays.
        * @see get_current_path_without_arrays()
        */
-      std::string get_current_path_without_arrays(std::vector<std::string> &path) const;
+      std::string get_relative_path_without_arrays() const;
   };
 }
 #endif
