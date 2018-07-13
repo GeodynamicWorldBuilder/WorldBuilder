@@ -63,11 +63,6 @@ namespace WorldBuilder
         virtual
         void decare_entries(std::string &path) = 0;
 
-        /**
-         * read in the world builder file
-         */
-        virtual
-        void read(const ptree &property_tree, std::string &path) = 0;
 
         /**
          * takes temperature and position and returns a temperature.

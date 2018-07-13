@@ -433,9 +433,8 @@ TEST_CASE("WorldBuilder Coordinate Systems: Interface")
 
   CoordinateSystems::Interface *interface = new CoordinateSystems::Cartesian;
 
-  ptree tree;
-  std::string file_name = "";
-  interface->read(tree,file_name);
+  std::string path = "";
+  interface->decare_entries(path);
 
   CHECK(interface->cartesian_to_natural_coordinates(std::array<double,3> {1,2,3}) == std::array<double,3> {1,2,3});
   CHECK(interface->natural_to_cartesian_coordinates(std::array<double,3> {1,2,3}) == std::array<double,3> {1,2,3});
@@ -449,9 +448,8 @@ TEST_CASE("WorldBuilder Coordinate Systems: Cartesian")
 {
   CoordinateSystems::Cartesian *cartesian = new CoordinateSystems::Cartesian;
 
-  ptree tree;
-  std::string file_name = "";
-  cartesian->read(tree,file_name);
+  std::string path = "";
+  cartesian->decare_entries(path);
 
   CHECK(cartesian->cartesian_to_natural_coordinates(std::array<double,3> {1,2,3}) == std::array<double,3> {1,2,3});
   CHECK(cartesian->natural_to_cartesian_coordinates(std::array<double,3> {1,2,3}) == std::array<double,3> {1,2,3});
@@ -1015,4 +1013,82 @@ TEST_CASE("WorldBuilder Types: print_tree")
     CHECK(Utilities::print_tree(tree, 0).str() == output.str());
 }
 
+TEST_CASE("WorldBuilder Parameters")
+{
+  // First test a world builder file with a cross section defined
+  std::string file = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb1.json";
+  World* null_world = NULL;
 
+  Parameters prm(file, *null_world);
+
+
+  // Test the UnsignedInt functions
+  CHECK_THROWS_WITH(prm.load_entry("non existent unsigned int", true, Types::UnsignedInt(1,"description")),
+		            Contains("Entry undeclared: non existent unsigned int"));
+
+  CHECK_THROWS_WITH(prm.get_unsigned_int("non existent unsigned int"),
+		  Contains("Could not find entry 'non existent unsigned int' not found. Make sure it is loaded or set"));
+
+  CHECK(prm.load_entry("non existent unsigned int", false, Types::UnsignedInt(1,"description")) == false);
+  CHECK(prm.get_unsigned_int("non existent unsigned int") == 1);
+
+  prm.set_entry("new unsigned int", Types::UnsignedInt(2,"description"));
+  CHECK(prm.get_unsigned_int("new unsigned int") == 2);
+
+  // Test the Double functions
+  CHECK_THROWS_WITH(prm.load_entry("non existent double", true, Types::Double(1,"description")),
+		            Contains("Entry undeclared: non existent"));
+
+  CHECK_THROWS_WITH(prm.get_double("non existent double"),
+		  Contains("Could not find entry 'non existent double' not found. Make sure it is loaded or set"));
+
+  CHECK(prm.load_entry("non existent double", false, Types::Double(1,"description")) == false);
+  CHECK(prm.get_double("non existent double") == 1);
+
+  prm.set_entry("new double", Types::Double(2,"description"));
+  CHECK(prm.get_double("new double") == 2);
+
+
+  // Test the String functions
+  CHECK_THROWS_WITH(prm.load_entry("non existent string", true, Types::String("1","description")),
+		            Contains("Entry undeclared: non existent string"));
+
+  CHECK_THROWS_WITH(prm.get_string("non existent string"),
+		  Contains("Could not find entry 'non existent string' not found. Make sure it is loaded or set"));
+
+  CHECK(prm.load_entry("non exitent string", false, Types::String("1","description")) == false);
+  CHECK(prm.get_string("non exitent string") == "1");
+
+  prm.set_entry("new string", Types::String("2","description"));
+  CHECK(prm.get_string("new string") == "2");
+
+  // Test the Point functions
+  CHECK_THROWS_WITH(prm.load_entry("non existent 2d Point", true, Types::Point<2>(Point<2>(1,2),"description")),
+		            Contains("Could not find .non existent 2d Point, while it is set as required."));
+  CHECK_THROWS_WITH(prm.load_entry("non existent 3d Point", true, Types::Point<3>(Point<3>(1,2,3),"description")),
+		            Contains("Could not find .non existent 3d Point, while it is set as required."));
+
+  CHECK_THROWS_WITH(prm.get_point<2>("non existent 2d Point"),
+		  Contains("Could not find entry 'non existent 2d Point' not found. Make sure it is loaded or set"));
+  CHECK_THROWS_WITH(prm.get_point<3>("non existent 3d Point"),
+		  Contains("Could not find entry 'non existent 3d Point' not found. Make sure it is loaded or set"));
+
+  CHECK(prm.load_entry("non existent 2d Point", false, Types::Point<2>(Point<2>(1,2),"description")) == false);
+  CHECK(prm.load_entry("non existent 3d Point", false, Types::Point<3>(Point<3>(1,2,3),"description")) == false);
+
+  CHECK(prm.get_point<2>("non existent 2d Point").get_array() == std::array<double,2>{1,2});
+  CHECK(prm.get_point<3>("non existent 3d Point").get_array() == std::array<double,3>{1,2,3});
+
+  prm.set_entry("new Point 2d", Types::Point<2>(Point<2>(3,4),"description"));
+  prm.set_entry("new Point 3d", Types::Point<3>(Point<3>(5,6,7),"description"));
+
+  CHECK(prm.get_point<2>("new Point 2d").get_array() == std::array<double,2>{3,4});
+  CHECK(prm.get_point<3>("new Point 3d").get_array() == std::array<double,3>{5,6,7});
+
+/**
+ * Todo: add tests for list, array, feature and coordinate system.
+ */
+
+
+
+}

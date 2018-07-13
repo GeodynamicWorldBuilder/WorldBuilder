@@ -30,7 +30,7 @@ namespace WorldBuilder
     {}
 
     void
-    Cartesian::read(const ptree &/*tree*/, std::string & /*path*/)
+    Cartesian::decare_entries(std::string &/*path*/)
     {}
 
 

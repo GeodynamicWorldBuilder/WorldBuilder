@@ -51,7 +51,7 @@ namespace WorldBuilder
          * Read in the world builder file
          */
         virtual
-        void read(const ptree &property_tree, std::string &path);
+        void decare_entries(std::string &path);
 
         /**
          * Returns what the natural coordinate system for this Coordinate System is.

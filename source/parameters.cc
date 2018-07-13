@@ -99,7 +99,9 @@ namespace WorldBuilder
         // otherwise set found_value to false.
         boost::optional<std::string> value_tree = Utilities::get_from_ptree_abs(*local_tree,
                                                                                 get_current_path_without_arrays(local_path),
-                                                                                (name.front() == '[' && name.back() == ']' ? "" : name), required, path_seperator);
+                                                                                (name.front() == '[' && name.back() == ']' ? "" : name),
+                                                                                required,
+                                                                                path_seperator);
         found_value = value_tree ? true : false;
 
         WBAssertThrow((found_value == true && required == true) || required == false,
@@ -167,13 +169,18 @@ namespace WorldBuilder
       }
     else if (type.get_type() == Types::type::List)
       {
-        const std::string path_plus_name_without_arrays = ((get_current_path_without_arrays() == "") ? name : (get_current_path_without_arrays() + path_seperator + name));
+        const std::string path_plus_name_without_arrays = ((get_current_path_without_arrays() == "")
+                                                           ?
+                                                           name
+                                                           :
+                                                           (get_current_path_without_arrays() + path_seperator + name));
 
         boost::optional<ptree &> child = local_tree->get_child_optional(path_plus_name_without_arrays);
 
         found_value = child ? true : false;
 
-        WBAssertThrow((found_value == true && required == true) || required == false, "Could not find " + get_current_path() + path_seperator + name + ", while it is set as required.");
+        WBAssertThrow((found_value == true && required == true) || required == false,
+                      "Could not find " + get_current_path() + path_seperator + name + ", while it is set as required.");
         if (child)
           {
             const Types::List &natural_type = dynamic_cast<const Types::List &>(type);
@@ -233,7 +240,7 @@ namespace WorldBuilder
           }
 // TODO: set default value
       }
-    else if (type.get_type() == Types::type::Point2D || type.get_type() == Types::type::Point3D)
+    else if (type.get_type() == Types::type::Point2D)
       {
         const std::string path_plus_name_without_arrays = ((get_current_path_without_arrays(local_path) == "") ? "" : (get_current_path_without_arrays(local_path) + path_seperator + ""))
                                                           + (name.front() == '[' && name.back() == ']' ? "" : name);
@@ -243,71 +250,94 @@ namespace WorldBuilder
 
         found_value = child ? true : false;
 
-        WBAssertThrow((found_value == true && required == true) || required == false, "Could not find " + get_current_path() + path_seperator + name + ", while it is set as required.");
-        if (child)
+
+        WBAssertThrow((found_value == true && required == true) || required == false,
+                      "Could not find " + get_current_path() + path_seperator + name + ", while it is set as required.");
+        const Types::Point<2> &natural_type = dynamic_cast<const Types::Point<2> &>(type);
+        if (found_value == true)
           {
-            if (type.get_type() == Types::type::Point2D)
+            WorldBuilder::Point<2> point;
+            unsigned int current_size = 0;
+            for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
               {
-                // 2d
-                const Types::Point<2> &natural_type = dynamic_cast<const Types::Point<2> &>(type);
+                // First check whether the value is in the tree. If not Assert when the value is required,
+                // otherwise return false.
+                boost::optional<std::string> value_tree = Utilities::get_from_ptree_abs(it->second,
+                                                                                        get_current_path_without_arrays(local_path),
+                                                                                        "", required, path_seperator);
 
-                WorldBuilder::Point<2> point;
-                unsigned int current_size = 0;
-                for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
-                  {
-                    // First check wheter the value is in the tree. If not Assert when the value is required,
-                    // otherwise return false.
-                    boost::optional<std::string> value_tree = Utilities::get_from_ptree_abs(it->second,
-                                                                                            get_current_path_without_arrays(local_path),
-                                                                                            "", required, path_seperator);
+                found_value = value_tree ? true : false;
 
-                    found_value = value_tree ? true : false;
+                WBAssertThrow((found_value == true && required == true) || required == false, "Could not find " + get_current_path() + ", while it is set as required.");
+                const double value = found_value == true ? Utilities::string_to_double(value_tree.get()) : natural_type.default_value[current_size];
 
-                    WBAssertThrow((found_value == true && required == true) || required == false, "Could not find " + get_current_path() + ", while it is set as required.");
-                    const double value = found_value == true ? Utilities::string_to_double(value_tree.get()) : natural_type.default_value[current_size];
-
-                    point[current_size] = value;
-                    current_size++;
-                  }
-                WBAssertThrow(current_size == 2, "The entry " + get_current_path() + path_seperator + name +
-                              " should represent a 2d point, but the size was not 2, it was "
-                              << current_size << ".");
-
-                vector_point_2d.push_back(Types::Point<2>(point, point,natural_type.description));
-                location = vector_point_2d.size()-1;
-                string_to_type_map[path_plus_name] = location;
+                point[current_size] = value;
+                current_size++;
               }
-            else
+            WBAssertThrow(current_size == 2, "The entry " + get_current_path() + path_seperator + name +
+                          " should represent a 2d point, but the size was not 2, it was "
+                          << current_size << ".");
+
+            vector_point_2d.push_back(Types::Point<2>(point, point,natural_type.description));
+            location = vector_point_2d.size()-1;
+            string_to_type_map[path_plus_name] = location;
+          }
+        else
+          {
+            vector_point_2d.push_back(natural_type);
+            location = vector_point_2d.size()-1;
+            string_to_type_map[path_plus_name] = location;
+          }
+      }
+    else if (type.get_type() == Types::type::Point3D)
+      {
+        const std::string path_plus_name_without_arrays = ((get_current_path_without_arrays(local_path) == "") ? "" : (get_current_path_without_arrays(local_path) + path_seperator + ""))
+                                                          + (name.front() == '[' && name.back() == ']' ? "" : name);
+
+
+        boost::optional<ptree &> child = local_tree->get_child_optional(path_plus_name_without_arrays);
+
+        found_value = child ? true : false;
+
+
+        WBAssertThrow((found_value == true && required == true) || required == false,
+                      "Could not find " + get_current_path() + path_seperator + name + ", while it is set as required.");
+
+        const Types::Point<3> &natural_type = dynamic_cast<const Types::Point<3> &>(type);
+
+        if (found_value)
+          {
+            WorldBuilder::Point<3> point;
+            unsigned int current_size = 0;
+            for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
               {
-                // 3d
-                const Types::Point<3> &natural_type = dynamic_cast<const Types::Point<3> &>(type);
+                // First check whether the value is in the tree. If not Assert when the value is required,
+                // otherwise return false.
+                boost::optional<std::string> value_tree = Utilities::get_from_ptree_abs(it->second,
+                                                                                        get_current_path_without_arrays(local_path),
+                                                                                        "", required, path_seperator);
 
-                WorldBuilder::Point<3> point;
-                unsigned int current_size = 0;
-                for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
-                  {
-                    // First check wheter the value is in the tree. If not Assert when the value is required,
-                    // otherwise return false.
-                    boost::optional<std::string> value_tree = Utilities::get_from_ptree_abs(it->second,
-                                                                                            get_current_path_without_arrays(local_path),
-                                                                                            "", required, path_seperator);
+                found_value = value_tree ? true : false;
 
-                    found_value = value_tree ? true : false;
+                WBAssertThrow((found_value == true && required == true) || required == false, "Could not find " + get_current_path() + ", while it is set as required.");
+                const double value = found_value == true ? Utilities::string_to_double(value_tree.get()) : natural_type.default_value[current_size];
 
-                    WBAssertThrow((found_value == true && required == true) || required == false, "Could not find " + get_current_path() + ", while it is set as required.");
-                    const double value = found_value == true ? Utilities::string_to_double(value_tree.get()) : natural_type.default_value[current_size];
-
-                    point[current_size] = value;
-                    current_size++;
-                  }
-                WBAssertThrow(current_size == 3, "The entry " + get_current_path() + path_seperator + name +
-                              " should represent a 2d point, but the size was not 3, it was "
-                              << current_size << ".");
-
-                vector_point_3d.push_back(Types::Point<3>(point, point,natural_type.description));
-                location = vector_point_3d.size()-1;
-                string_to_type_map[path_plus_name] = location;
+                point[current_size] = value;
+                current_size++;
               }
+            WBAssertThrow(current_size == 3, "The entry " + get_current_path() + path_seperator + name +
+                          " should represent a 2d point, but the size was not 3, it was "
+                          << current_size << ".");
+
+            vector_point_3d.push_back(Types::Point<3>(point, point,natural_type.description));
+            location = vector_point_3d.size()-1;
+            string_to_type_map[path_plus_name] = location;
+          }
+        else
+          {
+            vector_point_3d.push_back(natural_type);
+            location = vector_point_3d.size()-1;
+            string_to_type_map[path_plus_name] = location;
           }
       }
     else
@@ -341,6 +371,15 @@ namespace WorldBuilder
         vector_double.push_back(natural_type);
         location = vector_double.size()-1;
         string_to_type_map[path_plus_name] = location;
+      }
+    else if (type.get_type() == Types::type::UnsignedInt)
+      {
+        // The value is present and we have retrieved it. Now store it
+        const Types::UnsignedInt &natural_type = dynamic_cast<const Types::UnsignedInt &>(type);
+        vector_unsigned_int.push_back(natural_type);
+        string_to_type_map[path_plus_name] = vector_unsigned_int.size()-1;
+
+        return true;
       }
     else if (type.get_type() == Types::type::String)
       {
