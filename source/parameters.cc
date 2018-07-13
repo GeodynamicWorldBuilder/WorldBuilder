@@ -27,6 +27,7 @@
 #include <world_builder/utilities.h>
 #include <world_builder/types/feature.h>
 #include <world_builder/types/coordinate_system.h>
+#include <config.h>
 
 using boost::property_tree::ptree;
 

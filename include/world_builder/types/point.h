@@ -94,12 +94,6 @@ namespace WorldBuilder
         double &operator[](const unsigned int index);
 
 
-        /**
-         * Set value
-         */
-        virtual
-        void set_value(WorldBuilder::Point<dim> value);
-
 
         WorldBuilder::Point<dim> value;
         WorldBuilder::Point<dim> default_value;
@@ -108,6 +102,9 @@ namespace WorldBuilder
       private:
 
     };
+
+    template<int dim>
+    WorldBuilder::Point<dim> operator*(const double scalar, const Point<dim> &point);
   }
 }
 

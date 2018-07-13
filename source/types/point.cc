@@ -119,15 +119,17 @@ namespace WorldBuilder
       return value[index];
     }
 
-    template <int dim>
-    void
-    Point<dim>::set_value(WorldBuilder::Point<dim> value_)
+    template<int dim>
+    WorldBuilder::Point<dim>
+    operator*(const double scalar, const Point<dim> &point)
     {
-      value = value_;
+      return point.value*scalar;
     }
 
     template class Point<2>;
     template class Point<3>;
+    template WorldBuilder::Point<2> operator*(const double scalar, const Point<2> &point);
+    template WorldBuilder::Point<3> operator*(const double scalar, const Point<3> &point);
   }
 }
 

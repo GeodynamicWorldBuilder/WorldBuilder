@@ -35,12 +35,6 @@ namespace WorldBuilder
     CoordinateSystem::~CoordinateSystem ()
     {}
 
-    void
-    CoordinateSystem::set_value(std::string value_)
-    {
-      value = CoordinateSystems::create_coordinate_system(value_);
-    }
-
     std::unique_ptr<Interface>
     CoordinateSystem::clone() const
     {

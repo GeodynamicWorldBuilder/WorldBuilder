@@ -54,11 +54,6 @@ namespace WorldBuilder
         virtual
         std::unique_ptr<Interface> clone() const;
 
-        /**
-         * Set value
-         */
-        virtual
-        void set_value(std::string value);
 
         /**
          * This class is responsible for storing the CoordinateSystem when it

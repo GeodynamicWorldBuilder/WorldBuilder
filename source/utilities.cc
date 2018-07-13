@@ -449,35 +449,36 @@ namespace WorldBuilder
       return s;
     }
 
-    void print_tree (const ptree &pt, int level)
+    std::stringstream print_tree (const ptree &pt, int level)
     {
+      std::stringstream ss;
       if (pt.empty())
         {
-          std::cout << "\""<< pt.data()<< "\"";
+          ss << "\""<< pt.data()<< "\"";
         }
 
       else
         {
-          if (level) std::cout << std::endl;
+          if (level) ss << std::endl;
 
-          std::cout << indent(level) << "{" << std::endl;
+          ss << indent(level) << "{" << std::endl;
 
           for (ptree::const_iterator pos = pt.begin(); pos != pt.end();)
             {
-              std::cout << indent(level+1) << "\"" << pos->first << "\": ";
+              ss << indent(level+1) << "\"" << pos->first << "\": ";
 
-              print_tree(pos->second, level + 1);
+              ss << print_tree(pos->second, level + 1).str();
               ++pos;
               if (pos != pt.end())
                 {
-                  std::cout << ",";
+                  ss << ",";
                 }
-              std::cout << std::endl;
+              ss << std::endl;
             }
-          std::cout << indent(level) << " }";
+          ss << indent(level) << " }";
         }
 
-      return;
+      return ss;
     }
 
     template const std::array<double,2> convert_point_to_array<2>(const Point<2> &point_);

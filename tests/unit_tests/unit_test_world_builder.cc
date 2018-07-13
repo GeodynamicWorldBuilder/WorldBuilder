@@ -608,6 +608,43 @@ TEST_CASE("WorldBuilder Types: Point 2d")
    CHECK(type_clone_natural->default_value[1] == TYPE(5,6)[1]);
    CHECK(type_clone_natural->description == "test explicit");
    CHECK(type_clone_natural->get_type() == Types::type::Point2D);
+
+
+   /**
+     * Test Point operators
+     */
+   const TYPE point_array(std::array<double,2> {1,2});
+   const TYPE point_explicit(3,4);
+
+   Types::TYPE type_point_array(point_array, point_array, "test array");
+   Types::TYPE type_point_explicit(point_explicit, point_explicit, "test array");
+
+   CHECK(type_point_array.value.get_array() == std::array<double,2> {1,2});
+   CHECK(type_point_explicit.value.get_array() == std::array<double,2> {3,4});
+
+    // Test multiply operator
+    TYPE point = 2 * type_point_array * 1.0;
+
+    CHECK(point.get_array() == std::array<double,2> {2,4});
+
+    // Test dot operator
+    CHECK(type_point_array * type_point_explicit == 11);
+
+    // Test add operator
+    point = type_point_array + type_point_explicit;
+
+    CHECK(point.get_array() == std::array<double,2> {4,6});
+
+    // Test subtract operator
+    point = type_point_explicit - type_point_array;
+
+    CHECK(point.get_array() == std::array<double,2> {2,2});
+
+    // test the access operator
+    CHECK(type_point_array[0] == 1);
+
+    type_point_array[0] = 2;
+    CHECK(type_point_array[0] == 2);
 #undef TYPE
 }
 
@@ -654,6 +691,43 @@ TEST_CASE("WorldBuilder Types: Point 3d")
    CHECK(type_clone_natural->default_value[2] == 9);
    CHECK(type_clone_natural->description == "test explicit");
    CHECK(type_clone_natural->get_type() == Types::type::Point3D);
+
+   /**
+     * Test Point operators
+     */
+   const TYPE point_array(std::array<double,3> {1,2,3});
+   const TYPE point_explicit(4,5,6);
+
+   Types::TYPE type_point_array(point_array, point_array, "test array");
+   Types::TYPE type_point_explicit(point_explicit, point_explicit, "test array");
+
+   CHECK(type_point_array.value.get_array() == std::array<double,3> {1,2,3});
+   CHECK(type_point_explicit.value.get_array() == std::array<double,3> {4,5,6});
+
+    // Test multiply operator
+    TYPE point = 2 * type_point_array * 1.0;
+
+    CHECK(point.get_array() == std::array<double,3> {2,4,6});
+
+    // Test dot operator
+    CHECK(type_point_array * type_point_explicit == 32);
+
+    // Test add operator
+    point = type_point_array + type_point_explicit;
+
+    CHECK(point.get_array() == std::array<double,3> {5,7,9});
+
+    // Test subtract operator
+    point = type_point_explicit - type_point_array;
+
+    CHECK(point.get_array() == std::array<double,3> {3,3,3});
+
+    // test the access operator
+    CHECK(type_point_array[0] == 1);
+
+    type_point_array[0] = 2;
+    CHECK(type_point_array[0] == 2);
+
 #undef TYPE
 }
 
@@ -782,6 +856,163 @@ TEST_CASE("WorldBuilder Types: List")
    CHECK(type_copy2.description == "list test explicit");
    CHECK(type_copy2.get_type() == Types::type::TYPE);
 #undef TYPE
+}
+
+
+TEST_CASE("WorldBuilder Types: print_tree")
+{
+	std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb1.json";
+	boost::property_tree::ptree tree;
+    std::ifstream json_input_stream(file_name.c_str());
+    boost::property_tree::json_parser::read_json (json_input_stream, tree);
+    std::stringstream output;
+    output <<
+    "{\n" <<
+    "  \"Cross section\": \n" <<
+    "  {\n" <<
+    "    \"\": \n" <<
+    "    {\n" <<
+    "      \"\": \"100e3\",\n" <<
+    "      \"\": \"100e3\"\n" <<
+    "     },\n" <<
+    "    \"\": \n" <<
+    "    {\n" <<
+    "      \"\": \"400e3\",\n" <<
+    "      \"\": \"500e3\"\n" <<
+    "     }\n" <<
+    "   },\n" <<
+    "  \"Coordinate system\": \n" <<
+    "  {\n" <<
+    "    \"cartesian\": \"\"\n" <<
+    "   },\n" <<
+    "  \"Surface rotation point\": \n" <<
+    "  {\n" <<
+    "    \"\": \"165e3\",\n" <<
+    "    \"\": \"166e3\"\n" <<
+    "   },\n" <<
+    "  \"Surface rotation angle\": \"0\",\n" <<
+    "  \"Minimum parts per distance unit\": \"5\",\n" <<
+    "  \"Minimum distance points\": \"1e-5\",\n" <<
+    "  \"Surface objects\": \n" <<
+    "  {\n" <<
+    "    \"Continental plate\": \n" <<
+    "    {\n" <<
+    "      \"name\": \"Carribean\",\n" <<
+    "      \"coordinates\": \n" <<
+    "      {\n" <<
+    "        \"\": \n" <<
+    "        {\n" <<
+    "          \"\": \"-1e3\",\n" <<
+    "          \"\": \"500e3\"\n" <<
+    "         },\n" <<
+    "        \"\": \n" <<
+    "        {\n" <<
+    "          \"\": \"500e3\",\n" <<
+    "          \"\": \"500e3\"\n" <<
+    "         },\n" <<
+    "        \"\": \n" <<
+    "        {\n" <<
+    "          \"\": \"500e3\",\n" <<
+    "          \"\": \"1000e3\"\n" <<
+    "         },\n" <<
+    "        \"\": \n" <<
+    "        {\n" <<
+    "          \"\": \"-1e3\",\n" <<
+    "          \"\": \"1000e3\"\n" <<
+    "         }\n" <<
+    "       },\n" <<
+    "      \"temperature submodule\": \n" <<
+    "      {\n" <<
+    "        \"name\": \"constant\",\n" <<
+    "        \"depth\": \"250e3\",\n" <<
+    "        \"temperature\": \"150\"\n" <<
+    "       },\n" <<
+    "      \"composition submodule\": \n" <<
+    "      {\n" <<
+    "        \"name\": \"none\"\n" <<
+    "       }\n" <<
+    "     },\n" <<
+    "    \"Continental Plate\": \n" <<
+    "    {\n" <<
+    "      \"name\": \"Rest\",\n" <<
+    "      \"coordinates\": \n" <<
+    "      {\n" <<
+    "        \"\": \n" <<
+    "        {\n" <<
+    "          \"\": \"2000e3\",\n" <<
+    "          \"\": \"2000e3\"\n" <<
+    "         },\n" <<
+    "        \"\": \n" <<
+    "        {\n" <<
+    "          \"\": \"1000e3\",\n" <<
+    "          \"\": \"2000e3\"\n" <<
+    "         },\n" <<
+    "        \"\": \n" <<
+    "        {\n" <<
+    "          \"\": \"1000e3\",\n" <<
+    "          \"\": \"1000e3\"\n" <<
+    "         },\n" <<
+    "        \"\": \n" <<
+    "        {\n" <<
+    "          \"\": \"2000e3\",\n" <<
+    "          \"\": \"1000e3\"\n" <<
+    "         }\n" <<
+    "       },\n" <<
+    "      \"temperature submodule\": \n" <<
+    "      {\n" <<
+    "        \"name\": \"constant\",\n" <<
+    "        \"depth\": \"250e3\",\n" <<
+    "        \"temperature\": \"20\"\n" <<
+    "       },\n" <<
+    "      \"composition submodule\": \n" <<
+    "      {\n" <<
+    "        \"name\": \"constant\",\n" <<
+    "        \"depth\": \"250e3\",\n" <<
+    "        \"composition\": \"2\"\n" <<
+    "       }\n" <<
+    "     },\n" <<
+    "    \"Continental plate\": \n" <<
+    "    {\n" <<
+    "      \"name\": \"Carribean2\",\n" <<
+    "      \"coordinates\": \n" <<
+    "      {\n" <<
+    "        \"\": \n" <<
+    "        {\n" <<
+    "          \"\": \"-1e3\",\n" <<
+    "          \"\": \"500e3\"\n" <<
+    "         },\n" <<
+    "        \"\": \n" <<
+    "        {\n" <<
+    "          \"\": \"500e3\",\n" <<
+    "          \"\": \"500e3\"\n" <<
+    "         },\n" <<
+    "        \"\": \n" <<
+    "        {\n" <<
+    "          \"\": \"500e3\",\n" <<
+    "          \"\": \"1000e3\"\n" <<
+    "         },\n" <<
+    "        \"\": \n" <<
+    "        {\n" <<
+    "          \"\": \"-1e3\",\n" <<
+    "          \"\": \"1000e3\"\n" <<
+    "         }\n" <<
+    "       },\n" <<
+    "      \"temperature submodule\": \n" <<
+    "      {\n" <<
+    "        \"name\": \"none\",\n" <<
+    "        \"depth\": \"250e3\",\n" <<
+    "        \"temperature\": \"150\"\n" <<
+    "       },\n" <<
+    "      \"composition submodule\": \n" <<
+    "      {\n" <<
+    "        \"name\": \"constant\",\n" <<
+    "        \"depth\": \"250e3\",\n" <<
+    "        \"composition\": \"3\"\n" <<
+    "       }\n" <<
+    "     }\n" <<
+    "   }\n" <<
+    " }";
+    CHECK(Utilities::print_tree(tree, 0).str() == output.str());
 }
 
 
