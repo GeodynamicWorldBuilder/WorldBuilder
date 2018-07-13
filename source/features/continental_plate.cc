@@ -23,6 +23,7 @@
 #include <world_builder/utilities.h>
 #include <world_builder/assert.h>
 #include <world_builder/nan.h>
+#include <world_builder/parameters.h>
 
 
 namespace WorldBuilder
@@ -39,7 +40,7 @@ namespace WorldBuilder
       composition_submodule_composition(NaN::ISNAN)
     {
       this->world = world_;
-      this->name = "continental plate"
+      this->name = "continental plate";
     }
 
     ContinentalPlate::~ContinentalPlate()
@@ -49,17 +50,19 @@ namespace WorldBuilder
     void
     ContinentalPlate::decare_entries(std::string &path)
     {
-      //const Parameters prm = this->world->parameters;
-      this->world->parameters.enter_subsection("continental plate");
+      Parameters& prm = this->world->parameters;
+      prm.enter_subsection("continental plate");
       {
 
-        this->world->parameters.load_entry("name", true, Types::String("","description string in CP"));
-        name = this->world->parameters.get_string("name");
-        this->world->parameters.load_entry("coordinates", true, Types::Array(
-                                             Types::Point<2>(Point<2>(3,4),"desciption point cross section"),
-                                             "description points array"));
+        prm.load_entry("name", true, Types::String("","The name which the user has given to the feature."));
+        name = prm.get_string("name");
+        bool set = prm.load_entry("coordinates", true, Types::Array(
+                                                           Types::Point<2>(Point<2>(0,0),"desciption point cross section"),
+                                                       "An array of Points representing an array of coordinates where the feature is located."));
 
-        std::vector<const Types::Point<2>* > typed_coordinates =  this->world->parameters.get_array<const Types::Point<2> >("coordinates");
+        WBAssertThrow(set == true, "A list of coordinates is required for every feature.");
+
+        std::vector<const Types::Point<2>* > typed_coordinates =  prm.get_array<const Types::Point<2> >("coordinates");
 
         coordinates.resize(typed_coordinates.size());
         for (unsigned int i = 0; i < typed_coordinates.size(); ++i)
@@ -67,41 +70,41 @@ namespace WorldBuilder
             coordinates[i] = typed_coordinates[i]->value;
           }
 
-        this->world->parameters.enter_subsection("temperature submodule");
+        prm.enter_subsection("temperature submodule");
         {
-          this->world->parameters.load_entry("name", true, Types::String("","description string in CP"));
-          temperature_submodule_name = this->world->parameters.get_string("name");
+          prm.load_entry("name", true, Types::String("","The name of the temperature submodule."));
+          temperature_submodule_name = prm.get_string("name");
 
           if (temperature_submodule_name == "constant")
             {
-              this->world->parameters.load_entry("depth", true, Types::Double(NaN::DSNAN,"description string in CP"));
-              temperature_submodule_depth = this->world->parameters.get_double("depth");
+              prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth to which the temperature of this feature is present."));
+              temperature_submodule_depth = prm.get_double("depth");
 
-              this->world->parameters.load_entry("temperature", true, Types::Double(0,"description string in CP"));
-              temperature_submodule_temperature = this->world->parameters.get_double("temperature");
+              prm.load_entry("temperature", true, Types::Double(0,"The temperature which this feature should have"));
+              temperature_submodule_temperature = prm.get_double("temperature");
             }
 
         }
-        this->world->parameters.leave_subsection();
+        prm.leave_subsection();
 
-        this->world->parameters.enter_subsection("composition submodule");
+        prm.enter_subsection("composition submodule");
         {
-          this->world->parameters.load_entry("name", true, Types::String("","description string in CP"));
-          composition_submodule_name = this->world->parameters.get_string("name");
+          prm.load_entry("name", true, Types::String("",""));
+          composition_submodule_name = prm.get_string("name");
 
           if (composition_submodule_name == "constant")
             {
-              this->world->parameters.load_entry("depth", true, Types::Double(NaN::DSNAN,"description string in CP"));
-              composition_submodule_depth = this->world->parameters.get_double("depth");
+              prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth to which the composition of this feature is present."));
+              composition_submodule_depth = prm.get_double("depth");
 
-              this->world->parameters.load_entry("composition", true, Types::UnsignedInt(0,"description string in CP"));
-              composition_submodule_composition = this->world->parameters.get_unsigned_int("composition");
+              prm.load_entry("composition", true, Types::UnsignedInt(0,"The number of the composition that is present there."));
+              composition_submodule_composition = prm.get_unsigned_int("composition");
             }
         }
-        this->world->parameters.leave_subsection();
+        prm.leave_subsection();
 
       }
-      this->world->parameters.leave_subsection();
+      prm.leave_subsection();
     }
 
     void
