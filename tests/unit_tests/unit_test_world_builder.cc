@@ -1103,20 +1103,29 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK(prm.get_point<3>("3d point").get_array() == std::array<double,3>{12,13,14});
 
   // Test the Array functions
-  CHECK_THROWS_WITH(prm.load_entry("non existent string", true, Types::Array(Types::Double("1","description"),"description")),
-		            Contains("Entry undeclared: non existent string"));
+  CHECK_THROWS_WITH(prm.load_entry("non existent double array", true, Types::Array(Types::Double(1,"description"),"description")),
+		            Contains("Could not find .non existent double array, while it is set as required."));
 
-  CHECK_THROWS_WITH(prm.get_array("non existent string"),
-		  Contains("Could not find entry 'non existent string' not found. Make sure it is loaded or set"));
+  CHECK_THROWS_WITH(prm.get_array("non existent double array"),
+		  Contains("Could not find entry 'non existent double array' not found. Make sure it is loaded or set"));
 
-  CHECK(prm.load_entry("non exitent string", false, Types::Array("1","description")) == false);
-  CHECK(prm.get_string("non exitent string") == "1");
+  CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
+  CHECK_THROWS_WITH(prm.get_array<const Types::Double >("non exitent double array"),
+		  Contains("Could not find entry 'non exitent double array' not found. Make sure it is loaded or set."));
+  // This is not desired behavior, but it is not implemented yet.
 
-  prm.set_entry("new string", Types::String("2","description"));
-  CHECK(prm.get_string("new string") == "2");
+  prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
+  std::vector<const Types::Double* > set_typed_double =  prm.get_array<const Types::Double >("new double array");
+  CHECK(set_typed_double.size() == 0);
+  // This is not desired behavior, but it is not implemented yet.
 
-  prm.load_entry("string", true, Types::String("3","description"));
-  CHECK(prm.get_string("string") == "mystring 0");
+  prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
+  std::vector<const Types::Double* > true_loaded_typed_double =  prm.get_array<const Types::Double >("double array");
+  CHECK(true_loaded_typed_double.size() == 3);
+  CHECK(true_loaded_typed_double[0]->value == 25);
+  CHECK(true_loaded_typed_double[1]->value == 26);
+  CHECK(true_loaded_typed_double[2]->value == 27);
+
 
   // Test the enter_subsection and leave_subsection functions
   prm.enter_subsection("subsection 1");
@@ -1201,6 +1210,31 @@ TEST_CASE("WorldBuilder Parameters")
 	  CHECK(prm.get_point<2>("2d point").get_array() == std::array<double,2>{15,16});
 	  CHECK(prm.get_point<3>("3d point").get_array() == std::array<double,3>{17,18,19});
 
+
+	  // Test the Array functions
+	  CHECK_THROWS_WITH(prm.load_entry("non existent double array", true, Types::Array(Types::Double(1,"description"),"description")),
+			            Contains("Could not find subsection 1.non existent double array, while it is set as required."));
+
+	  CHECK_THROWS_WITH(prm.get_array("non existent double array"),
+			  Contains("Could not find entry 'non existent double array' not found. Make sure it is loaded or set"));
+
+	  CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
+	  CHECK_THROWS_WITH(prm.get_array<const Types::Double >("non exitent double array"),
+			  Contains("Could not find entry 'non exitent double array' not found. Make sure it is loaded or set."));
+	  // This is not desired behavior, but it is not implemented yet.
+
+	  prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
+	  std::vector<const Types::Double* > set_typed_double =  prm.get_array<const Types::Double >("new double array");
+	  CHECK(set_typed_double.size() == 0);
+	  // This is not desired behavior, but it is not implemented yet.
+
+	  prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
+	  std::vector<const Types::Double* > true_loaded_typed_double =  prm.get_array<const Types::Double >("double array");
+	  CHECK(true_loaded_typed_double.size() == 3);
+	  CHECK(true_loaded_typed_double[0]->value == 35);
+	  CHECK(true_loaded_typed_double[1]->value == 36);
+	  CHECK(true_loaded_typed_double[2]->value == 37);
+
 	  prm.enter_subsection("subsection 2");
 	  {
 		  // Test the UnsignedInt functions
@@ -1282,13 +1316,37 @@ TEST_CASE("WorldBuilder Parameters")
 
 		  CHECK(prm.get_point<2>("2d point").get_array() == std::array<double,2>{20,21});
 		  CHECK(prm.get_point<3>("3d point").get_array() == std::array<double,3>{22,23,24});
+
+		  // Test the Array functions
+		  CHECK_THROWS_WITH(prm.load_entry("non existent double array", true, Types::Array(Types::Double(1,"description"),"description")),
+				            Contains("Could not find subsection 1.subsection 2.non existent double array, while it is set as required."));
+
+		  CHECK_THROWS_WITH(prm.get_array("non existent double array"),
+				  Contains("Could not find entry 'non existent double array' not found. Make sure it is loaded or set"));
+
+		  CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
+		  CHECK_THROWS_WITH(prm.get_array<const Types::Double >("non exitent double array"),
+				  Contains("Could not find entry 'non exitent double array' not found. Make sure it is loaded or set."));
+		  // This is not desired behavior, but it is not implemented yet.
+
+		  prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
+		  std::vector<const Types::Double* > set_typed_double =  prm.get_array<const Types::Double >("new double array");
+		  CHECK(set_typed_double.size() == 0);
+		  // This is not desired behavior, but it is not implemented yet.
+
+		  prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
+		  std::vector<const Types::Double* > true_loaded_typed_double =  prm.get_array<const Types::Double >("double array");
+		  CHECK(true_loaded_typed_double.size() == 3);
+		  CHECK(true_loaded_typed_double[0]->value == 45);
+		  CHECK(true_loaded_typed_double[1]->value == 46);
+		  CHECK(true_loaded_typed_double[2]->value == 47);
 	  }
 	  prm.leave_subsection();
   }
   prm.leave_subsection();
 
 /**
- * Todo: add tests for list, array, feature and coordinate system.
+ * Todo: add tests for list,feature and coordinate system.
  */
 
 

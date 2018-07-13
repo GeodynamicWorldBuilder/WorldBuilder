@@ -215,6 +215,10 @@ namespace WorldBuilder
             }
             leave_subsection();
           }
+        else
+          {
+            // TODO: set default value
+          }
       }
     else if (type.get_type() == Types::type::Array)
       {
@@ -244,6 +248,8 @@ namespace WorldBuilder
               path_level++;
               for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
                 {
+                  unsigned int diff = path.size()-path_level;
+                  path_level+=diff;
                   //TODO add a mangle for the name
                   ptree *parent = local_tree;
                   local_tree = &(it->second);
@@ -252,12 +258,16 @@ namespace WorldBuilder
                   vector_array[location].inner_type_index.push_back(child_location);
                   local_tree = parent;
                   current_size++;
+                  path_level -= diff;
                 }
               path_level--;
             }
             leave_subsection();
           }
-// TODO: set default value
+        else
+          {
+            // TODO: set default value
+          }
       }
     else if (type.get_type() == Types::type::Point2D)
       {
@@ -572,7 +582,11 @@ namespace WorldBuilder
 
     for (unsigned int i = 0; i < typed_array.inner_type_index.size(); ++i)
       {
-        if (typed_array.inner_type == Types::type::Point2D)
+        if (typed_array.inner_type == Types::type::Double)
+          {
+            array[i] = dynamic_cast<T *>(&vector_double[typed_array.inner_type_index[i]]);
+          }
+        else if (typed_array.inner_type == Types::type::Point2D)
           {
             array[i] = dynamic_cast<T *>(&vector_point_2d[typed_array.inner_type_index[i]]);
           }
@@ -645,6 +659,8 @@ namespace WorldBuilder
 
   template Point<2> Parameters::get_point<2>(const std::string &name) const;
   template Point<3> Parameters::get_point<3>(const std::string &name) const;
+  template const std::vector<const Types::Double * > Parameters::get_array<const Types::Double >(const std::string &name) const;
   template const std::vector<const Types::Point<2>* > Parameters::get_array<const Types::Point<2> >(const std::string &name) const;
+  template const std::vector<const Types::Point<3>* > Parameters::get_array<const Types::Point<3> >(const std::string &name) const;
 }
 

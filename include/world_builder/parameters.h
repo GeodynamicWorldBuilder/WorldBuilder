@@ -88,6 +88,8 @@ namespace WorldBuilder
        * world builder file. Note that classes receive the subtree which is
        * relevant for them, so the they only have to account for their nesting.
        *
+       * Note that for the array and list, default values are not implemented.
+       *
        * \param name The name of the parameter which should be loaded
        * \param required Determines whether a value is required to be present.
        * When it isn't present, and the value is set to true, an assert is
@@ -106,6 +108,9 @@ namespace WorldBuilder
        * the file relative to the nesting defined by the enter_subsection and
        * leave_subsection functions. Note that classes receive the subtree which
        * is relevant for them, so the they only have to account for their nesting.
+       *
+       * Note that for the array and list, default values are not implemented.
+       *
        * @see enter_subsection()
        * @see leave_subsection()
        * @see Types::Interface
