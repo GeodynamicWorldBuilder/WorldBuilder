@@ -16,35 +16,40 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
-#include <boost/algorithm/string.hpp>
-
-#include <world_builder/features/interface.h>
-#include <world_builder/features/continental_plate.h>
+#include <world_builder/types/feature.h>
 #include <world_builder/assert.h>
-
 
 namespace WorldBuilder
 {
-  namespace Features
+  namespace Types
   {
-    Interface::Interface()
+    Feature::Feature(const std::string &description)
+      :
+      description(description)
+    {
+      this->type_name = type::Feature;
+    }
+
+    Feature::Feature(Feature &feature)
+      :
+      description(feature.description)
+    {
+      this->type_name = type::Feature;
+    }
+
+    Feature::~Feature ()
     {}
 
-    Interface::~Interface ()
-    {}
+    //void
+    //Feature::set_value(std::string value_)
+    //{
+    //  value = value_;
+    //}
 
     std::unique_ptr<Interface>
-    create_feature(const std::string name, World *world)
+    Feature::clone() const
     {
-      std::string feature_name = boost::algorithm::to_lower_copy(name);
-      boost::algorithm::trim(feature_name);
-      if (feature_name == "continental plate")
-        return std::make_unique<Features::ContinentalPlate>(world);
-      else
-        WBAssertThrow(false, "Feature " << feature_name << " not implemented.");
-
-      return NULL;
+      return std::unique_ptr<Interface>(new Feature(description));
     }
   }
 }

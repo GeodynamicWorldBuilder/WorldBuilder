@@ -406,15 +406,81 @@ namespace WorldBuilder
       return d;
     }
 
-    std::string
+    boost::optional<std::string>
     get_from_ptree(const ptree &tree,
                    const std::string &path,
                    const std::string &key,
+                   const bool required,
                    const std::string &path_separator)
     {
       boost::optional<std::string> value  = tree.get_optional<std::string> (key);
-      WBAssertThrow (value, "Entry undeclared: " + path + path_separator + key);
-      return value.get();
+      WBAssertThrow ((value && required == true) || required == false, "Entry undeclared: " + path + path_separator + key +
+                     ". Tree: " << std::endl << print_tree(tree,0).str() << std::endl);
+      return value;
+    }
+
+    boost::optional<std::string>
+    get_from_ptree_abs(const ptree &tree,
+                       const std::string &path,
+                       const std::string &key,
+                       const bool required,
+                       const std::string &path_separator)
+    {
+      std::string use_path = path == "" ? key : path + path_separator + key;
+      boost::optional<std::string> value  = tree.get_optional<std::string> (use_path);
+      WBAssertThrow ((value && required == true) || required == false, "Entry undeclared: " + use_path +
+                     ". Tree: " << std::endl << print_tree(tree,0).str() << std::endl);
+      return value;
+    }
+
+    /*std::string
+    escape_string(std::string &original)
+    {
+      // first escape the escape character. Lets say we start with  "abc &amp;[ ]"
+      //std::replace( s.begin(), s.end(), '&', '&amp');
+      // This now became "abc &ampamp[ ]". Escape the other characters:
+      //std::replace( s.begin(), s.end(), ' ', '&spa');
+      // This now became "abc&spa&ampamp[&spa]"
+      //std::replace( s.begin(), s.end(), '[', 'lsqb');
+    }*/
+
+    std::string indent(int level)
+    {
+      std::string s;
+      for (int i=0; i<level; i++) s += "  ";
+      return s;
+    }
+
+    std::stringstream print_tree (const ptree &pt, int level)
+    {
+      std::stringstream ss;
+      if (pt.empty())
+        {
+          ss << "\""<< pt.data()<< "\"";
+        }
+
+      else
+        {
+          if (level) ss << std::endl;
+
+          ss << indent(level) << "{" << std::endl;
+
+          for (ptree::const_iterator pos = pt.begin(); pos != pt.end();)
+            {
+              ss << indent(level+1) << "\"" << pos->first << "\": ";
+
+              ss << print_tree(pos->second, level + 1).str();
+              ++pos;
+              if (pos != pt.end())
+                {
+                  ss << ",";
+                }
+              ss << std::endl;
+            }
+          ss << indent(level) << " }";
+        }
+
+      return ss;
     }
 
     template const std::array<double,2> convert_point_to_array<2>(const Point<2> &point_);

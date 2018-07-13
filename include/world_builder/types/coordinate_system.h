@@ -17,16 +17,16 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_feature_features_continental_plate_h
-#define _world_feature_features_continental_plate_h
+#ifndef _world_feature_types_coordinate_systems_h
+#define _world_feature_types_coordinate_systems_h
 
-#include <world_builder/features/interface.h>
-#include <world_builder/world.h>
+#include <world_builder/types/interface.h>
+#include <world_builder/coordinate_systems/interface.h>
 
 
 namespace WorldBuilder
 {
-  namespace Features
+  namespace Types
   {
 
     /**
@@ -35,53 +35,44 @@ namespace WorldBuilder
      * the returned temperature or composition of the temperature and composition
      * functions of this class will be.
      */
-    class ContinentalPlate : public Interface
+    class CoordinateSystem : public Interface
     {
       public:
         /**
          * constructor
          */
-        ContinentalPlate(WorldBuilder::World *world);
+        CoordinateSystem(std::string default_value, std::string description);
 
         /**
          * Destructor
          */
-        ~ContinentalPlate();
+        ~CoordinateSystem();
 
         /**
-         * declare and read in the world builder file into the parameters class
+         * clone
          */
         virtual
-        void decare_entries(std::string &path);
+        std::unique_ptr<Interface> clone() const;
 
 
         /**
-         * Returns a temperature based on the given position
+         * This class is responsible for storing the CoordinateSystem when it
+         * is created at runtime. Therefore we store it as a unique pointer.
          */
-        virtual
-        double temperature(const Point<3> &position,
-                           const double depth,
-                           const double gravity,
-                           double temperature) const;
+        std::unique_ptr<::WorldBuilder::CoordinateSystems::Interface> value;
 
         /**
-         * Returns a value for the requests composition (0 is not present,
-         * 1 is present) based on the given position and
+         * This variable stores the default value for the coordinate system
          */
-        virtual
-        bool composition(const Point<3> &position,
-                         const double depth,
-                         const unsigned int composition_number,
-                         bool temperature) const;
+        std::string default_value;
 
-
+        /**
+         * The description of what this coordinate system represent.
+         * This is meant for documentation purposes.
+         */
+        std::string description;
 
       private:
-        // local parameters
-        double temperature_submodule_depth;
-        double temperature_submodule_temperature;
-        double composition_submodule_depth;
-        unsigned int composition_submodule_composition;
 
     };
   }

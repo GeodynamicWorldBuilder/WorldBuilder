@@ -16,36 +16,42 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
-#include <boost/algorithm/string.hpp>
-
-#include <world_builder/features/interface.h>
-#include <world_builder/features/continental_plate.h>
+#include <world_builder/types/unsigned_int.h>
 #include <world_builder/assert.h>
-
+#include <world_builder/utilities.h>
 
 namespace WorldBuilder
 {
-  namespace Features
+  namespace Types
   {
-    Interface::Interface()
-    {}
+    UnsignedInt::UnsignedInt(unsigned int default_value, std::string description)
+      :
+      value(default_value),
+      default_value(default_value),
+      description(description)
+    {
+      this->type_name = type::UnsignedInt;
+    }
 
-    Interface::~Interface ()
+    UnsignedInt::UnsignedInt(unsigned int value, unsigned int default_value, std::string description)
+      :
+      value(value),
+      default_value(default_value),
+      description(description)
+    {
+      this->type_name = type::UnsignedInt;
+
+    }
+
+    UnsignedInt::~UnsignedInt ()
     {}
 
     std::unique_ptr<Interface>
-    create_feature(const std::string name, World *world)
+    UnsignedInt::clone() const
     {
-      std::string feature_name = boost::algorithm::to_lower_copy(name);
-      boost::algorithm::trim(feature_name);
-      if (feature_name == "continental plate")
-        return std::make_unique<Features::ContinentalPlate>(world);
-      else
-        WBAssertThrow(false, "Feature " << feature_name << " not implemented.");
-
-      return NULL;
+      return std::unique_ptr<Interface>(new UnsignedInt(value, default_value, description));
     }
+
   }
 }
 

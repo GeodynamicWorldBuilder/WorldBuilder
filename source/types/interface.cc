@@ -19,33 +19,50 @@
 
 #include <boost/algorithm/string.hpp>
 
-#include <world_builder/features/interface.h>
-#include <world_builder/features/continental_plate.h>
 #include <world_builder/assert.h>
+#include <world_builder/types/interface.h>
+#include <world_builder/types/double.h>
+#include <world_builder/types/string.h>
+#include <world_builder/types/array.h>
+#include <world_builder/types/list.h>
+#include <world_builder/types/feature.h>
 
 
 namespace WorldBuilder
 {
-  namespace Features
+  namespace Types
   {
     Interface::Interface()
+      :
+      type_name(type::None)
     {}
 
     Interface::~Interface ()
     {}
 
-    std::unique_ptr<Interface>
-    create_feature(const std::string name, World *world)
+
+    type
+    Interface::get_type() const
     {
-      std::string feature_name = boost::algorithm::to_lower_copy(name);
-      boost::algorithm::trim(feature_name);
-      if (feature_name == "continental plate")
-        return std::make_unique<Features::ContinentalPlate>(world);
+      return type_name;
+    }
+
+    /*Interface *
+    create_type(const std::string name, std::string description, std::string default_value, Interface *type = NULL)
+    {
+      std::string type_name = boost::algorithm::to_lower_copy(name);
+      boost::algorithm::trim(type_name);
+      if (type_name == "Double")
+        return new Types::Double(default_value, description);
+      if (type_name == "String")
+        return new Types::String(default_value, description);
+      else if (type_name == "array")
+        return new Types::Array(type,description);
       else
-        WBAssertThrow(false, "Feature " << feature_name << " not implemented.");
+        WBAssertThrow(false, "Feature not implemented.");
 
       return NULL;
-    }
+    }*/
   }
 }
 

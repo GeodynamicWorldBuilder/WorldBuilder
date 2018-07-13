@@ -25,6 +25,7 @@
 #include <boost/property_tree/ptree.hpp>
 
 #include <world_builder/world.h>
+#include <world_builder/parameters.h>
 #include <world_builder/point.h>
 
 
@@ -57,10 +58,11 @@ namespace WorldBuilder
         ~Interface();
 
         /**
-         * read in the world builder file
+         * declare and read in the world builder file into the parameters class
          */
         virtual
-        void read(const ptree &property_tree, std::string &path) = 0;
+        void decare_entries(std::string &path) = 0;
+
 
         /**
          * takes temperature and position and returns a temperature.
@@ -82,11 +84,29 @@ namespace WorldBuilder
 
 
       protected:
+        /**
+         * A pointer to the world class to retrieve variables.
+         */
         WorldBuilder::World *world;
 
+        /**
+         * The name of the feature type.
+         */
         std::string name;
+
+        /**
+         * The coordinates at the surface of the feature
+         */
         std::vector<Point<2> > coordinates;
+
+        /**
+         * The name of the temperature submodule used by this feature.
+         */
         std::string temperature_submodule_name;
+
+        /**
+         * The name of the composition submodule used by this feature.
+         */
         std::string composition_submodule_name;
 
     };
@@ -95,8 +115,8 @@ namespace WorldBuilder
     /**
      * factory function
      */
-    Interface *
-    create_feature(const std::string name, WorldBuilder::World &world);
+    std::unique_ptr<Interface>
+    create_feature(const std::string name, WorldBuilder::World *world);
 
   }
 }

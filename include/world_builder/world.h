@@ -23,8 +23,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-#include <world_builder/features/interface.h>
-#include <world_builder/coordinate_systems/interface.h>
+#include <world_builder/parameters.h>
 
 using boost::property_tree::ptree;
 
@@ -40,7 +39,8 @@ namespace WorldBuilder
   {
     public:
       /**
-       * constructor
+       * Constructor. This constructor requires a atring with the location of
+       * the world builder file to initialize the world..
        */
       World(std::string filename);
 
@@ -52,7 +52,7 @@ namespace WorldBuilder
       /**
        * read in the world builder file
        */
-      void read(ptree &property_tree);
+      void declare_and_parse(Parameters &parameters);
 
       double temperature(const std::array<double, 2> &point, const double depth, const double gravity_norm) const;
 
@@ -64,42 +64,18 @@ namespace WorldBuilder
       bool composition(const std::array<double, 3> &point, const double depth, const unsigned int composition_number) const;
 
       /**
-       * returs a pointer to the coordinate system
-       */
-      WorldBuilder::CoordinateSystems::Interface &get_coordinate_system() const;
-
-      /**
        * Stores the path separtor used for the property tree.
        */
       static const char path_seperator = '.';
 
+
+      Parameters parameters;
+
     private:
-      /**
-       * These are the top level parameters
-       */
       unsigned int dim;
-      std::vector<std::array<double,2> > cross_section;
-      std::vector<double> surface_coord_conversions;
-      std::vector<double> surface_rotation_point;
-      double surface_rotation_angle;
-      unsigned int minimum_parts_per_distance_unit;
-      double minimum_distance_points;
 
-      /**
-       * adiabatic parameters
-       */
-      double potential_mantle_temperature;
-      double thermal_expansion_coefficient_alpha;
-      double specific_heat_Cp;
 
-      /**
-       * contains all the plugins.
-       * todo: make a unique or shared pointer?
-       */
-      std::vector<WorldBuilder::Features::Interface *> features;
 
-      // coordinate system
-      WorldBuilder::CoordinateSystems::Interface *coordinate_system;
 
 
 

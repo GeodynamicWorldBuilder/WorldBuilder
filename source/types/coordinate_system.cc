@@ -16,35 +16,29 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
-#include <boost/algorithm/string.hpp>
-
-#include <world_builder/features/interface.h>
-#include <world_builder/features/continental_plate.h>
+#include <world_builder/types/coordinate_system.h>
 #include <world_builder/assert.h>
-
+//#include <world_builder/coordinate_systems/interface.h>
 
 namespace WorldBuilder
 {
-  namespace Features
+  namespace Types
   {
-    Interface::Interface()
-    {}
+    CoordinateSystem::CoordinateSystem(std::string default_value, std::string description)
+      :
+      default_value(default_value),
+      description(description)
+    {
+      this->type_name = type::CoordinateSystem;
+    }
 
-    Interface::~Interface ()
+    CoordinateSystem::~CoordinateSystem ()
     {}
 
     std::unique_ptr<Interface>
-    create_feature(const std::string name, World *world)
+    CoordinateSystem::clone() const
     {
-      std::string feature_name = boost::algorithm::to_lower_copy(name);
-      boost::algorithm::trim(feature_name);
-      if (feature_name == "continental plate")
-        return std::make_unique<Features::ContinentalPlate>(world);
-      else
-        WBAssertThrow(false, "Feature " << feature_name << " not implemented.");
-
-      return NULL;
+      return std::unique_ptr<CoordinateSystem>(new CoordinateSystem(default_value, description));
     }
   }
 }

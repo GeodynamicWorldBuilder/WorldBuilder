@@ -23,6 +23,7 @@
 #include <world_builder/utilities.h>
 #include <world_builder/assert.h>
 #include <world_builder/nan.h>
+#include <world_builder/parameters.h>
 
 
 namespace WorldBuilder
@@ -31,69 +32,81 @@ namespace WorldBuilder
 
   namespace Features
   {
-    ContinentalPlate::ContinentalPlate(WorldBuilder::World &world_)
+    ContinentalPlate::ContinentalPlate(WorldBuilder::World *world_)
       :
       temperature_submodule_depth(NaN::DSNAN),
       temperature_submodule_temperature(NaN::DSNAN),
       composition_submodule_depth(NaN::DSNAN),
       composition_submodule_composition(NaN::ISNAN)
     {
-      this->world = &world_;
+      this->world = world_;
+      this->name = "continental plate";
     }
 
     ContinentalPlate::~ContinentalPlate()
     { }
 
+
     void
-    ContinentalPlate::read(const ptree &tree, std::string &path)
+    ContinentalPlate::decare_entries(std::string &path)
     {
-      name = boost::algorithm::to_lower_copy(get_from_ptree(tree,path,"name"));
-      boost::algorithm::trim(name);
+      Parameters &prm = this->world->parameters;
+      //prm.enter_subsection("continental plate");
+      {
 
-      boost::optional<const ptree &> child = tree.get_child("coordinates");
-      WBAssertThrow (child, "Entry undeclared: " + path + World::path_seperator +"coordinates");
-      for (boost::property_tree::ptree::const_iterator it = child.get().begin(); it != child.get().end(); ++it)
+        prm.load_entry("name", true, Types::String("","The name which the user has given to the feature."));
+        name = prm.get_string("name");
+        bool set = prm.load_entry("coordinates", true, Types::Array(
+                                    Types::Point<2>(Point<2>(0,0),"desciption point cross section"),
+                                    "An array of Points representing an array of coordinates where the feature is located."));
+
+        WBAssertThrow(set == true, "A list of coordinates is required for every feature.");
+
+        std::vector<const Types::Point<2>* > typed_coordinates =  prm.get_array<const Types::Point<2> >("coordinates");
+
+        coordinates.resize(typed_coordinates.size());
+        for (unsigned int i = 0; i < typed_coordinates.size(); ++i)
+          {
+            coordinates[i] = typed_coordinates[i]->value;
+          }
+
+        prm.enter_subsection("temperature submodule");
         {
-          std::vector<double> tmp;
-          boost::optional<const ptree &> child2 = it->second.get_child("");
-          WBAssertThrow (child, path + World::path_seperator + "coordinates: This should be a 2d array, but only one dimension found.");
-          for (boost::property_tree::ptree::const_iterator it2 = child2.get().begin(); it2 != child2.get().end(); ++it2)
+          prm.load_entry("name", true, Types::String("","The name of the temperature submodule."));
+          temperature_submodule_name = prm.get_string("name");
+
+          if (temperature_submodule_name == "constant")
             {
-              tmp.push_back(stod(it2->second.get<std::string>("")));
+              prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth to which the temperature of this feature is present."));
+              temperature_submodule_depth = prm.get_double("depth");
+
+              prm.load_entry("temperature", true, Types::Double(0,"The temperature which this feature should have"));
+              temperature_submodule_temperature = prm.get_double("temperature");
             }
-          WBAssertThrow (tmp.size() == 2, path + World::path_seperator + "coordinates: These represent 2d coordinates, but there are " <<
-                         tmp.size() <<
-                         " coordinates specified.");
 
-          std::array<double,2> tmp_array;
-          std::copy(tmp.begin(), tmp.end(), tmp_array.begin());
-          coordinates.push_back(tmp_array);
         }
-      WBAssertThrow (coordinates.size() > 2, path + World::path_seperator + "coordinates: This feature requires at least 3 coordinates, but only " <<
-                     coordinates.size() <<
-                     " where provided.");
+        prm.leave_subsection();
 
-      // Temperature submodule parameters
-      temperature_submodule_name = boost::algorithm::to_lower_copy(get_from_ptree(tree,path,"temperature submodule.name"));
-      boost::algorithm::trim(temperature_submodule_name);
-
-
-      if (temperature_submodule_name == "constant")
+        prm.enter_subsection("composition submodule");
         {
-          temperature_submodule_depth = Utilities::string_to_double(get_from_ptree(tree,path,"temperature submodule.depth"));
-          temperature_submodule_temperature = Utilities::string_to_double(get_from_ptree(tree,path,"temperature submodule.temperature"));
-        }
+          prm.load_entry("name", true, Types::String("","The name of the composition submodule used."));
+          composition_submodule_name = prm.get_string("name");
 
-      // Composition submodule parameters
-      composition_submodule_name = boost::algorithm::to_lower_copy(get_from_ptree(tree,path,"composition submodule.name"));
-      boost::algorithm::trim(composition_submodule_name);
+          if (composition_submodule_name == "constant")
+            {
+              prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth to which the composition of this feature is present."));
+              composition_submodule_depth = prm.get_double("depth");
 
-      if (composition_submodule_name == "constant")
-        {
-          composition_submodule_depth = Utilities::string_to_double(get_from_ptree(tree,path,"composition submodule.depth"));
-          composition_submodule_composition = Utilities::string_to_unsigned_int(get_from_ptree(tree,path,"composition submodule.composition"));
+              prm.load_entry("composition", true, Types::UnsignedInt(0,"The number of the composition that is present there."));
+              composition_submodule_composition = prm.get_unsigned_int("composition");
+            }
         }
+        prm.leave_subsection();
+
+      }
+      //prm.leave_subsection();
     }
+
 
     double
     ContinentalPlate::temperature(const Point<3> &position,
@@ -103,7 +116,7 @@ namespace WorldBuilder
     {
       if (temperature_submodule_name == "constant")
         {
-          WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,world->get_coordinate_system());
+          WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,*(world->parameters.coordinate_system));
           // The constant temperature module should be used for this.
           if (depth <= temperature_submodule_depth &&
               Utilities::polygon_contains_point(coordinates, natural_coordinate.get_surface_coordinates()))
@@ -133,7 +146,7 @@ namespace WorldBuilder
     {
       if (composition_submodule_name == "constant")
         {
-          WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,world->get_coordinate_system());
+          WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,*(world->parameters.coordinate_system));
           // The constant temperature module should be used for this.
           if (depth <= composition_submodule_depth &&
               Utilities::polygon_contains_point(coordinates, natural_coordinate.get_surface_coordinates()))

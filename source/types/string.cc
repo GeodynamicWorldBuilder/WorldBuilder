@@ -16,35 +16,44 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
-#include <boost/algorithm/string.hpp>
-
-#include <world_builder/features/interface.h>
-#include <world_builder/features/continental_plate.h>
+#include <world_builder/types/string.h>
 #include <world_builder/assert.h>
-
 
 namespace WorldBuilder
 {
-  namespace Features
+  namespace Types
   {
-    Interface::Interface()
+    String::String(std::string default_value, std::string description)
+      :
+      value(default_value),
+      default_value(default_value),
+      description(description)
+    {
+      this->type_name = type::String;
+    }
+
+    String::String(std::string value, std::string default_value, std::string description)
+      :
+      value(value),
+      default_value(default_value),
+      description(description)
+    {
+      this->type_name = type::String;
+    }
+
+    String::~String ()
     {}
 
-    Interface::~Interface ()
-    {}
+    void
+    String::set_value(std::string value_)
+    {
+      value = value_;
+    }
 
     std::unique_ptr<Interface>
-    create_feature(const std::string name, World *world)
+    String::clone() const
     {
-      std::string feature_name = boost::algorithm::to_lower_copy(name);
-      boost::algorithm::trim(feature_name);
-      if (feature_name == "continental plate")
-        return std::make_unique<Features::ContinentalPlate>(world);
-      else
-        WBAssertThrow(false, "Feature " << feature_name << " not implemented.");
-
-      return NULL;
+      return std::unique_ptr<Interface>(new String(value, default_value, description));
     }
   }
 }
