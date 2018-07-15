@@ -274,11 +274,9 @@ namespace WorldBuilder
         const std::string path_plus_name_without_arrays = ((get_relative_path_without_arrays() == "") ? "" : (get_relative_path_without_arrays() + path_seperator + ""))
                                                           + (name.front() == '[' && name.back() == ']' ? "" : name);
 
-
         boost::optional<ptree &> child = local_tree->get_child_optional(path_plus_name_without_arrays);
 
         found_value = child ? true : false;
-
 
         WBAssertThrow((found_value == true && required == true) || required == false,
                       "Could not find " + get_full_path() + path_seperator + name + ", while it is set as required.");
@@ -329,21 +327,17 @@ namespace WorldBuilder
         const std::string path_plus_name_without_arrays = ((get_relative_path_without_arrays() == "") ? "" : (get_relative_path_without_arrays() + path_seperator + ""))
                                                           + (name.front() == '[' && name.back() == ']' ? "" : name);
 
-
         boost::optional<ptree &> child = local_tree->get_child_optional(path_plus_name_without_arrays);
 
         found_value = child ? true : false;
 
-
         WBAssertThrow((found_value == true && required == true) || required == false,
                       "Could not find " + get_full_path() + path_seperator + name + ", while it is set as required.");
-
 
         unsigned int diff = path.size()-path_level;
         path_level+=diff;
         const Types::Point<3> &natural_type = dynamic_cast<const Types::Point<3> &>(type);
-
-        if (found_value)
+        if (found_value == true)
           {
             WorldBuilder::Point<3> point;
             unsigned int current_size = 0;
@@ -366,7 +360,7 @@ namespace WorldBuilder
               }
             WBAssertThrow(current_size == 3,
                           "The entry " + get_full_path() + path_seperator + name +
-                          " should represent a 2d point, but the size was not 3, it was "
+                          " should represent a 3d point, but the size was not 3, it was "
                           << current_size << ".");
 
             vector_point_3d.push_back(Types::Point<3>(point, point,natural_type.description));
@@ -379,7 +373,6 @@ namespace WorldBuilder
             location = vector_point_3d.size()-1;
             string_to_type_map[path_plus_name] = location;
           }
-
         path_level -= diff;
       }
     else
@@ -574,25 +567,24 @@ namespace WorldBuilder
 
     const Types::Array typed_array = vector_array[string_to_type_map.at(path_plus_name)];
 
-    //const T& typed_derived = dynamic_cast<std::vectorconst T&>(typed_array);
-
     std::vector<T *> array(typed_array.inner_type_index.size());
-
-
 
     for (unsigned int i = 0; i < typed_array.inner_type_index.size(); ++i)
       {
         if (typed_array.inner_type == Types::type::Double)
           {
             array[i] = dynamic_cast<T *>(&vector_double[typed_array.inner_type_index[i]]);
+            WBAssert(array[i] != NULL, "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator) << name << ", because it is not a Double.");
           }
         else if (typed_array.inner_type == Types::type::Point2D)
           {
             array[i] = dynamic_cast<T *>(&vector_point_2d[typed_array.inner_type_index[i]]);
+            WBAssert(array[i] != NULL, "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator) << name << ", because it is not a 2d Point.");
           }
         else if (typed_array.inner_type == Types::type::Point3D)
           {
             array[i] = dynamic_cast<T *>(&vector_point_3d[typed_array.inner_type_index[i]]);
+            WBAssert(array[i] != NULL, "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator) << name << ", because it is not a 3d Point.");
           }
         else
           {
