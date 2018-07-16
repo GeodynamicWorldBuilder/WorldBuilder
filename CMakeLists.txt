@@ -35,7 +35,6 @@ execute_process(COMMAND
 
 set (WORLD_BUILDER_SOURCE_DIR ${PROJECT_SOURCE_DIR})
 
-
 # generate version.cc
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/source/config.cc.in" "${PROJECT_SOURCE_DIR}/source/config.cc" @ONLY)
 
@@ -64,6 +63,14 @@ ADD_CUSTOM_TARGET(indent
   COMMAND ./doc/indent
   COMMENT "Indenting all the World Builder header and source files..."
   )
+
+
+if (NOT MSVC)
+   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Wswitch -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing")
+else()
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3")
+endif()
+
 
 #SET(COVERAGE OFF CACHE BOOL "Coverage")	
 SET(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_DEBUG} --coverage -fprofile-arcs -ftest-coverage ")

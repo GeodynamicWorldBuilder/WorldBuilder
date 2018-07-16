@@ -61,7 +61,7 @@ namespace WorldBuilder
          * declare and read in the world builder file into the parameters class
          */
         virtual
-        void decare_entries(std::string &path) = 0;
+        void decare_entries() = 0;
 
 
         /**
