@@ -96,7 +96,9 @@ namespace WorldBuilder
        * thrown. If it is set to false and the value is not found, the default
        * value is used.
        * \param type A value of class Type. Note that these may be nested.
+       *
        * \return Returns whether the value was found.
+       *
        * @see enter_subsection()
        * @see leave_subsection()
        * @see Types::Interface
@@ -115,7 +117,7 @@ namespace WorldBuilder
        * @see leave_subsection()
        * @see Types::Interface
        */
-      bool set_entry(const std::string &name, const Types::Interface &type);
+      void set_entry(const std::string &name, const Types::Interface &type);
 
       /**
        * This function is used to enter a subsection. It appends to the path
@@ -348,7 +350,7 @@ namespace WorldBuilder
        * used to keep the input for the public load_entry function simple.
        * @see load_entry()
        */
-      bool set_entry(const std::string &name, const Types::Interface &type, unsigned int &location);
+      void set_entry(const std::string &name, const Types::Interface &type, unsigned int &location);
 
 
       /**

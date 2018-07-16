@@ -25,8 +25,8 @@ namespace WorldBuilder
   {
     Array::Array(const Interface &type, const std::string &description)
       :
-      inner_type_ptr(type.clone()),
       inner_type(type.get_type()),
+      inner_type_ptr(type.clone()),
       description(description)
     {
       this->type_name = type::Array;
@@ -34,9 +34,9 @@ namespace WorldBuilder
 
     Array::Array(const Array &type)
       :
+      inner_type(type.inner_type),
       inner_type_ptr(nullptr),
       inner_type_index(type.inner_type_index),
-      inner_type(type.inner_type),
       description(type.description)
     {
       this->type_name = type::Array;
@@ -44,9 +44,9 @@ namespace WorldBuilder
 
     Array::Array(const std::vector<unsigned int> &inner_type_index, const Types::type inner_type, const std::string &description)
       :
+      inner_type(inner_type),
       inner_type_ptr(nullptr),
       inner_type_index(inner_type_index),
-      inner_type(inner_type),
       description(description)
     {
       this->type_name = type::Array;

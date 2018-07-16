@@ -158,9 +158,6 @@ namespace WorldBuilder
       }
     else if (type.get_type() == Types::type::Feature)
       {
-        const Types::Feature &natural_type = dynamic_cast<const Types::Feature &>(type);
-        std::string path_tmp = (get_relative_path() == "") ? name : (get_relative_path() + path_seperator + name);
-
         enter_subsection(name);
         {
           path_level++;
@@ -168,9 +165,8 @@ namespace WorldBuilder
           path_level--;
         }
         leave_subsection();
-        //std::string path_tmp2 = "Surface objects" + World::path_seperator + name;
 
-        features.back()->decare_entries(path_tmp);
+        features.back()->decare_entries();
 
         found_value = true;
       }
@@ -383,14 +379,14 @@ namespace WorldBuilder
     return found_value;
   }
 
-  bool
+  void
   Parameters::set_entry(const std::string &name, const Types::Interface &type)
   {
     unsigned int location;
     this->set_entry(name, type, location);
   }
 
-  bool
+  void
   Parameters::set_entry(const std::string &name, const Types::Interface &type, unsigned int &location)
   {
 
@@ -410,8 +406,6 @@ namespace WorldBuilder
         const Types::UnsignedInt &natural_type = dynamic_cast<const Types::UnsignedInt &>(type);
         vector_unsigned_int.push_back(natural_type);
         string_to_type_map[path_plus_name] = vector_unsigned_int.size()-1;
-
-        return true;
       }
     else if (type.get_type() == Types::type::String)
       {
@@ -419,8 +413,6 @@ namespace WorldBuilder
         const Types::String &natural_type = dynamic_cast<const Types::String &>(type);
         vector_string.push_back(natural_type);
         string_to_type_map[path_plus_name] = vector_string.size()-1;
-
-        return true;
       }
     else if (type.get_type() == Types::type::CoordinateSystem)
       {

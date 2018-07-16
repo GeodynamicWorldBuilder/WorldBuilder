@@ -38,8 +38,8 @@ namespace WorldBuilder
 
   World::World(std::string filename)
     :
-    dim(NaN::ISNAN),
-    parameters(filename,*this)
+    parameters(filename,*this),
+    dim(NaN::ISNAN)
   {
     this->declare_and_parse(parameters);
   }
