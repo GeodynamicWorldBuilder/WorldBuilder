@@ -48,11 +48,9 @@ namespace WorldBuilder
 
 
     void
-    ContinentalPlate::decare_entries(std::string &path)
+    ContinentalPlate::decare_entries()
     {
       Parameters &prm = this->world->parameters;
-      //prm.enter_subsection("continental plate");
-      {
 
         prm.load_entry("name", true, Types::String("","The name which the user has given to the feature."));
         name = prm.get_string("name");
@@ -102,9 +100,6 @@ namespace WorldBuilder
             }
         }
         prm.leave_subsection();
-
-      }
-      //prm.leave_subsection();
     }
 
 
