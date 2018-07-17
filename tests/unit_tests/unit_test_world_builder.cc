@@ -364,12 +364,10 @@ TEST_CASE("WorldBuilder C wrapper")
   CHECK(temperature == Approx(1600));
   temperature_3d(*ptr_ptr_world, 1, 2, 3, 0, 10, &temperature);
   CHECK(temperature == Approx(1600));
+  temperature_2d(*ptr_ptr_world, 550e3, 0, 0, 10, &temperature);
+  CHECK(temperature == Approx(150));
   temperature_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, 10, &temperature);
   CHECK(temperature == Approx(150));
-
-  // TODO: figure out why it isn't 150
-  //temperature_2d(*ptr_ptr_world, 1800e3, 0, 0, 10, &temperature);
-  //CHECK(temperature == Approx(150));
 
   // Test the compositions
   bool composition = false;
@@ -378,12 +376,10 @@ TEST_CASE("WorldBuilder C wrapper")
   CHECK(composition == false);
   composition_3d(*ptr_ptr_world, 1, 2, 3, 0, 2, &composition);
   CHECK(composition == false);
+  composition_2d(*ptr_ptr_world,  550e3, 0, 0, 3, &composition);
+  CHECK(composition == true);
   composition_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, 3, &composition);
   CHECK(composition == true);
-
-  // TODO: figure out why it isn't true
-  //composition_2d(*ptr_ptr_world, 1800e3, 0, 0, 3, &composition);
-  //CHECK(composition == true);
 
   release_world(*ptr_ptr_world);
 
@@ -404,10 +400,6 @@ TEST_CASE("WorldBuilder C wrapper")
   temperature_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, 10, &temperature);
   CHECK(temperature == Approx(150));
 
-  // TODO: figure out why it isn't 150
-  //temperature_2d(*ptr_ptr_world, 1800e3, 0, 0, 10, &temperature);
-  //CHECK(temperature == Approx(150));
-
   // Test the compositions
   CHECK_THROWS_WITH(composition_2d(*ptr_ptr_world, 1, 2, 0, 2, &composition),
                       Contains("This function can only be called when the cross section "
@@ -417,10 +409,6 @@ TEST_CASE("WorldBuilder C wrapper")
   CHECK(composition == false);
   composition_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, 3, &composition);
   CHECK(composition == true);
-
-  // TODO: figure out why it isn't true
-  //composition_2d(*ptr_ptr_world, 1800e3, 0, 0, 3, &composition);
-  //CHECK(composition == true);
 
   release_world(*ptr_ptr_world);
 }
