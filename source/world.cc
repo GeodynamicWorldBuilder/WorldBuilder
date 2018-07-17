@@ -89,7 +89,7 @@ namespace WorldBuilder
          * pre-compute stuff for the cross section
          */
         Point<2> surface_coord_conversions = (*cross_section[0]-*cross_section[1]);
-        surface_coord_conversions *= 1/(surface_coord_conversions.norm());
+        surface_coord_conversions *= -1/(surface_coord_conversions.norm());
         prm.set_entry("Surface coordinate conversions",
                       Types::Point<2>(surface_coord_conversions, surface_coord_conversions, "An internal value which is precomputed."));
       }
@@ -104,7 +104,9 @@ namespace WorldBuilder
   }
 
   double
-  World::temperature(const std::array<double,2> &point, const double depth, const double gravity_norm) const
+  World::temperature(const std::array<double,2> &point,
+                     const double depth,
+                     const double gravity_norm) const
   {
     // turn it into a 3d coordinate and call the 3d temperature function
     WBAssertThrow(dim == 2, "This function can only be called when the cross section "
@@ -114,13 +116,17 @@ namespace WorldBuilder
     // Todo: merge this into one line
     const Types::Array &cross_section_natural = parameters.get_array("Cross section");
 
-    WBAssert(cross_section_natural.inner_type_index.size() == 2, "Internal error: Cross section natural should contain two points, but it contains " << cross_section_natural.inner_type_index.size() <<  " points.");
+    WBAssert(cross_section_natural.inner_type_index.size() == 2,
+             "Internal error: Cross section natural should contain two points, but it contains "
+             << cross_section_natural.inner_type_index.size() <<  " points.");
 
     std::vector<Types::Point<2> > cross_section;
     for (unsigned int i = 0; i < cross_section_natural.inner_type_index.size(); ++i)
       cross_section.push_back(parameters.vector_point_2d[cross_section_natural.inner_type_index[i]]);
 
-    WBAssert(cross_section.size() == 2, "Internal error: Cross section should contain two points, but it contains " << cross_section.size() <<  " points.");
+    WBAssert(cross_section.size() == 2,
+             "Internal error: Cross section should contain two points, but it contains "
+             << cross_section.size() <<  " points.");
 
     const WorldBuilder::Point<2> &surface_coord_conversions = this->parameters.get_point<2>("Surface coordinate conversions");
 
@@ -132,7 +138,9 @@ namespace WorldBuilder
   }
 
   double
-  World::temperature(const std::array<double,3> &point_, const double depth, const double gravity_norm) const
+  World::temperature(const std::array<double,3> &point_,
+                     const double depth,
+                     const double gravity_norm) const
   {
     Point<3> point(point_);
 
@@ -150,7 +158,9 @@ namespace WorldBuilder
   }
 
   bool
-  World::composition(const std::array<double,2> &point, const double depth, const unsigned int composition_number) const
+  World::composition(const std::array<double,2> &point,
+                     const double depth,
+                     const unsigned int composition_number) const
   {
     // turn it into a 3d coordinate and call the 3d temperature function
     WBAssertThrow(dim == 2, "This function can only be called when the cross section "
@@ -176,7 +186,9 @@ namespace WorldBuilder
   }
 
   bool
-  World::composition(const std::array<double,3> &point_, const double depth, const unsigned int composition_number) const
+  World::composition(const std::array<double,3> &point_,
+                     const double depth,
+                     const unsigned int composition_number) const
   {
     Point<3> point(point_);
     double composition = 0;
