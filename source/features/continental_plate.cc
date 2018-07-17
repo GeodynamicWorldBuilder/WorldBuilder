@@ -52,54 +52,54 @@ namespace WorldBuilder
     {
       Parameters &prm = this->world->parameters;
 
-        prm.load_entry("name", true, Types::String("","The name which the user has given to the feature."));
-        name = prm.get_string("name");
-        bool set = prm.load_entry("coordinates", true, Types::Array(
-                                    Types::Point<2>(Point<2>(0,0),"desciption point cross section"),
-                                    "An array of Points representing an array of coordinates where the feature is located."));
+      prm.load_entry("name", true, Types::String("","The name which the user has given to the feature."));
+      name = prm.get_string("name");
+      bool set = prm.load_entry("coordinates", true, Types::Array(
+                                  Types::Point<2>(Point<2>(0,0),"desciption point cross section"),
+                                  "An array of Points representing an array of coordinates where the feature is located."));
 
-        WBAssertThrow(set == true, "A list of coordinates is required for every feature.");
+      WBAssertThrow(set == true, "A list of coordinates is required for every feature.");
 
-        std::vector<const Types::Point<2>* > typed_coordinates =  prm.get_array<const Types::Point<2> >("coordinates");
+      std::vector<const Types::Point<2>* > typed_coordinates =  prm.get_array<const Types::Point<2> >("coordinates");
 
-        coordinates.resize(typed_coordinates.size());
-        for (unsigned int i = 0; i < typed_coordinates.size(); ++i)
+      coordinates.resize(typed_coordinates.size());
+      for (unsigned int i = 0; i < typed_coordinates.size(); ++i)
+        {
+          coordinates[i] = typed_coordinates[i]->value;
+        }
+
+      prm.enter_subsection("temperature submodule");
+      {
+        prm.load_entry("name", true, Types::String("","The name of the temperature submodule."));
+        temperature_submodule_name = prm.get_string("name");
+
+        if (temperature_submodule_name == "constant")
           {
-            coordinates[i] = typed_coordinates[i]->value;
+            prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth to which the temperature of this feature is present."));
+            temperature_submodule_depth = prm.get_double("depth");
+
+            prm.load_entry("temperature", true, Types::Double(0,"The temperature which this feature should have"));
+            temperature_submodule_temperature = prm.get_double("temperature");
           }
 
-        prm.enter_subsection("temperature submodule");
-        {
-          prm.load_entry("name", true, Types::String("","The name of the temperature submodule."));
-          temperature_submodule_name = prm.get_string("name");
+      }
+      prm.leave_subsection();
 
-          if (temperature_submodule_name == "constant")
-            {
-              prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth to which the temperature of this feature is present."));
-              temperature_submodule_depth = prm.get_double("depth");
+      prm.enter_subsection("composition submodule");
+      {
+        prm.load_entry("name", true, Types::String("","The name of the composition submodule used."));
+        composition_submodule_name = prm.get_string("name");
 
-              prm.load_entry("temperature", true, Types::Double(0,"The temperature which this feature should have"));
-              temperature_submodule_temperature = prm.get_double("temperature");
-            }
+        if (composition_submodule_name == "constant")
+          {
+            prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth to which the composition of this feature is present."));
+            composition_submodule_depth = prm.get_double("depth");
 
-        }
-        prm.leave_subsection();
-
-        prm.enter_subsection("composition submodule");
-        {
-          prm.load_entry("name", true, Types::String("","The name of the composition submodule used."));
-          composition_submodule_name = prm.get_string("name");
-
-          if (composition_submodule_name == "constant")
-            {
-              prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth to which the composition of this feature is present."));
-              composition_submodule_depth = prm.get_double("depth");
-
-              prm.load_entry("composition", true, Types::UnsignedInt(0,"The number of the composition that is present there."));
-              composition_submodule_composition = prm.get_unsigned_int("composition");
-            }
-        }
-        prm.leave_subsection();
+            prm.load_entry("composition", true, Types::UnsignedInt(0,"The number of the composition that is present there."));
+            composition_submodule_composition = prm.get_unsigned_int("composition");
+          }
+      }
+      prm.leave_subsection();
     }
 
 
