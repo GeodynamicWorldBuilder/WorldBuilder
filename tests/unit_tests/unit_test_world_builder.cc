@@ -421,8 +421,7 @@ TEST_CASE("WorldBuilder Coordinate Systems: Interface")
 
   CoordinateSystems::Interface *interface = new CoordinateSystems::Cartesian;
 
-  std::string path = "";
-  interface->decare_entries(path);
+  interface->decare_entries();
 
   CHECK(interface->cartesian_to_natural_coordinates(std::array<double,3> {1,2,3}) == std::array<double,3> {1,2,3});
   CHECK(interface->natural_to_cartesian_coordinates(std::array<double,3> {1,2,3}) == std::array<double,3> {1,2,3});
@@ -436,8 +435,7 @@ TEST_CASE("WorldBuilder Coordinate Systems: Cartesian")
 {
   CoordinateSystems::Cartesian *cartesian = new CoordinateSystems::Cartesian;
 
-  std::string path = "";
-  cartesian->decare_entries(path);
+  cartesian->decare_entries();
 
   CHECK(cartesian->cartesian_to_natural_coordinates(std::array<double,3> {1,2,3}) == std::array<double,3> {1,2,3});
   CHECK(cartesian->natural_to_cartesian_coordinates(std::array<double,3> {1,2,3}) == std::array<double,3> {1,2,3});
