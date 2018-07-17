@@ -51,7 +51,7 @@ namespace WorldBuilder
          * read in the world builder file
          */
         virtual
-        void decare_entries(std::string &path) = 0;
+        void decare_entries() = 0;
 
         /**
          * Returns what the natural coordinate system for this geometry model is.

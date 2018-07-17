@@ -30,7 +30,7 @@ namespace WorldBuilder
     {}
 
     void
-    Cartesian::decare_entries(std::string &/*path*/)
+    Cartesian::decare_entries()
     {}
 
 

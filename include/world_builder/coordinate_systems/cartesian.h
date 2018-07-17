@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_builder_feature_features_continental_plate_h
-#define _world_builder_feature_features_continental_plate_h
+#ifndef _world_builder_coordinate_systems_cartesian_h
+#define _world_builder_coordinate_systems_cartesian_h
 
 #include <world_builder/utilities.h>
 #include <world_builder/coordinate_systems/interface.h>
@@ -51,7 +51,7 @@ namespace WorldBuilder
          * Read in the world builder file
          */
         virtual
-        void decare_entries(std::string &path);
+        void decare_entries();
 
         /**
          * Returns what the natural coordinate system for this Coordinate System is.
