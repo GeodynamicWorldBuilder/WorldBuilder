@@ -52,6 +52,8 @@ namespace WorldBuilder
     {
       Parameters &prm = this->world->parameters;
 
+      const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
+
       prm.load_entry("name", true, Types::String("","The name which the user has given to the feature."));
       name = prm.get_string("name");
       bool set = prm.load_entry("coordinates", true, Types::Array(
@@ -65,7 +67,7 @@ namespace WorldBuilder
       coordinates.resize(typed_coordinates.size());
       for (unsigned int i = 0; i < typed_coordinates.size(); ++i)
         {
-          coordinates[i] = typed_coordinates[i]->value;
+          coordinates[i] = typed_coordinates[i]->value  * (coordinate_system == CoordinateSystem::spherical ? M_PI / 180.0 : 1.0);
         }
 
       prm.enter_subsection("temperature submodule");
@@ -111,10 +113,13 @@ namespace WorldBuilder
     {
       if (temperature_submodule_name == "constant")
         {
-          WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,*(world->parameters.coordinate_system));
+          WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
+                                                                          *(world->parameters.coordinate_system));
+
           // The constant temperature module should be used for this.
           if (depth <= temperature_submodule_depth &&
-              Utilities::polygon_contains_point(coordinates, natural_coordinate.get_surface_coordinates()))
+              Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
+                                                                      world->parameters.coordinate_system->natural_coordinate_system())))
             {
               // We are in the the area where the contintal plate is defined. Set the constant temperature.
               return temperature_submodule_temperature;
@@ -144,7 +149,7 @@ namespace WorldBuilder
           WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,*(world->parameters.coordinate_system));
           // The constant temperature module should be used for this.
           if (depth <= composition_submodule_depth &&
-              Utilities::polygon_contains_point(coordinates, natural_coordinate.get_surface_coordinates()))
+              Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),world->parameters.coordinate_system->natural_coordinate_system())))
             {
               // We are in the the area where the contintal plate is defined. Set the constant temperature.
               if (composition_submodule_composition == composition_number)

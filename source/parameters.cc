@@ -282,7 +282,8 @@ namespace WorldBuilder
         const Types::Point<2> &natural_type = dynamic_cast<const Types::Point<2> &>(type);
         if (found_value == true)
           {
-            WorldBuilder::Point<2> point;
+            WorldBuilder::Point<2> point(std::array<double,2> {0,0},
+                                         this->coordinate_system != NULL ? this->coordinate_system->natural_coordinate_system() : CoordinateSystem::cartesian);
             unsigned int current_size = 0;
             for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
               {
@@ -335,7 +336,8 @@ namespace WorldBuilder
         const Types::Point<3> &natural_type = dynamic_cast<const Types::Point<3> &>(type);
         if (found_value == true)
           {
-            WorldBuilder::Point<3> point;
+            WorldBuilder::Point<3> point(std::array<double,3> {0,0,0},
+                                         this->coordinate_system != NULL ? this->coordinate_system->natural_coordinate_system() : CoordinateSystem::cartesian);
             unsigned int current_size = 0;
             for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
               {

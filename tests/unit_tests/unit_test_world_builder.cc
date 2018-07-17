@@ -26,8 +26,9 @@
 
 #include <catch2.h>
 
-#include <world_builder/coordinate_systems/interface.h>
 #include <world_builder/coordinate_systems/cartesian.h>
+#include <world_builder/coordinate_systems/interface.h>
+#include <world_builder/coordinate_systems/spherical.h>
 #include <world_builder/features/interface.h>
 #include <world_builder/features/continental_plate.h>
 #include <world_builder/point.h>
@@ -289,6 +290,7 @@ TEST_CASE("WorldBuilder Utilities: Point in polygon")
 
 TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
 {
+	// Cartesian
   CoordinateSystems::Interface *cartesian = new CoordinateSystems::Cartesian;
 
   // Test the natural coordinate system
@@ -303,6 +305,33 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   CHECK(ncp1.get_depth_coordinate() == 3);
 
   delete cartesian;
+
+  CoordinateSystems::Interface *spherical = new CoordinateSystems::Spherical;
+
+  // Test the natural coordinate system
+  Utilities::NaturalCoordinate nsa1(std::array<double,3> {1,2,3},*spherical);
+  std::array<double,3> nsa1_array = nsa1.get_coordinates();
+  CHECK(nsa1_array[0] == Approx(std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0)));
+  CHECK(nsa1_array[1] == Approx(1.1071487178));
+  CHECK(nsa1_array[2] == Approx(0.9302740141));
+  std::array<double,2> nsa1_surface_array = nsa1.get_surface_coordinates();
+  CHECK(nsa1_surface_array[0] == Approx(1.1071487178));
+  CHECK(nsa1_surface_array[1] == Approx(0.9302740141));
+  CHECK(nsa1.get_depth_coordinate() == Approx(std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0)));
+
+
+  Utilities::NaturalCoordinate nsp1(Point<3>(1,2,3),*spherical);
+  std::array<double,3> nsp1_array = nsp1.get_coordinates();
+  CHECK(nsp1_array[0] == Approx(std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0)));
+  CHECK(nsp1_array[1] == Approx(1.1071487178));
+  CHECK(nsp1_array[2] == Approx(0.9302740141));
+  std::array<double,2> nsp1_surface_array = nsp1.get_surface_coordinates();
+  CHECK(nsp1_surface_array[0] == Approx(1.1071487178));
+  CHECK(nsp1_surface_array[1] == Approx(0.9302740141));
+  CHECK(nsp1.get_depth_coordinate() == Approx(std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0)));
+
+  delete spherical;
+
 }
 
 TEST_CASE("WorldBuilder Utilities: Coordinate systems transformations")
@@ -328,7 +357,7 @@ TEST_CASE("WorldBuilder Utilities: Coordinate systems transformations")
     Point<3> spherical(Utilities::cartesian_to_spherical_coordinates(cartesian.get_array()), CoordinateSystem::spherical);
 
     compare_vectors_approx(std::vector<double>(std::begin(spherical.get_array()), std::end(spherical.get_array())),
-                           std::vector<double> {std::sqrt(2*2+1*1+6*6),3.60524026718,0.356733389});
+                           std::vector<double> {std::sqrt(2*2+1*1+6*6),3.60524026718,1.2140629383});
 
     Point<3> cartesian_back(Utilities::spherical_to_cartesian_coordinates(spherical.get_array()), CoordinateSystem::cartesian);
 
@@ -443,6 +472,26 @@ TEST_CASE("WorldBuilder Coordinate Systems: Cartesian")
   CHECK(cartesian->natural_coordinate_system() == CoordinateSystem::cartesian);
 
   delete cartesian;
+}
+
+TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
+{
+  CoordinateSystems::Spherical *spherical = new CoordinateSystems::Spherical;
+
+  spherical->decare_entries();
+
+  std::array<double,3> spherical_array = spherical->cartesian_to_natural_coordinates(std::array<double,3> {1,2,3});
+  CHECK(spherical_array[0] == Approx(std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0)));
+  CHECK(spherical_array[1] == Approx(1.1071487178));
+  CHECK(spherical_array[2] == Approx(0.9302740141));
+  std::array<double,3> cartesian_array = spherical->natural_to_cartesian_coordinates(std::array<double,3> {std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0),1.1071487178,0.9302740141});
+  CHECK(cartesian_array[0] == Approx(1));
+  CHECK(cartesian_array[1] == Approx(2));
+  CHECK(cartesian_array[2] == Approx(3));
+
+  CHECK(spherical->natural_coordinate_system() == CoordinateSystem::spherical);
+
+  delete spherical;
 }
 
 
