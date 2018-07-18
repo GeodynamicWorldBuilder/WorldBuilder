@@ -17,37 +17,41 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <boost/algorithm/string.hpp>
-
-#include <world_builder/coordinate_systems/interface.h>
-#include <world_builder/coordinate_systems/cartesian.h>
 #include <world_builder/coordinate_systems/spherical.h>
-#include <world_builder/assert.h>
-
 
 namespace WorldBuilder
 {
   namespace CoordinateSystems
   {
-    Interface::Interface()
+    Spherical::Spherical()
     {}
 
-    Interface::~Interface ()
+    Spherical::~Spherical()
     {}
 
-    std::unique_ptr<Interface>
-    create_coordinate_system(const std::string name)
+    void
+    Spherical::decare_entries()
+    {}
+
+
+    CoordinateSystem
+    Spherical::natural_coordinate_system() const
     {
-      std::string feature_name = boost::algorithm::to_lower_copy(name);
-      boost::algorithm::trim(feature_name);
-      if (feature_name == "cartesian")
-        return std::make_unique<CoordinateSystems::Cartesian>();
-      else if (feature_name == "spherical")
-        return std::make_unique<CoordinateSystems::Spherical>();
-      else
-        WBAssertThrow(false, "Coordinate system not implemented.");
+      return CoordinateSystem::spherical;
+    }
 
-      return NULL;
+
+    std::array<double,3>
+    Spherical::cartesian_to_natural_coordinates(const std::array<double,3> &position) const
+    {
+      return Utilities::cartesian_to_spherical_coordinates(position);
+    }
+
+
+    std::array<double,3>
+    Spherical::natural_to_cartesian_coordinates(const std::array<double,3> &position) const
+    {
+      return Utilities::spherical_to_cartesian_coordinates(position).get_array();
     }
   }
 }

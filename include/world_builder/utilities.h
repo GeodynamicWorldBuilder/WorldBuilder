@@ -41,12 +41,23 @@ namespace WorldBuilder
   {
 
     /**
-     * Given a 2d point and a list of points which form a polygon, computes if the point
-     * falls within the polygon.
+     * Given a 2d point and a list of points which form a polygon, computes if
+     * the point falls within the polygon. For spherical coordinates it will
+     * return true if the point or the point where the longitude is shifted
+     * by 2 * PI is inside on of the polygons. It calls
+     * polygon_contains_point_implementation to do the real work.
      */
     bool
     polygon_contains_point(const std::vector<Point<2> > &point_list,
                            const Point<2> &point);
+
+    /**
+     * Given a 2d point and a list of points which form a polygon, computes if the point
+     * falls within the polygon.
+     */
+    bool
+    polygon_contains_point_implementation(const std::vector<Point<2> > &point_list,
+                                          const Point<2> &point);
 
     /**
      * Given a 2d point and a list of points which form a polygon, compute the smallest

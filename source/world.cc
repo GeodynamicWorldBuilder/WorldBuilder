@@ -50,6 +50,11 @@ namespace WorldBuilder
   void World::declare_and_parse(Parameters &prm)
   {
     /**
+     * First load the coordinate system parameters.
+     */
+    prm.load_entry("Coordinate system", false, Types::CoordinateSystem("cartesian","This determines the coordinate system"));
+
+    /**
      * Temperature parameters.
      */
     prm.load_entry("Potential mantle temperature", false,
@@ -66,11 +71,8 @@ namespace WorldBuilder
     prm.load_entry("Surface rotation point", false,
                    Types::Point<2>(Point<2>(0,0), "The point where should be rotated around."));
 
-    /**
-     * Coordinate system parameters.
-     */
-    prm.load_entry("Coordinate system", false, Types::CoordinateSystem("cartesian","This determines the coordinate system"));
 
+    const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 
     bool set = prm.load_entry("Cross section", false,
                               Types::Array(
@@ -88,7 +90,7 @@ namespace WorldBuilder
         /**
          * pre-compute stuff for the cross section
          */
-        Point<2> surface_coord_conversions = (*cross_section[0]-*cross_section[1]);
+        Point<2> surface_coord_conversions = (*cross_section[0]-*cross_section[1]) * (coordinate_system == spherical ? M_PI / 180.0 : 1.0);
         surface_coord_conversions *= -1/(surface_coord_conversions.norm());
         prm.set_entry("Surface coordinate conversions",
                       Types::Point<2>(surface_coord_conversions, surface_coord_conversions, "An internal value which is precomputed."));
@@ -142,7 +144,7 @@ namespace WorldBuilder
                      const double depth,
                      const double gravity_norm) const
   {
-    Point<3> point(point_);
+    Point<3> point(point_,parameters.coordinate_system->natural_coordinate_system());
 
     double temperature = this->parameters.get_double("Potential mantle temperature") +
                          (((this->parameters.get_double("Potential mantle temperature") * this->parameters.get_double("Thermal expansion coefficient alpha") * gravity_norm) /
@@ -190,7 +192,7 @@ namespace WorldBuilder
                      const double depth,
                      const unsigned int composition_number) const
   {
-    Point<3> point(point_);
+    Point<3> point(point_,parameters.coordinate_system->natural_coordinate_system());
     double composition = 0;
     for (std::vector<std::unique_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
       {

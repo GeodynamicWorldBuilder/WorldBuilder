@@ -198,7 +198,8 @@ int main(int argc, char** argv)
 		    				                                      " on line " << i+1 << " of the data file. Dim is " << dim << ".");
 		    			std::array<double,3> coords = {string_to_double(data[i][0]),
 		    					                       string_to_double(data[i][1]),
-								                       string_to_double(data[i][3])};
+								                       string_to_double(data[i][2])};
+
 
 		    			std::cout << data[i][0] << " " << data[i][1] << " " << data[i][2] << " " << data[i][3] << " " << data[i][4] << " ";
 		    			std::cout << world->temperature(coords, string_to_double(data[i][3]), string_to_double(data[i][4]))  << " ";

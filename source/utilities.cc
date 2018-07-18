@@ -32,7 +32,24 @@ namespace WorldBuilder
     polygon_contains_point(const std::vector<Point<2> > &point_list,
                            const Point<2> &point)
     {
+      if (point.get_coordinate_system() == CoordinateSystem::spherical)
+        {
+          Point<2> other_point = point;
+          other_point[0] += point[0] < 0 ? 2.0 * M_PI : -2.0 * M_PI;
 
+          return (polygon_contains_point_implementation(point_list, point) ||
+                  polygon_contains_point_implementation(point_list, other_point));
+        }
+      else
+        {
+          return polygon_contains_point_implementation(point_list, point);
+        }
+    }
+
+    bool
+    polygon_contains_point_implementation(const std::vector<Point<2> > &point_list,
+                                          const Point<2> &point)
+    {
       /**
        * This code has been based on http://geomalgorithms.com/a03-_inclusion.html,
        * and therefore requires the following copyright notice:
@@ -290,7 +307,7 @@ namespace WorldBuilder
         scoord[1] += 2.0*M_PI; // correct phi to [0,2*pi]
 
       if (scoord[0] > std::numeric_limits<double>::min())
-        scoord[2] = std::acos(position[2]/scoord[0]);
+        scoord[2] = 0.5 * M_PI - std::acos(position[2]/scoord[0]);
       else
         scoord[2] = 0.0;
 
@@ -302,9 +319,9 @@ namespace WorldBuilder
     {
       Point<3> ccoord;
 
-      ccoord[0] = scoord[0] * std::sin(scoord[2]) * std::cos(scoord[1]); // X
-      ccoord[1] = scoord[0] * std::sin(scoord[2]) * std::sin(scoord[1]); // Y
-      ccoord[2] = scoord[0] * std::cos(scoord[2]); // Z
+      ccoord[0] = scoord[0] * std::sin(0.5 * M_PI - scoord[2]) * std::cos(scoord[1]); // X
+      ccoord[1] = scoord[0] * std::sin(0.5 * M_PI - scoord[2]) * std::sin(scoord[1]); // Y
+      ccoord[2] = scoord[0] * std::cos(0.5 * M_PI - scoord[2]); // Z
 
 
       return ccoord;
