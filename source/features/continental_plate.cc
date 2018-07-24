@@ -34,10 +34,10 @@ namespace WorldBuilder
   {
     ContinentalPlate::ContinentalPlate(WorldBuilder::World *world_)
       :
-      temperature_submodule_depth(NaN::DSNAN),
-      temperature_submodule_temperature(NaN::DSNAN),
-      composition_submodule_depth(NaN::DSNAN),
-      composition_submodule_composition(NaN::ISNAN)
+      temperature_submodule_constant_depth(NaN::DSNAN),
+      temperature_submodule_constant_temperature(NaN::DSNAN),
+      composition_submodule_constant_depth(NaN::DSNAN),
+      composition_submodule_constant_composition(NaN::ISNAN)
     {
       this->world = world_;
       this->name = "continental plate";
@@ -77,11 +77,23 @@ namespace WorldBuilder
 
         if (temperature_submodule_name == "constant")
           {
-            prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth to which the temperature of this feature is present."));
-            temperature_submodule_depth = prm.get_double("depth");
+            prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth in meters to which the temperature of this feature is present."));
+            temperature_submodule_constant_depth = prm.get_double("depth");
 
-            prm.load_entry("temperature", true, Types::Double(0,"The temperature which this feature should have"));
-            temperature_submodule_temperature = prm.get_double("temperature");
+            prm.load_entry("temperature", true, Types::Double(0,"The temperature in degree Kelvin which this feature should have"));
+            temperature_submodule_constant_temperature = prm.get_double("temperature");
+          }
+        else if (temperature_submodule_name == "linear")
+          {
+            prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth in meters to which the temperature rises (or lowers) to."));
+            temperature_submodule_linear_depth = prm.get_double("depth");
+
+            prm.load_entry("top temperature", false, Types::Double(293.15,"The temperature in degree Kelvin a the top of this block. If this value is not set, the "));
+            temperature_submodule_linear_top_temperature = prm.get_double("top temperature");
+
+
+            prm.load_entry("bottom temperature", false, Types::Double(NaN::DQNAN,"The temperature in degree Kelvin a the bottom of this block."));
+            temperature_submodule_linear_bottom_temperature = prm.get_double("bottom temperature");
           }
 
       }
@@ -94,11 +106,11 @@ namespace WorldBuilder
 
         if (composition_submodule_name == "constant")
           {
-            prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth to which the composition of this feature is present."));
-            composition_submodule_depth = prm.get_double("depth");
+            prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth in meters to which the composition of this feature is present."));
+            composition_submodule_constant_depth = prm.get_double("depth");
 
             prm.load_entry("composition", true, Types::UnsignedInt(0,"The number of the composition that is present there."));
-            composition_submodule_composition = prm.get_unsigned_int("composition");
+            composition_submodule_constant_composition = prm.get_unsigned_int("composition");
           }
       }
       prm.leave_subsection();
@@ -108,7 +120,7 @@ namespace WorldBuilder
     double
     ContinentalPlate::temperature(const Point<3> &position,
                                   const double depth,
-                                  const double /*gravity*/,
+                                  const double gravity_norm,
                                   double temperature) const
     {
       if (temperature_submodule_name == "constant")
@@ -117,13 +129,36 @@ namespace WorldBuilder
                                                                           *(world->parameters.coordinate_system));
 
           // The constant temperature module should be used for this.
-          if (depth <= temperature_submodule_depth &&
+          if (depth <= temperature_submodule_constant_depth &&
               Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
                                                                       world->parameters.coordinate_system->natural_coordinate_system())))
             {
               // We are in the the area where the contintal plate is defined. Set the constant temperature.
-              return temperature_submodule_temperature;
+              return temperature_submodule_constant_temperature;
             }
+        }
+      else if (temperature_submodule_name == "linear")
+        {
+          WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
+                                                                          *(world->parameters.coordinate_system));
+
+          // The linear temperature module should be used for this.
+          if (depth <= temperature_submodule_linear_depth &&
+              Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
+                                                                      world->parameters.coordinate_system->natural_coordinate_system())))
+            {
+              double bottom_temperature = temperature_submodule_linear_bottom_temperature;
+              if (std::isnan(temperature_submodule_linear_bottom_temperature))
+                {
+                  bottom_temperature =  this->world->parameters.get_double("Potential mantle temperature") +
+                                        (((this->world->parameters.get_double("Potential mantle temperature") * this->world->parameters.get_double("Thermal expansion coefficient alpha") * gravity_norm) /
+                                          this->world->parameters.get_double("specific heat Cp")) * 1000.0) * ((depth) / 1000.0);
+                }
+
+              return temperature_submodule_linear_top_temperature +
+                     depth * ((bottom_temperature - temperature_submodule_linear_top_temperature) / temperature_submodule_linear_depth);
+            }
+
 
         }
       else if (temperature_submodule_name == "none")
@@ -148,11 +183,11 @@ namespace WorldBuilder
         {
           WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,*(world->parameters.coordinate_system));
           // The constant temperature module should be used for this.
-          if (depth <= composition_submodule_depth &&
+          if (depth <= composition_submodule_constant_depth &&
               Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),world->parameters.coordinate_system->natural_coordinate_system())))
             {
               // We are in the the area where the contintal plate is defined. Set the constant temperature.
-              if (composition_submodule_composition == composition_number)
+              if (composition_submodule_constant_composition == composition_number)
                 {
                   return true;
                 }

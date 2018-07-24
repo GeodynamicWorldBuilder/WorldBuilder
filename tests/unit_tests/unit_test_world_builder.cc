@@ -509,9 +509,40 @@ TEST_CASE("WorldBuilder Features: Interface")
 
 TEST_CASE("WorldBuilder Features: Continental Plate")
 {
-  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb1.json";
+  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb4.wb";
   WorldBuilder::World world1(file_name);
   Features::ContinentalPlate *continental_plate = new Features::ContinentalPlate(&world1);
+
+  std::array<double,3> position = {0,0,0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+
+  position = {250e3,500e3,0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(150));
+  position = {250e3,500e3,0};
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(150));
+  position = {250e3,500e3,0};
+  CHECK(world1.temperature(position, 260e3, 10) == Approx(1716.48));
+
+  position = {1500e3,1500e3,0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(20));
+  position = {1500e3,1500e3,0};
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(20));
+  position = {1500e3,1500e3,0};
+  CHECK(world1.temperature(position, 260e3, 10) == Approx(1716.48));
+
+  position = {250e3,1750e3,0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
+  position = {250e3,1750e3,0};
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(1650.9452));
+  position = {250e3,1750e3,0};
+  CHECK(world1.temperature(position, 260e3, 10) == Approx(1716.48));
+
+  position = {750e3,250e3,0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(10));
+  position = {750e3,250e3,0};
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(48.4));
+  position = {750e3,250e3,0};
+  CHECK(world1.temperature(position, 260e3, 10) == Approx(1716.48));
 
   delete continental_plate;
 }

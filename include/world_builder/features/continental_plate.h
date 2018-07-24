@@ -77,12 +77,18 @@ namespace WorldBuilder
 
 
       private:
-        // local parameters
-        double temperature_submodule_depth;
-        double temperature_submodule_temperature;
-        double composition_submodule_depth;
-        unsigned int composition_submodule_composition;
+        // constant temperature submodule parameters
+        double temperature_submodule_constant_depth;
+        double temperature_submodule_constant_temperature;
 
+        // linear submodule parameters
+        double temperature_submodule_linear_depth;
+        double temperature_submodule_linear_top_temperature;
+        double temperature_submodule_linear_bottom_temperature;
+
+        // constant composition submodule parameters
+        double composition_submodule_constant_depth;
+        unsigned int composition_submodule_constant_composition;
     };
   }
 }
