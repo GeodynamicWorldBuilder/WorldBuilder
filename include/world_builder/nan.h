@@ -26,6 +26,15 @@ namespace WorldBuilder
     /**
      * A double signaling NaN
      */
+    const double DQNAN = std::numeric_limits<double>::quiet_NaN();
+
+    /**
+     * A unsigned int signaling NaN
+     */
+    const unsigned int IQNAN = std::numeric_limits<unsigned int>::quiet_NaN();
+    /**
+     * A double signaling NaN
+     */
     const double DSNAN = std::numeric_limits<double>::signaling_NaN();
 
     /**
