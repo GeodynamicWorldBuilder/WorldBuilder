@@ -53,6 +53,17 @@ namespace WorldBuilder
     {
       return position;
     }
+
+
+	double
+	Cartesian::distance_between_points_at_same_depth(const Point<3>& point_1, const Point<3>& point_2) const
+	{
+		// Todo: check that points are cartesian.
+		// Todo: check that points are at the same depth.
+		const Point<3> difference = point_1-point_2;
+		const Point<2> point_at_depth(difference[0],difference[1]);
+		return point_at_depth.norm();
+	}
   }
 }
 

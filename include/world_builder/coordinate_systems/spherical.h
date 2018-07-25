@@ -78,6 +78,19 @@ namespace WorldBuilder
         std::array<double,3> natural_to_cartesian_coordinates(const std::array<double,3> &position) const;
 
 
+        /**
+         * Computes the distance between two points which are on the same depth.
+         * The input is two 2d points at that depth. The distance is returned
+         * in meters. To compute this distance from spherical coordinates the
+         * radius is multiplied with the central angle. The central angle is
+         * compute in the most accurate way given on wikipedia
+         * (https://en.wikipedia.org/wiki/Great-circle_distance), through a
+         * special case of the Vincenty formula for an ellipsoid with equal
+         * major and minor axes (https://doi.org/10.1179/sre.1975.23.176.88).
+         */
+        virtual
+		double distance_between_points_at_same_depth(const Point<3>& point_1, const Point<3>& point_3) const;
+
       private:
 
     };
