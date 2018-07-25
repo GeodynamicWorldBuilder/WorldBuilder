@@ -31,6 +31,7 @@
 #include <world_builder/coordinate_systems/spherical.h>
 #include <world_builder/features/interface.h>
 #include <world_builder/features/continental_plate.h>
+#include <world_builder/features/oceanic_plate.h>
 #include <world_builder/point.h>
 #include <world_builder/types/array.h>
 #include <world_builder/types/coordinate_system.h>
@@ -471,6 +472,16 @@ TEST_CASE("WorldBuilder Coordinate Systems: Cartesian")
 
   CHECK(cartesian->natural_coordinate_system() == CoordinateSystem::cartesian);
 
+  // distance between two points at the same depth
+  Point<3> point_1(0.0,0.0,10.0);
+  Point<3> point_2(1.0,2.0,10.0);
+  Point<3> point_3(3.0,2.0,10.0);
+  Point<3> point_4(3.0,3.0,10.0);
+
+  CHECK(cartesian->distance_between_points_at_same_depth(point_1, point_2) == Approx(std::sqrt(1 + 2 * 2)));
+  CHECK(cartesian->distance_between_points_at_same_depth(point_2, point_3) == Approx(2.0));
+  CHECK(cartesian->distance_between_points_at_same_depth(point_2, point_4) == Approx(std::sqrt(2 * 2 + 1)));
+
   delete cartesian;
 }
 
@@ -491,6 +502,42 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
 
   CHECK(spherical->natural_coordinate_system() == CoordinateSystem::spherical);
 
+  // distance between two points at the same depth
+  double dtr = M_PI / 180.0;
+  // first check unit radius, this the central angle
+  Point<3> unit_point_1(1.0, 0.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
+  Point<3> unit_point_2(1.0, 1.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
+  Point<3> unit_point_3(1.0, 0.0 * dtr, 1.0 * dtr, CoordinateSystem::spherical);
+  Point<3> unit_point_4(1.0, 1.0 * dtr, 1.0 * dtr, CoordinateSystem::spherical);
+  Point<3> unit_point_5(1.0, 90.0 * dtr, 90.0 * dtr, CoordinateSystem::spherical);
+  Point<3> unit_point_6(1.0, -90.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
+  Point<3> unit_point_7(1.0, 90.0 * dtr, 180.0 * dtr, CoordinateSystem::spherical);
+
+  CHECK(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_2) == Approx(dtr));
+  CHECK(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_3) == Approx(dtr));
+  CHECK(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_4) ==
+		                                                 Approx(std::acos(std::sin(0) * std::sin(1*dtr) +
+		                                                		std::cos(0) * std::cos(1*dtr) * std::cos(1*dtr))));
+  CHECK(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_5) == Approx(0.5 * M_PI));
+  CHECK(spherical->distance_between_points_at_same_depth(unit_point_6, unit_point_7) == Approx(M_PI));
+
+  // secondly check non-unit radius
+  Point<3> point_1(10.0, 0.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
+  Point<3> point_2(10.0, 1.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
+  Point<3> point_3(10.0, 0.0 * dtr, 1.0 * dtr, CoordinateSystem::spherical);
+  Point<3> point_4(10.0, 1.0 * dtr, 1.0 * dtr, CoordinateSystem::spherical);
+  Point<3> point_5(10.0, 90.0 * dtr, 90.0 * dtr, CoordinateSystem::spherical);
+  Point<3> point_6(10.0, -90.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
+  Point<3> point_7(10.0, 90.0 * dtr, 180.0 * dtr, CoordinateSystem::spherical);
+
+  CHECK(spherical->distance_between_points_at_same_depth(point_1, point_2) == Approx(10 * dtr));
+  CHECK(spherical->distance_between_points_at_same_depth(point_1, point_3) == Approx(10 * dtr));
+  CHECK(spherical->distance_between_points_at_same_depth(point_1, point_4) ==
+		                                                 Approx(10 * std::acos(std::sin(0) * std::sin(1*dtr) +
+		                                                		std::cos(0) * std::cos(1*dtr) * std::cos(1*dtr))));
+  CHECK(spherical->distance_between_points_at_same_depth(point_1, point_5) == Approx(10 * 0.5 * M_PI));
+  CHECK(spherical->distance_between_points_at_same_depth(point_6, point_7) == Approx(10 * M_PI));
+
   delete spherical;
 }
 
@@ -509,10 +556,14 @@ TEST_CASE("WorldBuilder Features: Interface")
 
 TEST_CASE("WorldBuilder Features: Continental Plate")
 {
-  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb4.wb";
+  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/continental_plate.wb";
   WorldBuilder::World world1(file_name);
-  Features::ContinentalPlate *continental_plate = new Features::ContinentalPlate(&world1);
 
+  // Check continental plate directly
+  Features::ContinentalPlate *continental_plate = new Features::ContinentalPlate(&world1);
+  delete continental_plate;
+
+  // Check continental plate through the world
   std::array<double,3> position = {0,0,0};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
 
@@ -543,8 +594,48 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
   CHECK(world1.temperature(position, 240e3, 10) == Approx(48.4));
   position = {750e3,250e3,0};
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1716.48));
+}
 
-  delete continental_plate;
+TEST_CASE("WorldBuilder Features: Oceanic Plate")
+{
+  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate.wb";
+  WorldBuilder::World world1(file_name);
+
+  // Check continental plate directly
+  Features::OceanicPlate *oceanic_plate = new Features::OceanicPlate(&world1);
+  delete oceanic_plate;
+
+  // Check continental plate through the world
+  std::array<double,3> position = {0,0,0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+
+  position = {250e3,500e3,0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(150));
+  position = {250e3,500e3,0};
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(150));
+  position = {250e3,500e3,0};
+  CHECK(world1.temperature(position, 260e3, 10) == Approx(1716.48));
+
+  position = {1500e3,1500e3,0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(20));
+  position = {1500e3,1500e3,0};
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(20));
+  position = {1500e3,1500e3,0};
+  CHECK(world1.temperature(position, 260e3, 10) == Approx(1716.48));
+
+  position = {250e3,1750e3,0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
+  position = {250e3,1750e3,0};
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(1650.9452));
+  position = {250e3,1750e3,0};
+  CHECK(world1.temperature(position, 260e3, 10) == Approx(1716.48));
+
+  position = {750e3,250e3,0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(10));
+  position = {750e3,250e3,0};
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(48.4));
+  position = {750e3,250e3,0};
+  CHECK(world1.temperature(position, 260e3, 10) == Approx(1716.48));
 }
 
 TEST_CASE("WorldBuilder Types: Double")
