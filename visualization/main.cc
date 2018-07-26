@@ -324,11 +324,15 @@ int main(int argc, char **argv)
    * Begin making the grid
    */
   WBAssertThrow(dim == 2 || dim == 3, "Dimension should be 2d or 3d.");
-
+  bool compress_size = false;
   if (grid_type == "cartesian")
     {
       n_cell = n_cell_x * n_cell_z * (dim == 3 ? n_cell_y : 1.0);
-      n_p = (n_cell_x + 1) * (n_cell_z + 1) * (dim == 3 ? (n_cell_y + 1) : 1.0);
+      if(compress_size == false && dim == 3)
+    	  n_p = n_cell * 8 ; // it shouldn't matter for 2d in the output, so just do 3d.
+      else
+          n_p = (n_cell_x + 1) * (n_cell_z + 1) * (dim == 3 ? (n_cell_y + 1) : 1.0);
+
 
       double dx = (x_max - x_min) / n_cell_x;
       double dy = (y_max - y_min) / n_cell_y;
@@ -362,6 +366,8 @@ int main(int argc, char **argv)
         }
       else
         {
+    	  if(compress_size == true)
+    	  {
           for (unsigned int i = 0; i <= n_cell_x; ++i)
             {
               for (unsigned int j = 0; j <= n_cell_y; ++j)
@@ -376,6 +382,69 @@ int main(int argc, char **argv)
                     }
                 }
             }
+    	  }
+    	  else
+    	  {
+              for (unsigned int i = 0; i < n_cell_x; ++i)
+                {
+                  for (unsigned int j = 0; j < n_cell_y; ++j)
+                    {
+                      for (unsigned int k = 0; k < n_cell_z; ++k)
+                        {
+                    	  // position is defined by the vtk file format
+                    	  // position 0 of this cell
+                          grid_x[counter] = x_min + i * dx;
+                          grid_y[counter] = y_min + j * dy;
+                          grid_z[counter] = z_min + k * dz;
+                          grid_depth[counter] = (surface - z_min) - k * dz;
+                          counter++;
+                    	  // position 1 of this cell
+                          grid_x[counter] = x_min + (i + 1) * dx;
+                          grid_y[counter] = y_min + j * dy;
+                          grid_z[counter] = z_min + k * dz;
+                          grid_depth[counter] = (surface - z_min) - k * dz;
+                          counter++;
+                    	  // position 2 of this cell
+                          grid_x[counter] = x_min + (i + 1) * dx;
+                          grid_y[counter] = y_min + (j + 1) * dy;
+                          grid_z[counter] = z_min + k * dz;
+                          grid_depth[counter] = (surface - z_min) - k * dz;
+                          counter++;
+                    	  // position 3 of this cell
+                          grid_x[counter] = x_min + i * dx;
+                          grid_y[counter] = y_min + (j + 1) * dy;
+                          grid_z[counter] = z_min + k * dz;
+                          grid_depth[counter] = (surface - z_min) - k * dz;
+                          counter++;
+                          // position 0 of this cell
+                          grid_x[counter] = x_min + i * dx;
+                          grid_y[counter] = y_min + j * dy;
+                          grid_z[counter] = z_min + (k + 1) * dz;
+                          grid_depth[counter] = (surface - z_min) - (k + 1) * dz;
+                          counter++;
+                          // position 1 of this cell
+                          grid_x[counter] = x_min + (i + 1) * dx;
+                          grid_y[counter] = y_min + j * dy;
+                          grid_z[counter] = z_min + (k + 1) * dz;
+                          grid_depth[counter] = (surface - z_min) - (k + 1) * dz;
+                          counter++;
+                          // position 2 of this cell
+                          grid_x[counter] = x_min + (i + 1) * dx;
+                          grid_y[counter] = y_min + (j + 1) * dy;
+                          grid_z[counter] = z_min + (k + 1) * dz;
+                          grid_depth[counter] = (surface - z_min) - (k + 1) * dz;
+                          counter++;
+                          // position 3 of this cell
+                          grid_x[counter] = x_min + i * dx;
+                          grid_y[counter] = y_min + (j + 1) * dy;
+                          grid_z[counter] = z_min + (k + 1) * dz;
+                          grid_depth[counter] = (surface - z_min) - (k + 1) * dz;
+                          WBAssert(counter < n_p, "Assert counter smaller then n_P: counter = " << counter << ", n_p = " << n_p);
+                          counter++;
+                        }
+                    }
+                }
+    	  }
         }
 
       // compute connectivity. Local to global mapping.
@@ -398,6 +467,8 @@ int main(int argc, char **argv)
         }
       else
         {
+    	  if(compress_size == true)
+    	  {
           for (unsigned int i = 1; i <= n_cell_x; ++i)
             {
               for (unsigned int j = 1; j <= n_cell_y; ++j)
@@ -417,7 +488,22 @@ int main(int argc, char **argv)
                 }
             }
         }
-
+      else
+      {
+    	  for(unsigned int i = 0; i < n_cell; ++i)
+    	  {
+    		  grid_connectivity[i][0] = counter;
+    		  grid_connectivity[i][1] = counter + 1;
+    		  grid_connectivity[i][2] = counter + 2;
+    		  grid_connectivity[i][3] = counter + 3;
+    		  grid_connectivity[i][4] = counter + 4;
+    		  grid_connectivity[i][5] = counter + 5;
+    		  grid_connectivity[i][6] = counter + 6;
+    		  grid_connectivity[i][7] = counter + 7;
+    		  counter = counter + 8;
+    	  }
+      }
+        }
     }
   else if (grid_type == "annulus")
     {
@@ -958,20 +1044,63 @@ int main(int argc, char **argv)
   // create paraview file.
   std::ofstream myfile;
   myfile.open ("example.vtu");
-  myfile << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"BigEndian\">" << std::endl;
+  myfile << "<?xml version=\"1.0\" ?> " << std::endl;
+  myfile << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"LittleEndian\">" << std::endl;
   myfile << "<UnstructuredGrid>" << std::endl;
+  myfile << "<FieldData>" << std::endl;
+  myfile << "<DataArray type=\"Float32\" Name=\"TIME\" NumberOfTuples=\"1\" format=\"ascii\">0</DataArray>" << std::endl;
+  myfile << "</FieldData>" << std::endl;
   myfile << "<Piece NumberOfPoints=\""<< n_p << "\" NumberOfCells=\"" << n_cell << "\">" << std::endl;
-  myfile << "<PointData Scalars=\"scalars\">" << std::endl;
+  myfile << "  <Points>" << std::endl;
+  myfile << "    <DataArray type=\"Float32\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+  if (dim == 2)
+    for (unsigned int i = 0; i < n_p; ++i)
+      myfile << grid_x[i] << " " << grid_z[i] << " " << "0.0" << std::endl;
+  else
+    for (unsigned int i = 0; i < n_p; ++i)
+      myfile << grid_x[i] << " " << grid_y[i] << " " << grid_z[i] << std::endl;
+  myfile << "    </DataArray>" << std::endl;
+  myfile << "  </Points>" << std::endl;
+  myfile << std::endl;
+  myfile << "  <Cells>" << std::endl;
+  myfile << "    <DataArray type=\"Int32\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
+  if (dim == 2)
+    for (unsigned int i = 0; i < n_cell; ++i)
+      myfile << grid_connectivity[i][0] << " " <<grid_connectivity[i][1] << " " << grid_connectivity[i][2] << " " << grid_connectivity[i][3] << std::endl;
+  else
+    for (unsigned int i = 0; i < n_cell; ++i)
+      myfile << grid_connectivity[i][0] << " " <<grid_connectivity[i][1] << " " << grid_connectivity[i][2] << " " << grid_connectivity[i][3]  << " "
+             << grid_connectivity[i][4] << " " <<grid_connectivity[i][5] << " " << grid_connectivity[i][6] << " " << grid_connectivity[i][7]<< std::endl;
+  myfile << "    </DataArray>" << std::endl;
+  myfile << "    <DataArray type=\"Int32\" Name=\"offsets\" format=\"ascii\">" << std::endl;
+  if (dim == 2)
+    for (unsigned int i = 1; i <= n_cell; ++i)
+      myfile << i * 4 << " ";
+  else
+    for (unsigned int i = 1; i <= n_cell; ++i)
+      myfile << i * 8 << " ";
+  myfile << std::endl << "    </DataArray>" << std::endl;
+  myfile << "    <DataArray type=\"UInt8\" Name=\"types\" format=\"ascii\">" << std::endl;
+  if (dim == 2)
+    for (unsigned int i = 0; i < n_cell; ++i)
+      myfile << "9" << " ";
+  else
+    for (unsigned int i = 0; i < n_cell; ++i)
+      myfile << "12" << " ";
+  myfile <<  std::endl <<"    </DataArray>" << std::endl;
+  myfile << "  </Cells>" << std::endl;
 
-  myfile << "<DataArray type=\"Float32\" Name=\"Depth\" Format=\"ascii\">" << std::endl;
+  myfile << "  <PointData Scalars=\"scalars\">" << std::endl;
+
+  /*myfile << "<DataArray type=\"Float32\" Name=\"Depth\" format=\"ascii\">" << std::endl;
 
   for (unsigned int i = 0; i < n_p; ++i)
     {
       myfile <<  grid_depth[i] << std::endl;
     }
-  myfile << "</DataArray>" << std::endl;
+  myfile << "</DataArray>" << std::endl;*/
 
-  myfile << "<DataArray type=\"Float32\" Name=\"Temperature\" Format=\"ascii\">" << std::endl;
+  myfile << "    <DataArray type=\"Float32\" Name=\"T\" format=\"ascii\">" << std::endl;
   if (dim == 2)
     {
       for (unsigned int i = 0; i < n_p; ++i)
@@ -988,9 +1117,9 @@ int main(int argc, char **argv)
           myfile <<  world->temperature(coords, grid_depth[i], gravity) << std::endl;
         }
     }
-  myfile << "</DataArray>" << std::endl;
+  myfile << "    </DataArray>" << std::endl;
 
-  for (unsigned int c = 0; c < compositions; ++c)
+  /*for (unsigned int c = 0; c < compositions; ++c)
     {
       myfile << "<DataArray type=\"Float32\" Name=\"Composition " << c << "\" Format=\"ascii\">" << std::endl;
       if (dim == 2)
@@ -1010,49 +1139,13 @@ int main(int argc, char **argv)
             }
         }
       myfile << "</DataArray>" << std::endl;
-    }
+    }*/
 
-  myfile << "</PointData>" << std::endl;
+  myfile << "  </PointData>" << std::endl;
 
-  myfile << "<Points>" << std::endl;
-  myfile << "<DataArray type=\"Float32\" NumberOfComponents=\"3\" Format=\"ascii\">" << std::endl;
-  if (dim == 2)
-    for (unsigned int i = 0; i < n_p; ++i)
-      myfile << grid_x[i] << " " << grid_z[i] << " " << "0.0" << std::endl;
-  else
-    for (unsigned int i = 0; i < n_p; ++i)
-      myfile << grid_x[i] << " " << grid_y[i] << " " << grid_z[i] << std::endl;
-  myfile << "</DataArray>" << std::endl;
-  myfile << "</Points>" << std::endl;
-  myfile << "<Cells>" << std::endl;
-  myfile << "<DataArray type=\"Int32\" Name=\"connectivity\" Format=\"ascii\">" << std::endl;
-  if (dim == 2)
-    for (unsigned int i = 0; i < n_cell; ++i)
-      myfile << grid_connectivity[i][0] << " " <<grid_connectivity[i][1] << " " << grid_connectivity[i][2] << " " << grid_connectivity[i][3] << std::endl;
-  else
-    for (unsigned int i = 0; i < n_cell; ++i)
-      myfile << grid_connectivity[i][0] << " " <<grid_connectivity[i][1] << " " << grid_connectivity[i][2] << " " << grid_connectivity[i][3]  << " "
-             << grid_connectivity[i][4] << " " <<grid_connectivity[i][5] << " " << grid_connectivity[i][6] << " " << grid_connectivity[i][7]<< std::endl;
-  myfile << "</DataArray>" << std::endl;
-  myfile << "<DataArray type=\"Int32\" Name=\"offsets\" Format=\"ascii\">" << std::endl;
-  if (dim == 2)
-    for (unsigned int i = 1; i <= n_cell; ++i)
-      myfile << i * 4 << std::endl;
-  else
-    for (unsigned int i = 1; i <= n_cell; ++i)
-      myfile << i * 8 << std::endl;
-  myfile << "</DataArray>" << std::endl;
-  myfile << "<DataArray type=\"Int32\" Name=\"types\" Format=\"ascii\">" << std::endl;
-  if (dim == 2)
-    for (unsigned int i = 0; i < n_cell; ++i)
-      myfile << "9" << std::endl;
-  else
-    for (unsigned int i = 0; i < n_cell; ++i)
-      myfile << "12" << std::endl;
-  myfile << "</DataArray>" << std::endl;
-  myfile << "</Cells>" << std::endl;
-  myfile << "</Piece>" << std::endl;
-  myfile << "</UnstructuredGrid>" << std::endl;
+
+  myfile << " </Piece>" << std::endl;
+  myfile << " </UnstructuredGrid>" << std::endl;
   myfile << "</VTKFile>" << std::endl;
   /*
   switch(dim)
