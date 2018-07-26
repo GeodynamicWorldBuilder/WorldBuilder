@@ -89,7 +89,7 @@ namespace WorldBuilder
          * major and minor axes (https://doi.org/10.1179/sre.1975.23.176.88).
          */
         virtual
-		double distance_between_points_at_same_depth(const Point<3>& point_1, const Point<3>& point_3) const;
+        double distance_between_points_at_same_depth(const Point<3> &point_1, const Point<3> &point_3) const;
 
       private:
 

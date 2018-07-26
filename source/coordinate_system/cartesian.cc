@@ -17,6 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include <world_builder/assert.h>
 #include <world_builder/coordinate_systems/cartesian.h>
 
 namespace WorldBuilder
@@ -55,15 +56,22 @@ namespace WorldBuilder
     }
 
 
-	double
-	Cartesian::distance_between_points_at_same_depth(const Point<3>& point_1, const Point<3>& point_2) const
-	{
-		// Todo: check that points are cartesian.
-		// Todo: check that points are at the same depth.
-		const Point<3> difference = point_1-point_2;
-		const Point<2> point_at_depth(difference[0],difference[1]);
-		return point_at_depth.norm();
-	}
+    double
+    Cartesian::distance_between_points_at_same_depth(const Point<3> &point_1, const Point<3> &point_2) const
+    {
+      WBAssert(point_1.get_coordinate_system() == cartesian,
+               "Can not convert non cartesian points through the cartesian coordinate system.");
+      WBAssert(point_2.get_coordinate_system() == cartesian,
+               "Can not convert non cartesian points through the cartesian coordinate system.");
+      // Todo: check that points are at the same depth.
+      const Point<3> difference = point_1-point_2;
+      const Point<2> point_at_depth(difference[0],difference[1], cartesian);
+      //std::cout << "point 1 = " << point_1[0] << ":" << point_1[1] << ":" << point_1[2]
+		//		<< ", point_2 = "  << point_2[0] << ":" << point_2[1] << ":" << point_2[2]
+		//		<< ", difference = " << difference[0] << ":" << difference[1] << ":" << difference[2]
+		//		<< ", point_at_depth = " << point_at_depth[0] << ":" << point_at_depth[1] << std::endl;
+      return point_at_depth.norm();
+    }
   }
 }
 

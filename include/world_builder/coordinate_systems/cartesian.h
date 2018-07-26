@@ -83,7 +83,7 @@ namespace WorldBuilder
          * The input is two 3d points at that depth. It is implemented as the
          */
         virtual
-		double distance_between_points_at_same_depth(const Point<3>& point_1, const Point<3>& point_2) const;
+        double distance_between_points_at_same_depth(const Point<3> &point_1, const Point<3> &point_2) const;
 
 
       private:
