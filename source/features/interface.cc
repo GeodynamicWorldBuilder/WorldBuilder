@@ -21,6 +21,7 @@
 
 #include <world_builder/features/interface.h>
 #include <world_builder/features/continental_plate.h>
+#include <world_builder/features/oceanic_plate.h>
 #include <world_builder/assert.h>
 
 
@@ -41,6 +42,8 @@ namespace WorldBuilder
       boost::algorithm::trim(feature_name);
       if (feature_name == "continental plate")
         return std::make_unique<Features::ContinentalPlate>(world);
+      else if (feature_name == "oceanic plate")
+        return std::make_unique<Features::OceanicPlate>(world);
       else
         WBAssertThrow(false, "Feature " << feature_name << " not implemented.");
 
