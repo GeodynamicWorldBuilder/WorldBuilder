@@ -173,7 +173,7 @@ namespace WorldBuilder
       std::vector<double> distances(n_poly_points, 1e23);
 
       // Create another polygon but with all points shifted 1 position to the right
-      std::vector<Point<2> > shifted_point_list(n_poly_points);
+      std::vector<Point<2> > shifted_point_list(n_poly_points, Point<2>(point.get_coordinate_system()));
       shifted_point_list[0] = point_list[n_poly_points-1];
 
       for (unsigned int i = 0; i < n_poly_points-1; ++i)
@@ -278,6 +278,13 @@ namespace WorldBuilder
     }
 
 
+    CoordinateSystem
+    NaturalCoordinate::get_coordinate_system() const
+    {
+      return coordinate_system;
+    }
+
+
     double NaturalCoordinate::get_depth_coordinate() const
     {
       switch (coordinate_system)
@@ -317,7 +324,7 @@ namespace WorldBuilder
     Point<3>
     spherical_to_cartesian_coordinates(const std::array<double,3> &scoord)
     {
-      Point<3> ccoord;
+      Point<3> ccoord(cartesian);
 
       ccoord[0] = scoord[0] * std::sin(0.5 * M_PI - scoord[2]) * std::cos(scoord[1]); // X
       ccoord[1] = scoord[0] * std::sin(0.5 * M_PI - scoord[2]) * std::sin(scoord[1]); // Y

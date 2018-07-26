@@ -72,10 +72,10 @@ namespace WorldBuilder
     Point<dim>::operator*(const double scalar) const
     {
       // initialize the array to zero.
-      std::array<double,dim> array = WorldBuilder::Point<dim>().get_array();
+      std::array<double,dim> array = WorldBuilder::Point<dim>(value.get_coordinate_system()).get_array();
       for (unsigned int i = 0; i < dim; ++i)
         array[i] += value[i] * scalar;
-      return WorldBuilder::Point<dim>(array);
+      return WorldBuilder::Point<dim>(array,value.get_coordinate_system());
     }
 
     template<int dim>

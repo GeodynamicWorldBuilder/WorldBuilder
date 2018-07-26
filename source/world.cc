@@ -54,6 +54,8 @@ namespace WorldBuilder
      */
     prm.load_entry("Coordinate system", false, Types::CoordinateSystem("cartesian","This determines the coordinate system"));
 
+    const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
+
     /**
      * Temperature parameters.
      */
@@ -62,6 +64,7 @@ namespace WorldBuilder
     prm.load_entry("Thermal expansion coefficient alpha", false,
                    Types::Double(3.5e-5,"The thermal expansion coefficient alpha. TODO: expand add units"));
     prm.load_entry("specific heat Cp", false, Types::Double(1250,"The specific heat Cp.  TODO: expand and add units"));
+    prm.load_entry("thermal diffusivity", false, Types::Double(0.804e-6,"Set the thermal diffusivity. TODO: expand and add units "));
 
     /**
      * Model rotation parameters.
@@ -69,14 +72,13 @@ namespace WorldBuilder
     prm.load_entry("Surface rotation angle", false,
                    Types::Double(0,"The angle with which the model should be rotated around the Surface rotation point."));
     prm.load_entry("Surface rotation point", false,
-                   Types::Point<2>(Point<2>(0,0), "The point where should be rotated around."));
+                   Types::Point<2>(Point<2>(0,0, coordinate_system), "The point where should be rotated around."));
 
 
-    const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 
     bool set = prm.load_entry("Cross section", false,
                               Types::Array(
-                                Types::Point<2>(Point<2>(0,0),"A point in the cross section."),
+                                Types::Point<2>(Point<2>(0,0, coordinate_system),"A point in the cross section."),
                                 "This is an array of two points along where the cross section is taken"));
 
     if (set)
@@ -134,7 +136,8 @@ namespace WorldBuilder
 
     Point<3> coord_3d(cross_section[0][0] + point[0] * surface_coord_conversions[0],
                       cross_section[0][1] + point[0] * surface_coord_conversions[1],
-                      point[1]);
+                      point[1],
+                      parameters.coordinate_system->natural_coordinate_system());
 
     return temperature(coord_3d.get_array(), depth, gravity_norm);
   }
@@ -182,7 +185,8 @@ namespace WorldBuilder
 
     Point<3> coord_3d(cross_section[0][0] + point[0] * surface_coord_conversions[0],
                       cross_section[0][1] + point[0] * surface_coord_conversions[1],
-                      point[1]);
+                      point[1],
+                      parameters.coordinate_system->natural_coordinate_system());
 
     return composition(coord_3d.get_array(), depth, composition_number);
   }

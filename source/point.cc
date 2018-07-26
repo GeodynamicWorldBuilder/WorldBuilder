@@ -26,28 +26,28 @@
 namespace WorldBuilder
 {
   template<>
-  Point<3>::Point()
+  Point<3>::Point(const CoordinateSystem coordinate_system_)
     :
     point({0,0,0}),
-        coordinate_system(CoordinateSystem::cartesian)
+        coordinate_system(coordinate_system_)
   {}
 
   template<>
-  Point<2>::Point()
+  Point<2>::Point(const CoordinateSystem coordinate_system_)
     :
     point({0,0}),
-        coordinate_system(CoordinateSystem::cartesian)
+        coordinate_system(coordinate_system_)
   {}
 
   template<int dim>
-  Point<dim>::Point(const std::array<double,dim> &location, CoordinateSystem coordinate_system_)
+  Point<dim>::Point(const std::array<double,dim> &location, const CoordinateSystem coordinate_system_)
     :
     point(location),
     coordinate_system(coordinate_system_)
   {}
 
   template<int dim>
-  Point<dim>::Point(const Point<dim> &point_, CoordinateSystem coordinate_system_)
+  Point<dim>::Point(const Point<dim> &point_, const CoordinateSystem coordinate_system_)
     :
     point(point_.get_array()),
     coordinate_system(coordinate_system_)
@@ -55,7 +55,7 @@ namespace WorldBuilder
 
 
   template<>
-  Point<2>::Point(const double x, const double y, CoordinateSystem coordinate_system_)
+  Point<2>::Point(const double x, const double y, const CoordinateSystem coordinate_system_)
     :
     point({x,y}),
         coordinate_system(coordinate_system_)
@@ -116,17 +116,19 @@ namespace WorldBuilder
   Point<dim> Point<dim>::operator*(const double scalar) const
   {
     // initialize the array to zero.
-    std::array<double,dim> array = Point<dim>().get_array();
+    std::array<double,dim> array = Point<dim>(coordinate_system).get_array();
     for (unsigned int i = 0; i < dim; ++i)
       array[i] += point[i] * scalar;
-    return Point<dim>(array);
+    return Point<dim>(array,coordinate_system);
   }
 
   template<int dim>
   Point<dim>
   Point<dim>::operator+(const Point<dim> &point_) const
   {
-    Point<dim> point_tmp(point);
+    WBAssert(coordinate_system == point_.get_coordinate_system(),
+             "Cannot add two points which represent different coordinate systems.");
+    Point<dim> point_tmp(point,coordinate_system);
     point_tmp += point_;
 
     return point_tmp;
@@ -136,7 +138,9 @@ namespace WorldBuilder
   Point<dim>
   Point<dim>::operator-(const Point<dim> &point_) const
   {
-    Point<dim> point_tmp(point);
+    WBAssert(coordinate_system == point_.get_coordinate_system(),
+             "Cannot add two points which represent different coordinate systems. Internal has type " << (int)coordinate_system << ", other point has type " << (int)point_.get_coordinate_system());
+    Point<dim> point_tmp(point,coordinate_system);
     point_tmp -= point_;
 
     return point_tmp;
