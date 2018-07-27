@@ -15,7 +15,7 @@
 
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ */
 
 #define CATCH_CONFIG_MAIN
 
@@ -31,6 +31,7 @@
 #include <world_builder/coordinate_systems/spherical.h>
 #include <world_builder/features/interface.h>
 #include <world_builder/features/continental_plate.h>
+#include <world_builder/features/oceanic_plate.h>
 #include <world_builder/point.h>
 #include <world_builder/types/array.h>
 #include <world_builder/types/coordinate_system.h>
@@ -66,14 +67,14 @@ inline void compare_vectors_approx(
 TEST_CASE("WorldBuilder Point: Testing initialize and operators")
 {
   // Test initialization of the Point class
-  Point<2> p2;
-  Point<3> p3;
+  Point<2> p2(cartesian);
+  Point<3> p3(cartesian);
 
   CHECK(p2.get_array() == std::array<double,2> {0,0});
   CHECK(p3.get_array() == std::array<double,3> {0,0,0});
 
-  const Point<2> p2_array(std::array<double,2> {1,2});
-  const Point<3> p3_array(std::array<double,3> {1,2,3});
+  const Point<2> p2_array(std::array<double,2> {1,2},cartesian);
+  const Point<3> p3_array(std::array<double,3> {1,2,3},cartesian);
 
   CHECK(p2_array.get_array() == std::array<double,2> {1,2});
   CHECK(p3_array.get_array() == std::array<double,3> {1,2,3});
@@ -84,8 +85,8 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
   CHECK(p2_point.get_array() == std::array<double,2> {1,2});
   CHECK(p3_point.get_array() == std::array<double,3> {1,2,3});
 
-  const Point<2> p2_explicit(3,4);
-  const Point<3> p3_explicit(4,5,6);
+  const Point<2> p2_explicit(3,4,cartesian);
+  const Point<3> p3_explicit(4,5,6,cartesian);
 
   CHECK(p2_explicit.get_array() == std::array<double,2> {3,4});
   CHECK(p3_explicit.get_array() == std::array<double,3> {4,5,6});
@@ -161,8 +162,8 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
   CHECK(an2 == std::array<double,2> {1,2});
   CHECK(an3 == std::array<double,3> {1,2,3});
 
-  CHECK_THROWS_WITH(Point<2>(1,2,3),Contains("Can't use the 3d constructor in 2d."));
-  CHECK_THROWS_WITH(Point<3>(1,2),Contains("Can't use the 2d constructor in 3d."));
+  CHECK_THROWS_WITH(Point<2>(1,2,3,cartesian),Contains("Can't use the 3d constructor in 2d."));
+  CHECK_THROWS_WITH(Point<3>(1,2,cartesian),Contains("Can't use the 2d constructor in 3d."));
 
 
 
@@ -176,39 +177,39 @@ TEST_CASE("WorldBuilder Utilities: string to conversions")
   CHECK(Utilities::string_to_double(" 1.01 ") == 1.01);
 
   CHECK_THROWS_WITH(Utilities::string_to_double("1a"),
-                      Contains("Conversion of \"1a\" to double failed (bad cast): "));
+                    Contains("Conversion of \"1a\" to double failed (bad cast): "));
   CHECK_THROWS_WITH(Utilities::string_to_double("a1"),
-                      Contains("Conversion of \"a1\" to double failed (bad cast): "));
+                    Contains("Conversion of \"a1\" to double failed (bad cast): "));
   CHECK_THROWS_WITH(Utilities::string_to_double("a"),
-                      Contains("Conversion of \"a\" to double failed (bad cast): "));
+                    Contains("Conversion of \"a\" to double failed (bad cast): "));
 
   CHECK(Utilities::string_to_int("2") == 2);
   CHECK(Utilities::string_to_int(" 2 ") == 2);
 
   CHECK_THROWS_WITH(Utilities::string_to_int(" 2.02 "),
-                      Contains("Conversion of \" 2.02 \" to int failed (bad cast): "));
+                    Contains("Conversion of \" 2.02 \" to int failed (bad cast): "));
   CHECK_THROWS_WITH(Utilities::string_to_int("2b"),
-                      Contains("Conversion of \"2b\" to int failed (bad cast): "));
+                    Contains("Conversion of \"2b\" to int failed (bad cast): "));
   CHECK_THROWS_WITH(Utilities::string_to_int("b2"),
-                      Contains("Conversion of \"b2\" to int failed (bad cast): "));
+                    Contains("Conversion of \"b2\" to int failed (bad cast): "));
   CHECK_THROWS_WITH(Utilities::string_to_int("b"),
-                      Contains("Conversion of \"b\" to int failed (bad cast): "));
+                    Contains("Conversion of \"b\" to int failed (bad cast): "));
 
   CHECK(Utilities::string_to_unsigned_int("3") == 3);
   CHECK(Utilities::string_to_unsigned_int(" 3 ") == 3);
 
   CHECK_THROWS_WITH(Utilities::string_to_unsigned_int(" 3.03 "),
-                      Contains("Conversion of \" 3.03 \" to unsigned int failed (bad cast): "));
+                    Contains("Conversion of \" 3.03 \" to unsigned int failed (bad cast): "));
   CHECK_THROWS_WITH(Utilities::string_to_unsigned_int("3c"),
-                      Contains("Conversion of \"3c\" to unsigned int failed (bad cast): "));
+                    Contains("Conversion of \"3c\" to unsigned int failed (bad cast): "));
   CHECK_THROWS_WITH(Utilities::string_to_unsigned_int("c3"),
-                      Contains("Conversion of \"c3\" to unsigned int failed (bad cast): "));
+                    Contains("Conversion of \"c3\" to unsigned int failed (bad cast): "));
   CHECK_THROWS_WITH(Utilities::string_to_unsigned_int("c"),
-                      Contains("Conversion of \"c\" to unsigned int failed (bad cast): "));
+                    Contains("Conversion of \"c\" to unsigned int failed (bad cast): "));
 
   // Test point to array conversion
-  const Point<2> p2(1,2);
-  const Point<3> p3(1,2,3);
+  const Point<2> p2(1,2,cartesian);
+  const Point<3> p3(1,2,3,cartesian);
 
   CHECK(Utilities::convert_point_to_array(p2) == std::array<double,2> {1,2});
   CHECK(Utilities::convert_point_to_array(p3) == std::array<double,3> {1,2,3});
@@ -221,27 +222,27 @@ TEST_CASE("WorldBuilder Utilities: string to conversions")
 
 TEST_CASE("WorldBuilder Utilities: Point in polygon")
 {
-  std::vector<Point<2> > point_list_4_elements(4);
-  point_list_4_elements[0] = Point<2>(0,0);
-  point_list_4_elements[1] = Point<2>(5,0);
-  point_list_4_elements[2] = Point<2>(5,5);
-  point_list_4_elements[3] = Point<2>(0,5);
+  std::vector<Point<2> > point_list_4_elements(4, Point<2>(cartesian));
+  point_list_4_elements[0] = Point<2>(0,0,cartesian);
+  point_list_4_elements[1] = Point<2>(5,0,cartesian);
+  point_list_4_elements[2] = Point<2>(5,5,cartesian);
+  point_list_4_elements[3] = Point<2>(0,5,cartesian);
 
-  std::vector<Point<2> > point_list_3_elements(3);
-  point_list_3_elements[0] = Point<2>(10,10);
-  point_list_3_elements[1] = Point<2>(10,15);
-  point_list_3_elements[2] = Point<2>(15,15);
+  std::vector<Point<2> > point_list_3_elements(3, Point<2>(cartesian));
+  point_list_3_elements[0] = Point<2>(10,10,cartesian);
+  point_list_3_elements[1] = Point<2>(10,15,cartesian);
+  point_list_3_elements[2] = Point<2>(15,15,cartesian);
 
-  std::vector<Point<2> > check_points(9);
-  check_points[0] = Point<2>(-1,-1);
-  check_points[1] = Point<2>(0,0);
-  check_points[2] = Point<2>(0,5);
-  check_points[3] = Point<2>(5,0);
-  check_points[4] = Point<2>(5,5);
-  check_points[5] = Point<2>(5,5.01);
-  check_points[6] = Point<2>(1,1);
-  check_points[7] = Point<2>(12.5,12);
-  check_points[8] = Point<2>(11.5,12);
+  std::vector<Point<2> > check_points(9, Point<2>(cartesian));
+  check_points[0] = Point<2>(-1,-1,cartesian);
+  check_points[1] = Point<2>(0,0,cartesian);
+  check_points[2] = Point<2>(0,5,cartesian);
+  check_points[3] = Point<2>(5,0,cartesian);
+  check_points[4] = Point<2>(5,5,cartesian);
+  check_points[5] = Point<2>(5,5.01,cartesian);
+  check_points[6] = Point<2>(1,1,cartesian);
+  check_points[7] = Point<2>(12.5,12,cartesian);
+  check_points[8] = Point<2>(11.5,12,cartesian);
 
   std::vector<std::array<bool,2> > awnsers(9);
   awnsers[0] = {false,false};
@@ -274,23 +275,23 @@ TEST_CASE("WorldBuilder Utilities: Point in polygon")
       CHECK(Utilities::signed_distance_to_polygon(point_list_3_elements,check_points[i]) == Approx(awnsers_signed_distance[i][1]));
     }
 
-  std::vector<Point<2> > point_list_2_elements(2);
+  std::vector<Point<2> > point_list_2_elements(2, Point<2>(cartesian));
   CHECK_THROWS_WITH(Utilities::signed_distance_to_polygon(point_list_2_elements,check_points[0]),
-                      Contains("Not enough polygon points were specified."));
+                    Contains("Not enough polygon points were specified."));
 
-  std::vector<Point<2> > point_list_1_elements(1);
+  std::vector<Point<2> > point_list_1_elements(1, Point<2>(cartesian));
   CHECK_THROWS_WITH(Utilities::signed_distance_to_polygon(point_list_1_elements,check_points[0]),
-                      Contains("Not enough polygon points were specified."));
+                    Contains("Not enough polygon points were specified."));
 
-  std::vector<Point<2> > point_list_0_elements(0);
+  std::vector<Point<2> > point_list_0_elements(0, Point<2>(cartesian));
   CHECK_THROWS_WITH(Utilities::signed_distance_to_polygon(point_list_0_elements,check_points[0]),
-                      Contains("Not enough polygon points were specified."));
+                    Contains("Not enough polygon points were specified."));
 }
 
 
 TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
 {
-	// Cartesian
+  // Cartesian
   CoordinateSystems::Interface *cartesian = new CoordinateSystems::Cartesian;
 
   // Test the natural coordinate system
@@ -299,7 +300,7 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   CHECK(nca1.get_surface_coordinates() == std::array<double,2> {1,2});
   CHECK(nca1.get_depth_coordinate() == 3);
 
-  Utilities::NaturalCoordinate ncp1(Point<3>(1,2,3),*cartesian);
+  Utilities::NaturalCoordinate ncp1(Point<3>(1,2,3,CoordinateSystem::cartesian),*cartesian);
   CHECK(ncp1.get_coordinates() == std::array<double,3> {1,2,3});
   CHECK(ncp1.get_surface_coordinates() == std::array<double,2> {1,2});
   CHECK(ncp1.get_depth_coordinate() == 3);
@@ -320,7 +321,7 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   CHECK(nsa1.get_depth_coordinate() == Approx(std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0)));
 
 
-  Utilities::NaturalCoordinate nsp1(Point<3>(1,2,3),*spherical);
+  Utilities::NaturalCoordinate nsp1(Point<3>(1,2,3,CoordinateSystem::spherical),*spherical);
   std::array<double,3> nsp1_array = nsp1.get_coordinates();
   CHECK(nsp1_array[0] == Approx(std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0)));
   CHECK(nsp1_array[1] == Approx(1.1071487178));
@@ -338,9 +339,9 @@ TEST_CASE("WorldBuilder Utilities: Coordinate systems transformations")
 {
   // Test coordinate system transformation
   {
-    Point<3> cartesian(3,4,5);
+    Point<3> cartesian(3,4,5,CoordinateSystem::cartesian);
 
-    Point<3> spherical(Utilities::cartesian_to_spherical_coordinates(cartesian.get_array()), CoordinateSystem::spherical);
+    Point<3> spherical(Utilities::cartesian_to_spherical_coordinates(Point<3>(cartesian.get_array(),CoordinateSystem::cartesian)), CoordinateSystem::spherical);
 
     compare_vectors_approx(std::vector<double>(std::begin(spherical.get_array()), std::end(spherical.get_array())),
                            std::vector<double> {std::sqrt(3*3+4*4+5*5),0.927295218001613,0.7853982});
@@ -352,9 +353,9 @@ TEST_CASE("WorldBuilder Utilities: Coordinate systems transformations")
   }
 
   {
-    Point<3> cartesian(-2,-1,6);
+    Point<3> cartesian(-2,-1,6,CoordinateSystem::cartesian);
 
-    Point<3> spherical(Utilities::cartesian_to_spherical_coordinates(cartesian.get_array()), CoordinateSystem::spherical);
+    Point<3> spherical(Utilities::cartesian_to_spherical_coordinates(Point<3>(cartesian.get_array(),CoordinateSystem::cartesian)), CoordinateSystem::spherical);
 
     compare_vectors_approx(std::vector<double>(std::begin(spherical.get_array()), std::end(spherical.get_array())),
                            std::vector<double> {std::sqrt(2*2+1*1+6*6),3.60524026718,1.2140629383});
@@ -374,7 +375,7 @@ TEST_CASE("WorldBuilder Utilities: ptree function")
   tree.put("value", 3.14159);
   CHECK(Utilities::string_to_double(Utilities::get_from_ptree(tree, "pi", "value", true, ".").get()) == Approx(3.14159));
   CHECK_THROWS_WITH(Utilities::get_from_ptree(tree, "pi", "value_pi", true, "."),
-                      Contains("Entry undeclared: pi.value_pi"));
+                    Contains("Entry undeclared: pi.value_pi"));
 }
 
 TEST_CASE("WorldBuilder C wrapper")
@@ -422,8 +423,8 @@ TEST_CASE("WorldBuilder C wrapper")
 
 
   CHECK_THROWS_WITH(temperature_2d(*ptr_ptr_world, 1, 2, 0, 10, &temperature),
-                      Contains("This function can only be called when the cross section "
-                               "variable in the world builder file has been set. Dim is 3."));
+                    Contains("This function can only be called when the cross section "
+                             "variable in the world builder file has been set. Dim is 3."));
   temperature_3d(*ptr_ptr_world, 1, 2, 3, 0, 10, &temperature);
   CHECK(temperature == Approx(1600));
   temperature_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, 10, &temperature);
@@ -431,8 +432,8 @@ TEST_CASE("WorldBuilder C wrapper")
 
   // Test the compositions
   CHECK_THROWS_WITH(composition_2d(*ptr_ptr_world, 1, 2, 0, 2, &composition),
-                      Contains("This function can only be called when the cross section "
-                               "variable in the world builder file has been set. Dim is 3."));
+                    Contains("This function can only be called when the cross section "
+                             "variable in the world builder file has been set. Dim is 3."));
 
   composition_3d(*ptr_ptr_world, 1, 2, 3, 0, 2, &composition);
   CHECK(composition == false);
@@ -446,7 +447,7 @@ TEST_CASE("WorldBuilder C wrapper")
 TEST_CASE("WorldBuilder Coordinate Systems: Interface")
 {
   CHECK_THROWS_WITH(CoordinateSystems::create_coordinate_system("!not_implemented_coordinate_system!"),
-                      Contains("Coordinate system not implemented."));
+                    Contains("Coordinate system not implemented."));
 
   CoordinateSystems::Interface *interface = new CoordinateSystems::Cartesian;
 
@@ -471,6 +472,16 @@ TEST_CASE("WorldBuilder Coordinate Systems: Cartesian")
 
   CHECK(cartesian->natural_coordinate_system() == CoordinateSystem::cartesian);
 
+  // distance between two points at the same depth
+  Point<3> point_1(0.0,0.0,10.0, CoordinateSystem::cartesian);
+  Point<3> point_2(1.0,2.0,10.0, CoordinateSystem::cartesian);
+  Point<3> point_3(3.0,2.0,10.0, CoordinateSystem::cartesian);
+  Point<3> point_4(3.0,3.0,10.0, CoordinateSystem::cartesian);
+
+  CHECK(cartesian->distance_between_points_at_same_depth(point_1, point_2) == Approx(std::sqrt(1 + 2 * 2)));
+  CHECK(cartesian->distance_between_points_at_same_depth(point_2, point_3) == Approx(2.0));
+  CHECK(cartesian->distance_between_points_at_same_depth(point_2, point_4) == Approx(std::sqrt(2 * 2 + 1)));
+
   delete cartesian;
 }
 
@@ -491,6 +502,42 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
 
   CHECK(spherical->natural_coordinate_system() == CoordinateSystem::spherical);
 
+  // distance between two points at the same depth
+  double dtr = M_PI / 180.0;
+  // first check unit radius, this the central angle
+  Point<3> unit_point_1(1.0, 0.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
+  Point<3> unit_point_2(1.0, 1.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
+  Point<3> unit_point_3(1.0, 0.0 * dtr, 1.0 * dtr, CoordinateSystem::spherical);
+  Point<3> unit_point_4(1.0, 1.0 * dtr, 1.0 * dtr, CoordinateSystem::spherical);
+  Point<3> unit_point_5(1.0, 90.0 * dtr, 90.0 * dtr, CoordinateSystem::spherical);
+  Point<3> unit_point_6(1.0, -90.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
+  Point<3> unit_point_7(1.0, 90.0 * dtr, 180.0 * dtr, CoordinateSystem::spherical);
+
+  CHECK(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_2) == Approx(dtr));
+  CHECK(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_3) == Approx(dtr));
+  CHECK(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_4) ==
+        Approx(std::acos(std::sin(0) * std::sin(1*dtr) +
+                         std::cos(0) * std::cos(1*dtr) * std::cos(1*dtr))));
+  CHECK(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_5) == Approx(0.5 * M_PI));
+  CHECK(spherical->distance_between_points_at_same_depth(unit_point_6, unit_point_7) == Approx(M_PI));
+
+  // secondly check non-unit radius
+  Point<3> point_1(10.0, 0.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
+  Point<3> point_2(10.0, 1.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
+  Point<3> point_3(10.0, 0.0 * dtr, 1.0 * dtr, CoordinateSystem::spherical);
+  Point<3> point_4(10.0, 1.0 * dtr, 1.0 * dtr, CoordinateSystem::spherical);
+  Point<3> point_5(10.0, 90.0 * dtr, 90.0 * dtr, CoordinateSystem::spherical);
+  Point<3> point_6(10.0, -90.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
+  Point<3> point_7(10.0, 90.0 * dtr, 180.0 * dtr, CoordinateSystem::spherical);
+
+  CHECK(spherical->distance_between_points_at_same_depth(point_1, point_2) == Approx(10 * dtr));
+  CHECK(spherical->distance_between_points_at_same_depth(point_1, point_3) == Approx(10 * dtr));
+  CHECK(spherical->distance_between_points_at_same_depth(point_1, point_4) ==
+        Approx(10 * std::acos(std::sin(0) * std::sin(1*dtr) +
+                              std::cos(0) * std::cos(1*dtr) * std::cos(1*dtr))));
+  CHECK(spherical->distance_between_points_at_same_depth(point_1, point_5) == Approx(10 * 0.5 * M_PI));
+  CHECK(spherical->distance_between_points_at_same_depth(point_6, point_7) == Approx(10 * M_PI));
+
   delete spherical;
 }
 
@@ -500,7 +547,7 @@ TEST_CASE("WorldBuilder Features: Interface")
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb1.json";
   WorldBuilder::World world(file_name);
   CHECK_THROWS_WITH(Features::create_feature("!not_implemented_feature!", &world),
-                      Contains("Feature !not_implemented_feature! not implemented."));
+                    Contains("Feature !not_implemented_feature! not implemented."));
 
   Features::Interface *interface = new Features::ContinentalPlate(&world);
 
@@ -509,10 +556,14 @@ TEST_CASE("WorldBuilder Features: Interface")
 
 TEST_CASE("WorldBuilder Features: Continental Plate")
 {
-  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb4.wb";
+  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/continental_plate.wb";
   WorldBuilder::World world1(file_name);
-  Features::ContinentalPlate *continental_plate = new Features::ContinentalPlate(&world1);
 
+  // Check continental plate directly
+  Features::ContinentalPlate *continental_plate = new Features::ContinentalPlate(&world1);
+  delete continental_plate;
+
+  // Check continental plate through the world
   std::array<double,3> position = {0,0,0};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
 
@@ -543,262 +594,485 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
   CHECK(world1.temperature(position, 240e3, 10) == Approx(48.4));
   position = {750e3,250e3,0};
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1716.48));
+}
 
-  delete continental_plate;
+TEST_CASE("WorldBuilder Features: Oceanic Plate")
+{
+  // Cartesian
+  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate_cartesian.wb";
+  WorldBuilder::World world1(file_name);
+
+  // Check continental plate directly
+  Features::OceanicPlate *oceanic_plate = new Features::OceanicPlate(&world1);
+  delete oceanic_plate;
+
+  // Check continental plate through the world
+  std::array<double,3> position = {0,0,0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(1707.52));
+  CHECK(world1.temperature(position, 260e3, 10) == Approx(1716.48));
+  CHECK(world1.composition(position, 0, 0) == false);
+  CHECK(world1.composition(position, 0, 1) == false);
+  CHECK(world1.composition(position, 0, 2) == false);
+  CHECK(world1.composition(position, 0, 3) == false);
+  CHECK(world1.composition(position, 0, 4) == false);
+  CHECK(world1.composition(position, 0, 5) == false);
+  CHECK(world1.composition(position, 0, 6) == false);
+
+  position = {250e3,500e3,0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(150));
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(150));
+  CHECK(world1.temperature(position, 260e3, 10) == Approx(1716.48));
+  CHECK(world1.composition(position, 0, 0) == false);
+  CHECK(world1.composition(position, 0, 1) == false);
+  CHECK(world1.composition(position, 0, 2) == false);
+  CHECK(world1.composition(position, 0, 3) == true);
+  CHECK(world1.composition(position, 240e3, 3) == true);
+  CHECK(world1.composition(position, 260e3, 3) == false);
+  CHECK(world1.composition(position, 0, 4) == false);
+  CHECK(world1.composition(position, 0, 5) == false);
+  CHECK(world1.composition(position, 0, 6) == false);
+
+  position = {1500e3,1500e3,0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(20));
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(20));
+  CHECK(world1.temperature(position, 260e3, 10) == Approx(1716.48));
+  CHECK(world1.composition(position, 0, 0) == false);
+  CHECK(world1.composition(position, 0, 1) == false);
+  CHECK(world1.composition(position, 0, 2) == true);
+  CHECK(world1.composition(position, 240e3, 2) == true);
+  CHECK(world1.composition(position, 260e3, 2) == false);
+  CHECK(world1.composition(position, 0, 3) == false);
+  CHECK(world1.composition(position, 0, 4) == false);
+  CHECK(world1.composition(position, 0, 5) == false);
+  CHECK(world1.composition(position, 0, 6) == false);
+
+  position = {250e3,1750e3,0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(1650.9452));
+  CHECK(world1.temperature(position, 260e3, 10) == Approx(1716.48));
+  CHECK(world1.composition(position, 0, 0) == false);
+  CHECK(world1.composition(position, 0, 1) == false);
+  CHECK(world1.composition(position, 0, 2) == false);
+  CHECK(world1.composition(position, 0, 3) == false);
+  CHECK(world1.composition(position, 0, 4) == true);
+  CHECK(world1.composition(position, 240e3, 4) == true);
+  CHECK(world1.composition(position, 260e3, 4) == false);
+  CHECK(world1.composition(position, 0, 5) == false);
+  CHECK(world1.composition(position, 0, 6) == false);
+
+  position = {750e3,250e3,0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(10));
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(48.4));
+  CHECK(world1.temperature(position, 260e3, 10) == Approx(1716.48));
+  CHECK(world1.composition(position, 0, 0) == false);
+  CHECK(world1.composition(position, 0, 1) == false);
+  CHECK(world1.composition(position, 0, 2) == false);
+  CHECK(world1.composition(position, 0, 3) == false);
+  CHECK(world1.composition(position, 0, 4) == false);
+  CHECK(world1.composition(position, 0, 5) == true);
+  CHECK(world1.composition(position, 240e3, 5) == true);
+  CHECK(world1.composition(position, 260e3, 5) == false);
+  CHECK(world1.composition(position, 0, 6) == false);
+
+  position = {1500e3, 0, 0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
+  CHECK(world1.temperature(position, 10, 10) == Approx(304.5574529214));
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(1711.7158702436));
+  CHECK(world1.temperature(position, 260e3, 10) == Approx(1716.48));
+  CHECK(world1.composition(position, 0, 0) == false);
+  CHECK(world1.composition(position, 0, 1) == false);
+  CHECK(world1.composition(position, 0, 2) == false);
+  CHECK(world1.composition(position, 0, 3) == false);
+  CHECK(world1.composition(position, 0, 4) == false);
+  CHECK(world1.composition(position, 0, 5) == false);
+  CHECK(world1.composition(position, 0, 6) == false);
+
+  // test symmetry
+  position = {1600e3, 0, 0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
+  CHECK(world1.temperature(position, 10, 10) == Approx(293.661970436));
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(1712.0));
+  CHECK(world1.temperature(position, 260e3, 10) == Approx(1716.48));
+
+  position = {1400e3, 0, 0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
+  CHECK(world1.temperature(position, 10, 10) == Approx(293.661970436));
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(1712.0));
+  CHECK(world1.temperature(position, 260e3, 10) == Approx(1716.48));
+
+  // spherical
+  file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate_spherical.wb";
+  WorldBuilder::World world2(file_name);
+
+  // Check continental plate directly
+  oceanic_plate = new Features::OceanicPlate(&world2);
+  delete oceanic_plate;
+
+  // Check continental plate through the world
+  double dtr = M_PI / 180.0;
+  std::unique_ptr<WorldBuilder::CoordinateSystems::Interface> &coordinate_system = world2.parameters.coordinate_system;
+
+  position = {6371000,0,0};
+  CHECK(world2.temperature(position, 0, 10) == Approx(1600));
+  CHECK(world2.composition(position, 0, 0) == false);
+  CHECK(world2.composition(position, 0, 1) == false);
+  CHECK(world2.composition(position, 0, 2) == false);
+  CHECK(world2.composition(position, 0, 3) == false);
+  CHECK(world2.composition(position, 0, 4) == false);
+  CHECK(world2.composition(position, 0, 5) == false);
+  CHECK(world2.composition(position, 0, 6) == false);
+
+  position = {6371000, -5 * dtr,-5 * dtr};
+  position = coordinate_system->natural_to_cartesian_coordinates(position);
+  CHECK(world2.temperature(position, 0, 10) == Approx(150));
+  CHECK(world2.temperature(position, 240e3, 10) == Approx(150));
+  CHECK(world2.temperature(position, 260e3, 10) == Approx(1716.48));
+  CHECK(world2.composition(position, 0, 0) == false);
+  CHECK(world2.composition(position, 0, 1) == false);
+  CHECK(world2.composition(position, 0, 2) == false);
+  CHECK(world2.composition(position, 0, 3) == false);
+  CHECK(world2.composition(position, 0, 4) == false);
+  CHECK(world2.composition(position, 0, 5) == false);
+  CHECK(world2.composition(position, 0, 6) == false);
+
+  position = {6371000, 5 * dtr,-5 * dtr};
+  position = coordinate_system->natural_to_cartesian_coordinates(position);
+  CHECK(world2.temperature(position, 0, 10) == Approx(20));
+  CHECK(world2.temperature(position, 240e3, 10) == Approx(20));
+  CHECK(world2.temperature(position, 260e3, 10) == Approx(1716.48));
+  CHECK(world2.composition(position, 0, 0) == false);
+  CHECK(world2.composition(position, 0, 1) == false);
+  CHECK(world2.composition(position, 0, 2) == true);
+  CHECK(world2.composition(position, 240e3, 2) == true);
+  CHECK(world2.composition(position, 260e3, 2) == false);
+  CHECK(world2.composition(position, 0, 3) == false);
+  CHECK(world2.composition(position, 0, 4) == false);
+  CHECK(world2.composition(position, 0, 5) == false);
+  CHECK(world2.composition(position, 0, 6) == false);
+
+  position = {6371000, 5 * dtr,5 * dtr};
+  position = coordinate_system->natural_to_cartesian_coordinates(position);
+  CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
+  CHECK(world2.temperature(position, 240e3, 10) == Approx(1650.9452));
+  CHECK(world2.temperature(position, 260e3, 10) == Approx(1716.48));
+  CHECK(world2.composition(position, 0, 0) == false);
+  CHECK(world2.composition(position, 0, 1) == false);
+  CHECK(world2.composition(position, 0, 2) == false);
+  CHECK(world2.composition(position, 0, 3) == false);
+  CHECK(world2.composition(position, 0, 4) == true);
+  CHECK(world2.composition(position, 240e3, 4) == true);
+  CHECK(world2.composition(position, 260e3, 4) == false);
+  CHECK(world2.composition(position, 0, 5) == false);
+  CHECK(world2.composition(position, 0, 6) == false);
+
+  position = {6371000, -15 * dtr, -15 * dtr};
+  position = coordinate_system->natural_to_cartesian_coordinates(position);
+  CHECK(world2.temperature(position, 0, 10) == Approx(10));
+  CHECK(world2.temperature(position, 240e3, 10) == Approx(48.4));
+  CHECK(world2.temperature(position, 260e3, 10) == Approx(1716.48));
+  CHECK(world2.composition(position, 0, 0) == false);
+  CHECK(world2.composition(position, 0, 1) == false);
+  CHECK(world2.composition(position, 0, 2) == false);
+  CHECK(world2.composition(position, 0, 3) == false);
+  CHECK(world2.composition(position, 0, 4) == false);
+  CHECK(world2.composition(position, 0, 5) == true);
+  CHECK(world2.composition(position, 240e3, 5) == true);
+  CHECK(world2.composition(position, 260e3, 5) == false);
+  CHECK(world2.composition(position, 0, 6) == false);
+
+  position = {6371000, 15 * dtr, -19 * dtr};
+  position = coordinate_system->natural_to_cartesian_coordinates(position);
+  CHECK(world2.temperature(position, 0, 0) == Approx(293.15));
+  CHECK(world2.temperature(position, 10, 10) == Approx(304.5574529214));
+  CHECK(world2.temperature(position, 240e3, 10) == Approx(1711.7158702436));
+  CHECK(world2.temperature(position, 260e3, 10) == Approx(1716.48));
+  CHECK(world2.composition(position, 0, 0) == false);
+  CHECK(world2.composition(position, 0, 1) == false);
+  CHECK(world2.composition(position, 0, 2) == false);
+  CHECK(world2.composition(position, 0, 3) == false);
+  CHECK(world2.composition(position, 0, 4) == false);
+  CHECK(world2.composition(position, 0, 5) == false);
+  CHECK(world2.composition(position, 0, 6) == true);
+  CHECK(world2.composition(position, 240e3, 6) == true);
+  CHECK(world2.composition(position, 260e3, 6) == false);
+
+  // test symmetry
+  position = {6371000, 16 * dtr, -19 * dtr};
+  position = coordinate_system->natural_to_cartesian_coordinates(position);
+  CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
+  CHECK(world2.temperature(position, 10, 10) == Approx(293.6346275629));
+  CHECK(world2.temperature(position, 240e3, 10) == Approx(1712.0));
+  CHECK(world2.temperature(position, 260e3, 10) == Approx(1716.48));
+
+  position = {6371000, 14 * dtr, -19 * dtr};
+  position = coordinate_system->natural_to_cartesian_coordinates(position);
+  CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
+  CHECK(world2.temperature(position, 10, 10) == Approx(293.6346275629));
+  CHECK(world2.temperature(position, 240e3, 10) == Approx(1712.0));
+  CHECK(world2.temperature(position, 260e3, 10) == Approx(1716.48));
+
+  // test bend
+  position = {6371000, 12.5 * dtr, -12.5 * dtr};
+  position = coordinate_system->natural_to_cartesian_coordinates(position);
+  CHECK(world2.temperature(position, 0, 0) == Approx(293.15));
+  CHECK(world2.temperature(position, 10, 10) == Approx(304.5574529214));
+  CHECK(world2.temperature(position, 240e3, 10) == Approx(1711.7158702436));
+  CHECK(world2.temperature(position, 260e3, 10) == Approx(1716.48));
 }
 
 TEST_CASE("WorldBuilder Types: Double")
 {
 #define TYPE Double
-	Types::TYPE type(1,"test");
-   CHECK(type.value == 1);
-   CHECK(type.default_value == 1);
-   CHECK(type.description == "test");
-   CHECK(type.get_type() == Types::type::TYPE);
+  Types::TYPE type(1,"test");
+  CHECK(type.value == 1);
+  CHECK(type.default_value == 1);
+  CHECK(type.description == "test");
+  CHECK(type.get_type() == Types::type::TYPE);
 
-   Types::TYPE type_copy(type);
-   CHECK(type_copy.value == 1);
-   CHECK(type_copy.default_value == 1);
-   CHECK(type_copy.description == "test");
-   CHECK(type_copy.get_type() == Types::type::TYPE);
+  Types::TYPE type_copy(type);
+  CHECK(type_copy.value == 1);
+  CHECK(type_copy.default_value == 1);
+  CHECK(type_copy.description == "test");
+  CHECK(type_copy.get_type() == Types::type::TYPE);
 
-   Types::TYPE type_explicit(2, 3, "test explicit");
-   CHECK(type_explicit.value == 2);
-   CHECK(type_explicit.default_value == 3);
-   CHECK(type_explicit.description == "test explicit");
-   CHECK(type_explicit.get_type() == Types::type::TYPE);
+  Types::TYPE type_explicit(2, 3, "test explicit");
+  CHECK(type_explicit.value == 2);
+  CHECK(type_explicit.default_value == 3);
+  CHECK(type_explicit.description == "test explicit");
+  CHECK(type_explicit.get_type() == Types::type::TYPE);
 
-   std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
-   Types::TYPE* type_clone_natural = dynamic_cast<Types::TYPE*>(type_clone.get());
-   CHECK(type_clone_natural->value == 2);
-   CHECK(type_clone_natural->default_value == 3);
-   CHECK(type_clone_natural->description == "test explicit");
-   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
+  std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
+  Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
+  CHECK(type_clone_natural->value == 2);
+  CHECK(type_clone_natural->default_value == 3);
+  CHECK(type_clone_natural->description == "test explicit");
+  CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 #undef TYPE
 }
 
 TEST_CASE("WorldBuilder Types: UnsignedInt")
 {
 #define TYPE UnsignedInt
-	Types::TYPE type(1,"test");
-   CHECK(type.value == 1);
-   CHECK(type.default_value == 1);
-   CHECK(type.description == "test");
-   CHECK(type.get_type() == Types::type::TYPE);
+  Types::TYPE type(1,"test");
+  CHECK(type.value == 1);
+  CHECK(type.default_value == 1);
+  CHECK(type.description == "test");
+  CHECK(type.get_type() == Types::type::TYPE);
 
-   Types::TYPE type_copy(type);
-   CHECK(type_copy.value == 1);
-   CHECK(type_copy.default_value == 1);
-   CHECK(type_copy.description == "test");
-   CHECK(type_copy.get_type() == Types::type::TYPE);
+  Types::TYPE type_copy(type);
+  CHECK(type_copy.value == 1);
+  CHECK(type_copy.default_value == 1);
+  CHECK(type_copy.description == "test");
+  CHECK(type_copy.get_type() == Types::type::TYPE);
 
-   Types::TYPE type_explicit(2, 3, "test explicit");
-   CHECK(type_explicit.value == 2);
-   CHECK(type_explicit.default_value == 3);
-   CHECK(type_explicit.description == "test explicit");
-   CHECK(type_explicit.get_type() == Types::type::TYPE);
+  Types::TYPE type_explicit(2, 3, "test explicit");
+  CHECK(type_explicit.value == 2);
+  CHECK(type_explicit.default_value == 3);
+  CHECK(type_explicit.description == "test explicit");
+  CHECK(type_explicit.get_type() == Types::type::TYPE);
 
-   std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
-   Types::TYPE* type_clone_natural = dynamic_cast<Types::TYPE*>(type_clone.get());
-   CHECK(type_clone_natural->value == 2);
-   CHECK(type_clone_natural->default_value == 3);
-   CHECK(type_clone_natural->description == "test explicit");
-   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
+  std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
+  Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
+  CHECK(type_clone_natural->value == 2);
+  CHECK(type_clone_natural->default_value == 3);
+  CHECK(type_clone_natural->description == "test explicit");
+  CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 #undef TYPE
 }
 
 TEST_CASE("WorldBuilder Types: String")
 {
 #define TYPE String
-	Types::TYPE type("1","test");
-   CHECK(type.value == "1");
-   CHECK(type.default_value == "1");
-   CHECK(type.description == "test");
-   CHECK(type.get_type() == Types::type::TYPE);
+  Types::TYPE type("1","test");
+  CHECK(type.value == "1");
+  CHECK(type.default_value == "1");
+  CHECK(type.description == "test");
+  CHECK(type.get_type() == Types::type::TYPE);
 
-   Types::TYPE type_copy(type);
-   CHECK(type_copy.value == "1");
-   CHECK(type_copy.default_value == "1");
-   CHECK(type_copy.description == "test");
-   CHECK(type_copy.get_type() == Types::type::TYPE);
+  Types::TYPE type_copy(type);
+  CHECK(type_copy.value == "1");
+  CHECK(type_copy.default_value == "1");
+  CHECK(type_copy.description == "test");
+  CHECK(type_copy.get_type() == Types::type::TYPE);
 
-   Types::TYPE type_explicit("2", "3", "test explicit");
-   CHECK(type_explicit.value == "2");
-   CHECK(type_explicit.default_value == "3");
-   CHECK(type_explicit.description == "test explicit");
-   CHECK(type_explicit.get_type() == Types::type::TYPE);
+  Types::TYPE type_explicit("2", "3", "test explicit");
+  CHECK(type_explicit.value == "2");
+  CHECK(type_explicit.default_value == "3");
+  CHECK(type_explicit.description == "test explicit");
+  CHECK(type_explicit.get_type() == Types::type::TYPE);
 
-   std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
-   Types::TYPE* type_clone_natural = dynamic_cast<Types::TYPE*>(type_clone.get());
-   CHECK(type_clone_natural->value == "2");
-   CHECK(type_clone_natural->default_value == "3");
-   CHECK(type_clone_natural->description == "test explicit");
-   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
+  std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
+  Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
+  CHECK(type_clone_natural->value == "2");
+  CHECK(type_clone_natural->default_value == "3");
+  CHECK(type_clone_natural->description == "test explicit");
+  CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 #undef TYPE
 }
 
 TEST_CASE("WorldBuilder Types: Point 2d")
 {
 #define TYPE Point<2>
-	Types::TYPE type(TYPE(1,2),"test");
-	   CHECK(type.value[0] == TYPE(1,2)[0]);
-	   CHECK(type.value[1] == TYPE(1,2)[1]);
-	   CHECK(type.default_value[0] == TYPE(1,2)[0]);
-	   CHECK(type.default_value[1] == TYPE(1,2)[1]);
-   CHECK(type.description == "test");
-   CHECK(type.get_type() == Types::type::Point2D);
+  Types::TYPE type(TYPE(1,2,cartesian),"test");
+  CHECK(type.value[0] == TYPE(1,2,cartesian)[0]);
+  CHECK(type.value[1] == TYPE(1,2,cartesian)[1]);
+  CHECK(type.default_value[0] == TYPE(1,2,cartesian)[0]);
+  CHECK(type.default_value[1] == TYPE(1,2,cartesian)[1]);
+  CHECK(type.description == "test");
+  CHECK(type.get_type() == Types::type::Point2D);
 
-   Types::TYPE type_copy(type);
-   CHECK(type_copy.value[0] == TYPE(1,2)[0]);
-   CHECK(type_copy.value[1] == TYPE(1,2)[1]);
-   CHECK(type.default_value[0] == TYPE(1,2)[0]);
-   CHECK(type.default_value[1] == TYPE(1,2)[1]);
-   CHECK(type_copy.description == "test");
-   CHECK(type_copy.get_type() == Types::type::Point2D);
+  Types::TYPE type_copy(type);
+  CHECK(type_copy.value[0] == TYPE(1,2,cartesian)[0]);
+  CHECK(type_copy.value[1] == TYPE(1,2,cartesian)[1]);
+  CHECK(type.default_value[0] == TYPE(1,2,cartesian)[0]);
+  CHECK(type.default_value[1] == TYPE(1,2,cartesian)[1]);
+  CHECK(type_copy.description == "test");
+  CHECK(type_copy.get_type() == Types::type::Point2D);
 
-   Types::TYPE type_explicit(TYPE(3,4), TYPE(5,6), "test explicit");
-   CHECK(type_explicit.value[0] == TYPE(3,4)[0]);
-   CHECK(type_explicit.value[1] == TYPE(3,4)[1]);
-   CHECK(type_explicit.default_value[0] == TYPE(5,6)[0]);
-   CHECK(type_explicit.default_value[1] == TYPE(5,6)[1]);
-   CHECK(type_explicit.description == "test explicit");
-   CHECK(type_explicit.get_type() == Types::type::Point2D);
+  Types::TYPE type_explicit(TYPE(3,4,cartesian), TYPE(5,6,cartesian), "test explicit");
+  CHECK(type_explicit.value[0] == TYPE(3,4,cartesian)[0]);
+  CHECK(type_explicit.value[1] == TYPE(3,4,cartesian)[1]);
+  CHECK(type_explicit.default_value[0] == TYPE(5,6,cartesian)[0]);
+  CHECK(type_explicit.default_value[1] == TYPE(5,6,cartesian)[1]);
+  CHECK(type_explicit.description == "test explicit");
+  CHECK(type_explicit.get_type() == Types::type::Point2D);
 
-   std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
-   Types::TYPE* type_clone_natural = dynamic_cast<Types::TYPE*>(type_clone.get());
-   CHECK(type_clone_natural->value[0] == TYPE(3,4)[0]);
-   CHECK(type_clone_natural->value[1] == TYPE(3,4)[1]);
-   CHECK(type_clone_natural->default_value[0] == TYPE(5,6)[0]);
-   CHECK(type_clone_natural->default_value[1] == TYPE(5,6)[1]);
-   CHECK(type_clone_natural->description == "test explicit");
-   CHECK(type_clone_natural->get_type() == Types::type::Point2D);
+  std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
+  Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
+  CHECK(type_clone_natural->value[0] == TYPE(3,4,cartesian)[0]);
+  CHECK(type_clone_natural->value[1] == TYPE(3,4,cartesian)[1]);
+  CHECK(type_clone_natural->default_value[0] == TYPE(5,6,cartesian)[0]);
+  CHECK(type_clone_natural->default_value[1] == TYPE(5,6,cartesian)[1]);
+  CHECK(type_clone_natural->description == "test explicit");
+  CHECK(type_clone_natural->get_type() == Types::type::Point2D);
 
 
-   /**
-     * Test Point operators
-     */
-   const TYPE point_array(std::array<double,2> {1,2});
-   const TYPE point_explicit(3,4);
+  /**
+   * Test Point operators
+   */
+  const TYPE point_array(std::array<double,2> {1,2},cartesian);
+  const TYPE point_explicit(3,4,cartesian);
 
-   Types::TYPE type_point_array(point_array, point_array, "test array");
-   Types::TYPE type_point_explicit(point_explicit, point_explicit, "test array");
+  Types::TYPE type_point_array(point_array, point_array, "test array");
+  Types::TYPE type_point_explicit(point_explicit, point_explicit, "test array");
 
-   CHECK(type_point_array.value.get_array() == std::array<double,2> {1,2});
-   CHECK(type_point_explicit.value.get_array() == std::array<double,2> {3,4});
+  CHECK(type_point_array.value.get_array() == std::array<double,2> {1,2});
+  CHECK(type_point_explicit.value.get_array() == std::array<double,2> {3,4});
 
-    // Test multiply operator
-    TYPE point = 2 * type_point_array * 1.0;
+  // Test multiply operator
+  TYPE point = 2 * type_point_array * 1.0;
 
-    CHECK(point.get_array() == std::array<double,2> {2,4});
+  CHECK(point.get_array() == std::array<double,2> {2,4});
 
-    // Test dot operator
-    CHECK(type_point_array * type_point_explicit == 11);
+  // Test dot operator
+  CHECK(type_point_array * type_point_explicit == 11);
 
-    // Test add operator
-    point = type_point_array + type_point_explicit;
+  // Test add operator
+  point = type_point_array + type_point_explicit;
 
-    CHECK(point.get_array() == std::array<double,2> {4,6});
+  CHECK(point.get_array() == std::array<double,2> {4,6});
 
-    // Test subtract operator
-    point = type_point_explicit - type_point_array;
+  // Test subtract operator
+  point = type_point_explicit - type_point_array;
 
-    CHECK(point.get_array() == std::array<double,2> {2,2});
+  CHECK(point.get_array() == std::array<double,2> {2,2});
 
-    // test the access operator
-    CHECK(type_point_array[0] == 1);
+  // test the access operator
+  CHECK(type_point_array[0] == 1);
 
-    type_point_array[0] = 2;
-    CHECK(type_point_array[0] == 2);
+  type_point_array[0] = 2;
+  CHECK(type_point_array[0] == 2);
 #undef TYPE
 }
 
 TEST_CASE("WorldBuilder Types: Point 3d")
 {
 #define TYPE Point<3>
-	Types::TYPE type(TYPE(1,2,3),"test");
-	   CHECK(type.value[0] == 1);
-	   CHECK(type.value[1] == 2);
-	   CHECK(type.value[2] == 3);
-	   CHECK(type.default_value[0] == 1);
-	   CHECK(type.default_value[1] == 2);
-	   CHECK(type.default_value[2] == 3);
-   CHECK(type.description == "test");
-   CHECK(type.get_type() == Types::type::Point3D);
+  Types::TYPE type(TYPE(1,2,3,cartesian),"test");
+  CHECK(type.value[0] == 1);
+  CHECK(type.value[1] == 2);
+  CHECK(type.value[2] == 3);
+  CHECK(type.default_value[0] == 1);
+  CHECK(type.default_value[1] == 2);
+  CHECK(type.default_value[2] == 3);
+  CHECK(type.description == "test");
+  CHECK(type.get_type() == Types::type::Point3D);
 
-   Types::TYPE type_copy(type);
-   CHECK(type_copy.value[0] == 1);
-   CHECK(type_copy.value[1] == 2);
-   CHECK(type_copy.value[2] == 3);
-   CHECK(type_copy.default_value[0] == 1);
-   CHECK(type_copy.default_value[1] == 2);
-   CHECK(type_copy.default_value[2] == 3);
-   CHECK(type_copy.description == "test");
-   CHECK(type_copy.get_type() == Types::type::Point3D);
+  Types::TYPE type_copy(type);
+  CHECK(type_copy.value[0] == 1);
+  CHECK(type_copy.value[1] == 2);
+  CHECK(type_copy.value[2] == 3);
+  CHECK(type_copy.default_value[0] == 1);
+  CHECK(type_copy.default_value[1] == 2);
+  CHECK(type_copy.default_value[2] == 3);
+  CHECK(type_copy.description == "test");
+  CHECK(type_copy.get_type() == Types::type::Point3D);
 
-   Types::TYPE type_explicit(TYPE(4,5,6), TYPE(7,8,9), "test explicit");
-   CHECK(type_explicit.value[0] == 4);
-   CHECK(type_explicit.value[1] == 5);
-   CHECK(type_explicit.value[2] == 6);
-   CHECK(type_explicit.default_value[0] == 7);
-   CHECK(type_explicit.default_value[1] == 8);
-   CHECK(type_explicit.default_value[2] == 9);
-   CHECK(type_explicit.description == "test explicit");
-   CHECK(type_explicit.get_type() == Types::type::Point3D);
+  Types::TYPE type_explicit(TYPE(4,5,6,cartesian), TYPE(7,8,9,cartesian), "test explicit");
+  CHECK(type_explicit.value[0] == 4);
+  CHECK(type_explicit.value[1] == 5);
+  CHECK(type_explicit.value[2] == 6);
+  CHECK(type_explicit.default_value[0] == 7);
+  CHECK(type_explicit.default_value[1] == 8);
+  CHECK(type_explicit.default_value[2] == 9);
+  CHECK(type_explicit.description == "test explicit");
+  CHECK(type_explicit.get_type() == Types::type::Point3D);
 
-   std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
-   Types::TYPE* type_clone_natural = dynamic_cast<Types::TYPE*>(type_clone.get());
-   CHECK(type_clone_natural->value[0] == 4);
-   CHECK(type_clone_natural->value[1] == 5);
-   CHECK(type_clone_natural->value[2] == 6);
-   CHECK(type_clone_natural->default_value[0] == 7);
-   CHECK(type_clone_natural->default_value[1] == 8);
-   CHECK(type_clone_natural->default_value[2] == 9);
-   CHECK(type_clone_natural->description == "test explicit");
-   CHECK(type_clone_natural->get_type() == Types::type::Point3D);
+  std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
+  Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
+  CHECK(type_clone_natural->value[0] == 4);
+  CHECK(type_clone_natural->value[1] == 5);
+  CHECK(type_clone_natural->value[2] == 6);
+  CHECK(type_clone_natural->default_value[0] == 7);
+  CHECK(type_clone_natural->default_value[1] == 8);
+  CHECK(type_clone_natural->default_value[2] == 9);
+  CHECK(type_clone_natural->description == "test explicit");
+  CHECK(type_clone_natural->get_type() == Types::type::Point3D);
 
-   /**
-     * Test Point operators
-     */
-   const TYPE point_array(std::array<double,3> {1,2,3});
-   const TYPE point_explicit(4,5,6);
+  /**
+   * Test Point operators
+   */
+  const TYPE point_array(std::array<double,3> {1,2,3},cartesian);
+  const TYPE point_explicit(4,5,6,cartesian);
 
-   Types::TYPE type_point_array(point_array, point_array, "test array");
-   Types::TYPE type_point_explicit(point_explicit, point_explicit, "test array");
+  Types::TYPE type_point_array(point_array, point_array, "test array");
+  Types::TYPE type_point_explicit(point_explicit, point_explicit, "test array");
 
-   CHECK(type_point_array.value.get_array() == std::array<double,3> {1,2,3});
-   CHECK(type_point_explicit.value.get_array() == std::array<double,3> {4,5,6});
+  CHECK(type_point_array.value.get_array() == std::array<double,3> {1,2,3});
+  CHECK(type_point_explicit.value.get_array() == std::array<double,3> {4,5,6});
 
-    // Test multiply operator
-    TYPE point = 2 * type_point_array;
+  // Test multiply operator
+  TYPE point = 2 * type_point_array;
 
-    CHECK(point.get_array() == std::array<double,3> {2,4,6});
+  CHECK(point.get_array() == std::array<double,3> {2,4,6});
 
-    // Test multiply operator
-    point = type_point_array * 2;
+  // Test multiply operator
+  point = type_point_array * 2;
 
-    CHECK(point.get_array() == std::array<double,3> {2,4,6});
+  CHECK(point.get_array() == std::array<double,3> {2,4,6});
 
-    // Test dot operator
-    CHECK(type_point_array * type_point_explicit == 32);
+  // Test dot operator
+  CHECK(type_point_array * type_point_explicit == 32);
 
-    // Test add operator
-    point = type_point_array + type_point_explicit;
+  // Test add operator
+  point = type_point_array + type_point_explicit;
 
-    CHECK(point.get_array() == std::array<double,3> {5,7,9});
+  CHECK(point.get_array() == std::array<double,3> {5,7,9});
 
-    // Test subtract operator
-    point = type_point_explicit - type_point_array;
+  // Test subtract operator
+  point = type_point_explicit - type_point_array;
 
-    CHECK(point.get_array() == std::array<double,3> {3,3,3});
+  CHECK(point.get_array() == std::array<double,3> {3,3,3});
 
-    // test the access operator
-    CHECK(type_point_array[0] == 1);
+  // test the access operator
+  CHECK(type_point_array[0] == 1);
 
-    type_point_array[0] = 2;
-    CHECK(type_point_array[0] == 2);
+  type_point_array[0] = 2;
+  CHECK(type_point_array[0] == 2);
 
-    // const test the access operator
-    CHECK(point_array[0] == 1);
+  // const test the access operator
+  CHECK(point_array[0] == 1);
 
 #undef TYPE
 }
@@ -806,40 +1080,40 @@ TEST_CASE("WorldBuilder Types: Point 3d")
 TEST_CASE("WorldBuilder Types: Coordinate System")
 {
 #define TYPE CoordinateSystem
-	Types::TYPE type("1","test");
-   CHECK(type.value == nullptr);
-   CHECK(type.default_value == "1");
-   CHECK(type.description == "test");
-   CHECK(type.get_type() == Types::type::TYPE);
+  Types::TYPE type("1","test");
+  CHECK(type.value == nullptr);
+  CHECK(type.default_value == "1");
+  CHECK(type.description == "test");
+  CHECK(type.get_type() == Types::type::TYPE);
 
-   std::unique_ptr<Types::Interface> type_clone = type.clone();
-   Types::TYPE* type_clone_natural = dynamic_cast<Types::TYPE*>(type_clone.get());
-   CHECK(type_clone_natural->value == nullptr);
-   CHECK(type_clone_natural->default_value == "1");
-   CHECK(type_clone_natural->description == "test");
-   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
+  std::unique_ptr<Types::Interface> type_clone = type.clone();
+  Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
+  CHECK(type_clone_natural->value == nullptr);
+  CHECK(type_clone_natural->default_value == "1");
+  CHECK(type_clone_natural->description == "test");
+  CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 
-   /**
-    * todo: test the set value function.
-    */
+  /**
+   * todo: test the set value function.
+   */
 #undef TYPE
 }
 
 TEST_CASE("WorldBuilder Types: Feature")
 {
 #define TYPE Feature
-	Types::TYPE type("test");
-   CHECK(type.description == "test");
-   CHECK(type.get_type() == Types::type::TYPE);
+  Types::TYPE type("test");
+  CHECK(type.description == "test");
+  CHECK(type.get_type() == Types::type::TYPE);
 
-   Types::TYPE type_copy(type);
-   CHECK(type_copy.description == "test");
-   CHECK(type_copy.get_type() == Types::type::TYPE);
+  Types::TYPE type_copy(type);
+  CHECK(type_copy.description == "test");
+  CHECK(type_copy.get_type() == Types::type::TYPE);
 
-   std::unique_ptr<Types::Interface> type_clone = type_copy.clone();
-   Types::TYPE* type_clone_natural = dynamic_cast<Types::TYPE*>(type_clone.get());
-   CHECK(type_clone_natural->description == "test");
-   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
+  std::unique_ptr<Types::Interface> type_clone = type_copy.clone();
+  Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
+  CHECK(type_clone_natural->description == "test");
+  CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 
 #undef TYPE
 }
@@ -847,41 +1121,41 @@ TEST_CASE("WorldBuilder Types: Feature")
 TEST_CASE("WorldBuilder Types: Array")
 {
 #define TYPE Array
-	Types::TYPE type(Types::Double(0,"double test"),"array test");
-   CHECK(type.inner_type == Types::type::Double);
-   CHECK(type.inner_type_ptr.get() != nullptr);
-   CHECK(type.inner_type_index.size() == 0);
-   CHECK(type.description == "array test");
-   CHECK(type.get_type() == Types::type::TYPE);
+  Types::TYPE type(Types::Double(0,"double test"),"array test");
+  CHECK(type.inner_type == Types::type::Double);
+  CHECK(type.inner_type_ptr.get() != nullptr);
+  CHECK(type.inner_type_index.size() == 0);
+  CHECK(type.description == "array test");
+  CHECK(type.get_type() == Types::type::TYPE);
 
-   Types::TYPE type_copy(type);
-   CHECK(type_copy.inner_type == Types::type::Double);
-   CHECK(type_copy.inner_type_ptr.get() == nullptr);
-   CHECK(type_copy.inner_type_index.size() == 0);
-   CHECK(type_copy.description == "array test");
-   CHECK(type_copy.get_type() == Types::type::TYPE);
+  Types::TYPE type_copy(type);
+  CHECK(type_copy.inner_type == Types::type::Double);
+  CHECK(type_copy.inner_type_ptr.get() == nullptr);
+  CHECK(type_copy.inner_type_index.size() == 0);
+  CHECK(type_copy.description == "array test");
+  CHECK(type_copy.get_type() == Types::type::TYPE);
 
-   Types::TYPE type_explicit(std::vector<unsigned int> {1,2}, Types::type::Double, "array test explicit");
-   CHECK(type_explicit.inner_type == Types::type::Double);
-   CHECK(type_explicit.inner_type_ptr.get() == nullptr);
-   CHECK(type_explicit.inner_type_index.size() == 2);
-   CHECK(type_explicit.description == "array test explicit");
-   CHECK(type_explicit.get_type() == Types::type::TYPE);
+  Types::TYPE type_explicit(std::vector<unsigned int> {1,2}, Types::type::Double, "array test explicit");
+  CHECK(type_explicit.inner_type == Types::type::Double);
+  CHECK(type_explicit.inner_type_ptr.get() == nullptr);
+  CHECK(type_explicit.inner_type_index.size() == 2);
+  CHECK(type_explicit.description == "array test explicit");
+  CHECK(type_explicit.get_type() == Types::type::TYPE);
 
-   std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
-   Types::TYPE* type_clone_natural = dynamic_cast<Types::TYPE*>(type_clone.get());
-   CHECK(type_clone_natural->inner_type == Types::type::Double);
-   CHECK(type_clone_natural->inner_type_ptr.get() == nullptr);
-   CHECK(type_clone_natural->inner_type_index.size() == 2);
-   CHECK(type_clone_natural->description == "array test explicit");
-   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
+  std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
+  Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
+  CHECK(type_clone_natural->inner_type == Types::type::Double);
+  CHECK(type_clone_natural->inner_type_ptr.get() == nullptr);
+  CHECK(type_clone_natural->inner_type_index.size() == 2);
+  CHECK(type_clone_natural->description == "array test explicit");
+  CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 
-   Types::TYPE type_copy2(*type_clone_natural);
-   CHECK(type_copy2.inner_type == Types::type::Double);
-   CHECK(type_copy2.inner_type_ptr.get() == nullptr);
-   CHECK(type_copy2.inner_type_index.size() == 2);
-   CHECK(type_copy2.description == "array test explicit");
-   CHECK(type_copy2.get_type() == Types::type::TYPE);
+  Types::TYPE type_copy2(*type_clone_natural);
+  CHECK(type_copy2.inner_type == Types::type::Double);
+  CHECK(type_copy2.inner_type_ptr.get() == nullptr);
+  CHECK(type_copy2.inner_type_index.size() == 2);
+  CHECK(type_copy2.description == "array test explicit");
+  CHECK(type_copy2.get_type() == Types::type::TYPE);
 
 #undef TYPE
 }
@@ -889,219 +1163,220 @@ TEST_CASE("WorldBuilder Types: Array")
 TEST_CASE("WorldBuilder Types: List")
 {
 #define TYPE List
-	Types::TYPE type(Types::Double(0,"double test"),"list test");
-   CHECK(type.inner_type == Types::type::Double);
-   CHECK(type.inner_type_ptr.get() != nullptr);
-   CHECK(type.inner_type_index.size() == 0);
-   CHECK(type.description == "list test");
-   CHECK(type.get_type() == Types::type::TYPE);
+  Types::TYPE type(Types::Double(0,"double test"),"list test");
+  CHECK(type.inner_type == Types::type::Double);
+  CHECK(type.inner_type_ptr.get() != nullptr);
+  CHECK(type.inner_type_index.size() == 0);
+  CHECK(type.description == "list test");
+  CHECK(type.get_type() == Types::type::TYPE);
 
-   Types::TYPE type_copy(type);
-   CHECK(type_copy.inner_type == Types::type::Double);
-   CHECK(type_copy.inner_type_ptr.get() == nullptr);
-   CHECK(type_copy.inner_type_index.size() == 0);
-   CHECK(type_copy.description == "list test");
-   CHECK(type_copy.get_type() == Types::type::TYPE);
+  Types::TYPE type_copy(type);
+  CHECK(type_copy.inner_type == Types::type::Double);
+  CHECK(type_copy.inner_type_ptr.get() == nullptr);
+  CHECK(type_copy.inner_type_index.size() == 0);
+  CHECK(type_copy.description == "list test");
+  CHECK(type_copy.get_type() == Types::type::TYPE);
 
-   Types::TYPE type_explicit("name",std::vector<unsigned int> {1,2}, Types::type::Double, "list test explicit");
-   CHECK(type_explicit.name == "name");
-   CHECK(type_explicit.inner_type == Types::type::Double);
-   CHECK(type_explicit.inner_type_ptr.get() == nullptr);
-   CHECK(type_explicit.inner_type_index.size() == 2);
-   CHECK(type_explicit.description == "list test explicit");
-   CHECK(type_explicit.get_type() == Types::type::TYPE);
+  Types::TYPE type_explicit("name",std::vector<unsigned int> {1,2}, Types::type::Double, "list test explicit");
+  CHECK(type_explicit.name == "name");
+  CHECK(type_explicit.inner_type == Types::type::Double);
+  CHECK(type_explicit.inner_type_ptr.get() == nullptr);
+  CHECK(type_explicit.inner_type_index.size() == 2);
+  CHECK(type_explicit.description == "list test explicit");
+  CHECK(type_explicit.get_type() == Types::type::TYPE);
 
-   std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
-   Types::TYPE* type_clone_natural = dynamic_cast<Types::TYPE*>(type_clone.get());
-   CHECK(type_clone_natural->name == "name");
-   CHECK(type_clone_natural->inner_type == Types::type::Double);
-   CHECK(type_clone_natural->inner_type_ptr.get() == nullptr);
-   CHECK(type_clone_natural->inner_type_index.size() == 2);
-   CHECK(type_clone_natural->description == "list test explicit");
-   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
+  std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
+  Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
+  CHECK(type_clone_natural->name == "name");
+  CHECK(type_clone_natural->inner_type == Types::type::Double);
+  CHECK(type_clone_natural->inner_type_ptr.get() == nullptr);
+  CHECK(type_clone_natural->inner_type_index.size() == 2);
+  CHECK(type_clone_natural->description == "list test explicit");
+  CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 
-   Types::TYPE type_copy2(*type_clone_natural);
-   CHECK(type_copy2.name == "name");
-   CHECK(type_copy2.inner_type == Types::type::Double);
-   CHECK(type_copy2.inner_type_ptr.get() == nullptr);
-   CHECK(type_copy2.inner_type_index.size() == 2);
-   CHECK(type_copy2.description == "list test explicit");
-   CHECK(type_copy2.get_type() == Types::type::TYPE);
+  Types::TYPE type_copy2(*type_clone_natural);
+  CHECK(type_copy2.name == "name");
+  CHECK(type_copy2.inner_type == Types::type::Double);
+  CHECK(type_copy2.inner_type_ptr.get() == nullptr);
+  CHECK(type_copy2.inner_type_index.size() == 2);
+  CHECK(type_copy2.description == "list test explicit");
+  CHECK(type_copy2.get_type() == Types::type::TYPE);
 #undef TYPE
 }
 
 
 TEST_CASE("WorldBuilder Types: print_tree")
 {
-	std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb1.json";
-	boost::property_tree::ptree tree;
-    std::ifstream json_input_stream(file_name.c_str());
-    boost::property_tree::json_parser::read_json (json_input_stream, tree);
-    std::stringstream output;
-    output <<
-    "{\n" <<
-    "  \"Cross section\": \n" <<
-    "  {\n" <<
-    "    \"\": \n" <<
-    "    {\n" <<
-    "      \"\": \"100e3\",\n" <<
-    "      \"\": \"100e3\"\n" <<
-    "     },\n" <<
-    "    \"\": \n" <<
-    "    {\n" <<
-    "      \"\": \"400e3\",\n" <<
-    "      \"\": \"500e3\"\n" <<
-    "     }\n" <<
-    "   },\n" <<
-    "  \"Coordinate system\": \n" <<
-    "  {\n" <<
-    "    \"cartesian\": \"\"\n" <<
-    "   },\n" <<
-    "  \"Surface rotation point\": \n" <<
-    "  {\n" <<
-    "    \"\": \"165e3\",\n" <<
-    "    \"\": \"166e3\"\n" <<
-    "   },\n" <<
-    "  \"Surface rotation angle\": \"0\",\n" <<
-    "  \"Minimum parts per distance unit\": \"5\",\n" <<
-    "  \"Minimum distance points\": \"1e-5\",\n" <<
-    "  \"Surface objects\": \n" <<
-    "  {\n" <<
-    "    \"Continental plate\": \n" <<
-    "    {\n" <<
-    "      \"name\": \"Carribean\",\n" <<
-    "      \"coordinates\": \n" <<
-    "      {\n" <<
-    "        \"\": \n" <<
-    "        {\n" <<
-    "          \"\": \"-1e3\",\n" <<
-    "          \"\": \"500e3\"\n" <<
-    "         },\n" <<
-    "        \"\": \n" <<
-    "        {\n" <<
-    "          \"\": \"500e3\",\n" <<
-    "          \"\": \"500e3\"\n" <<
-    "         },\n" <<
-    "        \"\": \n" <<
-    "        {\n" <<
-    "          \"\": \"500e3\",\n" <<
-    "          \"\": \"1000e3\"\n" <<
-    "         },\n" <<
-    "        \"\": \n" <<
-    "        {\n" <<
-    "          \"\": \"-1e3\",\n" <<
-    "          \"\": \"1000e3\"\n" <<
-    "         }\n" <<
-    "       },\n" <<
-    "      \"temperature submodule\": \n" <<
-    "      {\n" <<
-    "        \"name\": \"constant\",\n" <<
-    "        \"depth\": \"250e3\",\n" <<
-    "        \"temperature\": \"150\"\n" <<
-    "       },\n" <<
-    "      \"composition submodule\": \n" <<
-    "      {\n" <<
-    "        \"name\": \"none\"\n" <<
-    "       }\n" <<
-    "     },\n" <<
-    "    \"Continental Plate\": \n" <<
-    "    {\n" <<
-    "      \"name\": \"Rest\",\n" <<
-    "      \"coordinates\": \n" <<
-    "      {\n" <<
-    "        \"\": \n" <<
-    "        {\n" <<
-    "          \"\": \"2000e3\",\n" <<
-    "          \"\": \"2000e3\"\n" <<
-    "         },\n" <<
-    "        \"\": \n" <<
-    "        {\n" <<
-    "          \"\": \"1000e3\",\n" <<
-    "          \"\": \"2000e3\"\n" <<
-    "         },\n" <<
-    "        \"\": \n" <<
-    "        {\n" <<
-    "          \"\": \"1000e3\",\n" <<
-    "          \"\": \"1000e3\"\n" <<
-    "         },\n" <<
-    "        \"\": \n" <<
-    "        {\n" <<
-    "          \"\": \"2000e3\",\n" <<
-    "          \"\": \"1000e3\"\n" <<
-    "         }\n" <<
-    "       },\n" <<
-    "      \"temperature submodule\": \n" <<
-    "      {\n" <<
-    "        \"name\": \"constant\",\n" <<
-    "        \"depth\": \"250e3\",\n" <<
-    "        \"temperature\": \"20\"\n" <<
-    "       },\n" <<
-    "      \"composition submodule\": \n" <<
-    "      {\n" <<
-    "        \"name\": \"constant\",\n" <<
-    "        \"depth\": \"250e3\",\n" <<
-    "        \"composition\": \"2\"\n" <<
-    "       }\n" <<
-    "     },\n" <<
-    "    \"Continental plate\": \n" <<
-    "    {\n" <<
-    "      \"name\": \"Carribean2\",\n" <<
-    "      \"coordinates\": \n" <<
-    "      {\n" <<
-    "        \"\": \n" <<
-    "        {\n" <<
-    "          \"\": \"-1e3\",\n" <<
-    "          \"\": \"500e3\"\n" <<
-    "         },\n" <<
-    "        \"\": \n" <<
-    "        {\n" <<
-    "          \"\": \"500e3\",\n" <<
-    "          \"\": \"500e3\"\n" <<
-    "         },\n" <<
-    "        \"\": \n" <<
-    "        {\n" <<
-    "          \"\": \"500e3\",\n" <<
-    "          \"\": \"1000e3\"\n" <<
-    "         },\n" <<
-    "        \"\": \n" <<
-    "        {\n" <<
-    "          \"\": \"-1e3\",\n" <<
-    "          \"\": \"1000e3\"\n" <<
-    "         }\n" <<
-    "       },\n" <<
-    "      \"temperature submodule\": \n" <<
-    "      {\n" <<
-    "        \"name\": \"none\",\n" <<
-    "        \"depth\": \"250e3\",\n" <<
-    "        \"temperature\": \"150\"\n" <<
-    "       },\n" <<
-    "      \"composition submodule\": \n" <<
-    "      {\n" <<
-    "        \"name\": \"constant\",\n" <<
-    "        \"depth\": \"250e3\",\n" <<
-    "        \"composition\": \"3\"\n" <<
-    "       }\n" <<
-    "     }\n" <<
-    "   }\n" <<
-    " }";
-    CHECK(Utilities::print_tree(tree, 0).str() == output.str());
+  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb1.json";
+  boost::property_tree::ptree tree;
+  std::ifstream json_input_stream(file_name.c_str());
+  boost::property_tree::json_parser::read_json (json_input_stream, tree);
+  std::stringstream output;
+  output <<
+         "{\n" <<
+         "  \"Cross section\": \n" <<
+         "  {\n" <<
+         "    \"\": \n" <<
+         "    {\n" <<
+         "      \"\": \"100e3\",\n" <<
+         "      \"\": \"100e3\"\n" <<
+         "     },\n" <<
+         "    \"\": \n" <<
+         "    {\n" <<
+         "      \"\": \"400e3\",\n" <<
+         "      \"\": \"500e3\"\n" <<
+         "     }\n" <<
+         "   },\n" <<
+         "  \"Coordinate system\": \n" <<
+         "  {\n" <<
+         "    \"cartesian\": \"\"\n" <<
+         "   },\n" <<
+         "  \"Surface rotation point\": \n" <<
+         "  {\n" <<
+         "    \"\": \"165e3\",\n" <<
+         "    \"\": \"166e3\"\n" <<
+         "   },\n" <<
+         "  \"Surface rotation angle\": \"0\",\n" <<
+         "  \"Minimum parts per distance unit\": \"5\",\n" <<
+         "  \"Minimum distance points\": \"1e-5\",\n" <<
+         "  \"Surface objects\": \n" <<
+         "  {\n" <<
+         "    \"Continental plate\": \n" <<
+         "    {\n" <<
+         "      \"name\": \"Carribean\",\n" <<
+         "      \"coordinates\": \n" <<
+         "      {\n" <<
+         "        \"\": \n" <<
+         "        {\n" <<
+         "          \"\": \"-1e3\",\n" <<
+         "          \"\": \"500e3\"\n" <<
+         "         },\n" <<
+         "        \"\": \n" <<
+         "        {\n" <<
+         "          \"\": \"500e3\",\n" <<
+         "          \"\": \"500e3\"\n" <<
+         "         },\n" <<
+         "        \"\": \n" <<
+         "        {\n" <<
+         "          \"\": \"500e3\",\n" <<
+         "          \"\": \"1000e3\"\n" <<
+         "         },\n" <<
+         "        \"\": \n" <<
+         "        {\n" <<
+         "          \"\": \"-1e3\",\n" <<
+         "          \"\": \"1000e3\"\n" <<
+         "         }\n" <<
+         "       },\n" <<
+         "      \"temperature submodule\": \n" <<
+         "      {\n" <<
+         "        \"name\": \"constant\",\n" <<
+         "        \"depth\": \"250e3\",\n" <<
+         "        \"temperature\": \"150\"\n" <<
+         "       },\n" <<
+         "      \"composition submodule\": \n" <<
+         "      {\n" <<
+         "        \"name\": \"none\"\n" <<
+         "       }\n" <<
+         "     },\n" <<
+         "    \"Continental Plate\": \n" <<
+         "    {\n" <<
+         "      \"name\": \"Rest\",\n" <<
+         "      \"coordinates\": \n" <<
+         "      {\n" <<
+         "        \"\": \n" <<
+         "        {\n" <<
+         "          \"\": \"2000e3\",\n" <<
+         "          \"\": \"2000e3\"\n" <<
+         "         },\n" <<
+         "        \"\": \n" <<
+         "        {\n" <<
+         "          \"\": \"1000e3\",\n" <<
+         "          \"\": \"2000e3\"\n" <<
+         "         },\n" <<
+         "        \"\": \n" <<
+         "        {\n" <<
+         "          \"\": \"1000e3\",\n" <<
+         "          \"\": \"1000e3\"\n" <<
+         "         },\n" <<
+         "        \"\": \n" <<
+         "        {\n" <<
+         "          \"\": \"2000e3\",\n" <<
+         "          \"\": \"1000e3\"\n" <<
+         "         }\n" <<
+         "       },\n" <<
+         "      \"temperature submodule\": \n" <<
+         "      {\n" <<
+         "        \"name\": \"constant\",\n" <<
+         "        \"depth\": \"250e3\",\n" <<
+         "        \"temperature\": \"20\"\n" <<
+         "       },\n" <<
+         "      \"composition submodule\": \n" <<
+         "      {\n" <<
+         "        \"name\": \"constant\",\n" <<
+         "        \"depth\": \"250e3\",\n" <<
+         "        \"composition\": \"2\"\n" <<
+         "       }\n" <<
+         "     },\n" <<
+         "    \"Continental plate\": \n" <<
+         "    {\n" <<
+         "      \"name\": \"Carribean2\",\n" <<
+         "      \"coordinates\": \n" <<
+         "      {\n" <<
+         "        \"\": \n" <<
+         "        {\n" <<
+         "          \"\": \"-1e3\",\n" <<
+         "          \"\": \"500e3\"\n" <<
+         "         },\n" <<
+         "        \"\": \n" <<
+         "        {\n" <<
+         "          \"\": \"500e3\",\n" <<
+         "          \"\": \"500e3\"\n" <<
+         "         },\n" <<
+         "        \"\": \n" <<
+         "        {\n" <<
+         "          \"\": \"500e3\",\n" <<
+         "          \"\": \"1000e3\"\n" <<
+         "         },\n" <<
+         "        \"\": \n" <<
+         "        {\n" <<
+         "          \"\": \"-1e3\",\n" <<
+         "          \"\": \"1000e3\"\n" <<
+         "         }\n" <<
+         "       },\n" <<
+         "      \"temperature submodule\": \n" <<
+         "      {\n" <<
+         "        \"name\": \"none\",\n" <<
+         "        \"depth\": \"250e3\",\n" <<
+         "        \"temperature\": \"150\"\n" <<
+         "       },\n" <<
+         "      \"composition submodule\": \n" <<
+         "      {\n" <<
+         "        \"name\": \"constant\",\n" <<
+         "        \"depth\": \"250e3\",\n" <<
+         "        \"composition\": \"3\"\n" <<
+         "       }\n" <<
+         "     }\n" <<
+         "   }\n" <<
+         " }";
+  CHECK(Utilities::print_tree(tree, 0).str() == output.str());
 }
 
 TEST_CASE("WorldBuilder Parameters")
 {
   // First test a world builder file with a cross section defined
   std::string file = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/type_data.json";
-  World* null_world = NULL;
+  World *null_world = NULL;
 
   Parameters prm(file, *null_world);
 
+  prm.load_entry("Coordinate system", false, Types::CoordinateSystem("cartesian","This determines the coordinate system"));
 
   // Test the UnsignedInt functions
   CHECK_THROWS_WITH(prm.load_entry("non existent unsigned int", true, Types::UnsignedInt(1,"description")),
-		            Contains("Entry undeclared: non existent unsigned int"));
+                    Contains("Entry undeclared: non existent unsigned int"));
 
   CHECK_THROWS_WITH(prm.get_unsigned_int("non existent unsigned int"),
-		  Contains("Could not find entry 'non existent unsigned int' not found. Make sure it is loaded or set"));
+                    Contains("Could not find entry 'non existent unsigned int' not found. Make sure it is loaded or set"));
 
   CHECK(prm.load_entry("non existent unsigned int", false, Types::UnsignedInt(1,"description")) == false);
   CHECK(prm.get_unsigned_int("non existent unsigned int") == 1);
@@ -1115,10 +1390,10 @@ TEST_CASE("WorldBuilder Parameters")
 
   // Test the Double functions
   CHECK_THROWS_WITH(prm.load_entry("non existent double", true, Types::Double(1,"description")),
-		            Contains("Entry undeclared: non existent"));
+                    Contains("Entry undeclared: non existent"));
 
   CHECK_THROWS_WITH(prm.get_double("non existent double"),
-		  Contains("Could not find entry 'non existent double' not found. Make sure it is loaded or set"));
+                    Contains("Could not find entry 'non existent double' not found. Make sure it is loaded or set"));
 
   CHECK(prm.load_entry("non existent double", false, Types::Double(1,"description")) == false);
   CHECK(prm.get_double("non existent double") == 1);
@@ -1132,10 +1407,10 @@ TEST_CASE("WorldBuilder Parameters")
 
   // Test the String functions
   CHECK_THROWS_WITH(prm.load_entry("non existent string", true, Types::String("1","description")),
-		            Contains("Entry undeclared: non existent string"));
+                    Contains("Entry undeclared: non existent string"));
 
   CHECK_THROWS_WITH(prm.get_string("non existent string"),
-		  Contains("Could not find entry 'non existent string' not found. Make sure it is loaded or set"));
+                    Contains("Could not find entry 'non existent string' not found. Make sure it is loaded or set"));
 
   CHECK(prm.load_entry("non exitent string", false, Types::String("1","description")) == false);
   CHECK(prm.get_string("non exitent string") == "1");
@@ -1147,54 +1422,54 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK(prm.get_string("string") == "mystring 0");
 
   // Test the Point functions
-  CHECK_THROWS_WITH(prm.load_entry("non existent 2d Point", true, Types::Point<2>(Point<2>(1,2),"description")),
-		            Contains("Could not find .non existent 2d Point, while it is set as required."));
-  CHECK_THROWS_WITH(prm.load_entry("non existent 3d Point", true, Types::Point<3>(Point<3>(1,2,3),"description")),
-		            Contains("Could not find .non existent 3d Point, while it is set as required."));
+  CHECK_THROWS_WITH(prm.load_entry("non existent 2d Point", true, Types::Point<2>(Point<2>(1,2,cartesian),"description")),
+                    Contains("Could not find .non existent 2d Point, while it is set as required."));
+  CHECK_THROWS_WITH(prm.load_entry("non existent 3d Point", true, Types::Point<3>(Point<3>(1,2,3,cartesian),"description")),
+                    Contains("Could not find .non existent 3d Point, while it is set as required."));
 
   CHECK_THROWS_WITH(prm.get_point<2>("non existent 2d Point"),
-		  Contains("Could not find entry 'non existent 2d Point' not found. Make sure it is loaded or set"));
+                    Contains("Could not find entry 'non existent 2d Point' not found. Make sure it is loaded or set"));
   CHECK_THROWS_WITH(prm.get_point<3>("non existent 3d Point"),
-		  Contains("Could not find entry 'non existent 3d Point' not found. Make sure it is loaded or set"));
+                    Contains("Could not find entry 'non existent 3d Point' not found. Make sure it is loaded or set"));
 
-  CHECK(prm.load_entry("non existent 2d Point", false, Types::Point<2>(Point<2>(1,2),"description")) == false);
-  CHECK(prm.load_entry("non existent 3d Point", false, Types::Point<3>(Point<3>(1,2,3),"description")) == false);
+  CHECK(prm.load_entry("non existent 2d Point", false, Types::Point<2>(Point<2>(1,2,cartesian),"description")) == false);
+  CHECK(prm.load_entry("non existent 3d Point", false, Types::Point<3>(Point<3>(1,2,3,cartesian),"description")) == false);
 
-  CHECK(prm.get_point<2>("non existent 2d Point").get_array() == std::array<double,2>{1,2});
-  CHECK(prm.get_point<3>("non existent 3d Point").get_array() == std::array<double,3>{1,2,3});
+  CHECK(prm.get_point<2>("non existent 2d Point").get_array() == std::array<double,2> {1,2});
+  CHECK(prm.get_point<3>("non existent 3d Point").get_array() == std::array<double,3> {1,2,3});
 
-  prm.set_entry("new Point 2d", Types::Point<2>(Point<2>(3,4),"description"));
-  prm.set_entry("new Point 3d", Types::Point<3>(Point<3>(5,6,7),"description"));
+  prm.set_entry("new Point 2d", Types::Point<2>(Point<2>(3,4,cartesian),"description"));
+  prm.set_entry("new Point 3d", Types::Point<3>(Point<3>(5,6,7,cartesian),"description"));
 
-  CHECK(prm.get_point<2>("new Point 2d").get_array() == std::array<double,2>{3,4});
-  CHECK(prm.get_point<3>("new Point 3d").get_array() == std::array<double,3>{5,6,7});
+  CHECK(prm.get_point<2>("new Point 2d").get_array() == std::array<double,2> {3,4});
+  CHECK(prm.get_point<3>("new Point 3d").get_array() == std::array<double,3> {5,6,7});
 
 
-  prm.load_entry("2d point", true, Types::Point<2>(Point<2>(1,2),"description"));
-  prm.load_entry("3d point", true, Types::Point<3>(Point<3>(3,4,5),"description"));
+  prm.load_entry("2d point", true, Types::Point<2>(Point<2>(1,2,cartesian),"description"));
+  prm.load_entry("3d point", true, Types::Point<3>(Point<3>(3,4,5,cartesian),"description"));
 
-  CHECK(prm.get_point<2>("2d point").get_array() == std::array<double,2>{10,11});
-  CHECK(prm.get_point<3>("3d point").get_array() == std::array<double,3>{12,13,14});
+  CHECK(prm.get_point<2>("2d point").get_array() == std::array<double,2> {10,11});
+  CHECK(prm.get_point<3>("3d point").get_array() == std::array<double,3> {12,13,14});
 
   // Test the Array<Types::Double> functions
   CHECK_THROWS_WITH(prm.load_entry("non existent double array", true, Types::Array(Types::Double(1,"description"),"description")),
-		            Contains("Could not find .non existent double array, while it is set as required."));
+                    Contains("Could not find .non existent double array, while it is set as required."));
 
   CHECK_THROWS_WITH(prm.get_array("non existent double array"),
-		  Contains("Could not find entry 'non existent double array' not found. Make sure it is loaded or set"));
+                    Contains("Could not find entry 'non existent double array' not found. Make sure it is loaded or set"));
 
   CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
   CHECK_THROWS_WITH(prm.get_array<const Types::Double >("non exitent double array"),
-		  Contains("Could not find entry 'non exitent double array' not found. Make sure it is loaded or set."));
+                    Contains("Could not find entry 'non exitent double array' not found. Make sure it is loaded or set."));
   // This is not desired behavior, but it is not implemented yet.
 
   prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
-  std::vector<const Types::Double* > set_typed_double =  prm.get_array<const Types::Double >("new double array");
+  std::vector<const Types::Double * > set_typed_double =  prm.get_array<const Types::Double >("new double array");
   CHECK(set_typed_double.size() == 0);
   // This is not desired behavior, but it is not implemented yet.
 
   prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
-  std::vector<const Types::Double* > true_loaded_typed_double =  prm.get_array<const Types::Double >("double array");
+  std::vector<const Types::Double * > true_loaded_typed_double =  prm.get_array<const Types::Double >("double array");
   CHECK(true_loaded_typed_double.size() == 3);
   CHECK(true_loaded_typed_double[0]->value == 25);
   CHECK(true_loaded_typed_double[1]->value == 26);
@@ -1202,68 +1477,68 @@ TEST_CASE("WorldBuilder Parameters")
 
 
   // Test the Array<Types::Point<2> > functions
-  CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2),"description"),"description")),
-		            Contains("Could not find .non existent point<2> array, while it is set as required."));
+  CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2,cartesian),"description"),"description")),
+                    Contains("Could not find .non existent point<2> array, while it is set as required."));
 
   CHECK_THROWS_WITH(prm.get_array("non existent point<2> array"),
-		  Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set"));
+                    Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set"));
 
-  CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<2>(Point<2>(3,4),"description"),"description")) == false);
+  CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<2>(Point<2>(3,4,cartesian),"description"),"description")) == false);
   CHECK_THROWS_WITH(prm.get_array<const Types::Point<2> >("non existent point<2> array"),
-		  Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set."));
+                    Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set."));
   // This is not desired behavior, but it is not implemented yet.
 
-  prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6),"description"),"description"));
+  prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
   std::vector<const Types::Point<2>* > set_typed_point_2d = prm.get_array<const Types::Point<2> >("new point<2> array");
   CHECK(set_typed_point_2d.size() == 0);
   // This is not desired behavior, but it is not implemented yet.
 
-  prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8),"description"),"description"));
+  prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
   std::vector<const Types::Point<2>* > true_loaded_typed_point_2d =  prm.get_array<const Types::Point<2> >("point<2> array");
   CHECK(true_loaded_typed_point_2d.size() == 3);
-  CHECK(true_loaded_typed_point_2d[0]->value.get_array() == std::array<double,2>{10,11});
-  CHECK(true_loaded_typed_point_2d[1]->value.get_array() == std::array<double,2>{12,13});
-  CHECK(true_loaded_typed_point_2d[2]->value.get_array() == std::array<double,2>{14,15});
+  CHECK(true_loaded_typed_point_2d[0]->value.get_array() == std::array<double,2> {10,11});
+  CHECK(true_loaded_typed_point_2d[1]->value.get_array() == std::array<double,2> {12,13});
+  CHECK(true_loaded_typed_point_2d[2]->value.get_array() == std::array<double,2> {14,15});
 
 
   // Test the Array<Types::Point<3> > functions
-  CHECK_THROWS_WITH(prm.load_entry("non existent point<3> array", true, Types::Array(Types::Point<3>(Point<3>(1,2,3),"description"),"description")),
-		            Contains("Could not find .non existent point<3> array, while it is set as required."));
+  CHECK_THROWS_WITH(prm.load_entry("non existent point<3> array", true, Types::Array(Types::Point<3>(Point<3>(1,2,3,cartesian),"description"),"description")),
+                    Contains("Could not find .non existent point<3> array, while it is set as required."));
 
   CHECK_THROWS_WITH(prm.get_array("non existent point<3> array"),
-		  Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set"));
+                    Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set"));
 
-  CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<3>(Point<3>(4,5,6),"description"),"description")) == false);
+  CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<3>(Point<3>(4,5,6,cartesian),"description"),"description")) == false);
   CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("non existent point<3> array"),
-		  Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set."));
+                    Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set."));
   // This is not desired behavior, but it is not implemented yet.
 
-  prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9),"description"),"description"));
+  prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
   std::vector<const Types::Point<3>* > set_typed_point_3d = prm.get_array<const Types::Point<3> >("new point<3> array");
   CHECK(set_typed_point_3d.size() == 0);
   // This is not desired behavior, but it is not implemented yet.
 
-  prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12),"description"),"description"));
+  prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
   std::vector<const Types::Point<3>* > true_loaded_typed_point_3d =  prm.get_array<const Types::Point<3> >("point<3> array");
   CHECK(true_loaded_typed_point_3d.size() == 3);
-  CHECK(true_loaded_typed_point_3d[0]->value.get_array() == std::array<double,3>{20,21,22});
-  CHECK(true_loaded_typed_point_3d[1]->value.get_array() == std::array<double,3>{23,24,25});
-  CHECK(true_loaded_typed_point_3d[2]->value.get_array() == std::array<double,3>{26,27,28});
+  CHECK(true_loaded_typed_point_3d[0]->value.get_array() == std::array<double,3> {20,21,22});
+  CHECK(true_loaded_typed_point_3d[1]->value.get_array() == std::array<double,3> {23,24,25});
+  CHECK(true_loaded_typed_point_3d[2]->value.get_array() == std::array<double,3> {26,27,28});
 
   CHECK_THROWS_WITH(prm.get_array<const Types::Double >("point<2> array"),
-		  Contains("Could not get point<2> array, because it is not a 2d Point."));
+                    Contains("Could not get point<2> array, because it is not a 2d Point."));
   CHECK_THROWS_WITH(prm.get_array<const Types::Double >("point<3> array"),
-		  Contains("Could not get point<3> array, because it is not a 3d Point."));
+                    Contains("Could not get point<3> array, because it is not a 3d Point."));
 
   CHECK_THROWS_WITH(prm.get_array<const Types::Point<2> >("point<3> array"),
-		  Contains("Could not get point<3> array, because it is not a 3d Point."));
+                    Contains("Could not get point<3> array, because it is not a 3d Point."));
   CHECK_THROWS_WITH(prm.get_array<const Types::Point<2> >("double array"),
-		  Contains("Could not get double array, because it is not a Double."));
+                    Contains("Could not get double array, because it is not a Double."));
 
   CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("point<2> array"),
-		  Contains("Could not get point<2> array, because it is not a 2d Point."));
+                    Contains("Could not get point<2> array, because it is not a 2d Point."));
   CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("double array"),
-		  Contains("Could not get double array, because it is not a Double."));
+                    Contains("Could not get double array, because it is not a Double."));
 
 
 
@@ -1271,353 +1546,353 @@ TEST_CASE("WorldBuilder Parameters")
   // Test the enter_subsection and leave_subsection functions
   prm.enter_subsection("subsection 1");
   {
-	  // Test the UnsignedInt functions
-	  CHECK_THROWS_WITH(prm.load_entry("non existent unsigned int", true, Types::UnsignedInt(1,"description")),
-			            Contains("Entry undeclared: subsection 1.non existent unsigned int"));
+    // Test the UnsignedInt functions
+    CHECK_THROWS_WITH(prm.load_entry("non existent unsigned int", true, Types::UnsignedInt(1,"description")),
+                      Contains("Entry undeclared: subsection 1.non existent unsigned int"));
 
-	  CHECK_THROWS_WITH(prm.get_unsigned_int("non existent unsigned int"),
-			  Contains("Could not find entry 'non existent unsigned int' not found. Make sure it is loaded or set"));
+    CHECK_THROWS_WITH(prm.get_unsigned_int("non existent unsigned int"),
+                      Contains("Could not find entry 'non existent unsigned int' not found. Make sure it is loaded or set"));
 
-	  CHECK(prm.load_entry("non existent unsigned int", false, Types::UnsignedInt(1,"description")) == false);
-	  CHECK(prm.get_unsigned_int("non existent unsigned int") == 1);
+    CHECK(prm.load_entry("non existent unsigned int", false, Types::UnsignedInt(1,"description")) == false);
+    CHECK(prm.get_unsigned_int("non existent unsigned int") == 1);
 
-	  prm.set_entry("new unsigned int", Types::UnsignedInt(2,"description"));
-	  CHECK(prm.get_unsigned_int("new unsigned int") == 2);
+    prm.set_entry("new unsigned int", Types::UnsignedInt(2,"description"));
+    CHECK(prm.get_unsigned_int("new unsigned int") == 2);
 
-	  prm.load_entry("unsigned int", true, Types::UnsignedInt(3,"description"));
-	  CHECK(prm.get_unsigned_int("unsigned int") == 5);
+    prm.load_entry("unsigned int", true, Types::UnsignedInt(3,"description"));
+    CHECK(prm.get_unsigned_int("unsigned int") == 5);
 
 
-	  // Test the Double functions
-	  CHECK_THROWS_WITH(prm.load_entry("non existent double", true, Types::Double(1,"description")),
-			            Contains("Entry undeclared: subsection 1.non existent"));
+    // Test the Double functions
+    CHECK_THROWS_WITH(prm.load_entry("non existent double", true, Types::Double(1,"description")),
+                      Contains("Entry undeclared: subsection 1.non existent"));
 
-	  CHECK_THROWS_WITH(prm.get_double("non existent double"),
-			  Contains("Could not find entry 'non existent double' not found. Make sure it is loaded or set"));
+    CHECK_THROWS_WITH(prm.get_double("non existent double"),
+                      Contains("Could not find entry 'non existent double' not found. Make sure it is loaded or set"));
 
-	  CHECK(prm.load_entry("non existent double", false, Types::Double(2,"description")) == false);
-	  CHECK(prm.get_double("non existent double") == 2);
+    CHECK(prm.load_entry("non existent double", false, Types::Double(2,"description")) == false);
+    CHECK(prm.get_double("non existent double") == 2);
 
-	  prm.set_entry("new double", Types::Double(3,"description"));
-	  CHECK(prm.get_double("new double") == 3);
+    prm.set_entry("new double", Types::Double(3,"description"));
+    CHECK(prm.get_double("new double") == 3);
 
-	  prm.load_entry("double", true, Types::Double(4,"description"));
-	  CHECK(prm.get_double("double") == 2.23456e2);
+    prm.load_entry("double", true, Types::Double(4,"description"));
+    CHECK(prm.get_double("double") == 2.23456e2);
 
 
-	  // Test the String functions
-	  CHECK_THROWS_WITH(prm.load_entry("non existent string", true, Types::String("2","description")),
-			            Contains("Entry undeclared: subsection 1.non existent string"));
+    // Test the String functions
+    CHECK_THROWS_WITH(prm.load_entry("non existent string", true, Types::String("2","description")),
+                      Contains("Entry undeclared: subsection 1.non existent string"));
 
-	  CHECK_THROWS_WITH(prm.get_string("non existent string"),
-			  Contains("Could not find entry 'non existent string' not found. Make sure it is loaded or set"));
+    CHECK_THROWS_WITH(prm.get_string("non existent string"),
+                      Contains("Could not find entry 'non existent string' not found. Make sure it is loaded or set"));
 
-	  CHECK(prm.load_entry("non exitent string", false, Types::String("3","description")) == false);
-	  CHECK(prm.get_string("non exitent string") == "3");
+    CHECK(prm.load_entry("non exitent string", false, Types::String("3","description")) == false);
+    CHECK(prm.get_string("non exitent string") == "3");
 
-	  prm.set_entry("new string", Types::String("4","description"));
-	  CHECK(prm.get_string("new string") == "4");
+    prm.set_entry("new string", Types::String("4","description"));
+    CHECK(prm.get_string("new string") == "4");
 
-	  prm.load_entry("string", true, Types::String("5","description"));
-	  CHECK(prm.get_string("string") == "mystring 1");
+    prm.load_entry("string", true, Types::String("5","description"));
+    CHECK(prm.get_string("string") == "mystring 1");
 
-	  // Test the Point functions
-	  CHECK_THROWS_WITH(prm.load_entry("non existent 2d Point", true, Types::Point<2>(Point<2>(3,4),"description")),
-			            Contains("Could not find subsection 1.non existent 2d Point, while it is set as required."));
-	  CHECK_THROWS_WITH(prm.load_entry("non existent 3d Point", true, Types::Point<3>(Point<3>(4,5,6),"description")),
-			            Contains("Could not find subsection 1.non existent 3d Point, while it is set as required."));
+    // Test the Point functions
+    CHECK_THROWS_WITH(prm.load_entry("non existent 2d Point", true, Types::Point<2>(Point<2>(3,4,cartesian),"description")),
+                      Contains("Could not find subsection 1.non existent 2d Point, while it is set as required."));
+    CHECK_THROWS_WITH(prm.load_entry("non existent 3d Point", true, Types::Point<3>(Point<3>(4,5,6,cartesian),"description")),
+                      Contains("Could not find subsection 1.non existent 3d Point, while it is set as required."));
 
-	  CHECK_THROWS_WITH(prm.get_point<2>("non existent 2d Point"),
-			  Contains("Could not find entry 'non existent 2d Point' not found. Make sure it is loaded or set"));
-	  CHECK_THROWS_WITH(prm.get_point<3>("non existent 3d Point"),
-			  Contains("Could not find entry 'non existent 3d Point' not found. Make sure it is loaded or set"));
+    CHECK_THROWS_WITH(prm.get_point<2>("non existent 2d Point"),
+                      Contains("Could not find entry 'non existent 2d Point' not found. Make sure it is loaded or set"));
+    CHECK_THROWS_WITH(prm.get_point<3>("non existent 3d Point"),
+                      Contains("Could not find entry 'non existent 3d Point' not found. Make sure it is loaded or set"));
 
-	  CHECK(prm.load_entry("non existent 2d Point", false, Types::Point<2>(Point<2>(3,4),"description")) == false);
-	  CHECK(prm.load_entry("non existent 3d Point", false, Types::Point<3>(Point<3>(4,5,6),"description")) == false);
+    CHECK(prm.load_entry("non existent 2d Point", false, Types::Point<2>(Point<2>(3,4,cartesian),"description")) == false);
+    CHECK(prm.load_entry("non existent 3d Point", false, Types::Point<3>(Point<3>(4,5,6,cartesian),"description")) == false);
 
-	  CHECK(prm.get_point<2>("non existent 2d Point").get_array() == std::array<double,2>{3,4});
-	  CHECK(prm.get_point<3>("non existent 3d Point").get_array() == std::array<double,3>{4,5,6});
+    CHECK(prm.get_point<2>("non existent 2d Point").get_array() == std::array<double,2> {3,4});
+    CHECK(prm.get_point<3>("non existent 3d Point").get_array() == std::array<double,3> {4,5,6});
 
-	  prm.set_entry("new Point 2d", Types::Point<2>(Point<2>(5,6),"description"));
-	  prm.set_entry("new Point 3d", Types::Point<3>(Point<3>(7,8,9),"description"));
+    prm.set_entry("new Point 2d", Types::Point<2>(Point<2>(5,6,cartesian),"description"));
+    prm.set_entry("new Point 3d", Types::Point<3>(Point<3>(7,8,9,cartesian),"description"));
 
-	  CHECK(prm.get_point<2>("new Point 2d").get_array() == std::array<double,2>{5,6});
-	  CHECK(prm.get_point<3>("new Point 3d").get_array() == std::array<double,3>{7,8,9});
+    CHECK(prm.get_point<2>("new Point 2d").get_array() == std::array<double,2> {5,6});
+    CHECK(prm.get_point<3>("new Point 3d").get_array() == std::array<double,3> {7,8,9});
 
 
-	  prm.load_entry("2d point", true, Types::Point<2>(Point<2>(1,2),"description"));
-	  prm.load_entry("3d point", true, Types::Point<3>(Point<3>(3,4,5),"description"));
+    prm.load_entry("2d point", true, Types::Point<2>(Point<2>(1,2,cartesian),"description"));
+    prm.load_entry("3d point", true, Types::Point<3>(Point<3>(3,4,5,cartesian),"description"));
 
-	  CHECK(prm.get_point<2>("2d point").get_array() == std::array<double,2>{15,16});
-	  CHECK(prm.get_point<3>("3d point").get_array() == std::array<double,3>{17,18,19});
+    CHECK(prm.get_point<2>("2d point").get_array() == std::array<double,2> {15,16});
+    CHECK(prm.get_point<3>("3d point").get_array() == std::array<double,3> {17,18,19});
 
 
-	  // Test the Array functions
-	  CHECK_THROWS_WITH(prm.load_entry("non existent double array", true, Types::Array(Types::Double(1,"description"),"description")),
-			            Contains("Could not find subsection 1.non existent double array, while it is set as required."));
+    // Test the Array functions
+    CHECK_THROWS_WITH(prm.load_entry("non existent double array", true, Types::Array(Types::Double(1,"description"),"description")),
+                      Contains("Could not find subsection 1.non existent double array, while it is set as required."));
 
-	  CHECK_THROWS_WITH(prm.get_array("non existent double array"),
-			  Contains("Could not find entry 'non existent double array' not found. Make sure it is loaded or set"));
+    CHECK_THROWS_WITH(prm.get_array("non existent double array"),
+                      Contains("Could not find entry 'non existent double array' not found. Make sure it is loaded or set"));
 
-	  CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
-	  CHECK_THROWS_WITH(prm.get_array<const Types::Double >("non exitent double array"),
-			  Contains("Could not find entry 'non exitent double array' not found. Make sure it is loaded or set."));
-	  // This is not desired behavior, but it is not implemented yet.
+    CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
+    CHECK_THROWS_WITH(prm.get_array<const Types::Double >("non exitent double array"),
+                      Contains("Could not find entry 'non exitent double array' not found. Make sure it is loaded or set."));
+    // This is not desired behavior, but it is not implemented yet.
 
-	  prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
-	  std::vector<const Types::Double* > set_typed_double =  prm.get_array<const Types::Double >("new double array");
-	  CHECK(set_typed_double.size() == 0);
-	  // This is not desired behavior, but it is not implemented yet.
+    prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
+    std::vector<const Types::Double * > set_typed_double =  prm.get_array<const Types::Double >("new double array");
+    CHECK(set_typed_double.size() == 0);
+    // This is not desired behavior, but it is not implemented yet.
 
-	  prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
-	  std::vector<const Types::Double* > true_loaded_typed_double =  prm.get_array<const Types::Double >("double array");
-	  CHECK(true_loaded_typed_double.size() == 3);
-	  CHECK(true_loaded_typed_double[0]->value == 35);
-	  CHECK(true_loaded_typed_double[1]->value == 36);
-	  CHECK(true_loaded_typed_double[2]->value == 37);
+    prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
+    std::vector<const Types::Double * > true_loaded_typed_double =  prm.get_array<const Types::Double >("double array");
+    CHECK(true_loaded_typed_double.size() == 3);
+    CHECK(true_loaded_typed_double[0]->value == 35);
+    CHECK(true_loaded_typed_double[1]->value == 36);
+    CHECK(true_loaded_typed_double[2]->value == 37);
 
-	  // Test the Array<Types::Point<2> > functions
-	  CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2),"description"),"description")),
-			            Contains("Could not find subsection 1.non existent point<2> array, while it is set as required."));
+    // Test the Array<Types::Point<2> > functions
+    CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2,cartesian),"description"),"description")),
+                      Contains("Could not find subsection 1.non existent point<2> array, while it is set as required."));
 
-	  CHECK_THROWS_WITH(prm.get_array("non existent point<2> array"),
-			  Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set"));
+    CHECK_THROWS_WITH(prm.get_array("non existent point<2> array"),
+                      Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set"));
 
-	  CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<2>(Point<2>(3,4),"description"),"description")) == false);
-	  CHECK_THROWS_WITH(prm.get_array<const Types::Point<2> >("non existent point<2> array"),
-			  Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set."));
-	  // This is not desired behavior, but it is not implemented yet.
+    CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<2>(Point<2>(3,4,cartesian),"description"),"description")) == false);
+    CHECK_THROWS_WITH(prm.get_array<const Types::Point<2> >("non existent point<2> array"),
+                      Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set."));
+    // This is not desired behavior, but it is not implemented yet.
 
-	  prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6),"description"),"description"));
-	  std::vector<const Types::Point<2>* > set_typed_point_2d = prm.get_array<const Types::Point<2> >("new point<2> array");
-	  CHECK(set_typed_point_2d.size() == 0);
-	  // This is not desired behavior, but it is not implemented yet.
+    prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
+    std::vector<const Types::Point<2>* > set_typed_point_2d = prm.get_array<const Types::Point<2> >("new point<2> array");
+    CHECK(set_typed_point_2d.size() == 0);
+    // This is not desired behavior, but it is not implemented yet.
 
-	  prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8),"description"),"description"));
-	  std::vector<const Types::Point<2>* > true_loaded_typed_point_2d =  prm.get_array<const Types::Point<2> >("point<2> array");
-	  CHECK(true_loaded_typed_point_2d.size() == 3);
-	  CHECK(true_loaded_typed_point_2d[0]->value.get_array() == std::array<double,2>{20,21});
-	  CHECK(true_loaded_typed_point_2d[1]->value.get_array() == std::array<double,2>{22,23});
-	  CHECK(true_loaded_typed_point_2d[2]->value.get_array() == std::array<double,2>{24,25});
+    prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
+    std::vector<const Types::Point<2>* > true_loaded_typed_point_2d =  prm.get_array<const Types::Point<2> >("point<2> array");
+    CHECK(true_loaded_typed_point_2d.size() == 3);
+    CHECK(true_loaded_typed_point_2d[0]->value.get_array() == std::array<double,2> {20,21});
+    CHECK(true_loaded_typed_point_2d[1]->value.get_array() == std::array<double,2> {22,23});
+    CHECK(true_loaded_typed_point_2d[2]->value.get_array() == std::array<double,2> {24,25});
 
 
-	  // Test the Array<Types::Point<3> > functions
-	  CHECK_THROWS_WITH(prm.load_entry("non existent point<3> array", true, Types::Array(Types::Point<3>(Point<3>(1,2,3),"description"),"description")),
-			            Contains("Could not find subsection 1.non existent point<3> array, while it is set as required."));
+    // Test the Array<Types::Point<3> > functions
+    CHECK_THROWS_WITH(prm.load_entry("non existent point<3> array", true, Types::Array(Types::Point<3>(Point<3>(1,2,3,cartesian),"description"),"description")),
+                      Contains("Could not find subsection 1.non existent point<3> array, while it is set as required."));
 
-	  CHECK_THROWS_WITH(prm.get_array("non existent point<3> array"),
-			  Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set"));
+    CHECK_THROWS_WITH(prm.get_array("non existent point<3> array"),
+                      Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set"));
 
-	  CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<3>(Point<3>(4,5,6),"description"),"description")) == false);
-	  CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("non existent point<3> array"),
-			  Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set."));
-	  // This is not desired behavior, but it is not implemented yet.
+    CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<3>(Point<3>(4,5,6,cartesian),"description"),"description")) == false);
+    CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("non existent point<3> array"),
+                      Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set."));
+    // This is not desired behavior, but it is not implemented yet.
 
-	  prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9),"description"),"description"));
-	  std::vector<const Types::Point<3>* > set_typed_point_3d = prm.get_array<const Types::Point<3> >("new point<3> array");
-	  CHECK(set_typed_point_3d.size() == 0);
-	  // This is not desired behavior, but it is not implemented yet.
+    prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
+    std::vector<const Types::Point<3>* > set_typed_point_3d = prm.get_array<const Types::Point<3> >("new point<3> array");
+    CHECK(set_typed_point_3d.size() == 0);
+    // This is not desired behavior, but it is not implemented yet.
 
-	  prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12),"description"),"description"));
-	  std::vector<const Types::Point<3>* > true_loaded_typed_point_3d =  prm.get_array<const Types::Point<3> >("point<3> array");
-	  CHECK(true_loaded_typed_point_3d.size() == 3);
-	  CHECK(true_loaded_typed_point_3d[0]->value.get_array() == std::array<double,3>{30,31,32});
-	  CHECK(true_loaded_typed_point_3d[1]->value.get_array() == std::array<double,3>{33,34,35});
-	  CHECK(true_loaded_typed_point_3d[2]->value.get_array() == std::array<double,3>{36,37,38});
+    prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
+    std::vector<const Types::Point<3>* > true_loaded_typed_point_3d =  prm.get_array<const Types::Point<3> >("point<3> array");
+    CHECK(true_loaded_typed_point_3d.size() == 3);
+    CHECK(true_loaded_typed_point_3d[0]->value.get_array() == std::array<double,3> {30,31,32});
+    CHECK(true_loaded_typed_point_3d[1]->value.get_array() == std::array<double,3> {33,34,35});
+    CHECK(true_loaded_typed_point_3d[2]->value.get_array() == std::array<double,3> {36,37,38});
 
-	  CHECK_THROWS_WITH(prm.get_array<const Types::Double >("point<2> array"),
-			  Contains("Could not get subsection 1.point<2> array, because it is not a 2d Point."));
-	  CHECK_THROWS_WITH(prm.get_array<const Types::Double >("point<3> array"),
-			  Contains("Could not get subsection 1.point<3> array, because it is not a 3d Point."));
+    CHECK_THROWS_WITH(prm.get_array<const Types::Double >("point<2> array"),
+                      Contains("Could not get subsection 1.point<2> array, because it is not a 2d Point."));
+    CHECK_THROWS_WITH(prm.get_array<const Types::Double >("point<3> array"),
+                      Contains("Could not get subsection 1.point<3> array, because it is not a 3d Point."));
 
-	  CHECK_THROWS_WITH(prm.get_array<const Types::Point<2> >("point<3> array"),
-			  Contains("Could not get subsection 1.point<3> array, because it is not a 3d Point."));
-	  CHECK_THROWS_WITH(prm.get_array<const Types::Point<2> >("double array"),
-			  Contains("Could not get subsection 1.double array, because it is not a Double."));
+    CHECK_THROWS_WITH(prm.get_array<const Types::Point<2> >("point<3> array"),
+                      Contains("Could not get subsection 1.point<3> array, because it is not a 3d Point."));
+    CHECK_THROWS_WITH(prm.get_array<const Types::Point<2> >("double array"),
+                      Contains("Could not get subsection 1.double array, because it is not a Double."));
 
-	  CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("point<2> array"),
-			  Contains("Could not get subsection 1.point<2> array, because it is not a 2d Point."));
-	  CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("double array"),
-			  Contains("Could not get subsection 1.double array, because it is not a Double."));
+    CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("point<2> array"),
+                      Contains("Could not get subsection 1.point<2> array, because it is not a 2d Point."));
+    CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("double array"),
+                      Contains("Could not get subsection 1.double array, because it is not a Double."));
 
-	  prm.enter_subsection("subsection 2");
-	  {
-		  // Test the UnsignedInt functions
-		  CHECK_THROWS_WITH(prm.load_entry("non existent unsigned int", true, Types::UnsignedInt(1,"description")),
-				            Contains("Entry undeclared: subsection 1.subsection 2.non existent unsigned int"));
+    prm.enter_subsection("subsection 2");
+    {
+      // Test the UnsignedInt functions
+      CHECK_THROWS_WITH(prm.load_entry("non existent unsigned int", true, Types::UnsignedInt(1,"description")),
+                        Contains("Entry undeclared: subsection 1.subsection 2.non existent unsigned int"));
 
-		  CHECK_THROWS_WITH(prm.get_unsigned_int("non existent unsigned int"),
-				  Contains("Could not find entry 'non existent unsigned int' not found. Make sure it is loaded or set"));
+      CHECK_THROWS_WITH(prm.get_unsigned_int("non existent unsigned int"),
+                        Contains("Could not find entry 'non existent unsigned int' not found. Make sure it is loaded or set"));
 
-		  CHECK(prm.load_entry("non existent unsigned int", false, Types::UnsignedInt(1,"description")) == false);
-		  CHECK(prm.get_unsigned_int("non existent unsigned int") == 1);
+      CHECK(prm.load_entry("non existent unsigned int", false, Types::UnsignedInt(1,"description")) == false);
+      CHECK(prm.get_unsigned_int("non existent unsigned int") == 1);
 
-		  prm.set_entry("new unsigned int", Types::UnsignedInt(2,"description"));
-		  CHECK(prm.get_unsigned_int("new unsigned int") == 2);
+      prm.set_entry("new unsigned int", Types::UnsignedInt(2,"description"));
+      CHECK(prm.get_unsigned_int("new unsigned int") == 2);
 
-		  prm.load_entry("unsigned int", true, Types::UnsignedInt(3,"description"));
-		  CHECK(prm.get_unsigned_int("unsigned int") == 6);
+      prm.load_entry("unsigned int", true, Types::UnsignedInt(3,"description"));
+      CHECK(prm.get_unsigned_int("unsigned int") == 6);
 
 
-		  // Test the Double functions
-		  CHECK_THROWS_WITH(prm.load_entry("non existent double", true, Types::Double(3,"description")),
-				            Contains("Entry undeclared: subsection 1.subsection 2.non existent"));
+      // Test the Double functions
+      CHECK_THROWS_WITH(prm.load_entry("non existent double", true, Types::Double(3,"description")),
+                        Contains("Entry undeclared: subsection 1.subsection 2.non existent"));
 
-		  CHECK_THROWS_WITH(prm.get_double("non existent double"),
-				  Contains("Could not find entry 'non existent double' not found. Make sure it is loaded or set"));
+      CHECK_THROWS_WITH(prm.get_double("non existent double"),
+                        Contains("Could not find entry 'non existent double' not found. Make sure it is loaded or set"));
 
-		  CHECK(prm.load_entry("non existent double", false, Types::Double(4,"description")) == false);
-		  CHECK(prm.get_double("non existent double") == 4);
+      CHECK(prm.load_entry("non existent double", false, Types::Double(4,"description")) == false);
+      CHECK(prm.get_double("non existent double") == 4);
 
-		  prm.set_entry("new double", Types::Double(5,"description"));
-		  CHECK(prm.get_double("new double") == 5);
+      prm.set_entry("new double", Types::Double(5,"description"));
+      CHECK(prm.get_double("new double") == 5);
 
-		  prm.load_entry("double", true, Types::Double(6,"description"));
-		  CHECK(prm.get_double("double") == 3.23456e2);
+      prm.load_entry("double", true, Types::Double(6,"description"));
+      CHECK(prm.get_double("double") == 3.23456e2);
 
 
-		  // Test the String functions
-		  CHECK_THROWS_WITH(prm.load_entry("non existent string", true, Types::String("3","description")),
-				            Contains("Entry undeclared: subsection 1.subsection 2.non existent string"));
+      // Test the String functions
+      CHECK_THROWS_WITH(prm.load_entry("non existent string", true, Types::String("3","description")),
+                        Contains("Entry undeclared: subsection 1.subsection 2.non existent string"));
 
-		  CHECK_THROWS_WITH(prm.get_string("non existent string"),
-				  Contains("Could not find entry 'non existent string' not found. Make sure it is loaded or set"));
+      CHECK_THROWS_WITH(prm.get_string("non existent string"),
+                        Contains("Could not find entry 'non existent string' not found. Make sure it is loaded or set"));
 
-		  CHECK(prm.load_entry("non exitent string", false, Types::String("4","description")) == false);
-		  CHECK(prm.get_string("non exitent string") == "4");
+      CHECK(prm.load_entry("non exitent string", false, Types::String("4","description")) == false);
+      CHECK(prm.get_string("non exitent string") == "4");
 
-		  prm.set_entry("new string", Types::String("5","description"));
-		  CHECK(prm.get_string("new string") == "5");
+      prm.set_entry("new string", Types::String("5","description"));
+      CHECK(prm.get_string("new string") == "5");
 
-		  prm.load_entry("string", true, Types::String("6","description"));
-		  CHECK(prm.get_string("string") == "mystring 2");
+      prm.load_entry("string", true, Types::String("6","description"));
+      CHECK(prm.get_string("string") == "mystring 2");
 
-		  // Test the Point functions
-		  CHECK_THROWS_WITH(prm.load_entry("non existent 2d Point", true, Types::Point<2>(Point<2>(1,2),"description")),
-				            Contains("Could not find subsection 1.subsection 2.non existent 2d Point, while it is set as required."));
-		  CHECK_THROWS_WITH(prm.load_entry("non existent 3d Point", true, Types::Point<3>(Point<3>(1,2,3),"description")),
-				            Contains("Could not find subsection 1.subsection 2.non existent 3d Point, while it is set as required."));
+      // Test the Point functions
+      CHECK_THROWS_WITH(prm.load_entry("non existent 2d Point", true, Types::Point<2>(Point<2>(1,2,cartesian),"description")),
+                        Contains("Could not find subsection 1.subsection 2.non existent 2d Point, while it is set as required."));
+      CHECK_THROWS_WITH(prm.load_entry("non existent 3d Point", true, Types::Point<3>(Point<3>(1,2,3,cartesian),"description")),
+                        Contains("Could not find subsection 1.subsection 2.non existent 3d Point, while it is set as required."));
 
-		  CHECK_THROWS_WITH(prm.get_point<2>("non existent 2d Point"),
-				  Contains("Could not find entry 'non existent 2d Point' not found. Make sure it is loaded or set"));
-		  CHECK_THROWS_WITH(prm.get_point<3>("non existent 3d Point"),
-				  Contains("Could not find entry 'non existent 3d Point' not found. Make sure it is loaded or set"));
+      CHECK_THROWS_WITH(prm.get_point<2>("non existent 2d Point"),
+                        Contains("Could not find entry 'non existent 2d Point' not found. Make sure it is loaded or set"));
+      CHECK_THROWS_WITH(prm.get_point<3>("non existent 3d Point"),
+                        Contains("Could not find entry 'non existent 3d Point' not found. Make sure it is loaded or set"));
 
-		  CHECK(prm.load_entry("non existent 2d Point", false, Types::Point<2>(Point<2>(1,2),"description")) == false);
-		  CHECK(prm.load_entry("non existent 3d Point", false, Types::Point<3>(Point<3>(1,2,3),"description")) == false);
+      CHECK(prm.load_entry("non existent 2d Point", false, Types::Point<2>(Point<2>(1,2,cartesian),"description")) == false);
+      CHECK(prm.load_entry("non existent 3d Point", false, Types::Point<3>(Point<3>(1,2,3,cartesian),"description")) == false);
 
-		  CHECK(prm.get_point<2>("non existent 2d Point").get_array() == std::array<double,2>{1,2});
-		  CHECK(prm.get_point<3>("non existent 3d Point").get_array() == std::array<double,3>{1,2,3});
+      CHECK(prm.get_point<2>("non existent 2d Point").get_array() == std::array<double,2> {1,2});
+      CHECK(prm.get_point<3>("non existent 3d Point").get_array() == std::array<double,3> {1,2,3});
 
-		  prm.set_entry("new Point 2d", Types::Point<2>(Point<2>(3,4),"description"));
-		  prm.set_entry("new Point 3d", Types::Point<3>(Point<3>(5,6,7),"description"));
+      prm.set_entry("new Point 2d", Types::Point<2>(Point<2>(3,4,cartesian),"description"));
+      prm.set_entry("new Point 3d", Types::Point<3>(Point<3>(5,6,7,cartesian),"description"));
 
-		  CHECK(prm.get_point<2>("new Point 2d").get_array() == std::array<double,2>{3,4});
-		  CHECK(prm.get_point<3>("new Point 3d").get_array() == std::array<double,3>{5,6,7});
-
-
-		  prm.load_entry("2d point", true, Types::Point<2>(Point<2>(1,2),"description"));
-		  prm.load_entry("3d point", true, Types::Point<3>(Point<3>(3,4,5),"description"));
-
-		  CHECK(prm.get_point<2>("2d point").get_array() == std::array<double,2>{20,21});
-		  CHECK(prm.get_point<3>("3d point").get_array() == std::array<double,3>{22,23,24});
-
-		  // Test the Array functions
-		  CHECK_THROWS_WITH(prm.load_entry("non existent double array", true, Types::Array(Types::Double(1,"description"),"description")),
-				            Contains("Could not find subsection 1.subsection 2.non existent double array, while it is set as required."));
-
-		  CHECK_THROWS_WITH(prm.get_array("non existent double array"),
-				  Contains("Could not find entry 'non existent double array' not found. Make sure it is loaded or set"));
-
-		  CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
-		  CHECK_THROWS_WITH(prm.get_array<const Types::Double >("non exitent double array"),
-				  Contains("Could not find entry 'non exitent double array' not found. Make sure it is loaded or set."));
-		  // This is not desired behavior, but it is not implemented yet.
-
-		  prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
-		  std::vector<const Types::Double* > set_typed_double =  prm.get_array<const Types::Double >("new double array");
-		  CHECK(set_typed_double.size() == 0);
-		  // This is not desired behavior, but it is not implemented yet.
-
-		  prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
-		  std::vector<const Types::Double* > true_loaded_typed_double =  prm.get_array<const Types::Double >("double array");
-		  CHECK(true_loaded_typed_double.size() == 3);
-		  CHECK(true_loaded_typed_double[0]->value == 45);
-		  CHECK(true_loaded_typed_double[1]->value == 46);
-		  CHECK(true_loaded_typed_double[2]->value == 47);
-
-
-		  // Test the Array<Types::Point<2> > functions
-		  CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2),"description"),"description")),
-				            Contains("Could not find subsection 1.subsection 2.non existent point<2> array, while it is set as required."));
-
-		  CHECK_THROWS_WITH(prm.get_array("non existent point<2> array"),
-				  Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set"));
-
-		  CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<2>(Point<2>(3,4),"description"),"description")) == false);
-		  CHECK_THROWS_WITH(prm.get_array<const Types::Point<2> >("non existent point<2> array"),
-				  Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set."));
-		  // This is not desired behavior, but it is not implemented yet.
-
-		  prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6),"description"),"description"));
-		  std::vector<const Types::Point<2>* > set_typed_point_2d = prm.get_array<const Types::Point<2> >("new point<2> array");
-		  CHECK(set_typed_point_2d.size() == 0);
-		  // This is not desired behavior, but it is not implemented yet.
-
-		  prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8),"description"),"description"));
-		  std::vector<const Types::Point<2>* > true_loaded_typed_point_2d =  prm.get_array<const Types::Point<2> >("point<2> array");
-		  CHECK(true_loaded_typed_point_2d.size() == 3);
-		  CHECK(true_loaded_typed_point_2d[0]->value.get_array() == std::array<double,2>{40,41});
-		  CHECK(true_loaded_typed_point_2d[1]->value.get_array() == std::array<double,2>{42,43});
-		  CHECK(true_loaded_typed_point_2d[2]->value.get_array() == std::array<double,2>{44,45});
-
-
-		  // Test the Array<Types::Point<3> > functions
-		  CHECK_THROWS_WITH(prm.load_entry("non existent point<3> array", true, Types::Array(Types::Point<3>(Point<3>(1,2,3),"description"),"description")),
-				            Contains("Could not find subsection 1.subsection 2.non existent point<3> array, while it is set as required."));
-
-		  CHECK_THROWS_WITH(prm.get_array("non existent point<3> array"),
-				  Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set"));
-
-		  CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<3>(Point<3>(4,5,6),"description"),"description")) == false);
-		  CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("non existent point<3> array"),
-				  Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set."));
-		  // This is not desired behavior, but it is not implemented yet.
-
-		  prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9),"description"),"description"));
-		  std::vector<const Types::Point<3>* > set_typed_point_3d = prm.get_array<const Types::Point<3> >("new point<3> array");
-		  CHECK(set_typed_point_3d.size() == 0);
-		  // This is not desired behavior, but it is not implemented yet.
-
-		  prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12),"description"),"description"));
-		  std::vector<const Types::Point<3>* > true_loaded_typed_point_3d =  prm.get_array<const Types::Point<3> >("point<3> array");
-		  CHECK(true_loaded_typed_point_3d.size() == 3);
-		  CHECK(true_loaded_typed_point_3d[0]->value.get_array() == std::array<double,3>{40,41,42});
-		  CHECK(true_loaded_typed_point_3d[1]->value.get_array() == std::array<double,3>{43,44,45});
-		  CHECK(true_loaded_typed_point_3d[2]->value.get_array() == std::array<double,3>{46,47,48});
-
-		  CHECK_THROWS_WITH(prm.get_array<const Types::Double >("point<2> array"),
-				  Contains("Could not get subsection 1.subsection 2.point<2> array, because it is not a 2d Point."));
-		  CHECK_THROWS_WITH(prm.get_array<const Types::Double >("point<3> array"),
-				  Contains("Could not get subsection 1.subsection 2.point<3> array, because it is not a 3d Point."));
-
-		  CHECK_THROWS_WITH(prm.get_array<const Types::Point<2> >("point<3> array"),
-				  Contains("Could not get subsection 1.subsection 2.point<3> array, because it is not a 3d Point."));
-		  CHECK_THROWS_WITH(prm.get_array<const Types::Point<2> >("double array"),
-				  Contains("Could not get subsection 1.subsection 2.double array, because it is not a Double."));
-
-		  CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("point<2> array"),
-				  Contains("Could not get subsection 1.subsection 2.point<2> array, because it is not a 2d Point."));
-		  CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("double array"),
-				  Contains("Could not get subsection 1.subsection 2.double array, because it is not a Double."));
-	  }
-	  prm.leave_subsection();
+      CHECK(prm.get_point<2>("new Point 2d").get_array() == std::array<double,2> {3,4});
+      CHECK(prm.get_point<3>("new Point 3d").get_array() == std::array<double,3> {5,6,7});
+
+
+      prm.load_entry("2d point", true, Types::Point<2>(Point<2>(1,2,cartesian),"description"));
+      prm.load_entry("3d point", true, Types::Point<3>(Point<3>(3,4,5,cartesian),"description"));
+
+      CHECK(prm.get_point<2>("2d point").get_array() == std::array<double,2> {20,21});
+      CHECK(prm.get_point<3>("3d point").get_array() == std::array<double,3> {22,23,24});
+
+      // Test the Array functions
+      CHECK_THROWS_WITH(prm.load_entry("non existent double array", true, Types::Array(Types::Double(1,"description"),"description")),
+                        Contains("Could not find subsection 1.subsection 2.non existent double array, while it is set as required."));
+
+      CHECK_THROWS_WITH(prm.get_array("non existent double array"),
+                        Contains("Could not find entry 'non existent double array' not found. Make sure it is loaded or set"));
+
+      CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
+      CHECK_THROWS_WITH(prm.get_array<const Types::Double >("non exitent double array"),
+                        Contains("Could not find entry 'non exitent double array' not found. Make sure it is loaded or set."));
+      // This is not desired behavior, but it is not implemented yet.
+
+      prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
+      std::vector<const Types::Double * > set_typed_double =  prm.get_array<const Types::Double >("new double array");
+      CHECK(set_typed_double.size() == 0);
+      // This is not desired behavior, but it is not implemented yet.
+
+      prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
+      std::vector<const Types::Double * > true_loaded_typed_double =  prm.get_array<const Types::Double >("double array");
+      CHECK(true_loaded_typed_double.size() == 3);
+      CHECK(true_loaded_typed_double[0]->value == 45);
+      CHECK(true_loaded_typed_double[1]->value == 46);
+      CHECK(true_loaded_typed_double[2]->value == 47);
+
+
+      // Test the Array<Types::Point<2> > functions
+      CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2,cartesian),"description"),"description")),
+                        Contains("Could not find subsection 1.subsection 2.non existent point<2> array, while it is set as required."));
+
+      CHECK_THROWS_WITH(prm.get_array("non existent point<2> array"),
+                        Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set"));
+
+      CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<2>(Point<2>(3,4,cartesian),"description"),"description")) == false);
+      CHECK_THROWS_WITH(prm.get_array<const Types::Point<2> >("non existent point<2> array"),
+                        Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set."));
+      // This is not desired behavior, but it is not implemented yet.
+
+      prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
+      std::vector<const Types::Point<2>* > set_typed_point_2d = prm.get_array<const Types::Point<2> >("new point<2> array");
+      CHECK(set_typed_point_2d.size() == 0);
+      // This is not desired behavior, but it is not implemented yet.
+
+      prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
+      std::vector<const Types::Point<2>* > true_loaded_typed_point_2d =  prm.get_array<const Types::Point<2> >("point<2> array");
+      CHECK(true_loaded_typed_point_2d.size() == 3);
+      CHECK(true_loaded_typed_point_2d[0]->value.get_array() == std::array<double,2> {40,41});
+      CHECK(true_loaded_typed_point_2d[1]->value.get_array() == std::array<double,2> {42,43});
+      CHECK(true_loaded_typed_point_2d[2]->value.get_array() == std::array<double,2> {44,45});
+
+
+      // Test the Array<Types::Point<3> > functions
+      CHECK_THROWS_WITH(prm.load_entry("non existent point<3> array", true, Types::Array(Types::Point<3>(Point<3>(1,2,3,cartesian),"description"),"description")),
+                        Contains("Could not find subsection 1.subsection 2.non existent point<3> array, while it is set as required."));
+
+      CHECK_THROWS_WITH(prm.get_array("non existent point<3> array"),
+                        Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set"));
+
+      CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<3>(Point<3>(4,5,6,cartesian),"description"),"description")) == false);
+      CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("non existent point<3> array"),
+                        Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set."));
+      // This is not desired behavior, but it is not implemented yet.
+
+      prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
+      std::vector<const Types::Point<3>* > set_typed_point_3d = prm.get_array<const Types::Point<3> >("new point<3> array");
+      CHECK(set_typed_point_3d.size() == 0);
+      // This is not desired behavior, but it is not implemented yet.
+
+      prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
+      std::vector<const Types::Point<3>* > true_loaded_typed_point_3d =  prm.get_array<const Types::Point<3> >("point<3> array");
+      CHECK(true_loaded_typed_point_3d.size() == 3);
+      CHECK(true_loaded_typed_point_3d[0]->value.get_array() == std::array<double,3> {40,41,42});
+      CHECK(true_loaded_typed_point_3d[1]->value.get_array() == std::array<double,3> {43,44,45});
+      CHECK(true_loaded_typed_point_3d[2]->value.get_array() == std::array<double,3> {46,47,48});
+
+      CHECK_THROWS_WITH(prm.get_array<const Types::Double >("point<2> array"),
+                        Contains("Could not get subsection 1.subsection 2.point<2> array, because it is not a 2d Point."));
+      CHECK_THROWS_WITH(prm.get_array<const Types::Double >("point<3> array"),
+                        Contains("Could not get subsection 1.subsection 2.point<3> array, because it is not a 3d Point."));
+
+      CHECK_THROWS_WITH(prm.get_array<const Types::Point<2> >("point<3> array"),
+                        Contains("Could not get subsection 1.subsection 2.point<3> array, because it is not a 3d Point."));
+      CHECK_THROWS_WITH(prm.get_array<const Types::Point<2> >("double array"),
+                        Contains("Could not get subsection 1.subsection 2.double array, because it is not a Double."));
+
+      CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("point<2> array"),
+                        Contains("Could not get subsection 1.subsection 2.point<2> array, because it is not a 2d Point."));
+      CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("double array"),
+                        Contains("Could not get subsection 1.subsection 2.double array, because it is not a Double."));
+    }
+    prm.leave_subsection();
   }
   prm.leave_subsection();
 
-/**
- * Todo: add tests for list,feature and coordinate system.
- */
+  /**
+   * Todo: add tests for list,feature and coordinate system.
+   */
 
 
 

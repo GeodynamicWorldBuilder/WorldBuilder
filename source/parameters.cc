@@ -267,6 +267,7 @@ namespace WorldBuilder
       }
     else if (type.get_type() == Types::type::Point2D)
       {
+        WBAssertThrow(this->coordinate_system != NULL, "The coordinate system must be loaded before points are loaded.");
         const std::string path_plus_name_without_arrays = ((get_relative_path_without_arrays() == "") ? "" : (get_relative_path_without_arrays() + path_seperator + ""))
                                                           + (name.front() == '[' && name.back() == ']' ? "" : name);
 
@@ -283,7 +284,8 @@ namespace WorldBuilder
         if (found_value == true)
           {
             WorldBuilder::Point<2> point(std::array<double,2> {0,0},
-                                         this->coordinate_system != NULL ? this->coordinate_system->natural_coordinate_system() : CoordinateSystem::cartesian);
+                                         this->coordinate_system->natural_coordinate_system());
+
             unsigned int current_size = 0;
             for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
               {
@@ -321,6 +323,7 @@ namespace WorldBuilder
       }
     else if (type.get_type() == Types::type::Point3D)
       {
+        WBAssertThrow(this->coordinate_system != NULL, "The coordinate system must be loaded before points are loaded.");
         const std::string path_plus_name_without_arrays = ((get_relative_path_without_arrays() == "") ? "" : (get_relative_path_without_arrays() + path_seperator + ""))
                                                           + (name.front() == '[' && name.back() == ']' ? "" : name);
 
@@ -337,7 +340,7 @@ namespace WorldBuilder
         if (found_value == true)
           {
             WorldBuilder::Point<3> point(std::array<double,3> {0,0,0},
-                                         this->coordinate_system != NULL ? this->coordinate_system->natural_coordinate_system() : CoordinateSystem::cartesian);
+                                         this->coordinate_system->natural_coordinate_system());
             unsigned int current_size = 0;
             for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
               {

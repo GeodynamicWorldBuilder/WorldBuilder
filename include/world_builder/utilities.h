@@ -105,6 +105,11 @@ namespace WorldBuilder
          */
         double get_depth_coordinate() const;
 
+        /**
+         * get the coordinate system type of this coordinate.
+         */
+        CoordinateSystem get_coordinate_system() const;
+
       private:
         /**
          * An enum which stores the the coordinate system of this natural

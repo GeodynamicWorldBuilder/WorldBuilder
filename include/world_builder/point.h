@@ -41,31 +41,31 @@ namespace WorldBuilder
        * Constructor. Constructs a Point at (0,0) in 2d or (0,0,0) in 3d
        * with a Cartesian coordinate system.
        */
-      Point();
+      Point(CoordinateSystem coordinate_system);
 
       /**
        * Constructor. Constructs a Point from a std::array<double,dim> and
-       * a coordinate system which is set by default to Cartesian.
+       * a coordinate system.
        */
-      Point(const std::array<double,dim> &location, CoordinateSystem coordinate_system = CoordinateSystem::cartesian);
+      Point(const std::array<double,dim> &location, CoordinateSystem coordinate_system);
 
       /**
        * Constructor. Constructs a Point from an other Point and
-       * a coordinate system which is set by default to Cartesian.
+       * a coordinate system.
        */
-      Point(const Point<dim> &point, CoordinateSystem coordinate_system = CoordinateSystem::cartesian);
+      Point(const Point<dim> &point, CoordinateSystem coordinate_system);
 
       /**
        * Constructor. Constructs a 2d Point from two doubles and
-       * a coordinate system which is set by default to Cartesian.
+       * a coordinate system.
        */
-      Point(const double x, const double y, CoordinateSystem coordinate_system = CoordinateSystem::cartesian);
+      Point(const double x, const double y, CoordinateSystem coordinate_system);
 
       /**
        * Constructor. Constructs a 3d Point from three doubles and
-       * a coordinate system which is set by default to Cartesian.
+       * a coordinate system.
        */
-      Point(const double x, const double y, const double z, CoordinateSystem coordinate_system = CoordinateSystem::cartesian);
+      Point(const double x, const double y, const double z, CoordinateSystem coordinate_system);
 
       /**
        * Destructor
