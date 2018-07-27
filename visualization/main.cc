@@ -318,20 +318,22 @@ int main(int argc, char **argv)
   std::vector<std::vector<unsigned int> > grid_connectivity(0);
 
 
+  bool compress_size = false;
+
+
 
 
   /**
    * Begin making the grid
    */
   WBAssertThrow(dim == 2 || dim == 3, "Dimension should be 2d or 3d.");
-  bool compress_size = false;
   if (grid_type == "cartesian")
     {
       n_cell = n_cell_x * n_cell_z * (dim == 3 ? n_cell_y : 1.0);
-      if(compress_size == false && dim == 3)
-    	  n_p = n_cell * 8 ; // it shouldn't matter for 2d in the output, so just do 3d.
+      if (compress_size == false && dim == 3)
+        n_p = n_cell * 8 ; // it shouldn't matter for 2d in the output, so just do 3d.
       else
-          n_p = (n_cell_x + 1) * (n_cell_z + 1) * (dim == 3 ? (n_cell_y + 1) : 1.0);
+        n_p = (n_cell_x + 1) * (n_cell_z + 1) * (dim == 3 ? (n_cell_y + 1) : 1.0);
 
 
       double dx = (x_max - x_min) / n_cell_x;
@@ -366,51 +368,51 @@ int main(int argc, char **argv)
         }
       else
         {
-    	  if(compress_size == true)
-    	  {
-          for (unsigned int i = 0; i <= n_cell_x; ++i)
+          if (compress_size == true)
             {
-              for (unsigned int j = 0; j <= n_cell_y; ++j)
+              for (unsigned int i = 0; i <= n_cell_x; ++i)
                 {
-                  for (unsigned int k = 0; k <= n_cell_z; ++k)
+                  for (unsigned int j = 0; j <= n_cell_y; ++j)
                     {
-                      grid_x[counter] = x_min + i * dx;
-                      grid_y[counter] = y_min + j * dy;
-                      grid_z[counter] = z_min + k * dz;
-                      grid_depth[counter] = (surface - z_min) - k * dz;
-                      counter++;
+                      for (unsigned int k = 0; k <= n_cell_z; ++k)
+                        {
+                          grid_x[counter] = x_min + i * dx;
+                          grid_y[counter] = y_min + j * dy;
+                          grid_z[counter] = z_min + k * dz;
+                          grid_depth[counter] = (surface - z_min) - k * dz;
+                          counter++;
+                        }
                     }
                 }
             }
-    	  }
-    	  else
-    	  {
+          else
+            {
               for (unsigned int i = 0; i < n_cell_x; ++i)
                 {
                   for (unsigned int j = 0; j < n_cell_y; ++j)
                     {
                       for (unsigned int k = 0; k < n_cell_z; ++k)
                         {
-                    	  // position is defined by the vtk file format
-                    	  // position 0 of this cell
+                          // position is defined by the vtk file format
+                          // position 0 of this cell
                           grid_x[counter] = x_min + i * dx;
                           grid_y[counter] = y_min + j * dy;
                           grid_z[counter] = z_min + k * dz;
                           grid_depth[counter] = (surface - z_min) - k * dz;
                           counter++;
-                    	  // position 1 of this cell
+                          // position 1 of this cell
                           grid_x[counter] = x_min + (i + 1) * dx;
                           grid_y[counter] = y_min + j * dy;
                           grid_z[counter] = z_min + k * dz;
                           grid_depth[counter] = (surface - z_min) - k * dz;
                           counter++;
-                    	  // position 2 of this cell
+                          // position 2 of this cell
                           grid_x[counter] = x_min + (i + 1) * dx;
                           grid_y[counter] = y_min + (j + 1) * dy;
                           grid_z[counter] = z_min + k * dz;
                           grid_depth[counter] = (surface - z_min) - k * dz;
                           counter++;
-                    	  // position 3 of this cell
+                          // position 3 of this cell
                           grid_x[counter] = x_min + i * dx;
                           grid_y[counter] = y_min + (j + 1) * dy;
                           grid_z[counter] = z_min + k * dz;
@@ -444,7 +446,7 @@ int main(int argc, char **argv)
                         }
                     }
                 }
-    	  }
+            }
         }
 
       // compute connectivity. Local to global mapping.
@@ -467,42 +469,42 @@ int main(int argc, char **argv)
         }
       else
         {
-    	  if(compress_size == true)
-    	  {
-          for (unsigned int i = 1; i <= n_cell_x; ++i)
+          if (compress_size == true)
             {
-              for (unsigned int j = 1; j <= n_cell_y; ++j)
+              for (unsigned int i = 1; i <= n_cell_x; ++i)
                 {
-                  for (unsigned int k = 1; k <= n_cell_z; ++k)
+                  for (unsigned int j = 1; j <= n_cell_y; ++j)
                     {
-                      grid_connectivity[counter][0] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j - 1) + k - 1;
-                      grid_connectivity[counter][1] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j - 1) + k - 1;
-                      grid_connectivity[counter][2] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j    ) + k - 1;
-                      grid_connectivity[counter][3] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j    ) + k - 1;
-                      grid_connectivity[counter][4] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j - 1) + k;
-                      grid_connectivity[counter][5] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j - 1) + k;
-                      grid_connectivity[counter][6] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j    ) + k;
-                      grid_connectivity[counter][7] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j    ) + k;
-                      counter++;
+                      for (unsigned int k = 1; k <= n_cell_z; ++k)
+                        {
+                          grid_connectivity[counter][0] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j - 1) + k - 1;
+                          grid_connectivity[counter][1] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j - 1) + k - 1;
+                          grid_connectivity[counter][2] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j    ) + k - 1;
+                          grid_connectivity[counter][3] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j    ) + k - 1;
+                          grid_connectivity[counter][4] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j - 1) + k;
+                          grid_connectivity[counter][5] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j - 1) + k;
+                          grid_connectivity[counter][6] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j    ) + k;
+                          grid_connectivity[counter][7] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j    ) + k;
+                          counter++;
+                        }
                     }
                 }
             }
-        }
-      else
-      {
-    	  for(unsigned int i = 0; i < n_cell; ++i)
-    	  {
-    		  grid_connectivity[i][0] = counter;
-    		  grid_connectivity[i][1] = counter + 1;
-    		  grid_connectivity[i][2] = counter + 2;
-    		  grid_connectivity[i][3] = counter + 3;
-    		  grid_connectivity[i][4] = counter + 4;
-    		  grid_connectivity[i][5] = counter + 5;
-    		  grid_connectivity[i][6] = counter + 6;
-    		  grid_connectivity[i][7] = counter + 7;
-    		  counter = counter + 8;
-    	  }
-      }
+          else
+            {
+              for (unsigned int i = 0; i < n_cell; ++i)
+                {
+                  grid_connectivity[i][0] = counter;
+                  grid_connectivity[i][1] = counter + 1;
+                  grid_connectivity[i][2] = counter + 2;
+                  grid_connectivity[i][3] = counter + 3;
+                  grid_connectivity[i][4] = counter + 4;
+                  grid_connectivity[i][5] = counter + 5;
+                  grid_connectivity[i][6] = counter + 6;
+                  grid_connectivity[i][7] = counter + 7;
+                  counter = counter + 8;
+                }
+            }
         }
     }
   else if (grid_type == "annulus")
@@ -608,7 +610,10 @@ int main(int argc, char **argv)
       double opening_angle_lat_rad =  (y_max - y_min);
 
       n_cell = n_cell_x * n_cell_y * (dim == 3 ? n_cell_z : 1.0);
-      n_p = (n_cell_x + 1) * (n_cell_y + 1) * (dim == 3 ? (n_cell_z + 1) : 1.0);
+      if (compress_size == false && dim == 3)
+        n_p = n_cell * 8 ; // it shouldn't matter for 2d in the output, so just do 3d.
+      else
+        n_p = (n_cell_x + 1) * (n_cell_z + 1) * (dim == 3 ? (n_cell_y + 1) : 1.0);
 
       double dlong = opening_angle_long_rad / n_cell_x;
       double dlat = opening_angle_lat_rad / n_cell_y;
@@ -622,16 +627,81 @@ int main(int argc, char **argv)
 
 
       unsigned int counter = 0;
-      for (unsigned int i = 1; i <= n_cell_x + 1; ++i)
-        for (unsigned int j = 1; j <= n_cell_y + 1; ++j)
-          for (unsigned int k = 1; k <= n_cell_z + 1; ++k)
+      if (compress_size == true)
+        {
+          for (unsigned int i = 1; i <= n_cell_x + 1; ++i)
+            for (unsigned int j = 1; j <= n_cell_y + 1; ++j)
+              for (unsigned int k = 1; k <= n_cell_z + 1; ++k)
+                {
+                  grid_x[counter] = x_min + (i-1) * dlong;
+                  grid_y[counter] = y_min + (j-1) * dlat;
+                  grid_z[counter] = inner_radius + (k-1) * dr;
+                  grid_depth[counter] = lr - (k-1) * dr;
+                  counter++;
+                }
+        }
+      else
+        {
+          for (unsigned int i = 0; i < n_cell_x; ++i)
             {
-              grid_x[counter] = x_min + (i-1) * dlong;
-              grid_y[counter] = y_min + (j-1) * dlat;
-              grid_z[counter] = inner_radius + (k-1) * dr;
-              grid_depth[counter] = lr - (k-1) * dr;
-              counter++;
+              for (unsigned int j = 0; j < n_cell_y; ++j)
+                {
+                  for (unsigned int k = 0; k < n_cell_z; ++k)
+                    {
+                      // position is defined by the vtk file format
+                      // position 0 of this cell
+                      grid_x[counter] = x_min + i * dlong;
+                      grid_y[counter] = y_min + j * dlat;
+                      grid_z[counter] = inner_radius + k * dr;
+                      grid_depth[counter] = lr - k * dr;
+                      counter++;
+                      // position 1 of this cell
+                      grid_x[counter] = x_min + (i + 1) * dlong;
+                      grid_y[counter] = y_min + j * dlat;
+                      grid_z[counter] = inner_radius + k * dr;
+                      grid_depth[counter] = lr - k * dr;
+                      counter++;
+                      // position 2 of this cell
+                      grid_x[counter] = x_min + (i + 1) * dlong;
+                      grid_y[counter] = y_min + (j + 1) * dlat;
+                      grid_z[counter] = inner_radius + k * dr;
+                      grid_depth[counter] = lr - k * dr;
+                      counter++;
+                      // position 3 of this cell
+                      grid_x[counter] = x_min + i * dlong;
+                      grid_y[counter] = y_min + (j + 1) * dlat;
+                      grid_z[counter] = inner_radius + k * dr;
+                      grid_depth[counter] = lr - k * dr;
+                      counter++;
+                      // position 0 of this cell
+                      grid_x[counter] = x_min + i * dlong;
+                      grid_y[counter] = y_min + j * dlat;
+                      grid_z[counter] = inner_radius + (k + 1) * dr;
+                      grid_depth[counter] = lr - (k + 1) * dr;
+                      counter++;
+                      // position 1 of this cell
+                      grid_x[counter] = x_min + (i + 1) * dlong;
+                      grid_y[counter] = y_min + j * dlat;
+                      grid_z[counter] = inner_radius + (k + 1) * dr;
+                      grid_depth[counter] = lr - (k + 1) * dr;
+                      counter++;
+                      // position 2 of this cell
+                      grid_x[counter] = x_min + (i + 1) * dlong;
+                      grid_y[counter] = y_min + (j + 1) * dlat;
+                      grid_z[counter] = inner_radius + (k + 1) * dr;
+                      grid_depth[counter] = lr - (k + 1) * dr;
+                      counter++;
+                      // position 3 of this cell
+                      grid_x[counter] = x_min + i * dlong;
+                      grid_y[counter] = y_min + (j + 1) * dlat;
+                      grid_z[counter] = inner_radius + (k + 1) * dr;
+                      grid_depth[counter] = lr - (k + 1) * dr;
+                      WBAssert(counter < n_p, "Assert counter smaller then n_P: counter = " << counter << ", n_p = " << n_p);
+                      counter++;
+                    }
+                }
             }
+        }
 
       for (unsigned int i = 0; i < n_p; ++i)
         {
@@ -650,22 +720,40 @@ int main(int argc, char **argv)
       grid_connectivity.resize(n_cell,std::vector<unsigned int>(8));
 
       counter = 0;
-      for (unsigned int i = 1; i <= n_cell_x; ++i)
+      if (compress_size == true)
         {
-          for (unsigned int j = 1; j <= n_cell_y; ++j)
+          for (unsigned int i = 1; i <= n_cell_x; ++i)
             {
-              for (unsigned int k = 1; k <= n_cell_z; ++k)
+              for (unsigned int j = 1; j <= n_cell_y; ++j)
                 {
-                  grid_connectivity[counter][0] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j - 1) + k - 1;
-                  grid_connectivity[counter][1] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j - 1) + k - 1;
-                  grid_connectivity[counter][2] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j    ) + k - 1;
-                  grid_connectivity[counter][3] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j    ) + k - 1;
-                  grid_connectivity[counter][4] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j - 1) + k;
-                  grid_connectivity[counter][5] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j - 1) + k;
-                  grid_connectivity[counter][6] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j    ) + k;
-                  grid_connectivity[counter][7] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j    ) + k;
-                  counter++;
+                  for (unsigned int k = 1; k <= n_cell_z; ++k)
+                    {
+                      grid_connectivity[counter][0] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j - 1) + k - 1;
+                      grid_connectivity[counter][1] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j - 1) + k - 1;
+                      grid_connectivity[counter][2] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j    ) + k - 1;
+                      grid_connectivity[counter][3] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j    ) + k - 1;
+                      grid_connectivity[counter][4] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j - 1) + k;
+                      grid_connectivity[counter][5] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j - 1) + k;
+                      grid_connectivity[counter][6] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j    ) + k;
+                      grid_connectivity[counter][7] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j    ) + k;
+                      counter++;
+                    }
                 }
+            }
+        }
+      else
+        {
+          for (unsigned int i = 0; i < n_cell; ++i)
+            {
+              grid_connectivity[i][0] = counter;
+              grid_connectivity[i][1] = counter + 1;
+              grid_connectivity[i][2] = counter + 2;
+              grid_connectivity[i][3] = counter + 3;
+              grid_connectivity[i][4] = counter + 4;
+              grid_connectivity[i][5] = counter + 5;
+              grid_connectivity[i][6] = counter + 6;
+              grid_connectivity[i][7] = counter + 7;
+              counter = counter + 8;
             }
         }
     }
@@ -1092,15 +1180,15 @@ int main(int argc, char **argv)
 
   myfile << "  <PointData Scalars=\"scalars\">" << std::endl;
 
-  /*myfile << "<DataArray type=\"Float32\" Name=\"Depth\" format=\"ascii\">" << std::endl;
+  myfile << "<DataArray type=\"Float32\" Name=\"Depth\" format=\"ascii\">" << std::endl;
 
   for (unsigned int i = 0; i < n_p; ++i)
     {
       myfile <<  grid_depth[i] << std::endl;
     }
-  myfile << "</DataArray>" << std::endl;*/
+  myfile << "</DataArray>" << std::endl;
 
-  myfile << "    <DataArray type=\"Float32\" Name=\"T\" format=\"ascii\">" << std::endl;
+  myfile << "    <DataArray type=\"Float32\" Name=\"Temperature\" format=\"ascii\">" << std::endl;
   if (dim == 2)
     {
       for (unsigned int i = 0; i < n_p; ++i)
@@ -1119,7 +1207,7 @@ int main(int argc, char **argv)
     }
   myfile << "    </DataArray>" << std::endl;
 
-  /*for (unsigned int c = 0; c < compositions; ++c)
+  for (unsigned int c = 0; c < compositions; ++c)
     {
       myfile << "<DataArray type=\"Float32\" Name=\"Composition " << c << "\" Format=\"ascii\">" << std::endl;
       if (dim == 2)
@@ -1139,7 +1227,7 @@ int main(int argc, char **argv)
             }
         }
       myfile << "</DataArray>" << std::endl;
-    }*/
+    }
 
   myfile << "  </PointData>" << std::endl;
 

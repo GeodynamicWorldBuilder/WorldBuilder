@@ -237,11 +237,11 @@ namespace WorldBuilder
                   else
                     Pb = segment_point0 + (c1 / c2) * v;
 
-                  Point<3> compare_point(Pb[0],Pb[1],natural_coordinate.get_coordinates()[2], coordinate_system);
+                  Point<3> compare_point(coordinate_system);
 
-                  //std::cout << "compare_point = " << compare_point[0] << ":" << compare_point[1] << ":" << compare_point[2]
-					//		<< ", natural_coordinate.get_coordinates() = " << natural_coordinate.get_coordinates()[0] << ":" << natural_coordinate.get_coordinates()[1] << ":" << natural_coordinate.get_coordinates()[2]
-						//	<< ", distance ridge = " << this->world->parameters.coordinate_system->distance_between_points_at_same_depth(Point<3>(natural_coordinate.get_coordinates(),natural_coordinate.get_coordinate_system()),compare_point) << std::endl;
+                  compare_point[0] = coordinate_system == cartesian ? Pb[0] :  natural_coordinate.get_depth_coordinate();
+                  compare_point[1] = coordinate_system == cartesian ? Pb[1] : Pb[0];
+                  compare_point[2] = coordinate_system == cartesian ? natural_coordinate.get_depth_coordinate() : Pb[1];
 
                   distance_ridge = std::min(distance_ridge,this->world->parameters.coordinate_system->distance_between_points_at_same_depth(Point<3>(natural_coordinate.get_coordinates(),natural_coordinate.get_coordinate_system()),compare_point));
 
@@ -254,16 +254,6 @@ namespace WorldBuilder
               const double age = distance_ridge / spreading_velocity;
               temperature = top_temperature + (bottom_temperature - top_temperature) * (depth / max_depth);
 
-              /*for (int i = 1; i<sommation_number+1; ++i)
-                {
-                  temperature = temperature + (bottom_temperature - top_temperature) *
-                                ((2 / (double(i) * M_PI)) * std::sin((double(i) * M_PI * depth) / max_depth) *
-                                 std::exp((((spreading_velocity * max_depth)/(2 * thermal_diffusivity)) -
-                                           std::sqrt(((spreading_velocity*spreading_velocity*max_depth*max_depth) /
-                                                      (4*thermal_diffusivity*thermal_diffusivity)) + double(i) * double(i) * M_PI * M_PI)) *
-                                          ((spreading_velocity * age) / max_depth)));
-                }*/
-
               for (int i = 1; i<sommation_number+1; ++i)
                 {
                   temperature = temperature + (bottom_temperature - top_temperature) *
@@ -275,9 +265,6 @@ namespace WorldBuilder
 
                 }
 
-              //std::cout << "top_temperature = " << top_temperature<< ", bottom_temperature = " << bottom_temperature
-            	//	  << ", age = " << age << ", temp = " << temperature << ", distance_ridge = " << distance_ridge
-				//	  << ", spreading_velocity = " << spreading_velocity << ", depth = " << depth << std::endl;
               return temperature;
             }
 
