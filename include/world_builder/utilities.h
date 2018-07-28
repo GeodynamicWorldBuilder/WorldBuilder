@@ -232,6 +232,11 @@ namespace WorldBuilder
      * screen.
      */
     std::stringstream print_tree (const ptree &pt, int level);
+
+    /**
+     * Cross product between two 3d points.
+     */
+    Point<3> cross_product(const Point<3> &a, const Point<3> &b);
   }
 }
 

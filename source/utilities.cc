@@ -507,6 +507,15 @@ namespace WorldBuilder
       return ss;
     }
 
+    Point<3> cross_product(const Point<3> &a, const Point<3> &b)
+    {
+      WBAssert(a.get_coordinate_system() == b.get_coordinate_system(), "Trying to do a cross product of points of a different coordinate system.");
+      const double x = a[1] * b[2] - b[1] * a[2];
+      const double y = a[2] * b[0] - b[2] * a[0];
+      const double z = a[0] * b[1] - b[0] * a[1];
+      return Point<3>(x,y,z,a.get_coordinate_system());
+    }
+
     template const std::array<double,2> convert_point_to_array<2>(const Point<2> &point_);
     template const std::array<double,3> convert_point_to_array<3>(const Point<3> &point_);
   }
