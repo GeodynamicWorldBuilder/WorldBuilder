@@ -646,8 +646,6 @@ namespace WorldBuilder
     return collapse.substr(0,collapse.size()-path_seperator.size());
   }
 
-  template Point<2> Parameters::get_point<2>(const std::string &name) const;
-  template Point<3> Parameters::get_point<3>(const std::string &name) const;
   template const std::vector<const Types::Double * > Parameters::get_array<const Types::Double >(const std::string &name) const;
   template const std::vector<const Types::Point<2>* > Parameters::get_array<const Types::Point<2> >(const std::string &name) const;
   template const std::vector<const Types::Point<3>* > Parameters::get_array<const Types::Point<3> >(const std::string &name) const;
