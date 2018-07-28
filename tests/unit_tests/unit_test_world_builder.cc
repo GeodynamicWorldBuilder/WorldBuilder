@@ -63,6 +63,21 @@ inline void compare_vectors_approx(
     }
 }
 
+/**
+ * Compare the given two std::array<double,3> entries with an epsilon (using Catch::Approx)
+ */
+inline void compare_3d_arrays_approx(
+  const std::array<double,3> &computed,
+  const std::array<double,3> &expected)
+{
+  CHECK(computed.size() == expected.size());
+  for (unsigned int i=0; i< computed.size(); ++i)
+    {
+      INFO("vector index i=" << i << ": ");
+      CHECK(computed[i] == Approx(expected[i]));
+    }
+}
+
 
 TEST_CASE("WorldBuilder Point: Testing initialize and operators")
 {
@@ -376,6 +391,53 @@ TEST_CASE("WorldBuilder Utilities: ptree function")
   CHECK(Utilities::string_to_double(Utilities::get_from_ptree(tree, "pi", "value", true, ".").get()) == Approx(3.14159));
   CHECK_THROWS_WITH(Utilities::get_from_ptree(tree, "pi", "value_pi", true, "."),
                     Contains("Entry undeclared: pi.value_pi"));
+}
+
+TEST_CASE("WorldBuilder Utilities: cross product")
+{
+  const Point<3> unit_x(1,0,0,cartesian);
+  const Point<3> unit_y(0,1,0,cartesian);
+  const Point<3> unit_z(0,0,1,cartesian);
+
+  compare_3d_arrays_approx(Utilities::cross_product(unit_x, unit_x).get_array(), std::array<double,3> {0,0,0});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_x, unit_y).get_array(), std::array<double,3> {0,0,1});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_x, unit_z).get_array(), std::array<double,3> {0,-1,0});
+
+  compare_3d_arrays_approx(Utilities::cross_product(unit_y, unit_x).get_array(), std::array<double,3> {0,0,-1});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_y, unit_y).get_array(), std::array<double,3> {0,0,0});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_y, unit_z).get_array(), std::array<double,3> {1,0,0});
+
+  compare_3d_arrays_approx(Utilities::cross_product(unit_z, unit_x).get_array(), std::array<double,3> {0,1,0});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_z, unit_y).get_array(), std::array<double,3> {-1,0,0});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_z, unit_z).get_array(), std::array<double,3> {0,0,0});
+
+
+  const double sqrt2 = sqrt(0.5);
+  const Point<3> sqrt2_x(sqrt2,0,0,cartesian);
+  const Point<3> sqrt2_y(0,sqrt2,0,cartesian);
+  const Point<3> sqrt2_z(0,0,sqrt2,cartesian);
+
+  const Point<3> unit_xy(sqrt2,sqrt2,0,cartesian);
+  const Point<3> unit_xz(sqrt2,0,sqrt2,cartesian);
+  const Point<3> unit_yz(0,sqrt2,sqrt2,cartesian);
+
+  compare_3d_arrays_approx(Utilities::cross_product(unit_xy, sqrt2_x).get_array(), std::array<double,3> {0,0,-0.5});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_xy, sqrt2_y).get_array(), std::array<double,3> {0,0,0.5});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_xy, sqrt2_z).get_array(), std::array<double,3> {0.5,-0.5,0});
+
+  compare_3d_arrays_approx(Utilities::cross_product(unit_xz, sqrt2_x).get_array(), std::array<double,3> {0,0.5,0});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_xz, sqrt2_y).get_array(), std::array<double,3> {-0.5,0,0.5});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_xz, sqrt2_z).get_array(), std::array<double,3> {0,-0.5,0});
+
+  compare_3d_arrays_approx(Utilities::cross_product(unit_yz, sqrt2_x).get_array(), std::array<double,3> {0,0.5,-0.5});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_yz, sqrt2_y).get_array(), std::array<double,3> {-0.5,0,0});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_yz, sqrt2_z).get_array(), std::array<double,3> {0.5,0,0});
+
+  const Point<3> point1(2,3,4,cartesian);
+  const Point<3> point2(5,6,7,cartesian);
+
+  compare_3d_arrays_approx(Utilities::cross_product(point1, point2).get_array(), std::array<double,3> {-3,6,-3});
+  compare_3d_arrays_approx(Utilities::cross_product(point2, point1).get_array(), std::array<double,3> {3,-6,3});
 }
 
 TEST_CASE("WorldBuilder C wrapper")
