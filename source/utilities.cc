@@ -19,9 +19,10 @@
 
 #include <boost/lexical_cast.hpp>
 
-#include <world_builder/utilities.h>
 #include <world_builder/assert.h>
 #include <world_builder/coordinate_systems/interface.h>
+#include <world_builder/nan.h>
+#include <world_builder/utilities.h>
 
 
 namespace WorldBuilder
@@ -507,13 +508,172 @@ namespace WorldBuilder
       return ss;
     }
 
-    Point<3> cross_product(const Point<3> &a, const Point<3> &b)
+    Point<3>
+    cross_product(const Point<3> &a, const Point<3> &b)
     {
       WBAssert(a.get_coordinate_system() == b.get_coordinate_system(), "Trying to do a cross product of points of a different coordinate system.");
       const double x = a[1] * b[2] - b[1] * a[2];
       const double y = a[2] * b[0] - b[2] * a[0];
       const double z = a[0] * b[1] - b[0] * a[1];
       return Point<3>(x,y,z,a.get_coordinate_system());
+    }
+
+    std::map<std::string,double>
+    distance_point_from_curved_planes(const Point<3> &point,
+                                      const std::vector<Point<2> > &point_list,
+                                      const std::vector<double> &global_x_list,
+                                      const std::vector<Point<3> > &reference_point,
+                                      const std::vector<std::vector<Point<2> > > &plane_segment_angles,
+                                      const std::vector<std::vector<Point<2> > > &plane_segment_lengths,
+                                      const double start_radius,
+                                      const CoordinateSystems::Interface &coordinate_system,
+                                      const bool only_positive)
+    {
+      double distance = INFINITY;
+      double distance_new = NaN::DSNAN;
+      double along_plane_distance = INFINITY;
+      double along_plane_distance_new  = NaN::DSNAN;
+
+      const CoordinateSystem natural_coordinate_system = coordinate_system.natural_coordinate_system();
+
+      const Point<3> check_point(point);
+      // We need this in cartesian coordinates, see explination at the creation
+      // of check_point_pushed.
+      const Point<3> down = natural_coordinate_system == cartesian
+                            ?
+                            Point<3>(0,0,-1,cartesian)
+                            :
+                            coordinate_system.natural_to_cartesian_coordinates(point * -1);
+
+      double fraction = 0;
+      unsigned int section = 0;
+      unsigned int segment = 0;
+
+      //const double start_radius = geometry_model->maximal_depth()-start_depth;
+      // todo: the point variable contains the radius, so adding the depth to that should give the max depth
+
+      // loop over all the planes to find out which one is closest to the point.
+      for (unsigned int i_plane=0; i_plane<point_list.size()-1; ++i_plane)
+        {
+          /**
+           * find what section of planes we are in. A section the original point distribution, and consist of planes
+           * made through the above cut up/refinement. Each 'plane' can consist of several segments into the depth.
+           * The global_x_list has to do with splines. Every 'original' point is an integer, all the added points are
+           * in between those integers. Plane and section seem interchangeable, might merge names in the future.
+           */
+          double d_fraction = global_x_list[i_plane];
+          const unsigned int i_section = (unsigned int)(std::floor(d_fraction));
+          d_fraction = d_fraction - i_section;
+
+          // The last section should use the previous angles
+          // if there is only one segment, use that for both the current and next segment.
+          const unsigned int current_section =  plane_segment_lengths.size() == 1
+                                                ?
+                                                0
+                                                :
+                                                (i_section != plane_segment_lengths.size()-1 ? i_section : i_section-1);
+
+          const unsigned int next_section = plane_segment_lengths.size() == 1
+                                            ?
+                                            0
+                                            :
+                                            (i_section != plane_segment_lengths.size()-1 ? i_section+1 : i_section);
+
+          // The order of a Cartesian coordinate is x,y,z and the order of a spherical coordinate it radius, long, lat (in rad).
+          const Point<3> P1(natural_coordinate_system == cartesian ? point_list[i_plane][0] : start_radius,
+                            natural_coordinate_system == cartesian ? point_list[i_plane][1] : point_list[i_plane][0],
+                            natural_coordinate_system == cartesian ? start_radius : point_list[i_plane][1]);
+
+          const Point<3> P2(natural_coordinate_system == cartesian ? point_list[i_plane+1][0] : start_radius,
+                            natural_coordinate_system == cartesian ? point_list[i_plane+1][1] : point_list[i_plane+1][0],
+                            natural_coordinate_system == cartesian ? start_radius : point_list[i_plane+1][1]);
+
+          const Point<3> reference_point_cart(natural_coordinate_system == cartesian ? reference_point[current_section][0] : start_radius,
+                                              natural_coordinate_system == cartesian ? reference_point[current_section][1] : reference_point[current_section][0],
+                                              natural_coordinate_system == cartesian ? start_radius : reference_point[current_section][1]);
+
+          // We first need to determine which way the plane is pointing to.
+          // To this end, we use a reference point given by the user. The
+          // plane goes down in the direction of the reference point. We
+          // adjust the angle for this.
+
+
+          // Turn it into x,y,z space so that meaningful distances can be
+          // computed (in meters). Even in spherical coordinates, we do not
+          // care about the distance along a surface since material and
+          // heat can move in all directions, analogous to that for
+          // example all computations in the ASPECT geodynamics FEM are
+          // computed in Cartesian coordinates, even for a sphere. This means
+          // that a given thickness will always stay the same no matter the
+          // depth. This seems the logical choice to me since otherwise mass
+          // of the fault or slab would be lost in the depth, when
+          // compressiblity is ignored. If one want to make sure the thickness
+          // is consistent with compressibility, that should be done by the
+          // user, who also should make sure that the density is increased
+          // accordingly in their application. It might be possible to in the
+          // future automatically adjust the thickness based on the
+          // compressiblity. One important thing is that the gravity vector in
+          // spherical coordinates is constant, but it isn't when converted to
+          // cartesian coordinates.
+          const Point<3> check_point_pushed = coordinate_system.natural_to_cartesian_coordinates(check_point);
+          Point<3> P1_pushed          = coordinate_system.natural_to_cartesian_coordinates(P1);
+          Point<3> P2_pushed          = coordinate_system.natural_to_cartesian_coordinates(P2);
+
+          // compute on what side of the line between p1 and p2 the reference
+          // point is located. This is done in the natural surface coordinates.
+          // This means that in spherical coordinates we check this for
+          // longitude and latitude. This should be the most correct way of
+          // computing this.
+          const double reference_on_side_of_line =   (point_list[i_plane+1][0] - point_list[i_plane][0]) * (reference_point[current_section][1] - point_list[i_plane][1])
+                                                     - (point_list[i_plane+1][1] - point_list[i_plane][1]) * (reference_point[current_section][0] - point_list[i_plane][0]);
+          //const Point<3> reference_point_cart_pushed = coordinate_system.natural_to_cartesian_coordinates(reference_point_cart);
+
+          double total_length = 0;
+          for (unsigned int i_segment = 0; i_segment < plane_segment_lengths[current_section].size(); i_segment++)
+            {
+              // We are now computing the distance of the check point to this segment.
+              // do linear interpolation for the angle and length
+              const double interpolated_angle_0 = plane_segment_angles[current_section][i_segment](0) +
+                                                  d_fraction * (plane_segment_angles[next_section][i_segment](0) - plane_segment_angles[current_section][i_segment](0));
+              const double interpolated_angle_1 = plane_segment_angles[current_section][i_segment](1) +
+                                                  d_fraction * (plane_segment_angles[next_section][i_segment](1) - plane_segment_angles[current_section][i_segment](1));
+              double plane_segment_length       = plane_segment_lengths[current_section][i_segment](0) +
+                                                  d_fraction*(plane_segment_lengths[next_section][i_segment](0) - plane_segment_lengths[current_section][i_segment](0));
+              double angle_corrected            = 90-interpolated_angle_0;
+
+              const Point<3> P1P2 = P2_pushed - P1_pushed;
+              const Point<3> P1CP = check_point_pushed - P1_pushed;
+
+
+
+              // For spherical P1 and P1P2 are both vectors coming from the center of the
+              // Earth, and the cross product therefore gives a vector tangential to the
+              // surface. For a box type model, the surface tangential we need
+              Point<3> surface_tangential = Utilities::cross_product(gravity_vector, P1P2);
+              WBAssert(surface_tangential.norm() != 0,
+                       "surface_tangential.norm() is zero, which should not happen. Surface_tangential = "
+                       << surface_tangential[0] + "," + surface_tangential[1] << "," << surface_tangential[2]);
+              //const double reference_on_side_of_line = ((surface_tangential)/(surface_tangential).norm()) * (reference_point_cart_pushed - P1_pushed);
+
+              // if reference point (vector) is not on the same (pointing to the same) side as the normal. Flip the normal
+              if (reference_on_side_of_line < 0)
+                {
+                  angle_corrected = -(90-interpolated_angle_0);
+                }
+              else
+                {
+                  surface_tangential = dealii::cross_product_3d(P1P2,gravity_vector);//spherical_coords ?
+                }
+
+              // find the normal to the defined segment plane
+              // We rotate the normal to the line P1 - P2 to get the normal of this plate
+              // The code for the rotation matrix and multiplying the matrix is based on http://www.programming-techniques.com/2012/03/3d-rotation-algorithm-about-arbitrary.html
+              // Find the rotation matrix.
+              const double inputMatrix[4] = {surface_tangential[0], surface_tangential[1], surface_tangential[2], 1};
+              double outputMatrix[4] = { };
+
+            }
+        }
     }
 
     template const std::array<double,2> convert_point_to_array<2>(const Point<2> &point_);

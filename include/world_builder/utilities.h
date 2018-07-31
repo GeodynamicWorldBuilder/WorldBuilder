@@ -21,6 +21,7 @@
 #define _world_builder_utilities_h
 
 #include <vector>
+#include <map>
 
 #include <boost/property_tree/json_parser.hpp>
 
@@ -237,6 +238,21 @@ namespace WorldBuilder
      * Cross product between two 3d points.
      */
     Point<3> cross_product(const Point<3> &a, const Point<3> &b);
+
+    /**
+     * Computes the distance of a point to a curved plane.
+     * TODO: add more info on how this works/is implemented.
+     * \param point This is the point of which we want to know the distance to the curved planes
+     * \param point_list This is a list of 2d Points
+     */
+    std::map<std::string,double> distance_point_from_curved_planes(const Point<3> &point,
+                                                                   const std::vector<Point<2> > &point_list,
+                                                                   const std::vector<Point<3> > &reference_point,
+                                                                   const std::vector<std::vector<Point<2> > > &plane_segment_angles,
+                                                                   const std::vector<std::vector<Point<2> > > &plane_segment_lengths,
+                                                                   const double start_depth,
+                                                                   const CoordinateSystems::Interface &coordinate_system,
+                                                                   const bool only_positive);
   }
 }
 
