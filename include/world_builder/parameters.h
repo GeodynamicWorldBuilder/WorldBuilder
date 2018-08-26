@@ -30,6 +30,7 @@
 #include <world_builder/types/unsigned_int.h>
 #include <world_builder/types/double.h>
 #include <world_builder/types/string.h>
+#include <world_builder/types/segment.h>
 #include <world_builder/types/point.h>
 #include <world_builder/types/array.h>
 #include <world_builder/types/list.h>
@@ -154,7 +155,7 @@ namespace WorldBuilder
       double get_double(const std::string &name) const;
 
       /**
-       * This function retrieves astring from the parameter class with
+       * This function retrieves a string from the parameter class with
        * the key in variable name, based on the path. Note the path rules for
        * called classes explained in the parameter class explanation.
        * \param name The key where the variable is stored.
@@ -162,6 +163,7 @@ namespace WorldBuilder
       std::string get_string(const std::string &name) const;
 
       // get_array(const std::string& name);
+
 
       /**
        * This function retrieves a point from the parameter class with
@@ -262,10 +264,20 @@ namespace WorldBuilder
        * retrieved with the help of the string_to_type_map and the
        * get_string() function.
        * @see string_to_type_map
-       * @see get_unsigned_int()
-       * @see Types::UnsignedInt
+       * @see get_string()
+       * @see Types::String
        */
       std::vector<Types::String> vector_string;
+
+      /**
+       * A vector which stores all the Sgment types. These can be
+       * retrieved with the help of the string_to_type_map and the
+       * get_segment() function.
+       * @see string_to_type_map
+       * @see get_segment()
+       * @see Types::Segment
+       */
+      std::vector<Types::Segment> vector_segment;
 
       /**
        * A vector which stores all the Array types. These can be

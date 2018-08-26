@@ -172,7 +172,7 @@ int main(int argc, char **argv)
     }
   catch (std::exception &e)
     {
-      std::cerr << "Could not start the World builder, error: " << e.what() << "\n";
+      std::cerr << "Could not start the World builder from file '" << wb_file << "', error: " << e.what() << "\n";
       return 1;
     }
   catch (...)

@@ -86,6 +86,11 @@ namespace WorldBuilder
       Point<dim> operator*(const double scalar) const;
 
       /**
+       * Divide the vector through a scalar
+       */
+      Point<dim> operator/(const double scalar) const;
+
+      /**
        * add two points
        */
       Point<dim> operator+(const Point<dim> &point) const;
@@ -102,6 +107,11 @@ namespace WorldBuilder
        * Multiply the vector with a scalar
        */
       Point<dim> &operator*=(const double scalar);
+
+      /**
+       * Divide the vector through a scalar
+       */
+      Point<dim> &operator/=(const double scalar);
 
       /**
        * add two points
@@ -159,5 +169,8 @@ namespace WorldBuilder
 
   template<int dim>
   Point<dim> operator*(const double scalar, const Point<dim> &point);
+
+  template<int dim>
+  Point<dim> operator/(const double scalar, const Point<dim> &point);
 }
 #endif

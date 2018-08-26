@@ -519,161 +519,282 @@ namespace WorldBuilder
     }
 
     std::map<std::string,double>
-    distance_point_from_curved_planes(const Point<3> &point,
+    distance_point_from_curved_planes(const Point<3> &check_point,
+                                      const Point<2> &reference_point,
                                       const std::vector<Point<2> > &point_list,
-                                      const std::vector<double> &global_x_list,
-                                      const std::vector<Point<3> > &reference_point,
+                                      const std::vector<std::vector<double> > &plane_segment_lengths,
                                       const std::vector<std::vector<Point<2> > > &plane_segment_angles,
-                                      const std::vector<std::vector<Point<2> > > &plane_segment_lengths,
                                       const double start_radius,
-                                      const CoordinateSystems::Interface &coordinate_system,
+                                      const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                       const bool only_positive)
     {
+      // TODO: Assert that point_list, plane_segment_angles and plane_segment_lenghts have the same size.
       double distance = INFINITY;
-      double distance_new = NaN::DSNAN;
+      double new_distance = NaN::DSNAN;
       double along_plane_distance = INFINITY;
-      double along_plane_distance_new  = NaN::DSNAN;
+      double new_along_plane_distance  = NaN::DSNAN;
 
-      const CoordinateSystem natural_coordinate_system = coordinate_system.natural_coordinate_system();
+      const CoordinateSystem natural_coordinate_system = coordinate_system->natural_coordinate_system();
+      const bool bool_cartesian = natural_coordinate_system == cartesian;
 
-      const Point<3> check_point(point);
-      // We need this in cartesian coordinates, see explination at the creation
-      // of check_point_pushed.
-      const Point<3> down = natural_coordinate_system == cartesian
-                            ?
-                            Point<3>(0,0,-1,cartesian)
-                            :
-                            coordinate_system.natural_to_cartesian_coordinates(point * -1);
+      //const Point<3> check_point(point);
+      const double check_point_depth = natural_coordinate_system == cartesian ? start_radius - check_point[2] : start_radius - check_point[0];
 
-      double fraction = 0;
-      unsigned int section = 0;
+      const Point<3> check_point_surface(bool_cartesian ? check_point[0]     : start_radius,
+                                         bool_cartesian ? check_point[1]     : check_point[1],
+                                         bool_cartesian ? start_radius : check_point[2],
+                                         natural_coordinate_system);
+
+      std::cout << "check_point_surface = " << check_point_surface[0] << ":" << check_point_surface[1] << ":" << check_point_surface[2] << std::endl;
+      // The section which is checked.
+      double section = 0;
+
+      // The 'horizontal' fraction between the points at the surface.
+      double section_fraction = 0;
+
+      // What segment the point on the line is in.
       unsigned int segment = 0;
 
-      //const double start_radius = geometry_model->maximal_depth()-start_depth;
-      // todo: the point variable contains the radius, so adding the depth to that should give the max depth
+      // The 'vertical' fraction, indicates how far in the current segment the
+      // point on the line is.
+      double segment_fraction = 0;
+
+      const DepthMethod depth_method = coordinate_system->depth_method();
+      WBAssertThrow(depth_method == DepthMethod::none
+    		        || depth_method == DepthMethod::angle_at_starting_point_with_surface,
+				    "Only the depth methods none and angle_at_starting_point_with_surface are "
+				    "currently implemented");
 
       // loop over all the planes to find out which one is closest to the point.
-      for (unsigned int i_plane=0; i_plane<point_list.size()-1; ++i_plane)
+      for (unsigned int i_section=0; i_section < point_list.size()-1; ++i_section)
         {
-          /**
-           * find what section of planes we are in. A section the original point distribution, and consist of planes
-           * made through the above cut up/refinement. Each 'plane' can consist of several segments into the depth.
-           * The global_x_list has to do with splines. Every 'original' point is an integer, all the added points are
-           * in between those integers. Plane and section seem interchangeable, might merge names in the future.
-           */
-          double d_fraction = global_x_list[i_plane];
-          const unsigned int i_section = (unsigned int)(std::floor(d_fraction));
-          d_fraction = d_fraction - i_section;
-
-          // The last section should use the previous angles
-          // if there is only one segment, use that for both the current and next segment.
-          const unsigned int current_section =  plane_segment_lengths.size() == 1
-                                                ?
-                                                0
-                                                :
-                                                (i_section != plane_segment_lengths.size()-1 ? i_section : i_section-1);
-
-          const unsigned int next_section = plane_segment_lengths.size() == 1
-                                            ?
-                                            0
-                                            :
-                                            (i_section != plane_segment_lengths.size()-1 ? i_section+1 : i_section);
-
+    	  const double current_section = i_section;
+    	  const double next_section = i_section+1;
           // The order of a Cartesian coordinate is x,y,z and the order of a spherical coordinate it radius, long, lat (in rad).
-          const Point<3> P1(natural_coordinate_system == cartesian ? point_list[i_plane][0] : start_radius,
-                            natural_coordinate_system == cartesian ? point_list[i_plane][1] : point_list[i_plane][0],
-                            natural_coordinate_system == cartesian ? start_radius : point_list[i_plane][1]);
+          const Point<3> P1(bool_cartesian ? point_list[current_section][0] : start_radius,
+                            bool_cartesian ? point_list[current_section][1] : point_list[current_section][0],
+                            bool_cartesian ? start_radius : point_list[current_section][1],
+                            natural_coordinate_system);
 
-          const Point<3> P2(natural_coordinate_system == cartesian ? point_list[i_plane+1][0] : start_radius,
-                            natural_coordinate_system == cartesian ? point_list[i_plane+1][1] : point_list[i_plane+1][0],
-                            natural_coordinate_system == cartesian ? start_radius : point_list[i_plane+1][1]);
+          const Point<3> P2(bool_cartesian ? point_list[next_section][0] : start_radius,
+                            bool_cartesian ? point_list[next_section][1] : point_list[next_section][0],
+                            bool_cartesian ? start_radius : point_list[next_section][1],
+                            natural_coordinate_system);
 
-          const Point<3> reference_point_cart(natural_coordinate_system == cartesian ? reference_point[current_section][0] : start_radius,
-                                              natural_coordinate_system == cartesian ? reference_point[current_section][1] : reference_point[current_section][0],
-                                              natural_coordinate_system == cartesian ? start_radius : reference_point[current_section][1]);
-
-          // We first need to determine which way the plane is pointing to.
-          // To this end, we use a reference point given by the user. The
-          // plane goes down in the direction of the reference point. We
-          // adjust the angle for this.
+          const Point<3> reference_point_cart(bool_cartesian ? reference_point[0] : start_radius,
+                                              bool_cartesian ? reference_point[1] : reference_point[0],
+                                              bool_cartesian ? start_radius : reference_point[1],
+                                              natural_coordinate_system);
 
 
-          // Turn it into x,y,z space so that meaningful distances can be
-          // computed (in meters). Even in spherical coordinates, we do not
-          // care about the distance along a surface since material and
-          // heat can move in all directions, analogous to that for
-          // example all computations in the ASPECT geodynamics FEM are
-          // computed in Cartesian coordinates, even for a sphere. This means
-          // that a given thickness will always stay the same no matter the
-          // depth. This seems the logical choice to me since otherwise mass
-          // of the fault or slab would be lost in the depth, when
-          // compressiblity is ignored. If one want to make sure the thickness
-          // is consistent with compressibility, that should be done by the
-          // user, who also should make sure that the density is increased
-          // accordingly in their application. It might be possible to in the
-          // future automatically adjust the thickness based on the
-          // compressiblity. One important thing is that the gravity vector in
-          // spherical coordinates is constant, but it isn't when converted to
-          // cartesian coordinates.
-          const Point<3> check_point_pushed = coordinate_system.natural_to_cartesian_coordinates(check_point);
-          Point<3> P1_pushed          = coordinate_system.natural_to_cartesian_coordinates(P1);
-          Point<3> P2_pushed          = coordinate_system.natural_to_cartesian_coordinates(P2);
+          std::cout << "P1 = " << P1[0] << ":" << P1[1] << ":" << P1[2] << std::endl;
 
-          // compute on what side of the line between p1 and p2 the reference
-          // point is located. This is done in the natural surface coordinates.
-          // This means that in spherical coordinates we check this for
-          // longitude and latitude. This should be the most correct way of
-          // computing this.
-          const double reference_on_side_of_line =   (point_list[i_plane+1][0] - point_list[i_plane][0]) * (reference_point[current_section][1] - point_list[i_plane][1])
-                                                     - (point_list[i_plane+1][1] - point_list[i_plane][1]) * (reference_point[current_section][0] - point_list[i_plane][0]);
-          //const Point<3> reference_point_cart_pushed = coordinate_system.natural_to_cartesian_coordinates(reference_point_cart);
+          std::cout << "P2 = " << P2[0] << ":" << P2[1] << ":" << P2[2] << std::endl;
 
+          std::cout << "reference_point_cart = " << reference_point_cart[0] << ":" << reference_point_cart[1] << ":" << reference_point_cart[2] << std::endl;
+
+          const Point<3> P1P2 = P2 - P1;
+          const Point<3> P1PC = check_point_surface - P1;
+
+          std::cout << "P1P2 = " << P1P2[0] << ":" << P1P2[1] << ":" << P1P2[2] << std::endl;
+          std::cout << "P1PC = " << P1PC[0] << ":" << P1PC[1] << ":" << P1PC[2] << std::endl;
+
+          // Compute the closest point on the line P1 to P2 from the check
+          // point at the surface. We do this in natural coordinates on
+          // purpose, because in spherical coordinates it is more accurate.
+          // Todo: used to be 2d result. Now testing whether 3d is fine. Check mathematically later.
+          Point<3> closest_point_on_line = P1 + ((P1PC * P1P2) / (P1P2 * P1P2)) * P1P2;
+          closest_point_on_line[bool_cartesian ? 2 : 0] = start_radius;
+          Point<3> closest_point_on_line_bottom = closest_point_on_line;
+          closest_point_on_line_bottom[bool_cartesian ? 2 : 0] = 0;
+
+
+          std::cout << "closest_point_on_line = " << closest_point_on_line[0] << ":" << closest_point_on_line[1] << ":" << closest_point_on_line[2] << std::endl;
+          std::cout << "closest_point_on_line_bottom = " << closest_point_on_line_bottom[0] << ":" << closest_point_on_line_bottom[1] << ":" << closest_point_on_line_bottom[2] << std::endl;
+          //std::cout << "P1PC = " << P1PC[0] << ":" << P1PC[1] << ":" << P1PC[2] << std::endl;
+
+          // compute what fraction of the distance between P1 and P2 the
+          // closest point lies.
+          const Point<3> P1CPL = closest_point_on_line - P1;
+          const double fraction_CPL_P1P2 = 1 - (P1P2.norm() - P1CPL.norm()) / P1P2.norm();
+
+
+          std::cout << "P1CPL = " << P1CPL[0] << ":" << P1CPL[1] << ":" << P1CPL[2] << std::endl;
+          std::cout << "fraction_CPL_P1P2 = " << fraction_CPL_P1P2 << std::endl;
+
+          // Now that we have both the check point and the
+          // closest_point_on_line, we need to push them to cartesian.
+          const Point<3> check_point_cartesian(coordinate_system->natural_to_cartesian_coordinates(check_point.get_array()),cartesian);
+          const Point<3> check_point_surface_cartesian(coordinate_system->natural_to_cartesian_coordinates(check_point_surface.get_array()),cartesian);
+          const Point<3> closest_point_on_line_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line.get_array()),cartesian);
+          const Point<3> closest_point_on_line_bottom_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_bottom.get_array()),cartesian);
+
+
+          std::cout << "check_point_cartesian = " << check_point_cartesian[0] << ":" << check_point_cartesian[1] << ":" << check_point_cartesian[2] << std::endl;
+          std::cout << "check_point_surface_cartesian = " << check_point_surface_cartesian[0] << ":" << check_point_surface_cartesian[1] << ":" << check_point_surface_cartesian[2] << std::endl;
+          std::cout << "closest_point_on_line_cartesian = " << closest_point_on_line_cartesian[0] << ":" << closest_point_on_line_cartesian[1] << ":" << closest_point_on_line_cartesian[2] << std::endl;
+
+          // The y-axis is from the bottom/center to the closest_point_on_line,
+          // the x-axis is 90 degrees rotated from that, so we rotate around
+          // the line P1P2.
+          // Todo: Assert that the norm of the axis are not equal to zero.
+          Point<3> y_axis = closest_point_on_line_cartesian - closest_point_on_line_bottom_cartesian;
+          y_axis = y_axis / y_axis.norm();
+          const Point<3> normal_to_plane = P1P2 / P1P2.norm();
+
+
+
+          // shorthand notation for computing the x_axis
+          double vx = y_axis[0];
+          double vy = y_axis[1];
+          double vz = y_axis[2];
+          double ux = normal_to_plane[0];
+          double uy = normal_to_plane[1];
+          double uz = normal_to_plane[2];
+
+          Point<3> x_axis(uy*uy*vx + ux*uy*vy - uz*vy + ux*uz*vz + uy*vz,
+        		          uy*ux*vx + uz*vx + uy*uy*vy + uy*uz*vz - ux*vz,
+						  uz*ux*vx - uy*vx + uz*uy*vy + uz*vy + uz*uz*vz,
+						  cartesian);
+
+          std::cout << "x_axis = " << x_axis[0] << ":" << x_axis[1] << ":" << x_axis[2] << std::endl;
+          x_axis = x_axis / x_axis.norm();
+
+
+          std::cout << "x_axis = " << x_axis[0] << ":" << x_axis[1] << ":" << x_axis[2] << std::endl;
+          std::cout << "y_axis = " << y_axis[0] << ":" << y_axis[1] << ":" << y_axis[2] << std::endl;
+          std::cout << "z_axis = " << normal_to_plane[0] << ":" << normal_to_plane[1] << ":" << normal_to_plane[2] << std::endl;
+
+          Point<2> check_point_2d(x_axis * (check_point - closest_point_on_line_bottom),
+        		                  y_axis * (check_point - closest_point_on_line_bottom),
+								  cartesian);
+
+          std::cout << "check_point_2d = " << check_point_2d[0] << ":" << check_point_2d[1]  << std::endl;
+
+          // Radius in this case means height from bottom of the model.
+          const double check_point_radius = start_radius - check_point_depth;
+
+
+          std::cout << "check_point_radius = " << check_point_radius << std::endl;
+
+    	  Point<2> begin_segment(x_axis * (closest_point_on_line - closest_point_on_line_bottom),
+                                 y_axis * (closest_point_on_line - closest_point_on_line_bottom),
+				                 cartesian);
+
+
+          std::cout << "begin_segment = " << begin_segment[0] << ":" << begin_segment[1]  << std::endl;
+
+    	  Point<2> end_segment = begin_segment;
           double total_length = 0;
           for (unsigned int i_segment = 0; i_segment < plane_segment_lengths[current_section].size(); i_segment++)
             {
-              // We are now computing the distance of the check point to this segment.
-              // do linear interpolation for the angle and length
-              const double interpolated_angle_0 = plane_segment_angles[current_section][i_segment](0) +
-                                                  d_fraction * (plane_segment_angles[next_section][i_segment](0) - plane_segment_angles[current_section][i_segment](0));
-              const double interpolated_angle_1 = plane_segment_angles[current_section][i_segment](1) +
-                                                  d_fraction * (plane_segment_angles[next_section][i_segment](1) - plane_segment_angles[current_section][i_segment](1));
-              double plane_segment_length       = plane_segment_lengths[current_section][i_segment](0) +
-                                                  d_fraction*(plane_segment_lengths[next_section][i_segment](0) - plane_segment_lengths[current_section][i_segment](0));
-              double angle_corrected            = 90-interpolated_angle_0;
+        	  const double current_segment = i_segment;
+        	  //const double next_segment = i_segment+1;
 
-              const Point<3> P1P2 = P2_pushed - P1_pushed;
-              const Point<3> P1CP = check_point_pushed - P1_pushed;
+        	  Point<2> begin_segment = end_segment;
+
+        	  // This interpolates different properties between P1 and P2 (the
+        	  // points of the plane at the surface)
+              const double interpolated_angle_top    = plane_segment_angles[current_section][current_segment][0]
+												       + fraction_CPL_P1P2 * (plane_segment_angles[next_section][current_segment][0]
+												                              - plane_segment_angles[current_section][current_segment][0]);
+              const double interpolated_angle_bottom = plane_segment_angles[current_section][current_segment][1]
+                                                       + fraction_CPL_P1P2 * (plane_segment_angles[next_section][current_segment][1]
+                                                                              - plane_segment_angles[current_section][current_segment][1]);
+              double interpolated_segment_length     = plane_segment_lengths[current_section][current_segment]
+                                                       + fraction_CPL_P1P2 * (plane_segment_lengths[next_section][current_segment]
+                                                                              - plane_segment_lengths[current_section][current_segment]);
 
 
+              std::cout << "interpolated_angle_top = " << interpolated_angle_top << std::endl;
+              std::cout << "interpolated_angle_bottom = " << interpolated_angle_bottom << std::endl;
+              std::cout << "interpolated_segment_length = " << interpolated_segment_length << std::endl;
 
-              // For spherical P1 and P1P2 are both vectors coming from the center of the
-              // Earth, and the cross product therefore gives a vector tangential to the
-              // surface. For a box type model, the surface tangential we need
-              Point<3> surface_tangential = Utilities::cross_product(gravity_vector, P1P2);
-              WBAssert(surface_tangential.norm() != 0,
-                       "surface_tangential.norm() is zero, which should not happen. Surface_tangential = "
-                       << surface_tangential[0] + "," + surface_tangential[1] << "," << surface_tangential[2]);
-              //const double reference_on_side_of_line = ((surface_tangential)/(surface_tangential).norm()) * (reference_point_cart_pushed - P1_pushed);
+              // Todo: check wheter this is still needed with the new method.
+              //double angle_corrected = 90 - interpolated_angle_top;
 
-              // if reference point (vector) is not on the same (pointing to the same) side as the normal. Flip the normal
-              if (reference_on_side_of_line < 0)
-                {
-                  angle_corrected = -(90-interpolated_angle_0);
-                }
+              // We want to know where the end point of this segment is (and
+              // the start of the next segment). There are two cases which we
+              // will deal with separately. The first one is if the angle is
+              // constant. The second one is if the angle changes.
+              const double difference_in_angle_along_segment = interpolated_angle_bottom - interpolated_angle_top;
+              //std::cout << "flag 1, difference_in_angle_along_segment = " << difference_in_angle_along_segment << ", interpolated_angle_bottom = " << interpolated_angle_bottom << ", interpolated_angle_top = " << interpolated_angle_top << std::endl;
+              if(std::fabs(difference_in_angle_along_segment) < 1e-8)
+              {
+            	  //std::cout << "flag 2" << std::endl;
+            	  // The angle is constant. It is easy find find the end of
+            	  // this segment and the distance.
+                  std::cout << "end_segment before = " << end_segment[0] << ":" << end_segment[1] << ", sin = " << interpolated_segment_length * std::sin(interpolated_angle_top) << ", cos = " << interpolated_segment_length * std::cos(interpolated_angle_top) << std::endl;
+            	  end_segment[0] += interpolated_segment_length * std::sin(interpolated_angle_top);
+            	  end_segment[1] -= interpolated_segment_length * std::cos(interpolated_angle_top);
+
+
+                  std::cout << "end_segment after = " << end_segment[0] << ":" << end_segment[1]  << std::endl;
+
+            	  // Now find the distance of a point to this line.
+            	  // Based on http://geomalgorithms.com/a02-_lines.html.
+            	  const Point<2> BSP_ESP = end_segment - begin_segment;
+            	  const Point<2> BSP_CP = check_point_2d - begin_segment;
+
+            	  const double c1 = BSP_ESP * BSP_CP;
+            	  const double c2 = BSP_ESP * BSP_ESP;
+
+            	  if(c1 <= 0 || c2 <= c1)
+            	  {
+                      new_distance = INFINITY;
+                      new_along_plane_distance = INFINITY;
+            	  }
+            	  else
+            	  {
+            		  const Point<2> Pb = begin_segment + (c1/c2) * BSP_ESP;
+            		  new_distance = (check_point_2d - Pb).norm();
+            		  new_along_plane_distance = (begin_segment - Pb).norm();
+            	  }
+
+              }
               else
-                {
-                  surface_tangential = dealii::cross_product_3d(P1P2,gravity_vector);//spherical_coords ?
-                }
+              {
+            	  // The angle is not constant. This means that we need to
+            	  // define a circle. First find the center of the circle.
+              }
 
-              // find the normal to the defined segment plane
-              // We rotate the normal to the line P1 - P2 to get the normal of this plate
-              // The code for the rotation matrix and multiplying the matrix is based on http://www.programming-techniques.com/2012/03/3d-rotation-algorithm-about-arbitrary.html
-              // Find the rotation matrix.
-              const double inputMatrix[4] = {surface_tangential[0], surface_tangential[1], surface_tangential[2], 1};
-              double outputMatrix[4] = { };
+              // Now we need to see whether we need to update the information
+              // based on whether this segment is the closest one to the point
+              // up to now. To do this we first look whether the point falls
+              // within the bound of the segment and if it is actually closer.
+              // TODO: find out whether the fabs() are needed.
+              if(new_along_plane_distance >= 0 &&
+                 new_along_plane_distance <= std::fabs(interpolated_segment_length) &&
+				 std::fabs(distance) > std::fabs(new_distance))
+              {
+            	  // There are two specific cases we are concerned with. The
+            	  // first case is that we want to have both the positive and
+            	  // negative distances (above and below the line). The second
+            	  // case is that we only want positive distances.
+            	  if ((!only_positive) ||
+            		  (only_positive  && new_distance > 0))
+            	  {
+            		  distance = new_distance;
+            		  along_plane_distance = new_along_plane_distance + total_length;
+            		  section = current_section;
+            		  section_fraction = fraction_CPL_P1P2;
+                      segment = i_segment;
+                      segment_fraction = new_along_plane_distance / interpolated_segment_length;
+            	  }
+              }
 
+              // increase the total length for the next segment.
+              total_length += interpolated_segment_length;
             }
         }
+      std::map<std::string, double> return_values;
+      return_values["distanceFromPlane"] = distance;
+      return_values["distanceAlongPlane"] = along_plane_distance;
+      return_values["sectionFraction"] = section_fraction;
+      return_values["segmentFraction"] = segment_fraction;
+      return_values["section"] = section;
+      return_values["segment"] = segment;
+      return return_values;
     }
 
     template const std::array<double,2> convert_point_to_array<2>(const Point<2> &point_);

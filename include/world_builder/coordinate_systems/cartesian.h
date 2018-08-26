@@ -40,7 +40,7 @@ namespace WorldBuilder
         /**
          * constructor
          */
-        Cartesian();
+        Cartesian(WorldBuilder::World *world);
 
         /**
          * Destructor
@@ -58,6 +58,14 @@ namespace WorldBuilder
          */
         virtual
         CoordinateSystem natural_coordinate_system() const;
+
+        /**
+         * Returns what method should be used to go down with an angle into
+         * the domain.
+         * \sa DepthMethod
+         */
+        virtual
+		DepthMethod depth_method() const;
 
         /**
          * Takes the Cartesian points (x,z or x,y,z) and returns standardized

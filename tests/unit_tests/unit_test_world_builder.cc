@@ -307,7 +307,7 @@ TEST_CASE("WorldBuilder Utilities: Point in polygon")
 TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
 {
   // Cartesian
-  CoordinateSystems::Interface *cartesian = new CoordinateSystems::Cartesian;
+  CoordinateSystems::Interface *cartesian = new CoordinateSystems::Cartesian(NULL);
 
   // Test the natural coordinate system
   Utilities::NaturalCoordinate nca1(std::array<double,3> {1,2,3},*cartesian);
@@ -322,7 +322,7 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
 
   delete cartesian;
 
-  CoordinateSystems::Interface *spherical = new CoordinateSystems::Spherical;
+  CoordinateSystems::Interface *spherical = new CoordinateSystems::Spherical(NULL);
 
   // Test the natural coordinate system
   Utilities::NaturalCoordinate nsa1(std::array<double,3> {1,2,3},*spherical);
@@ -508,10 +508,10 @@ TEST_CASE("WorldBuilder C wrapper")
 
 TEST_CASE("WorldBuilder Coordinate Systems: Interface")
 {
-  CHECK_THROWS_WITH(CoordinateSystems::create_coordinate_system("!not_implemented_coordinate_system!"),
+  CHECK_THROWS_WITH(CoordinateSystems::create_coordinate_system("!not_implemented_coordinate_system!",NULL),
                     Contains("Coordinate system not implemented."));
 
-  CoordinateSystems::Interface *interface = new CoordinateSystems::Cartesian;
+  CoordinateSystems::Interface *interface = new CoordinateSystems::Cartesian(NULL);
 
   interface->decare_entries();
 
@@ -525,7 +525,7 @@ TEST_CASE("WorldBuilder Coordinate Systems: Interface")
 
 TEST_CASE("WorldBuilder Coordinate Systems: Cartesian")
 {
-  CoordinateSystems::Cartesian *cartesian = new CoordinateSystems::Cartesian;
+  CoordinateSystems::Cartesian *cartesian = new CoordinateSystems::Cartesian(NULL);
 
   cartesian->decare_entries();
 
@@ -549,9 +549,21 @@ TEST_CASE("WorldBuilder Coordinate Systems: Cartesian")
 
 TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
 {
-  CoordinateSystems::Spherical *spherical = new CoordinateSystems::Spherical;
+	// TODO: make test where a cartesian wb file is loaded into a spherical coordinate system.
+	  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate_spherical.wb";
 
-  spherical->decare_entries();
+	  WorldBuilder::World world(file_name);
+  CoordinateSystems::Spherical *spherical = new CoordinateSystems::Spherical(&world);
+
+  world.parameters.enter_subsection("Coordinate system");
+  {
+	  world.parameters.enter_subsection("spherical");
+	  {
+		  spherical->decare_entries();
+	  }
+	  world.parameters.leave_subsection();
+  }
+  world.parameters.leave_subsection();
 
   std::array<double,3> spherical_array = spherical->cartesian_to_natural_coordinates(std::array<double,3> {1,2,3});
   CHECK(spherical_array[0] == Approx(std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0)));
@@ -1959,3 +1971,72 @@ TEST_CASE("WorldBuilder Parameters")
 
 
 }
+
+TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes")
+{
+	  std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::create_coordinate_system("cartesian", NULL);;
+
+	  cartesian_system->decare_entries();
+
+	  Point<3> position(10,0,0,cartesian);
+	  Point<2> reference_point(0,0,cartesian);
+
+	  std::vector<Point<2> > coordinates;
+	  coordinates.push_back(Point<2>(0,10,cartesian));
+	  coordinates.push_back(Point<2>(20,10,cartesian));
+
+	  std::vector<std::vector<double> > slab_segment_lengths(2);
+	  slab_segment_lengths[0].push_back(std::sqrt(10*10+10*10));
+	  slab_segment_lengths[0].push_back(200);
+	  slab_segment_lengths[1].push_back(std::sqrt(10*10+10*10));
+	  slab_segment_lengths[1].push_back(200);
+
+	  double dtr = M_PI/180;
+	  std::vector<std::vector<Point<2> > > slab_segment_angles(2);
+	  slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
+	  slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
+	  slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
+	  slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
+
+	  double starting_radius = 10;
+
+	  std::map<std::string,double> distance_from_planes =
+			  Utilities::distance_point_from_curved_planes(position,
+					  reference_point,
+					  coordinates,
+					  slab_segment_lengths,
+					  slab_segment_angles,
+					  starting_radius,
+					  cartesian_system,
+					  false);
+
+      CHECK(distance_from_planes["distanceFromPlane"] == Approx(3.97205e-15)); // practically zero
+      CHECK(distance_from_planes["distanceAlongPlane"] == Approx(std::sqrt(10*10+10*10)));
+      CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+      CHECK(distance_from_planes["section"] == 0);
+      CHECK(distance_from_planes["segment"] == 0);
+      CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+
+      // test 2
+	  reference_point[1] = 20;
+
+	  distance_from_planes =
+			  Utilities::distance_point_from_curved_planes(position,
+					  reference_point,
+					  coordinates,
+					  slab_segment_lengths,
+					  slab_segment_angles,
+					  starting_radius,
+					  cartesian_system,
+					  false);
+
+      CHECK(distance_from_planes["distanceFromPlane"] == Approx(3.97205e-15)); // practically zero
+      CHECK(distance_from_planes["distanceAlongPlane"] == Approx(std::sqrt(10*10+10*10)));
+      CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+      CHECK(distance_from_planes["section"] == 0);
+      CHECK(distance_from_planes["segment"] == 0);
+      CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+}
+

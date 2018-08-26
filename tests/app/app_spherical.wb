@@ -1,6 +1,6 @@
 {
     "Cross section": [[100e3,100e3],[400e3,500e3]],
-    "Coordinate system":{"spherical":{}},
+    "Coordinate system":{"spherical":{"depth method":"starting point"}},
     "Surface rotation point": ["0","0"],
     "Surface rotation angle": "0",
     "Minimum parts per distance unit": 5,

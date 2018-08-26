@@ -123,6 +123,17 @@ namespace WorldBuilder
   }
 
   template<int dim>
+  Point<dim> Point<dim>::operator/(const double scalar) const
+  {
+    // initialize the array to zero.
+    std::array<double,dim> array = Point<dim>(coordinate_system).get_array();
+    const double one_over_scalar = 1/scalar;
+    for (unsigned int i = 0; i < dim; ++i)
+      array[i] += point[i] * one_over_scalar;
+    return Point<dim>(array,coordinate_system);
+  }
+
+  template<int dim>
   Point<dim>
   Point<dim>::operator+(const Point<dim> &point_) const
   {
@@ -155,6 +166,17 @@ namespace WorldBuilder
       point[i] *= scalar;
     return *this;
   }
+
+
+  template<int dim>
+  Point<dim> &
+  Point<dim>::operator/=(const double scalar)
+  {
+    for (unsigned int i = 0; i < dim; ++i)
+      point[i] /= scalar;
+    return *this;
+  }
+
 
   template<int dim>
   Point<dim> &
@@ -244,6 +266,17 @@ namespace WorldBuilder
   operator*(const double scalar, const Point<dim> &point)
   {
     return point*scalar;
+  }
+
+  template<int dim>
+  Point<dim>
+  operator/(const double scalar, const Point<dim> &point)
+  {
+	  // initialize the array to zero.
+	  std::array<double,dim> array = Point<dim>(point.coordinate_system).get_array();
+	  for (unsigned int i = 0; i < dim; ++i)
+		  array[i] = scalar / point[i];
+	  return Point<dim>(array,point.coordinate_system);
   }
 
 

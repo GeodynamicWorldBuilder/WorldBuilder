@@ -36,14 +36,14 @@ namespace WorldBuilder
     {}
 
     std::unique_ptr<Interface>
-    create_coordinate_system(const std::string name)
+    create_coordinate_system(const std::string name, World *world)
     {
       std::string feature_name = boost::algorithm::to_lower_copy(name);
       boost::algorithm::trim(feature_name);
       if (feature_name == "cartesian")
-        return std::make_unique<CoordinateSystems::Cartesian>();
+        return std::make_unique<CoordinateSystems::Cartesian>(world);
       else if (feature_name == "spherical")
-        return std::make_unique<CoordinateSystems::Spherical>();
+        return std::make_unique<CoordinateSystems::Spherical>(world);
       else
         WBAssertThrow(false, "Coordinate system not implemented.");
 
