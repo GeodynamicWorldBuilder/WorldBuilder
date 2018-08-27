@@ -545,7 +545,7 @@ namespace WorldBuilder
                                          bool_cartesian ? start_radius : check_point[2],
                                          natural_coordinate_system);
 
-      std::cout << "check_point_surface = " << check_point_surface[0] << ":" << check_point_surface[1] << ":" << check_point_surface[2] << std::endl;
+      //std::cout << "check_point_surface = " << check_point_surface[0] << ":" << check_point_surface[1] << ":" << check_point_surface[2] << std::endl;
       // The section which is checked.
       double section = 0;
 
@@ -570,6 +570,15 @@ namespace WorldBuilder
         {
     	  const double current_section = i_section;
     	  const double next_section = i_section+1;
+    	  // see on what side the line P1P2 reference point is. This is based on the determinant
+    	  const double reference_on_side_of_line = (point_list[next_section][0] - point_list[current_section][0])
+    			                                     * (reference_point[1] - point_list[current_section][1])
+				                                   - (point_list[next_section][1] - point_list[current_section][1])
+												     * (reference_point[0] - point_list[current_section][0])
+										           < 0 ? 1 : -1;
+
+    	  //std::cout << "reference_on_side_of_line = " << reference_on_side_of_line << std::endl;
+
           // The order of a Cartesian coordinate is x,y,z and the order of a spherical coordinate it radius, long, lat (in rad).
           const Point<3> P1(bool_cartesian ? point_list[current_section][0] : start_radius,
                             bool_cartesian ? point_list[current_section][1] : point_list[current_section][0],
@@ -587,17 +596,17 @@ namespace WorldBuilder
                                               natural_coordinate_system);
 
 
-          std::cout << "P1 = " << P1[0] << ":" << P1[1] << ":" << P1[2] << std::endl;
+          //std::cout << "P1 = " << P1[0] << ":" << P1[1] << ":" << P1[2] << std::endl;
 
-          std::cout << "P2 = " << P2[0] << ":" << P2[1] << ":" << P2[2] << std::endl;
+          //std::cout << "P2 = " << P2[0] << ":" << P2[1] << ":" << P2[2] << std::endl;
 
-          std::cout << "reference_point_cart = " << reference_point_cart[0] << ":" << reference_point_cart[1] << ":" << reference_point_cart[2] << std::endl;
+          //std::cout << "reference_point_cart = " << reference_point_cart[0] << ":" << reference_point_cart[1] << ":" << reference_point_cart[2] << std::endl;
 
           const Point<3> P1P2 = P2 - P1;
           const Point<3> P1PC = check_point_surface - P1;
 
-          std::cout << "P1P2 = " << P1P2[0] << ":" << P1P2[1] << ":" << P1P2[2] << std::endl;
-          std::cout << "P1PC = " << P1PC[0] << ":" << P1PC[1] << ":" << P1PC[2] << std::endl;
+          //std::cout << "P1P2 = " << P1P2[0] << ":" << P1P2[1] << ":" << P1P2[2] << std::endl;
+          //std::cout << "P1PC = " << P1PC[0] << ":" << P1PC[1] << ":" << P1PC[2] << std::endl;
 
           // Compute the closest point on the line P1 to P2 from the check
           // point at the surface. We do this in natural coordinates on
@@ -609,18 +618,23 @@ namespace WorldBuilder
           closest_point_on_line_bottom[bool_cartesian ? 2 : 0] = 0;
 
 
-          std::cout << "closest_point_on_line = " << closest_point_on_line[0] << ":" << closest_point_on_line[1] << ":" << closest_point_on_line[2] << std::endl;
-          std::cout << "closest_point_on_line_bottom = " << closest_point_on_line_bottom[0] << ":" << closest_point_on_line_bottom[1] << ":" << closest_point_on_line_bottom[2] << std::endl;
+          //std::cout << "closest_point_on_line = " << closest_point_on_line[0] << ":" << closest_point_on_line[1] << ":" << closest_point_on_line[2] << std::endl;
+          //std::cout << "closest_point_on_line_bottom = " << closest_point_on_line_bottom[0] << ":" << closest_point_on_line_bottom[1] << ":" << closest_point_on_line_bottom[2] << std::endl;
           //std::cout << "P1PC = " << P1PC[0] << ":" << P1PC[1] << ":" << P1PC[2] << std::endl;
 
           // compute what fraction of the distance between P1 and P2 the
           // closest point lies.
           const Point<3> P1CPL = closest_point_on_line - P1;
-          const double fraction_CPL_P1P2 = 1 - (P1P2.norm() - P1CPL.norm()) / P1P2.norm();
+          const double fraction_CPL_P1P2 = (P1CPL * P1P2 <= 0 ? -1.0 : 1.0) * (1 - (P1P2.norm() - P1CPL.norm()) / P1P2.norm());
 
 
-          std::cout << "P1CPL = " << P1CPL[0] << ":" << P1CPL[1] << ":" << P1CPL[2] << std::endl;
-          std::cout << "fraction_CPL_P1P2 = " << fraction_CPL_P1P2 << std::endl;
+          //std::cout << "P1CPL = " << P1CPL[0] << ":" << P1CPL[1] << ":" << P1CPL[2] << std::endl;
+          //std::cout << "fraction_CPL_P1P2 = " << fraction_CPL_P1P2 << std::endl;
+
+          // If the point on the line does not lay between point P1 and P2
+          // then ignore it. Otherwise continue.
+          if(fraction_CPL_P1P2 >= 0 && fraction_CPL_P1P2 <= 1.0)
+          {
 
           // Now that we have both the check point and the
           // closest_point_on_line, we need to push them to cartesian.
@@ -630,9 +644,9 @@ namespace WorldBuilder
           const Point<3> closest_point_on_line_bottom_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_bottom.get_array()),cartesian);
 
 
-          std::cout << "check_point_cartesian = " << check_point_cartesian[0] << ":" << check_point_cartesian[1] << ":" << check_point_cartesian[2] << std::endl;
-          std::cout << "check_point_surface_cartesian = " << check_point_surface_cartesian[0] << ":" << check_point_surface_cartesian[1] << ":" << check_point_surface_cartesian[2] << std::endl;
-          std::cout << "closest_point_on_line_cartesian = " << closest_point_on_line_cartesian[0] << ":" << closest_point_on_line_cartesian[1] << ":" << closest_point_on_line_cartesian[2] << std::endl;
+          //std::cout << "check_point_cartesian = " << check_point_cartesian[0] << ":" << check_point_cartesian[1] << ":" << check_point_cartesian[2] << std::endl;
+          //std::cout << "check_point_surface_cartesian = " << check_point_surface_cartesian[0] << ":" << check_point_surface_cartesian[1] << ":" << check_point_surface_cartesian[2] << std::endl;
+          //std::cout << "closest_point_on_line_cartesian = " << closest_point_on_line_cartesian[0] << ":" << closest_point_on_line_cartesian[1] << ":" << closest_point_on_line_cartesian[2] << std::endl;
 
           // The y-axis is from the bottom/center to the closest_point_on_line,
           // the x-axis is 90 degrees rotated from that, so we rotate around
@@ -657,32 +671,32 @@ namespace WorldBuilder
 						  uz*ux*vx - uy*vx + uz*uy*vy + uz*vy + uz*uz*vz,
 						  cartesian);
 
-          std::cout << "x_axis = " << x_axis[0] << ":" << x_axis[1] << ":" << x_axis[2] << std::endl;
-          x_axis = x_axis / x_axis.norm();
+          //std::cout << "x_axis = " << x_axis[0] << ":" << x_axis[1] << ":" << x_axis[2] << std::endl;
+          x_axis = x_axis *(reference_on_side_of_line / x_axis.norm());
 
 
-          std::cout << "x_axis = " << x_axis[0] << ":" << x_axis[1] << ":" << x_axis[2] << std::endl;
-          std::cout << "y_axis = " << y_axis[0] << ":" << y_axis[1] << ":" << y_axis[2] << std::endl;
-          std::cout << "z_axis = " << normal_to_plane[0] << ":" << normal_to_plane[1] << ":" << normal_to_plane[2] << std::endl;
+          //std::cout << "x_axis = " << x_axis[0] << ":" << x_axis[1] << ":" << x_axis[2] << std::endl;
+          //std::cout << "y_axis = " << y_axis[0] << ":" << y_axis[1] << ":" << y_axis[2] << std::endl;
+          //std::cout << "z_axis = " << normal_to_plane[0] << ":" << normal_to_plane[1] << ":" << normal_to_plane[2] << std::endl;
 
           Point<2> check_point_2d(x_axis * (check_point - closest_point_on_line_bottom),
         		                  y_axis * (check_point - closest_point_on_line_bottom),
 								  cartesian);
 
-          std::cout << "check_point_2d = " << check_point_2d[0] << ":" << check_point_2d[1]  << std::endl;
+          //std::cout << "check_point_2d = " << check_point_2d[0] << ":" << check_point_2d[1]  << std::endl;
 
           // Radius in this case means height from bottom of the model.
           const double check_point_radius = start_radius - check_point_depth;
 
 
-          std::cout << "check_point_radius = " << check_point_radius << std::endl;
+          //std::cout << "check_point_radius = " << check_point_radius << std::endl;
 
     	  Point<2> begin_segment(x_axis * (closest_point_on_line - closest_point_on_line_bottom),
                                  y_axis * (closest_point_on_line - closest_point_on_line_bottom),
 				                 cartesian);
 
 
-          std::cout << "begin_segment = " << begin_segment[0] << ":" << begin_segment[1]  << std::endl;
+          //std::cout << "begin_segment = " << begin_segment[0] << ":" << begin_segment[1]  << std::endl;
 
     	  Point<2> end_segment = begin_segment;
           double total_length = 0;
@@ -695,10 +709,11 @@ namespace WorldBuilder
 
         	  // This interpolates different properties between P1 and P2 (the
         	  // points of the plane at the surface)
-              const double interpolated_angle_top    = plane_segment_angles[current_section][current_segment][0]
+        	  const double degree_90_to_rad = 0.5 * M_PI;
+              const double interpolated_angle_top    = degree_90_to_rad - plane_segment_angles[current_section][current_segment][0]
 												       + fraction_CPL_P1P2 * (plane_segment_angles[next_section][current_segment][0]
 												                              - plane_segment_angles[current_section][current_segment][0]);
-              const double interpolated_angle_bottom = plane_segment_angles[current_section][current_segment][1]
+              const double interpolated_angle_bottom = degree_90_to_rad - plane_segment_angles[current_section][current_segment][1]
                                                        + fraction_CPL_P1P2 * (plane_segment_angles[next_section][current_segment][1]
                                                                               - plane_segment_angles[current_section][current_segment][1]);
               double interpolated_segment_length     = plane_segment_lengths[current_section][current_segment]
@@ -706,9 +721,9 @@ namespace WorldBuilder
                                                                               - plane_segment_lengths[current_section][current_segment]);
 
 
-              std::cout << "interpolated_angle_top = " << interpolated_angle_top << std::endl;
-              std::cout << "interpolated_angle_bottom = " << interpolated_angle_bottom << std::endl;
-              std::cout << "interpolated_segment_length = " << interpolated_segment_length << std::endl;
+              //std::cout << "interpolated_angle_top = " << interpolated_angle_top << std::endl;
+              //std::cout << "interpolated_angle_bottom = " << interpolated_angle_bottom << std::endl;
+              //std::cout << "interpolated_segment_length = " << interpolated_segment_length << std::endl;
 
               // Todo: check wheter this is still needed with the new method.
               //double angle_corrected = 90 - interpolated_angle_top;
@@ -724,12 +739,15 @@ namespace WorldBuilder
             	  //std::cout << "flag 2" << std::endl;
             	  // The angle is constant. It is easy find find the end of
             	  // this segment and the distance.
-                  std::cout << "end_segment before = " << end_segment[0] << ":" << end_segment[1] << ", sin = " << interpolated_segment_length * std::sin(interpolated_angle_top) << ", cos = " << interpolated_segment_length * std::cos(interpolated_angle_top) << std::endl;
+                  //std::cout << "end_segment before = " << end_segment[0] << ":" << end_segment[1] << ", sin = " << interpolated_segment_length * std::sin(interpolated_angle_top) << ", cos = " << interpolated_segment_length * std::cos(interpolated_angle_top) << std::endl;
             	  end_segment[0] += interpolated_segment_length * std::sin(interpolated_angle_top);
             	  end_segment[1] -= interpolated_segment_length * std::cos(interpolated_angle_top);
 
+            	  Point<2> begin_end_segment = end_segment - begin_segment;
+            	  Point<2> normal_2d_plane(-begin_end_segment[0],begin_end_segment[1], cartesian);
+            	  normal_2d_plane /= normal_2d_plane.norm();
 
-                  std::cout << "end_segment after = " << end_segment[0] << ":" << end_segment[1]  << std::endl;
+                  //std::cout << "end_segment after = " << end_segment[0] << ":" << end_segment[1]  << std::endl;
 
             	  // Now find the distance of a point to this line.
             	  // Based on http://geomalgorithms.com/a02-_lines.html.
@@ -747,7 +765,11 @@ namespace WorldBuilder
             	  else
             	  {
             		  const Point<2> Pb = begin_segment + (c1/c2) * BSP_ESP;
-            		  new_distance = (check_point_2d - Pb).norm();
+            		  const double side_of_line =  (begin_segment[0] - end_segment[0]) * (check_point_2d[1] - begin_segment[1])
+            				                     - (begin_segment[1] - end_segment[1]) * (check_point_2d[0] - begin_segment[0])
+												 < 0 ? -1.0 : 1.0;
+
+            		  new_distance = side_of_line * (check_point_2d - Pb).norm();
             		  new_along_plane_distance = (begin_segment - Pb).norm();
             	  }
 
@@ -786,6 +808,7 @@ namespace WorldBuilder
               // increase the total length for the next segment.
               total_length += interpolated_segment_length;
             }
+        }
         }
       std::map<std::string, double> return_values;
       return_values["distanceFromPlane"] = distance;

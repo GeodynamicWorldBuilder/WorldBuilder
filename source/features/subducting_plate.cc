@@ -121,7 +121,7 @@ namespace WorldBuilder
     				  maximum_slab_thickness = all_segments[segment_i]->value_thickness[1];
 
     			  slab_segment_thickness[coordinate_i].push_back(all_segments[segment_i]->value_thickness);
-    			  slab_segment_angles[coordinate_i].push_back(all_segments[segment_i]->value_angle);
+    			  slab_segment_angles[coordinate_i].push_back(all_segments[segment_i]->value_angle * (M_PI/180));
     		  }
 
 			  if(total_slab_length[coordinate_i] > maximum_total_slab_length)
@@ -270,10 +270,10 @@ namespace WorldBuilder
 				  distance_along_plane <= max_slab_length)
     		  {
     			  // Inside the slab!
-    			  return distance_from_plane;
+    			  return temperature_submodule_constant_temperature;
     		  }
     	  }
-    	  return -1;
+    	  //return -1;
       }
 /*
       // We are in the the area where the contintal plate

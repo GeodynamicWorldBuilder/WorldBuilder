@@ -2010,7 +2010,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes")
 					  cartesian_system,
 					  false);
 
-      CHECK(distance_from_planes["distanceFromPlane"] == Approx(3.97205e-15)); // practically zero
+      CHECK(distance_from_planes["distanceFromPlane"] == Approx(-3.97205e-15)); // practically zero
       CHECK(distance_from_planes["distanceAlongPlane"] == Approx(std::sqrt(10*10+10*10)));
       CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
       CHECK(distance_from_planes["section"] == 0);
@@ -2018,7 +2018,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes")
       CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
 
-      // test 2
+      // center square test 2
 	  reference_point[1] = 20;
 
 	  distance_from_planes =
@@ -2031,12 +2031,231 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes")
 					  cartesian_system,
 					  false);
 
-      CHECK(distance_from_planes["distanceFromPlane"] == Approx(3.97205e-15)); // practically zero
+      CHECK(distance_from_planes["distanceFromPlane"] == Approx(std::sqrt(10*10+10*10)));
+      CHECK(distance_from_planes["distanceAlongPlane"] == Approx(7.10543e-16)); // practically zero
+      CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+      CHECK(distance_from_planes["section"] == 0);
+      CHECK(distance_from_planes["segment"] == 0);
+      CHECK(distance_from_planes["segmentFraction"] == Approx(5.0243e-17)); // practically zero
+
+      // center square test 3
+	  position[1] = 20;
+
+	  distance_from_planes =
+			  Utilities::distance_point_from_curved_planes(position,
+					  reference_point,
+					  coordinates,
+					  slab_segment_lengths,
+					  slab_segment_angles,
+					  starting_radius,
+					  cartesian_system,
+					  false);
+
+      CHECK(distance_from_planes["distanceFromPlane"] == Approx(-3.97205e-15)); // practically zero
       CHECK(distance_from_planes["distanceAlongPlane"] == Approx(std::sqrt(10*10+10*10)));
       CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
       CHECK(distance_from_planes["section"] == 0);
       CHECK(distance_from_planes["segment"] == 0);
       CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+      // center square test 4
+      reference_point[1] = 0;
+
+	  distance_from_planes =
+			  Utilities::distance_point_from_curved_planes(position,
+					  reference_point,
+					  coordinates,
+					  slab_segment_lengths,
+					  slab_segment_angles,
+					  starting_radius,
+					  cartesian_system,
+					  false);
+
+      CHECK(distance_from_planes["distanceFromPlane"] == Approx(std::sqrt(10*10+10*10)));
+      CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14); // practically zero
+      CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+      CHECK(distance_from_planes["section"] == 0);
+      CHECK(distance_from_planes["segment"] == 0);
+      CHECK(std::fabs(distance_from_planes["segmentFraction"]) < 1e-14); // practically zero
+
+      // center square test 5
+      position[1] = -10;
+      position[2] = -10;
+
+	  distance_from_planes =
+			  Utilities::distance_point_from_curved_planes(position,
+					  reference_point,
+					  coordinates,
+					  slab_segment_lengths,
+					  slab_segment_angles,
+					  starting_radius,
+					  cartesian_system,
+					  false);
+
+      CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
+      CHECK(distance_from_planes["distanceAlongPlane"] == Approx(sqrt(20*20+20*20))); // practically zero
+      CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+      CHECK(distance_from_planes["section"] == 0);
+      CHECK(distance_from_planes["segment"] == 1);
+      CHECK(distance_from_planes["segmentFraction"] == Approx(0.0707106781)); // practically zero
+
+      // begin section square test 6
+      position[0] = 0;
+
+	  distance_from_planes =
+			  Utilities::distance_point_from_curved_planes(position,
+					  reference_point,
+					  coordinates,
+					  slab_segment_lengths,
+					  slab_segment_angles,
+					  starting_radius,
+					  cartesian_system,
+					  false);
+
+      CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
+      CHECK(distance_from_planes["distanceAlongPlane"] == Approx(sqrt(20*20+20*20))); // practically zero
+      CHECK(std::fabs(distance_from_planes["sectionFraction"]) < 1e-14);
+      CHECK(distance_from_planes["section"] == 0);
+      CHECK(distance_from_planes["segment"] == 1);
+      CHECK(distance_from_planes["segmentFraction"] == Approx(0.0707106781)); // practically zero
+
+
+      // end section square test 7
+      position[0] = 20;
+
+	  distance_from_planes =
+			  Utilities::distance_point_from_curved_planes(position,
+					  reference_point,
+					  coordinates,
+					  slab_segment_lengths,
+					  slab_segment_angles,
+					  starting_radius,
+					  cartesian_system,
+					  false);
+
+      CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
+      CHECK(distance_from_planes["distanceAlongPlane"] == Approx(sqrt(20*20+20*20))); // practically zero
+      CHECK(distance_from_planes["sectionFraction"] == Approx(1.0));
+      CHECK(distance_from_planes["section"] == 0);
+      CHECK(distance_from_planes["segment"] == 1);
+      CHECK(distance_from_planes["segmentFraction"] == Approx(0.0707106781)); // practically zero
+
+      // before begin section square test 8
+      position[0] = -10;
+
+	  distance_from_planes =
+			  Utilities::distance_point_from_curved_planes(position,
+					  reference_point,
+					  coordinates,
+					  slab_segment_lengths,
+					  slab_segment_angles,
+					  starting_radius,
+					  cartesian_system,
+					  false);
+
+      CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
+      CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY); // practically zero
+      CHECK(distance_from_planes["sectionFraction"] == 0.0);
+      CHECK(distance_from_planes["section"] == 0);
+      CHECK(distance_from_planes["segment"] == 0);
+      CHECK(distance_from_planes["segmentFraction"] == 0.0); // practically zero
+
+      // beyond end section square test 9
+      position[0] = 25;
+
+	  distance_from_planes =
+			  Utilities::distance_point_from_curved_planes(position,
+					  reference_point,
+					  coordinates,
+					  slab_segment_lengths,
+					  slab_segment_angles,
+					  starting_radius,
+					  cartesian_system,
+					  false);
+
+      CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
+      CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY); // practically zero
+      CHECK(distance_from_planes["sectionFraction"] == 0.0);
+      CHECK(distance_from_planes["section"] == 0);
+      CHECK(distance_from_planes["segment"] == 0);
+      CHECK(distance_from_planes["segmentFraction"] == 0.0); // practically zero
+
+
+      // beyond end section square test 10
+      position[0] = 10;
+      position[1] = 0;
+      position[2] = 5;
+
+	  distance_from_planes =
+			  Utilities::distance_point_from_curved_planes(position,
+					  reference_point,
+					  coordinates,
+					  slab_segment_lengths,
+					  slab_segment_angles,
+					  starting_radius,
+					  cartesian_system,
+					  false);
+
+      CHECK(distance_from_planes["distanceFromPlane"] == Approx(-3.5355339059));
+      CHECK(distance_from_planes["distanceAlongPlane"] == Approx(10.6066017178)); // practically zero
+      CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+      CHECK(distance_from_planes["section"] == 0);
+      CHECK(distance_from_planes["segment"] == 0);
+      CHECK(distance_from_planes["segmentFraction"] == Approx(0.75)); // practically zero
+
+
+      // beyond end section square test 10
+      position[0] = 10;
+      position[1] = 0;
+      position[2] = -5;
+
+	  distance_from_planes =
+			  Utilities::distance_point_from_curved_planes(position,
+					  reference_point,
+					  coordinates,
+					  slab_segment_lengths,
+					  slab_segment_angles,
+					  starting_radius,
+					  cartesian_system,
+					  false);
+
+      CHECK(distance_from_planes["distanceFromPlane"] == Approx(3.5355339059));
+      CHECK(distance_from_planes["distanceAlongPlane"] == Approx(17.6776695297)); // practically zero
+      CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+      CHECK(distance_from_planes["section"] == 0);
+      CHECK(distance_from_planes["segment"] == 1);
+      CHECK(distance_from_planes["segmentFraction"] == Approx(0.0176776695)); // practically zero
+
+      // different angle
+      slab_segment_angles[0][0][0] = 22.5 * dtr;
+      slab_segment_angles[0][0][1] = 22.5 * dtr;
+      slab_segment_angles[0][1][0] = 22.5 * dtr;
+      slab_segment_angles[0][1][1] = 22.5 * dtr;
+      slab_segment_angles[1][0][0] = 22.5 * dtr;
+      slab_segment_angles[1][0][1] = 22.5 * dtr;
+      slab_segment_angles[1][1][0] = 22.5 * dtr;
+      slab_segment_angles[1][1][1] = 22.5 * dtr;
+
+      position[0] = 10;
+      position[1] = 0;
+      position[2] = 10-10*tan(22.5*dtr);
+
+	  distance_from_planes =
+			  Utilities::distance_point_from_curved_planes(position,
+					  reference_point,
+					  coordinates,
+					  slab_segment_lengths,
+					  slab_segment_angles,
+					  starting_radius,
+					  cartesian_system,
+					  false);
+
+      CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
+      CHECK(distance_from_planes["distanceAlongPlane"] == Approx(10.8239219938)); // practically zero
+      CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+      CHECK(distance_from_planes["section"] == 0);
+      CHECK(distance_from_planes["segment"] == 0);
+      CHECK(distance_from_planes["segmentFraction"] == Approx(0.7653668647));
 
 }
 

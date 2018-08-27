@@ -7,11 +7,11 @@
     "Minimum distance points": 1e-5,
     "Surface objects":
     {
-     "Subducting plate":{"name":"First subducting plate", "coordinates":[[100e3,500e3],[750e3,750e3]], "reference point":[0,0],
+     "Subducting plate":{"name":"First subducting plate", "coordinates":[[100e3,500e3],[750e3,750e3]], "reference point":[1000e3,1000e3],
          "starting depth":0, "max depth":1e10,
          "segments":
          {
-           "all":[{"length":100e3, "thickness":[200e3,100e3], "angle":[30]}, {"length":100e3, "thickness":[100e3], "angle":[30]}, {"length":150e3, "thickness":[100e3,0], "angle":[30]}],
+           "all":[{"length":200e3, "thickness":[100e3,100e3], "angle":[30]}, {"length":200e3, "thickness":[100e3], "angle":[60]}, {"length":150e3, "thickness":[100e3,100e3], "angle":[90]}],
            "1":[{"length":200e3, "thickness":[200e3], "angle":[30]}, {"length":100e3, "thickness":[100e3], "angle":[30]}, {"length":150e3, "thickness":[100e3], "angle":[30]}],
            "2":[{"length":200e3, "thickness":[200e3,100e3], "angle":[30]}, {"length":100e3, "thickness":[100e3], "angle":[30]}, {"length":150e3, "thickness":[100e3,0], "angle":[70]}]
          },
