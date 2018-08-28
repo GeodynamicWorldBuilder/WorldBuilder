@@ -25,35 +25,35 @@ namespace WorldBuilder
   namespace Types
   {
     Segment::Segment(double default_value_length,
-			         WorldBuilder::Point<2> default_value_thickness,
-					 WorldBuilder::Point<2> default_value_angle,
-			         std::string description)
+                     WorldBuilder::Point<2> default_value_thickness,
+                     WorldBuilder::Point<2> default_value_angle,
+                     std::string description)
       :
-    	      value_length(default_value_length),
-    	      default_value_length(default_value_length),
-		      value_thickness(default_value_thickness),
-			  default_value_thickness(default_value_thickness),
-		      value_angle(default_value_angle),
-			  default_value_angle(default_value_angle),
+      value_length(default_value_length),
+      default_value_length(default_value_length),
+      value_thickness(default_value_thickness),
+      default_value_thickness(default_value_thickness),
+      value_angle(default_value_angle),
+      default_value_angle(default_value_angle),
       description(description)
     {
       this->type_name = type::Segment;
     }
 
     Segment::Segment(double   value_length,
-    		         double   default_value_length,
-    		         WorldBuilder::Point<2> value_thickness,
-					 WorldBuilder::Point<2> default_value_thickness,
-			         WorldBuilder::Point<2> value_angle,
-					 WorldBuilder::Point<2> default_value_angle,
-			         std::string description)
+                     double   default_value_length,
+                     WorldBuilder::Point<2> value_thickness,
+                     WorldBuilder::Point<2> default_value_thickness,
+                     WorldBuilder::Point<2> value_angle,
+                     WorldBuilder::Point<2> default_value_angle,
+                     std::string description)
       :
-    	    	      value_length(value_length),
-    	    	      default_value_length(default_value_length),
-					  value_thickness(value_thickness),
-    				  default_value_thickness(default_value_thickness),
-    			      value_angle(value_angle),
-    				  default_value_angle(default_value_angle),
+      value_length(value_length),
+      default_value_length(default_value_length),
+      value_thickness(value_thickness),
+      default_value_thickness(default_value_thickness),
+      value_angle(value_angle),
+      default_value_angle(default_value_angle),
       description(description)
     {
       this->type_name = type::Segment;
@@ -67,9 +67,9 @@ namespace WorldBuilder
     Segment::clone() const
     {
       return std::unique_ptr<Interface>(new Segment(value_length, default_value_length,
-    		                                        value_thickness, default_value_thickness,
-    		                                        value_angle, default_value_angle,
-													description));
+                                                    value_thickness, default_value_thickness,
+                                                    value_angle, default_value_angle,
+                                                    description));
     }
 
   }

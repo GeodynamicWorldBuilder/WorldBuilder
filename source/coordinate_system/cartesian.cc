@@ -26,7 +26,7 @@ namespace WorldBuilder
   {
     Cartesian::Cartesian(WorldBuilder::World *world_)
     {
-    	this->world = world_;
+      this->world = world_;
     }
 
     Cartesian::~Cartesian()

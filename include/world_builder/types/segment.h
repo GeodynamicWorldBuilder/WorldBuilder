@@ -38,18 +38,18 @@ namespace WorldBuilder
         /**
          * A constructor for the load_entry function
          */
-    	Segment(double default_value_length,
-    			Point<2> default_value_thickness,
-				Point<2> default_value_angle,
-				std::string description);
+        Segment(double default_value_length,
+                Point<2> default_value_thickness,
+                Point<2> default_value_angle,
+                std::string description);
 
         /**
          * A constructor for the clone and set_entry function
          */
-    	Segment(double   value_length,    double   default_value_length,
-    	        Point<2> value_thickness, Point<2> default_value_thickness,
-    	        Point<2> value_angle,     Point<2> default_value_angle,
-				std::string description);
+        Segment(double   value_length,    double   default_value_length,
+                Point<2> value_thickness, Point<2> default_value_thickness,
+                Point<2> value_angle,     Point<2> default_value_angle,
+                std::string description);
 
         /**
          * Destructor

@@ -41,7 +41,7 @@ namespace WorldBuilder
         /**
          * constructor
          */
-    	SubductingPlate(WorldBuilder::World *world);
+        SubductingPlate(WorldBuilder::World *world);
 
         /**
          * Destructor

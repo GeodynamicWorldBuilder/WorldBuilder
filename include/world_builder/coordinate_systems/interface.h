@@ -67,7 +67,7 @@ namespace WorldBuilder
          * \sa DepthMethod
          */
         virtual
-		DepthMethod depth_method() const = 0;
+        DepthMethod depth_method() const = 0;
 
         /**
          * Takes the Cartesian points (x,z or x,y,z) and returns standardized

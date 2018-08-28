@@ -561,23 +561,23 @@ namespace WorldBuilder
 
       const DepthMethod depth_method = coordinate_system->depth_method();
       WBAssertThrow(depth_method == DepthMethod::none
-    		        || depth_method == DepthMethod::angle_at_starting_point_with_surface,
-				    "Only the depth methods none and angle_at_starting_point_with_surface are "
-				    "currently implemented");
+                    || depth_method == DepthMethod::angle_at_starting_point_with_surface,
+                    "Only the depth methods none and angle_at_starting_point_with_surface are "
+                    "currently implemented");
 
       // loop over all the planes to find out which one is closest to the point.
       for (unsigned int i_section=0; i_section < point_list.size()-1; ++i_section)
         {
-    	  const double current_section = i_section;
-    	  const double next_section = i_section+1;
-    	  // see on what side the line P1P2 reference point is. This is based on the determinant
-    	  const double reference_on_side_of_line = (point_list[next_section][0] - point_list[current_section][0])
-    			                                     * (reference_point[1] - point_list[current_section][1])
-				                                   - (point_list[next_section][1] - point_list[current_section][1])
-												     * (reference_point[0] - point_list[current_section][0])
-										           < 0 ? 1 : -1;
+          const double current_section = i_section;
+          const double next_section = i_section+1;
+          // see on what side the line P1P2 reference point is. This is based on the determinant
+          const double reference_on_side_of_line = (point_list[next_section][0] - point_list[current_section][0])
+                                                   * (reference_point[1] - point_list[current_section][1])
+                                                   - (point_list[next_section][1] - point_list[current_section][1])
+                                                   * (reference_point[0] - point_list[current_section][0])
+                                                   < 0 ? 1 : -1;
 
-    	  //std::cout << "reference_on_side_of_line = " << reference_on_side_of_line << std::endl;
+          //std::cout << "reference_on_side_of_line = " << reference_on_side_of_line << std::endl;
 
           // The order of a Cartesian coordinate is x,y,z and the order of a spherical coordinate it radius, long, lat (in rad).
           const Point<3> P1(bool_cartesian ? point_list[current_section][0] : start_radius,
@@ -633,182 +633,185 @@ namespace WorldBuilder
 
           // If the point on the line does not lay between point P1 and P2
           // then ignore it. Otherwise continue.
-          if(fraction_CPL_P1P2 >= 0 && fraction_CPL_P1P2 <= 1.0)
-          {
-
-          // Now that we have both the check point and the
-          // closest_point_on_line, we need to push them to cartesian.
-          const Point<3> check_point_cartesian(coordinate_system->natural_to_cartesian_coordinates(check_point.get_array()),cartesian);
-          const Point<3> check_point_surface_cartesian(coordinate_system->natural_to_cartesian_coordinates(check_point_surface.get_array()),cartesian);
-          const Point<3> closest_point_on_line_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line.get_array()),cartesian);
-          const Point<3> closest_point_on_line_bottom_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_bottom.get_array()),cartesian);
-
-
-          //std::cout << "check_point_cartesian = " << check_point_cartesian[0] << ":" << check_point_cartesian[1] << ":" << check_point_cartesian[2] << std::endl;
-          //std::cout << "check_point_surface_cartesian = " << check_point_surface_cartesian[0] << ":" << check_point_surface_cartesian[1] << ":" << check_point_surface_cartesian[2] << std::endl;
-          //std::cout << "closest_point_on_line_cartesian = " << closest_point_on_line_cartesian[0] << ":" << closest_point_on_line_cartesian[1] << ":" << closest_point_on_line_cartesian[2] << std::endl;
-
-          // The y-axis is from the bottom/center to the closest_point_on_line,
-          // the x-axis is 90 degrees rotated from that, so we rotate around
-          // the line P1P2.
-          // Todo: Assert that the norm of the axis are not equal to zero.
-          Point<3> y_axis = closest_point_on_line_cartesian - closest_point_on_line_bottom_cartesian;
-          y_axis = y_axis / y_axis.norm();
-          const Point<3> normal_to_plane = P1P2 / P1P2.norm();
-
-
-
-          // shorthand notation for computing the x_axis
-          double vx = y_axis[0];
-          double vy = y_axis[1];
-          double vz = y_axis[2];
-          double ux = normal_to_plane[0];
-          double uy = normal_to_plane[1];
-          double uz = normal_to_plane[2];
-
-          Point<3> x_axis(uy*uy*vx + ux*uy*vy - uz*vy + ux*uz*vz + uy*vz,
-        		          uy*ux*vx + uz*vx + uy*uy*vy + uy*uz*vz - ux*vz,
-						  uz*ux*vx - uy*vx + uz*uy*vy + uz*vy + uz*uz*vz,
-						  cartesian);
-
-          //std::cout << "x_axis = " << x_axis[0] << ":" << x_axis[1] << ":" << x_axis[2] << std::endl;
-          x_axis = x_axis *(reference_on_side_of_line / x_axis.norm());
-
-
-          //std::cout << "x_axis = " << x_axis[0] << ":" << x_axis[1] << ":" << x_axis[2] << std::endl;
-          //std::cout << "y_axis = " << y_axis[0] << ":" << y_axis[1] << ":" << y_axis[2] << std::endl;
-          //std::cout << "z_axis = " << normal_to_plane[0] << ":" << normal_to_plane[1] << ":" << normal_to_plane[2] << std::endl;
-
-          Point<2> check_point_2d(x_axis * (check_point - closest_point_on_line_bottom),
-        		                  y_axis * (check_point - closest_point_on_line_bottom),
-								  cartesian);
-
-          //std::cout << "check_point_2d = " << check_point_2d[0] << ":" << check_point_2d[1]  << std::endl;
-
-          // Radius in this case means height from bottom of the model.
-          const double check_point_radius = start_radius - check_point_depth;
-
-
-          //std::cout << "check_point_radius = " << check_point_radius << std::endl;
-
-    	  Point<2> begin_segment(x_axis * (closest_point_on_line - closest_point_on_line_bottom),
-                                 y_axis * (closest_point_on_line - closest_point_on_line_bottom),
-				                 cartesian);
-
-
-          //std::cout << "begin_segment = " << begin_segment[0] << ":" << begin_segment[1]  << std::endl;
-
-    	  Point<2> end_segment = begin_segment;
-          double total_length = 0;
-          for (unsigned int i_segment = 0; i_segment < plane_segment_lengths[current_section].size(); i_segment++)
+          if (fraction_CPL_P1P2 >= 0 && fraction_CPL_P1P2 <= 1.0)
             {
-        	  const double current_segment = i_segment;
-        	  //const double next_segment = i_segment+1;
 
-        	  Point<2> begin_segment = end_segment;
-
-        	  // This interpolates different properties between P1 and P2 (the
-        	  // points of the plane at the surface)
-        	  const double degree_90_to_rad = 0.5 * M_PI;
-              const double interpolated_angle_top    = degree_90_to_rad - plane_segment_angles[current_section][current_segment][0]
-												       + fraction_CPL_P1P2 * (plane_segment_angles[next_section][current_segment][0]
-												                              - plane_segment_angles[current_section][current_segment][0]);
-              const double interpolated_angle_bottom = degree_90_to_rad - plane_segment_angles[current_section][current_segment][1]
-                                                       + fraction_CPL_P1P2 * (plane_segment_angles[next_section][current_segment][1]
-                                                                              - plane_segment_angles[current_section][current_segment][1]);
-              double interpolated_segment_length     = plane_segment_lengths[current_section][current_segment]
-                                                       + fraction_CPL_P1P2 * (plane_segment_lengths[next_section][current_segment]
-                                                                              - plane_segment_lengths[current_section][current_segment]);
+              // Now that we have both the check point and the
+              // closest_point_on_line, we need to push them to cartesian.
+              const Point<3> check_point_cartesian(coordinate_system->natural_to_cartesian_coordinates(check_point.get_array()),cartesian);
+              const Point<3> check_point_surface_cartesian(coordinate_system->natural_to_cartesian_coordinates(check_point_surface.get_array()),cartesian);
+              const Point<3> closest_point_on_line_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line.get_array()),cartesian);
+              const Point<3> closest_point_on_line_bottom_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_bottom.get_array()),cartesian);
 
 
-              //std::cout << "interpolated_angle_top = " << interpolated_angle_top << std::endl;
-              //std::cout << "interpolated_angle_bottom = " << interpolated_angle_bottom << std::endl;
-              //std::cout << "interpolated_segment_length = " << interpolated_segment_length << std::endl;
+              //std::cout << "check_point_cartesian = " << check_point_cartesian[0] << ":" << check_point_cartesian[1] << ":" << check_point_cartesian[2] << std::endl;
+              //std::cout << "check_point_surface_cartesian = " << check_point_surface_cartesian[0] << ":" << check_point_surface_cartesian[1] << ":" << check_point_surface_cartesian[2] << std::endl;
+              //std::cout << "closest_point_on_line_cartesian = " << closest_point_on_line_cartesian[0] << ":" << closest_point_on_line_cartesian[1] << ":" << closest_point_on_line_cartesian[2] << std::endl;
 
-              // Todo: check wheter this is still needed with the new method.
-              //double angle_corrected = 90 - interpolated_angle_top;
+              // The y-axis is from the bottom/center to the closest_point_on_line,
+              // the x-axis is 90 degrees rotated from that, so we rotate around
+              // the line P1P2.
+              // Todo: Assert that the norm of the axis are not equal to zero.
+              Point<3> y_axis = closest_point_on_line_cartesian - closest_point_on_line_bottom_cartesian;
+              y_axis = y_axis / y_axis.norm();
+              const Point<3> normal_to_plane = P1P2 / P1P2.norm();
 
-              // We want to know where the end point of this segment is (and
-              // the start of the next segment). There are two cases which we
-              // will deal with separately. The first one is if the angle is
-              // constant. The second one is if the angle changes.
-              const double difference_in_angle_along_segment = interpolated_angle_bottom - interpolated_angle_top;
-              //std::cout << "flag 1, difference_in_angle_along_segment = " << difference_in_angle_along_segment << ", interpolated_angle_bottom = " << interpolated_angle_bottom << ", interpolated_angle_top = " << interpolated_angle_top << std::endl;
-              if(std::fabs(difference_in_angle_along_segment) < 1e-8)
-              {
-            	  //std::cout << "flag 2" << std::endl;
-            	  // The angle is constant. It is easy find find the end of
-            	  // this segment and the distance.
-                  //std::cout << "end_segment before = " << end_segment[0] << ":" << end_segment[1] << ", sin = " << interpolated_segment_length * std::sin(interpolated_angle_top) << ", cos = " << interpolated_segment_length * std::cos(interpolated_angle_top) << std::endl;
-            	  end_segment[0] += interpolated_segment_length * std::sin(interpolated_angle_top);
-            	  end_segment[1] -= interpolated_segment_length * std::cos(interpolated_angle_top);
 
-            	  Point<2> begin_end_segment = end_segment - begin_segment;
-            	  Point<2> normal_2d_plane(-begin_end_segment[0],begin_end_segment[1], cartesian);
-            	  normal_2d_plane /= normal_2d_plane.norm();
 
-                  //std::cout << "end_segment after = " << end_segment[0] << ":" << end_segment[1]  << std::endl;
+              // shorthand notation for computing the x_axis
+              double vx = y_axis[0];
+              double vy = y_axis[1];
+              double vz = y_axis[2];
+              double ux = normal_to_plane[0];
+              double uy = normal_to_plane[1];
+              double uz = normal_to_plane[2];
 
-            	  // Now find the distance of a point to this line.
-            	  // Based on http://geomalgorithms.com/a02-_lines.html.
-            	  const Point<2> BSP_ESP = end_segment - begin_segment;
-            	  const Point<2> BSP_CP = check_point_2d - begin_segment;
+              Point<3> x_axis(uy*uy*vx + ux*uy*vy - uz*vy + ux*uz*vz + uy*vz,
+                              uy*ux*vx + uz*vx + uy*uy*vy + uy*uz*vz - ux*vz,
+                              uz*ux*vx - uy*vx + uz*uy*vy + uz*vy + uz*uz*vz,
+                              cartesian);
 
-            	  const double c1 = BSP_ESP * BSP_CP;
-            	  const double c2 = BSP_ESP * BSP_ESP;
+              //std::cout << "x_axis = " << x_axis[0] << ":" << x_axis[1] << ":" << x_axis[2] << std::endl;
+              x_axis = x_axis *(reference_on_side_of_line / x_axis.norm());
 
-            	  if(c1 <= 0 || c2 <= c1)
-            	  {
-                      new_distance = INFINITY;
-                      new_along_plane_distance = INFINITY;
-            	  }
-            	  else
-            	  {
-            		  const Point<2> Pb = begin_segment + (c1/c2) * BSP_ESP;
-            		  const double side_of_line =  (begin_segment[0] - end_segment[0]) * (check_point_2d[1] - begin_segment[1])
-            				                     - (begin_segment[1] - end_segment[1]) * (check_point_2d[0] - begin_segment[0])
-												 < 0 ? -1.0 : 1.0;
 
-            		  new_distance = side_of_line * (check_point_2d - Pb).norm();
-            		  new_along_plane_distance = (begin_segment - Pb).norm();
-            	  }
+              //std::cout << "x_axis = " << x_axis[0] << ":" << x_axis[1] << ":" << x_axis[2] << std::endl;
+              //std::cout << "y_axis = " << y_axis[0] << ":" << y_axis[1] << ":" << y_axis[2] << std::endl;
+              //std::cout << "z_axis = " << normal_to_plane[0] << ":" << normal_to_plane[1] << ":" << normal_to_plane[2] << std::endl;
 
-              }
-              else
-              {
-            	  // The angle is not constant. This means that we need to
-            	  // define a circle. First find the center of the circle.
-              }
+              Point<2> check_point_2d(x_axis * (check_point - closest_point_on_line_bottom),
+                                      y_axis * (check_point - closest_point_on_line_bottom),
+                                      cartesian);
 
-              // Now we need to see whether we need to update the information
-              // based on whether this segment is the closest one to the point
-              // up to now. To do this we first look whether the point falls
-              // within the bound of the segment and if it is actually closer.
-              // TODO: find out whether the fabs() are needed.
-              if(new_along_plane_distance >= 0 &&
-                 new_along_plane_distance <= std::fabs(interpolated_segment_length) &&
-				 std::fabs(distance) > std::fabs(new_distance))
-              {
-            	  // There are two specific cases we are concerned with. The
-            	  // first case is that we want to have both the positive and
-            	  // negative distances (above and below the line). The second
-            	  // case is that we only want positive distances.
-            	  if ((!only_positive) ||
-            		  (only_positive  && new_distance > 0))
-            	  {
-            		  distance = new_distance;
-            		  along_plane_distance = new_along_plane_distance + total_length;
-            		  section = current_section;
-            		  section_fraction = fraction_CPL_P1P2;
-                      segment = i_segment;
-                      segment_fraction = new_along_plane_distance / interpolated_segment_length;
-            	  }
-              }
+              //std::cout << "check_point_2d = " << check_point_2d[0] << ":" << check_point_2d[1]  << std::endl;
 
-              // increase the total length for the next segment.
-              total_length += interpolated_segment_length;
+              // Radius in this case means height from bottom of the model.
+              const double check_point_radius = start_radius - check_point_depth;
+
+
+              //std::cout << "check_point_radius = " << check_point_radius << std::endl;
+
+              Point<2> begin_segment(x_axis * (closest_point_on_line - closest_point_on_line_bottom),
+                                     y_axis * (closest_point_on_line - closest_point_on_line_bottom),
+                                     cartesian);
+
+
+              //std::cout << "begin_segment = " << begin_segment[0] << ":" << begin_segment[1]  << std::endl;
+
+              Point<2> end_segment = begin_segment;
+              double total_length = 0;
+              for (unsigned int i_segment = 0; i_segment < plane_segment_lengths[current_section].size(); i_segment++)
+                {
+                  const double current_segment = i_segment;
+                  //const double next_segment = i_segment+1;
+
+                  Point<2> begin_segment = end_segment;
+
+                  // This interpolates different properties between P1 and P2 (the
+                  // points of the plane at the surface)
+                  const double degree_90_to_rad = 0.5 * M_PI;
+                  const double interpolated_angle_top    = degree_90_to_rad - (plane_segment_angles[current_section][current_segment][0]
+                                                                               + fraction_CPL_P1P2 * (plane_segment_angles[next_section][current_segment][0]
+                                                                                   - plane_segment_angles[current_section][current_segment][0]));
+
+                  const double interpolated_angle_bottom = degree_90_to_rad - (plane_segment_angles[current_section][current_segment][1]
+                                                                               + fraction_CPL_P1P2 * (plane_segment_angles[next_section][current_segment][1]
+                                                                                   - plane_segment_angles[current_section][current_segment][1]));
+
+
+                  double interpolated_segment_length     = plane_segment_lengths[current_section][current_segment]
+                                                           + fraction_CPL_P1P2 * (plane_segment_lengths[next_section][current_segment]
+                                                                                  - plane_segment_lengths[current_section][current_segment]);
+
+
+                  //std::cout << "interpolated_angle_top = " << interpolated_angle_top << std::endl;
+                  //std::cout << "interpolated_angle_bottom = " << interpolated_angle_bottom << std::endl;
+                  //std::cout << "interpolated_segment_length = " << interpolated_segment_length << std::endl;
+
+                  // Todo: check wheter this is still needed with the new method.
+                  //double angle_corrected = 90 - interpolated_angle_top;
+
+                  // We want to know where the end point of this segment is (and
+                  // the start of the next segment). There are two cases which we
+                  // will deal with separately. The first one is if the angle is
+                  // constant. The second one is if the angle changes.
+                  const double difference_in_angle_along_segment = interpolated_angle_bottom - interpolated_angle_top;
+                  //std::cout << "flag 1, difference_in_angle_along_segment = " << difference_in_angle_along_segment << ", interpolated_angle_bottom = " << interpolated_angle_bottom << ", interpolated_angle_top = " << interpolated_angle_top << std::endl;
+                  if (std::fabs(difference_in_angle_along_segment) < 1e-8)
+                    {
+                      //std::cout << "flag 2" << std::endl;
+                      // The angle is constant. It is easy find find the end of
+                      // this segment and the distance.
+                      //std::cout << "end_segment before = " << end_segment[0] << ":" << end_segment[1] << ", sin = " << interpolated_segment_length * std::sin(interpolated_angle_top) << ", cos = " << interpolated_segment_length * std::cos(interpolated_angle_top) << std::endl;
+                      end_segment[0] += interpolated_segment_length * std::sin(interpolated_angle_top);
+                      end_segment[1] -= interpolated_segment_length * std::cos(interpolated_angle_top);
+
+                      Point<2> begin_end_segment = end_segment - begin_segment;
+                      Point<2> normal_2d_plane(-begin_end_segment[0],begin_end_segment[1], cartesian);
+                      normal_2d_plane /= normal_2d_plane.norm();
+
+                      //std::cout << "end_segment after = " << end_segment[0] << ":" << end_segment[1]  << std::endl;
+
+                      // Now find the distance of a point to this line.
+                      // Based on http://geomalgorithms.com/a02-_lines.html.
+                      const Point<2> BSP_ESP = end_segment - begin_segment;
+                      const Point<2> BSP_CP = check_point_2d - begin_segment;
+
+                      const double c1 = BSP_ESP * BSP_CP;
+                      const double c2 = BSP_ESP * BSP_ESP;
+
+                      if (c1 < 0 || c2 < c1)
+                        {
+                          new_distance = INFINITY;
+                          new_along_plane_distance = INFINITY;
+                        }
+                      else
+                        {
+                          const Point<2> Pb = begin_segment + (c1/c2) * BSP_ESP;
+                          const double side_of_line =  (begin_segment[0] - end_segment[0]) * (check_point_2d[1] - begin_segment[1])
+                                                       - (begin_segment[1] - end_segment[1]) * (check_point_2d[0] - begin_segment[0])
+                                                       < 0 ? -1.0 : 1.0;
+
+                          new_distance = side_of_line * (check_point_2d - Pb).norm();
+                          new_along_plane_distance = (begin_segment - Pb).norm();
+                        }
+
+                    }
+                  else
+                    {
+                      // The angle is not constant. This means that we need to
+                      // define a circle. First find the center of the circle.
+                    }
+
+                  // Now we need to see whether we need to update the information
+                  // based on whether this segment is the closest one to the point
+                  // up to now. To do this we first look whether the point falls
+                  // within the bound of the segment and if it is actually closer.
+                  // TODO: find out whether the fabs() are needed.
+                  if (new_along_plane_distance >= 0 &&
+                      new_along_plane_distance <= std::fabs(interpolated_segment_length) &&
+                      std::fabs(distance) > std::fabs(new_distance))
+                    {
+                      // There are two specific cases we are concerned with. The
+                      // first case is that we want to have both the positive and
+                      // negative distances (above and below the line). The second
+                      // case is that we only want positive distances.
+                      if ((!only_positive) ||
+                          (only_positive  && new_distance > 0))
+                        {
+                          distance = new_distance;
+                          along_plane_distance = new_along_plane_distance + total_length;
+                          section = current_section;
+                          section_fraction = fraction_CPL_P1P2;
+                          segment = i_segment;
+                          segment_fraction = new_along_plane_distance / interpolated_segment_length;
+                        }
+                    }
+
+                  // increase the total length for the next segment.
+                  total_length += interpolated_segment_length;
+                }
             }
-        }
         }
       std::map<std::string, double> return_values;
       return_values["distanceFromPlane"] = distance;
