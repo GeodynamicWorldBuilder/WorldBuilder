@@ -95,7 +95,8 @@ namespace WorldBuilder
       {
 
         // For now it is required to have a all segments, this requirement might be dropped in the future.
-        prm.load_entry("all", true, Types::Array(Types::Segment(0,Point<2>(0,0,cartesian),Point<2>(0,0,cartesian), "A plate segment with a certain length, thickness and angle."),
+        prm.load_entry("all", true, Types::Array(Types::Segment(0,Point<2>(0,0,cartesian),Point<2>(0,0,cartesian),
+                                                                "A plate segment with a certain length, thickness and angle."),
                                                  "A list of plate segments."));
 
         std::vector<const Types::Segment *> all_segments = prm.get_array<const Types::Segment>("all");
@@ -108,20 +109,32 @@ namespace WorldBuilder
         slab_segment_angles.resize(typed_coordinates.size());
         for (unsigned int coordinate_i = 0; coordinate_i < typed_coordinates.size(); ++coordinate_i)
           {
-            total_slab_length[coordinate_i] = 0;
-            for (unsigned int segment_i = 0; segment_i < all_segments.size(); segment_i++)
+            std::vector<const Types::Segment *> &current_segment = all_segments;
+
+            // first check whether there is an overwrite for this coordinate
+            bool overwrite = prm.load_entry(std::to_string(coordinate_i), false, Types::Array(Types::Segment(0,Point<2>(0,0,cartesian),Point<2>(0,0,cartesian),
+                                            "A plate segment with a certain length, thickness and angle."),
+                                            "A list of plate segments."));
+
+
+            if (overwrite == true)
               {
-                total_slab_length[coordinate_i] += all_segments[segment_i]->value_length;
-                slab_segment_lengths[coordinate_i].push_back(all_segments[segment_i]->value_length);
+                current_segment = prm.get_array<const Types::Segment>(std::to_string(coordinate_i));
+              }
+            total_slab_length[coordinate_i] = 0;
+            for (unsigned int segment_i = 0; segment_i < current_segment.size(); segment_i++)
+              {
+                total_slab_length[coordinate_i] += current_segment[segment_i]->value_length;
+                slab_segment_lengths[coordinate_i].push_back(current_segment[segment_i]->value_length);
 
-                if (all_segments[segment_i]->value_thickness[0] > maximum_slab_thickness)
-                  maximum_slab_thickness = all_segments[segment_i]->value_thickness[0];
+                if (current_segment[segment_i]->value_thickness[0] > maximum_slab_thickness)
+                  maximum_slab_thickness = current_segment[segment_i]->value_thickness[0];
 
-                if (all_segments[segment_i]->value_thickness[1] > maximum_slab_thickness)
-                  maximum_slab_thickness = all_segments[segment_i]->value_thickness[1];
+                if (current_segment[segment_i]->value_thickness[1] > maximum_slab_thickness)
+                  maximum_slab_thickness = current_segment[segment_i]->value_thickness[1];
 
-                slab_segment_thickness[coordinate_i].push_back(all_segments[segment_i]->value_thickness);
-                slab_segment_angles[coordinate_i].push_back(all_segments[segment_i]->value_angle * (M_PI/180));
+                slab_segment_thickness[coordinate_i].push_back(current_segment[segment_i]->value_thickness);
+                slab_segment_angles[coordinate_i].push_back(current_segment[segment_i]->value_angle * (M_PI/180));
               }
 
             if (total_slab_length[coordinate_i] > maximum_total_slab_length)

@@ -2626,5 +2626,910 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes")
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0));
+
+  // Now test the curves into the depth
+  // curve test 1
+  //reference_point[0] = 0;
+  //reference_point[0] = 0;
+
+  slab_segment_angles[0][0][0] = 0.0 * dtr;
+  slab_segment_angles[0][0][1] = 45.0 * dtr;
+  slab_segment_angles[0][1][0] = 45.0 * dtr;
+  slab_segment_angles[0][1][1] = 90.0 * dtr;
+  slab_segment_angles[1][0][0] = 0.0 * dtr;
+  slab_segment_angles[1][0][1] = 45.0 * dtr;
+  slab_segment_angles[1][1][0] = 45.0 * dtr;
+  slab_segment_angles[1][1][1] = 90.0 * dtr;
+  slab_segment_angles[2][0][0] = 90 * dtr;
+  slab_segment_angles[2][0][1] = 90 * dtr;
+  slab_segment_angles[2][1][0] = 90 * dtr;
+  slab_segment_angles[2][1][1] = 90 * dtr;
+
+  slab_segment_lengths[0][0] = 10 * 45 * dtr;
+  slab_segment_lengths[0][1] = 10 * 45 * dtr;
+  slab_segment_lengths[1][0] = 10 * 45 * dtr;
+  slab_segment_lengths[1][1] = 10 * 45 * dtr;
+  slab_segment_lengths[2][0] = 5;
+  slab_segment_lengths[2][1] = 5;
+
+
+  position[0] = 10;
+  position[1] = 0;
+  position[2] = 0;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+  // curve test 2
+  position[0] = 10;
+  position[1] = 5;
+  position[2] = 0;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(distance_from_planes["distanceFromPlane"] == Approx(5.0)); // checked that it should be about 5 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+  // curve test 3
+  position[0] = 10;
+  position[1] = -5;
+  position[2] = 0;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(distance_from_planes["distanceFromPlane"] == Approx(-5.0)); // checked that it should be about -5 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+
+  // curve test 4
+  position[0] = 10;
+  position[1] = 10 - 10 * sqrt(2)/2;
+  position[2] = 10 * sqrt(2)/2;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+  // curve test 5
+  position[0] = 10;
+  position[1] = 10 - 10 * sqrt(2);
+  position[2] = 10 * sqrt(2);
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(distance_from_planes["distanceFromPlane"] == Approx(-10.0)); // checked that it should be about -10 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+  // curve test 6
+  position[0] = 10;
+  position[1] = 10;
+  position[2] = 0;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(distance_from_planes["distanceFromPlane"] == Approx(10.0)); // checked that it should be about 10 this with a drawing
+  // This is a special case where the point coincides with the center of the circle.
+  // Because all the points on the circle are equally close, we have chosen in the
+  // code to define this case as that this point belongs to the top of the top segment
+  // where the check point has angle 0. This means that the distanceAlongPlate is zero.
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(0.0));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.0));
+
+
+  // curve test 7
+  position[0] = 10;
+  position[1] = -5;
+  position[2] = -1;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
+  CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY);
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.0));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.0));
+
+  // curve test 8
+  slab_segment_lengths[0][0] = 5 * 45 * dtr;
+  slab_segment_lengths[0][1] = 5 * 45 * dtr;
+  slab_segment_lengths[1][0] = 5 * 45 * dtr;
+  slab_segment_lengths[1][1] = 5 * 45 * dtr;
+
+  position[0] = 10;
+  position[1] = 5;
+  position[2] = 5;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * M_PI/180 * 5));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+  // curve test 9
+  position[0] = 10;
+  position[1] = 10 - 5 * sqrt(2)/2;
+  position[2] = 5 + 5 * sqrt(2)/2;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45.0 * M_PI/180 * 5));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+
+  // curve test 10
+  slab_segment_angles[0][0][0] = 0.0 * dtr;
+  slab_segment_angles[0][0][1] = 90.0 * dtr;
+  slab_segment_angles[0][1][0] = 90.0 * dtr;
+  slab_segment_angles[0][1][1] = 180.0 * dtr;
+  slab_segment_angles[1][0][0] = 0.0 * dtr;
+  slab_segment_angles[1][0][1] = 90.0 * dtr;
+  slab_segment_angles[1][1][0] = 90.0 * dtr;
+  slab_segment_angles[1][1][1] = 180.0 * dtr;
+
+  slab_segment_lengths[0][0] = 10 * 90 * dtr;
+  slab_segment_lengths[0][1] = 10 * 90 * dtr;
+  slab_segment_lengths[1][0] = 10 * 90 * dtr;
+  slab_segment_lengths[1][1] = 10 * 90 * dtr;
+
+  position[0] = 10;
+  position[1] = 0;
+  position[2] = 0;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+  // curve test 11
+  position[0] = 10;
+  position[1] = 10 - 10 * sqrt(2)/2;
+  position[2] = 10 * sqrt(2)/2;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.5));
+
+  // curve test 12
+  position[0] = 10;
+  position[1] = 10 - 10 * sqrt(2)/2;
+  position[2] = -10 * sqrt(2)/2;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(135.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.5));
+
+
+  // curve test 13
+  position[0] = 10;
+  position[1] = 10;
+  position[2] = -10;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+  // curve test 14
+  slab_segment_angles[0][0][0] = 0.0 * dtr;
+  slab_segment_angles[0][0][1] = 180.0 * dtr;
+  slab_segment_angles[0][1][0] = 180.0 * dtr;
+  slab_segment_angles[0][1][1] = 270.0 * dtr;
+  slab_segment_angles[1][0][0] = 0.0 * dtr;
+  slab_segment_angles[1][0][1] = 180.0 * dtr;
+  slab_segment_angles[1][1][0] = 180.0 * dtr;
+  slab_segment_angles[1][1][1] = 270.0 * dtr;
+
+  slab_segment_lengths[0][0] = 10 * 180 * dtr;
+  slab_segment_lengths[0][1] = 10 * 90 * dtr;
+  slab_segment_lengths[1][0] = 10 * 180 * dtr;
+  slab_segment_lengths[1][1] = 10 * 90 * dtr;
+
+  position[0] = 10;
+  position[1] = 0;
+  position[2] = 0;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.5));
+
+  // curve test 15
+  position[0] = 10;
+  position[1] = 10;
+  position[2] = -10;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+  // curve test 16
+  position[0] = 10;
+  position[1] = 10;
+  position[2] = -11;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(distance_from_planes["distanceFromPlane"] == Approx(-1.0)); // checked that it should be about -1 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+  // curve test 16
+  position[0] = 10;
+  position[1] = 10;
+  position[2] = -9;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(distance_from_planes["distanceFromPlane"] == Approx(1.0)); // checked that it should be about -1 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+  // curve test 17
+  position[0] = 10;
+  position[1] = 20;
+  position[2] = 0;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(270.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+
+  // curve test 18
+  position[0] = 10;
+  position[1] = 21;
+  position[2] = 0;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(distance_from_planes["distanceFromPlane"] == Approx(-1.0)); // checked that it should be about 1 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(270.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+  // curve test 19
+  position[0] = 10;
+  position[1] = 19;
+  position[2] = 0;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(distance_from_planes["distanceFromPlane"] == Approx(1.0)); // checked that it should be about 1 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(270.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+
+  // curve test 20
+  slab_segment_angles[0][0][0] = 0.0 * dtr;
+  slab_segment_angles[0][0][1] = 270.0 * dtr;
+  slab_segment_angles[0][1][0] = 270.0 * dtr;
+  slab_segment_angles[0][1][1] = 315.0 * dtr;
+  slab_segment_angles[1][0][0] = 0.0 * dtr;
+  slab_segment_angles[1][0][1] = 270.0 * dtr;
+  slab_segment_angles[1][1][0] = 270.0 * dtr;
+  slab_segment_angles[1][1][1] = 315.0 * dtr;
+
+  slab_segment_lengths[0][0] = 10 * 270 * dtr;
+  slab_segment_lengths[0][1] = 10 * 45 * dtr;
+  slab_segment_lengths[1][0] = 10 * 270 * dtr;
+  slab_segment_lengths[1][1] = 10 * 45 * dtr;
+
+  position[0] = 10;
+  position[1] = 0;
+  position[2] = 0;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0/3.0));
+
+  // curve test 21
+  position[0] = 10;
+  position[1] = 10;
+  position[2] = -10;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(2.0/3.0));
+
+  // curve test 21
+  position[0] = 10;
+  position[1] = 20;
+  position[2] = 0;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(270.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+  // curve test 22
+  position[0] = 10;
+  position[1] = 10 + 1e-14 + 10 * sqrt(2)/2; // somehow it doesn't get the exact value here, so adding an epsiolon of 1e-14.
+  position[2] = 10 * sqrt(2)/2;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(315.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+  // curve test start 45 degree 1
+  slab_segment_angles[0][0][0] = 45.0 * dtr;
+  slab_segment_angles[0][0][1] = 90.0 * dtr;
+  slab_segment_angles[0][1][0] = 90.0 * dtr;
+  slab_segment_angles[0][1][1] = 135.0 * dtr;
+  slab_segment_angles[1][0][0] = 45.0 * dtr;
+  slab_segment_angles[1][0][1] = 90.0 * dtr;
+  slab_segment_angles[1][1][0] = 90.0 * dtr;
+  slab_segment_angles[1][1][1] = 135.0 * dtr;
+
+  slab_segment_lengths[0][0] = 10 * 45 * dtr;
+  slab_segment_lengths[0][1] = 10 * 45 * dtr;
+  slab_segment_lengths[1][0] = 10 * 45 * dtr;
+  slab_segment_lengths[1][1] = 10 * 45 * dtr;
+  slab_segment_lengths[2][0] = 5;
+  slab_segment_lengths[2][1] = 5;
+
+
+  position[0] = 10;
+  position[1] = 0;
+  position[2] = 0;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(distance_from_planes["distanceFromPlane"] == Approx(-7.3205080757)); // checked that it should be about -7.3 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(9.5531661812));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.2163468959));
+
+  // curve test change reference point 1
+  reference_point[0] = 50;
+  reference_point[1] = 50;
+
+  position[0] = 10;
+  position[1] = 0;
+  position[2] = 0;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  // checked that distanceFromPlane should be infinity (it is on the other side of the circle this with a drawing
+  CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
+  CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY);
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.0));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.0));
+
+  // curve test change reference point 2
+  position[0] = 10;
+  position[1] = 10;
+  position[2] = 0;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(distance_from_planes["distanceFromPlane"] == Approx(2.3463313527)); // checked that it should be about 2.3 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(11.780972451));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.5));
+
+  // curve test angle interpolation 1
+  reference_point[0] = 0;
+  reference_point[1] = 0;
+
+  slab_segment_angles[0][0][0] = 0.0 * dtr;
+  slab_segment_angles[0][0][1] = 180.0 * dtr;
+  slab_segment_angles[0][1][0] = 180.0 * dtr;
+  slab_segment_angles[0][1][1] = 270.0 * dtr;
+  slab_segment_angles[1][0][0] = 0.0 * dtr;
+  slab_segment_angles[1][0][1] = 90.0 * dtr;
+  slab_segment_angles[1][1][0] = 90.0 * dtr;
+  slab_segment_angles[1][1][1] = 135.0 * dtr;
+
+  slab_segment_lengths[0][0] = 10 * 135 * dtr;
+  slab_segment_lengths[0][1] = 10 * 67.5 * dtr;
+  slab_segment_lengths[1][0] = 10 * 135 * dtr;
+  slab_segment_lengths[1][1] = 10 * 67.5 * dtr;
+
+
+  position[0] = 10;
+  position[1] = 0;
+  position[2] = 0;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(2.0/3.0));
+
+  // curve test reverse angle 1
+  reference_point[0] = 0;
+  reference_point[1] = 0;
+
+  slab_segment_angles[0][0][0] = 0.0 * dtr;
+  slab_segment_angles[0][0][1] = 90.0 * dtr;
+  slab_segment_angles[0][1][0] = 90.0 * dtr;
+  slab_segment_angles[0][1][1] = 0.0 * dtr;
+  slab_segment_angles[1][0][0] = 0.0 * dtr;
+  slab_segment_angles[1][0][1] = 90.0 * dtr;
+  slab_segment_angles[1][1][0] = 90.0 * dtr;
+  slab_segment_angles[1][1][1] = 0.0 * dtr;
+
+  slab_segment_lengths[0][0] = 10 * 90 * dtr;
+  slab_segment_lengths[0][1] = 10 * 90 * dtr;
+  slab_segment_lengths[1][0] = 10 * 90 * dtr;
+  slab_segment_lengths[1][1] = 10 * 90 * dtr;
+
+  position[0] = 10;
+  position[1] = 0;
+  position[2] = 0;
+  std::cout << "================== position = " << position[0] << ":" << position[1] << ":" << position[2] << std::endl;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+  // curve test reverse angle 2
+  position[0] = 10;
+  position[1] = -10;
+  position[2] = -10;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+  // curve test reverse angle 3
+  position[0] = 10;
+  position[1] = 10 - (20 - 10 * sqrt(2)/2);
+  position[2] = -10 * sqrt(2)/2;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(135.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.5));
+
+  // curve test reverse angle 4
+  position[0] = 10;
+  position[1] = 10 - (20 - 10 * std::cos(0.1 * M_PI/180));
+  position[2] = - 10 * std::sin(0.1 * M_PI/180);
+  std::cout << "================== position = " << position[0] << ":" << position[1] << ":" << position[2] << std::endl;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.1 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.0011111111));
+
+
+  // curve test reverse angle 5
+  position[0] = 10;
+  position[1] = 10 - (20 - 10 * std::cos(0.001 * M_PI/180));
+  position[2] = - 10 * std::sin(0.001 * M_PI/180);
+  std::cout << "================== position = " << position[0] << ":" << position[1] << ":" << position[2] << std::endl;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.001 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.000011111111));
+
+  // curve test reverse angle 6
+  slab_segment_angles[0][0][0] = 0.0 * dtr;
+  slab_segment_angles[0][0][1] = 45.0 * dtr;
+  slab_segment_angles[0][1][0] = 45.0 * dtr;
+  slab_segment_angles[0][1][1] = 0.0 * dtr;
+  slab_segment_angles[1][0][0] = 0.0 * dtr;
+  slab_segment_angles[1][0][1] = 45.0 * dtr;
+  slab_segment_angles[1][1][0] = 45.0 * dtr;
+  slab_segment_angles[1][1][1] = 0.0 * dtr;
+
+  slab_segment_lengths[0][0] = 10 * 45 * dtr;
+  slab_segment_lengths[0][1] = 10 * 45 * dtr;
+  slab_segment_lengths[1][0] = 10 * 45 * dtr;
+  slab_segment_lengths[1][1] = 10 * 45 * dtr;
+  position[0] = 10;
+  position[1] = 10 - (20 - 10 * std::cos(45.000 * M_PI/180));
+  position[2] = - 10 * std::sin(45.000 * M_PI/180);
+  std::cout << "================== position = " << position[0] << ":" << position[1] << ":" << position[2] << std::endl;
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.1 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.0011111111));
+
 }
 
