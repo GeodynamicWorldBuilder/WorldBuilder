@@ -683,7 +683,8 @@ namespace WorldBuilder
                                       y_axis * (check_point - closest_point_on_line_bottom),
                                       cartesian);
 
-              std::cout << "check_point_2d = " << check_point_2d[0] << ":" << check_point_2d[1]  << std::endl;
+              //std::cout << "======================================================" << std::endl;
+              //std::cout << "check_point_2d = " << check_point_2d[0] << ":" << check_point_2d[1]  << std::endl;
 
               // Radius in this case means height from bottom of the model.
               const double check_point_radius = start_radius - check_point_depth;
@@ -696,7 +697,7 @@ namespace WorldBuilder
                                      cartesian);
 
 
-              //std::cout << "begin_segment = " << begin_segment[0] << ":" << begin_segment[1]  << std::endl;
+              //std::cout << "     begin_segment = " << begin_segment[0] << ":" << begin_segment[1]  << std::endl;
 
               Point<2> end_segment = begin_segment;
               double total_length = 0;
@@ -735,7 +736,7 @@ namespace WorldBuilder
                   // the start of the next segment). There are two cases which we
                   // will deal with separately. The first one is if the angle is
                   // constant. The second one is if the angle changes.
-                  const double difference_in_angle_along_segment = interpolated_angle_bottom - interpolated_angle_top;
+                  const double difference_in_angle_along_segment = interpolated_angle_top - interpolated_angle_bottom;
                   //std::cout << "flag 1, difference_in_angle_along_segment = " << difference_in_angle_along_segment << ", interpolated_angle_bottom = " << interpolated_angle_bottom << ", interpolated_angle_top = " << interpolated_angle_top << std::endl;
                   if (std::fabs(difference_in_angle_along_segment) < 1e-8)
                     {
@@ -818,7 +819,7 @@ namespace WorldBuilder
                     	  //std::cout << "tan_angle_top = " << tan_angle_top << std::endl;
                     	  //std::cout << "cos_angle_top = " << cos_angle_top << std::endl;
 
-                    	  const double center_circle_y = difference_in_angle_along_segment > 0 ?
+                    	  const double center_circle_y = difference_in_angle_along_segment < 0 ?
                     			                         begin_segment[1] - radius_angle_circle * cos_angle_top
                     			                         : begin_segment[1] + radius_angle_circle * cos_angle_top;
 
@@ -834,19 +835,21 @@ namespace WorldBuilder
                     	  //std::cout << "tan_angle_top * (CCYBS) = " << tan_angle_top * (CCYBS)  << std::endl;
 
 
-                    	  center_circle[0] = begin_segment[0] - tan_angle_top * (CCYBS);//difference_in_angle_along_segment > 0 ? begin_segment[0] - tan_angle_top * (CCYBS) : begin_segment[0] + tan_angle_top * (CCYBS);
+                    	  center_circle[0] = begin_segment[0] + tan_angle_top * (CCYBS);//difference_in_angle_along_segment > 0 ? begin_segment[0] - tan_angle_top * (CCYBS) : begin_segment[0] + tan_angle_top * (CCYBS);
                     	  center_circle[1] = center_circle_y;
                 	  }
 
-                	  std::cout << "begin_segment = " << begin_segment[0] << ", " << begin_segment[1] << std::endl;
+                	  //std::cout << "     begin_segment = " << begin_segment[0] << ", " << begin_segment[1] << std::endl;
 
-                	  WBAssert(std::fabs((begin_segment-center_circle).norm() - std::fabs(radius_angle_circle)) < 1e-8,
+                	  WBAssert(std::fabs((begin_segment-center_circle).norm() - std::fabs(radius_angle_circle))
+                	  < 1e-8 * std::fabs((begin_segment-center_circle).norm() + std::fabs(radius_angle_circle)),
                 			  "Internal error: The center of the circle is not a radius away from the begin point. " << std::endl
 							  << "The center is located at " << center_circle[0] << ":" << center_circle[1] << std::endl
 							  << "The begin point is located at " << begin_segment[0] << ":" << begin_segment[1] << std::endl
 							  << "The computed radius is " << std::fabs((begin_segment-center_circle).norm())
 							  << ", and it should be " << radius_angle_circle << ".");
-                	  std::cout << "center_circle = " << center_circle[0] << ", " << center_circle[1] << std::endl;
+
+                	  //std::cout << "     center_circle = " << center_circle[0] << ", " << center_circle[1] << std::endl;
 
                 	  // Now compute the location of the end of the segment by
                 	  // rotating P1 around the center_circle
@@ -855,10 +858,12 @@ namespace WorldBuilder
                 	  const double cos_angle_diff = cos(difference_in_angle_along_segment);
                 	  end_segment[0] = cos_angle_diff * BSPC[0] - sin_angle_diff * BSPC[1] + center_circle[0];
                 	  end_segment[1] = sin_angle_diff * BSPC[0] + cos_angle_diff * BSPC[1] + center_circle[1];
-                	  std::cout << "end_segment = " << end_segment[0] << ", " << end_segment[1] << std::endl;
+
+                	  //std::cout << "     end_segment = " << end_segment[0] << ", " << end_segment[1] << std::endl;
 
 
-                	  WBAssert(std::fabs((end_segment-center_circle).norm() - std::fabs(radius_angle_circle)) < 1e-8,
+                	  WBAssert(std::fabs((end_segment-center_circle).norm() - std::fabs(radius_angle_circle))
+                	  < 1e-8 * std::fabs((end_segment-center_circle).norm() + std::fabs(radius_angle_circle)) ,
                 			  "Internal error: The center of the circle is not a radius away from the end point. " << std::endl
 							  << "The center is located at " << center_circle[0] << ":" << center_circle[1] << std::endl
 							  << "The end point is located at " << end_segment[0] << ":" << end_segment[1] << std::endl
@@ -873,12 +878,12 @@ namespace WorldBuilder
                 	  // The angle of the check point is computed with the help of
                 	  // dot product. But before that we need to adjust the check
                 	  // point 2d.
-                	  const Point<2> check_point_2d_ajusted(-check_point_2d[0], check_point_2d[1], cartesian);
+                	  const Point<2> check_point_2d_ajusted(check_point_2d[0], check_point_2d[1], cartesian);
                 	  const Point<2> CPCR = check_point_2d_ajusted - center_circle;
                 	  const double CPCR_norm = CPCR.norm();
                       //std::cout << "check_point_2d_ajusted = " << check_point_2d_ajusted[0] << ":" << check_point_2d_ajusted[1]  << std::endl;
                       //std::cout << "CPCR = " << CPCR[0] << ":" << CPCR[1]  << std::endl;
-                      //std::cout << "CPCR_norm = " << CPCR_norm  << std::endl;
+                     // std::cout << "CPCR_norm = " << CPCR_norm  << std::endl;
 
                 	  const double dot_product = CPCR * Point<2>(0, radius_angle_circle, cartesian);
                 	  // If the x of the check point is larger then the x of center
@@ -888,24 +893,28 @@ namespace WorldBuilder
                 	  // Furthermore, when the check point is at the same location as
                 	  // the center of the circle, we count that point as belonging
                 	  // to the top of the top segment (0 degree).
-                	  double check_point_angle = CPCR_norm == 0 ? 0 : (check_point_2d_ajusted[0] < center_circle[0]
+                	  //std::cout << "std::acos(dot_product/(CPCR_norm * radius_angle_circle)) = " << std::acos(dot_product/(CPCR_norm * radius_angle_circle))*180/M_PI << std::endl;
+                	  //std::cout << "center_circle[0] = " << center_circle[0] << std::endl;
+                	  double check_point_angle = CPCR_norm == 0 ? 2.0 * M_PI : (check_point_2d_ajusted[0] <= center_circle[0]
 													   ? std::acos(dot_product/(CPCR_norm * radius_angle_circle))
-                	                                   : M_PI + M_PI - std::acos(dot_product/(CPCR.norm() * radius_angle_circle)));
-                	  check_point_angle = difference_in_angle_along_segment > 0 ? check_point_angle : check_point_angle - M_PI;
+                	                                   : 2.0 * M_PI - std::acos(dot_product/(CPCR.norm() * radius_angle_circle)));
+                	  check_point_angle = difference_in_angle_along_segment > 0 ? M_PI - check_point_angle : 2.0 * M_PI - check_point_angle;
 
                 	  //std::cout << "difference_in_angle_along_segment = " << difference_in_angle_along_segment << ", " << difference_in_angle_along_segment *180/M_PI << std::endl;
-                	  //std::cout << "check_point_angle = " << check_point_angle << ", " << check_point_angle *180/M_PI << std::endl;
+                	  //std::cout << "check_point_angle = " << check_point_angle << ", " << check_point_angle * 180/M_PI << std::endl;
                 	  //std::cout << "interpolated_angle_top = " << interpolated_angle_top << ", " << interpolated_angle_top *180/M_PI << std::endl;
                 	  //std::cout << "interpolated_angle_bottom = " << interpolated_angle_bottom << ", " << interpolated_angle_bottom *180/M_PI << std::endl;
 
-                	  if((difference_in_angle_along_segment > 0 && check_point_angle >= interpolated_angle_top && check_point_angle <= interpolated_angle_bottom)
-                		 || (difference_in_angle_along_segment < 0 && check_point_angle <= interpolated_angle_top && check_point_angle >= interpolated_angle_bottom))
+
+                	  if((difference_in_angle_along_segment > 0 && check_point_angle <= interpolated_angle_top && check_point_angle >= interpolated_angle_bottom)
+                		 || (difference_in_angle_along_segment < 0 && check_point_angle >= interpolated_angle_top && check_point_angle <= interpolated_angle_bottom))
                 	  {
-                		  new_distance = (radius_angle_circle - CPCR_norm) * (difference_in_angle_along_segment > 0 ? 1 : -1);
-                    	  new_along_plane_distance = (radius_angle_circle * check_point_angle - radius_angle_circle * interpolated_angle_top) * (difference_in_angle_along_segment > 0 ? 1 : -1);
-                    	  std::cout << "new_distance = " << new_distance << std::endl;
-                    	  std::cout << "new_along_plane_distance = " << new_along_plane_distance << std::endl;
+                		  new_distance = (radius_angle_circle - CPCR_norm) * (difference_in_angle_along_segment < 0 ? 1 : -1);
+                    	  new_along_plane_distance = (radius_angle_circle * check_point_angle - radius_angle_circle * interpolated_angle_top) * (difference_in_angle_along_segment < 0 ? 1 : -1);
+                    	  //std::cout << "new_distance = " << new_distance << std::endl;
+                    	  //std::cout << "new_along_plane_distance = " << new_along_plane_distance << std::endl;
                 	  }
+
                     }
 
                   // Now we need to see whether we need to update the information

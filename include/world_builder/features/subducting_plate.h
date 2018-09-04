@@ -99,11 +99,11 @@ namespace WorldBuilder
         double temperature_submodule_linear_bottom_temperature;
 
         // plate model submodule parameters
-        double temperature_submodule_plate_model_depth;
-        double temperature_submodule_plate_model_top_temperature;
-        double temperature_submodule_plate_model_bottom_temperature;
-        std::vector<Point<2> > temperature_submodule_plate_model_ridge_points;
-        double temperature_submodule_plate_model_spreading_velocity;
+        double temperature_submodule_plate_model_density;
+        double temperature_submodule_plate_model_plate_velocity;
+        double temperature_submodule_plate_model_thermal_conductivity;
+        double temperature_submodule_plate_model_Thermal_expansion_coefficient;
+        double temperature_submodule_plate_model_specific_heat;
 
         // constant composition submodule parameters
         double composition_submodule_constant_depth;

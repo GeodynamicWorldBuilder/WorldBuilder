@@ -3385,7 +3385,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes")
   position[0] = 10;
   position[1] = 0;
   position[2] = 0;
-  std::cout << "================== position = " << position[0] << ":" << position[1] << ":" << position[2] << std::endl;
 
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
@@ -3450,9 +3449,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes")
 
   // curve test reverse angle 4
   position[0] = 10;
-  position[1] = 10 - (20 - 10 * std::cos(0.1 * M_PI/180));
-  position[2] = - 10 * std::sin(0.1 * M_PI/180);
-  std::cout << "================== position = " << position[0] << ":" << position[1] << ":" << position[2] << std::endl;
+  //position[1] = 10 - (10 * std::cos(0.1 * M_PI/180));
+  //position[2] = - 10 * std::sin(0.1 * M_PI/180);
+  double angle = 180+0.1;
+  position[1] = 10 - (20 * std::cos(0 * M_PI/180) + 10 * std::cos((angle) * M_PI/180));
+  position[2] = 0 * std::cos(0 * M_PI/180) + 10 * std::sin((angle) * M_PI/180);
 
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
@@ -3476,7 +3477,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes")
   position[0] = 10;
   position[1] = 10 - (20 - 10 * std::cos(0.001 * M_PI/180));
   position[2] = - 10 * std::sin(0.001 * M_PI/180);
-  std::cout << "================== position = " << position[0] << ":" << position[1] << ":" << position[2] << std::endl;
 
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
@@ -3509,10 +3509,10 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes")
   slab_segment_lengths[0][1] = 10 * 45 * dtr;
   slab_segment_lengths[1][0] = 10 * 45 * dtr;
   slab_segment_lengths[1][1] = 10 * 45 * dtr;
+
   position[0] = 10;
-  position[1] = 10 - (20 - 10 * std::cos(45.000 * M_PI/180));
-  position[2] = - 10 * std::sin(45.000 * M_PI/180);
-  std::cout << "================== position = " << position[0] << ":" << position[1] << ":" << position[2] << std::endl;
+  position[1] = 10 - 10 * std::cos(45.000 * M_PI/180);
+  position[2] = 10 * std::sin(45.000 * M_PI/180);
 
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
@@ -3525,11 +3525,152 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes")
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.1 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+  // curve test reverse angle 6
+  position[0] = 10;
+  angle = 45;
+  position[1] = 10 - (10 * std::cos((angle) * M_PI/180));
+  position[2] = 10 * std::sin((angle) * M_PI/180);
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0.0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+  // curve test reverse angle 6
+  position[0] = 10;
+  angle = 180+45;
+  position[1] = 10 - (20 * std::cos(45 * M_PI/180) + 10 * std::cos((angle) * M_PI/180));
+  position[2] = 20 * std::cos(45 * M_PI/180) + 10 * std::sin((angle) * M_PI/180);
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
+
+
+  // curve test reverse angle 7
+  position[0] = 10;
+  angle = 180+46;
+  position[1] = 10 - (20 * std::cos(45 * M_PI/180) + 10 * std::cos((angle) * M_PI/180));
+  position[2] = 20 * std::cos(45 * M_PI/180) + 10 * std::sin((angle) * M_PI/180);
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(46 * M_PI/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
-  CHECK(distance_from_planes["segmentFraction"] == Approx(0.0011111111));
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.0222222222));
+
+
+
+  // curve test reverse angle 8
+  position[0] = 10;
+  angle = 180+46;
+  position[1] = 10 - (20 * std::cos(45 * M_PI/180) + 10 * std::cos((angle) * M_PI/180))+0.1;
+  position[2] = 20 * std::cos(45 * M_PI/180) + 10 * std::sin((angle) * M_PI/180);
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(distance_from_planes["distanceFromPlane"] == Approx(0.0697227738)); // checked that it should be small positive this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx((90 - 44.4093) * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.0131266424));
+
+  // curve test reverse angle 9
+  position[0] = 10;
+  angle = 180+46;
+  position[1] = 10 - (20 * std::cos(45 * M_PI/180) + 10 * std::cos((angle) * M_PI/180))-0.1;
+  position[2] = 20 * std::cos(45 * M_PI/180) + 10 * std::sin((angle) * M_PI/180);
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(distance_from_planes["distanceFromPlane"] == Approx(-0.0692053058)); // checked that it should be small negative this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx((90 - 43.585) * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.031445048));
+
+  // curve test reverse angle 10
+  position[0] = 10;
+  angle = 180+90;
+  position[1] = 10 - (20 * std::cos(45 * M_PI/180) + 10 * std::cos((angle) * M_PI/180));
+  position[2] = 20 * std::cos(45 * M_PI/180) + 10 * std::sin((angle) * M_PI/180);
+
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 cartesian_system,
+                                                 false);
+
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90 * M_PI/180 * 10));
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
 }
 

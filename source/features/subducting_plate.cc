@@ -119,8 +119,16 @@ namespace WorldBuilder
 
             if (overwrite == true)
               {
+            	// there is a special case for this coordinate, so use it.
                 current_segment = prm.get_array<const Types::Segment>(std::to_string(coordinate_i));
               }
+            else
+            {
+            	// Need to get it again, because the load entry last time could
+            	// have changed the segment list, thereby invalidating the pointers.
+            	current_segment = prm.get_array<const Types::Segment>("all");
+            }
+
             total_slab_length[coordinate_i] = 0;
             for (unsigned int segment_i = 0; segment_i < current_segment.size(); segment_i++)
               {
@@ -167,37 +175,25 @@ namespace WorldBuilder
           }
         else if (temperature_submodule_name == "plate model")
           {
-            prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth in meters to which the temperature rises (or lowers) to."));
-            temperature_submodule_plate_model_depth = prm.get_double("depth");
+            prm.load_entry("density", true, Types::Double(NaN::DSNAN,"The reference density of the subducting plate."));
+            temperature_submodule_plate_model_density = prm.get_double("density");
 
-            prm.load_entry("top temperature", false, Types::Double(293.15,"The temperature in degree Kelvin a the top of this block. If this value is not set, the "));
-            temperature_submodule_plate_model_top_temperature = prm.get_double("top temperature");
+            prm.load_entry("plate velocity", true, Types::Double(NaN::DSNAN,"The velocity in meters per year with which the plate subducts."));
+            temperature_submodule_plate_model_plate_velocity = prm.get_double("plate velocity");
 
+            prm.load_entry("thermal conductivity", false, Types::Double(2.0,"The thermal conductivity of the subducting plate material in ... units."));
+            temperature_submodule_plate_model_thermal_conductivity = prm.get_double("thermal conductivity");
 
-            prm.load_entry("bottom temperature", false, Types::Double(NaN::DQNAN,"The temperature in degree Kelvin a the bottom of this block."));
-            temperature_submodule_plate_model_bottom_temperature = prm.get_double("bottom temperature");
+            prm.load_entry("Thermal expansion coefficient", false, Types::Double(3.5e-5,"The thermal expansivity of the subducting plate material in ... units"));
+            temperature_submodule_plate_model_Thermal_expansion_coefficient = prm.get_double("Thermal expansion coefficient");
 
-            prm.load_entry("ridge points", true,
-                           Types::Array(Types::Point<2>(Point<2>({0,0},coordinate_system),
-                                                        "A 2d point on the line where the oceanic ridge is located."),
-                                        "A list of 2d points which indicate the location of the ridge."));
-            std::vector<const Types::Point<2>* > temp_ridge_points = prm.get_array<const Types::Point<2> >("ridge points");
-
-            const double dtr = prm.coordinate_system->natural_coordinate_system() == spherical ? M_PI / 180.0 : 1.0;
-            WBAssertThrow(temp_ridge_points.size() >= 2,
-                          "Need at least two points to form the ridge of the oceanic plate, "
-                          << temp_ridge_points.size() << " points where given.");
-            temperature_submodule_plate_model_ridge_points.resize(temp_ridge_points.size(),Point<2>(coordinate_system));
-            for (unsigned int i = 0; i < temp_ridge_points.size(); ++i)
-              {
-                temperature_submodule_plate_model_ridge_points[i] = temp_ridge_points[i]->value * dtr;
-              }
-
-            prm.load_entry("spreading velocity", true, Types::Double(NaN::DSNAN,
-                                                                     "The spreading velocity of the plate in meter per year. Todo: find out whether this is the half or the whole spreading velocity."));
-            // directly convert from meter per year to meter per second.
-            temperature_submodule_plate_model_spreading_velocity = prm.get_double("spreading velocity")/31557600;
+            prm.load_entry("specific heat", false, Types::Double(1250,"The specific heat of the subducting plate material in ... units"));
+            temperature_submodule_plate_model_specific_heat = prm.get_double("specific heat");
           }
+        else
+        {
+        	WBAssertThrow(false,"Subducting plate temperature model '" << temperature_submodule_name << "' not found.");
+        }
 
       }
       prm.leave_subsection();
@@ -233,7 +229,7 @@ namespace WorldBuilder
       const double starting_radius = natural_coordinate.get_depth_coordinate() + depth - starting_depth;
 
       // todo: explain and check -starting_depth
-      //if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness)
+      if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness)
       {
         // todo: explain
         std::map<std::string,double> distance_from_planes =
@@ -255,9 +251,6 @@ namespace WorldBuilder
         const unsigned int next_segment = current_segment + 1;
         const double segment_fraction = distance_from_planes["segmentFraction"];
 
-        //if(distance_from_plane < INFINITY)
-        // std::cout << "distance_from_plane = " << distance_from_plane << ", distance_along_plane = " << distance_along_plane << std::endl;
-
         if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)
           {
             // We want to do both section (horizontal) and segment (vertical) interpolation.
@@ -272,9 +265,22 @@ namespace WorldBuilder
                                              - slab_segment_thickness[current_section][current_segment][1]);
             const double thickness_local = thickness_up + segment_fraction * (thickness_down - thickness_up);
 
+            const double angle_up = slab_segment_angles[current_section][current_segment][0]
+                                        + section_fraction
+                                        * (slab_segment_angles[next_section][current_segment][0]
+                                           - slab_segment_angles[current_section][current_segment][0]);
+            const double angle_down = slab_segment_angles[current_section][current_segment][1]
+                                          + section_fraction
+                                          * (slab_segment_angles[next_section][current_segment][1]
+                                             - slab_segment_angles[current_section][current_segment][1]);
+            const double angle_local = angle_up + segment_fraction * (angle_down - angle_up);
+
             const double max_slab_length = total_slab_length[current_section] +
                                            section_fraction *
                                            (total_slab_length[next_section] - total_slab_length[current_section]);
+
+            const double potential_mantle_temperature = world->parameters.get_double("potential mantle temperature");
+            const double surface_temperature = world->parameters.get_double("surface temperature");
 
             // TODO: do some interpolation for the thickness.
             if (distance_from_plane > 0 &&
@@ -283,130 +289,41 @@ namespace WorldBuilder
                 distance_along_plane <= max_slab_length)
               {
                 // Inside the slab!
-                return temperature_submodule_constant_temperature;
+            	if (temperature_submodule_name == "constant")
+            	{
+            		return temperature_submodule_constant_temperature;
+            	}
+            	else if (temperature_submodule_name == "plate model")
+            	{
+            		/*
+            		 * We now use the McKenzie (1970) equation to determine the
+            		 * temperature inside the slab.
+            		 */
+            		const double R = (temperature_submodule_plate_model_density * temperature_submodule_plate_model_specific_heat
+            				         * (temperature_submodule_plate_model_plate_velocity /(365.25 * 24.0 * 60.0 * 60.0))
+									 * thickness_local) / (2.0 * temperature_submodule_plate_model_thermal_conductivity);
+
+            		const double H = temperature_submodule_plate_model_specific_heat
+            				         / (temperature_submodule_plate_model_Thermal_expansion_coefficient * gravity_norm * thickness_local);
+            		const double dip_rad = angle_local;//Utilities::string_to_double(Utilities::split_string_list(Utilities::split_string_list(temperature_submodule_vector_parameters[i_object][4])[0],':')[0]) * (numbers::PI / 180); // TODO: look into this, maybe angle per segment
+
+            		const int n_sum = 500;
+            		double temp = exp(((distance_along_plane / thickness_local) * sin(dip_rad) - (/*1 -*/ distance_from_plane / thickness_local) * cos(dip_rad)) / H);
+
+            		double sum=0;
+            		for (int i=1; i<=n_sum; i++)
+            		{
+            			sum += (std::pow((-1.0),i)/(i*M_PI)) *
+            					(exp((R - std::pow(std::pow(R, 2.0) + std::pow(i, 2.0) * std::pow(M_PI, 2.0), 0.5))
+            						 *(distance_along_plane / thickness_local)))
+								* (sin(i * M_PI * (1 - distance_from_plane / thickness_local)));
+            		}
+            		temperature = temp * (potential_mantle_temperature+2.0*(potential_mantle_temperature-surface_temperature) * sum);//segment;//distance_along_plane/thickness_local;//50+current_section;//
+
+            	}
               }
           }
-        //return -1;
       }
-      /*
-            // We are in the the area where the contintal plate
-            if (temperature_submodule_name == "constant")
-              {
-                if (depth <= temperature_submodule_constant_depth &&
-                    Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
-                                                                            world->parameters.coordinate_system->natural_coordinate_system())))
-                  {
-                    // The constant temperature module should be used for this. Set the constant temperature.
-                    return temperature_submodule_constant_temperature;
-                  }
-
-              }
-            else if (temperature_submodule_name == "linear")
-              {
-                // The linear temperature module should be used for this.
-                if (depth <= temperature_submodule_linear_depth &&
-                    Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
-                                                                            world->parameters.coordinate_system->natural_coordinate_system())))
-                  {
-                    double bottom_temperature = temperature_submodule_linear_bottom_temperature;
-                    if (std::isnan(temperature_submodule_linear_bottom_temperature))
-                      {
-                        bottom_temperature =  this->world->parameters.get_double("Potential mantle temperature") +
-                                              (((this->world->parameters.get_double("Potential mantle temperature") * this->world->parameters.get_double("Thermal expansion coefficient alpha") * gravity_norm) /
-                                                this->world->parameters.get_double("specific heat Cp")) * 1000.0) * ((depth) / 1000.0);
-                      }
-
-                    return temperature_submodule_linear_top_temperature +
-                           depth * ((bottom_temperature - temperature_submodule_linear_top_temperature) / temperature_submodule_linear_depth);
-                  }
-              }
-            else if (temperature_submodule_name == "plate model")
-              {
-                // The plate model temperature module should be used for this.
-                if (depth <= temperature_submodule_plate_model_depth &&
-                    Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
-                                                                            world->parameters.coordinate_system->natural_coordinate_system())))
-                  {
-                    double bottom_temperature = temperature_submodule_plate_model_bottom_temperature;
-                    const double max_depth = temperature_submodule_plate_model_depth;
-
-                    if (std::isnan(bottom_temperature))
-                      {
-                        bottom_temperature =  this->world->parameters.get_double("Potential mantle temperature") +
-                                              (((this->world->parameters.get_double("Potential mantle temperature") * this->world->parameters.get_double("Thermal expansion coefficient alpha") * gravity_norm) /
-                                                this->world->parameters.get_double("specific heat Cp")) * 1000.0) * ((max_depth) / 1000.0);
-                      }
-
-                    const int sommation_number = 100;
-                    double distance_ridge = std::numeric_limits<double>::max();
-
-                    const CoordinateSystem coordinate_system = world->parameters.coordinate_system->natural_coordinate_system();
-
-                    for (unsigned int i_ridge = 0; i_ridge < temperature_submodule_plate_model_ridge_points.size()-1; i_ridge++)
-                      {
-                        const Point<2> segment_point0 = temperature_submodule_plate_model_ridge_points[i_ridge];
-                        const Point<2> segment_point1 = temperature_submodule_plate_model_ridge_points[i_ridge+1];
-
-                        const Point<2> check_point(natural_coordinate.get_surface_coordinates(),natural_coordinate.get_coordinate_system());
-                        // based on http://geomalgorithms.com/a02-_lines.html
-                        const Point<2> v = segment_point1 - segment_point0;
-                        const Point<2> w = check_point - segment_point0;
-
-                        const double c1 = (w[0] * v[0] + w[1] * v[1]);
-                        const double c2 = (v[0] * v[0] + v[1] * v[1]);
-
-                        Point<2> Pb(coordinate_system);
-                        // This part is needed when we want to consider segments instead of lines
-                        // If you want to have infinite lines, use only the else statement.
-
-                        if (c1 <= 0)
-                          Pb=segment_point0;
-                        else if (c2 <= c1)
-                          Pb=segment_point1;
-                        else
-                          Pb = segment_point0 + (c1 / c2) * v;
-
-                        Point<3> compare_point(coordinate_system);
-
-                        compare_point[0] = coordinate_system == cartesian ? Pb[0] :  natural_coordinate.get_depth_coordinate();
-                        compare_point[1] = coordinate_system == cartesian ? Pb[1] : Pb[0];
-                        compare_point[2] = coordinate_system == cartesian ? natural_coordinate.get_depth_coordinate() : Pb[1];
-
-                        distance_ridge = std::min(distance_ridge,this->world->parameters.coordinate_system->distance_between_points_at_same_depth(Point<3>(natural_coordinate.get_coordinates(),natural_coordinate.get_coordinate_system()),compare_point));
-
-                      }
-
-                    // some aliases
-                    const double top_temperature = temperature_submodule_plate_model_top_temperature;
-                    const double spreading_velocity = temperature_submodule_plate_model_spreading_velocity;
-                    const double thermal_diffusivity = this->world->parameters.get_double("thermal diffusivity");
-                    const double age = distance_ridge / spreading_velocity;
-                    temperature = top_temperature + (bottom_temperature - top_temperature) * (depth / max_depth);
-
-                    for (int i = 1; i<sommation_number+1; ++i)
-                      {
-                        temperature = temperature + (bottom_temperature - top_temperature) *
-                                      ((2 / (double(i) * M_PI)) * std::sin((double(i) * M_PI * depth) / max_depth) *
-                                       std::exp((((spreading_velocity * max_depth)/(2 * thermal_diffusivity)) -
-                                                 std::sqrt(((spreading_velocity*spreading_velocity*max_depth*max_depth) /
-                                                            (4*thermal_diffusivity*thermal_diffusivity)) + double(i) * double(i) * M_PI * M_PI)) *
-                                                ((spreading_velocity * age) / max_depth)));
-
-                      }
-
-                    return temperature;
-                  }
-
-              }
-            else if (temperature_submodule_name == "none")
-              {
-                return temperature;
-              }
-            else
-              {
-                WBAssertThrow(false,"Given temperature module does not exist: " + temperature_submodule_name);
-              }
-      */
       return temperature;
     }
 
