@@ -56,6 +56,11 @@ namespace WorldBuilder
       Point(const Point<dim> &point, CoordinateSystem coordinate_system);
 
       /**
+       * Constructor. Constructs a Point from an other Point.
+       */
+      Point(const Point<dim> &point);
+
+      /**
        * Constructor. Constructs a 2d Point from two doubles and
        * a coordinate system.
        */

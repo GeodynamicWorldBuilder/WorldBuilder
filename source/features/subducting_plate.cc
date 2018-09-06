@@ -78,7 +78,7 @@ namespace WorldBuilder
                                                               "along that line. Through giving a point to which the plate should subduct "
                                                               "solves this problem."));
 
-      reference_point = prm.get_point<2>("reference point");
+      reference_point = prm.get_point<2>("reference point") * (coordinate_system == CoordinateSystem::spherical ? M_PI / 180.0 : 1.0);
 
 
       prm.load_entry("starting depth", false, Types::Double(0, "The depth below the surface at which this plate starts."));
@@ -99,6 +99,7 @@ namespace WorldBuilder
                                                                 "A plate segment with a certain length, thickness and angle."),
                                                  "A list of plate segments."));
 
+        // todo: remove the next line
         std::vector<const Types::Segment *> all_segments = prm.get_array<const Types::Segment>("all");
 
 
@@ -109,6 +110,7 @@ namespace WorldBuilder
         slab_segment_angles.resize(typed_coordinates.size());
         for (unsigned int coordinate_i = 0; coordinate_i < typed_coordinates.size(); ++coordinate_i)
           {
+        	// todo: remove the next line
             std::vector<const Types::Segment *> &current_segment = all_segments;
 
             // first check whether there is an overwrite for this coordinate

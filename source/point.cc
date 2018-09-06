@@ -53,6 +53,13 @@ namespace WorldBuilder
     coordinate_system(coordinate_system_)
   {}
 
+  template<int dim>
+  Point<dim>::Point(const Point<dim> &point_)
+    :
+    point(point_.get_array()),
+    coordinate_system(point_.get_coordinate_system())
+  {}
+
 
   template<>
   Point<2>::Point(const double x, const double y, const CoordinateSystem coordinate_system_)
@@ -96,8 +103,8 @@ namespace WorldBuilder
   template<int dim>
   Point<dim> &Point<dim>::operator=(const Point<dim> &point_)
   {
-    for (unsigned int i = 0; i < dim; ++i)
-      point[i] = point_[i];
+    point = point_.point;
+    coordinate_system = point_.coordinate_system;
     return *this;
   }
 
@@ -150,7 +157,7 @@ namespace WorldBuilder
   Point<dim>::operator-(const Point<dim> &point_) const
   {
     WBAssert(coordinate_system == point_.get_coordinate_system(),
-             "Cannot add two points which represent different coordinate systems. Internal has type " << (int)coordinate_system << ", other point has type " << (int)point_.get_coordinate_system());
+             "Cannot substract two points which represent different coordinate systems. Internal has type " << (int)coordinate_system << ", other point has type " << (int)point_.get_coordinate_system());
     Point<dim> point_tmp(point,coordinate_system);
     point_tmp -= point_;
 

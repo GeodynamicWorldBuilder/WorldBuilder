@@ -149,7 +149,8 @@ namespace WorldBuilder
                      const double depth,
                      const double gravity_norm) const
   {
-    Point<3> point(point_,parameters.coordinate_system->natural_coordinate_system());
+	  // We receive the cartesian points from the user.
+    Point<3> point(point_,cartesian);
 
     double temperature = this->parameters.get_double("potential mantle temperature") +
                          (((this->parameters.get_double("potential mantle temperature") * this->parameters.get_double("Thermal expansion coefficient alpha") * gravity_norm) /
@@ -198,7 +199,8 @@ namespace WorldBuilder
                      const double depth,
                      const unsigned int composition_number) const
   {
-    Point<3> point(point_,parameters.coordinate_system->natural_coordinate_system());
+	  // We receive the cartesian points from the user.
+    Point<3> point(point_,cartesian);
     double composition = 0;
     for (std::vector<std::unique_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
       {

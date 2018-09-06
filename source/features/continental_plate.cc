@@ -67,7 +67,7 @@ namespace WorldBuilder
       coordinates.resize(typed_coordinates.size(),Point<2>(coordinate_system));
       for (unsigned int i = 0; i < typed_coordinates.size(); ++i)
         {
-          coordinates[i] = typed_coordinates[i]->value  * (coordinate_system == CoordinateSystem::spherical ? M_PI / 180.0 : 1.0);
+          coordinates[i] = typed_coordinates[i]->value * (coordinate_system == CoordinateSystem::spherical ? M_PI / 180.0 : 1.0);
         }
 
       prm.enter_subsection("temperature submodule");
