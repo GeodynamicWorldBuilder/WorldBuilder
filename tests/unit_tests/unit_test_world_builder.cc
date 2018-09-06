@@ -3719,11 +3719,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
 TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes spherical")
 {
-	// Because most functionallity is already tested by the cartesian version
-	// of this test case, the scope of this test case is only to test whether
-	// the code which is different for the spherical case is correct.
+  // Because most functionallity is already tested by the cartesian version
+  // of this test case, the scope of this test case is only to test whether
+  // the code which is different for the spherical case is correct.
 
-	// spherical test 1
+  // spherical test 1
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_spherical.wb";
   WorldBuilder::World world(file_name);
 
@@ -3759,7 +3759,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  slab_segment_lengths,
                                                  slab_segment_angles,
                                                  starting_radius,
-												 world.parameters.coordinate_system,
+                                                 world.parameters.coordinate_system,
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
@@ -3781,7 +3781,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  slab_segment_lengths,
                                                  slab_segment_angles,
                                                  starting_radius,
-												 world.parameters.coordinate_system,
+                                                 world.parameters.coordinate_system,
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
@@ -3797,123 +3797,123 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   coordinates[0][1] = 45 * dtr;
   coordinates[1][0] = 10 * dtr;
   coordinates[1][1] = 45 * dtr;
-position = Point<3>(10,0 * dtr,45 * dtr,spherical);
-position = Point<3>(world.parameters.coordinate_system->natural_to_cartesian_coordinates(position.get_array()),cartesian);
+  position = Point<3>(10,0 * dtr,45 * dtr,spherical);
+  position = Point<3>(world.parameters.coordinate_system->natural_to_cartesian_coordinates(position.get_array()),cartesian);
 
-distance_from_planes =
-  Utilities::distance_point_from_curved_planes(position,
-                                               reference_point,
-                                               coordinates,
-                                               slab_segment_lengths,
-                                               slab_segment_angles,
-                                               starting_radius,
-												 world.parameters.coordinate_system,
-                                               false);
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 world.parameters.coordinate_system,
+                                                 false);
 
-CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
-CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14);
-CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-CHECK(distance_from_planes["section"] == 0);
-CHECK(distance_from_planes["segment"] == 0);
-CHECK(std::fabs(distance_from_planes["segmentFraction"]) < 1e-14);
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
+  CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14);
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(std::fabs(distance_from_planes["segmentFraction"]) < 1e-14);
 
 
 // spherical test 3
-position = Point<3>(5,0 * dtr,45 * dtr,spherical);
-position = Point<3>(world.parameters.coordinate_system->natural_to_cartesian_coordinates(position.get_array()),cartesian);
+  position = Point<3>(5,0 * dtr,45 * dtr,spherical);
+  position = Point<3>(world.parameters.coordinate_system->natural_to_cartesian_coordinates(position.get_array()),cartesian);
 
-distance_from_planes =
-Utilities::distance_point_from_curved_planes(position,
-                                           reference_point,
-                                           coordinates,
-                                           slab_segment_lengths,
-                                           slab_segment_angles,
-                                           starting_radius,
-											 world.parameters.coordinate_system,
-                                           false);
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 world.parameters.coordinate_system,
+                                                 false);
 
-CHECK(distance_from_planes["distanceFromPlane"] == Approx(10*sqrt(2)/4)); // checked it with a geometric drawing
-CHECK(distance_from_planes["distanceAlongPlane"] == Approx(10*sqrt(2)/4)); // checked it with a geometric drawing
-CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-CHECK(distance_from_planes["section"] == 0);
-CHECK(distance_from_planes["segment"] == 0);
-CHECK(distance_from_planes["segmentFraction"] == Approx(0.25));
+  CHECK(distance_from_planes["distanceFromPlane"] == Approx(10*sqrt(2)/4)); // checked it with a geometric drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(10*sqrt(2)/4)); // checked it with a geometric drawing
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.25));
 
 
 // spherical test 4
-position = Point<3>(10*sqrt(2)/2,0 * dtr,90 * dtr,spherical);
-position = Point<3>(world.parameters.coordinate_system->natural_to_cartesian_coordinates(position.get_array()),cartesian);
+  position = Point<3>(10*sqrt(2)/2,0 * dtr,90 * dtr,spherical);
+  position = Point<3>(world.parameters.coordinate_system->natural_to_cartesian_coordinates(position.get_array()),cartesian);
 
-distance_from_planes =
-Utilities::distance_point_from_curved_planes(position,
-                                           reference_point,
-                                           coordinates,
-                                           slab_segment_lengths,
-                                           slab_segment_angles,
-                                           starting_radius,
-											 world.parameters.coordinate_system,
-                                           false);
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 world.parameters.coordinate_system,
+                                                 false);
 
-CHECK(distance_from_planes["distanceFromPlane"] == Approx(10*sqrt(2)/2)); // checked it with a geometric drawing
-CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14); // checked it with a geometric drawing
-CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-CHECK(distance_from_planes["section"] == 0);
-CHECK(distance_from_planes["segment"] == 0);
-CHECK(std::fabs(distance_from_planes["segmentFraction"]) < 1e-14);
+  CHECK(distance_from_planes["distanceFromPlane"] == Approx(10*sqrt(2)/2)); // checked it with a geometric drawing
+  CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14); // checked it with a geometric drawing
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(std::fabs(distance_from_planes["segmentFraction"]) < 1e-14);
 
 
 // spherical test 5
-position = Point<3>(10*sqrt(2)/2,0 * dtr,0 * dtr,spherical);
-position = Point<3>(world.parameters.coordinate_system->natural_to_cartesian_coordinates(position.get_array()),cartesian);
+  position = Point<3>(10*sqrt(2)/2,0 * dtr,0 * dtr,spherical);
+  position = Point<3>(world.parameters.coordinate_system->natural_to_cartesian_coordinates(position.get_array()),cartesian);
 
-distance_from_planes =
-Utilities::distance_point_from_curved_planes(position,
-                                           reference_point,
-                                           coordinates,
-                                           slab_segment_lengths,
-                                           slab_segment_angles,
-                                           starting_radius,
-											 world.parameters.coordinate_system,
-                                           false);
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 world.parameters.coordinate_system,
+                                                 false);
 
-CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);  // checked it with a geometric drawing
-CHECK(distance_from_planes["distanceAlongPlane"] == Approx(10*sqrt(2)/2)); // checked it with a geometric drawing
-CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-CHECK(distance_from_planes["section"] == 0);
-CHECK(distance_from_planes["segment"] == 0);
-CHECK(distance_from_planes["segmentFraction"] == Approx(0.5));
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);  // checked it with a geometric drawing
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(10*sqrt(2)/2)); // checked it with a geometric drawing
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.5));
 
 // spherical curve test 1
 // This test has not been checked analytically or with a drawing, but
 // since the non-curved version works, and the visuals look oke, this
 // test is used to see if this changes. Todo: Construct analytical
 // solutions to test against.
-slab_segment_angles[0][0][0] = 0.0 * dtr;
-slab_segment_angles[0][0][1] = 45.0 * dtr;
-slab_segment_angles[0][1][0] = 45.0 * dtr;
-slab_segment_angles[0][1][1] = 0.0 * dtr;
-slab_segment_angles[1][0][0] = 0.0 * dtr;
-slab_segment_angles[1][0][1] = 45.0 * dtr;
-slab_segment_angles[1][1][0] = 45.0 * dtr;
-slab_segment_angles[1][1][1] = 0.0 * dtr;
+  slab_segment_angles[0][0][0] = 0.0 * dtr;
+  slab_segment_angles[0][0][1] = 45.0 * dtr;
+  slab_segment_angles[0][1][0] = 45.0 * dtr;
+  slab_segment_angles[0][1][1] = 0.0 * dtr;
+  slab_segment_angles[1][0][0] = 0.0 * dtr;
+  slab_segment_angles[1][0][1] = 45.0 * dtr;
+  slab_segment_angles[1][1][0] = 45.0 * dtr;
+  slab_segment_angles[1][1][1] = 0.0 * dtr;
 
-position = Point<3>(10*sqrt(2)/2,0 * dtr,0 * dtr,spherical);
-position = Point<3>(world.parameters.coordinate_system->natural_to_cartesian_coordinates(position.get_array()),cartesian);
-distance_from_planes =
-Utilities::distance_point_from_curved_planes(position,
-                                           reference_point,
-                                           coordinates,
-                                           slab_segment_lengths,
-                                           slab_segment_angles,
-                                           starting_radius,
-											 world.parameters.coordinate_system,
-                                           false);
+  position = Point<3>(10*sqrt(2)/2,0 * dtr,0 * dtr,spherical);
+  position = Point<3>(world.parameters.coordinate_system->natural_to_cartesian_coordinates(position.get_array()),cartesian);
+  distance_from_planes =
+    Utilities::distance_point_from_curved_planes(position,
+                                                 reference_point,
+                                                 coordinates,
+                                                 slab_segment_lengths,
+                                                 slab_segment_angles,
+                                                 starting_radius,
+                                                 world.parameters.coordinate_system,
+                                                 false);
 
-CHECK(distance_from_planes["distanceFromPlane"] == Approx(4.072033215));  // see comment at the top of the test
-CHECK(distance_from_planes["distanceAlongPlane"] == Approx(6.6085171895)); // see comment at the top of the test
-CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-CHECK(distance_from_planes["section"] == 0);
-CHECK(distance_from_planes["segment"] == 0);
-CHECK(distance_from_planes["segmentFraction"] == Approx(0.4672927318));
+  CHECK(distance_from_planes["distanceFromPlane"] == Approx(4.072033215));  // see comment at the top of the test
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(6.6085171895)); // see comment at the top of the test
+  CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
+  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.4672927318));
 }
 

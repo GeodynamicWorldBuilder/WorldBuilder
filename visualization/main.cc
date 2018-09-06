@@ -82,7 +82,7 @@ int main(int argc, char **argv)
   /**
    * First parse the command line options
    */
-	std::cout << "[1/5] Parsing file...                         \r";
+  std::cout << "[1/5] Parsing file...                         \r";
   std::string wb_file;
   std::string data_file;
 
@@ -1239,8 +1239,8 @@ int main(int argc, char **argv)
   for (unsigned int c = 0; c < compositions; ++c)
     {
       std::cout << "[5/5] Writing the paraview file: stage 2 of 3, writing composition "
-  		    << c << " of " << compositions << "            \r";
-        std::cout.flush();
+                << c << " of " << compositions << "            \r";
+      std::cout.flush();
       myfile << "<DataArray type=\"Float32\" Name=\"Composition " << c << "\" Format=\"ascii\">" << std::endl;
       if (dim == 2)
         {

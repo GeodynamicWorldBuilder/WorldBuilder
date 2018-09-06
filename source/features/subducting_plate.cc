@@ -110,7 +110,7 @@ namespace WorldBuilder
         slab_segment_angles.resize(typed_coordinates.size());
         for (unsigned int coordinate_i = 0; coordinate_i < typed_coordinates.size(); ++coordinate_i)
           {
-        	// todo: remove the next line
+            // todo: remove the next line
             std::vector<const Types::Segment *> &current_segment = all_segments;
 
             // first check whether there is an overwrite for this coordinate
@@ -121,15 +121,15 @@ namespace WorldBuilder
 
             if (overwrite == true)
               {
-            	// there is a special case for this coordinate, so use it.
+                // there is a special case for this coordinate, so use it.
                 current_segment = prm.get_array<const Types::Segment>(std::to_string(coordinate_i));
               }
             else
-            {
-            	// Need to get it again, because the load entry last time could
-            	// have changed the segment list, thereby invalidating the pointers.
-            	current_segment = prm.get_array<const Types::Segment>("all");
-            }
+              {
+                // Need to get it again, because the load entry last time could
+                // have changed the segment list, thereby invalidating the pointers.
+                current_segment = prm.get_array<const Types::Segment>("all");
+              }
 
             total_slab_length[coordinate_i] = 0;
             for (unsigned int segment_i = 0; segment_i < current_segment.size(); segment_i++)
@@ -163,18 +163,6 @@ namespace WorldBuilder
             prm.load_entry("temperature", true, Types::Double(0,"The temperature in degree Kelvin which this feature should have"));
             temperature_submodule_constant_temperature = prm.get_double("temperature");
           }
-        else if (temperature_submodule_name == "linear")
-          {
-            prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth in meters to which the temperature rises (or lowers) to."));
-            temperature_submodule_linear_depth = prm.get_double("depth");
-
-            prm.load_entry("top temperature", false, Types::Double(293.15,"The temperature in degree Kelvin a the top of this block. If this value is not set, the "));
-            temperature_submodule_linear_top_temperature = prm.get_double("top temperature");
-
-
-            prm.load_entry("bottom temperature", false, Types::Double(NaN::DQNAN,"The temperature in degree Kelvin a the bottom of this block."));
-            temperature_submodule_linear_bottom_temperature = prm.get_double("bottom temperature");
-          }
         else if (temperature_submodule_name == "plate model")
           {
             prm.load_entry("density", true, Types::Double(NaN::DSNAN,"The reference density of the subducting plate."));
@@ -193,9 +181,9 @@ namespace WorldBuilder
             temperature_submodule_plate_model_specific_heat = prm.get_double("specific heat");
           }
         else
-        {
-        	WBAssertThrow(false,"Subducting plate temperature model '" << temperature_submodule_name << "' not found.");
-        }
+          {
+            WBAssertThrow(false,"Subducting plate temperature model '" << temperature_submodule_name << "' not found.");
+          }
 
       }
       prm.leave_subsection();
@@ -232,100 +220,100 @@ namespace WorldBuilder
 
       // todo: explain and check -starting_depth
       if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness)
-      {
-        // todo: explain
-        std::map<std::string,double> distance_from_planes =
-          Utilities::distance_point_from_curved_planes(position,
-                                                       reference_point,
-                                                       coordinates,
-                                                       slab_segment_lengths,
-                                                       slab_segment_angles,
-                                                       starting_radius,
-                                                       this->world->parameters.coordinate_system,
-                                                       false);
+        {
+          // todo: explain
+          std::map<std::string,double> distance_from_planes =
+            Utilities::distance_point_from_curved_planes(position,
+                                                         reference_point,
+                                                         coordinates,
+                                                         slab_segment_lengths,
+                                                         slab_segment_angles,
+                                                         starting_radius,
+                                                         this->world->parameters.coordinate_system,
+                                                         false);
 
-        const double distance_from_plane = distance_from_planes["distanceFromPlane"];
-        const double distance_along_plane = distance_from_planes["distanceAlongPlane"];
-        const double section_fraction = distance_from_planes["sectionFraction"];
-        const unsigned int current_section = distance_from_planes["section"];
-        const unsigned int next_section = current_section + 1;
-        const unsigned int current_segment = distance_from_planes["segment"];
-        const unsigned int next_segment = current_segment + 1;
-        const double segment_fraction = distance_from_planes["segmentFraction"];
+          const double distance_from_plane = distance_from_planes["distanceFromPlane"];
+          const double distance_along_plane = distance_from_planes["distanceAlongPlane"];
+          const double section_fraction = distance_from_planes["sectionFraction"];
+          const unsigned int current_section = distance_from_planes["section"];
+          const unsigned int next_section = current_section + 1;
+          const unsigned int current_segment = distance_from_planes["segment"];
+          //const unsigned int next_segment = current_segment + 1;
+          const double segment_fraction = distance_from_planes["segmentFraction"];
 
-        if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)
-          {
-            // We want to do both section (horizontal) and segment (vertical) interpolation.
+          if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)
+            {
+              // We want to do both section (horizontal) and segment (vertical) interpolation.
 
-            const double thickness_up = slab_segment_thickness[current_section][current_segment][0]
-                                        + section_fraction
-                                        * (slab_segment_thickness[next_section][current_segment][0]
-                                           - slab_segment_thickness[current_section][current_segment][0]);
-            const double thickness_down = slab_segment_thickness[current_section][current_segment][1]
+              const double thickness_up = slab_segment_thickness[current_section][current_segment][0]
                                           + section_fraction
-                                          * (slab_segment_thickness[next_section][current_segment][1]
-                                             - slab_segment_thickness[current_section][current_segment][1]);
-            const double thickness_local = thickness_up + segment_fraction * (thickness_down - thickness_up);
+                                          * (slab_segment_thickness[next_section][current_segment][0]
+                                             - slab_segment_thickness[current_section][current_segment][0]);
+              const double thickness_down = slab_segment_thickness[current_section][current_segment][1]
+                                            + section_fraction
+                                            * (slab_segment_thickness[next_section][current_segment][1]
+                                               - slab_segment_thickness[current_section][current_segment][1]);
+              const double thickness_local = thickness_up + segment_fraction * (thickness_down - thickness_up);
 
-            const double angle_up = slab_segment_angles[current_section][current_segment][0]
+              const double angle_up = slab_segment_angles[current_section][current_segment][0]
+                                      + section_fraction
+                                      * (slab_segment_angles[next_section][current_segment][0]
+                                         - slab_segment_angles[current_section][current_segment][0]);
+              const double angle_down = slab_segment_angles[current_section][current_segment][1]
                                         + section_fraction
-                                        * (slab_segment_angles[next_section][current_segment][0]
-                                           - slab_segment_angles[current_section][current_segment][0]);
-            const double angle_down = slab_segment_angles[current_section][current_segment][1]
-                                          + section_fraction
-                                          * (slab_segment_angles[next_section][current_segment][1]
-                                             - slab_segment_angles[current_section][current_segment][1]);
-            const double angle_local = angle_up + segment_fraction * (angle_down - angle_up);
+                                        * (slab_segment_angles[next_section][current_segment][1]
+                                           - slab_segment_angles[current_section][current_segment][1]);
+              const double angle_local = angle_up + segment_fraction * (angle_down - angle_up);
 
-            const double max_slab_length = total_slab_length[current_section] +
-                                           section_fraction *
-                                           (total_slab_length[next_section] - total_slab_length[current_section]);
+              const double max_slab_length = total_slab_length[current_section] +
+                                             section_fraction *
+                                             (total_slab_length[next_section] - total_slab_length[current_section]);
 
-            const double potential_mantle_temperature = world->parameters.get_double("potential mantle temperature");
-            const double surface_temperature = world->parameters.get_double("surface temperature");
+              const double potential_mantle_temperature = world->parameters.get_double("potential mantle temperature");
+              const double surface_temperature = world->parameters.get_double("surface temperature");
 
-            // TODO: do some interpolation for the thickness.
-            if (distance_from_plane > 0 &&
-                distance_from_plane <= thickness_local &&
-                distance_along_plane > 0 &&
-                distance_along_plane <= max_slab_length)
-              {
-                // Inside the slab!
-            	if (temperature_submodule_name == "constant")
-            	{
-            		return temperature_submodule_constant_temperature;
-            	}
-            	else if (temperature_submodule_name == "plate model")
-            	{
-            		/*
-            		 * We now use the McKenzie (1970) equation to determine the
-            		 * temperature inside the slab.
-            		 */
-            		const double R = (temperature_submodule_plate_model_density * temperature_submodule_plate_model_specific_heat
-            				         * (temperature_submodule_plate_model_plate_velocity /(365.25 * 24.0 * 60.0 * 60.0))
-									 * thickness_local) / (2.0 * temperature_submodule_plate_model_thermal_conductivity);
+              // TODO: do some interpolation for the thickness.
+              if (distance_from_plane > 0 &&
+                  distance_from_plane <= thickness_local &&
+                  distance_along_plane > 0 &&
+                  distance_along_plane <= max_slab_length)
+                {
+                  // Inside the slab!
+                  if (temperature_submodule_name == "constant")
+                    {
+                      return temperature_submodule_constant_temperature;
+                    }
+                  else if (temperature_submodule_name == "plate model")
+                    {
+                      /*
+                       * We now use the McKenzie (1970) equation to determine the
+                       * temperature inside the slab.
+                       */
+                      const double R = (temperature_submodule_plate_model_density * temperature_submodule_plate_model_specific_heat
+                                        * (temperature_submodule_plate_model_plate_velocity /(365.25 * 24.0 * 60.0 * 60.0))
+                                        * thickness_local) / (2.0 * temperature_submodule_plate_model_thermal_conductivity);
 
-            		const double H = temperature_submodule_plate_model_specific_heat
-            				         / (temperature_submodule_plate_model_Thermal_expansion_coefficient * gravity_norm * thickness_local);
-            		const double dip_rad = angle_local;//Utilities::string_to_double(Utilities::split_string_list(Utilities::split_string_list(temperature_submodule_vector_parameters[i_object][4])[0],':')[0]) * (numbers::PI / 180); // TODO: look into this, maybe angle per segment
+                      const double H = temperature_submodule_plate_model_specific_heat
+                                       / (temperature_submodule_plate_model_Thermal_expansion_coefficient * gravity_norm * thickness_local);
+                      const double dip_rad = angle_local;//Utilities::string_to_double(Utilities::split_string_list(Utilities::split_string_list(temperature_submodule_vector_parameters[i_object][4])[0],':')[0]) * (numbers::PI / 180); // TODO: look into this, maybe angle per segment
 
-            		const int n_sum = 500;
-            		double temp = exp(((distance_along_plane / thickness_local) * sin(dip_rad) - (/*1 -*/ distance_from_plane / thickness_local) * cos(dip_rad)) / H);
+                      const int n_sum = 500;
+                      double temp = exp(((distance_along_plane / thickness_local) * sin(dip_rad) - (/*1 -*/ distance_from_plane / thickness_local) * cos(dip_rad)) / H);
 
-            		double sum=0;
-            		for (int i=1; i<=n_sum; i++)
-            		{
-            			sum += (std::pow((-1.0),i)/(i*M_PI)) *
-            					(exp((R - std::pow(std::pow(R, 2.0) + std::pow(i, 2.0) * std::pow(M_PI, 2.0), 0.5))
-            						 *(distance_along_plane / thickness_local)))
-								* (sin(i * M_PI * (1 - distance_from_plane / thickness_local)));
-            		}
-            		temperature = temp * (potential_mantle_temperature+2.0*(potential_mantle_temperature-surface_temperature) * sum);//segment;//distance_along_plane/thickness_local;//50+current_section;//
+                      double sum=0;
+                      for (int i=1; i<=n_sum; i++)
+                        {
+                          sum += (std::pow((-1.0),i)/(i*M_PI)) *
+                                 (exp((R - std::pow(std::pow(R, 2.0) + std::pow(i, 2.0) * std::pow(M_PI, 2.0), 0.5))
+                                      *(distance_along_plane / thickness_local)))
+                                 * (sin(i * M_PI * (1 - distance_from_plane / thickness_local)));
+                        }
+                      temperature = temp * (potential_mantle_temperature+2.0*(potential_mantle_temperature-surface_temperature) * sum);//segment;//distance_along_plane/thickness_local;//50+current_section;//
 
-            	}
-              }
-          }
-      }
+                    }
+                }
+            }
+        }
       return temperature;
     }
 
