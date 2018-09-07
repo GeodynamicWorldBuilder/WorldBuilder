@@ -295,7 +295,7 @@ namespace WorldBuilder
 
                       const int n_sum = 500;
                       double temp = exp(((distance_along_plane / thickness_local) * sin(angle_local)
-                    		           - (distance_from_plane / thickness_local) * cos(angle_local)) / H);
+                                         - (distance_from_plane / thickness_local) * cos(angle_local)) / H);
 
                       double sum=0;
                       for (int i=1; i<=n_sum; i++)
