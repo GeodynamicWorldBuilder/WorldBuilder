@@ -32,6 +32,7 @@
 #include <world_builder/features/interface.h>
 #include <world_builder/features/continental_plate.h>
 #include <world_builder/features/oceanic_plate.h>
+#include <world_builder/features/subducting_plate.h>
 #include <world_builder/point.h>
 #include <world_builder/types/array.h>
 #include <world_builder/types/coordinate_system.h>
@@ -893,6 +894,49 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   CHECK(world2.temperature(position, 10, 10) == Approx(304.5574529214));
   CHECK(world2.temperature(position, 240e3, 10) == Approx(1711.7158702436));
   CHECK(world2.temperature(position, 260e3, 10) == Approx(1716.48));
+}
+
+TEST_CASE("WorldBuilder Features: Subducting Plate")
+{
+  // Cartesian
+  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_constant_angles_cartesian.wb";
+  WorldBuilder::World world1(file_name);
+
+  // Check continental plate directly
+  Features::SubductingPlate *subducting_plate = new Features::SubductingPlate(&world1);
+  delete subducting_plate;
+
+  // Check continental plate through the world
+  std::array<double,3> position = {0,0,0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(1707.52));
+  CHECK(world1.temperature(position, 260e3, 10) == Approx(1716.48));
+  CHECK(world1.composition(position, 0, 0) == false);
+  CHECK(world1.composition(position, 0, 1) == false);
+  CHECK(world1.composition(position, 0, 2) == false);
+  CHECK(world1.composition(position, 0, 3) == false);
+  CHECK(world1.composition(position, 0, 4) == false);
+  CHECK(world1.composition(position, 0, 5) == false);
+  CHECK(world1.composition(position, 0, 6) == false);
+
+  position = {250e3,500e3,0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(1600.0));
+  CHECK(world1.temperature(position, 10, 10) == Approx(150));
+  CHECK(world1.temperature(position, std::sqrt(2) * 100e3 - 1, 10) == Approx(150.0));
+  CHECK(world1.temperature(position, std::sqrt(2) * 100e3 + 1, 10) == Approx(1663.3572155943));
+  CHECK(world1.composition(position, 0, 0) == false);
+  CHECK(world1.composition(position, 0, 1) == false);
+  CHECK(world1.composition(position, 0, 2) == false);
+  CHECK(world1.composition(position, 0, 3) == false);
+  CHECK(world1.composition(position, 10, 0) == false);
+  CHECK(world1.composition(position, 10, 1) == false);
+  CHECK(world1.composition(position, 10, 2) == false);
+  CHECK(world1.composition(position, 10, 3) == true);
+  CHECK(world1.composition(position, std::sqrt(2) * 100e3 - 1, 3) == true);
+  CHECK(world1.composition(position, std::sqrt(2) * 100e3 + 1, 3) == false);
+  CHECK(world1.composition(position, 0, 4) == false);
+  CHECK(world1.composition(position, 0, 5) == false);
+  CHECK(world1.composition(position, 0, 6) == false);
 }
 
 TEST_CASE("WorldBuilder Types: Double")

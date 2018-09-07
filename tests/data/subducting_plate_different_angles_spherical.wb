@@ -16,6 +16,6 @@
            "6":[{"length":200e3, "thickness":[100e3,100e3], "angle":[0,60]}, {"length":100e3, "thickness":[100e3,100e3], "angle":[60,0]}, {"length":150e3, "thickness":[100e3], "angle":[0]}]
          },
          "temperature submodule":{"name":"plate model", "density":3300, "plate velocity":0.01 },
-         "composition submodule":{"name":"none"}}
+         "composition submodule":{"name":"constant", "composition":1, "depth":50e3}}
     }
 }

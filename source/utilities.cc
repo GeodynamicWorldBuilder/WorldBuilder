@@ -579,16 +579,6 @@ namespace WorldBuilder
                                                    < 0 ? 1 : -1;
 
 
-          // The order of a Cartesian coordinate is x,y,z and the order of a spherical coordinate it radius, long, lat (in rad).
-          /*const Point<3> P1(bool_cartesian ? point_list[current_section][0] : start_radius,
-                            bool_cartesian ? point_list[current_section][1] : point_list[current_section][0],
-                            bool_cartesian ? start_radius : point_list[current_section][1],
-                            natural_coordinate_system);
-
-          const Point<3> P2(bool_cartesian ? point_list[next_section][0] : start_radius,
-                            bool_cartesian ? point_list[next_section][1] : point_list[next_section][0],
-                            bool_cartesian ? start_radius : point_list[next_section][1],
-                            natural_coordinate_system);*/
 
           const Point<2> P1(point_list[current_section]);
 
@@ -623,7 +613,8 @@ namespace WorldBuilder
                        "is  zero, while this may not happen.");
 
               // We now need 3d points from this point on, so make them.
-
+              // The order of a Cartesian coordinate is x,y,z and the order of
+              // a spherical coordinate it radius, long, lat (in rad).
               const Point<3> closest_point_on_line_surface(bool_cartesian ? closest_point_on_line_2d[0] : start_radius,
                                                            bool_cartesian ? closest_point_on_line_2d[1] : closest_point_on_line_2d[0],
                                                            bool_cartesian ? start_radius : closest_point_on_line_2d[1],
@@ -663,11 +654,6 @@ namespace WorldBuilder
               double ux = normal_to_plane[0];
               double uy = normal_to_plane[1];
               double uz = normal_to_plane[2];
-
-              /*Point<3> x_axis(uy*uy*vx + ux*uy*vy - uz*vy + ux*uz*vz + uy*vz,
-                              uy*ux*vx + uz*vx + uy*uy*vy + uy*uz*vz - ux*vz,
-                              uz*ux*vx - uy*vx + uz*uy*vy + uz*vy + uz*uz*vz,
-                              cartesian);*/
 
               Point<3> x_axis(ux*ux*vx + ux*uy*vy - uz*vy + uy*uz*vz + uy*vz,
                               uy*ux*vx + uz*vx + uy*uy*vy + uy*uz*vz - ux*vz,

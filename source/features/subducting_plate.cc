@@ -195,9 +195,6 @@ namespace WorldBuilder
 
         if (composition_submodule_name == "constant")
           {
-            prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth in meters to which the composition of this feature is present."));
-            composition_submodule_constant_depth = prm.get_double("depth");
-
             prm.load_entry("composition", true, Types::UnsignedInt(0,"The number of the composition that is present there."));
             composition_submodule_constant_composition = prm.get_unsigned_int("composition");
           }
@@ -323,28 +320,82 @@ namespace WorldBuilder
                                  const unsigned int composition_number,
                                  bool composition) const
     {
-      if (composition_submodule_name == "constant")
-        {
-          WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,*(world->parameters.coordinate_system));
-          // The constant temperature module should be used for this.
-          if (depth <= composition_submodule_constant_depth &&
-              Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),world->parameters.coordinate_system->natural_coordinate_system())))
-            {
-              // We are in the the area where the contintal plate is defined. Set the constant temperature.
-              if (composition_submodule_constant_composition == composition_number)
-                {
-                  return true;
-                }
-            }
-
-        }
-      else if (composition_submodule_name == "none")
+      if (composition_submodule_name == "none")
         {
           return composition;
         }
       else
         {
-          WBAssertThrow(false,"Given composition module does not exist: " + composition_submodule_name);
+          WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
+                                                                          *(world->parameters.coordinate_system));
+          // todo: explain
+          const double starting_radius = natural_coordinate.get_depth_coordinate() + depth - starting_depth;
+
+          // todo: explain and check -starting_depth
+          if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness)
+            {
+              // todo: explain
+              std::map<std::string,double> distance_from_planes =
+                Utilities::distance_point_from_curved_planes(position,
+                                                             reference_point,
+                                                             coordinates,
+                                                             slab_segment_lengths,
+                                                             slab_segment_angles,
+                                                             starting_radius,
+                                                             this->world->parameters.coordinate_system,
+                                                             false);
+
+              const double distance_from_plane = distance_from_planes["distanceFromPlane"];
+              const double distance_along_plane = distance_from_planes["distanceAlongPlane"];
+              const double section_fraction = distance_from_planes["sectionFraction"];
+              const unsigned int current_section = distance_from_planes["section"];
+              const unsigned int next_section = current_section + 1;
+              const unsigned int current_segment = distance_from_planes["segment"];
+              //const unsigned int next_segment = current_segment + 1;
+              const double segment_fraction = distance_from_planes["segmentFraction"];
+
+              if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)
+                {
+                  // We want to do both section (horizontal) and segment (vertical) interpolation.
+
+                  const double thickness_up = slab_segment_thickness[current_section][current_segment][0]
+                                              + section_fraction
+                                              * (slab_segment_thickness[next_section][current_segment][0]
+                                                 - slab_segment_thickness[current_section][current_segment][0]);
+                  const double thickness_down = slab_segment_thickness[current_section][current_segment][1]
+                                                + section_fraction
+                                                * (slab_segment_thickness[next_section][current_segment][1]
+                                                   - slab_segment_thickness[current_section][current_segment][1]);
+                  const double thickness_local = thickness_up + segment_fraction * (thickness_down - thickness_up);
+
+                  const double max_slab_length = total_slab_length[current_section] +
+                                                 section_fraction *
+                                                 (total_slab_length[next_section] - total_slab_length[current_section]);
+
+
+                  // TODO: do some interpolation for the thickness.
+                  if (distance_from_plane > 0 &&
+                      distance_from_plane <= thickness_local &&
+                      distance_along_plane > 0 &&
+                      distance_along_plane <= max_slab_length)
+                    {
+                      // Inside the slab!
+                      if (composition_submodule_name == "constant")
+                        {
+                          // We are in the the area where the contintal plate is defined. Set the constant temperature.
+                          if (composition_submodule_constant_composition == composition_number)
+                            {
+                              return true;
+                            }
+                        }
+                      else
+                        {
+                          WBAssertThrow(false,"Given composition module does not exist: " + composition_submodule_name);
+                        }
+
+                    }
+                }
+            }
         }
 
       return composition;
