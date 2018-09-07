@@ -40,7 +40,7 @@ namespace WorldBuilder
         /**
          * constructor
          */
-        Spherical();
+        Spherical(WorldBuilder::World *world);
 
         /**
          * Destructor
@@ -58,6 +58,14 @@ namespace WorldBuilder
          */
         virtual
         CoordinateSystem natural_coordinate_system() const;
+
+        /**
+         * Returns what method should be used to go down with an angle into
+         * the domain.
+         * \sa DepthMethod
+         */
+        virtual
+        DepthMethod depth_method() const;
 
         /**
          * Takes the Cartesian points (x,z or x,y,z) and returns standardized
@@ -90,6 +98,11 @@ namespace WorldBuilder
          */
         virtual
         double distance_between_points_at_same_depth(const Point<3> &point_1, const Point<3> &point_3) const;
+
+        /**
+         * What depth method the spherical coordinates use.
+         */
+        DepthMethod used_depth_method;
 
       private:
 

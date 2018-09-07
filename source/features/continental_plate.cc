@@ -67,7 +67,7 @@ namespace WorldBuilder
       coordinates.resize(typed_coordinates.size(),Point<2>(coordinate_system));
       for (unsigned int i = 0; i < typed_coordinates.size(); ++i)
         {
-          coordinates[i] = typed_coordinates[i]->value  * (coordinate_system == CoordinateSystem::spherical ? M_PI / 180.0 : 1.0);
+          coordinates[i] = typed_coordinates[i]->value * (coordinate_system == CoordinateSystem::spherical ? M_PI / 180.0 : 1.0);
         }
 
       prm.enter_subsection("temperature submodule");
@@ -150,8 +150,8 @@ namespace WorldBuilder
               double bottom_temperature = temperature_submodule_linear_bottom_temperature;
               if (std::isnan(temperature_submodule_linear_bottom_temperature))
                 {
-                  bottom_temperature =  this->world->parameters.get_double("Potential mantle temperature") +
-                                        (((this->world->parameters.get_double("Potential mantle temperature") * this->world->parameters.get_double("Thermal expansion coefficient alpha") * gravity_norm) /
+                  bottom_temperature =  this->world->parameters.get_double("potential mantle temperature") +
+                                        (((this->world->parameters.get_double("potential mantle temperature") * this->world->parameters.get_double("Thermal expansion coefficient alpha") * gravity_norm) /
                                           this->world->parameters.get_double("specific heat Cp")) * 1000.0) * ((depth) / 1000.0);
                 }
 

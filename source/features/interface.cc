@@ -22,6 +22,7 @@
 #include <world_builder/features/interface.h>
 #include <world_builder/features/continental_plate.h>
 #include <world_builder/features/oceanic_plate.h>
+#include <world_builder/features/subducting_plate.h>
 #include <world_builder/assert.h>
 
 
@@ -44,6 +45,8 @@ namespace WorldBuilder
         return std::make_unique<Features::ContinentalPlate>(world);
       else if (feature_name == "oceanic plate")
         return std::make_unique<Features::OceanicPlate>(world);
+      else if (feature_name == "subducting plate")
+        return std::make_unique<Features::SubductingPlate>(world);
       else
         WBAssertThrow(false, "Feature " << feature_name << " not implemented.");
 

@@ -22,8 +22,10 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-#include <world_builder/utilities.h>
 #include <world_builder/coordinate_system.h>
+#include <world_builder/parameters.h>
+#include <world_builder/utilities.h>
+#include <world_builder/world.h>
 
 
 using boost::property_tree::ptree;
@@ -60,6 +62,14 @@ namespace WorldBuilder
         CoordinateSystem natural_coordinate_system() const = 0;
 
         /**
+         * Returns what method should be used to go down with an angle into
+         * the domain.
+         * \sa DepthMethod
+         */
+        virtual
+        DepthMethod depth_method() const = 0;
+
+        /**
          * Takes the Cartesian points (x,z or x,y,z) and returns standardized
          * coordinates which are most 'natural' to the geometry model. For a box
          * this will  be (x,z) in 2d or (x,y,z) in 3d, and for a spheroid geometry
@@ -85,6 +95,10 @@ namespace WorldBuilder
         double distance_between_points_at_same_depth(const Point<3> &point_1, const Point<3> &point_2) const = 0;
 
       protected:
+        /**
+         * A pointer to the world class to retrieve variables.
+         */
+        WorldBuilder::World *world;
 
     };
 
@@ -93,7 +107,7 @@ namespace WorldBuilder
      * factory function
      */
     std::unique_ptr<Interface>
-    create_coordinate_system(const std::string name);
+    create_coordinate_system(const std::string name, World *world);
 
   }
 }

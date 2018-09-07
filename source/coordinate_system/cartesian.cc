@@ -24,8 +24,10 @@ namespace WorldBuilder
 {
   namespace CoordinateSystems
   {
-    Cartesian::Cartesian()
-    {}
+    Cartesian::Cartesian(WorldBuilder::World *world_)
+    {
+      this->world = world_;
+    }
 
     Cartesian::~Cartesian()
     {}
@@ -39,6 +41,13 @@ namespace WorldBuilder
     Cartesian::natural_coordinate_system() const
     {
       return CoordinateSystem::cartesian;
+    }
+
+
+    DepthMethod
+    Cartesian::depth_method() const
+    {
+      return DepthMethod::none;
     }
 
 

@@ -59,8 +59,10 @@ namespace WorldBuilder
     /**
      * Temperature parameters.
      */
-    prm.load_entry("Potential mantle temperature", false,
+    prm.load_entry("potential mantle temperature", false,
                    Types::Double(1600,"The potential temperature of the mantle at the surface in Kelvin"));
+    prm.load_entry("surface temperature", false,
+                   Types::Double(293,"The temperature at the surface in Kelvin"));
     prm.load_entry("Thermal expansion coefficient alpha", false,
                    Types::Double(3.5e-5,"The thermal expansion coefficient alpha. TODO: expand add units"));
     prm.load_entry("specific heat Cp", false, Types::Double(1250,"The specific heat Cp.  TODO: expand and add units"));
@@ -147,10 +149,11 @@ namespace WorldBuilder
                      const double depth,
                      const double gravity_norm) const
   {
-    Point<3> point(point_,parameters.coordinate_system->natural_coordinate_system());
+    // We receive the cartesian points from the user.
+    Point<3> point(point_,cartesian);
 
-    double temperature = this->parameters.get_double("Potential mantle temperature") +
-                         (((this->parameters.get_double("Potential mantle temperature") * this->parameters.get_double("Thermal expansion coefficient alpha") * gravity_norm) /
+    double temperature = this->parameters.get_double("potential mantle temperature") +
+                         (((this->parameters.get_double("potential mantle temperature") * this->parameters.get_double("Thermal expansion coefficient alpha") * gravity_norm) /
                            this->parameters.get_double("specific heat Cp")) * 1000.0) * ((depth) / 1000.0);
 
 
@@ -196,7 +199,8 @@ namespace WorldBuilder
                      const double depth,
                      const unsigned int composition_number) const
   {
-    Point<3> point(point_,parameters.coordinate_system->natural_coordinate_system());
+    // We receive the cartesian points from the user.
+    Point<3> point(point_,cartesian);
     double composition = 0;
     for (std::vector<std::unique_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
       {

@@ -82,6 +82,7 @@ int main(int argc, char **argv)
   /**
    * First parse the command line options
    */
+  std::cout << "[1/5] Parsing file...                         \r";
   std::string wb_file;
   std::string data_file;
 
@@ -165,6 +166,9 @@ int main(int argc, char **argv)
   /**
    * Try to start the world builder
    */
+  std::cout << "[2/5] Starting the world builder...                         \r";
+  std::cout.flush();
+
   std::unique_ptr<WorldBuilder::World> world;
   try
     {
@@ -172,7 +176,7 @@ int main(int argc, char **argv)
     }
   catch (std::exception &e)
     {
-      std::cerr << "Could not start the World builder, error: " << e.what() << "\n";
+      std::cerr << "Could not start the World builder from file '" << wb_file << "', error: " << e.what() << "\n";
       return 1;
     }
   catch (...)
@@ -185,6 +189,8 @@ int main(int argc, char **argv)
   /**
    * Read the data from the data files
    */
+  std::cout << "[3/5] Reading grid file...                        \r";
+  std::cout.flush();
   // if config file is available, parse it
   /*  if(config_file != "")
       {
@@ -326,6 +332,8 @@ int main(int argc, char **argv)
   /**
    * Begin making the grid
    */
+  std::cout << "[4/5] Building the grid...                        \r";
+  std::cout.flush();
   WBAssertThrow(dim == 2 || dim == 3, "Dimension should be 2d or 3d.");
   if (grid_type == "cartesian")
     {
@@ -625,7 +633,8 @@ int main(int argc, char **argv)
       grid_z.resize(n_p);
       grid_depth.resize(n_p);
 
-
+      std::cout << "[4/5] Building the grid: stage 1 of 3                        \r";
+      std::cout.flush();
       unsigned int counter = 0;
       if (compress_size == true)
         {
@@ -703,6 +712,8 @@ int main(int argc, char **argv)
             }
         }
 
+      std::cout << "[4/5] Building the grid: stage 2 of 3                        \r";
+      std::cout.flush();
       for (unsigned int i = 0; i < n_p; ++i)
         {
 
@@ -715,7 +726,8 @@ int main(int argc, char **argv)
           grid_z[i] = radius * std::sin(latitutde);
         }
 
-
+      std::cout << "[4/5] Building the grid: stage 3 of 3                        \r";
+      std::cout.flush();
       // compute connectivity. Local to global mapping.
       grid_connectivity.resize(n_cell,std::vector<unsigned int>(8));
 
@@ -754,6 +766,8 @@ int main(int argc, char **argv)
               grid_connectivity[i][6] = counter + 6;
               grid_connectivity[i][7] = counter + 7;
               counter = counter + 8;
+              std::cout << "[4/5] Building the grid: stage 3 of 3 [" << (double)i/(double)n_cell << "%]                       \r";
+              std::cout.flush();
             }
         }
     }
@@ -1130,6 +1144,13 @@ int main(int argc, char **argv)
     }
 
   // create paraview file.
+  std::cout << "[5/5] Writing the paraview file...                                               \r";
+  std::cout.flush();
+
+
+  std::cout << "[5/5] Writing the paraview file: stage 1 of 3, writing header                                  \r";
+  std::cout.flush();
+
   std::ofstream myfile;
   myfile.open ("example.vtu");
   myfile << "<?xml version=\"1.0\" ?> " << std::endl;
@@ -1188,6 +1209,10 @@ int main(int argc, char **argv)
     }
   myfile << "</DataArray>" << std::endl;
 
+
+  std::cout << "[5/5] Writing the paraview file: stage 2 of 3, writing temperatures                    \r";
+  std::cout.flush();
+
   myfile << "    <DataArray type=\"Float32\" Name=\"Temperature\" format=\"ascii\">" << std::endl;
   if (dim == 2)
     {
@@ -1207,8 +1232,15 @@ int main(int argc, char **argv)
     }
   myfile << "    </DataArray>" << std::endl;
 
+
+  std::cout << "[5/5] Writing the paraview file: stage 3 of 3, writing compositions                     \r";
+  std::cout.flush();
+
   for (unsigned int c = 0; c < compositions; ++c)
     {
+      std::cout << "[5/5] Writing the paraview file: stage 2 of 3, writing composition "
+                << c << " of " << compositions << "            \r";
+      std::cout.flush();
       myfile << "<DataArray type=\"Float32\" Name=\"Composition " << c << "\" Format=\"ascii\">" << std::endl;
       if (dim == 2)
         {
@@ -1304,6 +1336,10 @@ int main(int argc, char **argv)
     return 0;
   }
    */
+
+
+  std::cout << "                                                                                \r";
+  std::cout.flush();
 
   return 0;
 }

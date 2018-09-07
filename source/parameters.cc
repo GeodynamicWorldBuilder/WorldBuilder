@@ -26,6 +26,7 @@
 #include <world_builder/parameters.h>
 #include <world_builder/utilities.h>
 #include <world_builder/types/feature.h>
+#include <world_builder/types/segment.h>
 #include <world_builder/types/coordinate_system.h>
 #include <config.h>
 
@@ -41,7 +42,6 @@ namespace WorldBuilder
     // Get world builder file and check wether it exists
     WBAssertThrow(access( filename.c_str(), F_OK ) != -1,
                   "Could not find the world builder file at the specified location: " + filename);
-
     // Now read in the world builder file into a file stream and
     // put it into a boost property tree.
     std::ifstream json_input_stream(filename.c_str());
@@ -66,6 +66,7 @@ namespace WorldBuilder
     bool found_value = false;
 
     const std::string path_plus_name = (get_full_path() == "") ? name : (get_full_path() + path_seperator + name);
+
     if (type.get_type() == Types::type::UnsignedInt)
       {
         // First check whether the value is in the tree. If not Assert when the value is required,
@@ -125,6 +126,7 @@ namespace WorldBuilder
                                                                                 required,
                                                                                 path_seperator);
 
+
         found_value = value_tree ? true : false;
 
         WBAssertThrow((found_value == true && required == true) || required == false,
@@ -137,6 +139,148 @@ namespace WorldBuilder
 
         vector_string[vector_string.size()-1].set_value(value);
         location = vector_string.size()-1;
+        string_to_type_map[path_plus_name] = location;
+
+      }
+    else if (type.get_type() == Types::type::Segment)
+      {
+        // First check whether the value is in the tree. If not Assert when the value is required,
+        // otherwise set found_value to false.
+
+        const Types::Segment &natural_type = dynamic_cast<const Types::Segment &>(type);
+
+        // Check length value
+        boost::optional<std::string> length_value_tree =
+          Utilities::get_from_ptree_abs(*local_tree,
+                                        get_relative_path_without_arrays(),
+                                        "length",
+                                        required,
+                                        path_seperator);
+
+        found_value = length_value_tree ? true : false;
+
+        WBAssertThrow((found_value == true && required == true) || required == false,
+                      "Could not find " + get_full_path() + path_seperator + "length" + ", while it is set as required.");
+
+        // Check thickness value as a 2d point. Todo: see if it can be recursed to POINT2D
+        WorldBuilder::Point<2> point_thickness(std::array<double,2> {0,0},
+                                               this->coordinate_system->natural_coordinate_system());
+
+        std::string path_plus_name_without_arrays = "thickness";//((get_relative_path_without_arrays() == "") ? "" : (get_relative_path_without_arrays() + path_seperator + ""))
+        //+ (name.front() == '[' && name.back() == ']' ? "" : "thickness");
+
+        boost::optional<ptree &> child = local_tree->get_child_optional(path_plus_name_without_arrays);
+
+        found_value = child ? true : false;
+
+        WBAssertThrow((found_value == true && required == true) || required == false,
+                      "Could not find " + get_full_path() + path_seperator + "thickness" + ", while it is set as required.");
+
+        unsigned int diff = path.size()-path_level;
+        path_level+=diff;
+        if (found_value == true)
+          {
+            unsigned int current_size = 0;
+            for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
+              {
+                // First check whether the value is in the tree. If not Assert when the value is required,
+                // otherwise return false.
+                boost::optional<std::string> value_tree = Utilities::get_from_ptree_abs(it->second,
+                                                                                        get_relative_path_without_arrays(),
+                                                                                        "", required, path_seperator);
+
+                found_value = value_tree ? true : false;
+
+                WBAssertThrow((found_value == true && required == true) || required == false,
+                              "Could not find " + get_full_path() + ", while it is set as required.");
+                //Todo: this looks strange to me. A value should always be found, or something really weird happened...
+
+                const double value = found_value == true ? Utilities::string_to_double(value_tree.get()) : natural_type.default_value_thickness[current_size];
+
+                point_thickness[current_size] = value;
+                current_size++;
+              }
+
+            // if only one value is filled in, set it for both.
+            if (current_size == 1)
+              {
+                point_thickness[1] = point_thickness[0];
+              }
+            WBAssertThrow(current_size == 1 || current_size == 2,
+                          "The entry " + get_full_path() + path_seperator + "thickness" +
+                          " should contain one or two values, but the size was not 1 or 2, it was "
+                          << current_size << ".");
+          }
+        else
+          {
+            point_thickness = natural_type.default_value_thickness;
+          }
+        path_level -= diff;
+
+
+        // Check angle value as a 2d point. Todo: see if it can be recursed to POINT2D
+        WorldBuilder::Point<2> point_angle(std::array<double,2> {0,0},
+                                           this->coordinate_system->natural_coordinate_system());
+
+        path_plus_name_without_arrays = "angle";//((get_relative_path_without_arrays() == "") ? "" : (get_relative_path_without_arrays() + path_seperator + ""))
+        //        + (name.front() == '[' && name.back() == ']' ? "" : "angle");
+
+        child = local_tree->get_child_optional(path_plus_name_without_arrays);
+
+        found_value = child ? true : false;
+
+        WBAssertThrow((found_value == true && required == true) || required == false,
+                      "Could not find " + get_full_path() + path_seperator + "angle" + ", while it is set as required.");
+
+        //unsigned int diff = path.size()-path_level;
+        path_level+=diff;
+        if (found_value == true)
+          {
+            unsigned int current_size = 0;
+            for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
+              {
+                // First check whether the value is in the tree. If not Assert when the value is required,
+                // otherwise return false.
+                boost::optional<std::string> value_tree = Utilities::get_from_ptree_abs(it->second,
+                                                                                        get_relative_path_without_arrays(),
+                                                                                        "", required, path_seperator);
+
+                found_value = value_tree ? true : false;
+
+                WBAssertThrow((found_value == true && required == true) || required == false,
+                              "Could not find " + get_full_path() + ", while it is set as required.");
+                const double value = found_value == true ? Utilities::string_to_double(value_tree.get()) : natural_type.default_value_angle[current_size];
+
+                point_angle[current_size] = value;
+                current_size++;
+              }
+
+            // if only one value is filled in, set it for both.
+            if (current_size == 1)
+              {
+                point_angle[1] = point_angle[0];
+              }
+            WBAssertThrow(current_size == 1 || current_size == 2,
+                          "The entry " + get_full_path() + path_seperator + "angle" +
+                          " should contain one or two values, but the size was not 1 or 2, it was "
+                          << current_size << ".");
+          }
+        else
+          {
+            point_angle = natural_type.default_value_angle;
+          }
+        path_level -= diff;
+
+        // The values are present and we have retrieved them. Now store it into a Segment type.
+        const double value_length = length_value_tree ? Utilities::string_to_double(length_value_tree.get()) : natural_type.default_value_length;
+
+        vector_segment.push_back(Types::Segment(value_length, natural_type.default_value_length,
+                                                point_thickness, natural_type.default_value_thickness,
+                                                point_angle, natural_type.default_value_angle,
+                                                natural_type.description));
+
+        //vector_string[vector_string.size()-1].set_value(value);
+        location = vector_segment.size()-1;
         string_to_type_map[path_plus_name] = location;
 
       }
@@ -153,20 +297,32 @@ namespace WorldBuilder
         // only one entry allowed. For now we take the first one
         // Todo: assert when there are more entries
         std::string system = found_value == true ? child.get().begin()->first : natural_type.default_value;
-        coordinate_system = CoordinateSystems::create_coordinate_system(system);
+        enter_subsection(name);
+        {
+          enter_subsection(system);
+          {
+            coordinate_system = CoordinateSystems::create_coordinate_system(system, &world);
+
+            coordinate_system->decare_entries();
+          }
+          leave_subsection();
+        }
+        leave_subsection();
+
 
       }
     else if (type.get_type() == Types::type::Feature)
       {
+        // Todo: redesing the path_level system.
         enter_subsection(name);
         {
           path_level++;
           features.push_back(Features::create_feature(name, &world));
+          features.back()->decare_entries();
           path_level--;
         }
         leave_subsection();
 
-        features.back()->decare_entries();
 
         found_value = true;
       }
@@ -241,7 +397,7 @@ namespace WorldBuilder
             unsigned int current_size = 0;
             enter_subsection(name);
             {
-              path_level++;
+              //path_level++;
               for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
                 {
                   unsigned int diff = path.size()-path_level;
@@ -256,7 +412,7 @@ namespace WorldBuilder
                   current_size++;
                   path_level -= diff;
                 }
-              path_level--;
+              //path_level--;
             }
             leave_subsection();
           }
@@ -573,6 +729,11 @@ namespace WorldBuilder
             array[i] = dynamic_cast<T *>(&vector_double[typed_array.inner_type_index[i]]);
             WBAssert(array[i] != NULL, "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator) << name << ", because it is not a Double.");
           }
+        else if (typed_array.inner_type == Types::type::Segment)
+          {
+            array[i] = dynamic_cast<T *>(&vector_segment[typed_array.inner_type_index[i]]);
+            WBAssert(array[i] != NULL, "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator) << name << ", because it is not a segment.");
+          }
         else if (typed_array.inner_type == Types::type::Point2D)
           {
             array[i] = dynamic_cast<T *>(&vector_point_2d[typed_array.inner_type_index[i]]);
@@ -647,6 +808,7 @@ namespace WorldBuilder
   }
 
   template const std::vector<const Types::Double * > Parameters::get_array<const Types::Double >(const std::string &name) const;
+  template const std::vector<const Types::Segment * > Parameters::get_array<const Types::Segment >(const std::string &name) const;
   template const std::vector<const Types::Point<2>* > Parameters::get_array<const Types::Point<2> >(const std::string &name) const;
   template const std::vector<const Types::Point<3>* > Parameters::get_array<const Types::Point<3> >(const std::string &name) const;
 }

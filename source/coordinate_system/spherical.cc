@@ -24,21 +24,49 @@ namespace WorldBuilder
 {
   namespace CoordinateSystems
   {
-    Spherical::Spherical()
-    {}
+    Spherical::Spherical(WorldBuilder::World *world_)
+    {
+      this->world = world_;
+    }
 
     Spherical::~Spherical()
     {}
 
     void
     Spherical::decare_entries()
-    {}
+    {
+      Parameters &prm = this->world->parameters;
+
+      prm.load_entry("depth method", true,
+                     Types::String("",
+                                   "The method used to go with an angle into depth in the case of spherical "
+                                   "coordinates."));
+
+      std::string string_depth_method = prm.get_string("depth method");
+      if (string_depth_method == "starting point")
+        used_depth_method = DepthMethod::angle_at_starting_point_with_surface;
+      else if (string_depth_method == "begin segment")
+        used_depth_method = DepthMethod::angle_at_begin_segment_with_surface;
+      else if (string_depth_method == "continuous")
+        used_depth_method = DepthMethod::continuous_angle_with_surface;
+      else
+        WBAssertThrow(true,"Option " << string_depth_method << " is not a valid depth method for spherical "
+                      "coordinates. The available options are 'starting point', 'begin segment' and "
+                      "'continuous'.");
+    }
 
 
     CoordinateSystem
     Spherical::natural_coordinate_system() const
     {
       return CoordinateSystem::spherical;
+    }
+
+
+    DepthMethod
+    Spherical::depth_method() const
+    {
+      return used_depth_method;
     }
 
 

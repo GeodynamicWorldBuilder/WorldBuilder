@@ -53,6 +53,13 @@ namespace WorldBuilder
     coordinate_system(coordinate_system_)
   {}
 
+  template<int dim>
+  Point<dim>::Point(const Point<dim> &point_)
+    :
+    point(point_.get_array()),
+    coordinate_system(point_.get_coordinate_system())
+  {}
+
 
   template<>
   Point<2>::Point(const double x, const double y, const CoordinateSystem coordinate_system_)
@@ -96,8 +103,8 @@ namespace WorldBuilder
   template<int dim>
   Point<dim> &Point<dim>::operator=(const Point<dim> &point_)
   {
-    for (unsigned int i = 0; i < dim; ++i)
-      point[i] = point_[i];
+    point = point_.point;
+    coordinate_system = point_.coordinate_system;
     return *this;
   }
 
@@ -123,6 +130,17 @@ namespace WorldBuilder
   }
 
   template<int dim>
+  Point<dim> Point<dim>::operator/(const double scalar) const
+  {
+    // initialize the array to zero.
+    std::array<double,dim> array = Point<dim>(coordinate_system).get_array();
+    const double one_over_scalar = 1/scalar;
+    for (unsigned int i = 0; i < dim; ++i)
+      array[i] += point[i] * one_over_scalar;
+    return Point<dim>(array,coordinate_system);
+  }
+
+  template<int dim>
   Point<dim>
   Point<dim>::operator+(const Point<dim> &point_) const
   {
@@ -139,7 +157,7 @@ namespace WorldBuilder
   Point<dim>::operator-(const Point<dim> &point_) const
   {
     WBAssert(coordinate_system == point_.get_coordinate_system(),
-             "Cannot add two points which represent different coordinate systems. Internal has type " << (int)coordinate_system << ", other point has type " << (int)point_.get_coordinate_system());
+             "Cannot substract two points which represent different coordinate systems. Internal has type " << (int)coordinate_system << ", other point has type " << (int)point_.get_coordinate_system());
     Point<dim> point_tmp(point,coordinate_system);
     point_tmp -= point_;
 
@@ -155,6 +173,17 @@ namespace WorldBuilder
       point[i] *= scalar;
     return *this;
   }
+
+
+  template<int dim>
+  Point<dim> &
+  Point<dim>::operator/=(const double scalar)
+  {
+    for (unsigned int i = 0; i < dim; ++i)
+      point[i] /= scalar;
+    return *this;
+  }
+
 
   template<int dim>
   Point<dim> &
@@ -244,6 +273,17 @@ namespace WorldBuilder
   operator*(const double scalar, const Point<dim> &point)
   {
     return point*scalar;
+  }
+
+  template<int dim>
+  Point<dim>
+  operator/(const double scalar, const Point<dim> &point)
+  {
+    // initialize the array to zero.
+    std::array<double,dim> array = Point<dim>(point.coordinate_system).get_array();
+    for (unsigned int i = 0; i < dim; ++i)
+      array[i] = scalar / point[i];
+    return Point<dim>(array,point.coordinate_system);
   }
 
 
