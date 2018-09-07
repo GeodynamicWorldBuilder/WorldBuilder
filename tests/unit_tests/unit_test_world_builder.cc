@@ -937,6 +937,28 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.composition(position, 0, 4) == false);
   CHECK(world1.composition(position, 0, 5) == false);
   CHECK(world1.composition(position, 0, 6) == false);
+
+
+
+  position = {250e3,750e3,0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(1600.0));
+  CHECK(world1.temperature(position, 10, 10) == Approx(1512.4056427478)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, std::sqrt(2) * 100e3/2, 10) == Approx(946.7305134169)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, std::sqrt(2) * 100e3 - 1, 10) == Approx(1599.9907581812)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, std::sqrt(2) * 100e3 + 1, 10) == Approx(1663.3572155943));
+  CHECK(world1.composition(position, 0, 0) == false);
+  CHECK(world1.composition(position, 0, 1) == false);
+  CHECK(world1.composition(position, 0, 2) == false);
+  CHECK(world1.composition(position, 0, 3) == false);
+  CHECK(world1.composition(position, 10, 0) == false);
+  CHECK(world1.composition(position, 10, 1) == false);
+  CHECK(world1.composition(position, 10, 2) == false);
+  CHECK(world1.composition(position, 10, 3) == false);
+  CHECK(world1.composition(position, std::sqrt(2) * 100e3 - 1, 3) == false);
+  CHECK(world1.composition(position, std::sqrt(2) * 100e3 + 1, 3) == false);
+  CHECK(world1.composition(position, 0, 4) == false);
+  CHECK(world1.composition(position, 0, 5) == false);
+  CHECK(world1.composition(position, 0, 6) == false);
 }
 
 TEST_CASE("WorldBuilder Types: Double")

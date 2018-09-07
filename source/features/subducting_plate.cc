@@ -292,10 +292,10 @@ namespace WorldBuilder
 
                       const double H = temperature_submodule_plate_model_specific_heat
                                        / (temperature_submodule_plate_model_Thermal_expansion_coefficient * gravity_norm * thickness_local);
-                      const double dip_rad = angle_local;//Utilities::string_to_double(Utilities::split_string_list(Utilities::split_string_list(temperature_submodule_vector_parameters[i_object][4])[0],':')[0]) * (numbers::PI / 180); // TODO: look into this, maybe angle per segment
 
                       const int n_sum = 500;
-                      double temp = exp(((distance_along_plane / thickness_local) * sin(dip_rad) - (/*1 -*/ distance_from_plane / thickness_local) * cos(dip_rad)) / H);
+                      double temp = exp(((distance_along_plane / thickness_local) * sin(angle_local)
+                    		           - (distance_from_plane / thickness_local) * cos(angle_local)) / H);
 
                       double sum=0;
                       for (int i=1; i<=n_sum; i++)
