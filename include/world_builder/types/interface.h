@@ -35,7 +35,7 @@ namespace WorldBuilder
 
     enum class type
     {
-      None,String,Double,Int,UnsignedInt,Array,List,Point2D,Point3D,CoordinateSystem,Feature,Segment
+      None,String,Double,Int,UnsignedInt,Array,List,Point2D,Point3D,CoordinateSystem,Feature,Segment,ConstantLayer
     };
 
     class Interface

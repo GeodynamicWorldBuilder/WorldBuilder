@@ -27,13 +27,14 @@
 #include <boost/property_tree/ptree.hpp>
 
 #include <world_builder/types/interface.h>
-#include <world_builder/types/unsigned_int.h>
+#include <world_builder/types/constant_layer.h>
 #include <world_builder/types/double.h>
 #include <world_builder/types/string.h>
 #include <world_builder/types/segment.h>
 #include <world_builder/types/point.h>
 #include <world_builder/types/array.h>
 #include <world_builder/types/list.h>
+#include <world_builder/types/unsigned_int.h>
 
 
 
@@ -270,7 +271,7 @@ namespace WorldBuilder
       std::vector<Types::String> vector_string;
 
       /**
-       * A vector which stores all the Sgment types. These can be
+       * A vector which stores all the Segment types. These can be
        * retrieved with the help of the string_to_type_map and the
        * get_segment() function.
        * @see string_to_type_map
@@ -278,6 +279,16 @@ namespace WorldBuilder
        * @see Types::Segment
        */
       std::vector<Types::Segment> vector_segment;
+
+      /**
+       * A vector which stores all the ConstantLayer types. These can
+       * be retrieved with the help of the string_to_type_map and the
+       * get_segment() function.
+       * @see string_to_type_map
+       * @see get_constant_layer()
+       * @see Types::ConstantLayer
+       */
+      std::vector<Types::ConstantLayer> vector_constant_layer;
 
       /**
        * A vector which stores all the Array types. These can be

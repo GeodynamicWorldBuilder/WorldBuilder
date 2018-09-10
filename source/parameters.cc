@@ -27,6 +27,7 @@
 #include <world_builder/utilities.h>
 #include <world_builder/types/feature.h>
 #include <world_builder/types/segment.h>
+#include <world_builder/types/constant_layer.h>
 #include <world_builder/types/coordinate_system.h>
 #include <config.h>
 
@@ -146,7 +147,6 @@ namespace WorldBuilder
       {
         // First check whether the value is in the tree. If not Assert when the value is required,
         // otherwise set found_value to false.
-
         const Types::Segment &natural_type = dynamic_cast<const Types::Segment &>(type);
 
         // Check length value
@@ -281,6 +281,54 @@ namespace WorldBuilder
 
         //vector_string[vector_string.size()-1].set_value(value);
         location = vector_segment.size()-1;
+        string_to_type_map[path_plus_name] = location;
+
+      }
+    else if (type.get_type() == Types::type::ConstantLayer)
+      {
+        // First check whether the value is in the tree. If not Assert when the value is required,
+        // otherwise set found_value to false.
+        const Types::ConstantLayer &natural_type = dynamic_cast<const Types::ConstantLayer &>(type);
+
+        // Check composition value
+        boost::optional<std::string> composition_value_tree =
+          Utilities::get_from_ptree_abs(*local_tree,
+                                        get_relative_path_without_arrays(),
+                                        "composition",
+                                        required,
+                                        path_seperator);
+
+        found_value = composition_value_tree ? true : false;
+
+        WBAssertThrow((found_value == true && required == true) || required == false,
+                      "Could not find " + get_full_path() + path_seperator + "composition" + ", while it is set as required.");
+
+        // Check thickness value
+        boost::optional<std::string> thickness_value_tree =
+          Utilities::get_from_ptree_abs(*local_tree,
+                                        get_relative_path_without_arrays(),
+                                        "thickness",
+                                        required,
+                                        path_seperator);
+
+
+        found_value = thickness_value_tree ? true : false;
+
+        WBAssertThrow((found_value == true && required == true) || required == false,
+                      "Could not find " + get_full_path() + path_seperator + "composition" + ", while it is set as required.");
+
+
+
+        // The values are present and we have retrieved them. Now store it into a ConstantLayer type.
+        const int value_composition = composition_value_tree ? Utilities::string_to_int(composition_value_tree.get()) : natural_type.default_value_composition;
+        const double value_thickness = thickness_value_tree ? Utilities::string_to_double(thickness_value_tree.get()) : natural_type.default_value_thickness;
+
+        vector_constant_layer.push_back(Types::ConstantLayer(value_composition, natural_type.default_value_composition,
+                                                value_thickness, natural_type.default_value_thickness,
+                                                natural_type.description));
+
+        //vector_string[vector_string.size()-1].set_value(value);
+        location = vector_constant_layer.size()-1;
         string_to_type_map[path_plus_name] = location;
 
       }
@@ -734,6 +782,11 @@ namespace WorldBuilder
             array[i] = dynamic_cast<T *>(&vector_segment[typed_array.inner_type_index[i]]);
             WBAssert(array[i] != NULL, "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator) << name << ", because it is not a segment.");
           }
+        else if (typed_array.inner_type == Types::type::ConstantLayer)
+          {
+            array[i] = dynamic_cast<T *>(&vector_constant_layer[typed_array.inner_type_index[i]]);
+            WBAssert(array[i] != NULL, "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator) << name << ", because it is not a constant layer.");
+          }
         else if (typed_array.inner_type == Types::type::Point2D)
           {
             array[i] = dynamic_cast<T *>(&vector_point_2d[typed_array.inner_type_index[i]]);
@@ -809,6 +862,7 @@ namespace WorldBuilder
 
   template const std::vector<const Types::Double * > Parameters::get_array<const Types::Double >(const std::string &name) const;
   template const std::vector<const Types::Segment * > Parameters::get_array<const Types::Segment >(const std::string &name) const;
+  template const std::vector<const Types::ConstantLayer * > Parameters::get_array<const Types::ConstantLayer >(const std::string &name) const;
   template const std::vector<const Types::Point<2>* > Parameters::get_array<const Types::Point<2> >(const std::string &name) const;
   template const std::vector<const Types::Point<3>* > Parameters::get_array<const Types::Point<3> >(const std::string &name) const;
 }

@@ -77,7 +77,16 @@ namespace WorldBuilder
 
 
       private:
-        //
+        // todo: the memory of this can be greatly improved by
+        // or using a plugin system for the submodules, or
+        // putting the variables in a union. Although the memory
+        // used by this program is in real cases expected to be
+        // Insignificant compared to what a calling program may
+        // use, a smaller amount of memory used in here, could
+        // theoretically speed up the computation, because more
+        // relevant data could be stored in the cache. But this
+        // not a urgent problem, and would require testing.
+
         double starting_depth;
         double maximum_depth;
         Point<2> reference_point;
@@ -93,11 +102,6 @@ namespace WorldBuilder
         double temperature_submodule_constant_depth;
         double temperature_submodule_constant_temperature;
 
-        // linear submodule parameters
-        double temperature_submodule_linear_depth;
-        double temperature_submodule_linear_top_temperature;
-        double temperature_submodule_linear_bottom_temperature;
-
         // plate model submodule parameters
         double temperature_submodule_plate_model_density;
         double temperature_submodule_plate_model_plate_velocity;
@@ -108,6 +112,12 @@ namespace WorldBuilder
         // constant composition submodule parameters
         double composition_submodule_constant_depth;
         unsigned int composition_submodule_constant_composition;
+
+        // constant layers composition submodule parameters
+        std::vector<int> composition_submodule_constant_layers_compositions;
+        std::vector<double> composition_submodule_constant_layers_thicknesses;
+
+
     };
   }
 }
