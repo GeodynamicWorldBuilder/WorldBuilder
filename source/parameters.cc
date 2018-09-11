@@ -333,9 +333,9 @@ namespace WorldBuilder
         const double value_thickness = thickness_value_tree ? Utilities::string_to_double(thickness_value_tree.get()) : natural_type.default_value_thickness;
 
         vector_constant_layer.push_back(Types::ConstantLayer(value_composition, natural_type.default_value_composition,
-                value, natural_type.default_value,
-                value_thickness, natural_type.default_value_thickness,
-                                                natural_type.description));
+                                                             value, natural_type.default_value,
+                                                             value_thickness, natural_type.default_value_thickness,
+                                                             natural_type.description));
 
         //vector_string[vector_string.size()-1].set_value(value);
         location = vector_constant_layer.size()-1;

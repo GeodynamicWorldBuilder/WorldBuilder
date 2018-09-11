@@ -70,9 +70,9 @@ namespace WorldBuilder
          */
         virtual
         double composition(const Point<3> &position,
-                         const double depth,
-                         const unsigned int composition_number,
-                         double composition_value) const;
+                           const double depth,
+                           const unsigned int composition_number,
+                           double composition_value) const;
 
 
 

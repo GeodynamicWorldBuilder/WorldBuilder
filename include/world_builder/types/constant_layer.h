@@ -38,21 +38,21 @@ namespace WorldBuilder
         /**
          * A constructor for the load_entry function
          */
-    	ConstantLayer(int default_value_composition,
-  			  double default_value,
-			  double default_value_thickness,
-    	                     std::string description);
+        ConstantLayer(int default_value_composition,
+                      double default_value,
+                      double default_value_thickness,
+                      std::string description);
 
         /**
          * A constructor for the clone and set_entry function
          */
-    	ConstantLayer(int value_composition,
-    			  int default_value_composition,
-                  double value,
-                  double default_value,
-                  double value_thickness,
-                  double default_value_thickness,
-    	                     std::string description);
+        ConstantLayer(int value_composition,
+                      int default_value_composition,
+                      double value,
+                      double default_value,
+                      double value_thickness,
+                      double default_value_thickness,
+                      std::string description);
 
         /**
          * Destructor
