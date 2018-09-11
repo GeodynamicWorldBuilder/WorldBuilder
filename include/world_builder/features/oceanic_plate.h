@@ -69,10 +69,10 @@ namespace WorldBuilder
          * 1 is present) based on the given position and
          */
         virtual
-        bool composition(const Point<3> &position,
+        double composition(const Point<3> &position,
                          const double depth,
                          const unsigned int composition_number,
-                         bool temperature) const;
+                         double value) const;
 
 
 
@@ -95,10 +95,12 @@ namespace WorldBuilder
 
         // constant composition submodule parameters
         double composition_submodule_constant_depth;
+        double composition_submodule_constant_value;
         unsigned int composition_submodule_constant_composition;
 
         // constant layers composition submodule parameters
         std::vector<int> composition_submodule_constant_layers_compositions;
+        std::vector<int> composition_submodule_constant_layers_value;
         std::vector<double> composition_submodule_constant_layers_thicknesses;
     };
   }

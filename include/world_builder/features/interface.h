@@ -77,10 +77,10 @@ namespace WorldBuilder
          * 1 is present) based on the given position and
          */
         virtual
-        bool composition(const Point<3> &position,
+        double composition(const Point<3> &position,
                          const double depth,
                          const unsigned int composition_number,
-                         bool temperature) const = 0;
+                         double value) const = 0;
 
 
       protected:

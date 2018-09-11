@@ -165,7 +165,7 @@ namespace WorldBuilder
     return temperature;
   }
 
-  bool
+  double
   World::composition(const std::array<double,2> &point,
                      const double depth,
                      const unsigned int composition_number) const
@@ -194,7 +194,7 @@ namespace WorldBuilder
     return composition(coord_3d.get_array(), depth, composition_number);
   }
 
-  bool
+  double
   World::composition(const std::array<double,3> &point_,
                      const double depth,
                      const unsigned int composition_number) const

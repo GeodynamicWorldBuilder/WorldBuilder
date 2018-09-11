@@ -64,7 +64,7 @@ extern "C" {
    * This function return the composition at a specific location given x, z, depth and
    * composition number.
    */
-  void composition_2d(void *ptr_ptr_world, double x, double z, double depth, unsigned int composition_number, bool *composition)
+  void composition_2d(void *ptr_ptr_world, double x, double z, double depth, unsigned int composition_number, double *composition)
   {
     WorldBuilder::World *a = reinterpret_cast<WorldBuilder::World *>(ptr_ptr_world);
     std::array<double,2> position = {x,z};
@@ -75,7 +75,7 @@ extern "C" {
    * This function return the composition at a specific location given x, y, z, depth and
    * composition number.
    */
-  void composition_3d(void *ptr_ptr_world, double x, double y, double z, double depth, unsigned int composition_number, bool *composition)
+  void composition_3d(void *ptr_ptr_world, double x, double y, double z, double depth, unsigned int composition_number, double *composition)
   {
     WorldBuilder::World *a = reinterpret_cast<WorldBuilder::World *>(ptr_ptr_world);
     std::array<double,3> position = {x,y,z};

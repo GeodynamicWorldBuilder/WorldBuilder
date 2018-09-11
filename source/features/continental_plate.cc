@@ -109,13 +109,16 @@ namespace WorldBuilder
             prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth in meters to which the composition of this feature is present."));
             composition_submodule_constant_depth = prm.get_double("depth");
 
+            prm.load_entry("value", false, Types::Double(1.0,"The value between 0 and 1 of how much this composition is present."));
+            composition_submodule_constant_value = prm.get_double("value");
+
             prm.load_entry("composition", true, Types::UnsignedInt(0,"The number of the composition that is present there."));
             composition_submodule_constant_composition = prm.get_unsigned_int("composition");
           }
         else if(composition_submodule_name == "constant layers")
         {
             // Load the layers.
-            prm.load_entry("layers", true, Types::Array(Types::ConstantLayer(NaN::ISNAN,NaN::DSNAN,
+            prm.load_entry("layers", true, Types::Array(Types::ConstantLayer(NaN::ISNAN,1.0,NaN::DSNAN,
                                                                     "A plate constant layer with a certain composition and thickness."),
                                                      "A list of layers."));
 
@@ -123,11 +126,13 @@ namespace WorldBuilder
 
             composition_submodule_constant_layers_compositions.resize(constant_layers.size());
             composition_submodule_constant_layers_thicknesses.resize(constant_layers.size());
+            composition_submodule_constant_layers_composition_value.resize(constant_layers.size());
 
             for(unsigned int i = 0; i < constant_layers.size(); ++i)
             {
             	composition_submodule_constant_layers_compositions[i] = constant_layers[i]->value_composition;
             	composition_submodule_constant_layers_thicknesses[i] = constant_layers[i]->value_thickness;
+            	composition_submodule_constant_layers_composition_value[i] = constant_layers[i]->value;
             }
         }
         else
@@ -195,11 +200,11 @@ namespace WorldBuilder
       return temperature;
     }
 
-    bool
+    double
     ContinentalPlate::composition(const Point<3> &position,
                                   const double depth,
                                   const unsigned int composition_number,
-                                  bool composition) const
+                                  double composition) const
     {
       if (composition_submodule_name == "constant")
         {
@@ -211,7 +216,7 @@ namespace WorldBuilder
               // We are in the the area where the contintal plate is defined. Set the constant temperature.
               if (composition_submodule_constant_composition == composition_number)
                 {
-                  return true;
+                  return composition_submodule_constant_value;
                 }
             }
 
@@ -234,7 +239,7 @@ namespace WorldBuilder
     			  // We are in a layer. Check whether this is the correct composition.
                   if (composition_submodule_constant_layers_compositions[i] == composition_number)
                     {
-                      return true;
+                      return composition_submodule_constant_layers_composition_value[i];
                     }
     		  }
     		  total_thickness += composition_submodule_constant_layers_thicknesses[i];

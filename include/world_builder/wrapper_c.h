@@ -27,9 +27,9 @@ extern "C" {
 
   void temperature_3d(void *ptr_ptr_world, double x, double y, double z, double depth, double gravity, double *temperature);
 
-  void composition_2d(void *ptr_ptr_world, double x, double z, double depth, unsigned int composition_number, bool *composition);
+  void composition_2d(void *ptr_ptr_world, double x, double z, double depth, unsigned int composition_number, double *composition);
 
-  void composition_3d(void *ptr_ptr_world, double x, double y, double z, double depth, unsigned int composition_number, bool *composition);
+  void composition_3d(void *ptr_ptr_world, double x, double y, double z, double depth, unsigned int composition_number, double *composition);
 
   void release_world(void *ptr_ptr_world);
 }
