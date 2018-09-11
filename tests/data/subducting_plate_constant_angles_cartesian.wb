@@ -17,7 +17,7 @@
          },
          "temperature submodule":{"name":"constant", "temperature":150},
          "composition submodule":{"name":"constant", "composition":3}},
-     "Subducting plate":{"name":"Second subducting plate", "coordinates":[[0e3,750e3],[500e3,750e3],[1000e3,750e3]], "reference point":[0,0],
+     "Subducting plate":{"name":"Second subducting plate", "coordinates":[[0e3,250e3],[500e3,250e3],[1000e3,500e3]], "reference point":[0,-1],
          "starting depth":0, "max depth":1e10,
          "segments":
          {
@@ -26,6 +26,6 @@
            "2":[{"length":200e3, "thickness":[200e3,100e3], "angle":[30]}, {"length":100e3, "thickness":[100e3], "angle":[30]}, {"length":150e3, "thickness":[100e3,0], "angle":[70]}]
          },
          "temperature submodule":{"name":"plate model", "density":3300, "plate velocity":0.01 },
-         "composition submodule":{"name":"none"}}
+         "composition submodule":{"name":"constant layers", "layers":[{"composition":0, "thickness":33e3},{"composition":1, "thickness":33e3},{"composition":2, "thickness":33e3}]}}
     }
 }
