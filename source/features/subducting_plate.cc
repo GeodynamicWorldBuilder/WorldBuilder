@@ -207,10 +207,10 @@ namespace WorldBuilder
 
             std::vector<const Types::ConstantLayer *> constant_layers = prm.get_array<const Types::ConstantLayer>("layers");
 
-            composition_submodule_constant_layers_compositions.resize(typed_coordinates.size());
-            composition_submodule_constant_layers_thicknesses.resize(typed_coordinates.size());
+            composition_submodule_constant_layers_compositions.resize(constant_layers.size());
+            composition_submodule_constant_layers_thicknesses.resize(constant_layers.size());
 
-            for(unsigned int i = 0; i < typed_coordinates.size(); ++i)
+            for(unsigned int i = 0; i < constant_layers.size(); ++i)
             {
             	composition_submodule_constant_layers_compositions[i] = constant_layers[i]->value_composition;
             	composition_submodule_constant_layers_thicknesses[i] = constant_layers[i]->value_thickness;
@@ -414,14 +414,12 @@ namespace WorldBuilder
                       {
                     	  // find out what layer we are in.
                     	  double total_thickness = 0;
-                    	  //std::cout << "composition_submodule_constant_layers_compositions.size() = " << composition_submodule_constant_layers_compositions.size() << std::endl;
                     	  for(unsigned int i = 0; i < composition_submodule_constant_layers_compositions.size(); ++i)
                     	  {
-                    		  //std::cout << i << ": distance_from_plane = " << distance_from_plane << ", total_thickness = " << total_thickness << ", composition_submodule_constant_layers_thicknesses[i] = " << composition_submodule_constant_layers_thicknesses[i] << ", composition_submodule_constant_layers_compositions = " << composition_submodule_constant_layers_compositions[i] << std::endl;
-                    		  if(distance_from_plane > total_thickness
-                    			 && distance_from_plane <= total_thickness + composition_submodule_constant_layers_thicknesses[i])
+                    		  if(distance_from_plane >= total_thickness
+                    			 && distance_from_plane < total_thickness + composition_submodule_constant_layers_thicknesses[i])
                     		  {
-                    			  //std::cout << "inside: " << composition_number << std::endl;
+                    			  // We are in a layer. Check whether this is the correct composition.
                                   if (composition_submodule_constant_layers_compositions[i] == composition_number)
                                     {
                                       return true;

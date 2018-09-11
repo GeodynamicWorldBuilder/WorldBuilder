@@ -145,6 +145,28 @@ namespace WorldBuilder
             prm.load_entry("composition", true, Types::UnsignedInt(0,"The number of the composition that is present there."));
             composition_submodule_constant_composition = prm.get_unsigned_int("composition");
           }
+        else if(composition_submodule_name == "constant layers")
+        {
+            // Load the layers.
+            prm.load_entry("layers", true, Types::Array(Types::ConstantLayer(NaN::ISNAN,NaN::DSNAN,
+                                                                    "A plate constant layer with a certain composition and thickness."),
+                                                     "A list of layers."));
+
+            std::vector<const Types::ConstantLayer *> constant_layers = prm.get_array<const Types::ConstantLayer>("layers");
+
+            composition_submodule_constant_layers_compositions.resize(constant_layers.size());
+            composition_submodule_constant_layers_thicknesses.resize(constant_layers.size());
+
+            for(unsigned int i = 0; i < constant_layers.size(); ++i)
+            {
+            	composition_submodule_constant_layers_compositions[i] = constant_layers[i]->value_composition;
+            	composition_submodule_constant_layers_thicknesses[i] = constant_layers[i]->value_thickness;
+            }
+        }
+        else
+          {
+            WBAssertThrow(composition_submodule_name == "none","Subducting plate temperature model '" << temperature_submodule_name << "' not found.");
+          }
       }
       prm.leave_subsection();
     }
@@ -302,6 +324,30 @@ namespace WorldBuilder
             }
 
         }
+      else if(composition_submodule_name == "constant layers")
+      {
+    	  // find out what layer we are in.
+    	  double total_thickness = 0;
+    	  for(unsigned int i = 0; i < composition_submodule_constant_layers_compositions.size(); ++i)
+    	  {
+    		  WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,*(world->parameters.coordinate_system));
+
+    		  // Check wether we are in the correct layer
+    		  if(depth >= total_thickness
+    			 && depth < total_thickness + composition_submodule_constant_layers_thicknesses[i]
+	             && Utilities::polygon_contains_point(coordinates,
+	            		                              Point<2>(natural_coordinate.get_surface_coordinates(),
+	            		                              world->parameters.coordinate_system->natural_coordinate_system())))
+    		  {
+    			  // We are in a layer. Check whether this is the correct composition.
+                  if (composition_submodule_constant_layers_compositions[i] == composition_number)
+                    {
+                      return true;
+                    }
+    		  }
+    		  total_thickness += composition_submodule_constant_layers_thicknesses[i];
+    	  }
+      }
       else if (composition_submodule_name == "none")
         {
           return composition;
