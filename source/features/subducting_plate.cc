@@ -212,13 +212,13 @@ namespace WorldBuilder
 
             composition_submodule_constant_layers_compositions.resize(constant_layers.size());
             composition_submodule_constant_layers_thicknesses.resize(constant_layers.size());
-            composition_submodule_constant_layers_composition_value.resize(constant_layers.size());
+            composition_submodule_constant_layers_value.resize(constant_layers.size());
 
             for (unsigned int i = 0; i < constant_layers.size(); ++i)
               {
                 composition_submodule_constant_layers_compositions[i] = constant_layers[i]->value_composition;
                 composition_submodule_constant_layers_thicknesses[i] = constant_layers[i]->value_thickness;
-                composition_submodule_constant_layers_composition_value[i] = constant_layers[i]->value;
+                composition_submodule_constant_layers_value[i] = constant_layers[i]->value;
               }
           }
         else
@@ -427,7 +427,7 @@ namespace WorldBuilder
                                   // We are in a layer. Check whether this is the correct composition.
                                   if (composition_submodule_constant_layers_compositions[i] == composition_number)
                                     {
-                                      return composition_submodule_constant_layers_composition_value[i];
+                                      return composition_submodule_constant_layers_value[i];
                                     }
                                 }
                               total_thickness += composition_submodule_constant_layers_thicknesses[i];
