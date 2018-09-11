@@ -38,18 +38,21 @@ namespace WorldBuilder
         /**
          * A constructor for the load_entry function
          */
-    	ConstantLayer(int default_value_composition,
-    			  double default_value_thickness,
-    	                     std::string description);
+        ConstantLayer(int default_value_composition,
+                      double default_value,
+                      double default_value_thickness,
+                      std::string description);
 
         /**
          * A constructor for the clone and set_entry function
          */
-    	ConstantLayer(int value_composition,
-    			  int default_value_composition,
-    	                     double value_thickness,
-    	                     double default_value_thickness,
-    	                     std::string description);
+        ConstantLayer(int value_composition,
+                      int default_value_composition,
+                      double value,
+                      double default_value,
+                      double value_thickness,
+                      double default_value_thickness,
+                      std::string description);
 
         /**
          * Destructor
@@ -74,6 +77,18 @@ namespace WorldBuilder
          * value of -1.
          */
         int default_value_composition;
+
+
+        /**
+         * The value of the composition or temperature. This value is never
+         * required, even if the constant_layer required value is set to true.
+         */
+        double value;
+
+        /**
+         * The default value of the composition or temperature.
+         */
+        double default_value;
 
         /**
          * The thickness of the constant layer.

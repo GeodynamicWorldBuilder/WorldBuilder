@@ -49,7 +49,7 @@ USE, INTRINSIC :: ISO_C_BINDING!, ONLY: C_PTR
       REAL(C_DOUBLE), intent(in), value :: z
       REAL(C_DOUBLE), intent(in), value :: depth
       INTEGER(C_INT), intent(in), value :: composition_number
-      LOGICAL(C_BOOL), intent(out) :: composition
+      REAL(C_DOUBLE), intent(out) :: composition
     END SUBROUTINE composition_2d
 
     ! Create an interface with the 3d composition function of the World builder
@@ -63,7 +63,7 @@ USE, INTRINSIC :: ISO_C_BINDING!, ONLY: C_PTR
       REAL(C_DOUBLE), intent(in), value :: z
       REAL(C_DOUBLE), intent(in), value :: depth
       INTEGER(C_INT), intent(in), value :: composition_number
-      LOGICAL(C_BOOL), intent(out) :: composition
+      REAL(C_DOUBLE), intent(out) :: composition
     END SUBROUTINE composition_3d
 
     ! Create an interface with the release world function.

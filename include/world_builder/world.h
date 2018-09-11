@@ -59,9 +59,9 @@ namespace WorldBuilder
       double temperature(const std::array<double, 3> &point, const double depth, const double gravity_norm) const;
 
 
-      bool composition(const std::array<double, 2> &point, const double depth, const unsigned int composition_number) const;
+      double composition(const std::array<double, 2> &point, const double depth, const unsigned int composition_number) const;
 
-      bool composition(const std::array<double, 3> &point, const double depth, const unsigned int composition_number) const;
+      double composition(const std::array<double, 3> &point, const double depth, const unsigned int composition_number) const;
 
       /**
        * Stores the path separtor used for the property tree.

@@ -303,6 +303,14 @@ namespace WorldBuilder
         WBAssertThrow((found_value == true && required == true) || required == false,
                       "Could not find " + get_full_path() + path_seperator + "composition" + ", while it is set as required.");
 
+        // Check the value, which may be the value indicating composition or the temperature
+        boost::optional<std::string> value_tree =
+          Utilities::get_from_ptree_abs(*local_tree,
+                                        get_relative_path_without_arrays(),
+                                        "value",
+                                        false,
+                                        path_seperator);
+
         // Check thickness value
         boost::optional<std::string> thickness_value_tree =
           Utilities::get_from_ptree_abs(*local_tree,
@@ -321,11 +329,13 @@ namespace WorldBuilder
 
         // The values are present and we have retrieved them. Now store it into a ConstantLayer type.
         const int value_composition = composition_value_tree ? Utilities::string_to_int(composition_value_tree.get()) : natural_type.default_value_composition;
+        const double value = value_tree ? Utilities::string_to_double(value_tree.get()) : natural_type.default_value;
         const double value_thickness = thickness_value_tree ? Utilities::string_to_double(thickness_value_tree.get()) : natural_type.default_value_thickness;
 
         vector_constant_layer.push_back(Types::ConstantLayer(value_composition, natural_type.default_value_composition,
-                                                value_thickness, natural_type.default_value_thickness,
-                                                natural_type.description));
+                                                             value, natural_type.default_value,
+                                                             value_thickness, natural_type.default_value_thickness,
+                                                             natural_type.description));
 
         //vector_string[vector_string.size()-1].set_value(value);
         location = vector_constant_layer.size()-1;
@@ -710,6 +720,7 @@ namespace WorldBuilder
   {
     const std::string path_plus_name = get_full_path() == "" ? name : get_full_path() + path_seperator + name;
     WBAssert(string_to_type_map.count(path_plus_name) > 0, "Could not find entry \'" << name << "\' not found. Make sure it is loaded or set.");
+    //Todo: there is a problem that when the wrong get function is used. Have to find a way to fix this.
     return vector_unsigned_int[string_to_type_map.at(path_plus_name)].value;
   }
 

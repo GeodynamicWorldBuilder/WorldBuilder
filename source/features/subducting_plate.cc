@@ -197,25 +197,30 @@ namespace WorldBuilder
           {
             prm.load_entry("composition", true, Types::UnsignedInt(0,"The number of the composition that is present there."));
             composition_submodule_constant_composition = prm.get_unsigned_int("composition");
+
+            prm.load_entry("value", false, Types::Double(1.0,"The value between 0 and 1 of how much this composition is present."));
+            composition_submodule_constant_value = prm.get_double("value");
           }
-        else if(composition_submodule_name == "constant layers")
-        {
+        else if (composition_submodule_name == "constant layers")
+          {
             // Load the layers.
-            prm.load_entry("layers", true, Types::Array(Types::ConstantLayer(NaN::ISNAN,NaN::DSNAN,
-                                                                    "A plate constant layer with a certain composition and thickness."),
-                                                     "A list of layers."));
+            prm.load_entry("layers", true, Types::Array(Types::ConstantLayer(NaN::ISNAN,1.0,NaN::DSNAN,
+                                                                             "A plate constant layer with a certain composition and thickness."),
+                                                        "A list of layers."));
 
             std::vector<const Types::ConstantLayer *> constant_layers = prm.get_array<const Types::ConstantLayer>("layers");
 
             composition_submodule_constant_layers_compositions.resize(constant_layers.size());
             composition_submodule_constant_layers_thicknesses.resize(constant_layers.size());
+            composition_submodule_constant_layers_value.resize(constant_layers.size());
 
-            for(unsigned int i = 0; i < constant_layers.size(); ++i)
-            {
-            	composition_submodule_constant_layers_compositions[i] = constant_layers[i]->value_composition;
-            	composition_submodule_constant_layers_thicknesses[i] = constant_layers[i]->value_thickness;
-            }
-        }
+            for (unsigned int i = 0; i < constant_layers.size(); ++i)
+              {
+                composition_submodule_constant_layers_compositions[i] = constant_layers[i]->value_composition;
+                composition_submodule_constant_layers_thicknesses[i] = constant_layers[i]->value_thickness;
+                composition_submodule_constant_layers_value[i] = constant_layers[i]->value;
+              }
+          }
         else
           {
             WBAssertThrow(composition_submodule_name == "none","Subducting plate temperature model '" << temperature_submodule_name << "' not found.");
@@ -336,11 +341,11 @@ namespace WorldBuilder
       return temperature;
     }
 
-    bool
+    double
     SubductingPlate::composition(const Point<3> &position,
                                  const double depth,
                                  const unsigned int composition_number,
-                                 bool composition) const
+                                 double composition) const
     {
       if (composition_submodule_name == "none")
         {
@@ -407,27 +412,27 @@ namespace WorldBuilder
                           // We are in the the area where the subducting plate is defined. Set the constant composition
                           if (composition_submodule_constant_composition == composition_number)
                             {
-                              return true;
+                              return composition_submodule_constant_value;
                             }
                         }
-                      else if(composition_submodule_name == "constant layers")
-                      {
-                    	  // find out what layer we are in.
-                    	  double total_thickness = 0;
-                    	  for(unsigned int i = 0; i < composition_submodule_constant_layers_compositions.size(); ++i)
-                    	  {
-                    		  if(distance_from_plane >= total_thickness
-                    			 && distance_from_plane < total_thickness + composition_submodule_constant_layers_thicknesses[i])
-                    		  {
-                    			  // We are in a layer. Check whether this is the correct composition.
+                      else if (composition_submodule_name == "constant layers")
+                        {
+                          // find out what layer we are in.
+                          double total_thickness = 0;
+                          for (unsigned int i = 0; i < composition_submodule_constant_layers_compositions.size(); ++i)
+                            {
+                              if (distance_from_plane >= total_thickness
+                                  && distance_from_plane < total_thickness + composition_submodule_constant_layers_thicknesses[i])
+                                {
+                                  // We are in a layer. Check whether this is the correct composition.
                                   if (composition_submodule_constant_layers_compositions[i] == composition_number)
                                     {
-                                      return true;
+                                      return composition_submodule_constant_layers_value[i];
                                     }
-                    		  }
-                    		  total_thickness += composition_submodule_constant_layers_thicknesses[i];
-                    	  }
-                      }
+                                }
+                              total_thickness += composition_submodule_constant_layers_thicknesses[i];
+                            }
+                        }
                       else
                         {
                           WBAssertThrow(false,"Given composition module does not exist: " + composition_submodule_name);

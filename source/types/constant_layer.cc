@@ -24,12 +24,15 @@ namespace WorldBuilder
 {
   namespace Types
   {
-  ConstantLayer::ConstantLayer(int default_value_composition,
-		  double default_value_thickness,
-                     std::string description)
+    ConstantLayer::ConstantLayer(int default_value_composition,
+                                 double default_value,
+                                 double default_value_thickness,
+                                 std::string description)
       :
       value_composition(default_value_composition),
       default_value_composition(default_value_composition),
+      value(default_value),
+      default_value(default_value),
       value_thickness(default_value_thickness),
       default_value_thickness(default_value_thickness),
       description(description)
@@ -37,14 +40,18 @@ namespace WorldBuilder
       this->type_name = type::ConstantLayer;
     }
 
-  ConstantLayer::ConstantLayer(int value_composition,
-		  int default_value_composition,
-                     double value_thickness,
-                     double default_value_thickness,
-                     std::string description)
+    ConstantLayer::ConstantLayer(int value_composition,
+                                 int default_value_composition,
+                                 double value,
+                                 double default_value,
+                                 double value_thickness,
+                                 double default_value_thickness,
+                                 std::string description)
       :
-		value_composition(value_composition),
-		default_value_composition(default_value_composition),
+      value_composition(value_composition),
+      default_value_composition(default_value_composition),
+      value(value),
+      default_value(default_value),
       value_thickness(value_thickness),
       default_value_thickness(default_value_thickness),
       description(description)
@@ -53,15 +60,16 @@ namespace WorldBuilder
 
     }
 
-  ConstantLayer::~ConstantLayer ()
+    ConstantLayer::~ConstantLayer ()
     {}
 
     std::unique_ptr<Interface>
     ConstantLayer::clone() const
     {
       return std::unique_ptr<Interface>(new ConstantLayer(value_composition, default_value_composition,
-                                                    value_thickness, default_value_thickness,
-                                                    description));
+                                                          value, default_value,
+                                                          value_thickness, default_value_thickness,
+                                                          description));
     }
 
   }
