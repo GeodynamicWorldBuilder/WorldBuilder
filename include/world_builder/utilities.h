@@ -184,14 +184,14 @@ namespace WorldBuilder
     /**
      * Converts a string to a int
      */
-    double
+    int
     string_to_int(const std::string &string);
 
 
     /**
      * Converts a string to a unsigned int
      */
-    double
+    unsigned int
     string_to_unsigned_int(const std::string &string);
 
     /**

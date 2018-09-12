@@ -384,7 +384,7 @@ namespace WorldBuilder
       return d;
     }
 
-    double
+    int
     string_to_int(const std::string &string)
     {
       // trim whitespace on either side of the text if necessary
@@ -394,7 +394,7 @@ namespace WorldBuilder
       while ((s.size() > 0) && (s[s.size() - 1] == ' '))
         s.erase(s.end() - 1);
 
-      double d = 0;
+      int d = 0;
       try
         {
           d =  boost::lexical_cast<int>(s);
@@ -408,7 +408,7 @@ namespace WorldBuilder
     }
 
 
-    double
+    unsigned int
     string_to_unsigned_int(const std::string &string)
     {
       // trim whitespace on either side of the text if necessary
@@ -418,7 +418,7 @@ namespace WorldBuilder
       while ((s.size() > 0) && (s[s.size() - 1] == ' '))
         s.erase(s.end() - 1);
 
-      double d = 0;
+      unsigned int d = 0;
       try
         {
           d =  boost::lexical_cast<unsigned int>(s);
