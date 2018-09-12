@@ -30,7 +30,7 @@ namespace WorldBuilder
   {
 
     /**
-     * This class represents a continental plate and can implement submodules
+     * This class represents a subducting plate and can implement submodules
      * for temperature and composition. These submodules determine what
      * the returned temperature or composition of the temperature and composition
      * functions of this class will be.
@@ -56,7 +56,8 @@ namespace WorldBuilder
 
 
         /**
-         * Returns a temperature based on the given position
+         * Returns a temperature based on the given position, depth in the model,
+         * gravity and current temperature.
          */
         virtual
         double temperature(const Point<3> &position,
@@ -66,7 +67,9 @@ namespace WorldBuilder
 
         /**
          * Returns a value for the requests composition (0 is not present,
-         * 1 is present) based on the given position and
+         * 1 is present) based on the given position, depth in the model,
+         * the composition which is being requested and the current value
+         * of that composition at this location and depth.
          */
         virtual
         double composition(const Point<3> &position,
@@ -87,8 +90,25 @@ namespace WorldBuilder
         // relevant data could be stored in the cache. But this
         // not a urgent problem, and would require testing.
 
+        /**
+         * This variable stores the depth at which the subducting
+         * plate starts. It makes this depth effectively the surface
+         * of the model for the slab.
+         */
         double starting_depth;
+
+        /**
+         * The depth which below the subducting plate may no longer
+         * be present. This can not only help setting up models with
+         * less effort, but can also improve performance, because
+         * the algorithm doesn't have to search in locations below
+         * this depth.
+         */
         double maximum_depth;
+
+        /**
+         * A point on the surface to which the subducting plates subduct.
+         */
         Point<2> reference_point;
 
         std::vector<std::vector<double> > slab_segment_lengths;

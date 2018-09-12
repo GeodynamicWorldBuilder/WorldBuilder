@@ -195,6 +195,8 @@ namespace WorldBuilder
        * Returns the array with pointers to the requested type. The reason a
        * raw pointer is returned is that caller is not responsible for the
        * classes pointed at in the return vector or has ownership on them.
+       * This function is currently implemented for the Types Double, Segment,
+       * ConstantLayer, Point2D and Point3D.
        * \param name The key where the variable is stored. The array contains
        * \return std::vector<T*>
        */
@@ -226,8 +228,8 @@ namespace WorldBuilder
       ptree tree;
 
       /**
-       * This variable ontains a pointer to the a part of the tree. This
-       * variable is not repsonsible for the tree, so using a raw pointer.
+       * This variable contains a pointer to the a part of the tree. This
+       * variable is not responsible for the tree, so using a raw pointer.
        * @see tree
        */
       ptree *local_tree;

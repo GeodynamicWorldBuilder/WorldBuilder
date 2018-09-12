@@ -50,8 +50,9 @@ namespace WorldBuilder
         ~Interface();
 
         /**
-         * read in the world builder file
+         * Read in the world builder file, and does parsing and preparation for the model to start.
          */
+        // Todo: might have to rename this function, or split it up.
         virtual
         void decare_entries() = 0;
 
@@ -104,7 +105,7 @@ namespace WorldBuilder
 
 
     /**
-     * factory function
+     * A factory function for creating coordinate systems.
      */
     std::unique_ptr<Interface>
     create_coordinate_system(const std::string name, World *world);

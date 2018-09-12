@@ -118,7 +118,6 @@ namespace WorldBuilder
     return dot_product;
   }
 
-
   template<int dim>
   Point<dim> Point<dim>::operator*(const double scalar) const
   {
@@ -268,6 +267,9 @@ namespace WorldBuilder
   }
 
 
+  /**
+   * Multiplies a point with a scalar.
+   */
   template<int dim>
   Point<dim>
   operator*(const double scalar, const Point<dim> &point)
@@ -275,6 +277,9 @@ namespace WorldBuilder
     return point*scalar;
   }
 
+  /**
+   * Divides a scalar by a point: output_vector[i] = scalar / point[i].
+   */
   template<int dim>
   Point<dim>
   operator/(const double scalar, const Point<dim> &point)
@@ -286,9 +291,24 @@ namespace WorldBuilder
     return Point<dim>(array,point.coordinate_system);
   }
 
-
+  /**
+   * The 2d version of the point class.
+   */
   template class Point<2>;
+
+
+  /**
+   * The 3d version of the point class.
+   */
   template class Point<3>;
+
+  /**
+   * Multiplies a 2d point with a scalar.
+   */
   template Point<2> operator*(const double scalar, const Point<2> &point);
+
+  /**
+   * Multiplies a 3d point with a scalar.
+   */
   template Point<3> operator*(const double scalar, const Point<3> &point);
 }

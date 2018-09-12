@@ -210,10 +210,5 @@ namespace WorldBuilder
     return composition;
   }
 
-  /*WorldBuilder::CoordinateSystems::Interface &
-  World::get_coordinate_system() const
-  {
-    return *coordinate_system;
-  }*/
 }
 
