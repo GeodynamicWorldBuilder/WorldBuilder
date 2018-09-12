@@ -871,10 +871,35 @@ namespace WorldBuilder
     return collapse.substr(0,collapse.size()-path_seperator.size());
   }
 
+  /**
+   * Returns a vector of pointers to the Double Type based on the provided name.
+   * Note that the variable with this name has to be loaded before this function is called.
+   */
   template const std::vector<const Types::Double * > Parameters::get_array<const Types::Double >(const std::string &name) const;
+
+  /**
+   * Returns a vector of pointers to the Segment Type based on the provided name.
+   * Note that the variable with this name has to be loaded before this function is called.
+   */
   template const std::vector<const Types::Segment * > Parameters::get_array<const Types::Segment >(const std::string &name) const;
+
+  /**
+   * Returns a vector of pointers to the ConstantLayer Type based on the provided name.
+   * Note that the variable with this name has to be loaded before this function is called.
+   */
   template const std::vector<const Types::ConstantLayer * > Parameters::get_array<const Types::ConstantLayer >(const std::string &name) const;
+
+  /**
+   * Returns a vector of pointers to the Point<2> Type based on the provided name.
+   * Note that the variable with this name has to be loaded before this function is called.
+   */
   template const std::vector<const Types::Point<2>* > Parameters::get_array<const Types::Point<2> >(const std::string &name) const;
+
+  /**
+   * Returns a vector of pointers to the Point<3> Type based on the provided name.
+   * Note that the variable with this name has to be loaded before this function is called.
+   */
   template const std::vector<const Types::Point<3>* > Parameters::get_array<const Types::Point<3> >(const std::string &name) const;
+
 }
 

@@ -65,18 +65,6 @@ namespace WorldBuilder
         type get_type() const;
 
 
-        /**
-         * read in the world builder file
-         */
-        //virtual
-        //Interface* get_inner_type() const ;
-
-        /**
-         * read in the world builder file
-         */
-        //virtual
-        //Interface* set_inner_type();
-
       protected:
         type type_name;
     };

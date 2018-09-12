@@ -48,8 +48,9 @@ namespace WorldBuilder
         ~Cartesian();
 
         /**
-         * Read in the world builder file
+         * Read in the world builder file, and does parsing and preparation for the model to start.
          */
+        // Todo: might have to rename this function, or split it up.
         virtual
         void decare_entries();
 

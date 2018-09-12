@@ -119,6 +119,10 @@ namespace WorldBuilder
       return value[index];
     }
 
+    /**
+     * Multiplies a Types::Point<dim> with a scalr and returns a
+     * WorldBuilder::Point<dim>.
+     */
     template<int dim>
     WorldBuilder::Point<dim>
     operator*(const double scalar, const Point<dim> &point)
@@ -128,7 +132,18 @@ namespace WorldBuilder
 
     template class Point<2>;
     template class Point<3>;
+
+    /**
+     * Multiplies a Types::Point<2> with a scalr and returns a
+     * WorldBuilder::Point<2>.
+     */
     template WorldBuilder::Point<2> operator*(const double scalar, const Point<2> &point);
+
+
+    /**
+     * Multiplies a Types::Point<3> with a scalr and returns a
+     * WorldBuilder::Point<3>.
+     */
     template WorldBuilder::Point<3> operator*(const double scalar, const Point<3> &point);
   }
 }

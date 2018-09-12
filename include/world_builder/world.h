@@ -54,13 +54,28 @@ namespace WorldBuilder
        */
       void declare_and_parse(Parameters &parameters);
 
+      /**
+       * Returns the temperature based on a 2d Cartesian point, the depth in the
+       * model at that point and the gravity norm at that point.
+       */
       double temperature(const std::array<double, 2> &point, const double depth, const double gravity_norm) const;
 
+      /**
+       * Returns the temperature based on a 3d Cartesian point, the depth in the
+       * model at that point and the gravity norm at that point.
+       */
       double temperature(const std::array<double, 3> &point, const double depth, const double gravity_norm) const;
 
-
+      /**
+       * Returns the composition value based on a 2d Cartesian point, the depth in
+       * the model at that point and the gravity norm at that point.
+       */
       double composition(const std::array<double, 2> &point, const double depth, const unsigned int composition_number) const;
 
+      /**
+       * Returns the composition value based on a 3d Cartesian point, the depth in
+       * the model at that point and the gravity norm at that point.
+       */
       double composition(const std::array<double, 3> &point, const double depth, const unsigned int composition_number) const;
 
       /**
@@ -69,9 +84,19 @@ namespace WorldBuilder
       static const char path_seperator = '.';
 
 
+      /**
+       * This is the parameter class, which stores all the values loaded in
+       * from the parameter file or which are set directly.
+       */
       Parameters parameters;
 
     private:
+      /**
+       * The minimum dimension. If cross section data is provided, it is set
+       * to 2, which means the 2d function of temperature and composition can
+       * be used. Otherwise it is set to 3, which means that they can't be
+       * used.
+       */
       unsigned int dim;
 
 

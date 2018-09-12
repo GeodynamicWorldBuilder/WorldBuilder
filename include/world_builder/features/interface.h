@@ -113,7 +113,7 @@ namespace WorldBuilder
 
 
     /**
-     * factory function
+     * A factory function for creating features.
      */
     std::unique_ptr<Interface>
     create_feature(const std::string name, WorldBuilder::World *world);

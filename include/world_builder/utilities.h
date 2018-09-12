@@ -242,8 +242,30 @@ namespace WorldBuilder
     /**
      * Computes the distance of a point to a curved plane.
      * TODO: add more info on how this works/is implemented.
-     * \param point This is the point of which we want to know the distance to the curved planes
-     * \param point_list This is a list of 2d Points
+     * \param point This is the cartesian point of which we want to know the
+     * distance to the curved planes
+     * \param reference_point This is a 2d point in natural coordinates at the
+     * surface which the curved planes dip towards. Natural coordinates are in
+     * cartesian (x,y,z) in meters and in spherical radius in meters and longitude
+     * and latitude in radians.
+     * \param point_list This is a vector of 2d Points in natural coordinates at the
+     * surface which define the line along the surface at which the curved planes
+     * start. Natural coordinates are in cartesian (x,y,z) in meters and in spherical
+     * radius in meters and longitude and latitude in radians.
+     * \param plane_segment_lengths This is a vector of vectors of doubles. It contains
+     * the length of every segment at point in the point_list (in the same order as
+     * the point_list.
+     * \param plane_segment_angles This is a vector of vectors of 2d points. It contains
+     * the begin and end angle of every segment at point in the point_list (in the same
+     * order as the point_list.
+     * \param start_depth This value contains the depth at which the plane starts. This
+     * means that the start_depth effectively becomes the surface for this slab.
+     * \param coordinate_system This is a reference to the coordinate system of the
+     * World Builder. This is used to convert cartesian to natural coordinates and back.
+     * \param only_positive This value deterines whether only the the part below the
+     * plane should count as distance or both sides of the plane. It is called only_positive
+     * because the area below the plane, the distance is positve, and above the plane the
+     * distance is negative.
      */
     std::map<std::string,double> distance_point_from_curved_planes(const Point<3> &point,
                                                                    const Point<2> &reference_point,

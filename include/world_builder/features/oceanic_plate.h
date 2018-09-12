@@ -30,7 +30,7 @@ namespace WorldBuilder
   {
 
     /**
-     * This class represents a continental plate and can implement submodules
+     * This class represents a oceanic plate and can implement submodules
      * for temperature and composition. These submodules determine what
      * the returned temperature or composition of the temperature and composition
      * functions of this class will be.
@@ -56,7 +56,8 @@ namespace WorldBuilder
 
 
         /**
-         * Returns a temperature based on the given position
+         * Returns a temperature based on the given position, depth in the model,
+         * gravity and current temperature.
          */
         virtual
         double temperature(const Point<3> &position,
@@ -66,7 +67,9 @@ namespace WorldBuilder
 
         /**
          * Returns a value for the requests composition (0 is not present,
-         * 1 is present) based on the given position and
+         * 1 is present) based on the given position, depth in the model,
+         * the composition which is being requested and the current value
+         * of that composition at this location and depth.
          */
         virtual
         double composition(const Point<3> &position,
