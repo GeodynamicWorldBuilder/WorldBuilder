@@ -425,7 +425,11 @@ namespace WorldBuilder
                                   && distance_from_plane < total_thickness + composition_submodule_constant_layers_thicknesses[i])
                                 {
                                   // We are in a layer. Check whether this is the correct composition.
-                                  if (composition_submodule_constant_layers_compositions[i] == composition_number)
+                                  // The composition_number is cast to an int to prevent a warning.
+                                  // The reason composition_submodule_constant_layers_compositions is
+                                  // unsigned int is so that it can be set to a negative value, which
+                                  // is aways ignored.
+                                  if (composition_submodule_constant_layers_compositions[i] == (int)composition_number)
                                     {
                                       return composition_submodule_constant_layers_value[i];
                                     }
