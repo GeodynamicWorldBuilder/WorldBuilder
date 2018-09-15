@@ -6,8 +6,8 @@ IMPLICIT NONE
   ! Declare the types which will be needed.
   REAL*8 :: temperature,x=120e3,y=500e3,z=0,depth=0,gravity = 10
   INTEGER :: composition_number = 3
-  LOGICAL*1 :: composition
-  character(len=256) :: file_name = "../build/wb5.json"//C_NULL_CHAR
+  REAL*8 :: composition
+  character(len=256) :: file_name = "../../tests/data/continental_plate.wb"//C_NULL_CHAR
 
   ! Show how to call the functions.
   CALL create_world(cworld, file_name)
