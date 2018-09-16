@@ -17,6 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 #include <fstream>
+#include <sstream>
 #include <vector>
 #include <tuple>
 
@@ -46,7 +47,13 @@ namespace WorldBuilder
     // Now read in the world builder file into a file stream and
     // put it into a boost property tree.
     std::ifstream json_input_stream(filename.c_str());
-    boost::property_tree::json_parser::read_json (json_input_stream, tree);
+    std::stringstream json_fixed_input_stream;
+
+    WBAssert(json_input_stream, "Could not read the world builder file.");
+    json_fixed_input_stream << "{" <<  json_input_stream.rdbuf() << "}";
+    json_input_stream.close();
+
+    boost::property_tree::json_parser::read_json (json_fixed_input_stream, tree);
     local_tree = &tree;
   }
 

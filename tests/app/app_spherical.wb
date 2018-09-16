@@ -1,12 +1,11 @@
+"Cross section": [[100e3,100e3],[400e3,500e3]],
+"Coordinate system":{"spherical":{"depth method":"starting point"}},
+"Surface rotation point": ["0","0"],
+"Surface rotation angle": "0",
+"Minimum parts per distance unit": 5,
+"Minimum distance points": 1e-5,
+"Surface objects":
 {
-    "Cross section": [[100e3,100e3],[400e3,500e3]],
-    "Coordinate system":{"spherical":{"depth method":"starting point"}},
-    "Surface rotation point": ["0","0"],
-    "Surface rotation angle": "0",
-    "Minimum parts per distance unit": 5,
-    "Minimum distance points": 1e-5,
-    "Surface objects":
-    {
      "Continental plate":{"name":"Carribean","coordinates":[[-125,50],[-60,50],[-60,25],[-125,25]],
          "temperature submodule":{"name":"constant", "depth":250e3, "temperature":10},
          "composition submodule":{"name":"constant", "depth":250e3, "composition":1}},
@@ -30,5 +29,4 @@
      "Continental plate":{"name":"Equator","coordinates":[[-90,-7.5],[-90,7.5],[360,7.5],[360,-7.5]],
          "temperature submodule":{"name":"constant", "depth":250e3, "temperature":60},
          "composition submodule":{"name":"constant", "depth":250e3, "composition":6}}
-    }
 }

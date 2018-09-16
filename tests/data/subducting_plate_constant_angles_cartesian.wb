@@ -1,12 +1,11 @@
+"Cross section": [[100e3,100e3],[400e3,500e3]],
+"Coordinate system":{"cartesian":{}},
+"Surface rotation point": ["165e3","166e3"],
+"Surface rotation angle": "0",
+"Minimum parts per distance unit": 5,
+"Minimum distance points": 1e-5,
+"Surface objects":
 {
-    "Cross section": [[100e3,100e3],[400e3,500e3]],
-    "Coordinate system":{"cartesian":{}},
-    "Surface rotation point": ["165e3","166e3"],
-    "Surface rotation angle": "0",
-    "Minimum parts per distance unit": 5,
-    "Minimum distance points": 1e-5,
-    "Surface objects":
-    {
      "Subducting plate":{"name":"First subducting plate", "coordinates":[[0e3,500e3],[500e3,500e3],[1000e3,750e3]], "reference point":[1200e3,1200e3],
          "starting depth":0, "max depth":1e10,
          "segments":
@@ -27,5 +26,4 @@
          },
          "temperature submodule":{"name":"plate model", "density":3300, "plate velocity":0.01 },
          "composition submodule":{"name":"constant layers", "layers":[{"composition":0, "thickness":33e3},{"composition":1, "thickness":33e3},{"composition":2, "thickness":33e3}]}}
-    }
 }
