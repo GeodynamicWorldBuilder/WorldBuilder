@@ -1564,7 +1564,12 @@ TEST_CASE("WorldBuilder Types: print_tree")
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb1.json";
   boost::property_tree::ptree tree;
   std::ifstream json_input_stream(file_name.c_str());
-  boost::property_tree::json_parser::read_json (json_input_stream, tree);
+
+  std::stringstream json_fixed_input_stream;
+  json_fixed_input_stream << "{" <<  json_input_stream.rdbuf() << "}";
+  json_input_stream.close();
+
+  boost::property_tree::json_parser::read_json (json_fixed_input_stream, tree);
   std::stringstream output;
   output <<
          "{\n" <<

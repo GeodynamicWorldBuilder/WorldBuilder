@@ -1,12 +1,11 @@
+"Cross section": [[100e3,100e3],[400e3,500e3]],
+"Coordinate system":{"spherical":{"depth method":"starting point"}},
+"Surface rotation point": ["165e3","166e3"],
+"Surface rotation angle": "0",
+"Minimum parts per distance unit": 5,
+"Minimum distance points": 1e-5,
+"Surface objects":
 {
-    "Cross section": [[100e3,100e3],[400e3,500e3]],
-    "Coordinate system":{"spherical":{"depth method":"starting point"}},
-    "Surface rotation point": ["165e3","166e3"],
-    "Surface rotation angle": "0",
-    "Minimum parts per distance unit": 5,
-    "Minimum distance points": 1e-5,
-    "Surface objects":
-    {
      "Oceanic plate":{"name":"First oceanic plate","coordinates":[[-10,-10],[-1,-10],[-1,-1],[-10,-1]],
          "temperature submodule":{"name":"constant", "depth":250e3, "temperature":150},
          "composition submodule":{"name":"none"}},
@@ -31,5 +30,4 @@
          "temperature submodule":{"name":"plate model", "depth":250e3, "spreading velocity":0.01, "ridge points":[[15,-20],[15,-15],[10,-10]]},
          "composition submodule":{"name":"constant", "depth":250e3, "composition":6}}
      
-    }
 }
