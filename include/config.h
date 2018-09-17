@@ -30,6 +30,7 @@ namespace WorldBuilder
     static const std::string MAJOR;
     static const std::string MINOR;
     static const std::string PATCH;
+    static const std::string LABEL;
 
     static const std::string GIT_SHA1;
     static const std::string GIT_BRANCH;

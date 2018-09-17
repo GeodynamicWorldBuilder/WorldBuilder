@@ -1,3 +1,4 @@
+"version":0,
 "cross section": [[100e3,100e3],[400e3,500e3]],
 "coordinate system":{"Cartesian":{}},
 "surface rotation point": ["165e3","166e3"],
