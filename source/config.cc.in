@@ -21,9 +21,10 @@
 
 using namespace WorldBuilder;
 
-const std::string Version::MAJOR = "@VERSION_MAJOR@";
-const std::string Version::MINOR = "@VERSION_MINOR@";
-const std::string Version::PATCH = "@VERSION_PATCH@";
+const std::string Version::MAJOR = "@WORLD_BUILDER_VERSION_MAJOR@";
+const std::string Version::MINOR = "@WORLD_BUILDER_VERSION_MINOR@";
+const std::string Version::PATCH = "@WORLD_BUILDER_VERSION_PATCH@";
+const std::string Version::LABEL = "@WORLD_BUILDER_VERSION_LABEL@";
 
 const std::string Version::GIT_SHA1 = "@GIT_SHA1@";
 const std::string Version::GIT_BRANCH = "@GIT_BRANCH@";
