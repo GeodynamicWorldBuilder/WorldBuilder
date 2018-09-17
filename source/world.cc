@@ -52,7 +52,7 @@ namespace WorldBuilder
     /**
      * First load the coordinate system parameters.
      */
-    prm.load_entry("Coordinate system", false, Types::CoordinateSystem("cartesian","This determines the coordinate system"));
+    prm.load_entry("coordinate system", false, Types::CoordinateSystem("cartesian","This determines the coordinate system"));
 
     const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 
@@ -63,7 +63,7 @@ namespace WorldBuilder
                    Types::Double(1600,"The potential temperature of the mantle at the surface in Kelvin"));
     prm.load_entry("surface temperature", false,
                    Types::Double(293,"The temperature at the surface in Kelvin"));
-    prm.load_entry("Thermal expansion coefficient alpha", false,
+    prm.load_entry("thermal expansion coefficient alpha", false,
                    Types::Double(3.5e-5,"The thermal expansion coefficient alpha. TODO: expand add units"));
     prm.load_entry("specific heat Cp", false, Types::Double(1250,"The specific heat Cp.  TODO: expand and add units"));
     prm.load_entry("thermal diffusivity", false, Types::Double(0.804e-6,"Set the thermal diffusivity. TODO: expand and add units "));
@@ -71,14 +71,14 @@ namespace WorldBuilder
     /**
      * Model rotation parameters.
      */
-    prm.load_entry("Surface rotation angle", false,
-                   Types::Double(0,"The angle with which the model should be rotated around the Surface rotation point."));
-    prm.load_entry("Surface rotation point", false,
+    prm.load_entry("surface rotation angle", false,
+                   Types::Double(0,"The angle with which the model should be rotated around the surface rotation point."));
+    prm.load_entry("surface rotation point", false,
                    Types::Point<2>(Point<2>(0,0, coordinate_system), "The point where should be rotated around."));
 
 
 
-    bool set = prm.load_entry("Cross section", false,
+    bool set = prm.load_entry("cross section", false,
                               Types::Array(
                                 Types::Point<2>(Point<2>(0,0, coordinate_system),"A point in the cross section."),
                                 "This is an array of two points along where the cross section is taken"));
@@ -86,7 +86,7 @@ namespace WorldBuilder
     if (set)
       {
         dim = 2;
-        std::vector<const Types::Point<2>* > cross_section = prm.get_array<const Types::Point<2> >("Cross section");
+        std::vector<const Types::Point<2>* > cross_section = prm.get_array<const Types::Point<2> >("cross section");
 
         WBAssertThrow(cross_section.size() == 2, "The cross section should contain two points, but it contains "
                       << cross_section.size() << " points.");
@@ -96,7 +96,7 @@ namespace WorldBuilder
          */
         Point<2> surface_coord_conversions = (*cross_section[0]-*cross_section[1]) * (coordinate_system == spherical ? M_PI / 180.0 : 1.0);
         surface_coord_conversions *= -1/(surface_coord_conversions.norm());
-        prm.set_entry("Surface coordinate conversions",
+        prm.set_entry("surface coordinate conversions",
                       Types::Point<2>(surface_coord_conversions, surface_coord_conversions, "An internal value which is precomputed."));
       }
     else
@@ -104,7 +104,7 @@ namespace WorldBuilder
         dim = 3;
       }
 
-    prm.load_entry("Surface objects", true, Types::List(
+    prm.load_entry("surface objects", true, Types::List(
                      Types::Feature("These are the features"), "A list of features."));
 
   }
@@ -120,7 +120,7 @@ namespace WorldBuilder
                   << dim << ".");
 
     // Todo: merge this into one line
-    const Types::Array &cross_section_natural = parameters.get_array("Cross section");
+    const Types::Array &cross_section_natural = parameters.get_array("cross section");
 
     WBAssert(cross_section_natural.inner_type_index.size() == 2,
              "Internal error: Cross section natural should contain two points, but it contains "
@@ -134,7 +134,7 @@ namespace WorldBuilder
              "Internal error: Cross section should contain two points, but it contains "
              << cross_section.size() <<  " points.");
 
-    const WorldBuilder::Point<2> &surface_coord_conversions = this->parameters.get_point<2>("Surface coordinate conversions");
+    const WorldBuilder::Point<2> &surface_coord_conversions = this->parameters.get_point<2>("surface coordinate conversions");
 
     Point<3> coord_3d(cross_section[0][0] + point[0] * surface_coord_conversions[0],
                       cross_section[0][1] + point[0] * surface_coord_conversions[1],
@@ -153,7 +153,7 @@ namespace WorldBuilder
     Point<3> point(point_,cartesian);
 
     double temperature = this->parameters.get_double("potential mantle temperature") +
-                         (((this->parameters.get_double("potential mantle temperature") * this->parameters.get_double("Thermal expansion coefficient alpha") * gravity_norm) /
+                         (((this->parameters.get_double("potential mantle temperature") * this->parameters.get_double("thermal expansion coefficient alpha") * gravity_norm) /
                            this->parameters.get_double("specific heat Cp")) * 1000.0) * ((depth) / 1000.0);
 
 
@@ -176,7 +176,7 @@ namespace WorldBuilder
                   << dim << ".");
 
     // Todo: merge this into one line
-    const Types::Array &cross_section_natural = this->parameters.get_array("Cross section");
+    const Types::Array &cross_section_natural = this->parameters.get_array("cross section");
     std::vector<Types::Point<2> > cross_section;
     for (unsigned int i = 0; i < cross_section_natural.inner_type_index.size(); ++i)
       cross_section.push_back(this->parameters.vector_point_2d[cross_section_natural.inner_type_index[i]]);
@@ -184,7 +184,7 @@ namespace WorldBuilder
     WBAssert(cross_section.size() == 2, "Internal error: Cross section should contain two points, but it contains "
              << cross_section.size() <<  " points.");
 
-    const WorldBuilder::Point<2> &surface_coord_conversions = this->parameters.get_point<2>("Surface coordinate conversions");
+    const WorldBuilder::Point<2> &surface_coord_conversions = this->parameters.get_point<2>("surface coordinate conversions");
 
     Point<3> coord_3d(cross_section[0][0] + point[0] * surface_coord_conversions[0],
                       cross_section[0][1] + point[0] * surface_coord_conversions[1],

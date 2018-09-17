@@ -1,12 +1,12 @@
-"Cross section": [[100e3,100e3],[400e3,500e3]],
-"Coordinate system":{"cartesian":{}},
-"Surface rotation point": ["165e3","166e3"],
-"Surface rotation angle": "0",
-"Minimum parts per distance unit": 5,
-"Minimum distance points": 1e-5,
-"Surface objects":
+"cross section": [[100e3,100e3],[400e3,500e3]],
+"coordinate system":{"cartesian":{}},
+"surface rotation point": ["165e3","166e3"],
+"surface rotation angle": "0",
+"minimum parts per distance unit": 5,
+"minimum distance points": 1e-5,
+"surface objects":
 {
-     "Subducting plate":{"name":"First subducting plate", "coordinates":[[0e3,500e3],[500e3,500e3],[1000e3,750e3]], "reference point":[1200e3,1200e3],
+     "subducting plate":{"name":"First subducting plate", "coordinates":[[0e3,500e3],[500e3,500e3],[1000e3,750e3]], "reference point":[1200e3,1200e3],
          "starting depth":0, "max depth":1e10,
          "segments":
          {
@@ -16,7 +16,7 @@
          },
          "temperature submodule":{"name":"constant", "temperature":150},
          "composition submodule":{"name":"constant", "composition":3}},
-     "Subducting plate":{"name":"Second subducting plate", "coordinates":[[0e3,250e3],[500e3,250e3],[1000e3,500e3]], "reference point":[0,-1],
+     "subducting plate":{"name":"Second subducting plate", "coordinates":[[0e3,250e3],[500e3,250e3],[1000e3,500e3]], "reference point":[0,-1],
          "starting depth":0, "max depth":1e10,
          "segments":
          {

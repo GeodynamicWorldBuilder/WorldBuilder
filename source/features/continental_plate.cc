@@ -57,7 +57,7 @@ namespace WorldBuilder
       prm.load_entry("name", true, Types::String("","The name which the user has given to the feature."));
       name = prm.get_string("name");
       bool set = prm.load_entry("coordinates", true, Types::Array(
-                                  Types::Point<2>(Point<2>(0,0, coordinate_system),"desciption point cross section"),
+                                  Types::Point<2>(Point<2>(0,0, coordinate_system),"Description point cross section"),
                                   "An array of Points representing an array of coordinates where the feature is located."));
 
       WBAssertThrow(set == true, "A list of coordinates is required for every feature.");
@@ -178,7 +178,7 @@ namespace WorldBuilder
               if (std::isnan(temperature_submodule_linear_bottom_temperature))
                 {
                   bottom_temperature =  this->world->parameters.get_double("potential mantle temperature") +
-                                        (((this->world->parameters.get_double("potential mantle temperature") * this->world->parameters.get_double("Thermal expansion coefficient alpha") * gravity_norm) /
+                                        (((this->world->parameters.get_double("potential mantle temperature") * this->world->parameters.get_double("thermal expansion coefficient alpha") * gravity_norm) /
                                           this->world->parameters.get_double("specific heat Cp")) * 1000.0) * ((depth) / 1000.0);
                 }
 
