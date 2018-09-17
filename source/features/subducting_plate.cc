@@ -174,8 +174,8 @@ namespace WorldBuilder
             prm.load_entry("thermal conductivity", false, Types::Double(2.0,"The thermal conductivity of the subducting plate material in ... units."));
             temperature_submodule_plate_model_thermal_conductivity = prm.get_double("thermal conductivity");
 
-            prm.load_entry("Thermal expansion coefficient", false, Types::Double(3.5e-5,"The thermal expansivity of the subducting plate material in ... units"));
-            temperature_submodule_plate_model_Thermal_expansion_coefficient = prm.get_double("Thermal expansion coefficient");
+            prm.load_entry("thermal expansion coefficient", false, Types::Double(3.5e-5,"The thermal expansivity of the subducting plate material in ... units"));
+            temperature_submodule_plate_model_Thermal_expansion_coefficient = prm.get_double("thermal expansion coefficient");
 
             prm.load_entry("specific heat", false, Types::Double(1250,"The specific heat of the subducting plate material in ... units"));
             temperature_submodule_plate_model_specific_heat = prm.get_double("specific heat");

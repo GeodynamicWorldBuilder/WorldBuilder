@@ -1,32 +1,32 @@
-"Cross section": [[100e3,100e3],[400e3,500e3]],
-"Coordinate system":{"spherical":{"depth method":"starting point"}},
-"Surface rotation point": ["0","0"],
-"Surface rotation angle": "0",
-"Minimum parts per distance unit": 5,
-"Minimum distance points": 1e-5,
-"Surface objects":
+"cross section": [[100e3,100e3],[400e3,500e3]],
+"coordinate system":{"spherical":{"depth method":"starting point"}},
+"surface rotation point": ["0","0"],
+"surface rotation angle": "0",
+"minimum parts per distance unit": 5,
+"minimum distance points": 1e-5,
+"surface objects":
 {
-     "Continental plate":{"name":"Carribean","coordinates":[[-125,50],[-60,50],[-60,25],[-125,25]],
+     "continental plate":{"name":"Carribean","coordinates":[[-125,50],[-60,50],[-60,25],[-125,25]],
          "temperature submodule":{"name":"constant", "depth":250e3, "temperature":10},
          "composition submodule":{"name":"constant", "depth":250e3, "composition":1}},
 
-     "Continental Plate":{"name":"Rest", "coordinates":[[-10,60],[125,60],[125,10],[-10,10]],
+     "continental Plate":{"name":"Rest", "coordinates":[[-10,60],[125,60],[125,10],[-10,10]],
          "temperature submodule":{"name":"constant", "depth":250e3, "temperature":20},
          "composition submodule":{"name":"constant", "depth":250e3, "composition":2}},
 
-     "Continental plate":{"name":"Carribean2","coordinates":[[10,-10],[10,-40],[125,-40],[125,-10]],
+     "continental plate":{"name":"Carribean2","coordinates":[[10,-10],[10,-40],[125,-40],[125,-10]],
          "temperature submodule":{"name":"constant", "depth":250e3, "temperature":30},
          "composition submodule":{"name":"constant", "depth":250e3, "composition":3}},
 
-     "Continental plate":{"name":"Carribean3","coordinates":[[-10,-10],[-10,-40],[-125,-40],[-125,-10]],
+     "continental plate":{"name":"Carribean3","coordinates":[[-10,-10],[-10,-40],[-125,-40],[-125,-10]],
          "temperature submodule":{"name":"constant", "depth":250e3, "temperature":40},
          "composition submodule":{"name":"constant", "depth":250e3, "composition":4}},
 
-     "Continental plate":{"name":"South Pole","coordinates":[[-90,-90],[-90,-70],[360,-70],[360,-90]],
+     "continental plate":{"name":"South Pole","coordinates":[[-90,-90],[-90,-70],[360,-70],[360,-90]],
          "temperature submodule":{"name":"constant", "depth":250e3, "temperature":50},
          "composition submodule":{"name":"constant", "depth":250e3, "composition":5}},
 
-     "Continental plate":{"name":"Equator","coordinates":[[-90,-7.5],[-90,7.5],[360,7.5],[360,-7.5]],
+     "continental plate":{"name":"Equator","coordinates":[[-90,-7.5],[-90,7.5],[360,7.5],[360,-7.5]],
          "temperature submodule":{"name":"constant", "depth":250e3, "temperature":60},
          "composition submodule":{"name":"constant", "depth":250e3, "composition":6}}
 }

@@ -556,7 +556,7 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
   WorldBuilder::World world(file_name);
   CoordinateSystems::Spherical *spherical = new CoordinateSystems::Spherical(&world);
 
-  world.parameters.enter_subsection("Coordinate system");
+  world.parameters.enter_subsection("coordinate system");
   {
     world.parameters.enter_subsection("spherical");
     {
@@ -1573,7 +1573,7 @@ TEST_CASE("WorldBuilder Types: print_tree")
   std::stringstream output;
   output <<
          "{\n" <<
-         "  \"Cross section\": \n" <<
+         "  \"cross section\": \n" <<
          "  {\n" <<
          "    \"\": \n" <<
          "    {\n" <<
@@ -1586,21 +1586,21 @@ TEST_CASE("WorldBuilder Types: print_tree")
          "      \"\": \"500e3\"\n" <<
          "     }\n" <<
          "   },\n" <<
-         "  \"Coordinate system\": \n" <<
+         "  \"coordinate system\": \n" <<
          "  {\n" <<
          "    \"cartesian\": \"\"\n" <<
          "   },\n" <<
-         "  \"Surface rotation point\": \n" <<
+         "  \"surface rotation point\": \n" <<
          "  {\n" <<
          "    \"\": \"165e3\",\n" <<
          "    \"\": \"166e3\"\n" <<
          "   },\n" <<
-         "  \"Surface rotation angle\": \"0\",\n" <<
-         "  \"Minimum parts per distance unit\": \"5\",\n" <<
-         "  \"Minimum distance points\": \"1e-5\",\n" <<
-         "  \"Surface objects\": \n" <<
+         "  \"surface rotation angle\": \"0\",\n" <<
+         "  \"minimum parts per distance unit\": \"5\",\n" <<
+         "  \"minimum distance points\": \"1e-5\",\n" <<
+         "  \"surface objects\": \n" <<
          "  {\n" <<
-         "    \"Continental plate\": \n" <<
+         "    \"continental plate\": \n" <<
          "    {\n" <<
          "      \"name\": \"Carribean\",\n" <<
          "      \"coordinates\": \n" <<
@@ -1637,7 +1637,7 @@ TEST_CASE("WorldBuilder Types: print_tree")
          "        \"name\": \"none\"\n" <<
          "       }\n" <<
          "     },\n" <<
-         "    \"Continental Plate\": \n" <<
+         "    \"continental Plate\": \n" <<
          "    {\n" <<
          "      \"name\": \"Rest\",\n" <<
          "      \"coordinates\": \n" <<
@@ -1676,7 +1676,7 @@ TEST_CASE("WorldBuilder Types: print_tree")
          "        \"composition\": \"2\"\n" <<
          "       }\n" <<
          "     },\n" <<
-         "    \"Continental plate\": \n" <<
+         "    \"continental plate\": \n" <<
          "    {\n" <<
          "      \"name\": \"Carribean2\",\n" <<
          "      \"coordinates\": \n" <<

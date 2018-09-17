@@ -1,36 +1,36 @@
-"Cross section": [[100e3,100e3],[400e3,500e3]],
-"Coordinate system":{"cartesian":{}},
-"Surface rotation point": ["165e3","166e3"],
-"Surface rotation angle": "0",
-"Minimum parts per distance unit": 5,
-"Minimum distance points": 1e-5,
-"Surface objects":
+"cross section": [[100e3,100e3],[400e3,500e3]],
+"coordinate system":{"cartesian":{}},
+"surface rotation point": ["165e3","166e3"],
+"surface rotation angle": "0",
+"minimum parts per distance unit": 5,
+"minimum distance points": 1e-5,
+"surface objects":
 {
-  "Oceanic plate":{"name":"First oceanic plate","coordinates":[[-1e3,500e3],[500e3,500e3],[500e3,1000e3],[-1e3,1000e3]],
+  "oceanic plate":{"name":"First oceanic plate","coordinates":[[-1e3,500e3],[500e3,500e3],[500e3,1000e3],[-1e3,1000e3]],
      "temperature submodule":{"name":"constant", "depth":250e3, "temperature":150},
      "composition submodule":{"name":"none"}},
      
-  "Oceanic Plate":{"name":"Second oceanic plate", "coordinates":[[2000e3,2000e3],[1000e3,2000e3],[1000e3,1000e3],[2000e3,1000e3]],
+  "oceanic Plate":{"name":"Second oceanic plate", "coordinates":[[2000e3,2000e3],[1000e3,2000e3],[1000e3,1000e3],[2000e3,1000e3]],
      "temperature submodule":{"name":"constant", "depth":250e3, "temperature":20},
      "composition submodule":{"name":"constant", "depth":250e3, "composition":2}},
 
-  "Oceanic plate":{"name":"Third oceanic plate","coordinates":[[-1e3,500e3],[500e3,500e3],[500e3,1000e3],[-1e3,1000e3]],
+  "oceanic plate":{"name":"Third oceanic plate","coordinates":[[-1e3,500e3],[500e3,500e3],[500e3,1000e3],[-1e3,1000e3]],
      "temperature submodule":{"name":"none", "depth":250e3, "temperature":150},
      "composition submodule":{"name":"constant", "depth":250e3, "composition":3}},
 
-  "Oceanic plate":{"name":"Fourth oceanic plate","coordinates":[[-1e3,1500e3],[500e3,1500e3],[500e3,2000e3],[-1e3,2000e3]],
+  "oceanic plate":{"name":"Fourth oceanic plate","coordinates":[[-1e3,1500e3],[500e3,1500e3],[500e3,2000e3],[-1e3,2000e3]],
      "temperature submodule":{"name":"linear", "depth":250e3},
      "composition submodule":{"name":"constant", "depth":250e3, "composition":4}},
 
-  "Oceanic plate":{"name":"Fifth oceanic plate","coordinates":[[500e3,-1e3],[500e3,500e3],[1000e3,500e3],[1000e3,-1e3]],
+  "oceanic plate":{"name":"Fifth oceanic plate","coordinates":[[500e3,-1e3],[500e3,500e3],[1000e3,500e3],[1000e3,-1e3]],
      "temperature submodule":{"name":"linear", "depth":250e3, "top temperature":10, "bottom temperature":50},
      "composition submodule":{"name":"constant", "depth":250e3, "composition":5}},
      
-  "Oceanic plate":{"name":"Sixth oceanic plate","coordinates":[[1100e3,-1e3],[1100e3,750e3],[2500e3,750e3],[2500e3,-1e3]],
+  "oceanic plate":{"name":"Sixth oceanic plate","coordinates":[[1100e3,-1e3],[1100e3,750e3],[2500e3,750e3],[2500e3,-1e3]],
      "temperature submodule":{"name":"plate model", "depth":250e3, "spreading velocity":0.01, "ridge points":[[1500e3,-1e3],[1500e3,750e3]]},
      "composition submodule":{"name":"none"}},
      
-  "Oceanic plate":{"name":"Seventh oceanic plate","coordinates":[[50e3,-1e3],[400e3,-1e3],[400e3,400e3],[50e3,400e3]],
+  "oceanic plate":{"name":"Seventh oceanic plate","coordinates":[[50e3,-1e3],[400e3,-1e3],[400e3,400e3],[50e3,400e3]],
      "temperature submodule":{"name":"plate model", "depth":250e3, "spreading velocity":0.01, "ridge points":[[1500e3,-1e3],[1500e3,750e3]]},
      "composition submodule":{"name":"constant layers", "depth":250e3, "layers":[{"composition":6, "thickness":75e3},{"composition":7, "thickness":75e3},{"composition":8, "thickness":75e3}]}}     
     }
