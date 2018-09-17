@@ -1573,6 +1573,7 @@ TEST_CASE("WorldBuilder Types: print_tree")
   std::stringstream output;
   output <<
          "{\n" <<
+		 "  \"version\": \"0\",\n"
          "  \"cross section\": \n" <<
          "  {\n" <<
          "    \"\": \n" <<
