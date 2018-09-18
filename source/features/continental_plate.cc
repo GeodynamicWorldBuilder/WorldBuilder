@@ -88,7 +88,8 @@ namespace WorldBuilder
             prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth in meters to which the temperature rises (or lowers) to."));
             temperature_submodule_linear_depth = prm.get_double("depth");
 
-            prm.load_entry("top temperature", false, Types::Double(293.15,"The temperature in degree Kelvin a the top of this block. If this value is not set, the "));
+            prm.load_entry("top temperature", false, Types::Double(293.15,
+                                                                   "The temperature in degree Kelvin at the top of this block."));
             temperature_submodule_linear_top_temperature = prm.get_double("top temperature");
 
 
@@ -180,7 +181,7 @@ namespace WorldBuilder
                 {
                   bottom_temperature =  this->world->parameters.get_double("potential mantle temperature") +
                                         (((this->world->parameters.get_double("potential mantle temperature") * this->world->parameters.get_double("thermal expansion coefficient") * gravity_norm) /
-                                          this->world->parameters.get_double("specific heat Cp")) * 1000.0) * ((depth) / 1000.0);
+                                          this->world->parameters.get_double("specific heat")) * 1000.0) * ((depth) / 1000.0);
                 }
 
               return temperature_submodule_linear_top_temperature +
