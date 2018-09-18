@@ -153,9 +153,9 @@ namespace WorldBuilder
       }
       prm.leave_subsection();
 
-      prm.enter_subsection("temperature submodule");
+      prm.enter_subsection("temperature model");
       {
-        prm.load_entry("name", true, Types::String("","The name of the temperature submodule."));
+        prm.load_entry("name", true, Types::String("","The name of the temperature model."));
         temperature_submodule_name = prm.get_string("name");
 
         if (temperature_submodule_name == "constant")
@@ -188,9 +188,9 @@ namespace WorldBuilder
       }
       prm.leave_subsection();
 
-      prm.enter_subsection("composition submodule");
+      prm.enter_subsection("composition model");
       {
-        prm.load_entry("name", true, Types::String("","The name of the composition submodule used."));
+        prm.load_entry("name", true, Types::String("","The name of the composition model used."));
         composition_submodule_name = prm.get_string("name");
 
         if (composition_submodule_name == "constant")
