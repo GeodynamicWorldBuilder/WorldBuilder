@@ -110,7 +110,7 @@ namespace WorldBuilder
             prm.load_entry("ridge points", true,
                            Types::Array(Types::Point<2>(Point<2>({0,0},coordinate_system),
                                                         "A 2d point on the line where the oceanic ridge is located."),
-                                        "A list of 2d points which indicate the location of the ridge."));
+                                        "A list of 2d points which define the location of the ridge."));
             std::vector<const Types::Point<2>* > temp_ridge_points = prm.get_array<const Types::Point<2> >("ridge points");
 
             const double dtr = prm.coordinate_system->natural_coordinate_system() == spherical ? M_PI / 180.0 : 1.0;
@@ -124,7 +124,8 @@ namespace WorldBuilder
               }
 
             prm.load_entry("spreading velocity", true, Types::Double(NaN::DSNAN,
-                                                                     "The spreading velocity of the plate in meter per year. Todo: find out whether this is the half or the whole spreading velocity."));
+                                                                     "The spreading velocity of the plate in meter per year. "
+                                                                     "This is the velocity with which one side moves away from the ridge."));
             // directly convert from meter per year to meter per second.
             temperature_submodule_plate_model_spreading_velocity = prm.get_double("spreading velocity")/31557600;
           }
@@ -211,7 +212,7 @@ namespace WorldBuilder
                 {
                   bottom_temperature =  this->world->parameters.get_double("potential mantle temperature") +
                                         (((this->world->parameters.get_double("potential mantle temperature") * this->world->parameters.get_double("thermal expansion coefficient") * gravity_norm) /
-                                          this->world->parameters.get_double("specific heat Cp")) * 1000.0) * ((depth) / 1000.0);
+                                          this->world->parameters.get_double("specific heat")) * 1000.0) * ((depth) / 1000.0);
                 }
 
               return temperature_submodule_linear_top_temperature +
@@ -232,7 +233,7 @@ namespace WorldBuilder
                 {
                   bottom_temperature =  this->world->parameters.get_double("potential mantle temperature") +
                                         (((this->world->parameters.get_double("potential mantle temperature") * this->world->parameters.get_double("thermal expansion coefficient") * gravity_norm) /
-                                          this->world->parameters.get_double("specific heat Cp")) * 1000.0) * ((max_depth) / 1000.0);
+                                          this->world->parameters.get_double("specific heat")) * 1000.0) * ((max_depth) / 1000.0);
                 }
 
               const int sommation_number = 100;

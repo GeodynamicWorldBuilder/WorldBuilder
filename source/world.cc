@@ -77,9 +77,9 @@ namespace WorldBuilder
     prm.load_entry("surface temperature", false,
                    Types::Double(293,"The temperature at the surface in Kelvin"));
     prm.load_entry("thermal expansion coefficient", false,
-                   Types::Double(3.5e-5,"The thermal expansion coefficient. TODO: expand add units"));
-    prm.load_entry("specific heat Cp", false, Types::Double(1250,"The specific heat Cp.  TODO: expand and add units"));
-    prm.load_entry("thermal diffusivity", false, Types::Double(0.804e-6,"Set the thermal diffusivity. TODO: expand and add units "));
+                   Types::Double(3.5e-5,"The thermal expansion coefficient in $K^{-1}$."));
+    prm.load_entry("specific heat", false, Types::Double(1250,"The specific heat in $J kg^{-1} K^{-1}."));
+    prm.load_entry("thermal diffusivity", false, Types::Double(0.804e-6,"Set the thermal diffusivity in $m^{2} s^{-1}$."));
 
     /**
      * Model rotation parameters.
@@ -167,7 +167,7 @@ namespace WorldBuilder
 
     double temperature = this->parameters.get_double("potential mantle temperature") +
                          (((this->parameters.get_double("potential mantle temperature") * this->parameters.get_double("thermal expansion coefficient") * gravity_norm) /
-                           this->parameters.get_double("specific heat Cp")) * 1000.0) * ((depth) / 1000.0);
+                           this->parameters.get_double("specific heat")) * 1000.0) * ((depth) / 1000.0);
 
 
     for (std::vector<std::unique_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
