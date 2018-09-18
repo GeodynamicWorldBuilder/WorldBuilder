@@ -76,8 +76,8 @@ namespace WorldBuilder
                    Types::Double(1600,"The potential temperature of the mantle at the surface in Kelvin"));
     prm.load_entry("surface temperature", false,
                    Types::Double(293,"The temperature at the surface in Kelvin"));
-    prm.load_entry("thermal expansion coefficient alpha", false,
-                   Types::Double(3.5e-5,"The thermal expansion coefficient alpha. TODO: expand add units"));
+    prm.load_entry("thermal expansion coefficient", false,
+                   Types::Double(3.5e-5,"The thermal expansion coefficient. TODO: expand add units"));
     prm.load_entry("specific heat Cp", false, Types::Double(1250,"The specific heat Cp.  TODO: expand and add units"));
     prm.load_entry("thermal diffusivity", false, Types::Double(0.804e-6,"Set the thermal diffusivity. TODO: expand and add units "));
 
@@ -166,7 +166,7 @@ namespace WorldBuilder
     Point<3> point(point_,cartesian);
 
     double temperature = this->parameters.get_double("potential mantle temperature") +
-                         (((this->parameters.get_double("potential mantle temperature") * this->parameters.get_double("thermal expansion coefficient alpha") * gravity_norm) /
+                         (((this->parameters.get_double("potential mantle temperature") * this->parameters.get_double("thermal expansion coefficient") * gravity_norm) /
                            this->parameters.get_double("specific heat Cp")) * 1000.0) * ((depth) / 1000.0);
 
 

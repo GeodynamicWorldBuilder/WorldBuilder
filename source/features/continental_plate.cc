@@ -70,9 +70,9 @@ namespace WorldBuilder
           coordinates[i] = typed_coordinates[i]->value * (coordinate_system == CoordinateSystem::spherical ? M_PI / 180.0 : 1.0);
         }
 
-      prm.enter_subsection("temperature submodule");
+      prm.enter_subsection("temperature model");
       {
-        prm.load_entry("name", true, Types::String("","The name of the temperature submodule."));
+        prm.load_entry("name", true, Types::String("","The name of the temperature model."));
         temperature_submodule_name = prm.get_string("name");
 
         if (temperature_submodule_name == "constant")
@@ -92,16 +92,17 @@ namespace WorldBuilder
             temperature_submodule_linear_top_temperature = prm.get_double("top temperature");
 
 
-            prm.load_entry("bottom temperature", false, Types::Double(NaN::DQNAN,"The temperature in degree Kelvin a the bottom of this block."));
+            prm.load_entry("bottom temperature", false, Types::Double(NaN::DQNAN,"The temperature in degree Kelvin a the bottom of this block. "
+                                                                      "If this value is not defined, the adiabatic temperature at this depth is used."));
             temperature_submodule_linear_bottom_temperature = prm.get_double("bottom temperature");
           }
 
       }
       prm.leave_subsection();
 
-      prm.enter_subsection("composition submodule");
+      prm.enter_subsection("composition model");
       {
-        prm.load_entry("name", true, Types::String("","The name of the composition submodule used."));
+        prm.load_entry("name", true, Types::String("","The name of the composition model used."));
         composition_submodule_name = prm.get_string("name");
 
         if (composition_submodule_name == "constant")
@@ -178,7 +179,7 @@ namespace WorldBuilder
               if (std::isnan(temperature_submodule_linear_bottom_temperature))
                 {
                   bottom_temperature =  this->world->parameters.get_double("potential mantle temperature") +
-                                        (((this->world->parameters.get_double("potential mantle temperature") * this->world->parameters.get_double("thermal expansion coefficient alpha") * gravity_norm) /
+                                        (((this->world->parameters.get_double("potential mantle temperature") * this->world->parameters.get_double("thermal expansion coefficient") * gravity_norm) /
                                           this->world->parameters.get_double("specific heat Cp")) * 1000.0) * ((depth) / 1000.0);
                 }
 

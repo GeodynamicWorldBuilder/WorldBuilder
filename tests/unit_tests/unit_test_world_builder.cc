@@ -1627,13 +1627,13 @@ TEST_CASE("WorldBuilder Types: print_tree")
          "          \"\": \"1000e3\"\n" <<
          "         }\n" <<
          "       },\n" <<
-         "      \"temperature submodule\": \n" <<
+         "      \"temperature model\": \n" <<
          "      {\n" <<
          "        \"name\": \"constant\",\n" <<
          "        \"depth\": \"250e3\",\n" <<
          "        \"temperature\": \"150\"\n" <<
          "       },\n" <<
-         "      \"composition submodule\": \n" <<
+         "      \"composition model\": \n" <<
          "      {\n" <<
          "        \"name\": \"none\"\n" <<
          "       }\n" <<
@@ -1664,13 +1664,13 @@ TEST_CASE("WorldBuilder Types: print_tree")
          "          \"\": \"1000e3\"\n" <<
          "         }\n" <<
          "       },\n" <<
-         "      \"temperature submodule\": \n" <<
+         "      \"temperature model\": \n" <<
          "      {\n" <<
          "        \"name\": \"constant\",\n" <<
          "        \"depth\": \"250e3\",\n" <<
          "        \"temperature\": \"20\"\n" <<
          "       },\n" <<
-         "      \"composition submodule\": \n" <<
+         "      \"composition model\": \n" <<
          "      {\n" <<
          "        \"name\": \"constant\",\n" <<
          "        \"depth\": \"250e3\",\n" <<
@@ -1703,13 +1703,13 @@ TEST_CASE("WorldBuilder Types: print_tree")
          "          \"\": \"1000e3\"\n" <<
          "         }\n" <<
          "       },\n" <<
-         "      \"temperature submodule\": \n" <<
+         "      \"temperature model\": \n" <<
          "      {\n" <<
          "        \"name\": \"none\",\n" <<
          "        \"depth\": \"250e3\",\n" <<
          "        \"temperature\": \"150\"\n" <<
          "       },\n" <<
-         "      \"composition submodule\": \n" <<
+         "      \"composition model\": \n" <<
          "      {\n" <<
          "        \"name\": \"constant\",\n" <<
          "        \"depth\": \"250e3\",\n" <<

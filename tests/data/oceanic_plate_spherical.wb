@@ -8,27 +8,27 @@
 "surface objects":
 {
      "oceanic plate":{"name":"First oceanic plate","coordinates":[[-10,-10],[-1,-10],[-1,-1],[-10,-1]],
-         "temperature submodule":{"name":"constant", "depth":250e3, "temperature":150},
-         "composition submodule":{"name":"none"}},
+         "temperature model":{"name":"constant", "depth":250e3, "temperature":150},
+         "composition model":{"name":"none"}},
      
      "oceanic Plate":{"name":"Second oceanic plate", "coordinates":[[10,-10],[1,-10],[1,-1],[10,-1]],
-         "temperature submodule":{"name":"constant", "depth":250e3, "temperature":20},
-         "composition submodule":{"name":"constant", "depth":250e3, "composition":2}},
+         "temperature model":{"name":"constant", "depth":250e3, "temperature":20},
+         "composition model":{"name":"constant", "depth":250e3, "composition":2}},
 
      "oceanic plate":{"name":"Third oceanic plate","coordinates":[[-10,10],[-1,10],[-1,1],[-10,1]],
-         "temperature submodule":{"name":"none", "depth":250e3, "temperature":150},
-         "composition submodule":{"name":"constant", "depth":250e3, "composition":3}},
+         "temperature model":{"name":"none", "depth":250e3, "temperature":150},
+         "composition model":{"name":"constant", "depth":250e3, "composition":3}},
 
      "oceanic plate":{"name":"Fourth oceanic plate","coordinates":[[10,10],[1,10],[1,1],[10,1]],
-         "temperature submodule":{"name":"linear", "depth":250e3},
-         "composition submodule":{"name":"constant", "depth":250e3, "composition":4}},
+         "temperature model":{"name":"linear", "depth":250e3},
+         "composition model":{"name":"constant", "depth":250e3, "composition":4}},
 
      "oceanic plate":{"name":"Fifth oceanic plate","coordinates":[[-20,-20],[-11,-20],[-11,-11],[-20,-11]],
-         "temperature submodule":{"name":"linear", "depth":250e3, "top temperature":10, "bottom temperature":50},
-         "composition submodule":{"name":"constant", "depth":250e3, "composition":5}},
+         "temperature model":{"name":"linear", "depth":250e3, "top temperature":10, "bottom temperature":50},
+         "composition model":{"name":"constant", "depth":250e3, "composition":5}},
      
      "oceanic plate":{"name":"First oceanic plate","coordinates":[[20,-20],[-10,-20],[-10,-11],[20,-11]],
-         "temperature submodule":{"name":"plate model", "depth":250e3, "spreading velocity":0.01, "ridge points":[[15,-20],[15,-15],[10,-10]]},
-         "composition submodule":{"name":"constant", "depth":250e3, "composition":6}}
+         "temperature model":{"name":"plate model", "depth":250e3, "spreading velocity":0.01, "ridge points":[[15,-20],[15,-15],[10,-10]]},
+         "composition model":{"name":"constant", "depth":250e3, "composition":6}}
      
 }
