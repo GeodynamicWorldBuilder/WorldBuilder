@@ -40,10 +40,12 @@ namespace WorldBuilder
     {
       std::string feature_name = boost::algorithm::to_lower_copy(name);
       boost::algorithm::trim(feature_name);
+      // We can't use std::make_unique for now, because it requires c++14,
+      // and we only require a c++11 compiler.
       if (feature_name == "cartesian")
-        return std::make_unique<CoordinateSystems::Cartesian>(world);
+        return std::unique_ptr<CoordinateSystems::Cartesian>(new CoordinateSystems::Cartesian(world));
       else if (feature_name == "spherical")
-        return std::make_unique<CoordinateSystems::Spherical>(world);
+        return std::unique_ptr<CoordinateSystems::Spherical>(new CoordinateSystems::Spherical(world));
       else
         WBAssertThrow(false, "Coordinate system not implemented.");
 

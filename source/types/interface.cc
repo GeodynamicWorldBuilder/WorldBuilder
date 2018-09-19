@@ -48,23 +48,6 @@ namespace WorldBuilder
     {
       return type_name;
     }
-
-    /*Interface *
-    create_type(const std::string name, std::string description, std::string default_value, Interface *type = NULL)
-    {
-      std::string type_name = boost::algorithm::to_lower_copy(name);
-      boost::algorithm::trim(type_name);
-      if (type_name == "Double")
-        return new Types::Double(default_value, description);
-      if (type_name == "String")
-        return new Types::String(default_value, description);
-      else if (type_name == "array")
-        return new Types::Array(type,description);
-      else
-        WBAssertThrow(false, "Feature not implemented.");
-
-      return NULL;
-    }*/
   }
 }
 
