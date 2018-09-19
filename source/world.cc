@@ -19,7 +19,7 @@
 
 #include <sstream>
 
-#include <config.h>
+#include <world_builder/config.h>
 #include <world_builder/world.h>
 #include <world_builder/utilities.h>
 #include <world_builder/assert.h>

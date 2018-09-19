@@ -24,13 +24,13 @@
 #include <boost/property_tree/json_parser.hpp>
 
 #include <world_builder/assert.h>
+#include <world_builder/config.h>
 #include <world_builder/parameters.h>
 #include <world_builder/utilities.h>
 #include <world_builder/types/feature.h>
 #include <world_builder/types/segment.h>
 #include <world_builder/types/constant_layer.h>
 #include <world_builder/types/coordinate_system.h>
-#include <config.h>
 
 using boost::property_tree::ptree;
 
