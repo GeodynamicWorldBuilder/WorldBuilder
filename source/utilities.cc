@@ -440,7 +440,7 @@ namespace WorldBuilder
     {
       boost::optional<std::string> value  = tree.get_optional<std::string> (key);
       WBAssertThrow ((value && required == true) || required == false, "Entry undeclared: " + path + path_separator + key +
-                     ". Tree: " << std::endl << print_tree(tree,0).str() << std::endl);
+                     ". Tree: " << std::endl << print_tree(tree,0) << std::endl);
       return value;
     }
 
@@ -454,7 +454,7 @@ namespace WorldBuilder
       std::string use_path = path == "" ? key : path + path_separator + key;
       boost::optional<std::string> value  = tree.get_optional<std::string> (use_path);
       WBAssertThrow ((value && required == true) || required == false, "Entry undeclared: " + use_path +
-                     ". Tree: " << std::endl << print_tree(tree,0).str() << std::endl);
+                     ". Tree: " << std::endl << print_tree(tree,0) << std::endl);
       return value;
     }
 
@@ -476,7 +476,7 @@ namespace WorldBuilder
       return s;
     }
 
-    std::stringstream print_tree (const ptree &pt, int level)
+    std::string print_tree (const ptree &pt, int level)
     {
       std::stringstream ss;
       if (pt.empty())
@@ -494,7 +494,7 @@ namespace WorldBuilder
             {
               ss << indent(level+1) << "\"" << pos->first << "\": ";
 
-              ss << print_tree(pos->second, level + 1).str();
+              ss << print_tree(pos->second, level + 1);
               ++pos;
               if (pos != pt.end())
                 {
@@ -505,7 +505,7 @@ namespace WorldBuilder
           ss << indent(level) << " }";
         }
 
-      return ss;
+      return ss.str();
     }
 
     Point<3>
