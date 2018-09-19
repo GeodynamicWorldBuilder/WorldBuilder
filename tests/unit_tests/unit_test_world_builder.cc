@@ -26,6 +26,7 @@
 
 #include <catch2.h>
 
+#include <world_builder/config.h>
 #include <world_builder/coordinate_systems/cartesian.h>
 #include <world_builder/coordinate_systems/interface.h>
 #include <world_builder/coordinate_systems/spherical.h>
@@ -43,7 +44,6 @@
 #include <world_builder/types/unsigned_int.h>
 #include <world_builder/utilities.h>
 #include <world_builder/wrapper_c.h>
-#include <config.h>
 
 using namespace WorldBuilder;
 
