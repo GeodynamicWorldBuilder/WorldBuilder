@@ -41,12 +41,14 @@ namespace WorldBuilder
     {
       std::string feature_name = boost::algorithm::to_lower_copy(name);
       boost::algorithm::trim(feature_name);
+      // We can't use std::make_unique for now, because it requires c++14,
+      // and we only require a c++11 compiler.
       if (feature_name == "continental plate")
-        return std::make_unique<Features::ContinentalPlate>(world);
+        return std::unique_ptr<Features::ContinentalPlate>(new Features::ContinentalPlate(world));
       else if (feature_name == "oceanic plate")
-        return std::make_unique<Features::OceanicPlate>(world);
+        return std::unique_ptr<Features::OceanicPlate>(new Features::OceanicPlate(world));
       else if (feature_name == "subducting plate")
-        return std::make_unique<Features::SubductingPlate>(world);
+        return std::unique_ptr<Features::SubductingPlate>(new Features::SubductingPlate(world));
       else
         WBAssertThrow(false, "Feature " << feature_name << " not implemented.");
 
