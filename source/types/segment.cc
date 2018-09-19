@@ -37,7 +37,7 @@ namespace WorldBuilder
       default_value_angle(default_value_angle),
       description(description)
     {
-      this->type_name = type::Segment;
+      this->type_name = Types::type::Segment;
     }
 
     Segment::Segment(double   value_length,
@@ -56,7 +56,7 @@ namespace WorldBuilder
       default_value_angle(default_value_angle),
       description(description)
     {
-      this->type_name = type::Segment;
+      this->type_name = Types::type::Segment;
 
     }
 

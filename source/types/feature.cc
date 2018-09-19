@@ -27,24 +27,18 @@ namespace WorldBuilder
       :
       description(description)
     {
-      this->type_name = type::Feature;
+      this->type_name = Types::type::Feature;
     }
 
     Feature::Feature(Feature &feature)
       :
       description(feature.description)
     {
-      this->type_name = type::Feature;
+      this->type_name = Types::type::Feature;
     }
 
     Feature::~Feature ()
     {}
-
-    //void
-    //Feature::set_value(std::string value_)
-    //{
-    //  value = value_;
-    //}
 
     std::unique_ptr<Interface>
     Feature::clone() const

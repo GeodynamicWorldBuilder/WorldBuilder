@@ -37,7 +37,7 @@ namespace WorldBuilder
       default_value_thickness(default_value_thickness),
       description(description)
     {
-      this->type_name = type::ConstantLayer;
+      this->type_name = Types::type::ConstantLayer;
     }
 
     ConstantLayer::ConstantLayer(int value_composition,
@@ -56,7 +56,7 @@ namespace WorldBuilder
       default_value_thickness(default_value_thickness),
       description(description)
     {
-      this->type_name = type::ConstantLayer;
+      this->type_name = Types::type::ConstantLayer;
 
     }
 

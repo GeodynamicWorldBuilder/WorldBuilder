@@ -29,7 +29,7 @@ namespace WorldBuilder
       default_value(default_value),
       description(description)
     {
-      this->type_name = type::CoordinateSystem;
+      this->type_name = Types::type::CoordinateSystem;
     }
 
     CoordinateSystem::~CoordinateSystem ()

@@ -30,7 +30,7 @@ namespace WorldBuilder
       default_value(default_value),
       description(description)
     {
-      this->type_name = type::Double;
+      this->type_name = Types::type::Double;
     }
 
     Double::Double(double value, double default_value, std::string description)
@@ -39,7 +39,7 @@ namespace WorldBuilder
       default_value(default_value),
       description(description)
     {
-      this->type_name = type::Double;
+      this->type_name = Types::type::Double;
 
     }
 
