@@ -31,7 +31,7 @@ namespace WorldBuilder
       default_value(default_value),
       description(description)
     {
-      this->type_name = dim == 2 ? type::Point2D : type::Point3D;
+      this->type_name = dim == 2 ? Types::type::Point2D : Types::type::Point3D;
     }
 
     template <int dim>
@@ -41,7 +41,7 @@ namespace WorldBuilder
       default_value(default_value),
       description(description)
     {
-      this->type_name = dim == 2 ? type::Point2D : type::Point3D;
+      this->type_name = dim == 2 ? Types::type::Point2D : Types::type::Point3D;
     }
 
     template <int dim>

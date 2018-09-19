@@ -29,7 +29,7 @@ namespace WorldBuilder
       default_value(default_value),
       description(description)
     {
-      this->type_name = type::String;
+      this->type_name = Types::type::String;
     }
 
     String::String(std::string value, std::string default_value, std::string description)
@@ -38,7 +38,7 @@ namespace WorldBuilder
       default_value(default_value),
       description(description)
     {
-      this->type_name = type::String;
+      this->type_name = Types::type::String;
     }
 
     String::~String ()

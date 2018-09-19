@@ -29,7 +29,7 @@ namespace WorldBuilder
       inner_type_ptr(type.clone()),
       description(description)
     {
-      this->type_name = type::Array;
+      this->type_name = Types::type::Array;
     }
 
     Array::Array(const Array &type)
@@ -39,7 +39,7 @@ namespace WorldBuilder
       inner_type_index(type.inner_type_index),
       description(type.description)
     {
-      this->type_name = type::Array;
+      this->type_name = Types::type::Array;
     }
 
     Array::Array(const std::vector<unsigned int> &inner_type_index, const Types::type inner_type, const std::string &description)
@@ -49,7 +49,7 @@ namespace WorldBuilder
       inner_type_index(inner_type_index),
       description(description)
     {
-      this->type_name = type::Array;
+      this->type_name = Types::type::Array;
     }
 
     Array::~Array ()

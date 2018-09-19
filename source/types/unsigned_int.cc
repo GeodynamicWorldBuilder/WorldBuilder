@@ -30,7 +30,7 @@ namespace WorldBuilder
       default_value(default_value),
       description(description)
     {
-      this->type_name = type::UnsignedInt;
+      this->type_name = Types::type::UnsignedInt;
     }
 
     UnsignedInt::UnsignedInt(unsigned int value, unsigned int default_value, std::string description)
@@ -39,7 +39,7 @@ namespace WorldBuilder
       default_value(default_value),
       description(description)
     {
-      this->type_name = type::UnsignedInt;
+      this->type_name = Types::type::UnsignedInt;
 
     }
 
