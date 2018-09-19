@@ -232,7 +232,7 @@ namespace WorldBuilder
      * This function prints a boost property tree as a json type file to the
      * screen.
      */
-    std::stringstream print_tree (const ptree &pt, int level);
+    std::string print_tree (const ptree &pt, int level);
 
     /**
      * Cross product between two 3d points.

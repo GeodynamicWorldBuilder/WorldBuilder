@@ -1718,7 +1718,7 @@ TEST_CASE("WorldBuilder Types: print_tree")
          "     }\n" <<
          "   }\n" <<
          " }";
-  CHECK(Utilities::print_tree(tree, 0).str() == output.str());
+  CHECK(Utilities::print_tree(tree, 0) == output.str());
 }
 
 TEST_CASE("WorldBuilder Parameters")
