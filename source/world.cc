@@ -19,6 +19,7 @@
 
 #include <sstream>
 
+
 #include <world_builder/config.h>
 #include <world_builder/world.h>
 #include <world_builder/utilities.h>
@@ -48,19 +49,24 @@ namespace WorldBuilder
   World::~World()
   {}
 
+
   void World::declare_and_parse(Parameters &prm)
   {
+	  rapidjson::Document& doc = this->parameters.json_document;
     /**
      * First load the major version number in the file and check the major
      * version number of the program.
      */
+    WBAssertThrow(doc.HasMember("version"),
+	          "An entry called version is required in a World Builder "
+		  "Parameter file.");
     prm.load_entry("version", true, Types::String("",
                                                   "The major version number for which the input file was written."));
 
     WBAssertThrow(Version::MAJOR == "0"
-                  && prm.get_string("version") == Version::MAJOR + "." + Version::MINOR
+                  && doc["version"].GetString() == Version::MAJOR + "." + Version::MINOR
                   || Version::MAJOR != "0"
-                  && prm.get_string("version") == Version::MAJOR,
+                  && doc["version"].GetString() == Version::MAJOR,
                   "The major and minor version combination (for major version 0) or the major "
                   "version (for major versions after 0) for which is input file was written "
                   "is not the same as the version of the World Builder you are running. This means "

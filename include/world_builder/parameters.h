@@ -26,6 +26,8 @@
 
 #include <boost/property_tree/ptree.hpp>
 
+#include <rapidjson/document.h>
+
 #include <world_builder/types/interface.h>
 #include <world_builder/types/constant_layer.h>
 #include <world_builder/types/double.h>
@@ -221,6 +223,7 @@ namespace WorldBuilder
        */
       std::vector<std::string> path;
 
+      rapidjson::Document json_document;
 
       /**
        * The boost property tree, used to read in the data from a json file.

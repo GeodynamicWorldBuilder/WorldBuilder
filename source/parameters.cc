@@ -23,6 +23,8 @@
 
 #include <boost/property_tree/json_parser.hpp>
 
+#include <rapidjson/istreamwrapper.h>
+
 #include <world_builder/assert.h>
 #include <world_builder/config.h>
 #include <world_builder/parameters.h>
@@ -51,6 +53,15 @@ namespace WorldBuilder
 
     WBAssert(json_input_stream, "Could not read the world builder file.");
 
+    boost::property_tree::json_parser::read_json (json_input_stream, tree);
+    std::ifstream json_input_stream2(filename.c_str());
+    WBAssert(json_input_stream, "Could not read the world builder file.");
+
+    rapidjson::IStreamWrapper isw(json_input_stream2);
+
+    json_document.ParseStream(isw);
+    WBAssertThrow(json_document.IsObject(), "it is not an object.");
+    json_input_stream.close();
     boost::property_tree::json_parser::read_json (json_input_stream, tree);
     local_tree = &tree;
   }
