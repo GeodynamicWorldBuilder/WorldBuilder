@@ -504,8 +504,8 @@ TEST_CASE("WorldBuilder C wrapper")
 TEST_CASE("WorldBuilder Coordinate Systems: Interface")
 {
   CHECK_THROWS_WITH(CoordinateSystems::Interface::create("!not_implemented_coordinate_system!",NULL),
-          Contains("Internal error: Plugin with name '!not_implemented_coordinate_system!' is not found. "
-                   "The size of factories is 2."));
+                    Contains("Internal error: Plugin with name '!not_implemented_coordinate_system!' is not found. "
+                             "The size of factories is 2."));
 
   unique_ptr<CoordinateSystems::Interface> interface(CoordinateSystems::Interface::create("cartesian",NULL));
 

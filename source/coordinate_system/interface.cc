@@ -29,41 +29,41 @@ namespace WorldBuilder
 {
   namespace CoordinateSystems
   {
-  std::map<std::string, ObjectFactory *> Interface::factories;
+    std::map<std::string, ObjectFactory *> Interface::factories;
 
-  Interface::Interface()
-  {}
+    Interface::Interface()
+    {}
 
-  Interface::~Interface ()
-  {}
+    Interface::~Interface ()
+    {}
 
-  void
-  Interface::registerType(
-    const std::string &name, ObjectFactory *factory)
-  {
-    factories[name] = factory;
-  }
+    void
+    Interface::registerType(
+      const std::string &name, ObjectFactory *factory)
+    {
+      factories[name] = factory;
+    }
 
-  std::unique_ptr<Interface>
-  Interface::create(const std::string &name, WorldBuilder::World *world)
-  {
-    std::string lower_case_name;
-    std::transform(name.begin(),
-                   name.end(),
-                   std::back_inserter(lower_case_name),
-                   ::tolower);;
+    std::unique_ptr<Interface>
+    Interface::create(const std::string &name, WorldBuilder::World *world)
+    {
+      std::string lower_case_name;
+      std::transform(name.begin(),
+                     name.end(),
+                     std::back_inserter(lower_case_name),
+                     ::tolower);;
 
-    // Have a nice assert message to check whether a plugin exists in the case
-    // of a debug compilation.
-    WBAssert(factories.find(lower_case_name) != factories.end(),
-             "Internal error: Plugin with name '" << lower_case_name << "' is not found. "
-             "The size of factories is " << factories.size() << ".");
+      // Have a nice assert message to check whether a plugin exists in the case
+      // of a debug compilation.
+      WBAssert(factories.find(lower_case_name) != factories.end(),
+               "Internal error: Plugin with name '" << lower_case_name << "' is not found. "
+               "The size of factories is " << factories.size() << ".");
 
-    // Using at() because the [] will just insert values
-    // which is undesirable in this case. An exception is
-    // thrown when the name is not present.
-    return factories.at(lower_case_name)->create(world);
-  }
+      // Using at() because the [] will just insert values
+      // which is undesirable in this case. An exception is
+      // thrown when the name is not present.
+      return factories.at(lower_case_name)->create(world);
+    }
   }
 }
 

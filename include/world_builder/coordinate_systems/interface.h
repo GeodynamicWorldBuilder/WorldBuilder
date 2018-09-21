@@ -35,11 +35,11 @@ namespace WorldBuilder
   namespace CoordinateSystems
   {
 
-  class ObjectFactory;
+    class ObjectFactory;
 
-  /**
-   * This class is an interface for the specific coordinate systems.
-   */
+    /**
+     * This class is an interface for the specific coordinate systems.
+     */
     class Interface
     {
       public:

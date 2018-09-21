@@ -28,10 +28,10 @@ namespace WorldBuilder
 {
   namespace CoordinateSystems
   {
-  /**
-   * Register header file
-   */
-  WB_REGISTER_COORDINATE_SYSTEM_HEADER(Cartesian)
+    /**
+     * Register header file
+     */
+    WB_REGISTER_COORDINATE_SYSTEM_HEADER(Cartesian)
 
 
     /**
