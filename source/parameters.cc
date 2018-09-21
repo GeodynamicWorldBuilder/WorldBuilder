@@ -382,7 +382,7 @@ namespace WorldBuilder
         enter_subsection(name);
         {
           path_level++;
-          features.push_back(Features::create_feature(name, &world));
+          features.push_back(Features::Interface::create(name,&world));
           features.back()->decare_entries();
           path_level--;
         }

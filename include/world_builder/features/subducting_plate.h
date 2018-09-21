@@ -30,6 +30,11 @@ namespace WorldBuilder
   {
 
     /**
+     * Register header file
+     */
+    REGISTER_TYPE_HEADER(SubductingPlate)
+
+    /**
      * This class represents a subducting plate and can implement submodules
      * for temperature and composition. These submodules determine what
      * the returned temperature or composition of the temperature and composition

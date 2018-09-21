@@ -30,10 +30,9 @@
 #include <world_builder/coordinate_systems/cartesian.h>
 #include <world_builder/coordinate_systems/interface.h>
 #include <world_builder/coordinate_systems/spherical.h>
+
 #include <world_builder/features/interface.h>
-#include <world_builder/features/continental_plate.h>
-#include <world_builder/features/oceanic_plate.h>
-#include <world_builder/features/subducting_plate.h>
+
 #include <world_builder/point.h>
 #include <world_builder/types/array.h>
 #include <world_builder/types/coordinate_system.h>
@@ -44,7 +43,6 @@
 #include <world_builder/types/unsigned_int.h>
 #include <world_builder/utilities.h>
 #include <world_builder/wrapper_c.h>
-
 using namespace WorldBuilder;
 
 using Catch::Matchers::Contains;
@@ -107,9 +105,9 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
   CHECK(p2_explicit.get_array() == std::array<double,2> {3,4});
   CHECK(p3_explicit.get_array() == std::array<double,3> {4,5,6});
 
-  /**
-   * Test Point operators
-   */
+
+  // Test Point operators
+
   // Test assign operator
   p2 = p2_array;
   p3 = p3_array;
@@ -184,6 +182,7 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
 
 
 }
+
 
 TEST_CASE("WorldBuilder Utilities: string to conversions")
 {
@@ -616,17 +615,17 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
   delete spherical;
 }
 
-
 TEST_CASE("WorldBuilder Features: Interface")
 {
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb1.json";
+
   WorldBuilder::World world(file_name);
-  CHECK_THROWS_WITH(Features::create_feature("!not_implemented_feature!", &world),
-                    Contains("Feature !not_implemented_feature! not implemented."));
+  CHECK_THROWS_WITH(Features::Interface::create("!not_implemented_feature!", &world),
+                    Contains("Internal error: Plugin with name '!not_implemented_feature!' is not found. "
+                             "The size of factories is 3."));
 
-  Features::Interface *interface = new Features::ContinentalPlate(&world);
+  std::unique_ptr<Features::Interface> interface = Features::Interface::create("continental plate", &world);
 
-  delete interface;
 }
 
 TEST_CASE("WorldBuilder Features: Continental Plate")
@@ -635,8 +634,7 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
   WorldBuilder::World world1(file_name);
 
   // Check continental plate directly
-  Features::ContinentalPlate *continental_plate = new Features::ContinentalPlate(&world1);
-  delete continental_plate;
+  std::unique_ptr<Features::Interface> continental_plate = Features::Interface::create("continental plate", &world1);
 
   // Check continental plate through the world
   std::array<double,3> position = {0,0,0};
@@ -816,8 +814,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   WorldBuilder::World world1(file_name);
 
   // Check continental plate directly
-  Features::OceanicPlate *oceanic_plate = new Features::OceanicPlate(&world1);
-  delete oceanic_plate;
+  std::unique_ptr<Features::Interface> continental_plate = Features::Interface::create("oceanic plate", &world1);
 
   // Check continental plate through the world
   std::array<double,3> position = {0,0,0};
@@ -989,8 +986,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   WorldBuilder::World world2(file_name);
 
   // Check continental plate directly
-  oceanic_plate = new Features::OceanicPlate(&world2);
-  delete oceanic_plate;
+  std::unique_ptr<Features::Interface> oceanic_plate = Features::Interface::create("oceanic plate", &world2);
 
   // Check continental plate through the world
   double dtr = M_PI / 180.0;
@@ -1110,9 +1106,8 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_constant_angles_cartesian.wb";
   WorldBuilder::World world1(file_name);
 
-  // Check continental plate directly
-  Features::SubductingPlate *subducting_plate = new Features::SubductingPlate(&world1);
-  delete subducting_plate;
+  // Check continental plate directly (upper case should automatically turn into lower case).
+  std::unique_ptr<Features::Interface> continental_plate = Features::Interface::create("Subducting Plate", &world1);
 
   // Check continental plate through the world
   std::array<double,3> position = {0,0,0};
@@ -1302,9 +1297,9 @@ TEST_CASE("WorldBuilder Types: Point 2d")
   CHECK(type_clone_natural->get_type() == Types::type::Point2D);
 
 
-  /**
-   * Test Point operators
-   */
+
+  // Test Point operators
+
   const TYPE point_array(std::array<double,2> {1,2},cartesian);
   const TYPE point_explicit(3,4,cartesian);
 
@@ -1384,9 +1379,9 @@ TEST_CASE("WorldBuilder Types: Point 3d")
   CHECK(type_clone_natural->description == "test explicit");
   CHECK(type_clone_natural->get_type() == Types::type::Point3D);
 
-  /**
-   * Test Point operators
-   */
+
+  // Test Point operators
+
   const TYPE point_array(std::array<double,3> {1,2,3},cartesian);
   const TYPE point_explicit(4,5,6,cartesian);
 
@@ -1447,9 +1442,9 @@ TEST_CASE("WorldBuilder Types: Coordinate System")
   CHECK(type_clone_natural->description == "test");
   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 
-  /**
-   * todo: test the set value function.
-   */
+
+  // todo: test the set value function.
+
 #undef TYPE
 }
 
@@ -2250,9 +2245,9 @@ TEST_CASE("WorldBuilder Parameters")
   }
   prm.leave_subsection();
 
-  /**
-   * Todo: add tests for list,feature and coordinate system.
-   */
+
+  // Todo: add tests for list,feature and coordinate system.
+
 
 
 
