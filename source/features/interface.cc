@@ -30,8 +30,6 @@ namespace WorldBuilder
 {
   namespace Features
   {
-
-
     std::map<std::string, ObjectFactory *> Interface::factories;
 
     Interface::Interface()

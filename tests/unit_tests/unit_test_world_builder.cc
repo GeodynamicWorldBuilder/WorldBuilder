@@ -27,9 +27,7 @@
 #include <catch2.h>
 
 #include <world_builder/config.h>
-#include <world_builder/coordinate_systems/cartesian.h>
 #include <world_builder/coordinate_systems/interface.h>
-#include <world_builder/coordinate_systems/spherical.h>
 
 #include <world_builder/features/interface.h>
 
@@ -307,7 +305,7 @@ TEST_CASE("WorldBuilder Utilities: Point in polygon")
 TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
 {
   // Cartesian
-  CoordinateSystems::Interface *cartesian = new CoordinateSystems::Cartesian(NULL);
+  unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",NULL));
 
   // Test the natural coordinate system
   Utilities::NaturalCoordinate nca1(std::array<double,3> {1,2,3},*cartesian);
@@ -320,9 +318,8 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   CHECK(ncp1.get_surface_coordinates() == std::array<double,2> {1,2});
   CHECK(ncp1.get_depth_coordinate() == 3);
 
-  delete cartesian;
 
-  CoordinateSystems::Interface *spherical = new CoordinateSystems::Spherical(NULL);
+  unique_ptr<CoordinateSystems::Interface> spherical(CoordinateSystems::Interface::create("spherical",NULL));
 
   // Test the natural coordinate system
   Utilities::NaturalCoordinate nsa1(std::array<double,3> {1,2,3},*spherical);
@@ -345,8 +342,6 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   CHECK(nsp1_surface_array[0] == Approx(1.1071487178));
   CHECK(nsp1_surface_array[1] == Approx(0.9302740141));
   CHECK(nsp1.get_depth_coordinate() == Approx(std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0)));
-
-  delete spherical;
 
 }
 
@@ -508,10 +503,11 @@ TEST_CASE("WorldBuilder C wrapper")
 
 TEST_CASE("WorldBuilder Coordinate Systems: Interface")
 {
-  CHECK_THROWS_WITH(CoordinateSystems::create_coordinate_system("!not_implemented_coordinate_system!",NULL),
-                    Contains("Coordinate system not implemented."));
+  CHECK_THROWS_WITH(CoordinateSystems::Interface::create("!not_implemented_coordinate_system!",NULL),
+          Contains("Internal error: Plugin with name '!not_implemented_coordinate_system!' is not found. "
+                   "The size of factories is 2."));
 
-  CoordinateSystems::Interface *interface = new CoordinateSystems::Cartesian(NULL);
+  unique_ptr<CoordinateSystems::Interface> interface(CoordinateSystems::Interface::create("cartesian",NULL));
 
   interface->decare_entries();
 
@@ -520,12 +516,11 @@ TEST_CASE("WorldBuilder Coordinate Systems: Interface")
 
   CHECK(interface->natural_coordinate_system() == CoordinateSystem::cartesian);
 
-  delete interface;
 }
 
 TEST_CASE("WorldBuilder Coordinate Systems: Cartesian")
 {
-  CoordinateSystems::Cartesian *cartesian = new CoordinateSystems::Cartesian(NULL);
+  unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",NULL));
 
   cartesian->decare_entries();
 
@@ -544,7 +539,6 @@ TEST_CASE("WorldBuilder Coordinate Systems: Cartesian")
   CHECK(cartesian->distance_between_points_at_same_depth(point_2, point_3) == Approx(2.0));
   CHECK(cartesian->distance_between_points_at_same_depth(point_2, point_4) == Approx(std::sqrt(2 * 2 + 1)));
 
-  delete cartesian;
 }
 
 TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
@@ -553,7 +547,8 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate_spherical.wb";
 
   WorldBuilder::World world(file_name);
-  CoordinateSystems::Spherical *spherical = new CoordinateSystems::Spherical(&world);
+
+  unique_ptr<CoordinateSystems::Interface> spherical(CoordinateSystems::Interface::create("spherical", &world));
 
   world.parameters.enter_subsection("coordinate system");
   {
@@ -612,7 +607,6 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
   CHECK(spherical->distance_between_points_at_same_depth(point_1, point_5) == Approx(10 * 0.5 * M_PI));
   CHECK(spherical->distance_between_points_at_same_depth(point_6, point_7) == Approx(10 * M_PI));
 
-  delete spherical;
 }
 
 TEST_CASE("WorldBuilder Features: Interface")
@@ -2255,7 +2249,7 @@ TEST_CASE("WorldBuilder Parameters")
 
 TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes cartesian")
 {
-  std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::create_coordinate_system("cartesian", NULL);;
+  std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::Interface::create("cartesian", NULL);;
 
   cartesian_system->decare_entries();
 

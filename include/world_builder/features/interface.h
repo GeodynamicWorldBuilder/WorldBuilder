@@ -37,14 +37,15 @@ namespace WorldBuilder
 {
   class World;
 
-  /**
-   * This class is an interface for the specific plate tectonic feature classes,
-   * such as continental plate, oceanic plate and subduction zone.
-   */
+
   namespace Features
   {
     class ObjectFactory;
 
+    /**
+     * This class is an interface for the specific plate tectonic feature classes,
+     * such as continental plate, oceanic plate and subduction zone.
+     */
     class Interface
     {
       public:
@@ -89,14 +90,14 @@ namespace WorldBuilder
          * A function to register a new type. This is part of the automatic
          * registration of the object factory.
          */
-        static void registerType(const string &name,
+        static void registerType(const std::string &name,
                                  ObjectFactory *factory);
 
         /**
          * A function to create a new type. This is part of the automatic
          * registration of the object factory.
          */
-        static std::unique_ptr<Interface> create(const string &name, WorldBuilder::World *world);
+        static std::unique_ptr<Interface> create(const std::string &name, WorldBuilder::World *world);
 
       protected:
         /**

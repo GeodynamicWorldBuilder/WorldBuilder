@@ -28,6 +28,11 @@ namespace WorldBuilder
 {
   namespace CoordinateSystems
   {
+  /**
+   * Register header file
+   */
+  WB_REGISTER_COORDINATE_SYSTEM_HEADER(Cartesian)
+
 
     /**
      * This implements a Cartesian geometry model.The Cartesian geometry model

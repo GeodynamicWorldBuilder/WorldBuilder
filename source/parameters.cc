@@ -366,7 +366,7 @@ namespace WorldBuilder
         {
           enter_subsection(system);
           {
-            coordinate_system = CoordinateSystems::create_coordinate_system(system, &world);
+            coordinate_system = CoordinateSystems::Interface::create(system, &world);
 
             coordinate_system->decare_entries();
           }
