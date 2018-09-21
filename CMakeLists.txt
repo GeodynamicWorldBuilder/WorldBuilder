@@ -75,7 +75,7 @@ ADD_CUSTOM_TARGET(indent
 
 
 if (NOT MSVC)
-   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Wswitch -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing")
+   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Wswitch -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing")
 else()
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3")
 endif()
