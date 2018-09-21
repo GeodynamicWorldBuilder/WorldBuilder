@@ -85,9 +85,17 @@ namespace WorldBuilder
                            double value) const = 0;
 
 
+        /**
+         * A function to register a new type. This is part of the automatic
+         * registration of the object factory.
+         */
         static void registerType(const string &name,
                                  ObjectFactory *factory);
 
+        /**
+         * A function to create a new type. This is part of the automatic
+         * registration of the object factory.
+         */
         static std::unique_ptr<Interface> create(const string &name, WorldBuilder::World *world);
 
       protected:
@@ -122,13 +130,20 @@ namespace WorldBuilder
     };
 
 
-
+    /**
+     * A class to create new objects
+     */
     class ObjectFactory
     {
       public:
         virtual std::unique_ptr<Interface> create(World *world) = 0;
     };
 
+    /**
+     * A macro which should be in every derived cpp file to automatically
+     * register it. Because this is a library, we need some extra measures
+     * to ensure that the static variable is actually initialized.
+     */
 #define REGISTER_TYPE(klass,name) \
   int make_sure_compilation_unit_referenced##klass() { return 0; } \
   class klass##Factory : public ObjectFactory { \
@@ -143,6 +158,11 @@ namespace WorldBuilder
   }; \
   static klass##Factory global_##klass##Factory;
 
+    /**
+     * A macro which should be in every derived header file to automatically
+     * register it. Because this is a library, we need some extra measures
+     * to ensure that the static variable is actually initialized.
+     */
 #define REGISTER_TYPE_HEADER(klass) \
   extern int make_sure_compilation_unit_referenced##klass(); \
   static int never_actually_used##klass = make_sure_compilation_unit_referenced##klass();
