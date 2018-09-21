@@ -1,16 +1,16 @@
 language: c++
 sudo: true
 compiler:
-  - g++-6
+  - g++-4
 
 addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - gcc-6
-      - g++-6
-      - gfortran-6
+      - gcc-4
+      - g++-4
+      - gfortran-4
       - cmake
       - libboost-program-options-dev
       - libboost-test-dev
@@ -21,7 +21,7 @@ before_install:
 before_script:
     - gcc --version
     - gcov --version
-    - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-6 --slave /usr/bin/gcov gcov /usr/bin/gcov-6
+    - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-4 --slave /usr/bin/gcov gcov /usr/bin/gcov-4
     - sudo update-alternatives --config gcc
     - gcc --version
     - gcov --version
