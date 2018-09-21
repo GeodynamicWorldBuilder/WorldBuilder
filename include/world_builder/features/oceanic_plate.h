@@ -32,7 +32,7 @@ namespace WorldBuilder
     /**
      * Register header file
      */
-    REGISTER_TYPE_HEADER(OceanicPlate)
+    WB_REGISTER_FEATURE_HEADER(OceanicPlate)
 
     /**
      * This class represents a oceanic plate and can implement submodules

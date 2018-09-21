@@ -373,7 +373,7 @@ namespace WorldBuilder
     /**
      * Register plugin
      */
-    REGISTER_TYPE(OceanicPlate, oceanic plate)
+    WB_REGISTER_FEATURE(OceanicPlate, oceanic plate)
   }
 }
 

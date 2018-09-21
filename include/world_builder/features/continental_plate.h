@@ -32,7 +32,7 @@ namespace WorldBuilder
     /**
      * Register header file
      */
-    REGISTER_TYPE_HEADER(ContinentalPlate)
+    WB_REGISTER_FEATURE_HEADER(ContinentalPlate)
 
     /**
      * This class represents a continental plate and can implement submodules

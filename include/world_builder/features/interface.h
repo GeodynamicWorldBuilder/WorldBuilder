@@ -144,7 +144,7 @@ namespace WorldBuilder
      * register it. Because this is a library, we need some extra measures
      * to ensure that the static variable is actually initialized.
      */
-#define REGISTER_TYPE(klass,name) \
+#define WB_REGISTER_FEATURE(klass,name) \
   int make_sure_compilation_unit_referenced##klass() { return 0; } \
   class klass##Factory : public ObjectFactory { \
     public: \
@@ -163,7 +163,7 @@ namespace WorldBuilder
      * register it. Because this is a library, we need some extra measures
      * to ensure that the static variable is actually initialized.
      */
-#define REGISTER_TYPE_HEADER(klass) \
+#define WB_REGISTER_FEATURE_HEADER(klass) \
   extern int make_sure_compilation_unit_referenced##klass(); \
   static int never_actually_used##klass = make_sure_compilation_unit_referenced##klass();
 

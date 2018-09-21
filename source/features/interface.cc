@@ -32,7 +32,7 @@ namespace WorldBuilder
   {
 
 
-    std::map<std::string, ObjectFactory *> Interface::factories = std::map<std::string, ObjectFactory *>();
+    std::map<std::string, ObjectFactory *> Interface::factories;
 
     Interface::Interface()
     {}
@@ -42,13 +42,13 @@ namespace WorldBuilder
 
     void
     Interface::registerType(
-      const string &name, ObjectFactory *factory)
+      const std::string &name, ObjectFactory *factory)
     {
       factories[name] = factory;
     }
 
     std::unique_ptr<Interface>
-    Interface::create(const string &name, WorldBuilder::World *world)
+    Interface::create(const std::string &name, WorldBuilder::World *world)
     {
       std::string lower_case_name;
       std::transform(name.begin(),

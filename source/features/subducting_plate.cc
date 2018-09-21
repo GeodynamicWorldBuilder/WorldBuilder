@@ -453,7 +453,7 @@ namespace WorldBuilder
     /**
      * Register plugin
      */
-    REGISTER_TYPE(SubductingPlate, subducting plate)
+    WB_REGISTER_FEATURE(SubductingPlate, subducting plate)
   }
 }
 

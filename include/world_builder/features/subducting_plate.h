@@ -32,7 +32,7 @@ namespace WorldBuilder
     /**
      * Register header file
      */
-    REGISTER_TYPE_HEADER(SubductingPlate)
+    WB_REGISTER_FEATURE_HEADER(SubductingPlate)
 
     /**
      * This class represents a subducting plate and can implement submodules
