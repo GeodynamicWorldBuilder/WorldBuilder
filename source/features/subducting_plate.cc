@@ -449,6 +449,11 @@ namespace WorldBuilder
 
       return composition;
     }
+
+    /**
+     * Register plugin
+     */
+    WB_REGISTER_FEATURE(SubductingPlate, subducting plate)
   }
 }
 

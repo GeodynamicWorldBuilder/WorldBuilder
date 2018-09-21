@@ -35,6 +35,11 @@ namespace WorldBuilder
   namespace CoordinateSystems
   {
 
+    class ObjectFactory;
+
+    /**
+     * This class is an interface for the specific coordinate systems.
+     */
     class Interface
     {
       public:
@@ -95,20 +100,69 @@ namespace WorldBuilder
         virtual
         double distance_between_points_at_same_depth(const Point<3> &point_1, const Point<3> &point_2) const = 0;
 
+        /**
+         * A function to register a new type. This is part of the automatic
+         * registration of the object factory.
+         */
+        static void registerType(const std::string &name,
+                                 ObjectFactory *factory);
+
+        /**
+         * A function to create a new type. This is part of the automatic
+         * registration of the object factory.
+         */
+        static std::unique_ptr<Interface> create(const std::string &name, WorldBuilder::World *world);
+
       protected:
         /**
          * A pointer to the world class to retrieve variables.
          */
         WorldBuilder::World *world;
 
+
+      private:
+        static std::map<std::string, ObjectFactory *> factories;
+
     };
 
 
+
     /**
-     * A factory function for creating coordinate systems.
+     * A class to create new objects
      */
-    std::unique_ptr<Interface>
-    create_coordinate_system(const std::string name, World *world);
+    class ObjectFactory
+    {
+      public:
+        virtual std::unique_ptr<Interface> create(World *world) = 0;
+    };
+
+    /**
+     * A macro which should be in every derived cpp file to automatically
+     * register it. Because this is a library, we need some extra measures
+     * to ensure that the static variable is actually initialized.
+     */
+#define WB_REGISTER_COORDINATE_SYSTEM(klass,name) \
+  int make_sure_compilation_unit_referenced##klass() { return 0; } \
+  class klass##Factory : public ObjectFactory { \
+    public: \
+      klass##Factory() \
+      { \
+        Interface::registerType(#name, this); \
+      } \
+      virtual std::unique_ptr<Interface> create(World *world) { \
+        return std::unique_ptr<Interface>(new klass(world)); \
+      } \
+  }; \
+  static klass##Factory global_##klass##Factory;
+
+    /**
+     * A macro which should be in every derived header file to automatically
+     * register it. Because this is a library, we need some extra measures
+     * to ensure that the static variable is actually initialized.
+     */
+#define WB_REGISTER_COORDINATE_SYSTEM_HEADER(klass) \
+  extern int make_sure_compilation_unit_referenced##klass(); \
+  static int never_actually_used##klass = make_sure_compilation_unit_referenced##klass();
 
   }
 }

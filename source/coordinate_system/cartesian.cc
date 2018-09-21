@@ -78,6 +78,11 @@ namespace WorldBuilder
 
       return point_at_depth.norm();
     }
+
+    /**
+     * Register plugin
+     */
+    WB_REGISTER_COORDINATE_SYSTEM(Cartesian, cartesian)
   }
 }
 

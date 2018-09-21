@@ -262,6 +262,8 @@ namespace WorldBuilder
 
       return composition;
     }
+
+    WB_REGISTER_FEATURE(ContinentalPlate, continental plate)
+
   }
 }
-

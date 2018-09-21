@@ -28,6 +28,10 @@ namespace WorldBuilder
 {
   namespace CoordinateSystems
   {
+    /**
+     * Register header file
+     */
+    WB_REGISTER_COORDINATE_SYSTEM_HEADER(Spherical)
 
     /**
      * This implements a Spherical geometry model.The Cartesian geometry model

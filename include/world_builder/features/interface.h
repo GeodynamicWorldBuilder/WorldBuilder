@@ -20,6 +20,7 @@
 #ifndef _world_builder_features_interface_h
 #define _world_builder_features_interface_h
 
+#include <map>
 #include <vector>
 
 #include <boost/property_tree/ptree.hpp>
@@ -30,19 +31,21 @@
 
 
 using boost::property_tree::ptree;
-
+using namespace std;
 
 namespace WorldBuilder
 {
   class World;
 
-  /**
-   * This class is an interface for the specific plate tectonic feature classes,
-   * such as continental plate, oceanic plate and subduction zone.
-   */
+
   namespace Features
   {
+    class ObjectFactory;
 
+    /**
+     * This class is an interface for the specific plate tectonic feature classes,
+     * such as continental plate, oceanic plate and subduction zone.
+     */
     class Interface
     {
       public:
@@ -73,7 +76,7 @@ namespace WorldBuilder
                            const double gravity,
                            double temperature) const = 0;
         /**
-         * Returns a value for the reqeusted composition (0 is not present,
+         * Returns a value for the requested composition (0 is not present,
          * 1 is present) based on the given position and
          */
         virtual
@@ -82,6 +85,19 @@ namespace WorldBuilder
                            const unsigned int composition_number,
                            double value) const = 0;
 
+
+        /**
+         * A function to register a new type. This is part of the automatic
+         * registration of the object factory.
+         */
+        static void registerType(const std::string &name,
+                                 ObjectFactory *factory);
+
+        /**
+         * A function to create a new type. This is part of the automatic
+         * registration of the object factory.
+         */
+        static std::unique_ptr<Interface> create(const std::string &name, WorldBuilder::World *world);
 
       protected:
         /**
@@ -109,14 +125,49 @@ namespace WorldBuilder
          */
         std::string composition_submodule_name;
 
+
+      private:
+        static std::map<std::string, ObjectFactory *> factories;
     };
 
 
     /**
-     * A factory function for creating features.
+     * A class to create new objects
      */
-    std::unique_ptr<Interface>
-    create_feature(const std::string name, WorldBuilder::World *world);
+    class ObjectFactory
+    {
+      public:
+        virtual std::unique_ptr<Interface> create(World *world) = 0;
+    };
+
+    /**
+     * A macro which should be in every derived cpp file to automatically
+     * register it. Because this is a library, we need some extra measures
+     * to ensure that the static variable is actually initialized.
+     */
+#define WB_REGISTER_FEATURE(klass,name) \
+  int make_sure_compilation_unit_referenced##klass() { return 0; } \
+  class klass##Factory : public ObjectFactory { \
+    public: \
+      klass##Factory() \
+      { \
+        Interface::registerType(#name, this); \
+      } \
+      virtual std::unique_ptr<Interface> create(World *world) { \
+        return std::unique_ptr<Interface>(new klass(world)); \
+      } \
+  }; \
+  static klass##Factory global_##klass##Factory;
+
+    /**
+     * A macro which should be in every derived header file to automatically
+     * register it. Because this is a library, we need some extra measures
+     * to ensure that the static variable is actually initialized.
+     */
+#define WB_REGISTER_FEATURE_HEADER(klass) \
+  extern int make_sure_compilation_unit_referenced##klass(); \
+  static int never_actually_used##klass = make_sure_compilation_unit_referenced##klass();
+
 
   }
 }

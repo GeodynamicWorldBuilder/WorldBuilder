@@ -30,6 +30,11 @@ namespace WorldBuilder
   {
 
     /**
+     * Register header file
+     */
+    WB_REGISTER_FEATURE_HEADER(ContinentalPlate)
+
+    /**
      * This class represents a continental plate and can implement submodules
      * for temperature and composition. These submodules determine what
      * the returned temperature or composition of the temperature and composition
@@ -99,6 +104,8 @@ namespace WorldBuilder
         std::vector<int> composition_submodule_constant_layers_value;
         std::vector<double> composition_submodule_constant_layers_thicknesses;
     };
+
+
   }
 }
 

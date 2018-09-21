@@ -369,6 +369,11 @@ namespace WorldBuilder
 
       return composition;
     }
+
+    /**
+     * Register plugin
+     */
+    WB_REGISTER_FEATURE(OceanicPlate, oceanic plate)
   }
 }
 

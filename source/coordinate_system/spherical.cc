@@ -111,6 +111,11 @@ namespace WorldBuilder
 
       return radius * std::atan2(top, bottom);
     }
+
+    /**
+     * Register plugin
+     */
+    WB_REGISTER_COORDINATE_SYSTEM(Spherical, spherical)
   }
 }
 

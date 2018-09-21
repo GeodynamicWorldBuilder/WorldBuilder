@@ -1,7 +1,7 @@
 language: c++
 sudo: true
 compiler:
-  - g++-6
+  - g++-4.9
 
 addons:
   apt:

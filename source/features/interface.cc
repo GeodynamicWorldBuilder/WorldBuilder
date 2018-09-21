@@ -30,30 +30,42 @@ namespace WorldBuilder
 {
   namespace Features
   {
+    std::map<std::string, ObjectFactory *> Interface::factories;
+
     Interface::Interface()
     {}
 
     Interface::~Interface ()
     {}
 
-    std::unique_ptr<Interface>
-    create_feature(const std::string name, World *world)
+    void
+    Interface::registerType(
+      const std::string &name, ObjectFactory *factory)
     {
-      std::string feature_name = boost::algorithm::to_lower_copy(name);
-      boost::algorithm::trim(feature_name);
-      // We can't use std::make_unique for now, because it requires c++14,
-      // and we only require a c++11 compiler.
-      if (feature_name == "continental plate")
-        return std::unique_ptr<Features::ContinentalPlate>(new Features::ContinentalPlate(world));
-      else if (feature_name == "oceanic plate")
-        return std::unique_ptr<Features::OceanicPlate>(new Features::OceanicPlate(world));
-      else if (feature_name == "subducting plate")
-        return std::unique_ptr<Features::SubductingPlate>(new Features::SubductingPlate(world));
-      else
-        WBAssertThrow(false, "Feature " << feature_name << " not implemented.");
-
-      return NULL;
+      factories[name] = factory;
     }
+
+    std::unique_ptr<Interface>
+    Interface::create(const std::string &name, WorldBuilder::World *world)
+    {
+      std::string lower_case_name;
+      std::transform(name.begin(),
+                     name.end(),
+                     std::back_inserter(lower_case_name),
+                     ::tolower);;
+
+      // Have a nice assert message to check whether a plugin exists in the case
+      // of a debug compilation.
+      WBAssert(factories.find(lower_case_name) != factories.end(),
+               "Internal error: Plugin with name '" << lower_case_name << "' is not found. "
+               "The size of factories is " << factories.size() << ".");
+
+      // Using at() because the [] will just insert values
+      // which is undesirable in this case. An exception is
+      // thrown when the name is not present.
+      return factories.at(lower_case_name)->create(world);
+    }
+
   }
 }
 
