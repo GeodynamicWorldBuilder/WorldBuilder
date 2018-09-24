@@ -505,7 +505,7 @@ TEST_CASE("WorldBuilder Coordinate Systems: Interface")
 {
   CHECK_THROWS_WITH(CoordinateSystems::Interface::create("!not_implemented_coordinate_system!",NULL),
                     Contains("Internal error: Plugin with name '!not_implemented_coordinate_system!' is not found. "
-                             "The size of factories is 2."));
+                             "The size of factories is "));
 
   unique_ptr<CoordinateSystems::Interface> interface(CoordinateSystems::Interface::create("cartesian",NULL));
 
@@ -616,7 +616,7 @@ TEST_CASE("WorldBuilder Features: Interface")
   WorldBuilder::World world(file_name);
   CHECK_THROWS_WITH(Features::Interface::create("!not_implemented_feature!", &world),
                     Contains("Internal error: Plugin with name '!not_implemented_feature!' is not found. "
-                             "The size of factories is 3."));
+                             "The size of factories is "));
 
   std::unique_ptr<Features::Interface> interface = Features::Interface::create("continental plate", &world);
 
@@ -799,6 +799,185 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
   CHECK(world1.composition(position, 260e3, 6) == 0.0);
   CHECK(world1.composition(position, 260e3, 7) == 0.0);
   CHECK(world1.composition(position, 260e3, 8) == 0.0);
+}
+
+TEST_CASE("WorldBuilder Features: Mantle layer")
+{
+  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/mantle_layer_cartesian.wb";
+  WorldBuilder::World world1(file_name);
+
+  // Check continental plate directly
+  std::unique_ptr<Features::Interface> mantle_layer = Features::Interface::create("mantle layer", &world1);
+
+  // Check continental plate through the world
+  std::array<double,3> position = {0,0,0};
+  CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+
+  position = {250e3,501e3,0};
+  CHECK(world1.temperature(position, 0+100e3, 10) == Approx(150));
+  CHECK(world1.temperature(position, 240e3+100e3, 10) == Approx(150));
+  CHECK(world1.temperature(position, 260e3+100e3, 10) == Approx(1761.28));
+
+  CHECK(world1.composition(position, 0+200e3, 0) == 0.0);
+  CHECK(world1.composition(position, 0+200e3, 1) == 0.0);
+  CHECK(world1.composition(position, 0+200e3, 2) == 0.0);
+  CHECK(world1.composition(position, 0+200e3, 3) == 1.0);
+  CHECK(world1.composition(position, 0+200e3, 4) == 0.0);
+  CHECK(world1.composition(position, 0+200e3, 5) == 0.0);
+  CHECK(world1.composition(position, 240e3+200e3, 0) == 0.0);
+  CHECK(world1.composition(position, 240e3+200e3, 1) == 0.0);
+  CHECK(world1.composition(position, 240e3+200e3, 2) == 0.0);
+  CHECK(world1.composition(position, 240e3+200e3, 3) == 1.0);
+  CHECK(world1.composition(position, 240e3+200e3, 4) == 0.0);
+  CHECK(world1.composition(position, 240e3+200e3, 5) == 0.0);
+  CHECK(world1.composition(position, 260e3+200e3, 0) == 0.0);
+  CHECK(world1.composition(position, 260e3+200e3, 1) == 0.0);
+  CHECK(world1.composition(position, 260e3+200e3, 2) == 0.0);
+  CHECK(world1.composition(position, 260e3+200e3, 3) == 0.0);
+  CHECK(world1.composition(position, 260e3+200e3, 4) == 0.0);
+  CHECK(world1.composition(position, 260e3+200e3, 5) == 0.0);
+
+  position = {1500e3,1500e3,0};
+  CHECK(world1.temperature(position, 0+150e3, 10) == Approx(20));
+  CHECK(world1.temperature(position, 240e3+150e3, 10) == Approx(20));
+  CHECK(world1.temperature(position, 260e3+150e3, 10) == Approx(1783.68));
+
+  CHECK(world1.composition(position, 0+150e3, 0) == 0.0);
+  CHECK(world1.composition(position, 0+150e3, 1) == 0.0);
+  CHECK(world1.composition(position, 0+150e3, 2) == 1.0);
+  CHECK(world1.composition(position, 0+150e3, 3) == 0.0);
+  CHECK(world1.composition(position, 0+150e3, 4) == 0.0);
+  CHECK(world1.composition(position, 0+150e3, 5) == 0.0);
+  CHECK(world1.composition(position, 240e3+150e3, 0) == 0.0);
+  CHECK(world1.composition(position, 240e3+150e3, 1) == 0.0);
+  CHECK(world1.composition(position, 240e3+150e3, 2) == 1.0);
+  CHECK(world1.composition(position, 240e3+150e3, 3) == 0.0);
+  CHECK(world1.composition(position, 240e3+150e3, 4) == 0.0);
+  CHECK(world1.composition(position, 240e3+150e3, 5) == 0.0);
+  CHECK(world1.composition(position, 260e3+150e3, 0) == 0.0);
+  CHECK(world1.composition(position, 260e3+150e3, 1) == 0.0);
+  CHECK(world1.composition(position, 260e3+150e3, 2) == 0.0);
+  CHECK(world1.composition(position, 260e3+150e3, 3) == 0.0);
+  CHECK(world1.composition(position, 260e3+150e3, 4) == 0.0);
+  CHECK(world1.composition(position, 260e3+150e3, 5) == 0.0);
+
+  position = {250e3,1750e3,0};
+  CHECK(world1.temperature(position, 0+250e3, 10) == Approx(293.15));
+  CHECK(world1.temperature(position, 240e3+250e3, 10) == Approx(1758.4652));
+  CHECK(world1.temperature(position, 260e3+250e3, 10) == Approx(1828.48));
+
+  CHECK(world1.composition(position, 0+250e3, 0) == 0.0);
+  CHECK(world1.composition(position, 0+250e3, 1) == 0.0);
+  CHECK(world1.composition(position, 0+250e3, 2) == 0.0);
+  CHECK(world1.composition(position, 0+250e3, 3) == 0.0);
+  CHECK(world1.composition(position, 0+250e3, 4) == 1.0);
+  CHECK(world1.composition(position, 0+250e3, 5) == 0.0);
+  CHECK(world1.composition(position, 240e3+250e3, 0) == 0.0);
+  CHECK(world1.composition(position, 240e3+250e3, 1) == 0.0);
+  CHECK(world1.composition(position, 240e3+250e3, 2) == 0.0);
+  CHECK(world1.composition(position, 240e3+250e3, 3) == 0.0);
+  CHECK(world1.composition(position, 240e3+250e3, 4) == 1.0);
+  CHECK(world1.composition(position, 240e3+250e3, 5) == 0.0);
+  CHECK(world1.composition(position, 260e3+250e3, 0) == 0.0);
+  CHECK(world1.composition(position, 260e3+250e3, 1) == 0.0);
+  CHECK(world1.composition(position, 260e3+250e3, 2) == 0.0);
+  CHECK(world1.composition(position, 260e3+250e3, 3) == 0.0);
+  CHECK(world1.composition(position, 260e3+250e3, 4) == 0.0);
+  CHECK(world1.composition(position, 260e3+250e3, 5) == 0.0);
+
+  position = {750e3,250e3,0};
+  CHECK(world1.temperature(position, 0+300e3, 10) == Approx(10));
+  CHECK(world1.temperature(position, 240e3+300e3, 10) == Approx(48.4));
+  CHECK(world1.temperature(position, 260e3+300e3, 10) == Approx(1850.88));
+
+  CHECK(world1.composition(position, 0+300e3, 0) == 0.0);
+  CHECK(world1.composition(position, 0+300e3, 1) == 0.0);
+  CHECK(world1.composition(position, 0+300e3, 2) == 0.0);
+  CHECK(world1.composition(position, 0+300e3, 3) == 0.0);
+  CHECK(world1.composition(position, 0+300e3, 4) == 0.0);
+  CHECK(world1.composition(position, 0+300e3, 5) == 1.0);
+  CHECK(world1.composition(position, 240e3+300e3, 0) == 0.0);
+  CHECK(world1.composition(position, 240e3+300e3, 1) == 0.0);
+  CHECK(world1.composition(position, 240e3+300e3, 2) == 0.0);
+  CHECK(world1.composition(position, 240e3+300e3, 3) == 0.0);
+  CHECK(world1.composition(position, 240e3+300e3, 4) == 0.0);
+  CHECK(world1.composition(position, 240e3+300e3, 5) == 1.0);
+  CHECK(world1.composition(position, 260e3+300e3, 0) == 0.0);
+  CHECK(world1.composition(position, 260e3+300e3, 1) == 0.0);
+  CHECK(world1.composition(position, 260e3+300e3, 2) == 0.0);
+  CHECK(world1.composition(position, 260e3+300e3, 3) == 0.0);
+  CHECK(world1.composition(position, 260e3+300e3, 4) == 0.0);
+  CHECK(world1.composition(position, 260e3+300e3, 5) == 0.0);
+
+  // the constant layers test
+  position = {1500e3,250e3,0};
+  CHECK(world1.temperature(position, 0+350e3, 10) == Approx(1756.8));
+  CHECK(world1.temperature(position, 240e3+350e3, 10) == Approx(1864.32));
+  CHECK(world1.temperature(position, 260e3+350e3, 10) == Approx(1873.28));
+
+  CHECK(world1.composition(position, 0+350e3, 0) == 0.0);
+  CHECK(world1.composition(position, 0+350e3, 1) == 0.0);
+  CHECK(world1.composition(position, 0+350e3, 2) == 0.0);
+  CHECK(world1.composition(position, 0+350e3, 3) == 0.0);
+  CHECK(world1.composition(position, 0+350e3, 4) == 0.0);
+  CHECK(world1.composition(position, 0+350e3, 5) == 0.0);
+  CHECK(world1.composition(position, 0+350e3, 6) == 1.0);
+  CHECK(world1.composition(position, 0+350e3, 7) == 0.0);
+  CHECK(world1.composition(position, 0+350e3, 8) == 0.0);
+  CHECK(world1.composition(position, 75e3-1+350e3, 0) == 0.0);
+  CHECK(world1.composition(position, 75e3-1+350e3, 1) == 0.0);
+  CHECK(world1.composition(position, 75e3-1+350e3, 2) == 0.0);
+  CHECK(world1.composition(position, 75e3-1+350e3, 3) == 0.0);
+  CHECK(world1.composition(position, 75e3-1+350e3, 4) == 0.0);
+  CHECK(world1.composition(position, 75e3-1+350e3, 5) == 0.0);
+  CHECK(world1.composition(position, 75e3-1+350e3, 6) == 1.0);
+  CHECK(world1.composition(position, 75e3-1+350e3, 7) == 0.0);
+  CHECK(world1.composition(position, 75e3-1+350e3, 8) == 0.0);
+  CHECK(world1.composition(position, 75e3+1+350e3, 0) == 0.0);
+  CHECK(world1.composition(position, 75e3+1+350e3, 1) == 0.0);
+  CHECK(world1.composition(position, 75e3+1+350e3, 2) == 0.0);
+  CHECK(world1.composition(position, 75e3+1+350e3, 3) == 0.0);
+  CHECK(world1.composition(position, 75e3+1+350e3, 4) == 0.0);
+  CHECK(world1.composition(position, 75e3+1+350e3, 5) == 0.0);
+  CHECK(world1.composition(position, 75e3+1+350e3, 6) == 0.0);
+  CHECK(world1.composition(position, 75e3+1+350e3, 7) == 1.0);
+  CHECK(world1.composition(position, 75e3+1+350e3, 8) == 0.0);
+  CHECK(world1.composition(position, 150e3-1+350e3, 0) == 0.0);
+  CHECK(world1.composition(position, 150e3-1+350e3, 1) == 0.0);
+  CHECK(world1.composition(position, 150e3-1+350e3, 2) == 0.0);
+  CHECK(world1.composition(position, 150e3-1+350e3, 3) == 0.0);
+  CHECK(world1.composition(position, 150e3-1+350e3, 4) == 0.0);
+  CHECK(world1.composition(position, 150e3-1+350e3, 5) == 0.0);
+  CHECK(world1.composition(position, 150e3-1+350e3, 6) == 0.0);
+  CHECK(world1.composition(position, 150e3-1+350e3, 7) == 1.0);
+  CHECK(world1.composition(position, 150e3-1+350e3, 8) == 0.0);
+  CHECK(world1.composition(position, 150e3+1+350e3, 0) == 0.0);
+  CHECK(world1.composition(position, 150e3+1+350e3, 1) == 0.0);
+  CHECK(world1.composition(position, 150e3+1+350e3, 2) == 0.0);
+  CHECK(world1.composition(position, 150e3+1+350e3, 3) == 0.0);
+  CHECK(world1.composition(position, 150e3+1+350e3, 4) == 0.0);
+  CHECK(world1.composition(position, 150e3+1+350e3, 5) == 0.0);
+  CHECK(world1.composition(position, 150e3+1+350e3, 6) == 0.0);
+  CHECK(world1.composition(position, 150e3+1+350e3, 7) == 0.0);
+  CHECK(world1.composition(position, 150e3+1+350e3, 8) == 1.0);
+  CHECK(world1.composition(position, 240e3+350e3, 0) == 0.0);
+  CHECK(world1.composition(position, 240e3+350e3, 1) == 0.0);
+  CHECK(world1.composition(position, 240e3+350e3, 2) == 0.0);
+  CHECK(world1.composition(position, 240e3+350e3, 3) == 0.0);
+  CHECK(world1.composition(position, 240e3+350e3, 4) == 0.0);
+  CHECK(world1.composition(position, 240e3+350e3, 5) == 0.0);
+  CHECK(world1.composition(position, 240e3+350e3, 6) == 0.0);
+  CHECK(world1.composition(position, 240e3+350e3, 7) == 0.0);
+  CHECK(world1.composition(position, 240e3+350e3, 8) == 0.0);
+  CHECK(world1.composition(position, 260e3+350e3, 0) == 0.0);
+  CHECK(world1.composition(position, 260e3+350e3, 1) == 0.0);
+  CHECK(world1.composition(position, 260e3+350e3, 2) == 0.0);
+  CHECK(world1.composition(position, 260e3+350e3, 3) == 0.0);
+  CHECK(world1.composition(position, 260e3+350e3, 4) == 0.0);
+  CHECK(world1.composition(position, 260e3+350e3, 5) == 0.0);
+  CHECK(world1.composition(position, 260e3+350e3, 6) == 0.0);
+  CHECK(world1.composition(position, 260e3+350e3, 7) == 0.0);
+  CHECK(world1.composition(position, 260e3+350e3, 8) == 0.0);
 }
 
 TEST_CASE("WorldBuilder Features: Oceanic Plate")

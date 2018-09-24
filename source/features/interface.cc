@@ -23,6 +23,7 @@
 #include <world_builder/features/continental_plate.h>
 #include <world_builder/features/oceanic_plate.h>
 #include <world_builder/features/subducting_plate.h>
+#include <world_builder/features/mantle_layer.h>
 #include <world_builder/assert.h>
 
 
