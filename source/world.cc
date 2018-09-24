@@ -19,6 +19,7 @@
 
 #include <sstream>
 
+#include "rapidjson/pointer.h"
 
 #include <world_builder/config.h>
 #include <world_builder/world.h>
@@ -52,14 +53,19 @@ namespace WorldBuilder
 
   void World::declare_and_parse(Parameters &prm)
   {
-	  rapidjson::Document& doc = this->parameters.json_document;
+	  using namespace rapidjson;
+	  Document& doc = this->parameters.json_document;
     /**
      * First load the major version number in the file and check the major
      * version number of the program.
      */
-    WBAssertThrow(doc.HasMember("version"),
-	          "An entry called version is required in a World Builder "
-		  "Parameter file.");
+<<<<<<< HEAD
+	  WBAssertThrow(Pointer("/version").Get(doc) != NULL,
+			  "An entry called version is required in a World Builder "
+			  "Parameter file.");
+    //WBAssertThrow(doc.HasMember("version"),
+//	          "An entry called version is required in a World Builder "
+//		  "Parameter file.");
     prm.load_entry("version", true, Types::String("",
                                                   "The major version number for which the input file was written."));
 
@@ -73,6 +79,7 @@ namespace WorldBuilder
                   "That there may have been incompatible changes made between the versions. "
                   "Verify those changes and wheter they affect your model. If this is not "
                   "the case, adjust the version number in the input file.");
+//    WBAssertThrow(Pointer("/version").Get(doc)->GetUint() == Utilities::string_to_unsigned_int(Version::MAJOR),
 
     /**
      * Seconly load the coordinate system parameters.

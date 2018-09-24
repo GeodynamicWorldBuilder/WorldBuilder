@@ -924,6 +924,17 @@ namespace WorldBuilder
   }
 
   std::string
+  Parameters::get_full_json_path() const
+  {
+    std::string collapse = "";
+    for (unsigned int i = 0; i < path.size(); i++)
+      {
+        collapse += path[i] + "/";
+      }
+    return collapse.substr(0,collapse.size()-1);
+  }
+
+  std::string
   Parameters::get_relative_path() const
   {
     std::string collapse = "";

@@ -352,6 +352,13 @@ namespace WorldBuilder
 
       /**
        * This function return the current path as stored in the path variable
+       * as a string in json pointer format.
+       * \return std::string
+       */
+      std::string get_full_json_path() const;
+
+      /**
+       * This function return the current path as stored in the path variable
        * as a string.
        * \return std::string
        */
