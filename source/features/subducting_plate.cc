@@ -182,7 +182,7 @@ namespace WorldBuilder
           }
         else
           {
-            WBAssertThrow(false,"Subducting plate temperature model '" << temperature_submodule_name << "' not found.");
+            WBAssertThrow(temperature_submodule_name == "none","Subducting plate temperature model '" << temperature_submodule_name << "' not found.");
           }
 
       }
