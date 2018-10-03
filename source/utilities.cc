@@ -561,9 +561,10 @@ namespace WorldBuilder
 
       const DepthMethod depth_method = coordinate_system->depth_method();
       WBAssertThrow(depth_method == DepthMethod::none
-                    || depth_method == DepthMethod::angle_at_starting_point_with_surface,
-                    "Only the depth methods none and angle_at_starting_point_with_surface are "
-                    "currently implemented");
+                    || depth_method == DepthMethod::angle_at_starting_point_with_surface
+                    || depth_method == DepthMethod::angle_at_begin_segment_with_surface,
+                    "Only the depth methods none, angle_at_starting_point_with_surface and "
+                    "angle_at_begin_segment_with_surface are implemented");
 
       // loop over all the planes to find out which one is closest to the point.
 
@@ -673,24 +674,33 @@ namespace WorldBuilder
 
 
               Point<2> end_segment = begin_segment;
-              double total_length = 0;
-
+              double total_length = 0.0;
+              double add_angle = 0.0;
               for (unsigned int i_segment = 0; i_segment < plane_segment_lengths[current_section].size(); i_segment++)
                 {
                   const double current_segment = i_segment;
 
-                  Point<2> begin_segment = end_segment;
+                  // compute the angle between the the previous begin and end if
+                  // the depth method is angle_at_begin_segment_with_surface.
+                  if (depth_method == DepthMethod::angle_at_begin_segment_with_surface)
+                    {
+                      add_angle += std::acos(begin_segment * end_segment / (begin_segment.norm() * end_segment.norm()));
+                    }
+
+                  begin_segment = end_segment;
 
                   // This interpolates different properties between P1 and P2 (the
                   // points of the plane at the surface)
                   const double degree_90_to_rad = 0.5 * M_PI;
                   const double interpolated_angle_top    = plane_segment_angles[current_section][current_segment][0]
                                                            + fraction_CPL_P1P2 * (plane_segment_angles[next_section][current_segment][0]
-                                                                                  - plane_segment_angles[current_section][current_segment][0]);
+                                                                                  - plane_segment_angles[current_section][current_segment][0])
+                                                           + add_angle;
 
                   const double interpolated_angle_bottom = plane_segment_angles[current_section][current_segment][1]
                                                            + fraction_CPL_P1P2 * (plane_segment_angles[next_section][current_segment][1]
-                                                                                  - plane_segment_angles[current_section][current_segment][1]);
+                                                                                  - plane_segment_angles[current_section][current_segment][1])
+                                                           + add_angle;
 
 
                   double interpolated_segment_length     = plane_segment_lengths[current_section][current_segment]

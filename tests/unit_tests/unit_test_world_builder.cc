@@ -4371,3 +4371,96 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.4672927318));
 }
 
+TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes spherical depth methods")
+{
+
+  {
+    // starting point
+    std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/spherical_depth_method_starting_point.wb";
+    WorldBuilder::World world(file_name);
+
+    const double dtr = M_PI/180.0;
+    // origin
+    std::array<double,3> position = {6371000 - 0, 0 * dtr, 0 * dtr};
+    position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
+    CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
+    CHECK(world.temperature(position, 1, 10) == 0);
+    CHECK(world.temperature(position, 200e3, 10) == 0);
+    CHECK(world.temperature(position, 210e3, 10) == Approx(1694.08));
+
+    // ~330 km
+    position = {6371000 - 0, 0 * dtr, -3 * dtr};
+    position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
+    CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
+    CHECK(world.temperature(position, 50e3, 10) == Approx(1622.4));
+    CHECK(world.temperature(position, 75e3, 10) == 0);
+    CHECK(world.temperature(position, 250e3, 10) == 0);
+    CHECK(world.temperature(position, 275e3, 10) == Approx(1723.2));
+
+
+    // ~1100 km
+    position = {6371000 - 0, 0 * dtr, -10 * dtr};
+    position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
+    CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
+    CHECK(world.temperature(position, 95e3, 10) == Approx(1642.56));
+    CHECK(world.temperature(position, 100e3, 10) == 0);
+    CHECK(world.temperature(position, 300e3, 10) == 0);
+    CHECK(world.temperature(position, 305e3, 10) == Approx(1736.64));
+
+
+    // ~2200 km
+    position = {6371000 - 0, 0 * dtr, -20 * dtr};
+    position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
+    CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
+    CHECK(world.temperature(position, 1, 10) == 0.0);
+    CHECK(world.temperature(position, 200e3, 10) == 0);
+    CHECK(world.temperature(position, 205e3, 10) == Approx(1691.84));
+    CHECK(world.temperature(position, 570e3, 10) == Approx(1855.36));
+  }
+
+  {
+    // begin segment depth method
+    std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/spherical_depth_method_begin_segment.wb";
+    WorldBuilder::World world(file_name);
+
+    const double dtr = M_PI/180.0;
+    // origin
+    std::array<double,3> position = {6371000 - 0, 0 * dtr, 0 * dtr};
+    position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
+    CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
+    CHECK(world.temperature(position, 1, 10) == 0);
+    CHECK(world.temperature(position, 200e3, 10) == 0);
+    CHECK(world.temperature(position, 210e3, 10) == Approx(1694.08));
+
+    // ~330 km
+    position = {6371000 - 0, 0 * dtr, -3 * dtr};
+    position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
+    CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
+    CHECK(world.temperature(position, 50e3, 10) == Approx(1622.4));
+    CHECK(world.temperature(position, 75e3, 10) == 0);
+    CHECK(world.temperature(position, 250e3, 10) == 0);
+    CHECK(world.temperature(position, 275e3, 10) == Approx(1723.2));
+
+
+    // ~1100 km
+    position = {6371000 - 0, 0 * dtr, -10 * dtr};
+    position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
+    CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
+    CHECK(world.temperature(position, 150e3, 10) == Approx(1667.2));
+    CHECK(world.temperature(position, 175e3, 10) == 0);
+    CHECK(world.temperature(position, 380e3, 10) == 0);
+    CHECK(world.temperature(position, 385e3, 10) == Approx(1772.48));
+
+
+    // ~1100 km
+    position = {6371000 - 0, 0 * dtr, -20 * dtr};
+    position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
+    CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
+    CHECK(world.temperature(position, 350e3, 10) == Approx(1756.8));
+    CHECK(world.temperature(position, 355e3, 10) == 0);
+    CHECK(world.temperature(position, 565e3, 10) == 0);
+    CHECK(world.temperature(position, 570e3, 10) == Approx(1855.36));
+  }
+
+}
+
