@@ -247,6 +247,8 @@ namespace WorldBuilder
                     {
                       return composition_submodule_constant_layers_value[i];
                     }
+                  else
+                    return 0.0;
                 }
               total_thickness += composition_submodule_constant_layers_thicknesses[i];
             }
