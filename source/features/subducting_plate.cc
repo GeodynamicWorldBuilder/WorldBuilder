@@ -258,6 +258,7 @@ namespace WorldBuilder
 
           const double distance_from_plane = distance_from_planes["distanceFromPlane"];
           const double distance_along_plane = distance_from_planes["distanceAlongPlane"];
+          const double average_angle = distance_from_planes["averageAngle"];
           const double section_fraction = distance_from_planes["sectionFraction"];
           const unsigned int current_section = distance_from_planes["section"];
           const unsigned int next_section = current_section + 1;
@@ -278,16 +279,6 @@ namespace WorldBuilder
                                             * (slab_segment_thickness[next_section][current_segment][1]
                                                - slab_segment_thickness[current_section][current_segment][1]);
               const double thickness_local = thickness_up + segment_fraction * (thickness_down - thickness_up);
-
-              const double angle_up = slab_segment_angles[current_section][current_segment][0]
-                                      + section_fraction
-                                      * (slab_segment_angles[next_section][current_segment][0]
-                                         - slab_segment_angles[current_section][current_segment][0]);
-              const double angle_down = slab_segment_angles[current_section][current_segment][1]
-                                        + section_fraction
-                                        * (slab_segment_angles[next_section][current_segment][1]
-                                           - slab_segment_angles[current_section][current_segment][1]);
-              const double angle_local = angle_up + segment_fraction * (angle_down - angle_up);
 
               const double max_slab_length = total_slab_length[current_section] +
                                              section_fraction *
@@ -311,7 +302,12 @@ namespace WorldBuilder
                     {
                       /*
                        * We now use the McKenzie (1970) equation to determine the
-                       * temperature inside the slab.
+                       * temperature inside the slab. The McKenzie equation was
+                       * designed for a straight slab, but we have a potentially
+                       * curved slab. Because the angle is a required parameter, we
+                       * first tried a local angle. This gave weird effects of
+                       * apparent cooling when the slabs angle decreases. Now we
+                       * use an average angle, which works better.
                        */
                       const double R = (temperature_submodule_plate_model_density * temperature_submodule_plate_model_specific_heat
                                         * (temperature_submodule_plate_model_plate_velocity /(365.25 * 24.0 * 60.0 * 60.0))
@@ -321,8 +317,8 @@ namespace WorldBuilder
                                        / (temperature_submodule_plate_model_Thermal_expansion_coefficient * gravity_norm * thickness_local);
 
                       const int n_sum = 500;
-                      double temp = exp(((distance_along_plane / thickness_local) * sin(angle_local)
-                                         - (distance_from_plane / thickness_local) * cos(angle_local)) / H);
+                      double temp = exp(((distance_along_plane / thickness_local) * sin(average_angle)
+                                         - (distance_from_plane / thickness_local) * cos(average_angle)) / H);
 
                       double sum=0;
                       for (int i=1; i<=n_sum; i++)
