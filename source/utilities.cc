@@ -547,17 +547,18 @@ namespace WorldBuilder
                                             natural_coordinate_system);
 
       // The section which is checked.
-      double section = 0;
+      double section = 0.0;
 
       // The 'horizontal' fraction between the points at the surface.
-      double section_fraction = 0;
+      double section_fraction = 0.0;
 
       // What segment the point on the line is in.
       unsigned int segment = 0;
 
       // The 'vertical' fraction, indicates how far in the current segment the
       // point on the line is.
-      double segment_fraction = 0;
+      double segment_fraction = 0.0;
+      double total_average_angle = 0.0;
 
       const DepthMethod depth_method = coordinate_system->depth_method();
       WBAssertThrow(depth_method == DepthMethod::none
@@ -676,6 +677,7 @@ namespace WorldBuilder
               Point<2> end_segment = begin_segment;
               double total_length = 0.0;
               double add_angle = 0.0;
+              double average_angle = 0.0;
               for (unsigned int i_segment = 0; i_segment < plane_segment_lengths[current_section].size(); i_segment++)
                 {
                   const double current_segment = i_segment;
@@ -878,9 +880,16 @@ namespace WorldBuilder
                           section_fraction = fraction_CPL_P1P2;
                           segment = i_segment;
                           segment_fraction = new_along_plane_distance / interpolated_segment_length;
+                          total_average_angle = (average_angle * total_length
+                                                 + 0.5 * (interpolated_angle_top + interpolated_angle_bottom  - 2 * add_angle) * new_along_plane_distance) /
+                                                (total_length + new_along_plane_distance);
                         }
                     }
 
+                  // increase average angle
+                  average_angle = (average_angle * total_length +
+                                   0.5 * (interpolated_angle_top + interpolated_angle_bottom  - 2 * add_angle) * interpolated_segment_length) /
+                                  (total_length + interpolated_segment_length);
                   // increase the total length for the next segment.
                   total_length += interpolated_segment_length;
                 }
@@ -893,6 +902,7 @@ namespace WorldBuilder
       return_values["segmentFraction"] = segment_fraction;
       return_values["section"] = section;
       return_values["segment"] = segment;
+      return_values["averageAngle"] = total_average_angle;
       return return_values;
     }
 
