@@ -622,15 +622,11 @@ int main(int argc, char **argv)
     }
   else if (grid_type == "chunk")
     {
-
-
-      WBAssertThrow(dim == 3, "The chunk only works in 3d.");
-
       double inner_radius = z_min;
       double outer_radius = z_max;
 
-      WBAssertThrow(x_min < x_max, "The minimum longitude must be less than the maximum longitude.");
-      WBAssertThrow(x_min < x_max, "The minimum latitude must be less than the maximum latitude.");
+      WBAssertThrow(x_min <= x_max, "The minimum longitude must be less than the maximum longitude.");
+      WBAssertThrow(y_min <= y_max, "The minimum latitude must be less than the maximum latitude.");
       WBAssertThrow(inner_radius < outer_radius, "The inner radius must be less than the outer radius.");
 
       WBAssertThrow(x_min - x_max <= 2.0 * M_PI, "The difference between the minimum and maximum longitude "
@@ -642,7 +638,7 @@ int main(int argc, char **argv)
       double opening_angle_long_rad = (x_max - x_min);
       double opening_angle_lat_rad =  (y_max - y_min);
 
-      n_cell = n_cell_x * n_cell_y * (dim == 3 ? n_cell_z : 1.0);
+      n_cell = n_cell_x * n_cell_z * (dim == 3 ? n_cell_y : 1.0);
       if (compress_size == false && dim == 3)
         n_p = n_cell * 8 ; // it shouldn't matter for 2d in the output, so just do 3d.
       else
@@ -654,84 +650,98 @@ int main(int argc, char **argv)
       double dr = lr / n_cell_z;
 
       grid_x.resize(n_p);
-      grid_y.resize(n_p);
+      grid_y.resize(dim == 3 ? n_p : 0);
       grid_z.resize(n_p);
       grid_depth.resize(n_p);
 
       std::cout << "[4/5] Building the grid: stage 1 of 3                        \r";
       std::cout.flush();
       unsigned int counter = 0;
-      if (compress_size == true)
+      if (dim == 2)
         {
           for (unsigned int i = 1; i <= n_cell_x + 1; ++i)
-            for (unsigned int j = 1; j <= n_cell_y + 1; ++j)
-              for (unsigned int k = 1; k <= n_cell_z + 1; ++k)
-                {
-                  grid_x[counter] = x_min + (i-1) * dlong;
-                  grid_y[counter] = y_min + (j-1) * dlat;
-                  grid_z[counter] = inner_radius + (k-1) * dr;
-                  grid_depth[counter] = lr - (k-1) * dr;
-                  counter++;
-                }
+            for (unsigned int j = 1; j <= n_cell_z + 1; ++j)
+              {
+                grid_x[counter] = x_min + (i-1) * dlong;
+                grid_z[counter] = inner_radius + (j-1) * dr;
+                grid_depth[counter] = lr - (j-1) * dr;
+                counter++;
+              }
         }
       else
         {
-          for (unsigned int i = 0; i < n_cell_x; ++i)
+          if (compress_size == true)
             {
-              for (unsigned int j = 0; j < n_cell_y; ++j)
-                {
-                  for (unsigned int k = 0; k < n_cell_z; ++k)
+              for (unsigned int i = 1; i <= n_cell_x + 1; ++i)
+                for (unsigned int j = 1; j <= n_cell_y + 1; ++j)
+                  for (unsigned int k = 1; k <= n_cell_z + 1; ++k)
                     {
-                      // position is defined by the vtk file format
-                      // position 0 of this cell
-                      grid_x[counter] = x_min + i * dlong;
-                      grid_y[counter] = y_min + j * dlat;
-                      grid_z[counter] = inner_radius + k * dr;
-                      grid_depth[counter] = lr - k * dr;
+                      grid_x[counter] = x_min + (i-1) * dlong;
+                      grid_y[counter] = y_min + (j-1) * dlat;
+                      grid_z[counter] = inner_radius + (k-1) * dr;
+                      grid_depth[counter] = lr - (k-1) * dr;
                       counter++;
-                      // position 1 of this cell
-                      grid_x[counter] = x_min + (i + 1) * dlong;
-                      grid_y[counter] = y_min + j * dlat;
-                      grid_z[counter] = inner_radius + k * dr;
-                      grid_depth[counter] = lr - k * dr;
-                      counter++;
-                      // position 2 of this cell
-                      grid_x[counter] = x_min + (i + 1) * dlong;
-                      grid_y[counter] = y_min + (j + 1) * dlat;
-                      grid_z[counter] = inner_radius + k * dr;
-                      grid_depth[counter] = lr - k * dr;
-                      counter++;
-                      // position 3 of this cell
-                      grid_x[counter] = x_min + i * dlong;
-                      grid_y[counter] = y_min + (j + 1) * dlat;
-                      grid_z[counter] = inner_radius + k * dr;
-                      grid_depth[counter] = lr - k * dr;
-                      counter++;
-                      // position 0 of this cell
-                      grid_x[counter] = x_min + i * dlong;
-                      grid_y[counter] = y_min + j * dlat;
-                      grid_z[counter] = inner_radius + (k + 1) * dr;
-                      grid_depth[counter] = lr - (k + 1) * dr;
-                      counter++;
-                      // position 1 of this cell
-                      grid_x[counter] = x_min + (i + 1) * dlong;
-                      grid_y[counter] = y_min + j * dlat;
-                      grid_z[counter] = inner_radius + (k + 1) * dr;
-                      grid_depth[counter] = lr - (k + 1) * dr;
-                      counter++;
-                      // position 2 of this cell
-                      grid_x[counter] = x_min + (i + 1) * dlong;
-                      grid_y[counter] = y_min + (j + 1) * dlat;
-                      grid_z[counter] = inner_radius + (k + 1) * dr;
-                      grid_depth[counter] = lr - (k + 1) * dr;
-                      counter++;
-                      // position 3 of this cell
-                      grid_x[counter] = x_min + i * dlong;
-                      grid_y[counter] = y_min + (j + 1) * dlat;
-                      grid_z[counter] = inner_radius + (k + 1) * dr;
-                      grid_depth[counter] = lr - (k + 1) * dr;
-                      WBAssert(counter < n_p, "Assert counter smaller then n_P: counter = " << counter << ", n_p = " << n_p);
-                      counter++;
+                    }
+            }
+          else
+            {
+              for (unsigned int i = 0; i < n_cell_x; ++i)
+                {
+                  for (unsigned int j = 0; j < n_cell_y; ++j)
+                    {
+                      for (unsigned int k = 0; k < n_cell_z; ++k)
+                        {
+                          // position is defined by the vtk file format
+                          // position 0 of this cell
+                          grid_x[counter] = x_min + i * dlong;
+                          grid_y[counter] = y_min + j * dlat;
+                          grid_z[counter] = inner_radius + k * dr;
+                          grid_depth[counter] = lr - k * dr;
+                          counter++;
+                          // position 1 of this cell
+                          grid_x[counter] = x_min + (i + 1) * dlong;
+                          grid_y[counter] = y_min + j * dlat;
+                          grid_z[counter] = inner_radius + k * dr;
+                          grid_depth[counter] = lr - k * dr;
+                          counter++;
+                          // position 2 of this cell
+                          grid_x[counter] = x_min + (i + 1) * dlong;
+                          grid_y[counter] = y_min + (j + 1) * dlat;
+                          grid_z[counter] = inner_radius + k * dr;
+                          grid_depth[counter] = lr - k * dr;
+                          counter++;
+                          // position 3 of this cell
+                          grid_x[counter] = x_min + i * dlong;
+                          grid_y[counter] = y_min + (j + 1) * dlat;
+                          grid_z[counter] = inner_radius + k * dr;
+                          grid_depth[counter] = lr - k * dr;
+                          counter++;
+                          // position 0 of this cell
+                          grid_x[counter] = x_min + i * dlong;
+                          grid_y[counter] = y_min + j * dlat;
+                          grid_z[counter] = inner_radius + (k + 1) * dr;
+                          grid_depth[counter] = lr - (k + 1) * dr;
+                          counter++;
+                          // position 1 of this cell
+                          grid_x[counter] = x_min + (i + 1) * dlong;
+                          grid_y[counter] = y_min + j * dlat;
+                          grid_z[counter] = inner_radius + (k + 1) * dr;
+                          grid_depth[counter] = lr - (k + 1) * dr;
+                          counter++;
+                          // position 2 of this cell
+                          grid_x[counter] = x_min + (i + 1) * dlong;
+                          grid_y[counter] = y_min + (j + 1) * dlat;
+                          grid_z[counter] = inner_radius + (k + 1) * dr;
+                          grid_depth[counter] = lr - (k + 1) * dr;
+                          counter++;
+                          // position 3 of this cell
+                          grid_x[counter] = x_min + i * dlong;
+                          grid_y[counter] = y_min + (j + 1) * dlat;
+                          grid_z[counter] = inner_radius + (k + 1) * dr;
+                          grid_depth[counter] = lr - (k + 1) * dr;
+                          WBAssert(counter < n_p, "Assert counter smaller then n_P: counter = " << counter << ", n_p = " << n_p);
+                          counter++;
+                        }
                     }
                 }
             }
@@ -739,60 +749,94 @@ int main(int argc, char **argv)
 
       std::cout << "[4/5] Building the grid: stage 2 of 3                        \r";
       std::cout.flush();
-      for (unsigned int i = 0; i < n_p; ++i)
+      if (dim == 2)
         {
+          for (unsigned int i = 0; i < n_p; ++i)
+            {
 
-          double longitude = grid_x[i];
-          double latitutde = grid_y[i];
-          double radius = grid_z[i];
+              double longitude = grid_x[i];
+              double radius = grid_z[i];
 
-          grid_x[i] = radius * std::cos(latitutde) * std::cos(longitude);
-          grid_y[i] = radius * std::cos(latitutde) * std::sin(longitude);
-          grid_z[i] = radius * std::sin(latitutde);
+              grid_x[i] = radius * std::cos(longitude);
+              grid_z[i] = radius * std::sin(longitude);
+            }
         }
+      else
+        {
+          for (unsigned int i = 0; i < n_p; ++i)
+            {
 
+              double longitude = grid_x[i];
+              double latitutde = grid_y[i];
+              double radius = grid_z[i];
+
+              grid_x[i] = radius * std::cos(latitutde) * std::cos(longitude);
+              grid_y[i] = radius * std::cos(latitutde) * std::sin(longitude);
+              grid_z[i] = radius * std::sin(latitutde);
+            }
+        }
       std::cout << "[4/5] Building the grid: stage 3 of 3                        \r";
       std::cout.flush();
       // compute connectivity. Local to global mapping.
-      grid_connectivity.resize(n_cell,std::vector<unsigned int>(8));
+      grid_connectivity.resize(n_cell,std::vector<unsigned int>((dim-1)*4));
 
       counter = 0;
-      if (compress_size == true)
+      if (dim == 2)
         {
           for (unsigned int i = 1; i <= n_cell_x; ++i)
             {
-              for (unsigned int j = 1; j <= n_cell_y; ++j)
+              for (unsigned int j = 1; j <= n_cell_z; ++j)
                 {
-                  for (unsigned int k = 1; k <= n_cell_z; ++k)
-                    {
-                      grid_connectivity[counter][0] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j - 1) + k - 1;
-                      grid_connectivity[counter][1] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j - 1) + k - 1;
-                      grid_connectivity[counter][2] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j    ) + k - 1;
-                      grid_connectivity[counter][3] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j    ) + k - 1;
-                      grid_connectivity[counter][4] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j - 1) + k;
-                      grid_connectivity[counter][5] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j - 1) + k;
-                      grid_connectivity[counter][6] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j    ) + k;
-                      grid_connectivity[counter][7] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j    ) + k;
-                      counter++;
-                    }
+                  grid_connectivity[counter][0] = (n_cell_z + 1) * (i - 1) + j - 1;
+                  grid_connectivity[counter][1] = (n_cell_z + 1) * (i - 1) + j;
+                  grid_connectivity[counter][2] = (n_cell_z + 1) * (i    ) + j;
+                  grid_connectivity[counter][3] = (n_cell_z + 1) * (i    ) + j - 1;
+
+                  counter = counter+1;
+                  std::cout << "[4/5] Building the grid: stage 3 of 3 [" << (double)i/(double)n_cell << "%]                       \r";
+                  std::cout.flush();
                 }
             }
         }
       else
         {
-          for (unsigned int i = 0; i < n_cell; ++i)
+          if (compress_size == true)
             {
-              grid_connectivity[i][0] = counter;
-              grid_connectivity[i][1] = counter + 1;
-              grid_connectivity[i][2] = counter + 2;
-              grid_connectivity[i][3] = counter + 3;
-              grid_connectivity[i][4] = counter + 4;
-              grid_connectivity[i][5] = counter + 5;
-              grid_connectivity[i][6] = counter + 6;
-              grid_connectivity[i][7] = counter + 7;
-              counter = counter + 8;
-              std::cout << "[4/5] Building the grid: stage 3 of 3 [" << (double)i/(double)n_cell << "%]                       \r";
-              std::cout.flush();
+              for (unsigned int i = 1; i <= n_cell_x; ++i)
+                {
+                  for (unsigned int j = 1; j <= n_cell_y; ++j)
+                    {
+                      for (unsigned int k = 1; k <= n_cell_z; ++k)
+                        {
+                          grid_connectivity[counter][0] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j - 1) + k - 1;
+                          grid_connectivity[counter][1] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j - 1) + k - 1;
+                          grid_connectivity[counter][2] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j    ) + k - 1;
+                          grid_connectivity[counter][3] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j    ) + k - 1;
+                          grid_connectivity[counter][4] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j - 1) + k;
+                          grid_connectivity[counter][5] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j - 1) + k;
+                          grid_connectivity[counter][6] = (n_cell_y + 1) * (n_cell_z + 1) * (i    ) + (n_cell_z + 1) * (j    ) + k;
+                          grid_connectivity[counter][7] = (n_cell_y + 1) * (n_cell_z + 1) * (i - 1) + (n_cell_z + 1) * (j    ) + k;
+                          counter++;
+                        }
+                    }
+                }
+            }
+          else
+            {
+              for (unsigned int i = 0; i < n_cell; ++i)
+                {
+                  grid_connectivity[i][0] = counter;
+                  grid_connectivity[i][1] = counter + 1;
+                  grid_connectivity[i][2] = counter + 2;
+                  grid_connectivity[i][3] = counter + 3;
+                  grid_connectivity[i][4] = counter + 4;
+                  grid_connectivity[i][5] = counter + 5;
+                  grid_connectivity[i][6] = counter + 6;
+                  grid_connectivity[i][7] = counter + 7;
+                  counter = counter + 8;
+                  std::cout << "[4/5] Building the grid: stage 3 of 3 [" << (double)i/(double)n_cell << "%]                       \r";
+                  std::cout.flush();
+                }
             }
         }
     }

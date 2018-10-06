@@ -313,23 +313,25 @@ namespace WorldBuilder
                                         * (temperature_submodule_plate_model_plate_velocity /(365.25 * 24.0 * 60.0 * 60.0))
                                         * thickness_local) / (2.0 * temperature_submodule_plate_model_thermal_conductivity);
 
+                      // gravity in original in cm/s^2, here in m/s^2, thickness original in km, here in meter. So 100/1000=0.1
                       const double H = temperature_submodule_plate_model_specific_heat
-                                       / (temperature_submodule_plate_model_Thermal_expansion_coefficient * gravity_norm * thickness_local);
+                                       / (temperature_submodule_plate_model_Thermal_expansion_coefficient * gravity_norm * 0.1 * thickness_local);
 
                       const int n_sum = 500;
-                      double temp = exp(((distance_along_plane / thickness_local) * sin(average_angle)
-                                         - (distance_from_plane / thickness_local) * cos(average_angle)) / H);
+                      double z_scaled = 1 - (distance_from_plane / thickness_local);
+                      double x_scaled = distance_along_plane / thickness_local;
+                      double temp = exp((x_scaled * sin(average_angle)
+                                         - z_scaled * cos(average_angle)) / H);
 
                       double sum=0;
                       for (int i=1; i<=n_sum; i++)
                         {
                           sum += (std::pow((-1.0),i)/(i*M_PI)) *
-                                 (exp((R - std::pow(std::pow(R, 2.0) + std::pow(i, 2.0) * std::pow(M_PI, 2.0), 0.5))
-                                      *(distance_along_plane / thickness_local)))
-                                 * (sin(i * M_PI * (1 - distance_from_plane / thickness_local)));
+                                 (exp((R - std::pow(R * R + i * i * M_PI * M_PI, 0.5)) * x_scaled))
+                                 * (sin(i * M_PI * z_scaled));
                         }
-                      temperature = temp * (potential_mantle_temperature+2.0*(potential_mantle_temperature-surface_temperature) * sum);//segment;//distance_along_plane/thickness_local;//50+current_section;//
-
+                      temperature = temp * (potential_mantle_temperature + (surface_temperature - 273.15) * (z_scaled)
+                                            + 2.0 * (potential_mantle_temperature - 273.15) * sum);
                     }
                 }
             }

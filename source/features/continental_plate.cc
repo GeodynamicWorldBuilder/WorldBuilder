@@ -181,7 +181,7 @@ namespace WorldBuilder
                 {
                   bottom_temperature =  this->world->parameters.get_double("potential mantle temperature") +
                                         (((this->world->parameters.get_double("potential mantle temperature") * this->world->parameters.get_double("thermal expansion coefficient") * gravity_norm) /
-                                          this->world->parameters.get_double("specific heat")) * 1000.0) * ((depth) / 1000.0);
+                                          this->world->parameters.get_double("specific heat"))) * depth;
                 }
 
               return temperature_submodule_linear_top_temperature +

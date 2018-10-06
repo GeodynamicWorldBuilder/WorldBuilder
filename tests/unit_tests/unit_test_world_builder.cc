@@ -1315,12 +1315,18 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.composition(position, 0, 6) == 0.0);
 
 
-
+// results strongly dependent on the summation number of the McKenzie temperature.
   position = {250e3,250e3,0};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600.0));
-  CHECK(world1.temperature(position, 10, 10) == Approx(1512.4056427478)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, std::sqrt(2) * 100e3/2, 10) == Approx(946.7305134169)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, std::sqrt(2) * 100e3 - 1, 10) == Approx(1599.9907581812)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 1, 10) == Approx(1607.4818890612)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 5, 10) == Approx(1571.2135069216)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 10, 10) == Approx(1528.0459485492)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 100, 10) == Approx(1068.1100810682)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 500, 10) == Approx(894.9450953737)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 1000, 10) == Approx(847.7577529978)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 5000, 10) == Approx(638.1862559148)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, std::sqrt(2) * 100e3/2, 10) == Approx(946.8090143284)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, std::sqrt(2) * 100e3 - 1, 10) == Approx(1603.1616724909)); // we are in the plate for sure (colder than anywhere in the mantle)
   CHECK(world1.temperature(position, std::sqrt(2) * 100e3 + 1, 10) == Approx(1663.3572155943));
   CHECK(world1.composition(position, 0, 0) == 0.0);
   CHECK(world1.composition(position, 0, 1) == 0.0);
