@@ -990,6 +990,19 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   std::unique_ptr<Features::Interface> continental_plate = Features::Interface::create("oceanic plate", &world1);
 
   // Check continental plate through the world
+  // 2d
+  std::array<double,2> position_2d = {0,0};
+  CHECK(world1.temperature(position_2d, 0, 10) == Approx(1600));
+  CHECK(world1.temperature(position_2d, 240e3, 10) == Approx(1707.52));
+  CHECK(world1.temperature(position_2d, 260e3, 10) == Approx(1716.48));
+  CHECK(world1.composition(position_2d, 0, 0) == 0.0);
+  CHECK(world1.composition(position_2d, 0, 1) == 0.0);
+  CHECK(world1.composition(position_2d, 0, 2) == 0.0);
+  CHECK(world1.composition(position_2d, 0, 3) == 0.0);
+  CHECK(world1.composition(position_2d, 0, 4) == 0.0);
+  CHECK(world1.composition(position_2d, 0, 5) == 0.0);
+  CHECK(world1.composition(position_2d, 0, 6) == 0.0);
+  // 3d
   std::array<double,3> position = {0,0,0};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
   CHECK(world1.temperature(position, 240e3, 10) == Approx(1707.52));
@@ -1165,6 +1178,18 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   double dtr = M_PI / 180.0;
   std::unique_ptr<WorldBuilder::CoordinateSystems::Interface> &coordinate_system = world2.parameters.coordinate_system;
 
+  // 2d
+  position_2d = {6371000,0};
+  CHECK(world2.temperature(position_2d, 0, 10) == Approx(1600));
+  CHECK(world2.composition(position_2d, 0, 0) == 0.0);
+  CHECK(world2.composition(position_2d, 0, 1) == 0.0);
+  CHECK(world2.composition(position_2d, 0, 2) == 0.0);
+  CHECK(world2.composition(position_2d, 0, 3) == 0.0);
+  CHECK(world2.composition(position_2d, 0, 4) == 0.0);
+  CHECK(world2.composition(position_2d, 0, 5) == 0.0);
+  CHECK(world2.composition(position_2d, 0, 6) == 0.0);
+
+  // 3d
   position = {6371000,0,0};
   CHECK(world2.temperature(position, 0, 10) == Approx(1600));
   CHECK(world2.composition(position, 0, 0) == 0.0);
