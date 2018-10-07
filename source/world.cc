@@ -76,7 +76,7 @@ namespace WorldBuilder
     prm.load_entry("potential mantle temperature", false,
                    Types::Double(1600,"The potential temperature of the mantle at the surface in Kelvin"));
     prm.load_entry("surface temperature", false,
-                   Types::Double(293,"The temperature at the surface in Kelvin"));
+                   Types::Double(293.15,"The temperature at the surface in Kelvin"));
     prm.load_entry("thermal expansion coefficient", false,
                    Types::Double(3.5e-5,"The thermal expansion coefficient in $K^{-1}$."));
     prm.load_entry("specific heat", false, Types::Double(1250,"The specific heat in $J kg^{-1} K^{-1}."));
@@ -133,6 +133,14 @@ namespace WorldBuilder
                   "variable in the world builder file has been set. Dim is "
                   << dim << ".");
 
+    const CoordinateSystem coordinate_system = this->parameters.coordinate_system->natural_coordinate_system();
+
+    Point<2> point_natural(point[0], point[1],coordinate_system);
+    if (coordinate_system == spherical)
+      {
+        point_natural[1] = std::sqrt(point[0]*point[0]+point[1]*point[1]);
+        point_natural[0] = std::atan2(point[1],point[0]);
+      }
     // Todo: merge this into one line
     const Types::Array &cross_section_natural = parameters.get_array("cross section");
 
@@ -140,9 +148,9 @@ namespace WorldBuilder
              "Internal error: Cross section natural should contain two points, but it contains "
              << cross_section_natural.inner_type_index.size() <<  " points.");
 
-    std::vector<Types::Point<2> > cross_section;
+    std::vector<Point<2> > cross_section;
     for (unsigned int i = 0; i < cross_section_natural.inner_type_index.size(); ++i)
-      cross_section.push_back(parameters.vector_point_2d[cross_section_natural.inner_type_index[i]]);
+      cross_section.push_back(parameters.vector_point_2d[cross_section_natural.inner_type_index[i]]  * (coordinate_system == spherical ? M_PI / 180.0 : 1.0));
 
     WBAssert(cross_section.size() == 2,
              "Internal error: Cross section should contain two points, but it contains "
@@ -150,12 +158,24 @@ namespace WorldBuilder
 
     const WorldBuilder::Point<2> &surface_coord_conversions = this->parameters.get_point<2>("surface coordinate conversions");
 
-    Point<3> coord_3d(cross_section[0][0] + point[0] * surface_coord_conversions[0],
-                      cross_section[0][1] + point[0] * surface_coord_conversions[1],
-                      point[1],
-                      parameters.coordinate_system->natural_coordinate_system());
+    Point<3> coord_3d(coordinate_system);
+    if (coordinate_system == spherical)
+      {
+        coord_3d[0] = point_natural[1];
+        coord_3d[1] = cross_section[0][0] + point_natural[0] * surface_coord_conversions[0];
+        coord_3d[2] = cross_section[0][1] + point_natural[0] * surface_coord_conversions[1];
+      }
+    else
+      {
+        coord_3d[0] = cross_section[0][0] + point_natural[0] * surface_coord_conversions[0];
+        coord_3d[1] = cross_section[0][1] + point_natural[0] * surface_coord_conversions[1];
+        coord_3d[2] = point_natural[1];
+      }
 
-    return temperature(coord_3d.get_array(), depth, gravity_norm);
+
+    std::array<double, 3> point_3d_cartesian = this->parameters.coordinate_system->natural_to_cartesian_coordinates(coord_3d.get_array());
+
+    return temperature(point_3d_cartesian, depth, gravity_norm);
   }
 
   double
@@ -189,23 +209,43 @@ namespace WorldBuilder
                   "variable in the world builder file has been set. Dim is "
                   << dim << ".");
 
+    const CoordinateSystem coordinate_system = this->parameters.coordinate_system->natural_coordinate_system();
+
+    Point<2> point_natural(point[0], point[1],coordinate_system);
+    if (coordinate_system == spherical)
+      {
+        point_natural[1] = std::sqrt(point[0]*point[0]+point[1]*point[1]);
+        point_natural[0] = std::atan2(point[1],point[0]);
+      }
+
     // Todo: merge this into one line
     const Types::Array &cross_section_natural = this->parameters.get_array("cross section");
-    std::vector<Types::Point<2> > cross_section;
+    std::vector<Point<2> > cross_section;
     for (unsigned int i = 0; i < cross_section_natural.inner_type_index.size(); ++i)
-      cross_section.push_back(this->parameters.vector_point_2d[cross_section_natural.inner_type_index[i]]);
+      cross_section.push_back(this->parameters.vector_point_2d[cross_section_natural.inner_type_index[i]] * (coordinate_system == spherical ? M_PI / 180.0 : 1.0));
 
     WBAssert(cross_section.size() == 2, "Internal error: Cross section should contain two points, but it contains "
              << cross_section.size() <<  " points.");
 
     const WorldBuilder::Point<2> &surface_coord_conversions = this->parameters.get_point<2>("surface coordinate conversions");
 
-    Point<3> coord_3d(cross_section[0][0] + point[0] * surface_coord_conversions[0],
-                      cross_section[0][1] + point[0] * surface_coord_conversions[1],
-                      point[1],
-                      parameters.coordinate_system->natural_coordinate_system());
+    Point<3> coord_3d(coordinate_system);
+    if (coordinate_system == spherical)
+      {
+        coord_3d[0] = point_natural[1];
+        coord_3d[1] = cross_section[0][0] + point_natural[0] * surface_coord_conversions[0];
+        coord_3d[2] = cross_section[0][1] + point_natural[0] * surface_coord_conversions[1];
+      }
+    else
+      {
+        coord_3d[0] = cross_section[0][0] + point_natural[0] * surface_coord_conversions[0];
+        coord_3d[1] = cross_section[0][1] + point_natural[0] * surface_coord_conversions[1];
+        coord_3d[2] = point_natural[1];
+      }
 
-    return composition(coord_3d.get_array(), depth, composition_number);
+    std::array<double, 3> point_3d_cartesian = this->parameters.coordinate_system->natural_to_cartesian_coordinates(coord_3d.get_array());
+
+    return composition(point_3d_cartesian, depth, composition_number);
   }
 
   double

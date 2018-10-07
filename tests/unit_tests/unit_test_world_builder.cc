@@ -990,6 +990,19 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   std::unique_ptr<Features::Interface> continental_plate = Features::Interface::create("oceanic plate", &world1);
 
   // Check continental plate through the world
+  // 2d
+  std::array<double,2> position_2d = {0,0};
+  CHECK(world1.temperature(position_2d, 0, 10) == Approx(1600));
+  CHECK(world1.temperature(position_2d, 240e3, 10) == Approx(1707.52));
+  CHECK(world1.temperature(position_2d, 260e3, 10) == Approx(1716.48));
+  CHECK(world1.composition(position_2d, 0, 0) == 0.0);
+  CHECK(world1.composition(position_2d, 0, 1) == 0.0);
+  CHECK(world1.composition(position_2d, 0, 2) == 0.0);
+  CHECK(world1.composition(position_2d, 0, 3) == 0.0);
+  CHECK(world1.composition(position_2d, 0, 4) == 0.0);
+  CHECK(world1.composition(position_2d, 0, 5) == 0.0);
+  CHECK(world1.composition(position_2d, 0, 6) == 0.0);
+  // 3d
   std::array<double,3> position = {0,0,0};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
   CHECK(world1.temperature(position, 240e3, 10) == Approx(1707.52));
@@ -1165,6 +1178,18 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   double dtr = M_PI / 180.0;
   std::unique_ptr<WorldBuilder::CoordinateSystems::Interface> &coordinate_system = world2.parameters.coordinate_system;
 
+  // 2d
+  position_2d = {6371000,0};
+  CHECK(world2.temperature(position_2d, 0, 10) == Approx(1600));
+  CHECK(world2.composition(position_2d, 0, 0) == 0.0);
+  CHECK(world2.composition(position_2d, 0, 1) == 0.0);
+  CHECK(world2.composition(position_2d, 0, 2) == 0.0);
+  CHECK(world2.composition(position_2d, 0, 3) == 0.0);
+  CHECK(world2.composition(position_2d, 0, 4) == 0.0);
+  CHECK(world2.composition(position_2d, 0, 5) == 0.0);
+  CHECK(world2.composition(position_2d, 0, 6) == 0.0);
+
+  // 3d
   position = {6371000,0,0};
   CHECK(world2.temperature(position, 0, 10) == Approx(1600));
   CHECK(world2.composition(position, 0, 0) == 0.0);
@@ -1315,12 +1340,18 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.composition(position, 0, 6) == 0.0);
 
 
-
+// results strongly dependent on the summation number of the McKenzie temperature.
   position = {250e3,250e3,0};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600.0));
-  CHECK(world1.temperature(position, 10, 10) == Approx(1512.4056427478)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, std::sqrt(2) * 100e3/2, 10) == Approx(946.7305134169)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, std::sqrt(2) * 100e3 - 1, 10) == Approx(1599.9907581812)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 1, 10) == Approx(1607.4818890612)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 5, 10) == Approx(1571.2135069216)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 10, 10) == Approx(1528.0459485492)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 100, 10) == Approx(1068.1100810682)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 500, 10) == Approx(894.9450953737)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 1000, 10) == Approx(847.7577529978)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 5000, 10) == Approx(638.1862559148)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, std::sqrt(2) * 100e3/2, 10) == Approx(946.8090143284)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, std::sqrt(2) * 100e3 - 1, 10) == Approx(1603.1616724909)); // we are in the plate for sure (colder than anywhere in the mantle)
   CHECK(world1.temperature(position, std::sqrt(2) * 100e3 + 1, 10) == Approx(1663.3572155943));
   CHECK(world1.composition(position, 0, 0) == 0.0);
   CHECK(world1.composition(position, 0, 1) == 0.0);
