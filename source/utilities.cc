@@ -906,6 +906,124 @@ namespace WorldBuilder
       return return_values;
     }
 
+    void interpolation::set_points(const std::vector<double> &x,
+                                   const std::vector<double> &y,
+                                   bool monotone_spline)
+    {
+      assert(x.size() == y.size());
+      m_x = x;
+      m_y = y;
+      const unsigned int n = x.size();
+      for (unsigned int i = 0; i < n-1; i++)
+        {
+          assert(m_x[i] < m_x[i+1]);
+        }
+
+      if (monotone_spline == true)
+        {
+          /**
+           * This monotone spline algorithm is based on the javascript version
+           * at https://en.wikipedia.org/wiki/Monotone_cubic_interpolation. The
+           * parameters from this algorithm prevent overshooting in the
+           * interpolation spline.
+           */
+          std::vector<double> dys(n-1), dxs(n-1), ms(n-1);
+          for (unsigned int i=0; i < n-1; i++)
+            {
+              dxs[i] = x[i+1]-x[i];
+              dys[i] = y[i+1]-y[i];
+              ms[i] = dys[i]/dxs[i];
+            }
+
+          // get m_a parameter
+          m_c.resize(n);
+          m_c[0] = 0;
+
+          for (unsigned int i = 0; i < n-2; i++)
+            {
+              const double m0 = ms[i];
+              const double m1 = ms[i+1];
+
+              if (m0 * m1 <= 0)
+                {
+                  m_c[i+1] = 0;
+                }
+              else
+                {
+                  const double dx0 = dxs[i];
+                  const double dx1 = dxs[i+1];
+                  const double common = dx0 + dx1;
+                  m_c[i+1] = 3*common/((common + dx0)/m0 + (common + dx1)/m1);
+                }
+            }
+          m_c[n-1] = ms[n-2];
+
+          // Get b and c coefficients
+          m_a.resize(n);
+          m_b.resize(n);
+          for (unsigned int i = 0; i < m_c.size()-1; i++)
+            {
+              const double c1 = m_c[i];
+              const double m0 = ms[i];
+
+              const double invDx = 1/dxs[i];
+              const double common0 = c1 + m_c[i+1] - m0 - m0;
+              m_b[i] = (m0 - c1 - common0) * invDx;
+              m_a[i] = common0 * invDx * invDx;
+            }
+        }
+      else     // linear interpolation
+        {
+          m_a.resize(n);
+          m_b.resize(n);
+          m_c.resize(n);
+          for (unsigned int i = 0; i<n-1; i++)
+            {
+              m_a[i] = 0.0;
+              m_b[i] = 0.0;
+              m_c[i] = (m_y[i+1]-m_y[i])/(m_x[i+1]-m_x[i]);
+            }
+        }
+
+      // for the right boundary we define
+      // f_{n-1}(x) = b*(x-x_{n-1})^2 + c*(x-x_{n-1}) + y_{n-1}
+      double h = x[n-1]-x[n-2];
+      // m_b[n-1] is determined by the boundary condition
+      if (!monotone_spline)
+        {
+          m_a[n-1] = 0.0;
+          m_c[n-1] = 3.0*m_a[n-2]*h*h+2.0*m_b[n-2]*h+m_c[n-2];   // = f'_{n-2}(x_{n-1})
+        }
+    }
+
+    double interpolation::operator() (double x) const
+    {
+      size_t n = m_x.size();
+      // find the closest point m_x[idx] < x, idx=0 even if x<m_x[0]
+      std::vector<double>::const_iterator it;
+      it = std::lower_bound(m_x.begin(),m_x.end(),x);
+      int idx = std::max( int(it-m_x.begin())-1, 0);
+
+      double h = x-m_x[idx];
+      double interpol;
+      if (x<m_x[0])
+        {
+          // extrapolation to the left
+          interpol = ((m_b[0])*h + m_c[0])*h + m_y[0];
+        }
+      else if (x>m_x[n-1])
+        {
+          // extrapolation to the right
+          interpol = ((m_b[n-1])*h + m_c[n-1])*h + m_y[n-1];
+        }
+      else
+        {
+          // interpolation
+          interpol = ((m_a[idx]*h + m_b[idx])*h + m_c[idx])*h + m_y[idx];
+        }
+      return interpol;
+    }
+
     template const std::array<double,2> convert_point_to_array<2>(const Point<2> &point_);
     template const std::array<double,3> convert_point_to_array<3>(const Point<3> &point_);
   }

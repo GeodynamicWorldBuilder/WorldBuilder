@@ -233,6 +233,80 @@ TEST_CASE("WorldBuilder Utilities: string to conversions")
   CHECK_THROWS_WITH(Utilities::string_to_coordinate_system("other"), Contains("Coordinate system not implemented."));
 }
 
+
+TEST_CASE("WorldBuilder Utilities: interpolation")
+{
+  Utilities::interpolation linear;
+  std::vector<double> x = {0,1,2,6};
+  std::vector<double> y = {10,5,5,35};
+  linear.set_points(x,y,false);
+  CHECK(linear(-1) == Approx(15.0));
+  CHECK(linear(-0.9) == Approx(14.5));
+  CHECK(linear(-0.5) == Approx(12.5));
+  CHECK(linear(-0.1) == Approx(10.5));
+  CHECK(linear(0) == Approx(10.0));
+  CHECK(linear(0.1) == Approx(9.5));
+  CHECK(linear(0.5) == Approx(7.5));
+  CHECK(linear(0.9) == Approx(5.5));
+  CHECK(linear(1) == Approx(5.0));
+  CHECK(linear(1.1) == Approx(5.0));
+  CHECK(linear(1.5) == Approx(5.0));
+  CHECK(linear(1.9) == Approx(5.0));
+  CHECK(linear(2) == Approx(5.0));
+  CHECK(linear(2.1) == Approx(5.75));
+  CHECK(linear(2.5) == Approx(8.75));
+  CHECK(linear(2.9) == Approx(11.75));
+  CHECK(linear(3) == Approx(12.5));
+  CHECK(linear(3.1) == Approx(13.25));
+  CHECK(linear(3.5) == Approx(16.25));
+  CHECK(linear(3.9) == Approx(19.25));
+  CHECK(linear(4) == Approx(20));
+  CHECK(linear(5) == Approx(27.5));
+  CHECK(linear(6) == Approx(35));
+  CHECK(linear(7) == Approx(42.5));
+
+  Utilities::interpolation monotone_cubic_spline;
+  linear.set_points(x,y,true);
+
+  CHECK(linear(-1) == Approx(-5));
+  CHECK(linear(-0.9) == Approx(-2.15));
+  CHECK(linear(-0.7) == Approx(2.65));
+  CHECK(linear(-0.5) == Approx(6.25));
+  CHECK(linear(-0.3) == Approx(8.65));
+  CHECK(linear(-0.1) == Approx(9.85));
+  CHECK(linear(0) == Approx(10.0));
+  CHECK(linear(0.1) == Approx(9.86));
+  CHECK(linear(0.3) == Approx(8.92));
+  CHECK(linear(0.5) == Approx(7.5));
+  CHECK(linear(0.7) == Approx(6.08));
+  CHECK(linear(0.9) == Approx(5.14));
+  CHECK(linear(1) == Approx(5.0));
+  CHECK(linear(1.1) == Approx(5.0));
+  CHECK(linear(1.3) == Approx(5.0));
+  CHECK(linear(1.5) == Approx(5.0));
+  CHECK(linear(1.7) == Approx(5.0));
+  CHECK(linear(1.9) == Approx(5.0));
+  CHECK(linear(2) == Approx(5.0));
+  CHECK(linear(2.1) == Approx(5.03703125));
+  CHECK(linear(2.3) == Approx(5.32484375));
+  CHECK(linear(2.5) == Approx(5.87890625));
+  CHECK(linear(2.7) == Approx(6.67671875));
+  CHECK(linear(2.9) == Approx(7.69578125));
+  CHECK(linear(3) == Approx(8.28125));
+  CHECK(linear(3.1) == Approx(8.91359375));
+  CHECK(linear(3.3) == Approx(10.30765625));
+  CHECK(linear(3.5) == Approx(11.85546875));
+  CHECK(linear(3.7) == Approx(13.53453125));
+  CHECK(linear(3.9) == Approx(15.32234375));
+  CHECK(linear(4) == Approx(16.25));
+  CHECK(linear(4.5) == Approx(21.11328125));
+  CHECK(linear(5) == Approx(26.09375));
+  CHECK(linear(5.5) == Approx(30.83984375));
+  CHECK(linear(6) == Approx(35));
+  CHECK(linear(6.5) == Approx(38.75));
+  CHECK(linear(7) == Approx(42.5));
+}
+
 TEST_CASE("WorldBuilder Utilities: Point in polygon")
 {
   std::vector<Point<2> > point_list_4_elements(4, Point<2>(cartesian));
