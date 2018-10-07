@@ -233,6 +233,172 @@ TEST_CASE("WorldBuilder Utilities: string to conversions")
   CHECK_THROWS_WITH(Utilities::string_to_coordinate_system("other"), Contains("Coordinate system not implemented."));
 }
 
+
+TEST_CASE("WorldBuilder Utilities: interpolation")
+{
+  Utilities::interpolation linear;
+  std::vector<double> x = {0,1,2,6};
+  std::vector<double> y = {10,5,5,35};
+  linear.set_points(x,y,false);
+  CHECK(linear(-1) == Approx(15.0));
+  CHECK(linear(-0.9) == Approx(14.5));
+  CHECK(linear(-0.5) == Approx(12.5));
+  CHECK(linear(-0.1) == Approx(10.5));
+  CHECK(linear(0) == Approx(10.0));
+  CHECK(linear(0.1) == Approx(9.5));
+  CHECK(linear(0.5) == Approx(7.5));
+  CHECK(linear(0.9) == Approx(5.5));
+  CHECK(linear(1) == Approx(5.0));
+  CHECK(linear(1.1) == Approx(5.0));
+  CHECK(linear(1.5) == Approx(5.0));
+  CHECK(linear(1.9) == Approx(5.0));
+  CHECK(linear(2) == Approx(5.0));
+  CHECK(linear(2.1) == Approx(5.75));
+  CHECK(linear(2.5) == Approx(8.75));
+  CHECK(linear(2.9) == Approx(11.75));
+  CHECK(linear(3) == Approx(12.5));
+  CHECK(linear(3.1) == Approx(13.25));
+  CHECK(linear(3.5) == Approx(16.25));
+  CHECK(linear(3.9) == Approx(19.25));
+  CHECK(linear(4) == Approx(20));
+  CHECK(linear(5) == Approx(27.5));
+  CHECK(linear(6) == Approx(35));
+  CHECK(linear(7) == Approx(42.5));
+
+  Utilities::interpolation monotone_cubic_spline;
+  monotone_cubic_spline.set_points(x,y,true);
+
+  CHECK(monotone_cubic_spline(-1) == Approx(-5));
+  CHECK(monotone_cubic_spline(-0.9) == Approx(-2.15));
+  CHECK(monotone_cubic_spline(-0.7) == Approx(2.65));
+  CHECK(monotone_cubic_spline(-0.5) == Approx(6.25));
+  CHECK(monotone_cubic_spline(-0.3) == Approx(8.65));
+  CHECK(monotone_cubic_spline(-0.1) == Approx(9.85));
+  CHECK(monotone_cubic_spline(0) == Approx(10.0));
+  CHECK(monotone_cubic_spline(0.1) == Approx(9.86));
+  CHECK(monotone_cubic_spline(0.3) == Approx(8.92));
+  CHECK(monotone_cubic_spline(0.5) == Approx(7.5));
+  CHECK(monotone_cubic_spline(0.7) == Approx(6.08));
+  CHECK(monotone_cubic_spline(0.9) == Approx(5.14));
+  CHECK(monotone_cubic_spline(1) == Approx(5.0));
+  CHECK(monotone_cubic_spline(1.1) == Approx(5.0));
+  CHECK(monotone_cubic_spline(1.3) == Approx(5.0));
+  CHECK(monotone_cubic_spline(1.5) == Approx(5.0));
+  CHECK(monotone_cubic_spline(1.7) == Approx(5.0));
+  CHECK(monotone_cubic_spline(1.9) == Approx(5.0));
+  CHECK(monotone_cubic_spline(2) == Approx(5.0));
+  CHECK(monotone_cubic_spline(2.1) == Approx(5.03703125));
+  CHECK(monotone_cubic_spline(2.3) == Approx(5.32484375));
+  CHECK(monotone_cubic_spline(2.5) == Approx(5.87890625));
+  CHECK(monotone_cubic_spline(2.7) == Approx(6.67671875));
+  CHECK(monotone_cubic_spline(2.9) == Approx(7.69578125));
+  CHECK(monotone_cubic_spline(3) == Approx(8.28125));
+  CHECK(monotone_cubic_spline(3.1) == Approx(8.91359375));
+  CHECK(monotone_cubic_spline(3.3) == Approx(10.30765625));
+  CHECK(monotone_cubic_spline(3.5) == Approx(11.85546875));
+  CHECK(monotone_cubic_spline(3.7) == Approx(13.53453125));
+  CHECK(monotone_cubic_spline(3.9) == Approx(15.32234375));
+  CHECK(monotone_cubic_spline(4) == Approx(16.25));
+  CHECK(monotone_cubic_spline(4.5) == Approx(21.11328125));
+  CHECK(monotone_cubic_spline(5) == Approx(26.09375));
+  CHECK(monotone_cubic_spline(5.5) == Approx(30.83984375));
+  CHECK(monotone_cubic_spline(6) == Approx(35));
+  CHECK(monotone_cubic_spline(6.5) == Approx(38.75));
+  CHECK(monotone_cubic_spline(7) == Approx(42.5));
+
+  Utilities::interpolation monotone_cubic_spline2;
+  y[1] = -5;
+  y[3] = -35;
+  monotone_cubic_spline2.set_points(x,y,true);
+  CHECK(monotone_cubic_spline2(-1) == Approx(-35));
+  CHECK(monotone_cubic_spline2(-0.5) == Approx(-1.25));
+  CHECK(monotone_cubic_spline2(0) == Approx(10));
+  CHECK(monotone_cubic_spline2(0.5) == Approx(2.5));
+  CHECK(monotone_cubic_spline2(1) == Approx(-5.0));
+  CHECK(monotone_cubic_spline2(1.5) == Approx(0.0));
+  CHECK(monotone_cubic_spline2(2) == Approx(5.0));
+  CHECK(monotone_cubic_spline2(2.5) == Approx(3.828125));
+  CHECK(monotone_cubic_spline2(3) == Approx(0.625));
+  CHECK(monotone_cubic_spline2(3.5) == Approx(-4.140625));
+  CHECK(monotone_cubic_spline2(4) == Approx(-10));
+  CHECK(monotone_cubic_spline2(4.5) == Approx(-16.484375));
+  CHECK(monotone_cubic_spline2(5) == Approx(-23.125));
+  CHECK(monotone_cubic_spline2(5.5) == Approx(-29.453125));
+  CHECK(monotone_cubic_spline2(6) == Approx(-35.0));
+  CHECK(monotone_cubic_spline2(6.5) == Approx(-40));
+  CHECK(monotone_cubic_spline2(7) == Approx(-45));
+
+  Utilities::interpolation monotone_cubic_spline3;
+  y[0] = 10;
+  y[1] = -5;
+  y[2] = -10;
+  y[3] = -35;
+  monotone_cubic_spline3.set_points(x,y,true);
+  CHECK(monotone_cubic_spline3(-1) == Approx(-27.5));
+  CHECK(monotone_cubic_spline3(-0.5) == Approx(0.625));
+  CHECK(monotone_cubic_spline3(0) == Approx(10.0));
+  CHECK(monotone_cubic_spline3(0.5) == Approx(3.4375));
+  CHECK(monotone_cubic_spline3(1) == Approx(-5.0));
+  CHECK(monotone_cubic_spline3(1.5) == Approx(-7.7272727273));
+  CHECK(monotone_cubic_spline3(2) == Approx(-10.0));
+  CHECK(monotone_cubic_spline3(2.5) == Approx(-12.9074928977));
+  CHECK(monotone_cubic_spline3(3) == Approx(-15.9303977273));
+  CHECK(monotone_cubic_spline3(3.5) == Approx(-19.0420809659));
+  CHECK(monotone_cubic_spline3(4) == Approx(-22.2159090909));
+  CHECK(monotone_cubic_spline3(4.5) == Approx(-25.4252485795));
+  CHECK(monotone_cubic_spline3(5) == Approx(-28.6434659091));
+  CHECK(monotone_cubic_spline3(5.5) == Approx(-31.8439275568));
+  CHECK(monotone_cubic_spline3(6) == Approx(-35.0));
+  CHECK(monotone_cubic_spline3(6.5) == Approx(-38.125));
+  CHECK(monotone_cubic_spline3(7) == Approx(-41.25));
+
+  // bi monotone cubic spline
+  Utilities::interpolation monotone_cubic_spline_x;
+  Utilities::interpolation monotone_cubic_spline_y;
+  x[0] = 0;
+  x[1] = 1;
+  x[2] = 2;
+  x[3] = 3;
+  y[0] = 10;
+  y[1] = 10;
+  y[2] = 5;
+  y[3] = 0;
+  monotone_cubic_spline_x.set_points(x,y,true);
+  y[0] = 0;
+  y[1] = 5;
+  y[2] = 10;
+  y[3] = 10;
+  monotone_cubic_spline_y.set_points(x,y,true);
+
+  CHECK(monotone_cubic_spline_x(0) == Approx(10));
+  CHECK(monotone_cubic_spline_x(0.25) == Approx(10));
+  CHECK(monotone_cubic_spline_x(0.5) == Approx(10));
+  CHECK(monotone_cubic_spline_x(0.75) == Approx(10));
+  CHECK(monotone_cubic_spline_x(1) == Approx(10.0));
+  CHECK(monotone_cubic_spline_x(1.25) == Approx(9.453125));
+  CHECK(monotone_cubic_spline_x(1.5) == Approx(8.125));
+  CHECK(monotone_cubic_spline_x(1.75) == Approx(6.484375));
+  CHECK(monotone_cubic_spline_x(2) == Approx(5.0));
+  CHECK(monotone_cubic_spline_x(2.25) == Approx(3.75));
+  CHECK(monotone_cubic_spline_x(2.5) == Approx(2.5));
+  CHECK(monotone_cubic_spline_x(2.75) == Approx(1.25));
+  CHECK(monotone_cubic_spline_x(3) == Approx(0));
+
+  CHECK(monotone_cubic_spline_y(0) == Approx(0));
+  CHECK(monotone_cubic_spline_y(0.25) == Approx(0.546875));
+  CHECK(monotone_cubic_spline_y(0.5) == Approx(1.875));
+  CHECK(monotone_cubic_spline_y(0.75) == Approx(3.515625));
+  CHECK(monotone_cubic_spline_y(1) == Approx(5.0));
+  CHECK(monotone_cubic_spline_y(1.25) == Approx(6.484375));
+  CHECK(monotone_cubic_spline_y(1.5) == Approx(8.125));
+  CHECK(monotone_cubic_spline_y(1.75) == Approx(9.453125));
+  CHECK(monotone_cubic_spline_y(2) == Approx(10.0));
+  CHECK(monotone_cubic_spline_y(2.25) == Approx(10.0));
+  CHECK(monotone_cubic_spline_y(2.5) == Approx(10.0));
+  CHECK(monotone_cubic_spline_y(2.75) == Approx(10.0));
+  CHECK(monotone_cubic_spline_y(3) == Approx(10.0));
+}
+
 TEST_CASE("WorldBuilder Utilities: Point in polygon")
 {
   std::vector<Point<2> > point_list_4_elements(4, Point<2>(cartesian));

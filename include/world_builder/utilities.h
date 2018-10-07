@@ -275,6 +275,42 @@ namespace WorldBuilder
                                                                    const double start_depth,
                                                                    const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                                                    const bool only_positive);
+
+    /**
+     * Class for linear and monotone spline interpolation
+     */
+    class interpolation
+    {
+      public:
+        /**
+         * Initialize the spline.
+         *
+         * @param x X coordinates of interpolation points.
+         * @param y Values in the interpolation points.
+         * @param monotone_spline Whether to construct a monotone cubic spline or just do linear interpolation.
+         */
+        void set_points(const std::vector<double> &x,
+                        const std::vector<double> &y,
+                        const bool monotone_spline = false);
+        /**
+         * Evaluate at point @p x.
+         */
+        double operator() (double x) const;
+
+      private:
+        /**
+         * x coordinates of points
+         */
+        std::vector<double> m_x;
+
+        /**
+         * interpolation parameters
+         * \[
+         * f(x) = a*(x-x_i)^3 + b*(x-x_i)^2 + c*(x-x_i) + y_i
+         * \]
+         */
+        std::vector<double> m_a, m_b, m_c, m_y;
+    };
   }
 }
 
