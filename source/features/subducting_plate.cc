@@ -47,29 +47,12 @@ namespace WorldBuilder
     void
     SubductingPlate::decare_entries()
     {
+
       Parameters &prm = this->world->parameters;
 
       const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 
-      // Get the name
-      prm.load_entry("name", true, Types::String("","The name which the user has given to the feature."));
-      name = prm.get_string("name");
-
-      // Get the list of coordinates where the subduction zone is located
-      bool set = prm.load_entry("coordinates", true, Types::Array(
-                                  Types::Point<2>(Point<2>(0,0,coordinate_system),"desciption point cross section"),
-                                  "An array of Points representing an array of coordinates where the feature is located."));
-
-      WBAssertThrow(set == true, "A list of coordinates is required for every feature.");
-
-      std::vector<const Types::Point<2>* > typed_coordinates =  prm.get_array<const Types::Point<2> >("coordinates");
-
-      coordinates.resize(typed_coordinates.size(), Point<2>(coordinate_system));
-      for (unsigned int i = 0; i < typed_coordinates.size(); ++i)
-        {
-          coordinates[i] = typed_coordinates[i]->value *
-                           (coordinate_system == CoordinateSystem::spherical ? M_PI / 180.0 : 1.0);
-        }
+      this->declare_interface_entries(prm, coordinate_system);
 
       // Get the reference point
       prm.load_entry("reference point", true, Types::Point<2>(Point<2>(0,0,coordinate_system),
@@ -104,11 +87,11 @@ namespace WorldBuilder
 
 
         maximum_slab_thickness = 0;
-        total_slab_length.resize(typed_coordinates.size());
-        slab_segment_lengths.resize(typed_coordinates.size());
-        slab_segment_thickness.resize(typed_coordinates.size());
-        slab_segment_angles.resize(typed_coordinates.size());
-        for (unsigned int coordinate_i = 0; coordinate_i < typed_coordinates.size(); ++coordinate_i)
+        total_slab_length.resize(original_number_of_coordinates);
+        slab_segment_lengths.resize(original_number_of_coordinates);
+        slab_segment_thickness.resize(original_number_of_coordinates);
+        slab_segment_angles.resize(original_number_of_coordinates);
+        for (unsigned int coordinate_i = 0; coordinate_i < original_number_of_coordinates; ++coordinate_i)
           {
             // todo: remove the next line
             std::vector<const Types::Segment *> &current_segment = all_segments;
@@ -254,13 +237,14 @@ namespace WorldBuilder
                                                          slab_segment_angles,
                                                          starting_radius,
                                                          this->world->parameters.coordinate_system,
-                                                         false);
+                                                         false,
+                                                         one_dimensional_coordinates);
 
           const double distance_from_plane = distance_from_planes["distanceFromPlane"];
           const double distance_along_plane = distance_from_planes["distanceAlongPlane"];
           const double average_angle = distance_from_planes["averageAngle"];
           const double section_fraction = distance_from_planes["sectionFraction"];
-          const unsigned int current_section = distance_from_planes["section"];
+          const unsigned int current_section = one_dimensional_coordinates[distance_from_planes["section"]];
           const unsigned int next_section = current_section + 1;
           const unsigned int current_segment = distance_from_planes["segment"];
           //const unsigned int next_segment = current_segment + 1;
@@ -368,12 +352,13 @@ namespace WorldBuilder
                                                              slab_segment_angles,
                                                              starting_radius,
                                                              this->world->parameters.coordinate_system,
-                                                             false);
+                                                             false,
+                                                             one_dimensional_coordinates);
 
               const double distance_from_plane = distance_from_planes["distanceFromPlane"];
               const double distance_along_plane = distance_from_planes["distanceAlongPlane"];
               const double section_fraction = distance_from_planes["sectionFraction"];
-              const unsigned int current_section = distance_from_planes["section"];
+              const unsigned int current_section = one_dimensional_coordinates[distance_from_planes["section"]];
               const unsigned int next_section = current_section + 1;
               const unsigned int current_segment = distance_from_planes["segment"];
               //const unsigned int next_segment = current_segment + 1;

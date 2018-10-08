@@ -61,6 +61,12 @@ namespace WorldBuilder
         ~Interface();
 
         /**
+         * Declare the entries stored in the interface, which
+         * are the name and coordinates.
+         */
+        void declare_interface_entries(Parameters &prm, const CoordinateSystem coordinate_system);
+
+        /**
          * declare and read in the world builder file into the parameters class
          */
         virtual
@@ -111,9 +117,27 @@ namespace WorldBuilder
         std::string name;
 
         /**
+         * number of original coordinates, before adding
+         * more automatically.
+         */
+        unsigned int original_number_of_coordinates;
+
+        /**
          * The coordinates at the surface of the feature
          */
         std::vector<Point<2> > coordinates;
+
+        /**
+         * A vector of one dimensional coordinates for this feature.
+         * If empty, this variables is interpretated just as
+         * {0,1,2,...,number of coordinates}. It allows for, for example,
+         * adding extra coordinates automatically, and still reference the
+         * user provided coordinates by the original number. Note that no
+         * whole numbers may be skiped. So for a list of 4 points, {0,0.5,1,2}
+         * is allowed, but {0,2,3,4} is not.
+         */
+        std::vector<double> one_dimensional_coordinates;
+
 
         /**
          * The name of the temperature submodule used by this feature.

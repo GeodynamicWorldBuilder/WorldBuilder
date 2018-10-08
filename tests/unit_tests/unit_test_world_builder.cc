@@ -669,11 +669,14 @@ TEST_CASE("WorldBuilder C wrapper")
 
 TEST_CASE("WorldBuilder Coordinate Systems: Interface")
 {
-  CHECK_THROWS_WITH(CoordinateSystems::Interface::create("!not_implemented_coordinate_system!",NULL),
+  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate_spherical.wb";
+  WorldBuilder::World world(file_name);
+
+  CHECK_THROWS_WITH(CoordinateSystems::Interface::create("!not_implemented_coordinate_system!",&world),
                     Contains("Internal error: Plugin with name '!not_implemented_coordinate_system!' is not found. "
                              "The size of factories is "));
 
-  unique_ptr<CoordinateSystems::Interface> interface(CoordinateSystems::Interface::create("cartesian",NULL));
+  unique_ptr<CoordinateSystems::Interface> interface(CoordinateSystems::Interface::create("cartesian",&world));
 
   interface->decare_entries();
 
@@ -1538,6 +1541,168 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.composition(position, 0, 4) == 0.0);
   CHECK(world1.composition(position, 0, 5) == 0.0);
   CHECK(world1.composition(position, 0, 6) == 0.0);
+}
+
+TEST_CASE("WorldBuilder Features: coordinate interpolation")
+{
+  {
+    std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/interpolation_none_cartesian.wb";
+    WorldBuilder::World world1(file_name);
+
+    std::array<double,3> position = {374e3,875e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(150));
+    CHECK(world1.composition(position, 0, 0) == 1.0);
+    position = {376e3,875e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+    CHECK(world1.composition(position, 0, 0) == 0.0);
+
+    position = {375e3,874e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+    CHECK(world1.composition(position, 0, 0) == 0.0);
+    position = {375e3,876e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(150));
+    CHECK(world1.composition(position, 0, 0) == 1.0);
+
+
+    position = {374e3,625e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(150));
+    CHECK(world1.composition(position, 0, 0) == 1.0);
+    position = {376e3,625e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+    CHECK(world1.composition(position, 0, 0) == 0.0);
+
+    position = {375e3,624e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(150));
+    CHECK(world1.composition(position, 0, 0) == 1.0);
+    position = {375e3,626e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+    CHECK(world1.composition(position, 0, 0) == 0.0);
+
+
+    position = {638e3,425e3,0};
+    CHECK(world1.temperature(position, 1e3, 10) == Approx(150));
+    CHECK(world1.composition(position, 1e3, 0) == 1.0);
+    position = {637e3,425e3,0};
+    CHECK(world1.temperature(position, 10, 10) == Approx(1600));
+    CHECK(world1.composition(position, 10, 0) == 0.0);
+
+    position = {625e3,200e3,0};
+    CHECK(world1.temperature(position, 10, 10) == Approx(150));
+    CHECK(world1.composition(position, 10, 0) == 1.0);
+    position = {624e3,200e3,0};
+    CHECK(world1.temperature(position, 10, 10) == Approx(1600));
+    CHECK(world1.composition(position, 10, 0) == 0.0);
+  }
+
+  {
+    std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/interpolation_linear_cartesian.wb";
+    WorldBuilder::World world1(file_name);
+
+    std::array<double,3> position = {374e3,875e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(150));
+    CHECK(world1.composition(position, 0, 0) == 1.0);
+    position = {376e3,875e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+    CHECK(world1.composition(position, 0, 0) == 0.0);
+
+    position = {375e3,874e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+    CHECK(world1.composition(position, 0, 0) == 0.0);
+    position = {375e3,876e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(150));
+    CHECK(world1.composition(position, 0, 0) == 1.0);
+
+
+    position = {374e3,625e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(150));
+    CHECK(world1.composition(position, 0, 0) == 1.0);
+    position = {376e3,625e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+    CHECK(world1.composition(position, 0, 0) == 0.0);
+
+    position = {375e3,624e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(150));
+    CHECK(world1.composition(position, 0, 0) == 1.0);
+    position = {375e3,626e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+    CHECK(world1.composition(position, 0, 0) == 0.0);
+
+
+    position = {638e3,425e3,0};
+    CHECK(world1.temperature(position, 1e3, 10) == Approx(150));
+    CHECK(world1.composition(position, 1e3, 0) == 1.0);
+    position = {637e3,425e3,0};
+    CHECK(world1.temperature(position, 10, 10) == Approx(1600));
+    CHECK(world1.composition(position, 10, 0) == 0.0);
+
+    position = {625e3,200e3,0};
+    CHECK(world1.temperature(position, 10, 10) == Approx(150));
+    CHECK(world1.composition(position, 10, 0) == 1.0);
+    position = {624e3,200e3,0};
+    CHECK(world1.temperature(position, 10, 10) == Approx(1600));
+    CHECK(world1.composition(position, 10, 0) == 0.0);
+  }
+
+  {
+    std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/interpolation_monotone_spline_cartesian.wb";
+    WorldBuilder::World world1(file_name);
+
+    std::array<double,3> position = {374e3,875e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+    CHECK(world1.composition(position, 0, 0) == 0.0);
+    position = {376e3,875e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+    CHECK(world1.composition(position, 0, 0) == 0.0);
+    position = {350e3,900e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(150));
+    CHECK(world1.composition(position, 0, 0) == 1.0);
+
+    position = {375e3,874e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+    CHECK(world1.composition(position, 0, 0) == 0.0);
+    position = {375e3,876e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+    CHECK(world1.composition(position, 0, 0) == 0.0);
+
+
+    position = {374e3,625e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+    CHECK(world1.composition(position, 0, 0) == 0.0);
+    position = {376e3,625e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+    CHECK(world1.composition(position, 0, 0) == 0.0);
+    position = {350e3,600e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(150));
+    CHECK(world1.composition(position, 0, 0) == 1.0);
+
+    position = {375e3,624e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+    CHECK(world1.composition(position, 0, 0) == 0.0);
+    position = {375e3,626e3,0};
+    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+    CHECK(world1.composition(position, 0, 0) == 0.0);
+
+
+    position = {638e3,425e3,0};
+    CHECK(world1.temperature(position, 10, 10) == Approx(1600));
+    CHECK(world1.composition(position, 10, 0) == 0.0);
+    position = {637e3,425e3,0};
+    CHECK(world1.temperature(position, 10, 10) == Approx(1600));
+    CHECK(world1.composition(position, 10, 0) == 0.0);
+    position = {617.5e3,445e3,0};
+    CHECK(world1.temperature(position, 1e3, 10) == Approx(150));
+    CHECK(world1.composition(position, 1e3, 0) == 1.0);
+
+    position = {625e3,200e3,0};
+    CHECK(world1.temperature(position, 10, 10) == Approx(1600));
+    CHECK(world1.composition(position, 10, 0) == 0.0);
+    position = {624e3,200e3,0};
+    CHECK(world1.temperature(position, 10, 10) == Approx(1600));
+    CHECK(world1.composition(position, 10, 0) == 0.0);
+    position = {607e3,180e3,0};
+    CHECK(world1.temperature(position, 3e3, 10) == Approx(150));
+    CHECK(world1.composition(position, 3e3, 0) == 1.0);
+  }
 }
 
 TEST_CASE("WorldBuilder Types: Double")
@@ -2623,7 +2788,7 @@ TEST_CASE("WorldBuilder Parameters")
 
 }
 
-TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes cartesian")
+TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes cartesian part 1")
 {
   std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::Interface::create("cartesian", NULL);;
 
@@ -3322,7 +3487,40 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0));
+}
 
+TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes cartesian part 2")
+{
+  std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::Interface::create("cartesian", NULL);;
+
+  cartesian_system->decare_entries();
+
+  Point<3> position(10,0,0,cartesian);
+  Point<2> reference_point(0,0,cartesian);
+
+  std::vector<Point<2> > coordinates;
+  coordinates.push_back(Point<2>(0,10,cartesian));
+  coordinates.push_back(Point<2>(20,10,cartesian));
+  coordinates.push_back(Point<2>(30,10,cartesian));
+
+  std::vector<std::vector<double> > slab_segment_lengths(3);
+  slab_segment_lengths[0].push_back(std::sqrt(10*10+10*10));
+  slab_segment_lengths[0].push_back(200);
+  slab_segment_lengths[1].push_back(std::sqrt(10*10+10*10));
+  slab_segment_lengths[1].push_back(200);
+  slab_segment_lengths[2].push_back(std::sqrt(10*10+10*10));
+  slab_segment_lengths[2].push_back(200);
+
+  double dtr = M_PI/180;
+  std::vector<std::vector<Point<2> > > slab_segment_angles(3);
+  slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
+  slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
+  slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
+  slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
+  slab_segment_angles[2].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
+  slab_segment_angles[2].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
+
+  double starting_radius = 10;
   // Now test the curves into the depth
   // curve test 1
 
@@ -3351,7 +3549,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[1] = 0;
   position[2] = 0;
 
-  distance_from_planes =
+  std::map<std::string,double> distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  reference_point,
                                                  coordinates,
