@@ -526,9 +526,20 @@ namespace WorldBuilder
                                       const std::vector<std::vector<Point<2> > > &plane_segment_angles,
                                       const double start_radius,
                                       const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
-                                      const bool only_positive)
+                                      const bool only_positive,
+                                      std::vector<double> global_x_list)
     {
       // TODO: Assert that point_list, plane_segment_angles and plane_segment_lenghts have the same size.
+      if (global_x_list.size() == 0)
+        {
+          // fill it
+          global_x_list.resize(point_list.size());
+          for (unsigned int i = 0; i < point_list.size(); ++i)
+            global_x_list[i] = i;
+        }
+      WBAssertThrow(global_x_list.size() == point_list.size(), "The given global_x_list doesn't have "
+                    "the same size as the point list. This is required.");
+
       double distance = INFINITY;
       double new_distance = NaN::DSNAN;
       double along_plane_distance = INFINITY;
@@ -599,16 +610,23 @@ namespace WorldBuilder
           // compute what fraction of the distance between P1 and P2 the
           // closest point lies.
           const Point<2> P1CPL = closest_point_on_line_2d - P1;
-          const double fraction_CPL_P1P2 = (P1CPL * P1P2 <= 0 ? -1.0 : 1.0) * (1 - (P1P2.norm() - P1CPL.norm()) / P1P2.norm());
 
+          // This determines where the check point is between the coordinates
+          // in the coordinate list.
+          const double fraction_CPL_P1P2_strict = (P1CPL * P1P2 <= 0 ? -1.0 : 1.0)
+                                                  * (1 - (P1P2.norm() - P1CPL.norm()) / P1P2.norm());
 
           // If the point on the line does not lay between point P1 and P2
           // then ignore it. Otherwise continue.
-          if (fraction_CPL_P1P2 >= 0 && fraction_CPL_P1P2 <= 1.0)
+          if (fraction_CPL_P1P2_strict >= 0 && fraction_CPL_P1P2_strict <= 1.0)
             {
+              // now figure out where the point is in relation with the user
+              // defined coordinates
+              const double fraction_CPL_P1P2 = global_x_list[i_section] - (int)global_x_list[i_section]
+                                               + (global_x_list[i_section+1]-global_x_list[i_section]) * fraction_CPL_P1P2_strict;
+
               const Point<2> unit_normal_to_plane_spherical = P1P2 / P1P2.norm();
               const Point<2> closest_point_on_line_plus_normal_to_plane_spherical = closest_point_on_line_2d + 1e-8 * (closest_point_on_line_2d.norm() > 1.0 ? closest_point_on_line_2d.norm() : 1.0) * unit_normal_to_plane_spherical;
-              //const Point<3> normal_to_plane_spherical_unit = normal_to_plane_spherical / normal_to_plane_spherical.norm();
 
               WBAssert(closest_point_on_line_plus_normal_to_plane_spherical.norm() != 0.0,
                        "Internal error: The norm of variable 'closest_point_on_line_plus_normal_to_plane_spherical' "
@@ -847,10 +865,15 @@ namespace WorldBuilder
                       double check_point_angle = CPCR_norm == 0 ? 2.0 * M_PI : (check_point_2d[0] <= center_circle[0]
                                                                                 ? std::acos(dot_product/(CPCR_norm * radius_angle_circle))
                                                                                 : 2.0 * M_PI - std::acos(dot_product/(CPCR_norm * radius_angle_circle)));
-                      check_point_angle = difference_in_angle_along_segment > 0 ? M_PI - check_point_angle : 2.0 * M_PI - check_point_angle;
+                      check_point_angle = difference_in_angle_along_segment >= 0 ? M_PI - check_point_angle : 2.0 * M_PI - check_point_angle;
 
-                      if ((difference_in_angle_along_segment > 0 && check_point_angle <= interpolated_angle_top && check_point_angle >= interpolated_angle_bottom)
-                          || (difference_in_angle_along_segment < 0 && check_point_angle >= interpolated_angle_top && check_point_angle <= interpolated_angle_bottom))
+                      // In the case that it is exactly 2 * pi, bring it back to zero
+                      check_point_angle = (std::fabs(check_point_angle - 2 * M_PI) < 1e-14 ? 0 : check_point_angle);
+
+                      if ((difference_in_angle_along_segment > 0 && (check_point_angle <= interpolated_angle_top || std::fabs(check_point_angle - interpolated_angle_top) < 1e-12)
+                           && (check_point_angle >= interpolated_angle_bottom || std::fabs(check_point_angle - interpolated_angle_bottom) < 1e-12))
+                          || (difference_in_angle_along_segment < 0 && (check_point_angle >= interpolated_angle_top || std::fabs(check_point_angle - interpolated_angle_top) < 1e-12)
+                              && (check_point_angle <= interpolated_angle_bottom || std::fabs(check_point_angle - interpolated_angle_bottom) < 1e-12)))
                         {
                           new_distance = (radius_angle_circle - CPCR_norm) * (difference_in_angle_along_segment < 0 ? 1 : -1);
                           new_along_plane_distance = (radius_angle_circle * check_point_angle - radius_angle_circle * interpolated_angle_top) * (difference_in_angle_along_segment < 0 ? 1 : -1);
@@ -863,7 +886,7 @@ namespace WorldBuilder
                   // up to now. To do this we first look whether the point falls
                   // within the bound of the segment and if it is actually closer.
                   // TODO: find out whether the fabs() are needed.
-                  if (new_along_plane_distance >= 0 &&
+                  if (new_along_plane_distance >= -1e-10 &&
                       new_along_plane_distance <= std::fabs(interpolated_segment_length) &&
                       std::fabs(distance) > std::fabs(new_distance))
                     {

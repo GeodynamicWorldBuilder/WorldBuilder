@@ -266,6 +266,13 @@ namespace WorldBuilder
      * plane should count as distance or both sides of the plane. It is called only_positive
      * because the area below the plane, the distance is positve, and above the plane the
      * distance is negative.
+     * \param global_x_list This is a list of one dimensional coorindates, with zero or the
+     * amount of coordinates entries, used for interpolation. An empty list is interpretated
+     * as a list filled with {0,1,2,...,number of coordinates}. Filling this list with other
+     * values changes the returned section fraction. It allows for, for example, adding
+     * extra coordinates automatically, and still reference the user provided coordinates by
+     * the original number. Note that no whole numbers may be skiped. So for a list of 4 points,
+     * {0,0.5,1,2} is allowed, but {0,2,3,4} is not.
      */
     std::map<std::string,double> distance_point_from_curved_planes(const Point<3> &point,
                                                                    const Point<2> &reference_point,
@@ -274,7 +281,8 @@ namespace WorldBuilder
                                                                    const std::vector<std::vector<Point<2> > > &plane_segment_angles,
                                                                    const double start_depth,
                                                                    const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
-                                                                   const bool only_positive);
+                                                                   const bool only_positive,
+                                                                   std::vector<double> global_x_list = {});
 
     /**
      * Class for linear and monotone spline interpolation
