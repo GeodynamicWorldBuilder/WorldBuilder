@@ -90,6 +90,15 @@ namespace WorldBuilder
     prm.load_entry("surface rotation point", false,
                    Types::Point<2>(Point<2>(0,0, coordinate_system), "The point where should be rotated around."));
 
+    /**
+     * Model descretisation parameters.
+     */
+    prm.load_entry("minimum points per distance", false,
+                   Types::Double(std::numeric_limits<double>::max(),"This enforces that there is at least every distance interval"
+                                 "(in degree for spherical coordinates or meter in cartesian coordinates) a point."));
+    prm.load_entry("interpolation", false,
+                   Types::String("none", "What type of interpolation should be used to enforce the minimum points per "
+                                 "distance parameter. Options are none, linear and monotone spline."));
 
 
     bool set = prm.load_entry("cross section", false,

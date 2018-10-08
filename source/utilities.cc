@@ -584,6 +584,9 @@ namespace WorldBuilder
         {
           const double current_section = i_section;
           const double next_section = i_section+1;
+          // translate to orignal coordinates current and next section
+          const double original_current_section = std::floor(global_x_list[i_section]);
+          const double original_next_section = original_current_section + 1;
           // see on what side the line P1P2 reference point is. This is based on the determinant
           const double reference_on_side_of_line = (point_list[next_section][0] - point_list[current_section][0])
                                                    * (reference_point[1] - point_list[current_section][1])
@@ -696,7 +699,7 @@ namespace WorldBuilder
               double total_length = 0.0;
               double add_angle = 0.0;
               double average_angle = 0.0;
-              for (unsigned int i_segment = 0; i_segment < plane_segment_lengths[current_section].size(); i_segment++)
+              for (unsigned int i_segment = 0; i_segment < plane_segment_lengths[original_current_section].size(); i_segment++)
                 {
                   const double current_segment = i_segment;
 
@@ -712,20 +715,20 @@ namespace WorldBuilder
                   // This interpolates different properties between P1 and P2 (the
                   // points of the plane at the surface)
                   const double degree_90_to_rad = 0.5 * M_PI;
-                  const double interpolated_angle_top    = plane_segment_angles[current_section][current_segment][0]
-                                                           + fraction_CPL_P1P2 * (plane_segment_angles[next_section][current_segment][0]
-                                                                                  - plane_segment_angles[current_section][current_segment][0])
+                  const double interpolated_angle_top    = plane_segment_angles[original_current_section][current_segment][0]
+                                                           + fraction_CPL_P1P2 * (plane_segment_angles[original_next_section][current_segment][0]
+                                                                                  - plane_segment_angles[original_current_section][current_segment][0])
                                                            + add_angle;
 
-                  const double interpolated_angle_bottom = plane_segment_angles[current_section][current_segment][1]
-                                                           + fraction_CPL_P1P2 * (plane_segment_angles[next_section][current_segment][1]
-                                                                                  - plane_segment_angles[current_section][current_segment][1])
+                  const double interpolated_angle_bottom = plane_segment_angles[original_current_section][current_segment][1]
+                                                           + fraction_CPL_P1P2 * (plane_segment_angles[original_next_section][current_segment][1]
+                                                                                  - plane_segment_angles[original_current_section][current_segment][1])
                                                            + add_angle;
 
 
-                  double interpolated_segment_length     = plane_segment_lengths[current_section][current_segment]
-                                                           + fraction_CPL_P1P2 * (plane_segment_lengths[next_section][current_segment]
-                                                                                  - plane_segment_lengths[current_section][current_segment]);
+                  double interpolated_segment_length     = plane_segment_lengths[original_current_section][current_segment]
+                                                           + fraction_CPL_P1P2 * (plane_segment_lengths[original_next_section][current_segment]
+                                                                                  - plane_segment_lengths[original_current_section][current_segment]);
 
                   // We want to know where the end point of this segment is (and
                   // the start of the next segment). There are two cases which we
