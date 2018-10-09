@@ -705,11 +705,11 @@ namespace WorldBuilder
 
                   // compute the angle between the the previous begin and end if
                   // the depth method is angle_at_begin_segment_with_surface.
-                  if (depth_method == DepthMethod::angle_at_begin_segment_with_surface)
+                  if (i_segment != 0 && depth_method == DepthMethod::angle_at_begin_segment_with_surface)
                     {
-                      const double add_angle_inner = begin_segment * end_segment / (begin_segment.norm() * end_segment.norm());
+                      const double add_angle_inner = (begin_segment * end_segment) / (begin_segment.norm() * end_segment.norm());
 
-                      WBAssert(!std::isnan(add_angle),
+                      WBAssert(!std::isnan(add_angle_inner),
                                "Internal error: The add_angle_inner variable is not a number: " << add_angle_inner
                                << ". Variables: begin_segment = " << begin_segment[0] << ":" << begin_segment[1]
                                << ", end_segment = " << end_segment[0] << ":" << end_segment[1]
@@ -718,24 +718,14 @@ namespace WorldBuilder
                                << ".");
 
                       // there could be round of error problems here is the inner part is close to one
-                      if (add_angle_inner <= 1)
-                        {
-                          add_angle += std::acos(add_angle_inner);
-                        }
-                      else if (add_angle_inner-1.0 < 1e-14)
-                        {
-                          /**
-                           * The inner part of the acos is very close to one, so it is safe to set it to one.
-                           * This means we should do: add_angle += std::acos(1.0), which is add_angle += 0,
-                           * so do nothing
-                           */
-                        }
-                      else
-                        {
-                          WBAssert(add_angle_inner >= 0,
-                                   "Internal error: The variable add_angle_inner is smaller than zero, which causes "
-                                   "the std::acos to return nan.");
-                        }
+                      WBAssert(add_angle_inner >= 0 && add_angle_inner <= 1,
+                               "Internal error: The variable add_angle_inner is smaller than zero or larger then one,"
+                               "which causes the std::acos to return nan. If it is only a little bit larger then one, "
+                               "this is probably caused by that begin and end segment are the same and round off error. "
+                               "The value of add_angle_inner = " << add_angle_inner);
+
+                      add_angle += std::acos(add_angle_inner);
+
                       WBAssert(!std::isnan(add_angle),
                                "Internal error: The add_angle variable is not a number: " << add_angle
                                << ". Variables: begin_segment = " << begin_segment[0] << ":" << begin_segment[1]
