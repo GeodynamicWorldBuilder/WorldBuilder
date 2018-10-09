@@ -705,10 +705,39 @@ namespace WorldBuilder
 
                   // compute the angle between the the previous begin and end if
                   // the depth method is angle_at_begin_segment_with_surface.
-                  if (depth_method == DepthMethod::angle_at_begin_segment_with_surface)
+                  if (i_segment != 0 && depth_method == DepthMethod::angle_at_begin_segment_with_surface)
                     {
-                      add_angle += std::acos(begin_segment * end_segment / (begin_segment.norm() * end_segment.norm()));
+                      const double add_angle_inner = (begin_segment * end_segment) / (begin_segment.norm() * end_segment.norm());
+
+                      WBAssert(!std::isnan(add_angle_inner),
+                               "Internal error: The add_angle_inner variable is not a number: " << add_angle_inner
+                               << ". Variables: begin_segment = " << begin_segment[0] << ":" << begin_segment[1]
+                               << ", end_segment = " << end_segment[0] << ":" << end_segment[1]
+                               << ", begin_segment * end_segment / (begin_segment.norm() * end_segment.norm()) = "
+                               << std::setprecision(32) << begin_segment * end_segment / (begin_segment.norm() * end_segment.norm())
+                               << ".");
+
+                      // there could be round of error problems here is the inner part is close to one
+                      WBAssert(add_angle_inner >= 0 && add_angle_inner <= 1,
+                               "Internal error: The variable add_angle_inner is smaller than zero or larger then one,"
+                               "which causes the std::acos to return nan. If it is only a little bit larger then one, "
+                               "this is probably caused by that begin and end segment are the same and round off error. "
+                               "The value of add_angle_inner = " << add_angle_inner);
+
+                      add_angle += std::acos(add_angle_inner);
+
+                      WBAssert(!std::isnan(add_angle),
+                               "Internal error: The add_angle variable is not a number: " << add_angle
+                               << ". Variables: begin_segment = " << begin_segment[0] << ":" << begin_segment[1]
+                               << ", end_segment = " << end_segment[0] << ":" << end_segment[1]
+                               << ", begin_segment * end_segment / (begin_segment.norm() * end_segment.norm()) = "
+                               << std::setprecision(32) << begin_segment * end_segment / (begin_segment.norm() * end_segment.norm())
+                               << ", std::acos(begin_segment * end_segment / (begin_segment.norm() * end_segment.norm())) = "
+                               << std::acos(begin_segment * end_segment / (begin_segment.norm() * end_segment.norm())));
                     }
+
+
+
 
                   begin_segment = end_segment;
 
@@ -729,6 +758,8 @@ namespace WorldBuilder
                   double interpolated_segment_length     = plane_segment_lengths[original_current_section][current_segment]
                                                            + fraction_CPL_P1P2 * (plane_segment_lengths[original_next_section][current_segment]
                                                                                   - plane_segment_lengths[original_current_section][current_segment]);
+                  WBAssert(!std::isnan(interpolated_angle_top),
+                           "Internal error: The interpolated_angle_top variable is not a number: " << interpolated_angle_top);
 
                   // We want to know where the end point of this segment is (and
                   // the start of the next segment). There are two cases which we
@@ -803,15 +834,22 @@ namespace WorldBuilder
                         {
                           double tan_angle_top = std::tan(interpolated_angle_top);
 
+                          WBAssert(!std::isnan(tan_angle_top),
+                                   "Internal error: The tan_angle_top variable is not a number: " << tan_angle_top);
                           const double center_circle_y = difference_in_angle_along_segment < 0 ?
                                                          begin_segment[1] - radius_angle_circle * cos_angle_top
                                                          : begin_segment[1] + radius_angle_circle * cos_angle_top;
 
+                          WBAssert(!std::isnan(center_circle_y),
+                                   "Internal error: The center_circle_y variable is not a number: " << center_circle_y);
 
                           // to prevent round off errors becomming dominant, we check
                           // whether center_circle_y - begin_segment[1] should be zero.
                           // TODO: improve this to some kind of relative difference.
                           const double CCYBS = center_circle_y - begin_segment[1];
+
+                          WBAssert(!std::isnan(CCYBS),
+                                   "Internal error: The CCYBS variable is not a number: " << CCYBS);
 
 
 
@@ -819,6 +857,8 @@ namespace WorldBuilder
                           center_circle[1] = center_circle_y;
                         }
 
+                      WBAssert(!std::isnan(center_circle[0]) || !std::isnan(center_circle[1]),
+                               "Internal error: The center variable contains not a number: " << center_circle[0] << ":" << center_circle[0]);
                       WBAssert(std::fabs((begin_segment-center_circle).norm() - std::fabs(radius_angle_circle))
                                < 1e-8 * std::fabs((begin_segment-center_circle).norm() + std::fabs(radius_angle_circle)),
                                "Internal error: The center of the circle is not a radius away from the begin point. " << std::endl
