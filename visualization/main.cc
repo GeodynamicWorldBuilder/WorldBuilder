@@ -131,11 +131,14 @@ int main(int argc, char **argv)
   double z_min = NaN::DSNAN; // z or inner_radius
   double z_max = NaN::DSNAN; // z or outer_radius
 
+  unsigned int number_of_threads = 1;
+
   try
     {
       po::options_description desc("Allowed options");
       desc.add_options()
       ("help", "produce help message")
+      ("j,j", po::value<unsigned int>(), "the number of threads the visualizer is allowed to use.")
       ("files", po::value<std::vector<std::string> >(), "list of files, starting with the World Builder "
        "file and data file(s) after it.");
 
@@ -150,14 +153,19 @@ int main(int argc, char **argv)
         {
           std::cout << std::endl << "TODO: Write description how to use this." << std::endl << std::endl;
           std::cout << desc << "\n";
-          //return 0;
+          return 0;
+        }
+
+      if (vm.count("j"))
+        {
+          number_of_threads = vm["j"].as<unsigned int>();
         }
 
       if (!vm.count("files"))
         {
           std::cout << "Error: There where no files passed to the World Builder, use --help for more " << std::endl
                     << "information on how  to use the World Builder app." << std::endl;
-          //return 0;
+          return 1;
         }
 
       std::vector<std::string> file_names = vm["files"].as<std::vector<std::string> >();
@@ -166,7 +174,7 @@ int main(int argc, char **argv)
         {
           std::cout << "Error:  The World Builder app requires at least two files, a World Builder file " << std::endl
                     << "and a data file to convert." << std::endl;
-          //return 0;
+          return 1;
         }
 
       wb_file = file_names[0];
@@ -216,27 +224,11 @@ int main(int argc, char **argv)
    */
   std::cout << "[3/5] Reading grid file...                        \r";
   std::cout.flush();
+
   // if config file is available, parse it
-  /*  if(config_file != "")
-      {
-        // Get world builder file and check wether it exists
-        WBAssertThrow(access( config_file.c_str(), F_OK ) != -1,
-            "Could not find the provided convig file at the specified location: " + config_file);
+  WBAssertThrow(access( data_file.c_str(), F_OK ) != -1,
+                "Could not find the provided convig file at the specified location: " + data_file);
 
-
-        // Now read in the world builder file into a file stream and
-        // put it into a boost property tree.
-        //std::ifstream json_input_stream(config_file.c_str());
-        ptree tree;
-        tree.read_json(config_file, tree);
-
-        if(boost::optional<unsigned int> value = tree.get_optional<unsigned int>("dim"))
-            dim = value.get();
-
-        if(boost::optional<unsigned int> value = tree.get_optional<unsigned int>("compositions"))
-            compositions = value.get();
-
-      }*/
   std::string line;
   std::ifstream data_stream(data_file);
 
@@ -308,17 +300,6 @@ int main(int argc, char **argv)
   /**
    * All variables set by the user
    */
-
-
-
-  /*// cartesian
-  double x_min = 0e3;  // x or long
-  double x_max = 100e3;  // x or long
-  double y_min = 0e3; // y or lat
-  double y_max = 110e3; // y or lat
-  double z_min = 40e3; // z or inner_radius
-  double z_max = 120e3; // z or outer_radius
-  // */
 
   if (grid_type == "sphere")
     WBAssert(n_cell_x == n_cell_y, "For the sphere grid the amount of cells in the x (long) and y (lat) direction have to be the same.");
@@ -1279,26 +1260,35 @@ int main(int argc, char **argv)
   myfile << "</DataArray>" << std::endl;
 
 
-  std::cout << "[5/5] Writing the paraview file: stage 2 of 3, writing temperatures                    \r";
+  std::cout << "[5/5] Writing the paraview file: stage 2 of 3, computing temperatures                    \r";
   std::cout.flush();
 
   myfile << "    <DataArray type=\"Float32\" Name=\"Temperature\" format=\"ascii\">" << std::endl;
+  std::vector<double> temp_vector(n_p);
   if (dim == 2)
     {
+      #pragma omp parallel for num_threads(number_of_threads)
       for (unsigned int i = 0; i < n_p; ++i)
         {
           std::array<double,2> coords = {grid_x[i], grid_z[i]};
-          myfile <<  world->temperature(coords, grid_depth[i], gravity) << std::endl;
+          temp_vector[i] = world->temperature(coords, grid_depth[i], gravity);
         }
     }
   else
     {
+      #pragma omp parallel for num_threads(number_of_threads)
       for (unsigned int i = 0; i < n_p; ++i)
         {
           std::array<double,3> coords = {grid_x[i], grid_y[i], grid_z[i]};
-          myfile <<  world->temperature(coords, grid_depth[i], gravity) << std::endl;
+          temp_vector[i] = world->temperature(coords, grid_depth[i], gravity);
         }
     }
+
+  std::cout << "[5/5] Writing the paraview file: stage 2 of 3, writing temperatures                    \r";
+  std::cout.flush();
+
+  for (unsigned int i = 0; i < n_p; ++i)
+    myfile << temp_vector[i]  << std::endl;
   myfile << "    </DataArray>" << std::endl;
 
 
@@ -1307,26 +1297,38 @@ int main(int argc, char **argv)
 
   for (unsigned int c = 0; c < compositions; ++c)
     {
-      std::cout << "[5/5] Writing the paraview file: stage 2 of 3, writing composition "
-                << c << " of " << compositions << "            \r";
+      std::cout << "[5/5] Writing the paraview file: stage 2 of 3, computing composition "
+                << c << " of " << compositions-1 << "            \r";
       std::cout.flush();
+
       myfile << "<DataArray type=\"Float32\" Name=\"Composition " << c << "\" Format=\"ascii\">" << std::endl;
       if (dim == 2)
         {
+          #pragma omp parallel for num_threads(number_of_threads)
           for (unsigned int i = 0; i < n_p; ++i)
             {
               std::array<double,2> coords = {grid_x[i], grid_z[i]};
-              myfile <<  world->composition(coords, grid_depth[i], c) << std::endl;
+              temp_vector[i] =  world->composition(coords, grid_depth[i], c);
             }
         }
       else
         {
+          #pragma omp parallel for num_threads(number_of_threads)
           for (unsigned int i = 0; i < n_p; ++i)
             {
               std::array<double,3> coords = {grid_x[i], grid_y[i], grid_z[i]};
-              myfile <<  world->composition(coords, grid_depth[i], c) << std::endl;
+              temp_vector[i] =  world->composition(coords, grid_depth[i], c);
             }
         }
+
+
+      std::cout << "[5/5] Writing the paraview file: stage 2 of 3, writing composition "
+                << c << " of " << compositions-1 << "            \r";
+      std::cout.flush();
+
+      for (unsigned int i = 0; i < n_p; ++i)
+        myfile << temp_vector[i]  << std::endl;
+
       myfile << "</DataArray>" << std::endl;
     }
 
@@ -1336,76 +1338,6 @@ int main(int argc, char **argv)
   myfile << " </Piece>" << std::endl;
   myfile << " </UnstructuredGrid>" << std::endl;
   myfile << "</VTKFile>" << std::endl;
-  /*
-  switch(dim)
-  {
-  case 2:
-    // set the header
-    std::cout << "# x z d T ";
-
-    for(unsigned int c = 0; c < compositions; ++c)
-      std::cout << "c" << c << " ";
-
-    std::cout <<std::endl;
-
-    // set the values
-    for(unsigned int i = 0; i < data.size(); ++i)
-      if(data[i][0] != "#")
-      {
-
-        WBAssertThrow(data[i].size() == dim + 2, "The file needs to contain dim + 2 entries, but contains " << data[i].size() << " entries "
-            " on line " << i+1 << " of the data file.  Dim is " << dim << ".");
-
-        std::array<double,2> coords = {string_to_double(data[i][0]),
-            string_to_double(data[i][1])};
-        std::cout << data[i][0] << " " << data[i][1] << " " << data[i][2] << " " << data[i][3] << " ";
-        //std::cout << world->temperature(coords, string_to_double(data[i][2]), string_to_double(data[i][3]))  << " ";
-
-        for(unsigned int c = 0; c < compositions; ++c)
-        {
-          //std::cout << world->composition(coords, string_to_double(data[i][2]), c)  << " ";
-        }
-        std::cout << std::endl;
-
-      }
-    break;
-  case 3:
-    // set the header
-    std::cout << "# x y z d T ";
-
-    for(unsigned int c = 0; c < compositions; ++c)
-      std::cout << "c" << c << " ";
-
-    std::cout <<std::endl;
-
-    // set the values
-    for(unsigned int i = 0; i < data.size(); ++i)
-      if(data[i][0] != "#")
-      {
-        WBAssertThrow(data[i].size() == dim + 2, "The file needs to contain dim + 2 entries, but contains " << data[i].size() << " entries "
-            " on line " << i+1 << " of the data file. Dim is " << dim << ".");
-        std::array<double,3> coords = {string_to_double(data[i][0]),
-            string_to_double(data[i][1]),
-            string_to_double(data[i][3])};
-
-        std::cout << data[i][0] << " " << data[i][1] << " " << data[i][2] << " " << data[i][3] << " " << data[i][4] << " ";
-        //std::cout << world->temperature(coords, string_to_double(data[i][3]), string_to_double(data[i][4]))  << " ";
-
-        for(unsigned int c = 0; c < compositions; ++c)
-        {
-          //std::cout << world->composition(coords, string_to_double(data[i][3]), c)  << " ";
-        }
-        std::cout << std::endl;
-
-      }
-    break;
-  default:
-    std::cout << "The World Builder can only be run in 2d and 3d but a different space dimension " << std::endl
-    << "is given: dim = " << dim << ".";
-    return 0;
-  }
-   */
-
 
   std::cout << "                                                                                \r";
   std::cout.flush();
