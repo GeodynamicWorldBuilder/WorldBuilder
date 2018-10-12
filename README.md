@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/GeodynamicWorldBuilder/WorldBuilder.svg?branch=master)](https://travis-ci.org/GeodynamicWorldBuilder/WorldBuilder)
+[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/8amaw31qwwlo33vs?svg=true)](https://ci.appveyor.com/project/MFraters/worldbuilder)
+[![Travis CI Build Status](https://travis-ci.org/GeodynamicWorldBuilder/WorldBuilder.svg?branch=master)](https://travis-ci.org/GeodynamicWorldBuilder/WorldBuilder)
 [![Coverage Status](https://coveralls.io/repos/github/GeodynamicWorldBuilder/WorldBuilder/badge.svg?branch=master)](https://coveralls.io/github/GeodynamicWorldBuilder/WorldBuilder?branch=master)
 
 What is the World Builder?
