@@ -6,6 +6,7 @@ before_install:
   - |
     (
       if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
+        pwd
         print ~/.bashrc
         choco install msys2 
         source ~/.bashrc
@@ -21,18 +22,16 @@ before_install:
         source ~/.bashrc
       else
         eval "${MATRIX_EVAL}"
+        echo $MATRIX_EVAL
+        echo $CC
+        echo $CXX
+        echo $FC
+        gcc --version
+        gcov --version
+       gfortran --version
       fi
     )
-  - echo $MATRIX_EVAL
-  - echo $CC
-  - echo $CXX
-  - echo $FC
-  - gcc --version
-  - gcov --version
 script:
-  - gcc --version
-  - gcov --version
-  - gfortran --version
   - cmake . $CMAKE_EXTRA_ARGS 
   - make -j 2
   - ctest -VV
