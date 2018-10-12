@@ -6,23 +6,19 @@ before_install:
   - |
     (
       if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
-        title=test
-        tasklist /v /fo csv | findstr /i "test"
+        print ~/.bashrc
         choco install msys2 
-        refreshenv
+        source ~/.bashrc
       fi
     )
   - |
     (
     if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
         pacman --noconfirm -Syu 
-        refreshenv
         pacman -S mingw-w64-x86_64-toolchain 
-        refreshenv
         pacman --noconfirm -S dos2unix 
-        refreshenv
         pacman --noconfirm -S mingw-w64-x86_64-boost   
-        refreshenv
+        source ~/.bashrc
       else
         eval "${MATRIX_EVAL}"
       fi
