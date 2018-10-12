@@ -16,13 +16,13 @@ foreach(test_source ${UNIT_TEST_SOURCES})
 
 	# Move testing binaries into a testBin directory
         set_target_properties(${test_name} PROPERTIES
-            RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR}/bin/unit_tests/)
+            RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR}/bin/)
 
         #Finally add it to test execution -
         #Notice the WORKING_DIRECTORY and COMMAND
         add_test(NAME ${test_name}
-                 WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/unit_tests/
-		 COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/unit_tests/${test_name})
+                 WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+		 COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${test_name})
 endforeach(test_source)
 
 # App testing
