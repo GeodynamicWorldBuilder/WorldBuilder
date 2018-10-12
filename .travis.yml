@@ -3,19 +3,29 @@ sudo: false
 dist: trusty
 before_install:
   - echo ${CMAKE_EXTRA_ARGS}
-  - eval "${MATRIX_EVAL}"
-  - echo ${MATRIX_EVAL}
-  - echo ${CC}
-  - echo ${CXX}
-  - echo ${FC}
-  - pip install --user cpp-coveralls
+  - |
+    (
+      if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
+        choco install msys2 
+        pacman --noconfirm -Syu 
+        pacman -S mingw-w64-x86_64-toolchain 
+        pacman --noconfirm -S dos2unix 
+        pacman --noconfirm -S mingw-w64-x86_64-boost   
+      else
+        eval "${MATRIX_EVAL}"
+      fi
+    )
+  - echo $MATRIX_EVAL
+  - echo $CC
+  - echo $CXX
+  - echo $FC
   - gcc --version
   - gcov --version
 script:
   - gcc --version
   - gcov --version
   - gfortran --version
-  - cmake . ${CMAKE_EXTRA_ARGS} 
+  - cmake . $CMAKE_EXTRA_ARGS 
   - make -j 2
   - ctest -VV
 after_success:
