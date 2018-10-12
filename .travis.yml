@@ -1,36 +1,99 @@
-language: c++
-sudo: true
-compiler:
-  - g++-4.9
-
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - gcc-6
-      - g++-6
-      - gfortran-6
-      - cmake
-      - libboost-program-options-dev
-      - libboost-test-dev
-
+language: cpp
+sudo: false
+dist: trusty
 before_install:
+  - echo ${CMAKE_EXTRA_ARGS}
+  - eval "${MATRIX_EVAL}"
+  - echo ${MATRIX_EVAL}
+  - echo ${CC}
+  - echo ${CXX}
+  - echo ${FC}
   - pip install --user cpp-coveralls
+  - gcc --version
+  - gcov --version
+script:
+  - gcc --version
+  - gcov --version
+  - gfortran --version
+  - cmake . ${CMAKE_EXTRA_ARGS} ${MAC_COMPILER_EXTRA}
+  - make -j 2
+  - ctest -VV
+after_success:
+    - if [ "${RUN_COVERALLS}" = "TRUE" ]; then
+        coveralls -i source -i app --gcov-options '\-lp'; 
+      fi
 
 before_script:
-    - gcc --version
-    - gcov --version
-    - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-6 --slave /usr/bin/gcov gcov /usr/bin/gcov-6
-    - sudo update-alternatives --config gcc
-    - gcc --version
-    - gcov --version
+            - gcc --version
+            - gcov --version
 
-script:
-    - export CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Coverage"
-    - cmake . ${CMAKE_EXTRA_ARGS}
-    - make
-    - ctest -VV
+cache: 
+  apt: true
 
-after_success:
-        - coveralls -i source -i app --gcov-options '\-lp' 
+matrix:
+  include:
+    - name: "linux gcc6 coverage"
+      sudo: true
+      os: linux
+      compiler: 
+        - g++-6
+      env: 
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Coverage"
+         - RUN_COVERALLS="TRUE"
+         - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6 && FC=gfortran && sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-6 --slave /usr/bin/gcov gcov /usr/bin/gcov-6 && sudo update-alternatives --config gcc && gcc --version && gcov --version"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-6
+            - gfortran-6
+            - cmake
+            - libboost-program-options-dev
+
+    - name: "linux gcc release"
+      sudo: false
+      compiler:
+        - g++-6
+      env:
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Release"
+         - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6 && FC=gfortran"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-6
+            - gfortran
+            - cmake
+            - libboost-program-options-dev
+       
+    - name: "linux clang"
+      sudo: false
+      os: linux
+      compiler: 
+        - clang-3.6
+      env: 
+        - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6 && GC=gfortran" 
+        - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.6
+          packages:
+            - clang-3.6
+            - gfortran 
+            - cmake
+            - libboost-program-options-dev
+    - name: "osx clang"
+      sudo: false
+      os: osx
+      compiler: 
+        - clang
+      osx_image: xcode10
+      env: 
+        - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && brew install gcc || true  && brew link --overwrite gcc && brew install libomp || brew upgrade libomp || true && export LDFLAGS="-L/usr/local/opt/llvm/lib" && export CPPFLAGS="-I/usr/local/opt/llvm/include" && export CC=/usr/local/opt/llvm/bin/clang && export  CXX=/usr/local/opt/llvm/bin/clang++ && export FC=gfortran" 
+        - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug -DOpenMP_CXX_FLAGS="-Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include" -DOpenMP_CXX_LIB_NAMES="omp" -DOpenMP_omp_LIBRARY=/usr/local/opt/libomp/lib/libomp.dylib"
+
+

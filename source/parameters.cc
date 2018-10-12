@@ -41,12 +41,14 @@ namespace WorldBuilder
     world(world),
     path_level(0)
   {
-    // Get world builder file and check wether it exists
-    WBAssertThrow(access( filename.c_str(), F_OK ) != -1,
-                  "Could not find the world builder file at the specified location: " + filename);
     // Now read in the world builder file into a file stream and
     // put it into a boost property tree.
     std::ifstream json_input_stream(filename.c_str());
+
+    // Get world builder file and check wether it exists
+    WBAssertThrow(json_input_stream.good(),
+                  "Could not find the world builder file at the specified location: " + filename);
+
     std::stringstream json_fixed_input_stream;
 
     WBAssert(json_input_stream, "Could not read the world builder file.");
@@ -726,6 +728,11 @@ namespace WorldBuilder
   Parameters::get_unsigned_int(const std::string &name) const
   {
     const std::string path_plus_name = get_full_path() == "" ? name : get_full_path() + path_seperator + name;
+    /**
+     * Note: This assert only checks in debug mode. This is on purpose, because 
+     * this is code which can only be called by other code, so by developers. 
+     * They should run in debug mode. 
+     */
     WBAssert(string_to_type_map.count(path_plus_name) > 0, "Could not find entry \'" << name << "\' not found. Make sure it is loaded or set.");
     //Todo: there is a problem that when the wrong get function is used. Have to find a way to fix this.
     return vector_unsigned_int[string_to_type_map.at(path_plus_name)].value;

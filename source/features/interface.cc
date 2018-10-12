@@ -30,10 +30,10 @@
 
 namespace WorldBuilder
 {
+using namespace Utilities;
+
   namespace Features
   {
-    std::map<std::string, ObjectFactory *> Interface::factories;
-
     Interface::Interface()
     {}
 
@@ -61,7 +61,7 @@ namespace WorldBuilder
       for (unsigned int i = 0; i < original_number_of_coordinates; ++i)
         {
           coordinates[i] = typed_coordinates[i]->value *
-                           (coordinate_system == CoordinateSystem::spherical ? M_PI / 180.0 : 1.0);
+                           (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
         }
 
       // perform interpolation if required.
@@ -82,7 +82,7 @@ namespace WorldBuilder
                         "For interpolation, linear and monotone spline are the onlyl allowed values.");
 
           double minimum_points_per_distance = prm.get_double("minimum points per distance") *
-                                               (coordinate_system == CoordinateSystem::spherical ? M_PI / 180.0 : 1.0);
+                                               (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
 
           if (minimum_points_per_distance > 0)
             {
@@ -133,7 +133,7 @@ namespace WorldBuilder
     Interface::registerType(
       const std::string &name, ObjectFactory *factory)
     {
-      factories[name] = factory;
+      get_factory_map()[name] = factory;
     }
 
     std::unique_ptr<Interface>
@@ -147,14 +147,14 @@ namespace WorldBuilder
 
       // Have a nice assert message to check whether a plugin exists in the case
       // of a debug compilation.
-      WBAssert(factories.find(lower_case_name) != factories.end(),
-               "Internal error: Plugin with name '" << lower_case_name << "' is not found. "
-               "The size of factories is " << factories.size() << ".");
+      WBAssertThrow(get_factory_map().find(lower_case_name) != get_factory_map().end(),
+                    "Internal error: Plugin with name '" << lower_case_name << "' is not found. "
+                    "The size of factories is " << get_factory_map().size() << ".");
 
       // Using at() because the [] will just insert values
       // which is undesirable in this case. An exception is
       // thrown when the name is not present.
-      return factories.at(lower_case_name)->create(world);
+      return get_factory_map().at(lower_case_name)->create(world);
     }
 
   }

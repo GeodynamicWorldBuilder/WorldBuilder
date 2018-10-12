@@ -36,7 +36,7 @@ namespace WorldBuilder
       if (point.get_coordinate_system() == CoordinateSystem::spherical)
         {
           Point<2> other_point = point;
-          other_point[0] += point[0] < 0 ? 2.0 * M_PI : -2.0 * M_PI;
+          other_point[0] += point[0] < 0 ? 2.0 * const_pi : -2.0 * const_pi;
 
           return (polygon_contains_point_implementation(point_list, point) ||
                   polygon_contains_point_implementation(point_list, other_point));
@@ -312,10 +312,10 @@ namespace WorldBuilder
       scoord[0] = position.norm(); // R
       scoord[1] = std::atan2(position[1],position[0]); // Phi
       //if (scoord[1] < 0.0)
-      //scoord[1] += 2.0*M_PI; // correct phi to [0,2*pi]
+      //scoord[1] += 2.0*const_pi; // correct phi to [0,2*pi]
 
       if (scoord[0] > std::numeric_limits<double>::min())
-        scoord[2] = 0.5 * M_PI - std::acos(position[2]/scoord[0]);
+        scoord[2] = 0.5 * const_pi - std::acos(position[2]/scoord[0]);
       else
         scoord[2] = 0.0;
 
@@ -327,9 +327,9 @@ namespace WorldBuilder
     {
       Point<3> ccoord(cartesian);
 
-      ccoord[0] = scoord[0] * std::sin(0.5 * M_PI - scoord[2]) * std::cos(scoord[1]); // X
-      ccoord[1] = scoord[0] * std::sin(0.5 * M_PI - scoord[2]) * std::sin(scoord[1]); // Y
-      ccoord[2] = scoord[0] * std::cos(0.5 * M_PI - scoord[2]); // Z
+      ccoord[0] = scoord[0] * std::sin(0.5 * const_pi - scoord[2]) * std::cos(scoord[1]); // X
+      ccoord[1] = scoord[0] * std::sin(0.5 * const_pi - scoord[2]) * std::sin(scoord[1]); // Y
+      ccoord[2] = scoord[0] * std::cos(0.5 * const_pi - scoord[2]); // Z
 
 
       return ccoord;
@@ -743,7 +743,7 @@ namespace WorldBuilder
 
                   // This interpolates different properties between P1 and P2 (the
                   // points of the plane at the surface)
-                  const double degree_90_to_rad = 0.5 * M_PI;
+                  const double degree_90_to_rad = 0.5 * const_pi;
                   const double interpolated_angle_top    = plane_segment_angles[original_current_section][current_segment][0]
                                                            + fraction_CPL_P1P2 * (plane_segment_angles[original_next_section][current_segment][0]
                                                                                   - plane_segment_angles[original_current_section][current_segment][0])
@@ -812,7 +812,7 @@ namespace WorldBuilder
                       const double cos_angle_top = std::cos(interpolated_angle_top);
 
                       Point<2> center_circle(cartesian);
-                      if (std::fabs(interpolated_angle_top - 0.5 * M_PI) < 1e-8)
+                      if (std::fabs(interpolated_angle_top - 0.5 * const_pi) < 1e-8)
                         {
                           // if interpolated_angle_top is 90 degrees, the tan function
                           // is undefined (1/0). What we really want in this case is
@@ -821,7 +821,7 @@ namespace WorldBuilder
                           center_circle[0] = difference_in_angle_along_segment > 0 ? begin_segment[0] + radius_angle_circle : begin_segment[0] - radius_angle_circle;
                           center_circle[1] = begin_segment[1];
                         }
-                      else if (std::fabs(interpolated_angle_top - 1.5 * M_PI) < 1e-8)
+                      else if (std::fabs(interpolated_angle_top - 1.5 * const_pi) < 1e-8)
                         {
                           // if interpolated_angle_top is 270 degrees, the tan function
                           // is undefined (-1/0). What we really want in this case is
@@ -905,13 +905,13 @@ namespace WorldBuilder
                       // Furthermore, when the check point is at the same location as
                       // the center of the circle, we count that point as belonging
                       // to the top of the top segment (0 degree).
-                      double check_point_angle = CPCR_norm == 0 ? 2.0 * M_PI : (check_point_2d[0] <= center_circle[0]
+                      double check_point_angle = CPCR_norm == 0 ? 2.0 * const_pi : (check_point_2d[0] <= center_circle[0]
                                                                                 ? std::acos(dot_product/(CPCR_norm * radius_angle_circle))
-                                                                                : 2.0 * M_PI - std::acos(dot_product/(CPCR_norm * radius_angle_circle)));
-                      check_point_angle = difference_in_angle_along_segment >= 0 ? M_PI - check_point_angle : 2.0 * M_PI - check_point_angle;
+                                                                                : 2.0 * const_pi - std::acos(dot_product/(CPCR_norm * radius_angle_circle)));
+                      check_point_angle = difference_in_angle_along_segment >= 0 ? const_pi - check_point_angle : 2.0 * const_pi - check_point_angle;
 
                       // In the case that it is exactly 2 * pi, bring it back to zero
-                      check_point_angle = (std::fabs(check_point_angle - 2 * M_PI) < 1e-14 ? 0 : check_point_angle);
+                      check_point_angle = (std::fabs(check_point_angle - 2 * const_pi) < 1e-14 ? 0 : check_point_angle);
 
                       if ((difference_in_angle_along_segment > 0 && (check_point_angle <= interpolated_angle_top || std::fabs(check_point_angle - interpolated_angle_top) < 1e-12)
                            && (check_point_angle >= interpolated_angle_bottom || std::fabs(check_point_angle - interpolated_angle_bottom) < 1e-12))

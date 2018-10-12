@@ -121,8 +121,11 @@ namespace WorldBuilder
 
 
       private:
-        static std::map<std::string, ObjectFactory *> factories;
-
+        static std::map<std::string, ObjectFactory *> & get_factory_map()
+        {
+          static std::map<std::string, ObjectFactory *> factories;
+          return factories;
+        }
     };
 
 

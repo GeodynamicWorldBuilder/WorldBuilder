@@ -41,6 +41,10 @@ namespace WorldBuilder
   namespace Utilities
   {
 
+  // define pi. Directly defining it seems to be
+  // the safest option.
+  constexpr double const_pi = 3.141592653589793238462643383279502884;
+
     /**
      * Given a 2d point and a list of points which form a polygon, computes if
      * the point falls within the polygon. For spherical coordinates it will

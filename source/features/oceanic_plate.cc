@@ -99,7 +99,7 @@ namespace WorldBuilder
                                         "A list of 2d points which define the location of the ridge."));
             std::vector<const Types::Point<2>* > temp_ridge_points = prm.get_array<const Types::Point<2> >("ridge points");
 
-            const double dtr = prm.coordinate_system->natural_coordinate_system() == spherical ? M_PI / 180.0 : 1.0;
+            const double dtr = prm.coordinate_system->natural_coordinate_system() == spherical ? const_pi / 180.0 : 1.0;
             WBAssertThrow(temp_ridge_points.size() >= 2,
                           "Need at least two points to form the ridge of the oceanic plate, "
                           << temp_ridge_points.size() << " points where given.");
@@ -271,10 +271,10 @@ namespace WorldBuilder
               for (int i = 1; i<sommation_number+1; ++i)
                 {
                   temperature = temperature + (bottom_temperature - top_temperature) *
-                                ((2 / (double(i) * M_PI)) * std::sin((double(i) * M_PI * depth) / max_depth) *
+                                ((2 / (double(i) * const_pi)) * std::sin((double(i) * const_pi * depth) / max_depth) *
                                  std::exp((((spreading_velocity * max_depth)/(2 * thermal_diffusivity)) -
                                            std::sqrt(((spreading_velocity*spreading_velocity*max_depth*max_depth) /
-                                                      (4*thermal_diffusivity*thermal_diffusivity)) + double(i) * double(i) * M_PI * M_PI)) *
+                                                      (4*thermal_diffusivity*thermal_diffusivity)) + double(i) * double(i) * const_pi * const_pi)) *
                                           ((spreading_velocity * age) / max_depth)));
 
                 }
