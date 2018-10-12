@@ -117,7 +117,7 @@ namespace WorldBuilder
         /**
          * pre-compute stuff for the cross section
          */
-        Point<2> surface_coord_conversions = (*cross_section[0]-*cross_section[1]) * (coordinate_system == spherical ? M_PI / 180.0 : 1.0);
+        Point<2> surface_coord_conversions = (*cross_section[0]-*cross_section[1]) * (coordinate_system == spherical ? const_pi / 180.0 : 1.0);
         surface_coord_conversions *= -1/(surface_coord_conversions.norm());
         prm.set_entry("surface coordinate conversions",
                       Types::Point<2>(surface_coord_conversions, surface_coord_conversions, "An internal value which is precomputed."));
@@ -159,7 +159,7 @@ namespace WorldBuilder
 
     std::vector<Point<2> > cross_section;
     for (unsigned int i = 0; i < cross_section_natural.inner_type_index.size(); ++i)
-      cross_section.push_back(parameters.vector_point_2d[cross_section_natural.inner_type_index[i]]  * (coordinate_system == spherical ? M_PI / 180.0 : 1.0));
+      cross_section.push_back(parameters.vector_point_2d[cross_section_natural.inner_type_index[i]]  * (coordinate_system == spherical ? const_pi / 180.0 : 1.0));
 
     WBAssert(cross_section.size() == 2,
              "Internal error: Cross section should contain two points, but it contains "
@@ -231,7 +231,7 @@ namespace WorldBuilder
     const Types::Array &cross_section_natural = this->parameters.get_array("cross section");
     std::vector<Point<2> > cross_section;
     for (unsigned int i = 0; i < cross_section_natural.inner_type_index.size(); ++i)
-      cross_section.push_back(this->parameters.vector_point_2d[cross_section_natural.inner_type_index[i]] * (coordinate_system == spherical ? M_PI / 180.0 : 1.0));
+      cross_section.push_back(this->parameters.vector_point_2d[cross_section_natural.inner_type_index[i]] * (coordinate_system == spherical ? const_pi / 180.0 : 1.0));
 
     WBAssert(cross_section.size() == 2, "Internal error: Cross section should contain two points, but it contains "
              << cross_section.size() <<  " points.");

@@ -19,9 +19,9 @@
 
 #ifndef _world_builder_point_h
 #define _world_builder_point_h
-
-#include <array>
+#define _USE_MATH_DEFINES
 #include <cmath>
+#include <array>
 
 #include <world_builder/coordinate_system.h>
 

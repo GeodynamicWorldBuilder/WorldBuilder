@@ -22,12 +22,12 @@
  * and was contribute to the World Builder with the permission and help of
  * the author of GHOST.
  */
+#include <cmath>
 
 #include <exception>
 #include <iostream>
 #include <array>
 #include <fstream>
-#include <cmath>
 
 #include <boost/program_options.hpp>
 #include <boost/property_tree/json_parser.hpp>
@@ -41,6 +41,7 @@
 namespace po = boost::program_options;
 using namespace WorldBuilder;
 using namespace WorldBuilder::Utilities;
+
 
 void project_on_sphere(double radius, double &x_, double &y_, double &z_)
 {
@@ -77,7 +78,7 @@ void lay_points(double x1, double y1, double z1,
           double s = -1.0 + (2.0 / level) * j;
 
           // equiangular
-          const double pi4 = M_PI*0.25;
+          const double pi4 = const_pi*0.25;
           double x0 = -pi4 + i * 2.0 * (double)pi4/(double)level;
           double y0 = -pi4 + j * 2.0 * (double)pi4/(double)level;
           r = std::tan(x0);
@@ -225,12 +226,14 @@ int main(int argc, char **argv)
   std::cout << "[3/5] Reading grid file...                        \r";
   std::cout.flush();
 
-  // if config file is available, parse it
-  WBAssertThrow(access( data_file.c_str(), F_OK ) != -1,
-                "Could not find the provided convig file at the specified location: " + data_file);
 
   std::string line;
   std::ifstream data_stream(data_file);
+
+  // if config file is available, parse it
+  WBAssertThrow(data_stream.good(),
+                "Could not find the provided convig file at the specified location: " + data_file);
+
 
   // move the data into a vector of strings
   std::vector<std::vector<std::string> > data;
@@ -308,10 +311,10 @@ int main(int argc, char **argv)
       grid_type == "chunk" ||
       grid_type == "anullus")
     {
-      x_min *= (M_PI/180);
-      x_max *= (M_PI/180);
-      y_min *= (M_PI/180);
-      y_max *= (M_PI/180);
+      x_min *= (const_pi/180);
+      x_max *= (const_pi/180);
+      y_min *= (const_pi/180);
+      y_max *= (const_pi/180);
     }
 
 
@@ -533,12 +536,12 @@ int main(int argc, char **argv)
       double inner_radius = z_min;
       double outer_radius = z_max;
 
-      double l_outer = 2.0 * M_PI * outer_radius;
+      double l_outer = 2.0 * const_pi * outer_radius;
 
       double lr = outer_radius - inner_radius;
       double dr = lr/n_cell_z;
 
-      unsigned int n_cell_t = (2 * M_PI * outer_radius)/dr;
+      unsigned int n_cell_t = (2 * const_pi * outer_radius)/dr;
 
       // compute the ammount of cells
       n_cell = n_cell_t *n_cell_z;
@@ -569,7 +572,7 @@ int main(int argc, char **argv)
             {
               double xi = grid_x[counter];
               double zi = grid_z[counter];
-              double theta = xi / l_outer * 2.0 * M_PI;
+              double theta = xi / l_outer * 2.0 * const_pi;
               grid_x[counter] = std::cos(theta) * (inner_radius + zi);
               grid_z[counter] = std::sin(theta) * (inner_radius + zi);
               grid_depth[counter] = outer_radius - std::sqrt(grid_x[counter] * grid_x[counter] + grid_z[counter] * grid_z [counter]);
@@ -610,11 +613,11 @@ int main(int argc, char **argv)
       WBAssertThrow(y_min <= y_max, "The minimum latitude must be less than the maximum latitude.");
       WBAssertThrow(inner_radius < outer_radius, "The inner radius must be less than the outer radius.");
 
-      WBAssertThrow(x_min - x_max <= 2.0 * M_PI, "The difference between the minimum and maximum longitude "
+      WBAssertThrow(x_min - x_max <= 2.0 * const_pi, "The difference between the minimum and maximum longitude "
                     " must be less than or equal to 360 degree.");
 
-      WBAssertThrow(y_min >= - 0.5 * M_PI, "The minimum latitude must be larger then or equal to -90 degree.");
-      WBAssertThrow(y_min <= 0.5 * M_PI, "The maximum latitude must be smaller then or equal to 90 degree.");
+      WBAssertThrow(y_min >= - 0.5 * const_pi, "The minimum latitude must be larger then or equal to -90 degree.");
+      WBAssertThrow(y_min <= 0.5 * const_pi, "The maximum latitude must be smaller then or equal to 90 degree.");
 
       double opening_angle_long_rad = (x_max - x_min);
       double opening_angle_lat_rad =  (y_max - y_min);

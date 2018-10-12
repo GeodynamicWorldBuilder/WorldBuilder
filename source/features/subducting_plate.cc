@@ -61,7 +61,7 @@ namespace WorldBuilder
                                                               "along that line. Through giving a point to which the plate should subduct "
                                                               "solves this problem."));
 
-      reference_point = prm.get_point<2>("reference point") * (coordinate_system == CoordinateSystem::spherical ? M_PI / 180.0 : 1.0);
+      reference_point = prm.get_point<2>("reference point") * (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
 
 
       prm.load_entry("starting depth", false, Types::Double(0, "The depth below the surface at which this plate starts."));
@@ -127,7 +127,7 @@ namespace WorldBuilder
                   maximum_slab_thickness = current_segment[segment_i]->value_thickness[1];
 
                 slab_segment_thickness[coordinate_i].push_back(current_segment[segment_i]->value_thickness);
-                slab_segment_angles[coordinate_i].push_back(current_segment[segment_i]->value_angle * (M_PI/180));
+                slab_segment_angles[coordinate_i].push_back(current_segment[segment_i]->value_angle * (const_pi/180));
               }
 
             if (total_slab_length[coordinate_i] > maximum_total_slab_length)
@@ -310,9 +310,9 @@ namespace WorldBuilder
                       double sum=0;
                       for (int i=1; i<=n_sum; i++)
                         {
-                          sum += (std::pow((-1.0),i)/(i*M_PI)) *
-                                 (exp((R - std::pow(R * R + i * i * M_PI * M_PI, 0.5)) * x_scaled))
-                                 * (sin(i * M_PI * z_scaled));
+                          sum += (std::pow((-1.0),i)/(i*const_pi)) *
+                                 (exp((R - std::pow(R * R + i * i * const_pi * const_pi, 0.5)) * x_scaled))
+                                 * (sin(i * const_pi * z_scaled));
                         }
                       temperature = temp * (potential_mantle_temperature + (surface_temperature - 273.15) * (z_scaled)
                                             + 2.0 * (potential_mantle_temperature - 273.15) * sum);

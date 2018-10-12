@@ -741,7 +741,7 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
   CHECK(spherical->natural_coordinate_system() == CoordinateSystem::spherical);
 
   // distance between two points at the same depth
-  double dtr = M_PI / 180.0;
+  double dtr = Utilities::const_pi / 180.0;
   // first check unit radius, this the central angle
   Point<3> unit_point_1(1.0, 0.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
   Point<3> unit_point_2(1.0, 1.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
@@ -756,8 +756,8 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
   CHECK(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_4) ==
         Approx(std::acos(std::sin(0) * std::sin(1*dtr) +
                          std::cos(0) * std::cos(1*dtr) * std::cos(1*dtr))));
-  CHECK(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_5) == Approx(0.5 * M_PI));
-  CHECK(spherical->distance_between_points_at_same_depth(unit_point_6, unit_point_7) == Approx(M_PI));
+  CHECK(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_5) == Approx(0.5 * Utilities::const_pi));
+  CHECK(spherical->distance_between_points_at_same_depth(unit_point_6, unit_point_7) == Approx(Utilities::const_pi));
 
   // secondly check non-unit radius
   Point<3> point_1(10.0, 0.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
@@ -773,8 +773,8 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
   CHECK(spherical->distance_between_points_at_same_depth(point_1, point_4) ==
         Approx(10 * std::acos(std::sin(0) * std::sin(1*dtr) +
                               std::cos(0) * std::cos(1*dtr) * std::cos(1*dtr))));
-  CHECK(spherical->distance_between_points_at_same_depth(point_1, point_5) == Approx(10 * 0.5 * M_PI));
-  CHECK(spherical->distance_between_points_at_same_depth(point_6, point_7) == Approx(10 * M_PI));
+  CHECK(spherical->distance_between_points_at_same_depth(point_1, point_5) == Approx(10 * 0.5 * Utilities::const_pi));
+  CHECK(spherical->distance_between_points_at_same_depth(point_6, point_7) == Approx(10 * Utilities::const_pi));
 
 }
 
@@ -1344,7 +1344,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   std::unique_ptr<Features::Interface> oceanic_plate = Features::Interface::create("oceanic plate", &world2);
 
   // Check continental plate through the world
-  double dtr = M_PI / 180.0;
+  double dtr = Utilities::const_pi / 180.0;
   std::unique_ptr<WorldBuilder::CoordinateSystems::Interface> &coordinate_system = world2.parameters.coordinate_system;
 
   // 2d
@@ -2262,12 +2262,13 @@ TEST_CASE("WorldBuilder Parameters")
   prm.load_entry("Coordinate system", false, Types::CoordinateSystem("cartesian","This determines the coordinate system"));
 
   // Test the UnsignedInt functions
+#ifndef NDEBUG
   CHECK_THROWS_WITH(prm.load_entry("non existent unsigned int", true, Types::UnsignedInt(1,"description")),
                     Contains("Entry undeclared: non existent unsigned int"));
 
   CHECK_THROWS_WITH(prm.get_unsigned_int("non existent unsigned int"),
                     Contains("Could not find entry 'non existent unsigned int' not found. Make sure it is loaded or set"));
-
+#endif
   CHECK(prm.load_entry("non existent unsigned int", false, Types::UnsignedInt(1,"description")) == false);
   CHECK(prm.get_unsigned_int("non existent unsigned int") == 1);
 
@@ -2279,12 +2280,13 @@ TEST_CASE("WorldBuilder Parameters")
 
 
   // Test the Double functions
+#ifndef NDEBUG
   CHECK_THROWS_WITH(prm.load_entry("non existent double", true, Types::Double(1,"description")),
                     Contains("Entry undeclared: non existent"));
 
   CHECK_THROWS_WITH(prm.get_double("non existent double"),
                     Contains("Could not find entry 'non existent double' not found. Make sure it is loaded or set"));
-
+#endif
   CHECK(prm.load_entry("non existent double", false, Types::Double(1,"description")) == false);
   CHECK(prm.get_double("non existent double") == 1);
 
@@ -2296,12 +2298,13 @@ TEST_CASE("WorldBuilder Parameters")
 
 
   // Test the String functions
+#ifndef NDEBUG
   CHECK_THROWS_WITH(prm.load_entry("non existent string", true, Types::String("1","description")),
                     Contains("Entry undeclared: non existent string"));
 
   CHECK_THROWS_WITH(prm.get_string("non existent string"),
                     Contains("Could not find entry 'non existent string' not found. Make sure it is loaded or set"));
-
+#endif
   CHECK(prm.load_entry("non exitent string", false, Types::String("1","description")) == false);
   CHECK(prm.get_string("non exitent string") == "1");
 
@@ -2312,6 +2315,7 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK(prm.get_string("string") == "mystring 0");
 
   // Test the Point functions
+#ifndef NDEBUG
   CHECK_THROWS_WITH(prm.load_entry("non existent 2d Point", true, Types::Point<2>(Point<2>(1,2,cartesian),"description")),
                     Contains("Could not find .non existent 2d Point, while it is set as required."));
   CHECK_THROWS_WITH(prm.load_entry("non existent 3d Point", true, Types::Point<3>(Point<3>(1,2,3,cartesian),"description")),
@@ -2321,6 +2325,7 @@ TEST_CASE("WorldBuilder Parameters")
                     Contains("Could not find entry 'non existent 2d Point' not found. Make sure it is loaded or set"));
   CHECK_THROWS_WITH(prm.get_point<3>("non existent 3d Point"),
                     Contains("Could not find entry 'non existent 3d Point' not found. Make sure it is loaded or set"));
+#endif
 
   CHECK(prm.load_entry("non existent 2d Point", false, Types::Point<2>(Point<2>(1,2,cartesian),"description")) == false);
   CHECK(prm.load_entry("non existent 3d Point", false, Types::Point<3>(Point<3>(1,2,3,cartesian),"description")) == false);
@@ -2342,6 +2347,7 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK(prm.get_point<3>("3d point").get_array() == std::array<double,3> {12,13,14});
 
   // Test the Array<Types::Double> functions
+#ifndef NDEBUG
   CHECK_THROWS_WITH(prm.load_entry("non existent double array", true, Types::Array(Types::Double(1,"description"),"description")),
                     Contains("Could not find .non existent double array, while it is set as required."));
 
@@ -2351,6 +2357,7 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
   CHECK_THROWS_WITH(prm.get_array<const Types::Double >("non exitent double array"),
                     Contains("Could not find entry 'non exitent double array' not found. Make sure it is loaded or set."));
+#endif
   // This is not desired behavior, but it is not implemented yet.
 
   prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
@@ -2367,6 +2374,7 @@ TEST_CASE("WorldBuilder Parameters")
 
 
   // Test the Array<Types::Point<2> > functions
+#ifndef NDEBUG
   CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2,cartesian),"description"),"description")),
                     Contains("Could not find .non existent point<2> array, while it is set as required."));
 
@@ -2377,6 +2385,7 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK_THROWS_WITH(prm.get_array<const Types::Point<2> >("non existent point<2> array"),
                     Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set."));
   // This is not desired behavior, but it is not implemented yet.
+#endif
 
   prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
   std::vector<const Types::Point<2>* > set_typed_point_2d = prm.get_array<const Types::Point<2> >("new point<2> array");
@@ -2392,6 +2401,7 @@ TEST_CASE("WorldBuilder Parameters")
 
 
   // Test the Array<Types::Point<3> > functions
+#ifndef NDEBUG
   CHECK_THROWS_WITH(prm.load_entry("non existent point<3> array", true, Types::Array(Types::Point<3>(Point<3>(1,2,3,cartesian),"description"),"description")),
                     Contains("Could not find .non existent point<3> array, while it is set as required."));
 
@@ -2402,6 +2412,7 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("non existent point<3> array"),
                     Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set."));
   // This is not desired behavior, but it is not implemented yet.
+#endif
 
   prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
   std::vector<const Types::Point<3>* > set_typed_point_3d = prm.get_array<const Types::Point<3> >("new point<3> array");
@@ -2415,6 +2426,7 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK(true_loaded_typed_point_3d[1]->value.get_array() == std::array<double,3> {23,24,25});
   CHECK(true_loaded_typed_point_3d[2]->value.get_array() == std::array<double,3> {26,27,28});
 
+#ifndef NDEBUG
   CHECK_THROWS_WITH(prm.get_array<const Types::Double >("point<2> array"),
                     Contains("Could not get point<2> array, because it is not a 2d Point."));
   CHECK_THROWS_WITH(prm.get_array<const Types::Double >("point<3> array"),
@@ -2429,19 +2441,19 @@ TEST_CASE("WorldBuilder Parameters")
                     Contains("Could not get point<2> array, because it is not a 2d Point."));
   CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("double array"),
                     Contains("Could not get double array, because it is not a Double."));
-
-
-
+#endif
 
   // Test the enter_subsection and leave_subsection functions
   prm.enter_subsection("subsection 1");
   {
     // Test the UnsignedInt functions
+  #ifndef NDEBUG
     CHECK_THROWS_WITH(prm.load_entry("non existent unsigned int", true, Types::UnsignedInt(1,"description")),
                       Contains("Entry undeclared: subsection 1.non existent unsigned int"));
 
     CHECK_THROWS_WITH(prm.get_unsigned_int("non existent unsigned int"),
                       Contains("Could not find entry 'non existent unsigned int' not found. Make sure it is loaded or set"));
+  #endif
 
     CHECK(prm.load_entry("non existent unsigned int", false, Types::UnsignedInt(1,"description")) == false);
     CHECK(prm.get_unsigned_int("non existent unsigned int") == 1);
@@ -2454,11 +2466,13 @@ TEST_CASE("WorldBuilder Parameters")
 
 
     // Test the Double functions
+    #ifndef NDEBUG
     CHECK_THROWS_WITH(prm.load_entry("non existent double", true, Types::Double(1,"description")),
                       Contains("Entry undeclared: subsection 1.non existent"));
 
     CHECK_THROWS_WITH(prm.get_double("non existent double"),
                       Contains("Could not find entry 'non existent double' not found. Make sure it is loaded or set"));
+    #endif
 
     CHECK(prm.load_entry("non existent double", false, Types::Double(2,"description")) == false);
     CHECK(prm.get_double("non existent double") == 2);
@@ -2471,11 +2485,13 @@ TEST_CASE("WorldBuilder Parameters")
 
 
     // Test the String functions
+    #ifndef NDEBUG
     CHECK_THROWS_WITH(prm.load_entry("non existent string", true, Types::String("2","description")),
                       Contains("Entry undeclared: subsection 1.non existent string"));
 
     CHECK_THROWS_WITH(prm.get_string("non existent string"),
                       Contains("Could not find entry 'non existent string' not found. Make sure it is loaded or set"));
+    #endif
 
     CHECK(prm.load_entry("non exitent string", false, Types::String("3","description")) == false);
     CHECK(prm.get_string("non exitent string") == "3");
@@ -2487,6 +2503,7 @@ TEST_CASE("WorldBuilder Parameters")
     CHECK(prm.get_string("string") == "mystring 1");
 
     // Test the Point functions
+    #ifndef NDEBUG
     CHECK_THROWS_WITH(prm.load_entry("non existent 2d Point", true, Types::Point<2>(Point<2>(3,4,cartesian),"description")),
                       Contains("Could not find subsection 1.non existent 2d Point, while it is set as required."));
     CHECK_THROWS_WITH(prm.load_entry("non existent 3d Point", true, Types::Point<3>(Point<3>(4,5,6,cartesian),"description")),
@@ -2496,6 +2513,7 @@ TEST_CASE("WorldBuilder Parameters")
                       Contains("Could not find entry 'non existent 2d Point' not found. Make sure it is loaded or set"));
     CHECK_THROWS_WITH(prm.get_point<3>("non existent 3d Point"),
                       Contains("Could not find entry 'non existent 3d Point' not found. Make sure it is loaded or set"));
+#endif
 
     CHECK(prm.load_entry("non existent 2d Point", false, Types::Point<2>(Point<2>(3,4,cartesian),"description")) == false);
     CHECK(prm.load_entry("non existent 3d Point", false, Types::Point<3>(Point<3>(4,5,6,cartesian),"description")) == false);
@@ -2518,6 +2536,7 @@ TEST_CASE("WorldBuilder Parameters")
 
 
     // Test the Array functions
+    #ifndef NDEBUG
     CHECK_THROWS_WITH(prm.load_entry("non existent double array", true, Types::Array(Types::Double(1,"description"),"description")),
                       Contains("Could not find subsection 1.non existent double array, while it is set as required."));
 
@@ -2528,6 +2547,7 @@ TEST_CASE("WorldBuilder Parameters")
     CHECK_THROWS_WITH(prm.get_array<const Types::Double >("non exitent double array"),
                       Contains("Could not find entry 'non exitent double array' not found. Make sure it is loaded or set."));
     // This is not desired behavior, but it is not implemented yet.
+#endif
 
     prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
     std::vector<const Types::Double * > set_typed_double =  prm.get_array<const Types::Double >("new double array");
@@ -2542,6 +2562,7 @@ TEST_CASE("WorldBuilder Parameters")
     CHECK(true_loaded_typed_double[2]->value == 37);
 
     // Test the Array<Types::Point<2> > functions
+    #ifndef NDEBUG
     CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2,cartesian),"description"),"description")),
                       Contains("Could not find subsection 1.non existent point<2> array, while it is set as required."));
 
@@ -2552,6 +2573,7 @@ TEST_CASE("WorldBuilder Parameters")
     CHECK_THROWS_WITH(prm.get_array<const Types::Point<2> >("non existent point<2> array"),
                       Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set."));
     // This is not desired behavior, but it is not implemented yet.
+#endif
 
     prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
     std::vector<const Types::Point<2>* > set_typed_point_2d = prm.get_array<const Types::Point<2> >("new point<2> array");
@@ -2567,6 +2589,7 @@ TEST_CASE("WorldBuilder Parameters")
 
 
     // Test the Array<Types::Point<3> > functions
+    #ifndef NDEBUG
     CHECK_THROWS_WITH(prm.load_entry("non existent point<3> array", true, Types::Array(Types::Point<3>(Point<3>(1,2,3,cartesian),"description"),"description")),
                       Contains("Could not find subsection 1.non existent point<3> array, while it is set as required."));
 
@@ -2577,6 +2600,7 @@ TEST_CASE("WorldBuilder Parameters")
     CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("non existent point<3> array"),
                       Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set."));
     // This is not desired behavior, but it is not implemented yet.
+#endif
 
     prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
     std::vector<const Types::Point<3>* > set_typed_point_3d = prm.get_array<const Types::Point<3> >("new point<3> array");
@@ -2590,6 +2614,7 @@ TEST_CASE("WorldBuilder Parameters")
     CHECK(true_loaded_typed_point_3d[1]->value.get_array() == std::array<double,3> {33,34,35});
     CHECK(true_loaded_typed_point_3d[2]->value.get_array() == std::array<double,3> {36,37,38});
 
+#ifndef NDEBUG
     CHECK_THROWS_WITH(prm.get_array<const Types::Double >("point<2> array"),
                       Contains("Could not get subsection 1.point<2> array, because it is not a 2d Point."));
     CHECK_THROWS_WITH(prm.get_array<const Types::Double >("point<3> array"),
@@ -2604,15 +2629,18 @@ TEST_CASE("WorldBuilder Parameters")
                       Contains("Could not get subsection 1.point<2> array, because it is not a 2d Point."));
     CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("double array"),
                       Contains("Could not get subsection 1.double array, because it is not a Double."));
+#endif
 
     prm.enter_subsection("subsection 2");
     {
       // Test the UnsignedInt functions
+      #ifndef NDEBUG
       CHECK_THROWS_WITH(prm.load_entry("non existent unsigned int", true, Types::UnsignedInt(1,"description")),
                         Contains("Entry undeclared: subsection 1.subsection 2.non existent unsigned int"));
 
       CHECK_THROWS_WITH(prm.get_unsigned_int("non existent unsigned int"),
                         Contains("Could not find entry 'non existent unsigned int' not found. Make sure it is loaded or set"));
+#endif
 
       CHECK(prm.load_entry("non existent unsigned int", false, Types::UnsignedInt(1,"description")) == false);
       CHECK(prm.get_unsigned_int("non existent unsigned int") == 1);
@@ -2625,11 +2653,13 @@ TEST_CASE("WorldBuilder Parameters")
 
 
       // Test the Double functions
+      #ifndef NDEBUG
       CHECK_THROWS_WITH(prm.load_entry("non existent double", true, Types::Double(3,"description")),
                         Contains("Entry undeclared: subsection 1.subsection 2.non existent"));
 
       CHECK_THROWS_WITH(prm.get_double("non existent double"),
                         Contains("Could not find entry 'non existent double' not found. Make sure it is loaded or set"));
+#endif
 
       CHECK(prm.load_entry("non existent double", false, Types::Double(4,"description")) == false);
       CHECK(prm.get_double("non existent double") == 4);
@@ -2642,11 +2672,13 @@ TEST_CASE("WorldBuilder Parameters")
 
 
       // Test the String functions
+      #ifndef NDEBUG
       CHECK_THROWS_WITH(prm.load_entry("non existent string", true, Types::String("3","description")),
                         Contains("Entry undeclared: subsection 1.subsection 2.non existent string"));
 
       CHECK_THROWS_WITH(prm.get_string("non existent string"),
                         Contains("Could not find entry 'non existent string' not found. Make sure it is loaded or set"));
+#endif
 
       CHECK(prm.load_entry("non exitent string", false, Types::String("4","description")) == false);
       CHECK(prm.get_string("non exitent string") == "4");
@@ -2658,6 +2690,7 @@ TEST_CASE("WorldBuilder Parameters")
       CHECK(prm.get_string("string") == "mystring 2");
 
       // Test the Point functions
+      #ifndef NDEBUG
       CHECK_THROWS_WITH(prm.load_entry("non existent 2d Point", true, Types::Point<2>(Point<2>(1,2,cartesian),"description")),
                         Contains("Could not find subsection 1.subsection 2.non existent 2d Point, while it is set as required."));
       CHECK_THROWS_WITH(prm.load_entry("non existent 3d Point", true, Types::Point<3>(Point<3>(1,2,3,cartesian),"description")),
@@ -2667,6 +2700,7 @@ TEST_CASE("WorldBuilder Parameters")
                         Contains("Could not find entry 'non existent 2d Point' not found. Make sure it is loaded or set"));
       CHECK_THROWS_WITH(prm.get_point<3>("non existent 3d Point"),
                         Contains("Could not find entry 'non existent 3d Point' not found. Make sure it is loaded or set"));
+#endif
 
       CHECK(prm.load_entry("non existent 2d Point", false, Types::Point<2>(Point<2>(1,2,cartesian),"description")) == false);
       CHECK(prm.load_entry("non existent 3d Point", false, Types::Point<3>(Point<3>(1,2,3,cartesian),"description")) == false);
@@ -2688,16 +2722,21 @@ TEST_CASE("WorldBuilder Parameters")
       CHECK(prm.get_point<3>("3d point").get_array() == std::array<double,3> {22,23,24});
 
       // Test the Array functions
+      #ifndef NDEBUG
       CHECK_THROWS_WITH(prm.load_entry("non existent double array", true, Types::Array(Types::Double(1,"description"),"description")),
                         Contains("Could not find subsection 1.subsection 2.non existent double array, while it is set as required."));
 
       CHECK_THROWS_WITH(prm.get_array("non existent double array"),
                         Contains("Could not find entry 'non existent double array' not found. Make sure it is loaded or set"));
+#endif
 
       CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
+
+      #ifndef NDEBUG
       CHECK_THROWS_WITH(prm.get_array<const Types::Double >("non exitent double array"),
                         Contains("Could not find entry 'non exitent double array' not found. Make sure it is loaded or set."));
       // This is not desired behavior, but it is not implemented yet.
+#endif
 
       prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
       std::vector<const Types::Double * > set_typed_double =  prm.get_array<const Types::Double >("new double array");
@@ -2713,16 +2752,21 @@ TEST_CASE("WorldBuilder Parameters")
 
 
       // Test the Array<Types::Point<2> > functions
+      #ifndef NDEBUG
       CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2,cartesian),"description"),"description")),
                         Contains("Could not find subsection 1.subsection 2.non existent point<2> array, while it is set as required."));
 
       CHECK_THROWS_WITH(prm.get_array("non existent point<2> array"),
                         Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set"));
+#endif
 
       CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<2>(Point<2>(3,4,cartesian),"description"),"description")) == false);
+      
+      #ifndef NDEBUG
       CHECK_THROWS_WITH(prm.get_array<const Types::Point<2> >("non existent point<2> array"),
                         Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set."));
       // This is not desired behavior, but it is not implemented yet.
+#endif
 
       prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
       std::vector<const Types::Point<2>* > set_typed_point_2d = prm.get_array<const Types::Point<2> >("new point<2> array");
@@ -2738,16 +2782,21 @@ TEST_CASE("WorldBuilder Parameters")
 
 
       // Test the Array<Types::Point<3> > functions
+      #ifndef NDEBUG
       CHECK_THROWS_WITH(prm.load_entry("non existent point<3> array", true, Types::Array(Types::Point<3>(Point<3>(1,2,3,cartesian),"description"),"description")),
                         Contains("Could not find subsection 1.subsection 2.non existent point<3> array, while it is set as required."));
 
       CHECK_THROWS_WITH(prm.get_array("non existent point<3> array"),
                         Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set"));
+#endif
 
       CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<3>(Point<3>(4,5,6,cartesian),"description"),"description")) == false);
+      
+      #ifndef NDEBUG
       CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("non existent point<3> array"),
                         Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set."));
       // This is not desired behavior, but it is not implemented yet.
+#endif
 
       prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
       std::vector<const Types::Point<3>* > set_typed_point_3d = prm.get_array<const Types::Point<3> >("new point<3> array");
@@ -2761,6 +2810,7 @@ TEST_CASE("WorldBuilder Parameters")
       CHECK(true_loaded_typed_point_3d[1]->value.get_array() == std::array<double,3> {43,44,45});
       CHECK(true_loaded_typed_point_3d[2]->value.get_array() == std::array<double,3> {46,47,48});
 
+#ifndef NDEBUG
       CHECK_THROWS_WITH(prm.get_array<const Types::Double >("point<2> array"),
                         Contains("Could not get subsection 1.subsection 2.point<2> array, because it is not a 2d Point."));
       CHECK_THROWS_WITH(prm.get_array<const Types::Double >("point<3> array"),
@@ -2775,6 +2825,7 @@ TEST_CASE("WorldBuilder Parameters")
                         Contains("Could not get subsection 1.subsection 2.point<2> array, because it is not a 2d Point."));
       CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("double array"),
                         Contains("Could not get subsection 1.subsection 2.double array, because it is not a Double."));
+                        #endif
     }
     prm.leave_subsection();
   }
@@ -2807,7 +2858,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   slab_segment_lengths[1].push_back(std::sqrt(10*10+10*10));
   slab_segment_lengths[1].push_back(200);
 
-  double dtr = M_PI/180;
+  double dtr = Utilities::const_pi/180;
   std::vector<std::vector<Point<2> > > slab_segment_angles(2);
   slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
   slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
@@ -3511,7 +3562,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   slab_segment_lengths[2].push_back(std::sqrt(10*10+10*10));
   slab_segment_lengths[2].push_back(200);
 
-  double dtr = M_PI/180;
+  double dtr = Utilities::const_pi/180;
   std::vector<std::vector<Point<2> > > slab_segment_angles(3);
   slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
   slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
@@ -3560,7 +3611,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
@@ -3582,7 +3633,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(5.0)); // checked that it should be about 5 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
@@ -3604,7 +3655,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(-5.0)); // checked that it should be about -5 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
@@ -3627,7 +3678,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
@@ -3649,7 +3700,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(-10.0)); // checked that it should be about -10 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
@@ -3725,7 +3776,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * M_PI/180 * 5));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 5));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
@@ -3747,7 +3798,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45.0 * M_PI/180 * 5));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45.0 * Utilities::const_pi/180 * 5));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
@@ -3784,7 +3835,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
@@ -3806,7 +3857,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
@@ -3828,7 +3879,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(135.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(135.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
@@ -3851,7 +3902,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
@@ -3887,7 +3938,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
@@ -3909,7 +3960,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
@@ -3931,7 +3982,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(-1.0)); // checked that it should be about -1 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
@@ -3953,7 +4004,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(1.0)); // checked that it should be about -1 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
@@ -3975,7 +4026,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(270.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(270.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
@@ -3998,7 +4049,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(-1.0)); // checked that it should be about 1 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(270.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(270.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
@@ -4020,7 +4071,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(1.0)); // checked that it should be about 1 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(270.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(270.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
@@ -4057,7 +4108,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
@@ -4079,7 +4130,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
@@ -4101,7 +4152,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(270.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(270.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
@@ -4123,7 +4174,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(315.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(315.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
@@ -4250,7 +4301,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
@@ -4289,7 +4340,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
@@ -4311,7 +4362,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
@@ -4333,7 +4384,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(135.0 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(135.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
@@ -4343,8 +4394,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
 
   double angle = 180+0.1;
-  position[1] = 10 - (20 * std::cos(0 * M_PI/180) + 10 * std::cos((angle) * M_PI/180));
-  position[2] = 0 * std::cos(0 * M_PI/180) + 10 * std::sin((angle) * M_PI/180);
+  position[1] = 10 - (20 * std::cos(0 * Utilities::const_pi/180) + 10 * std::cos((angle) * Utilities::const_pi/180));
+  position[2] = 0 * std::cos(0 * Utilities::const_pi/180) + 10 * std::sin((angle) * Utilities::const_pi/180);
 
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
@@ -4357,7 +4408,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.1 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.1 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
@@ -4366,8 +4417,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   // curve test reverse angle 5
   position[0] = 10;
-  position[1] = 10 - (20 - 10 * std::cos(0.001 * M_PI/180));
-  position[2] = - 10 * std::sin(0.001 * M_PI/180);
+  position[1] = 10 - (20 - 10 * std::cos(0.001 * Utilities::const_pi/180));
+  position[2] = - 10 * std::sin(0.001 * Utilities::const_pi/180);
 
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
@@ -4380,7 +4431,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.001 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.001 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
@@ -4402,8 +4453,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   slab_segment_lengths[1][1] = 10 * 45 * dtr;
 
   position[0] = 10;
-  position[1] = 10 - 10 * std::cos(45.000 * M_PI/180);
-  position[2] = 10 * std::sin(45.000 * M_PI/180);
+  position[1] = 10 - 10 * std::cos(45.000 * Utilities::const_pi/180);
+  position[2] = 10 * std::sin(45.000 * Utilities::const_pi/180);
 
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
@@ -4416,7 +4467,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
@@ -4425,8 +4476,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   // curve test reverse angle 6
   position[0] = 10;
   angle = 45;
-  position[1] = 10 - (10 * std::cos((angle) * M_PI/180));
-  position[2] = 10 * std::sin((angle) * M_PI/180);
+  position[1] = 10 - (10 * std::cos((angle) * Utilities::const_pi/180));
+  position[2] = 10 * std::sin((angle) * Utilities::const_pi/180);
 
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
@@ -4439,7 +4490,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0.0);
@@ -4448,8 +4499,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   // curve test reverse angle 6
   position[0] = 10;
   angle = 180+45;
-  position[1] = 10 - (20 * std::cos(45 * M_PI/180) + 10 * std::cos((angle) * M_PI/180));
-  position[2] = 20 * std::cos(45 * M_PI/180) + 10 * std::sin((angle) * M_PI/180);
+  position[1] = 10 - (20 * std::cos(45 * Utilities::const_pi/180) + 10 * std::cos((angle) * Utilities::const_pi/180));
+  position[2] = 20 * std::cos(45 * Utilities::const_pi/180) + 10 * std::sin((angle) * Utilities::const_pi/180);
 
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
@@ -4462,7 +4513,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
@@ -4472,8 +4523,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   // curve test reverse angle 7
   position[0] = 10;
   angle = 180+46;
-  position[1] = 10 - (20 * std::cos(45 * M_PI/180) + 10 * std::cos((angle) * M_PI/180));
-  position[2] = 20 * std::cos(45 * M_PI/180) + 10 * std::sin((angle) * M_PI/180);
+  position[1] = 10 - (20 * std::cos(45 * Utilities::const_pi/180) + 10 * std::cos((angle) * Utilities::const_pi/180));
+  position[2] = 20 * std::cos(45 * Utilities::const_pi/180) + 10 * std::sin((angle) * Utilities::const_pi/180);
 
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
@@ -4486,7 +4537,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(46 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(46 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
@@ -4497,8 +4548,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   // curve test reverse angle 8
   position[0] = 10;
   angle = 180+46;
-  position[1] = 10 - (20 * std::cos(45 * M_PI/180) + 10 * std::cos((angle) * M_PI/180))+0.1;
-  position[2] = 20 * std::cos(45 * M_PI/180) + 10 * std::sin((angle) * M_PI/180);
+  position[1] = 10 - (20 * std::cos(45 * Utilities::const_pi/180) + 10 * std::cos((angle) * Utilities::const_pi/180))+0.1;
+  position[2] = 20 * std::cos(45 * Utilities::const_pi/180) + 10 * std::sin((angle) * Utilities::const_pi/180);
 
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
@@ -4511,7 +4562,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(0.0697227738)); // checked that it should be small positive this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx((90 - 44.4093) * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx((90 - 44.4093) * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
@@ -4520,8 +4571,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   // curve test reverse angle 9
   position[0] = 10;
   angle = 180+46;
-  position[1] = 10 - (20 * std::cos(45 * M_PI/180) + 10 * std::cos((angle) * M_PI/180))-0.1;
-  position[2] = 20 * std::cos(45 * M_PI/180) + 10 * std::sin((angle) * M_PI/180);
+  position[1] = 10 - (20 * std::cos(45 * Utilities::const_pi/180) + 10 * std::cos((angle) * Utilities::const_pi/180))-0.1;
+  position[2] = 20 * std::cos(45 * Utilities::const_pi/180) + 10 * std::sin((angle) * Utilities::const_pi/180);
 
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
@@ -4534,7 +4585,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(-0.0692053058)); // checked that it should be small negative this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx((90 - 43.585) * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx((90 - 43.585) * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
@@ -4543,8 +4594,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   // curve test reverse angle 10
   position[0] = 10;
   angle = 180+90;
-  position[1] = 10 - (20 * std::cos(45 * M_PI/180) + 10 * std::cos((angle) * M_PI/180));
-  position[2] = 20 * std::cos(45 * M_PI/180) + 10 * std::sin((angle) * M_PI/180);
+  position[1] = 10 - (20 * std::cos(45 * Utilities::const_pi/180) + 10 * std::cos((angle) * Utilities::const_pi/180));
+  position[2] = 20 * std::cos(45 * Utilities::const_pi/180) + 10 * std::sin((angle) * Utilities::const_pi/180);
 
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
@@ -4557,7 +4608,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90 * M_PI/180 * 10));
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
@@ -4717,7 +4768,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_spherical.wb";
   WorldBuilder::World world(file_name);
 
-  const double dtr = M_PI/180.0;
+  const double dtr = Utilities::const_pi/180.0;
   Point<3> position(10,0 * dtr,10 * dtr,spherical);
   position = Point<3>(world.parameters.coordinate_system->natural_to_cartesian_coordinates(position.get_array()),cartesian);
 
@@ -4733,7 +4784,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   slab_segment_lengths[1].push_back(std::sqrt(10*10+10*10));
   slab_segment_lengths[1].push_back(200);
 
-  //double dtr = M_PI/180;
+  //double dtr = Utilities::const_pi/180;
   std::vector<std::vector<Point<2> > > slab_segment_angles(2);
   slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
   slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
@@ -4915,7 +4966,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/spherical_depth_method_starting_point.wb";
     WorldBuilder::World world(file_name);
 
-    const double dtr = M_PI/180.0;
+    const double dtr = Utilities::const_pi/180.0;
     // origin
     std::array<double,3> position = {6371000 - 0, 0 * dtr, 0 * dtr};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
@@ -4959,7 +5010,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/spherical_depth_method_begin_segment.wb";
     WorldBuilder::World world(file_name);
 
-    const double dtr = M_PI/180.0;
+    const double dtr = Utilities::const_pi/180.0;
     // origin
     std::array<double,3> position = {6371000 - 0, 0 * dtr, 0 * dtr};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
