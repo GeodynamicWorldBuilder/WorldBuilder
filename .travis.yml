@@ -6,6 +6,7 @@ before_install:
   - |
     (
       if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
+        powershell
         title=test
         tasklist /v /fo csv | findstr /i "test"
         choco install msys2 
