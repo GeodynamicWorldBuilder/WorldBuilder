@@ -7,6 +7,7 @@ before_install:
     (
       if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
         pwd
+        ls
         print ~/.bashrc
         choco install msys2 
         source ~/.bashrc
@@ -28,7 +29,7 @@ before_install:
         echo $FC
         gcc --version
         gcov --version
-       gfortran --version
+        gfortran --version
       fi
     )
 script:
@@ -41,8 +42,6 @@ after_success:
       fi
 
 before_script:
-            - gcc --version
-            - gcov --version
 
 cache: 
   apt: true
