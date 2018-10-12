@@ -1,0 +1,36 @@
+version: '0.1.0.{build}'
+
+image: Visual Studio 2017
+
+platform:
+  - x64
+ 
+configuration:
+  - Release
+  - Debug
+
+environment:
+  CMAKE_GENERATOR: -G"MSYS Makefiles"
+  VCPKG_ARCH: x64-windows
+
+init:
+  - cmd: set PATH=%MINGW_DIR%;%PATH%
+
+before_build:
+
+build_script:
+  - set PATH=C:\msys64\mingw64\bin;C:\msys64\usr\bin;%PATH%
+  - pacman --noconfirm -Syu
+  - pacman --noconfirm -S dos2unix
+  - pacman --noconfirm -S mingw-w64-x86_64-boost
+  - mkdir install
+  - mkdir build
+  - cd build
+  - cmake %CMAKE_GENERATOR% -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_VERBOSE_MAKEFILE=ON -DBUILD_SHARED_LIBS=ON ..
+  - make -j 2 
+  - cd bin
+  - WorldBuilderApp.exe
+  - cd ..  
+
+
+test_script: ctest -VV
