@@ -16,10 +16,10 @@ before_install:
   - |
     (
     if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
-        pacman --noconfirm -Syu 
-        pacman -S mingw-w64-x86_64-toolchain 
-        pacman --noconfirm -S dos2unix 
-        pacman --noconfirm -S mingw-w64-x86_64-boost   
+        /c/tools/msys64/mingw64.exe pacman --noconfirm -Syu 
+        /c/tools/msys64/mingw64.exe pacman -S mingw-w64-x86_64-toolchain 
+        /c/tools/msys64/mingw64.exe pacman --noconfirm -S dos2unix 
+        /c/tools/msys64/mingw64.exe pacman --noconfirm -S mingw-w64-x86_64-boost   
         source ~/.bashrc
       else
         eval "${MATRIX_EVAL}"
