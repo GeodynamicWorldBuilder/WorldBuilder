@@ -97,7 +97,9 @@ matrix:
         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug -DOpenMP_CXX_FLAGS="-Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include" -DOpenMP_CXX_LIB_NAMES="omp" -DOpenMP_omp_LIBRARY=/usr/local/opt/libomp/lib/libomp.dylib"
     - name: "windows debug"
       os: windows
+      language: bash
       env:
         - MATRIX_EVAL="choco install msys2 && pacman --noconfirm -Syu && pacman -S mingw-w64-x86_64-toolchain && pacman --noconfirm -S dos2unix && pacman --noconfirm -S mingw-w64-x86_64-boost
+        - CMAKE_EXTRA_ARGS="-G\"MSYS Makefiles\" -DCMAKE_BUILD_TYPE=Debug"
 
 
