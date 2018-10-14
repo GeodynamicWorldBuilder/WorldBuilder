@@ -28,11 +28,11 @@ before_install:
       if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
         pacman --noconfirm -Syu 
         echo "=====B-2====="
-        /c/tools/msys64/usr/bin/pacman.exe --noconfirm -S mingw-w64-x86_64-toolchain 
+        pacman --noconfirm -S mingw-w64-x86_64-toolchain 
         echo "=====B-1====="
-        /c/tools/msys64/usr/bin/pacman.exe pacman --noconfirm -S mingw-w64-x86_64-cmake 
+        pacman pacman --noconfirm -S mingw-w64-x86_64-cmake 
         echo "=====B0====="
-        /c/tools/msys64/mingw64.exe pacman --noconfirm -S mingw-w64-x86_64-boost   
+        pacman --noconfirm -S mingw-w64-x86_64-boost   
         echo "=====B1====="
         ls /c/tools/
         echo "=====B2====="
