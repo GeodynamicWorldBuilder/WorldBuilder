@@ -3,7 +3,9 @@ sudo: false
 dist: trusty
 before_install:
   - echo ${CMAKE_EXTRA_ARGS}
-  -  | ( if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
+  -  | 
+     ( 
+     if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
        powershell
        fi
        )
