@@ -27,6 +27,17 @@ before_install:
     (
       if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
         /c/tools/msys64/usr/bin/pacman.exe --noconfirm -Syu 
+        while [[ "$done" -le "1" ]]  
+          do
+            done=$(grep 'there is nothing to do' update.log --count)
+            sleep 5
+            echo "sleeping..."
+            echo $(grep 'there is nothing to do' update.log --count) 
+            echo "$done"
+        done
+        sleep 5
+        cat update.log
+        rm update.log
         echo "=====B-2====="
         pacman --noconfirm -S mingw-w64-x86_64-toolchain 
         while(grep 'there is nothing to do' update.log --count != 2)
