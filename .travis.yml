@@ -10,16 +10,16 @@ before_install:
         print ~/.bashrc
         choco install msys2 
         ls /c/tools/
-        ls /c/tools/msys2/
-        ls /c/tools/msys2/mingw64/bin/
-        export PATH=/c/tools/msys2:"$PATH"
+        ls /c/tools/msys64/
+        ls /c/tools/msys64/mingw64/bin/
+        export PATH=/c/tools/msys64:"$PATH"
         refreshenv
         source ~/.bashrc
       fi
     )
   - |
     (
-    if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
+      if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
         /c/tools/msys64/mingw64.exe pacman --noconfirm -Syu 
         /c/tools/msys64/mingw64.exe pacman -S mingw-w64-x86_64-toolchain 
         /c/tools/msys64/mingw64.exe pacman --noconfirm -S dos2unix 
