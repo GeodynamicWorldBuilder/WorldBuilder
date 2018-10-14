@@ -3,6 +3,10 @@ sudo: false
 dist: trusty
 before_install:
   - echo ${CMAKE_EXTRA_ARGS}
+  -  | ( if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
+       powershell
+       fi
+       )
   - |
     (
       if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
@@ -10,6 +14,7 @@ before_install:
         ls
         print ~/.bashrc
         choco install msys2 
+        refreshenv
         source ~/.bashrc
       fi
     )
