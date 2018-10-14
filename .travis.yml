@@ -7,14 +7,11 @@ before_install:
     (
       if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
         pwd
-        print ~/.bashrc
         choco install msys2 
         ls /c/tools/
         ls /c/tools/msys64/
         ls /c/tools/msys64/mingw64/bin/
         export PATH=/c/tools/msys64:"$PATH"
-        refreshenv
-        source ~/.bashrc
       fi
     )
   - |
@@ -25,9 +22,8 @@ before_install:
         /c/tools/msys64/mingw64.exe pacman --noconfirm -S dos2unix 
         /c/tools/msys64/mingw64.exe pacman --noconfirm -S mingw-w64-x86_64-boost   
         ls /c/tools/
-        ls /c/tools/msys2/
-        ls /c/tools/msys2/mingw64/bin/
-        source ~/.bashrc
+        ls /c/tools/msys64/
+        ls /c/tools/msys64/mingw64/bin/
       else
         eval "${MATRIX_EVAL}"
         echo $MATRIX_EVAL
