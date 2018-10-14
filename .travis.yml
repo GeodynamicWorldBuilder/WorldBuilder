@@ -40,11 +40,6 @@ before_install:
         rm update.log
         echo "=====B-2====="
         pacman --noconfirm -S mingw-w64-x86_64-toolchain 
-        while(grep 'there is nothing to do' update.log --count != 2)
-        {
-                sleep 2
-                echo "sleeping..."
-        }
         echo "=====B-1====="
         pacman pacman --noconfirm -S mingw-w64-x86_64-cmake 
         echo "=====B0====="
