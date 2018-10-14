@@ -3,19 +3,16 @@ sudo: false
 dist: trusty
 before_install:
   - echo ${CMAKE_EXTRA_ARGS}
-  -  | 
-     ( 
-     if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
-       powershell
-       fi
-       )
   - |
     (
       if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
         pwd
-        ls
         print ~/.bashrc
         choco install msys2 
+        ls /c/tools/
+        ls /c/tools/msys2/
+        ls /c/tools/msys2/mingw64/bin/
+export PATH=/c/tools/msys2:"$PATH"
         refreshenv
         source ~/.bashrc
       fi
@@ -27,6 +24,9 @@ before_install:
         /c/tools/msys64/mingw64.exe pacman -S mingw-w64-x86_64-toolchain 
         /c/tools/msys64/mingw64.exe pacman --noconfirm -S dos2unix 
         /c/tools/msys64/mingw64.exe pacman --noconfirm -S mingw-w64-x86_64-boost   
+        ls /c/tools/
+        ls /c/tools/msys2/
+        ls /c/tools/msys2/mingw64/bin/
         source ~/.bashrc
       else
         eval "${MATRIX_EVAL}"
