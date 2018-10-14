@@ -36,6 +36,7 @@ before_install:
         sleep 5
         cat update.log
         rm update.log
+        done=0
         echo "=====B-2====="
         /c/tools/msys64/msys2_shell.cmd -lc "pacman --noconfirm -S mingw-w64-x86-toolchain | tee update.log" 
         while [[ "$done" -le "0" ]]  
@@ -47,10 +48,19 @@ before_install:
         sleep 5
         cat update.log
         rm update.log
+        done=0
         echo "=====B-1====="
-        pacman pacman --noconfirm -S mingw-w64-x86_64-cmake 
+        /c/tools/msys64/msys2_shell.cmd -lc "pacman --noconfirm -S mingw-w64-x86-cmake | tee update.log" 
+        sleep 60
+        cat update.log
+        rm update.log
+        done=0
         echo "=====B0====="
-        pacman --noconfirm -S mingw-w64-x86_64-boost   
+        /c/tools/msys64/msys2_shell.cmd -lc "pacman --noconfirm -S mingw-w64-x86-boost | tee update.log" 
+        sleep 120
+        cat update.log
+        rm update.log
+        done=0
         echo "=====B1====="
         ls /c/tools/
         echo "=====B2====="
