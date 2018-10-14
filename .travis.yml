@@ -12,7 +12,7 @@ before_install:
         ls /c/tools/
         ls /c/tools/msys2/
         ls /c/tools/msys2/mingw64/bin/
-export PATH=/c/tools/msys2:"$PATH"
+        export PATH=/c/tools/msys2:"$PATH"
         refreshenv
         source ~/.bashrc
       fi
