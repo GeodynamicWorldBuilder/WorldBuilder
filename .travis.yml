@@ -9,21 +9,28 @@ before_install:
         pwd
         choco install msys2 
         ls /c/tools/
+        echo "=====1====="
         ls /c/tools/msys64/
+        echo "=====2====="
         ls /c/tools/msys64/mingw64/bin/
-        export PATH=/c/tools/msys64:"$PATH"
+        echo "=====3====="
+        export PATH=/c/tools/msys64/:/c/msys64/mingw64/bin;/c/tools/msys64/usr/bin:"$PATH"
+        echo "=====4====="
       fi
     )
   - |
     (
       if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
         /c/tools/msys64/mingw64.exe pacman --noconfirm -Syu 
-        /c/tools/msys64/mingw64.exe pacman -S mingw-w64-x86_64-toolchain 
+        /c/tools/msys64/mingw64.exe pacman --noconfirm -S mingw-w64-x86_64-toolchain 
         /c/tools/msys64/mingw64.exe pacman --noconfirm -S dos2unix 
         /c/tools/msys64/mingw64.exe pacman --noconfirm -S mingw-w64-x86_64-boost   
         ls /c/tools/
+        echo "=====5====="
         ls /c/tools/msys64/
+        echo "=====6====="
         ls /c/tools/msys64/mingw64/bin/
+        echo "=====7====="
       else
         eval "${MATRIX_EVAL}"
         echo $MATRIX_EVAL
