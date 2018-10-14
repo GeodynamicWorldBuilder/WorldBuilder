@@ -31,7 +31,7 @@ before_install:
           do
             done=$(grep 'there is nothing to do' update.log --count)
             sleep 5
-            less -n 1 update.log
+            tail -n 1 update.log
             echo "sleeping..."
         done
         sleep 5
@@ -45,7 +45,7 @@ before_install:
             done=$(grep 'installing mingw-w64-x86_64-cmake' update.log --count)
             sleep 10
             total=$((total+10))
-            less -n 1 update.log
+            tail -n 1 update.log
             echo "slept for $total s"
         done
         sleep 5
@@ -59,7 +59,7 @@ before_install:
             done=$(grep 'installing mingw-w64-x86_64-winstorecompat-git' update.log --count)
             sleep 10
             total=$((total+10))
-            less -n 1 update.log
+            tail -n 1 update.log
             echo "slept for $total"
         done
         sleep 5
@@ -68,7 +68,15 @@ before_install:
         done=0
         echo "=====B0====="
         /c/tools/msys64/msys2_shell.cmd -lc "pacman --noconfirm -S mingw-w64-x86_64-boost | tee update.log" 
-        sleep 120
+        while [[ "$done" -le "0" ]]  
+          do
+            done=$(grep 'installing mingw-w64-x86_64-boost' update.log --count)
+            sleep 10
+            total=$((total+10))
+            tail -n 1 update.log
+            echo "slept for $total"
+        done
+        sleep 60
         cat update.log
         rm update.log
         done=0
