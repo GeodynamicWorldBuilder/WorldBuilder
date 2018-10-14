@@ -14,7 +14,7 @@ before_install:
         echo "=====2====="
         ls /c/tools/msys64/mingw64/bin/
         echo "=====3====="
-        export PATH=/c/tools/msys64/:/c/msys64/mingw64/bin;/c/tools/msys64/usr/bin:"$PATH"
+        export PATH=/c/tools/msys64/:/c/msys64/mingw64/bin:/c/tools/msys64/usr/bin:"$PATH"
         echo "=====4====="
       fi
     )
@@ -23,6 +23,7 @@ before_install:
       if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
         /c/tools/msys64/mingw64.exe pacman --noconfirm -Syu 
         /c/tools/msys64/mingw64.exe pacman --noconfirm -S mingw-w64-x86_64-toolchain 
+        /c/tools/msys64/mingw64.exe pacman --noconfirm -S cmake 
         /c/tools/msys64/mingw64.exe pacman --noconfirm -S dos2unix 
         /c/tools/msys64/mingw64.exe pacman --noconfirm -S mingw-w64-x86_64-boost   
         ls /c/tools/
