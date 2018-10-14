@@ -32,14 +32,21 @@ before_install:
             done=$(grep 'there is nothing to do' update.log --count)
             sleep 5
             echo "sleeping..."
-            echo $(grep 'there is nothing to do' update.log --count) 
-            echo "$done"
         done
         sleep 5
         cat update.log
         rm update.log
         echo "=====B-2====="
-        pacman --noconfirm -S mingw-w64-x86_64-toolchain 
+        /c/tools/msys64/msys2_shell.cmd -lc "pacman --noconfirm -S mingw-w64-x86-toolchain | tee update.log" 
+        while [[ "$done" -le "0" ]]  
+          do
+            done=$(grep 'installing mingw-w64-x86_64-winstorecompat-git' update.log --count)
+            sleep 5
+            echo "sleeping..."
+        done
+        sleep 5
+        cat update.log
+        rm update.log
         echo "=====B-1====="
         pacman pacman --noconfirm -S mingw-w64-x86_64-cmake 
         echo "=====B0====="
