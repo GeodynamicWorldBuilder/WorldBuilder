@@ -8,14 +8,17 @@ before_install:
       if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
         pwd
         choco install msys2 
+        echo "=====A1====="
         ls /c/tools/
-        echo "=====1====="
+        echo "=====A2====="
         ls /c/tools/msys64/
-        echo "=====2====="
+        echo "=====A3====="
+        ls /c/tools/msys64/mingw64/
+        echo "=====A4====="
         ls /c/tools/msys64/mingw64/bin/
-        echo "=====3====="
-        export PATH=/c/tools/msys64/:/c/msys64/mingw64/bin:/c/tools/msys64/usr/bin:"$PATH"
-        echo "=====4====="
+        echo "=====A5====="
+        export PATH=/c/tools/msys64/:/c/tools/msys64/mingw64/bin/:"$PATH"
+        echo "=====A6====="
       fi
     )
   - |
@@ -23,15 +26,17 @@ before_install:
       if [ "$TRAVIS_OS_NAME" = 'windows' ]; then
         /c/tools/msys64/mingw64.exe pacman --noconfirm -Syu 
         /c/tools/msys64/mingw64.exe pacman --noconfirm -S mingw-w64-x86_64-toolchain 
-        /c/tools/msys64/mingw64.exe pacman --noconfirm -S cmake 
-        /c/tools/msys64/mingw64.exe pacman --noconfirm -S dos2unix 
+        /c/tools/msys64/mingw64.exe pacman --noconfirm -S mingw-w64-x86_64-cmake 
         /c/tools/msys64/mingw64.exe pacman --noconfirm -S mingw-w64-x86_64-boost   
+        echo "=====B1====="
         ls /c/tools/
-        echo "=====5====="
+        echo "=====B2====="
         ls /c/tools/msys64/
-        echo "=====6====="
+        echo "=====B3====="
+        ls /c/tools/msys64/mingw64/
+        echo "=====B4====="
         ls /c/tools/msys64/mingw64/bin/
-        echo "=====7====="
+        echo "=====B5====="
       else
         eval "${MATRIX_EVAL}"
         echo $MATRIX_EVAL
