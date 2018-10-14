@@ -52,6 +52,7 @@ before_install:
         cat update.log
         rm update.log
         done=0
+        total=0
         echo "=====B-1====="
         /c/tools/msys64/msys2_shell.cmd -lc "pacman --noconfirm -S mingw-w64-x86_64-toolchain | tee update.log && echo \"done\" >> update.log" 
         while [[ "$done" -le "0" ]]  
@@ -66,6 +67,7 @@ before_install:
         cat update.log
         rm update.log
         done=0
+        total=0
         echo "=====B0====="
         /c/tools/msys64/msys2_shell.cmd -lc "pacman --noconfirm -S mingw-w64-x86_64-boost | tee update.log && echo \"done\" >> update.log" 
         while [[ "$done" -le "0" ]]  
@@ -80,6 +82,7 @@ before_install:
         cat update.log
         rm update.log
         done=0
+        total=0
         echo "=====B1====="
         ls /c/tools/
         echo "=====B2====="
@@ -89,6 +92,8 @@ before_install:
         echo "=====B4====="
         ls /c/tools/msys64/mingw64/bin/
         echo "=====B5====="
+        export PATH=/c/tools/msys64/:/c/tools/msys64/mingw64/bin/:"$PATH"
+        /c/tools/msys64/mingw64/bin/cmake.exe . $CMAKE_EXTRA_ARGS
       else
         eval "${MATRIX_EVAL}"
         echo $MATRIX_EVAL
