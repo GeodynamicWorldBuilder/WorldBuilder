@@ -39,44 +39,44 @@ before_install:
         rm update.log
         done=0
         echo "=====B-2====="
-        /c/tools/msys64/msys2_shell.cmd -lc "pacman --noconfirm -S mingw-w64-x86_64-cmake | tee update.log" 
+        /c/tools/msys64/msys2_shell.cmd -lc "pacman --noconfirm -S mingw-w64-x86_64-cmake | tee update.log && echo \"done\" >> update.log" 
         while [[ "$done" -le "0" ]]  
           do
-            done=$(grep 'installing mingw-w64-x86_64-cmake' update.log --count)
+            done=$(grep 'done' update.log --count)
             sleep 10
             total=$((total+10))
             tail -n 1 update.log
             echo "slept for $total s"
         done
-        sleep 60
+        sleep 2
         cat update.log
         rm update.log
         done=0
         echo "=====B-1====="
-        /c/tools/msys64/msys2_shell.cmd -lc "pacman --noconfirm -S mingw-w64-x86_64-toolchain | tee update.log" 
+        /c/tools/msys64/msys2_shell.cmd -lc "pacman --noconfirm -S mingw-w64-x86_64-toolchain | tee update.log && echo \"done\" >> update.log" 
         while [[ "$done" -le "0" ]]  
           do
-            done=$(grep 'installing mingw-w64-x86_64-winstorecompat-git' update.log --count)
+            done=$(grep 'done' update.log --count)
             sleep 10
             total=$((total+10))
-            tail -n 1 update.log
+            tail -n 5 update.log
             echo "slept for $total"
         done
-        sleep 60
+        sleep 2
         cat update.log
         rm update.log
         done=0
         echo "=====B0====="
-        /c/tools/msys64/msys2_shell.cmd -lc "pacman --noconfirm -S mingw-w64-x86_64-boost | tee update.log" 
+        /c/tools/msys64/msys2_shell.cmd -lc "pacman --noconfirm -S mingw-w64-x86_64-boost | tee update.log && echo \"done\" >> update.log" 
         while [[ "$done" -le "0" ]]  
           do
-            done=$(grep 'installing mingw-w64-x86_64-boost' update.log --count)
+            done=$(grep 'done' update.log --count)
             sleep 10
             total=$((total+10))
             tail -n 1 update.log
             echo "slept for $total"
         done
-        sleep 60
+        sleep 2
         cat update.log
         rm update.log
         done=0
