@@ -48,7 +48,7 @@ before_install:
             tail -n 1 update.log
             echo "slept for $total s"
         done
-        sleep 5
+        sleep 60
         cat update.log
         rm update.log
         done=0
@@ -62,7 +62,7 @@ before_install:
             tail -n 1 update.log
             echo "slept for $total"
         done
-        sleep 5
+        sleep 60
         cat update.log
         rm update.log
         done=0
