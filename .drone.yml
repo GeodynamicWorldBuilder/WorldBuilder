@@ -9,15 +9,13 @@ build:
     - echo "$PATH"
     - ls /c/
     - echo "=====A1====="
-    - ls /c/tools
-    - echo "=====A2====="
-    - ls /c/tools/msys64/
+    - ls /c/msys64/
     - echo "=====A3====="
-    - ls /c/tools/msys64/mingw64/
+    - ls /c/msys64/mingw64/
     - echo "=====A4====="
-    - ls /c/tools/msys64/mingw64/bin
+    - ls /c/msys64/mingw64/bin
     - echo "=====A5====="
-    - export PATH=/c/tools/msys64/:/c/tools/msys64/mingw64/bin/:"$PATH"
-    - /c/tools/msys64/mingw64/bin/cmake.exe -G"MSYS Makefiles" .
-    - /c/tools/msys64/mingw64/bin/make -j 2
-    - /c/tools/msys64/mingw64/bin/ctest -VV
+    - export PATH=/c/msys64/:/c/msys64/mingw64/bin/:"$PATH"
+    - /c/msys64/mingw64/bin/cmake.exe -G"MSYS Makefiles" .
+    - /c/msys64/mingw64/bin/make -j 2
+    - /c/msys64/mingw64/bin/ctest -VV
