@@ -93,6 +93,7 @@ before_install:
         ls /c/tools/msys64/mingw64/bin/
         echo "=====B5====="
         export PATH=/c/tools/msys64/:/c/tools/msys64/mingw64/bin/:"$PATH"
+        echo "${CMAKE_EXTRA_ARGS}"
         /c/tools/msys64/mingw64/bin/cmake.exe . $CMAKE_EXTRA_ARGS
       else
         eval "${MATRIX_EVAL}"
