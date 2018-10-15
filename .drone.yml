@@ -6,3 +6,6 @@ build:
     - pacman --noconfirm -S mingw-w64-x86_64-cmake
     - pacman --noconfirm -S mingw-w64-x86_64-toolchain
     - pacman --noconfirm -S mingw-w64-x86_64-boost
+    - cmake -G"MSYS Makefiles" .
+    - make -j 2
+    - ctest -VV
