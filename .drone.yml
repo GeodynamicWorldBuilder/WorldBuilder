@@ -1,6 +1,6 @@
 build:
   image: teaci/msys64
-  shell: msys64
+  shell: mingw64
   pull: true
   commands:
     - pacman --noconfirm -Syu
