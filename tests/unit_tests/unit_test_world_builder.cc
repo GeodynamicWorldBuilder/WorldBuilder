@@ -2447,13 +2447,13 @@ TEST_CASE("WorldBuilder Parameters")
   prm.enter_subsection("subsection 1");
   {
     // Test the UnsignedInt functions
-  #ifndef NDEBUG
+#ifndef NDEBUG
     CHECK_THROWS_WITH(prm.load_entry("non existent unsigned int", true, Types::UnsignedInt(1,"description")),
                       Contains("Entry undeclared: subsection 1.non existent unsigned int"));
 
     CHECK_THROWS_WITH(prm.get_unsigned_int("non existent unsigned int"),
                       Contains("Could not find entry 'non existent unsigned int' not found. Make sure it is loaded or set"));
-  #endif
+#endif
 
     CHECK(prm.load_entry("non existent unsigned int", false, Types::UnsignedInt(1,"description")) == false);
     CHECK(prm.get_unsigned_int("non existent unsigned int") == 1);
@@ -2466,13 +2466,13 @@ TEST_CASE("WorldBuilder Parameters")
 
 
     // Test the Double functions
-    #ifndef NDEBUG
+#ifndef NDEBUG
     CHECK_THROWS_WITH(prm.load_entry("non existent double", true, Types::Double(1,"description")),
                       Contains("Entry undeclared: subsection 1.non existent"));
 
     CHECK_THROWS_WITH(prm.get_double("non existent double"),
                       Contains("Could not find entry 'non existent double' not found. Make sure it is loaded or set"));
-    #endif
+#endif
 
     CHECK(prm.load_entry("non existent double", false, Types::Double(2,"description")) == false);
     CHECK(prm.get_double("non existent double") == 2);
@@ -2485,13 +2485,13 @@ TEST_CASE("WorldBuilder Parameters")
 
 
     // Test the String functions
-    #ifndef NDEBUG
+#ifndef NDEBUG
     CHECK_THROWS_WITH(prm.load_entry("non existent string", true, Types::String("2","description")),
                       Contains("Entry undeclared: subsection 1.non existent string"));
 
     CHECK_THROWS_WITH(prm.get_string("non existent string"),
                       Contains("Could not find entry 'non existent string' not found. Make sure it is loaded or set"));
-    #endif
+#endif
 
     CHECK(prm.load_entry("non exitent string", false, Types::String("3","description")) == false);
     CHECK(prm.get_string("non exitent string") == "3");
@@ -2503,7 +2503,7 @@ TEST_CASE("WorldBuilder Parameters")
     CHECK(prm.get_string("string") == "mystring 1");
 
     // Test the Point functions
-    #ifndef NDEBUG
+#ifndef NDEBUG
     CHECK_THROWS_WITH(prm.load_entry("non existent 2d Point", true, Types::Point<2>(Point<2>(3,4,cartesian),"description")),
                       Contains("Could not find subsection 1.non existent 2d Point, while it is set as required."));
     CHECK_THROWS_WITH(prm.load_entry("non existent 3d Point", true, Types::Point<3>(Point<3>(4,5,6,cartesian),"description")),
@@ -2536,7 +2536,7 @@ TEST_CASE("WorldBuilder Parameters")
 
 
     // Test the Array functions
-    #ifndef NDEBUG
+#ifndef NDEBUG
     CHECK_THROWS_WITH(prm.load_entry("non existent double array", true, Types::Array(Types::Double(1,"description"),"description")),
                       Contains("Could not find subsection 1.non existent double array, while it is set as required."));
 
@@ -2562,7 +2562,7 @@ TEST_CASE("WorldBuilder Parameters")
     CHECK(true_loaded_typed_double[2]->value == 37);
 
     // Test the Array<Types::Point<2> > functions
-    #ifndef NDEBUG
+#ifndef NDEBUG
     CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2,cartesian),"description"),"description")),
                       Contains("Could not find subsection 1.non existent point<2> array, while it is set as required."));
 
@@ -2589,7 +2589,7 @@ TEST_CASE("WorldBuilder Parameters")
 
 
     // Test the Array<Types::Point<3> > functions
-    #ifndef NDEBUG
+#ifndef NDEBUG
     CHECK_THROWS_WITH(prm.load_entry("non existent point<3> array", true, Types::Array(Types::Point<3>(Point<3>(1,2,3,cartesian),"description"),"description")),
                       Contains("Could not find subsection 1.non existent point<3> array, while it is set as required."));
 
@@ -2634,7 +2634,7 @@ TEST_CASE("WorldBuilder Parameters")
     prm.enter_subsection("subsection 2");
     {
       // Test the UnsignedInt functions
-      #ifndef NDEBUG
+#ifndef NDEBUG
       CHECK_THROWS_WITH(prm.load_entry("non existent unsigned int", true, Types::UnsignedInt(1,"description")),
                         Contains("Entry undeclared: subsection 1.subsection 2.non existent unsigned int"));
 
@@ -2653,7 +2653,7 @@ TEST_CASE("WorldBuilder Parameters")
 
 
       // Test the Double functions
-      #ifndef NDEBUG
+#ifndef NDEBUG
       CHECK_THROWS_WITH(prm.load_entry("non existent double", true, Types::Double(3,"description")),
                         Contains("Entry undeclared: subsection 1.subsection 2.non existent"));
 
@@ -2672,7 +2672,7 @@ TEST_CASE("WorldBuilder Parameters")
 
 
       // Test the String functions
-      #ifndef NDEBUG
+#ifndef NDEBUG
       CHECK_THROWS_WITH(prm.load_entry("non existent string", true, Types::String("3","description")),
                         Contains("Entry undeclared: subsection 1.subsection 2.non existent string"));
 
@@ -2690,7 +2690,7 @@ TEST_CASE("WorldBuilder Parameters")
       CHECK(prm.get_string("string") == "mystring 2");
 
       // Test the Point functions
-      #ifndef NDEBUG
+#ifndef NDEBUG
       CHECK_THROWS_WITH(prm.load_entry("non existent 2d Point", true, Types::Point<2>(Point<2>(1,2,cartesian),"description")),
                         Contains("Could not find subsection 1.subsection 2.non existent 2d Point, while it is set as required."));
       CHECK_THROWS_WITH(prm.load_entry("non existent 3d Point", true, Types::Point<3>(Point<3>(1,2,3,cartesian),"description")),
@@ -2722,7 +2722,7 @@ TEST_CASE("WorldBuilder Parameters")
       CHECK(prm.get_point<3>("3d point").get_array() == std::array<double,3> {22,23,24});
 
       // Test the Array functions
-      #ifndef NDEBUG
+#ifndef NDEBUG
       CHECK_THROWS_WITH(prm.load_entry("non existent double array", true, Types::Array(Types::Double(1,"description"),"description")),
                         Contains("Could not find subsection 1.subsection 2.non existent double array, while it is set as required."));
 
@@ -2732,7 +2732,7 @@ TEST_CASE("WorldBuilder Parameters")
 
       CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
 
-      #ifndef NDEBUG
+#ifndef NDEBUG
       CHECK_THROWS_WITH(prm.get_array<const Types::Double >("non exitent double array"),
                         Contains("Could not find entry 'non exitent double array' not found. Make sure it is loaded or set."));
       // This is not desired behavior, but it is not implemented yet.
@@ -2752,7 +2752,7 @@ TEST_CASE("WorldBuilder Parameters")
 
 
       // Test the Array<Types::Point<2> > functions
-      #ifndef NDEBUG
+#ifndef NDEBUG
       CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2,cartesian),"description"),"description")),
                         Contains("Could not find subsection 1.subsection 2.non existent point<2> array, while it is set as required."));
 
@@ -2761,8 +2761,8 @@ TEST_CASE("WorldBuilder Parameters")
 #endif
 
       CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<2>(Point<2>(3,4,cartesian),"description"),"description")) == false);
-      
-      #ifndef NDEBUG
+
+#ifndef NDEBUG
       CHECK_THROWS_WITH(prm.get_array<const Types::Point<2> >("non existent point<2> array"),
                         Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set."));
       // This is not desired behavior, but it is not implemented yet.
@@ -2782,7 +2782,7 @@ TEST_CASE("WorldBuilder Parameters")
 
 
       // Test the Array<Types::Point<3> > functions
-      #ifndef NDEBUG
+#ifndef NDEBUG
       CHECK_THROWS_WITH(prm.load_entry("non existent point<3> array", true, Types::Array(Types::Point<3>(Point<3>(1,2,3,cartesian),"description"),"description")),
                         Contains("Could not find subsection 1.subsection 2.non existent point<3> array, while it is set as required."));
 
@@ -2791,8 +2791,8 @@ TEST_CASE("WorldBuilder Parameters")
 #endif
 
       CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<3>(Point<3>(4,5,6,cartesian),"description"),"description")) == false);
-      
-      #ifndef NDEBUG
+
+#ifndef NDEBUG
       CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("non existent point<3> array"),
                         Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set."));
       // This is not desired behavior, but it is not implemented yet.
@@ -2825,7 +2825,7 @@ TEST_CASE("WorldBuilder Parameters")
                         Contains("Could not get subsection 1.subsection 2.point<2> array, because it is not a 2d Point."));
       CHECK_THROWS_WITH(prm.get_array<const Types::Point<3> >("double array"),
                         Contains("Could not get subsection 1.subsection 2.double array, because it is not a Double."));
-                        #endif
+#endif
     }
     prm.leave_subsection();
   }

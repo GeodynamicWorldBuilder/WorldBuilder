@@ -29,7 +29,7 @@ namespace WorldBuilder
 {
   namespace CoordinateSystems
   {
- 
+
     Interface::Interface()
     {}
 

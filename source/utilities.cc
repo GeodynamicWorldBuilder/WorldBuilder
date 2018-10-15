@@ -906,8 +906,8 @@ namespace WorldBuilder
                       // the center of the circle, we count that point as belonging
                       // to the top of the top segment (0 degree).
                       double check_point_angle = CPCR_norm == 0 ? 2.0 * const_pi : (check_point_2d[0] <= center_circle[0]
-                                                                                ? std::acos(dot_product/(CPCR_norm * radius_angle_circle))
-                                                                                : 2.0 * const_pi - std::acos(dot_product/(CPCR_norm * radius_angle_circle)));
+                                                                                    ? std::acos(dot_product/(CPCR_norm * radius_angle_circle))
+                                                                                    : 2.0 * const_pi - std::acos(dot_product/(CPCR_norm * radius_angle_circle)));
                       check_point_angle = difference_in_angle_along_segment >= 0 ? const_pi - check_point_angle : 2.0 * const_pi - check_point_angle;
 
                       // In the case that it is exactly 2 * pi, bring it back to zero
