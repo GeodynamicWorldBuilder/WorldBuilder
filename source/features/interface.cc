@@ -21,6 +21,7 @@
 
 #include <world_builder/features/interface.h>
 #include <world_builder/features/continental_plate.h>
+#include <world_builder/features/fault.h>
 #include <world_builder/features/oceanic_plate.h>
 #include <world_builder/features/subducting_plate.h>
 #include <world_builder/features/mantle_layer.h>
