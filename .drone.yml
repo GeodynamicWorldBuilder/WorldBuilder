@@ -4,6 +4,7 @@ build:
   pull: true
   commands:
     - pacman --noconfirm -Syu
+    - pacman --noconfirm --needed --noprogressbar -S mingw-w64-x86_64-make
     - pacman --noconfirm --needed --noprogressbar -S mingw-w64-x86_64-cmake
     - pacman --noconfirm --needed --noprogressbar -S mingw-w64-x86_64-boost
     - echo "$PATH"
