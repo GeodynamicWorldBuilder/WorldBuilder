@@ -3,8 +3,20 @@ build:
   shell: msys64
   pull: true
   commands:
-    - pacman --noconfirm -S mingw-w64-x86_64-cmake
-    - pacman --noconfirm -S mingw-w64-x86_64-boost
+    - pacman --noconfirm -Syu
+    - pacman --noconfirm --needed --noprogressbar -S mingw-w64-x86_64-cmake
+    - pacman --noconfirm --needed --noprogressbar -S mingw-w64-x86_64-boost
+    - echo "$PATH"
+    - ls /c/
+    - echo "=====A1====="
+    - ls /c/tools
+    - echo "=====A2====="
+    - ls /c/tools/msys64/
+    - echo "=====A3====="
+    - ls /c/tools/msys64/mingw64/
+    - echo "=====A4====="
+    - ls /c/tools/msys64/mingw64/bin
+    - echo "=====A5====="
     - export PATH=/c/tools/msys64/:/c/tools/msys64/mingw64/bin/:"$PATH"
     - /c/tools/msys64/mingw64/bin/cmake.exe -G"MSYS Makefiles" .
     - /c/tools/msys64/mingw64/bin/make -j 2
