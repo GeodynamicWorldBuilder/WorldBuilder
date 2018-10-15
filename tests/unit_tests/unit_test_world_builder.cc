@@ -1555,7 +1555,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   // Check fault plate through the world
   std::array<double,3> position = {0,0,0};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-  CHECK(world1.temperature(position, 220e3, 10) == Approx(1698.56));
+  CHECK(world1.temperature(position, 220e3, 10) == Approx(1701.6589518333));
   CHECK(world1.temperature(position, 230e3, 10) == Approx(100.0));
   CHECK(world1.composition(position, 0, 0) == 0.0);
   CHECK(world1.composition(position, 0, 1) == 0.0);
@@ -1569,7 +1569,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world1.temperature(position, 0, 10) == Approx(1600.0));
   CHECK(world1.temperature(position, 10, 10) == Approx(150));
   CHECK(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(150.0));
-  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(1631.6788317972));
+  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(1631.9945206949));
   CHECK(world1.composition(position, 0, 0) == 0.0);
   CHECK(world1.composition(position, 0, 1) == 0.0);
   CHECK(world1.composition(position, 0, 2) == 0.0);
@@ -1596,7 +1596,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world1.temperature(position, 5000, 10) == Approx(100.0));
   CHECK(world1.temperature(position, std::sqrt(2) * 50e3/2, 10) == Approx(100.0));
   CHECK(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(100.0));
-  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(1631.6788317972));
+  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(1631.9945206949));
   CHECK(world1.composition(position, 0, 0) == 0.0);
   CHECK(world1.composition(position, 0, 1) == 0.0);
   CHECK(world1.composition(position, 0, 2) == 0.0);
