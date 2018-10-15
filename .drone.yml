@@ -6,6 +6,6 @@ build:
     - pacman --noconfirm -S mingw-w64-x86_64-cmake
     - pacman --noconfirm -S mingw-w64-x86_64-boost
     - export PATH=/c/tools/msys64/:/c/tools/msys64/mingw64/bin/:"$PATH"
-    - cmake -G"MSYS Makefiles" .
-    - make -j 2
-    - ctest -VV
+    - /c/tools/msys64/mingw64/bin/cmake.exe -G"MSYS Makefiles" .
+    - /c/tools/msys64/mingw64/bin/make -j 2
+    - /c/tools/msys64/mingw64/bin/ctest -VV
