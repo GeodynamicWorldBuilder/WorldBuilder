@@ -18,5 +18,5 @@ build:
     - echo "=====A5====="
     - export PATH=/c/msys64/:/c/msys64/mingw64/bin/:"$PATH"
     - /c/msys64/mingw64/bin/cmake.exe -G"MSYS Makefiles" .
-    - /c/msys64/mingw64/bin/make -j 2
+    - make -j 2
     - /c/msys64/mingw64/bin/ctest -VV
