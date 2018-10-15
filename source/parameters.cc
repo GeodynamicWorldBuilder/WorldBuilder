@@ -729,9 +729,9 @@ namespace WorldBuilder
   {
     const std::string path_plus_name = get_full_path() == "" ? name : get_full_path() + path_seperator + name;
     /**
-     * Note: This assert only checks in debug mode. This is on purpose, because 
-     * this is code which can only be called by other code, so by developers. 
-     * They should run in debug mode. 
+     * Note: This assert only checks in debug mode. This is on purpose, because
+     * this is code which can only be called by other code, so by developers.
+     * They should run in debug mode.
      */
     WBAssert(string_to_type_map.count(path_plus_name) > 0, "Could not find entry \'" << name << "\' not found. Make sure it is loaded or set.");
     //Todo: there is a problem that when the wrong get function is used. Have to find a way to fix this.
