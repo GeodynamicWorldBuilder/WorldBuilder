@@ -179,8 +179,8 @@ namespace WorldBuilder
               if (std::isnan(temperature_submodule_linear_bottom_temperature))
                 {
                   bottom_temperature =  this->world->parameters.get_double("potential mantle temperature") *
-     		                            std::exp(((this->world->parameters.get_double("thermal expansion coefficient") * gravity_norm) /
-                                        this->world->parameters.get_double("specific heat")) * depth);
+                                        std::exp(((this->world->parameters.get_double("thermal expansion coefficient") * gravity_norm) /
+                                                  this->world->parameters.get_double("specific heat")) * depth);
                 }
 
               return temperature_submodule_linear_top_temperature +
@@ -202,7 +202,7 @@ namespace WorldBuilder
             {
               return  this->world->parameters.get_double("potential mantle temperature") *
                       std::exp(((this->world->parameters.get_double("thermal expansion coefficient") * gravity_norm) /
-                      this->world->parameters.get_double("specific heat")) * depth);
+                                this->world->parameters.get_double("specific heat")) * depth);
             }
 
 

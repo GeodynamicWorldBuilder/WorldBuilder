@@ -201,8 +201,8 @@ namespace WorldBuilder
     Point<3> point(point_,cartesian);
 
     double temperature = this->parameters.get_double("potential mantle temperature") *
-    		             std::exp(((this->parameters.get_double("thermal expansion coefficient") * gravity_norm) /
-                         this->parameters.get_double("specific heat")) * depth);
+                         std::exp(((this->parameters.get_double("thermal expansion coefficient") * gravity_norm) /
+                                   this->parameters.get_double("specific heat")) * depth);
 
 
     for (std::vector<std::unique_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
