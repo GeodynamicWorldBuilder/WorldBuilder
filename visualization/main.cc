@@ -74,15 +74,15 @@ void lay_points(double x1, double y1, double z1,
       for (unsigned int i = 0; i < level+1; ++i)
         {
           // equidistant (is this irrelevant?)
-          double r = -1.0 + (2.0 / level) * i;
-          double s = -1.0 + (2.0 / level) * j;
+          // double r = -1.0 + (2.0 / level) * i;
+          // double s = -1.0 + (2.0 / level) * j;
 
           // equiangular
           const double pi4 = const_pi*0.25;
-          double x0 = -pi4 + i * 2.0 * (double)pi4/(double)level;
-          double y0 = -pi4 + j * 2.0 * (double)pi4/(double)level;
-          r = std::tan(x0);
-          s = std::tan(y0);
+          const double x0 = -pi4 + i * 2.0 * (double)pi4/(double)level;
+          const double y0 = -pi4 + j * 2.0 * (double)pi4/(double)level;
+          const double r = std::tan(x0);
+          const double s = std::tan(y0);
 
 
           double N1 = 0.25 * (1.0 - r) * (1.0 - s);
@@ -200,7 +200,7 @@ int main(int argc, char **argv)
   /**
    * Try to start the world builder
    */
-  std::cout << "[2/5] Starting the world builder...                         \r";
+  std::cout << "[2/5] Starting the world builder with " << number_of_threads << " threads...                         \r";
   std::cout.flush();
 
   std::unique_ptr<WorldBuilder::World> world;

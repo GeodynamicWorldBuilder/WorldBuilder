@@ -550,7 +550,7 @@ namespace WorldBuilder
 
       const Point<3> check_point_natural(coordinate_system->cartesian_to_natural_coordinates(check_point.get_array()),natural_coordinate_system);
       const Point<3> check_point_surface(bool_cartesian ? check_point_natural[0] : start_radius,
-                                         bool_cartesian ? check_point_natural[1] : check_point_natural[1],
+                                         check_point_natural[1],
                                          bool_cartesian ? start_radius           : check_point_natural[2],
                                          natural_coordinate_system);
       const Point<2> check_point_surface_2d(bool_cartesian ? check_point_natural[0] : check_point_natural[1],
