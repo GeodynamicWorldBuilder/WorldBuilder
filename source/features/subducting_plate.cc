@@ -82,10 +82,6 @@ namespace WorldBuilder
                                                                 "A plate segment with a certain length, thickness and angle."),
                                                  "A list of plate segments."));
 
-        // todo: remove the next line
-        std::vector<const Types::Segment *> all_segments = prm.get_array<const Types::Segment>("all");
-
-
         maximum_slab_thickness = 0;
         total_slab_length.resize(original_number_of_coordinates);
         slab_segment_lengths.resize(original_number_of_coordinates);
@@ -94,7 +90,7 @@ namespace WorldBuilder
         for (unsigned int coordinate_i = 0; coordinate_i < original_number_of_coordinates; ++coordinate_i)
           {
             // todo: remove the next line
-            std::vector<const Types::Segment *> &current_segment = all_segments;
+            std::vector<const Types::Segment *> current_segment;
 
             // first check whether there is an overwrite for this coordinate
             bool overwrite = prm.load_entry(std::to_string(coordinate_i), false, Types::Array(Types::Segment(0,Point<2>(0,0,cartesian),Point<2>(0,0,cartesian),
