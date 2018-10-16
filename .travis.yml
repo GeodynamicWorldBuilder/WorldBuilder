@@ -61,6 +61,7 @@ matrix:
             - gfortran-6
             - cmake
             - libboost-program-options-dev
+
     - name: "linux gcc release"
       sudo: false
       compiler:
