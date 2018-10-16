@@ -7,7 +7,7 @@
 "minimum distance points": 1e-5,
 "surface objects":
 {
-     "subducting plate":{"name":"First subducting plate", "coordinates":[[0e3,500e3],[500e3,500e3],[1000e3,750e3]], "reference point":[1200e3,1200e3],
+     "fault":{"name":"First fault", "coordinates":[[0e3,500e3],[500e3,500e3],[1000e3,750e3]], "reference point":[1200e3,1200e3],
          "starting depth":0, "max depth":1e10,
          "segments":
          {
@@ -18,7 +18,7 @@
          "temperature model":{"name":"constant", "temperature":150},
          "composition model":{"name":"constant", "composition":3}},
 
-     "subducting plate":{"name":"Second subducting plate", "coordinates":[[0e3,250e3],[500e3,250e3],[1000e3,500e3]], "reference point":[0,-1],
+    "fault":{"name":"Second fault", "coordinates":[[0e3,250e3],[500e3,250e3],[1000e3,500e3]], "reference point":[0,-1],
          "starting depth":0, "max depth":1e10,
          "segments":
          {
@@ -26,10 +26,10 @@
            "1":[{"length":200e3, "thickness":[100e3,100e3], "angle":[45]}, {"length":100e3, "thickness":[100e3], "angle":[30]}, {"length":150e3, "thickness":[100e3], "angle":[30]}],
            "2":[{"length":200e3, "thickness":[200e3,100e3], "angle":[30]}, {"length":100e3, "thickness":[100e3], "angle":[30]}, {"length":150e3, "thickness":[100e3,0], "angle":[70]}]
          },
-         "temperature model":{"name":"plate model", "density":3300, "plate velocity":0.01 },
+         "temperature model":{"name":"constant", "temperature":100 },
          "composition model":{"name":"constant layers", "layers":[{"composition":0, "thickness":33e3},{"composition":1, "thickness":33e3},{"composition":2, "thickness":33e3}]}},
 
-    "subducting plate":{"name":"none fault", "coordinates":[[0e3,250e3],[500e3,250e3],[1000e3,500e3]], "reference point":[0,-1],
+    "fault":{"name":"none fault", "coordinates":[[0e3,250e3],[500e3,250e3],[1000e3,500e3]], "reference point":[0,-1],
          "starting depth":0, "max depth":1e10,
          "segments":
          {

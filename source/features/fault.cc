@@ -19,7 +19,7 @@
 
 #include <boost/algorithm/string.hpp>
 
-#include <world_builder/features/subducting_plate.h>
+#include <world_builder/features/fault.h>
 #include <world_builder/utilities.h>
 #include <world_builder/assert.h>
 #include <world_builder/nan.h>
@@ -32,20 +32,20 @@ namespace WorldBuilder
 
   namespace Features
   {
-    SubductingPlate::SubductingPlate(WorldBuilder::World *world_)
+    Fault::Fault(WorldBuilder::World *world_)
       :
       reference_point(0,0,cartesian)
     {
       this->world = world_;
-      this->name = "subducting plate";
+      this->name = "fault";
     }
 
-    SubductingPlate::~SubductingPlate()
+    Fault::~Fault()
     { }
 
 
     void
-    SubductingPlate::decare_entries()
+    Fault::decare_entries()
     {
 
       Parameters &prm = this->world->parameters;
@@ -56,10 +56,10 @@ namespace WorldBuilder
 
       // Get the reference point
       prm.load_entry("reference point", true, Types::Point<2>(Point<2>(0,0,coordinate_system),
-                                                              "A point which the plate subducts towards. When a coordinates of the subducting "
-                                                              "plate form a line, it is undefined in what direction the plate should subduct "
-                                                              "along that line. Through giving a point to which the plate should subduct "
-                                                              "solves this problem."));
+                                                              "A point which the fault dips towards. When a coordinates of the fault "
+                                                              "form a line, it is undefined in what direction the fault should dip "
+                                                              "along that line. Through giving a point to which the plate should dip "
+                                                              "towards solves this problem."));
 
       reference_point = prm.get_point<2>("reference point") * (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
 
@@ -142,26 +142,9 @@ namespace WorldBuilder
             prm.load_entry("temperature", true, Types::Double(0,"The temperature in degree Kelvin which this feature should have"));
             temperature_submodule_constant_temperature = prm.get_double("temperature");
           }
-        else if (temperature_submodule_name == "plate model")
-          {
-            prm.load_entry("density", true, Types::Double(NaN::DSNAN,"The reference density of the subducting plate."));
-            temperature_submodule_plate_model_density = prm.get_double("density");
-
-            prm.load_entry("plate velocity", true, Types::Double(NaN::DSNAN,"The velocity in meters per year with which the plate subducts."));
-            temperature_submodule_plate_model_plate_velocity = prm.get_double("plate velocity");
-
-            prm.load_entry("thermal conductivity", false, Types::Double(2.0,"The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$."));
-            temperature_submodule_plate_model_thermal_conductivity = prm.get_double("thermal conductivity");
-
-            prm.load_entry("thermal expansion coefficient", false, Types::Double(3.5e-5,"The thermal expansivity of the subducting plate material in $K^{-1}$."));
-            temperature_submodule_plate_model_Thermal_expansion_coefficient = prm.get_double("thermal expansion coefficient");
-
-            prm.load_entry("specific heat", false, Types::Double(1250,"The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$."));
-            temperature_submodule_plate_model_specific_heat = prm.get_double("specific heat");
-          }
         else
           {
-            WBAssertThrow(temperature_submodule_name == "none","Subducting plate temperature model '" << temperature_submodule_name << "' not found.");
+            WBAssertThrow(temperature_submodule_name == "none","Fault plate temperature model '" << temperature_submodule_name << "' not found.");
           }
 
       }
@@ -202,7 +185,7 @@ namespace WorldBuilder
           }
         else
           {
-            WBAssertThrow(composition_submodule_name == "none","Subducting plate temperature model '" << temperature_submodule_name << "' not found.");
+            WBAssertThrow(composition_submodule_name == "none","fault plate temperature model '" << temperature_submodule_name << "' not found.");
           }
       }
       prm.leave_subsection();
@@ -210,10 +193,10 @@ namespace WorldBuilder
 
 
     double
-    SubductingPlate::temperature(const Point<3> &position,
-                                 const double depth,
-                                 const double gravity_norm,
-                                 double temperature) const
+    Fault::temperature(const Point<3> &position,
+                       const double depth,
+                       const double /*gravity_norm*/,
+                       double temperature) const
     {
       WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
                                                                       *(world->parameters.coordinate_system));
@@ -225,6 +208,8 @@ namespace WorldBuilder
       if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness)
         {
           // todo: explain
+          // This function only returns positive values, because we want
+          // the fault to be centered around the line provided by the user.
           std::map<std::string,double> distance_from_planes =
             Utilities::distance_point_from_curved_planes(position,
                                                          reference_point,
@@ -233,12 +218,11 @@ namespace WorldBuilder
                                                          slab_segment_angles,
                                                          starting_radius,
                                                          this->world->parameters.coordinate_system,
-                                                         false,
+                                                         true,
                                                          one_dimensional_coordinates);
 
           const double distance_from_plane = distance_from_planes["distanceFromPlane"];
           const double distance_along_plane = distance_from_planes["distanceAlongPlane"];
-          const double average_angle = distance_from_planes["averageAngle"];
           const double section_fraction = distance_from_planes["sectionFraction"];
           const unsigned int current_section = one_dimensional_coordinates[distance_from_planes["section"]];
           const unsigned int next_section = current_section + 1;
@@ -264,12 +248,11 @@ namespace WorldBuilder
                                              section_fraction *
                                              (total_slab_length[next_section] - total_slab_length[current_section]);
 
-              const double potential_mantle_temperature = world->parameters.get_double("potential mantle temperature");
-              const double surface_temperature = world->parameters.get_double("surface temperature");
 
-              // TODO: do some interpolation for the thickness.
+              // Because both sides return positve values, we have to
+              // devide the thickness_local by two
               if (distance_from_plane > 0 &&
-                  distance_from_plane <= thickness_local &&
+                  distance_from_plane <= thickness_local * 0.5 &&
                   distance_along_plane > 0 &&
                   distance_along_plane <= max_slab_length)
                 {
@@ -278,41 +261,6 @@ namespace WorldBuilder
                     {
                       return temperature_submodule_constant_temperature;
                     }
-                  else if (temperature_submodule_name == "plate model")
-                    {
-                      /*
-                       * We now use the McKenzie (1970) equation to determine the
-                       * temperature inside the slab. The McKenzie equation was
-                       * designed for a straight slab, but we have a potentially
-                       * curved slab. Because the angle is a required parameter, we
-                       * first tried a local angle. This gave weird effects of
-                       * apparent cooling when the slabs angle decreases. Now we
-                       * use an average angle, which works better.
-                       */
-                      const double R = (temperature_submodule_plate_model_density * temperature_submodule_plate_model_specific_heat
-                                        * (temperature_submodule_plate_model_plate_velocity /(365.25 * 24.0 * 60.0 * 60.0))
-                                        * thickness_local) / (2.0 * temperature_submodule_plate_model_thermal_conductivity);
-
-                      // gravity in original in cm/s^2, here in m/s^2, thickness original in km, here in meter. So 100/1000=0.1
-                      const double H = temperature_submodule_plate_model_specific_heat
-                                       / (temperature_submodule_plate_model_Thermal_expansion_coefficient * gravity_norm * 0.1 * thickness_local);
-
-                      const int n_sum = 500;
-                      double z_scaled = 1 - (distance_from_plane / thickness_local);
-                      double x_scaled = distance_along_plane / thickness_local;
-                      double temp = exp((x_scaled * sin(average_angle)
-                                         - z_scaled * cos(average_angle)) / H);
-
-                      double sum=0;
-                      for (int i=1; i<=n_sum; i++)
-                        {
-                          sum += (std::pow((-1.0),i)/(i*const_pi)) *
-                                 (exp((R - std::pow(R * R + i * i * const_pi * const_pi, 0.5)) * x_scaled))
-                                 * (sin(i * const_pi * z_scaled));
-                        }
-                      temperature = temp * (potential_mantle_temperature + (surface_temperature - 273.15) * (z_scaled)
-                                            + 2.0 * (potential_mantle_temperature - 273.15) * sum);
-                    }
                 }
             }
         }
@@ -320,10 +268,10 @@ namespace WorldBuilder
     }
 
     double
-    SubductingPlate::composition(const Point<3> &position,
-                                 const double depth,
-                                 const unsigned int composition_number,
-                                 double composition) const
+    Fault::composition(const Point<3> &position,
+                       const double depth,
+                       const unsigned int composition_number,
+                       double composition) const
     {
       if (composition_submodule_name == "none")
         {
@@ -340,6 +288,8 @@ namespace WorldBuilder
           if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness)
             {
               // todo: explain
+              // This function only returns positive values, because we want
+              // the fault to be centered around the line provided by the user.
               std::map<std::string,double> distance_from_planes =
                 Utilities::distance_point_from_curved_planes(position,
                                                              reference_point,
@@ -348,7 +298,7 @@ namespace WorldBuilder
                                                              slab_segment_angles,
                                                              starting_radius,
                                                              this->world->parameters.coordinate_system,
-                                                             false,
+                                                             true,
                                                              one_dimensional_coordinates);
 
               const double distance_from_plane = distance_from_planes["distanceFromPlane"];
@@ -379,16 +329,17 @@ namespace WorldBuilder
                                                  (total_slab_length[next_section] - total_slab_length[current_section]);
 
 
-                  // TODO: do some interpolation for the thickness.
+                  // Because both sides return positve values, we have to
+                  // devide the thickness_local by two
                   if (distance_from_plane > 0 &&
-                      distance_from_plane <= thickness_local &&
+                      distance_from_plane <= thickness_local * 0.5 &&
                       distance_along_plane > 0 &&
                       distance_along_plane <= max_slab_length)
                     {
                       // Inside the slab!
                       if (composition_submodule_name == "constant")
                         {
-                          // We are in the the area where the subducting plate is defined. Set the constant composition
+                          // We are in the the area where the fault plate is defined. Set the constant composition
                           if (composition_submodule_constant_composition == composition_number)
                             {
                               return composition_submodule_constant_value;
@@ -402,8 +353,8 @@ namespace WorldBuilder
                           double total_thickness = 0;
                           for (unsigned int i = 0; i < composition_submodule_constant_layers_compositions.size(); ++i)
                             {
-                              if (distance_from_plane >= total_thickness
-                                  && distance_from_plane < total_thickness + composition_submodule_constant_layers_thicknesses[i])
+                              if (distance_from_plane >= total_thickness * 0.5
+                                  && distance_from_plane < total_thickness * 0.5 + composition_submodule_constant_layers_thicknesses[i] * 0.5)
                                 {
                                   // We are in a layer. Check whether this is the correct composition.
                                   // The composition_number is cast to an int to prevent a warning.
@@ -436,7 +387,7 @@ namespace WorldBuilder
     /**
      * Register plugin
      */
-    WB_REGISTER_FEATURE(SubductingPlate, subducting plate)
+    WB_REGISTER_FEATURE(Fault, fault)
   }
 }
 
