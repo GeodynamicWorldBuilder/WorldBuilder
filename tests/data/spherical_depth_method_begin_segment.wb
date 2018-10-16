@@ -1,4 +1,4 @@
-"version":0,
+"version":"0.1",
 "cross section": [[100e3,100e3],[400e3,500e3]],
 "coordinate system":{"spherical":{"depth method":"begin segment"}},
 "surface rotation point": ["165e3","166e3"],
