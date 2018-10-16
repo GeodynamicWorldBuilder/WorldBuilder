@@ -2353,9 +2353,10 @@ TEST_CASE("WorldBuilder Parameters")
 {
   // First test a world builder file with a cross section defined
   std::string file = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/type_data.json";
-  World *null_world = NULL;
+  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_spherical.wb";
+  WorldBuilder::World world(file_name);
 
-  Parameters prm(file, *null_world);
+  Parameters prm(file, world);
 
   prm.load_entry("Coordinate system", false, Types::CoordinateSystem("cartesian","This determines the coordinate system"));
 

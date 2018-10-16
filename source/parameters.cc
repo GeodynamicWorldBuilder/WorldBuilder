@@ -418,7 +418,6 @@ namespace WorldBuilder
             enter_subsection(name);
             {
               path_level++;
-              unsigned int current_size = 0;
               for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
                 {
                   //TODO add a mangle for the name
@@ -428,7 +427,6 @@ namespace WorldBuilder
                   found_value = this->load_entry(it->first, required, *natural_type.inner_type_ptr, child_location);
                   vector_list[location].inner_type_index.push_back(child_location);
                   local_tree = parent;
-                  current_size++;
                 }
               path_level--;
             }
@@ -461,9 +459,9 @@ namespace WorldBuilder
             location = vector_array.size()-1;
             string_to_type_map[path_plus_name] = location;
 
-            unsigned int current_size = 0;
             enter_subsection(name);
             {
+              unsigned int current_size = 0;
               //path_level++;
               for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
                 {
