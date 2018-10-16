@@ -1,3 +1,7 @@
+codecov:
+  ci:
+    - !appveyor
+    - !codacy
 ignore:
   - tests/.*
   - visualization/.*
