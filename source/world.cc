@@ -54,15 +54,20 @@ namespace WorldBuilder
      * First load the major version number in the file and check the major
      * version number of the program.
      */
-    prm.load_entry("version", true, Types::UnsignedInt(NaN::ISNAN,
-                                                       "The major version number for which the input file was written."));
+    prm.load_entry("version", true, Types::String("",
+                                                  "The major version number for which the input file was written."));
 
-    WBAssertThrow(prm.get_unsigned_int("version") == Utilities::string_to_unsigned_int(Version::MAJOR),
-                  "The major version for which is input file was written is not the "
-                  "same as the version of the World Builder you are running. This means "
-                  "That there have been incompatible changes made between the versions. "
+    WBAssertThrow(Version::MAJOR == "0"
+                  && prm.get_string("version") == Version::MAJOR + "." + Version::MINOR
+                  || Version::MAJOR != "0"
+                  && prm.get_string("version") == Version::MAJOR,
+                  "The major and minor version combination (for major version 0) or the major "
+                  "version (for major versions after 0) for which is input file was written "
+                  "is not the same as the version of the World Builder you are running. This means "
+                  "That there may have been incompatible changes made between the versions. "
                   "Verify those changes and wheter they affect your model. If this is not "
                   "the case, adjust the version number in the input file.");
+
     /**
      * Seconly load the coordinate system parameters.
      */
