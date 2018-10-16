@@ -937,19 +937,15 @@ namespace WorldBuilder
                       // first case is that we want to have both the positive and
                       // negative distances (above and below the line). The second
                       // case is that we only want positive distances.
-                      //if ((!only_positive && std::fabs(new_distance) < std::fabs(distance)) ||
-                      //  (only_positive && std::fabs(new_distance) < std::fabs(distance)  && new_distance > 0))
-                      {
-                        distance = only_positive ? std::fabs(new_distance) : new_distance;
-                        along_plane_distance = new_along_plane_distance + total_length;
-                        section = current_section;
-                        section_fraction = fraction_CPL_P1P2;
-                        segment = i_segment;
-                        segment_fraction = new_along_plane_distance / interpolated_segment_length;
-                        total_average_angle = (average_angle * total_length
-                                               + 0.5 * (interpolated_angle_top + interpolated_angle_bottom  - 2 * add_angle) * new_along_plane_distance) /
-                                              (total_length + new_along_plane_distance);
-                      }
+                      distance = only_positive ? std::fabs(new_distance) : new_distance;
+                      along_plane_distance = new_along_plane_distance + total_length;
+                      section = current_section;
+                      section_fraction = fraction_CPL_P1P2;
+                      segment = i_segment;
+                      segment_fraction = new_along_plane_distance / interpolated_segment_length;
+                      total_average_angle = (average_angle * total_length
+                                             + 0.5 * (interpolated_angle_top + interpolated_angle_bottom  - 2 * add_angle) * new_along_plane_distance) /
+                                            (total_length + new_along_plane_distance);
                     }
 
                   // increase average angle
