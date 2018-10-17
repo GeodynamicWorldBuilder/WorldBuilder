@@ -302,12 +302,11 @@ namespace WorldBuilder
                       WBAssert(!std::isnan(H), "Internal error: H is not a number: " << H << ".");
 
                       const int n_sum = 500;
-                      double z_scaled = 1 - ((std::fabs(distance_from_plane) < 2.0 * std::numeric_limits<double>::epsilon() ?
-                                              2.0 *std::numeric_limits<double>::epsilon()
-                                              :
-                                              distance_from_plane)
-                                             / thickness_local);
+		      // distance_from_plane can't be zero, see if stament above,
+		      // so no protection needed.
+                      double z_scaled = 1 - (distance_from_plane/ thickness_local);
 
+		      // distance_along_plane can be zeor, so protect division.
                       double x_scaled = (std::fabs(distance_along_plane) < 2.0 * std::numeric_limits<double>::epsilon() ?
                                          2.0 *std::numeric_limits<double>::epsilon()
                                          :
