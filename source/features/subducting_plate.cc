@@ -270,7 +270,7 @@ namespace WorldBuilder
               // TODO: do some interpolation for the thickness.
               if (distance_from_plane > 0 &&
                   distance_from_plane <= thickness_local &&
-                  distance_along_plane > 0 &&
+                  distance_along_plane >= 0 &&
                   distance_along_plane <= max_slab_length)
                 {
                   // Inside the slab!
@@ -293,15 +293,35 @@ namespace WorldBuilder
                                         * (temperature_submodule_plate_model_plate_velocity /(365.25 * 24.0 * 60.0 * 60.0))
                                         * thickness_local) / (2.0 * temperature_submodule_plate_model_thermal_conductivity);
 
+                      WBAssert(!std::isnan(R), "Internal error: R is not a number: " << R << ".");
+
                       // gravity in original in cm/s^2, here in m/s^2, thickness original in km, here in meter. So 100/1000=0.1
                       const double H = temperature_submodule_plate_model_specific_heat
                                        / (temperature_submodule_plate_model_Thermal_expansion_coefficient * gravity_norm * 0.1 * thickness_local);
 
+                      WBAssert(!std::isnan(H), "Internal error: H is not a number: " << H << ".");
+
                       const int n_sum = 500;
-                      double z_scaled = 1 - (distance_from_plane / thickness_local);
-                      double x_scaled = distance_along_plane / thickness_local;
+                      double z_scaled = 1 - ((std::fabs(distance_from_plane) < 2.0 * std::numeric_limits<double>::epsilon() ?
+                                              2.0 *std::numeric_limits<double>::epsilon()
+                                              :
+                                              distance_from_plane)
+                                             / thickness_local);
+
+                      double x_scaled = (std::fabs(distance_along_plane) < 2.0 * std::numeric_limits<double>::epsilon() ?
+                                         2.0 *std::numeric_limits<double>::epsilon()
+                                         :
+                                         distance_along_plane)
+                                        / thickness_local;
                       double temp = exp((x_scaled * sin(average_angle)
                                          - z_scaled * cos(average_angle)) / H);
+
+                      WBAssert(!std::isnan(z_scaled), "Internal error: z_scaled is not a number: " << z_scaled << ".");
+                      WBAssert(!std::isnan(x_scaled), "Internal error: x_scaled is not a number: " << x_scaled << ".");
+                      WBAssert(!std::isnan(temp), "Internal error: temp is not a number: " << temp << ". In exponent: "
+                               << (x_scaled * sin(average_angle) - z_scaled * cos(average_angle)) / H
+                               << ", top: " << (x_scaled * sin(average_angle) - z_scaled * cos(average_angle))
+                               << ", x_scaled = " << x_scaled << ", z_scaled = " << z_scaled << ", average_angle = " << average_angle);
 
                       double sum=0;
                       for (int i=1; i<=n_sum; i++)
@@ -312,6 +332,8 @@ namespace WorldBuilder
                         }
                       temperature = temp * (potential_mantle_temperature + (surface_temperature - 273.15) * (z_scaled)
                                             + 2.0 * (potential_mantle_temperature - 273.15) * sum);
+
+                      WBAssert(!std::isnan(temperature), "Internal error: temperature is not a number: " << temperature << ".");
                     }
                 }
             }
@@ -382,7 +404,7 @@ namespace WorldBuilder
                   // TODO: do some interpolation for the thickness.
                   if (distance_from_plane > 0 &&
                       distance_from_plane <= thickness_local &&
-                      distance_along_plane > 0 &&
+                      distance_along_plane >= 0 &&
                       distance_along_plane <= max_slab_length)
                     {
                       // Inside the slab!

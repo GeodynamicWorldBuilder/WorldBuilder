@@ -944,14 +944,16 @@ namespace WorldBuilder
                       segment = i_segment;
                       segment_fraction = new_along_plane_distance / interpolated_segment_length;
                       total_average_angle = (average_angle * total_length
-                                             + 0.5 * (interpolated_angle_top + interpolated_angle_bottom  - 2 * add_angle) * new_along_plane_distance) /
-                                            (total_length + new_along_plane_distance);
+                                             + 0.5 * (interpolated_angle_top + interpolated_angle_bottom  - 2 * add_angle) * new_along_plane_distance);
+                      total_average_angle = (total_average_angle == 0 ? 0 : total_average_angle /
+                                             (total_length + new_along_plane_distance));
                     }
 
                   // increase average angle
                   average_angle = (average_angle * total_length +
-                                   0.5 * (interpolated_angle_top + interpolated_angle_bottom  - 2 * add_angle) * interpolated_segment_length) /
-                                  (total_length + interpolated_segment_length);
+                                   0.5 * (interpolated_angle_top + interpolated_angle_bottom  - 2 * add_angle) * interpolated_segment_length);
+                  average_angle = (average_angle == 0 ? 0 : average_angle /
+                                   (total_length + interpolated_segment_length));
                   // increase the total length for the next segment.
                   total_length += interpolated_segment_length;
                 }
