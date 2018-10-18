@@ -268,7 +268,7 @@ namespace WorldBuilder
               const double surface_temperature = world->parameters.get_double("surface temperature");
 
               // TODO: do some interpolation for the thickness.
-              if (distance_from_plane > 0 &&
+              if (distance_from_plane >= 0 &&
                   distance_from_plane <= thickness_local &&
                   distance_along_plane >= 0 &&
                   distance_along_plane <= max_slab_length)
@@ -302,11 +302,14 @@ namespace WorldBuilder
                       WBAssert(!std::isnan(H), "Internal error: H is not a number: " << H << ".");
 
                       const int n_sum = 500;
-                      // distance_from_plane can't be zero, see if stament above,
-                      // so no protection needed.
-                      double z_scaled = 1 - (distance_from_plane/ thickness_local);
+                      // distance_from_plane can be zero, so protect division.
+                      double z_scaled = 1 - (std::fabs(distance_from_plane) < 2.0 * std::numeric_limits<double>::epsilon() ?
+                                             2.0 * std::numeric_limits<double>::epsilon()
+                                             :
+                                             distance_from_plane
+                                             / thickness_local);
 
-                      // distance_along_plane can be zeor, so protect division.
+                      // distance_along_plane can be zero, so protect division.
                       double x_scaled = (std::fabs(distance_along_plane) < 2.0 * std::numeric_limits<double>::epsilon() ?
                                          2.0 *std::numeric_limits<double>::epsilon()
                                          :
@@ -401,7 +404,7 @@ namespace WorldBuilder
 
 
                   // TODO: do some interpolation for the thickness.
-                  if (distance_from_plane > 0 &&
+                  if (distance_from_plane >= 0 &&
                       distance_from_plane <= thickness_local &&
                       distance_along_plane >= 0 &&
                       distance_along_plane <= max_slab_length)
@@ -415,7 +418,9 @@ namespace WorldBuilder
                               return composition_submodule_constant_value;
                             }
                           else
-                            return 0.0;
+                            {
+                              return 0.0;
+                            }
                         }
                       else if (composition_submodule_name == "constant layers")
                         {
@@ -436,7 +441,9 @@ namespace WorldBuilder
                                       return composition_submodule_constant_layers_value[i];
                                     }
                                   else
-                                    return 0.0;
+                                    {
+                                      return 0.0;
+                                    }
                                 }
                               total_thickness += composition_submodule_constant_layers_thicknesses[i];
                             }
