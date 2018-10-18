@@ -659,6 +659,22 @@ namespace WorldBuilder
               const Point<3> closest_point_on_line_bottom_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_bottom.get_array()),cartesian);
               const Point<3> closest_point_on_line_plus_normal_to_plane_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_plus_normal_to_plane_surface_spherical.get_array()),cartesian);
 
+
+              // if the two points are the same, we don't need to search any further
+              if (std::fabs((check_point_cartesian - closest_point_on_line_cartesian).norm()) < 2e-14)
+                {
+                  distance = 0.0;
+                  along_plane_distance = 0.0;
+                  section = current_section;
+                  section_fraction = fraction_CPL_P1P2;
+                  segment = 0;
+                  segment_fraction = 0.0;
+                  total_average_angle = plane_segment_angles[original_current_section][0][0]
+                                        + fraction_CPL_P1P2 * (plane_segment_angles[original_next_section][0][0]
+                                                               - plane_segment_angles[original_current_section][0][0]);
+                  break;
+                }
+
               Point<3> normal_to_plane = closest_point_on_line_plus_normal_to_plane_cartesian - closest_point_on_line_cartesian;
               normal_to_plane = normal_to_plane / normal_to_plane.norm();
 
@@ -667,7 +683,27 @@ namespace WorldBuilder
               // the line P1P2.
               // Todo: Assert that the norm of the axis are not equal to zero.
               Point<3> y_axis = closest_point_on_line_cartesian - closest_point_on_line_bottom_cartesian;
+
+              WBAssert(y_axis.norm() != 0,
+                       "Internal error: The y_axis.norm() is zero. Y_axis is " << y_axis[0] << ":" << y_axis[1] << ":" << y_axis[2]);
+
+              WBAssert(!std::isnan(y_axis[0]),
+                       "Internal error: The y_axis variable is not a number: " << y_axis[0]);
+              WBAssert(!std::isnan(y_axis[1]),
+                       "Internal error: The y_axis variable is not a number: " << y_axis[1]);
+              WBAssert(!std::isnan(y_axis[2]),
+                       "Internal error: The y_axis variable is not a number: " << y_axis[2]);
+
+
               y_axis = y_axis / y_axis.norm();
+
+
+              WBAssert(!std::isnan(y_axis[0]),
+                       "Internal error: The y_axis variable is not a number: " << y_axis[0]);
+              WBAssert(!std::isnan(y_axis[1]),
+                       "Internal error: The y_axis variable is not a number: " << y_axis[1]);
+              WBAssert(!std::isnan(y_axis[2]),
+                       "Internal error: The y_axis variable is not a number: " << y_axis[2]);
 
 
               // shorthand notation for computing the x_axis
@@ -683,7 +719,22 @@ namespace WorldBuilder
                               uz*ux*vx - uy*vx + uz*uy*vy + ux*vy + uz*uz*vz,
                               cartesian);
 
+              WBAssert(!std::isnan(x_axis[0]),
+                       "Internal error: The x_axis variable is not a number: " << x_axis[0]);
+              WBAssert(!std::isnan(x_axis[1]),
+                       "Internal error: The x_axis variable is not a number: " << x_axis[1]);
+              WBAssert(!std::isnan(x_axis[2]),
+                       "Internal error: The x_axis variable is not a number: " << x_axis[2]);
+
               x_axis = x_axis *(reference_on_side_of_line / x_axis.norm());
+
+
+              WBAssert(!std::isnan(x_axis[0]),
+                       "Internal error: The x_axis variable is not a number: " << x_axis[0]);
+              WBAssert(!std::isnan(x_axis[1]),
+                       "Internal error: The x_axis variable is not a number: " << x_axis[1]);
+              WBAssert(!std::isnan(x_axis[2]),
+                       "Internal error: The x_axis variable is not a number: " << x_axis[2]);
 
               Point<2> check_point_2d(x_axis * (check_point_cartesian - closest_point_on_line_bottom_cartesian),
                                       y_axis * (check_point_cartesian - closest_point_on_line_bottom_cartesian),
@@ -695,7 +746,20 @@ namespace WorldBuilder
                                      cartesian);
 
 
+              WBAssert(!std::isnan(check_point_2d[0]),
+                       "Internal error: The check_point_2d variable is not a number: " << check_point_2d[0]);
+              WBAssert(!std::isnan(check_point_2d[1]),
+                       "Internal error: The check_point_2d variable is not a number: " << check_point_2d[1]);
+
+
+              WBAssert(!std::isnan(begin_segment[0]),
+                       "Internal error: The begin_segment variable is not a number: " << begin_segment[0]);
+              WBAssert(!std::isnan(begin_segment[1]),
+                       "Internal error: The begin_segment variable is not a number: " << begin_segment[1]);
+
               Point<2> end_segment = begin_segment;
+
+
               double total_length = 0.0;
               double add_angle = 0.0;
               double average_angle = 0.0;
@@ -740,6 +804,12 @@ namespace WorldBuilder
 
 
                   begin_segment = end_segment;
+
+                  WBAssert(!std::isnan(begin_segment[0]),
+                           "Internal error: The begin_segment variable is not a number: " << begin_segment[0]);
+                  WBAssert(!std::isnan(begin_segment[1]),
+                           "Internal error: The begin_segment variable is not a number: " << begin_segment[1]);
+
 
                   // This interpolates different properties between P1 and P2 (the
                   // points of the plane at the surface)
@@ -809,7 +879,16 @@ namespace WorldBuilder
                       // define a circle. First find the center of the circle.
                       const double radius_angle_circle = std::fabs(interpolated_segment_length/difference_in_angle_along_segment);
 
+                      WBAssert(!std::isnan(radius_angle_circle),
+                               "Internal error: The radius_angle_circle variable is not a number: " << radius_angle_circle
+                               << ". interpolated_segment_length = " << interpolated_segment_length
+                               << ", difference_in_angle_along_segment = " << difference_in_angle_along_segment);
+
                       const double cos_angle_top = std::cos(interpolated_angle_top);
+
+                      WBAssert(!std::isnan(cos_angle_top),
+                               "Internal error: The radius_angle_circle variable is not a number: " << cos_angle_top
+                               << ". interpolated_angle_top = " << interpolated_angle_top);
 
                       Point<2> center_circle(cartesian);
                       if (std::fabs(interpolated_angle_top - 0.5 * const_pi) < 1e-8)
@@ -841,7 +920,10 @@ namespace WorldBuilder
                                                          : begin_segment[1] + radius_angle_circle * cos_angle_top;
 
                           WBAssert(!std::isnan(center_circle_y),
-                                   "Internal error: The center_circle_y variable is not a number: " << center_circle_y);
+                                   "Internal error: The center_circle_y variable is not a number: " << center_circle_y
+                                   << ". begin_segment[1] = " << begin_segment[1]
+                                   << ", radius_angle_circle = " << radius_angle_circle
+                                   << ", cos_angle_top = " << cos_angle_top);
 
                           // to prevent round off errors becomming dominant, we check
                           // whether center_circle_y - begin_segment[1] should be zero.
@@ -944,14 +1026,16 @@ namespace WorldBuilder
                       segment = i_segment;
                       segment_fraction = new_along_plane_distance / interpolated_segment_length;
                       total_average_angle = (average_angle * total_length
-                                             + 0.5 * (interpolated_angle_top + interpolated_angle_bottom  - 2 * add_angle) * new_along_plane_distance) /
-                                            (total_length + new_along_plane_distance);
+                                             + 0.5 * (interpolated_angle_top + interpolated_angle_bottom  - 2 * add_angle) * new_along_plane_distance);
+                      total_average_angle = (total_average_angle == 0 ? 0 : total_average_angle /
+                                             (total_length + new_along_plane_distance));
                     }
 
                   // increase average angle
                   average_angle = (average_angle * total_length +
-                                   0.5 * (interpolated_angle_top + interpolated_angle_bottom  - 2 * add_angle) * interpolated_segment_length) /
-                                  (total_length + interpolated_segment_length);
+                                   0.5 * (interpolated_angle_top + interpolated_angle_bottom  - 2 * add_angle) * interpolated_segment_length);
+                  average_angle = (average_angle == 0 ? 0 : average_angle /
+                                   (total_length + interpolated_segment_length));
                   // increase the total length for the next segment.
                   total_length += interpolated_segment_length;
                 }
