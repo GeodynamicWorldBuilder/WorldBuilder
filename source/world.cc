@@ -79,9 +79,11 @@ namespace WorldBuilder
      * Temperature parameters.
      */
     prm.load_entry("potential mantle temperature", false,
-                   Types::Double(1600,"The potential temperature of the mantle at the surface in Kelvin"));
+                   Types::Double(1600,"The potential temperature of the mantle at the surface in Kelvin."));
     prm.load_entry("surface temperature", false,
-                   Types::Double(293.15,"The temperature at the surface in Kelvin"));
+                   Types::Double(293.15,"The temperature at the surface in Kelvin."));
+    prm.load_entry("force surface temperature", false,
+                   Types::String("false","Force the provided surface temperature to be set at the surface"));
     prm.load_entry("thermal expansion coefficient", false,
                    Types::Double(3.5e-5,"The thermal expansion coefficient in $K^{-1}$."));
     prm.load_entry("specific heat", false, Types::Double(1250,"The specific heat in $J kg^{-1} K^{-1}."));
@@ -199,6 +201,9 @@ namespace WorldBuilder
   {
     // We receive the cartesian points from the user.
     Point<3> point(point_,cartesian);
+
+    if (std::fabs(depth) < 2.0 * std::numeric_limits<double>::epsilon() && this->parameters.get_string("force surface temperature") == "true")
+      return this->parameters.get_double("surface temperature");
 
     double temperature = this->parameters.get_double("potential mantle temperature") *
                          std::exp(((this->parameters.get_double("thermal expansion coefficient") * gravity_norm) /

@@ -1664,6 +1664,95 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world1.composition(position, 1, 1) == 0.0);
   CHECK(world1.composition(position, 1, 2) == 1.0);
 
+  std::string file_name2 = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/fault_constant_angles_cartesian_force_temp.wb";
+  WorldBuilder::World world2(file_name2);
+
+  // Check fault plate through the world
+  position = {0,0,800e3};
+  CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
+  CHECK(world2.temperature(position, 220e3, 10) == Approx(1701.6589518333));
+  CHECK(world2.temperature(position, 230e3, 10) == Approx(100.0));
+  CHECK(world2.composition(position, 0, 0) == 0.0);
+  CHECK(world2.composition(position, 0, 1) == 0.0);
+  CHECK(world2.composition(position, 0, 2) == 0.0);
+  CHECK(world2.composition(position, 0, 3) == 0.0);
+  CHECK(world2.composition(position, 0, 4) == 0.0);
+  CHECK(world2.composition(position, 0, 5) == 0.0);
+  CHECK(world2.composition(position, 0, 6) == 0.0);
+
+  position = {250e3,500e3,800e3};
+  CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
+  CHECK(world2.temperature(position, 10, 10) == Approx(150));
+  CHECK(world2.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(150.0));
+  CHECK(world2.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(1631.9945206949));
+  CHECK(world2.composition(position, 0, 0) == 0.0);
+  CHECK(world2.composition(position, 0, 1) == 0.0);
+  CHECK(world2.composition(position, 0, 2) == 0.0);
+  CHECK(world2.composition(position, 0, 3) == 0.0);
+  CHECK(world2.composition(position, 10, 0) == 0.0);
+  CHECK(world2.composition(position, 10, 1) == 0.0);
+  CHECK(world2.composition(position, 10, 2) == 0.0);
+  CHECK(world2.composition(position, 10, 3) == 1.0);
+  CHECK(world2.composition(position, std::sqrt(2) * 50e3 - 1, 3) == 1.0);
+  CHECK(world2.composition(position, std::sqrt(2) * 50e3 + 1, 3) == 0.0);
+  CHECK(world2.composition(position, 0, 4) == 0.0);
+  CHECK(world2.composition(position, 0, 5) == 0.0);
+  CHECK(world2.composition(position, 0, 6) == 0.0);
+
+
+  position = {250e3,250e3,800e3};
+  CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
+  CHECK(world2.temperature(position, 1, 10) == Approx(100.0));
+  CHECK(world2.temperature(position, 5, 10) == Approx(100.0));
+  CHECK(world2.temperature(position, 10, 10) == Approx(100.0));
+  CHECK(world2.temperature(position, 100, 10) == Approx(100.0));
+  CHECK(world2.temperature(position, 500, 10) == Approx(100.0));
+  CHECK(world2.temperature(position, 1000, 10) == Approx(100.0));
+  CHECK(world2.temperature(position, 5000, 10) == Approx(100.0));
+  CHECK(world2.temperature(position, std::sqrt(2) * 50e3/2, 10) == Approx(100.0));
+  CHECK(world2.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(100.0));
+  CHECK(world2.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(1631.9945206949));
+  CHECK(world2.composition(position, 0, 0) == 0.0);
+  CHECK(world2.composition(position, 0, 1) == 0.0);
+  CHECK(world2.composition(position, 0, 2) == 0.0);
+  CHECK(world2.composition(position, 0, 3) == 0.0);
+  CHECK(world2.composition(position, 10, 0) == 1.0);
+  CHECK(world2.composition(position, 10, 1) == 0.0);
+  CHECK(world2.composition(position, 10, 2) == 0.0);
+  CHECK(world2.composition(position, 10, 3) == 0.0);
+
+  CHECK(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0) == 1.0);
+  CHECK(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 1) == 0.0);
+  CHECK(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 2) == 0.0);
+  CHECK(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 0) == 0.0);
+  CHECK(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 1) == 1.0);
+  CHECK(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 2) == 0.0);
+  CHECK(world2.composition(position, std::sqrt(2) * 66e3 * 0.5 - 1, 1) == 1.0);
+  CHECK(world2.composition(position, std::sqrt(2) * 66e3 * 0.5 + 1, 1) == 0.0);
+  CHECK(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 2) == 1.0);
+  CHECK(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 2) == 0.0);
+  CHECK(world2.composition(position, std::sqrt(2) * 100e3 * 0.5 - 1, 3) == 0.0);
+  CHECK(world2.composition(position, std::sqrt(2) * 100e3 * 0.5 + 1, 3) == 0.0);
+  CHECK(world2.composition(position, 0, 4) == 0.0);
+  CHECK(world2.composition(position, 0, 5) == 0.0);
+  CHECK(world2.composition(position, 0, 6) == 0.0);
+
+  position = {250e3,250e3,800e3};
+  CHECK(world2.composition(position, 1, 0) == 1.0);
+  CHECK(world2.composition(position, 1, 1) == 0.0);
+  CHECK(world2.composition(position, 1, 2) == 0.0);
+  position = {250e3,250e3-std::sqrt(2) * 33e3 * 0.5 + 1, 800e3};
+  CHECK(world2.composition(position, 1, 0) == 1.0);
+  CHECK(world2.composition(position, 1, 1) == 0.0);
+  CHECK(world2.composition(position, 1, 2) == 0.0);
+  position = {250e3,250e3-std::sqrt(2) * 66e3 * 0.5 + 1, 800e3};
+  CHECK(world2.composition(position, 1, 0) == 0.0);
+  CHECK(world2.composition(position, 1, 1) == 1.0);
+  CHECK(world2.composition(position, 1, 2) == 0.0);
+  position = {250e3,250e3-std::sqrt(2) * 99e3 * 0.5 + 1, 800e3};
+  CHECK(world2.composition(position, 1, 0) == 0.0);
+  CHECK(world2.composition(position, 1, 1) == 0.0);
+  CHECK(world2.composition(position, 1, 2) == 1.0);
 }
 
 TEST_CASE("WorldBuilder Features: coordinate interpolation")
