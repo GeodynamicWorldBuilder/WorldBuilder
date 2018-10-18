@@ -1,0 +1,43 @@
+"version":"0.1",
+"cross section": [[100e3,100e3],[400e3,500e3]],
+"coordinate system":{"cartesian":{}},
+"force surface temperature":"true",
+"surface rotation point": ["165e3","166e3"],
+"surface rotation angle": "0",
+"minimum parts per distance unit": 5,
+"minimum distance points": 1e-5,
+"surface objects":
+{
+     "fault":{"name":"First fault", "coordinates":[[0e3,500e3],[500e3,500e3],[1000e3,750e3]], "reference point":[1200e3,1200e3],
+         "starting depth":0, "max depth":1e10,
+         "segments":
+         {
+           "all":[{"length":200e3, "thickness":[100e3,100e3], "angle":[45]}, {"length":200e3, "thickness":[100e3], "angle":[60]}, {"length":150e3, "thickness":[100e3,100e3], "angle":[90]}],
+           "1":[{"length":200e3, "thickness":[100e3,100e3], "angle":[45]}, {"length":100e3, "thickness":[100e3], "angle":[30]}, {"length":150e3, "thickness":[100e3], "angle":[30]}],
+           "2":[{"length":200e3, "thickness":[200e3,100e3], "angle":[30]}, {"length":100e3, "thickness":[100e3], "angle":[30]}, {"length":150e3, "thickness":[100e3,0], "angle":[70]}]
+         },
+         "temperature model":{"name":"constant", "temperature":150},
+         "composition model":{"name":"constant", "composition":3}},
+
+    "fault":{"name":"Second fault", "coordinates":[[0e3,250e3],[500e3,250e3],[1000e3,500e3]], "reference point":[0,-1],
+         "starting depth":0, "max depth":1e10,
+         "segments":
+         {
+           "all":[{"length":200e3, "thickness":[100e3,100e3], "angle":[45]}, {"length":200e3, "thickness":[100e3], "angle":[60]}, {"length":150e3, "thickness":[100e3,100e3], "angle":[90]}],
+           "1":[{"length":200e3, "thickness":[100e3,100e3], "angle":[45]}, {"length":100e3, "thickness":[100e3], "angle":[30]}, {"length":150e3, "thickness":[100e3], "angle":[30]}],
+           "2":[{"length":200e3, "thickness":[200e3,100e3], "angle":[30]}, {"length":100e3, "thickness":[100e3], "angle":[30]}, {"length":150e3, "thickness":[100e3,0], "angle":[70]}]
+         },
+         "temperature model":{"name":"constant", "temperature":100 },
+         "composition model":{"name":"constant layers", "layers":[{"composition":0, "thickness":33e3},{"composition":1, "thickness":33e3},{"composition":2, "thickness":33e3}]}},
+
+    "fault":{"name":"none fault", "coordinates":[[0e3,250e3],[500e3,250e3],[1000e3,500e3]], "reference point":[0,-1],
+         "starting depth":0, "max depth":1e10,
+         "segments":
+         {
+           "all":[{"length":200e3, "thickness":[100e3,100e3], "angle":[45]}, {"length":200e3, "thickness":[100e3], "angle":[60]}, {"length":150e3, "thickness":[100e3,100e3], "angle":[90]}],
+           "1":[{"length":200e3, "thickness":[100e3,200e3], "angle":[45]}, {"length":100e3, "thickness":[100e3], "angle":[30]}, {"length":150e3, "thickness":[100e3], "angle":[30]}],
+           "2":[{"length":200e3, "thickness":[200e3,100e3], "angle":[30]}, {"length":100e3, "thickness":[100e3], "angle":[30]}, {"length":150e3, "thickness":[100e3,0], "angle":[70]}]
+         },
+         "temperature model":{"name":"none"},
+         "composition model":{"name":"none"}}
+}
