@@ -541,9 +541,9 @@ namespace WorldBuilder
                     "the same size as the point list. This is required.");
 
       double distance = INFINITY;
-      double new_distance = NaN::DSNAN;
+      double new_distance = INFINITY;
       double along_plane_distance = INFINITY;
-      double new_along_plane_distance  = NaN::DSNAN;
+      double new_along_plane_distance  = INFINITY;
 
       const CoordinateSystem natural_coordinate_system = coordinate_system->natural_coordinate_system();
       const bool bool_cartesian = natural_coordinate_system == cartesian;
