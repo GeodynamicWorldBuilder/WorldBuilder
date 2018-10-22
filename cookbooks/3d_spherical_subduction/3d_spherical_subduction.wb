@@ -1,0 +1,31 @@
+"version":"0.1",
+"coordinate system":{"spherical":{"depth method":"begin segment"}},
+"cross section":[[0,0],[10,0]],
+"minimum points per distance":0.01,
+"interpolation":"monotone spline",
+"surface objects":
+{
+  "mantle layer":{"name":"upper mantle", "top depth":95e3, "coordinates":[[-1,-1],[41,-1],[41,-1],[-1,-1]],
+                   "temperature model":{"name":"linear", "depth":565e3, "top temperature":1600, "bottom temperature":1820},
+                   "composition model":{"name":"constant", "depth":565e3, "composition":4}},
+
+  "mantle layer":{"name":"lower mantle", "top depth":660e3, "coordinates":[[-1,-1],[41,-1],[41,-1],[-1,-1]],
+                   "temperature model":{"name":"linear", "depth":500e3, "top temperature":1820, "bottom temperature":2000},
+                   "composition model":{"name":"constant", "depth":500e3, "composition":5}},
+
+  "oceanic plate":{"name":"oceanic plate", "coordinates":[[-1,-1],[-1,41],[15,41],[15,20],[5,10],[5,-1]],
+                   "temperature model":{"name":"linear", "depth":95e3, "bottom temperature":1600},
+                   "composition model":{"name":"constant layers", "layers":[{"composition":0, "thickness":10e3},{"composition":1, "thickness":85e3}]}},
+
+  "continental plate":{"name":"continental plate", "coordinates":[[41,41],[15,41],[15,20],[5,10],[5,-1],[41,-1]],
+                   "temperature model":{"name":"linear", "depth":120e3, "bottom temperature":1600},
+                   "composition model":{"name":"constant layers", "layers":[{"composition":2, "thickness":30e3},{"composition":3, "thickness":65e3}]}},
+
+  "subducting plate":{"name":"Subducting plate", "coordinates":[[15,41],[15,25],[5,5],[5,-1]], "reference point":[20,0],
+    "segments":
+    {
+      "all":[{"length":200e3, "thickness":[95e3], "angle":[0,45]}, {"length":400e3, "thickness":[95e3], "angle":[45]}, {"length":200e3, "thickness":[95e3], "angle":[45,0]},{"length":100e3, "thickness":[95e3], "angle":[0]}]
+    },
+    "temperature model":{"name":"plate model", "density":3300, "plate velocity":0.05 },
+    "composition model":{"name":"constant layers", "layers":[{"composition":0, "thickness":10e3},{"composition":1, "thickness":85e3}]}}
+}
