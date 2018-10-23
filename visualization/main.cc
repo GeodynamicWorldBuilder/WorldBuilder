@@ -294,7 +294,27 @@ int main(int argc, char **argv)
         n_cell_y = string_to_double(data[i][2]);
       if (data[i][0] == "n_cell_z" && data[i][1] == "=")
         n_cell_z = string_to_double(data[i][2]);
+
     }
+
+  WBAssertThrow(dim == 2 || dim == 3, "dim should be set in the grid file and can only be 2 or 3.");
+
+  WBAssertThrow(!std::isnan(x_min), "x_min is not a number:" << x_min << ". This value has probably not been provided in the grid file.");
+  WBAssertThrow(!std::isnan(x_max), "x_max is not a number:" << x_max << ". This value has probably not been provided in the grid file.");
+  WBAssertThrow(dim == 2 || !std::isnan(y_min), "y_min is not a number:" << y_min << ". This value has probably not been provided in the grid file.");
+  WBAssertThrow(dim == 2 || !std::isnan(y_max), "y_max is not a number:" << y_max << ". This value has probably not been provided in the grid file.");
+  WBAssertThrow(!std::isnan(z_min), "z_min is not a number:" << z_min << ". This value has probably not been provided in the grid file.");
+  WBAssertThrow(!std::isnan(z_max), "z_max is not a number:" << z_max << ". This value has probably not been provided in the grid file.");
+
+
+  WBAssertThrow(n_cell_x != 0, "n_cell_z may not be equal to zero: " << n_cell_x << ".");
+  WBAssertThrow(!std::isnan(n_cell_x), "n_cell_z is not a number:" << n_cell_x << ".");
+
+  WBAssertThrow(dim == 3 || n_cell_z != 0, "In 3d n_cell_z may not be equal to zero: " << n_cell_y << ".");
+  WBAssertThrow(!std::isnan(n_cell_z), "n_cell_z is not a number:" << n_cell_y << ".");
+
+  WBAssertThrow(n_cell_z != 0, "n_cell_z may not be equal to zero: " << n_cell_z << ".");
+  WBAssertThrow(!std::isnan(n_cell_z), "n_cell_z is not a number:" << n_cell_z << ".");
 
 
 
@@ -356,6 +376,11 @@ int main(int argc, char **argv)
       double dx = (x_max - x_min) / n_cell_x;
       double dy = (y_max - y_min) / n_cell_y;
       double dz = (z_max - z_min) / n_cell_z;
+
+
+      WBAssertThrow(!std::isnan(dx), "dz is not a number:" << dz << ".");
+      WBAssertThrow(dim == 2 || !std::isnan(dy), "dz is not a number:" << dz << ".");
+      WBAssertThrow(!std::isnan(dz), "dz is not a number:" << dz << ".");
 
       // todo: determine wheter a input variable is desirable for this.
       double surface = z_max;
