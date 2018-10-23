@@ -1229,8 +1229,12 @@ int main(int argc, char **argv)
   std::cout << "[5/5] Writing the paraview file: stage 1 of 3, writing header                                  \r";
   std::cout.flush();
 
+  std::string base_filename = wb_file.substr(wb_file.find_last_of("/\\") + 1);
+  std::string::size_type const p(base_filename.find_last_of('.'));
+  std::string file_without_extension = base_filename.substr(0, p);
+
   std::ofstream myfile;
-  myfile.open ("example.vtu");
+  myfile.open (file_without_extension + ".vtu");
   myfile << "<?xml version=\"1.0\" ?> " << std::endl;
   myfile << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"LittleEndian\">" << std::endl;
   myfile << "<UnstructuredGrid>" << std::endl;
