@@ -49,13 +49,9 @@ namespace WorldBuilder
     WBAssertThrow(json_input_stream.good(),
                   "Could not find the world builder file at the specified location: " + filename);
 
-    std::stringstream json_fixed_input_stream;
-
     WBAssert(json_input_stream, "Could not read the world builder file.");
-    json_fixed_input_stream << "{" <<  json_input_stream.rdbuf() << "}";
-    json_input_stream.close();
 
-    boost::property_tree::json_parser::read_json (json_fixed_input_stream, tree);
+    boost::property_tree::json_parser::read_json (json_input_stream, tree);
     local_tree = &tree;
   }
 

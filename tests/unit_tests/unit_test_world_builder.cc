@@ -2307,11 +2307,7 @@ TEST_CASE("WorldBuilder Types: print_tree")
   boost::property_tree::ptree tree;
   std::ifstream json_input_stream(file_name.c_str());
 
-  std::stringstream json_fixed_input_stream;
-  json_fixed_input_stream << "{" <<  json_input_stream.rdbuf() << "}";
-  json_input_stream.close();
-
-  boost::property_tree::json_parser::read_json (json_fixed_input_stream, tree);
+  boost::property_tree::json_parser::read_json (json_input_stream, tree);
   std::stringstream output;
   output <<
          "{\n" <<
@@ -2341,7 +2337,7 @@ TEST_CASE("WorldBuilder Types: print_tree")
          "  \"surface rotation angle\": \"0\",\n" <<
          "  \"minimum parts per distance unit\": \"5\",\n" <<
          "  \"minimum distance points\": \"1e-5\",\n" <<
-         "  \"surface objects\": \n" <<
+         "  \"features\": \n" <<
          "  {\n" <<
          "    \"continental plate\": \n" <<
          "    {\n" <<

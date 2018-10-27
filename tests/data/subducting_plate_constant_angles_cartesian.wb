@@ -1,3 +1,4 @@
+{
 "version":"0.1",
 "cross section": [[100e3,100e3],[400e3,100e3]],
 "coordinate system":{"cartesian":{}},
@@ -5,7 +6,7 @@
 "surface rotation angle": "0",
 "minimum parts per distance unit": 5,
 "minimum distance points": 1e-5,
-"surface objects":
+"features":
 {
      "subducting plate":{"name":"First subducting plate", "coordinates":[[0e3,500e3],[500e3,500e3],[1000e3,750e3]], "reference point":[1200e3,1200e3],
          "starting depth":0, "max depth":1e10,
@@ -39,4 +40,5 @@
          },
          "temperature model":{"name":"none"},
          "composition model":{"name":"none"}}
+}
 }

@@ -1,3 +1,4 @@
+{
 "version":"0.1",
 "cross section": [[100e3,100e3],[400e3,500e3]],
 "coordinate system":{"cartesian":{}},
@@ -5,7 +6,7 @@
 "surface rotation angle": "0",
 "minimum parts per distance unit": 5,
 "minimum distance points": 1e-5,
-"surface objects":
+"features":
 {
   "mantle layer":{"name":"First mantle layer","coordinates":[[-1e3,500e3],[500e3,500e3],[500e3,1000e3],[-1e3,1000e3]],
      "top depth":100e3,
@@ -38,4 +39,4 @@
      "composition model":{"name":"constant layers", "depth":250e3, "layers":[{"composition":6, "thickness":75e3},{"composition":7, "thickness":75e3},{"composition":8, "thickness":75e3}]}}
      
     }
-
+}

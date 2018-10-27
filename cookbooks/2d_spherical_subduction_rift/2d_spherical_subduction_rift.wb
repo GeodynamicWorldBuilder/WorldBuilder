@@ -1,3 +1,4 @@
+{
 "version":"0.1",
 "coordinate system":{"spherical":{"depth method":"begin segment"}},
 "cross section":[[0,0],[10,0]],
@@ -27,4 +28,5 @@
     },
     "temperature model":{"name":"plate model", "density":3300, "plate velocity":0.01 },
     "composition model":{"name":"constant layers", "layers":[{"composition":0, "thickness":10e3},{"composition":1, "thickness":85e3}]}}
+}
 }

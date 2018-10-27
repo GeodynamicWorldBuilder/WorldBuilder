@@ -1,9 +1,10 @@
+{
 "version":"0.1",
 "surface rotation point": ["165e3","166e3"],
 "surface rotation angle": "0",
 "minimum parts per distance unit": 5,
 "minimum distance points": 1e-5,
-"surface objects":
+"features":
 {
      "continental plate":{"name":"Carribean","coordinates":[[-1e3,500e3],[500e3,500e3],[500e3,1000e3],[-1e3,1000e3]],
          "temperature model":{"name":"constant", "depth":250e3, "temperature":150},
@@ -16,4 +17,5 @@
      "continental Plate":{"name":"Carribean2","coordinates":[[-1e3,500e3],[500e3,500e3],[500e3,1000e3],[-1e3,1000e3]],
          "temperature model":{"name":"none", "depth":250e3, "temperature":150},
          "composition model":{"name":"constant", "depth":250e3, "composition":3}}
+}
 }

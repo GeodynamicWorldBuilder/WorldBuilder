@@ -1,9 +1,10 @@
+{
 "version":"0.1",
 "coordinate system":{"spherical":{"depth method":"begin segment"}},
 "cross section":[[0,0],[10,0]],
 "minimum points per distance":0.01,
 "interpolation":"monotone spline",
-"surface objects":
+"features":
 {
   "mantle layer":{"name":"upper mantle", "top depth":95e3, "coordinates":[[-1,-1],[41,-1],[41,-1],[-1,-1]],
                    "temperature model":{"name":"linear", "depth":565e3, "top temperature":1600, "bottom temperature":1820},
@@ -28,4 +29,5 @@
     },
     "temperature model":{"name":"plate model", "density":3300, "plate velocity":0.05 },
     "composition model":{"name":"constant layers", "layers":[{"composition":0, "thickness":10e3},{"composition":1, "thickness":85e3}]}}
+}
 }
