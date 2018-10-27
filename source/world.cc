@@ -134,7 +134,7 @@ namespace WorldBuilder
         dim = 3;
       }
 
-    prm.load_entry("surface objects", true, Types::List(
+    prm.load_entry("features", true, Types::List(
                      Types::Feature("These are the features"), "A list of features."));
 
   }

@@ -1,3 +1,4 @@
+{
 "version":"0.1",
 "cross section": [[0,0],[400e3,500e3]],
 "coordinate system":{"cartesian":{}},
@@ -5,7 +6,7 @@
 "surface rotation angle": "0",
 "minimum parts per distance unit": 5,
 "minimum distance points": 1e-5,
-"surface objects":
+"features":
 {
   "oceanic plate":{"name":"First oceanic plate","coordinates":[[-1e3,500e3],[500e3,500e3],[500e3,1000e3],[-1e3,1000e3]],
      "temperature model":{"name":"constant", "depth":250e3, "temperature":150},
@@ -34,4 +35,5 @@
   "oceanic plate":{"name":"Seventh oceanic plate","coordinates":[[50e3,-1e3],[400e3,-1e3],[400e3,400e3],[50e3,400e3]],
      "temperature model":{"name":"plate model", "depth":250e3, "spreading velocity":0.01, "ridge points":[[1500e3,-1e3],[1500e3,750e3]]},
      "composition model":{"name":"constant layers", "depth":250e3, "layers":[{"composition":6, "thickness":75e3},{"composition":7, "thickness":75e3},{"composition":8, "thickness":75e3}]}}     
-    }
+}
+}
