@@ -295,9 +295,6 @@ namespace WorldBuilder
         // otherwise set found_value to false.
         const Types::ConstantLayer &natural_type = dynamic_cast<const Types::ConstantLayer &>(type);
 
-        const std::string path_plus_name_without_arrays = ((get_relative_path_without_arrays() == "") ? "" : (get_relative_path_without_arrays() + path_seperator + ""))
-                                                          + (name.front() == '[' && name.back() == ']' ? path_seperator : name);
-
         // Check composition value
         std::vector<unsigned int> compositions;
         boost::optional<ptree &> child = local_tree->get_child_optional("compositions");
