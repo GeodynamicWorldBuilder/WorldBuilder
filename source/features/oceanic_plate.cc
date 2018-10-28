@@ -155,7 +155,7 @@ namespace WorldBuilder
         else if (composition_submodule_name == "constant layers")
           {
             // Load the layers.
-            prm.load_entry("layers", true, Types::Array(Types::ConstantLayer(NaN::ISNAN,1.0,NaN::DSNAN,
+            prm.load_entry("layers", true, Types::Array(Types::ConstantLayer({NaN::ISNAN}, {1.0},NaN::DSNAN,
                                                                              "A plate constant layer with a certain composition and thickness."),
                                                         "A list of layers."));
 
@@ -361,12 +361,18 @@ namespace WorldBuilder
                   // The reason composition_submodule_constant_layers_compositions is
                   // unsigned int is so that it can be set to a negative value, which
                   // is aways ignored.
-                  if (composition_submodule_constant_layers_compositions[i] == (int)composition_number)
+                  const bool clear = true;
+                  for (unsigned int j =0; j < composition_submodule_constant_layers_compositions[i].size(); ++j)
                     {
-                      return composition_submodule_constant_layers_value[i];
+                      if (composition_submodule_constant_layers_compositions[i][j] == composition_number)
+                        {
+                          return composition_submodule_constant_layers_value[i][j];
+                        }
+                      else if (clear == true)
+                        {
+                          composition = 0.0;
+                        }
                     }
-                  else
-                    return 0.0;
                 }
               total_thickness += composition_submodule_constant_layers_thicknesses[i];
             }

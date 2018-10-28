@@ -36,7 +36,9 @@
    "mantle layer":{"name":"Sixth mantle layer","coordinates":[[1250e3,-1e3],[1250e3,500e3],[1750e3,500e3],[1750e3,-1e3]],
      "top depth":350e3,
      "temperature model":{"name":"adiabatic", "depth":250e3},
-     "composition model":{"name":"constant layers", "depth":250e3, "layers":[{"composition":6, "thickness":75e3},{"composition":7, "thickness":75e3},{"composition":8, "thickness":75e3}]}}
+     "composition model":{"name":"constant layers", "depth":250e3, "layers":[{"compositions":[6], "thickness":75e3},
+                                                                             {"compositions":[7], "thickness":75e3},
+                                                                             {"compositions":[8,9], "fractions":[0.25,0.75], "thickness":75e3}]}}
      
     }
 }
