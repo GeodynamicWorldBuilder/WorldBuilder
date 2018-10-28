@@ -61,7 +61,7 @@ namespace WorldBuilder
 
         /**
          * Clone. The caller of clone is responsible for the lifetime of it,
-         * so return a unique pionter.
+         * so return a unique pointer.
          */
         virtual
         std::unique_ptr<Interface> clone() const;

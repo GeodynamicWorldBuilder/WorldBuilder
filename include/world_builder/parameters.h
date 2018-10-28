@@ -201,7 +201,7 @@ namespace WorldBuilder
        * \return std::vector<T*>
        */
       template<class T>
-      const std::vector<T *> get_array(const std::string &name) const;
+      const std::vector<T> get_array(const std::string &name) const;
 
       /**
        * A reference to the World class. This is needed to create the features.

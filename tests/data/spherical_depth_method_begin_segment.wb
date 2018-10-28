@@ -28,6 +28,6 @@
                   {"length":300e3, "thickness":[200e3], "angle":[10]}]
          },
          "temperature model":{"name":"constant", "temperature":0 },
-         "composition model":{"name":"constant", "composition":0, "depth":200e3}}
+         "composition model":{"name":"constant", "compositions":[0], "depth":200e3}}
 }
 }

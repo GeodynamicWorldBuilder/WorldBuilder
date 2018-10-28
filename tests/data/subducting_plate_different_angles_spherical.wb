@@ -17,6 +17,6 @@
            "6":[{"length":200e3, "thickness":[100e3,100e3], "angle":[0,60]}, {"length":100e3, "thickness":[100e3,100e3], "angle":[60,0]}, {"length":150e3, "thickness":[100e3], "angle":[0]}]
          },
          "temperature model":{"name":"plate model", "density":3300, "plate velocity":0.01 },
-         "composition model":{"name":"constant", "composition":1, "depth":50e3}}
+         "composition model":{"name":"constant", "compositions":[1], "depth":50e3}}
 }
 }

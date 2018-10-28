@@ -17,7 +17,7 @@
            "2":[{"length":200e3, "thickness":[200e3,100e3], "angle":[30]}, {"length":100e3, "thickness":[100e3], "angle":[30]}, {"length":150e3, "thickness":[100e3,0], "angle":[70]}]
          },
          "temperature model":{"name":"constant", "temperature":150},
-         "composition model":{"name":"constant", "composition":3}},
+         "composition model":{"name":"constant", "compositions":[3,4], "fractions":[0.25,0.75]}},
 
     "fault":{"name":"Second fault", "coordinates":[[0e3,250e3],[500e3,250e3],[1000e3,500e3]], "reference point":[0,-1],
          "starting depth":0, "max depth":1e10,
