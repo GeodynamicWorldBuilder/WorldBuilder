@@ -5,19 +5,19 @@
 {
   "oceanic plate":{"name":"oceanic plate", "coordinates":[[-1e3,-1e3],[1150e3,-1e3],[1150e3,1e3],[-1e3,1e3]],
                    "temperature model":{"name":"plate model", "depth":95e3, "bottom temperature":1600, "spreading velocity":0.005, "ridge points":[[100e3,-1e3],[100e3,1e3]]},
-                   "composition model":{"name":"constant layers", "layers":[{"composition":0, "thickness":10e3},{"composition":1, "thickness":85e3}]}},
+                   "composition model":{"name":"constant layers", "layers":[{"compositions":[0], "thickness":10e3},{"compositions":[1], "thickness":85e3}]}},
 
   "continental plate":{"name":"continental plate", "coordinates":[[1150e3,-1e3],[2001e3,-1e3],[2001e3,1e3],[1150e3,1e3]],
                    "temperature model":{"name":"linear", "depth":95e3, "bottom temperature":1600},
-                   "composition model":{"name":"constant layers", "layers":[{"composition":2, "thickness":30e3},{"composition":3, "thickness":65e3}]}},
+                   "composition model":{"name":"constant layers", "layers":[{"compositions":[2], "thickness":30e3},{"compositions":[3], "thickness":65e3}]}},
 
   "mantle layer":{"name":"upper mantle", "top depth":95e3, "coordinates":[[-1e3,-1e3],[2001e3,-1e3],[2001e3,1e3],[-1e3,1e3]],
                    "temperature model":{"name":"linear", "depth":565e3, "top temperature":1600, "bottom temperature":1820},
-                   "composition model":{"name":"constant", "depth":565e3, "composition":4}},
+                   "composition model":{"name":"constant", "depth":565e3, "compositions":[4]}},
 
   "mantle layer":{"name":"lower mantle", "top depth":660e3, "coordinates":[[-1e3,-1e3],[2001e3,-1e3],[2001e3,1e3],[-1e3,1e3]],
                    "temperature model":{"name":"linear", "depth":500e3, "top temperature":1820, "bottom temperature":2000},
-                   "composition model":{"name":"constant", "depth":500e3, "composition":5}},
+                   "composition model":{"name":"constant", "depth":500e3, "compositions":[5]}},
 
   "subducting plate":{"name":"Subducting plate", "coordinates":[[1150e3,-1e3],[1150e3,1e3]], "reference point":[2000e3,0],
     "segments":
@@ -26,6 +26,6 @@
              {"length":200e3, "thickness":[95e3], "angle":[45,0]},{"length":100e3, "thickness":[95e3], "angle":[0]}]
     },
     "temperature model":{"name":"plate model", "density":3300, "plate velocity":0.01 },
-    "composition model":{"name":"constant layers", "layers":[{"composition":0, "thickness":10e3},{"composition":1, "thickness":85e3}]}}
+    "composition model":{"name":"constant layers", "layers":[{"compositions":[0], "thickness":10e3},{"compositions":[1], "thickness":85e3}]}}
 }
 }
