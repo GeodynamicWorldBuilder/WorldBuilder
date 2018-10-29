@@ -38,18 +38,18 @@ namespace WorldBuilder
         /**
          * A constructor for the load_entry function
          */
-        ConstantLayer(int default_value_composition,
-                      double default_value,
+        ConstantLayer(std::vector<unsigned int> default_value_composition,
+                      std::vector<double> default_value,
                       double default_value_thickness,
                       std::string description);
 
         /**
          * A constructor for the clone and set_entry function
          */
-        ConstantLayer(int value_composition,
-                      int default_value_composition,
-                      double value,
-                      double default_value,
+        ConstantLayer(std::vector<unsigned int> value_composition,
+                      std::vector<unsigned int> default_value_composition,
+                      std::vector<double> value,
+                      std::vector<double> default_value,
                       double value_thickness,
                       double default_value_thickness,
                       std::string description);
@@ -61,7 +61,7 @@ namespace WorldBuilder
 
         /**
          * Clone. The caller of clone is responsible for the lifetime of it,
-         * so return a unique pionter.
+         * so return a unique pointer.
          */
         virtual
         std::unique_ptr<Interface> clone() const;
@@ -70,25 +70,25 @@ namespace WorldBuilder
          * The composition number. An int is used so we can allow a value of
          * -1.
          */
-        int value_composition;
+        std::vector<unsigned int> value_composition;
 
         /**
          * The default composition number. An int is used so we can allow a
          * value of -1.
          */
-        int default_value_composition;
+        std::vector<unsigned int> default_value_composition;
 
 
         /**
          * The value of the composition or temperature. This value is never
          * required, even if the constant_layer required value is set to true.
          */
-        double value;
+        std::vector<double> value;
 
         /**
          * The default value of the composition or temperature.
          */
-        double default_value;
+        std::vector<double> default_value;
 
         /**
          * The thickness of the constant layer.

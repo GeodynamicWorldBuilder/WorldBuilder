@@ -129,12 +129,12 @@ namespace WorldBuilder
 
         // constant composition submodule parameters
         double composition_submodule_constant_depth;
-        unsigned int composition_submodule_constant_composition;
-        double composition_submodule_constant_value;
+        std::vector<unsigned int> composition_submodule_constant_composition;
+        std::vector<double> composition_submodule_constant_value;
 
         // constant layers composition submodule parameters
-        std::vector<int> composition_submodule_constant_layers_compositions;
-        std::vector<int> composition_submodule_constant_layers_value;
+        std::vector<std::vector<unsigned int> > composition_submodule_constant_layers_compositions;
+        std::vector<std::vector<double> > composition_submodule_constant_layers_value;
         std::vector<double> composition_submodule_constant_layers_thicknesses;
 
 

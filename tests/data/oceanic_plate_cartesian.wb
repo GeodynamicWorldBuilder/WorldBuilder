@@ -14,19 +14,19 @@
      
   "oceanic Plate":{"name":"Second oceanic plate", "coordinates":[[2000e3,2000e3],[1000e3,2000e3],[1000e3,1000e3],[2000e3,1000e3]],
      "temperature model":{"name":"constant", "depth":250e3, "temperature":20},
-     "composition model":{"name":"constant", "depth":250e3, "composition":2}},
+     "composition model":{"name":"constant", "depth":250e3, "compositions":[2]}},
 
   "oceanic plate":{"name":"Third oceanic plate","coordinates":[[-1e3,500e3],[500e3,500e3],[500e3,1000e3],[-1e3,1000e3]],
      "temperature model":{"name":"none", "depth":250e3, "temperature":150},
-     "composition model":{"name":"constant", "depth":250e3, "composition":3}},
+     "composition model":{"name":"constant", "depth":250e3, "compositions":[3]}},
 
   "oceanic plate":{"name":"Fourth oceanic plate","coordinates":[[-1e3,1500e3],[500e3,1500e3],[500e3,2000e3],[-1e3,2000e3]],
      "temperature model":{"name":"linear", "depth":250e3},
-     "composition model":{"name":"constant", "depth":250e3, "composition":4}},
+     "composition model":{"name":"constant", "depth":250e3, "compositions":[4]}},
 
   "oceanic plate":{"name":"Fifth oceanic plate","coordinates":[[500e3,-1e3],[500e3,500e3],[1000e3,500e3],[1000e3,-1e3]],
      "temperature model":{"name":"linear", "depth":250e3, "top temperature":10, "bottom temperature":50},
-     "composition model":{"name":"constant", "depth":250e3, "composition":5}},
+     "composition model":{"name":"constant", "depth":250e3, "compositions":[5,6], "fractions":[0.25,0.75]}},
      
   "oceanic plate":{"name":"Sixth oceanic plate","coordinates":[[1100e3,-1e3],[1100e3,750e3],[2500e3,750e3],[2500e3,-1e3]],
      "temperature model":{"name":"plate model", "depth":250e3, "spreading velocity":0.01, "ridge points":[[1500e3,-1e3],[1500e3,750e3]]},
@@ -34,6 +34,8 @@
      
   "oceanic plate":{"name":"Seventh oceanic plate","coordinates":[[50e3,-1e3],[400e3,-1e3],[400e3,400e3],[50e3,400e3]],
      "temperature model":{"name":"plate model", "depth":250e3, "spreading velocity":0.01, "ridge points":[[1500e3,-1e3],[1500e3,750e3]]},
-     "composition model":{"name":"constant layers", "depth":250e3, "layers":[{"composition":6, "thickness":75e3},{"composition":7, "thickness":75e3},{"composition":8, "thickness":75e3}]}}     
+     "composition model":{"name":"constant layers", "depth":250e3, "layers":[{"compositions":[6], "thickness":75e3},
+                                                                             {"compositions":[7], "thickness":75e3},
+                                                                             {"compositions":[8,9], "fractions":[0.25,0.75], "thickness":75e3}]}}
 }
 }

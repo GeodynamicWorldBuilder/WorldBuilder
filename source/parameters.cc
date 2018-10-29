@@ -296,25 +296,53 @@ namespace WorldBuilder
         const Types::ConstantLayer &natural_type = dynamic_cast<const Types::ConstantLayer &>(type);
 
         // Check composition value
-        boost::optional<std::string> composition_value_tree =
-          Utilities::get_from_ptree_abs(*local_tree,
-                                        get_relative_path_without_arrays(),
-                                        "composition",
-                                        required,
-                                        path_seperator);
+        std::vector<unsigned int> compositions;
+        boost::optional<ptree &> child = local_tree->get_child_optional("compositions");
 
-        found_value = composition_value_tree ? true : false;
+        found_value = child ? true : false;
 
         WBAssertThrow((found_value == true && required == true) || required == false,
-                      "Could not find " + get_full_path() + path_seperator + "composition" + ", while it is set as required.");
+                      "Could not find " + get_full_path() + path_seperator + name + path_seperator +
+                      " compositions, while it is set as required.");
+
+        if (child)
+          {
+            for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
+              {
+                compositions.push_back(Utilities::string_to_int(it->second.get<std::string>("")));
+              }
+          }
+        else
+          {
+            compositions = natural_type.default_value_composition;
+          }
 
         // Check the value, which may be the value indicating composition or the temperature
-        boost::optional<std::string> value_tree =
-          Utilities::get_from_ptree_abs(*local_tree,
-                                        get_relative_path_without_arrays(),
-                                        "value",
-                                        false,
-                                        path_seperator);
+        std::vector<double> fractions;
+        child = local_tree->get_child_optional("fractions");
+
+        found_value = child ? true : false;
+
+        // fractions are not required
+        //WBAssertThrow((found_value == true && required == true) || required == false,
+        //          "Could not find " + get_full_path() + path_seperator + name + path_seperator + " fractions, while it is set as required.");
+
+        if (child)
+          {
+            for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
+              {
+                fractions.push_back(Utilities::string_to_double(it->second.get<std::string>("")));
+              }
+          }
+        else
+          {
+            fractions = natural_type.default_value;
+          }
+
+        WBAssertThrow(compositions.size() == fractions.size(),
+                      "The amount of provided compositions in the constant layer should match the amount of given fractions in "
+                      << get_full_path() + path_seperator + name + ". "
+                      << "Compositions size = " << compositions.size() << ", fractions size = " << fractions.size() << ".");
 
         // Check thickness value
         boost::optional<std::string> thickness_value_tree =
@@ -333,12 +361,12 @@ namespace WorldBuilder
 
 
         // The values are present and we have retrieved them. Now store it into a ConstantLayer type.
-        const int value_composition = composition_value_tree ? Utilities::string_to_int(composition_value_tree.get()) : natural_type.default_value_composition;
-        const double value = value_tree ? Utilities::string_to_double(value_tree.get()) : natural_type.default_value;
+        //const int value_composition = composition_value_tree ? Utilities::string_to_int(composition_value_tree.get()) : natural_type.default_value_composition;
+        //const double value = value_tree ? Utilities::string_to_double(value_tree.get()) : natural_type.default_value;
         const double value_thickness = thickness_value_tree ? Utilities::string_to_double(thickness_value_tree.get()) : natural_type.default_value_thickness;
 
-        vector_constant_layer.push_back(Types::ConstantLayer(value_composition, natural_type.default_value_composition,
-                                                             value, natural_type.default_value,
+        vector_constant_layer.push_back(Types::ConstantLayer(compositions, natural_type.default_value_composition,
+                                                             fractions, natural_type.default_value,
                                                              value_thickness, natural_type.default_value_thickness,
                                                              natural_type.description));
 
@@ -479,7 +507,15 @@ namespace WorldBuilder
           }
         else
           {
-            // TODO: set default value
+            const Types::Array &natural_type = dynamic_cast<const Types::Array &>(type);
+
+            vector_array.push_back(Types::Array(std::vector<unsigned int>(), natural_type.inner_type,natural_type.description));
+
+            location = vector_array.size()-1;
+            string_to_type_map[path_plus_name] = location;
+            unsigned int child_location;
+            this->set_entry("[0]", *natural_type.inner_type_ptr, child_location);
+            vector_array[location].inner_type_index.push_back(child_location);
           }
       }
     else if (type.get_type() == Types::type::Point2D)
@@ -636,6 +672,13 @@ namespace WorldBuilder
         vector_string.push_back(natural_type);
         string_to_type_map[path_plus_name] = vector_string.size()-1;
       }
+    else if (type.get_type() == Types::type::Segment)
+      {
+        // The value is present and we have retrieved it. Now store it
+        const Types::Segment &natural_type = dynamic_cast<const Types::Segment &>(type);
+        vector_segment.push_back(natural_type);
+        string_to_type_map[path_plus_name] = vector_string.size()-1;
+      }
     else if (type.get_type() == Types::type::CoordinateSystem)
       {
 
@@ -701,7 +744,7 @@ namespace WorldBuilder
       }
     else
       {
-        WBAssertThrow(false,"Type not defined.");
+        WBAssertThrow(false,"Type not defined: " << (int)type.get_type());
       }
   }
 
@@ -778,7 +821,7 @@ namespace WorldBuilder
   }
 
   template<class T>
-  const std::vector<T *>
+  const std::vector<T>
   Parameters::get_array(const std::string &name) const
   {
     //TODO: Assert that the size of the vector is larger then zero.
@@ -787,34 +830,58 @@ namespace WorldBuilder
 
     const Types::Array typed_array = vector_array[string_to_type_map.at(path_plus_name)];
 
-    std::vector<T *> array(typed_array.inner_type_index.size());
+    std::vector<T> array;
 
     for (unsigned int i = 0; i < typed_array.inner_type_index.size(); ++i)
       {
-        if (typed_array.inner_type == Types::type::Double)
+        if (typed_array.inner_type == Types::type::UnsignedInt)
           {
-            array[i] = dynamic_cast<T *>(&vector_double[typed_array.inner_type_index[i]]);
-            WBAssert(array[i] != NULL, "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator) << name << ", because it is not a Double.");
+            WBAssert(dynamic_cast<const T *>(&vector_unsigned_int[typed_array.inner_type_index[i]]) != NULL,
+                     "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator)
+                     << name << ", because it is not a Unsigned Int.");
+
+            array.push_back(*dynamic_cast<const T *>(&vector_unsigned_int[typed_array.inner_type_index[i]]));
+
+          }
+        else if (typed_array.inner_type == Types::type::Double)
+          {
+            WBAssert(dynamic_cast<const T *>(&vector_double[typed_array.inner_type_index[i]]) != NULL,
+                     "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator)
+                     << name << ", because it is not a Double.");
+
+            array.push_back(*dynamic_cast<const T *>(&vector_double[typed_array.inner_type_index[i]]));
           }
         else if (typed_array.inner_type == Types::type::Segment)
           {
-            array[i] = dynamic_cast<T *>(&vector_segment[typed_array.inner_type_index[i]]);
-            WBAssert(array[i] != NULL, "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator) << name << ", because it is not a segment.");
+            WBAssert(dynamic_cast<const T *>(&vector_segment[typed_array.inner_type_index[i]]) != NULL,
+                     "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator)
+                     << name << ", because it is not a segment.");
+
+            array.push_back(*dynamic_cast<const T *>(&vector_segment[typed_array.inner_type_index[i]]));
           }
         else if (typed_array.inner_type == Types::type::ConstantLayer)
           {
-            array[i] = dynamic_cast<T *>(&vector_constant_layer[typed_array.inner_type_index[i]]);
-            WBAssert(array[i] != NULL, "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator) << name << ", because it is not a constant layer.");
+            WBAssert(dynamic_cast<const T *>(&vector_constant_layer[typed_array.inner_type_index[i]]) != NULL,
+                     "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator)
+                     << name << ", because it is not a constant layer.");
+
+            array.push_back(*dynamic_cast<const T *>(&vector_constant_layer[typed_array.inner_type_index[i]]));
           }
         else if (typed_array.inner_type == Types::type::Point2D)
           {
-            array[i] = dynamic_cast<T *>(&vector_point_2d[typed_array.inner_type_index[i]]);
-            WBAssert(array[i] != NULL, "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator) << name << ", because it is not a 2d Point.");
+            WBAssert(dynamic_cast<const T *>(&vector_point_2d[typed_array.inner_type_index[i]]) != NULL,
+                     "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator)
+                     << name << ", because it is not a 2d Point.");
+
+            array.push_back(*dynamic_cast<const T *>(&vector_point_2d[typed_array.inner_type_index[i]]));
           }
         else if (typed_array.inner_type == Types::type::Point3D)
           {
-            array[i] = dynamic_cast<T *>(&vector_point_3d[typed_array.inner_type_index[i]]);
-            WBAssert(array[i] != NULL, "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator) << name << ", because it is not a 3d Point.");
+            WBAssert(dynamic_cast<const T *>(&vector_point_3d[typed_array.inner_type_index[i]]) != NULL,
+                     "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator)
+                     << name << ", because it is not a 3d Point.");
+
+            array.push_back(*dynamic_cast<const T *>(&vector_point_3d[typed_array.inner_type_index[i]]));
           }
         else
           {
@@ -879,35 +946,42 @@ namespace WorldBuilder
     return collapse.substr(0,collapse.size()-path_seperator.size());
   }
 
+
+  /**
+   * Returns a vector of pointers to the UnsignedInt Type based on the provided name.
+   * Note that the variable with this name has to be loaded before this function is called.
+   */
+  template const std::vector<Types::UnsignedInt> Parameters::get_array<Types::UnsignedInt>(const std::string &name) const;
+
   /**
    * Returns a vector of pointers to the Double Type based on the provided name.
    * Note that the variable with this name has to be loaded before this function is called.
    */
-  template const std::vector<const Types::Double * > Parameters::get_array<const Types::Double >(const std::string &name) const;
+  template const std::vector<Types::Double> Parameters::get_array<Types::Double>(const std::string &name) const;
 
   /**
    * Returns a vector of pointers to the Segment Type based on the provided name.
    * Note that the variable with this name has to be loaded before this function is called.
    */
-  template const std::vector<const Types::Segment * > Parameters::get_array<const Types::Segment >(const std::string &name) const;
+  template const std::vector<Types::Segment> Parameters::get_array<Types::Segment>(const std::string &name) const;
 
   /**
    * Returns a vector of pointers to the ConstantLayer Type based on the provided name.
    * Note that the variable with this name has to be loaded before this function is called.
    */
-  template const std::vector<const Types::ConstantLayer * > Parameters::get_array<const Types::ConstantLayer >(const std::string &name) const;
+  template const std::vector<Types::ConstantLayer> Parameters::get_array<Types::ConstantLayer>(const std::string &name) const;
 
   /**
    * Returns a vector of pointers to the Point<2> Type based on the provided name.
    * Note that the variable with this name has to be loaded before this function is called.
    */
-  template const std::vector<const Types::Point<2>* > Parameters::get_array<const Types::Point<2> >(const std::string &name) const;
+  template const std::vector<Types::Point<2> > Parameters::get_array<Types::Point<2> >(const std::string &name) const;
 
   /**
    * Returns a vector of pointers to the Point<3> Type based on the provided name.
    * Note that the variable with this name has to be loaded before this function is called.
    */
-  template const std::vector<const Types::Point<3>* > Parameters::get_array<const Types::Point<3> >(const std::string &name) const;
+  template const std::vector<Types::Point<3> > Parameters::get_array<Types::Point<3> >(const std::string &name) const;
 
 }
 

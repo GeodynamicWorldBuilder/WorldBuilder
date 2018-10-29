@@ -116,7 +116,7 @@ namespace WorldBuilder
     if (set)
       {
         dim = 2;
-        std::vector<const Types::Point<2>* > cross_section = prm.get_array<const Types::Point<2> >("cross section");
+        std::vector<Types::Point<2> > cross_section = prm.get_array<Types::Point<2> >("cross section");
 
         WBAssertThrow(cross_section.size() == 2, "The cross section should contain two points, but it contains "
                       << cross_section.size() << " points.");
@@ -124,7 +124,7 @@ namespace WorldBuilder
         /**
          * pre-compute stuff for the cross section
          */
-        Point<2> surface_coord_conversions = (*cross_section[0]-*cross_section[1]) * (coordinate_system == spherical ? const_pi / 180.0 : 1.0);
+        Point<2> surface_coord_conversions = (cross_section[0]-cross_section[1]) * (coordinate_system == spherical ? const_pi / 180.0 : 1.0);
         surface_coord_conversions *= -1/(surface_coord_conversions.norm());
         prm.set_entry("surface coordinate conversions",
                       Types::Point<2>(surface_coord_conversions, surface_coord_conversions, "An internal value which is precomputed."));

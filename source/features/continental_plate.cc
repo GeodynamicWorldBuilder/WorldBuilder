@@ -94,23 +94,41 @@ namespace WorldBuilder
 
         if (composition_submodule_name == "constant")
           {
-            prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth in meters to which the composition of this feature is present."));
+            prm.load_entry("depth", true,
+                           Types::Double(NaN::DSNAN,"The depth in meters to which the composition of this feature is present."));
             composition_submodule_constant_depth = prm.get_double("depth");
 
-            prm.load_entry("value", false, Types::Double(1.0,"The value between 0 and 1 of how much this composition is present."));
-            composition_submodule_constant_value = prm.get_double("value");
+            prm.load_entry("compositions", true,
+                           Types::Array(Types::UnsignedInt(0,"The number of the composition that is present there."),
+                                        "A list of compositions which are present"));
+            std::vector<Types::UnsignedInt> temp_composition = prm.get_array<Types::UnsignedInt>("compositions");
+            composition_submodule_constant_composition.resize(temp_composition.size());
+            for (unsigned int i = 0; i < temp_composition.size(); ++i)
+              {
+                composition_submodule_constant_composition[i] = temp_composition[i].value;
+              }
 
-            prm.load_entry("composition", true, Types::UnsignedInt(0,"The number of the composition that is present there."));
-            composition_submodule_constant_composition = prm.get_unsigned_int("composition");
+            prm.load_entry("fractions", false,
+                           Types::Array(Types::Double(1.0,"The value between 0 and 1 of how much this composition is present."),
+                                        "A list of compositional fractions corresponding to the compositions list."));
+            std::vector<Types::Double> temp_fraction = prm.get_array<Types::Double>("fractions");
+            composition_submodule_constant_value.resize(temp_fraction.size());
+            for (unsigned int i = 0; i < temp_composition.size(); ++i)
+              {
+                composition_submodule_constant_value[i] = temp_fraction[i].value;
+              }
+
+            WBAssertThrow(composition_submodule_constant_composition.size() == composition_submodule_constant_value.size(),
+                          "There are not the same amount of compositions and fractions.");
           }
         else if (composition_submodule_name == "constant layers")
           {
             // Load the layers.
-            prm.load_entry("layers", true, Types::Array(Types::ConstantLayer(NaN::ISNAN,1.0,NaN::DSNAN,
+            prm.load_entry("layers", true, Types::Array(Types::ConstantLayer({NaN::ISNAN}, {1.0},NaN::DSNAN,
                                                                              "A plate constant layer with a certain composition and thickness."),
                                                         "A list of layers."));
 
-            std::vector<const Types::ConstantLayer *> constant_layers = prm.get_array<const Types::ConstantLayer>("layers");
+            std::vector<Types::ConstantLayer> constant_layers = prm.get_array<Types::ConstantLayer>("layers");
 
             composition_submodule_constant_layers_compositions.resize(constant_layers.size());
             composition_submodule_constant_layers_thicknesses.resize(constant_layers.size());
@@ -118,9 +136,9 @@ namespace WorldBuilder
 
             for (unsigned int i = 0; i < constant_layers.size(); ++i)
               {
-                composition_submodule_constant_layers_compositions[i] = constant_layers[i]->value_composition;
-                composition_submodule_constant_layers_thicknesses[i] = constant_layers[i]->value_thickness;
-                composition_submodule_constant_layers_value[i] = constant_layers[i]->value;
+                composition_submodule_constant_layers_compositions[i] = constant_layers[i].value_composition;
+                composition_submodule_constant_layers_thicknesses[i] = constant_layers[i].value_thickness;
+                composition_submodule_constant_layers_value[i] = constant_layers[i].value;
               }
           }
         else
@@ -202,9 +220,17 @@ namespace WorldBuilder
               Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),world->parameters.coordinate_system->natural_coordinate_system())))
             {
               // We are in the the area where the contintal plate is defined. Set the constant temperature.
-              if (composition_submodule_constant_composition == composition_number)
+              const bool clear = true;
+              for (unsigned int i =0; i < composition_submodule_constant_composition.size(); ++i)
                 {
-                  return composition_submodule_constant_value;
+                  if (composition_submodule_constant_composition[i] == composition_number)
+                    {
+                      return composition_submodule_constant_value[i];
+                    }
+                  else if (clear == true)
+                    {
+                      composition = 0.0;
+                    }
                 }
             }
 
@@ -217,7 +243,7 @@ namespace WorldBuilder
             {
               WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,*(world->parameters.coordinate_system));
 
-              // Check wether we are in the correct layer
+              // Check whether we are in the correct layer
               if (depth >= total_thickness
                   && depth < total_thickness + composition_submodule_constant_layers_thicknesses[i]
                   && Utilities::polygon_contains_point(coordinates,
@@ -228,13 +254,19 @@ namespace WorldBuilder
                   // The composition_number is cast to an int to prevent a warning.
                   // The reason composition_submodule_constant_layers_compositions is
                   // unsigned int is so that it can be set to a negative value, which
-                  // is aways ignored.
-                  if (composition_submodule_constant_layers_compositions[i] == (int)composition_number)
+                  // is always ignored.
+                  const bool clear = true;
+                  for (unsigned int j =0; j < composition_submodule_constant_layers_compositions[i].size(); ++j)
                     {
-                      return composition_submodule_constant_layers_value[i];
+                      if (composition_submodule_constant_layers_compositions[i][j] == composition_number)
+                        {
+                          return composition_submodule_constant_layers_value[i][j];
+                        }
+                      else if (clear == true)
+                        {
+                          composition = 0.0;
+                        }
                     }
-                  else
-                    return 0.0;
                 }
               total_thickness += composition_submodule_constant_layers_thicknesses[i];
             }

@@ -10,26 +10,26 @@
 {
      "continental plate":{"name":"Carribean","coordinates":[[-125,50],[-60,50],[-60,25],[-125,25]],
          "temperature model":{"name":"constant", "depth":250e3, "temperature":10},
-         "composition model":{"name":"constant", "depth":250e3, "composition":1}},
+         "composition model":{"name":"constant", "depth":250e3, "compositions":[1]}},
 
      "continental Plate":{"name":"Rest", "coordinates":[[-10,60],[125,60],[125,10],[-10,10]],
          "temperature model":{"name":"constant", "depth":250e3, "temperature":20},
-         "composition model":{"name":"constant", "depth":250e3, "composition":2}},
+         "composition model":{"name":"constant", "depth":250e3, "compositions":[2]}},
 
      "continental plate":{"name":"Carribean2","coordinates":[[10,-10],[10,-40],[125,-40],[125,-10]],
          "temperature model":{"name":"constant", "depth":250e3, "temperature":30},
-         "composition model":{"name":"constant", "depth":250e3, "composition":3}},
+         "composition model":{"name":"constant", "depth":250e3, "compositions":[3]}},
 
      "continental plate":{"name":"Carribean3","coordinates":[[-10,-10],[-10,-40],[-125,-40],[-125,-10]],
          "temperature model":{"name":"constant", "depth":250e3, "temperature":40},
-         "composition model":{"name":"constant", "depth":250e3, "composition":4}},
+         "composition model":{"name":"constant", "depth":250e3, "compositions":[4]}},
 
      "continental plate":{"name":"South Pole","coordinates":[[-90,-90],[-90,-70],[360,-70],[360,-90]],
          "temperature model":{"name":"constant", "depth":250e3, "temperature":50},
-         "composition model":{"name":"constant", "depth":250e3, "composition":5}},
+         "composition model":{"name":"constant", "depth":250e3, "compositions":[5]}},
 
      "continental plate":{"name":"Equator","coordinates":[[-90,-7.5],[-90,7.5],[360,7.5],[360,-7.5]],
          "temperature model":{"name":"constant", "depth":250e3, "temperature":60},
-         "composition model":{"name":"constant", "depth":250e3, "composition":6}}
+         "composition model":{"name":"constant", "depth":250e3, "compositions":[6]}}
 }
 }

@@ -55,13 +55,13 @@ namespace WorldBuilder
 
       WBAssertThrow(set == true, "A list of coordinates is required for every feature.");
 
-      std::vector<const Types::Point<2>* > typed_coordinates =  prm.get_array<const Types::Point<2> >("coordinates");
+      std::vector<Types::Point<2>> typed_coordinates =  prm.get_array<Types::Point<2> >("coordinates");
 
       original_number_of_coordinates = typed_coordinates.size();
       coordinates.resize(original_number_of_coordinates, Point<2>(coordinate_system));
       for (unsigned int i = 0; i < original_number_of_coordinates; ++i)
         {
-          coordinates[i] = typed_coordinates[i]->value *
+          coordinates[i] = typed_coordinates[i].value *
                            (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
         }
 

@@ -24,8 +24,8 @@ namespace WorldBuilder
 {
   namespace Types
   {
-    ConstantLayer::ConstantLayer(int default_value_composition,
-                                 double default_value,
+    ConstantLayer::ConstantLayer(std::vector<unsigned int> default_value_composition,
+                                 std::vector<double> default_value,
                                  double default_value_thickness,
                                  std::string description)
       :
@@ -40,10 +40,10 @@ namespace WorldBuilder
       this->type_name = Types::type::ConstantLayer;
     }
 
-    ConstantLayer::ConstantLayer(int value_composition,
-                                 int default_value_composition,
-                                 double value,
-                                 double default_value,
+    ConstantLayer::ConstantLayer(std::vector<unsigned int> value_composition,
+                                 std::vector<unsigned int> default_value_composition,
+                                 std::vector<double> value,
+                                 std::vector<double> default_value,
                                  double value_thickness,
                                  double default_value_thickness,
                                  std::string description)

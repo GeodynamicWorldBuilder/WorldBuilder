@@ -90,7 +90,7 @@ namespace WorldBuilder
         for (unsigned int coordinate_i = 0; coordinate_i < original_number_of_coordinates; ++coordinate_i)
           {
             // todo: remove the next line
-            std::vector<const Types::Segment *> current_segment;
+            std::vector<Types::Segment> current_segment;
 
             // first check whether there is an overwrite for this coordinate
             bool overwrite = prm.load_entry(std::to_string(coordinate_i), false, Types::Array(Types::Segment(0,Point<2>(0,0,cartesian),Point<2>(0,0,cartesian),
@@ -101,29 +101,29 @@ namespace WorldBuilder
             if (overwrite == true)
               {
                 // there is a special case for this coordinate, so use it.
-                current_segment = prm.get_array<const Types::Segment>(std::to_string(coordinate_i));
+                current_segment = prm.get_array<Types::Segment>(std::to_string(coordinate_i));
               }
             else
               {
                 // Need to get it again, because the load entry last time could
                 // have changed the segment list, thereby invalidating the pointers.
-                current_segment = prm.get_array<const Types::Segment>("all");
+                current_segment = prm.get_array<Types::Segment>("all");
               }
 
             total_slab_length[coordinate_i] = 0;
             for (unsigned int segment_i = 0; segment_i < current_segment.size(); segment_i++)
               {
-                total_slab_length[coordinate_i] += current_segment[segment_i]->value_length;
-                slab_segment_lengths[coordinate_i].push_back(current_segment[segment_i]->value_length);
+                total_slab_length[coordinate_i] += current_segment[segment_i].value_length;
+                slab_segment_lengths[coordinate_i].push_back(current_segment[segment_i].value_length);
 
-                if (current_segment[segment_i]->value_thickness[0] > maximum_slab_thickness)
-                  maximum_slab_thickness = current_segment[segment_i]->value_thickness[0];
+                if (current_segment[segment_i].value_thickness[0] > maximum_slab_thickness)
+                  maximum_slab_thickness = current_segment[segment_i].value_thickness[0];
 
-                if (current_segment[segment_i]->value_thickness[1] > maximum_slab_thickness)
-                  maximum_slab_thickness = current_segment[segment_i]->value_thickness[1];
+                if (current_segment[segment_i].value_thickness[1] > maximum_slab_thickness)
+                  maximum_slab_thickness = current_segment[segment_i].value_thickness[1];
 
-                slab_segment_thickness[coordinate_i].push_back(current_segment[segment_i]->value_thickness);
-                slab_segment_angles[coordinate_i].push_back(current_segment[segment_i]->value_angle * (const_pi/180));
+                slab_segment_thickness[coordinate_i].push_back(current_segment[segment_i].value_thickness);
+                slab_segment_angles[coordinate_i].push_back(current_segment[segment_i].value_angle * (const_pi/180));
               }
 
             if (total_slab_length[coordinate_i] > maximum_total_slab_length)
@@ -157,20 +157,37 @@ namespace WorldBuilder
 
         if (composition_submodule_name == "constant")
           {
-            prm.load_entry("composition", true, Types::UnsignedInt(0,"The number of the composition that is present there."));
-            composition_submodule_constant_composition = prm.get_unsigned_int("composition");
+            prm.load_entry("compositions", true,
+                           Types::Array(Types::UnsignedInt(0,"The number of the composition that is present there."),
+                                        "A list of compositions which are present"));
+            std::vector<Types::UnsignedInt> temp_composition = prm.get_array<Types::UnsignedInt>("compositions");
+            composition_submodule_constant_composition.resize(temp_composition.size());
+            for (unsigned int i = 0; i < temp_composition.size(); ++i)
+              {
+                composition_submodule_constant_composition[i] = temp_composition[i].value;
+              }
 
-            prm.load_entry("value", false, Types::Double(1.0,"The value between 0 and 1 of how much this composition is present."));
-            composition_submodule_constant_value = prm.get_double("value");
+            prm.load_entry("fractions", false,
+                           Types::Array(Types::Double(1.0,"The value between 0 and 1 of how much this composition is present."),
+                                        "A list of compositional fractions corresponding to the compositions list."));
+            std::vector<Types::Double> temp_fraction = prm.get_array<Types::Double>("fractions");
+            composition_submodule_constant_value.resize(temp_fraction.size());
+            for (unsigned int i = 0; i < temp_composition.size(); ++i)
+              {
+                composition_submodule_constant_value[i] = temp_fraction[i].value;
+              }
+
+            WBAssertThrow(composition_submodule_constant_composition.size() == composition_submodule_constant_value.size(),
+                          "There are not the same amount of compositions and fractions.");
           }
         else if (composition_submodule_name == "constant layers")
           {
             // Load the layers.
-            prm.load_entry("layers", true, Types::Array(Types::ConstantLayer(NaN::ISNAN,1.0,NaN::DSNAN,
+            prm.load_entry("layers", true, Types::Array(Types::ConstantLayer({NaN::ISNAN}, {1.0},NaN::DSNAN,
                                                                              "A plate constant layer with a certain composition and thickness."),
                                                         "A list of layers."));
 
-            std::vector<const Types::ConstantLayer *> constant_layers = prm.get_array<const Types::ConstantLayer>("layers");
+            std::vector<Types::ConstantLayer> constant_layers = prm.get_array<Types::ConstantLayer>("layers");
 
             composition_submodule_constant_layers_compositions.resize(constant_layers.size());
             composition_submodule_constant_layers_thicknesses.resize(constant_layers.size());
@@ -178,9 +195,9 @@ namespace WorldBuilder
 
             for (unsigned int i = 0; i < constant_layers.size(); ++i)
               {
-                composition_submodule_constant_layers_compositions[i] = constant_layers[i]->value_composition;
-                composition_submodule_constant_layers_thicknesses[i] = constant_layers[i]->value_thickness;
-                composition_submodule_constant_layers_value[i] = constant_layers[i]->value;
+                composition_submodule_constant_layers_compositions[i] = constant_layers[i].value_composition;
+                composition_submodule_constant_layers_thicknesses[i] = constant_layers[i].value_thickness;
+                composition_submodule_constant_layers_value[i] = constant_layers[i].value;
               }
           }
         else
@@ -340,12 +357,19 @@ namespace WorldBuilder
                       if (composition_submodule_name == "constant")
                         {
                           // We are in the the area where the fault plate is defined. Set the constant composition
-                          if (composition_submodule_constant_composition == composition_number)
+                          const bool clear = true;
+                          // We are in the the area where the contintal plate is defined. Set the constant temperature.
+                          for (unsigned int i =0; i < composition_submodule_constant_composition.size(); ++i)
                             {
-                              return composition_submodule_constant_value;
+                              if (composition_submodule_constant_composition[i] == composition_number)
+                                {
+                                  return composition_submodule_constant_value[i];
+                                }
+                              else if (clear == true)
+                                {
+                                  composition = 0.0;
+                                }
                             }
-                          else
-                            return 0.0;
                         }
                       else if (composition_submodule_name == "constant layers")
                         {
@@ -361,12 +385,18 @@ namespace WorldBuilder
                                   // The reason composition_submodule_constant_layers_compositions is
                                   // unsigned int is so that it can be set to a negative value, which
                                   // is aways ignored.
-                                  if (composition_submodule_constant_layers_compositions[i] == (int)composition_number)
+                                  const bool clear = true;
+                                  for (unsigned int j =0; j < composition_submodule_constant_layers_compositions[i].size(); ++j)
                                     {
-                                      return composition_submodule_constant_layers_value[i];
+                                      if (composition_submodule_constant_layers_compositions[i][j] == composition_number)
+                                        {
+                                          return composition_submodule_constant_layers_value[i][j];
+                                        }
+                                      else if (clear == true)
+                                        {
+                                          composition = 0.0;
+                                        }
                                     }
-                                  else
-                                    return 0.0;
                                 }
                               total_thickness += composition_submodule_constant_layers_thicknesses[i];
                             }
