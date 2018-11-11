@@ -802,7 +802,7 @@ int main(int argc, char **argv)
                   grid_connectivity[counter][3] = (n_cell_z + 1) * (i    ) + j - 1;
 
                   counter = counter+1;
-                  std::cout << "[4/5] Building the grid: stage 3 of 3 [" << (double)i/(double)n_cell << "%]                       \r";
+                  std::cout << "[4/5] Building the grid: stage 3 of 3 [" << ((double)i/(double)n_cell)*100.0 << "%]                       \r";
                   std::cout.flush();
                 }
             }
@@ -843,7 +843,7 @@ int main(int argc, char **argv)
                   grid_connectivity[i][6] = counter + 6;
                   grid_connectivity[i][7] = counter + 7;
                   counter = counter + 8;
-                  std::cout << "[4/5] Building the grid: stage 3 of 3 [" << (double)i/(double)n_cell << "%]                       \r";
+                  std::cout << "[4/5] Building the grid: stage 3 of 3 [" << ((double)i/(double)n_cell)*100.0 << "%]                       \r";
                   std::cout.flush();
                 }
             }
