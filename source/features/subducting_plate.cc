@@ -279,6 +279,10 @@ namespace WorldBuilder
                                                - slab_segment_thickness[current_section][current_segment][1]);
               const double thickness_local = thickness_up + segment_fraction * (thickness_down - thickness_up);
 
+              // if the thickness is zero, we don't need to compute anything, so return.
+              if (std::fabs(thickness_local) < 2.0 * std::numeric_limits<double>::epsilon())
+                return temperature;
+
               const double max_slab_length = total_slab_length[current_section] +
                                              section_fraction *
                                              (total_slab_length[next_section] - total_slab_length[current_section]);
