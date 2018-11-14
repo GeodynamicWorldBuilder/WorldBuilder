@@ -141,6 +141,8 @@ namespace WorldBuilder
           {
             prm.load_entry("temperature", true, Types::Double(0,"The temperature in degree Kelvin which this feature should have"));
             temperature_submodule_constant_temperature = prm.get_double("temperature");
+            prm.load_entry("operation", false, Types::String("replace","Wheter the temperature should be replaced or added."));
+            temperature_submodule_constant_operation = prm.get_string("operation");
           }
         else if (temperature_submodule_name == "plate model")
           {
@@ -293,7 +295,7 @@ namespace WorldBuilder
                   // Inside the slab!
                   if (temperature_submodule_name == "constant")
                     {
-                      return temperature_submodule_constant_temperature;
+                      return temperature_submodule_constant_temperature + (temperature_submodule_constant_operation == "add" ? temperature : 0);
                     }
                   else if (temperature_submodule_name == "plate model")
                     {
