@@ -51,6 +51,12 @@ namespace WorldBuilder
        */
       ~World();
 
+
+      /**
+       * Describe what the world builder file should look like
+       */
+      static void declare_entries(Parameters &prm);
+
       /**
        * read in the world builder file
        */

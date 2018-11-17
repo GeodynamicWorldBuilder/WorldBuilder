@@ -24,6 +24,9 @@
 #include <boost/property_tree/json_parser.hpp>
 
 #include <rapidjson/istreamwrapper.h>
+#include "rapidjson/pointer.h"
+#include "rapidjson/prettywriter.h"
+#include "rapidjson/stringbuffer.h"
 
 #include <world_builder/assert.h>
 #include <world_builder/config.h>
@@ -35,14 +38,22 @@
 #include <world_builder/types/coordinate_system.h>
 
 using boost::property_tree::ptree;
+using namespace rapidjson;
 
 namespace WorldBuilder
 {
-  Parameters::Parameters(std::string &filename, World &world)
-    :
-    world(world),
-    path_level(0)
+  Parameters::Parameters(World &world)
+  :
+		world(world)
   {
+  }
+
+  Parameters::~Parameters()
+  {}
+
+  void Parameters::initialize(std::string &filename)
+  {
+	    path_level =0;
     // Now read in the world builder file into a file stream and
     // put it into a boost property tree.
     std::ifstream json_input_stream(filename.c_str());
@@ -62,12 +73,32 @@ namespace WorldBuilder
     json_document.ParseStream(isw);
     WBAssertThrow(json_document.IsObject(), "it is not an object.");
     json_input_stream.close();
-    boost::property_tree::json_parser::read_json (json_input_stream, tree);
+    //boost::property_tree::json_parser::read_json (json_input_stream, tree);
     local_tree = &tree;
   }
 
-  Parameters::~Parameters()
-  {}
+  void
+  Parameters::declare_entry(const std::string name,
+		                    const std::string default_value,
+							const bool required,
+							const std::string type,
+							const std::string documentation)
+  {
+	  std::cout << "decarling entry: " << std::endl;
+	  rapidjson::Document& doc = json_document;
+	  const std::string base = this->get_full_json_path() + "/" + name;
+	  std::cout << "base name = " << base << std::endl;
+	  Pointer((base + "/default_value").c_str()).Set(doc,default_value.c_str());
+	  Pointer((base + "/required").c_str()).Set(doc,required);
+	  Pointer((base + "/type").c_str()).Set(doc,type.c_str());
+	  Pointer((base + "/documentation").c_str()).Set(doc,documentation.c_str());
+
+	    StringBuffer buffer;
+	    PrettyWriter<StringBuffer> writer(buffer);
+	    doc.Accept(writer);
+
+	    std::cout << buffer.GetString() << std::endl;
+  }
 
   bool
   Parameters::load_entry(const std::string &name, const bool required, const Types::Interface &type)
@@ -420,7 +451,7 @@ namespace WorldBuilder
         {
           path_level++;
           features.push_back(Features::Interface::create(name,&world));
-          features.back()->decare_entries();
+          features.back()->parse_entries(*this);
           path_level--;
         }
         leave_subsection();
@@ -926,7 +957,7 @@ namespace WorldBuilder
   std::string
   Parameters::get_full_json_path() const
   {
-    std::string collapse = "";
+    std::string collapse = "/";
     for (unsigned int i = 0; i < path.size(); i++)
       {
         collapse += path[i] + "/";

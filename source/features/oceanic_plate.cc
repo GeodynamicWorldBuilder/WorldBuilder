@@ -48,9 +48,15 @@ namespace WorldBuilder
 
 
     void
-    OceanicPlate::decare_entries()
+    OceanicPlate::declare_entries(Parameters &prm)
     {
-      Parameters &prm = this->world->parameters;
+
+    }
+
+    void
+    OceanicPlate::parse_entries(Parameters &prm)
+    {
+      //Parameters &prm = this->world->parameters;
 
       const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 

@@ -79,12 +79,26 @@ namespace WorldBuilder
        * \param filename A string with the path to the world builder file
        * \param world A reference to the World class
        */
-      Parameters(std::string &filename, World &);
+      Parameters(World &world);
 
       /**
        * Destructor
        */
       ~Parameters();
+
+      /**
+       * Todo
+       */
+      void initialize(std::string &filename);
+
+      /**
+       * Todo
+       */
+	  void declare_entry(const std::string name,
+    		             const std::string default_value,
+						 const bool required,
+						 const std::string type,
+						 const std::string documentation);
 
       /**
        * Loads an entry into the parameter class from the world builder file,

@@ -47,10 +47,17 @@ namespace WorldBuilder
     { }
 
 
+
     void
-    MantleLayer::decare_entries()
+    MantleLayer::declare_entries(Parameters &prm)
     {
-      Parameters &prm = this->world->parameters;
+
+    }
+
+    void
+    MantleLayer::parse_entries(Parameters &prm)
+    {
+      //Parameters &prm = this->world->parameters;
 
       const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 

@@ -45,10 +45,16 @@ namespace WorldBuilder
 
 
     void
-    Fault::decare_entries()
+    Fault::declare_entries(Parameters &prm)
     {
 
-      Parameters &prm = this->world->parameters;
+    }
+
+    void
+    Fault::parse_entries(Parameters &prm)
+    {
+
+      //Parameters &prm = this->world->parameters;
 
       const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 

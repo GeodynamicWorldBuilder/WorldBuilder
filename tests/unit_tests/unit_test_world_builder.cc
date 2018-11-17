@@ -2510,7 +2510,8 @@ TEST_CASE("WorldBuilder Parameters")
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_spherical.wb";
   WorldBuilder::World world(file_name);
 
-  Parameters prm(file, world);
+  Parameters prm(world);
+  prm.initialize(file_name);
 
   prm.load_entry("Coordinate system", false, Types::CoordinateSystem("cartesian","This determines the coordinate system"));
 

@@ -48,9 +48,25 @@ namespace WorldBuilder
 
 
     void
-    ContinentalPlate::decare_entries()
+    ContinentalPlate::declare_entries(Parameters &prm)
     {
-      Parameters &prm = this->world->parameters;
+        prm.enter_subsection("temperature models");
+        {
+        	prm.enter_subsection("[]");
+        	{
+        		prm.declare_entry("constant","",true,"string",
+        				          "The name which the user has given to the feature.");
+
+        	}
+        	prm.leave_subsection();
+        }
+        prm.leave_subsection();
+    }
+
+    void
+    ContinentalPlate::parse_entries(Parameters &prm)
+    {
+      //Parameters &prm = this->world->parameters;
 
       const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 

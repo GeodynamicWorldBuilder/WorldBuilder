@@ -42,6 +42,36 @@ namespace WorldBuilder
     {}
 
     void
+	Interface::declare_entries(Parameters &prm)
+    {
+    	std::cout << "declare entries for features." << std::endl;
+
+
+    	std::map<std::string, void ( * )(Parameters &)>::iterator it;
+
+    	for ( it = get_declare_map().begin(); it != get_declare_map().end(); it++ )
+    	{
+    		std::cout << "declaring: " << it->first << std::endl;
+    		prm.enter_subsection("[]");
+    		{
+    			prm.enter_subsection(it->first);
+    			{
+    				prm.declare_entry("name","",true,"string",
+    						"The name which the user has given to the feature.");
+    				prm.declare_entry("coordinates","",true,"array of points",
+    						"An array of Points representing an array of coordinates where the feature is located.");
+
+    				it->second(prm);
+    			}
+    			prm.leave_subsection();
+    		}
+    		prm.leave_subsection();
+
+    	}
+    	std::cout << "declare entries for features." << std::endl;
+    }
+
+    void
     Interface::declare_interface_entries(Parameters &prm, const CoordinateSystem coordinate_system)
     {
       // Get the name
@@ -130,11 +160,14 @@ namespace WorldBuilder
       prm.enter_subsection(name);
     }
 
+
     void
-    Interface::registerType(
-      const std::string &name, ObjectFactory *factory)
+    Interface::registerType(const std::string &name,
+                            void ( *declare_entries)(Parameters &),
+							ObjectFactory *factory)
     {
       get_factory_map()[name] = factory;
+      get_declare_map()[name] = declare_entries;
     }
 
     std::unique_ptr<Interface>

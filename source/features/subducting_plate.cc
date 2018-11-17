@@ -44,11 +44,18 @@ namespace WorldBuilder
     { }
 
 
+
     void
-    SubductingPlate::decare_entries()
+	SubductingPlate::declare_entries(Parameters &prm)
     {
 
-      Parameters &prm = this->world->parameters;
+    }
+
+    void
+	SubductingPlate::parse_entries(Parameters &prm)
+    {
+
+      //Parameters &prm = this->world->parameters;
 
       const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 

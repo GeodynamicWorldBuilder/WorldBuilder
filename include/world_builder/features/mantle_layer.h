@@ -56,8 +56,14 @@ namespace WorldBuilder
         /**
          * declare and read in the world builder file into the parameters class
          */
-        virtual
-        void decare_entries();
+		static
+        void declare_entries(Parameters &prm);
+
+        /**
+         * declare and read in the world builder file into the parameters class
+         */
+		virtual
+        void parse_entries(Parameters &prm);
 
 
         /**

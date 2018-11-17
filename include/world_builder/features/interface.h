@@ -69,8 +69,14 @@ namespace WorldBuilder
         /**
          * declare and read in the world builder file into the parameters class
          */
-        virtual
-        void decare_entries() = 0;
+		static
+        void declare_entries(Parameters &prm);
+
+        /**
+         * declare and read in the world builder file into the parameters class
+         */
+		virtual
+        void parse_entries(Parameters &prm) = 0;
 
 
         /**
@@ -97,7 +103,9 @@ namespace WorldBuilder
          * registration of the object factory.
          */
         static void registerType(const std::string &name,
+        		                 void ( *)(Parameters &),
                                  ObjectFactory *factory);
+
 
         /**
          * A function to create a new type. This is part of the automatic
@@ -156,6 +164,12 @@ namespace WorldBuilder
           static std::map<std::string, ObjectFactory *> factories;
           return factories;
         }
+
+        static std::map<std::string, void ( * )(Parameters &)> &get_declare_map()
+        {
+          static std::map<std::string, void ( * )(Parameters &)> declares;
+          return declares;
+        }
     };
 
 
@@ -179,7 +193,7 @@ namespace WorldBuilder
     public: \
       klass##Factory() \
       { \
-        Interface::registerType(#name, this); \
+        Interface::registerType(#name, klass::declare_entries, this); \
       } \
       virtual std::unique_ptr<Interface> create(World *world) { \
         return std::unique_ptr<Interface>(new klass(world)); \

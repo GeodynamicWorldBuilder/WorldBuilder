@@ -41,25 +41,42 @@ namespace WorldBuilder
 
   World::World(std::string filename)
     :
-    parameters(filename,*this),
+    		parameters(*this),
     dim(NaN::ISNAN)
   {
+	  std::cout << "flag 1 " << std::endl;
+	this->declare_entries(parameters);
+	  std::cout << "flag 2 " << std::endl;
+	parameters.initialize(filename);
+	  std::cout << "flag 3 " << std::endl;
     this->declare_and_parse(parameters);
+	  std::cout << "flag 4 " << std::endl;
   }
 
   World::~World()
   {}
 
+  void World::declare_entries(Parameters &prm)
+  {
+	  std::cout << "declare entry: " << std::endl;
+	  prm.declare_entry("version","",true,"string","The major and minor version number for which the input file was written.");
+
+	  prm.enter_subsection("features");
+	  {
+	    Features::Interface::declare_entries(prm);
+	  }
+	  prm.leave_subsection();
+  }
+
 
   void World::declare_and_parse(Parameters &prm)
   {
 	  using namespace rapidjson;
-	  Document& doc = this->parameters.json_document;
+	  Document& doc = prm.json_document;
     /**
      * First load the major version number in the file and check the major
      * version number of the program.
      */
-<<<<<<< HEAD
 	  WBAssertThrow(Pointer("/version").Get(doc) != NULL,
 			  "An entry called version is required in a World Builder "
 			  "Parameter file.");
