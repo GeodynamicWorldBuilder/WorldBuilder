@@ -126,6 +126,7 @@ namespace WorldBuilder
         // constant temperature submodule parameters
         double temperature_submodule_constant_depth;
         double temperature_submodule_constant_temperature;
+        std::string temperature_submodule_constant_operation;
 
         // plate model submodule parameters
         double temperature_submodule_plate_model_density;
