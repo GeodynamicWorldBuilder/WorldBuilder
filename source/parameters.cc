@@ -70,8 +70,8 @@ namespace WorldBuilder
 
     rapidjson::IStreamWrapper isw(json_input_stream2);
 
-    json_document.ParseStream(isw);
-    WBAssertThrow(json_document.IsObject(), "it is not an object.");
+    parameters.ParseStream(isw);
+    WBAssertThrow(parameters.IsObject(), "it is not an object.");
     json_input_stream.close();
     //boost::property_tree::json_parser::read_json (json_input_stream, tree);
     local_tree = &tree;
@@ -84,20 +84,42 @@ namespace WorldBuilder
 							const std::string type,
 							const std::string documentation)
   {
-	  std::cout << "decarling entry: " << std::endl;
-	  rapidjson::Document& doc = json_document;
+	  std::cout << "declareing entry: " << std::endl;
 	  const std::string base = this->get_full_json_path() + "/" + name;
 	  std::cout << "base name = " << base << std::endl;
-	  Pointer((base + "/default_value").c_str()).Set(doc,default_value.c_str());
-	  Pointer((base + "/required").c_str()).Set(doc,required);
-	  Pointer((base + "/type").c_str()).Set(doc,type.c_str());
-	  Pointer((base + "/documentation").c_str()).Set(doc,documentation.c_str());
+	  Pointer((base + "/default_value").c_str()).Set(declarations,default_value.c_str());
+	  Pointer((base + "/required").c_str()).Set(declarations,required);
+	  Pointer((base + "/type").c_str()).Set(declarations,type.c_str());
+	  Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
 
 	    StringBuffer buffer;
 	    PrettyWriter<StringBuffer> writer(buffer);
-	    doc.Accept(writer);
+	    declarations.Accept(writer);
 
 	    std::cout << buffer.GetString() << std::endl;
+  }
+
+  std::string
+  Parameters::load_entry(const std::string name)//, const Types::Interface &type)
+  {
+	  const std::string base = this->get_full_json_path() + "/" + name;
+	  WBAssertThrow(Pointer(base.c_str()).Get(declarations) != NULL, "Value \"" << base << "\" has not been declared.");
+	  Value* value = Pointer(base.c_str()).Get(parameters);
+	  WBAssertThrow(value != NULL && Pointer((base + "/required").c_str()).Get(declarations), "Value \"" << base << "\" not found in the input file while it is required.");
+	  if(value == NULL)
+	  {
+		  const std::string default_value = Pointer((base + "/default_value").c_str()).Get(declarations)->GetString();
+		  Pointer(base.c_str()).Set(parameters,default_value.c_str());
+		  return default_value;
+	  }
+	  //Pointer((base + "/type").c_str()).Get(declarations);
+
+	    StringBuffer buffer;
+	    PrettyWriter<StringBuffer> writer(buffer);
+	    parameters.Accept(writer);
+
+	    std::cout << buffer.GetString() << std::endl;
+	  return value->GetString();
   }
 
   bool

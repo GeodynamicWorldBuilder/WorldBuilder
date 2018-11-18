@@ -72,7 +72,7 @@ namespace WorldBuilder
   void World::declare_and_parse(Parameters &prm)
   {
 	  using namespace rapidjson;
-	  Document& doc = prm.json_document;
+	  Document& doc = prm.parameters;
     /**
      * First load the major version number in the file and check the major
      * version number of the program.
@@ -83,13 +83,12 @@ namespace WorldBuilder
     //WBAssertThrow(doc.HasMember("version"),
 //	          "An entry called version is required in a World Builder "
 //		  "Parameter file.");
-    prm.load_entry("version", true, Types::String("",
-                                                  "The major version number for which the input file was written."));
+    //prm.load_entry("version", Types::String("","The major version number for which the input file was written."));
 
     WBAssertThrow(Version::MAJOR == "0"
-                  && doc["version"].GetString() == Version::MAJOR + "." + Version::MINOR
+                  && prm.load_entry("version") == Version::MAJOR + "." + Version::MINOR
                   || Version::MAJOR != "0"
-                  && doc["version"].GetString() == Version::MAJOR,
+                  && prm.load_entry("version") == Version::MAJOR,
                   "The major and minor version combination (for major version 0) or the major "
                   "version (for major versions after 0) for which is input file was written "
                   "is not the same as the version of the World Builder you are running. This means "

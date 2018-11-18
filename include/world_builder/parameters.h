@@ -94,6 +94,11 @@ namespace WorldBuilder
       /**
        * Todo
        */
+      std::string load_entry(const std::string name);//, const Types::Interface &type);
+
+      /**
+       * Todo
+       */
 	  void declare_entry(const std::string name,
     		             const std::string default_value,
 						 const bool required,
@@ -237,7 +242,8 @@ namespace WorldBuilder
        */
       std::vector<std::string> path;
 
-      rapidjson::Document json_document;
+      rapidjson::Document declarations;
+      rapidjson::Document parameters;
 
       /**
        * The boost property tree, used to read in the data from a json file.

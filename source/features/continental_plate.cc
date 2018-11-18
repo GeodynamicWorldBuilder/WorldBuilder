@@ -20,6 +20,7 @@
 #include <boost/algorithm/string.hpp>
 
 #include <world_builder/features/continental_plate.h>
+#include <world_builder/features/continental_plate_models/temperature/interface.h>
 #include <world_builder/utilities.h>
 #include <world_builder/assert.h>
 #include <world_builder/nan.h>
@@ -52,13 +53,7 @@ namespace WorldBuilder
     {
         prm.enter_subsection("temperature models");
         {
-        	prm.enter_subsection("[]");
-        	{
-        		prm.declare_entry("constant","",true,"string",
-        				          "The name which the user has given to the feature.");
-
-        	}
-        	prm.leave_subsection();
+        	Features::ContinentalPlateModels::Temperature::Interface::declare_entries(prm);
         }
         prm.leave_subsection();
     }
