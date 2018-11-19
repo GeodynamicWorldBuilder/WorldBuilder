@@ -47,10 +47,8 @@ namespace WorldBuilder
           std::map<std::string, void ( *)(Parameters &)>::iterator it;
 
           unsigned int counter = 0;
-          for ( it = get_declare_map().begin(); it != get_declare_map().end(); it++ )
+          for ( it = get_declare_map().begin(); it != get_declare_map().end(); ++it )
             {
-              std::cout << "declaring: " << it->first << std::endl;
-
               prm.enter_subsection("oneOf");
               {
                 prm.enter_subsection(std::to_string(counter));

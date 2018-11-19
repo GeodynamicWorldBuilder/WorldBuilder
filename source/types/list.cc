@@ -75,7 +75,6 @@ namespace WorldBuilder
       using namespace rapidjson;
       Document &declarations = prm.declarations;
       const std::string path = prm.get_full_json_path();
-      const std::string type_name = "double";
       Pointer((path + "/type").c_str()).Set(declarations,"object");
       const std::string base = path + "/properties/" + name;
       std::cout << "base name = " << base << std::endl;

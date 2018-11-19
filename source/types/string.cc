@@ -76,13 +76,12 @@ namespace WorldBuilder
       using namespace rapidjson;
       Document &declarations = prm.declarations;
       const std::string path = prm.get_full_json_path();
-      const std::string type_name = "string";
       Pointer((path + "/type").c_str()).Set(declarations,"object");
       const std::string base = path + "/properties/" + name;
       std::cout << "base name = " << base << std::endl;
       Pointer((base + "/default").c_str()).Set(declarations,default_value.c_str());
       Pointer((base + "/required").c_str()).Set(declarations,required);
-      Pointer((base + "/type").c_str()).Set(declarations,type_name.c_str());
+      Pointer((base + "/type").c_str()).Set(declarations,"string");
       Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
       if (restricted_values != "")
         {

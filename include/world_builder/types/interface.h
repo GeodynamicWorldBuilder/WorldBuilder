@@ -23,8 +23,8 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <map>
 
-//#include <world_builder/parameters.h>
 
 #include <rapidjson/document.h>
 #include <rapidjson/pointer.h>
