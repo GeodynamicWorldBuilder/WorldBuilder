@@ -32,10 +32,19 @@
 #include <world_builder/config.h>
 #include <world_builder/parameters.h>
 #include <world_builder/utilities.h>
-#include <world_builder/types/feature.h>
 #include <world_builder/types/segment.h>
 #include <world_builder/types/constant_layer.h>
 #include <world_builder/types/coordinate_system.h>
+
+#include <world_builder/types/point.h>
+#include <world_builder/types/constant_layer.h>
+#include <world_builder/types/double.h>
+#include <world_builder/types/string.h>
+#include <world_builder/types/segment.h>
+#include <world_builder/types/array.h>
+#include <world_builder/types/list.h>
+#include <world_builder/types/unsigned_int.h>
+#include "../include/world_builder/types/plugin_system.h"
 
 using boost::property_tree::ptree;
 using namespace rapidjson;
@@ -43,8 +52,8 @@ using namespace rapidjson;
 namespace WorldBuilder
 {
   Parameters::Parameters(World &world)
-  :
-		world(world)
+    :
+    world(world)
   {
   }
 
@@ -53,7 +62,15 @@ namespace WorldBuilder
 
   void Parameters::initialize(std::string &filename)
   {
-	    path_level =0;
+    {
+      StringBuffer buffer;
+      PrettyWriter<StringBuffer> writer(buffer);
+      declarations.Accept(writer);
+
+      std::cout << buffer.GetString() << std::endl;
+    }
+
+    path_level =0;
     // Now read in the world builder file into a file stream and
     // put it into a boost property tree.
     std::ifstream json_input_stream(filename.c_str());
@@ -70,56 +87,143 @@ namespace WorldBuilder
 
     rapidjson::IStreamWrapper isw(json_input_stream2);
 
-    parameters.ParseStream(isw);
+    WBAssertThrow(!parameters.ParseStream(isw).HasParseError(), "Parsing erros world builder file");
     WBAssertThrow(parameters.IsObject(), "it is not an object.");
     json_input_stream.close();
     //boost::property_tree::json_parser::read_json (json_input_stream, tree);
     local_tree = &tree;
+
+
+    SchemaDocument schema(declarations);
+    SchemaValidator validator(schema);
+
+    if (!parameters.Accept(validator))
+      {
+        // Input JSON is invalid according to the schema
+        // Output diagnostic information
+        StringBuffer sb;
+        validator.GetInvalidSchemaPointer().StringifyUriFragment(sb);
+        printf("Invalid schema: %s\n", sb.GetString());
+        printf("Invalid keyword: %s\n", validator.GetInvalidSchemaKeyword());
+        sb.Clear();
+        validator.GetInvalidDocumentPointer().StringifyUriFragment(sb);
+        printf("Invalid document: %s\n", sb.GetString());
+        StringBuffer buffer;
+        PrettyWriter<StringBuffer> writer(buffer);
+        validator.GetError().Accept(writer);
+        WBAssert(false, "Error document: " << std::endl << buffer.GetString());
+      }
+    else
+      {
+        std::cout << "schema says it is correct, yay!" << std::endl;
+      }
+    {
+      StringBuffer buffer;
+      PrettyWriter<StringBuffer> writer(buffer);
+      \
+      parameters.Accept(writer);
+      //std::cout << "parameters file: " << std::endl << buffer.GetString() << std::endl;
+    }
+
   }
 
   void
   Parameters::declare_entry(const std::string name,
-		                    const std::string default_value,
-							const bool required,
-							const std::string type,
-							const std::string documentation)
+                            const std::string default_value,
+                            const bool required,
+                            const Types::Interface &type,
+                            const std::string documentation)
   {
-	  std::cout << "declareing entry: " << std::endl;
-	  const std::string base = this->get_full_json_path() + "/" + name;
-	  std::cout << "base name = " << base << std::endl;
-	  Pointer((base + "/default_value").c_str()).Set(declarations,default_value.c_str());
-	  Pointer((base + "/required").c_str()).Set(declarations,required);
-	  Pointer((base + "/type").c_str()).Set(declarations,type.c_str());
-	  Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
+    type.write_schema(*this,name,default_value,required,documentation);
+    /*std::string type_name;
+    if(type.get_type() == Types::type::String)
+      type_name = "string";
+    else if(type.get_type() == Types::type::Int)
+      type_name = "integer";
+    else if(type.get_type() == Types::type::Double)
+      type_name = "number";
+    else if(type.get_type() == Types::type::Array)
+      type_name = "array";
+    else if(type.get_type() == Types::type::Point2D)
+      type_name = "point2d";
 
-	    StringBuffer buffer;
-	    PrettyWriter<StringBuffer> writer(buffer);
-	    declarations.Accept(writer);
 
-	    std::cout << buffer.GetString() << std::endl;
+    std::cout << "declareing entry of type : " << type_name << std::endl;
+
+    if(type_name == "string" || type_name == "integer" || type_name == "number")
+    {
+      Pointer((this->get_full_json_path() + "/type").c_str()).Set(declarations,"object");
+      const std::string base = this->get_full_json_path() + "/properties/" + name;
+      std::cout << "base name = " << base << std::endl;
+      Pointer((base + "/default").c_str()).Set(declarations,default_value.c_str());
+      Pointer((base + "/required").c_str()).Set(declarations,required);
+      Pointer((base + "/type").c_str()).Set(declarations,type_name.c_str());
+      Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
+      if(required)
+      {
+        if(Pointer((this->get_full_json_path() + "/required").c_str()).Get(declarations) == NULL)
+        {
+          // The required array doesn't exist yet, so we create it and fill it.
+          Pointer((this->get_full_json_path() + "/required/0").c_str()).Create(declarations);
+          Pointer((this->get_full_json_path() + "/required/0").c_str()).Set(declarations, name.c_str());
+        }
+        else
+        {
+          // The required array already exist yet, so we add an element to the end.
+          Pointer((this->get_full_json_path() + "/required/-").c_str()).Set(declarations, name.c_str());
+        }
+      }
+    }
+    else if(type_name == "array")
+    {
+      Pointer((this->get_full_json_path() + "/" + name + "/type").c_str()).Set(declarations,"array");
+      const std::string base = this->get_full_json_path() + "/properties/" + name;
+      std::cout << "base name = " << base << std::endl;
+
+      /*std::vector<std::string> substrings = Utilities::split_string(type, '|');
+      std::cout << "size = " << substrings.size() << std::endl;
+      WBAssert(substrings.size() > 1, "The type of the elements of the array or object have to be defined (e.g. array|string).");
+      WBAssert(substrings[0] == "array" || substrings[0] == "object", "only arrays and objects can have sub-elements, indicated by |.");
+      if(substrings[0] == "array")
+      {
+        std::string subtype = type.substr(6, type.size());
+      }
+      else if(substrings[0] == "object")
+      {
+        std::string subtype = type.substr(6, type.size());
+      }* /
+    }*/
+
+    StringBuffer buffer;
+    PrettyWriter<StringBuffer> writer(buffer);
+    declarations.Accept(writer);
+
+    //std::cout << buffer.GetString() << std::endl;
   }
+
 
   std::string
   Parameters::load_entry(const std::string name)//, const Types::Interface &type)
   {
-	  const std::string base = this->get_full_json_path() + "/" + name;
-	  WBAssertThrow(Pointer(base.c_str()).Get(declarations) != NULL, "Value \"" << base << "\" has not been declared.");
-	  Value* value = Pointer(base.c_str()).Get(parameters);
-	  WBAssertThrow(value != NULL && Pointer((base + "/required").c_str()).Get(declarations), "Value \"" << base << "\" not found in the input file while it is required.");
-	  if(value == NULL)
-	  {
-		  const std::string default_value = Pointer((base + "/default_value").c_str()).Get(declarations)->GetString();
-		  Pointer(base.c_str()).Set(parameters,default_value.c_str());
-		  return default_value;
-	  }
-	  //Pointer((base + "/type").c_str()).Get(declarations);
+    const std::string base = this->get_full_json_path();
+    WBAssertThrow(Pointer((base  + "/properties/" + name).c_str()).Get(declarations) != NULL, "Value \"" << base << "\" has not been declared.");
+    Value *value = Pointer((base + "/" + name).c_str()).Get(parameters);
 
-	    StringBuffer buffer;
-	    PrettyWriter<StringBuffer> writer(buffer);
-	    parameters.Accept(writer);
+    WBAssertThrow(value != NULL && Pointer((base + "/properties/" + name + "/required").c_str()).Get(declarations), "Value \"" << base << "/" << name << "\" not found in the input file while it is required.");
+    if (value == NULL)
+      {
+        const std::string default_value = Pointer((base + "/properties/" + name + "/default_value").c_str()).Get(declarations)->GetString();
+        Pointer((base + "/" + name).c_str()).Set(parameters,default_value.c_str());
+        return default_value;
+      }
+    //Pointer((base + "/type").c_str()).Get(declarations);
 
-	    std::cout << buffer.GetString() << std::endl;
-	  return value->GetString();
+    StringBuffer buffer;
+    PrettyWriter<StringBuffer> writer(buffer);
+    parameters.Accept(writer);
+
+    //std::cout << buffer.GetString() << std::endl;
+    return value->GetString();
   }
 
   bool
@@ -466,7 +570,7 @@ namespace WorldBuilder
 
 
       }
-    else if (type.get_type() == Types::type::Feature)
+    else if (type.get_type() == Types::type::PluginSystem)
       {
         // Todo: redesing the path_level system.
         enter_subsection(name);
@@ -752,7 +856,7 @@ namespace WorldBuilder
         coordinate_system = CoordinateSystems::create_coordinate_system(system);*/
       }
 
-    else if (type.get_type() == Types::type::Feature)
+    else if (type.get_type() == Types::type::PluginSystem)
       {
         WBAssert(false, "A Feature can not be directly set, use the load_entry function.");
       }

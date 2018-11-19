@@ -29,6 +29,11 @@
 #include <world_builder/utilities.h>
 
 
+#include <world_builder/types/array.h>
+#include <world_builder/types/point.h>
+#include <world_builder/types/string.h>
+
+
 namespace WorldBuilder
 {
   using namespace Utilities;
@@ -42,33 +47,38 @@ namespace WorldBuilder
     {}
 
     void
-	Interface::declare_entries(Parameters &prm)
+    Interface::declare_entries(Parameters &prm)
     {
-    	std::cout << "declare entries for features." << std::endl;
+      std::cout << "declare entries for features." << std::endl;
 
 
-    	std::map<std::string, void ( * )(Parameters &)>::iterator it;
+      std::map<std::string, void ( *)(Parameters &)>::iterator it;
 
-    	for ( it = get_declare_map().begin(); it != get_declare_map().end(); it++ )
-    	{
-    		std::cout << "declaring: " << it->first << std::endl;
-    		prm.enter_subsection("[]");
-    		{
-    			prm.enter_subsection(it->first);
-    			{
-    				prm.declare_entry("name","",true,"string",
-    						"The name which the user has given to the feature.");
-    				prm.declare_entry("coordinates","",true,"array of points",
-    						"An array of Points representing an array of coordinates where the feature is located.");
+      unsigned int counter = 0;
+      for ( it = get_declare_map().begin(); it != get_declare_map().end(); it++ )
+        {
+          std::cout << "declaring: " << it->first << std::endl;
 
-    				it->second(prm);
-    			}
-    			prm.leave_subsection();
-    		}
-    		prm.leave_subsection();
+          prm.enter_subsection("oneOf");
+          {
+            prm.enter_subsection(std::to_string(counter));
+            {
+              prm.declare_entry("type","",true,Types::String(it->first),
+                                "The name which the user has given to the feature.");
+              prm.declare_entry("name","",true,Types::String(),
+                                "The name which the user has given to the feature.");
+              prm.declare_entry("coordinates","",true,Types::Array(Types::Point<2>()),
+                                "An array of 2d Points representing an array of coordinates where the feature is located.");
 
-    	}
-    	std::cout << "declare entries for features." << std::endl;
+              it->second(prm);
+            }
+            prm.leave_subsection();
+          }
+          prm.leave_subsection();
+
+          counter++;
+
+        }
     }
 
     void
@@ -164,7 +174,7 @@ namespace WorldBuilder
     void
     Interface::registerType(const std::string &name,
                             void ( *declare_entries)(Parameters &),
-							ObjectFactory *factory)
+                            ObjectFactory *factory)
     {
       get_factory_map()[name] = factory;
       get_declare_map()[name] = declare_entries;

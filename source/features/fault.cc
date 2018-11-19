@@ -25,6 +25,14 @@
 #include <world_builder/nan.h>
 #include <world_builder/parameters.h>
 
+#include <world_builder/types/array.h>
+#include <world_builder/types/constant_layer.h>
+#include <world_builder/types/double.h>
+#include <world_builder/types/segment.h>
+#include <world_builder/types/point.h>
+#include <world_builder/types/string.h>
+#include <world_builder/types/unsigned_int.h>
+
 
 namespace WorldBuilder
 {
@@ -84,7 +92,7 @@ namespace WorldBuilder
       {
 
         // For now it is required to have a all segments, this requirement might be dropped in the future.
-        prm.load_entry("all", true, Types::Array(Types::Segment(0,Point<2>(0,0,cartesian),Point<2>(0,0,cartesian),
+        prm.load_entry("all", true, Types::Array(Types::Segment(0,WorldBuilder::Point<2>(0,0,cartesian),WorldBuilder::Point<2>(0,0,cartesian),
                                                                 "A plate segment with a certain length, thickness and angle."),
                                                  "A list of plate segments."));
 
@@ -99,7 +107,7 @@ namespace WorldBuilder
             std::vector<Types::Segment> current_segment;
 
             // first check whether there is an overwrite for this coordinate
-            bool overwrite = prm.load_entry(std::to_string(coordinate_i), false, Types::Array(Types::Segment(0,Point<2>(0,0,cartesian),Point<2>(0,0,cartesian),
+            bool overwrite = prm.load_entry(std::to_string(coordinate_i), false, Types::Array(Types::Segment(0,WorldBuilder::Point<2>(0,0,cartesian),WorldBuilder::Point<2>(0,0,cartesian),
                                             "A plate segment with a certain length, thickness and angle."),
                                             "A list of plate segments."));
 

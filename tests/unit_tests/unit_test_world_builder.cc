@@ -32,13 +32,18 @@
 #include <world_builder/features/interface.h>
 
 #include <world_builder/point.h>
+
 #include <world_builder/types/array.h>
 #include <world_builder/types/coordinate_system.h>
+#include <world_builder/types/constant_layer.h>
 #include <world_builder/types/double.h>
-#include <world_builder/types/feature.h>
+#include <world_builder/types/plugin_system.h>
 #include <world_builder/types/list.h>
+#include <world_builder/types/segment.h>
+#include <world_builder/types/point.h>
 #include <world_builder/types/string.h>
 #include <world_builder/types/unsigned_int.h>
+
 #include <world_builder/utilities.h>
 #include <world_builder/wrapper_c.h>
 using namespace WorldBuilder;
@@ -2233,9 +2238,9 @@ TEST_CASE("WorldBuilder Types: Coordinate System")
 #undef TYPE
 }
 
-TEST_CASE("WorldBuilder Types: Feature")
+TEST_CASE("WorldBuilder Types: PluginSystem")
 {
-#define TYPE Feature
+#define TYPE PluginSystem
   Types::TYPE type("test");
   CHECK(type.description == "test");
   CHECK(type.get_type() == Types::type::TYPE);

@@ -18,11 +18,33 @@
 */
 #include <world_builder/types/string.h>
 #include <world_builder/assert.h>
+#include <world_builder/parameters.h>
 
 namespace WorldBuilder
 {
   namespace Types
   {
+
+    String::String()
+      :
+      value(""),
+      default_value(""),
+      description(""),
+      restricted_values("")
+    {
+      this->type_name = Types::type::String;
+    }
+
+    String::String(const std::string restricted_values)
+      :
+      value(""),
+      default_value(""),
+      description(""),
+      restricted_values(restricted_values)
+    {
+      this->type_name = Types::type::String;
+    }
+
     String::String(std::string default_value, std::string description)
       :
       value(default_value),
@@ -43,6 +65,58 @@ namespace WorldBuilder
 
     String::~String ()
     {}
+
+    void
+    String::write_schema(Parameters &prm,
+                         const std::string name,
+                         const std::string default_value,
+                         const bool required,
+                         const std::string documentation) const
+    {
+      using namespace rapidjson;
+      Document &declarations = prm.declarations;
+      const std::string path = prm.get_full_json_path();
+      const std::string type_name = "string";
+      Pointer((path + "/type").c_str()).Set(declarations,"object");
+      const std::string base = path + "/properties/" + name;
+      std::cout << "base name = " << base << std::endl;
+      Pointer((base + "/default").c_str()).Set(declarations,default_value.c_str());
+      Pointer((base + "/required").c_str()).Set(declarations,required);
+      Pointer((base + "/type").c_str()).Set(declarations,type_name.c_str());
+      Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
+      if (restricted_values != "")
+        {
+          std::cout << "enum = " << Pointer((base + "/enum").c_str()).Get(declarations) << std::endl;
+          if (Pointer((base + "/enum").c_str()).Get(declarations) == NULL)
+            {
+              std::cout << base  + "/enum" << ", new enum! " << restricted_values << std::endl;
+              // The enum array doesn't exist yet, so we create it and fill it.
+              Pointer((base + "/enum/0").c_str()).Create(declarations);
+              Pointer((base + "/enum/0").c_str()).Set(declarations, restricted_values.c_str());
+            }
+          else
+            {
+              std::cout << "fill enum! " << restricted_values << std::endl;
+              // The enum array already exist yet, so we add an element to the end.
+              Pointer((base + "/enum/-").c_str()).Set(declarations, restricted_values.c_str());
+            }
+        }
+      if (required)
+        {
+          std::cout << "required = " << Pointer((base + "/required").c_str()).Get(declarations) << std::endl;
+          if (Pointer((path + "/required").c_str()).Get(declarations) == NULL)
+            {
+              // The required array doesn't exist yet, so we create it and fill it.
+              Pointer((path + "/required/0").c_str()).Create(declarations);
+              Pointer((path + "/required/0").c_str()).Set(declarations, name.c_str());
+            }
+          else
+            {
+              // The required array already exist yet, so we add an element to the end.
+              Pointer((path + "/required/-").c_str()).Set(declarations, name.c_str());
+            }
+        }
+    }
 
     void
     String::set_value(std::string value_)

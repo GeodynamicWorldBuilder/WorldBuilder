@@ -28,7 +28,6 @@ namespace WorldBuilder
 {
   namespace Types
   {
-
     /**
      * This class represents a double value with documentation
      */
@@ -65,6 +64,16 @@ namespace WorldBuilder
          */
         virtual
         std::unique_ptr<Interface> clone() const;
+
+        /**
+         * Todo
+         */
+        virtual
+        void write_schema(Parameters &prm,
+                          const std::string name,
+                          const std::string default_value,
+                          const bool required,
+                          const std::string documentation) const;
 
         /**
          * The composition number. An int is used so we can allow a value of

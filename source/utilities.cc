@@ -29,6 +29,19 @@ namespace WorldBuilder
 {
   namespace Utilities
   {
+
+    std::vector<std::string> split_string(const std::string &string, char delimiter)
+    {
+      std::vector<std::string> substrings;
+      std::string substring;
+      std::istringstream tokenStream(string);
+      while (std::getline(tokenStream, substring, delimiter))
+        {
+          substrings.push_back(substring);
+        }
+      return substrings;
+    }
+
     bool
     polygon_contains_point(const std::vector<Point<2> > &point_list,
                            const Point<2> &point)

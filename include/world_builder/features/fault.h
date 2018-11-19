@@ -56,13 +56,13 @@ namespace WorldBuilder
         /**
          * declare and read in the world builder file into the parameters class
          */
-		static
+        static
         void declare_entries(Parameters &prm);
 
         /**
          * declare and read in the world builder file into the parameters class
          */
-		virtual
+        virtual
         void parse_entries(Parameters &prm);
 
         /**
@@ -119,11 +119,11 @@ namespace WorldBuilder
         /**
          * A point on the surface to which the fault dips.
          */
-        Point<2> reference_point;
+        WorldBuilder::Point<2> reference_point;
 
         std::vector<std::vector<double> > slab_segment_lengths;
-        std::vector<std::vector<Point<2> > > slab_segment_thickness;
-        std::vector<std::vector<Point<2> > > slab_segment_angles;
+        std::vector<std::vector<WorldBuilder::Point<2> > > slab_segment_thickness;
+        std::vector<std::vector<WorldBuilder::Point<2> > > slab_segment_angles;
         std::vector<double> total_slab_length;
         double maximum_total_slab_length;
         double maximum_slab_thickness;

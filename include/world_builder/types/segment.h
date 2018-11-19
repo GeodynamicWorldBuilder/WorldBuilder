@@ -39,16 +39,16 @@ namespace WorldBuilder
          * A constructor for the load_entry function
          */
         Segment(double default_value_length,
-                Point<2> default_value_thickness,
-                Point<2> default_value_angle,
+                WorldBuilder::Point<2> default_value_thickness,
+                WorldBuilder::Point<2> default_value_angle,
                 std::string description);
 
         /**
          * A constructor for the clone and set_entry function
          */
         Segment(double   value_length,    double   default_value_length,
-                Point<2> value_thickness, Point<2> default_value_thickness,
-                Point<2> value_angle,     Point<2> default_value_angle,
+                WorldBuilder::Point<2> value_thickness, WorldBuilder::Point<2> default_value_thickness,
+                WorldBuilder::Point<2> value_angle,     WorldBuilder::Point<2> default_value_angle,
                 std::string description);
 
         /**
@@ -63,12 +63,22 @@ namespace WorldBuilder
         virtual
         std::unique_ptr<Interface> clone() const;
 
+        /**
+         * Todo
+         */
+        virtual
+        void write_schema(Parameters &prm,
+                          const std::string name,
+                          const std::string default_value,
+                          const bool required,
+                          const std::string documentation) const;
+
         double value_length;
         double default_value_length;
-        Point<2> value_thickness;
-        Point<2> default_value_thickness;
-        Point<2> value_angle;
-        Point<2> default_value_angle;
+        WorldBuilder::Point<2> value_thickness;
+        WorldBuilder::Point<2> default_value_thickness;
+        WorldBuilder::Point<2> value_angle;
+        WorldBuilder::Point<2> default_value_angle;
         std::string description;
 
       private:

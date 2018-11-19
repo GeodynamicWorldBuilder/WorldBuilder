@@ -24,8 +24,14 @@
 #include <vector>
 #include <memory>
 
+//#include <world_builder/parameters.h>
+
+#include <rapidjson/document.h>
+#include <rapidjson/pointer.h>
+
 namespace WorldBuilder
 {
+  class Parameters;
   /**
    * This class is an interface for the specific plate tectonic feature classes,
    * such as continental plate, oceanic plate and subduction zone.
@@ -35,7 +41,7 @@ namespace WorldBuilder
 
     enum class type
     {
-      None,String,Double,Int,UnsignedInt,Array,List,Point2D,Point3D,CoordinateSystem,Feature,Segment,ConstantLayer
+      None,String,Double,Int,UnsignedInt,Array,List,Point2D,Point3D,CoordinateSystem,PluginSystem,Segment,ConstantLayer
     };
 
     class Interface
@@ -51,6 +57,16 @@ namespace WorldBuilder
          */
         virtual
         ~Interface();
+
+        /**
+         * Todo
+         */
+        virtual
+        void write_schema(Parameters &prm,
+                          const std::string name,
+                          const std::string default_value,
+                          const bool required,
+                          const std::string documentation) const = 0;
 
         /**
          * clone

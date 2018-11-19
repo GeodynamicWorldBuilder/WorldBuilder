@@ -29,8 +29,15 @@
 #include <world_builder/nan.h>
 #include <world_builder/parameters.h>
 #include <world_builder/types/interface.h>
-#include <world_builder/types/feature.h>
 #include <world_builder/types/coordinate_system.h>
+
+#include <world_builder/types/array.h>
+#include <world_builder/types/double.h>
+#include <world_builder/types/list.h>
+#include <world_builder/types/string.h>
+#include <world_builder/types/point.h>
+#include "../include/world_builder/types/plugin_system.h"
+#include "../include/world_builder/types/plugin_system.h"
 
 
 namespace WorldBuilder
@@ -41,16 +48,16 @@ namespace WorldBuilder
 
   World::World(std::string filename)
     :
-    		parameters(*this),
+    parameters(*this),
     dim(NaN::ISNAN)
   {
-	  std::cout << "flag 1 " << std::endl;
-	this->declare_entries(parameters);
-	  std::cout << "flag 2 " << std::endl;
-	parameters.initialize(filename);
-	  std::cout << "flag 3 " << std::endl;
+    std::cout << "flag 1 " << std::endl;
+    this->declare_entries(parameters);
+    std::cout << "flag 2 " << std::endl;
+    parameters.initialize(filename);
+    std::cout << "flag 3 " << std::endl;
     this->declare_and_parse(parameters);
-	  std::cout << "flag 4 " << std::endl;
+    std::cout << "flag 4 " << std::endl;
   }
 
   World::~World()
@@ -58,31 +65,32 @@ namespace WorldBuilder
 
   void World::declare_entries(Parameters &prm)
   {
-	  std::cout << "declare entry: " << std::endl;
-	  prm.declare_entry("version","",true,"string","The major and minor version number for which the input file was written.");
+    std::cout << "declare entry: " << std::endl;
+    prm.declare_entry("version","",true,Types::String(),"The major and minor version number for which the input file was written.");
+    prm.declare_entry("cross section","",true,Types::Array(Types::Point<2>(),2,2),"This is an array of two points along where the cross section is taken");
 
-	  prm.enter_subsection("features");
-	  {
-	    Features::Interface::declare_entries(prm);
-	  }
-	  prm.leave_subsection();
+    prm.declare_entry("features","",true,Types::PluginSystem(Features::Interface::declare_entries),"A list of features.");
+
+
   }
 
 
   void World::declare_and_parse(Parameters &prm)
   {
-	  using namespace rapidjson;
-	  Document& doc = prm.parameters;
+    using namespace rapidjson;
+    Document &doc = prm.parameters;
+
+
     /**
      * First load the major version number in the file and check the major
      * version number of the program.
      */
-	  WBAssertThrow(Pointer("/version").Get(doc) != NULL,
-			  "An entry called version is required in a World Builder "
-			  "Parameter file.");
+    WBAssertThrow(Pointer("/version").Get(doc) != NULL,
+                  "An entry called version is required in a World Builder "
+                  "Parameter file.");
     //WBAssertThrow(doc.HasMember("version"),
-//	          "An entry called version is required in a World Builder "
-//		  "Parameter file.");
+//            "An entry called version is required in a World Builder "
+//      "Parameter file.");
     //prm.load_entry("version", Types::String("","The major version number for which the input file was written."));
 
     WBAssertThrow(Version::MAJOR == "0"
@@ -164,7 +172,7 @@ namespace WorldBuilder
       }
 
     prm.load_entry("features", true, Types::List(
-                     Types::Feature("These are the features"), "A list of features."));
+                     Types::PluginSystem("These are the features"), "A list of features."));
 
   }
 

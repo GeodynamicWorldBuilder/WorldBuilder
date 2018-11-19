@@ -25,6 +25,14 @@
 #include <world_builder/nan.h>
 #include <world_builder/parameters.h>
 
+#include <world_builder/types/array.h>
+#include <world_builder/types/constant_layer.h>
+#include <world_builder/types/double.h>
+#include <world_builder/types/segment.h>
+#include <world_builder/types/point.h>
+#include <world_builder/types/string.h>
+#include <world_builder/types/unsigned_int.h>
+
 
 namespace WorldBuilder
 {
@@ -46,13 +54,13 @@ namespace WorldBuilder
 
 
     void
-	SubductingPlate::declare_entries(Parameters &prm)
+    SubductingPlate::declare_entries(Parameters &prm)
     {
 
     }
 
     void
-	SubductingPlate::parse_entries(Parameters &prm)
+    SubductingPlate::parse_entries(Parameters &prm)
     {
 
       //Parameters &prm = this->world->parameters;

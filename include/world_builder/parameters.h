@@ -27,16 +27,18 @@
 #include <boost/property_tree/ptree.hpp>
 
 #include <rapidjson/document.h>
+#include "rapidjson/schema.h"
 
-#include <world_builder/types/interface.h>
+#include <world_builder/point.h>
+//#include <world_builder/types/interface.h>
+/*#include <world_builder/types/point.h>
 #include <world_builder/types/constant_layer.h>
 #include <world_builder/types/double.h>
 #include <world_builder/types/string.h>
 #include <world_builder/types/segment.h>
-#include <world_builder/types/point.h>
 #include <world_builder/types/array.h>
 #include <world_builder/types/list.h>
-#include <world_builder/types/unsigned_int.h>
+#include <world_builder/types/unsigned_int.h>*/
 
 
 
@@ -44,6 +46,19 @@ using boost::property_tree::ptree;
 
 namespace WorldBuilder
 {
+  namespace Types
+  {
+    class Interface;
+    template<int dim>
+    class Point;
+    class ConstantLayer;
+    class Double;
+    class String;
+    class Segment;
+    class Array;
+    class List;
+    class UnsignedInt;
+  }
 
   namespace Features
   {
@@ -99,11 +114,11 @@ namespace WorldBuilder
       /**
        * Todo
        */
-	  void declare_entry(const std::string name,
-    		             const std::string default_value,
-						 const bool required,
-						 const std::string type,
-						 const std::string documentation);
+      void declare_entry(const std::string name,
+                         const std::string default_value,
+                         const bool required,
+                         const Types::Interface &type,
+                         const std::string documentation);
 
       /**
        * Loads an entry into the parameter class from the world builder file,

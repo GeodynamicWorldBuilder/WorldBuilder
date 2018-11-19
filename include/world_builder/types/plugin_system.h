@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_feature_types_feature_h
-#define _world_feature_types_feature_h
+#ifndef _world_feature_types_plugin_system_h
+#define _world_feature_types_plugin_system_h
 
 #include <world_builder/types/interface.h>
 #include <world_builder/features/interface.h>
@@ -33,29 +33,44 @@ namespace WorldBuilder
      * This class represents a plate tectonic feature class, such as the
      * continental plate class, oceanic plate class and subduction zone class.
      */
-    class Feature : public Interface
+    class PluginSystem : public Interface
     {
       public:
         /**
          * constructor
          */
-        Feature(const std::string &description);
+        PluginSystem(void ( *declare_entries)(Parameters &) = NULL);
+
+        /**
+         * constructor
+         */
+        PluginSystem(const std::string &description);
 
         /**
          * Copy constructor
          */
-        Feature(Feature &feature);
+        PluginSystem(PluginSystem &feature);
 
         /**
          * Destructor
          */
-        ~Feature();
+        ~PluginSystem();
 
         /**
          * clone
          */
         virtual
         std::unique_ptr<Interface> clone() const;
+
+        /**
+         * Todo
+         */
+        virtual
+        void write_schema(Parameters &prm,
+                          const std::string name,
+                          const std::string default_value,
+                          const bool required,
+                          const std::string documentation) const;
 
         /**
          * Set value
@@ -66,6 +81,7 @@ namespace WorldBuilder
         //std::string value;
         //std::unique_ptr<::WorldBuilder::Features::Interface> value;
         //std::string default_value;
+        void( *declare_entries)(Parameters &);
         std::string description;
 
       private:

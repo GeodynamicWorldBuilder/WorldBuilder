@@ -16,70 +16,58 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#include <world_builder/types/double.h>
+#include <world_builder/types/plugin_system.h>
+
 #include <world_builder/assert.h>
-#include <world_builder/utilities.h>
 #include <world_builder/parameters.h>
 
 namespace WorldBuilder
 {
   namespace Types
   {
-    Double::Double()
+    PluginSystem::PluginSystem(void ( *declare_entries)(Parameters &))
       :
-      value(0),
-      default_value(0),
+      declare_entries(declare_entries),
       description("")
     {
-      this->type_name = Types::type::Double;
+      this->type_name = Types::type::PluginSystem;
     }
 
-    Double::Double(double default_value, std::string description)
+    PluginSystem::PluginSystem(const std::string &description)
       :
-      value(default_value),
-      default_value(default_value),
       description(description)
     {
-      this->type_name = Types::type::Double;
+      this->type_name = Types::type::PluginSystem;
     }
 
-    Double::Double(double value, double default_value, std::string description)
+    PluginSystem::PluginSystem(PluginSystem &feature)
       :
-      value(value),
-      default_value(default_value),
-      description(description)
+      description(feature.description)
     {
-      this->type_name = Types::type::Double;
-
+      this->type_name = Types::type::PluginSystem;
     }
 
-    Double::~Double ()
+    PluginSystem::~PluginSystem ()
     {}
 
     std::unique_ptr<Interface>
-    Double::clone() const
+    PluginSystem::clone() const
     {
-      return std::unique_ptr<Interface>(new Double(value, default_value, description));
+      return std::unique_ptr<Interface>(new PluginSystem(description));
     }
 
     void
-    Double::write_schema(Parameters &prm,
-                         const std::string name,
-                         const std::string default_value,
-                         const bool required,
-                         const std::string documentation) const
+    PluginSystem::write_schema(Parameters &prm,
+                               const std::string name,
+                               const std::string default_value,
+                               const bool required,
+                               const std::string documentation) const
     {
       using namespace rapidjson;
       Document &declarations = prm.declarations;
       const std::string path = prm.get_full_json_path();
-      const std::string type_name = "number";
-      Pointer((path + "/type").c_str()).Set(declarations,"object");
-      const std::string base = path + "/properties/" + name;
-      std::cout << "base name = " << base << std::endl;
-      Pointer((base + "/default").c_str()).Set(declarations,default_value.c_str());
-      Pointer((base + "/required").c_str()).Set(declarations,required);
-      Pointer((base + "/type").c_str()).Set(declarations,type_name.c_str());
-      Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
+      const std::string base = path + "/" + name;
+
       if (required)
         {
           if (Pointer((path + "/required").c_str()).Get(declarations) == NULL)
@@ -94,8 +82,23 @@ namespace WorldBuilder
               Pointer((path + "/required/-").c_str()).Set(declarations, name.c_str());
             }
         }
-    }
+      prm.enter_subsection("properties");
+      {
+        prm.enter_subsection(name);
+        {
+          Pointer((prm.get_full_json_path() + "/type").c_str()).Set(prm.declarations,"array");
 
+          prm.enter_subsection("items");
+          {
+            WBAssert(this->declare_entries != NULL, "No declare entries given.");
+            this->declare_entries(prm);//Features::Interface::declare_entries(prm);
+          }
+          prm.leave_subsection();
+        }
+        prm.leave_subsection();
+      }
+      prm.leave_subsection();
+    }
   }
 }
 

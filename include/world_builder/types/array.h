@@ -43,6 +43,14 @@ namespace WorldBuilder
         /**
          * Constructor for the declaration
          */
+        Array(const Interface &type,
+              const unsigned int min_items = 0,
+              const unsigned int max_items = std::numeric_limits<unsigned int>::max(),
+              const bool unique_items = false);
+
+        /**
+         * Constructor for the declaration
+         */
         Array(const Interface &type, const std::string &description);
 
         /**
@@ -85,6 +93,16 @@ namespace WorldBuilder
         std::unique_ptr<Interface>   clone() const;
 
         /**
+         * Todo
+         */
+        virtual
+        void write_schema(Parameters &prm,
+                          const std::string name,
+                          const std::string default_value,
+                          const bool required,
+                          const std::string documentation) const;
+
+        /**
          * An enum of the type which this class points to
          * @see Types::type
          */
@@ -111,6 +129,21 @@ namespace WorldBuilder
          * @see inner_type_ptr
          */
         std::vector<unsigned int> inner_type_index;
+
+        /**
+         * Todo
+         */
+        unsigned int min_items;
+
+        /**
+         * Todo
+         */
+        unsigned int max_items;
+
+        /**
+         * Todo
+         */
+        bool unique_items;
 
         /**
          * The description of what this array and the values within represent.

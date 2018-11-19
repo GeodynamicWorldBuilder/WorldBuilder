@@ -46,6 +46,11 @@ namespace WorldBuilder
     constexpr double const_pi = 3.141592653589793238462643383279502884;
 
     /**
+     * Split string based on a delimiter
+     */
+    std::vector<std::string> split_string(const std::string &string, char delimiter);
+
+    /**
      * Given a 2d point and a list of points which form a polygon, computes if
      * the point falls within the polygon. For spherical coordinates it will
      * return true if the point or the point where the longitude is shifted

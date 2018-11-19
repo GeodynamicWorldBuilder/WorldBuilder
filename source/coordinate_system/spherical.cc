@@ -19,6 +19,7 @@
 
 #include <world_builder/assert.h>
 #include <world_builder/coordinate_systems/spherical.h>
+#include <world_builder/types/string.h>
 
 namespace WorldBuilder
 {

@@ -54,6 +54,16 @@ namespace WorldBuilder
         virtual
         std::unique_ptr<Interface> clone() const;
 
+        /**
+         * Todo
+         */
+        virtual
+        void write_schema(Parameters &prm,
+                          const std::string name,
+                          const std::string default_value,
+                          const bool required,
+                          const std::string documentation) const;
+
 
         /**
          * This class is responsible for storing the CoordinateSystem when it

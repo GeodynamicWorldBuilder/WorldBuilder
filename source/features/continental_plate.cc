@@ -26,6 +26,13 @@
 #include <world_builder/nan.h>
 #include <world_builder/parameters.h>
 
+#include <world_builder/types/array.h>
+#include <world_builder/types/constant_layer.h>
+#include <world_builder/types/double.h>
+#include <world_builder/types/string.h>
+#include <world_builder/types/unsigned_int.h>
+#include "../../include/world_builder/types/plugin_system.h"
+
 
 namespace WorldBuilder
 {
@@ -51,11 +58,14 @@ namespace WorldBuilder
     void
     ContinentalPlate::declare_entries(Parameters &prm)
     {
-        prm.enter_subsection("temperature models");
-        {
-        	Features::ContinentalPlateModels::Temperature::Interface::declare_entries(prm);
-        }
-        prm.leave_subsection();
+      prm.declare_entry("temperature models","",true,
+                        Types::PluginSystem(Features::ContinentalPlateModels::Temperature::Interface::declare_entries),
+                        "A list of temperature models.");
+      //prm.enter_subsection("temperature models");
+      //{
+      //Features::ContinentalPlateModels::Temperature::Interface::declare_entries(prm);
+      //}
+      //prm.leave_subsection();
     }
 
     void
