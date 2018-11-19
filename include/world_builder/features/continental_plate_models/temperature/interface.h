@@ -21,6 +21,7 @@
 #define _world_builder_features_continental_plate_temperature_interface_h
 
 #include <vector>
+#include <map>
 
 #include <boost/property_tree/ptree.hpp>
 

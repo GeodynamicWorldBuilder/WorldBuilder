@@ -66,7 +66,6 @@ namespace WorldBuilder
       using namespace rapidjson;
       Document &declarations = prm.declarations;
       const std::string path = prm.get_full_json_path();
-      const std::string base = path + "/" + name;
 
       if (required)
         {
