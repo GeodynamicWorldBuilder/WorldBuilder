@@ -45,7 +45,12 @@ namespace WorldBuilder
         /**
          * constructor
          */
-        String(std::string restricted_values);
+        String(std::string restricted_value);
+
+        /**
+         * constructor
+         */
+        String(const std::vector<std::string> &restricted_values);
 
         /**
          * constructor
@@ -88,7 +93,7 @@ namespace WorldBuilder
         std::string value;
         std::string default_value;
         std::string description;
-        std::string restricted_values;
+        std::vector<std::string> restricted_values;
     };
   }
 }

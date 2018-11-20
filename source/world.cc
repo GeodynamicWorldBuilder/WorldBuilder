@@ -28,6 +28,7 @@
 #include <world_builder/point.h>
 #include <world_builder/nan.h>
 #include <world_builder/parameters.h>
+#include <world_builder/coordinate_systems/interface.h>
 #include <world_builder/types/interface.h>
 #include <world_builder/types/coordinate_system.h>
 
@@ -36,8 +37,7 @@
 #include <world_builder/types/list.h>
 #include <world_builder/types/string.h>
 #include <world_builder/types/point.h>
-#include "../include/world_builder/types/plugin_system.h"
-#include "../include/world_builder/types/plugin_system.h"
+#include <world_builder/types/plugin_system.h>
 
 
 namespace WorldBuilder
@@ -51,13 +51,11 @@ namespace WorldBuilder
     parameters(*this),
     dim(NaN::ISNAN)
   {
-    std::cout << "flag 1 " << std::endl;
     this->declare_entries(parameters);
-    std::cout << "flag 2 " << std::endl;
+
     parameters.initialize(filename);
-    std::cout << "flag 3 " << std::endl;
-    this->declare_and_parse(parameters);
-    std::cout << "flag 4 " << std::endl;
+
+    this->parse_entries(parameters);
   }
 
   World::~World()
@@ -65,17 +63,16 @@ namespace WorldBuilder
 
   void World::declare_entries(Parameters &prm)
   {
-    std::cout << "declare entry: " << std::endl;
     prm.declare_entry("version","",true,Types::String(),"The major and minor version number for which the input file was written.");
     prm.declare_entry("cross section","",true,Types::Array(Types::Point<2>(),2,2),"This is an array of two points along where the cross section is taken");
-
+    prm.declare_entry("coordinate system","",true,Types::PluginSystem(CoordinateSystems::Interface::declare_entries, false),"A coordinate system. Cartesian or spherical.");
     prm.declare_entry("features","",true,Types::PluginSystem(Features::Interface::declare_entries),"A list of features.");
 
 
   }
 
 
-  void World::declare_and_parse(Parameters &prm)
+  void World::parse_entries(Parameters &prm)
   {
     using namespace rapidjson;
     Document &doc = prm.parameters;
@@ -85,36 +82,57 @@ namespace WorldBuilder
      * First load the major version number in the file and check the major
      * version number of the program.
      */
-    WBAssertThrow(Pointer("/version").Get(doc) != NULL,
-                  "An entry called version is required in a World Builder "
-                  "Parameter file.");
+    //WBAssertThrow(Pointer("/version").Get(doc) != NULL,
+    //             "An entry called version is required in a World Builder "
+    //             "Parameter file.");
     //WBAssertThrow(doc.HasMember("version"),
 //            "An entry called version is required in a World Builder "
 //      "Parameter file.");
     //prm.load_entry("version", Types::String("","The major version number for which the input file was written."));
 
     WBAssertThrow(Version::MAJOR == "0"
-                  && prm.load_entry("version") == Version::MAJOR + "." + Version::MINOR
+                  && prm.get<std::string>("version") == Version::MAJOR + "." + Version::MINOR
                   || Version::MAJOR != "0"
-                  && prm.load_entry("version") == Version::MAJOR,
+                  && prm.get<std::string>("version") == Version::MAJOR,
                   "The major and minor version combination (for major version 0) or the major "
                   "version (for major versions after 0) for which is input file was written "
                   "is not the same as the version of the World Builder you are running. This means "
                   "That there may have been incompatible changes made between the versions. "
                   "Verify those changes and wheter they affect your model. If this is not "
-                  "the case, adjust the version number in the input file.");
+                  "the case, adjust the version number in the input file. The provided version "
+                  "number is \"" << prm.get<std::string>("version") << "\".");
 //    WBAssertThrow(Pointer("/version").Get(doc)->GetUint() == Utilities::string_to_unsigned_int(Version::MAJOR),
 
     /**
      * Seconly load the coordinate system parameters.
      */
-    prm.load_entry("coordinate system", false, Types::CoordinateSystem("cartesian","This determines the coordinate system"));
+    prm.coordinate_system = prm.get_unique_pointer<CoordinateSystems::Interface>("coordinate system");
+    prm.coordinate_system->parse_entries(prm);
+
+    prm.get_unique_pointers<Features::Interface>("features",prm.features);
+
+
+    prm.enter_subsection("features");
+    {
+      unsigned int counter = 0;
+      for (auto &feature: prm.features)
+        {
+          prm.enter_subsection(std::to_string(counter));
+          {
+            feature->parse_entries(prm);
+          }
+          prm.leave_subsection();
+          counter++;
+        }
+    }
+    prm.leave_subsection();
+
 
     const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 
     /**
      * Temperature parameters.
-     */
+     * /
     prm.load_entry("potential mantle temperature", false,
                    Types::Double(1600,"The potential temperature of the mantle at the surface in Kelvin."));
     prm.load_entry("surface temperature", false,
@@ -126,17 +144,17 @@ namespace WorldBuilder
     prm.load_entry("specific heat", false, Types::Double(1250,"The specific heat in $J kg^{-1} K^{-1}."));
     prm.load_entry("thermal diffusivity", false, Types::Double(0.804e-6,"Set the thermal diffusivity in $m^{2} s^{-1}$."));
 
-    /**
+    / **
      * Model rotation parameters.
-     */
+     * /
     prm.load_entry("surface rotation angle", false,
                    Types::Double(0,"The angle with which the model should be rotated around the surface rotation point."));
     prm.load_entry("surface rotation point", false,
                    Types::Point<2>(Point<2>(0,0, coordinate_system), "The point where should be rotated around."));
 
-    /**
+    / **
      * Model descretisation parameters.
-     */
+     * /
     prm.load_entry("minimum points per distance", false,
                    Types::Double(std::numeric_limits<double>::max(),"This enforces that there is at least every distance interval"
                                  "(in degree for spherical coordinates or meter in cartesian coordinates) a point."));
@@ -158,9 +176,9 @@ namespace WorldBuilder
         WBAssertThrow(cross_section.size() == 2, "The cross section should contain two points, but it contains "
                       << cross_section.size() << " points.");
 
-        /**
+        / **
          * pre-compute stuff for the cross section
-         */
+         * /
         Point<2> surface_coord_conversions = (cross_section[0]-cross_section[1]) * (coordinate_system == spherical ? const_pi / 180.0 : 1.0);
         surface_coord_conversions *= -1/(surface_coord_conversions.norm());
         prm.set_entry("surface coordinate conversions",
@@ -169,10 +187,10 @@ namespace WorldBuilder
     else
       {
         dim = 3;
-      }
+      }*/
 
-    prm.load_entry("features", true, Types::List(
-                     Types::PluginSystem("These are the features"), "A list of features."));
+    //prm.load_entry("features", true, Types::List(
+    //               Types::PluginSystem("These are the features"), "A list of features."));
 
   }
 

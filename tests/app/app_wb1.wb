@@ -1,8 +1,8 @@
 {
 "version":"0.1",
+"coordinate system":{"type":"spherical","depth method":"starting point"},
 "cross section":[[1.0,1.0],[1.0,1.0]],
 "cross section1":[[100e3,100e3,1],[400e3,500e3]],
-"coordinate system":{"Cartesian":{}},
 "surface rotation point": ["165e3","166e3"],
 "surface rotation angle": "0",
 "minimum parts per distance unit": 5,

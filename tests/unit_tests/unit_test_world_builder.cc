@@ -683,7 +683,7 @@ TEST_CASE("WorldBuilder Coordinate Systems: Interface")
 
   unique_ptr<CoordinateSystems::Interface> interface(CoordinateSystems::Interface::create("cartesian",&world));
 
-  interface->decare_entries();
+  interface->declare_entries(world.parameters);
 
   CHECK(interface->cartesian_to_natural_coordinates(std::array<double,3> {1,2,3}) == std::array<double,3> {1,2,3});
   CHECK(interface->natural_to_cartesian_coordinates(std::array<double,3> {1,2,3}) == std::array<double,3> {1,2,3});
@@ -696,7 +696,8 @@ TEST_CASE("WorldBuilder Coordinate Systems: Cartesian")
 {
   unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",NULL));
 
-  cartesian->decare_entries();
+  //todo:fix
+  //cartesian->declare_entries();
 
   CHECK(cartesian->cartesian_to_natural_coordinates(std::array<double,3> {1,2,3}) == std::array<double,3> {1,2,3});
   CHECK(cartesian->natural_to_cartesian_coordinates(std::array<double,3> {1,2,3}) == std::array<double,3> {1,2,3});
@@ -728,7 +729,7 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
   {
     world.parameters.enter_subsection("spherical");
     {
-      spherical->decare_entries();
+      spherical->declare_entries(world.parameters);
     }
     world.parameters.leave_subsection();
   }
@@ -3110,7 +3111,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 {
   std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::Interface::create("cartesian", NULL);;
 
-  cartesian_system->decare_entries();
+  //Todo:fix
+  //cartesian_system->declare_entries();
 
   Point<3> position(10,0,0,cartesian);
   Point<2> reference_point(0,0,cartesian);
@@ -3811,7 +3813,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 {
   std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::Interface::create("cartesian", NULL);;
 
-  cartesian_system->decare_entries();
+  //todo: fix
+  //cartesian_system->declare_entries();
 
   Point<3> position(10,0,0,cartesian);
   Point<2> reference_point(0,0,cartesian);

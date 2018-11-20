@@ -76,7 +76,7 @@ namespace WorldBuilder
       Pointer((path + "/type").c_str()).Set(declarations,"object");
       const std::string base = path + "/properties/" + name;
       std::cout << "base name = " << base << std::endl;
-      Pointer((base + "/default").c_str()).Set(declarations,default_value.c_str());
+      Pointer((base + "/default value").c_str()).Set(declarations,default_value.c_str());
       Pointer((base + "/required").c_str()).Set(declarations,required);
       Pointer((base + "/type").c_str()).Set(declarations,type_name.c_str());
       Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());

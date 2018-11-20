@@ -39,7 +39,7 @@ namespace WorldBuilder
         /**
          * constructor
          */
-        PluginSystem(void ( *declare_entries)(Parameters &) = NULL);
+        PluginSystem(void ( *declare_entries)(Parameters &) = NULL, const bool allow_multiple = true);
 
         /**
          * constructor
@@ -82,6 +82,7 @@ namespace WorldBuilder
         //std::unique_ptr<::WorldBuilder::Features::Interface> value;
         //std::string default_value;
         void( *declare_entries)(Parameters &);
+        bool allow_multiple;
         std::string description;
 
       private:

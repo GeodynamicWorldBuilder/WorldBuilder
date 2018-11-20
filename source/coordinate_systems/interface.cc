@@ -37,10 +37,38 @@ namespace WorldBuilder
     {}
 
     void
-    Interface::registerType(
-      const std::string &name, ObjectFactory *factory)
+    Interface::declare_entries(Parameters &prm)
+    {
+      std::map<std::string, void ( *)(Parameters &)>::iterator it;
+
+      unsigned int counter = 0;
+      for ( it = get_declare_map().begin(); it != get_declare_map().end(); ++it )
+        {
+          prm.enter_subsection("oneOf");
+          {
+            prm.enter_subsection(std::to_string(counter));
+            {
+              prm.declare_entry("type","",true,Types::String(it->first),
+                                "The name which the user has given to the feature.");
+
+              it->second(prm);
+            }
+            prm.leave_subsection();
+          }
+          prm.leave_subsection();
+
+          counter++;
+
+        }
+    }
+
+    void
+    Interface::registerType(const std::string &name,
+                            void ( *declare_entries)(Parameters &),
+                            ObjectFactory *factory)
     {
       get_factory_map()[name] = factory;
+      get_declare_map()[name] = declare_entries;
     }
 
     std::unique_ptr<Interface>

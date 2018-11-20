@@ -73,12 +73,19 @@ namespace WorldBuilder
     {
       //Parameters &prm = this->world->parameters;
 
+      std::cout << "parsing continetnal plate" << std::endl;
       const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 
-      this->declare_interface_entries(prm, coordinate_system);
+      this->name = prm.get<std::string>("name");
+      this->coordinates = prm.get_vector<Point<2> >("coordinates");
+
+
+      //this->parse_interface_entries(prm, coordinate_system);
 
       prm.enter_subsection("temperature model");
       {
+
+        //prm.get_unique_pointers(temperature_submodule_name, )
         prm.load_entry("name", true, Types::String("","The name of the temperature model."));
         temperature_submodule_name = prm.get_string("name");
 

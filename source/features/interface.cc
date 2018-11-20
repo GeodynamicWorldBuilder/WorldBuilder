@@ -49,9 +49,6 @@ namespace WorldBuilder
     void
     Interface::declare_entries(Parameters &prm)
     {
-      std::cout << "declare entries for features." << std::endl;
-
-
       std::map<std::string, void ( *)(Parameters &)>::iterator it;
 
       unsigned int counter = 0;

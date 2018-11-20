@@ -33,8 +33,14 @@ namespace WorldBuilder
     {}
 
     void
-    Cartesian::decare_entries()
+    Cartesian::declare_entries(Parameters &prm)
     {}
+
+    void
+    Cartesian::parse_entries(Parameters &prm)
+    {
+      std::cout << "          Parsing cartesian coordinate system!" << std::endl;
+    }
 
 
     CoordinateSystem

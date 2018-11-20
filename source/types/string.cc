@@ -30,12 +30,23 @@ namespace WorldBuilder
       value(""),
       default_value(""),
       description(""),
-      restricted_values("")
+      restricted_values({})
     {
       this->type_name = Types::type::String;
     }
 
-    String::String(const std::string restricted_values)
+    String::String(const std::string restricted_value)
+      :
+      value(""),
+      default_value(""),
+      description(""),
+      restricted_values({restricted_value})
+    {
+      this->type_name = Types::type::String;
+    }
+
+
+    String::String(const std::vector<std::string> &restricted_values)
       :
       value(""),
       default_value(""),
@@ -79,25 +90,28 @@ namespace WorldBuilder
       Pointer((path + "/type").c_str()).Set(declarations,"object");
       const std::string base = path + "/properties/" + name;
       std::cout << "base name = " << base << std::endl;
-      Pointer((base + "/default").c_str()).Set(declarations,default_value.c_str());
+      Pointer((base + "/default value").c_str()).Set(declarations,default_value.c_str());
       Pointer((base + "/required").c_str()).Set(declarations,required);
       Pointer((base + "/type").c_str()).Set(declarations,"string");
       Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
-      if (restricted_values != "")
+      for (unsigned int i = 0; i < restricted_values.size(); ++i)
         {
-          std::cout << "enum = " << Pointer((base + "/enum").c_str()).Get(declarations) << std::endl;
-          if (Pointer((base + "/enum").c_str()).Get(declarations) == NULL)
+          if (restricted_values[i] != "")
             {
-              std::cout << base  + "/enum" << ", new enum! " << restricted_values << std::endl;
-              // The enum array doesn't exist yet, so we create it and fill it.
-              Pointer((base + "/enum/0").c_str()).Create(declarations);
-              Pointer((base + "/enum/0").c_str()).Set(declarations, restricted_values.c_str());
-            }
-          else
-            {
-              std::cout << "fill enum! " << restricted_values << std::endl;
-              // The enum array already exist yet, so we add an element to the end.
-              Pointer((base + "/enum/-").c_str()).Set(declarations, restricted_values.c_str());
+              std::cout << "enum = " << Pointer((base + "/enum").c_str()).Get(declarations) << std::endl;
+              if (i == 0 && Pointer((base + "/enum").c_str()).Get(declarations) == NULL)
+                {
+                  std::cout << base  + "/enum" << ", new enum! " << restricted_values[i] << std::endl;
+                  // The enum array doesn't exist yet, so we create it and fill it.
+                  Pointer((base + "/enum/0").c_str()).Create(declarations);
+                  Pointer((base + "/enum/0").c_str()).Set(declarations, restricted_values[i].c_str());
+                }
+              else
+                {
+                  std::cout << "fill enum! " << restricted_values[i] << std::endl;
+                  // The enum array already exist yet, so we add an element to the end.
+                  Pointer((base + "/enum/-").c_str()).Set(declarations, restricted_values[i].c_str());
+                }
             }
         }
       if (required)

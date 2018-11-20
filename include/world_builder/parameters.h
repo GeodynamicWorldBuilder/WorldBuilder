@@ -109,7 +109,27 @@ namespace WorldBuilder
       /**
        * Todo
        */
-      std::string load_entry(const std::string name);//, const Types::Interface &type);
+      template<class T>
+      T get(const std::string &name);
+
+      /**
+       * Todo
+       */
+      template<class T>
+      std::vector<T> get_vector(const std::string &name);
+
+      /**
+       * Todo
+       */
+      template<class T>
+      std::unique_ptr<T> get_unique_pointer(const std::string &name);
+
+      /**
+       * Todo
+       */
+      template<class T>
+      void
+      get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<T> > &);
 
       /**
        * Todo

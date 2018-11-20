@@ -34,26 +34,36 @@ namespace WorldBuilder
     {}
 
     void
-    Spherical::decare_entries()
+    Spherical::declare_entries(Parameters &prm)
     {
-      Parameters &prm = this->world->parameters;
 
-      prm.load_entry("depth method", true,
-                     Types::String("",
-                                   "The method used to go with an angle into depth in the case of spherical "
-                                   "coordinates."));
+      prm.declare_entry("depth method","",true,
+                        Types::String(std::vector<std::string>({"starting point", "begin segment", "continuous"})),
+                        "Which depth method to use in the spherical case.");
 
-      std::string string_depth_method = prm.get_string("depth method");
-      if (string_depth_method == "starting point")
-        used_depth_method = DepthMethod::angle_at_starting_point_with_surface;
-      else if (string_depth_method == "begin segment")
-        used_depth_method = DepthMethod::angle_at_begin_segment_with_surface;
-      else if (string_depth_method == "continuous")
-        used_depth_method = DepthMethod::continuous_angle_with_surface;
-      else
-        WBAssertThrow(true,"Option " << string_depth_method << " is not a valid depth method for spherical "
-                      "coordinates. The available options are 'starting point', 'begin segment' and "
-                      "'continuous'.");
+
+    }
+
+    void
+    Spherical::parse_entries(Parameters &prm)
+    {
+      prm.enter_subsection("coordinate system");
+      {
+        std::string string_depth_method = prm.get<std::string>("depth method");
+        if (string_depth_method == "starting point")
+          used_depth_method = DepthMethod::angle_at_starting_point_with_surface;
+        else if (string_depth_method == "begin segment")
+          used_depth_method = DepthMethod::angle_at_begin_segment_with_surface;
+        else if (string_depth_method == "continuous")
+          used_depth_method = DepthMethod::continuous_angle_with_surface;
+        else
+          WBAssertThrow(true,"Option " << string_depth_method << " is not a valid depth method for spherical "
+                        "coordinates. The available options are 'starting point', 'begin segment' and "
+                        "'continuous'.");
+
+        std::cout << "string_depth_method = " << string_depth_method << std::endl;
+      }
+      prm.leave_subsection();
     }
 
 

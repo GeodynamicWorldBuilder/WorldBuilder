@@ -120,9 +120,9 @@ namespace WorldBuilder
     {
       StringBuffer buffer;
       PrettyWriter<StringBuffer> writer(buffer);
-      \
+
       parameters.Accept(writer);
-      //std::cout << "parameters file: " << std::endl << buffer.GetString() << std::endl;
+      std::cout << "parameters file: " << std::endl << buffer.GetString() << std::endl;
     }
 
   }
@@ -202,28 +202,155 @@ namespace WorldBuilder
   }
 
 
+  template<>
   std::string
-  Parameters::load_entry(const std::string name)//, const Types::Interface &type)
+  Parameters::get(const std::string &name)
   {
     const std::string base = this->get_full_json_path();
-    WBAssertThrow(Pointer((base  + "/properties/" + name).c_str()).Get(declarations) != NULL, "Value \"" << base << "\" has not been declared.");
-    Value *value = Pointer((base + "/" + name).c_str()).Get(parameters);
+    const Value *value = Pointer((base + "/" + name).c_str()).Get(parameters);
+    const Value *testvalue = Pointer("/features/0/name").Get(parameters);
+    std::cout << "get string value = " << value << ", testvalue = " << testvalue
+              << std::endl << ", path = " << base + "/" + name << std::endl
+              << ", path = /features/0/name" << std::endl;
 
-    WBAssertThrow(value != NULL && Pointer((base + "/properties/" + name + "/required").c_str()).Get(declarations), "Value \"" << base << "/" << name << "\" not found in the input file while it is required.");
+    {
+      StringBuffer buffer;
+      PrettyWriter<StringBuffer> writer(buffer);
+      parameters.Accept(writer);
+      //std::cout << "before 1 " << name << ":" << std::endl << buffer.GetString() << std::endl;
+    }
+    bool required = false;
+    if (Pointer((base + "/required").c_str()).Get(declarations) != NULL)
+      {
+        for (auto &v : Pointer((base + "/required").c_str()).Get(declarations)->GetArray())
+          {
+            if (v.GetString() == name)
+              {
+                required = true;
+                std::cout << "required" << std::endl;
+              }
+          }
+      }
+
+    WBAssert(value != NULL || required == false,
+             "Internal error: Value \"" << base << "/" << name << "/type\" not found in the input file, while it was set as required.");
+
     if (value == NULL)
       {
-        const std::string default_value = Pointer((base + "/properties/" + name + "/default_value").c_str()).Get(declarations)->GetString();
-        Pointer((base + "/" + name).c_str()).Set(parameters,default_value.c_str());
-        return default_value;
+        value = Pointer((base + "/properties/" + name + "/default value").c_str()).Get(declarations);
+        WBAssert(value != NULL,
+                 "internal error: could not retrieve the default value at: "
+                 << base + "/" + name + "/default value");
       }
-    //Pointer((base + "/type").c_str()).Get(declarations);
 
-    StringBuffer buffer;
-    PrettyWriter<StringBuffer> writer(buffer);
-    parameters.Accept(writer);
-
-    //std::cout << buffer.GetString() << std::endl;
+    {
+      StringBuffer buffer;
+      PrettyWriter<StringBuffer> writer(buffer);
+      parameters.Accept(writer);
+      //std::cout << "afther 1:" << std::endl << buffer.GetString() << std::endl;
+    }
     return value->GetString();
+  }
+
+  template<>
+  std::vector<Point<2> >
+  Parameters::get_vector(const std::string &name)
+  {
+    std::vector<Point<2> > vector;
+    const std::string strict_base = this->get_full_json_path();
+    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != NULL)
+      {
+        Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+        for (unsigned int i = 0; i < array->Size(); ++i )
+          {
+            const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
+            //let's assume that the file is correct, because it has been checked with the json schema.
+            // So there are exactly two values.
+            double value1 = Pointer((base + "/0").c_str()).Get(parameters)->GetDouble();
+            double value2 = Pointer((base + "/1").c_str()).Get(parameters)->GetDouble();
+
+            vector.push_back(Point<2>(value1,value2,this->coordinate_system->natural_coordinate_system()));
+          }
+      }
+    return vector;
+  }
+
+  template<class T>
+  std::unique_ptr<T>
+  Parameters::get_unique_pointer(const std::string &name)
+  {
+    const std::string base = this->get_full_json_path();
+    Value *value = Pointer((base + "/" + name + "/type").c_str()).Get(parameters);
+
+    bool required = false;
+    if (Pointer((base + "/required").c_str()).Get(declarations) != NULL)
+      for (auto &v : Pointer((base + "/required").c_str()).Get(declarations)->GetArray())
+        {
+          if (v.GetString() == name)
+            {
+              required = true;
+            }
+        }
+
+    WBAssert(value != NULL || required == false,
+             "Internal error: Value \"" << base << "/" << name << "/type\" not found in the input file, while it was set as required.");
+
+    if (value == NULL)
+      {
+        value = Pointer((base + "/properties/" + name + "/default value").c_str()).Get(declarations);
+        WBAssert(value != NULL,
+                 "internal error: could not retrieve the default value at: "
+                 << base + "/" + name + "/default value. Make sure the value has been declared.");
+      }
+
+    return T::create(value->GetString(),&world);
+  }
+
+  template<class T>
+  void
+  Parameters::get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<T> > &vector)
+  {
+    const std::string strict_base = this->get_full_json_path();
+    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != NULL)
+      {
+        Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+        for (unsigned int i = 0; i < array->Size(); ++i )
+          {
+            //std::cout << array[i].GetObject().FindMember("type")->value.GetString() << std::endl;
+            const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
+
+            std::string value = Pointer((base + "/type").c_str()).Get(parameters)->GetString();
+            //std::string value = "continental plate";
+            //td::cout << "value: " <<  value << ", path = " << base  + "//type" << std::endl;
+            /*bool required = false;
+            if (Pointer((strict_base + "/required").c_str()).Get(declarations) != NULL)
+              for (auto &v : Pointer((strict_base + "/required").c_str()).Get(declarations)->GetArray())
+                {
+                  if (v.GetString() == name)
+                    {
+                    std::cout << "feature is required!" << std::endl;
+                      required = true;
+                    }
+                }
+
+            WBAssert(value != NULL || required == false,
+                     "Internal error: Value \"" << base << "/type\" not found in the input file, while it was set as required.");
+
+            if (value == NULL)
+              {
+              std::cout << "setting default value" << std::endl;
+                value = Pointer((strict_base + "/properties/" + name + "/default value").c_str()).Get(declarations);
+                WBAssert(value != NULL,
+                         "internal error: could not retrieve the default value at: "
+                         << strict_base + "/" + name + "/default value. Make sure the value has been declared.");
+              }
+            */
+            // std::cout << "creating a " << value << std::endl;
+            vector.push_back(std::move(T::create(value, &world)));
+          }
+      }
   }
 
   bool
@@ -562,7 +689,7 @@ namespace WorldBuilder
           {
             coordinate_system = CoordinateSystems::Interface::create(system, &world);
 
-            coordinate_system->decare_entries();
+            //coordinate_system->declare_entries();
           }
           leave_subsection();
         }
@@ -1161,6 +1288,20 @@ namespace WorldBuilder
    * Note that the variable with this name has to be loaded before this function is called.
    */
   template const std::vector<Types::Point<3> > Parameters::get_array<Types::Point<3> >(const std::string &name) const;
+
+  /**
+   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+   * Note that the variable with this name has to be loaded before this function is called.
+   */
+  template std::unique_ptr<CoordinateSystems::Interface> Parameters::get_unique_pointer<CoordinateSystems::Interface>(const std::string &name);
+
+  /**
+   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+   * Note that the variable with this name has to be loaded before this function is called.
+   */
+  template void
+  Parameters::get_unique_pointers<Features::Interface>(const std::string &name,
+                                                       std::vector<std::unique_ptr<Features::Interface> > &vector);
 
 }
 

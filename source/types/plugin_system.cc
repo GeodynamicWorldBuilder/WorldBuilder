@@ -25,9 +25,10 @@ namespace WorldBuilder
 {
   namespace Types
   {
-    PluginSystem::PluginSystem(void ( *declare_entries)(Parameters &))
+    PluginSystem::PluginSystem(void ( *declare_entries)(Parameters &), const bool allow_multiple)
       :
       declare_entries(declare_entries),
+      allow_multiple(allow_multiple),
       description("")
     {
       this->type_name = Types::type::PluginSystem;
@@ -85,14 +86,29 @@ namespace WorldBuilder
       {
         prm.enter_subsection(name);
         {
-          Pointer((prm.get_full_json_path() + "/type").c_str()).Set(prm.declarations,"array");
+          Pointer((prm.get_full_json_path() + "/default value").c_str()).Set(prm.declarations,default_value.c_str());
 
-          prm.enter_subsection("items");
-          {
-            WBAssert(this->declare_entries != NULL, "No declare entries given.");
-            this->declare_entries(prm);//Features::Interface::declare_entries(prm);
-          }
-          prm.leave_subsection();
+          if (allow_multiple)
+            {
+              Pointer((prm.get_full_json_path() + "/type").c_str()).Set(prm.declarations,"array");
+
+              prm.enter_subsection("items");
+              {
+                WBAssert(this->declare_entries != NULL, "No declare entries given.");
+                this->declare_entries(prm);//Features::Interface::declare_entries(prm);
+              }
+              prm.leave_subsection();
+            }
+          else
+            {
+              Pointer((prm.get_full_json_path() + "/type").c_str()).Set(prm.declarations,"object");
+              //prm.enter_subsection("properties");
+              //{
+              WBAssert(this->declare_entries != NULL, "No declare entries given.");
+              this->declare_entries(prm);//Features::Interface::declare_entries(prm);
+              //}
+              //prm.leave_subsection();
+            }
         }
         prm.leave_subsection();
       }
