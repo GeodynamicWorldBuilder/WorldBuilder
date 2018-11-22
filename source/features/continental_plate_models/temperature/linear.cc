@@ -58,24 +58,23 @@ namespace WorldBuilder
         void
         Linear::declare_entries(Parameters &prm, const std::string &)
         {
-          // Add top temperature to the required parameters.
-          //prm.declare_entry("", "", true, Types::Object({"top temperature"}), "Temperature model object");
-
-
-          prm.declare_entry("min depth","",false,Types::Double(0),
+          prm.declare_entry("min depth", Types::Double(0),
                             "The depth in meters from which the temperature of this feature is present.");
-          prm.declare_entry("max depth","",false,Types::Double(std::numeric_limits<double>::max()),
+
+          prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),
                             "The depth in meters to which the temperature of this feature is present.");
-          prm.declare_entry("top temperature","",true,Types::Double(293.15),
+
+          prm.declare_entry("top temperature", Types::Double(293.15),
                             "The temperature at the top in degree Kelvin of this feature."
                             "If the value is below zero, the an adiabatic temperature is used.");
-          prm.declare_entry("bottom temperature","",true,Types::Double(-1),
+
+          prm.declare_entry("bottom temperature", Types::Double(-1),
                             "The temperature at the top in degree Kelvin of this feature. "
                             "If the value is below zero, an adiabatic temperature is used.");
-          prm.declare_entry("operation","replace",false,Types::String(),
+
+          prm.declare_entry("operation", Types::String("replace"),
                             "Whether the value should replace any value previously defined at this location (replace) or "
                             "add the value to the previously define value (add).");
-
         }
 
         void
@@ -90,16 +89,13 @@ namespace WorldBuilder
 
 
         double
-        Linear::get_temperature(const Point<3> &position,
+        Linear::get_temperature(const Point<3> &,
                                 const double depth,
                                 const double gravity_norm,
                                 double temperature) const
         {
           if (depth <= max_depth && depth >= min_depth)
             {
-              WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                              *(world->parameters.coordinate_system));
-
               double bottom_temperature_local = bottom_temperature;
               if (bottom_temperature_local < 0)
                 {

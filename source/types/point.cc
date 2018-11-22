@@ -70,41 +70,19 @@ namespace WorldBuilder
     template<int dim>
     void
     Point<dim>::write_schema(Parameters &prm,
-                             const std::string name,
-                             const std::string default_value,
-                             const bool required,
-                             const std::string documentation) const
+                             const std::string &name,
+                             const std::string &documentation) const
     {
       using namespace rapidjson;
       Document &declarations = prm.declarations;
-      const std::string path = prm.get_full_json_path();
-      const std::string base = path;// + "/" + name;
+      const std::string base = prm.get_full_json_path() + "/" + name;
+
       Pointer((base + "/type").c_str()).Set(declarations,"array");
-      Pointer((base + "/items/type").c_str()).Set(declarations,"array");
-      Pointer((base + "/items/minItems").c_str()).Set(declarations,2);
-      Pointer((base + "/items/maxItems").c_str()).Set(declarations,2);
-      Pointer((base + "/items/items/type").c_str()).Set(declarations,"number");
-
-
-      //WBAssertThrow(false,"Not implemented.");
-      /*Pointer((base + "/default").c_str()).Set(declarations,default_value.c_str());
-      Pointer((base + "/required").c_str()).Set(declarations,required);
-      Pointer((base + "/type").c_str()).Set(declarations,type_name.c_str());
+      Pointer((base + "/minItems").c_str()).Set(declarations,2);
+      Pointer((base + "/maxItems").c_str()).Set(declarations,2);
+      Pointer((base + "/items/type").c_str()).Set(declarations,"number");
       Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
-      if(required)
-      {
-        if(Pointer((path + "/required").c_str()).Get(declarations) == NULL)
-        {
-          // The required array doesn't exist yet, so we create it and fill it.
-          Pointer((path + "/required/0").c_str()).Create(declarations);
-          Pointer((path + "/required/0").c_str()).Set(declarations, name.c_str());
-        }
-        else
-        {
-          // The required array already exist yet, so we add an element to the end.
-          Pointer((path + "/required/-").c_str()).Set(declarations, name.c_str());
-        }
-      }*/
+      // todo: default value
     }
 
 

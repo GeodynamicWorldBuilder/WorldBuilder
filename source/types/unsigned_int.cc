@@ -56,38 +56,18 @@ namespace WorldBuilder
 
     void
     UnsignedInt::write_schema(Parameters &prm,
-                              const std::string name,
-                              const std::string ,
-                              const bool ,
-                              const std::string documentation) const
+                              const std::string &name,
+                              const std::string &documentation) const
     {
       using namespace rapidjson;
       Document &declarations = prm.declarations;
-      const std::string path = prm.get_full_json_path();
-      const std::string type_name = "integer";
-      //Pointer((path + "/type").c_str()).Set(declarations,"object");
-      const std::string base = path + "/" + name;
-      //std::cout << "base name = " << base << std::endl;
-      Pointer((base + "/default value").c_str()).Set(declarations,default_value);
-      //Pointer((base + "/required").c_str()).Set(declarations,required);
-      Pointer((base + "/type").c_str()).Set(declarations,type_name.c_str());
-      Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
-      /*if (required)
-        {
-          if (Pointer((path + "/required").c_str()).Get(declarations) == NULL)
-            {
-              // The required array doesn't exist yet, so we create it and fill it.
-              Pointer((path + "/required/0").c_str()).Create(declarations);
-              Pointer((path + "/required/0").c_str()).Set(declarations, name.c_str());
-            }
-          else
-            {
-              // The required array already exist yet, so we add an element to the end.
-              Pointer((path + "/required/-").c_str()).Set(declarations, name.c_str());
-            }
-        }*/
-    }
 
+      const std::string base = prm.get_full_json_path() + "/" + name;
+      Pointer((base + "/default value").c_str()).Set(declarations,default_value);
+      Pointer((base + "/type").c_str()).Set(declarations,"integer");
+      Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
+
+    }
   }
 }
 

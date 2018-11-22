@@ -55,22 +55,9 @@ namespace WorldBuilder
         Layers::declare_entries(Parameters &prm, const std::string &)
         {
 
-          prm.declare_entry("layers","",true,
-                            Types::PluginSystem(Features::ContinentalPlateModels::Composition::Interface::declare_entries),
+          prm.declare_entry("layers",
+                            Types::PluginSystem("", Features::ContinentalPlateModels::Composition::Interface::declare_entries),
                             "A list of composition models to be used as layers.");
-
-          /*prm.declare_entry("min depth","0",false,Types::Double(0),
-                            "The depth in meters from which the composition of this feature is present.");
-          prm.declare_entry("max depth","0",false,Types::Double(std::numeric_limits<double>::max()),
-                            "The depth in meters to which the composition of this feature is present.");
-          prm.declare_entry("compositions","",true,Types::Array(Types::UnsignedInt(), true,1),
-                            "A list with the labels of the composition which are present there.");
-          prm.declare_entry("fractions","1",false,Types::Array(Types::Double(1.0),false,1),
-                            "TA list of compositional fractions corresponding to the compositions list.");
-          prm.declare_entry("operation","replace",false,Types::String(),
-                            "Whether the value should replace any value previously defined at this location (replace) or "
-                            "add the value to the previously define value (add).");
-          */
         }
 
         void
@@ -90,16 +77,6 @@ namespace WorldBuilder
               }
           }
           prm.leave_subsection();
-
-          //composition_models = prm.get_unique_pointer<Features::ContinentalPlateModels::Composition::Interface>("layers");
-          //composition_models->parse_entries(prm);
-          /*min_depth = prm.get<double>("min depth");
-          max_depth = prm.get<double>("max depth");
-          compositions = prm.get_vector<unsigned int>("compositions");
-          fractions = prm.get_vector<double>("fractions");
-
-          WBAssertThrow(compositions.size() == fractions.size(),
-                        "There are not the same amount of compositions and fractions.");*/
         }
 
 

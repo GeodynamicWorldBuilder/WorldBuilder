@@ -75,15 +75,12 @@ namespace WorldBuilder
 
     void
     ConstantLayer::write_schema(Parameters &prm,
-                                const std::string name,
-                                const std::string default_value,
-                                const bool required,
-                                const std::string documentation) const
+                                const std::string &name,
+                                const std::string &documentation) const
     {
       using namespace rapidjson;
-      Document &declarations = prm.declarations;
       const std::string path = prm.get_full_json_path();
-      Pointer((path + "/type").c_str()).Set(declarations,"object");
+      Pointer((path + "/type").c_str()).Set(prm.declarations,"object");
       const std::string base = path + "/properties/" + name;
       //std::cout << "base name = " << base << std::endl;
       WBAssertThrow(false,"Not implemented.");

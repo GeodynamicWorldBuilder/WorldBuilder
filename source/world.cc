@@ -69,33 +69,34 @@ namespace WorldBuilder
   {
     prm.enter_subsection("properties");
     {
-      prm.declare_entry("", "", true, Types::Object({"version", "features"}), "Root object");
+      prm.declare_entry("", Types::Object({"version", "features"}), "Root object");
 
-      prm.declare_entry("version","",true,Types::String(),"The major and minor version number for which the input file was written.");
+      prm.declare_entry("version", Types::String(""),"The major and minor version number for which the input file was written.");
 
-      prm.declare_entry("cross section","",false,Types::Array(Types::Point<2>(),2,2),"This is an array of two points along where the cross section is taken");
+      prm.declare_entry("cross section", Types::Array(Types::Point<2>(),2,2),"This is an array of two points along where the cross section is taken");
 
-      prm.declare_entry("coordinate system","cartesian",false,Types::PluginSystem(CoordinateSystems::Interface::declare_entries, false),"A coordinate system. Cartesian or spherical.");
-      prm.declare_entry("features","",true,Types::PluginSystem(Features::Interface::declare_entries),"A list of features.");
+      prm.declare_entry("coordinate system", Types::PluginSystem("cartesian", CoordinateSystems::Interface::declare_entries, false),"A coordinate system. Cartesian or spherical.");
+      prm.declare_entry("features", Types::PluginSystem("",Features::Interface::declare_entries),"A list of features.");
 
-      prm.declare_entry("potential mantle temperature","1600",false,Types::Double(1600),
+      prm.declare_entry("potential mantle temperature", Types::Double(1600),
                         "The potential temperature of the mantle at the surface in Kelvin.");
-      prm.declare_entry("surface temperature","293.15",false,Types::Double(293.15),
+      prm.declare_entry("surface temperature", Types::Double(293.15),
                         "The temperature at the surface in Kelvin.");
-      prm.declare_entry("force surface temperature","false",false,Types::Bool(),
+      prm.declare_entry("force surface temperature", Types::Bool(false),
                         "Force the provided surface temperature to be set at the surface");
-      prm.declare_entry("thermal expansion coefficient","3.5e-5",false,Types::Double(3.5e-5),
+      prm.declare_entry("thermal expansion coefficient", Types::Double(3.5e-5),
                         "The thermal expansion coefficient in $K^{-1}$.");
-      prm.declare_entry("specific heat","1250",false,Types::Double(1250),
+      prm.declare_entry("specific heat", Types::Double(1250),
                         "The specific heat in $J kg^{-1} K^{-1}.");
-      prm.declare_entry("thermal diffusivity","0.804e-6",false,Types::Double(0.804e-6),
+      prm.declare_entry("thermal diffusivity", Types::Double(0.804e-6),
                         "The thermal diffusivity in $m^{2} s^{-1}$.");
 
-      prm.declare_entry("minimum points per unit distance",std::to_string(std::numeric_limits<unsigned int>::max()),false,Types::UnsignedInt(std::numeric_limits<unsigned int>::max()),
+      prm.declare_entry("minimum points per unit distance",Types::UnsignedInt(std::numeric_limits<unsigned int>::max()),
                         "This enforces that there is at least every distance interval"
                         "(in degree for spherical coordinates or meter in cartesian coordinates) a point. "
                         "Requires interpolation to be not 'none'.");
-      prm.declare_entry("interpolation","none",false,Types::String(),
+
+      prm.declare_entry("interpolation",Types::String("none"),
                         "What type of interpolation should be used to enforce the minimum points per "
                         "distance parameter. Options are none, linear and monotone spline.");
 
@@ -108,20 +109,11 @@ namespace WorldBuilder
   void World::parse_entries(Parameters &prm)
   {
     using namespace rapidjson;
-    Document &doc = prm.parameters;
-
 
     /**
      * First load the major version number in the file and check the major
      * version number of the program.
      */
-    //WBAssertThrow(Pointer("/version").Get(doc) != NULL,
-    //             "An entry called version is required in a World Builder "
-    //             "Parameter file.");
-    //WBAssertThrow(doc.HasMember("version"),
-//            "An entry called version is required in a World Builder "
-//      "Parameter file.");
-    //prm.load_entry("version", Types::String("","The major version number for which the input file was written."));
 
     WBAssertThrow(Version::MAJOR == "0"
                   && prm.get<std::string>("version") == Version::MAJOR + "." + Version::MINOR
@@ -134,7 +126,6 @@ namespace WorldBuilder
                   "Verify those changes and wheter they affect your model. If this is not "
                   "the case, adjust the version number in the input file. The provided version "
                   "number is \"" << prm.get<std::string>("version") << "\".");
-//    WBAssertThrow(Pointer("/version").Get(doc)->GetUint() == Utilities::string_to_unsigned_int(Version::MAJOR),
 
     /**
      * Seconly load the coordinate system parameters.
@@ -267,9 +258,6 @@ namespace WorldBuilder
           {
             dim = 3;
           }*/
-
-    //prm.load_entry("features", true, Types::List(
-    //               Types::PluginSystem("These are the features"), "A list of features."));
 
   }
 

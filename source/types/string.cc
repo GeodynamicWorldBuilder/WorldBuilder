@@ -25,45 +25,40 @@ namespace WorldBuilder
   namespace Types
   {
 
-    String::String()
+    String::String(const std::string default_value)
       :
-      value(""),
-      default_value(""),
+      default_value(default_value),
       description(""),
       restricted_values({})
     {
       this->type_name = Types::type::String;
     }
 
-    String::String(const std::string restricted_value)
+    String::String(const std::string default_value, const std::string restricted_value)
       :
-      value(""),
-      default_value(""),
-      description(""),
+      default_value(default_value),
       restricted_values({restricted_value})
     {
       this->type_name = Types::type::String;
     }
 
 
-    String::String(const std::vector<std::string> &restricted_values)
+    String::String(const std::string default_value, const std::vector<std::string> &restricted_values)
       :
-      value(""),
-      default_value(""),
-      description(""),
+      default_value(default_value),
       restricted_values(restricted_values)
     {
       this->type_name = Types::type::String;
     }
 
-    String::String(std::string default_value, std::string description)
+    /*String::String(std::string default_value, std::string description)
       :
       value(default_value),
       default_value(default_value),
       description(description)
     {
       this->type_name = Types::type::String;
-    }
+    }*/
 
     String::String(std::string value, std::string default_value, std::string description)
       :
@@ -79,56 +74,32 @@ namespace WorldBuilder
 
     void
     String::write_schema(Parameters &prm,
-                         const std::string name,
-                         const std::string default_value,
-                         const bool required,
-                         const std::string documentation) const
+                         const std::string &name,
+                         const std::string &documentation) const
     {
       using namespace rapidjson;
       Document &declarations = prm.declarations;
-      const std::string path = prm.get_full_json_path();
-      //Pointer((path + "/type").c_str()).Set(declarations,"object");
-      const std::string base = path + "/" + name;
-      //std::cout << "base name = " << base << std::endl;
+      const std::string base = prm.get_full_json_path() + "/" + name;
       Pointer((base + "/default value").c_str()).Set(declarations,default_value.c_str());
-      Pointer((base + "/required").c_str()).Set(declarations,required);
       Pointer((base + "/type").c_str()).Set(declarations,"string");
       Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
       for (unsigned int i = 0; i < restricted_values.size(); ++i)
         {
           if (restricted_values[i] != "")
             {
-              //std::cout << "enum = " << Pointer((base + "/enum").c_str()).Get(declarations) << std::endl;
               if (i == 0 && Pointer((base + "/enum").c_str()).Get(declarations) == NULL)
                 {
-                  //std::cout << base  + "/enum" << ", new enum! " << restricted_values[i] << std::endl;
                   // The enum array doesn't exist yet, so we create it and fill it.
                   Pointer((base + "/enum/0").c_str()).Create(declarations);
                   Pointer((base + "/enum/0").c_str()).Set(declarations, restricted_values[i].c_str());
                 }
               else
                 {
-                  //std::cout << "fill enum! " << restricted_values[i] << std::endl;
                   // The enum array already exist yet, so we add an element to the end.
                   Pointer((base + "/enum/-").c_str()).Set(declarations, restricted_values[i].c_str());
                 }
             }
         }
-      /*if (required)
-        {
-          //std::cout << "required = " << Pointer((base + "/required").c_str()).Get(declarations) << std::endl;
-          if (Pointer((path + "/required").c_str()).Get(declarations) == NULL)
-            {
-              // The required array doesn't exist yet, so we create it and fill it.
-              Pointer((path + "/required/0").c_str()).Create(declarations);
-              Pointer((path + "/required/0").c_str()).Set(declarations, name.c_str());
-            }
-          else
-            {
-              // The required array already exist yet, so we add an element to the end.
-              Pointer((path + "/required/-").c_str()).Set(declarations, name.c_str());
-            }
-        }*/
     }
 
     void

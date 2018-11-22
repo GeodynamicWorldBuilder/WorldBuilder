@@ -70,10 +70,8 @@ namespace WorldBuilder
          */
         virtual
         void write_schema(Parameters &prm,
-                          const std::string name,
-                          const std::string default_value,
-                          const bool required,
-                          const std::string documentation) const;
+                          const std::string &name,
+                          const std::string &documentation) const;
 
         /**
          * The composition number. An int is used so we can allow a value of

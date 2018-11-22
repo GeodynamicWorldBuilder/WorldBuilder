@@ -40,22 +40,22 @@ namespace WorldBuilder
         /**
          * constructor
          */
-        String();
+        String(const std::string default_value);
 
         /**
          * constructor
          */
-        String(std::string restricted_value);
+        String(const std::string default_value, const std::string restricted_value);
 
         /**
          * constructor
          */
-        String(const std::vector<std::string> &restricted_values);
+        String(const std::string default_value, const std::vector<std::string> &restricted_values);
 
         /**
          * constructor
          */
-        String(std::string default_value, std::string description);
+        //String(std::string default_value, std::string description);
 
 
         /**
@@ -73,10 +73,8 @@ namespace WorldBuilder
          */
         virtual
         void write_schema(Parameters &prm,
-                          const std::string name,
-                          const std::string default_value,
-                          const bool required,
-                          const std::string documentation) const;
+                          const std::string &name,
+                          const std::string &documentation) const;
 
         /**
          * clone

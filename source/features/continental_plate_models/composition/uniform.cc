@@ -59,20 +59,21 @@ namespace WorldBuilder
         Uniform::declare_entries(Parameters &prm, const std::string &)
         {
           // Add compositions to the required parameters.
-          prm.declare_entry("", "", true, Types::Object({"compositions"}), "Uniform compositional model object");
+          prm.declare_entry("", Types::Object({"compositions"}), "Uniform compositional model object");
 
 
-          prm.declare_entry("min depth","0",false,Types::Double(0),
+          prm.declare_entry("min depth", Types::Double(0),
                             "The depth in meters from which the composition of this feature is present.");
-          prm.declare_entry("max depth","0",false,Types::Double(std::numeric_limits<double>::max()),
+          prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),
                             "The depth in meters to which the composition of this feature is present.");
-          prm.declare_entry("compositions","",true,Types::Array(Types::UnsignedInt(), true,1),
+          prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(), true,1),
                             "A list with the labels of the composition which are present there.");
-          prm.declare_entry("fractions","1",false,Types::Array(Types::Double(1.0),false,1),
+          prm.declare_entry("fractions", Types::Array(Types::Double(1.0),false,1),
                             "TA list of compositional fractions corresponding to the compositions list.");
-          prm.declare_entry("operation","replace",false,Types::String(),
+          prm.declare_entry("operation", Types::String("replace"),
                             "Whether the value should replace any value previously defined at this location (replace) or "
-                            "add the value to the previously define value (add).");
+                            "add the value to the previously define value (add). Replacing implies that all values not "
+                            "explicitly defined are set to zero.");
 
         }
 
@@ -90,7 +91,7 @@ namespace WorldBuilder
 
 
         double
-        Uniform::get_composition(const Point<3> &position,
+        Uniform::get_composition(const Point<3> &,
                                  const double depth,
                                  const unsigned int composition_number,
                                  double composition_) const
@@ -98,7 +99,7 @@ namespace WorldBuilder
           double composition = composition_;
           if (depth <= max_depth && depth >= min_depth)
             {
-              const bool clear = true;
+              const bool clear = operation == "replace" ? true : false;
               for (unsigned int i =0; i < compositions.size(); ++i)
                 {
                   if (compositions[i] == composition_number)

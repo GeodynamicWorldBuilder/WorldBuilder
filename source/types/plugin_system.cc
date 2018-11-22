@@ -25,11 +25,13 @@ namespace WorldBuilder
 {
   namespace Types
   {
-    PluginSystem::PluginSystem(void ( *declare_entries)(Parameters &, const std::string &), const bool allow_multiple)
+    PluginSystem::PluginSystem(const std::string &default_value,
+                               void ( *declare_entries)(Parameters &, const std::string &),
+                               const bool allow_multiple)
       :
+      default_value(default_value),
       declare_entries(declare_entries),
-      allow_multiple(allow_multiple),
-      description("")
+      allow_multiple(allow_multiple)
     {
       this->type_name = Types::type::PluginSystem;
     }
@@ -59,46 +61,39 @@ namespace WorldBuilder
 
     void
     PluginSystem::write_schema(Parameters &prm,
-                               const std::string name,
-                               const std::string default_value,
-                               const bool required,
-                               const std::string documentation) const
+                               const std::string &name,
+                               const std::string &documentation) const
     {
       using namespace rapidjson;
-      Document &declarations = prm.declarations;
       const std::string path = prm.get_full_json_path();
 
+      prm.enter_subsection(name);
       {
-        prm.enter_subsection(name);
-        {
-          Pointer((prm.get_full_json_path() + "/default value").c_str()).Set(prm.declarations,default_value.c_str());
+        Pointer((prm.get_full_json_path() + "/documentation").c_str()).Set(prm.declarations,documentation.c_str());
+        Pointer((prm.get_full_json_path() + "/default value").c_str()).Set(prm.declarations,default_value.c_str());
 
-          if (allow_multiple)
-            {
-              Pointer((prm.get_full_json_path() + "/type").c_str()).Set(prm.declarations,"array");
+        if (allow_multiple)
+          {
+            Pointer((prm.get_full_json_path() + "/type").c_str()).Set(prm.declarations,"array");
 
-              prm.enter_subsection("items");
-              {
-                WBAssert(this->declare_entries != NULL, "No declare entries given.");
-                //std::cout << path << " and name = " << name << std::endl;
-                this->declare_entries(prm, name);//Features::Interface::declare_entries(prm);
-              }
-              prm.leave_subsection();
-            }
-          else
+            prm.enter_subsection("items");
             {
-              Pointer((prm.get_full_json_path() + "/type").c_str()).Set(prm.declarations,"object");
-              //prm.enter_subsection("properties");
-              //{
               WBAssert(this->declare_entries != NULL, "No declare entries given.");
-              this->declare_entries(prm, name);//Features::Interface::declare_entries(prm);
-              //}
-              //prm.leave_subsection();
+
+              this->declare_entries(prm, name);
             }
-        }
-        prm.leave_subsection();
+            prm.leave_subsection();
+          }
+        else
+          {
+            Pointer((prm.get_full_json_path() + "/type").c_str()).Set(prm.declarations,"object");
+
+            WBAssert(this->declare_entries != NULL, "No declare entries given.");
+            this->declare_entries(prm, name);
+
+          }
       }
-      //prm.leave_subsection();
+      prm.leave_subsection();
     }
   }
 }

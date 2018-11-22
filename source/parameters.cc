@@ -130,76 +130,10 @@ namespace WorldBuilder
 
   void
   Parameters::declare_entry(const std::string name,
-                            const std::string default_value,
-                            const bool required,
                             const Types::Interface &type,
                             const std::string documentation)
   {
-    type.write_schema(*this,name,default_value,required,documentation);
-    /*std::string type_name;
-    if(type.get_type() == Types::type::String)
-      type_name = "string";
-    else if(type.get_type() == Types::type::Int)
-      type_name = "integer";
-    else if(type.get_type() == Types::type::Double)
-      type_name = "number";
-    else if(type.get_type() == Types::type::Array)
-      type_name = "array";
-    else if(type.get_type() == Types::type::Point2D)
-      type_name = "point2d";
-
-
-    std::cout << "declareing entry of type : " << type_name << std::endl;
-
-    if(type_name == "string" || type_name == "integer" || type_name == "number")
-    {
-      Pointer((this->get_full_json_path() + "/type").c_str()).Set(declarations,"object");
-      const std::string base = this->get_full_json_path() + "/properties/" + name;
-      std::cout << "base name = " << base << std::endl;
-      Pointer((base + "/default").c_str()).Set(declarations,default_value.c_str());
-      Pointer((base + "/required").c_str()).Set(declarations,required);
-      Pointer((base + "/type").c_str()).Set(declarations,type_name.c_str());
-      Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
-      if(required)
-      {
-        if(Pointer((this->get_full_json_path() + "/required").c_str()).Get(declarations) == NULL)
-        {
-          // The required array doesn't exist yet, so we create it and fill it.
-          Pointer((this->get_full_json_path() + "/required/0").c_str()).Create(declarations);
-          Pointer((this->get_full_json_path() + "/required/0").c_str()).Set(declarations, name.c_str());
-        }
-        else
-        {
-          // The required array already exist yet, so we add an element to the end.
-          Pointer((this->get_full_json_path() + "/required/-").c_str()).Set(declarations, name.c_str());
-        }
-      }
-    }
-    else if(type_name == "array")
-    {
-      Pointer((this->get_full_json_path() + "/" + name + "/type").c_str()).Set(declarations,"array");
-      const std::string base = this->get_full_json_path() + "/properties/" + name;
-      std::cout << "base name = " << base << std::endl;
-
-      /*std::vector<std::string> substrings = Utilities::split_string(type, '|');
-      std::cout << "size = " << substrings.size() << std::endl;
-      WBAssert(substrings.size() > 1, "The type of the elements of the array or object have to be defined (e.g. array|string).");
-      WBAssert(substrings[0] == "array" || substrings[0] == "object", "only arrays and objects can have sub-elements, indicated by |.");
-      if(substrings[0] == "array")
-      {
-        std::string subtype = type.substr(6, type.size());
-      }
-      else if(substrings[0] == "object")
-      {
-        std::string subtype = type.substr(6, type.size());
-      }* /
-    }*/
-
-    StringBuffer buffer;
-    PrettyWriter<StringBuffer> writer(buffer);
-    declarations.Accept(writer);
-
-    //std::cout << buffer.GetString() << std::endl;
+    type.write_schema(*this,name,documentation);
   }
 
   bool
@@ -233,7 +167,6 @@ namespace WorldBuilder
 
     if (value == NULL)
       {
-        //std::cout << "full json schema path = " << this->get_full_json_schema_path() << std::endl;
         value = Pointer((get_full_json_schema_path() + "/" + name + "/default value").c_str()).Get(declarations);
         WBAssert(value != NULL,
                  "internal error: could not retrieve the default value at: "
@@ -250,7 +183,6 @@ namespace WorldBuilder
     const std::string base = this->get_full_json_path();
     const Value *value = Pointer((base + "/" + name).c_str()).Get(parameters);
 
-    //std::cout << "base = " << this->get_full_json_path() << std::endl;
     bool required = false;
     if (Pointer((base + "/required").c_str()).Get(declarations) != NULL)
       {
@@ -293,7 +225,6 @@ namespace WorldBuilder
   {
     const std::string base = this->get_full_json_path();
     const Value *value = Pointer((base + "/" + name).c_str()).Get(parameters);
-    const Value *testvalue = Pointer("/features/0/name").Get(parameters);
 
     bool required = false;
     if (Pointer((base + "/required").c_str()).Get(declarations) != NULL)
@@ -327,7 +258,6 @@ namespace WorldBuilder
   {
     const std::string base = this->get_full_json_path();
     const Value *value = Pointer((base + "/" + name).c_str()).Get(parameters);
-    const Value *testvalue = Pointer("/features/0/name").Get(parameters);
 
     bool required = false;
     if (Pointer((base + "/required").c_str()).Get(declarations) != NULL)
@@ -346,7 +276,7 @@ namespace WorldBuilder
 
     if (value == NULL)
       {
-        value = Pointer((base + "/properties/" + name + "/default value").c_str()).Get(declarations);
+        value = Pointer((get_full_json_schema_path() + "/" + name + "/default value").c_str()).Get(declarations);
         WBAssert(value != NULL,
                  "internal error: could not retrieve the default value at: "
                  << base + "/" + name + "/default value");
@@ -473,7 +403,7 @@ namespace WorldBuilder
 
     if (value == NULL)
       {
-        value = Pointer((base + "/properties/" + name + "/default value").c_str()).Get(declarations);
+        value = Pointer((get_full_json_schema_path() + "/" + name + "/default value").c_str()).Get(declarations);
         WBAssert(value != NULL,
                  "internal error: could not retrieve the default value at: "
                  << base + "/" + name + "/default value. Make sure the value has been declared.");
@@ -493,36 +423,10 @@ namespace WorldBuilder
 
         for (unsigned int i = 0; i < array->Size(); ++i )
           {
-            //std::cout << array[i].GetObject().FindMember("type")->value.GetString() << std::endl;
             const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
 
             std::string value = Pointer((base + "/model").c_str()).Get(parameters)->GetString();
-            //std::string value = "continental plate";
-            //td::cout << "value: " <<  value << ", path = " << base  + "//type" << std::endl;
-            /*bool required = false;
-            if (Pointer((strict_base + "/required").c_str()).Get(declarations) != NULL)
-              for (auto &v : Pointer((strict_base + "/required").c_str()).Get(declarations)->GetArray())
-                {
-                  if (v.GetString() == name)
-                    {
-                    std::cout << "feature is required!" << std::endl;
-                      required = true;
-                    }
-                }
 
-            WBAssert(value != NULL || required == false,
-                     "Internal error: Value \"" << base << "/type\" not found in the input file, while it was set as required.");
-
-            if (value == NULL)
-              {
-              std::cout << "setting default value" << std::endl;
-                value = Pointer((strict_base + "/properties/" + name + "/default value").c_str()).Get(declarations);
-                WBAssert(value != NULL,
-                         "internal error: could not retrieve the default value at: "
-                         << strict_base + "/" + name + "/default value. Make sure the value has been declared.");
-              }
-            */
-            // std::cout << "creating a " << value << std::endl;
             vector.push_back(std::move(T::create(value, &world)));
           }
       }
@@ -559,10 +463,10 @@ namespace WorldBuilder
                       "Could not find " + get_full_path() + ", while it is set as required.");
 
         // Store the value
-        const Types::UnsignedInt &natural_type = dynamic_cast<const Types::UnsignedInt &>(type);
+        //const Types::UnsignedInt &natural_type = dynamic_cast<const Types::UnsignedInt &>(type);
 
-        const unsigned int value = found_value == true ? Utilities::string_to_unsigned_int(value_tree.get())
-                                   : natural_type.default_value;
+        //const unsigned int value = found_value == true ? Utilities::string_to_unsigned_int(value_tree.get())
+        //                         : natural_type.default_value;
 
         //vector_unsigned_int.push_back(Types::UnsignedInt(value,natural_type.default_value,natural_type.description));
         location = vector_unsigned_int.size()-1;

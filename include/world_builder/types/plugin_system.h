@@ -39,7 +39,9 @@ namespace WorldBuilder
         /**
          * constructor
          */
-        PluginSystem(void ( *declare_entries)(Parameters &, const std::string &) = NULL, const bool allow_multiple = true);
+        PluginSystem(const std::string &default_vaule,
+                     void ( *declare_entries)(Parameters &, const std::string &),
+                     const bool allow_multiple = true);
 
         /**
          * constructor
@@ -67,20 +69,11 @@ namespace WorldBuilder
          */
         virtual
         void write_schema(Parameters &prm,
-                          const std::string name,
-                          const std::string default_value,
-                          const bool required,
-                          const std::string documentation) const;
+                          const std::string &name,
+                          const std::string &documentation) const;
 
-        /**
-         * Set value
-         */
-        //virtual
-        //void set_value(std::string value);
 
-        //std::string value;
-        //std::unique_ptr<::WorldBuilder::Features::Interface> value;
-        //std::string default_value;
+        std::string default_value;
         void( *declare_entries)(Parameters &, const std::string &);
         bool allow_multiple;
         std::string description;

@@ -105,25 +105,6 @@ namespace WorldBuilder
 
         double min_depth;
         double max_depth;
-
-        // constant temperature submodule parameters
-        double temperature_submodule_constant_depth;
-        double temperature_submodule_constant_temperature;
-
-        // linear submodule parameters
-        double temperature_submodule_linear_depth;
-        double temperature_submodule_linear_top_temperature;
-        double temperature_submodule_linear_bottom_temperature;
-
-        // constant composition submodule parameters
-        double composition_submodule_constant_depth;
-        std::vector<unsigned int> composition_submodule_constant_composition;
-        std::vector<double> composition_submodule_constant_value;
-
-        // constant layers composition submodule parameters
-        std::vector<std::vector<unsigned int> > composition_submodule_constant_layers_compositions;
-        std::vector<std::vector<double> > composition_submodule_constant_layers_value;
-        std::vector<double> composition_submodule_constant_layers_thicknesses;
     };
 
 

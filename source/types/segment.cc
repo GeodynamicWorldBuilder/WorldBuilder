@@ -75,10 +75,8 @@ namespace WorldBuilder
 
     void
     Segment::write_schema(Parameters &prm,
-                          const std::string name,
-                          const std::string default_value,
-                          const bool required,
-                          const std::string documentation) const
+                          const std::string &name,
+                          const std::string &documentation) const
     {
       using namespace rapidjson;
       Document &declarations = prm.declarations;

@@ -30,15 +30,6 @@
 #include "rapidjson/schema.h"
 
 #include <world_builder/point.h>
-//#include <world_builder/types/interface.h>
-/*#include <world_builder/types/point.h>
-#include <world_builder/types/constant_layer.h>
-#include <world_builder/types/double.h>
-#include <world_builder/types/string.h>
-#include <world_builder/types/segment.h>
-#include <world_builder/types/array.h>
-#include <world_builder/types/list.h>
-#include <world_builder/types/unsigned_int.h>*/
 
 
 
@@ -141,8 +132,6 @@ namespace WorldBuilder
        * Todo
        */
       void declare_entry(const std::string name,
-                         const std::string default_value,
-                         const bool required,
                          const Types::Interface &type,
                          const std::string documentation);
 

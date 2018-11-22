@@ -61,28 +61,28 @@ namespace WorldBuilder
         {
 
           // Add temperature to the required parameters.
-          prm.declare_entry("", "", true, Types::Object({"temperature"}), "Temperature model object");
+          prm.declare_entry("", Types::Object({"temperature"}), "Temperature model object");
 
 
-          prm.declare_entry("min depth","0",false,Types::Double(0),
+          prm.declare_entry("min depth", Types::Double(0),
                             "The depth in meters from which the temperature of this feature is present.");
 
-          prm.declare_entry("max depth","0",false,Types::Double(std::numeric_limits<double>::max()),
+          prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),
                             "The depth in meters to which the temperature of this feature is present.");
 
-          prm.declare_entry("potential mantle temperature","",true,Types::Double(-1),
+          prm.declare_entry("potential mantle temperature", Types::Double(-1),
                             "The potential temperature of the mantle at the surface in Kelvin. "
                             "If the value is lower then zero, the global value is used.");
 
-          prm.declare_entry("thermal expansion coefficient","",true,Types::Double(-1),
+          prm.declare_entry("thermal expansion coefficient", Types::Double(-1),
                             "The thermal expansion coefficient in $K^{-1}$. "
                             "If the value is lower then zero, the global value is used.");
 
-          prm.declare_entry("specific heat","",true,Types::Double(-1),
+          prm.declare_entry("specific heat", Types::Double(-1),
                             "The specific heat in $J kg^{-1} K^{-1}."
                             "If the value is lower then zero, the global value is used.");
 
-          prm.declare_entry("operation","replace",false,Types::String(std::vector<std::string> {"replace", "add", "substract"}),
+          prm.declare_entry("operation", Types::String("replace",std::vector<std::string> {"replace", "add", "substract"}),
                             "Whether the value should replace any value previously defined at this location (replace), "
                             "add the value to the previously define value (add) or substract the value to the previously "
                             "define value (substract).");

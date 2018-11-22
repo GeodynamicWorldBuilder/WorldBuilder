@@ -50,42 +50,37 @@ namespace WorldBuilder
     void
     Interface::declare_entries(Parameters &prm, const std::string &parent_name)
     {
-      //std::map<std::string, void ( *)(Parameters &)>::iterator it;
-      //prm.enter_subsection("properties");
-      {
-        unsigned int counter = 0;
-        for (auto  it = get_declare_map().begin(); it != get_declare_map().end(); ++it )
+
+      unsigned int counter = 0;
+      for (auto  it = get_declare_map().begin(); it != get_declare_map().end(); ++it )
+        {
+          prm.enter_subsection("oneOf");
           {
-            prm.enter_subsection("oneOf");
+            prm.enter_subsection(std::to_string(counter));
             {
-              prm.enter_subsection(std::to_string(counter));
+
+              prm.enter_subsection("properties");
               {
+                prm.declare_entry("", Types::Object({"model", "name", "coordinates"}), "feature object");
 
-                prm.enter_subsection("properties");
-                {
-                  prm.declare_entry("", "", true, Types::Object({"model", "name", "coordinates"}), "feature object");
+                prm.declare_entry("model", Types::String("",it->first),
+                                  "The name which the user has given to the feature.");
+                prm.declare_entry("name", Types::String(""),
+                                  "The name which the user has given to the feature.");
+                prm.declare_entry("coordinates", Types::Array(Types::Point<2>(), true),
+                                  "An array of 2d Points representing an array of coordinates where the feature is located.");
 
-                  prm.declare_entry("model","",true,Types::String(it->first),
-                                    "The name which the user has given to the feature.");
-                  prm.declare_entry("name","",true,Types::String(),
-                                    "The name which the user has given to the feature.");
-                  prm.declare_entry("coordinates","",true,Types::Array(Types::Point<2>(), true),
-                                    "An array of 2d Points representing an array of coordinates where the feature is located.");
-
-                  //std::cout << "base = " << prm.get_full_json_path() << std::endl;
-                  it->second(prm, parent_name);
-                }
-                prm.leave_subsection();
+                it->second(prm, parent_name);
               }
               prm.leave_subsection();
             }
             prm.leave_subsection();
-
-            counter++;
-
           }
-      }
-      //prm.leave_subsection();
+          prm.leave_subsection();
+
+          counter++;
+
+        }
     }
 
     void

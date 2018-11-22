@@ -58,9 +58,9 @@ namespace WorldBuilder
                     {
                       prm.enter_subsection("properties");
                       {
-                        prm.declare_entry("", "", true, Types::Object({"model"}), "Temperature object");
+                        prm.declare_entry("", Types::Object({"model"}), "Temperature object");
 
-                        prm.declare_entry("model","",true,Types::String(it->first),
+                        prm.declare_entry("model", Types::String("",it->first),
                                           "The name of the temperature model.");
 
                         it->second(prm, parent_name);
@@ -84,7 +84,6 @@ namespace WorldBuilder
         {
           get_factory_map()[name] = factory;
           get_declare_map()[name] = declare_entries;
-          //std::cout << "registering temp " << name  << std::endl;
         }
 
         std::unique_ptr<Interface>

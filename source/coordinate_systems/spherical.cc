@@ -39,11 +39,11 @@ namespace WorldBuilder
     {
 
       // Add depth method to the requried parameters.
-      prm.declare_entry("", "", true, Types::Object({"depth method"}), "Coordinate sysetm object");
+      prm.declare_entry("", Types::Object({"depth method"}), "Coordinate sysetm object");
 
 
-      prm.declare_entry("depth method","",true,
-                        Types::String(std::vector<std::string>({"starting point", "begin segment", "continuous"})),
+      prm.declare_entry("depth method",
+                        Types::String("",std::vector<std::string>({"starting point", "begin segment", "continuous"})),
                         "Which depth method to use in the spherical case.");
 
 
