@@ -98,6 +98,57 @@ namespace WorldBuilder
        */
       Parameters parameters;
 
+      /**
+       * Todo
+       */
+      std::vector<Point<2> > cross_section;
+
+      /**
+       * Todo
+       */
+      Point<2> surface_coord_conversions;
+
+      /**
+       * Todo
+       */
+      double potential_mantle_temperature;
+
+      /**
+       * Todo
+       */
+      double surface_temperature;
+
+      /**
+       * Todo
+       */
+      bool force_surface_temperature;
+
+      /**
+       * Todo
+       */
+      double thermal_expansion_coefficient;
+
+      /**
+       * Todo
+       */
+      double specific_heat;
+
+      /**
+       * Todo
+       */
+      double thermal_diffusivity;
+
+      /**
+       * Todo
+       */
+      unsigned int minimum_points_per_distance;
+
+      /**
+       * Todo
+       */
+      std::string interpolation;
+
+
     private:
       /**
        * The minimum dimension. If cross section data is provided, it is set

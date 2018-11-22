@@ -21,6 +21,7 @@
 
 #include <world_builder/features/continental_plate.h>
 #include <world_builder/features/continental_plate_models/temperature/interface.h>
+#include <world_builder/features/continental_plate_models/composition/interface.h>
 #include <world_builder/utilities.h>
 #include <world_builder/assert.h>
 #include <world_builder/nan.h>
@@ -31,7 +32,7 @@
 #include <world_builder/types/double.h>
 #include <world_builder/types/string.h>
 #include <world_builder/types/unsigned_int.h>
-#include "../../include/world_builder/types/plugin_system.h"
+#include <world_builder/types/plugin_system.h>
 
 
 namespace WorldBuilder
@@ -56,125 +57,161 @@ namespace WorldBuilder
 
 
     void
-    ContinentalPlate::declare_entries(Parameters &prm)
+    ContinentalPlate::declare_entries(Parameters &prm, const std::string &)
     {
+      prm.declare_entry("min depth", "0", false, Types::Double(0),
+                        "The depth to which this feature is present");
+      prm.declare_entry("max depth", "0", true, Types::Double(std::numeric_limits<double>::max()),
+                        "The depth to which this feature is present");
       prm.declare_entry("temperature models","",true,
                         Types::PluginSystem(Features::ContinentalPlateModels::Temperature::Interface::declare_entries),
                         "A list of temperature models.");
-      //prm.enter_subsection("temperature models");
-      //{
-      //Features::ContinentalPlateModels::Temperature::Interface::declare_entries(prm);
-      //}
-      //prm.leave_subsection();
+      prm.declare_entry("composition models","",true,
+                        Types::PluginSystem(Features::ContinentalPlateModels::Composition::Interface::declare_entries),
+                        "A list of composition models.");
     }
 
     void
     ContinentalPlate::parse_entries(Parameters &prm)
     {
-      //Parameters &prm = this->world->parameters;
-
-      std::cout << "parsing continetnal plate" << std::endl;
       const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 
       this->name = prm.get<std::string>("name");
       this->coordinates = prm.get_vector<Point<2> >("coordinates");
+      if (coordinate_system == CoordinateSystem::spherical)
+        for (auto &coordinate: coordinates)
+          coordinate *= const_pi / 180.0;
 
+      min_depth = prm.get<double>("min depth");
+      max_depth = prm.get<double>("max depth");
+
+
+      prm.get_unique_pointers<Features::ContinentalPlateModels::Temperature::Interface>("temperature models", temperature_models);
+
+      prm.enter_subsection("temperature models");
+      {
+        for (unsigned int i = 0; i < temperature_models.size(); ++i)
+          {
+            prm.enter_subsection(std::to_string(i));
+            {
+              temperature_models[i]->parse_entries(prm);
+            }
+            prm.leave_subsection();
+          }
+      }
+      prm.leave_subsection();
+
+
+      prm.get_unique_pointers<Features::ContinentalPlateModels::Composition::Interface>("composition models", composition_models);
+
+      prm.enter_subsection("composition models");
+      {
+        for (unsigned int i = 0; i < composition_models.size(); ++i)
+          {
+            prm.enter_subsection(std::to_string(i));
+            {
+              composition_models[i]->parse_entries(prm);
+            }
+            prm.leave_subsection();
+          }
+      }
+      prm.leave_subsection();
 
       //this->parse_interface_entries(prm, coordinate_system);
+      /*
+            prm.enter_subsection("temperature model");
+            {
 
-      prm.enter_subsection("temperature model");
-      {
+              //prm.get_unique_pointers(temperature_submodule_name, )
+              prm.load_entry("name", true, Types::String("","The name of the temperature model."));
+              temperature_submodule_name = prm.get_string("name");
 
-        //prm.get_unique_pointers(temperature_submodule_name, )
-        prm.load_entry("name", true, Types::String("","The name of the temperature model."));
-        temperature_submodule_name = prm.get_string("name");
+              if (temperature_submodule_name == "constant")
+                {
+                  prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth in meters to which the temperature of this feature is present."));
+                  temperature_submodule_constant_depth = prm.get_double("depth");
 
-        if (temperature_submodule_name == "constant")
-          {
-            prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth in meters to which the temperature of this feature is present."));
-            temperature_submodule_constant_depth = prm.get_double("depth");
+                  prm.load_entry("temperature", true, Types::Double(0,"The temperature in degree Kelvin which this feature should have"));
+                  temperature_submodule_constant_temperature = prm.get_double("temperature");
+                }
+              else if (temperature_submodule_name == "linear")
+                {
+                  prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth in meters to which the temperature rises (or lowers) to."));
+                  temperature_submodule_linear_depth = prm.get_double("depth");
 
-            prm.load_entry("temperature", true, Types::Double(0,"The temperature in degree Kelvin which this feature should have"));
-            temperature_submodule_constant_temperature = prm.get_double("temperature");
-          }
-        else if (temperature_submodule_name == "linear")
-          {
-            prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth in meters to which the temperature rises (or lowers) to."));
-            temperature_submodule_linear_depth = prm.get_double("depth");
-
-            prm.load_entry("top temperature", false, Types::Double(293.15,
-                                                                   "The temperature in degree Kelvin at the top of this block."));
-            temperature_submodule_linear_top_temperature = prm.get_double("top temperature");
+                  prm.load_entry("top temperature", false, Types::Double(293.15,
+                                                                         "The temperature in degree Kelvin at the top of this block."));
+                  temperature_submodule_linear_top_temperature = prm.get_double("top temperature");
 
 
-            prm.load_entry("bottom temperature", false, Types::Double(NaN::DQNAN,"The temperature in degree Kelvin a the bottom of this block. "
-                                                                      "If this value is not defined, the adiabatic temperature at this depth is used."));
-            temperature_submodule_linear_bottom_temperature = prm.get_double("bottom temperature");
-          }
+                  prm.load_entry("bottom temperature", false, Types::Double(NaN::DQNAN,"The temperature in degree Kelvin a the bottom of this block. "
+                                                                            "If this value is not defined, the adiabatic temperature at this depth is used."));
+                  temperature_submodule_linear_bottom_temperature = prm.get_double("bottom temperature");
+                }
 
-      }
-      prm.leave_subsection();
+            }
+            prm.leave_subsection();
 
-      prm.enter_subsection("composition model");
-      {
-        prm.load_entry("name", true, Types::String("","The name of the composition model used."));
-        composition_submodule_name = prm.get_string("name");
+            prm.enter_subsection("composition model");
+            {
+              prm.load_entry("name", true, Types::String("","The name of the composition model used."));
+              composition_submodule_name = prm.get_string("name");
 
-        if (composition_submodule_name == "constant")
-          {
-            prm.load_entry("depth", true,
-                           Types::Double(NaN::DSNAN,"The depth in meters to which the composition of this feature is present."));
-            composition_submodule_constant_depth = prm.get_double("depth");
+              if (composition_submodule_name == "constant")
+                {
+                  prm.load_entry("depth", true,
+                                 Types::Double(NaN::DSNAN,"The depth in meters to which the composition of this feature is present."));
+                  composition_submodule_constant_depth = prm.get_double("depth");
 
-            prm.load_entry("compositions", true,
-                           Types::Array(Types::UnsignedInt(0,"The number of the composition that is present there."),
-                                        "A list of compositions which are present"));
-            std::vector<Types::UnsignedInt> temp_composition = prm.get_array<Types::UnsignedInt>("compositions");
-            composition_submodule_constant_composition.resize(temp_composition.size());
-            for (unsigned int i = 0; i < temp_composition.size(); ++i)
-              {
-                composition_submodule_constant_composition[i] = temp_composition[i].value;
-              }
+                  prm.load_entry("compositions", true,
+                                 Types::Array(Types::UnsignedInt(0,"The number of the composition that is present there."),
+                                              "A list of compositions which are present"));
+                  std::vector<Types::UnsignedInt> temp_composition = prm.get_array<Types::UnsignedInt>("compositions");
+                  composition_submodule_constant_composition.resize(temp_composition.size());
+                  for (unsigned int i = 0; i < temp_composition.size(); ++i)
+                    {
+                      composition_submodule_constant_composition[i] = temp_composition[i].value;
+                    }
 
-            prm.load_entry("fractions", false,
-                           Types::Array(Types::Double(1.0,"The value between 0 and 1 of how much this composition is present."),
-                                        "A list of compositional fractions corresponding to the compositions list."));
-            std::vector<Types::Double> temp_fraction = prm.get_array<Types::Double>("fractions");
-            composition_submodule_constant_value.resize(temp_fraction.size());
-            for (unsigned int i = 0; i < temp_composition.size(); ++i)
-              {
-                composition_submodule_constant_value[i] = temp_fraction[i].value;
-              }
+                  prm.load_entry("fractions", false,
+                                 Types::Array(Types::Double(1.0,"The value between 0 and 1 of how much this composition is present."),
+                                              "A list of compositional fractions corresponding to the compositions list."));
+                  std::vector<Types::Double> temp_fraction = prm.get_array<Types::Double>("fractions");
+                  composition_submodule_constant_value.resize(temp_fraction.size());
+                  for (unsigned int i = 0; i < temp_composition.size(); ++i)
+                    {
+                      composition_submodule_constant_value[i] = temp_fraction[i].value;
+                    }
 
-            WBAssertThrow(composition_submodule_constant_composition.size() == composition_submodule_constant_value.size(),
-                          "There are not the same amount of compositions and fractions.");
-          }
-        else if (composition_submodule_name == "constant layers")
-          {
-            // Load the layers.
-            prm.load_entry("layers", true, Types::Array(Types::ConstantLayer({NaN::ISNAN}, {1.0},NaN::DSNAN,
-                                                                             "A plate constant layer with a certain composition and thickness."),
-                                                        "A list of layers."));
+                  WBAssertThrow(composition_submodule_constant_composition.size() == composition_submodule_constant_value.size(),
+                                "There are not the same amount of compositions and fractions.");
+                }
+              else if (composition_submodule_name == "constant layers")
+                {
+                  // Load the layers.
+                  prm.load_entry("layers", true, Types::Array(Types::ConstantLayer({NaN::ISNAN}, {1.0},NaN::DSNAN,
+                                                                                   "A plate constant layer with a certain composition and thickness."),
+                                                              "A list of layers."));
 
-            std::vector<Types::ConstantLayer> constant_layers = prm.get_array<Types::ConstantLayer>("layers");
+                  std::vector<Types::ConstantLayer> constant_layers = prm.get_array<Types::ConstantLayer>("layers");
 
-            composition_submodule_constant_layers_compositions.resize(constant_layers.size());
-            composition_submodule_constant_layers_thicknesses.resize(constant_layers.size());
-            composition_submodule_constant_layers_value.resize(constant_layers.size());
+                  composition_submodule_constant_layers_compositions.resize(constant_layers.size());
+                  composition_submodule_constant_layers_thicknesses.resize(constant_layers.size());
+                  composition_submodule_constant_layers_value.resize(constant_layers.size());
 
-            for (unsigned int i = 0; i < constant_layers.size(); ++i)
-              {
-                composition_submodule_constant_layers_compositions[i] = constant_layers[i].value_composition;
-                composition_submodule_constant_layers_thicknesses[i] = constant_layers[i].value_thickness;
-                composition_submodule_constant_layers_value[i] = constant_layers[i].value;
-              }
-          }
-        else
-          {
-            WBAssertThrow(composition_submodule_name == "none","Subducting plate temperature model '" << temperature_submodule_name << "' not found.");
-          }
-      }
-      prm.leave_subsection();
+                  for (unsigned int i = 0; i < constant_layers.size(); ++i)
+                    {
+                      composition_submodule_constant_layers_compositions[i] = constant_layers[i].value_composition;
+                      composition_submodule_constant_layers_thicknesses[i] = constant_layers[i].value_thickness;
+                      composition_submodule_constant_layers_value[i] = constant_layers[i].value;
+                    }
+                }
+              else
+                {
+                  WBAssertThrow(composition_submodule_name == "none","Subducting plate temperature model '" << temperature_submodule_name << "' not found.");
+                }
+            }
+            prm.leave_subsection();*/
     }
 
 
@@ -184,10 +221,23 @@ namespace WorldBuilder
                                   const double gravity_norm,
                                   double temperature) const
     {
-      if (temperature_submodule_name == "constant")
+      WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
+                                                                      *(world->parameters.coordinate_system));
+
+      if (depth <= max_depth && depth >= min_depth &&
+          Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
+                                                                  world->parameters.coordinate_system->natural_coordinate_system())))
         {
-          WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                          *(world->parameters.coordinate_system));
+          for (auto &temperature_model: temperature_models)
+            {
+              temperature = temperature_model->get_temperature(position,
+                                                               depth,
+                                                               gravity_norm,
+                                                               temperature);
+            }
+        }
+      /*if (temperature_submodule_name == "constant")
+        {
 
           // The constant temperature module should be used for this.
           if (depth <= temperature_submodule_constant_depth &&
@@ -229,7 +279,7 @@ namespace WorldBuilder
       else
         {
           WBAssertThrow(false,"Given temperature module does not exist: " + temperature_submodule_name);
-        }
+        }*/
 
       return temperature;
     }
@@ -240,7 +290,22 @@ namespace WorldBuilder
                                   const unsigned int composition_number,
                                   double composition) const
     {
-      if (composition_submodule_name == "constant")
+      WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
+                                                                      *(world->parameters.coordinate_system));
+
+      if (depth <= max_depth && depth >= min_depth &&
+          Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
+                                                                  world->parameters.coordinate_system->natural_coordinate_system())))
+        {
+          for (auto &composition_model: composition_models)
+            {
+              composition = composition_model->get_composition(position,
+                                                               depth,
+                                                               composition_number,
+                                                               composition);
+            }
+        }
+      /*if (composition_submodule_name == "constant")
         {
           WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,*(world->parameters.coordinate_system));
           // The constant temperature module should be used for this.
@@ -306,7 +371,7 @@ namespace WorldBuilder
       else
         {
           WBAssertThrow(false,"Given composition module does not exist: " + composition_submodule_name);
-        }
+        }*/
 
       return composition;
     }

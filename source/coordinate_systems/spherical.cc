@@ -20,6 +20,7 @@
 #include <world_builder/assert.h>
 #include <world_builder/coordinate_systems/spherical.h>
 #include <world_builder/types/string.h>
+#include <world_builder/types/object.h>
 
 namespace WorldBuilder
 {
@@ -34,8 +35,12 @@ namespace WorldBuilder
     {}
 
     void
-    Spherical::declare_entries(Parameters &prm)
+    Spherical::declare_entries(Parameters &prm, const std::string &)
     {
+
+      // Add depth method to the requried parameters.
+      prm.declare_entry("", "", true, Types::Object({"depth method"}), "Coordinate sysetm object");
+
 
       prm.declare_entry("depth method","",true,
                         Types::String(std::vector<std::string>({"starting point", "begin segment", "continuous"})),
@@ -61,7 +66,7 @@ namespace WorldBuilder
                         "coordinates. The available options are 'starting point', 'begin segment' and "
                         "'continuous'.");
 
-        std::cout << "string_depth_method = " << string_depth_method << std::endl;
+        //std::cout << "string_depth_method = " << string_depth_method << std::endl;
       }
       prm.leave_subsection();
     }

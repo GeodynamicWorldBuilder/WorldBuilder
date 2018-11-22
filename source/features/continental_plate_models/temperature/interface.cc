@@ -17,15 +17,17 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <world_builder/features/continental_plate_models/temperature/interface.h>
 
 #include <boost/algorithm/string.hpp>
 
 #include <world_builder/assert.h>
-#include <world_builder/features/continental_plate_models/temperature/constant.h>
-
 #include <world_builder/types/string.h>
-
+#include <world_builder/types/object.h>
+#include <world_builder/features/continental_plate_models/temperature/interface.h>
+#include <world_builder/features/continental_plate_models/temperature/adiabatic.h>
+#include <world_builder/features/continental_plate_models/temperature/layers.h>
+#include <world_builder/features/continental_plate_models/temperature/linear.h>
+#include <world_builder/features/continental_plate_models/temperature/uniform.h>
 
 namespace WorldBuilder
 {
@@ -42,39 +44,47 @@ namespace WorldBuilder
         {}
 
         void
-        Interface::declare_entries(Parameters &prm)
+        Interface::declare_entries(Parameters &prm, const std::string &parent_name)
         {
-          std::map<std::string, void ( *)(Parameters &)>::iterator it;
-
           unsigned int counter = 0;
-          for ( it = get_declare_map().begin(); it != get_declare_map().end(); ++it )
+          for (auto it = get_declare_map().begin(); it != get_declare_map().end(); ++it )
             {
-              prm.enter_subsection("oneOf");
-              {
-                prm.enter_subsection(std::to_string(counter));
+              // prevent infinite recursion
+              if (it->first != parent_name)
                 {
-                  prm.declare_entry("model","",true,Types::String(it->first),
-                                    "The name of the temperature model.");
+                  prm.enter_subsection("oneOf");
+                  {
+                    prm.enter_subsection(std::to_string(counter));
+                    {
+                      prm.enter_subsection("properties");
+                      {
+                        prm.declare_entry("", "", true, Types::Object({"model"}), "Temperature object");
 
-                  it->second(prm);
+                        prm.declare_entry("model","",true,Types::String(it->first),
+                                          "The name of the temperature model.");
+
+                        it->second(prm, parent_name);
+                      }
+                      prm.leave_subsection();
+                    }
+                    prm.leave_subsection();
+                  }
+                  prm.leave_subsection();
+
+                  counter++;
                 }
-                prm.leave_subsection();
-              }
-              prm.leave_subsection();
-
-              counter++;
-
             }
         }
 
 
         void
         Interface::registerType(const std::string &name,
-                                void ( *declare_entries)(Parameters &),
+                                void ( *declare_entries)(Parameters &, const std::string &),
                                 ObjectFactory *factory)
         {
           get_factory_map()[name] = factory;
           get_declare_map()[name] = declare_entries;
+          //std::cout << "registering temp " << name  << std::endl;
         }
 
         std::unique_ptr<Interface>

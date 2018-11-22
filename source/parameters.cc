@@ -32,10 +32,8 @@
 #include <world_builder/config.h>
 #include <world_builder/parameters.h>
 #include <world_builder/utilities.h>
-#include <world_builder/types/segment.h>
-#include <world_builder/types/constant_layer.h>
-#include <world_builder/types/coordinate_system.h>
 
+#include <world_builder/types/coordinate_system.h>
 #include <world_builder/types/point.h>
 #include <world_builder/types/constant_layer.h>
 #include <world_builder/types/double.h>
@@ -44,7 +42,10 @@
 #include <world_builder/types/array.h>
 #include <world_builder/types/list.h>
 #include <world_builder/types/unsigned_int.h>
-#include "../include/world_builder/types/plugin_system.h"
+#include <world_builder/types/plugin_system.h>
+
+#include <world_builder/features/continental_plate_models/temperature/interface.h>
+#include <world_builder/features/continental_plate_models/composition/interface.h>
 
 using boost::property_tree::ptree;
 using namespace rapidjson;
@@ -67,7 +68,7 @@ namespace WorldBuilder
       PrettyWriter<StringBuffer> writer(buffer);
       declarations.Accept(writer);
 
-      std::cout << buffer.GetString() << std::endl;
+      // std::cout << buffer.GetString() << std::endl;
     }
 
     path_level =0;
@@ -115,14 +116,14 @@ namespace WorldBuilder
       }
     else
       {
-        std::cout << "schema says it is correct, yay!" << std::endl;
+        //std::cout << "schema says it is correct, yay!" << std::endl;
       }
     {
       StringBuffer buffer;
       PrettyWriter<StringBuffer> writer(buffer);
 
       parameters.Accept(writer);
-      std::cout << "parameters file: " << std::endl << buffer.GetString() << std::endl;
+      //std::cout << "parameters file: " << std::endl << buffer.GetString() << std::endl;
     }
 
   }
@@ -201,6 +202,12 @@ namespace WorldBuilder
     //std::cout << buffer.GetString() << std::endl;
   }
 
+  bool
+  Parameters::check_entry(const std::string &name) const
+  {
+    return Pointer((this->get_full_json_path() + "/" + name).c_str()).Get(parameters) == NULL ? false : true;
+  }
+
 
   template<>
   std::string
@@ -208,17 +215,7 @@ namespace WorldBuilder
   {
     const std::string base = this->get_full_json_path();
     const Value *value = Pointer((base + "/" + name).c_str()).Get(parameters);
-    const Value *testvalue = Pointer("/features/0/name").Get(parameters);
-    std::cout << "get string value = " << value << ", testvalue = " << testvalue
-              << std::endl << ", path = " << base + "/" + name << std::endl
-              << ", path = /features/0/name" << std::endl;
 
-    {
-      StringBuffer buffer;
-      PrettyWriter<StringBuffer> writer(buffer);
-      parameters.Accept(writer);
-      //std::cout << "before 1 " << name << ":" << std::endl << buffer.GetString() << std::endl;
-    }
     bool required = false;
     if (Pointer((base + "/required").c_str()).Get(declarations) != NULL)
       {
@@ -227,7 +224,119 @@ namespace WorldBuilder
             if (v.GetString() == name)
               {
                 required = true;
-                std::cout << "required" << std::endl;
+              }
+          }
+      }
+
+    WBAssert(value != NULL || required == false,
+             "Internal error: Value \"" << base << "/" << name << "/type\" not found in the input file, while it was set as required.");
+
+    if (value == NULL)
+      {
+        //std::cout << "full json schema path = " << this->get_full_json_schema_path() << std::endl;
+        value = Pointer((get_full_json_schema_path() + "/" + name + "/default value").c_str()).Get(declarations);
+        WBAssert(value != NULL,
+                 "internal error: could not retrieve the default value at: "
+                 << base + "/" + name + "/default value");
+      }
+
+    return value->GetString();
+  }
+
+  template<>
+  double
+  Parameters::get(const std::string &name)
+  {
+    const std::string base = this->get_full_json_path();
+    const Value *value = Pointer((base + "/" + name).c_str()).Get(parameters);
+
+    //std::cout << "base = " << this->get_full_json_path() << std::endl;
+    bool required = false;
+    if (Pointer((base + "/required").c_str()).Get(declarations) != NULL)
+      {
+        for (auto &v : Pointer((base + "/required").c_str()).Get(declarations)->GetArray())
+          {
+            if (v.GetString() == name)
+              {
+                required = true;
+              }
+          }
+      }
+
+    WBAssert(value != NULL || required == false,
+             "Internal error: Value \"" << base << "/" << name << "/type\" not found in the input file, while it was set as required.");
+
+    if (value == NULL)
+      {
+        //std::cout << "full json schema path = " << this->get_full_json_schema_path() << std::endl;
+        value = Pointer((get_full_json_schema_path() + "/" + name + "/default value").c_str()).Get(declarations);
+        WBAssert(value != NULL,
+                 "internal error: could not retrieve the default value at: "
+                 << get_full_json_schema_path() + "/" + name + "/default value");
+      }
+
+    double return_value;
+    try
+      {
+        return_value = value->GetDouble();
+      }
+    catch (...)
+      {
+        WBAssertThrow(false, "Could not convert values of " << base << " into doubles.");
+      }
+    return return_value;
+  }
+
+  template<>
+  unsigned int
+  Parameters::get(const std::string &name)
+  {
+    const std::string base = this->get_full_json_path();
+    const Value *value = Pointer((base + "/" + name).c_str()).Get(parameters);
+    const Value *testvalue = Pointer("/features/0/name").Get(parameters);
+
+    bool required = false;
+    if (Pointer((base + "/required").c_str()).Get(declarations) != NULL)
+      {
+        for (auto &v : Pointer((base + "/required").c_str()).Get(declarations)->GetArray())
+          {
+            if (v.GetString() == name)
+              {
+                required = true;
+              }
+          }
+      }
+
+    WBAssert(value != NULL || required == false,
+             "Internal error: Value \"" << base << "/" << name << "/type\" not found in the input file, while it was set as required.");
+
+    if (value == NULL)
+      {
+        value = Pointer((get_full_json_schema_path() + "/" + name + "/default value").c_str()).Get(declarations);
+        WBAssert(value != NULL,
+                 "internal error: could not retrieve the default value at: "
+                 << base + "/" + name + "/default value");
+      }
+
+    return value->GetUint();
+  }
+
+  template<>
+  bool
+  Parameters::get(const std::string &name)
+  {
+    const std::string base = this->get_full_json_path();
+    const Value *value = Pointer((base + "/" + name).c_str()).Get(parameters);
+    const Value *testvalue = Pointer("/features/0/name").Get(parameters);
+
+    bool required = false;
+    if (Pointer((base + "/required").c_str()).Get(declarations) != NULL)
+      {
+        for (auto &v : Pointer((base + "/required").c_str()).Get(declarations)->GetArray())
+          {
+            if (v.GetString() == name)
+              {
+                required = true;
               }
           }
       }
@@ -243,13 +352,7 @@ namespace WorldBuilder
                  << base + "/" + name + "/default value");
       }
 
-    {
-      StringBuffer buffer;
-      PrettyWriter<StringBuffer> writer(buffer);
-      parameters.Accept(writer);
-      //std::cout << "afther 1:" << std::endl << buffer.GetString() << std::endl;
-    }
-    return value->GetString();
+    return value->GetBool();
   }
 
   template<>
@@ -267,10 +370,82 @@ namespace WorldBuilder
             const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
             //let's assume that the file is correct, because it has been checked with the json schema.
             // So there are exactly two values.
-            double value1 = Pointer((base + "/0").c_str()).Get(parameters)->GetDouble();
-            double value2 = Pointer((base + "/1").c_str()).Get(parameters)->GetDouble();
+            double value1, value2;
 
+            try
+              {
+                value1 = Pointer((base + "/0").c_str()).Get(parameters)->GetDouble();
+                value2 = Pointer((base + "/1").c_str()).Get(parameters)->GetDouble();
+              }
+            catch (...)
+              {
+                WBAssertThrow(false, "Could not convert values of " << base << " into doubles.");
+              }
             vector.push_back(Point<2>(value1,value2,this->coordinate_system->natural_coordinate_system()));
+          }
+      }
+    return vector;
+  }
+
+  template<>
+  std::vector<double>
+  Parameters::get_vector(const std::string &name)
+  {
+    std::vector<double> vector;
+    const std::string strict_base = this->get_full_json_path();
+    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != NULL)
+      {
+        Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+        for (unsigned int i = 0; i < array->Size(); ++i )
+          {
+            const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
+
+            vector.push_back(Pointer(base.c_str()).Get(parameters)->GetDouble());
+          }
+      }
+    else
+      {
+        unsigned int min_size = Pointer((this->get_full_json_schema_path()  + "/" + name + "/minItems").c_str()).Get(declarations)->GetUint();
+
+        double default_value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/items/default value").c_str()).Get(declarations)->GetDouble();
+
+        // set to min size
+        for (unsigned int i = 0; i < min_size; ++i)
+          {
+            vector.push_back(default_value);
+          }
+      }
+    return vector;
+  }
+
+  template<>
+  std::vector<unsigned int>
+  Parameters::get_vector(const std::string &name)
+  {
+    std::vector<unsigned int> vector;
+    const std::string strict_base = this->get_full_json_path();
+    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != NULL)
+      {
+        Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+        for (unsigned int i = 0; i < array->Size(); ++i )
+          {
+            const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
+
+            vector.push_back(Pointer(base.c_str()).Get(parameters)->GetUint());
+          }
+      }
+    else
+      {
+        unsigned int min_size = Pointer((this->get_full_json_schema_path()  + "/" + name + "/minItems").c_str()).Get(declarations)->GetUint();
+
+        unsigned int default_value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/items/default value").c_str()).Get(declarations)->GetUint();
+
+        // set to min size
+        for (unsigned int i = 0; i < min_size; ++i)
+          {
+            vector.push_back(default_value);
           }
       }
     return vector;
@@ -281,7 +456,7 @@ namespace WorldBuilder
   Parameters::get_unique_pointer(const std::string &name)
   {
     const std::string base = this->get_full_json_path();
-    Value *value = Pointer((base + "/" + name + "/type").c_str()).Get(parameters);
+    Value *value = Pointer((base + "/" + name + "/model").c_str()).Get(parameters);
 
     bool required = false;
     if (Pointer((base + "/required").c_str()).Get(declarations) != NULL)
@@ -294,7 +469,7 @@ namespace WorldBuilder
         }
 
     WBAssert(value != NULL || required == false,
-             "Internal error: Value \"" << base << "/" << name << "/type\" not found in the input file, while it was set as required.");
+             "Internal error: Value \"" << base << "/" << name << "/model\" not found in the input file, while it was set as required.");
 
     if (value == NULL)
       {
@@ -321,7 +496,7 @@ namespace WorldBuilder
             //std::cout << array[i].GetObject().FindMember("type")->value.GetString() << std::endl;
             const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
 
-            std::string value = Pointer((base + "/type").c_str()).Get(parameters)->GetString();
+            std::string value = Pointer((base + "/model").c_str()).Get(parameters)->GetString();
             //std::string value = "continental plate";
             //td::cout << "value: " <<  value << ", path = " << base  + "//type" << std::endl;
             /*bool required = false;
@@ -389,7 +564,7 @@ namespace WorldBuilder
         const unsigned int value = found_value == true ? Utilities::string_to_unsigned_int(value_tree.get())
                                    : natural_type.default_value;
 
-        vector_unsigned_int.push_back(Types::UnsignedInt(value,natural_type.default_value,natural_type.description));
+        //vector_unsigned_int.push_back(Types::UnsignedInt(value,natural_type.default_value,natural_type.description));
         location = vector_unsigned_int.size()-1;
         string_to_type_map[path_plus_name] = location;
 
@@ -1208,14 +1383,110 @@ namespace WorldBuilder
   }
 
   std::string
-  Parameters::get_full_json_path() const
+  Parameters::get_full_json_path(unsigned int max_size) const
   {
-    std::string collapse = "/";
+    std::string collapse = "";//"/";
+    for (unsigned int i = 0; i < path.size() && i < max_size; i++)
+      {
+        collapse +=  "/" + path[i];// + "/";
+      }
+    return collapse;//.substr(0,collapse.size()-1);
+  }
+
+  std::string
+  Parameters::get_full_json_schema_path() const
+  {
+    std::string collapse = "/properties";
     for (unsigned int i = 0; i < path.size(); i++)
       {
-        collapse += path[i] + "/";
+        // first get the type
+        std::string type = Pointer((collapse + "/" + path[i] + "/type").c_str()).Get(declarations)->GetString();
+        if (type == "array")
+          {
+            // the type is an array. Arrays always have an items, but can also
+            // have a oneOf (todo: or anyOf ...). Find out whether this is the case
+            //collapse += path[i] + "/items";
+            if (Pointer((collapse + "/" + path[i] + "/items/oneOf").c_str()).Get(declarations) != NULL)
+              {
+                // it has a structure with oneOf. Find out which of the entries is needed.
+                // This means we have to take a sneak peak to figure out how to get to the
+                // next value.
+                unsigned int size = Pointer((collapse + "/" + path[i] + "/items/oneOf").c_str()).Get(declarations)->Size();
+                bool found = false;
+                unsigned int index = 0;
+                for (; index < size; ++index)
+                  {
+                    std::string declarations_string = Pointer((collapse + "/" + path[i] + "/items/oneOf/" + std::to_string(index)
+                                                               + "/properties/model/enum/0").c_str()).Get(declarations)->GetString();
+
+                    //std::cout << "flag 1: i = " << i << ", get_full_json_path()= " << get_full_json_path() << std::endl;
+                    // we need to get the json path relevant for the current declaration string
+                    // we are interested in, which requires an offset of 2.
+                    std::string parameters_string = Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters)->GetString();
+                    //std::cout << "flag 2: i = " << i << ", get_full_json_path(i+2) = " << get_full_json_path(i+2) << std::endl;
+                    //std::cout << "declarations_string = " << declarations_string << ", parameters_string = " << parameters_string << std::endl;
+                    // currently in our case these are always objects, so go directly to find the option we need.
+                    if (declarations_string == parameters_string)
+                      {
+                        // found it for index i;
+                        found = true;
+                        break;
+                      }
+                  }
+                WBAssert(found == true,
+                         "Internal error: This is an array with several possible values, "
+                         "but could not find the correct value " << collapse + "/" + path[i] + "/items/oneOf");
+                collapse += "/" + path[i] + "/items/oneOf/" + std::to_string(index) + "/properties";
+                // add one to i, to skip the array
+                ++i;
+              }
+            else
+              {
+                collapse += "/" + path[i] + "/items";
+              }
+          }
+        else if (type == "object")
+          {
+            WBAssertThrow(false, "Not implemented");
+            std::cout << "           this is an object" << std::endl;
+            // the type is an object. object or have a properties or
+            // have a oneOf (todo: or anyOf ...). Find out whether this is the case
+            //collapse += path[i] + "/pro";
+            if (Pointer((collapse + path[i] + "/items/oneOf").c_str()).Get(declarations) != NULL)
+              {
+                // it has a structure with oneOf. Find out which of the entries is needed.
+                // This means we have to take a sneak peak to figure out how to get to the
+                // next value.
+                unsigned int size = Pointer((collapse + path[i] + "/items/oneOf").c_str()).Get(declarations)->Size();
+                bool found = false;
+                unsigned int index = 0;
+                for (; index < size; ++index)
+                  {
+                    // currently in our case these are always objects, so go directly to find the option we need.
+                    if (Pointer((collapse + path[i] + "/items/oneOf/" + std::to_string(index)
+                                 + "/" + path[i+1]).c_str()).Get(declarations) != NULL)
+                      {
+                        // found it for index i;
+                        found = true;
+                        break;
+                      }
+                  }
+                WBAssert(found == true,
+                         "Internal error: This is an array with several possible values, "
+                         "but could not find the correct value " << collapse + path[i] + "/items/oneOf");
+                collapse += path[i] + "/oneOf/" + std::to_string(index);
+              }
+            else
+              {
+                collapse += path[i] + "/properties";
+              }
+          }
+        else
+          {
+            collapse += "/" + path[i];
+          }
       }
-    return collapse.substr(0,collapse.size()-1);
+    return collapse;//substr(0,collapse.size());
   }
 
   std::string
@@ -1226,9 +1497,12 @@ namespace WorldBuilder
       {
         collapse += path[i] + path_seperator;
       }
-    return collapse.substr(0,collapse.size()-path_seperator.size());
+    return collapse;//.substr(0,collapse.size());
   }
 
+  /**
+   * Warning: do not use before declarations is filled.
+   */
   std::string
   Parameters::get_full_path_without_arrays() const
   {
@@ -1237,7 +1511,7 @@ namespace WorldBuilder
       {
         collapse += (path[i].front() == '[' && path[i].back() == ']' ? "" : path[i]) + path_seperator;
       }
-    return collapse.substr(0,collapse.size()-path_seperator.size());
+    return collapse;//.substr(0,collapse.size()-path_seperator.size());
   }
 
 
@@ -1302,6 +1576,21 @@ namespace WorldBuilder
   template void
   Parameters::get_unique_pointers<Features::Interface>(const std::string &name,
                                                        std::vector<std::unique_ptr<Features::Interface> > &vector);
+  /**
+   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+   * Note that the variable with this name has to be loaded before this function is called.
+   */
+  template void
+  Parameters::get_unique_pointers<Features::ContinentalPlateModels::Temperature::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::ContinentalPlateModels::Temperature::Interface> > &vector);
+
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template void
+  Parameters::get_unique_pointers<Features::ContinentalPlateModels::Composition::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::ContinentalPlateModels::Composition::Interface> > &vector);
 
 }
 

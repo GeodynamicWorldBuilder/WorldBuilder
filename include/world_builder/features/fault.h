@@ -57,7 +57,7 @@ namespace WorldBuilder
          * declare and read in the world builder file into the parameters class
          */
         static
-        void declare_entries(Parameters &prm);
+        void declare_entries(Parameters &prm, const std::string &parent_name = "");
 
         /**
          * declare and read in the world builder file into the parameters class

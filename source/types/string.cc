@@ -87,9 +87,9 @@ namespace WorldBuilder
       using namespace rapidjson;
       Document &declarations = prm.declarations;
       const std::string path = prm.get_full_json_path();
-      Pointer((path + "/type").c_str()).Set(declarations,"object");
-      const std::string base = path + "/properties/" + name;
-      std::cout << "base name = " << base << std::endl;
+      //Pointer((path + "/type").c_str()).Set(declarations,"object");
+      const std::string base = path + "/" + name;
+      //std::cout << "base name = " << base << std::endl;
       Pointer((base + "/default value").c_str()).Set(declarations,default_value.c_str());
       Pointer((base + "/required").c_str()).Set(declarations,required);
       Pointer((base + "/type").c_str()).Set(declarations,"string");
@@ -98,25 +98,25 @@ namespace WorldBuilder
         {
           if (restricted_values[i] != "")
             {
-              std::cout << "enum = " << Pointer((base + "/enum").c_str()).Get(declarations) << std::endl;
+              //std::cout << "enum = " << Pointer((base + "/enum").c_str()).Get(declarations) << std::endl;
               if (i == 0 && Pointer((base + "/enum").c_str()).Get(declarations) == NULL)
                 {
-                  std::cout << base  + "/enum" << ", new enum! " << restricted_values[i] << std::endl;
+                  //std::cout << base  + "/enum" << ", new enum! " << restricted_values[i] << std::endl;
                   // The enum array doesn't exist yet, so we create it and fill it.
                   Pointer((base + "/enum/0").c_str()).Create(declarations);
                   Pointer((base + "/enum/0").c_str()).Set(declarations, restricted_values[i].c_str());
                 }
               else
                 {
-                  std::cout << "fill enum! " << restricted_values[i] << std::endl;
+                  //std::cout << "fill enum! " << restricted_values[i] << std::endl;
                   // The enum array already exist yet, so we add an element to the end.
                   Pointer((base + "/enum/-").c_str()).Set(declarations, restricted_values[i].c_str());
                 }
             }
         }
-      if (required)
+      /*if (required)
         {
-          std::cout << "required = " << Pointer((base + "/required").c_str()).Get(declarations) << std::endl;
+          //std::cout << "required = " << Pointer((base + "/required").c_str()).Get(declarations) << std::endl;
           if (Pointer((path + "/required").c_str()).Get(declarations) == NULL)
             {
               // The required array doesn't exist yet, so we create it and fill it.
@@ -128,7 +128,7 @@ namespace WorldBuilder
               // The required array already exist yet, so we add an element to the end.
               Pointer((path + "/required/-").c_str()).Set(declarations, name.c_str());
             }
-        }
+        }*/
     }
 
     void

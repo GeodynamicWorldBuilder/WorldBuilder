@@ -25,16 +25,17 @@ namespace WorldBuilder
   namespace Types
   {
     Array::Array(const Interface &type,
+                 const bool required,
                  const unsigned int min_items,
                  const unsigned int max_items,
                  const bool unique_items)
       :
       inner_type(type.get_type()),
       inner_type_ptr(type.clone()),
+      required(required),
       min_items(min_items),
       max_items(max_items),
-      unique_items(unique_items),
-      description("")
+      unique_items(unique_items)
     {
       this->type_name = Types::type::Array;
     }
@@ -81,18 +82,21 @@ namespace WorldBuilder
     Array::write_schema(Parameters &prm,
                         const std::string name,
                         const std::string default_value,
-                        const bool required,
+                        const bool ,
                         const std::string documentation) const
     {
       using namespace rapidjson;
       Document &declarations = prm.declarations;
       const std::string path = prm.get_full_json_path();
-      const std::string base = path + "/properties/" + name;
+      const std::string base = path + "/" + name;
+      //std::cout << "array get_full_json_path        = " << prm.get_full_json_path() << std::endl;
       Pointer((base + "/type").c_str()).Set(declarations,"array");
       Pointer((base + "/minItems").c_str()).Set(declarations,min_items);
       Pointer((base + "/maxItems").c_str()).Set(declarations,max_items);
       Pointer((base + "/uniqueItems").c_str()).Set(declarations,unique_items);
 
+      /*if(required == true)
+      {
       if (Pointer((path + "/required").c_str()).Get(declarations) == NULL)
         {
           // The required array doesn't exist yet, so we create it and fill it.
@@ -104,8 +108,9 @@ namespace WorldBuilder
           // The required array already exist yet, so we add an element to the end.
           Pointer((path + "/required/-").c_str()).Set(declarations, name.c_str());
         }
+      }*/
 
-      prm.enter_subsection("properties");
+      //prm.enter_subsection("properties");
       {
         prm.enter_subsection(name);
         {
@@ -113,13 +118,13 @@ namespace WorldBuilder
         }
         prm.leave_subsection();
       }
-      prm.leave_subsection();
+      //prm.leave_subsection();
 
       //Pointer((base + "/items/type").c_str()).Set(declarations,"array");
       //Pointer((base + "/items/maxItems").c_str()).Set(declarations,2);
       //WBAssert(Pointer((base + "/items").c_str()).Get(declarations) == NULL, "Internal error: There is already an items.");
       //Pointer((base + "/items/0").c_str()).Create(declarations);
-      std::cout << "base name = " << base << std::endl;
+      //std::cout << "base name = " << base << std::endl;
 
     }
   }

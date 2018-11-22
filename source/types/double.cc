@@ -25,11 +25,10 @@ namespace WorldBuilder
 {
   namespace Types
   {
-    Double::Double()
+    Double::Double(const double default_value)
       :
       value(0),
-      default_value(0),
-      description("")
+      default_value(default_value)
     {
       this->type_name = Types::type::Double;
     }
@@ -65,22 +64,22 @@ namespace WorldBuilder
     void
     Double::write_schema(Parameters &prm,
                          const std::string name,
-                         const std::string default_value,
-                         const bool required,
+                         const std::string ,
+                         const bool ,
                          const std::string documentation) const
     {
       using namespace rapidjson;
       Document &declarations = prm.declarations;
       const std::string path = prm.get_full_json_path();
       const std::string type_name = "number";
-      Pointer((path + "/type").c_str()).Set(declarations,"object");
-      const std::string base = path + "/properties/" + name;
-      std::cout << "base name = " << base << std::endl;
-      Pointer((base + "/default value").c_str()).Set(declarations,default_value.c_str());
-      Pointer((base + "/required").c_str()).Set(declarations,required);
+      //Pointer((path + "/type").c_str()).Set(declarations,"object");
+      const std::string base = path + "/" + name;
+      //std::cout << "base name = " << base << std::endl;
+      Pointer((base + "/default value").c_str()).Set(declarations,default_value);
+      //Pointer((base + "/required").c_str()).Set(declarations,required);
       Pointer((base + "/type").c_str()).Set(declarations,type_name.c_str());
       Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
-      if (required)
+      /*if (required)
         {
           if (Pointer((path + "/required").c_str()).Get(declarations) == NULL)
             {
@@ -93,7 +92,7 @@ namespace WorldBuilder
               // The required array already exist yet, so we add an element to the end.
               Pointer((path + "/required/-").c_str()).Set(declarations, name.c_str());
             }
-        }
+        }*/
     }
 
   }

@@ -44,6 +44,7 @@ namespace WorldBuilder
          * Constructor for the declaration
          */
         Array(const Interface &type,
+              const bool required,
               const unsigned int min_items = 0,
               const unsigned int max_items = std::numeric_limits<unsigned int>::max(),
               const bool unique_items = false);
@@ -129,6 +130,11 @@ namespace WorldBuilder
          * @see inner_type_ptr
          */
         std::vector<unsigned int> inner_type_index;
+
+        /**
+         * Todo
+         */
+        bool required;
 
         /**
          * Todo

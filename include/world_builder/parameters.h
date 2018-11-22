@@ -134,6 +134,12 @@ namespace WorldBuilder
       /**
        * Todo
        */
+      bool
+      check_entry(const std::string &name) const;
+
+      /**
+       * Todo
+       */
       void declare_entry(const std::string name,
                          const std::string default_value,
                          const bool required,
@@ -410,7 +416,15 @@ namespace WorldBuilder
        * as a string in json pointer format.
        * \return std::string
        */
-      std::string get_full_json_path() const;
+      std::string get_full_json_path(unsigned int max_size = std::numeric_limits<unsigned int>::max()) const;
+
+      /**
+       * todo: Warning: do not use before declarations is filled.
+       * This function return the current path as stored in the path variable
+       * as a string in json pointer format.
+       * \return std::string
+       */
+      std::string get_full_json_schema_path() const;
 
       /**
        * This function return the current path as stored in the path variable

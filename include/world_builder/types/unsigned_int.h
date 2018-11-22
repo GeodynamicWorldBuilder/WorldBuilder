@@ -29,10 +29,7 @@ namespace WorldBuilder
   {
 
     /**
-     * This class represents a continental plate and can implement submodules
-     * for temperature and composition. These submodules determine what
-     * the returned temperature or composition of the temperature and composition
-     * functions of this class will be.
+     * This class represents a bool value with documentation
      */
     class UnsignedInt : public Interface
     {
@@ -40,12 +37,13 @@ namespace WorldBuilder
         /**
          * A constructor for the load_entry function
          */
-        UnsignedInt(unsigned int default_value, std::string description);
+        UnsignedInt(unsigned int default_value = 0);
+
 
         /**
          * A constructor for the clone and set_entry function
          */
-        UnsignedInt(unsigned int value, unsigned int default_value, std::string description);
+        UnsignedInt(unsigned int value, unsigned int default_value);
 
         /**
          * Destructor
@@ -69,10 +67,8 @@ namespace WorldBuilder
                           const bool required,
                           const std::string documentation) const;
 
-
         unsigned int value;
         unsigned int default_value;
-        std::string description;
 
       private:
 

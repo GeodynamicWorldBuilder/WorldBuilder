@@ -21,28 +21,29 @@
 #include <world_builder/utilities.h>
 #include <world_builder/parameters.h>
 
+#include <world_builder/nan.h>
+
 namespace WorldBuilder
 {
   namespace Types
   {
-    UnsignedInt::UnsignedInt(unsigned int default_value, std::string description)
+    UnsignedInt::UnsignedInt(unsigned int default_value)
       :
-      value(default_value),
-      default_value(default_value),
-      description(description)
+      value(0),
+      default_value(default_value)
     {
       this->type_name = Types::type::UnsignedInt;
     }
 
-    UnsignedInt::UnsignedInt(unsigned int value, unsigned int default_value, std::string description)
+
+    UnsignedInt::UnsignedInt(unsigned int value, unsigned int default_value)
       :
       value(value),
-      default_value(default_value),
-      description(description)
+      default_value(default_value)
     {
       this->type_name = Types::type::UnsignedInt;
-
     }
+
 
     UnsignedInt::~UnsignedInt ()
     {}
@@ -50,41 +51,41 @@ namespace WorldBuilder
     std::unique_ptr<Interface>
     UnsignedInt::clone() const
     {
-      return std::unique_ptr<Interface>(new UnsignedInt(value, default_value, description));
+      return std::unique_ptr<Interface>(new UnsignedInt(value, default_value));
     }
 
     void
     UnsignedInt::write_schema(Parameters &prm,
                               const std::string name,
-                              const std::string default_value,
-                              const bool required,
+                              const std::string ,
+                              const bool ,
                               const std::string documentation) const
     {
       using namespace rapidjson;
       Document &declarations = prm.declarations;
       const std::string path = prm.get_full_json_path();
-      Pointer((path + "/type").c_str()).Set(declarations,"object");
-      const std::string base = path + "/properties/" + name;
-      std::cout << "base name = " << base << std::endl;
-      WBAssertThrow(false,"Not implemented.");
-      /*Pointer((base + "/default").c_str()).Set(declarations,default_value.c_str());
-      Pointer((base + "/required").c_str()).Set(declarations,required);
+      const std::string type_name = "integer";
+      //Pointer((path + "/type").c_str()).Set(declarations,"object");
+      const std::string base = path + "/" + name;
+      //std::cout << "base name = " << base << std::endl;
+      Pointer((base + "/default value").c_str()).Set(declarations,default_value);
+      //Pointer((base + "/required").c_str()).Set(declarations,required);
       Pointer((base + "/type").c_str()).Set(declarations,type_name.c_str());
       Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
-      if(required)
-      {
-        if(Pointer((path + "/required").c_str()).Get(declarations) == NULL)
+      /*if (required)
         {
-          // The required array doesn't exist yet, so we create it and fill it.
-          Pointer((path + "/required/0").c_str()).Create(declarations);
-          Pointer((path + "/required/0").c_str()).Set(declarations, name.c_str());
-        }
-        else
-        {
-          // The required array already exist yet, so we add an element to the end.
-          Pointer((path + "/required/-").c_str()).Set(declarations, name.c_str());
-        }
-      }*/
+          if (Pointer((path + "/required").c_str()).Get(declarations) == NULL)
+            {
+              // The required array doesn't exist yet, so we create it and fill it.
+              Pointer((path + "/required/0").c_str()).Create(declarations);
+              Pointer((path + "/required/0").c_str()).Set(declarations, name.c_str());
+            }
+          else
+            {
+              // The required array already exist yet, so we add an element to the end.
+              Pointer((path + "/required/-").c_str()).Set(declarations, name.c_str());
+            }
+        }*/
     }
 
   }

@@ -25,7 +25,7 @@ namespace WorldBuilder
 {
   namespace Types
   {
-    PluginSystem::PluginSystem(void ( *declare_entries)(Parameters &), const bool allow_multiple)
+    PluginSystem::PluginSystem(void ( *declare_entries)(Parameters &, const std::string &), const bool allow_multiple)
       :
       declare_entries(declare_entries),
       allow_multiple(allow_multiple),
@@ -68,21 +68,6 @@ namespace WorldBuilder
       Document &declarations = prm.declarations;
       const std::string path = prm.get_full_json_path();
 
-      if (required)
-        {
-          if (Pointer((path + "/required").c_str()).Get(declarations) == NULL)
-            {
-              // The required array doesn't exist yet, so we create it and fill it.
-              Pointer((path + "/required/0").c_str()).Create(declarations);
-              Pointer((path + "/required/0").c_str()).Set(declarations, name.c_str());
-            }
-          else
-            {
-              // The required array already exist yet, so we add an element to the end.
-              Pointer((path + "/required/-").c_str()).Set(declarations, name.c_str());
-            }
-        }
-      prm.enter_subsection("properties");
       {
         prm.enter_subsection(name);
         {
@@ -95,7 +80,8 @@ namespace WorldBuilder
               prm.enter_subsection("items");
               {
                 WBAssert(this->declare_entries != NULL, "No declare entries given.");
-                this->declare_entries(prm);//Features::Interface::declare_entries(prm);
+                //std::cout << path << " and name = " << name << std::endl;
+                this->declare_entries(prm, name);//Features::Interface::declare_entries(prm);
               }
               prm.leave_subsection();
             }
@@ -105,14 +91,14 @@ namespace WorldBuilder
               //prm.enter_subsection("properties");
               //{
               WBAssert(this->declare_entries != NULL, "No declare entries given.");
-              this->declare_entries(prm);//Features::Interface::declare_entries(prm);
+              this->declare_entries(prm, name);//Features::Interface::declare_entries(prm);
               //}
               //prm.leave_subsection();
             }
         }
         prm.leave_subsection();
       }
-      prm.leave_subsection();
+      //prm.leave_subsection();
     }
   }
 }

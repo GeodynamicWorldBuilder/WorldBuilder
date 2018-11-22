@@ -23,6 +23,9 @@
 #include <world_builder/features/interface.h>
 #include <world_builder/world.h>
 
+#include <world_builder/features/continental_plate_models/temperature/interface.h>
+#include <world_builder/features/continental_plate_models/composition/interface.h>
+
 
 namespace WorldBuilder
 {
@@ -57,7 +60,7 @@ namespace WorldBuilder
          * declare and read in the world builder file into the parameters class
          */
         static
-        void declare_entries(Parameters &prm);
+        void declare_entries(Parameters &prm, const std::string &parent_name = "");
 
         /**
          * declare and read in the world builder file into the parameters class
@@ -91,6 +94,18 @@ namespace WorldBuilder
 
 
       private:
+        /**
+         * A vector containing all the pointers to the temperature models. This vector is
+         * responsible for the features and has ownership over them. Therefore
+         * unique pointers are used.
+         * @see Features
+         */
+        std::vector<std::unique_ptr<Features::ContinentalPlateModels::Temperature::Interface> > temperature_models;
+        std::vector<std::unique_ptr<Features::ContinentalPlateModels::Composition::Interface> > composition_models;
+
+        double min_depth;
+        double max_depth;
+
         // constant temperature submodule parameters
         double temperature_submodule_constant_depth;
         double temperature_submodule_constant_temperature;

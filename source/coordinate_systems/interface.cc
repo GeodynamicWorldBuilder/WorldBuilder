@@ -24,6 +24,8 @@
 #include <world_builder/coordinate_systems/spherical.h>
 #include <world_builder/assert.h>
 
+#include <world_builder/types/object.h>
+
 
 namespace WorldBuilder
 {
@@ -37,21 +39,26 @@ namespace WorldBuilder
     {}
 
     void
-    Interface::declare_entries(Parameters &prm)
+    Interface::declare_entries(Parameters &prm, const std::string &parent_name)
     {
-      std::map<std::string, void ( *)(Parameters &)>::iterator it;
 
       unsigned int counter = 0;
-      for ( it = get_declare_map().begin(); it != get_declare_map().end(); ++it )
+      for (auto  it = get_declare_map().begin(); it != get_declare_map().end(); ++it )
         {
           prm.enter_subsection("oneOf");
           {
             prm.enter_subsection(std::to_string(counter));
             {
-              prm.declare_entry("type","",true,Types::String(it->first),
-                                "The name which the user has given to the feature.");
+              prm.enter_subsection("properties");
+              {
+                prm.declare_entry("", "", true, Types::Object({"model"}), "Coordinate sysetm object");
 
-              it->second(prm);
+                prm.declare_entry("model","",true,Types::String(it->first),
+                                  "The name which the user has given to the feature.");
+
+                it->second(prm, parent_name);
+              }
+              prm.leave_subsection();
             }
             prm.leave_subsection();
           }
@@ -64,7 +71,7 @@ namespace WorldBuilder
 
     void
     Interface::registerType(const std::string &name,
-                            void ( *declare_entries)(Parameters &),
+                            void ( *declare_entries)(Parameters &, const std::string &),
                             ObjectFactory *factory)
     {
       get_factory_map()[name] = factory;

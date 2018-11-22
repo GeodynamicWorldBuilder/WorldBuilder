@@ -8,33 +8,33 @@
 "minimum distance points": 1e-5,
 "features":
 {
-  "oceanic plate":{"name":"First oceanic plate","coordinates":[[-1e3,500e3],[500e3,500e3],[500e3,1000e3],[-1e3,1000e3]],
-     "temperature model":{"name":"constant", "depth":250e3, "temperature":150},
-     "composition model":{"name":"none"}},
+  {"model":"oceanic plate", "name":"First oceanic plate", "max depth":250e3, "coordinates":[[-1e3,500e3],[500e3,500e3],[500e3,1000e3],[-1e3,1000e3]],
+     "temperature models":{"model":"uniform", "temperature":150},
+     "composition models":{"model":"none"}},
      
-  "oceanic Plate":{"name":"Second oceanic plate", "coordinates":[[2000e3,2000e3],[1000e3,2000e3],[1000e3,1000e3],[2000e3,1000e3]],
-     "temperature model":{"name":"constant", "depth":250e3, "temperature":20},
-     "composition model":{"name":"constant", "depth":250e3, "compositions":[2]}},
+  {"model":"oceanic plate", "name":"Second oceanic plate", "coordinates":[[2000e3,2000e3],[1000e3,2000e3],[1000e3,1000e3],[2000e3,1000e3]],
+     "temperature models":{"model":"uniform", "temperature":20},
+     "composition models":{"model":"uniform", "compositions":[2]}},
 
-  "oceanic plate":{"name":"Third oceanic plate","coordinates":[[-1e3,500e3],[500e3,500e3],[500e3,1000e3],[-1e3,1000e3]],
-     "temperature model":{"name":"none", "depth":250e3, "temperature":150},
-     "composition model":{"name":"constant", "depth":250e3, "compositions":[3]}},
+  {"model":"oceanic plate", "name":"Third oceanic plate", "max depth":250e3, "coordinates":[[-1e3,500e3],[500e3,500e3],[500e3,1000e3],[-1e3,1000e3]],
+     "temperature models":{"model":"none", "temperature":150},
+     "composition models":{"model":"uniform", "compositions":[3]}},
 
-  "oceanic plate":{"name":"Fourth oceanic plate","coordinates":[[-1e3,1500e3],[500e3,1500e3],[500e3,2000e3],[-1e3,2000e3]],
-     "temperature model":{"name":"linear", "depth":250e3},
-     "composition model":{"name":"constant", "depth":250e3, "compositions":[4]}},
+  {"model":"oceanic plate", "name":"Fourth oceanic plate", "max depth":250e3, "coordinates":[[-1e3,1500e3],[500e3,1500e3],[500e3,2000e3],[-1e3,2000e3]],
+     "temperature models":{"model":"linear"},
+     "composition models":{"model":"uniform", "compositions":[4]}},
 
-  "oceanic plate":{"name":"Fifth oceanic plate","coordinates":[[500e3,-1e3],[500e3,500e3],[1000e3,500e3],[1000e3,-1e3]],
-     "temperature model":{"name":"linear", "depth":250e3, "top temperature":10, "bottom temperature":50},
-     "composition model":{"name":"constant", "depth":250e3, "compositions":[5,6], "fractions":[0.25,0.75]}},
+  {"model":"oceanic plate", "name":"Fifth oceanic plate", "max depth":250e3, "coordinates":[[500e3,-1e3],[500e3,500e3],[1000e3,500e3],[1000e3,-1e3]],
+     "temperature models":{"model":"linear", "top temperature":10, "bottom temperature":50},
+     "composition models":{"model":"uniform", "compositions":[5,6], "fractions":[0.25,0.75]}},
      
-  "oceanic plate":{"name":"Sixth oceanic plate","coordinates":[[1100e3,-1e3],[1100e3,750e3],[2500e3,750e3],[2500e3,-1e3]],
-     "temperature model":{"name":"plate model", "depth":250e3, "spreading velocity":0.01, "ridge points":[[1500e3,-1e3],[1500e3,750e3]]},
-     "composition model":{"name":"none"}},
+  {"model":"oceanic plate", "name":"Sixth oceanic plate", "max depth":250e3, "coordinates":[[1100e3,-1e3],[1100e3,750e3],[2500e3,750e3],[2500e3,-1e3]],
+     "temperature models":{"model":"plate model", "spreading velocity":0.01, "ridge points":[[1500e3,-1e3],[1500e3,750e3]]},
+     "composition models":{"model":"none"}},
      
-  "oceanic plate":{"name":"Seventh oceanic plate","coordinates":[[50e3,-1e3],[400e3,-1e3],[400e3,400e3],[50e3,400e3]],
-     "temperature model":{"name":"plate model", "depth":250e3, "spreading velocity":0.01, "ridge points":[[1500e3,-1e3],[1500e3,750e3]]},
-     "composition model":{"name":"constant layers", "depth":250e3, "layers":[{"compositions":[6], "thickness":75e3},
+  {"model":"oceanic plate", "name":"Seventh oceanic plate", "max depth":250e3, "coordinates":[[50e3,-1e3],[400e3,-1e3],[400e3,400e3],[50e3,400e3]],
+     "temperature models":{"model":"plate model", "spreading velocity":0.01, "ridge points":[[1500e3,-1e3],[1500e3,750e3]]},
+     "composition models":{"model":"uniform layers", "layers":[{"compositions":[6], "thickness":75e3},
                                                                              {"compositions":[7], "thickness":75e3},
                                                                              {"compositions":[8,9], "fractions":[0.25,0.75], "thickness":75e3}]}}
 }

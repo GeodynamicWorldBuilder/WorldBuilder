@@ -70,7 +70,7 @@ namespace WorldBuilder
          * declare and read in the world builder file into the parameters class
          */
         static
-        void declare_entries(Parameters &prm);
+        void declare_entries(Parameters &prm, const std::string &parent_name);
 
         /**
          * declare and read in the world builder file into the parameters class
@@ -103,8 +103,13 @@ namespace WorldBuilder
          * registration of the object factory.
          */
         static void registerType(const std::string &name,
-                                 void ( *)(Parameters &),
+                                 void ( *)(Parameters &, const std::string &),
                                  ObjectFactory *factory);
+
+        const std::string get_name() const
+        {
+          return name;
+        };
 
 
         /**
@@ -165,9 +170,9 @@ namespace WorldBuilder
           return factories;
         }
 
-        static std::map<std::string, void ( *)(Parameters &)> &get_declare_map()
+        static std::map<std::string, void ( *)(Parameters &, const std::string &)> &get_declare_map()
         {
-          static std::map<std::string, void ( *)(Parameters &)> declares;
+          static std::map<std::string, void ( *)(Parameters &, const std::string &)> declares;
           return declares;
         }
     };

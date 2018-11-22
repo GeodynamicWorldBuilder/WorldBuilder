@@ -37,7 +37,7 @@ namespace WorldBuilder
         /**
          * A constructor for the load_entry function
          */
-        Double();
+        Double(const double default_value);
 
         /**
          * A constructor for the load_entry function

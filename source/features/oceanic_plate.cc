@@ -55,7 +55,7 @@ namespace WorldBuilder
 
 
     void
-    OceanicPlate::declare_entries(Parameters &prm)
+    OceanicPlate::declare_entries(Parameters &prm, const std::string &)
     {
 
     }
@@ -142,9 +142,9 @@ namespace WorldBuilder
             prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth in meters to which the composition of this feature is present."));
             composition_submodule_constant_depth = prm.get_double("depth");
 
-            prm.load_entry("compositions", true,
-                           Types::Array(Types::UnsignedInt(0,"The number of the composition that is present there."),
-                                        "A list of compositions which are present"));
+            //prm.load_entry("compositions", true,
+            //             Types::Array(Types::UnsignedInt(0,"The number of the composition that is present there."),
+            //                        "A list of compositions which are present"));
             std::vector<Types::UnsignedInt> temp_composition = prm.get_array<Types::UnsignedInt>("compositions");
             composition_submodule_constant_composition.resize(temp_composition.size());
             for (unsigned int i = 0; i < temp_composition.size(); ++i)

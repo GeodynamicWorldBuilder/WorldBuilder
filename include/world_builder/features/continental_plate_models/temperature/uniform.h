@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_builder_features_continental_plate_temperature_constant_h
-#define _world_builder_features_continental_plate_temperature_constant_h
+#ifndef _world_builder_features_continental_plate_temperature_uniform_h
+#define _world_builder_features_continental_plate_temperature_uniform_h
 
 #include <world_builder/features/continental_plate_models/temperature/interface.h>
 #include <world_builder/world.h>
@@ -35,7 +35,7 @@ namespace WorldBuilder
         /**
          * Register header file
          */
-        WB_REGISTER_FEATURE_CONTINENTAL_TEMPERATURE_MODEL_HEADER(Constant)
+        WB_REGISTER_FEATURE_CONTINENTAL_TEMPERATURE_MODEL_HEADER(Uniform)
 
         /**
          * This class represents a continental plate and can implement submodules
@@ -43,24 +43,24 @@ namespace WorldBuilder
          * the returned temperature or composition of the temperature and composition
          * functions of this class will be.
          */
-        class Constant : public Interface
+        class Uniform : public Interface
         {
           public:
             /**
              * constructor
              */
-            Constant(WorldBuilder::World *world);
+            Uniform(WorldBuilder::World *world);
 
             /**
              * Destructor
              */
-            ~Constant();
+            ~Uniform();
 
             /**
              * declare and read in the world builder file into the parameters class
              */
             static
-            void declare_entries(Parameters &prm);
+            void declare_entries(Parameters &prm, const std::string &parent_name = "");
 
             /**
              * declare and read in the world builder file into the parameters class
@@ -81,8 +81,9 @@ namespace WorldBuilder
 
 
           private:
-            // constant temperature submodule parameters
-            double depth;
+            // uniform temperature submodule parameters
+            double min_depth;
+            double max_depth;
             double temperature;
             std::string operation;
 
