@@ -58,6 +58,9 @@ namespace WorldBuilder
         void
         Linear::declare_entries(Parameters &prm, const std::string &)
         {
+          // Add max depth to the required parameters.
+          prm.declare_entry("", Types::Object({"max depth"}), "Temperature model object");
+
           prm.declare_entry("min depth", Types::Double(0),
                             "The depth in meters from which the temperature of this feature is present.");
 
@@ -84,7 +87,7 @@ namespace WorldBuilder
           max_depth = prm.get<double>("max depth");
           WBAssert(max_depth >= min_depth, "max depth needs to be larger or equal to min depth.");
           top_temperature = prm.get<double>("top temperature");
-          bottom_temperature = prm.get<double>("top temperature");
+          bottom_temperature = prm.get<double>("bottom temperature");
         }
 
 
@@ -96,13 +99,6 @@ namespace WorldBuilder
         {
           if (depth <= max_depth && depth >= min_depth)
             {
-              double bottom_temperature_local = bottom_temperature;
-              if (bottom_temperature_local < 0)
-                {
-                  bottom_temperature_local =  this->world->potential_mantle_temperature *
-                                              std::exp(((this->world->thermal_expansion_coefficient * gravity_norm) /
-                                                        this->world->specific_heat) * max_depth);
-                }
 
               double top_temperature_local = top_temperature;
               if (top_temperature_local < 0)
@@ -110,6 +106,14 @@ namespace WorldBuilder
                   top_temperature_local =  this->world->potential_mantle_temperature *
                                            std::exp(((this->world->thermal_expansion_coefficient * gravity_norm) /
                                                      this->world->specific_heat) * min_depth);
+                }
+
+              double bottom_temperature_local = bottom_temperature;
+              if (bottom_temperature_local < 0)
+                {
+                  bottom_temperature_local =  this->world->potential_mantle_temperature *
+                                              std::exp(((this->world->thermal_expansion_coefficient * gravity_norm) /
+                                                        this->world->specific_heat) * max_depth);
                 }
 
               return top_temperature +

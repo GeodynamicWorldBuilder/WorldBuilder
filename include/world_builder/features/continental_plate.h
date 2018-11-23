@@ -101,6 +101,13 @@ namespace WorldBuilder
          * @see Features
          */
         std::vector<std::unique_ptr<Features::ContinentalPlateModels::Temperature::Interface> > temperature_models;
+
+        /**
+         * A vector containing all the pointers to the composition models. This vector is
+         * responsible for the features and has ownership over them. Therefore
+         * unique pointers are used.
+         * @see Features
+         */
         std::vector<std::unique_ptr<Features::ContinentalPlateModels::Composition::Interface> > composition_models;
 
         double min_depth;

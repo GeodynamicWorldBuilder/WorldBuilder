@@ -46,6 +46,8 @@
 
 #include <world_builder/features/continental_plate_models/temperature/interface.h>
 #include <world_builder/features/continental_plate_models/composition/interface.h>
+#include <world_builder/features/oceanic_plate_models/temperature/interface.h>
+#include <world_builder/features/oceanic_plate_models/composition/interface.h>
 
 using boost::property_tree::ptree;
 using namespace rapidjson;
@@ -1482,6 +1484,7 @@ namespace WorldBuilder
   template void
   Parameters::get_unique_pointers<Features::Interface>(const std::string &name,
                                                        std::vector<std::unique_ptr<Features::Interface> > &vector);
+
   /**
    * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
    * Note that the variable with this name has to be loaded before this function is called.
@@ -1497,6 +1500,22 @@ namespace WorldBuilder
   template void
   Parameters::get_unique_pointers<Features::ContinentalPlateModels::Composition::Interface>(const std::string &name,
       std::vector<std::unique_ptr<Features::ContinentalPlateModels::Composition::Interface> > &vector);
+
+  /**
+   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+   * Note that the variable with this name has to be loaded before this function is called.
+   */
+  template void
+  Parameters::get_unique_pointers<Features::OceanicPlateModels::Temperature::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::OceanicPlateModels::Temperature::Interface> > &vector);
+
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template void
+  Parameters::get_unique_pointers<Features::OceanicPlateModels::Composition::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::OceanicPlateModels::Composition::Interface> > &vector);
 
 }
 

@@ -22,6 +22,8 @@
 
 #include <world_builder/features/interface.h>
 #include <world_builder/world.h>
+#include <world_builder/features/oceanic_plate_models/temperature/interface.h>
+#include <world_builder/features/oceanic_plate_models/composition/interface.h>
 
 
 namespace WorldBuilder
@@ -91,6 +93,25 @@ namespace WorldBuilder
 
 
       private:
+        /**
+         * A vector containing all the pointers to the temperature models. This vector is
+         * responsible for the features and has ownership over them. Therefore
+         * unique pointers are used.
+         * @see Features
+         */
+        std::vector<std::unique_ptr<Features::OceanicPlateModels::Temperature::Interface> > temperature_models;
+
+        /**
+         * A vector containing all the pointers to the composition models. This vector is
+         * responsible for the features and has ownership over them. Therefore
+         * unique pointers are used.
+         * @see Features
+         */
+        std::vector<std::unique_ptr<Features::OceanicPlateModels::Composition::Interface> > composition_models;
+
+        double min_depth;
+        double max_depth;
+
         // constant temperature submodule parameters
         double temperature_submodule_constant_depth;
         double temperature_submodule_constant_temperature;

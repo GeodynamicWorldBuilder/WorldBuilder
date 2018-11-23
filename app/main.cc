@@ -180,7 +180,7 @@ int main(int argc, char **argv)
     {
       case 2:
         // set the header
-        std::cout << "# x z d T ";
+        std::cout << "# x z d g T ";
 
         for (unsigned int c = 0; c < compositions; ++c)
           std::cout << "c" << c << " ";
@@ -211,7 +211,7 @@ int main(int argc, char **argv)
         break;
       case 3:
         // set the header
-        std::cout << "# x y z d T ";
+        std::cout << "# x y z d g T ";
 
         for (unsigned int c = 0; c < compositions; ++c)
           std::cout << "c" << c << " ";

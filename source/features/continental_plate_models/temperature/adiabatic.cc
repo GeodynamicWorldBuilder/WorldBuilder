@@ -61,7 +61,7 @@ namespace WorldBuilder
         {
 
           // Add temperature to the required parameters.
-          prm.declare_entry("", Types::Object({"temperature"}), "Temperature model object");
+          //prm.declare_entry("", Types::Object({"temperature"}), "Temperature model object");
 
 
           prm.declare_entry("min depth", Types::Double(0),

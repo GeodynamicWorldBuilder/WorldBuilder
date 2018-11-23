@@ -84,6 +84,7 @@ namespace WorldBuilder
           max_depth = prm.get<double>("max depth");
           compositions = prm.get_vector<unsigned int>("compositions");
           fractions = prm.get_vector<double>("fractions");
+          operation = prm.get<std::string>("operation");
 
           WBAssertThrow(compositions.size() == fractions.size(),
                         "There are not the same amount of compositions and fractions.");
@@ -99,18 +100,16 @@ namespace WorldBuilder
           double composition = composition_;
           if (depth <= max_depth && depth >= min_depth)
             {
-              const bool clear = operation == "replace" ? true : false;
               for (unsigned int i =0; i < compositions.size(); ++i)
                 {
                   if (compositions[i] == composition_number)
                     {
                       return fractions[i];
                     }
-                  else if (clear == true)
-                    {
-                      composition = 0.0;
-                    }
                 }
+
+              if (operation == "replace")
+                return 0.0;
             }
           return composition;
         }

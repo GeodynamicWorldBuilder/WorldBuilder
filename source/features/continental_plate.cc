@@ -22,6 +22,7 @@
 #include <world_builder/features/continental_plate.h>
 #include <world_builder/features/continental_plate_models/temperature/interface.h>
 #include <world_builder/features/continental_plate_models/composition/interface.h>
+
 #include <world_builder/utilities.h>
 #include <world_builder/assert.h>
 #include <world_builder/nan.h>
