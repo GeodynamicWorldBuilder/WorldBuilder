@@ -50,7 +50,7 @@ namespace WorldBuilder
       using namespace rapidjson;
       const std::string path = prm.get_full_json_path();
       Pointer((path + "/type").c_str()).Set(prm.declarations,"object");
-      const std::string base = path + "/properties/" + name;
+      //const std::string base = path + "/properties/" + name;
       //std::cout << "base name = " << base << std::endl;
       WBAssertThrow(false,"Not implemented.");
       /*Pointer((base + "/default").c_str()).Set(declarations,default_value.c_str());

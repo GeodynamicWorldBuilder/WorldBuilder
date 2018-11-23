@@ -65,16 +65,16 @@ namespace WorldBuilder
                                const std::string &documentation) const
     {
       using namespace rapidjson;
-      const std::string path = prm.get_full_json_path();
 
       prm.enter_subsection(name);
       {
-        Pointer((prm.get_full_json_path() + "/documentation").c_str()).Set(prm.declarations,documentation.c_str());
-        Pointer((prm.get_full_json_path() + "/default value").c_str()).Set(prm.declarations,default_value.c_str());
+        const std::string path = prm.get_full_json_path();
+        Pointer((path + "/documentation").c_str()).Set(prm.declarations,documentation.c_str());
+        Pointer((path + "/default value").c_str()).Set(prm.declarations,default_value.c_str());
 
         if (allow_multiple)
           {
-            Pointer((prm.get_full_json_path() + "/type").c_str()).Set(prm.declarations,"array");
+            Pointer((path + "/type").c_str()).Set(prm.declarations,"array");
 
             prm.enter_subsection("items");
             {
@@ -86,7 +86,7 @@ namespace WorldBuilder
           }
         else
           {
-            Pointer((prm.get_full_json_path() + "/type").c_str()).Set(prm.declarations,"object");
+            Pointer((path + "/type").c_str()).Set(prm.declarations,"object");
 
             WBAssert(this->declare_entries != NULL, "No declare entries given.");
             this->declare_entries(prm, name);
