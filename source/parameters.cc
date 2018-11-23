@@ -82,13 +82,15 @@ namespace WorldBuilder
 
     WBAssert(json_input_stream, "Could not read the world builder file.");
 
-    boost::property_tree::json_parser::read_json (json_input_stream, tree);
+    //boost::property_tree::json_parser::read_json (json_input_stream, tree);
     std::ifstream json_input_stream2(filename.c_str());
     WBAssert(json_input_stream, "Could not read the world builder file.");
 
     rapidjson::IStreamWrapper isw(json_input_stream2);
 
-    WBAssertThrow(!parameters.ParseStream(isw).HasParseError(), "Parsing erros world builder file");
+    // relaxing sytax by allowing comments () for now, maybe also allow trailing commas and (kParseTrailingCommasFlag) and nan's, inf etc (kParseNanAndInfFlag)?
+    WBAssertThrow(!parameters.ParseStream<kParseCommentsFlag>(isw).HasParseError(), "Parsing erros world builder file");
+
     WBAssertThrow(parameters.IsObject(), "it is not an object.");
     json_input_stream.close();
     //boost::property_tree::json_parser::read_json (json_input_stream, tree);

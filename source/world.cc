@@ -91,9 +91,10 @@ namespace WorldBuilder
       prm.declare_entry("thermal diffusivity", Types::Double(0.804e-6),
                         "The thermal diffusivity in $m^{2} s^{-1}$.");
 
-      prm.declare_entry("minimum points per unit distance",Types::UnsignedInt(std::numeric_limits<unsigned int>::max()),
-                        "This enforces that there is at least every distance interval"
-                        "(in degree for spherical coordinates or meter in cartesian coordinates) a point. "
+      prm.declare_entry("maximum distance between coordinates",Types::Double(0),
+                        "This enforces a maximum distance (in degree for spherical coordinates "
+                        "or meter in cartesian coordinates) between coordinates in the model. "
+                        "If the distance is larger, extra points are added by interpolation. "
                         "Requires interpolation to be not 'none'.");
 
       prm.declare_entry("interpolation",Types::String("none"),
@@ -178,7 +179,7 @@ namespace WorldBuilder
     /**
      * Model discretiation paramters
      */
-    minimum_points_per_distance = prm.get<unsigned int>("minimum points per unit distance");
+    maximum_distance_between_coordinates = prm.get<double>("maximum distance between coordinates");
     interpolation = prm.get<std::string>("interpolation");
 
     /**

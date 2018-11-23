@@ -141,7 +141,7 @@ namespace WorldBuilder
       /**
        * Todo
        */
-      unsigned int minimum_points_per_distance;
+      double maximum_distance_between_coordinates;
 
       /**
        * Todo

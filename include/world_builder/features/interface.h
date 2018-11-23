@@ -60,11 +60,20 @@ namespace WorldBuilder
         virtual
         ~Interface();
 
+
         /**
-         * Declare the entries stored in the interface, which
-         * are the name and coordinates.
+         * depricated
          */
-        void declare_interface_entries(Parameters &prm, const CoordinateSystem coordinate_system);
+        void
+        declare_interface_entries(Parameters &prm,
+                                  const CoordinateSystem coordinate_system);
+        /**
+         * helper function to parse coordinates.
+         */
+        void
+        get_coordinates(const std::string name,
+                        Parameters &prm,
+                        const CoordinateSystem coordinate_system);
 
         /**
          * declare and read in the world builder file into the parameters class

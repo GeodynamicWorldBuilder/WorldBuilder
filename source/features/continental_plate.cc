@@ -75,10 +75,7 @@ namespace WorldBuilder
       const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 
       this->name = prm.get<std::string>("name");
-      this->coordinates = prm.get_vector<Point<2> >("coordinates");
-      if (coordinate_system == CoordinateSystem::spherical)
-        for (auto &coordinate: coordinates)
-          coordinate *= const_pi / 180.0;
+      this->get_coordinates("coordinates", prm, coordinate_system);
 
       min_depth = prm.get<double>("min depth");
       max_depth = prm.get<double>("max depth");

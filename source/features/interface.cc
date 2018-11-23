@@ -82,22 +82,24 @@ namespace WorldBuilder
 
         }
     }
+    void
+    Interface::declare_interface_entries(Parameters &prm,
+                                         const CoordinateSystem coordinate_system)
+    {
+      this->coordinates = prm.get_vector<Point<2> >("coordinates");
+    }
 
     void
-    Interface::declare_interface_entries(Parameters &prm, const CoordinateSystem coordinate_system)
+    Interface::get_coordinates(const std::string name, Parameters &prm, const CoordinateSystem coordinate_system)
     {
-      // Get the name
-      prm.load_entry("name", true, Types::String("","The name which the user has given to the feature."));
-      name = prm.get_string("name");
 
-      // Get the list of coordinates where the subduction zone is located
-      bool set = prm.load_entry("coordinates", true, Types::Array(
-                                  Types::Point<2>(Point<2>(0,0,coordinate_system),"desciption point cross section"),
-                                  "An array of Points representing an array of coordinates where the feature is located."));
+      coordinates = prm.get_vector<Point<2> >("coordinates");
+      if (coordinate_system == CoordinateSystem::spherical)
+        for (auto &coordinate: coordinates)
+          coordinate *= const_pi / 180.0;
 
-      WBAssertThrow(set == true, "A list of coordinates is required for every feature.");
-
-      std::vector<Types::Point<2>> typed_coordinates =  prm.get_array<Types::Point<2> >("coordinates");
+      std::string interpolation = this->world->interpolation;
+      /*std::vector<Types::Point<2>> typed_coordinates =  prm.get_array<Types::Point<2> >("coordinates");
 
       original_number_of_coordinates = typed_coordinates.size();
       coordinates.resize(original_number_of_coordinates, Point<2>(coordinate_system));
@@ -111,8 +113,10 @@ namespace WorldBuilder
       prm.leave_subsection();
       prm.leave_subsection();
       std::string interpolation = prm.get_string("interpolation");
-
+      */
       // the one_dimensional_coordinates is always needed, so fill it.
+      original_number_of_coordinates = coordinates.size();
+      //std:cout << "original_number_of_coordinates = " << original_number_of_coordinates << std::endl;
       std::vector<double> one_dimensional_coordinates_local(original_number_of_coordinates,0.0);
       for (unsigned int j=0; j<original_number_of_coordinates; ++j)
         {
@@ -124,10 +128,10 @@ namespace WorldBuilder
           WBAssertThrow(interpolation == "linear" || interpolation == "monotone spline",
                         "For interpolation, linear and monotone spline are the onlyl allowed values.");
 
-          double minimum_points_per_distance = prm.get_double("minimum points per distance") *
-                                               (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
+          double maximum_distance_between_coordinates = this->world->maximum_distance_between_coordinates *
+                                                        (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
 
-          if (minimum_points_per_distance > 0)
+          if (maximum_distance_between_coordinates > 0)
             {
               std::vector<double> x_list(original_number_of_coordinates,0.0);
               std::vector<double> y_list(original_number_of_coordinates,0.0);
@@ -154,7 +158,7 @@ namespace WorldBuilder
                                      coordinate_system);
 
                   const double length = (P1 - P2).norm();
-                  const int parts = std::ceil(length / minimum_points_per_distance);
+                  const int parts = std::ceil(length / maximum_distance_between_coordinates);
                   for (int j = 1; j < parts; j++)
                     {
                       const double x_position3 = i_plane+(double(j)/double(parts));
@@ -168,8 +172,8 @@ namespace WorldBuilder
             }
         }
       one_dimensional_coordinates = one_dimensional_coordinates_local;
-      prm.enter_subsection("objects");
-      prm.enter_subsection(name);
+      //prm.enter_subsection("objects");
+      //prm.enter_subsection(name);
     }
 
 

@@ -2,7 +2,7 @@
 "version":"0.1",
 "coordinate system":{"model":"cartesian"},
 "cross section":[[100e3,100e3],[400e3,500e3]],
-"minimum points per unit distance": 5,
+"maximum distance between coordinates": 5,
 "features":[
   {
     "model":"continental plate", "name":"Carribean", "max depth":300e3,
