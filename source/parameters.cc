@@ -27,6 +27,7 @@
 #include "rapidjson/pointer.h"
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
+#include "rapidjson/error/en.h"
 
 #include <world_builder/assert.h>
 #include <world_builder/config.h>
@@ -91,8 +92,16 @@ namespace WorldBuilder
     rapidjson::IStreamWrapper isw(json_input_stream2);
 
     // relaxing sytax by allowing comments () for now, maybe also allow trailing commas and (kParseTrailingCommasFlag) and nan's, inf etc (kParseNanAndInfFlag)?
-    WBAssertThrow(!parameters.ParseStream<kParseCommentsFlag>(isw).HasParseError(), "Parsing erros world builder file");
+    //WBAssertThrow(!parameters.ParseStream<kParseCommentsFlag>(isw).HasParseError(), "Parsing erros world builder file");
 
+    if (parameters.ParseStream<kParseCommentsFlag>(isw).HasParseError())
+      {
+        fprintf(stderr, "\nError(offset %u): %s\n",
+                (unsigned)parameters.GetErrorOffset(),
+                GetParseError_En(parameters.GetParseError()));
+        WBAssertThrow(false, "Parsing errors world builder file");
+
+      }
     WBAssertThrow(parameters.IsObject(), "it is not an object.");
     json_input_stream.close();
     //boost::property_tree::json_parser::read_json (json_input_stream, tree);

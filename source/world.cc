@@ -327,7 +327,7 @@ namespace WorldBuilder
     Point<3> point(point_,cartesian);
 
     if (std::fabs(depth) < 2.0 * std::numeric_limits<double>::epsilon() && force_surface_temperature == true)
-      return this->parameters.get_double("surface temperature");
+      return this->surface_temperature;
 
     double temperature = potential_mantle_temperature *
                          std::exp(((thermal_expansion_coefficient * gravity_norm) /

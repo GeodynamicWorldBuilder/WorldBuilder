@@ -97,6 +97,13 @@ namespace WorldBuilder
              */
             static std::unique_ptr<Interface> create(const std::string &name, WorldBuilder::World *world);
 
+            /**
+             * Returns the name of the plugin
+             */
+            std::string get_name() const
+            {
+              return name;
+            };
 
           protected:
             /**

@@ -135,6 +135,12 @@ namespace WorldBuilder
                                                                depth,
                                                                gravity_norm,
                                                                temperature);
+
+              WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature
+                       << ", based on a temperature model with the name " << temperature_model->get_name());
+              WBAssert(std::isfinite(temperature), "Temparture is not a finite: " << temperature
+                       << ", based on a temperature model with the name " << temperature_model->get_name());
+
             }
         }
 
@@ -160,6 +166,12 @@ namespace WorldBuilder
                                                                depth,
                                                                composition_number,
                                                                composition);
+
+              WBAssert(!std::isnan(composition), "Composition is not a number: " << composition
+                       << ", based on a temperature model with the name " << composition_model->get_name());
+              WBAssert(std::isfinite(composition), "Composition is not a finite: " << composition
+                       << ", based on a temperature model with the name " << composition_model->get_name());
+
             }
         }
 

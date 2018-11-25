@@ -44,7 +44,6 @@ namespace WorldBuilder
          * Constructor for the declaration
          */
         Array(const Interface &type,
-              const bool required,
               const unsigned int min_items = 0,
               const unsigned int max_items = std::numeric_limits<unsigned int>::max(),
               const bool unique_items = false);
