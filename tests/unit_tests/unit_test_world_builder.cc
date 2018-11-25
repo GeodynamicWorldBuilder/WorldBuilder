@@ -1040,7 +1040,7 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
 
   position = {250e3,1750e3,0};
   CHECK(world1.temperature(position, 0+250e3, 10) == Approx(293.15));
-  CHECK(world1.temperature(position, 240e3+250e3, 10) == Approx(1773.6063769675));
+  CHECK(world1.temperature(position, 240e3+250e3, 10) == Approx(1778.5465550447));
   CHECK(world1.temperature(position, 260e3+250e3, 10) == Approx(1845.598526046));
 
   CHECK(world1.composition(position, 0+250e3, 0) == 0.0);

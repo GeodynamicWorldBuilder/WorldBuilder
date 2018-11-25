@@ -166,12 +166,12 @@ int main(int argc, char **argv)
   // Read config from data if pressent
   for (unsigned int i = 0; i < data.size(); ++i)
     {
-      if (data[i][0] == "#" && data[i][1] == "dim" && data[i][2] == "=")
+      if (data[i].size() > 0 && data[i][0] == "#" && data[i][1] == "dim" && data[i][2] == "=")
         {
           dim = string_to_unsigned_int(data[i][3]);
         }
 
-      if (data[i][0] == "#" && data[i][1] == "compositions" && data[i][2] == "=")
+      if (data[i].size() > 0 && data[i][0] == "#" && data[i][1] == "compositions" && data[i][2] == "=")
         compositions = string_to_unsigned_int(data[i][3]);
 
     }
