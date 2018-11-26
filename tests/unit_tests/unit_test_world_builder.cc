@@ -811,7 +811,13 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
 
   position = {250e3,500e3,0};
   CHECK(world1.temperature(position, 0, 10) == Approx(150));
-  CHECK(world1.temperature(position, 240e3, 10) == Approx(150));
+  CHECK(world1.temperature(position, 74e3, 10) == Approx(150));
+  CHECK(world1.temperature(position, 76e3, 10) == Approx(100));
+  CHECK(world1.temperature(position, 149e3, 10) == Approx(100));
+  CHECK(world1.temperature(position, 151e3, 10) == Approx(50));
+  CHECK(world1.temperature(position, 224e3, 10) == Approx(50));
+  CHECK(world1.temperature(position, 226e3, 10) == Approx(1704.5201415988));
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(1711.2149738521));
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
 
   CHECK(world1.composition(position, 0, 0) == 0.0);
@@ -835,7 +841,7 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
 
   position = {1500e3,1500e3,0};
   CHECK(world1.temperature(position, 0, 10) == Approx(20));
-  CHECK(world1.temperature(position, 240e3, 10) == Approx(20));
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(21.3901871732));
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
 
   CHECK(world1.composition(position, 0, 0) == 0.0);
@@ -859,7 +865,7 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
 
   position = {250e3,1750e3,0};
   CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
-  CHECK(world1.temperature(position, 240e3, 10) == Approx(1654.492374898));
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(1659.0985664065));
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
 
   CHECK(world1.composition(position, 0, 0) == 0.0);
@@ -1231,7 +1237,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
 
   position = {250e3,1750e3,0};
   CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
-  CHECK(world1.temperature(position, 240e3, 10) == Approx(1654.492374898));
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(1659.0985664065));
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
   CHECK(world1.composition(position, 0, 0) == 0.0);
   CHECK(world1.composition(position, 0, 1) == 0.0);
@@ -1426,7 +1432,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   position = {6371000, 5 * dtr,5 * dtr};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
   CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
-  CHECK(world2.temperature(position, 240e3, 10) == Approx(1654.492374898));
+  CHECK(world2.temperature(position, 240e3, 10) == Approx(1659.0985664065));
   CHECK(world2.temperature(position, 260e3, 10) == Approx(1720.8246597128));
   CHECK(world2.composition(position, 0, 0) == 0.0);
   CHECK(world2.composition(position, 0, 1) == 0.0);
@@ -2354,157 +2360,170 @@ TEST_CASE("WorldBuilder Types: print_tree")
   boost::property_tree::json_parser::read_json (json_input_stream, tree);
   std::stringstream output;
   output <<
-         "{\n" <<
+         "{\n"
          "  \"version\": \"0.1\",\n"
-         "  \"cross section\": \n" <<
-         "  {\n" <<
-         "    \"\": \n" <<
-         "    {\n" <<
-         "      \"\": \"100e3\",\n" <<
-         "      \"\": \"100e3\"\n" <<
-         "     },\n" <<
-         "    \"\": \n" <<
-         "    {\n" <<
-         "      \"\": \"400e3\",\n" <<
-         "      \"\": \"500e3\"\n" <<
-         "     }\n" <<
-         "   },\n" <<
-         "  \"coordinate system\": \n" <<
-         "  {\n" <<
-         "    \"cartesian\": \"\"\n" <<
-         "   },\n" <<
-         "  \"surface rotation point\": \n" <<
-         "  {\n" <<
-         "    \"\": \"165e3\",\n" <<
-         "    \"\": \"166e3\"\n" <<
-         "   },\n" <<
-         "  \"surface rotation angle\": \"0\",\n" <<
-         "  \"minimum parts per distance unit\": \"5\",\n" <<
-         "  \"minimum distance points\": \"1e-5\",\n" <<
-         "  \"features\": \n" <<
-         "  {\n" <<
-         "    \"continental plate\": \n" <<
-         "    {\n" <<
-         "      \"name\": \"Carribean\",\n" <<
-         "      \"coordinates\": \n" <<
-         "      {\n" <<
-         "        \"\": \n" <<
-         "        {\n" <<
-         "          \"\": \"-1e3\",\n" <<
-         "          \"\": \"500e3\"\n" <<
-         "         },\n" <<
-         "        \"\": \n" <<
-         "        {\n" <<
-         "          \"\": \"500e3\",\n" <<
-         "          \"\": \"500e3\"\n" <<
-         "         },\n" <<
-         "        \"\": \n" <<
-         "        {\n" <<
-         "          \"\": \"500e3\",\n" <<
-         "          \"\": \"1000e3\"\n" <<
-         "         },\n" <<
-         "        \"\": \n" <<
-         "        {\n" <<
-         "          \"\": \"-1e3\",\n" <<
-         "          \"\": \"1000e3\"\n" <<
-         "         }\n" <<
-         "       },\n" <<
-         "      \"temperature model\": \n" <<
-         "      {\n" <<
-         "        \"name\": \"constant\",\n" <<
-         "        \"depth\": \"250e3\",\n" <<
-         "        \"temperature\": \"150\"\n" <<
-         "       },\n" <<
-         "      \"composition model\": \n" <<
-         "      {\n" <<
-         "        \"name\": \"none\"\n" <<
-         "       }\n" <<
-         "     },\n" <<
-         "    \"continental Plate\": \n" <<
-         "    {\n" <<
-         "      \"name\": \"Rest\",\n" <<
-         "      \"coordinates\": \n" <<
-         "      {\n" <<
-         "        \"\": \n" <<
-         "        {\n" <<
-         "          \"\": \"2000e3\",\n" <<
-         "          \"\": \"2000e3\"\n" <<
-         "         },\n" <<
-         "        \"\": \n" <<
-         "        {\n" <<
-         "          \"\": \"1000e3\",\n" <<
-         "          \"\": \"2000e3\"\n" <<
-         "         },\n" <<
-         "        \"\": \n" <<
-         "        {\n" <<
-         "          \"\": \"1000e3\",\n" <<
-         "          \"\": \"1000e3\"\n" <<
-         "         },\n" <<
-         "        \"\": \n" <<
-         "        {\n" <<
-         "          \"\": \"2000e3\",\n" <<
-         "          \"\": \"1000e3\"\n" <<
-         "         }\n" <<
-         "       },\n" <<
-         "      \"temperature model\": \n" <<
-         "      {\n" <<
-         "        \"name\": \"constant\",\n" <<
-         "        \"depth\": \"250e3\",\n" <<
-         "        \"temperature\": \"20\"\n" <<
-         "       },\n" <<
-         "      \"composition model\": \n" <<
-         "      {\n" <<
-         "        \"name\": \"constant\",\n" <<
-         "        \"depth\": \"250e3\",\n" <<
-         "        \"compositions\": \n" <<
-         "        {\n" <<
-         "          \"\": \"2\"\n" <<
-         "         }\n" <<
-         "       }\n" <<
-         "     },\n" <<
-         "    \"continental plate\": \n" <<
-         "    {\n" <<
-         "      \"name\": \"Carribean2\",\n" <<
-         "      \"coordinates\": \n" <<
-         "      {\n" <<
-         "        \"\": \n" <<
-         "        {\n" <<
-         "          \"\": \"-1e3\",\n" <<
-         "          \"\": \"500e3\"\n" <<
-         "         },\n" <<
-         "        \"\": \n" <<
-         "        {\n" <<
-         "          \"\": \"500e3\",\n" <<
-         "          \"\": \"500e3\"\n" <<
-         "         },\n" <<
-         "        \"\": \n" <<
-         "        {\n" <<
-         "          \"\": \"500e3\",\n" <<
-         "          \"\": \"1000e3\"\n" <<
-         "         },\n" <<
-         "        \"\": \n" <<
-         "        {\n" <<
-         "          \"\": \"-1e3\",\n" <<
-         "          \"\": \"1000e3\"\n" <<
-         "         }\n" <<
-         "       },\n" <<
-         "      \"temperature model\": \n" <<
-         "      {\n" <<
-         "        \"name\": \"none\",\n" <<
-         "        \"depth\": \"250e3\",\n" <<
-         "        \"temperature\": \"150\"\n" <<
-         "       },\n" <<
-         "      \"composition model\": \n" <<
-         "      {\n" <<
-         "        \"name\": \"constant\",\n" <<
-         "        \"depth\": \"250e3\",\n" <<
-         "        \"compositions\": \n" <<
-         "        {\n" <<
-         "          \"\": \"3\"\n" <<
-         "         }\n" <<
-         "       }\n" <<
-         "     }\n" <<
-         "   }\n" <<
+         "  \"coordinate system\": \n"
+         "  {\n"
+         "    \"model\": \"cartesian\"\n"
+         "   },\n"
+         "  \"cross section\": \n"
+         "  {\n"
+         "    \"\": \n"
+         "    {\n"
+         "      \"\": \"100e3\",\n"
+         "      \"\": \"100e3\"\n"
+         "     },\n"
+         "    \"\": \n"
+         "    {\n"
+         "      \"\": \"400e3\",\n"
+         "      \"\": \"500e3\"\n"
+         "     }\n"
+         "   },\n"
+         "  \"maximum distance between coordinates\": \"5\",\n"
+         "  \"features\": \n"
+         "  {\n"
+         "    \"\": \n"
+         "    {\n"
+         "      \"model\": \"continental plate\",\n"
+         "      \"name\": \"Carribean\",\n"
+         "      \"max depth\": \"300e3\",\n"
+         "      \"coordinates\": \n"
+         "      {\n"
+         "        \"\": \n"
+         "        {\n"
+         "          \"\": \"-1e3\",\n"
+         "          \"\": \"500e3\"\n"
+         "         },\n"
+         "        \"\": \n"
+         "        {\n"
+         "          \"\": \"500e3\",\n"
+         "          \"\": \"500e3\"\n"
+         "         },\n"
+         "        \"\": \n"
+         "        {\n"
+         "          \"\": \"500e3\",\n"
+         "          \"\": \"1000e3\"\n"
+         "         },\n"
+         "        \"\": \n"
+         "        {\n"
+         "          \"\": \"-1e3\",\n"
+         "          \"\": \"1000e3\"\n"
+         "         }\n"
+         "       },\n"
+         "      \"temperature models\": \n"
+         "      {\n"
+         "        \"\": \n"
+         "        {\n"
+         "          \"model\": \"uniform\",\n"
+         "          \"min depth\": \"0\",\n"
+         "          \"max depth\": \"250e3\",\n"
+         "          \"temperature\": \"150\"\n"
+         "         }\n"
+         "       }\n"
+         "     },\n"
+         "    \"\": \n"
+         "    {\n"
+         "      \"model\": \"continental plate\",\n"
+         "      \"name\": \"Rest\",\n"
+         "      \"max depth\": \"300e3\",\n"
+         "      \"coordinates\": \n"
+         "      {\n"
+         "        \"\": \n"
+         "        {\n"
+         "          \"\": \"2000e3\",\n"
+         "          \"\": \"2000e3\"\n"
+         "         },\n"
+         "        \"\": \n"
+         "        {\n"
+         "          \"\": \"1000e3\",\n"
+         "          \"\": \"2000e3\"\n"
+         "         },\n"
+         "        \"\": \n"
+         "        {\n"
+         "          \"\": \"1000e3\",\n"
+         "          \"\": \"1000e3\"\n"
+         "         },\n"
+         "        \"\": \n"
+         "        {\n"
+         "          \"\": \"2000e3\",\n"
+         "          \"\": \"1000e3\"\n"
+         "         }\n"
+         "       },\n"
+         "      \"temperature models\": \n"
+         "      {\n"
+         "        \"\": \n"
+         "        {\n"
+         "          \"model\": \"uniform\",\n"
+         "          \"max depth\": \"250e3\",\n"
+         "          \"temperature\": \"20\"\n"
+         "         }\n"
+         "       },\n"
+         "      \"composition models\": \n"
+         "      {\n"
+         "        \"\": \n"
+         "        {\n"
+         "          \"model\": \"uniform\",\n"
+         "          \"max depth\": \"250e3\",\n"
+         "          \"compositions\": \n"
+         "          {\n"
+         "            \"\": \"2\"\n"
+         "           }\n"
+         "         }\n"
+         "       }\n"
+         "     },\n"
+         "    \"\": \n"
+         "    {\n"
+         "      \"model\": \"continental plate\",\n"
+         "      \"name\": \"Carribean2\",\n"
+         "      \"max depth\": \"300e3\",\n"
+         "      \"coordinates\": \n"
+         "      {\n"
+         "        \"\": \n"
+         "        {\n"
+         "          \"\": \"-1e3\",\n"
+         "          \"\": \"500e3\"\n"
+         "         },\n"
+         "        \"\": \n"
+         "        {\n"
+         "          \"\": \"500e3\",\n"
+         "          \"\": \"500e3\"\n"
+         "         },\n"
+         "        \"\": \n"
+         "        {\n"
+         "          \"\": \"500e3\",\n"
+         "          \"\": \"1000e3\"\n"
+         "         },\n"
+         "        \"\": \n"
+         "        {\n"
+         "          \"\": \"-1e3\",\n"
+         "          \"\": \"1000e3\"\n"
+         "         }\n"
+         "       },\n"
+         "      \"temperature models\": \n"
+         "      {\n"
+         "        \"\": \n"
+         "        {\n"
+         "          \"model\": \"uniform\",\n"
+         "          \"min depth\": \"0\",\n"
+         "          \"max depth\": \"250e3\",\n"
+         "          \"temperature\": \"150\"\n"
+         "         }\n"
+         "       },\n"
+         "      \"composition models\": \n"
+         "      {\n"
+         "        \"\": \n"
+         "        {\n"
+         "          \"model\": \"uniform\",\n"
+         "          \"min depth\": \"0\",\n"
+         "          \"max depth\": \"250e3\",\n"
+         "          \"compositions\": \n"
+         "          {\n"
+         "            \"\": \"3\"\n"
+         "           }\n"
+         "         }\n"
+         "       }\n"
+         "     }\n"
+         "   }\n"
          " }";
   CHECK(Utilities::print_tree(tree, 0) == output.str());
 }

@@ -84,14 +84,18 @@ namespace WorldBuilder
         Layers::get_temperature(const Point<3> &position,
                                 const double depth,
                                 const double gravity,
-                                double temperature) const
+                                double temperature,
+                                const double feature_min_depth,
+                                const double feature_max_depth) const
         {
           for (auto &layer: layers)
             {
               temperature = layer->get_temperature(position,
                                                    depth,
                                                    gravity,
-                                                   temperature);
+                                                   temperature,
+                                                   feature_min_depth,
+                                                   feature_max_depth);
             }
           return temperature;
         }

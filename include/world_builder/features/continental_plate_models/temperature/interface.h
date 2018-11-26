@@ -81,7 +81,9 @@ namespace WorldBuilder
             double get_temperature(const Point<3> &position,
                                    const double depth,
                                    const double gravity,
-                                   double temperature) const = 0;
+                                   double temperature,
+                                   const double feature_min_depth,
+                                   const double feature_max_depth) const = 0;
             /**
              * A function to register a new type. This is part of the automatic
              * registration of the object factory.

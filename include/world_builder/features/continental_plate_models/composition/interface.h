@@ -81,7 +81,9 @@ namespace WorldBuilder
             double get_composition(const Point<3> &position,
                                    const double depth,
                                    const unsigned int composition_number,
-                                   double composition) const = 0;
+                                   double composition,
+                                   const double feature_min_depth,
+                                   const double feature_max_depth) const = 0;
             /**
              * A function to register a new type. This is part of the automatic
              * registration of the object factory.

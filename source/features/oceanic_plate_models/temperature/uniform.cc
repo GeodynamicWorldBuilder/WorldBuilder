@@ -92,7 +92,9 @@ namespace WorldBuilder
         Uniform::get_temperature(const Point<3> &,
                                  const double depth,
                                  const double ,
-                                 double temperature_) const
+                                 double temperature_,
+                                 const double feature_min_depth,
+                                 const double feature_max_depth) const
         {
 
           if (depth <= max_depth && depth >= min_depth)

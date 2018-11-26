@@ -95,17 +95,21 @@ namespace WorldBuilder
         Linear::get_temperature(const Point<3> &,
                                 const double depth,
                                 const double gravity_norm,
-                                double temperature) const
+                                double temperature,
+                                const double feature_min_depth,
+                                const double feature_max_depth) const
         {
           if (depth <= max_depth && depth >= min_depth)
             {
+              const double min_depth_local = std::max(feature_min_depth, min_depth);
+              const double max_depth_local = std::min(feature_max_depth, max_depth);
 
               double top_temperature_local = top_temperature;
               if (top_temperature_local < 0)
                 {
                   top_temperature_local =  this->world->potential_mantle_temperature *
                                            std::exp(((this->world->thermal_expansion_coefficient * gravity_norm) /
-                                                     this->world->specific_heat) * min_depth);
+                                                     this->world->specific_heat) * min_depth_local);
                 }
 
               double bottom_temperature_local = bottom_temperature;
@@ -113,11 +117,11 @@ namespace WorldBuilder
                 {
                   bottom_temperature_local =  this->world->potential_mantle_temperature *
                                               std::exp(((this->world->thermal_expansion_coefficient * gravity_norm) /
-                                                        this->world->specific_heat) * max_depth);
+                                                        this->world->specific_heat) * max_depth_local);
                 }
 
               return top_temperature +
-                     depth * ((bottom_temperature_local - top_temperature_local) / (max_depth - min_depth));
+                     (depth - min_depth_local) * ((bottom_temperature_local - top_temperature_local) / (max_depth_local - min_depth_local));
 
             }
 

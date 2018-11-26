@@ -84,14 +84,18 @@ namespace WorldBuilder
         Layers::get_composition(const Point<3> &position,
                                 const double depth,
                                 const unsigned int composition_number,
-                                double composition) const
+                                double composition,
+                                const double feature_min_depth,
+                                const double feature_max_depth) const
         {
           for (auto &layer: layers)
             {
               composition = layer->get_composition(position,
                                                    depth,
                                                    composition_number,
-                                                   composition);
+                                                   composition,
+                                                   feature_min_depth,
+                                                   feature_max_depth);
             }
           return composition;
         }

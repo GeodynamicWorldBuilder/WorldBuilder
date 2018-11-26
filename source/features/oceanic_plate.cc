@@ -136,7 +136,9 @@ namespace WorldBuilder
               temperature = temperature_model->get_temperature(position,
                                                                depth,
                                                                gravity_norm,
-                                                               temperature);
+                                                               temperature,
+                                                               min_depth,
+                                                               max_depth);
 
               WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature
                        << ", based on a temperature model with the name " << temperature_model->get_name());
@@ -167,7 +169,9 @@ namespace WorldBuilder
               composition = composition_model->get_composition(position,
                                                                depth,
                                                                composition_number,
-                                                               composition);
+                                                               composition,
+                                                               min_depth,
+                                                               max_depth);
 
               WBAssert(!std::isnan(composition), "Composition is not a number: " << composition
                        << ", based on a temperature model with the name " << composition_model->get_name());

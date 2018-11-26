@@ -133,7 +133,9 @@ namespace WorldBuilder
         Adiabatic::get_temperature(const Point<3> &,
                                    const double depth,
                                    const double gravity_norm,
-                                   double temperature) const
+                                   double temperature,
+                                   const double ,
+                                   const double ) const
         {
 
           if (depth <= max_depth && depth >= min_depth)

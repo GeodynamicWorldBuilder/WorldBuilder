@@ -95,7 +95,9 @@ namespace WorldBuilder
         Uniform::get_composition(const Point<3> &,
                                  const double depth,
                                  const unsigned int composition_number,
-                                 double composition_) const
+                                 double composition_,
+                                 const double ,
+                                 const double ) const
         {
           double composition = composition_;
           if (depth <= max_depth && depth >= min_depth)

@@ -77,7 +77,9 @@ namespace WorldBuilder
             double get_composition(const Point<3> &position,
                                    const double depth,
                                    const unsigned int composition_number,
-                                   double composition) const;
+                                   double composition,
+                                   const double feature_min_depth,
+                                   const double feature_max_depth) const;
 
 
           private:
