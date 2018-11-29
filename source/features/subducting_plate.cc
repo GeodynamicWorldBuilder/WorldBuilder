@@ -31,7 +31,12 @@
 #include <world_builder/types/segment.h>
 #include <world_builder/types/point.h>
 #include <world_builder/types/string.h>
+#include <world_builder/types/object.h>
+#include <world_builder/types/plugin_system.h>
 #include <world_builder/types/unsigned_int.h>
+
+#include <world_builder/features/subducting_plate_models/temperature/interface.h>
+#include <world_builder/features/subducting_plate_models/composition/interface.h>
 
 
 namespace WorldBuilder
@@ -54,14 +59,113 @@ namespace WorldBuilder
 
 
     void
-    SubductingPlate::declare_entries(Parameters &prm, const std::string &)
+    SubductingPlate::declare_entries(Parameters &prm,
+                                     const std::string &parent_name,
+                                     const std::vector<std::string> &required_entries)
     {
+      if (parent_name == "items")
+        prm.enter_subsection("properties");
 
+      prm.declare_entry("min depth", Types::Double(0),
+                        "The depth to which this feature is present");
+      prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),
+                        "The depth to which this feature is present");
+      prm.declare_entry("dip point", Types::Point<2>(),
+                        "The depth to which this feature is present");
+      /*        prm.enter_subsection("segments");
+              {
+                prm.enter_subsection("properties");
+                {
+                      prm.declare_entry("", Types::Object(), "Segment of subducting slab");
+
+                      prm.declare_entry("length", Types::Double(0), "length of the segment");
+
+                      prm.declare_entry("top truncation", Types::Point<2>(), "length of the segment");
+
+                      prm.declare_entry("thickness", Types::Point<2>(), "length of the segment");
+
+                      prm.declare_entry("angle", Types::Point<2>(), "length of the segment");
+                }
+                prm.leave_subsection();
+              }
+              prm.leave_subsection();*/
+      prm.declare_entry("segments", Types::Array(Types::Segment(0,Point<2>(0,0,invalid),Point<2>(0,0,invalid),Point<2>(0,0,invalid),
+                                                                Types::PluginSystem("", Features::SubductingPlateModels::Temperature::Interface::declare_entries, {"model"}),
+                                                                Types::PluginSystem("", Features::SubductingPlateModels::Composition::Interface::declare_entries, {"model"}))),
+                        "The depth to which this feature is present");
+      prm.declare_entry("temperature models",
+                        Types::PluginSystem("", Features::SubductingPlateModels::Temperature::Interface::declare_entries, {"model"}),
+                        "A list of temperature models.");
+      prm.declare_entry("composition models",
+                        Types::PluginSystem("", Features::SubductingPlateModels::Composition::Interface::declare_entries, {"model"}),
+                        "A list of composition models.");
+
+      if (parent_name != "items")
+        {
+          // This only happens if we are not in sections
+          prm.declare_entry("sections", Types::Array(Types::PluginSystem("",Features::SubductingPlate::declare_entries, {"coordinate"}, false)),"A list of feature properties for a coordinate.");
+        }
+      else
+        {
+
+          // this only happens in sections
+          prm.declare_entry("coordinate", Types::UnsignedInt(0),
+                            "The coordinate which should be overwritten");
+
+          prm.leave_subsection();
+        }
     }
 
     void
     SubductingPlate::parse_entries(Parameters &prm)
     {
+      const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
+
+      this->name = prm.get<std::string>("name");
+      this->get_coordinates("coordinates", prm, coordinate_system);
+
+      const unsigned int n_sections = this->original_number_of_coordinates;
+
+      std::vector<std::shared_ptr<Features::SubductingPlateModels::Temperature::Interface> > temperature_models;
+      std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface>  > composition_models;
+      // get the amount of segments.
+      std::vector<Types::Segment> segment_vector = prm.get_vector<Types::Segment>("segments", temperature_models, composition_models);
+      starting_depth = prm.get<double>("min depth");
+      maximum_depth = prm.get<double>("max depth");
+
+
+      /* prm.get_unique_pointers<Features::SubductingPlateModels::Temperature::Interface>("temperature models", temperature_models);
+
+       prm.enter_subsection("temperature models");
+       {
+         for (unsigned int i = 0; i < temperature_models.size(); ++i)
+           {
+             prm.enter_subsection(std::to_string(i));
+             {
+               temperature_models[i]->parse_entries(prm);
+             }
+             prm.leave_subsection();
+           }
+       }
+       prm.leave_subsection();
+
+
+       prm.get_unique_pointers<Features::SubductingPlateModels::Composition::Interface>("composition models", composition_models);
+
+       prm.enter_subsection("composition models");
+       {
+         for (unsigned int i = 0; i < composition_models.size(); ++i)
+           {
+             prm.enter_subsection(std::to_string(i));
+             {
+               composition_models[i]->parse_entries(prm);
+             }
+             prm.leave_subsection();
+           }
+       }
+       prm.leave_subsection();*/
+
+      /*
 
       //Parameters &prm = this->world->parameters;
 
@@ -239,7 +343,7 @@ namespace WorldBuilder
             WBAssertThrow(composition_submodule_name == "none","Subducting plate temperature model '" << temperature_submodule_name << "' not found.");
           }
       }
-      prm.leave_subsection();
+      prm.leave_subsection();*/
     }
 
 

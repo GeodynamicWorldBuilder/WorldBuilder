@@ -75,8 +75,8 @@ namespace WorldBuilder
 
       prm.declare_entry("cross section", Types::Array(Types::Point<2>(),2,2),"This is an array of two points along where the cross section is taken");
 
-      prm.declare_entry("coordinate system", Types::PluginSystem("cartesian", CoordinateSystems::Interface::declare_entries, false),"A coordinate system. Cartesian or spherical.");
-      prm.declare_entry("features", Types::PluginSystem("",Features::Interface::declare_entries),"A list of features.");
+      prm.declare_entry("coordinate system", Types::PluginSystem("cartesian", CoordinateSystems::Interface::declare_entries, {"model"}, false),"A coordinate system. Cartesian or spherical.");
+      prm.declare_entry("features", Types::PluginSystem("",Features::Interface::declare_entries, {"model", "coordinates"}),"A list of features.");
 
       prm.declare_entry("potential mantle temperature", Types::Double(1600),
                         "The potential temperature of the mantle at the surface in Kelvin.");

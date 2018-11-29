@@ -26,14 +26,19 @@ namespace WorldBuilder
   namespace Types
   {
     PluginSystem::PluginSystem(const std::string &default_value,
-                               void ( *declare_entries)(Parameters &, const std::string &),
+                               void ( *declare_entries)(Parameters &, const std::string &, const std::vector<std::string> &),
+                               const std::vector<std::string> required_entries,
                                const bool allow_multiple)
       :
       default_value(default_value),
       declare_entries(declare_entries),
+      required_entries(required_entries),
       allow_multiple(allow_multiple)
     {
       this->type_name = Types::type::PluginSystem;
+      std::cout << "-------construct pluginsystem with pointer = " << this->declare_entries
+                << " and reqruied entires.size() = " << required_entries.size() << std::endl;
+      WBAssert(declare_entries != NULL, "declare entries may not be a null pointer.");
     }
 
     PluginSystem::PluginSystem(const std::string &description)
@@ -56,7 +61,7 @@ namespace WorldBuilder
     std::unique_ptr<Interface>
     PluginSystem::clone() const
     {
-      return std::unique_ptr<Interface>(new PluginSystem(description));
+      return std::unique_ptr<Interface>(new PluginSystem(default_value, declare_entries, required_entries, allow_multiple));
     }
 
     void
@@ -80,7 +85,7 @@ namespace WorldBuilder
             {
               WBAssert(this->declare_entries != NULL, "No declare entries given.");
 
-              this->declare_entries(prm, name);
+              this->declare_entries(prm, name, required_entries);
             }
             prm.leave_subsection();
           }
@@ -88,8 +93,10 @@ namespace WorldBuilder
           {
             Pointer((path + "/type").c_str()).Set(prm.declarations,"object");
 
+            //std::cout << "-------use pluginsystem with name " << name << ", and pointer = " << declare_entries<< " and reqruied entires.size() = " << required_entries.size() << std::endl;
             WBAssert(this->declare_entries != NULL, "No declare entries given.");
-            this->declare_entries(prm, name);
+            this->declare_entries(prm, name, required_entries);
+
 
           }
       }

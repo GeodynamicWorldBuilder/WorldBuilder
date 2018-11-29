@@ -56,7 +56,7 @@ namespace WorldBuilder
         {
 
           prm.declare_entry("layers",
-                            Types::PluginSystem("", Features::OceanicPlateModels::Composition::Interface::declare_entries),
+                            Types::PluginSystem("", Features::OceanicPlateModels::Composition::Interface::declare_entries, {"model"}),
                             "A list of composition models to be used as layers.");
         }
 

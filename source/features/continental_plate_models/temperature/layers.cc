@@ -56,7 +56,7 @@ namespace WorldBuilder
         {
 
           prm.declare_entry("layers",
-                            Types::PluginSystem("", Features::ContinentalPlateModels::Temperature::Interface::declare_entries),
+                            Types::PluginSystem("", Features::ContinentalPlateModels::Temperature::Interface::declare_entries, {"model"}),
                             "A list of temperature models to be used as layers.");
         }
 

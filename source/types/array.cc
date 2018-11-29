@@ -97,6 +97,7 @@ namespace WorldBuilder
 
       prm.enter_subsection(name);
       {
+        WBAssertThrow(this->inner_type_ptr != NULL, "Internal error, inner pointer is NULL.");
         this->inner_type_ptr->write_schema(prm, "items", "");
       }
       prm.leave_subsection();

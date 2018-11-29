@@ -39,7 +39,7 @@ namespace WorldBuilder
     {}
 
     void
-    Interface::declare_entries(Parameters &prm, const std::string &parent_name)
+    Interface::declare_entries(Parameters &prm, const std::string &parent_name, const std::vector<std::string> &required_entries)
     {
 
       unsigned int counter = 0;
@@ -51,7 +51,7 @@ namespace WorldBuilder
             {
               prm.enter_subsection("properties");
               {
-                prm.declare_entry("", Types::Object({"model"}), "Coordinate sysetm object");
+                prm.declare_entry("", Types::Object(required_entries), "Coordinate sysetm object");
 
                 prm.declare_entry("model",Types::String("",it->first),
                                   "The name which the user has given to the feature.");

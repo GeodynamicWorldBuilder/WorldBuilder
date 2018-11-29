@@ -43,7 +43,9 @@ namespace WorldBuilder
         {}
 
         void
-        Interface::declare_entries(Parameters &prm, const std::string &parent_name)
+        Interface::declare_entries(Parameters &prm,
+                                   const std::string &parent_name,
+                                   const std::vector<std::string> &required_entries)
         {
           unsigned int counter = 0;
           for ( auto it = get_declare_map().begin(); it != get_declare_map().end(); ++it )
@@ -57,7 +59,7 @@ namespace WorldBuilder
                     {
                       prm.enter_subsection("properties");
                       {
-                        prm.declare_entry("", Types::Object({"model"}), "composition object");
+                        prm.declare_entry("", Types::Object(required_entries), "composition object");
 
                         prm.declare_entry("model", Types::String("",it->first),
                                           "The name of the composition model.");

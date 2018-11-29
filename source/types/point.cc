@@ -78,8 +78,8 @@ namespace WorldBuilder
       const std::string base = prm.get_full_json_path() + "/" + name;
 
       Pointer((base + "/type").c_str()).Set(declarations,"array");
-      Pointer((base + "/minItems").c_str()).Set(declarations,2);
-      Pointer((base + "/maxItems").c_str()).Set(declarations,2);
+      Pointer((base + "/minItems").c_str()).Set(declarations,dim);
+      Pointer((base + "/maxItems").c_str()).Set(declarations,dim);
       Pointer((base + "/items/type").c_str()).Set(declarations,"number");
       Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
       // todo: default value

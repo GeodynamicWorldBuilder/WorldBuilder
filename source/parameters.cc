@@ -51,6 +51,11 @@
 #include <world_builder/features/oceanic_plate_models/composition/interface.h>
 #include <world_builder/features/mantle_layer_models/temperature/interface.h>
 #include <world_builder/features/mantle_layer_models/composition/interface.h>
+#include <world_builder/features/subducting_plate_models/temperature/interface.h>
+#include <world_builder/features/subducting_plate_models/composition/interface.h>
+
+#include <world_builder/features/subducting_plate_models/temperature/interface.h>
+#include <world_builder/features/subducting_plate_models/composition/interface.h>
 
 using boost::property_tree::ptree;
 using namespace rapidjson;
@@ -70,10 +75,10 @@ namespace WorldBuilder
   {
     {
       StringBuffer buffer;
-      PrettyWriter<StringBuffer> writer(buffer);
+      PrettyWriter<StringBuffer, UTF8<>, UTF8<>, CrtAllocator, kWriteNanAndInfFlag> writer(buffer);
       declarations.Accept(writer);
 
-      // std::cout << buffer.GetString() << std::endl;
+      //std::cout << buffer.GetString() << std::endl;
     }
 
     path_level =0;
@@ -96,7 +101,7 @@ namespace WorldBuilder
     // relaxing sytax by allowing comments () for now, maybe also allow trailing commas and (kParseTrailingCommasFlag) and nan's, inf etc (kParseNanAndInfFlag)?
     //WBAssertThrow(!parameters.ParseStream<kParseCommentsFlag>(isw).HasParseError(), "Parsing erros world builder file");
 
-    if (parameters.ParseStream<kParseCommentsFlag>(isw).HasParseError())
+    if (parameters.ParseStream<kParseCommentsFlag | kParseNanAndInfFlag>(isw).HasParseError())
       {
         fprintf(stderr, "\nError(offset %u): %s\n",
                 (unsigned)parameters.GetErrorOffset(),
@@ -332,6 +337,113 @@ namespace WorldBuilder
     return vector;
   }
 
+
+  template<>
+  std::vector<Types::Segment>
+  Parameters::get_vector(const std::string &name,
+                         std::vector<std::shared_ptr<Features::SubductingPlateModels::Temperature::Interface> > &,
+                         std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface> > &)
+  {
+    std::vector<Types::Segment> vector;
+    const std::string strict_base = this->get_full_json_path();
+    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != NULL)
+      {
+        // get the array of segments
+        Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+        for (unsigned int i = 0; i < array->Size(); ++i )
+          {
+            const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
+            // get one segment
+            // length
+            double length = Pointer((base + "/length").c_str()).Get(parameters)->GetDouble();
+            std::cout << "length = " << length << std::endl;
+
+            // get thickness
+            Value *point_array = Pointer((base  + "/thickness").c_str()).Get(parameters);
+            Point<2> thickness(invalid);
+            if (point_array != NULL)
+              {
+                if (point_array->Size() == 1)
+                  {
+                    // There is only one value, set it for both elements
+                    double local0 = Pointer((base + "/thickness/0").c_str()).Get(parameters)->GetDouble();
+                    thickness = Point<2>(local0,local0,invalid);
+                  }
+                else
+                  {
+                    double local0 = Pointer((base + "/thickness/0").c_str()).Get(parameters)->GetDouble();
+                    double local1 = Pointer((base + "/thickness/1").c_str()).Get(parameters)->GetDouble();
+                    thickness = Point<2>(local0,local1,invalid);
+                  }
+              }
+            std::cout << "thickness = " << thickness[0] << ":" << thickness[1] << std::endl;
+
+            // get top trunctation (default is 0,0)
+            point_array = Pointer((base  + "/top trunctation").c_str()).Get(parameters);
+            Point<2> top_trunctation(invalid);
+            if (point_array != NULL)
+              {
+                if (point_array->Size() == 1)
+                  {
+                    // There is only one value, set it for both elements
+                    double local0 = Pointer((base + "/top trunctation/0").c_str()).Get(parameters)->GetDouble();
+                    top_trunctation = Point<2>(local0,local0,invalid);
+                  }
+                else
+                  {
+                    double local0 = Pointer((base + "/top trunctation/0").c_str()).Get(parameters)->GetDouble();
+                    double local1 = Pointer((base + "/top trunctation/1").c_str()).Get(parameters)->GetDouble();
+                    top_trunctation = Point<2>(local0,local1,invalid);
+                  }
+              }
+            std::cout << "top trunctation = " << top_trunctation[0] << ":" << top_trunctation[1] << std::endl;
+
+            // get thickness
+            point_array = Pointer((base  + "/angle").c_str()).Get(parameters);
+            Point<2> angle(invalid);
+            if (point_array != NULL)
+              {
+                if (point_array->Size() == 1)
+                  {
+                    // There is only one value, set it for both elements
+                    double local0 = Pointer((base + "/angle/0").c_str()).Get(parameters)->GetDouble();
+                    angle = Point<2>(local0,local0,invalid);
+                  }
+                else
+                  {
+                    double local0 = Pointer((base + "/angle/0").c_str()).Get(parameters)->GetDouble();
+                    double local1 = Pointer((base + "/angle/1").c_str()).Get(parameters)->GetDouble();
+                    angle = Point<2>(local0,local1,invalid);
+                  }
+              }
+            std::cout << "angle = " << angle[0] << ":" << angle[1] << std::endl;
+
+            // Get temperture models
+            std::vector<std::shared_ptr<Features::SubductingPlateModels::Temperature::Interface> > temperature_models;
+            this->get_shared_pointers<Features::SubductingPlateModels::Temperature::Interface>("temperature models", temperature_models);
+
+            std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface> > composition_models;
+            this->get_shared_pointers<Features::SubductingPlateModels::Composition::Interface>("composition models", composition_models);
+            //let's assume that the file is correct, because it has been checked with the json schema.
+            // So there are exactly two values.
+            /*double value1, value2;
+
+            try
+              {
+                value1 = Pointer((base + "/0").c_str()).Get(parameters)->GetDouble();
+                value2 = Pointer((base + "/1").c_str()).Get(parameters)->GetDouble();
+              }
+            catch (...)
+              {
+                WBAssertThrow(false, "Could not convert values of " << base << " into doubles.");
+              }
+            vector.push_back(Point<2>(value1,value2,this->coordinate_system->natural_coordinate_system()));*/
+          }
+      }
+    return vector;
+  }
+
   template<>
   std::vector<double>
   Parameters::get_vector(const std::string &name)
@@ -447,6 +559,28 @@ namespace WorldBuilder
       }
   }
 
+
+
+  template<class T>
+  void
+  Parameters::get_shared_pointers(const std::string &name, std::vector<std::shared_ptr<T> > &vector)
+  {
+    const std::string strict_base = this->get_full_json_path();
+    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != NULL)
+      {
+        Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+        for (unsigned int i = 0; i < array->Size(); ++i )
+          {
+            const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
+
+            std::string value = Pointer((base + "/model").c_str()).Get(parameters)->GetString();
+
+            vector.push_back(std::move(T::create(value, &world)));
+          }
+      }
+  }
+
   bool
   Parameters::load_entry(const std::string &name, const bool required, const Types::Interface &type)
   {
@@ -539,143 +673,144 @@ namespace WorldBuilder
       }
     else if (type.get_type() == Types::type::Segment)
       {
-        // First check whether the value is in the tree. If not Assert when the value is required,
-        // otherwise set found_value to false.
-        const Types::Segment &natural_type = dynamic_cast<const Types::Segment &>(type);
+        /*
+         // First check whether the value is in the tree. If not Assert when the value is required,
+         // otherwise set found_value to false.
+         const Types::Segment &natural_type = dynamic_cast<const Types::Segment &>(type);
 
-        // Check length value
-        boost::optional<std::string> length_value_tree =
-          Utilities::get_from_ptree_abs(*local_tree,
-                                        get_relative_path_without_arrays(),
-                                        "length",
-                                        required,
-                                        path_seperator);
+         // Check length value
+         boost::optional<std::string> length_value_tree =
+           Utilities::get_from_ptree_abs(*local_tree,
+                                         get_relative_path_without_arrays(),
+                                         "length",
+                                         required,
+                                         path_seperator);
 
-        found_value = length_value_tree ? true : false;
+         found_value = length_value_tree ? true : false;
 
-        WBAssertThrow((found_value == true && required == true) || required == false,
-                      "Could not find " + get_full_path() + path_seperator + "length" + ", while it is set as required.");
+         WBAssertThrow((found_value == true && required == true) || required == false,
+                       "Could not find " + get_full_path() + path_seperator + "length" + ", while it is set as required.");
 
-        // Check thickness value as a 2d point. Todo: see if it can be recursed to POINT2D
-        WorldBuilder::Point<2> point_thickness(std::array<double,2> {0,0},
-                                               this->coordinate_system->natural_coordinate_system());
+         // Check thickness value as a 2d point. Todo: see if it can be recursed to POINT2D
+         WorldBuilder::Point<2> point_thickness(std::array<double,2> {0,0},
+                                                this->coordinate_system->natural_coordinate_system());
 
-        std::string path_plus_name_without_arrays = "thickness";//((get_relative_path_without_arrays() == "") ? "" : (get_relative_path_without_arrays() + path_seperator + ""))
-        //+ (name.front() == '[' && name.back() == ']' ? "" : "thickness");
+         std::string path_plus_name_without_arrays = "thickness";//((get_relative_path_without_arrays() == "") ? "" : (get_relative_path_without_arrays() + path_seperator + ""))
+         //+ (name.front() == '[' && name.back() == ']' ? "" : "thickness");
 
-        boost::optional<ptree &> child = local_tree->get_child_optional(path_plus_name_without_arrays);
+         boost::optional<ptree &> child = local_tree->get_child_optional(path_plus_name_without_arrays);
 
-        found_value = child ? true : false;
+         found_value = child ? true : false;
 
-        WBAssertThrow((found_value == true && required == true) || required == false,
-                      "Could not find " + get_full_path() + path_seperator + "thickness" + ", while it is set as required.");
+         WBAssertThrow((found_value == true && required == true) || required == false,
+                       "Could not find " + get_full_path() + path_seperator + "thickness" + ", while it is set as required.");
 
-        unsigned int diff = path.size()-path_level;
-        path_level+=diff;
-        if (found_value == true)
-          {
-            unsigned int current_size = 0;
-            for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
-              {
-                // First check whether the value is in the tree. If not Assert when the value is required,
-                // otherwise return false.
-                boost::optional<std::string> value_tree = Utilities::get_from_ptree_abs(it->second,
-                                                                                        get_relative_path_without_arrays(),
-                                                                                        "", required, path_seperator);
+         unsigned int diff = path.size()-path_level;
+         path_level+=diff;
+         if (found_value == true)
+           {
+             unsigned int current_size = 0;
+             for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
+               {
+                 // First check whether the value is in the tree. If not Assert when the value is required,
+                 // otherwise return false.
+                 boost::optional<std::string> value_tree = Utilities::get_from_ptree_abs(it->second,
+                                                                                         get_relative_path_without_arrays(),
+                                                                                         "", required, path_seperator);
 
-                found_value = value_tree ? true : false;
+                 found_value = value_tree ? true : false;
 
-                WBAssertThrow((found_value == true && required == true) || required == false,
-                              "Could not find " + get_full_path() + ", while it is set as required.");
-                //Todo: this looks strange to me. A value should always be found, or something really weird happened...
+                 WBAssertThrow((found_value == true && required == true) || required == false,
+                               "Could not find " + get_full_path() + ", while it is set as required.");
+                 //Todo: this looks strange to me. A value should always be found, or something really weird happened...
 
-                const double value = found_value == true ? Utilities::string_to_double(value_tree.get()) : natural_type.default_value_thickness[current_size];
+                 const double value = found_value == true ? Utilities::string_to_double(value_tree.get()) : natural_type.default_value_thickness[current_size];
 
-                point_thickness[current_size] = value;
-                current_size++;
-              }
+                 point_thickness[current_size] = value;
+                 current_size++;
+               }
 
-            // if only one value is filled in, set it for both.
-            if (current_size == 1)
-              {
-                point_thickness[1] = point_thickness[0];
-              }
-            WBAssertThrow(current_size == 1 || current_size == 2,
-                          "The entry " + get_full_path() + path_seperator + "thickness" +
-                          " should contain one or two values, but the size was not 1 or 2, it was "
-                          << current_size << ".");
-          }
-        else
-          {
-            point_thickness = natural_type.default_value_thickness;
-          }
-        path_level -= diff;
+             // if only one value is filled in, set it for both.
+             if (current_size == 1)
+               {
+                 point_thickness[1] = point_thickness[0];
+               }
+             WBAssertThrow(current_size == 1 || current_size == 2,
+                           "The entry " + get_full_path() + path_seperator + "thickness" +
+                           " should contain one or two values, but the size was not 1 or 2, it was "
+                           << current_size << ".");
+           }
+         else
+           {
+             point_thickness = natural_type.default_value_thickness;
+           }
+         path_level -= diff;
 
 
-        // Check angle value as a 2d point. Todo: see if it can be recursed to POINT2D
-        WorldBuilder::Point<2> point_angle(std::array<double,2> {0,0},
-                                           this->coordinate_system->natural_coordinate_system());
+         // Check angle value as a 2d point. Todo: see if it can be recursed to POINT2D
+         WorldBuilder::Point<2> point_angle(std::array<double,2> {0,0},
+                                            this->coordinate_system->natural_coordinate_system());
 
-        path_plus_name_without_arrays = "angle";//((get_relative_path_without_arrays() == "") ? "" : (get_relative_path_without_arrays() + path_seperator + ""))
-        //        + (name.front() == '[' && name.back() == ']' ? "" : "angle");
+         path_plus_name_without_arrays = "angle";//((get_relative_path_without_arrays() == "") ? "" : (get_relative_path_without_arrays() + path_seperator + ""))
+         //        + (name.front() == '[' && name.back() == ']' ? "" : "angle");
 
-        child = local_tree->get_child_optional(path_plus_name_without_arrays);
+         child = local_tree->get_child_optional(path_plus_name_without_arrays);
 
-        found_value = child ? true : false;
+         found_value = child ? true : false;
 
-        WBAssertThrow((found_value == true && required == true) || required == false,
-                      "Could not find " + get_full_path() + path_seperator + "angle" + ", while it is set as required.");
+         WBAssertThrow((found_value == true && required == true) || required == false,
+                       "Could not find " + get_full_path() + path_seperator + "angle" + ", while it is set as required.");
 
-        //unsigned int diff = path.size()-path_level;
-        path_level+=diff;
-        if (found_value == true)
-          {
-            unsigned int current_size = 0;
-            for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
-              {
-                // First check whether the value is in the tree. If not Assert when the value is required,
-                // otherwise return false.
-                boost::optional<std::string> value_tree = Utilities::get_from_ptree_abs(it->second,
-                                                                                        get_relative_path_without_arrays(),
-                                                                                        "", required, path_seperator);
+         //unsigned int diff = path.size()-path_level;
+         path_level+=diff;
+         if (found_value == true)
+           {
+             unsigned int current_size = 0;
+             for (boost::property_tree::ptree::iterator it = child.get().begin(); it != child.get().end(); ++it)
+               {
+                 // First check whether the value is in the tree. If not Assert when the value is required,
+                 // otherwise return false.
+                 boost::optional<std::string> value_tree = Utilities::get_from_ptree_abs(it->second,
+                                                                                         get_relative_path_without_arrays(),
+                                                                                         "", required, path_seperator);
 
-                found_value = value_tree ? true : false;
+                 found_value = value_tree ? true : false;
 
-                WBAssertThrow((found_value == true && required == true) || required == false,
-                              "Could not find " + get_full_path() + ", while it is set as required.");
-                const double value = found_value == true ? Utilities::string_to_double(value_tree.get()) : natural_type.default_value_angle[current_size];
+                 WBAssertThrow((found_value == true && required == true) || required == false,
+                               "Could not find " + get_full_path() + ", while it is set as required.");
+                 const double value = found_value == true ? Utilities::string_to_double(value_tree.get()) : natural_type.default_value_angle[current_size];
 
-                point_angle[current_size] = value;
-                current_size++;
-              }
+                 point_angle[current_size] = value;
+                 current_size++;
+               }
 
-            // if only one value is filled in, set it for both.
-            if (current_size == 1)
-              {
-                point_angle[1] = point_angle[0];
-              }
-            WBAssertThrow(current_size == 1 || current_size == 2,
-                          "The entry " + get_full_path() + path_seperator + "angle" +
-                          " should contain one or two values, but the size was not 1 or 2, it was "
-                          << current_size << ".");
-          }
-        else
-          {
-            point_angle = natural_type.default_value_angle;
-          }
-        path_level -= diff;
+             // if only one value is filled in, set it for both.
+             if (current_size == 1)
+               {
+                 point_angle[1] = point_angle[0];
+               }
+             WBAssertThrow(current_size == 1 || current_size == 2,
+                           "The entry " + get_full_path() + path_seperator + "angle" +
+                           " should contain one or two values, but the size was not 1 or 2, it was "
+                           << current_size << ".");
+           }
+         else
+           {
+             point_angle = natural_type.default_value_angle;
+           }
+         path_level -= diff;
 
-        // The values are present and we have retrieved them. Now store it into a Segment type.
-        const double value_length = length_value_tree ? Utilities::string_to_double(length_value_tree.get()) : natural_type.default_value_length;
+         // The values are present and we have retrieved them. Now store it into a Segment type.
+         const double value_length = length_value_tree ? Utilities::string_to_double(length_value_tree.get()) : natural_type.default_value_length;
 
-        vector_segment.push_back(Types::Segment(value_length, natural_type.default_value_length,
-                                                point_thickness, natural_type.default_value_thickness,
-                                                point_angle, natural_type.default_value_angle,
-                                                natural_type.description));
+         vector_segment.push_back(Types::Segment(value_length, natural_type.default_value_length,
+                                                 point_thickness, natural_type.default_value_thickness,
+                                                 point_angle, natural_type.default_value_angle,
+                                                 natural_type.description));
 
-        //vector_string[vector_string.size()-1].set_value(value);
-        location = vector_segment.size()-1;
-        string_to_type_map[path_plus_name] = location;
+         //vector_string[vector_string.size()-1].set_value(value);
+         location = vector_segment.size()-1;
+         string_to_type_map[path_plus_name] = location;*/
 
       }
     else if (type.get_type() == Types::type::ConstantLayer)
@@ -1064,9 +1199,9 @@ namespace WorldBuilder
     else if (type.get_type() == Types::type::Segment)
       {
         // The value is present and we have retrieved it. Now store it
-        const Types::Segment &natural_type = dynamic_cast<const Types::Segment &>(type);
-        vector_segment.push_back(natural_type);
-        string_to_type_map[path_plus_name] = vector_string.size()-1;
+        // const Types::Segment &natural_type = dynamic_cast<const Types::Segment &>(type);
+        //vector_segment.push_back(natural_type);
+        //string_to_type_map[path_plus_name] = vector_string.size()-1;
       }
     else if (type.get_type() == Types::type::CoordinateSystem)
       {
@@ -1211,8 +1346,9 @@ namespace WorldBuilder
 
   template<class T>
   const std::vector<T>
-  Parameters::get_array(const std::string &name) const
+  Parameters::get_array(const std::string &) const
   {
+    /*
     //TODO: Assert that the size of the vector is larger then zero.
     const std::string path_plus_name = get_full_path() == "" ? name : get_full_path() + path_seperator + name;
     WBAssert(string_to_type_map.count(path_plus_name) > 0, "Could not find entry \'" << name << "\' not found. Make sure it is loaded or set.");
@@ -1279,7 +1415,8 @@ namespace WorldBuilder
 
       }
 
-    return array;
+    return array;*/
+    return std::vector<T>();
   }
 
 //TODO:
@@ -1482,6 +1619,17 @@ namespace WorldBuilder
    */
   template const std::vector<Types::Point<3> > Parameters::get_array<Types::Point<3> >(const std::string &name) const;
 
+
+  /**
+   * Returns a vector of pointers to the Point<3> Type based on the provided name.
+   * Note that the variable with this name has to be loaded before this function is called.
+   */
+  //template std::vector<Types::Segment>
+  //Parameters::get_vector<Types::Segment,
+  //Features::SubductingPlateModels::Temperature::Interface,
+  //Features::SubductingPlateModels::Composition::Interface>(const std::string &name);
+
+
   /**
    * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
    * Note that the variable with this name has to be loaded before this function is called.
@@ -1543,6 +1691,38 @@ namespace WorldBuilder
   template void
   Parameters::get_unique_pointers<Features::MantleLayerModels::Composition::Interface>(const std::string &name,
       std::vector<std::unique_ptr<Features::MantleLayerModels::Composition::Interface> > &vector);
+
+  /**
+   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+   * Note that the variable with this name has to be loaded before this function is called.
+   */
+  template void
+  Parameters::get_unique_pointers<Features::SubductingPlateModels::Temperature::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::SubductingPlateModels::Temperature::Interface> > &vector);
+
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template void
+  Parameters::get_unique_pointers<Features::SubductingPlateModels::Composition::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::SubductingPlateModels::Composition::Interface> > &vector);
+
+  /**
+   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+   * Note that the variable with this name has to be loaded before this function is called.
+   */
+  template void
+  Parameters::get_shared_pointers<Features::SubductingPlateModels::Temperature::Interface>(const std::string &name,
+      std::vector<std::shared_ptr<Features::SubductingPlateModels::Temperature::Interface> > &vector);
+
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template void
+  Parameters::get_shared_pointers<Features::SubductingPlateModels::Composition::Interface>(const std::string &name,
+      std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface> > &vector);
 
 }
 

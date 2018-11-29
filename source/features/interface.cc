@@ -48,7 +48,7 @@ namespace WorldBuilder
     {}
 
     void
-    Interface::declare_entries(Parameters &prm, const std::string &parent_name)
+    Interface::declare_entries(Parameters &prm, const std::string &parent_name, const std::vector<std::string> &required_entries)
     {
 
       unsigned int counter = 0;
@@ -61,7 +61,7 @@ namespace WorldBuilder
 
               prm.enter_subsection("properties");
               {
-                prm.declare_entry("", Types::Object({"model", "name", "coordinates"}), "feature object");
+                prm.declare_entry("", Types::Object(required_entries), "feature object");
 
                 prm.declare_entry("model", Types::String("",it->first),
                                   "The name which the user has given to the feature.");
@@ -70,7 +70,9 @@ namespace WorldBuilder
                 prm.declare_entry("coordinates", Types::Array(Types::Point<2>(), true),
                                   "An array of 2d Points representing an array of coordinates where the feature is located.");
 
-                it->second(prm, parent_name);
+
+                WBAssert(it->second != NULL, "No declare entries given.");
+                it->second(prm, parent_name, {});
               }
               prm.leave_subsection();
             }
@@ -179,7 +181,7 @@ namespace WorldBuilder
 
     void
     Interface::registerType(const std::string &name,
-                            void ( *declare_entries)(Parameters &, const std::string &),
+                            void ( *declare_entries)(Parameters &, const std::string &,const std::vector<std::string> &),
                             ObjectFactory *factory)
     {
       get_factory_map()[name] = factory;

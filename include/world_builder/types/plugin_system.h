@@ -40,7 +40,8 @@ namespace WorldBuilder
          * constructor
          */
         PluginSystem(const std::string &default_vaule,
-                     void ( *declare_entries)(Parameters &, const std::string &),
+                     void ( *declare_entries)(Parameters &, const std::string &, const std::vector<std::string> &),
+                     const std::vector<std::string> required_entries,
                      const bool allow_multiple = true);
 
         /**
@@ -74,7 +75,8 @@ namespace WorldBuilder
 
 
         std::string default_value;
-        void( *declare_entries)(Parameters &, const std::string &);
+        void( *declare_entries)(Parameters &, const std::string &, const std::vector<std::string> &);
+        std::vector<std::string> required_entries;
         bool allow_multiple;
         std::string description;
 

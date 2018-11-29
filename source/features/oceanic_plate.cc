@@ -57,17 +57,19 @@ namespace WorldBuilder
 
 
     void
-    OceanicPlate::declare_entries(Parameters &prm, const std::string &)
+    OceanicPlate::declare_entries(Parameters &prm,
+                                  const std::string &,
+                                  const std::vector<std::string> &required_entries)
     {
       prm.declare_entry("min depth", Types::Double(0),
                         "The depth to which this feature is present");
       prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),
                         "The depth to which this feature is present");
       prm.declare_entry("temperature models",
-                        Types::PluginSystem("", Features::OceanicPlateModels::Temperature::Interface::declare_entries),
+                        Types::PluginSystem("", Features::OceanicPlateModels::Temperature::Interface::declare_entries, {"model"}),
                         "A list of temperature models.");
       prm.declare_entry("composition models",
-                        Types::PluginSystem("", Features::OceanicPlateModels::Composition::Interface::declare_entries),
+                        Types::PluginSystem("", Features::OceanicPlateModels::Composition::Interface::declare_entries, {"model"}),
                         "A list of composition models.");
     }
 

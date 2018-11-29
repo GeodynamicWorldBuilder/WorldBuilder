@@ -683,7 +683,7 @@ TEST_CASE("WorldBuilder Coordinate Systems: Interface")
 
   unique_ptr<CoordinateSystems::Interface> interface(CoordinateSystems::Interface::create("cartesian",&world));
 
-  interface->declare_entries(world.parameters, "");
+  interface->declare_entries(world.parameters, "", {});
 
   CHECK(interface->cartesian_to_natural_coordinates(std::array<double,3> {1,2,3}) == std::array<double,3> {1,2,3});
   CHECK(interface->natural_to_cartesian_coordinates(std::array<double,3> {1,2,3}) == std::array<double,3> {1,2,3});
@@ -729,7 +729,7 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
   {
     world.parameters.enter_subsection("spherical");
     {
-      spherical->declare_entries(world.parameters,"");
+      spherical->declare_entries(world.parameters,"", {});
     }
     world.parameters.leave_subsection();
   }

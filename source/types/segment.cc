@@ -25,37 +25,61 @@ namespace WorldBuilder
 {
   namespace Types
   {
-    Segment::Segment(double default_value_length,
-                     WorldBuilder::Point<2> default_value_thickness,
-                     WorldBuilder::Point<2> default_value_angle,
+    Segment::Segment(const double default_length,
+                     const WorldBuilder::Point<2> default_thickness,
+                     const WorldBuilder::Point<2> default_top_truncation,
+                     const WorldBuilder::Point<2> default_angle,
+                     const Types::Interface &temperature_pugin_system_,
+                     const Types::Interface &composition_pugin_system_)
+      :
+      value_length(default_length),
+      default_length(default_length),
+      value_thickness(default_thickness),
+      default_thickness(default_thickness),
+      default_top_truncation(default_top_truncation),
+      value_angle(default_angle),
+      default_angle(default_angle),
+      temperature_pugin_system(temperature_pugin_system_.clone()),
+      composition_pugin_system(composition_pugin_system_.clone())
+    {
+      this->type_name = Types::type::Segment;
+    }
+
+    // todo remove function
+    Segment::Segment(double default_length,
+                     WorldBuilder::Point<2> default_thickness,
+                     WorldBuilder::Point<2> default_angle,
                      std::string description)
       :
-      value_length(default_value_length),
-      default_value_length(default_value_length),
-      value_thickness(default_value_thickness),
-      default_value_thickness(default_value_thickness),
-      value_angle(default_value_angle),
-      default_value_angle(default_value_angle),
+      value_length(default_length),
+      default_length(default_length),
+      value_thickness(default_thickness),
+      default_top_truncation(default_thickness),
+      default_thickness(default_thickness),
+      value_angle(default_angle),
+      default_angle(default_angle),
       description(description)
     {
       this->type_name = Types::type::Segment;
     }
 
-    Segment::Segment(double   value_length,
-                     double   default_value_length,
-                     WorldBuilder::Point<2> value_thickness,
-                     WorldBuilder::Point<2> default_value_thickness,
-                     WorldBuilder::Point<2> value_angle,
-                     WorldBuilder::Point<2> default_value_angle,
-                     std::string description)
+    // todo update function
+    Segment::Segment(const double default_length,
+                     const WorldBuilder::Point<2> default_thickness,
+                     const WorldBuilder::Point<2> default_top_truncation,
+                     const WorldBuilder::Point<2> default_angle,
+                     const std::unique_ptr<Types::Interface> &temperature_pugin_system_,
+                     const std::unique_ptr<Types::Interface> &composition_pugin_system_)
       :
-      value_length(value_length),
-      default_value_length(default_value_length),
-      value_thickness(value_thickness),
-      default_value_thickness(default_value_thickness),
-      value_angle(value_angle),
-      default_value_angle(default_value_angle),
-      description(description)
+      value_length(default_length),
+      default_length(default_length),
+      value_thickness(default_thickness),
+      default_thickness(default_thickness),
+      default_top_truncation(default_top_truncation),
+      value_angle(default_angle),
+      default_angle(default_angle),
+      temperature_pugin_system(temperature_pugin_system_->clone()),
+      composition_pugin_system(composition_pugin_system_->clone())
     {
       this->type_name = Types::type::Segment;
 
@@ -64,13 +88,16 @@ namespace WorldBuilder
     Segment::~Segment ()
     {}
 
+    // todo update function
     std::unique_ptr<Interface>
     Segment::clone() const
     {
-      return std::unique_ptr<Interface>(new Segment(value_length, default_value_length,
-                                                    value_thickness, default_value_thickness,
-                                                    value_angle, default_value_angle,
-                                                    description));
+      return std::unique_ptr<Interface>(new Segment(default_length,
+                                                    default_thickness,
+                                                    default_top_truncation,
+                                                    default_angle,
+                                                    temperature_pugin_system,
+                                                    composition_pugin_system));
     }
 
     void
@@ -80,29 +107,40 @@ namespace WorldBuilder
     {
       using namespace rapidjson;
       Document &declarations = prm.declarations;
-      const std::string path = prm.get_full_json_path();
-      Pointer((path + "/type").c_str()).Set(declarations,"object");
-      //const std::string base = path + "/properties/" + name;
-      //std::cout << "base name = " << base << std::endl;
-      WBAssertThrow(false,"Not implemented.");
-      /*Pointer((base + "/default").c_str()).Set(declarations,default_value.c_str());
-      Pointer((base + "/required").c_str()).Set(declarations,required);
-      Pointer((base + "/type").c_str()).Set(declarations,type_name.c_str());
-      Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
-      if(required)
+      prm.enter_subsection(name);
       {
-        if(Pointer((path + "/required").c_str()).Get(declarations) == NULL)
+        std::string base = prm.get_full_json_path();
+
+        Pointer((base + "/type").c_str()).Set(declarations,"object");
+        Pointer((base + "/additionalProperties").c_str()).Set(declarations,false);
+        Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
+        prm.enter_subsection("properties");
         {
-          // The required array doesn't exist yet, so we create it and fill it.
-          Pointer((path + "/required/0").c_str()).Create(declarations);
-          Pointer((path + "/required/0").c_str()).Set(declarations, name.c_str());
+          std::string base = prm.get_full_json_path();
+          Pointer((base + "/length/type").c_str()).Set(declarations,"number");
+
+          Pointer((base + "/thickness/type").c_str()).Set(declarations,"array");
+          Pointer((base + "/thickness/minItems").c_str()).Set(declarations,1);
+          Pointer((base + "/thickness/maxItems").c_str()).Set(declarations,2);
+          Pointer((base + "/thickness/items/type").c_str()).Set(declarations,"number");
+
+          Pointer((base + "/top trunctation/type").c_str()).Set(declarations,"array");
+          Pointer((base + "/top trunctation/minItems").c_str()).Set(declarations,1);
+          Pointer((base + "/top trunctation/maxItems").c_str()).Set(declarations,2);
+          Pointer((base + "/top trunctation/items/type").c_str()).Set(declarations,"number");
+
+          Pointer((base + "/angle/type").c_str()).Set(declarations,"array");
+          Pointer((base + "/angle/minItems").c_str()).Set(declarations,1);
+          Pointer((base + "/angle/maxItems").c_str()).Set(declarations,2);
+          Pointer((base + "/angle/items/type").c_str()).Set(declarations,"number");
+
+          temperature_pugin_system->write_schema(prm, "temperature models", "");
+          composition_pugin_system->write_schema(prm, "composition models", "");
         }
-        else
-        {
-          // The required array already exist yet, so we add an element to the end.
-          Pointer((path + "/required/-").c_str()).Set(declarations, name.c_str());
-        }
-      }*/
+        prm.leave_subsection();
+      }
+      prm.leave_subsection();
+
     }
 
   }

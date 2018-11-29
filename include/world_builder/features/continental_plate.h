@@ -60,7 +60,9 @@ namespace WorldBuilder
          * declare and read in the world builder file into the parameters class
          */
         static
-        void declare_entries(Parameters &prm, const std::string &parent_name = "");
+        void declare_entries(Parameters &prm,
+                             const std::string &parent_name = "",
+                             const std::vector<std::string> &required_entries = {});
 
         /**
          * declare and read in the world builder file into the parameters class
@@ -112,6 +114,7 @@ namespace WorldBuilder
 
         double min_depth;
         double max_depth;
+
     };
 
 

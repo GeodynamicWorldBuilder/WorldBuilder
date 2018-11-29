@@ -22,6 +22,7 @@
 
 #include <world_builder/types/interface.h>
 #include <world_builder/point.h>
+#include <world_builder/types/plugin_system.h>
 
 
 namespace WorldBuilder
@@ -36,20 +37,32 @@ namespace WorldBuilder
     {
       public:
         /**
+         * A constructor
+         */
+        Segment(const double default_length,
+                const WorldBuilder::Point<2> default_thickness,
+                const WorldBuilder::Point<2> default_top_truncation,
+                const WorldBuilder::Point<2> default_angle,
+                const Types::Interface &temperature_pugin_system,
+                const Types::Interface &composition_pugin_system);
+
+        /**
          * A constructor for the load_entry function
          */
-        Segment(double default_value_length,
-                WorldBuilder::Point<2> default_value_thickness,
-                WorldBuilder::Point<2> default_value_angle,
+        Segment(double default_length,
+                WorldBuilder::Point<2> default_thickness,
+                WorldBuilder::Point<2> default_angle,
                 std::string description);
 
         /**
          * A constructor for the clone and set_entry function
          */
-        Segment(double   value_length,    double   default_value_length,
-                WorldBuilder::Point<2> value_thickness, WorldBuilder::Point<2> default_value_thickness,
-                WorldBuilder::Point<2> value_angle,     WorldBuilder::Point<2> default_value_angle,
-                std::string description);
+        Segment(const double default_length,
+                const WorldBuilder::Point<2> default_thickness,
+                const WorldBuilder::Point<2> default_top_truncation,
+                const WorldBuilder::Point<2> default_angle,
+                const std::unique_ptr<Types::Interface> &temperature_pugin_system_,
+                const std::unique_ptr<Types::Interface> &composition_pugin_system_);
 
         /**
          * Destructor
@@ -71,12 +84,19 @@ namespace WorldBuilder
                           const std::string &name,
                           const std::string &documentation) const;
 
+
         double value_length;
-        double default_value_length;
+        double default_length;
         WorldBuilder::Point<2> value_thickness;
-        WorldBuilder::Point<2> default_value_thickness;
+        WorldBuilder::Point<2> default_thickness;
+        WorldBuilder::Point<2> default_top_truncation;
         WorldBuilder::Point<2> value_angle;
-        WorldBuilder::Point<2> default_value_angle;
+        WorldBuilder::Point<2> default_angle;
+        //double default_value_length;
+        //WorldBuilder::Point<2> default_value_thickness;
+        //WorldBuilder::Point<2> default_value_angle;
+        std::unique_ptr<Types::Interface> temperature_pugin_system;
+        std::unique_ptr<Types::Interface> composition_pugin_system;
         std::string description;
 
       private:

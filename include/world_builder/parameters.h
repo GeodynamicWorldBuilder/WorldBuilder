@@ -112,6 +112,12 @@ namespace WorldBuilder
       /**
        * Todo
        */
+      template<class T, class A, class B>
+      std::vector<T> get_vector(const std::string &name, std::vector<std::shared_ptr<A> > &, std::vector<std::shared_ptr<B> > &);
+
+      /**
+       * Todo
+       */
       template<class T>
       std::unique_ptr<T> get_unique_pointer(const std::string &name);
 
@@ -121,6 +127,13 @@ namespace WorldBuilder
       template<class T>
       void
       get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<T> > &);
+
+      /**
+       * Todo
+       */
+      template<class T>
+      void
+      get_shared_pointers(const std::string &name, std::vector<std::shared_ptr<T> > &);
 
       /**
        * Todo

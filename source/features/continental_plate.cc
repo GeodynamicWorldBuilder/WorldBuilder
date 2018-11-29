@@ -32,6 +32,7 @@
 #include <world_builder/types/constant_layer.h>
 #include <world_builder/types/double.h>
 #include <world_builder/types/string.h>
+#include <world_builder/types/object.h>
 #include <world_builder/types/unsigned_int.h>
 #include <world_builder/types/plugin_system.h>
 
@@ -56,18 +57,42 @@ namespace WorldBuilder
 
 
     void
-    ContinentalPlate::declare_entries(Parameters &prm, const std::string &)
+    ContinentalPlate::declare_entries(Parameters &prm,
+                                      const std::string &parent_name,
+                                      const std::vector<std::string> &required_entries)
     {
+      if (parent_name == "items")
+        prm.enter_subsection("properties");
+      prm.declare_entry("", Types::Object(required_entries), "continental plate object");
+
       prm.declare_entry("min depth", Types::Double(0),
                         "The depth to which this feature is present");
       prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),
                         "The depth to which this feature is present");
       prm.declare_entry("temperature models",
-                        Types::PluginSystem("", Features::ContinentalPlateModels::Temperature::Interface::declare_entries),
+                        Types::PluginSystem("", Features::ContinentalPlateModels::Temperature::Interface::declare_entries, {"model"}),
                         "A list of temperature models.");
       prm.declare_entry("composition models",
-                        Types::PluginSystem("", Features::ContinentalPlateModels::Composition::Interface::declare_entries),
+                        Types::PluginSystem("", Features::ContinentalPlateModels::Composition::Interface::declare_entries, {"model"}),
                         "A list of composition models.");
+
+      /* Todo
+      // prevent infinite recursion
+      if (parent_name != "items")
+        {
+          // This only happens if we are not in sections
+          prm.declare_entry("sections", Types::Array(Types::PluginSystem("",Features::ContinentalPlate::declare_entries, {"coordinate"}, false)),"A list of features.");
+        }
+      else
+        {
+
+          // this only happens in sections
+          prm.declare_entry("coordinate", Types::UnsignedInt(0),
+                            "The coordinate which should be overwritten");
+
+          prm.leave_subsection();
+        }
+        */
     }
 
     void
