@@ -543,7 +543,7 @@ namespace WorldBuilder
                                       std::vector<double> global_x_list)
     {
       // TODO: Assert that point_list, plane_segment_angles and plane_segment_lenghts have the same size.
-      WBAssert(point_list.size() == plane_segment_lengths.size(),
+      /*WBAssert(point_list.size() == plane_segment_lengths.size(),
                "Internal error: The size of point_list (" << point_list.size()
                << ") and plane_segment_lengths (" << plane_segment_lengths.size() << ") are different.");
       WBAssert(point_list.size() == plane_segment_angles.size(),
@@ -551,7 +551,7 @@ namespace WorldBuilder
                << ") and plane_segment_angles (" << plane_segment_angles.size() << ") are different.");
       WBAssert(point_list.size() == plane_segment_angles.size(),
                "Internal error: The size of point_list (" << point_list.size()
-               << ") and global_x_list (" << global_x_list.size() << ") are different.");
+               << ") and global_x_list (" << global_x_list.size() << ") are different.");*/
       if (global_x_list.size() == 0)
         {
           // fill it

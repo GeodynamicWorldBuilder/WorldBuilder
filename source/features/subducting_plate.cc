@@ -551,7 +551,7 @@ namespace WorldBuilder
       // todo: explain and check -starting_depth
       if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness)
         {
-          WBAssert(coordinates.size() == slab_segment_lengths.size(),
+          /*WBAssert(coordinates.size() == slab_segment_lengths.size(),
                    "Internal error: The size of coordinates (" << coordinates.size()
                    << ") and slab_segment_lengths (" << slab_segment_lengths.size() << ") are different.");
           WBAssert(coordinates.size() == slab_segment_angles.size(),
@@ -559,7 +559,7 @@ namespace WorldBuilder
                    << ") and slab_segment_angles (" << slab_segment_angles.size() << ") are different.");
           WBAssert(coordinates.size() == slab_segment_angles.size(),
                    "Internal error: The size of coordinates (" << coordinates.size()
-                   << ") and one_dimensional_coordinates (" << one_dimensional_coordinates.size() << ") are different.");
+                   << ") and one_dimensional_coordinates (" << one_dimensional_coordinates.size() << ") are different.");*/
           // todo: explain
           std::map<std::string,double> distance_from_planes =
             Utilities::distance_point_from_curved_planes(position,
