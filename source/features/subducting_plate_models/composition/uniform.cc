@@ -97,7 +97,7 @@ namespace WorldBuilder
                                  double composition_,
                                  const double ,
                                  const double ,
-								   const std::map<std::string,double>& distance_from_plane) const
+                                 const std::map<std::string,double> &distance_from_plane) const
         {
           double composition = composition_;
           if (distance_from_plane.at("distanceFromPlane") <= max_depth && distance_from_plane.at("distanceFromPlane") >= min_depth)

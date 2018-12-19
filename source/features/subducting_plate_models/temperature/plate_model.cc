@@ -163,7 +163,7 @@ namespace WorldBuilder
                                     double temperature_,
                                     const double feature_min_depth,
                                     const double feature_max_depth,
-									   const std::map<std::string,double>& distance_from_planes) const
+                                    const std::map<std::string,double> &distance_from_planes) const
         {
 
           double temperature = temperature_;
@@ -231,12 +231,12 @@ namespace WorldBuilder
 
 
 
-              if (operation == "replace")
-                return temperature;
-              else if ("add")
-                return temperature_ + temperature;
-              else if ("substract")
-                return temperature_ - temperature;
+          if (operation == "replace")
+            return temperature;
+          else if ("add")
+            return temperature_ + temperature;
+          else if ("substract")
+            return temperature_ - temperature;
 
 
           return temperature_;

@@ -63,8 +63,8 @@ namespace WorldBuilder
         void
         Layers::parse_entries(Parameters &prm)
         {
-        	// todo: should not need to empty, possibility to improve performance
-        	layers.resize(0);
+          // todo: should not need to empty, possibility to improve performance
+          layers.resize(0);
           prm.get_unique_pointers<Interface>("layers", layers);
 
           prm.enter_subsection("layers");

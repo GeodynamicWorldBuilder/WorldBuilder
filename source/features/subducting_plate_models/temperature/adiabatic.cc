@@ -136,7 +136,7 @@ namespace WorldBuilder
                                    double temperature,
                                    const double ,
                                    const double ,
-								   const std::map<std::string,double>& ) const
+                                   const std::map<std::string,double> &) const
         {
 
           if (depth <= max_depth && depth >= min_depth)

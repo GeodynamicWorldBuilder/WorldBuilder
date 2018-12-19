@@ -351,9 +351,9 @@ namespace WorldBuilder
                 WBAssertThrow(false, "Could not convert values of " << base << " into doubles.");
               }
             return Point<2>(value1,value2,this->coordinate_system->natural_coordinate_system());
+          }
       }
-      }
-        WBAssertThrow(false, "default values not implemented in get<Point<2> >. Looked in: " + strict_base + "/" << name);
+    WBAssertThrow(false, "default values not implemented in get<Point<2> >. Looked in: " + strict_base + "/" << name);
 
     return Point<2>(invalid);;
   }
@@ -394,10 +394,10 @@ namespace WorldBuilder
   template<>
   std::vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,Features::SubductingPlateModels::Composition::Interface> >
   Parameters::get_vector(const std::string &name,
-                         std::vector<std::shared_ptr<Features::SubductingPlateModels::Temperature::Interface> > & default_temperature_models,
-                         std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface> > & default_composition_models)
+                         std::vector<std::shared_ptr<Features::SubductingPlateModels::Temperature::Interface> > &default_temperature_models,
+                         std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface> > &default_composition_models)
   {
-	  using namespace Features::SubductingPlateModels;
+    using namespace Features::SubductingPlateModels;
     std::vector<Objects::Segment<Temperature::Interface,Composition::Interface> > vector;
     this->enter_subsection(name);
     const std::string strict_base = this->get_full_json_path();
@@ -408,7 +408,7 @@ namespace WorldBuilder
 
         for (unsigned int i = 0; i < array->Size(); ++i )
           {
-        	this->enter_subsection(std::to_string(i));
+            this->enter_subsection(std::to_string(i));
             const std::string base = this->get_full_json_path();
             // get one segment
             // length
@@ -476,48 +476,48 @@ namespace WorldBuilder
             //This is a value to look back in the path elements. It is a
             // bit arbetrary, so might want to look in the future for an alternative.
             const unsigned int searchback = path.size() > 5 && path[path.size()-4] == "sections" ? 4 : 2;
-            if(this->get_shared_pointers<Temperature::Interface>("temperature models", temperature_models) == false)
-            {
-            	temperature_models = default_temperature_models;
+            if (this->get_shared_pointers<Temperature::Interface>("temperature models", temperature_models) == false)
+              {
+                temperature_models = default_temperature_models;
 
-            	// we only need to do something when there is a temperature model defined
-            	if(Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Get(parameters) != NULL)
-            	{
-            	// copy the value, this unfortunately removes it.
-            	Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Get(parameters)->GetArray());
+                // we only need to do something when there is a temperature model defined
+                if (Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Get(parameters) != NULL)
+                  {
+                    // copy the value, this unfortunately removes it.
+                    Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Get(parameters)->GetArray());
 
-            	// now copy it
-            	Value value2;
-            	value2.CopyFrom(value1, parameters.GetAllocator());
+                    // now copy it
+                    Value value2;
+                    value2.CopyFrom(value1, parameters.GetAllocator());
 
-            	// now we should have 2x the same value, so put it back and place it in the correct location.
-            	Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
+                    // now we should have 2x the same value, so put it back and place it in the correct location.
+                    Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
 
-            	Pointer((base).c_str()).Get(parameters)->AddMember("temperature models", value2, parameters.GetAllocator());
-            	}
-            }
+                    Pointer((base).c_str()).Get(parameters)->AddMember("temperature models", value2, parameters.GetAllocator());
+                  }
+              }
 
             std::vector<std::shared_ptr<Composition::Interface> > composition_models;
-            if(this->get_shared_pointers<Composition::Interface>("composition models", composition_models) == false)
-            {
-            	composition_models = default_composition_models;
+            if (this->get_shared_pointers<Composition::Interface>("composition models", composition_models) == false)
+              {
+                composition_models = default_composition_models;
 
-            	// we only need to do something when there is a composition model defined
-            	if(Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Get(parameters) != NULL)
-            	{
-            	// copy the value, this unfortunately removes it.
-            	Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Get(parameters)->GetArray());
+                // we only need to do something when there is a composition model defined
+                if (Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Get(parameters) != NULL)
+                  {
+                    // copy the value, this unfortunately removes it.
+                    Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Get(parameters)->GetArray());
 
-            	// now copy it
-            	Value value2;
-            	value2.CopyFrom(value1, parameters.GetAllocator());
+                    // now copy it
+                    Value value2;
+                    value2.CopyFrom(value1, parameters.GetAllocator());
 
-            	// now we should have 2x the same value, so put it back and place it in the correct location.
-            	Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
+                    // now we should have 2x the same value, so put it back and place it in the correct location.
+                    Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
 
-            	Pointer((base).c_str()).Get(parameters)->AddMember("composition models", value2, parameters.GetAllocator());
-            	}
-            }
+                    Pointer((base).c_str()).Get(parameters)->AddMember("composition models", value2, parameters.GetAllocator());
+                  }
+              }
             vector.push_back(Objects::Segment<Temperature::Interface,Composition::Interface>(length, thickness, top_trunctation, angle, temperature_models, composition_models));
             //let's assume that the file is correct, because it has been checked with the json schema.
             // So there are exactly two values.
@@ -654,9 +654,9 @@ namespace WorldBuilder
           }
       }
     else
-    {
-    	return false;
-    }
+      {
+        return false;
+      }
 
     return true;
   }
@@ -676,9 +676,9 @@ namespace WorldBuilder
           }
       }
     else
-    {
-    	return false;
-    }
+      {
+        return false;
+      }
 
     return true;
   }
@@ -704,9 +704,9 @@ namespace WorldBuilder
           }
       }
     else
-    {
-    	return false;
-    }
+      {
+        return false;
+      }
 
     return true;
   }
@@ -1586,13 +1586,13 @@ namespace WorldBuilder
     for (unsigned int i = 0; i < path.size(); i++)
       {
         // first get the type
-    	//WBAssert(Pointer((collapse + "/" + path[i] + "/type").c_str()).Get(declarations) != NULL, "Internal error: could not find " << collapse + "/" + path[i] + "/type");
+        //WBAssert(Pointer((collapse + "/" + path[i] + "/type").c_str()).Get(declarations) != NULL, "Internal error: could not find " << collapse + "/" + path[i] + "/type");
 
-    	std::string base_path = Pointer((collapse + "/" + path[i] + "/type").c_str()).Get(declarations) != NULL
-        		?
-        				collapse + "/" + path[i]
-						:
-						collapse;
+        std::string base_path = Pointer((collapse + "/" + path[i] + "/type").c_str()).Get(declarations) != NULL
+                                ?
+                                collapse + "/" + path[i]
+                                :
+                                collapse;
         std::string type = Pointer((base_path + "/type").c_str()).Get(declarations)->GetString();
 
         if (type == "array")
@@ -1616,11 +1616,11 @@ namespace WorldBuilder
                     //std::cout << "flag 1: i = " << i << ", get_full_json_path()= " << get_full_json_path() << std::endl;
                     // we need to get the json path relevant for the current declaration string
                     // we are interested in, which requires an offset of 2.
-                    if(Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters) == NULL)
-                    {
-                    	std::vector<double> fail;
-                    	fail[200] = 1;
-                    }
+                    if (Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters) == NULL)
+                      {
+                        std::vector<double> fail;
+                        fail[200] = 1;
+                      }
                     WBAssert(Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters) != NULL, "Could not find model in: " << get_full_json_path(i+2) + "/model");
                     std::string parameters_string = Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters)->GetString();
                     //std::cout << "flag 2: i = " << i << ", get_full_json_path(i+2) = " << get_full_json_path(i+2) << std::endl;
@@ -1680,9 +1680,9 @@ namespace WorldBuilder
             else
               {*/
             //++i;
-                collapse += "/properties";// + path[i];
-                //++i;
-              //}
+            collapse += "/properties";// + path[i];
+            //++i;
+            //}
           }
         else
           {

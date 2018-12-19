@@ -146,28 +146,28 @@ namespace WorldBuilder
       // initialize the default models
       /*prm.enter_subsection("temperature models");
       {
-    	  for(unsigned int i = 0; i < default_temperature_models.size(); ++i)
-    	  {
-    		  prm.enter_subsection(std::to_string(i));
-    		  {
-    			  default_temperature_models[i]->parse_entries(prm);
-    		  }
-    		  prm.leave_subsection();
-    	  }
+        for(unsigned int i = 0; i < default_temperature_models.size(); ++i)
+        {
+          prm.enter_subsection(std::to_string(i));
+          {
+            default_temperature_models[i]->parse_entries(prm);
+          }
+          prm.leave_subsection();
+        }
       }
       prm.leave_subsection();
 
 
       prm.enter_subsection("composition models");
       {
-    	  for(unsigned int i = 0; i < default_composition_models.size(); ++i)
-    	  {
-    		  prm.enter_subsection(std::to_string(i));
-    		  {
-    			  default_composition_models[i]->parse_entries(prm);
-    		  }
-    		  prm.leave_subsection();
-    	  }
+        for(unsigned int i = 0; i < default_composition_models.size(); ++i)
+        {
+          prm.enter_subsection(std::to_string(i));
+          {
+            default_composition_models[i]->parse_entries(prm);
+          }
+          prm.leave_subsection();
+        }
       }
       prm.leave_subsection();*/
 
@@ -176,7 +176,7 @@ namespace WorldBuilder
 
       // get the default segments.
       default_segment_vector = prm.get_vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
-	                                  Features::SubductingPlateModels::Composition::Interface> >("segments", default_temperature_models, default_composition_models);
+      Features::SubductingPlateModels::Composition::Interface> >("segments", default_temperature_models, default_composition_models);
 
 
       // This vector stores segments to this coordiante/section.
@@ -187,39 +187,39 @@ namespace WorldBuilder
 
       prm.enter_subsection("segments");
       {
-    	  for(unsigned int i = 0; i < default_segment_vector.size(); ++i)
-    	  {
-    		  prm.enter_subsection(std::to_string(i));
-    		  {
-    			  prm.enter_subsection("temperature models");
-    			  {
-    				  for(unsigned int j = 0; j < default_segment_vector[i].temperature_systems.size(); ++j)
-    				  {
-    					  prm.enter_subsection(std::to_string(j));
-    					  {
-    						  default_segment_vector[i].temperature_systems[j]->parse_entries(prm);
-    					  }
-    					  prm.leave_subsection();
-    				  }
-    			  }
-    			  prm.leave_subsection();
+        for (unsigned int i = 0; i < default_segment_vector.size(); ++i)
+          {
+            prm.enter_subsection(std::to_string(i));
+            {
+              prm.enter_subsection("temperature models");
+              {
+                for (unsigned int j = 0; j < default_segment_vector[i].temperature_systems.size(); ++j)
+                  {
+                    prm.enter_subsection(std::to_string(j));
+                    {
+                      default_segment_vector[i].temperature_systems[j]->parse_entries(prm);
+                    }
+                    prm.leave_subsection();
+                  }
+              }
+              prm.leave_subsection();
 
 
-    			  prm.enter_subsection("composition models");
-    			  {
-    				  for(unsigned int j = 0; j < default_segment_vector[i].composition_systems.size(); ++j)
-    				  {
-    					  prm.enter_subsection(std::to_string(j));
-    					  {
-    						  default_segment_vector[i].composition_systems[j]->parse_entries(prm);
-    					  }
-    					  prm.leave_subsection();
-    				  }
-    			  }
-    			  prm.leave_subsection();
-    		  }
-    		  prm.leave_subsection();
-    	  }
+              prm.enter_subsection("composition models");
+              {
+                for (unsigned int j = 0; j < default_segment_vector[i].composition_systems.size(); ++j)
+                  {
+                    prm.enter_subsection(std::to_string(j));
+                    {
+                      default_segment_vector[i].composition_systems[j]->parse_entries(prm);
+                    }
+                    prm.leave_subsection();
+                  }
+              }
+              prm.leave_subsection();
+            }
+            prm.leave_subsection();
+          }
       }
       prm.leave_subsection();
 
@@ -228,61 +228,61 @@ namespace WorldBuilder
       prm.get_unique_pointers("sections", sections_vector);
 
       prm.enter_subsection("sections");
-      for(unsigned int i = 0; i < n_sections; ++i)
-      {
-    	  // first check whether this section/coordinate has a a special overwrite
-    	  for(unsigned int i_sector = 0; i_sector < sections_vector.size(); ++i_sector)
-    	  {
-    		  prm.enter_subsection(std::to_string(i_sector));
-    		  {
-    			  const unsigned int change_coord_number = prm.get<unsigned int>("coordinate");
+      for (unsigned int i = 0; i < n_sections; ++i)
+        {
+          // first check whether this section/coordinate has a a special overwrite
+          for (unsigned int i_sector = 0; i_sector < sections_vector.size(); ++i_sector)
+            {
+              prm.enter_subsection(std::to_string(i_sector));
+              {
+                const unsigned int change_coord_number = prm.get<unsigned int>("coordinate");
 
-    		  segment_vector[change_coord_number] = prm.get_vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
-                      Features::SubductingPlateModels::Composition::Interface> >("segments", default_temperature_models, default_composition_models);
+                segment_vector[change_coord_number] = prm.get_vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
+                                                      Features::SubductingPlateModels::Composition::Interface> >("segments", default_temperature_models, default_composition_models);
 
-    	      prm.enter_subsection("segments");
-    	      {
-    	    	  for(unsigned int i = 0; i < segment_vector[change_coord_number].size(); ++i)
-    	    	  {
-    	    		  prm.enter_subsection(std::to_string(i));
-    	    		  {
-    	    			  prm.enter_subsection("temperature models");
-    	    			  {
-    	    				  for(unsigned int j = 0; j < segment_vector[change_coord_number][i].temperature_systems.size(); ++j)
-    	    				  {
-    	    					  prm.enter_subsection(std::to_string(j));
-    	    					  {
-    	    						  segment_vector[change_coord_number][i].temperature_systems[j]->parse_entries(prm);
-    	    					  }
-    	    					  prm.leave_subsection();
-    	    				  }
-    	    			  }
-    	    			  prm.leave_subsection();
+                prm.enter_subsection("segments");
+                {
+                  for (unsigned int i = 0; i < segment_vector[change_coord_number].size(); ++i)
+                    {
+                      prm.enter_subsection(std::to_string(i));
+                      {
+                        prm.enter_subsection("temperature models");
+                        {
+                          for (unsigned int j = 0; j < segment_vector[change_coord_number][i].temperature_systems.size(); ++j)
+                            {
+                              prm.enter_subsection(std::to_string(j));
+                              {
+                                segment_vector[change_coord_number][i].temperature_systems[j]->parse_entries(prm);
+                              }
+                              prm.leave_subsection();
+                            }
+                        }
+                        prm.leave_subsection();
 
 
-    	    			  prm.enter_subsection("composition models");
-    	    			  {
-    	    				  for(unsigned int j = 0; j < segment_vector[change_coord_number][j].composition_systems.size(); ++j)
-    	    				  {
-    	    					  prm.enter_subsection(std::to_string(j));
-    	    					  {
-    	    						  segment_vector[change_coord_number][i].composition_systems[j]->parse_entries(prm);
-    	    					  }
-    	    					  prm.leave_subsection();
-    	    				  }
-    	    			  }
-    	    			  prm.leave_subsection();
-    	    		  }
-    	    		  prm.leave_subsection();
-    	    	  }
-    	      }
-    	      prm.leave_subsection();
+                        prm.enter_subsection("composition models");
+                        {
+                          for (unsigned int j = 0; j < segment_vector[change_coord_number][j].composition_systems.size(); ++j)
+                            {
+                              prm.enter_subsection(std::to_string(j));
+                              {
+                                segment_vector[change_coord_number][i].composition_systems[j]->parse_entries(prm);
+                              }
+                              prm.leave_subsection();
+                            }
+                        }
+                        prm.leave_subsection();
+                      }
+                      prm.leave_subsection();
+                    }
+                }
+                prm.leave_subsection();
 
-    		  }
-			  prm.leave_subsection();
-    	  }
+              }
+              prm.leave_subsection();
+            }
 
-      }
+        }
       prm.leave_subsection();
 
       maximum_slab_thickness = 0;
@@ -293,27 +293,27 @@ namespace WorldBuilder
       slab_segment_top_truncation.resize(original_number_of_coordinates);
       slab_segment_angles.resize(original_number_of_coordinates);
 
-      for(unsigned int i = 0; i < segment_vector.size(); ++i)
-      {
-    	  double local_total_slab_length = 0;
-    	  slab_segment_lengths[i].resize(segment_vector[i].size());
-    	  slab_segment_thickness[i].resize(segment_vector[i].size(), Point<2>(invalid));
-    	  slab_segment_top_truncation[i].resize(segment_vector[i].size(), Point<2>(invalid));
-    	  slab_segment_angles[i].resize(segment_vector[i].size(), Point<2>(invalid));
-    	  for(unsigned int j = 0; j < segment_vector[i].size(); ++j)
-    	  {
-    		  slab_segment_lengths[i][j] = segment_vector[i][j].value_length;
-    		  local_total_slab_length += segment_vector[i][j].value_length;
+      for (unsigned int i = 0; i < segment_vector.size(); ++i)
+        {
+          double local_total_slab_length = 0;
+          slab_segment_lengths[i].resize(segment_vector[i].size());
+          slab_segment_thickness[i].resize(segment_vector[i].size(), Point<2>(invalid));
+          slab_segment_top_truncation[i].resize(segment_vector[i].size(), Point<2>(invalid));
+          slab_segment_angles[i].resize(segment_vector[i].size(), Point<2>(invalid));
+          for (unsigned int j = 0; j < segment_vector[i].size(); ++j)
+            {
+              slab_segment_lengths[i][j] = segment_vector[i][j].value_length;
+              local_total_slab_length += segment_vector[i][j].value_length;
 
-    		  slab_segment_thickness[i][j] = segment_vector[i][j].value_thickness;
-    		  slab_segment_top_truncation[i][j] = segment_vector[i][j].value_top_truncation;
+              slab_segment_thickness[i][j] = segment_vector[i][j].value_thickness;
+              slab_segment_top_truncation[i][j] = segment_vector[i][j].value_top_truncation;
 
-    		  slab_segment_angles[i][j] = segment_vector[i][j].value_angle * (const_pi/180);
-    	  }
-    	  maximum_slab_thickness = std::max(maximum_slab_thickness, local_total_slab_length);
-    	  total_slab_length[i] = local_total_slab_length;
-    	  maximum_total_slab_length = std::max(maximum_total_slab_length, local_total_slab_length);
-      }
+              slab_segment_angles[i][j] = segment_vector[i][j].value_angle * (const_pi/180);
+            }
+          maximum_slab_thickness = std::max(maximum_slab_thickness, local_total_slab_length);
+          total_slab_length[i] = local_total_slab_length;
+          maximum_total_slab_length = std::max(maximum_total_slab_length, local_total_slab_length);
+        }
 
 
       /* prm.get_unique_pointers<Features::SubductingPlateModels::Temperature::Interface>("temperature models", temperature_models);
@@ -542,24 +542,24 @@ namespace WorldBuilder
       const double starting_radius = natural_coordinate.get_depth_coordinate() + depth - starting_depth;
 
       WBAssert(starting_radius != 0, "Internal error: starting_radius can not be zero. "
-    		  << "Position = " << position[0] << ":" << position[1] << ":" << position[2]
-    		  << ", natural_coordinate.get_depth_coordinate() = " << natural_coordinate.get_depth_coordinate()
-    		  << ", depth = " << depth
-    		  << ", starting_depth " << starting_depth
-			  );
+               << "Position = " << position[0] << ":" << position[1] << ":" << position[2]
+               << ", natural_coordinate.get_depth_coordinate() = " << natural_coordinate.get_depth_coordinate()
+               << ", depth = " << depth
+               << ", starting_depth " << starting_depth
+              );
 
       // todo: explain and check -starting_depth
       if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness)
         {
-    	  WBAssert(coordinates.size() == slab_segment_lengths.size(),
-    			  "Internal error: The size of coordinates (" << coordinates.size()
-				  << ") and slab_segment_lengths (" << slab_segment_lengths.size() << ") are different.");
-    	  WBAssert(coordinates.size() == slab_segment_angles.size(),
-    			  "Internal error: The size of coordinates (" << coordinates.size()
-				  << ") and slab_segment_angles (" << slab_segment_angles.size() << ") are different.");
-    	  WBAssert(coordinates.size() == slab_segment_angles.size(),
-    			  "Internal error: The size of coordinates (" << coordinates.size()
-				  << ") and one_dimensional_coordinates (" << one_dimensional_coordinates.size() << ") are different.");
+          WBAssert(coordinates.size() == slab_segment_lengths.size(),
+                   "Internal error: The size of coordinates (" << coordinates.size()
+                   << ") and slab_segment_lengths (" << slab_segment_lengths.size() << ") are different.");
+          WBAssert(coordinates.size() == slab_segment_angles.size(),
+                   "Internal error: The size of coordinates (" << coordinates.size()
+                   << ") and slab_segment_angles (" << slab_segment_angles.size() << ") are different.");
+          WBAssert(coordinates.size() == slab_segment_angles.size(),
+                   "Internal error: The size of coordinates (" << coordinates.size()
+                   << ") and one_dimensional_coordinates (" << one_dimensional_coordinates.size() << ") are different.");
           // todo: explain
           std::map<std::string,double> distance_from_planes =
             Utilities::distance_point_from_curved_planes(position,
@@ -585,7 +585,7 @@ namespace WorldBuilder
           if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)
             {
               // We want to do both section (horizontal) and segment (vertical) interpolation.
-        	  // first for thickness
+              // first for thickness
               const double thickness_up = slab_segment_thickness[current_section][current_segment][0]
                                           + section_fraction
                                           * (slab_segment_thickness[next_section][current_segment][0]
@@ -599,13 +599,13 @@ namespace WorldBuilder
 
               // secondly for top truncation
               const double top_truncation_up = slab_segment_top_truncation[current_section][current_segment][0]
-                                          + section_fraction
-                                          * (slab_segment_top_truncation[next_section][current_segment][0]
-                                             - slab_segment_top_truncation[current_section][current_segment][0]);
+                                               + section_fraction
+                                               * (slab_segment_top_truncation[next_section][current_segment][0]
+                                                  - slab_segment_top_truncation[current_section][current_segment][0]);
               const double top_truncation_down = slab_segment_top_truncation[current_section][current_segment][1]
-                                            + section_fraction
-                                            * (slab_segment_top_truncation[next_section][current_segment][1]
-                                               - slab_segment_top_truncation[current_section][current_segment][1]);
+                                                 + section_fraction
+                                                 * (slab_segment_top_truncation[next_section][current_segment][1]
+                                                    - slab_segment_top_truncation[current_section][current_segment][1]);
               const double top_truncation_local = top_truncation_up + segment_fraction * (top_truncation_down - top_truncation_up);
 
               // if the thickness is zero, we don't need to compute anything, so return.
@@ -613,8 +613,8 @@ namespace WorldBuilder
                 return temperature;
 
               // if the thickness is smaller than what is truncated off at the top, we don't need to compute anything, so return.
-              if(thickness_local < top_truncation_local)
-            	  return temperature;
+              if (thickness_local < top_truncation_local)
+                return temperature;
 
               const double max_slab_length = total_slab_length[current_section] +
                                              section_fraction *
@@ -626,18 +626,18 @@ namespace WorldBuilder
                   distance_along_plane <= max_slab_length)
                 {
                   // Inside the slab!
-            	  double temperature_current_section = temperature;
-            	  double temperature_next_section = temperature;
+                  double temperature_current_section = temperature;
+                  double temperature_next_section = temperature;
 
-            	  for (auto &temperature_model: segment_vector[current_section][current_segment].temperature_systems)
+                  for (auto &temperature_model: segment_vector[current_section][current_segment].temperature_systems)
                     {
-                	   temperature_current_section = temperature_model->get_temperature(position,
-                                                                       depth,
-                                                                       gravity_norm,
-                                                                       temperature,
-                                                                       starting_depth,
-                                                                       maximum_depth,
-																	   distance_from_planes);
+                      temperature_current_section = temperature_model->get_temperature(position,
+                                                                                       depth,
+                                                                                       gravity_norm,
+                                                                                       temperature,
+                                                                                       starting_depth,
+                                                                                       maximum_depth,
+                                                                                       distance_from_planes);
 
                       WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature
                                << ", based on a temperature model with the name " << temperature_model->get_name());
@@ -648,13 +648,13 @@ namespace WorldBuilder
 
                   for (auto &temperature_model: segment_vector[next_section][current_segment].temperature_systems)
                     {
-                	  temperature_next_section = temperature_model->get_temperature(position,
-                                                                       depth,
-                                                                       gravity_norm,
-                                                                       temperature,
-																	   starting_depth,
-																	   maximum_depth,
-																	   distance_from_planes);
+                      temperature_next_section = temperature_model->get_temperature(position,
+                                                                                    depth,
+                                                                                    gravity_norm,
+                                                                                    temperature,
+                                                                                    starting_depth,
+                                                                                    maximum_depth,
+                                                                                    distance_from_planes);
 
                       WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature
                                << ", based on a temperature model with the name " << temperature_model->get_name());
@@ -717,7 +717,7 @@ namespace WorldBuilder
                   // We want to do both section (horizontal) and segment (vertical) interpolation.
 
                   // We want to do both section (horizontal) and segment (vertical) interpolation.
-            	  // first for thickness
+                  // first for thickness
                   const double thickness_up = slab_segment_thickness[current_section][current_segment][0]
                                               + section_fraction
                                               * (slab_segment_thickness[next_section][current_segment][0]
@@ -731,13 +731,13 @@ namespace WorldBuilder
 
                   // secondly for top truncation
                   const double top_truncation_up = slab_segment_top_truncation[current_section][current_segment][0]
-                                              + section_fraction
-                                              * (slab_segment_top_truncation[next_section][current_segment][0]
-                                                 - slab_segment_top_truncation[current_section][current_segment][0]);
+                                                   + section_fraction
+                                                   * (slab_segment_top_truncation[next_section][current_segment][0]
+                                                      - slab_segment_top_truncation[current_section][current_segment][0]);
                   const double top_truncation_down = slab_segment_top_truncation[current_section][current_segment][1]
-                                                + section_fraction
-                                                * (slab_segment_top_truncation[next_section][current_segment][1]
-                                                   - slab_segment_top_truncation[current_section][current_segment][1]);
+                                                     + section_fraction
+                                                     * (slab_segment_top_truncation[next_section][current_segment][1]
+                                                        - slab_segment_top_truncation[current_section][current_segment][1]);
                   const double top_truncation_local = top_truncation_up + segment_fraction * (top_truncation_down - top_truncation_up);
 
                   // if the thickness is zero, we don't need to compute anything, so return.
@@ -745,8 +745,8 @@ namespace WorldBuilder
                     return composition;
 
                   // if the thickness is smaller than what is truncated off at the top, we don't need to compute anything, so return.
-                  if(thickness_local < top_truncation_local)
-                	  return composition;
+                  if (thickness_local < top_truncation_local)
+                    return composition;
 
                   const double max_slab_length = total_slab_length[current_section] +
                                                  section_fraction *
@@ -759,18 +759,18 @@ namespace WorldBuilder
                     {
                       // Inside the slab!
 
-                	  double composition_current_section = composition;
-                	  double composition_next_section = composition;
+                      double composition_current_section = composition;
+                      double composition_next_section = composition;
 
-                	  for (auto &composition_model: segment_vector[current_section][current_segment].composition_systems)
+                      for (auto &composition_model: segment_vector[current_section][current_segment].composition_systems)
                         {
-                		  composition_current_section = composition_model->get_composition(position,
-                                                                           depth,
-																		   composition_number,
-																		   composition_current_section,
-                                                                           starting_depth,
-                                                                           maximum_depth,
-    																	   distance_from_planes);
+                          composition_current_section = composition_model->get_composition(position,
+                                                                                           depth,
+                                                                                           composition_number,
+                                                                                           composition_current_section,
+                                                                                           starting_depth,
+                                                                                           maximum_depth,
+                                                                                           distance_from_planes);
 
                           WBAssert(!std::isnan(composition_current_section), "Composition_current_section is not a number: " << composition_current_section
                                    << ", based on a temperature model with the name " << composition_model->get_name());
@@ -781,13 +781,13 @@ namespace WorldBuilder
 
                       for (auto &composition_model: segment_vector[next_section][current_segment].composition_systems)
                         {
-                    	  composition_next_section = composition_model->get_composition(position,
-                                                                           depth,
-																		   composition_number,
-																		   composition_next_section,
-    																	   starting_depth,
-    																	   maximum_depth,
-    																	   distance_from_planes);
+                          composition_next_section = composition_model->get_composition(position,
+                                                                                        depth,
+                                                                                        composition_number,
+                                                                                        composition_next_section,
+                                                                                        starting_depth,
+                                                                                        maximum_depth,
+                                                                                        distance_from_planes);
 
                           WBAssert(!std::isnan(composition_next_section), "Composition_next_section is not a number: " << composition_next_section
                                    << ", based on a temperature model with the name " << composition_model->get_name());

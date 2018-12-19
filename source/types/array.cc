@@ -77,7 +77,7 @@ namespace WorldBuilder
     std::unique_ptr<Interface>
     Array::clone() const
     {
-    	WBAssertThrow(false,"probably wrong code");
+      WBAssertThrow(false,"probably wrong code");
       return std::unique_ptr<Interface>(new Array(inner_type_index, inner_type, description));
     }
 

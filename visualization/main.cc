@@ -1249,9 +1249,9 @@ int main(int argc, char **argv)
       myfile << grid_x[i] << " " << grid_z[i] << " " << "0.0" << std::endl;
   else
     for (unsigned int i = 0; i < n_p; ++i)
-    {
-      myfile << grid_x[i] << " " << grid_y[i] << " " << grid_z[i] << std::endl;
-    }
+      {
+        myfile << grid_x[i] << " " << grid_y[i] << " " << grid_z[i] << std::endl;
+      }
   std::cout << "[5/5] Writing the paraview file: stage 1 of 3, writing header part 2                              \r";
   std::cout.flush();
   myfile << "    </DataArray>" << std::endl;

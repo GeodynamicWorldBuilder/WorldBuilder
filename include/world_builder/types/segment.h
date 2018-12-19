@@ -108,10 +108,10 @@ namespace WorldBuilder
   namespace Objects
   {
 
-   /**
-     * This class represents an actual segment
-     */
-  template <class A, class B>
+    /**
+      * This class represents an actual segment
+      */
+    template <class A, class B>
     class Segment : public Types::Interface
     {
       public:

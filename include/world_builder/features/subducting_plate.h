@@ -101,16 +101,16 @@ namespace WorldBuilder
         std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface>  > default_composition_models;
 
         std::vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
-  	                                 Features::SubductingPlateModels::Composition::Interface> > default_segment_vector;
+            Features::SubductingPlateModels::Composition::Interface> > default_segment_vector;
 
         std::vector< std::vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
-  	                                   Features::SubductingPlateModels::Composition::Interface> > > sections_segment_vector;
+            Features::SubductingPlateModels::Composition::Interface> > > sections_segment_vector;
 
         // This vector stores segments to this coordiante/section.
         //First used (raw) pointers to the segment relevant to this coordinate/section,
         // but I do not trust it won't fail when memory is moved. So storing the all the data now.
         std::vector<std::vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
-          Features::SubductingPlateModels::Composition::Interface> > > segment_vector;
+            Features::SubductingPlateModels::Composition::Interface> > > segment_vector;
 
         // todo: the memory of this can be greatly improved by
         // or using a plugin system for the submodules, or

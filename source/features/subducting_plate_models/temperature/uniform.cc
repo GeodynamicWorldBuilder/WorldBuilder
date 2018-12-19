@@ -96,7 +96,7 @@ namespace WorldBuilder
                                  double temperature_,
                                  const double feature_min_depth,
                                  const double feature_max_depth,
-								   const std::map<std::string,double>& distance_from_plane) const
+                                 const std::map<std::string,double> &distance_from_plane) const
         {
 
           if (distance_from_plane.at("distanceFromPlane") <= max_depth && distance_from_plane.at("distanceFromPlane") >= min_depth)

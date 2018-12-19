@@ -63,8 +63,8 @@ namespace WorldBuilder
         void
         Layers::parse_entries(Parameters &prm)
         {
-        	// todo: should not need to empty, possibility to improve performance
-        	layers.resize(0);
+          // todo: should not need to empty, possibility to improve performance
+          layers.resize(0);
           prm.get_unique_pointers<Interface>("layers", layers);
 
           prm.enter_subsection("layers");
@@ -89,7 +89,7 @@ namespace WorldBuilder
                                 double composition,
                                 const double feature_min_depth,
                                 const double feature_max_depth,
-								   const std::map<std::string,double>& distance_from_planes) const
+                                const std::map<std::string,double> &distance_from_planes) const
         {
           for (auto &layer: layers)
             {
@@ -99,7 +99,7 @@ namespace WorldBuilder
                                                    composition,
                                                    feature_min_depth,
                                                    feature_max_depth,
-												   distance_from_planes);
+                                                   distance_from_planes);
             }
           return composition;
         }

@@ -103,9 +103,9 @@ int main(int argc, char **argv)
    */
   std::unique_ptr<WorldBuilder::World> world;
   //try
-    {
-      world = std::unique_ptr<WorldBuilder::World>(new WorldBuilder::World(wb_file));
-    }
+  {
+    world = std::unique_ptr<WorldBuilder::World>(new WorldBuilder::World(wb_file));
+  }
   /*catch (std::exception &e)
     {
       std::cerr << "Could not start the World builder, error: " << e.what() << "\n";
