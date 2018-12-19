@@ -44,10 +44,6 @@ namespace WorldBuilder
                      const std::vector<std::string> required_entries,
                      const bool allow_multiple = true);
 
-        /**
-         * constructor
-         */
-        PluginSystem(const std::string &description);
 
         /**
          * Copy constructor

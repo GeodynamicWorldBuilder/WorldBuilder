@@ -29,7 +29,7 @@
 #include <world_builder/types/string.h>
 #include <world_builder/types/plugin_system.h>
 #include <world_builder/types/unsigned_int.h>
-#include <world_builder/features/continental_plate_models/temperature/layers.h>
+#include <world_builder/features/subducting_plate_models/temperature/layers.h>
 
 
 namespace WorldBuilder
@@ -38,7 +38,7 @@ namespace WorldBuilder
 
   namespace Features
   {
-    namespace ContinentalPlateModels
+    namespace SubductingPlateModels
     {
       namespace Temperature
       {
@@ -56,15 +56,13 @@ namespace WorldBuilder
         {
 
           prm.declare_entry("layers",
-                            Types::PluginSystem("", Features::ContinentalPlateModels::Temperature::Interface::declare_entries, {"model"}),
+                            Types::PluginSystem("", Features::SubductingPlateModels::Temperature::Interface::declare_entries, {"model"}),
                             "A list of temperature models to be used as layers.");
         }
 
         void
         Layers::parse_entries(Parameters &prm)
         {
-        	// todo: should not need to empty, possibility to improve performance
-        	layers.resize(0);
           prm.get_unique_pointers<Interface>("layers", layers);
 
           prm.enter_subsection("layers");
@@ -88,7 +86,8 @@ namespace WorldBuilder
                                 const double gravity,
                                 double temperature,
                                 const double feature_min_depth,
-                                const double feature_max_depth) const
+                                const double feature_max_depth,
+								   const std::map<std::string,double>& distance_from_planes) const
         {
           for (auto &layer: layers)
             {
@@ -97,7 +96,8 @@ namespace WorldBuilder
                                                    gravity,
                                                    temperature,
                                                    feature_min_depth,
-                                                   feature_max_depth);
+                                                   feature_max_depth,
+												   distance_from_planes);
             }
           return temperature;
         }

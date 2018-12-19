@@ -1226,7 +1226,7 @@ int main(int argc, char **argv)
   std::cout.flush();
 
 
-  std::cout << "[5/5] Writing the paraview file: stage 1 of 3, writing header                                  \r";
+  std::cout << "[5/5] Writing the paraview file: stage 1 of 3, writing header part 1                              \r";
   std::cout.flush();
 
   std::string base_filename = wb_file.substr(wb_file.find_last_of("/\\") + 1);
@@ -1249,7 +1249,11 @@ int main(int argc, char **argv)
       myfile << grid_x[i] << " " << grid_z[i] << " " << "0.0" << std::endl;
   else
     for (unsigned int i = 0; i < n_p; ++i)
+    {
       myfile << grid_x[i] << " " << grid_y[i] << " " << grid_z[i] << std::endl;
+    }
+  std::cout << "[5/5] Writing the paraview file: stage 1 of 3, writing header part 2                              \r";
+  std::cout.flush();
   myfile << "    </DataArray>" << std::endl;
   myfile << "  </Points>" << std::endl;
   myfile << std::endl;

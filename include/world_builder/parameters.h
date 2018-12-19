@@ -125,14 +125,14 @@ namespace WorldBuilder
        * Todo
        */
       template<class T>
-      void
+      bool
       get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<T> > &);
 
       /**
        * Todo
        */
       template<class T>
-      void
+      bool
       get_shared_pointers(const std::string &name, std::vector<std::shared_ptr<T> > &);
 
       /**
@@ -346,7 +346,7 @@ namespace WorldBuilder
        * @see get_segment()
        * @see Types::Segment
        */
-      std::vector<Types::Segment> vector_segment;
+      //std::vector<Types::Segment> vector_segment;
 
       /**
        * A vector which stores all the ConstantLayer types. These can

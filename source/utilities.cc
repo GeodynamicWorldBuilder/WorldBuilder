@@ -543,6 +543,15 @@ namespace WorldBuilder
                                       std::vector<double> global_x_list)
     {
       // TODO: Assert that point_list, plane_segment_angles and plane_segment_lenghts have the same size.
+      WBAssert(point_list.size() == plane_segment_lengths.size(),
+    			  "Internal error: The size of point_list (" << point_list.size()
+				  << ") and plane_segment_lengths (" << plane_segment_lengths.size() << ") are different.");
+      WBAssert(point_list.size() == plane_segment_angles.size(),
+    			  "Internal error: The size of point_list (" << point_list.size()
+				  << ") and plane_segment_angles (" << plane_segment_angles.size() << ") are different.");
+      WBAssert(point_list.size() == plane_segment_angles.size(),
+    			  "Internal error: The size of point_list (" << point_list.size()
+				  << ") and global_x_list (" << global_x_list.size() << ") are different.");
       if (global_x_list.size() == 0)
         {
           // fill it
@@ -698,7 +707,9 @@ namespace WorldBuilder
               Point<3> y_axis = closest_point_on_line_cartesian - closest_point_on_line_bottom_cartesian;
 
               WBAssert(y_axis.norm() != 0,
-                       "Internal error: The y_axis.norm() is zero. Y_axis is " << y_axis[0] << ":" << y_axis[1] << ":" << y_axis[2]);
+                       "Internal error: The y_axis.norm() is zero. Y_axis is " << y_axis[0] << ":" << y_axis[1] << ":" << y_axis[2]
+					   << ". closest_point_on_line_cartesian = " << closest_point_on_line_cartesian[0] << ":" << closest_point_on_line_cartesian[1] << ":" << closest_point_on_line_cartesian[2]
+					   << ", closest_point_on_line_bottom_cartesian = " << closest_point_on_line_bottom_cartesian[0] << ":" << closest_point_on_line_bottom_cartesian[1] << ":" << closest_point_on_line_bottom_cartesian[2]);
 
               WBAssert(!std::isnan(y_axis[0]),
                        "Internal error: The y_axis variable is not a number: " << y_axis[0]);

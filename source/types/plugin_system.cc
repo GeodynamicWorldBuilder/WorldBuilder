@@ -36,21 +36,19 @@ namespace WorldBuilder
       allow_multiple(allow_multiple)
     {
       this->type_name = Types::type::PluginSystem;
-      std::cout << "-------construct pluginsystem with pointer = " << this->declare_entries
-                << " and reqruied entires.size() = " << required_entries.size() << std::endl;
+      //std::cout << "-------construct pluginsystem " << default_value << " with pointer = " << this->declare_entries
+        //        << " and reqruied entires.size() = " << required_entries.size() << std::endl;
       WBAssert(declare_entries != NULL, "declare entries may not be a null pointer.");
     }
 
-    PluginSystem::PluginSystem(const std::string &description)
-      :
-      description(description)
-    {
-      this->type_name = Types::type::PluginSystem;
-    }
 
-    PluginSystem::PluginSystem(PluginSystem &feature)
+    PluginSystem::PluginSystem(PluginSystem &plugin_system)
       :
-      description(feature.description)
+		default_value(plugin_system.default_value),
+		  declare_entries(plugin_system.declare_entries),
+		  required_entries(plugin_system.required_entries),
+		  allow_multiple(plugin_system.allow_multiple),
+	      description(plugin_system.description)
     {
       this->type_name = Types::type::PluginSystem;
     }

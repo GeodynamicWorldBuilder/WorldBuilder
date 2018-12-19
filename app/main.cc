@@ -102,11 +102,11 @@ int main(int argc, char **argv)
    * Try to start the world builder
    */
   std::unique_ptr<WorldBuilder::World> world;
-  try
+  //try
     {
       world = std::unique_ptr<WorldBuilder::World>(new WorldBuilder::World(wb_file));
     }
-  catch (std::exception &e)
+  /*catch (std::exception &e)
     {
       std::cerr << "Could not start the World builder, error: " << e.what() << "\n";
       return 1;
@@ -115,7 +115,7 @@ int main(int argc, char **argv)
     {
       std::cerr << "Exception of unknown type!\n";
       return 1;
-    }
+    }*/
 
 
   /**
