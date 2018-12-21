@@ -40,16 +40,6 @@ namespace WorldBuilder
         Double(const double default_value);
 
         /**
-         * A constructor for the load_entry function
-         */
-        Double(double default_value, std::string description);
-
-        /**
-         * A constructor for the clone and set_entry function
-         */
-        Double(double value, double default_value, std::string description);
-
-        /**
          * Destructor
          */
         ~Double();
@@ -69,9 +59,7 @@ namespace WorldBuilder
                           const std::string &name,
                           const std::string &documentation) const;
 
-        double value;
         double default_value;
-        std::string description;
 
       private:
 

@@ -1561,158 +1561,7 @@ namespace WorldBuilder
     path.pop_back();
   }
 
-  unsigned int
-  Parameters::get_unsigned_int(const std::string &name) const
-  {
-    const std::string path_plus_name = get_full_path() == "" ? name : get_full_path() + path_seperator + name;
-    /**
-     * Note: This assert only checks in debug mode. This is on purpose, because
-     * this is code which can only be called by other code, so by developers.
-     * They should run in debug mode.
-     */
-    WBAssert(string_to_type_map.count(path_plus_name) > 0, "Could not find entry \'" << name << "\' not found. Make sure it is loaded or set.");
-    //Todo: there is a problem that when the wrong get function is used. Have to find a way to fix this.
-    return vector_unsigned_int[string_to_type_map.at(path_plus_name)].value;
-  }
 
-  double
-  Parameters::get_double(const std::string &name) const
-  {
-    const std::string path_plus_name = get_full_path() == "" ? name : get_full_path() + path_seperator + name;
-    WBAssert(string_to_type_map.count(path_plus_name) > 0, "Could not find entry \'" << name << "\' not found. Make sure it is loaded or set.");
-    return vector_double[string_to_type_map.at(path_plus_name)].value;
-  }
-
-  std::string
-  Parameters::get_string(const std::string &name) const
-  {
-    const std::string path_plus_name = get_full_path() == "" ? name : get_full_path() + path_seperator + name;
-    WBAssert(string_to_type_map.count(path_plus_name) > 0, "Could not find entry \'" << name << "\' not found. Make sure it is loaded or set.");
-    return vector_string[string_to_type_map.at(path_plus_name)].value;
-  }
-
-  template<>
-  Point<2>
-  Parameters::get_point(const std::string &name) const
-  {
-    const std::string path_plus_name = get_full_path() == "" ? name : get_full_path() + path_seperator + name;
-    WBAssert(string_to_type_map.count(path_plus_name) > 0, "Could not find entry \'" << name << "\' not found. Make sure it is loaded or set.");
-    return vector_point_2d[string_to_type_map.at(path_plus_name)].value;
-  }
-
-  template<>
-  Point<3>
-  Parameters::get_point(const std::string &name) const
-  {
-    const std::string path_plus_name = get_full_path() == "" ? name : get_full_path() + path_seperator + name;
-    WBAssert(string_to_type_map.count(path_plus_name) > 0, "Could not find entry \'" << name << "\' not found. Make sure it is loaded or set.");
-    return vector_point_3d[string_to_type_map.at(path_plus_name)].value;
-  }
-
-
-  const Types::Array &
-  Parameters::get_array(const std::string &name) const
-  {
-    //TODO: Assert that the size of the vector is larger then zero.
-    const std::string path_plus_name = get_full_path() == "" ? name : get_full_path() + path_seperator + name;
-    WBAssert(string_to_type_map.count(path_plus_name) > 0, "Could not find entry \'" << name << "\' not found. Make sure it is loaded or set.");
-
-    return vector_array[string_to_type_map.at(path_plus_name)];
-  }
-
-  template<class T>
-  const std::vector<T>
-  Parameters::get_array(const std::string &) const
-  {
-    /*
-    //TODO: Assert that the size of the vector is larger then zero.
-    const std::string path_plus_name = get_full_path() == "" ? name : get_full_path() + path_seperator + name;
-    WBAssert(string_to_type_map.count(path_plus_name) > 0, "Could not find entry \'" << name << "\' not found. Make sure it is loaded or set.");
-
-    const Types::Array typed_array = vector_array[string_to_type_map.at(path_plus_name)];
-
-    std::vector<T> array;
-
-    for (unsigned int i = 0; i < typed_array.inner_type_index.size(); ++i)
-      {
-        if (typed_array.inner_type == Types::type::UnsignedInt)
-          {
-            WBAssert(dynamic_cast<const T *>(&vector_unsigned_int[typed_array.inner_type_index[i]]) != NULL,
-                     "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator)
-                     << name << ", because it is not a Unsigned Int.");
-
-            array.push_back(*dynamic_cast<const T *>(&vector_unsigned_int[typed_array.inner_type_index[i]]));
-
-          }
-        else if (typed_array.inner_type == Types::type::Double)
-          {
-            WBAssert(dynamic_cast<const T *>(&vector_double[typed_array.inner_type_index[i]]) != NULL,
-                     "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator)
-                     << name << ", because it is not a Double.");
-
-            array.push_back(*dynamic_cast<const T *>(&vector_double[typed_array.inner_type_index[i]]));
-          }
-        else if (typed_array.inner_type == Types::type::Segment)
-          {
-            WBAssert(dynamic_cast<const T *>(&vector_segment[typed_array.inner_type_index[i]]) != NULL,
-                     "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator)
-                     << name << ", because it is not a segment.");
-
-            array.push_back(*dynamic_cast<const T *>(&vector_segment[typed_array.inner_type_index[i]]));
-          }
-        else if (typed_array.inner_type == Types::type::ConstantLayer)
-          {
-            WBAssert(dynamic_cast<const T *>(&vector_constant_layer[typed_array.inner_type_index[i]]) != NULL,
-                     "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator)
-                     << name << ", because it is not a constant layer.");
-
-            array.push_back(*dynamic_cast<const T *>(&vector_constant_layer[typed_array.inner_type_index[i]]));
-          }
-        else if (typed_array.inner_type == Types::type::Point2D)
-          {
-            WBAssert(dynamic_cast<const T *>(&vector_point_2d[typed_array.inner_type_index[i]]) != NULL,
-                     "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator)
-                     << name << ", because it is not a 2d Point.");
-
-            array.push_back(*dynamic_cast<const T *>(&vector_point_2d[typed_array.inner_type_index[i]]));
-          }
-        else if (typed_array.inner_type == Types::type::Point3D)
-          {
-            WBAssert(dynamic_cast<const T *>(&vector_point_3d[typed_array.inner_type_index[i]]) != NULL,
-                     "Could not get " << get_full_path() << (get_full_path() == "" ? "" : path_seperator)
-                     << name << ", because it is not a 3d Point.");
-
-            array.push_back(*dynamic_cast<const T *>(&vector_point_3d[typed_array.inner_type_index[i]]));
-          }
-        else
-          {
-            WBAssert(false, "type conversion not implemented for type with number " << (int)typed_array.inner_type << ".");
-          }
-
-      }
-
-    return array;*/
-    return std::vector<T>();
-  }
-
-//TODO:
-  /*
-  template<class T>
-  T Parameters::get(const std::string &name)
-  {
-
-  }*/
-
-  std::string
-  Parameters::get_full_path() const
-  {
-    std::string collapse = "";
-    for (unsigned int i = 0; i < path.size(); i++)
-      {
-        collapse += path[i] + path_seperator;
-      }
-    return collapse.substr(0,collapse.size()-path_seperator.size());
-  }
 
   std::string
   Parameters::get_full_json_path(unsigned int max_size) const
@@ -1759,14 +1608,8 @@ namespace WorldBuilder
                     std::string declarations_string = Pointer((base_path + "/items/oneOf/" + std::to_string(index)
                                                                + "/properties/model/enum/0").c_str()).Get(declarations)->GetString();
 
-                    //std::cout << "flag 1: i = " << i << ", get_full_json_path()= " << get_full_json_path() << std::endl;
                     // we need to get the json path relevant for the current declaration string
                     // we are interested in, which requires an offset of 2.
-                    if (Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters) == NULL)
-                      {
-                        std::vector<double> fail;
-                        fail[200] = 1;
-                      }
                     WBAssert(Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters) != NULL, "Could not find model in: " << get_full_json_path(i+2) + "/model");
                     std::string parameters_string = Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters)->GetString();
                     //std::cout << "flag 2: i = " << i << ", get_full_json_path(i+2) = " << get_full_json_path(i+2) << std::endl;
@@ -1789,8 +1632,6 @@ namespace WorldBuilder
             else
               {
                 collapse = base_path + "/items";
-                // add one to i, to skip the array
-                //++i;
               }
           }
         else if (type == "object")
@@ -1838,89 +1679,8 @@ namespace WorldBuilder
     return collapse;//substr(0,collapse.size());
   }
 
-  std::string
-  Parameters::get_relative_path() const
-  {
-    std::string collapse = "";
-    for (unsigned int i = path_level; i < path.size(); i++)
-      {
-        collapse += path[i] + path_seperator;
-      }
-    return collapse;//.substr(0,collapse.size());
-  }
-
-  /**
-   * Warning: do not use before declarations is filled.
-   */
-  std::string
-  Parameters::get_full_path_without_arrays() const
-  {
-    std::string collapse = "";
-    for (unsigned int i = 0; i < path.size(); i++)
-      {
-        collapse += (path[i].front() == '[' && path[i].back() == ']' ? "" : path[i]) + path_seperator;
-      }
-    return collapse;//.substr(0,collapse.size()-path_seperator.size());
-  }
 
 
-  std::string
-  Parameters::get_relative_path_without_arrays() const
-  {
-    std::string collapse = "";
-    for (unsigned int i = path_level; i < path.size(); i++)
-      {
-        collapse += (path[i].front() == '[' && path[i].back() == ']' ? "" : path[i]) + path_seperator;
-      }
-    return collapse.substr(0,collapse.size()-path_seperator.size());
-  }
-
-
-  /**
-   * Returns a vector of pointers to the UnsignedInt Type based on the provided name.
-   * Note that the variable with this name has to be loaded before this function is called.
-   */
-  template const std::vector<Types::UnsignedInt> Parameters::get_array<Types::UnsignedInt>(const std::string &name) const;
-
-  /**
-   * Returns a vector of pointers to the Double Type based on the provided name.
-   * Note that the variable with this name has to be loaded before this function is called.
-   */
-  template const std::vector<Types::Double> Parameters::get_array<Types::Double>(const std::string &name) const;
-
-  /**
-   * Returns a vector of pointers to the Segment Type based on the provided name.
-   * Note that the variable with this name has to be loaded before this function is called.
-   */
-  //template const std::vector<Types::Segment> Parameters::get_array<Types::Segment>(const std::string &name) const;
-
-  /**
-   * Returns a vector of pointers to the ConstantLayer Type based on the provided name.
-   * Note that the variable with this name has to be loaded before this function is called.
-   */
-  //template const std::vector<Types::ConstantLayer> Parameters::get_array<Types::ConstantLayer>(const std::string &name) const;
-
-  /**
-   * Returns a vector of pointers to the Point<2> Type based on the provided name.
-   * Note that the variable with this name has to be loaded before this function is called.
-   */
-  template const std::vector<Types::Point<2> > Parameters::get_array<Types::Point<2> >(const std::string &name) const;
-
-  /**
-   * Returns a vector of pointers to the Point<3> Type based on the provided name.
-   * Note that the variable with this name has to be loaded before this function is called.
-   */
-  template const std::vector<Types::Point<3> > Parameters::get_array<Types::Point<3> >(const std::string &name) const;
-
-
-  /**
-   * Returns a vector of pointers to the Point<3> Type based on the provided name.
-   * Note that the variable with this name has to be loaded before this function is called.
-   */
-  //template std::vector<Types::Segment>
-  //Parameters::get_vector<Types::Segment,
-  //Features::SubductingPlateModels::Temperature::Interface,
-  //Features::SubductingPlateModels::Composition::Interface>(const std::string &name);
 
 
   /**

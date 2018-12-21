@@ -27,32 +27,11 @@ namespace WorldBuilder
   {
     Double::Double(const double default_value)
       :
-      value(0),
       default_value(default_value)
     {
       this->type_name = Types::type::Double;
     }
 
-    // deprecated
-    Double::Double(double default_value, std::string description)
-      :
-      value(default_value),
-      default_value(default_value),
-      description(description)
-    {
-      this->type_name = Types::type::Double;
-    }
-
-    // deprecated
-    Double::Double(double value, double default_value, std::string description)
-      :
-      value(value),
-      default_value(default_value),
-      description(description)
-    {
-      this->type_name = Types::type::Double;
-
-    }
 
     Double::~Double ()
     {}
@@ -60,7 +39,7 @@ namespace WorldBuilder
     std::unique_ptr<Interface>
     Double::clone() const
     {
-      return std::unique_ptr<Interface>(new Double(value, default_value, description));
+      return std::unique_ptr<Interface>(new Double(default_value));
     }
 
     void

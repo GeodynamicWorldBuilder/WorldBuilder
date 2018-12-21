@@ -1953,13 +1953,13 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world3.composition(position, 0, 6) == 0.0);
 
   position = {250e3,500e3,800e3};
-  // results strongly dependent on the summation number of the McKenzie temperature.
+  //adibatic temperature
   CHECK(world3.temperature(position, 0, 10) == Approx(1600));
-  CHECK(world3.temperature(position, 1, 10) == Approx(1.0)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world3.temperature(position, 5000, 10) == Approx(1.0)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world3.temperature(position, 10e3, 10) == Approx(1.0));
-  CHECK(world3.temperature(position, 25e3, 10) == Approx(1.0));
-  CHECK(world3.temperature(position, 50e3, 10) == Approx(1.0));
+  CHECK(world3.temperature(position, 1, 10) == Approx(1600.0004480001));
+  CHECK(world3.temperature(position, 5000, 10) == Approx(1602.241568732));
+  CHECK(world3.temperature(position, 10e3, 10) == Approx(1604.486277858));
+  CHECK(world3.temperature(position, 25e3, 10) == Approx(1611.239291627));
+  CHECK(world3.temperature(position, 50e3, 10) == Approx(1622.5575343016));
   CHECK(world3.temperature(position, 75e3, 10) == Approx(1633.95528262));
   CHECK(world3.temperature(position, 150e3, 10) == Approx(1668.6311660012));
   //CHECK(world3.temperature(position, std::sqrt(2) * 100e3 - 1, 10) == Approx(150.0));
@@ -2300,29 +2300,21 @@ TEST_CASE("WorldBuilder Features: coordinate interpolation")
 TEST_CASE("WorldBuilder Types: Double")
 {
 #define TYPE Double
-  Types::TYPE type(1,"test");
-  CHECK(type.value == 1);
+  Types::TYPE type(1);
   CHECK(type.default_value == 1);
-  CHECK(type.description == "test");
   CHECK(type.get_type() == Types::type::TYPE);
 
   Types::TYPE type_copy(type);
-  CHECK(type_copy.value == 1);
   CHECK(type_copy.default_value == 1);
-  CHECK(type_copy.description == "test");
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
-  Types::TYPE type_explicit(2, 3, "test explicit");
-  CHECK(type_explicit.value == 2);
+  Types::TYPE type_explicit(3);
   CHECK(type_explicit.default_value == 3);
-  CHECK(type_explicit.description == "test explicit");
   CHECK(type_explicit.get_type() == Types::type::TYPE);
 
   std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
-  CHECK(type_clone_natural->value == 2);
   CHECK(type_clone_natural->default_value == 3);
-  CHECK(type_clone_natural->description == "test explicit");
   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 #undef TYPE
 }
@@ -2591,7 +2583,7 @@ TEST_CASE("WorldBuilder Types: PluginSystem")
 TEST_CASE("WorldBuilder Types: Array")
 {
 #define TYPE Array
-  Types::TYPE type(Types::Double(0,"double test"));
+  Types::TYPE type(Types::Double(0));
   CHECK(type.inner_type == Types::type::Double);
   CHECK(type.inner_type_ptr.get() != nullptr);
   CHECK(type.get_type() == Types::type::TYPE);
