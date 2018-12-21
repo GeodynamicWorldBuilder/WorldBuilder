@@ -190,8 +190,8 @@ namespace WorldBuilder
                 const unsigned int change_coord_number = prm.get<unsigned int>("coordinate");
 
                 WBAssertThrow(segment_vector.size() > change_coord_number, "Error: for subducting plate with name: '" << this->name
-                		                                                    << "', trying to change the section of coordinate " << change_coord_number
-                		                                                    << " while only " << segment_vector.size() << " coordinates are defined.");
+                              << "', trying to change the section of coordinate " << change_coord_number
+                              << " while only " << segment_vector.size() << " coordinates are defined.");
 
                 segment_vector[change_coord_number] = prm.get_vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
                                                       Features::SubductingPlateModels::Composition::Interface> >("segments", default_temperature_models, default_composition_models);

@@ -2681,311 +2681,120 @@ TEST_CASE("WorldBuilder Parameters")
   prm.load_entry("unsigned int", true, Types::UnsignedInt(3,"description"));
   CHECK(prm.get_unsigned_int("unsigned int") == 4);*/
 // Todo: redo this with the new type system.
-/*
-  // Test the Double functions
-  CHECK_THROWS_WITH(prm.load_entry("non existent double", true, Types::Double(1,"description")),
-                    Contains("Entry undeclared: non existent"));
-
-#ifndef NDEBUG
-  CHECK_THROWS_WITH(prm.get_double("non existent double"),
-                    Contains("Could not find entry 'non existent double' not found. Make sure it is loaded or set"));
-#endif
-  CHECK(prm.load_entry("non existent double", false, Types::Double(1,"description")) == false);
-  CHECK(prm.get_double("non existent double") == 1);
-
-  prm.set_entry("new double", Types::Double(2,"description"));
-  CHECK(prm.get_double("new double") == 2);
-
-  prm.load_entry("double", true, Types::Double(3,"description"));
-  CHECK(prm.get_double("double") == 1.23456e2);
-
-
-  // Test the String functions
-  CHECK_THROWS_WITH(prm.load_entry("non existent string", true, Types::String("1","description")),
-                    Contains("Entry undeclared: non existent string"));
-
-#ifndef NDEBUG
-  CHECK_THROWS_WITH(prm.get_string("non existent string"),
-                    Contains("Could not find entry 'non existent string' not found. Make sure it is loaded or set"));
-#endif
-  CHECK(prm.load_entry("non exitent string", false, Types::String("1","description")) == false);
-  CHECK(prm.get_string("non exitent string") == "1");
-
-  prm.set_entry("new string", Types::String("2","description"));
-  CHECK(prm.get_string("new string") == "2");
-
-  prm.load_entry("string", true, Types::String("3","description"));
-  CHECK(prm.get_string("string") == "mystring 0");
-
-  // Test the Point functions
-  CHECK_THROWS_WITH(prm.load_entry("non existent 2d Point", true, Types::Point<2>(Point<2>(1,2,cartesian),"description")),
-                    Contains("Could not find .non existent 2d Point, while it is set as required."));
-  CHECK_THROWS_WITH(prm.load_entry("non existent 3d Point", true, Types::Point<3>(Point<3>(1,2,3,cartesian),"description")),
-                    Contains("Could not find .non existent 3d Point, while it is set as required."));
-
-#ifndef NDEBUG
-  CHECK_THROWS_WITH(prm.get_point<2>("non existent 2d Point"),
-                    Contains("Could not find entry 'non existent 2d Point' not found. Make sure it is loaded or set"));
-  CHECK_THROWS_WITH(prm.get_point<3>("non existent 3d Point"),
-                    Contains("Could not find entry 'non existent 3d Point' not found. Make sure it is loaded or set"));
-#endif
-
-  CHECK(prm.load_entry("non existent 2d Point", false, Types::Point<2>(Point<2>(1,2,cartesian),"description")) == false);
-  CHECK(prm.load_entry("non existent 3d Point", false, Types::Point<3>(Point<3>(1,2,3,cartesian),"description")) == false);
-
-  CHECK(prm.get_point<2>("non existent 2d Point").get_array() == std::array<double,2> {1,2});
-  CHECK(prm.get_point<3>("non existent 3d Point").get_array() == std::array<double,3> {1,2,3});
-
-  prm.set_entry("new Point 2d", Types::Point<2>(Point<2>(3,4,cartesian),"description"));
-  prm.set_entry("new Point 3d", Types::Point<3>(Point<3>(5,6,7,cartesian),"description"));
-
-  CHECK(prm.get_point<2>("new Point 2d").get_array() == std::array<double,2> {3,4});
-  CHECK(prm.get_point<3>("new Point 3d").get_array() == std::array<double,3> {5,6,7});
-
-
-  prm.load_entry("2d point", true, Types::Point<2>(Point<2>(1,2,cartesian),"description"));
-  prm.load_entry("3d point", true, Types::Point<3>(Point<3>(3,4,5,cartesian),"description"));
-
-  CHECK(prm.get_point<2>("2d point").get_array() == std::array<double,2> {10,11});
-  CHECK(prm.get_point<3>("3d point").get_array() == std::array<double,3> {12,13,14});
-
-  // Test the Array<Types::Double> functions
-  CHECK_THROWS_WITH(prm.load_entry("non existent double array", true, Types::Array(Types::Double(1,"description"),"description")),
-                    Contains("Could not find .non existent double array, while it is set as required."));
-
-#ifndef NDEBUG
-  CHECK_THROWS_WITH(prm.get_array("non existent double array"),
-                    Contains("Could not find entry 'non existent double array' not found. Make sure it is loaded or set"));
-#endif
-
-  CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
-
-#ifndef NDEBUG
-  CHECK(prm.get_array<Types::Double>("non exitent double array").size() == 1);
-  CHECK(prm.get_array<Types::Double>("non exitent double array")[0].value == 2.0);
-  CHECK(prm.get_array<Types::Double>("non exitent double array")[0].description == "description");
-#endif
-  // This is not desired behavior, but it is not implemented yet.
-
-  prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
-  std::vector<Types::Double> set_typed_double =  prm.get_array<Types::Double >("new double array");
-  CHECK(set_typed_double.size() == 0);
-  // This is not desired behavior, but it is not implemented yet.
-
-  prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
-  std::vector<Types::Double> true_loaded_typed_double =  prm.get_array<Types::Double >("double array");
-  CHECK(true_loaded_typed_double.size() == 3);
-  CHECK(true_loaded_typed_double[0].value == 25);
-  CHECK(true_loaded_typed_double[1].value == 26);
-  CHECK(true_loaded_typed_double[2].value == 27);
-
-
-  // Test the Array<Types::Point<2> > functions
-  CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2,cartesian),"description"),"description")),
-                    Contains("Could not find .non existent point<2> array, while it is set as required."));
-
-#ifndef NDEBUG
-  CHECK_THROWS_WITH(prm.get_array("non existent point<2> array"),
-                    Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set"));
-#endif
-  CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<2>(Point<2>(3,4,cartesian),"description"),"description")) == false);
-
-#ifndef NDEBUG
-  CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("non existent point<2> array"),
-                    Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set."));
-  // This is not desired behavior, but it is not implemented yet.
-#endif
-
-  prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
-  std::vector<Types::Point<2> > set_typed_point_2d = prm.get_array<Types::Point<2> >("new point<2> array");
-  CHECK(set_typed_point_2d.size() == 0);
-  // This is not desired behavior, but it is not implemented yet.
-
-  prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
-  std::vector<Types::Point<2> > true_loaded_typed_point_2d =  prm.get_array<Types::Point<2> >("point<2> array");
-  CHECK(true_loaded_typed_point_2d.size() == 3);
-  CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {10,11});
-  CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {12,13});
-  CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {14,15});
-
-
-  // Test the Array<Types::Point<3> > functions
-  CHECK_THROWS_WITH(prm.load_entry("non existent point<3> array", true, Types::Array(Types::Point<3>(Point<3>(1,2,3,cartesian),"description"),"description")),
-                    Contains("Could not find .non existent point<3> array, while it is set as required."));
-
-#ifndef NDEBUG
-  CHECK_THROWS_WITH(prm.get_array("non existent point<3> array"),
-                    Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set"));
-#endif
-  CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<3>(Point<3>(4,5,6,cartesian),"description"),"description")) == false);
-
-#ifndef NDEBUG
-  CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("non existent point<3> array"),
-                    Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set."));
-  // This is not desired behavior, but it is not implemented yet.
-#endif
-
-  prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
-  std::vector<Types::Point<3> > set_typed_point_3d = prm.get_array<Types::Point<3> >("new point<3> array");
-  CHECK(set_typed_point_3d.size() == 0);
-  // This is not desired behavior, but it is not implemented yet.
-
-  prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
-  std::vector<Types::Point<3> > true_loaded_typed_point_3d =  prm.get_array<Types::Point<3> >("point<3> array");
-  CHECK(true_loaded_typed_point_3d.size() == 3);
-  CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {20,21,22});
-  CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {23,24,25});
-  CHECK(true_loaded_typed_point_3d[2].value.get_array() == std::array<double,3> {26,27,28});
-
-#ifndef NDEBUG
-  CHECK_THROWS_WITH(prm.get_array<Types::Double >("point<2> array"),
-                    Contains("Could not get point<2> array, because it is not a 2d Point."));
-  CHECK_THROWS_WITH(prm.get_array<Types::Double >("point<3> array"),
-                    Contains("Could not get point<3> array, because it is not a 3d Point."));
-
-  CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("point<3> array"),
-                    Contains("Could not get point<3> array, because it is not a 3d Point."));
-  CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("double array"),
-                    Contains("Could not get double array, because it is not a Double."));
-
-  CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("point<2> array"),
-                    Contains("Could not get point<2> array, because it is not a 2d Point."));
-  CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("double array"),
-                    Contains("Could not get double array, because it is not a Double."));
-#endif
-
-  // Test the enter_subsection and leave_subsection functions
-  prm.enter_subsection("subsection 1");
-  {
-    // Test the UnsignedInt functions
-    / *CHECK_THROWS_WITH(prm.load_entry("non existent unsigned int", true, Types::UnsignedInt(1,"description")),
-                      Contains("Entry undeclared: subsection 1.non existent unsigned int"));
-
-    #ifndef NDEBUG
-    CHECK_THROWS_WITH(prm.get_unsigned_int("non existent unsigned int"),
-                      Contains("Could not find entry 'non existent unsigned int' not found. Make sure it is loaded or set"));
-    #endif
-
-    CHECK(prm.load_entry("non existent unsigned int", false, Types::UnsignedInt(1,"description")) == false);
-    CHECK(prm.get_unsigned_int("non existent unsigned int") == 1);
-
-    prm.set_entry("new unsigned int", Types::UnsignedInt(2,"description"));
-    CHECK(prm.get_unsigned_int("new unsigned int") == 2);
-
-    prm.load_entry("unsigned int", true, Types::UnsignedInt(3,"description"));
-    CHECK(prm.get_unsigned_int("unsigned int") == 5);* /
-
-
+  /*
     // Test the Double functions
     CHECK_THROWS_WITH(prm.load_entry("non existent double", true, Types::Double(1,"description")),
-                      Contains("Entry undeclared: subsection 1.non existent"));
+                      Contains("Entry undeclared: non existent"));
 
-#ifndef NDEBUG
+  #ifndef NDEBUG
     CHECK_THROWS_WITH(prm.get_double("non existent double"),
                       Contains("Could not find entry 'non existent double' not found. Make sure it is loaded or set"));
-#endif
+  #endif
+    CHECK(prm.load_entry("non existent double", false, Types::Double(1,"description")) == false);
+    CHECK(prm.get_double("non existent double") == 1);
 
-    CHECK(prm.load_entry("non existent double", false, Types::Double(2,"description")) == false);
-    CHECK(prm.get_double("non existent double") == 2);
+    prm.set_entry("new double", Types::Double(2,"description"));
+    CHECK(prm.get_double("new double") == 2);
 
-    prm.set_entry("new double", Types::Double(3,"description"));
-    CHECK(prm.get_double("new double") == 3);
-
-    prm.load_entry("double", true, Types::Double(4,"description"));
-    CHECK(prm.get_double("double") == 2.23456e2);
+    prm.load_entry("double", true, Types::Double(3,"description"));
+    CHECK(prm.get_double("double") == 1.23456e2);
 
 
     // Test the String functions
-    CHECK_THROWS_WITH(prm.load_entry("non existent string", true, Types::String("2","description")),
-                      Contains("Entry undeclared: subsection 1.non existent string"));
+    CHECK_THROWS_WITH(prm.load_entry("non existent string", true, Types::String("1","description")),
+                      Contains("Entry undeclared: non existent string"));
 
-#ifndef NDEBUG
+  #ifndef NDEBUG
     CHECK_THROWS_WITH(prm.get_string("non existent string"),
                       Contains("Could not find entry 'non existent string' not found. Make sure it is loaded or set"));
-#endif
+  #endif
+    CHECK(prm.load_entry("non exitent string", false, Types::String("1","description")) == false);
+    CHECK(prm.get_string("non exitent string") == "1");
 
-    CHECK(prm.load_entry("non exitent string", false, Types::String("3","description")) == false);
-    CHECK(prm.get_string("non exitent string") == "3");
+    prm.set_entry("new string", Types::String("2","description"));
+    CHECK(prm.get_string("new string") == "2");
 
-    prm.set_entry("new string", Types::String("4","description"));
-    CHECK(prm.get_string("new string") == "4");
-
-    prm.load_entry("string", true, Types::String("5","description"));
-    CHECK(prm.get_string("string") == "mystring 1");
+    prm.load_entry("string", true, Types::String("3","description"));
+    CHECK(prm.get_string("string") == "mystring 0");
 
     // Test the Point functions
-    CHECK_THROWS_WITH(prm.load_entry("non existent 2d Point", true, Types::Point<2>(Point<2>(3,4,cartesian),"description")),
-                      Contains("Could not find subsection 1.non existent 2d Point, while it is set as required."));
-    CHECK_THROWS_WITH(prm.load_entry("non existent 3d Point", true, Types::Point<3>(Point<3>(4,5,6,cartesian),"description")),
-                      Contains("Could not find subsection 1.non existent 3d Point, while it is set as required."));
+    CHECK_THROWS_WITH(prm.load_entry("non existent 2d Point", true, Types::Point<2>(Point<2>(1,2,cartesian),"description")),
+                      Contains("Could not find .non existent 2d Point, while it is set as required."));
+    CHECK_THROWS_WITH(prm.load_entry("non existent 3d Point", true, Types::Point<3>(Point<3>(1,2,3,cartesian),"description")),
+                      Contains("Could not find .non existent 3d Point, while it is set as required."));
 
-#ifndef NDEBUG
+  #ifndef NDEBUG
     CHECK_THROWS_WITH(prm.get_point<2>("non existent 2d Point"),
                       Contains("Could not find entry 'non existent 2d Point' not found. Make sure it is loaded or set"));
     CHECK_THROWS_WITH(prm.get_point<3>("non existent 3d Point"),
                       Contains("Could not find entry 'non existent 3d Point' not found. Make sure it is loaded or set"));
-#endif
+  #endif
 
-    CHECK(prm.load_entry("non existent 2d Point", false, Types::Point<2>(Point<2>(3,4,cartesian),"description")) == false);
-    CHECK(prm.load_entry("non existent 3d Point", false, Types::Point<3>(Point<3>(4,5,6,cartesian),"description")) == false);
+    CHECK(prm.load_entry("non existent 2d Point", false, Types::Point<2>(Point<2>(1,2,cartesian),"description")) == false);
+    CHECK(prm.load_entry("non existent 3d Point", false, Types::Point<3>(Point<3>(1,2,3,cartesian),"description")) == false);
 
-    CHECK(prm.get_point<2>("non existent 2d Point").get_array() == std::array<double,2> {3,4});
-    CHECK(prm.get_point<3>("non existent 3d Point").get_array() == std::array<double,3> {4,5,6});
+    CHECK(prm.get_point<2>("non existent 2d Point").get_array() == std::array<double,2> {1,2});
+    CHECK(prm.get_point<3>("non existent 3d Point").get_array() == std::array<double,3> {1,2,3});
 
-    prm.set_entry("new Point 2d", Types::Point<2>(Point<2>(5,6,cartesian),"description"));
-    prm.set_entry("new Point 3d", Types::Point<3>(Point<3>(7,8,9,cartesian),"description"));
+    prm.set_entry("new Point 2d", Types::Point<2>(Point<2>(3,4,cartesian),"description"));
+    prm.set_entry("new Point 3d", Types::Point<3>(Point<3>(5,6,7,cartesian),"description"));
 
-    CHECK(prm.get_point<2>("new Point 2d").get_array() == std::array<double,2> {5,6});
-    CHECK(prm.get_point<3>("new Point 3d").get_array() == std::array<double,3> {7,8,9});
+    CHECK(prm.get_point<2>("new Point 2d").get_array() == std::array<double,2> {3,4});
+    CHECK(prm.get_point<3>("new Point 3d").get_array() == std::array<double,3> {5,6,7});
 
 
     prm.load_entry("2d point", true, Types::Point<2>(Point<2>(1,2,cartesian),"description"));
     prm.load_entry("3d point", true, Types::Point<3>(Point<3>(3,4,5,cartesian),"description"));
 
-    CHECK(prm.get_point<2>("2d point").get_array() == std::array<double,2> {15,16});
-    CHECK(prm.get_point<3>("3d point").get_array() == std::array<double,3> {17,18,19});
+    CHECK(prm.get_point<2>("2d point").get_array() == std::array<double,2> {10,11});
+    CHECK(prm.get_point<3>("3d point").get_array() == std::array<double,3> {12,13,14});
 
-
-    // Test the Array functions
+    // Test the Array<Types::Double> functions
     CHECK_THROWS_WITH(prm.load_entry("non existent double array", true, Types::Array(Types::Double(1,"description"),"description")),
-                      Contains("Could not find subsection 1.non existent double array, while it is set as required."));
+                      Contains("Could not find .non existent double array, while it is set as required."));
 
-#ifndef NDEBUG
+  #ifndef NDEBUG
     CHECK_THROWS_WITH(prm.get_array("non existent double array"),
                       Contains("Could not find entry 'non existent double array' not found. Make sure it is loaded or set"));
+  #endif
 
     CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
+
+  #ifndef NDEBUG
     CHECK(prm.get_array<Types::Double>("non exitent double array").size() == 1);
     CHECK(prm.get_array<Types::Double>("non exitent double array")[0].value == 2.0);
     CHECK(prm.get_array<Types::Double>("non exitent double array")[0].description == "description");
+  #endif
     // This is not desired behavior, but it is not implemented yet.
-#endif
 
     prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
-    std::vector<Types::Double > set_typed_double =  prm.get_array<Types::Double >("new double array");
+    std::vector<Types::Double> set_typed_double =  prm.get_array<Types::Double >("new double array");
     CHECK(set_typed_double.size() == 0);
     // This is not desired behavior, but it is not implemented yet.
 
     prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
-    std::vector<Types::Double > true_loaded_typed_double =  prm.get_array<Types::Double >("double array");
+    std::vector<Types::Double> true_loaded_typed_double =  prm.get_array<Types::Double >("double array");
     CHECK(true_loaded_typed_double.size() == 3);
-    CHECK(true_loaded_typed_double[0].value == 35);
-    CHECK(true_loaded_typed_double[1].value == 36);
-    CHECK(true_loaded_typed_double[2].value == 37);
+    CHECK(true_loaded_typed_double[0].value == 25);
+    CHECK(true_loaded_typed_double[1].value == 26);
+    CHECK(true_loaded_typed_double[2].value == 27);
+
 
     // Test the Array<Types::Point<2> > functions
     CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2,cartesian),"description"),"description")),
-                      Contains("Could not find subsection 1.non existent point<2> array, while it is set as required."));
+                      Contains("Could not find .non existent point<2> array, while it is set as required."));
 
-#ifndef NDEBUG
+  #ifndef NDEBUG
     CHECK_THROWS_WITH(prm.get_array("non existent point<2> array"),
                       Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set"));
-
+  #endif
     CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<2>(Point<2>(3,4,cartesian),"description"),"description")) == false);
+
+  #ifndef NDEBUG
     CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("non existent point<2> array"),
                       Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set."));
     // This is not desired behavior, but it is not implemented yet.
-#endif
+  #endif
 
     prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
     std::vector<Types::Point<2> > set_typed_point_2d = prm.get_array<Types::Point<2> >("new point<2> array");
@@ -2995,24 +2804,26 @@ TEST_CASE("WorldBuilder Parameters")
     prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
     std::vector<Types::Point<2> > true_loaded_typed_point_2d =  prm.get_array<Types::Point<2> >("point<2> array");
     CHECK(true_loaded_typed_point_2d.size() == 3);
-    CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {20,21});
-    CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {22,23});
-    CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {24,25});
+    CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {10,11});
+    CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {12,13});
+    CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {14,15});
 
 
     // Test the Array<Types::Point<3> > functions
     CHECK_THROWS_WITH(prm.load_entry("non existent point<3> array", true, Types::Array(Types::Point<3>(Point<3>(1,2,3,cartesian),"description"),"description")),
-                      Contains("Could not find subsection 1.non existent point<3> array, while it is set as required."));
+                      Contains("Could not find .non existent point<3> array, while it is set as required."));
 
-#ifndef NDEBUG
+  #ifndef NDEBUG
     CHECK_THROWS_WITH(prm.get_array("non existent point<3> array"),
                       Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set"));
-
+  #endif
     CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<3>(Point<3>(4,5,6,cartesian),"description"),"description")) == false);
+
+  #ifndef NDEBUG
     CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("non existent point<3> array"),
                       Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set."));
     // This is not desired behavior, but it is not implemented yet.
-#endif
+  #endif
 
     prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
     std::vector<Types::Point<3> > set_typed_point_3d = prm.get_array<Types::Point<3> >("new point<3> array");
@@ -3022,32 +2833,33 @@ TEST_CASE("WorldBuilder Parameters")
     prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
     std::vector<Types::Point<3> > true_loaded_typed_point_3d =  prm.get_array<Types::Point<3> >("point<3> array");
     CHECK(true_loaded_typed_point_3d.size() == 3);
-    CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {30,31,32});
-    CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {33,34,35});
-    CHECK(true_loaded_typed_point_3d[2].value.get_array() == std::array<double,3> {36,37,38});
+    CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {20,21,22});
+    CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {23,24,25});
+    CHECK(true_loaded_typed_point_3d[2].value.get_array() == std::array<double,3> {26,27,28});
 
-#ifndef NDEBUG
+  #ifndef NDEBUG
     CHECK_THROWS_WITH(prm.get_array<Types::Double >("point<2> array"),
-                      Contains("Could not get subsection 1.point<2> array, because it is not a 2d Point."));
+                      Contains("Could not get point<2> array, because it is not a 2d Point."));
     CHECK_THROWS_WITH(prm.get_array<Types::Double >("point<3> array"),
-                      Contains("Could not get subsection 1.point<3> array, because it is not a 3d Point."));
+                      Contains("Could not get point<3> array, because it is not a 3d Point."));
 
     CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("point<3> array"),
-                      Contains("Could not get subsection 1.point<3> array, because it is not a 3d Point."));
+                      Contains("Could not get point<3> array, because it is not a 3d Point."));
     CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("double array"),
-                      Contains("Could not get subsection 1.double array, because it is not a Double."));
+                      Contains("Could not get double array, because it is not a Double."));
 
     CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("point<2> array"),
-                      Contains("Could not get subsection 1.point<2> array, because it is not a 2d Point."));
+                      Contains("Could not get point<2> array, because it is not a 2d Point."));
     CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("double array"),
-                      Contains("Could not get subsection 1.double array, because it is not a Double."));
-#endif
+                      Contains("Could not get double array, because it is not a Double."));
+  #endif
 
-    prm.enter_subsection("subsection 2");
+    // Test the enter_subsection and leave_subsection functions
+    prm.enter_subsection("subsection 1");
     {
       // Test the UnsignedInt functions
       / *CHECK_THROWS_WITH(prm.load_entry("non existent unsigned int", true, Types::UnsignedInt(1,"description")),
-                        Contains("Entry undeclared: subsection 1.subsection 2.non existent unsigned int"));
+                        Contains("Entry undeclared: subsection 1.non existent unsigned int"));
 
       #ifndef NDEBUG
       CHECK_THROWS_WITH(prm.get_unsigned_int("non existent unsigned int"),
@@ -3061,93 +2873,93 @@ TEST_CASE("WorldBuilder Parameters")
       CHECK(prm.get_unsigned_int("new unsigned int") == 2);
 
       prm.load_entry("unsigned int", true, Types::UnsignedInt(3,"description"));
-      CHECK(prm.get_unsigned_int("unsigned int") == 6);* /
+      CHECK(prm.get_unsigned_int("unsigned int") == 5);* /
 
 
       // Test the Double functions
-      CHECK_THROWS_WITH(prm.load_entry("non existent double", true, Types::Double(3,"description")),
-                        Contains("Entry undeclared: subsection 1.subsection 2.non existent"));
+      CHECK_THROWS_WITH(prm.load_entry("non existent double", true, Types::Double(1,"description")),
+                        Contains("Entry undeclared: subsection 1.non existent"));
 
-#ifndef NDEBUG
+  #ifndef NDEBUG
       CHECK_THROWS_WITH(prm.get_double("non existent double"),
                         Contains("Could not find entry 'non existent double' not found. Make sure it is loaded or set"));
-#endif
+  #endif
 
-      CHECK(prm.load_entry("non existent double", false, Types::Double(4,"description")) == false);
-      CHECK(prm.get_double("non existent double") == 4);
+      CHECK(prm.load_entry("non existent double", false, Types::Double(2,"description")) == false);
+      CHECK(prm.get_double("non existent double") == 2);
 
-      prm.set_entry("new double", Types::Double(5,"description"));
-      CHECK(prm.get_double("new double") == 5);
+      prm.set_entry("new double", Types::Double(3,"description"));
+      CHECK(prm.get_double("new double") == 3);
 
-      prm.load_entry("double", true, Types::Double(6,"description"));
-      CHECK(prm.get_double("double") == 3.23456e2);
+      prm.load_entry("double", true, Types::Double(4,"description"));
+      CHECK(prm.get_double("double") == 2.23456e2);
 
 
       // Test the String functions
-      CHECK_THROWS_WITH(prm.load_entry("non existent string", true, Types::String("3","description")),
-                        Contains("Entry undeclared: subsection 1.subsection 2.non existent string"));
+      CHECK_THROWS_WITH(prm.load_entry("non existent string", true, Types::String("2","description")),
+                        Contains("Entry undeclared: subsection 1.non existent string"));
 
-#ifndef NDEBUG
+  #ifndef NDEBUG
       CHECK_THROWS_WITH(prm.get_string("non existent string"),
                         Contains("Could not find entry 'non existent string' not found. Make sure it is loaded or set"));
-#endif
+  #endif
 
-      CHECK(prm.load_entry("non exitent string", false, Types::String("4","description")) == false);
-      CHECK(prm.get_string("non exitent string") == "4");
+      CHECK(prm.load_entry("non exitent string", false, Types::String("3","description")) == false);
+      CHECK(prm.get_string("non exitent string") == "3");
 
-      prm.set_entry("new string", Types::String("5","description"));
-      CHECK(prm.get_string("new string") == "5");
+      prm.set_entry("new string", Types::String("4","description"));
+      CHECK(prm.get_string("new string") == "4");
 
-      prm.load_entry("string", true, Types::String("6","description"));
-      CHECK(prm.get_string("string") == "mystring 2");
+      prm.load_entry("string", true, Types::String("5","description"));
+      CHECK(prm.get_string("string") == "mystring 1");
 
       // Test the Point functions
+      CHECK_THROWS_WITH(prm.load_entry("non existent 2d Point", true, Types::Point<2>(Point<2>(3,4,cartesian),"description")),
+                        Contains("Could not find subsection 1.non existent 2d Point, while it is set as required."));
+      CHECK_THROWS_WITH(prm.load_entry("non existent 3d Point", true, Types::Point<3>(Point<3>(4,5,6,cartesian),"description")),
+                        Contains("Could not find subsection 1.non existent 3d Point, while it is set as required."));
 
-      CHECK_THROWS_WITH(prm.load_entry("non existent 2d Point", true, Types::Point<2>(Point<2>(1,2,cartesian),"description")),
-                        Contains("Could not find subsection 1.subsection 2.non existent 2d Point, while it is set as required."));
-      CHECK_THROWS_WITH(prm.load_entry("non existent 3d Point", true, Types::Point<3>(Point<3>(1,2,3,cartesian),"description")),
-                        Contains("Could not find subsection 1.subsection 2.non existent 3d Point, while it is set as required."));
-
-#ifndef NDEBUG
+  #ifndef NDEBUG
       CHECK_THROWS_WITH(prm.get_point<2>("non existent 2d Point"),
                         Contains("Could not find entry 'non existent 2d Point' not found. Make sure it is loaded or set"));
       CHECK_THROWS_WITH(prm.get_point<3>("non existent 3d Point"),
                         Contains("Could not find entry 'non existent 3d Point' not found. Make sure it is loaded or set"));
-#endif
+  #endif
 
-      CHECK(prm.load_entry("non existent 2d Point", false, Types::Point<2>(Point<2>(1,2,cartesian),"description")) == false);
-      CHECK(prm.load_entry("non existent 3d Point", false, Types::Point<3>(Point<3>(1,2,3,cartesian),"description")) == false);
+      CHECK(prm.load_entry("non existent 2d Point", false, Types::Point<2>(Point<2>(3,4,cartesian),"description")) == false);
+      CHECK(prm.load_entry("non existent 3d Point", false, Types::Point<3>(Point<3>(4,5,6,cartesian),"description")) == false);
 
-      CHECK(prm.get_point<2>("non existent 2d Point").get_array() == std::array<double,2> {1,2});
-      CHECK(prm.get_point<3>("non existent 3d Point").get_array() == std::array<double,3> {1,2,3});
+      CHECK(prm.get_point<2>("non existent 2d Point").get_array() == std::array<double,2> {3,4});
+      CHECK(prm.get_point<3>("non existent 3d Point").get_array() == std::array<double,3> {4,5,6});
 
-      prm.set_entry("new Point 2d", Types::Point<2>(Point<2>(3,4,cartesian),"description"));
-      prm.set_entry("new Point 3d", Types::Point<3>(Point<3>(5,6,7,cartesian),"description"));
+      prm.set_entry("new Point 2d", Types::Point<2>(Point<2>(5,6,cartesian),"description"));
+      prm.set_entry("new Point 3d", Types::Point<3>(Point<3>(7,8,9,cartesian),"description"));
 
-      CHECK(prm.get_point<2>("new Point 2d").get_array() == std::array<double,2> {3,4});
-      CHECK(prm.get_point<3>("new Point 3d").get_array() == std::array<double,3> {5,6,7});
+      CHECK(prm.get_point<2>("new Point 2d").get_array() == std::array<double,2> {5,6});
+      CHECK(prm.get_point<3>("new Point 3d").get_array() == std::array<double,3> {7,8,9});
 
 
       prm.load_entry("2d point", true, Types::Point<2>(Point<2>(1,2,cartesian),"description"));
       prm.load_entry("3d point", true, Types::Point<3>(Point<3>(3,4,5,cartesian),"description"));
 
-      CHECK(prm.get_point<2>("2d point").get_array() == std::array<double,2> {20,21});
-      CHECK(prm.get_point<3>("3d point").get_array() == std::array<double,3> {22,23,24});
+      CHECK(prm.get_point<2>("2d point").get_array() == std::array<double,2> {15,16});
+      CHECK(prm.get_point<3>("3d point").get_array() == std::array<double,3> {17,18,19});
+
 
       // Test the Array functions
-
       CHECK_THROWS_WITH(prm.load_entry("non existent double array", true, Types::Array(Types::Double(1,"description"),"description")),
-                        Contains("Could not find subsection 1.subsection 2.non existent double array, while it is set as required."));
-#ifndef NDEBUG
+                        Contains("Could not find subsection 1.non existent double array, while it is set as required."));
+
+  #ifndef NDEBUG
       CHECK_THROWS_WITH(prm.get_array("non existent double array"),
                         Contains("Could not find entry 'non existent double array' not found. Make sure it is loaded or set"));
-#endif
 
       CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
-
-      CHECK(prm.get_array<Types::Double >("non exitent double array").size() == 1);
-      CHECK(prm.get_array<Types::Double >("non exitent double array")[0].value == 2.0);
-      CHECK(prm.get_array<Types::Double >("non exitent double array")[0].description == "description");
+      CHECK(prm.get_array<Types::Double>("non exitent double array").size() == 1);
+      CHECK(prm.get_array<Types::Double>("non exitent double array")[0].value == 2.0);
+      CHECK(prm.get_array<Types::Double>("non exitent double array")[0].description == "description");
+      // This is not desired behavior, but it is not implemented yet.
+  #endif
 
       prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
       std::vector<Types::Double > set_typed_double =  prm.get_array<Types::Double >("new double array");
@@ -3157,27 +2969,23 @@ TEST_CASE("WorldBuilder Parameters")
       prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
       std::vector<Types::Double > true_loaded_typed_double =  prm.get_array<Types::Double >("double array");
       CHECK(true_loaded_typed_double.size() == 3);
-      CHECK(true_loaded_typed_double[0].value == 45);
-      CHECK(true_loaded_typed_double[1].value == 46);
-      CHECK(true_loaded_typed_double[2].value == 47);
-
+      CHECK(true_loaded_typed_double[0].value == 35);
+      CHECK(true_loaded_typed_double[1].value == 36);
+      CHECK(true_loaded_typed_double[2].value == 37);
 
       // Test the Array<Types::Point<2> > functions
-#ifndef NDEBUG
       CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2,cartesian),"description"),"description")),
-                        Contains("Could not find subsection 1.subsection 2.non existent point<2> array, while it is set as required."));
+                        Contains("Could not find subsection 1.non existent point<2> array, while it is set as required."));
 
+  #ifndef NDEBUG
       CHECK_THROWS_WITH(prm.get_array("non existent point<2> array"),
                         Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set"));
-#endif
 
       CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<2>(Point<2>(3,4,cartesian),"description"),"description")) == false);
-
-#ifndef NDEBUG
       CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("non existent point<2> array"),
                         Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set."));
       // This is not desired behavior, but it is not implemented yet.
-#endif
+  #endif
 
       prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
       std::vector<Types::Point<2> > set_typed_point_2d = prm.get_array<Types::Point<2> >("new point<2> array");
@@ -3187,27 +2995,24 @@ TEST_CASE("WorldBuilder Parameters")
       prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
       std::vector<Types::Point<2> > true_loaded_typed_point_2d =  prm.get_array<Types::Point<2> >("point<2> array");
       CHECK(true_loaded_typed_point_2d.size() == 3);
-      CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {40,41});
-      CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {42,43});
-      CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {44,45});
+      CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {20,21});
+      CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {22,23});
+      CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {24,25});
 
 
       // Test the Array<Types::Point<3> > functions
-#ifndef NDEBUG
       CHECK_THROWS_WITH(prm.load_entry("non existent point<3> array", true, Types::Array(Types::Point<3>(Point<3>(1,2,3,cartesian),"description"),"description")),
-                        Contains("Could not find subsection 1.subsection 2.non existent point<3> array, while it is set as required."));
+                        Contains("Could not find subsection 1.non existent point<3> array, while it is set as required."));
 
+  #ifndef NDEBUG
       CHECK_THROWS_WITH(prm.get_array("non existent point<3> array"),
                         Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set"));
-#endif
 
       CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<3>(Point<3>(4,5,6,cartesian),"description"),"description")) == false);
-
-#ifndef NDEBUG
       CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("non existent point<3> array"),
                         Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set."));
       // This is not desired behavior, but it is not implemented yet.
-#endif
+  #endif
 
       prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
       std::vector<Types::Point<3> > set_typed_point_3d = prm.get_array<Types::Point<3> >("new point<3> array");
@@ -3217,31 +3022,226 @@ TEST_CASE("WorldBuilder Parameters")
       prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
       std::vector<Types::Point<3> > true_loaded_typed_point_3d =  prm.get_array<Types::Point<3> >("point<3> array");
       CHECK(true_loaded_typed_point_3d.size() == 3);
-      CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {40,41,42});
-      CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {43,44,45});
-      CHECK(true_loaded_typed_point_3d[2].value.get_array() == std::array<double,3> {46,47,48});
+      CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {30,31,32});
+      CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {33,34,35});
+      CHECK(true_loaded_typed_point_3d[2].value.get_array() == std::array<double,3> {36,37,38});
 
-#ifndef NDEBUG
+  #ifndef NDEBUG
       CHECK_THROWS_WITH(prm.get_array<Types::Double >("point<2> array"),
-                        Contains("Could not get subsection 1.subsection 2.point<2> array, because it is not a 2d Point."));
+                        Contains("Could not get subsection 1.point<2> array, because it is not a 2d Point."));
       CHECK_THROWS_WITH(prm.get_array<Types::Double >("point<3> array"),
-                        Contains("Could not get subsection 1.subsection 2.point<3> array, because it is not a 3d Point."));
+                        Contains("Could not get subsection 1.point<3> array, because it is not a 3d Point."));
 
       CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("point<3> array"),
-                        Contains("Could not get subsection 1.subsection 2.point<3> array, because it is not a 3d Point."));
+                        Contains("Could not get subsection 1.point<3> array, because it is not a 3d Point."));
       CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("double array"),
-                        Contains("Could not get subsection 1.subsection 2.double array, because it is not a Double."));
+                        Contains("Could not get subsection 1.double array, because it is not a Double."));
 
       CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("point<2> array"),
-                        Contains("Could not get subsection 1.subsection 2.point<2> array, because it is not a 2d Point."));
+                        Contains("Could not get subsection 1.point<2> array, because it is not a 2d Point."));
       CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("double array"),
-                        Contains("Could not get subsection 1.subsection 2.double array, because it is not a Double."));
-#endif
+                        Contains("Could not get subsection 1.double array, because it is not a Double."));
+  #endif
+
+      prm.enter_subsection("subsection 2");
+      {
+        // Test the UnsignedInt functions
+        / *CHECK_THROWS_WITH(prm.load_entry("non existent unsigned int", true, Types::UnsignedInt(1,"description")),
+                          Contains("Entry undeclared: subsection 1.subsection 2.non existent unsigned int"));
+
+        #ifndef NDEBUG
+        CHECK_THROWS_WITH(prm.get_unsigned_int("non existent unsigned int"),
+                          Contains("Could not find entry 'non existent unsigned int' not found. Make sure it is loaded or set"));
+        #endif
+
+        CHECK(prm.load_entry("non existent unsigned int", false, Types::UnsignedInt(1,"description")) == false);
+        CHECK(prm.get_unsigned_int("non existent unsigned int") == 1);
+
+        prm.set_entry("new unsigned int", Types::UnsignedInt(2,"description"));
+        CHECK(prm.get_unsigned_int("new unsigned int") == 2);
+
+        prm.load_entry("unsigned int", true, Types::UnsignedInt(3,"description"));
+        CHECK(prm.get_unsigned_int("unsigned int") == 6);* /
+
+
+        // Test the Double functions
+        CHECK_THROWS_WITH(prm.load_entry("non existent double", true, Types::Double(3,"description")),
+                          Contains("Entry undeclared: subsection 1.subsection 2.non existent"));
+
+  #ifndef NDEBUG
+        CHECK_THROWS_WITH(prm.get_double("non existent double"),
+                          Contains("Could not find entry 'non existent double' not found. Make sure it is loaded or set"));
+  #endif
+
+        CHECK(prm.load_entry("non existent double", false, Types::Double(4,"description")) == false);
+        CHECK(prm.get_double("non existent double") == 4);
+
+        prm.set_entry("new double", Types::Double(5,"description"));
+        CHECK(prm.get_double("new double") == 5);
+
+        prm.load_entry("double", true, Types::Double(6,"description"));
+        CHECK(prm.get_double("double") == 3.23456e2);
+
+
+        // Test the String functions
+        CHECK_THROWS_WITH(prm.load_entry("non existent string", true, Types::String("3","description")),
+                          Contains("Entry undeclared: subsection 1.subsection 2.non existent string"));
+
+  #ifndef NDEBUG
+        CHECK_THROWS_WITH(prm.get_string("non existent string"),
+                          Contains("Could not find entry 'non existent string' not found. Make sure it is loaded or set"));
+  #endif
+
+        CHECK(prm.load_entry("non exitent string", false, Types::String("4","description")) == false);
+        CHECK(prm.get_string("non exitent string") == "4");
+
+        prm.set_entry("new string", Types::String("5","description"));
+        CHECK(prm.get_string("new string") == "5");
+
+        prm.load_entry("string", true, Types::String("6","description"));
+        CHECK(prm.get_string("string") == "mystring 2");
+
+        // Test the Point functions
+
+        CHECK_THROWS_WITH(prm.load_entry("non existent 2d Point", true, Types::Point<2>(Point<2>(1,2,cartesian),"description")),
+                          Contains("Could not find subsection 1.subsection 2.non existent 2d Point, while it is set as required."));
+        CHECK_THROWS_WITH(prm.load_entry("non existent 3d Point", true, Types::Point<3>(Point<3>(1,2,3,cartesian),"description")),
+                          Contains("Could not find subsection 1.subsection 2.non existent 3d Point, while it is set as required."));
+
+  #ifndef NDEBUG
+        CHECK_THROWS_WITH(prm.get_point<2>("non existent 2d Point"),
+                          Contains("Could not find entry 'non existent 2d Point' not found. Make sure it is loaded or set"));
+        CHECK_THROWS_WITH(prm.get_point<3>("non existent 3d Point"),
+                          Contains("Could not find entry 'non existent 3d Point' not found. Make sure it is loaded or set"));
+  #endif
+
+        CHECK(prm.load_entry("non existent 2d Point", false, Types::Point<2>(Point<2>(1,2,cartesian),"description")) == false);
+        CHECK(prm.load_entry("non existent 3d Point", false, Types::Point<3>(Point<3>(1,2,3,cartesian),"description")) == false);
+
+        CHECK(prm.get_point<2>("non existent 2d Point").get_array() == std::array<double,2> {1,2});
+        CHECK(prm.get_point<3>("non existent 3d Point").get_array() == std::array<double,3> {1,2,3});
+
+        prm.set_entry("new Point 2d", Types::Point<2>(Point<2>(3,4,cartesian),"description"));
+        prm.set_entry("new Point 3d", Types::Point<3>(Point<3>(5,6,7,cartesian),"description"));
+
+        CHECK(prm.get_point<2>("new Point 2d").get_array() == std::array<double,2> {3,4});
+        CHECK(prm.get_point<3>("new Point 3d").get_array() == std::array<double,3> {5,6,7});
+
+
+        prm.load_entry("2d point", true, Types::Point<2>(Point<2>(1,2,cartesian),"description"));
+        prm.load_entry("3d point", true, Types::Point<3>(Point<3>(3,4,5,cartesian),"description"));
+
+        CHECK(prm.get_point<2>("2d point").get_array() == std::array<double,2> {20,21});
+        CHECK(prm.get_point<3>("3d point").get_array() == std::array<double,3> {22,23,24});
+
+        // Test the Array functions
+
+        CHECK_THROWS_WITH(prm.load_entry("non existent double array", true, Types::Array(Types::Double(1,"description"),"description")),
+                          Contains("Could not find subsection 1.subsection 2.non existent double array, while it is set as required."));
+  #ifndef NDEBUG
+        CHECK_THROWS_WITH(prm.get_array("non existent double array"),
+                          Contains("Could not find entry 'non existent double array' not found. Make sure it is loaded or set"));
+  #endif
+
+        CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
+
+        CHECK(prm.get_array<Types::Double >("non exitent double array").size() == 1);
+        CHECK(prm.get_array<Types::Double >("non exitent double array")[0].value == 2.0);
+        CHECK(prm.get_array<Types::Double >("non exitent double array")[0].description == "description");
+
+        prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
+        std::vector<Types::Double > set_typed_double =  prm.get_array<Types::Double >("new double array");
+        CHECK(set_typed_double.size() == 0);
+        // This is not desired behavior, but it is not implemented yet.
+
+        prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
+        std::vector<Types::Double > true_loaded_typed_double =  prm.get_array<Types::Double >("double array");
+        CHECK(true_loaded_typed_double.size() == 3);
+        CHECK(true_loaded_typed_double[0].value == 45);
+        CHECK(true_loaded_typed_double[1].value == 46);
+        CHECK(true_loaded_typed_double[2].value == 47);
+
+
+        // Test the Array<Types::Point<2> > functions
+  #ifndef NDEBUG
+        CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2,cartesian),"description"),"description")),
+                          Contains("Could not find subsection 1.subsection 2.non existent point<2> array, while it is set as required."));
+
+        CHECK_THROWS_WITH(prm.get_array("non existent point<2> array"),
+                          Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set"));
+  #endif
+
+        CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<2>(Point<2>(3,4,cartesian),"description"),"description")) == false);
+
+  #ifndef NDEBUG
+        CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("non existent point<2> array"),
+                          Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set."));
+        // This is not desired behavior, but it is not implemented yet.
+  #endif
+
+        prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
+        std::vector<Types::Point<2> > set_typed_point_2d = prm.get_array<Types::Point<2> >("new point<2> array");
+        CHECK(set_typed_point_2d.size() == 0);
+        // This is not desired behavior, but it is not implemented yet.
+
+        prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
+        std::vector<Types::Point<2> > true_loaded_typed_point_2d =  prm.get_array<Types::Point<2> >("point<2> array");
+        CHECK(true_loaded_typed_point_2d.size() == 3);
+        CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {40,41});
+        CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {42,43});
+        CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {44,45});
+
+
+        // Test the Array<Types::Point<3> > functions
+  #ifndef NDEBUG
+        CHECK_THROWS_WITH(prm.load_entry("non existent point<3> array", true, Types::Array(Types::Point<3>(Point<3>(1,2,3,cartesian),"description"),"description")),
+                          Contains("Could not find subsection 1.subsection 2.non existent point<3> array, while it is set as required."));
+
+        CHECK_THROWS_WITH(prm.get_array("non existent point<3> array"),
+                          Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set"));
+  #endif
+
+        CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<3>(Point<3>(4,5,6,cartesian),"description"),"description")) == false);
+
+  #ifndef NDEBUG
+        CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("non existent point<3> array"),
+                          Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set."));
+        // This is not desired behavior, but it is not implemented yet.
+  #endif
+
+        prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
+        std::vector<Types::Point<3> > set_typed_point_3d = prm.get_array<Types::Point<3> >("new point<3> array");
+        CHECK(set_typed_point_3d.size() == 0);
+        // This is not desired behavior, but it is not implemented yet.
+
+        prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
+        std::vector<Types::Point<3> > true_loaded_typed_point_3d =  prm.get_array<Types::Point<3> >("point<3> array");
+        CHECK(true_loaded_typed_point_3d.size() == 3);
+        CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {40,41,42});
+        CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {43,44,45});
+        CHECK(true_loaded_typed_point_3d[2].value.get_array() == std::array<double,3> {46,47,48});
+
+  #ifndef NDEBUG
+        CHECK_THROWS_WITH(prm.get_array<Types::Double >("point<2> array"),
+                          Contains("Could not get subsection 1.subsection 2.point<2> array, because it is not a 2d Point."));
+        CHECK_THROWS_WITH(prm.get_array<Types::Double >("point<3> array"),
+                          Contains("Could not get subsection 1.subsection 2.point<3> array, because it is not a 3d Point."));
+
+        CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("point<3> array"),
+                          Contains("Could not get subsection 1.subsection 2.point<3> array, because it is not a 3d Point."));
+        CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("double array"),
+                          Contains("Could not get subsection 1.subsection 2.double array, because it is not a Double."));
+
+        CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("point<2> array"),
+                          Contains("Could not get subsection 1.subsection 2.point<2> array, because it is not a 2d Point."));
+        CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("double array"),
+                          Contains("Could not get subsection 1.subsection 2.double array, because it is not a Double."));
+  #endif
+      }
+      prm.leave_subsection();
     }
     prm.leave_subsection();
-  }
-  prm.leave_subsection();
-*/
+  */
 
   // Todo: add tests for list,feature and coordinate system.
 
