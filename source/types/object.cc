@@ -33,42 +33,13 @@ namespace WorldBuilder
       this->type_name = Types::type::Object;
     }
 
-    Object::Object(const Interface &type, const std::string &description)
-      :
-      inner_type(type.get_type()),
-      inner_type_ptr(type.clone()),
-      description(description)
-    {
-      this->type_name = Types::type::Object;
-    }
-
-    Object::Object(const Object &type)
-      :
-      inner_type(type.inner_type),
-      inner_type_ptr(nullptr),
-      inner_type_index(type.inner_type_index),
-      description(type.description)
-    {
-      this->type_name = Types::type::Object;
-    }
-
-    Object::Object(const std::vector<unsigned int> &inner_type_index, const Types::type inner_type, const std::string &description)
-      :
-      inner_type(inner_type),
-      inner_type_ptr(nullptr),
-      inner_type_index(inner_type_index),
-      description(description)
-    {
-      this->type_name = Types::type::Object;
-    }
-
     Object::~Object ()
     {}
 
     std::unique_ptr<Interface>
     Object::clone() const
     {
-      return std::unique_ptr<Interface>(new Object(inner_type_index, inner_type, description));
+      return std::unique_ptr<Interface>(new Object(required, additional_properties));
     }
 
     void

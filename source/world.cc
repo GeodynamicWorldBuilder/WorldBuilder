@@ -34,7 +34,6 @@
 #include <world_builder/types/array.h>
 #include <world_builder/types/bool.h>
 #include <world_builder/types/double.h>
-#include <world_builder/types/list.h>
 #include <world_builder/types/string.h>
 #include <world_builder/types/object.h>
 #include <world_builder/types/point.h>

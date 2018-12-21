@@ -46,7 +46,6 @@ namespace WorldBuilder
     class String;
     class Segment;
     class Array;
-    class List;
     class UnsignedInt;
   }
 
@@ -348,13 +347,6 @@ namespace WorldBuilder
        */
       std::vector<Types::Array> vector_array;
 
-      /**
-       * A vector which stores all the List types. These can be
-       * retrieved with the help of the string_to_type_map.
-       * @see string_to_type_map
-       * @see Types::List
-       */
-      std::vector<Types::List> vector_list;
 
       /**
        * A vector which stores all the Point<2> types. These can be

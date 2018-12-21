@@ -39,12 +39,6 @@ namespace WorldBuilder
          */
         Bool(const bool default_value);
 
-
-        /**
-         * A constructor for the clone and set_entry function
-         */
-        Bool(bool value, bool default_value);
-
         /**
          * Destructor
          */
@@ -65,7 +59,6 @@ namespace WorldBuilder
                           const std::string &name,
                           const std::string &documentation) const;
 
-        bool value;
         bool default_value;
 
       private:

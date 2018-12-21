@@ -47,36 +47,6 @@ namespace WorldBuilder
                const bool additional_properties = false);
 
         /**
-         * Constructor for the declaration
-         */
-        Object(const Interface &type, const std::string &description);
-
-        /**
-         * Copy constructor which does not copy the inner_type_ptr.
-         */
-        Object(const Object &type);
-
-        /**
-         * Constructor for copying and cloning
-         */
-        Object(const std::vector<unsigned int> &inner_type_index, const Types::type inner_type, const std::string &description);
-
-
-        /**
-         * access index (const)
-         */
-        //template<class T>
-        //const T &operator[](const unsigned int index) const;
-
-
-        /**
-         * access index
-         */
-        //Types::Interface
-        //T &operator[](const unsigned int index);
-
-
-        /**
          * Destructor
          */
         ~Object();
@@ -98,33 +68,6 @@ namespace WorldBuilder
                           const std::string &name,
                           const std::string &documentation) const;
 
-        /**
-         * An enum of the type which this class points to
-         * @see Types::type
-         */
-        Types::type inner_type;
-
-        /**
-         * This class is sometimes responsible for the object it points to, but
-         * sometimes it is not responsible for the object is points to.
-         * When it is responsible the unique_inner_type points to it and the
-         * inner_type should have size zero. When it is not responsible,
-         * unique_inner_type should point to the nullptr and inner_type should
-         * have a size larger then zero.
-         * @see inner_type_index
-         */
-        std::unique_ptr<Interface> inner_type_ptr;
-
-        /**
-         * This class is sometimes responsible for the object it points to, but
-         * sometimes it is not responsible for the object is points to.
-         * When it is responsible the unique_inner_type points to it and the
-         * inner_type should have size zero. When it is not responsible,
-         * unique_inner_type should point to the nullptr and inner_type should
-         * have a size larger then zero.
-         * @see inner_type_ptr
-         */
-        std::vector<unsigned int> inner_type_index;
 
         /**
          * Todo
@@ -132,26 +75,6 @@ namespace WorldBuilder
         std::vector<std::string> required;
         bool additional_properties;
 
-        /**
-         * Todo
-         */
-        unsigned int min_items;
-
-        /**
-         * Todo
-         */
-        unsigned int max_items;
-
-        /**
-         * Todo
-         */
-        bool unique_items;
-
-        /**
-         * The description of what this object and the values within represent.
-         * This is meant for documentation pruposes.
-         */
-        std::string description;
 
     };
   }

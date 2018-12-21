@@ -51,23 +51,6 @@ namespace WorldBuilder
       this->type_name = Types::type::Segment;
     }
 
-    // todo remove function
-    /*  Segment::Segment(double default_length,
-                       WorldBuilder::Point<2> default_thickness,
-                       WorldBuilder::Point<2> default_angle,
-                       std::string description)
-        :
-        value_length(default_length),
-        default_length(default_length),
-        value_thickness(default_thickness),
-        default_top_truncation(default_thickness),
-        default_thickness(default_thickness),
-        value_angle(default_angle),
-        default_angle(default_angle),
-        description(description)
-      {
-        this->type_name = Types::type::Segment;
-      }*/
 
     // todo update function
     Segment::Segment(const double default_length,
@@ -175,29 +158,6 @@ namespace WorldBuilder
 
     }
 
-    // todo update function
-    /*template<class A, class B>
-      Segment<A,B>::Segment(const double default_length,
-              const WorldBuilder::Point<2> default_thickness,
-              const WorldBuilder::Point<2> default_top_truncation,
-              const WorldBuilder::Point<2> default_angle,
-              std::vector<std::shared_ptr<A> > &temperature_systems,
-              std::vector<std::shared_ptr<B> > &composition_systems)
-        :
-        value_length(default_length),
-        default_length(default_length),
-        value_thickness(default_thickness),
-        default_thickness(default_thickness),
-        default_top_truncation(default_top_truncation),
-        value_angle(default_angle),
-        default_angle(default_angle),
-        temperature_systems(temperature_systems),
-        composition_systems(composition_systems)
-      {
-        this->type_name = Types::type::Segment;
-
-      }*/
-
     template<class A, class B>
     Segment<A,B>::~Segment ()
     {}
@@ -222,42 +182,6 @@ namespace WorldBuilder
                                const std::string &documentation) const
     {
       WBAssertThrow(false, "not implemented.");
-      /*using namespace rapidjson;
-      Document &declarations = prm.declarations;
-      prm.enter_subsection(name);
-      {
-        std::string base = prm.get_full_json_path();
-
-        Pointer((base + "/type").c_str()).Set(declarations,"object");
-        Pointer((base + "/additionalProperties").c_str()).Set(declarations,false);
-        Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
-        prm.enter_subsection("properties");
-        {
-          std::string base = prm.get_full_json_path();
-          Pointer((base + "/length/type").c_str()).Set(declarations,"number");
-
-          Pointer((base + "/thickness/type").c_str()).Set(declarations,"array");
-          Pointer((base + "/thickness/minItems").c_str()).Set(declarations,1);
-          Pointer((base + "/thickness/maxItems").c_str()).Set(declarations,2);
-          Pointer((base + "/thickness/items/type").c_str()).Set(declarations,"number");
-
-          Pointer((base + "/top trunctation/type").c_str()).Set(declarations,"array");
-          Pointer((base + "/top trunctation/minItems").c_str()).Set(declarations,1);
-          Pointer((base + "/top trunctation/maxItems").c_str()).Set(declarations,2);
-          Pointer((base + "/top trunctation/items/type").c_str()).Set(declarations,"number");
-
-          Pointer((base + "/angle/type").c_str()).Set(declarations,"array");
-          Pointer((base + "/angle/minItems").c_str()).Set(declarations,1);
-          Pointer((base + "/angle/maxItems").c_str()).Set(declarations,2);
-          Pointer((base + "/angle/items/type").c_str()).Set(declarations,"number");
-
-          temperature_pugin_system->write_schema(prm, "temperature models", "");
-          composition_pugin_system->write_schema(prm, "composition models", "");
-        }
-        prm.leave_subsection();
-      }
-      prm.leave_subsection();*/
-
     }
 
 

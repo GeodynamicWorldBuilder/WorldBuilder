@@ -32,15 +32,6 @@ namespace WorldBuilder
       this->type_name = Types::type::Bool;
     }
 
-// depricated
-    Bool::Bool(bool value, bool default_value)
-      :
-      value(value),
-      default_value(default_value)
-    {
-      this->type_name = Types::type::Bool;
-    }
-
 
     Bool::~Bool ()
     {}
@@ -48,7 +39,7 @@ namespace WorldBuilder
     std::unique_ptr<Interface>
     Bool::clone() const
     {
-      return std::unique_ptr<Interface>(new Bool(value, default_value));
+      return std::unique_ptr<Interface>(new Bool(default_value));
     }
 
     void

@@ -17,6 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 #include <world_builder/types/array.h>
+#include <world_builder/types/bool.h>
 #include <world_builder/assert.h>
 #include <world_builder/parameters.h>
 
@@ -39,38 +40,6 @@ namespace WorldBuilder
       this->type_name = Types::type::Array;
     }
 
-    // deprecated
-    Array::Array(const Interface &type, const std::string &description)
-      :
-      inner_type(type.get_type()),
-      inner_type_ptr(type.clone()),
-      description(description)
-    {
-      this->type_name = Types::type::Array;
-    }
-
-    // deprecated
-    Array::Array(const Array &type)
-      :
-      inner_type(type.inner_type),
-      inner_type_ptr(nullptr),
-      inner_type_index(type.inner_type_index),
-      description(type.description)
-    {
-      this->type_name = Types::type::Array;
-    }
-
-    // deprecated
-    Array::Array(const std::vector<unsigned int> &inner_type_index, const Types::type inner_type, const std::string &description)
-      :
-      inner_type(inner_type),
-      inner_type_ptr(nullptr),
-      inner_type_index(inner_type_index),
-      description(description)
-    {
-      this->type_name = Types::type::Array;
-    }
-
     Array::~Array ()
     {}
 
@@ -78,7 +47,7 @@ namespace WorldBuilder
     Array::clone() const
     {
       WBAssertThrow(false,"Error: Cloning Arrays is currently not possible.");
-      return std::unique_ptr<Interface>(new Array(inner_type_index, inner_type, description));
+      return std::unique_ptr<Interface>(new Bool(true));
     }
 
     void

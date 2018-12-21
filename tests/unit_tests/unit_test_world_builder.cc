@@ -34,11 +34,12 @@
 #include <world_builder/point.h>
 
 #include <world_builder/types/array.h>
+#include <world_builder/types/bool.h>
 #include <world_builder/types/double.h>
 #include <world_builder/types/plugin_system.h>
-#include <world_builder/types/list.h>
-#include <world_builder/types/segment.h>
 #include <world_builder/types/point.h>
+#include <world_builder/types/object.h>
+#include <world_builder/types/segment.h>
 #include <world_builder/types/string.h>
 #include <world_builder/types/unsigned_int.h>
 
@@ -1929,6 +1930,209 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world2.composition(position, 1, 1) == 0.0);
   CHECK(world2.composition(position, 1, 2) == 0.25);
   CHECK(world2.composition(position, 1, 3) == 0.75);
+
+
+  // Cartesian
+  file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/fault_constant_angles_cartesian_2.wb";
+  WorldBuilder::World world3(file_name);
+
+  // Check fault directly (upper case should automatically turn into lower case).
+  std::unique_ptr<Features::Interface> continental_plate = Features::Interface::create("Fault", &world3);
+
+  // Check fault through the world
+  position = {0,0,800e3};
+  CHECK(world3.temperature(position, 0, 10) == Approx(1600.0));
+  CHECK(world3.temperature(position, 240e3, 10) == Approx(1711.2149738521));
+  CHECK(world3.temperature(position, 260e3, 10) == Approx(1720.8246597128));
+  CHECK(world3.composition(position, 0, 0) == 0.0);
+  CHECK(world3.composition(position, 0, 1) == 0.0);
+  CHECK(world3.composition(position, 0, 2) == 0.0);
+  CHECK(world3.composition(position, 0, 3) == 0.0);
+  CHECK(world3.composition(position, 0, 4) == 0.0);
+  CHECK(world3.composition(position, 0, 5) == 0.0);
+  CHECK(world3.composition(position, 0, 6) == 0.0);
+
+  position = {250e3,500e3,800e3};
+  // results strongly dependent on the summation number of the McKenzie temperature.
+  CHECK(world3.temperature(position, 0, 10) == Approx(1600));
+  CHECK(world3.temperature(position, 1, 10) == Approx(1.0)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world3.temperature(position, 5000, 10) == Approx(1.0)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world3.temperature(position, 10e3, 10) == Approx(1.0));
+  CHECK(world3.temperature(position, 25e3, 10) == Approx(1.0));
+  CHECK(world3.temperature(position, 50e3, 10) == Approx(1.0));
+  CHECK(world3.temperature(position, 75e3, 10) == Approx(1633.95528262));
+  CHECK(world3.temperature(position, 150e3, 10) == Approx(1668.6311660012));
+  //CHECK(world3.temperature(position, std::sqrt(2) * 100e3 - 1, 10) == Approx(150.0));
+  //CHECK(world3.temperature(position, std::sqrt(2) * 100e3 + 1, 10) == Approx(1664.6283561404));
+  CHECK(world3.composition(position, 0, 0) == 0.0);
+  CHECK(world3.composition(position, 0, 1) == 0.0);
+  CHECK(world3.composition(position, 0, 2) == 0.0);
+  CHECK(world3.composition(position, 0, 3) == 0.0);
+  CHECK(world3.composition(position, 0, 4) == 0.0);
+  CHECK(world3.composition(position, 10, 0) == 1.0);
+  CHECK(world3.composition(position, 10, 1) == 0.0);
+  CHECK(world3.composition(position, 10, 2) == 0.0);
+  CHECK(world3.composition(position, 10, 3) == 0.0);
+  CHECK(world3.composition(position, 10, 4) == 0.0);
+  //todo: recheck these results
+  CHECK(world3.composition(position, std::sqrt(2) * 16.5e3 - 1, 0) == 1.0);
+  CHECK(world3.composition(position, std::sqrt(2) * 16.5e3 + 1, 0) == 1.0);
+  CHECK(world3.composition(position, std::sqrt(2) * 16.5e3 - 1, 1) == 0.0);
+  CHECK(world3.composition(position, std::sqrt(2) * 16.5e3 + 1, 1) == 0.0);
+  CHECK(world3.composition(position, std::sqrt(2) * 33e3 - 1, 1) == 0.0);
+  CHECK(world3.composition(position, std::sqrt(2) * 33e3 + 1, 1) == 1.0);
+  CHECK(world3.composition(position, std::sqrt(2) * 33e3 - 1, 2) == 0.0);
+  CHECK(world3.composition(position, std::sqrt(2) * 33e3 + 1, 2) == 0.0);
+  CHECK(world3.composition(position, std::sqrt(2) * 33e3 + 1, 3) == 0.0);
+  CHECK(world3.composition(position, std::sqrt(2) * 49.5e3 - 1, 2) == 0.0);
+  CHECK(world3.composition(position, std::sqrt(2) * 49.5e3 - 1, 3) == 0.0);
+  CHECK(world3.composition(position, std::sqrt(2) * 49.5e3 + 1, 2) == 0.0);
+  // this comes form the first subducting plate
+  CHECK(world3.composition(position, std::sqrt(2) * 49.5e3 + 1, 3) == 0.0);
+  CHECK(world3.composition(position, std::sqrt(2) * 50e3 - 1, 3) == 0.0);
+  CHECK(world3.composition(position, std::sqrt(2) * 50e3 + 1, 3) == 0.0);
+  CHECK(world3.composition(position, 0, 4) == 0.0);
+  CHECK(world3.composition(position, 0, 5) == 0.0);
+  CHECK(world3.composition(position, 0, 6) == 0.0);
+
+
+  position = {250e3,600e3,800e3};
+  CHECK(world3.temperature(position, 0, 10) == Approx(1600));
+  CHECK(world3.temperature(position, 10, 10) == Approx(1600.0044800063));
+  CHECK(world3.temperature(position, 100e3, 10) == Approx(1.0));
+  CHECK(world3.temperature(position, 100e3+1, 10) == Approx(1.0000424264));
+  CHECK(world3.temperature(position, 101e3, 10) == Approx(1.0424264069));
+  CHECK(world3.temperature(position, 110e3, 10) == Approx(1.4242640687));
+  CHECK(world3.temperature(position, 150e3, 10) == Approx(3.1213203436));
+  CHECK(world3.temperature(position, 200e3, 10) == Approx(1692.1562939786));
+  CHECK(world3.composition(position, 0, 0) == 0.0);
+  CHECK(world3.composition(position, 0, 1) == 0.0);
+  CHECK(world3.composition(position, 0, 2) == 0.0);
+  CHECK(world3.composition(position, 0, 3) == 0.0);
+  CHECK(world3.composition(position, 10, 0) == 0.0);
+  CHECK(world3.composition(position, 10, 1) == 0.0);
+  CHECK(world3.composition(position, 10, 2) == 0.0);
+  CHECK(world3.composition(position, 10, 3) == 0.0);
+  CHECK(world3.composition(position, 100e3, 0) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3, 1) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3, 2) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3, 3) == Approx(1.0));
+  CHECK(world3.composition(position, 100e3, 4) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3+1, 0) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3+1, 1) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3+1, 2) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3+1, 3) == Approx(1.0));
+  CHECK(world3.composition(position, 100e3+1, 4) == Approx(0.0));
+  CHECK(world3.composition(position, 101e3, 0) == Approx(0.0));
+  CHECK(world3.composition(position, 101e3+1, 1) == Approx(0.0));
+  CHECK(world3.composition(position, 101e3+1, 2) == Approx(0.0));
+  CHECK(world3.composition(position, 101e3+1, 3) == Approx(1.0));
+  CHECK(world3.composition(position, 101e3+1, 4) == Approx(0.0));
+  CHECK(world3.composition(position, 150e3, 0) == Approx(0.0));
+  CHECK(world3.composition(position, 150e3, 1) == Approx(0.0));
+  CHECK(world3.composition(position, 150e3, 2) == Approx(0.0));
+  CHECK(world3.composition(position, 150e3, 3) == Approx(1.0));
+  CHECK(world3.composition(position, 150e3, 4) == Approx(0.0));
+  CHECK(world3.composition(position, 200e3, 0) == Approx(0.0));
+  CHECK(world3.composition(position, 200e3, 1) == Approx(0.0));
+  CHECK(world3.composition(position, 200e3, 2) == Approx(0.0));
+  CHECK(world3.composition(position, 200e3, 3) == Approx(0.0));
+  CHECK(world3.composition(position, 200e3, 4) == Approx(0.0));
+  CHECK(world3.composition(position, 0, 4) == 0.0);
+  CHECK(world3.composition(position, 0, 5) == 0.0);
+  CHECK(world3.composition(position, 0, 6) == 0.0);
+
+  position = {650e3,650e3,800e3};
+  CHECK(world3.temperature(position, 0, 10) == Approx(4.3590710784));
+  CHECK(world3.temperature(position, 10, 10) == Approx(4.3590710784));
+  CHECK(world3.temperature(position, 100e3, 10) == Approx(4.3590710784));
+  CHECK(world3.temperature(position, 100e3+1, 10) == Approx(4.3590710784));
+  CHECK(world3.temperature(position, 101e3, 10) == Approx(4.3590710784));
+  CHECK(world3.temperature(position, 110e3, 10) == Approx(4.3590710784));
+  CHECK(world3.temperature(position, 150e3, 10) == Approx(1668.6311660012));
+  CHECK(world3.temperature(position, 200e3, 10) == Approx(1692.1562939786));
+  CHECK(world3.composition(position, 0, 0) == 0.0);
+  CHECK(world3.composition(position, 0, 1) == 0.0);
+  CHECK(world3.composition(position, 0, 2) == 0.0);
+  CHECK(world3.composition(position, 0, 3) == Approx(0.0897677696));
+  CHECK(world3.composition(position, 10, 0) == 0.0);
+  CHECK(world3.composition(position, 10, 1) == 0.0);
+  CHECK(world3.composition(position, 10, 2) == 0.0);
+  CHECK(world3.composition(position, 10, 3) == Approx(0.0897677696));
+  CHECK(world3.composition(position, 100e3, 0) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3, 1) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3, 2) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3, 3) == Approx(0.0897677696));
+  CHECK(world3.composition(position, 100e3, 4) == Approx(0.2693033088));
+  CHECK(world3.composition(position, 100e3+1, 0) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3+1, 1) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3+1, 2) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3+1, 3) == Approx(0.0897677696));
+  CHECK(world3.composition(position, 100e3+1, 4) == Approx(0.2693033088));
+  CHECK(world3.composition(position, 101e3, 0) == Approx(0.0));
+  CHECK(world3.composition(position, 101e3+1, 1) == Approx(0.0));
+  CHECK(world3.composition(position, 101e3+1, 2) == Approx(0.0));
+  CHECK(world3.composition(position, 101e3+1, 3) == Approx(0.0897677696));
+  CHECK(world3.composition(position, 101e3+1, 4) == Approx(0.2693033088));
+  CHECK(world3.composition(position, 150e3, 0) == Approx(0.0));
+  CHECK(world3.composition(position, 150e3, 1) == Approx(0.0));
+  CHECK(world3.composition(position, 150e3, 2) == Approx(0.0));
+  CHECK(world3.composition(position, 150e3, 3) == Approx(0.0));
+  CHECK(world3.composition(position, 150e3, 4) == Approx(0.0));
+  CHECK(world3.composition(position, 200e3, 0) == Approx(0.0));
+  CHECK(world3.composition(position, 200e3, 1) == Approx(0.0));
+  CHECK(world3.composition(position, 200e3, 2) == Approx(0.0));
+  CHECK(world3.composition(position, 200e3, 3) == Approx(0.0));
+  CHECK(world3.composition(position, 200e3, 4) == Approx(0.0));
+  CHECK(world3.composition(position, 0, 4) == Approx(0.2693033088));
+  CHECK(world3.composition(position, 0, 5) == Approx(0.6409289216));
+  CHECK(world3.composition(position, 0, 6) == 0.0);
+
+  position = {700e3,675e3,800e3};
+  CHECK(world3.temperature(position, 0, 10) == Approx(4.4592312705));
+  CHECK(world3.temperature(position, 10, 10) == Approx(4.4592312705));
+  CHECK(world3.temperature(position, 100e3, 10) == Approx(4.4592312705));
+  CHECK(world3.temperature(position, 100e3+1, 10) == Approx(4.4592312705));
+  CHECK(world3.temperature(position, 101e3, 10) == Approx(4.4592312705));
+  CHECK(world3.temperature(position, 110e3, 10) == Approx(4.4592312705));
+  CHECK(world3.temperature(position, 150e3, 10) == Approx(1668.6311660012));
+  CHECK(world3.temperature(position, 200e3, 10) == Approx(1692.1562939786));
+  CHECK(world3.composition(position, 0, 0) == 0.0);
+  CHECK(world3.composition(position, 0, 1) == 0.0);
+  CHECK(world3.composition(position, 0, 2) == 0.0);
+  CHECK(world3.composition(position, 0, 3) == Approx(0.1148078176));
+  CHECK(world3.composition(position, 10, 0) == 0.0);
+  CHECK(world3.composition(position, 10, 1) == 0.0);
+  CHECK(world3.composition(position, 10, 2) == 0.0);
+  CHECK(world3.composition(position, 10, 3) == Approx(0.1148078176));
+  CHECK(world3.composition(position, 100e3, 0) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3, 1) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3, 2) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3, 3) == Approx(0.1148078176));
+  CHECK(world3.composition(position, 100e3, 4) == Approx(0.3444234529));
+  CHECK(world3.composition(position, 100e3+1, 0) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3+1, 1) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3+1, 2) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3+1, 3) == Approx(0.1148078176));
+  CHECK(world3.composition(position, 100e3+1, 4) == Approx(0.3444234529));
+  CHECK(world3.composition(position, 101e3, 0) == Approx(0.0));
+  CHECK(world3.composition(position, 101e3+1, 1) == Approx(0.0));
+  CHECK(world3.composition(position, 101e3+1, 2) == Approx(0.0));
+  CHECK(world3.composition(position, 101e3+1, 3) == Approx(0.1148078176));
+  CHECK(world3.composition(position, 101e3+1, 4) == Approx(0.3444234529));
+  CHECK(world3.composition(position, 150e3, 0) == Approx(0.0));
+  CHECK(world3.composition(position, 150e3, 1) == Approx(0.0));
+  CHECK(world3.composition(position, 150e3, 2) == Approx(0.0));
+  CHECK(world3.composition(position, 150e3, 3) == Approx(0.0));
+  CHECK(world3.composition(position, 150e3, 4) == Approx(0.0));
+  CHECK(world3.composition(position, 200e3, 0) == Approx(0.0));
+  CHECK(world3.composition(position, 200e3, 1) == Approx(0.0));
+  CHECK(world3.composition(position, 200e3, 2) == Approx(0.0));
+  CHECK(world3.composition(position, 200e3, 3) == Approx(0.0));
+  CHECK(world3.composition(position, 200e3, 4) == Approx(0.0));
+  CHECK(world3.composition(position, 0, 4) == Approx(0.3444234529));
+  CHECK(world3.composition(position, 0, 5) == Approx(0.5407687295));
+  CHECK(world3.composition(position, 0, 6) == 0.0);
 }
 
 TEST_CASE("WorldBuilder Features: coordinate interpolation")
@@ -2387,18 +2591,14 @@ TEST_CASE("WorldBuilder Types: PluginSystem")
 TEST_CASE("WorldBuilder Types: Array")
 {
 #define TYPE Array
-  Types::TYPE type(Types::Double(0,"double test"),"array test");
+  Types::TYPE type(Types::Double(0,"double test"));
   CHECK(type.inner_type == Types::type::Double);
   CHECK(type.inner_type_ptr.get() != nullptr);
-  CHECK(type.inner_type_index.size() == 0);
-  CHECK(type.description == "array test");
   CHECK(type.get_type() == Types::type::TYPE);
 
-  Types::TYPE type_copy(type);
+  /*Types::TYPE type_copy(type);
   CHECK(type_copy.inner_type == Types::type::Double);
   CHECK(type_copy.inner_type_ptr.get() == nullptr);
-  CHECK(type_copy.inner_type_index.size() == 0);
-  CHECK(type_copy.description == "array test");
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
   Types::TYPE type_explicit(std::vector<unsigned int> {1,2}, Types::type::Double, "array test explicit");
@@ -2406,9 +2606,9 @@ TEST_CASE("WorldBuilder Types: Array")
   CHECK(type_explicit.inner_type_ptr.get() == nullptr);
   CHECK(type_explicit.inner_type_index.size() == 2);
   CHECK(type_explicit.description == "array test explicit");
-  CHECK(type_explicit.get_type() == Types::type::TYPE);
+  CHECK(type_explicit.get_type() == Types::type::TYPE);*/
 
-  CHECK_THROWS_WITH(type_explicit.clone(),Contains("Error: Cloning Arrays is currently not possible."));
+  CHECK_THROWS_WITH(type.clone(),Contains("Error: Cloning Arrays is currently not possible."));
   /*
   std::unique_ptr<Types::Interface> type_clone = type_explicit.clone()
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
@@ -2428,47 +2628,63 @@ TEST_CASE("WorldBuilder Types: Array")
 #undef TYPE
 }
 
-TEST_CASE("WorldBuilder Types: List")
+TEST_CASE("WorldBuilder Types: Object")
 {
-#define TYPE List
-  Types::TYPE type(Types::Double(0,"double test"),"list test");
-  CHECK(type.inner_type == Types::type::Double);
-  CHECK(type.inner_type_ptr.get() != nullptr);
-  CHECK(type.inner_type_index.size() == 0);
-  CHECK(type.description == "list test");
+#define TYPE Object
+  Types::TYPE type(std::vector<std::string> {"test1","test2"},true);
+  CHECK(type.required.size() == 2);
+  CHECK(type.required[0] == "test1");
+  CHECK(type.required[1] == "test2");
+  CHECK(type.additional_properties == true);
   CHECK(type.get_type() == Types::type::TYPE);
 
   Types::TYPE type_copy(type);
-  CHECK(type_copy.inner_type == Types::type::Double);
-  CHECK(type_copy.inner_type_ptr.get() == nullptr);
-  CHECK(type_copy.inner_type_index.size() == 0);
-  CHECK(type_copy.description == "list test");
+  CHECK(type_copy.required.size() == 2);
+  CHECK(type_copy.required[0] == "test1");
+  CHECK(type_copy.required[1] == "test2");
+  CHECK(type_copy.additional_properties == true);
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
-  Types::TYPE type_explicit("name",std::vector<unsigned int> {1,2}, Types::type::Double, "list test explicit");
-  CHECK(type_explicit.name == "name");
-  CHECK(type_explicit.inner_type == Types::type::Double);
-  CHECK(type_explicit.inner_type_ptr.get() == nullptr);
-  CHECK(type_explicit.inner_type_index.size() == 2);
-  CHECK(type_explicit.description == "list test explicit");
-  CHECK(type_explicit.get_type() == Types::type::TYPE);
-
-  std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
+  std::unique_ptr<Types::Interface> type_clone = type_copy.clone();
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
-  CHECK(type_clone_natural->name == "name");
-  CHECK(type_clone_natural->inner_type == Types::type::Double);
-  CHECK(type_clone_natural->inner_type_ptr.get() == nullptr);
-  CHECK(type_clone_natural->inner_type_index.size() == 2);
-  CHECK(type_clone_natural->description == "list test explicit");
+  CHECK(type_clone_natural->required.size() == 2);
+  CHECK(type_clone_natural->required[0] == "test1");
+  CHECK(type_clone_natural->required[1] == "test2");
+  CHECK(type_clone_natural->additional_properties == true);
   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 
   Types::TYPE type_copy2(*type_clone_natural);
-  CHECK(type_copy2.name == "name");
-  CHECK(type_copy2.inner_type == Types::type::Double);
-  CHECK(type_copy2.inner_type_ptr.get() == nullptr);
-  CHECK(type_copy2.inner_type_index.size() == 2);
-  CHECK(type_copy2.description == "list test explicit");
+  CHECK(type_copy2.required.size() == 2);
+  CHECK(type_copy2.required[0] == "test1");
+  CHECK(type_copy2.required[1] == "test2");
+  CHECK(type_copy2.additional_properties == true);
   CHECK(type_copy2.get_type() == Types::type::TYPE);
+
+#undef TYPE
+}
+
+
+TEST_CASE("WorldBuilder Types: Bool")
+{
+#define TYPE Bool
+  Types::TYPE type(true);
+  CHECK(type.default_value == true);
+  CHECK(type.get_type() == Types::type::TYPE);
+
+
+  Types::TYPE type_copy(type);
+  CHECK(type_copy.default_value == true);
+  CHECK(type_copy.get_type() == Types::type::TYPE);
+
+  std::unique_ptr<Types::Interface> type_clone = type_copy.clone();
+  Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
+  CHECK(type_clone_natural->default_value == true);
+  CHECK(type_clone_natural->get_type() == Types::type::TYPE);
+
+  Types::TYPE type_copy2(*type_clone_natural);
+  CHECK(type_copy2.default_value == true);
+  CHECK(type_copy2.get_type() == Types::type::TYPE);
+
 #undef TYPE
 }
 
