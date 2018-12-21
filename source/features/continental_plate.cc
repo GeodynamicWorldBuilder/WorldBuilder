@@ -29,7 +29,6 @@
 #include <world_builder/parameters.h>
 
 #include <world_builder/types/array.h>
-#include <world_builder/types/constant_layer.h>
 #include <world_builder/types/double.h>
 #include <world_builder/types/string.h>
 #include <world_builder/types/object.h>

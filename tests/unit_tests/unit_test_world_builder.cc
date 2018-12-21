@@ -34,8 +34,6 @@
 #include <world_builder/point.h>
 
 #include <world_builder/types/array.h>
-#include <world_builder/types/coordinate_system.h>
-#include <world_builder/types/constant_layer.h>
 #include <world_builder/types/double.h>
 #include <world_builder/types/plugin_system.h>
 #include <world_builder/types/list.h>
@@ -162,8 +160,8 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
   CHECK(p3.get_array() == std::array<double,3> {4,8,12});
 
   // Test coordinate system
-  CHECK(p2.get_coordinate_system() == CoordinateSystem::cartesian);
-  CHECK(p3.get_coordinate_system() == CoordinateSystem::cartesian);
+  //CHECK(p2.get_coordinate_system() == CoordinateSystem::cartesian);
+  //CHECK(p3.get_coordinate_system() == CoordinateSystem::cartesian);
 
   // Test norm and norm_square
   CHECK(p2.norm_square() == 80);
@@ -2342,7 +2340,7 @@ TEST_CASE("WorldBuilder Types: Point 3d")
 
 #undef TYPE
 }
-
+/*
 TEST_CASE("WorldBuilder Types: Coordinate System")
 {
 #define TYPE CoordinateSystem
@@ -2363,7 +2361,7 @@ TEST_CASE("WorldBuilder Types: Coordinate System")
   // todo: test the set value function.
 
 #undef TYPE
-}
+}*/
 
 // not sure how to unit test this.
 /*
@@ -2662,7 +2660,7 @@ TEST_CASE("WorldBuilder Parameters")
   Parameters prm(world);
   prm.initialize(file_name);
 
-  prm.load_entry("Coordinate system", false, Types::CoordinateSystem("cartesian","This determines the coordinate system"));
+  //prm.load_entry("Coordinate system", false, Types::CoordinateSystem("cartesian","This determines the coordinate system"));
 
   // Test the UnsignedInt functions
   /*CHECK_THROWS_WITH(prm.load_entry("non existent unsigned int", true, Types::UnsignedInt(1,"description")),

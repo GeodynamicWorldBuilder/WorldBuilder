@@ -34,9 +34,7 @@
 #include <world_builder/parameters.h>
 #include <world_builder/utilities.h>
 
-#include <world_builder/types/coordinate_system.h>
 #include <world_builder/types/point.h>
-#include <world_builder/types/constant_layer.h>
 #include <world_builder/types/double.h>
 #include <world_builder/types/string.h>
 #include <world_builder/types/segment.h>
@@ -859,7 +857,7 @@ namespace WorldBuilder
 
     return true;
   }
-
+  /*
   bool
   Parameters::load_entry(const std::string &name, const bool required, const Types::Interface &type)
   {
@@ -1089,7 +1087,7 @@ namespace WorldBuilder
 
          //vector_string[vector_string.size()-1].set_value(value);
          location = vector_segment.size()-1;
-         string_to_type_map[path_plus_name] = location;*/
+         string_to_type_map[path_plus_name] = location;* /
 
       }
     else if (type.get_type() == Types::type::ConstantLayer)
@@ -1486,16 +1484,16 @@ namespace WorldBuilder
       {
 
         WBAssert(false, "A Coordinate system can not be directly set, use the load_entry function.");
-        /*const Types::CoordinateSystem &natural_type = dynamic_cast<const Types::CoordinateSystem &>(type);
+        / *const Types::CoordinateSystem &natural_type = dynamic_cast<const Types::CoordinateSystem &>(type);
         std::string system = natural_type.;
-        coordinate_system = CoordinateSystems::create_coordinate_system(system);*/
+        coordinate_system = CoordinateSystems::create_coordinate_system(system);* /
       }
 
     else if (type.get_type() == Types::type::PluginSystem)
       {
         WBAssert(false, "A Feature can not be directly set, use the load_entry function.");
       }
-    /*else if (type.get_type() == Types::type::List)
+    / *else if (type.get_type() == Types::type::List)
       {
         const std::string path_plus_name_without_arrays = ((get_current_path_without_arrays() == "") ? name : (get_current_path_without_arrays() + path_seperator + name));
 
@@ -1510,7 +1508,7 @@ namespace WorldBuilder
             this->set_entry(local_path,  natural_type.name, *(natural_type.inner_type[i]));
           }
 
-      }*/
+      }* /
     else if (type.get_type() == Types::type::Array)
       {
         const Types::Array &natural_type = dynamic_cast<const Types::Array &>(type);
@@ -1549,7 +1547,7 @@ namespace WorldBuilder
       {
         WBAssertThrow(false,"Type not defined: " << (int)type.get_type());
       }
-  }
+  }*/
 
   void
   Parameters::enter_subsection(const std::string name)
@@ -1901,7 +1899,7 @@ namespace WorldBuilder
    * Returns a vector of pointers to the ConstantLayer Type based on the provided name.
    * Note that the variable with this name has to be loaded before this function is called.
    */
-  template const std::vector<Types::ConstantLayer> Parameters::get_array<Types::ConstantLayer>(const std::string &name) const;
+  //template const std::vector<Types::ConstantLayer> Parameters::get_array<Types::ConstantLayer>(const std::string &name) const;
 
   /**
    * Returns a vector of pointers to the Point<2> Type based on the provided name.

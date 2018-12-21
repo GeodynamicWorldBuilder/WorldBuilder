@@ -42,7 +42,6 @@ namespace WorldBuilder
     class Interface;
     template<int dim>
     class Point;
-    class ConstantLayer;
     class Double;
     class String;
     class Segment;
@@ -260,7 +259,7 @@ namespace WorldBuilder
        * raw pointer is returned is that caller is not responsible for the
        * classes pointed at in the return vector or has ownership on them.
        * This function is currently implemented for the Types Double, Segment,
-       * ConstantLayer, Point2D and Point3D.
+       * Point2D and Point3D.
        * \param name The key where the variable is stored. The array contains
        * \return std::vector<T*>
        */
@@ -338,25 +337,6 @@ namespace WorldBuilder
        */
       std::vector<Types::String> vector_string;
 
-      /**
-       * A vector which stores all the Segment types. These can be
-       * retrieved with the help of the string_to_type_map and the
-       * get_segment() function.
-       * @see string_to_type_map
-       * @see get_segment()
-       * @see Types::Segment
-       */
-      //std::vector<Types::Segment> vector_segment;
-
-      /**
-       * A vector which stores all the ConstantLayer types. These can
-       * be retrieved with the help of the string_to_type_map and the
-       * get_segment() function.
-       * @see string_to_type_map
-       * @see get_constant_layer()
-       * @see Types::ConstantLayer
-       */
-      std::vector<Types::ConstantLayer> vector_constant_layer;
 
       /**
        * A vector which stores all the Array types. These can be

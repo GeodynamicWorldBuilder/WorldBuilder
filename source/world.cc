@@ -30,7 +30,6 @@
 #include <world_builder/parameters.h>
 #include <world_builder/coordinate_systems/interface.h>
 #include <world_builder/types/interface.h>
-#include <world_builder/types/coordinate_system.h>
 
 #include <world_builder/types/array.h>
 #include <world_builder/types/bool.h>
