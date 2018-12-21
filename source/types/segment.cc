@@ -24,6 +24,8 @@
 
 #include <world_builder/features/subducting_plate_models/temperature/interface.h>
 #include <world_builder/features/subducting_plate_models/composition/interface.h>
+#include <world_builder/features/fault_models/temperature/interface.h>
+#include <world_builder/features/fault_models/composition/interface.h>
 
 namespace WorldBuilder
 {
@@ -265,6 +267,13 @@ namespace WorldBuilder
     */
     template class
     Segment<Features::SubductingPlateModels::Temperature::Interface,Features::SubductingPlateModels::Composition::Interface>;
+
+    /**
+    * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+    * Note that the variable with this name has to be loaded before this function is called.
+    */
+    template class
+    Segment<Features::FaultModels::Temperature::Interface,Features::FaultModels::Composition::Interface>;
 
     /**
     * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.

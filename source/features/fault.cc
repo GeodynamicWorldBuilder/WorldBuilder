@@ -32,6 +32,7 @@
 #include <world_builder/types/point.h>
 #include <world_builder/types/string.h>
 #include <world_builder/types/unsigned_int.h>
+#include <world_builder/types/plugin_system.h>
 
 
 namespace WorldBuilder
@@ -54,15 +55,212 @@ namespace WorldBuilder
 
     void
     Fault::declare_entries(Parameters &prm,
-                           const std::string &,
+                           const std::string & parent_name,
                            const std::vector<std::string> &required_entries)
     {
+        if (parent_name == "items")
+          prm.enter_subsection("properties");
 
+        prm.declare_entry("min depth", Types::Double(0),
+                          "The depth to which this feature is present");
+        prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),
+                          "The depth to which this feature is present");
+        prm.declare_entry("dip point", Types::Point<2>(),
+                          "The depth to which this feature is present");
+
+        prm.declare_entry("segments", Types::Array(Types::Segment(0,Point<2>(0,0,invalid),Point<2>(0,0,invalid),Point<2>(0,0,invalid),
+                                                                  Types::PluginSystem("", Features::FaultModels::Temperature::Interface::declare_entries, {"model"}),
+                                                                  Types::PluginSystem("", Features::FaultModels::Composition::Interface::declare_entries, {"model"}))),
+                          "The depth to which this feature is present");
+
+        prm.declare_entry("temperature models",
+                          Types::PluginSystem("", Features::FaultModels::Temperature::Interface::declare_entries, {"model"}),
+                          "A list of temperature models.");
+        prm.declare_entry("composition models",
+                          Types::PluginSystem("", Features::FaultModels::Composition::Interface::declare_entries, {"model"}),
+                          "A list of composition models.");
+
+        if (parent_name != "items")
+          {
+            // This only happens if we are not in sections
+            prm.declare_entry("sections", Types::Array(Types::PluginSystem("",Features::Fault::declare_entries, {"coordinate"}, false)),"A list of feature properties for a coordinate.");
+          }
+        else
+          {
+
+            // this only happens in sections
+            prm.declare_entry("coordinate", Types::UnsignedInt(0),
+                              "The coordinate which should be overwritten");
+
+            prm.leave_subsection();
+          }
     }
 
     void
     Fault::parse_entries(Parameters &prm)
     {
+        const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
+
+        this->name = prm.get<std::string>("name");
+        this->get_coordinates("coordinates", prm, coordinate_system);
+
+
+        starting_depth = prm.get<double>("min depth");
+        maximum_depth = prm.get<double>("max depth");
+
+        const unsigned int n_sections = this->original_number_of_coordinates;
+
+        reference_point = prm.get<Point<2> >("dip point");
+
+        default_temperature_models.resize(0);
+        default_composition_models.resize(0);
+        bool found = prm.get_shared_pointers<Features::FaultModels::Temperature::Interface>("temperature models", default_temperature_models);
+        found = prm.get_shared_pointers<Features::FaultModels::Composition::Interface>("composition models", default_composition_models);
+
+        // get the default segments.
+        default_segment_vector = prm.get_vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
+        Features::FaultModels::Composition::Interface> >("segments", default_temperature_models, default_composition_models);
+
+
+        // This vector stores segments to this coordiante/section.
+        //First used (raw) pointers to the segment relevant to this coordinate/section,
+        // but I do not trust it won't fail when memory is moved. So storing the all the data now.
+        segment_vector.resize(0);
+        segment_vector.resize(n_sections, default_segment_vector);
+
+        prm.enter_subsection("segments");
+        {
+          for (unsigned int i = 0; i < default_segment_vector.size(); ++i)
+            {
+              prm.enter_subsection(std::to_string(i));
+              {
+                prm.enter_subsection("temperature models");
+                {
+                  for (unsigned int j = 0; j < default_segment_vector[i].temperature_systems.size(); ++j)
+                    {
+                      prm.enter_subsection(std::to_string(j));
+                      {
+                        default_segment_vector[i].temperature_systems[j]->parse_entries(prm);
+                      }
+                      prm.leave_subsection();
+                    }
+                }
+                prm.leave_subsection();
+
+
+                prm.enter_subsection("composition models");
+                {
+                  for (unsigned int j = 0; j < default_segment_vector[i].composition_systems.size(); ++j)
+                    {
+                      prm.enter_subsection(std::to_string(j));
+                      {
+                        default_segment_vector[i].composition_systems[j]->parse_entries(prm);
+                      }
+                      prm.leave_subsection();
+                    }
+                }
+                prm.leave_subsection();
+              }
+              prm.leave_subsection();
+            }
+        }
+        prm.leave_subsection();
+
+        // now search whether a section is present, if so, replace the default segments.
+        std::vector<std::unique_ptr<Features::Fault> > sections_vector;
+        prm.get_unique_pointers("sections", sections_vector);
+
+        prm.enter_subsection("sections");
+        for (unsigned int i = 0; i < n_sections; ++i)
+          {
+            // first check whether this section/coordinate has a a special overwrite
+            for (unsigned int i_sector = 0; i_sector < sections_vector.size(); ++i_sector)
+              {
+                prm.enter_subsection(std::to_string(i_sector));
+                {
+                  const unsigned int change_coord_number = prm.get<unsigned int>("coordinate");
+
+                  WBAssertThrow(segment_vector.size() > change_coord_number, "Error: for fault with name: '" << this->name
+                  		                                                    << "', trying to change the section of coordinate " << change_coord_number
+                  		                                                    << " while only " << segment_vector.size() << " coordinates are defined.");
+
+                  segment_vector[change_coord_number] = prm.get_vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
+                                                        Features::FaultModels::Composition::Interface> >("segments", default_temperature_models, default_composition_models);
+
+                  prm.enter_subsection("segments");
+                  {
+                    for (unsigned int i = 0; i < segment_vector[change_coord_number].size(); ++i)
+                      {
+                        prm.enter_subsection(std::to_string(i));
+                        {
+                          prm.enter_subsection("temperature models");
+                          {
+                            for (unsigned int j = 0; j < segment_vector[change_coord_number][i].temperature_systems.size(); ++j)
+                              {
+                                prm.enter_subsection(std::to_string(j));
+                                {
+                                  segment_vector[change_coord_number][i].temperature_systems[j]->parse_entries(prm);
+                                }
+                                prm.leave_subsection();
+                              }
+                          }
+                          prm.leave_subsection();
+
+
+                          prm.enter_subsection("composition models");
+                          {
+                            for (unsigned int j = 0; j < segment_vector[change_coord_number][j].composition_systems.size(); ++j)
+                              {
+                                prm.enter_subsection(std::to_string(j));
+                                {
+                                  segment_vector[change_coord_number][i].composition_systems[j]->parse_entries(prm);
+                                }
+                                prm.leave_subsection();
+                              }
+                          }
+                          prm.leave_subsection();
+                        }
+                        prm.leave_subsection();
+                      }
+                  }
+                  prm.leave_subsection();
+
+                }
+                prm.leave_subsection();
+              }
+
+          }
+        prm.leave_subsection();
+
+        maximum_slab_thickness = 0;
+        maximum_total_slab_length = 0;
+        total_slab_length.resize(original_number_of_coordinates);
+        slab_segment_lengths.resize(original_number_of_coordinates);
+        slab_segment_thickness.resize(original_number_of_coordinates);
+        slab_segment_top_truncation.resize(original_number_of_coordinates);
+        slab_segment_angles.resize(original_number_of_coordinates);
+
+        for (unsigned int i = 0; i < segment_vector.size(); ++i)
+          {
+            double local_total_slab_length = 0;
+            slab_segment_lengths[i].resize(segment_vector[i].size());
+            slab_segment_thickness[i].resize(segment_vector[i].size(), Point<2>(invalid));
+            slab_segment_top_truncation[i].resize(segment_vector[i].size(), Point<2>(invalid));
+            slab_segment_angles[i].resize(segment_vector[i].size(), Point<2>(invalid));
+            for (unsigned int j = 0; j < segment_vector[i].size(); ++j)
+              {
+                slab_segment_lengths[i][j] = segment_vector[i][j].value_length;
+                local_total_slab_length += segment_vector[i][j].value_length;
+
+                slab_segment_thickness[i][j] = segment_vector[i][j].value_thickness;
+                slab_segment_top_truncation[i][j] = segment_vector[i][j].value_top_truncation;
+
+                slab_segment_angles[i][j] = segment_vector[i][j].value_angle * (const_pi/180);
+              }
+            maximum_slab_thickness = std::max(maximum_slab_thickness, local_total_slab_length);
+            total_slab_length[i] = local_total_slab_length;
+            maximum_total_slab_length = std::max(maximum_total_slab_length, local_total_slab_length);
+          }
       /*
 
        //Parameters &prm = this->world->parameters;
@@ -229,7 +427,7 @@ namespace WorldBuilder
     double
     Fault::temperature(const Point<3> &position,
                        const double depth,
-                       const double /*gravity_norm*/,
+                       const double gravity_norm,
                        double temperature) const
     {
       WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
@@ -237,6 +435,13 @@ namespace WorldBuilder
 
       // todo: explain
       const double starting_radius = natural_coordinate.get_depth_coordinate() + depth - starting_depth;
+
+      WBAssert(starting_radius != 0, "Internal error: starting_radius can not be zero. "
+               << "Position = " << position[0] << ":" << position[1] << ":" << position[2]
+               << ", natural_coordinate.get_depth_coordinate() = " << natural_coordinate.get_depth_coordinate()
+               << ", depth = " << depth
+               << ", starting_depth " << starting_depth
+              );
 
       // todo: explain and check -starting_depth
       if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness)
@@ -282,6 +487,24 @@ namespace WorldBuilder
                                              section_fraction *
                                              (total_slab_length[next_section] - total_slab_length[current_section]);
 
+              // secondly for top truncation
+              const double top_truncation_up = slab_segment_top_truncation[current_section][current_segment][0]
+                                               + section_fraction
+                                               * (slab_segment_top_truncation[next_section][current_segment][0]
+                                                  - slab_segment_top_truncation[current_section][current_segment][0]);
+              const double top_truncation_down = slab_segment_top_truncation[current_section][current_segment][1]
+                                                 + section_fraction
+                                                 * (slab_segment_top_truncation[next_section][current_segment][1]
+                                                    - slab_segment_top_truncation[current_section][current_segment][1]);
+              const double top_truncation_local = top_truncation_up + segment_fraction * (top_truncation_down - top_truncation_up);
+
+              // if the thickness is zero, we don't need to compute anything, so return.
+              if (std::fabs(thickness_local) < 2.0 * std::numeric_limits<double>::epsilon())
+                return temperature;
+
+              // if the thickness is smaller than what is truncated off at the top, we don't need to compute anything, so return.
+              if (thickness_local < top_truncation_local)
+                return temperature;
 
               // Because both sides return positve values, we have to
               // devide the thickness_local by two
@@ -290,11 +513,47 @@ namespace WorldBuilder
                   distance_along_plane > 0 &&
                   distance_along_plane <= max_slab_length)
                 {
-                  // Inside the slab!
-                  if (temperature_submodule_name == "constant")
+                  // Inside the fault!
+                  double temperature_current_section = temperature;
+                  double temperature_next_section = temperature;
+
+                  for (auto &temperature_model: segment_vector[current_section][current_segment].temperature_systems)
                     {
-                      return temperature_submodule_constant_temperature;
+                      temperature_current_section = temperature_model->get_temperature(position,
+                                                                                       depth,
+                                                                                       gravity_norm,
+                                                                                       temperature,
+                                                                                       starting_depth,
+                                                                                       maximum_depth,
+                                                                                       distance_from_planes);
+
+                      WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature
+                               << ", based on a temperature model with the name " << temperature_model->get_name());
+                      WBAssert(std::isfinite(temperature), "Temparture is not a finite: " << temperature
+                               << ", based on a temperature model with the name " << temperature_model->get_name());
+
                     }
+
+                  for (auto &temperature_model: segment_vector[next_section][current_segment].temperature_systems)
+                    {
+                      temperature_next_section = temperature_model->get_temperature(position,
+                                                                                    depth,
+                                                                                    gravity_norm,
+                                                                                    temperature,
+                                                                                    starting_depth,
+                                                                                    maximum_depth,
+                                                                                    distance_from_planes);
+
+                      WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature
+                               << ", based on a temperature model with the name " << temperature_model->get_name());
+                      WBAssert(std::isfinite(temperature), "Temparture is not a finite: " << temperature
+                               << ", based on a temperature model with the name " << temperature_model->get_name());
+
+                    }
+
+                  // linear interpolation between current and next section temperatures
+                  temperature = temperature_current_section + section_fraction * (temperature_next_section - temperature_current_section);
+
                 }
             }
         }
@@ -307,12 +566,6 @@ namespace WorldBuilder
                        const unsigned int composition_number,
                        double composition) const
     {
-      if (composition_submodule_name == "none")
-        {
-          return composition;
-        }
-      else
-        {
           WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
                                                                           *(world->parameters.coordinate_system));
           // todo: explain
@@ -358,6 +611,25 @@ namespace WorldBuilder
                                                    - slab_segment_thickness[current_section][current_segment][1]);
                   const double thickness_local = thickness_up + segment_fraction * (thickness_down - thickness_up);
 
+                  // secondly for top truncation
+                  const double top_truncation_up = slab_segment_top_truncation[current_section][current_segment][0]
+                                                   + section_fraction
+                                                   * (slab_segment_top_truncation[next_section][current_segment][0]
+                                                      - slab_segment_top_truncation[current_section][current_segment][0]);
+                  const double top_truncation_down = slab_segment_top_truncation[current_section][current_segment][1]
+                                                     + section_fraction
+                                                     * (slab_segment_top_truncation[next_section][current_segment][1]
+                                                        - slab_segment_top_truncation[current_section][current_segment][1]);
+                  const double top_truncation_local = top_truncation_up + segment_fraction * (top_truncation_down - top_truncation_up);
+
+                  // if the thickness is zero, we don't need to compute anything, so return.
+                  if (std::fabs(thickness_local) < 2.0 * std::numeric_limits<double>::epsilon())
+                    return composition;
+
+                  // if the thickness is smaller than what is truncated off at the top, we don't need to compute anything, so return.
+                  if (thickness_local < top_truncation_local)
+                    return composition;
+
                   const double max_slab_length = total_slab_length[current_section] +
                                                  section_fraction *
                                                  (total_slab_length[next_section] - total_slab_length[current_section]);
@@ -370,63 +642,52 @@ namespace WorldBuilder
                       distance_along_plane > 0 &&
                       distance_along_plane <= max_slab_length)
                     {
-                      // Inside the slab!
-                      if (composition_submodule_name == "constant")
+                      // Inside the fault!
+                      double composition_current_section = composition;
+                      double composition_next_section = composition;
+
+                      for (auto &composition_model: segment_vector[current_section][current_segment].composition_systems)
                         {
-                          // We are in the the area where the fault plate is defined. Set the constant composition
-                          const bool clear = true;
-                          // We are in the the area where the contintal plate is defined. Set the constant temperature.
-                          for (unsigned int i =0; i < composition_submodule_constant_composition.size(); ++i)
-                            {
-                              if (composition_submodule_constant_composition[i] == composition_number)
-                                {
-                                  return composition_submodule_constant_value[i];
-                                }
-                              else if (clear == true)
-                                {
-                                  composition = 0.0;
-                                }
-                            }
+                          composition_current_section = composition_model->get_composition(position,
+                                                                                           depth,
+                                                                                           composition_number,
+                                                                                           composition_current_section,
+                                                                                           starting_depth,
+                                                                                           maximum_depth,
+                                                                                           distance_from_planes);
+
+                          WBAssert(!std::isnan(composition_current_section), "Composition_current_section is not a number: " << composition_current_section
+                                   << ", based on a temperature model with the name " << composition_model->get_name());
+                          WBAssert(std::isfinite(composition_current_section), "Composition_current_section is not a finite: " << composition_current_section
+                                   << ", based on a temperature model with the name " << composition_model->get_name());
+
                         }
-                      else if (composition_submodule_name == "constant layers")
+
+                      for (auto &composition_model: segment_vector[next_section][current_segment].composition_systems)
                         {
-                          // find out what layer we are in.
-                          double total_thickness = 0;
-                          for (unsigned int i = 0; i < composition_submodule_constant_layers_compositions.size(); ++i)
-                            {
-                              if (distance_from_plane >= total_thickness * 0.5
-                                  && distance_from_plane < total_thickness * 0.5 + composition_submodule_constant_layers_thicknesses[i] * 0.5)
-                                {
-                                  // We are in a layer. Check whether this is the correct composition.
-                                  // The composition_number is cast to an int to prevent a warning.
-                                  // The reason composition_submodule_constant_layers_compositions is
-                                  // unsigned int is so that it can be set to a negative value, which
-                                  // is aways ignored.
-                                  const bool clear = true;
-                                  for (unsigned int j =0; j < composition_submodule_constant_layers_compositions[i].size(); ++j)
-                                    {
-                                      if (composition_submodule_constant_layers_compositions[i][j] == composition_number)
-                                        {
-                                          return composition_submodule_constant_layers_value[i][j];
-                                        }
-                                      else if (clear == true)
-                                        {
-                                          composition = 0.0;
-                                        }
-                                    }
-                                }
-                              total_thickness += composition_submodule_constant_layers_thicknesses[i];
-                            }
+                          composition_next_section = composition_model->get_composition(position,
+                                                                                        depth,
+                                                                                        composition_number,
+                                                                                        composition_next_section,
+                                                                                        starting_depth,
+                                                                                        maximum_depth,
+                                                                                        distance_from_planes);
+
+                          WBAssert(!std::isnan(composition_next_section), "Composition_next_section is not a number: " << composition_next_section
+                                   << ", based on a temperature model with the name " << composition_model->get_name());
+                          WBAssert(std::isfinite(composition_next_section), "Composition_next_section is not a finite: " << composition_next_section
+                                   << ", based on a temperature model with the name " << composition_model->get_name());
+
                         }
-                      else
-                        {
-                          WBAssertThrow(false,"Given composition module does not exist: " + composition_submodule_name);
-                        }
+
+                      // linear interpolation between current and next section temperatures
+                      composition = composition_current_section + section_fraction * (composition_next_section - composition_current_section);
+
 
                     }
                 }
             }
-        }
+
 
       return composition;
     }

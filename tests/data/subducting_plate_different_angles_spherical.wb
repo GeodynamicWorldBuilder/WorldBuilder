@@ -1,22 +1,12 @@
 {
 "version":"0.1",
 "cross section": [[100e3,100e3],[400e3,500e3]],
-"coordinate system":{"spherical":{"depth method":"starting point"}},
-"surface rotation point": ["165e3","166e3"],
-"surface rotation angle": "0",
-"minimum parts per distance unit": 5,
-"minimum distance points": 1e-5,
+"coordinate system":{"model":"spherical", "depth method":"starting point"},
 "features":
-{
-     "subducting plate":{"name":"First subducting plate", "coordinates":[[-11,0],[0,0],[11,6]], "reference point":[-30,-30],
-         "starting depth":0, "max depth":1e10,
-         "segments":
-         {
-           "all":[{"length":200e3, "thickness":[100e3,100e3], "angle":[0,60]}, {"length":200e3, "thickness":[200e3], "angle":[60,0]}, {"length":200e3, "thickness":[100e3], "angle":[0,60]}],
-           "5":[{"length":200e3, "thickness":[100e3,0], "angle":[0,60]}, {"length":100e3, "thickness":[0,100e3], "angle":[60,90]}, {"length":150e3, "thickness":[100e3], "angle":[90,90]}],
-           "6":[{"length":200e3, "thickness":[100e3,100e3], "angle":[0,60]}, {"length":100e3, "thickness":[100e3,100e3], "angle":[60,0]}, {"length":150e3, "thickness":[100e3], "angle":[0]}]
-         },
-         "temperature model":{"name":"plate model", "density":3300, "plate velocity":0.01 },
-         "composition model":{"name":"constant", "compositions":[1], "depth":50e3}}
-}
+[
+     {"model":"subducting plate", "name":"First subducting plate", "coordinates":[[-11,0],[0,0],[11,6]], "dip point":[-30,-30],
+         "segments":[{"length":200e3, "thickness":[100e3,100e3], "angle":[0,60]}, {"length":200e3, "thickness":[200e3], "angle":[60,0]}, {"length":200e3, "thickness":[100e3], "angle":[0,60]}],
+         "temperature models":[{"model":"plate model", "density":3300, "plate velocity":0.01 }],
+         "composition models":[{"model":"uniform", "compositions":[1]}]}
+]
 }

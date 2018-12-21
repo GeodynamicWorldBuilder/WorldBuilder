@@ -57,6 +57,9 @@
 #include <world_builder/features/subducting_plate.h>
 #include <world_builder/features/subducting_plate_models/temperature/interface.h>
 #include <world_builder/features/subducting_plate_models/composition/interface.h>
+#include <world_builder/features/fault.h>
+#include <world_builder/features/fault_models/temperature/interface.h>
+#include <world_builder/features/fault_models/composition/interface.h>
 
 using boost::property_tree::ptree;
 using namespace rapidjson;
@@ -519,20 +522,144 @@ namespace WorldBuilder
                   }
               }
             vector.push_back(Objects::Segment<Temperature::Interface,Composition::Interface>(length, thickness, top_trunctation, angle, temperature_models, composition_models));
-            //let's assume that the file is correct, because it has been checked with the json schema.
-            // So there are exactly two values.
-            /*double value1, value2;
 
-            try
+            this->leave_subsection();
+          }
+      }
+    this->leave_subsection();
+    return vector;
+  }
+
+
+  template<>
+  std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,Features::FaultModels::Composition::Interface> >
+  Parameters::get_vector(const std::string &name,
+                         std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface> > &default_temperature_models,
+                         std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface> > &default_composition_models)
+  {
+    using namespace Features::FaultModels;
+    std::vector<Objects::Segment<Temperature::Interface,Composition::Interface> > vector;
+    this->enter_subsection(name);
+    const std::string strict_base = this->get_full_json_path();
+    if (Pointer((strict_base).c_str()).Get(parameters) != NULL)
+      {
+        // get the array of segments
+        Value *array = Pointer((strict_base).c_str()).Get(parameters);
+
+        for (unsigned int i = 0; i < array->Size(); ++i )
+          {
+            this->enter_subsection(std::to_string(i));
+            const std::string base = this->get_full_json_path();
+            // get one segment
+            // length
+            double length = Pointer((base + "/length").c_str()).Get(parameters)->GetDouble();
+
+            // get thickness
+            Value *point_array = Pointer((base  + "/thickness").c_str()).Get(parameters);
+            Point<2> thickness(invalid);
+            if (point_array != NULL)
               {
-                value1 = Pointer((base + "/0").c_str()).Get(parameters)->GetDouble();
-                value2 = Pointer((base + "/1").c_str()).Get(parameters)->GetDouble();
+                if (point_array->Size() == 1)
+                  {
+                    // There is only one value, set it for both elements
+                    double local0 = Pointer((base + "/thickness/0").c_str()).Get(parameters)->GetDouble();
+                    thickness = Point<2>(local0,local0,invalid);
+                  }
+                else
+                  {
+                    double local0 = Pointer((base + "/thickness/0").c_str()).Get(parameters)->GetDouble();
+                    double local1 = Pointer((base + "/thickness/1").c_str()).Get(parameters)->GetDouble();
+                    thickness = Point<2>(local0,local1,invalid);
+                  }
               }
-            catch (...)
+
+            // get top trunctation (default is 0,0)
+            point_array = Pointer((base  + "/top truncation").c_str()).Get(parameters);
+            Point<2> top_trunctation(invalid);
+            if (point_array != NULL)
               {
-                WBAssertThrow(false, "Could not convert values of " << base << " into doubles.");
+                if (point_array->Size() == 1)
+                  {
+                    // There is only one value, set it for both elements
+                    double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
+                    top_trunctation = Point<2>(local0,local0,invalid);
+                  }
+                else
+                  {
+                    double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
+                    double local1 = Pointer((base + "/top truncation/1").c_str()).Get(parameters)->GetDouble();
+                    top_trunctation = Point<2>(local0,local1,invalid);
+                  }
               }
-            vector.push_back(Point<2>(value1,value2,this->coordinate_system->natural_coordinate_system()));*/
+            // get thickness
+            point_array = Pointer((base  + "/angle").c_str()).Get(parameters);
+            Point<2> angle(invalid);
+            if (point_array != NULL)
+              {
+                if (point_array->Size() == 1)
+                  {
+                    // There is only one value, set it for both elements
+                    double local0 = Pointer((base + "/angle/0").c_str()).Get(parameters)->GetDouble();
+                    angle = Point<2>(local0,local0,invalid);
+                  }
+                else
+                  {
+                    double local0 = Pointer((base + "/angle/0").c_str()).Get(parameters)->GetDouble();
+                    double local1 = Pointer((base + "/angle/1").c_str()).Get(parameters)->GetDouble();
+                    angle = Point<2>(local0,local1,invalid);
+                  }
+              }
+
+            // Get temperature models
+            std::vector<std::shared_ptr<Temperature::Interface> > temperature_models;
+
+            //This is a value to look back in the path elements. It is a
+            // bit arbetrary, so might want to look in the future for an alternative.
+            const unsigned int searchback = path.size() > 5 && path[path.size()-4] == "sections" ? 4 : 2;
+            if (this->get_shared_pointers<Temperature::Interface>("temperature models", temperature_models) == false)
+              {
+                temperature_models = default_temperature_models;
+
+                // we only need to do something when there is a temperature model defined
+                if (Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Get(parameters) != NULL)
+                  {
+                    // copy the value, this unfortunately removes it.
+                    Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Get(parameters)->GetArray());
+
+                    // now copy it
+                    Value value2;
+                    value2.CopyFrom(value1, parameters.GetAllocator());
+
+                    // now we should have 2x the same value, so put it back and place it in the correct location.
+                    Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
+
+                    Pointer((base).c_str()).Get(parameters)->AddMember("temperature models", value2, parameters.GetAllocator());
+                  }
+              }
+
+            std::vector<std::shared_ptr<Composition::Interface> > composition_models;
+            if (this->get_shared_pointers<Composition::Interface>("composition models", composition_models) == false)
+              {
+                composition_models = default_composition_models;
+
+                // we only need to do something when there is a composition model defined
+                if (Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Get(parameters) != NULL)
+                  {
+                    // copy the value, this unfortunately removes it.
+                    Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Get(parameters)->GetArray());
+
+                    // now copy it
+                    Value value2;
+                    value2.CopyFrom(value1, parameters.GetAllocator());
+
+                    // now we should have 2x the same value, so put it back and place it in the correct location.
+                    Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
+
+                    Pointer((base).c_str()).Get(parameters)->AddMember("composition models", value2, parameters.GetAllocator());
+                  }
+              }
+            vector.push_back(Objects::Segment<Temperature::Interface,Composition::Interface>(length, thickness, top_trunctation, angle, temperature_models, composition_models));
+
             this->leave_subsection();
           }
       }
@@ -673,6 +800,28 @@ namespace WorldBuilder
         for (unsigned int i = 0; i < array->Size(); ++i )
           {
             vector.push_back(std::move(std::unique_ptr<Features::SubductingPlate>(new Features::SubductingPlate(&world))));
+          }
+      }
+    else
+      {
+        return false;
+      }
+
+    return true;
+  }
+
+  template<>
+  bool
+  Parameters::get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<Features::Fault> > &vector)
+  {
+    const std::string strict_base = this->get_full_json_path();
+    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != NULL)
+      {
+        Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+        for (unsigned int i = 0; i < array->Size(); ++i )
+          {
+            vector.push_back(std::move(std::unique_ptr<Features::Fault>(new Features::Fault(&world))));
           }
       }
     else
@@ -1855,6 +2004,23 @@ namespace WorldBuilder
   Parameters::get_unique_pointers<Features::SubductingPlateModels::Composition::Interface>(const std::string &name,
       std::vector<std::unique_ptr<Features::SubductingPlateModels::Composition::Interface> > &vector);
 
+  /**
+   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+   * Note that the variable with this name has to be loaded before this function is called.
+   */
+  template bool
+  Parameters::get_unique_pointers<Features::FaultModels::Temperature::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::FaultModels::Temperature::Interface> > &vector);
+
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_unique_pointers<Features::FaultModels::Composition::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::FaultModels::Composition::Interface> > &vector);
+
+
 
   /**
    * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -1871,6 +2037,25 @@ namespace WorldBuilder
   template bool
   Parameters::get_shared_pointers<Features::SubductingPlateModels::Composition::Interface>(const std::string &name,
       std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface> > &vector);
+
+
+  /**
+   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+   * Note that the variable with this name has to be loaded before this function is called.
+   */
+  template bool
+  Parameters::get_shared_pointers<Features::FaultModels::Temperature::Interface>(const std::string &name,
+      std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface> > &vector);
+
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_shared_pointers<Features::FaultModels::Composition::Interface>(const std::string &name,
+      std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface> > &vector);
+
+
 
 
 

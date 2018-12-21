@@ -2159,28 +2159,20 @@ TEST_CASE("WorldBuilder Types: String")
 {
 #define TYPE String
   Types::TYPE type("1","test");
-  CHECK(type.value == "1");
   CHECK(type.default_value == "1");
-  CHECK(type.description == "test");
   CHECK(type.get_type() == Types::type::TYPE);
 
   Types::TYPE type_copy(type);
-  CHECK(type_copy.value == "1");
   CHECK(type_copy.default_value == "1");
-  CHECK(type_copy.description == "test");
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
   Types::TYPE type_explicit("2", "3", "test explicit");
-  CHECK(type_explicit.value == "2");
   CHECK(type_explicit.default_value == "3");
-  CHECK(type_explicit.description == "test explicit");
   CHECK(type_explicit.get_type() == Types::type::TYPE);
 
   std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
-  CHECK(type_clone_natural->value == "2");
   CHECK(type_clone_natural->default_value == "3");
-  CHECK(type_clone_natural->description == "test explicit");
   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 #undef TYPE
 }
@@ -2418,7 +2410,9 @@ TEST_CASE("WorldBuilder Types: Array")
   CHECK(type_explicit.description == "array test explicit");
   CHECK(type_explicit.get_type() == Types::type::TYPE);
 
-  std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
+  CHECK_THROWS_WITH(type_explicit.clone(),Contains("Error: Cloning Arrays is currently not possible."));
+  /*
+  std::unique_ptr<Types::Interface> type_clone = type_explicit.clone()
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
   CHECK(type_clone_natural->inner_type == Types::type::Double);
   CHECK(type_clone_natural->inner_type_ptr.get() == nullptr);
@@ -2431,7 +2425,7 @@ TEST_CASE("WorldBuilder Types: Array")
   CHECK(type_copy2.inner_type_ptr.get() == nullptr);
   CHECK(type_copy2.inner_type_index.size() == 2);
   CHECK(type_copy2.description == "array test explicit");
-  CHECK(type_copy2.get_type() == Types::type::TYPE);
+  CHECK(type_copy2.get_type() == Types::type::TYPE);*/
 
 #undef TYPE
 }
@@ -2686,8 +2680,8 @@ TEST_CASE("WorldBuilder Parameters")
 
   prm.load_entry("unsigned int", true, Types::UnsignedInt(3,"description"));
   CHECK(prm.get_unsigned_int("unsigned int") == 4);*/
-
-
+// Todo: redo this with the new type system.
+/*
   // Test the Double functions
   CHECK_THROWS_WITH(prm.load_entry("non existent double", true, Types::Double(1,"description")),
                     Contains("Entry undeclared: non existent"));
@@ -2864,7 +2858,7 @@ TEST_CASE("WorldBuilder Parameters")
   prm.enter_subsection("subsection 1");
   {
     // Test the UnsignedInt functions
-    /*CHECK_THROWS_WITH(prm.load_entry("non existent unsigned int", true, Types::UnsignedInt(1,"description")),
+    / *CHECK_THROWS_WITH(prm.load_entry("non existent unsigned int", true, Types::UnsignedInt(1,"description")),
                       Contains("Entry undeclared: subsection 1.non existent unsigned int"));
 
     #ifndef NDEBUG
@@ -2879,7 +2873,7 @@ TEST_CASE("WorldBuilder Parameters")
     CHECK(prm.get_unsigned_int("new unsigned int") == 2);
 
     prm.load_entry("unsigned int", true, Types::UnsignedInt(3,"description"));
-    CHECK(prm.get_unsigned_int("unsigned int") == 5);*/
+    CHECK(prm.get_unsigned_int("unsigned int") == 5);* /
 
 
     // Test the Double functions
@@ -3052,7 +3046,7 @@ TEST_CASE("WorldBuilder Parameters")
     prm.enter_subsection("subsection 2");
     {
       // Test the UnsignedInt functions
-      /*CHECK_THROWS_WITH(prm.load_entry("non existent unsigned int", true, Types::UnsignedInt(1,"description")),
+      / *CHECK_THROWS_WITH(prm.load_entry("non existent unsigned int", true, Types::UnsignedInt(1,"description")),
                         Contains("Entry undeclared: subsection 1.subsection 2.non existent unsigned int"));
 
       #ifndef NDEBUG
@@ -3067,7 +3061,7 @@ TEST_CASE("WorldBuilder Parameters")
       CHECK(prm.get_unsigned_int("new unsigned int") == 2);
 
       prm.load_entry("unsigned int", true, Types::UnsignedInt(3,"description"));
-      CHECK(prm.get_unsigned_int("unsigned int") == 6);*/
+      CHECK(prm.get_unsigned_int("unsigned int") == 6);* /
 
 
       // Test the Double functions
@@ -3247,7 +3241,7 @@ TEST_CASE("WorldBuilder Parameters")
     prm.leave_subsection();
   }
   prm.leave_subsection();
-
+*/
 
   // Todo: add tests for list,feature and coordinate system.
 
