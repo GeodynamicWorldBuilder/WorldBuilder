@@ -22,8 +22,6 @@
 #include <iostream>
 #include <memory>
 
-#include <boost/property_tree/json_parser.hpp>
-
 #include <catch2.h>
 
 #include <world_builder/config.h>
