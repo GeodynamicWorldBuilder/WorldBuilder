@@ -17,8 +17,6 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <boost/algorithm/string.hpp>
-
 #include <world_builder/features/mantle_layer.h>
 #include <world_builder/utilities.h>
 #include <world_builder/assert.h>
