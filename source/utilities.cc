@@ -19,6 +19,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
 
 #include <world_builder/assert.h>
 #include <world_builder/coordinate_systems/interface.h>

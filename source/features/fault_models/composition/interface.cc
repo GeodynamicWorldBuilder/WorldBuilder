@@ -18,7 +18,7 @@
 */
 
 
-#include <boost/algorithm/string.hpp>
+#include <algorithm>
 
 #include <world_builder/assert.h>
 #include <world_builder/types/string.h>

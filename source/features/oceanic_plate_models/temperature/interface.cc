@@ -17,8 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-
-#include <boost/algorithm/string.hpp>
+#include <algorithm>
 
 #include <world_builder/assert.h>
 #include <world_builder/types/string.h>

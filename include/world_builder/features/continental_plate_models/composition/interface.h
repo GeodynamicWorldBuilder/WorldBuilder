@@ -23,7 +23,6 @@
 #include <vector>
 #include <map>
 
-#include <boost/property_tree/ptree.hpp>
 
 #include <world_builder/world.h>
 #include <world_builder/parameters.h>

@@ -23,14 +23,10 @@
 #include <map>
 #include <vector>
 
-#include <boost/property_tree/ptree.hpp>
-
 #include <world_builder/world.h>
 #include <world_builder/parameters.h>
 #include <world_builder/point.h>
 
-
-using boost::property_tree::ptree;
 using namespace std;
 
 namespace WorldBuilder

@@ -25,7 +25,6 @@
 #include <memory>
 #include <map>
 
-
 #include <rapidjson/document.h>
 #include <rapidjson/pointer.h>
 
