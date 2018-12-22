@@ -24,13 +24,11 @@
  */
 #include <cmath>
 
+#include <algorithm>
 #include <exception>
 #include <iostream>
 #include <array>
 #include <fstream>
-
-#include <boost/program_options.hpp>
-#include <boost/property_tree/json_parser.hpp>
 
 #include <world_builder/assert.h>
 #include <world_builder/nan.h>
@@ -38,7 +36,6 @@
 #include <world_builder/world.h>
 #include <world_builder/coordinate_system.h>
 
-namespace po = boost::program_options;
 using namespace WorldBuilder;
 using namespace WorldBuilder::Utilities;
 
