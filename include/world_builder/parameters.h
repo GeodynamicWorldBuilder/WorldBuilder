@@ -23,17 +23,13 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <memory>
 
-#include <boost/property_tree/ptree.hpp>
 
 #include <rapidjson/document.h>
 #include "rapidjson/schema.h"
 
 #include <world_builder/point.h>
-
-
-
-using boost::property_tree::ptree;
 
 namespace WorldBuilder
 {
@@ -146,42 +142,6 @@ namespace WorldBuilder
                          const Types::Interface &type,
                          const std::string documentation);
 
-      /**
-       * Loads an entry into the parameter class from the world builder file,
-       * where the name is the key in the file relative to the nesting in the
-       * world builder file. Note that classes receive the subtree which is
-       * relevant for them, so the they only have to account for their nesting.
-       *
-       * Note that for the array and list, default values are not implemented.
-       *
-       * \param name The name of the parameter which should be loaded
-       * \param required Determines whether a value is required to be present.
-       * When it isn't present, and the value is set to true, an assert is
-       * thrown. If it is set to false and the value is not found, the default
-       * value is used.
-       * \param type A value of class Type. Note that these may be nested.
-       *
-       * \return Returns whether the value was found.
-       *
-       * @see enter_subsection()
-       * @see leave_subsection()
-       * @see Types::Interface
-       */
-      bool load_entry(const std::string &name, const bool required, const Types::Interface &type);
-
-      /**
-       * Sets an entry into the parameter class, where the name is the key in
-       * the file relative to the nesting defined by the enter_subsection and
-       * leave_subsection functions. Note that classes receive the subtree which
-       * is relevant for them, so the they only have to account for their nesting.
-       *
-       * Note that for the array and list, default values are not implemented.
-       *
-       * @see enter_subsection()
-       * @see leave_subsection()
-       * @see Types::Interface
-       */
-      void set_entry(const std::string &name, const Types::Interface &type);
 
       /**
        * This function is used to enter a subsection. It appends to the path
@@ -223,17 +183,6 @@ namespace WorldBuilder
       rapidjson::Document declarations;
       rapidjson::Document parameters;
 
-      /**
-       * The boost property tree, used to read in the data from a json file.
-       */
-      ptree tree;
-
-      /**
-       * This variable contains a pointer to the a part of the tree. This
-       * variable is not responsible for the tree, so using a raw pointer.
-       * @see tree
-       */
-      ptree *local_tree;
 
 
 

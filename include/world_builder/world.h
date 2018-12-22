@@ -20,12 +20,8 @@
 #ifndef _world_builder_world_h
 #define _world_builder_world_h
 
-
-#include <boost/property_tree/ptree.hpp>
-
 #include <world_builder/parameters.h>
 
-using boost::property_tree::ptree;
 
 
 namespace WorldBuilder
@@ -86,10 +82,6 @@ namespace WorldBuilder
        */
       double composition(const std::array<double, 3> &point, const double depth, const unsigned int composition_number) const;
 
-      /**
-       * Stores the path separtor used for the property tree.
-       */
-      static const char path_seperator = '.';
 
 
       /**

@@ -103,6 +103,21 @@ void lay_points(double x1, double y1, double z1,
     }
 }
 
+
+std::vector<std::string> get_command_line_options_vector(int argc, char **argv)
+{
+  std::vector<std::string> vector;
+  for (int i=1; i < argc; ++i)
+    vector.push_back(std::string(argv[i]));
+
+  return vector;
+}
+
+bool find_command_line_option(char **begin, char **end, const std::string &option)
+{
+  return std::find(begin, end, option) != end;
+}
+
 int main(int argc, char **argv)
 {
   /**
@@ -136,54 +151,55 @@ int main(int argc, char **argv)
 
   try
     {
-      po::options_description desc("Allowed options");
-      desc.add_options()
-      ("help", "produce help message")
-      ("j,j", po::value<unsigned int>(), "the number of threads the visualizer is allowed to use.")
-      ("files", po::value<std::vector<std::string> >(), "list of files, starting with the World Builder "
-       "file and data file(s) after it.");
 
-      po::positional_options_description p;
-      p.add("files", -1);
-
-      po::variables_map vm;
-      po::store(po::command_line_parser(argc, argv).options(desc).positional(p).run(), vm);
-      po::notify(vm);
-
-      if (vm.count("help"))
+      if (find_command_line_option(argv, argv+argc, "-h") || find_command_line_option(argv, argv+argc, "--help"))
         {
-          std::cout << std::endl << "TODO: Write description how to use this." << std::endl << std::endl;
-          std::cout << desc << "\n";
+          std::cout << "This program allows to use the world builder library directly with a world builder file and a grid file. "
+                    "The data file will be filled with intitial conditions from the world as set by the world builder file." << std::endl
+                    << "Besides providing two files, where the first is the world builder file and the second is the grid file, the available options are: " << std::endl
+                    << "-h or --help to get this help screen," << std::endl
+                    << "-j the number of threads the visualizer is allowed to use." << std::endl;
           return 0;
         }
 
-      if (vm.count("j"))
+      std::vector<std::string> options_vector = get_command_line_options_vector(argc, argv);
+
+      for (unsigned int i = 0; i < options_vector.size(); ++i)
         {
-          number_of_threads = vm["j"].as<unsigned int>();
+          if (options_vector[i] == "-j")
+            {
+              number_of_threads = Utilities::string_to_unsigned_int(options_vector[i+1]);
+              options_vector.erase(options_vector.begin()+i-1);
+              options_vector.erase(options_vector.begin()+i);
+            }
         }
 
-      if (!vm.count("files"))
+
+      if (options_vector.size() == 0)
         {
           std::cout << "Error: There where no files passed to the World Builder, use --help for more " << std::endl
                     << "information on how  to use the World Builder app." << std::endl;
-          return 1;
+          return 0;
         }
 
-      std::vector<std::string> file_names = vm["files"].as<std::vector<std::string> >();
 
-      if (file_names.size() < 2)
+      if (options_vector.size() == 1)
         {
           std::cout << "Error:  The World Builder app requires at least two files, a World Builder file " << std::endl
                     << "and a data file to convert." << std::endl;
-          return 1;
+          return 0;
         }
 
-      wb_file = file_names[0];
-      // Todo: Is it useful to check whether the string is empty?
+      if (options_vector.size() != 2)
+        {
+          std::cout << "Only two command line arguments may be given, which should be the world builder file location and the grid file location (in that order). "
+                    << "command line options where given." << std::endl;
+          return 0;
+        }
 
 
-      data_file = file_names[1];
-      // Todo: Is it useful to check whether the string is empty?
+      wb_file = options_vector[0];
+      data_file = options_vector[1];
 
     }
   catch (std::exception &e)

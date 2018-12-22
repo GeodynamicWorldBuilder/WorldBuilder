@@ -194,35 +194,35 @@ TEST_CASE("WorldBuilder Utilities: string to conversions")
   CHECK(Utilities::string_to_double(" 1.01 ") == 1.01);
 
   CHECK_THROWS_WITH(Utilities::string_to_double("1a"),
-                    Contains("Conversion of \"1a\" to double failed (bad cast): "));
+                    Contains("Could not convert \"1a\" to a double."));
   CHECK_THROWS_WITH(Utilities::string_to_double("a1"),
-                    Contains("Conversion of \"a1\" to double failed (bad cast): "));
+                    Contains("Could not convert \"a1\" to a double."));
   CHECK_THROWS_WITH(Utilities::string_to_double("a"),
-                    Contains("Conversion of \"a\" to double failed (bad cast): "));
+                    Contains("Could not convert \"a\" to a double."));
 
   CHECK(Utilities::string_to_int("2") == 2);
   CHECK(Utilities::string_to_int(" 2 ") == 2);
 
   CHECK_THROWS_WITH(Utilities::string_to_int(" 2.02 "),
-                    Contains("Conversion of \" 2.02 \" to int failed (bad cast): "));
+                    Contains("Could not convert \"2.02\" to an int."));
   CHECK_THROWS_WITH(Utilities::string_to_int("2b"),
-                    Contains("Conversion of \"2b\" to int failed (bad cast): "));
+                    Contains("Could not convert \"2b\" to an int."));
   CHECK_THROWS_WITH(Utilities::string_to_int("b2"),
-                    Contains("Conversion of \"b2\" to int failed (bad cast): "));
+                    Contains("Could not convert \"b2\" to an int."));
   CHECK_THROWS_WITH(Utilities::string_to_int("b"),
-                    Contains("Conversion of \"b\" to int failed (bad cast): "));
+                    Contains("Could not convert \"b\" to an int."));
 
   CHECK(Utilities::string_to_unsigned_int("3") == 3);
   CHECK(Utilities::string_to_unsigned_int(" 3 ") == 3);
 
   CHECK_THROWS_WITH(Utilities::string_to_unsigned_int(" 3.03 "),
-                    Contains("Conversion of \" 3.03 \" to unsigned int failed (bad cast): "));
+                    Contains("Could not convert \"3.03\" to an unsigned int."));
   CHECK_THROWS_WITH(Utilities::string_to_unsigned_int("3c"),
-                    Contains("Conversion of \"3c\" to unsigned int failed (bad cast): "));
+                    Contains("Could not convert \"3c\" to an unsigned int."));
   CHECK_THROWS_WITH(Utilities::string_to_unsigned_int("c3"),
-                    Contains("Conversion of \"c3\" to unsigned int failed (bad cast): "));
+                    Contains("Could not convert \"c3\" to an unsigned int."));
   CHECK_THROWS_WITH(Utilities::string_to_unsigned_int("c"),
-                    Contains("Conversion of \"c\" to unsigned int failed (bad cast): "));
+                    Contains("Could not convert \"c\" to an unsigned int."));
 
   // Test point to array conversion
   const Point<2> p2(1,2,cartesian);
@@ -547,15 +547,6 @@ TEST_CASE("WorldBuilder Utilities: Coordinate systems transformations")
   }
 
 
-}
-
-TEST_CASE("WorldBuilder Utilities: ptree function")
-{
-  ptree tree;
-  tree.put("value", 3.14159);
-  CHECK(Utilities::string_to_double(Utilities::get_from_ptree(tree, "pi", "value", true, ".").get()) == Approx(3.14159));
-  CHECK_THROWS_WITH(Utilities::get_from_ptree(tree, "pi", "value_pi", true, "."),
-                    Contains("Entry undeclared: pi.value_pi"));
 }
 
 TEST_CASE("WorldBuilder Utilities: cross product")
@@ -2680,7 +2671,7 @@ TEST_CASE("WorldBuilder Types: Bool")
 #undef TYPE
 }
 
-
+/*
 TEST_CASE("WorldBuilder Types: print_tree")
 {
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb1.json";
@@ -2856,7 +2847,7 @@ TEST_CASE("WorldBuilder Types: print_tree")
          "   }\n"
          " }";
   CHECK(Utilities::print_tree(tree, 0) == output.str());
-}
+}*/
 
 TEST_CASE("WorldBuilder Parameters")
 {
