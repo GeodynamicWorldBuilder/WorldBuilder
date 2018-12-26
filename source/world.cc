@@ -73,9 +73,6 @@ namespace WorldBuilder
 
       prm.declare_entry("cross section", Types::Array(Types::Point<2>(),2,2),"This is an array of two points along where the cross section is taken");
 
-      prm.declare_entry("coordinate system", Types::PluginSystem("cartesian", CoordinateSystems::Interface::declare_entries, {"model"}, false),"A coordinate system. Cartesian or spherical.");
-      prm.declare_entry("features", Types::PluginSystem("",Features::Interface::declare_entries, {"model", "coordinates"}),"A list of features.");
-
       prm.declare_entry("potential mantle temperature", Types::Double(1600),
                         "The potential temperature of the mantle at the surface in Kelvin.");
       prm.declare_entry("surface temperature", Types::Double(293.15),
@@ -85,7 +82,7 @@ namespace WorldBuilder
       prm.declare_entry("thermal expansion coefficient", Types::Double(3.5e-5),
                         "The thermal expansion coefficient in $K^{-1}$.");
       prm.declare_entry("specific heat", Types::Double(1250),
-                        "The specific heat in $J kg^{-1} K^{-1}.");
+                        "The specific heat in $J kg^{-1} K^{-1}.$");
       prm.declare_entry("thermal diffusivity", Types::Double(0.804e-6),
                         "The thermal diffusivity in $m^{2} s^{-1}$.");
 
@@ -98,6 +95,11 @@ namespace WorldBuilder
       prm.declare_entry("interpolation",Types::String("none"),
                         "What type of interpolation should be used to enforce the minimum points per "
                         "distance parameter. Options are none, linear and monotone spline.");
+
+
+      prm.declare_entry("coordinate system", Types::PluginSystem("cartesian", CoordinateSystems::Interface::declare_entries, {"model"}, false),"A coordinate system. Cartesian or spherical.");
+      prm.declare_entry("features", Types::PluginSystem("",Features::Interface::declare_entries, {"model", "coordinates"}),"A list of features.");
+
 
     }
     prm.leave_subsection();

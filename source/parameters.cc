@@ -24,6 +24,7 @@
 #include <rapidjson/istreamwrapper.h>
 #include "rapidjson/pointer.h"
 #include "rapidjson/prettywriter.h"
+#include "rapidjson/latexwriter.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/error/en.h"
 
@@ -72,11 +73,13 @@ namespace WorldBuilder
   void Parameters::initialize(std::string &filename)
   {
     {
+    	std::ofstream myfile;
+    	myfile.open ("../declarations.tex");
       StringBuffer buffer;
-      PrettyWriter<StringBuffer, UTF8<>, UTF8<>, CrtAllocator, kWriteNanAndInfFlag> writer(buffer);
+      LatexWriter<StringBuffer, UTF8<>, UTF8<>, CrtAllocator, kWriteNanAndInfFlag> writer(buffer);
       declarations.Accept(writer);
 
-      //std::cout << buffer.GetString() << std::endl;
+      myfile << buffer.GetString();
     }
 
     path_level =0;

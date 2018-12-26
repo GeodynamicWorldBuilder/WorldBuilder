@@ -77,7 +77,7 @@ namespace WorldBuilder
                             "If the value is lower then zero, the global value is used.");
 
           prm.declare_entry("specific heat", Types::Double(-1),
-                            "The specific heat in $J kg^{-1} K^{-1}."
+                            "The specific heat in $J kg^{-1} K^{-1}$. "
                             "If the value is lower then zero, the global value is used.");
 
           prm.declare_entry("operation", Types::String("replace",std::vector<std::string> {"replace", "add", "substract"}),
