@@ -30,14 +30,6 @@ RAPIDJSON_DIAG_OFF(c++98-compat)
 
 RAPIDJSON_NAMESPACE_BEGIN
 
-//! Combination of LatexWriter format flags.
-/*! \see LatexWriter::SetFormatOptions
- */
-enum LatexFormatOptions
-{
-  lFormatDefault = 0,         //!< Default pretty formatting.
-  lFormatSingleLineArray = 1  //!< Format arrays on a single line.
-};
 
 //! Writer with indentation and spacing.
 /*!
@@ -59,38 +51,31 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
         \param levelDepth Initial capacity of stack.
     */
     explicit LatexWriter(OutputStream &os, StackAllocator *allocator = 0, size_t levelDepth = Base::kDefaultLevelDepth) :
-      Base(os, allocator, levelDepth), indentChar_(' '), indentCharCount_(4), formatOptions_(lFormatDefault) {}
+      Base(os, allocator, levelDepth)
+    {
+      level_type.resize(0);
+      array_number.resize(0);
+      path.resize(0);
+    }
 
 
     explicit LatexWriter(StackAllocator *allocator = 0, size_t levelDepth = Base::kDefaultLevelDepth) :
-      Base(allocator, levelDepth), indentChar_(' '), indentCharCount_(4) {}
+      Base(allocator, levelDepth)
+    {
+      level_type.resize(0);
+      array_number.resize(0);
+      path.resize(0);
+    }
 
 #if RAPIDJSON_HAS_CXX11_RVALUE_REFS
     LatexWriter(LatexWriter &&rhs) :
-      Base(std::forward<LatexWriter>(rhs)), indentChar_(rhs.indentChar_), indentCharCount_(rhs.indentCharCount_), formatOptions_(rhs.formatOptions_) {}
+      Base(std::forward<LatexWriter>(rhs))
+    {
+      level_type.resize(0);
+      array_number.resize(0);
+      path.resize(0);
+    }
 #endif
-
-    //! Set custom indentation.
-    /*! \param indentChar       Character for indentation. Must be whitespace character (' ', '\\t', '\\n', '\\r').
-        \param indentCharCount  Number of indent characters for each indentation level.
-        \note The default indentation is 4 spaces.
-    */
-    LatexWriter &SetIndent(Ch indentChar, unsigned indentCharCount)
-    {
-      RAPIDJSON_ASSERT(indentChar == ' ' || indentChar == '\t' || indentChar == '\n' || indentChar == '\r');
-      indentChar_ = indentChar;
-      indentCharCount_ = indentCharCount;
-      return *this;
-    }
-
-    //! Set pretty writer formatting options.
-    /*! \param options Formatting options.
-    */
-    LatexWriter &SetFormatOptions(LatexFormatOptions options)
-    {
-      formatOptions_ = options;
-      return *this;
-    }
 
     /*! @name Implementation of Handler
         \see Handler
@@ -99,69 +84,69 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
 
     bool Null()
     {
-      //LatexPrefix(kNullType);
       return Base::EndValue(Base::WriteNull());
     }
     bool Bool(bool b)
     {
-      //LatexPrefix(b ? kTrueType : kFalseType);
       Base::EndValue(Base::WriteBool(b));
       Base::os_->Put('\n');
       return true;
     }
     bool Int(int i)
     {
-      //LatexPrefix(kNumberType);
       Base::EndValue(Base::WriteInt(i));
       Base::os_->Put('\n');
       return true;
     }
     bool Uint(unsigned u)
     {
-      //LatexPrefix(kNumberType);
       Base::EndValue(Base::WriteUint(u));
       Base::os_->Put('\n');
       return true;
     }
     bool Int64(int64_t i64)
     {
-      //LatexPrefix(kNumberType);
       Base::EndValue(Base::WriteInt64(i64));
       Base::os_->Put('\n');
       return true;
     }
     bool Uint64(uint64_t u64)
     {
-      //LatexPrefix(kNumberType);
       Base::EndValue(Base::WriteUint64(u64));
       Base::os_->Put('\n');
       return true;
     }
     bool Double(double d)
     {
-      //LatexPrefix(kNumberType);
       Base::EndValue(Base::WriteDouble(d));
       Base::os_->Put('\n');
       return true;
     }
 
-    bool RawNumber(const Ch *str, SizeType length, bool copy = false)
+    bool RawNumber(const Ch *str, SizeType length, bool /*copy = false*/)
     {
       RAPIDJSON_ASSERT(str != 0);
-      (void)copy;
-      //LatexPrefix(kNumberType);
       Base::EndValue(Base::WriteString(str, length, false));
       Base::os_->Put('\n');
       return true;
     }
 
-    bool String(const Ch *str, SizeType length, bool copy = false)
+    bool String(const Ch *str, SizeType length, bool /*copy = false*/)
     {
       RAPIDJSON_ASSERT(str != 0);
-      (void)copy;
-      //LatexPrefix(kStringType);
+      if (small_array == true)
+        if (first_small_array == true)
+          first_small_array = false;
+        else
+          {
+            Base::os_->Put(',');
+            Base::os_->Put(' ');
+          }
+
       Base::EndValue(Base::WriteString(str, length, false));
-      Base::os_->Put('\n');
+
+      if (small_array == false)
+        Base::os_->Put('\n');
       return true;
     }
 
@@ -174,120 +159,114 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
 
     bool StartObject()
     {
-    	std::string begin = "";
-    	if(level_type.size() == 0)
-    	{
-    		// root object
-      	  begin = "startobject root: \\section{" + get_path() + "} \\begin{itemize}";
-      	  level_type.push_back(0);
-    	}
-    	else if(level_type.back() == 2)
-    	{
-    		path.push_back("1");
-    		level_type.push_back(0);
-    		begin = "startobject type=2";
-    	}
-        Base::os_->Put('\n');
+      std::string begin = "";
+      if (level_type.size() != 0 && level_type.back() == 1)
+        {
+          // this is a properties starting, so first clear all the itemized
+          // the lvel_type.push_back(1) has already been done by the key: properties
+          for (unsigned int i = 0; i < itemized_open; ++i)
+            {
+              begin += "\\end{itemized}";
+            }
+          itemized_open = 0;
+          if (skip_next_push_back == false)
+            {
 
-      	Base::WriteString(begin.c_str(), begin.size(), false);
-      ////LatexPrefix(kObjectType);
-      /*if(set_enum_ == true)
-      {
-    	  new (Base::level_stack_.template Push<typename Base::Level>()) typename Base::Level(true);
-    	  //this->os_->Put('\\'); // "\x5C"
-    	  std::string begin = "\\end{itemize} \\section{" + get_path() + "}";
-    	  Base::WriteString(begin.c_str(), begin.size(), false);
-          //Base::os_->Put('\n');
-    	  //this->os_->Put(begin.c_str());
-          // reset set_enum_;
-          set_enum_ = false;
-      }
+              if (level_type.size() <= 2)
+                begin += "\\section{" + get_path() + "} \\begin{itemized}";
+              else if (level_type.size() <= 5)
+                begin += "\\subsection{" + get_path() + "} \\begin{itemized}";
+              else if (level_type.size() <= 7)
+                begin += "\\subsubsection{" + get_path() + "} \\begin{itemized}";
+              else
+                begin += "\\paragraph{" + get_path() + "} \\begin{itemized}";
+
+              itemized_open++;
+              level_type.push_back(0);
+            }
+          else
+            {
+              skip_next_push_back = false;
+            }
+        }
+      else if (level_type.size() != 0 && level_type.back() == 2)
+        {
+          // this is a array starting, so first clear all the itemized
+          // the lvel_type.push_back(1) has already been done by the key: properties
+          for (unsigned int i = 0; i < itemized_open; ++i)
+            {
+              begin += "\\end{itemized}";
+            }
+          itemized_open = 0;
+          unsigned int number = array_number.back() + 1;
+          array_number.back() = number;
+          path.push_back(std::to_string(array_number.back()));
+          level_type.push_back(0);
+
+          if (level_type.size() <= 2)
+            begin += "\\section{" + get_path() + "} \\begin{itemized}";
+          else if (level_type.size() <= 5)
+            begin += "\\subsection{" + get_path() + "} \\begin{itemized}";
+          else if (level_type.size() <= 7)
+            begin += "\\subsubsection{" + get_path() + "} \\begin{itemized}";
+          else
+            begin += "\\paragraph{" + get_path() + "} \\begin{itemized}";
+
+          itemized_open++;
+        }
       else
-      {
-    	  new (Base::level_stack_.template Push<typename Base::Level>()) typename Base::Level(false);
+        {
+          if (level_type.size() <= 2)
+            begin += "\\section{" + get_path() + "} \\begin{itemized}";
+          else if (level_type.size() <= 5)
+            begin += "\\subsection{" + get_path() + "} \\begin{itemized}";
+          else if (level_type.size() <= 7)
+            begin += "\\subsubsection{" + get_path() + "} \\begin{itemized}";
+          else
+            begin += "\\paragraph{" + get_path() + "} \\begin{itemized}";
 
-    	  std::string begin = "\\begin{itemize}";
-    	  Base::WriteString(begin.c_str(), begin.size(), false);
-          //Base::os_->Put('\n');
-    	  //this->os_->Put(begin.c_str());
-      }*/
-      return true; //Base::WriteStartObject();
+          itemized_open++;
+          if (level_type.size() > 0 && (level_type.back() != 3 || level_type.size() == 0))
+            level_type.push_back(0);
+        }
+
+      Base::WriteString(begin.c_str(), begin.size(), false);
+      Base::os_->Put('\n');
+
+      return true;
     }
 
-    bool Key(const Ch *str, SizeType length, bool copy = false)
+    bool Key(const Ch *str, SizeType /*length*/, bool /*copy = false*/)
     {
-        std::string vector = "[";
-        for(unsigned int i = 0; i < level_type.size(); ++i)
-      	  vector += std::to_string(level_type[i]) + ", ";
-        vector += "]";
-    	std::string item = "\\item {\\bf " + std::string(str) + "}: ";
-    	if(std::string(str) == "properties")
-    	{
-    		set_enum_ = true;
-    		item = "";
-    		//std::cout << "level_type.size() = " << level_type.size() << std::endl;
-    		for(unsigned int i = 0; i < level_type.size(); ++i)
-    		{
-    			if(level_type.back() == 0)
-    			{
-    			item += " key type=P0 \\end{itemize}";
-    			}
-    			else if(level_type.back() == 1)
-    			{
-    				item += " key type=P1";
-    				if(path.size() != 0)
-    				path.pop_back();
-    				break;
-    			}else if(level_type.back() == 2)
-    			{
-    				item += " key type=P2";
-    				if(path.size() != 0)
-    				path.pop_back();
-    			}
-    			// otherwise assert?
-    		}
-    		level_type.resize(0);
+      std::string item = "\\item {\\bf " + std::string(str) + "}: ";
+      std::string key(str);
+      if (key == "properties")
+        {
+          level_type.push_back(1);
+          skip_next_push_back = true;
+          item = "";
+        }
+      else if (key == "oneOf")
+        {
+          level_type.push_back(2);
+          path.push_back(key);
+          item = "";
+        }
+      else if (key == "items")
+        {
+          level_type.push_back(3);
+          path.push_back(key);
+          item = "";
+        }
+      else if (level_type.size() > 0 && level_type.back() == 1)
+        {
+          // the level just below properties, these are the sections
+          // add to the path
+          path.push_back(key);
+          item = "";
+        }
 
-    	      //item += "\\section{" + get_path() + "} \\begin{itemize}";
-    		// 0 means itemize, 1 means section, 2 means oneof
-    		level_type.push_back(1);
-        	//path.push_back(str);
-    	}
-    	else if(std::string(str) == "oneOf")
-    	{
-    		path.push_back("oneOf");
-    		//path.push_back("1");
-    		level_type.push_back(2);
-    		item = " key type=oneOf \\section{" + get_path() + "} \\begin{itemize}";
-    	}
-    	else if(std::string(str) == "items")
-    	{
-    		item = " key type=items \\begin{itemize}";
-    		level_type.push_back(0);
-    	}
-    	else if(level_type.back() == 1)
-		{
-			//if(path.size() != 0)
-				//path.pop_back();
-			path.push_back(str);
-			item = " key type=1 \\section{" + get_path() + "} \\begin{itemize}";
-			level_type.push_back(0);
-		}
-    	else if(level_type.back() == 2)
-    	{
-			path.push_back(str);
-			item = " key type=2 \\section{" + get_path() + "} \\begin{itemize}";
-			level_type.push_back(0);
-    	}
-    	item += vector;
-    	//else
-    	//{
-  	  //std::string item =  level_type.back() == 1 ? "\\section{" + get_path() + "} \\begin{itemize}" : "\\item {\\bf " + std::string(str) + "}: ";
-
-    	Base::WriteString(item.c_str(), item.length(), false);
-
-
-    	//}
+      Base::WriteString(item.c_str(), item.length(), false);
 
       return true;
     }
@@ -299,98 +278,85 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
     }
 #endif
 
-    bool EndObject(SizeType memberCount = 0)
+    bool EndObject(SizeType /*memberCount = 0*/)
     {
-      (void)memberCount;
-      //RAPIDJSON_ASSERT(Base::level_stack_.GetSize() >= sizeof(typename Base::Level)); // not inside an Object
-      //RAPIDJSON_ASSERT(!Base::level_stack_.template Top<typename Base::Level>()->inArray); // currently inside an Array, not Object
-      //RAPIDJSON_ASSERT(0 == Base::level_stack_.template Top<typename Base::Level>()->valueCount % 2); // Object has a Key without a Value
-
-      // (ab)using the internal system.
-     /* bool used_enum = Base::level_stack_.template Top<typename Base::Level>()->inArray;
-
-      bool empty = Base::level_stack_.template Pop<typename Base::Level>(1)->valueCount == 0;
-
-      Base::os_->Put('\n');
-      if (!empty)
-        {
-          //Base::os_->Put('\n');
-          WriteIndent();
-        }*/
-      //bool used_enum = true;
-
-      //if(used_enum == true)
-      {
-    	  //this->os_->Put('\\');
-    	  //std::string end = "\\end{enumerate}";
-    	  //path.pop_back();
-    	  //Base::WriteString(end.c_str(), end.size(), false);
-      }
-      //else
-      std::string vector = "[";
-      for(unsigned int i = 0; i < level_type.size(); ++i)
-    	  vector += std::to_string(level_type[i]) + ", ";
-      vector += "]";
-      //std::cout << std::endl;
       std::string end = "";
-      if(level_type.back() == 0)
-      {
-    	  if(path.size() != 0)
-    	    path.pop_back();
+      if (itemized_open > 0)
+        {
+          end = "\\end{itemized}";
+          itemized_open--;
+        }
 
-    	  if(level_type.size() != 0)
-    	    level_type.pop_back();
-    	  end = " end type=0 \\end{itemize}";
-      }
-      else if(level_type.back() == 1)
-      {
-    	  end = "end type=1";
-    	  if(path.size() != 0)
-    	    path.pop_back();
+      if (level_type.size() > 0 && path.size() > 0 &&
+          ( level_type.back() == 3 || level_type.back() == 0))
+        path.pop_back();
 
-    	  if(level_type.size() != 0)
-    	    level_type.pop_back();
-      }
-      else if(level_type.back() == 2)
-      {
-    	  end = "end type=2";
-    	  if(level_type.size() != 0)
-    	  level_type.pop_back();
-    	  if(path.size() != 0)
-    	  path.pop_back();
-      }
-      end += vector;
-      Base::WriteString(end.c_str(), end.size(), false);
+      if (level_type.size() > 0)
+        level_type.pop_back();
+
+      Base::WriteString(end.c_str(), end.length(), false);
+
       return true;
     }
 
     bool StartArray()
     {
-      //LatexPrefix(kArrayType);
-      //new (Base::level_stack_.template Push<typename Base::Level>()) typename Base::Level(true);
-      //return Base::WriteStartArray();
-    	return true;
+      std::string begin = "";
+      if (level_type.size() != 0 && level_type.back() == 2)
+        {
+          // this is a properties starting, so first clear all the itemized
+          // the lvel_type.push_back(1) has already been done by the key: properties
+          for (unsigned int i = 0; i < itemized_open; ++i)
+            {
+              begin += "\\end{itemized}";
+            }
+          itemized_open = 0;
+
+          if (level_type.size() <= 2)
+            begin += "\\section{" + get_path() + "} \\begin{itemized}";
+          else if (level_type.size() <= 5)
+            begin += "\\subsection{" + get_path() + "} \\begin{itemized}";
+          else if (level_type.size() <= 7)
+            begin += "\\subsubsection{" + get_path() + "} \\begin{itemized}";
+          else
+            begin += "\\paragraph{" + get_path() + "} \\begin{itemized}";
+
+          itemized_open++;
+          array_number.push_back(0);
+        }
+      else
+        {
+          begin = "[";
+          small_array = true;
+          first_small_array = true;
+        }
+
+      Base::WriteString(begin.c_str(), begin.size(), false);
+
+      if (small_array == false)
+        Base::os_->Put('\n');
+
+      return true;
     }
 
-    bool EndArray(SizeType memberCount = 0)
+    bool EndArray(SizeType /*memberCount = 0*/)
     {
-      (void)memberCount;
-      /*RAPIDJSON_ASSERT(Base::level_stack_.GetSize() >= sizeof(typename Base::Level));
-      RAPIDJSON_ASSERT(Base::level_stack_.template Top<typename Base::Level>()->inArray);
-      bool empty = Base::level_stack_.template Pop<typename Base::Level>(1)->valueCount == 0;
-
-      if (!empty && !(formatOptions_ & lFormatSingleLineArray))
+      std::string end = "";
+      if (level_type.size() != 0 && level_type.back() == 2)
         {
-          Base::os_->Put('\n');
-          //WriteIndent();
+          array_number.pop_back();
+          level_type.pop_back();
+          if (path.size() > 0)
+            path.pop_back();
         }
-      bool ret = Base::EndValue(Base::WriteEndArray());
-      (void)ret;
-      RAPIDJSON_ASSERT(ret == true);
-      if (Base::level_stack_.Empty()) // end of json text
-        Base::Flush();*/
-      if(level_type.size() != 0 && level_type.back() == 2)
-    	  level_type.pop_back();
+      else
+        {
+          end = "]";
+          small_array = false;
+        }
+
+      Base::WriteString(end.c_str(), end.size(), false);
+
       return true;
     }
 
@@ -423,91 +389,27 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
     bool RawValue(const Ch *json, size_t length, Type type)
     {
       RAPIDJSON_ASSERT(json != 0);
-      //LatexPrefix(type);
       return Base::EndValue(Base::WriteRawValue(json, length));
     }
 
   protected:
-    void LatexPrefix(Type type)
-    {
-      (void)type;
-      if (Base::level_stack_.GetSize() != 0)   // this value is not at root
-        {
-          typename Base::Level *level = Base::level_stack_.template Top<typename Base::Level>();
-
-          if (level->inArray)
-            {
-              if (level->valueCount > 0)
-                {
-                  //Base::os_->Put(','); // add comma if it is not the first element in array
-                  if (formatOptions_ & lFormatSingleLineArray)
-                    Base::os_->Put(' ');
-                }
-
-              if (!(formatOptions_ & lFormatSingleLineArray))
-                {
-                  Base::os_->Put('\n');
-                  WriteIndent();
-                }
-            }
-          else    // in object
-            {
-              if (level->valueCount > 0)
-                {
-                  if (level->valueCount % 2 == 0)
-                    {
-                      //Base::os_->Put(',');
-                      Base::os_->Put('\n');
-                    }
-                  else
-                    {
-                      Base::os_->Put(':');
-                      if(type == kObjectType)
-                      {
-                    	  Base::os_->Put('\n');
-                    	  WriteIndent();
-                      }
-                      Base::os_->Put(' ');
-                    }
-                }
-              else
-                Base::os_->Put('\n');
-
-              if (level->valueCount % 2 == 0)
-                WriteIndent();
-            }
-          if (!level->inArray && level->valueCount % 2 == 0)
-            RAPIDJSON_ASSERT(type == kStringType);  // if it's in object, then even number should be a name
-          level->valueCount++;
-        }
-      else
-        {
-          RAPIDJSON_ASSERT(!Base::hasRoot_);  // Should only has one and only one root.
-          Base::hasRoot_ = true;
-        }
-    }
-
-    void WriteIndent()
-    {
-      size_t count = (Base::level_stack_.GetSize() / sizeof(typename Base::Level)) * indentCharCount_;
-      PutN(*Base::os_, static_cast<typename OutputStream::Ch>(indentChar_), count);
-    }
 
     std::string get_path()
     {
-    	std::string return_path;
-    	for(auto string : path)
-    	{
-    		return_path += "/" + string;
-    	}
-    	return return_path == "" ? "/" : return_path;
+      std::string return_path;
+      for (auto string : path)
+        {
+          return_path += "/" + string;
+        }
+      return return_path == "" ? "/" : return_path;
     }
 
-    Ch indentChar_;
-    unsigned indentCharCount_;
-    LatexFormatOptions formatOptions_;
+    unsigned int itemized_open = 0;
     std::vector<unsigned int> level_type;
-    bool set_enum_ = false;
+    std::vector<unsigned int> array_number;
+    bool skip_next_push_back = false;
+    bool small_array = false;
+    bool first_small_array = false;
 
   private:
     std::vector<std::string> path;

@@ -474,22 +474,22 @@ class Writer
 #undef Z16
       };
 
-      if(quotes)
-      {
-      if (TargetEncoding::supportUnicode)
-        PutReserve(*os_, 2 + length * 6); // "\uxxxx..."
+      if (quotes)
+        {
+          if (TargetEncoding::supportUnicode)
+            PutReserve(*os_, 2 + length * 6); // "\uxxxx..."
+          else
+            PutReserve(*os_, 2 + length * 12);  // "\uxxxx\uyyyy..."
+        }
       else
-        PutReserve(*os_, 2 + length * 12);  // "\uxxxx\uyyyy..."
-      }
-      else
-      {
+        {
           if (TargetEncoding::supportUnicode)
             PutReserve(*os_, length * 6); // "\uxxxx..."
           else
             PutReserve(*os_, length * 12);  // "\uxxxx\uyyyy..."
-      }
+        }
 
-      if(quotes)
+      if (quotes)
         PutUnsafe(*os_, '\"');
       GenericStringStream<SourceEncoding> is(str);
       while (ScanWriteUnescapedString(is, length))
@@ -532,7 +532,7 @@ class Writer
           else if ((sizeof(Ch) == 1 || static_cast<unsigned>(c) < 256) && RAPIDJSON_UNLIKELY(escape[static_cast<unsigned char>(c)]))
             {
               is.Take();
-              if(quotes)
+              if (quotes)
                 PutUnsafe(*os_, '\\');
               PutUnsafe(*os_, static_cast<typename OutputStream::Ch>(escape[static_cast<unsigned char>(c)]));
               if (escape[static_cast<unsigned char>(c)] == 'u')
@@ -548,7 +548,7 @@ class Writer
                                         Transcoder<SourceEncoding, TargetEncoding>::TranscodeUnsafe(is, *os_))))
             return false;
         }
-      if(quotes)
+      if (quotes)
         PutUnsafe(*os_, '\"');
       return true;
     }

@@ -73,8 +73,8 @@ namespace WorldBuilder
   void Parameters::initialize(std::string &filename)
   {
     {
-    	std::ofstream myfile;
-    	myfile.open ("../declarations.tex");
+      std::ofstream myfile;
+      myfile.open ("../declarations.tex");
       StringBuffer buffer;
       LatexWriter<StringBuffer, UTF8<>, UTF8<>, CrtAllocator, kWriteNanAndInfFlag> writer(buffer);
       declarations.Accept(writer);
