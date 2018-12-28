@@ -61,6 +61,7 @@ namespace WorldBuilder
         void
         Layers::parse_entries(Parameters &prm)
         {
+          layers.resize(0);
           prm.get_unique_pointers<Interface>("layers", layers);
 
           prm.enter_subsection("layers");

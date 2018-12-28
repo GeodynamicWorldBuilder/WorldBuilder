@@ -740,6 +740,7 @@ namespace WorldBuilder
                   // This interpolates different properties between P1 and P2 (the
                   // points of the plane at the surface)
                   const double degree_90_to_rad = 0.5 * const_pi;
+
                   const double interpolated_angle_top    = plane_segment_angles[original_current_section][current_segment][0]
                                                            + fraction_CPL_P1P2 * (plane_segment_angles[original_next_section][current_segment][0]
                                                                                   - plane_segment_angles[original_current_section][current_segment][0])

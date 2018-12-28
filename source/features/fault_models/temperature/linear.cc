@@ -60,10 +60,10 @@ namespace WorldBuilder
           prm.declare_entry("", Types::Object({"max distance fault center"}), "Temperature model object");
 
           prm.declare_entry("min distance fault center", Types::Double(0),
-                            "todo The depth in meters from which the composition of this feature is present.");
+                            "The minimum distance to the center of the fault. This determines where the linear temperature starts.");
 
           prm.declare_entry("max distance fault center", Types::Double(std::numeric_limits<double>::max()),
-                            "todo The depth in meters to which the composition of this feature is present.");
+                            "The minimum distance to the center of the fault. This determines where the linear temperature end.");
 
           prm.declare_entry("top temperature", Types::Double(293.15),
                             "The temperature at the top in degree Kelvin of this feature."

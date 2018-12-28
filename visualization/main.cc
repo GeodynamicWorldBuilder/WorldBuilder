@@ -166,7 +166,7 @@ int main(int argc, char **argv)
           if (options_vector[i] == "-j")
             {
               number_of_threads = Utilities::string_to_unsigned_int(options_vector[i+1]);
-              options_vector.erase(options_vector.begin()+i-1);
+              options_vector.erase(options_vector.begin()+i);
               options_vector.erase(options_vector.begin()+i);
             }
         }

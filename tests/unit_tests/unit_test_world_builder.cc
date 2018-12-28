@@ -1735,7 +1735,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   std::array<double,3> position = {0,0,800e3};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
   CHECK(world1.temperature(position, 220e3, 10) == Approx(1701.6589518333));
-  CHECK(world1.temperature(position, 230e3, 10) == Approx(100.0));
+  CHECK(world1.temperature(position, 230e3, 10) == Approx(965.8099855202));
   CHECK(world1.composition(position, 0, 0) == 0.0);
   CHECK(world1.composition(position, 0, 1) == 0.0);
   CHECK(world1.composition(position, 0, 2) == 0.0);
@@ -1769,15 +1769,15 @@ TEST_CASE("WorldBuilder Features: Fault")
 
   position = {250e3,250e3,800e3};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600.0));
-  CHECK(world1.temperature(position, 1, 10) == Approx(100.0));
-  CHECK(world1.temperature(position, 5, 10) == Approx(100.0));
-  CHECK(world1.temperature(position, 10, 10) == Approx(100.0));
-  CHECK(world1.temperature(position, 100, 10) == Approx(100.0));
-  CHECK(world1.temperature(position, 500, 10) == Approx(100.0));
-  CHECK(world1.temperature(position, 1000, 10) == Approx(100.0));
-  CHECK(world1.temperature(position, 5000, 10) == Approx(100.0));
-  CHECK(world1.temperature(position, std::sqrt(2) * 50e3/2, 10) == Approx(100.0));
-  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(100.0));
+  CHECK(world1.temperature(position, 1, 10) == Approx(293.1595620855));
+  CHECK(world1.temperature(position, 5, 10) == Approx(293.1978104273));
+  CHECK(world1.temperature(position, 10, 10) == Approx(293.2456208547));
+  CHECK(world1.temperature(position, 100, 10) == Approx(294.1062085466));
+  CHECK(world1.temperature(position, 500, 10) == Approx(297.9310427331));
+  CHECK(world1.temperature(position, 1000, 10) == Approx(302.7120854661));
+  CHECK(world1.temperature(position, 5000, 10) == Approx(340.9604273305));
+  CHECK(world1.temperature(position, std::sqrt(2) * 50e3/2, 10) == Approx(631.2207737686));
+  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(969.2819854517));
   CHECK(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(1631.9945206949));
   CHECK(world1.composition(position, 0, 0) == 0.0);
   CHECK(world1.composition(position, 0, 1) == 0.0);
@@ -2122,6 +2122,38 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world3.composition(position, 0, 4) == Approx(0.3444234529));
   CHECK(world3.composition(position, 0, 5) == Approx(0.5407687295));
   CHECK(world3.composition(position, 0, 6) == 0.0);
+
+
+  file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/fault_different_angles_cartesian.wb";
+  WorldBuilder::World world4(file_name);
+
+  position = {250e3,501e3,800e3};
+  CHECK(world4.temperature(position, 0, 10) == Approx(-1));
+  CHECK(world4.composition(position, 0, 0) == 1.0);
+  CHECK(world4.temperature(position, 1, 10) == Approx(-1));
+  CHECK(world4.composition(position, 1, 0) == 1.0);
+  CHECK(world4.temperature(position, 1e3, 10) == Approx(-1));
+  CHECK(world4.composition(position, 1e3, 0) == 1.0);
+  CHECK(world4.temperature(position, 10e3, 10) == Approx(-1));
+  CHECK(world4.composition(position, 10e3, 0) == 1.0);
+  CHECK(world4.temperature(position, 20e3, 10) == Approx(-2));
+  CHECK(world4.composition(position, 20e3, 0) == 0.0);
+  CHECK(world4.temperature(position, 30e3, 10) == Approx(-2));
+  CHECK(world4.composition(position, 30e3, 0) == 0.0);
+  CHECK(world4.temperature(position, 35e3, 10) == Approx(-3));
+  CHECK(world4.composition(position, 35e3, 0) == 0.0);
+  CHECK(world4.temperature(position, 40e3, 10) == Approx(-3));
+  CHECK(world4.composition(position, 40e3, 0) == 0.0);
+  CHECK(world4.temperature(position, 45e3, 10) == Approx(-3));
+  CHECK(world4.composition(position, 45e3, 0) == 0.0);
+  CHECK(world4.temperature(position, 50e3, 10) == Approx(1622.5575343016));
+  CHECK(world4.composition(position, 50e3, 0) == 0.0);
+  CHECK(world4.temperature(position, 60e3, 10) == Approx(1627.1070617637));
+  CHECK(world4.composition(position, 60e3, 0) == 0.0);
+  CHECK(world4.temperature(position, 80e3, 10) == Approx(1636.2444220394));
+  CHECK(world4.composition(position, 80e3, 0) == 0.0);
+  CHECK(world4.temperature(position, 100e3, 10) == Approx(1645.4330950743));
+  CHECK(world4.composition(position, 100e3, 0) == 0.0);
 }
 
 TEST_CASE("WorldBuilder Features: coordinate interpolation")

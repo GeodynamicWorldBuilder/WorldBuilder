@@ -532,6 +532,7 @@ namespace WorldBuilder
     std::vector<Objects::Segment<Temperature::Interface,Composition::Interface> > vector;
     this->enter_subsection(name);
     const std::string strict_base = this->get_full_json_path();
+    WBAssertThrow(Pointer((strict_base).c_str()).Get(parameters) != NULL, "Could not find " << strict_base << " in parameters.");
     if (Pointer((strict_base).c_str()).Get(parameters) != NULL)
       {
         // get the array of segments
@@ -757,6 +758,7 @@ namespace WorldBuilder
   bool
   Parameters::get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<T> > &vector)
   {
+    vector.resize(0);
     const std::string strict_base = this->get_full_json_path();
     if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != NULL)
       {
@@ -783,6 +785,7 @@ namespace WorldBuilder
   bool
   Parameters::get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<Features::SubductingPlate> > &vector)
   {
+    vector.resize(0);
     const std::string strict_base = this->get_full_json_path();
     if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != NULL)
       {
@@ -805,6 +808,7 @@ namespace WorldBuilder
   bool
   Parameters::get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<Features::Fault> > &vector)
   {
+    vector.resize(0);
     const std::string strict_base = this->get_full_json_path();
     if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != NULL)
       {
@@ -829,6 +833,7 @@ namespace WorldBuilder
   bool
   Parameters::get_shared_pointers(const std::string &name, std::vector<std::shared_ptr<T> > &vector)
   {
+    //vector.resize(0);
     const std::string strict_base = this->get_full_json_path();
     if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != NULL)
       {
@@ -869,12 +874,12 @@ namespace WorldBuilder
   std::string
   Parameters::get_full_json_path(unsigned int max_size) const
   {
-    std::string collapse = "";//"/";
+    std::string collapse = "";
     for (unsigned int i = 0; i < path.size() && i < max_size; i++)
       {
-        collapse +=  "/" + path[i];// + "/";
+        collapse +=  "/" + path[i];
       }
-    return collapse;//.substr(0,collapse.size()-1);
+    return collapse;
   }
 
   std::string
@@ -915,8 +920,7 @@ namespace WorldBuilder
                     // we are interested in, which requires an offset of 2.
                     WBAssert(Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters) != NULL, "Could not find model in: " << get_full_json_path(i+2) + "/model");
                     std::string parameters_string = Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters)->GetString();
-                    //std::cout << "flag 2: i = " << i << ", get_full_json_path(i+2) = " << get_full_json_path(i+2) << std::endl;
-                    //std::cout << "declarations_string = " << declarations_string << ", parameters_string = " << parameters_string << std::endl;
+
                     // currently in our case these are always objects, so go directly to find the option we need.
                     if (declarations_string == parameters_string)
                       {
@@ -939,47 +943,14 @@ namespace WorldBuilder
           }
         else if (type == "object")
           {
-            //WBAssertThrow(false, "Not implemented");
-            // the type is an object. object or have a properties or
-            // have a oneOf (todo: or anyOf ...). Find out whether this is the case
-            //collapse += path[i] + "/pro";
-            /*if (Pointer((collapse + "/" + path[i] + "/items/oneOf").c_str()).Get(declarations) != NULL)
-              {
-                // it has a structure with oneOf. Find out which of the entries is needed.
-                // This means we have to take a sneak peak to figure out how to get to the
-                // next value.
-                unsigned int size = Pointer((collapse + path[i] + "/items/oneOf").c_str()).Get(declarations)->Size();
-                bool found = false;
-                unsigned int index = 0;
-                for (; index < size; ++index)
-                  {
-                    // currently in our case these are always objects, so go directly to find the option we need.
-                    if (Pointer((collapse + path[i] + "/items/oneOf/" + std::to_string(index)
-                                 + "/" + path[i+1]).c_str()).Get(declarations) != NULL)
-                      {
-                        // found it for index i;
-                        found = true;
-                        break;
-                      }
-                  }
-                WBAssert(found == true,
-                         "Internal error: This is an array with several possible values, "
-                         "but could not find the correct value " << collapse + path[i] + "/items/oneOf");
-                collapse += path[i] + "/oneOf/" + std::to_string(index);
-              }
-            else
-              {*/
-            //++i;
-            collapse += "/properties";// + path[i];
-            //++i;
-            //}
+            collapse += "/properties";
           }
         else
           {
             collapse += "/" + path[i];
           }
       }
-    return collapse;//substr(0,collapse.size());
+    return collapse;
   }
 
 

@@ -125,6 +125,7 @@ namespace WorldBuilder
       segment_vector.resize(0);
       segment_vector.resize(n_sections, default_segment_vector);
 
+
       prm.enter_subsection("segments");
       {
         for (unsigned int i = 0; i < default_segment_vector.size(); ++i)
@@ -163,6 +164,7 @@ namespace WorldBuilder
       }
       prm.leave_subsection();
 
+
       // now search whether a section is present, if so, replace the default segments.
       std::vector<std::unique_ptr<Features::Fault> > sections_vector;
       prm.get_unique_pointers("sections", sections_vector);
@@ -181,8 +183,16 @@ namespace WorldBuilder
                               << "', trying to change the section of coordinate " << change_coord_number
                               << " while only " << segment_vector.size() << " coordinates are defined.");
 
+                unsigned int old_segment_vector_sub_size = segment_vector[change_coord_number].size();
+
                 segment_vector[change_coord_number] = prm.get_vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
                                                       Features::FaultModels::Composition::Interface> >("segments", default_temperature_models, default_composition_models);
+
+                WBAssertThrow(old_segment_vector_sub_size == segment_vector[change_coord_number].size(),
+                              "For the fault with name " << this->name << ", the section which changes coordinate "
+                              << change_coord_number << " has a different amount of segments than the default. This is not allowed. "
+                              "The default is " << old_segment_vector_sub_size << " and this coordinate has "
+                              << segment_vector[change_coord_number].size() << ".");
 
                 prm.enter_subsection("segments");
                 {
@@ -229,6 +239,7 @@ namespace WorldBuilder
         }
       prm.leave_subsection();
 
+
       maximum_slab_thickness = 0;
       maximum_total_slab_length = 0;
       total_slab_length.resize(original_number_of_coordinates);
@@ -244,6 +255,7 @@ namespace WorldBuilder
           slab_segment_thickness[i].resize(segment_vector[i].size(), Point<2>(invalid));
           slab_segment_top_truncation[i].resize(segment_vector[i].size(), Point<2>(invalid));
           slab_segment_angles[i].resize(segment_vector[i].size(), Point<2>(invalid));
+
           for (unsigned int j = 0; j < segment_vector[i].size(); ++j)
             {
               slab_segment_lengths[i][j] = segment_vector[i][j].value_length;
@@ -258,166 +270,6 @@ namespace WorldBuilder
           total_slab_length[i] = local_total_slab_length;
           maximum_total_slab_length = std::max(maximum_total_slab_length, local_total_slab_length);
         }
-      /*
-
-       //Parameters &prm = this->world->parameters;
-
-       const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
-
-       this->declare_interface_entries(prm, coordinate_system);
-
-       // Get the reference point
-       prm.load_entry("reference point", true, Types::Point<2>(Point<2>(0,0,coordinate_system),
-                                                               "A point which the fault dips towards. When a coordinates of the fault "
-                                                               "form a line, it is undefined in what direction the fault should dip "
-                                                               "along that line. Through giving a point to which the plate should dip "
-                                                               "towards solves this problem."));
-
-       reference_point = prm.get_point<2>("reference point") * (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
-
-
-       prm.load_entry("starting depth", false, Types::Double(0, "The depth below the surface at which this plate starts."));
-
-       starting_depth = prm.get_double("starting depth");
-
-
-       prm.load_entry("maximum depth", false, Types::Double(INFINITY, "The depth below the surface at which this plate may not be present."));
-
-       maximum_depth = prm.get_double("maximum depth");
-
-
-       prm.enter_subsection("segments");
-       {
-
-         // For now it is required to have a all segments, this requirement might be dropped in the future.
-         prm.load_entry("all", true, Types::Array(Types::Segment(0,WorldBuilder::Point<2>(0,0,cartesian),WorldBuilder::Point<2>(0,0,cartesian),
-                                                                 "A plate segment with a certain length, thickness and angle."),
-                                                  "A list of plate segments."));
-
-         maximum_slab_thickness = 0;
-         total_slab_length.resize(original_number_of_coordinates);
-         slab_segment_lengths.resize(original_number_of_coordinates);
-         slab_segment_thickness.resize(original_number_of_coordinates);
-         slab_segment_angles.resize(original_number_of_coordinates);
-         for (unsigned int coordinate_i = 0; coordinate_i < original_number_of_coordinates; ++coordinate_i)
-           {
-             // todo: remove the next line
-             std::vector<Types::Segment> current_segment;
-
-             // first check whether there is an overwrite for this coordinate
-             bool overwrite = prm.load_entry(std::to_string(coordinate_i), false, Types::Array(Types::Segment(0,WorldBuilder::Point<2>(0,0,cartesian),WorldBuilder::Point<2>(0,0,cartesian),
-                                             "A plate segment with a certain length, thickness and angle."),
-                                             "A list of plate segments."));
-
-
-             if (overwrite == true)
-               {
-                 // there is a special case for this coordinate, so use it.
-                 current_segment = prm.get_array<Types::Segment>(std::to_string(coordinate_i));
-               }
-             else
-               {
-                 // Need to get it again, because the load entry last time could
-                 // have changed the segment list, thereby invalidating the pointers.
-                 current_segment = prm.get_array<Types::Segment>("all");
-               }
-
-             total_slab_length[coordinate_i] = 0;
-             for (unsigned int segment_i = 0; segment_i < current_segment.size(); segment_i++)
-               {
-                 total_slab_length[coordinate_i] += current_segment[segment_i].value_length;
-                 slab_segment_lengths[coordinate_i].push_back(current_segment[segment_i].value_length);
-
-                 if (current_segment[segment_i].value_thickness[0] > maximum_slab_thickness)
-                   maximum_slab_thickness = current_segment[segment_i].value_thickness[0];
-
-                 if (current_segment[segment_i].value_thickness[1] > maximum_slab_thickness)
-                   maximum_slab_thickness = current_segment[segment_i].value_thickness[1];
-
-                 slab_segment_thickness[coordinate_i].push_back(current_segment[segment_i].value_thickness);
-                 slab_segment_angles[coordinate_i].push_back(current_segment[segment_i].value_angle * (const_pi/180));
-               }
-
-             if (total_slab_length[coordinate_i] > maximum_total_slab_length)
-               maximum_total_slab_length = total_slab_length[coordinate_i];
-           }
-       }
-       prm.leave_subsection();
-
-       prm.enter_subsection("temperature model");
-       {
-         prm.load_entry("name", true, Types::String("","The name of the temperature model."));
-         temperature_submodule_name = prm.get_string("name");
-
-         if (temperature_submodule_name == "constant")
-           {
-             prm.load_entry("temperature", true, Types::Double(0,"The temperature in degree Kelvin which this feature should have"));
-             temperature_submodule_constant_temperature = prm.get_double("temperature");
-           }
-         else
-           {
-             WBAssertThrow(temperature_submodule_name == "none","Fault plate temperature model '" << temperature_submodule_name << "' not found.");
-           }
-
-       }
-       prm.leave_subsection();
-
-       prm.enter_subsection("composition model");
-       {
-         prm.load_entry("name", true, Types::String("","The name of the composition model used."));
-         composition_submodule_name = prm.get_string("name");
-
-         if (composition_submodule_name == "constant")
-           {
-             //prm.load_entry("compositions", true,
-             //             Types::Array(Types::UnsignedInt(0,"The number of the composition that is present there."),
-             //                        "A list of compositions which are present"));
-             std::vector<Types::UnsignedInt> temp_composition = prm.get_array<Types::UnsignedInt>("compositions");
-             composition_submodule_constant_composition.resize(temp_composition.size());
-             for (unsigned int i = 0; i < temp_composition.size(); ++i)
-               {
-                 composition_submodule_constant_composition[i] = temp_composition[i].value;
-               }
-
-             prm.load_entry("fractions", false,
-                            Types::Array(Types::Double(1.0,"The value between 0 and 1 of how much this composition is present."),
-                                         "A list of compositional fractions corresponding to the compositions list."));
-             std::vector<Types::Double> temp_fraction = prm.get_array<Types::Double>("fractions");
-             composition_submodule_constant_value.resize(temp_fraction.size());
-             for (unsigned int i = 0; i < temp_composition.size(); ++i)
-               {
-                 composition_submodule_constant_value[i] = temp_fraction[i].value;
-               }
-
-             WBAssertThrow(composition_submodule_constant_composition.size() == composition_submodule_constant_value.size(),
-                           "There are not the same amount of compositions and fractions.");
-           }
-         else if (composition_submodule_name == "constant layers")
-           {
-             // Load the layers.
-             prm.load_entry("layers", true, Types::Array(Types::ConstantLayer({NaN::ISNAN}, {1.0},NaN::DSNAN,
-                                                                              "A plate constant layer with a certain composition and thickness."),
-                                                         "A list of layers."));
-
-             std::vector<Types::ConstantLayer> constant_layers = prm.get_array<Types::ConstantLayer>("layers");
-
-             composition_submodule_constant_layers_compositions.resize(constant_layers.size());
-             composition_submodule_constant_layers_thicknesses.resize(constant_layers.size());
-             composition_submodule_constant_layers_value.resize(constant_layers.size());
-
-             for (unsigned int i = 0; i < constant_layers.size(); ++i)
-               {
-                 composition_submodule_constant_layers_compositions[i] = constant_layers[i].value_composition;
-                 composition_submodule_constant_layers_thicknesses[i] = constant_layers[i].value_thickness;
-                 composition_submodule_constant_layers_value[i] = constant_layers[i].value;
-               }
-           }
-         else
-           {
-             WBAssertThrow(composition_submodule_name == "none","fault plate temperature model '" << temperature_submodule_name << "' not found.");
-           }
-       }
-       prm.leave_subsection();*/
     }
 
 
