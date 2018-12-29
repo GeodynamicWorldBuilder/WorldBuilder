@@ -83,7 +83,8 @@ int main(int argc, char **argv)
   std::unique_ptr<WorldBuilder::World> world;
   //try
   {
-    world = std::unique_ptr<WorldBuilder::World>(new WorldBuilder::World(wb_file));
+    std::string output_dir = wb_file.substr(0,wb_file.find_last_of("/\\") + 1);
+    world = std::unique_ptr<WorldBuilder::World>(new WorldBuilder::World(wb_file, true, output_dir));
   }
   /*catch (std::exception &e)
     {

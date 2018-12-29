@@ -70,18 +70,30 @@ namespace WorldBuilder
   Parameters::~Parameters()
   {}
 
-  void Parameters::initialize(std::string &filename)
+  void Parameters::initialize(std::string &filename, bool has_output_dir, std::string output_dir)
   {
 
-    StringBuffer buffer;
-    {
-      std::ofstream myfile;
-      myfile.open ("../declarations.tex");
-      LatexWriter<StringBuffer, UTF8<>, UTF8<>, CrtAllocator, kWriteNanAndInfFlag> writer(buffer);
-      declarations.Accept(writer);
+    if (has_output_dir == true)
+      {
+        StringBuffer buffer;
+        std::ofstream file;
+        // write out declarations
+        file.open (output_dir + "world_buider_declarations.tex");
+        WBAssertThrow(file.is_open(), "Error: Could not open file '" + output_dir + "world_buider_declarations.tex' for string the tex declarations.");
+        LatexWriter<StringBuffer, UTF8<>, UTF8<>, CrtAllocator, kWriteNanAndInfFlag> tex_writer(buffer);
+        declarations.Accept(tex_writer);
+        file << buffer.GetString();
+        file.close();
 
-      myfile << buffer.GetString();
-    }
+        // write out json schema
+        buffer.Clear();
+        file.open (output_dir + "world_buider_declarations.schema.json");
+        WBAssertThrow(file.is_open(), "Error: Could not open file '" + output_dir + "world_buider_declarations.schema.json' for string the json declarations.");
+        PrettyWriter<StringBuffer, UTF8<>, UTF8<>, CrtAllocator, kWriteNanAndInfFlag> json_writer(buffer);
+        declarations.Accept(json_writer);
+        file << buffer.GetString();
+        file.close();
+      }
 
     path_level =0;
     // Now read in the world builder file into a file stream and
@@ -114,7 +126,7 @@ namespace WorldBuilder
       {
         // Input JSON is invalid according to the schema
         // Output diagnostic information
-        buffer.Clear();
+        StringBuffer buffer;
         std::stringstream string;
         validator.GetInvalidSchemaPointer().StringifyUriFragment(buffer);
         string << "Invalid schema: " << buffer.GetString() << std::endl;

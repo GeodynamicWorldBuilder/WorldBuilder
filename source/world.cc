@@ -47,7 +47,7 @@ namespace WorldBuilder
 
   using namespace Utilities;
 
-  World::World(std::string filename)
+  World::World(std::string filename, bool has_output_dir, std::string output_dir)
     :
     parameters(*this),
     surface_coord_conversions(invalid),
@@ -55,7 +55,7 @@ namespace WorldBuilder
   {
     this->declare_entries(parameters);
 
-    parameters.initialize(filename);
+    parameters.initialize(filename, has_output_dir, output_dir);
 
     this->parse_entries(parameters);
   }

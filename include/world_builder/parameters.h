@@ -89,7 +89,7 @@ namespace WorldBuilder
       /**
        * Todo
        */
-      void initialize(std::string &filename);
+      void initialize(std::string &filename, bool has_output_dir = false, std::string output_dir = "");
 
       /**
        * Todo

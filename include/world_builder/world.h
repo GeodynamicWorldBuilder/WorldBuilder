@@ -40,7 +40,7 @@ namespace WorldBuilder
        * Constructor. This constructor requires a atring with the location of
        * the world builder file to initialize the world..
        */
-      World(std::string filename);
+      World(std::string filename, bool has_output_dir = false, std::string output_dir = "");
 
       /**
        * Destructor
