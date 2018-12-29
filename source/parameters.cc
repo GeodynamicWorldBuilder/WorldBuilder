@@ -124,7 +124,7 @@ namespace WorldBuilder
         string << "Invalid schema: " << buffer.GetString() << std::endl;
         PrettyWriter<StringBuffer> writer(buffer);
         validator.GetError().Accept(writer);
-        WBAssert(false, string.str() << "Error document: " << std::endl << buffer.GetString());
+        WBAssertThrow(false, string.str() << "Error document: " << std::endl << buffer.GetString());
       }
   }
 
