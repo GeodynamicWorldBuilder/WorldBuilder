@@ -2139,9 +2139,9 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world4.composition(position, 1e3, 0) == 1.0);
   CHECK(world4.temperature(position, 10e3, 10) == Approx(-1));
   CHECK(world4.composition(position, 10e3, 0) == 1.0);
-  CHECK(world4.temperature(position, 20e3, 10) == Approx(-2));
+  CHECK(world4.temperature(position, 20e3, 10) == Approx(573.2769020077));
   CHECK(world4.composition(position, 20e3, 0) == 0.0);
-  CHECK(world4.temperature(position, 30e3, 10) == Approx(-2));
+  CHECK(world4.temperature(position, 30e3, 10) == Approx(1374.2941781431));
   CHECK(world4.composition(position, 30e3, 0) == 0.0);
   CHECK(world4.temperature(position, 35e3, 10) == Approx(-3));
   CHECK(world4.composition(position, 35e3, 0) == 0.0);

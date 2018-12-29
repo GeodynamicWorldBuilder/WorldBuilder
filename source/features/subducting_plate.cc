@@ -417,130 +417,124 @@ namespace WorldBuilder
                                  const unsigned int composition_number,
                                  double composition) const
     {
-      if (composition_submodule_name == "none")
+
+      WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
+                                                                      *(world->parameters.coordinate_system));
+      // todo: explain
+      const double starting_radius = natural_coordinate.get_depth_coordinate() + depth - starting_depth;
+
+      // todo: explain and check -starting_depth
+      if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness)
         {
-          return composition;
-        }
-      else
-        {
-          WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                          *(world->parameters.coordinate_system));
           // todo: explain
-          const double starting_radius = natural_coordinate.get_depth_coordinate() + depth - starting_depth;
+          std::map<std::string,double> distance_from_planes =
+            Utilities::distance_point_from_curved_planes(position,
+                                                         reference_point,
+                                                         coordinates,
+                                                         slab_segment_lengths,
+                                                         slab_segment_angles,
+                                                         starting_radius,
+                                                         this->world->parameters.coordinate_system,
+                                                         false,
+                                                         one_dimensional_coordinates);
 
-          // todo: explain and check -starting_depth
-          if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness)
+          const double distance_from_plane = distance_from_planes["distanceFromPlane"];
+          const double distance_along_plane = distance_from_planes["distanceAlongPlane"];
+          const double section_fraction = distance_from_planes["sectionFraction"];
+          const unsigned int current_section = one_dimensional_coordinates[distance_from_planes["section"]];
+          const unsigned int next_section = current_section + 1;
+          const unsigned int current_segment = distance_from_planes["segment"];
+          //const unsigned int next_segment = current_segment + 1;
+          const double segment_fraction = distance_from_planes["segmentFraction"];
+
+          if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)
             {
-              // todo: explain
-              std::map<std::string,double> distance_from_planes =
-                Utilities::distance_point_from_curved_planes(position,
-                                                             reference_point,
-                                                             coordinates,
-                                                             slab_segment_lengths,
-                                                             slab_segment_angles,
-                                                             starting_radius,
-                                                             this->world->parameters.coordinate_system,
-                                                             false,
-                                                             one_dimensional_coordinates);
+              // We want to do both section (horizontal) and segment (vertical) interpolation.
 
-              const double distance_from_plane = distance_from_planes["distanceFromPlane"];
-              const double distance_along_plane = distance_from_planes["distanceAlongPlane"];
-              const double section_fraction = distance_from_planes["sectionFraction"];
-              const unsigned int current_section = one_dimensional_coordinates[distance_from_planes["section"]];
-              const unsigned int next_section = current_section + 1;
-              const unsigned int current_segment = distance_from_planes["segment"];
-              //const unsigned int next_segment = current_segment + 1;
-              const double segment_fraction = distance_from_planes["segmentFraction"];
+              // We want to do both section (horizontal) and segment (vertical) interpolation.
+              // first for thickness
+              const double thickness_up = slab_segment_thickness[current_section][current_segment][0]
+                                          + section_fraction
+                                          * (slab_segment_thickness[next_section][current_segment][0]
+                                             - slab_segment_thickness[current_section][current_segment][0]);
+              const double thickness_down = slab_segment_thickness[current_section][current_segment][1]
+                                            + section_fraction
+                                            * (slab_segment_thickness[next_section][current_segment][1]
+                                               - slab_segment_thickness[current_section][current_segment][1]);
+              const double thickness_local = thickness_up + segment_fraction * (thickness_down - thickness_up);
+              distance_from_planes["thicknessLocal"] = thickness_local;
 
-              if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)
+              // secondly for top truncation
+              const double top_truncation_up = slab_segment_top_truncation[current_section][current_segment][0]
+                                               + section_fraction
+                                               * (slab_segment_top_truncation[next_section][current_segment][0]
+                                                  - slab_segment_top_truncation[current_section][current_segment][0]);
+              const double top_truncation_down = slab_segment_top_truncation[current_section][current_segment][1]
+                                                 + section_fraction
+                                                 * (slab_segment_top_truncation[next_section][current_segment][1]
+                                                    - slab_segment_top_truncation[current_section][current_segment][1]);
+              const double top_truncation_local = top_truncation_up + segment_fraction * (top_truncation_down - top_truncation_up);
+
+              // if the thickness is zero, we don't need to compute anything, so return.
+              if (std::fabs(thickness_local) < 2.0 * std::numeric_limits<double>::epsilon())
+                return composition;
+
+              // if the thickness is smaller than what is truncated off at the top, we don't need to compute anything, so return.
+              if (thickness_local < top_truncation_local)
+                return composition;
+
+              const double max_slab_length = total_slab_length[current_section] +
+                                             section_fraction *
+                                             (total_slab_length[next_section] - total_slab_length[current_section]);
+
+              if (distance_from_plane >= top_truncation_local &&
+                  distance_from_plane <= thickness_local &&
+                  distance_along_plane >= 0 &&
+                  distance_along_plane <= max_slab_length)
                 {
-                  // We want to do both section (horizontal) and segment (vertical) interpolation.
+                  // Inside the slab!
 
-                  // We want to do both section (horizontal) and segment (vertical) interpolation.
-                  // first for thickness
-                  const double thickness_up = slab_segment_thickness[current_section][current_segment][0]
-                                              + section_fraction
-                                              * (slab_segment_thickness[next_section][current_segment][0]
-                                                 - slab_segment_thickness[current_section][current_segment][0]);
-                  const double thickness_down = slab_segment_thickness[current_section][current_segment][1]
-                                                + section_fraction
-                                                * (slab_segment_thickness[next_section][current_segment][1]
-                                                   - slab_segment_thickness[current_section][current_segment][1]);
-                  const double thickness_local = thickness_up + segment_fraction * (thickness_down - thickness_up);
-                  distance_from_planes["thicknessLocal"] = thickness_local;
+                  double composition_current_section = composition;
+                  double composition_next_section = composition;
 
-                  // secondly for top truncation
-                  const double top_truncation_up = slab_segment_top_truncation[current_section][current_segment][0]
-                                                   + section_fraction
-                                                   * (slab_segment_top_truncation[next_section][current_segment][0]
-                                                      - slab_segment_top_truncation[current_section][current_segment][0]);
-                  const double top_truncation_down = slab_segment_top_truncation[current_section][current_segment][1]
-                                                     + section_fraction
-                                                     * (slab_segment_top_truncation[next_section][current_segment][1]
-                                                        - slab_segment_top_truncation[current_section][current_segment][1]);
-                  const double top_truncation_local = top_truncation_up + segment_fraction * (top_truncation_down - top_truncation_up);
-
-                  // if the thickness is zero, we don't need to compute anything, so return.
-                  if (std::fabs(thickness_local) < 2.0 * std::numeric_limits<double>::epsilon())
-                    return composition;
-
-                  // if the thickness is smaller than what is truncated off at the top, we don't need to compute anything, so return.
-                  if (thickness_local < top_truncation_local)
-                    return composition;
-
-                  const double max_slab_length = total_slab_length[current_section] +
-                                                 section_fraction *
-                                                 (total_slab_length[next_section] - total_slab_length[current_section]);
-
-                  if (distance_from_plane >= top_truncation_local &&
-                      distance_from_plane <= thickness_local &&
-                      distance_along_plane >= 0 &&
-                      distance_along_plane <= max_slab_length)
+                  for (auto &composition_model: segment_vector[current_section][current_segment].composition_systems)
                     {
-                      // Inside the slab!
+                      composition_current_section = composition_model->get_composition(position,
+                                                                                       depth,
+                                                                                       composition_number,
+                                                                                       composition_current_section,
+                                                                                       starting_depth,
+                                                                                       maximum_depth,
+                                                                                       distance_from_planes);
 
-                      double composition_current_section = composition;
-                      double composition_next_section = composition;
-
-                      for (auto &composition_model: segment_vector[current_section][current_segment].composition_systems)
-                        {
-                          composition_current_section = composition_model->get_composition(position,
-                                                                                           depth,
-                                                                                           composition_number,
-                                                                                           composition_current_section,
-                                                                                           starting_depth,
-                                                                                           maximum_depth,
-                                                                                           distance_from_planes);
-
-                          WBAssert(!std::isnan(composition_current_section), "Composition_current_section is not a number: " << composition_current_section
-                                   << ", based on a temperature model with the name " << composition_model->get_name());
-                          WBAssert(std::isfinite(composition_current_section), "Composition_current_section is not a finite: " << composition_current_section
-                                   << ", based on a temperature model with the name " << composition_model->get_name());
-
-                        }
-
-                      for (auto &composition_model: segment_vector[next_section][current_segment].composition_systems)
-                        {
-                          composition_next_section = composition_model->get_composition(position,
-                                                                                        depth,
-                                                                                        composition_number,
-                                                                                        composition_next_section,
-                                                                                        starting_depth,
-                                                                                        maximum_depth,
-                                                                                        distance_from_planes);
-
-                          WBAssert(!std::isnan(composition_next_section), "Composition_next_section is not a number: " << composition_next_section
-                                   << ", based on a temperature model with the name " << composition_model->get_name());
-                          WBAssert(std::isfinite(composition_next_section), "Composition_next_section is not a finite: " << composition_next_section
-                                   << ", based on a temperature model with the name " << composition_model->get_name());
-
-                        }
-
-                      // linear interpolation between current and next section temperatures
-                      composition = composition_current_section + section_fraction * (composition_next_section - composition_current_section);
-
+                      WBAssert(!std::isnan(composition_current_section), "Composition_current_section is not a number: " << composition_current_section
+                               << ", based on a temperature model with the name " << composition_model->get_name());
+                      WBAssert(std::isfinite(composition_current_section), "Composition_current_section is not a finite: " << composition_current_section
+                               << ", based on a temperature model with the name " << composition_model->get_name());
 
                     }
+
+                  for (auto &composition_model: segment_vector[next_section][current_segment].composition_systems)
+                    {
+                      composition_next_section = composition_model->get_composition(position,
+                                                                                    depth,
+                                                                                    composition_number,
+                                                                                    composition_next_section,
+                                                                                    starting_depth,
+                                                                                    maximum_depth,
+                                                                                    distance_from_planes);
+
+                      WBAssert(!std::isnan(composition_next_section), "Composition_next_section is not a number: " << composition_next_section
+                               << ", based on a temperature model with the name " << composition_model->get_name());
+                      WBAssert(std::isfinite(composition_next_section), "Composition_next_section is not a finite: " << composition_next_section
+                               << ", based on a temperature model with the name " << composition_model->get_name());
+
+                    }
+
+                  // linear interpolation between current and next section temperatures
+                  composition = composition_current_section + section_fraction * (composition_next_section - composition_current_section);
+
+
                 }
             }
         }

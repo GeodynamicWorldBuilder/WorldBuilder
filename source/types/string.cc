@@ -102,12 +102,6 @@ namespace WorldBuilder
         }
     }
 
-    void
-    String::set_value(std::string value_)
-    {
-      value = value_;
-    }
-
     std::unique_ptr<Interface>
     String::clone() const
     {

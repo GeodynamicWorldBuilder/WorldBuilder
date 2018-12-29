@@ -44,7 +44,7 @@ namespace WorldBuilder
 
       prm.declare_entry("depth method",
                         Types::String("",std::vector<std::string>({"starting point", "begin segment", "continuous"})),
-                        "Which depth method to use in the spherical case.");
+                        "Which depth method to use in the spherical case. The available options are \'starting point\' and \'begin segment\'.");
 
 
     }
@@ -59,12 +59,12 @@ namespace WorldBuilder
           used_depth_method = DepthMethod::angle_at_starting_point_with_surface;
         else if (string_depth_method == "begin segment")
           used_depth_method = DepthMethod::angle_at_begin_segment_with_surface;
-        else if (string_depth_method == "continuous")
-          used_depth_method = DepthMethod::continuous_angle_with_surface;
+        //else if (string_depth_method == "continuous")
+        //used_depth_method = DepthMethod::continuous_angle_with_surface;
         else
           WBAssertThrow(true,"Option " << string_depth_method << " is not a valid depth method for spherical "
-                        "coordinates. The available options are 'starting point', 'begin segment' and "
-                        "'continuous'.");
+                        "coordinates. The available options are 'starting point' and 'begin segment'. "
+                        "The option 'continuous' is not yet available.");
 
         //std::cout << "string_depth_method = " << string_depth_method << std::endl;
       }

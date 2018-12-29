@@ -91,37 +91,39 @@ namespace WorldBuilder
 
         double
         Linear::get_temperature(const Point<3> &,
-                                const double depth,
+                                const double /*depth*/,
                                 const double gravity_norm,
                                 double temperature,
-                                const double feature_min_depth,
-                                const double feature_max_depth,
+                                const double /*feature_min_depth*/,
+                                const double /*feature_max_depth*/,
                                 const std::map<std::string,double> &distance_from_planes) const
         {
 
-          const double min_depth_local = min_depth;
-          const double max_depth_local = max_depth;
-
-          double top_temperature_local = top_temperature;
-          if (top_temperature_local < 0)
+          if (std::fabs(distance_from_planes.at("distanceFromPlane")) <= max_depth && std::fabs(distance_from_planes.at("distanceFromPlane")) >= min_depth)
             {
-              top_temperature_local =  this->world->potential_mantle_temperature *
-                                       std::exp(((this->world->thermal_expansion_coefficient * gravity_norm) /
-                                                 this->world->specific_heat) * min_depth_local);
+              const double min_depth_local = min_depth;
+              const double max_depth_local = max_depth;
+
+              double top_temperature_local = top_temperature;
+              if (top_temperature_local < 0)
+                {
+                  top_temperature_local =  this->world->potential_mantle_temperature *
+                                           std::exp(((this->world->thermal_expansion_coefficient * gravity_norm) /
+                                                     this->world->specific_heat) * min_depth_local);
+                }
+
+              double bottom_temperature_local = bottom_temperature;
+              if (bottom_temperature_local < 0)
+                {
+                  bottom_temperature_local =  this->world->potential_mantle_temperature *
+                                              std::exp(((this->world->thermal_expansion_coefficient * gravity_norm) /
+                                                        this->world->specific_heat) * max_depth_local);
+                }
+
+              return top_temperature +
+                     (std::fabs(distance_from_planes.at("distanceFromPlane")) - min_depth_local) * ((bottom_temperature_local - top_temperature_local) / (max_depth_local - min_depth_local));
+
             }
-
-          double bottom_temperature_local = bottom_temperature;
-          if (bottom_temperature_local < 0)
-            {
-              bottom_temperature_local =  this->world->potential_mantle_temperature *
-                                          std::exp(((this->world->thermal_expansion_coefficient * gravity_norm) /
-                                                    this->world->specific_heat) * max_depth_local);
-            }
-
-          return top_temperature +
-                 (std::fabs(distance_from_planes.at("distanceFromPlane")) - min_depth_local) * ((bottom_temperature_local - top_temperature_local) / (max_depth_local - min_depth_local));
-
-
 
           return temperature;
         }

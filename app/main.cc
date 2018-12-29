@@ -44,53 +44,38 @@ int main(int argc, char **argv)
   unsigned int dim = 3;
   unsigned int compositions = 0;
 
-  try
+  if (find_command_line_option(argv, argv+argc, "-h") || find_command_line_option(argv, argv+argc, "--help"))
     {
-      if (find_command_line_option(argv, argv+argc, "-h") || find_command_line_option(argv, argv+argc, "--help"))
-        {
-          std::cout << "This program allows to use the world builder library directly with a world builder file and a data file. "
-                    "The data file will be filled with intitial conditions from the world as set by the world builder file." << std::endl
-                    << "Besides providing two files, where the first is the world builder file and the second is the data file, the available options are: " << std::endl
-                    << "-h or --help to get this help screen." << std::endl;
-          return 0;
-        }
-
-      if (argc == 1)
-        {
-          std::cout << "Error: There where no files passed to the World Builder, use --help for more " << std::endl
-                    << "information on how  to use the World Builder app." << std::endl;
-          return 0;
-        }
-
-
-      if (argc == 2)
-        {
-          std::cout << "Error:  The World Builder app requires at least two files, a World Builder file " << std::endl
-                    << "and a data file to convert." << std::endl;
-          return 0;
-        }
-
-      if (argc != 3)
-        {
-          std::cout << "Only two command line arguments may be given, which should be the world builder file location and the data file location (in that order). "
-                    << "command line options where given." << std::endl;
-          return 0;
-        }
-
-      wb_file = argv[1];
-      data_file = argv[2];
-
+      std::cout << "This program allows to use the world builder library directly with a world builder file and a data file. "
+                "The data file will be filled with intitial conditions from the world as set by the world builder file." << std::endl
+                << "Besides providing two files, where the first is the world builder file and the second is the data file, the available options are: " << std::endl
+                << "-h or --help to get this help screen." << std::endl;
+      return 0;
     }
-  catch (std::exception &e)
+
+  if (argc == 1)
     {
-      std::cerr << "error: " << e.what() << "\n";
-      return 1;
+      std::cout << "Error: There where no files passed to the World Builder, use --help for more " << std::endl
+                << "information on how  to use the World Builder app." << std::endl;
+      return 0;
     }
-  catch (...)
+
+
+  if (argc == 2)
     {
-      std::cerr << "Exception of unknown type!\n";
-      return 1;
+      std::cout << "Error:  The World Builder app requires at least two files, a World Builder file " << std::endl
+                << "and a data file to convert." << std::endl;
+      return 0;
     }
+
+  if (argc != 3)
+    {
+      std::cout << "Only two command line arguments may be given, which should be the world builder file location and the data file location (in that order). " << std::endl;
+      return 0;
+    }
+
+  wb_file = argv[1];
+  data_file = argv[2];
 
   /**
    * Try to start the world builder
@@ -115,27 +100,7 @@ int main(int argc, char **argv)
   /**
    * Read the data from the data files
    */
-  // if config file is available, parse it
-  /*  if(config_file != "")
-    {
-      // Get world builder file and check wether it exists
-      WBAssertThrow(access( config_file.c_str(), F_OK ) != -1,
-          "Could not find the provided convig file at the specified location: " + config_file);
 
-
-      // Now read in the world builder file into a file stream and
-      // put it into a boost property tree.
-      //std::ifstream json_input_stream(config_file.c_str());
-      ptree tree;
-      tree.read_json(config_file, tree);
-
-      if(boost::optional<unsigned int> value = tree.get_optional<unsigned int>("dim"))
-          dim = value.get();
-
-      if(boost::optional<unsigned int> value = tree.get_optional<unsigned int>("compositions"))
-          compositions = value.get();
-
-    }*/
   std::string line;
   std::ifstream data_stream(data_file);
 
