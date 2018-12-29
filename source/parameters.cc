@@ -113,7 +113,21 @@ namespace WorldBuilder
 
     WBAssertThrow(!(parameters.ParseStream<kParseCommentsFlag | kParseNanAndInfFlag>(isw).HasParseError()),
                   "Parsing errors world builder file: Error(offset " << (unsigned)parameters.GetErrorOffset()
-                  << "): " << GetParseError_En(parameters.GetParseError()));
+                  << "): " << GetParseError_En(parameters.GetParseError()) << std::endl << std::endl
+                  << " Showing 50 chars before and after: "
+                  << std::string((std::istreambuf_iterator<char>(json_input_stream.seekg(0, json_input_stream.beg))),
+                                 std::istreambuf_iterator<char>()).substr((unsigned)parameters.GetErrorOffset() < 50
+                                                                          ? 0
+                                                                          :
+                                                                          (unsigned)parameters.GetErrorOffset()-50,
+                                                                          100) << std::endl << std::endl
+                  << " Showing 5 chars before and after: "
+                  << std::string((std::istreambuf_iterator<char>(json_input_stream.seekg(0, json_input_stream.beg))),
+                                 std::istreambuf_iterator<char>()).substr((unsigned)parameters.GetErrorOffset() < 5
+                                                                          ? 0
+                                                                          :
+                                                                          (unsigned)parameters.GetErrorOffset()-5,
+                                                                          10));//std::ifstream(filename.c_str()).rdbuf()->str());
 
     WBAssertThrow(parameters.IsObject(), "World builder file is is not an object.");
     json_input_stream.close();
