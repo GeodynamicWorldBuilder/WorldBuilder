@@ -72,10 +72,11 @@ namespace WorldBuilder
 
   void Parameters::initialize(std::string &filename)
   {
+
+    StringBuffer buffer;
     {
       std::ofstream myfile;
       myfile.open ("../declarations.tex");
-      StringBuffer buffer;
       LatexWriter<StringBuffer, UTF8<>, UTF8<>, CrtAllocator, kWriteNanAndInfFlag> writer(buffer);
       declarations.Accept(writer);
 
@@ -98,15 +99,11 @@ namespace WorldBuilder
     // relaxing sytax by allowing comments () for now, maybe also allow trailing commas and (kParseTrailingCommasFlag) and nan's, inf etc (kParseNanAndInfFlag)?
     //WBAssertThrow(!parameters.ParseStream<kParseCommentsFlag>(isw).HasParseError(), "Parsing erros world builder file");
 
-    if (parameters.ParseStream<kParseCommentsFlag | kParseNanAndInfFlag>(isw).HasParseError())
-      {
-        fprintf(stderr, "\nError(offset %u): %s\n",
-                (unsigned)parameters.GetErrorOffset(),
-                GetParseError_En(parameters.GetParseError()));
-        WBAssertThrow(false, "Parsing errors world builder file");
+    WBAssertThrow(!(parameters.ParseStream<kParseCommentsFlag | kParseNanAndInfFlag>(isw).HasParseError()),
+                  "Parsing errors world builder file: Error(offset " << (unsigned)parameters.GetErrorOffset()
+                  << "): " << GetParseError_En(parameters.GetParseError()));
 
-      }
-    WBAssertThrow(parameters.IsObject(), "it is not an object.");
+    WBAssertThrow(parameters.IsObject(), "World builder file is is not an object.");
     json_input_stream.close();
 
 
@@ -117,30 +114,18 @@ namespace WorldBuilder
       {
         // Input JSON is invalid according to the schema
         // Output diagnostic information
-        StringBuffer sb;
-        validator.GetInvalidSchemaPointer().StringifyUriFragment(sb);
-        printf("Invalid schema: %s\n", sb.GetString());
-        printf("Invalid keyword: %s\n", validator.GetInvalidSchemaKeyword());
-        sb.Clear();
-        validator.GetInvalidDocumentPointer().StringifyUriFragment(sb);
-        printf("Invalid document: %s\n", sb.GetString());
-        StringBuffer buffer;
+        buffer.Clear();
+        std::stringstream string;
+        validator.GetInvalidSchemaPointer().StringifyUriFragment(buffer);
+        string << "Invalid schema: " << buffer.GetString() << std::endl;
+        string << "Invalid keyword: " << validator.GetInvalidSchemaKeyword();
+        buffer.Clear();
+        validator.GetInvalidDocumentPointer().StringifyUriFragment(buffer);
+        string << "Invalid schema: " << buffer.GetString() << std::endl;
         PrettyWriter<StringBuffer> writer(buffer);
         validator.GetError().Accept(writer);
-        WBAssert(false, "Error document: " << std::endl << buffer.GetString());
+        WBAssert(false, string.str() << "Error document: " << std::endl << buffer.GetString());
       }
-    else
-      {
-        //std::cout << "schema says it is correct, yay!" << std::endl;
-      }
-    {
-      StringBuffer buffer;
-      PrettyWriter<StringBuffer> writer(buffer);
-
-      parameters.Accept(writer);
-      //std::cout << "parameters file: " << std::endl << buffer.GetString() << std::endl;
-    }
-
   }
 
   void
@@ -342,7 +327,7 @@ namespace WorldBuilder
               }
             catch (...)
               {
-                WBAssertThrow(false, "Could not convert values of " << base << " into doubles.");
+                WBAssertThrow(false, "Could not convert values of " << base << " into Point<2>, because it could not convert the sub-elements into doubles.");
               }
             return Point<2>(value1,value2,this->coordinate_system->natural_coordinate_system());
           }

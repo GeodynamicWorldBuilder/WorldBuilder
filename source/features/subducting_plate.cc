@@ -62,7 +62,7 @@ namespace WorldBuilder
     void
     SubductingPlate::declare_entries(Parameters &prm,
                                      const std::string &parent_name,
-                                     const std::vector<std::string> &required_entries)
+                                     const std::vector<std::string> & /*required_entries*/)
     {
       if (parent_name == "items")
         prm.enter_subsection("properties");
@@ -120,8 +120,8 @@ namespace WorldBuilder
 
       default_temperature_models.resize(0);
       default_composition_models.resize(0);
-      bool found = prm.get_shared_pointers<Features::SubductingPlateModels::Temperature::Interface>("temperature models", default_temperature_models);
-      found = prm.get_shared_pointers<Features::SubductingPlateModels::Composition::Interface>("composition models", default_composition_models);
+      prm.get_shared_pointers<Features::SubductingPlateModels::Temperature::Interface>("temperature models", default_temperature_models);
+      prm.get_shared_pointers<Features::SubductingPlateModels::Composition::Interface>("composition models", default_composition_models);
 
       // get the default segments.
       default_segment_vector = prm.get_vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
@@ -315,7 +315,6 @@ namespace WorldBuilder
 
           const double distance_from_plane = distance_from_planes["distanceFromPlane"];
           const double distance_along_plane = distance_from_planes["distanceAlongPlane"];
-          const double average_angle = distance_from_planes["averageAngle"];
           const double section_fraction = distance_from_planes["sectionFraction"];
           const unsigned int current_section = one_dimensional_coordinates[distance_from_planes["section"]];
           const unsigned int next_section = current_section + 1;

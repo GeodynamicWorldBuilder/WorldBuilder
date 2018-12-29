@@ -53,7 +53,7 @@ namespace WorldBuilder
     void
     Fault::declare_entries(Parameters &prm,
                            const std::string &parent_name,
-                           const std::vector<std::string> &required_entries)
+                           const std::vector<std::string> & /*required_entries*/)
     {
       if (parent_name == "items")
         prm.enter_subsection("properties");
@@ -111,8 +111,8 @@ namespace WorldBuilder
 
       default_temperature_models.resize(0);
       default_composition_models.resize(0);
-      bool found = prm.get_shared_pointers<Features::FaultModels::Temperature::Interface>("temperature models", default_temperature_models);
-      found = prm.get_shared_pointers<Features::FaultModels::Composition::Interface>("composition models", default_composition_models);
+      prm.get_shared_pointers<Features::FaultModels::Temperature::Interface>("temperature models", default_temperature_models);
+      prm.get_shared_pointers<Features::FaultModels::Composition::Interface>("composition models", default_composition_models);
 
       // get the default segments.
       default_segment_vector = prm.get_vector<Objects::Segment<Features::FaultModels::Temperature::Interface,

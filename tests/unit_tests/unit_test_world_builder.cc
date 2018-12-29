@@ -28,6 +28,9 @@
 #include <world_builder/coordinate_systems/interface.h>
 
 #include <world_builder/features/interface.h>
+#include <world_builder/features/continental_plate.h>
+#include <world_builder/features/fault_models/temperature/uniform.h>
+#include <world_builder/features/fault_models/composition/uniform.h>
 
 #include <world_builder/point.h>
 
@@ -2581,26 +2584,79 @@ TEST_CASE("WorldBuilder Types: Coordinate System")
 }*/
 
 // not sure how to unit test this.
-/*
 TEST_CASE("WorldBuilder Types: PluginSystem")
 {
 #define TYPE PluginSystem
-  Types::TYPE type("test");
-  CHECK(type.description == "test");
+  Types::TYPE type("test", Features::ContinentalPlate::declare_entries, std::vector<std::string> {"test required"}, false);
+  CHECK(type.default_value == "test");
+  CHECK(type.required_entries[0] == "test required");
+  CHECK(type.allow_multiple == false);
   CHECK(type.get_type() == Types::type::TYPE);
 
   Types::TYPE type_copy(type);
-  CHECK(type_copy.description == "test");
+  CHECK(type_copy.default_value == "test");
+  CHECK(type_copy.required_entries[0] == "test required");
+  CHECK(type_copy.allow_multiple == false);
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
   std::unique_ptr<Types::Interface> type_clone = type_copy.clone();
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
-  CHECK(type_clone_natural->description == "test");
+  CHECK(type_clone_natural->default_value == "test");
+  CHECK(type_clone_natural->required_entries[0] == "test required");
+  CHECK(type_clone_natural->allow_multiple == false);
   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 
 #undef TYPE
 }
-*/
+
+
+// not sure how to unit test this.
+TEST_CASE("WorldBuilder Types: Segment Object")
+{
+#define TYPE Segment
+  WorldBuilder::Point<2> thickness(1,2,invalid);
+  WorldBuilder::Point<2> top_trucation(3,4,invalid);
+  WorldBuilder::Point<2> angle(5,6,invalid);
+  Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface>
+  type (1.0, thickness, top_trucation, angle,
+        std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface> >(),
+        std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface> >());
+  CHECK(type.value_length == 1);
+  CHECK(type.value_thickness[0] == 1);
+  CHECK(type.value_thickness[1] == 2);
+  CHECK(type.value_top_truncation[0] == 3);
+  CHECK(type.value_top_truncation[1] == 4);
+  CHECK(type.value_angle[0] == 5);
+  CHECK(type.value_angle[1] == 6);
+  CHECK(type.get_type() == Types::type::TYPE);
+
+  Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface>
+  type_copy(type);
+  CHECK(type_copy.value_length == 1);
+  CHECK(type_copy.value_thickness[0] == 1);
+  CHECK(type_copy.value_thickness[1] == 2);
+  CHECK(type_copy.value_top_truncation[0] == 3);
+  CHECK(type_copy.value_top_truncation[1] == 4);
+  CHECK(type_copy.value_angle[0] == 5);
+  CHECK(type_copy.value_angle[1] == 6);
+  CHECK(type_copy.get_type() == Types::type::TYPE);
+
+  std::unique_ptr<Types::Interface> type_clone = type_copy.clone();
+  Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface>
+  *type_clone_natural = dynamic_cast<Objects::TYPE<Features::FaultModels::Temperature::Interface,
+   Features::FaultModels::Composition::Interface> *>(type_clone.get());
+  CHECK(type_clone_natural->value_length == 1);
+  CHECK(type_clone_natural->value_thickness[0] == 1);
+  CHECK(type_clone_natural->value_thickness[1] == 2);
+  CHECK(type_clone_natural->value_top_truncation[0] == 3);
+  CHECK(type_clone_natural->value_top_truncation[1] == 4);
+  CHECK(type_clone_natural->value_angle[0] == 5);
+  CHECK(type_clone_natural->value_angle[1] == 6);
+  CHECK(type_clone_natural->get_type() == Types::type::TYPE);
+
+#undef TYPE
+}
+
 TEST_CASE("WorldBuilder Types: Array")
 {
 #define TYPE Array
@@ -5689,6 +5745,14 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     CHECK(world.temperature(position, 565e3, 10) == 0);
     CHECK(world.temperature(position, 570e3, 10) == Approx(1876.8664968188));
   }
+
+}
+
+TEST_CASE("WorldBuilder parameters: invalid 1")
+{
+
+  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/invalid_1.wb";
+  CHECK_THROWS_WITH(WorldBuilder::World(file_name), Contains("Invalid keyword: additionalPropertiesInvalid schema: #/test"));
 
 }
 

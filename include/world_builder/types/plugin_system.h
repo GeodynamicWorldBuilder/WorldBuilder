@@ -74,7 +74,6 @@ namespace WorldBuilder
         void( *declare_entries)(Parameters &, const std::string &, const std::vector<std::string> &);
         std::vector<std::string> required_entries;
         bool allow_multiple;
-        std::string description;
 
       private:
 

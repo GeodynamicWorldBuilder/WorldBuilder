@@ -177,9 +177,9 @@ namespace WorldBuilder
 
     template<class A, class B>
     void
-    Segment<A,B>::write_schema(Parameters &prm,
-                               const std::string &name,
-                               const std::string &documentation) const
+    Segment<A,B>::write_schema(Parameters & /*prm*/,
+                               const std::string & /*name*/,
+                               const std::string & /*documentation*/) const
     {
       WBAssertThrow(false, "not implemented.");
     }

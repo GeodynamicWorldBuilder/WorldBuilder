@@ -93,12 +93,8 @@ namespace WorldBuilder
         WorldBuilder::Point<2> default_top_truncation;
         WorldBuilder::Point<2> value_angle;
         WorldBuilder::Point<2> default_angle;
-        //double default_value_length;
-        //WorldBuilder::Point<2> default_value_thickness;
-        //WorldBuilder::Point<2> default_value_angle;
         std::unique_ptr<Types::Interface> temperature_pugin_system;
         std::unique_ptr<Types::Interface> composition_pugin_system;
-        std::string description;
 
       private:
 
@@ -152,12 +148,8 @@ namespace WorldBuilder
         WorldBuilder::Point<2> value_thickness;
         WorldBuilder::Point<2> value_top_truncation;
         WorldBuilder::Point<2> value_angle;
-        //double default_value_length;
-        //WorldBuilder::Point<2> default_value_thickness;
-        //WorldBuilder::Point<2> default_value_angle;
         std::vector<std::shared_ptr<A> > temperature_systems;
         std::vector<std::shared_ptr<B> > composition_systems;
-        std::string description;
 
       private:
 
