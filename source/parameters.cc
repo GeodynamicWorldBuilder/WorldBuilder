@@ -111,23 +111,29 @@ namespace WorldBuilder
     // relaxing sytax by allowing comments () for now, maybe also allow trailing commas and (kParseTrailingCommasFlag) and nan's, inf etc (kParseNanAndInfFlag)?
     //WBAssertThrow(!parameters.ParseStream<kParseCommentsFlag>(isw).HasParseError(), "Parsing erros world builder file");
 
-    WBAssertThrow(!(parameters.ParseStream<kParseCommentsFlag | kParseNanAndInfFlag>(isw).HasParseError()),
-                  "Parsing errors world builder file: Error(offset " << (unsigned)parameters.GetErrorOffset()
-                  << "): " << GetParseError_En(parameters.GetParseError()) << std::endl << std::endl
-                  << " Showing 50 chars before and after: "
-                  << std::string((std::istreambuf_iterator<char>(json_input_stream.seekg(0, json_input_stream.beg))),
-                                 std::istreambuf_iterator<char>()).substr((unsigned)parameters.GetErrorOffset() < 50
-                                                                          ? 0
-                                                                          :
-                                                                          (unsigned)parameters.GetErrorOffset()-50,
-                                                                          100) << std::endl << std::endl
-                  << " Showing 5 chars before and after: "
-                  << std::string((std::istreambuf_iterator<char>(json_input_stream.seekg(0, json_input_stream.beg))),
-                                 std::istreambuf_iterator<char>()).substr((unsigned)parameters.GetErrorOffset() < 5
-                                                                          ? 0
-                                                                          :
-                                                                          (unsigned)parameters.GetErrorOffset()-5,
-                                                                          10));//std::ifstream(filename.c_str()).rdbuf()->str());
+    WBAssertThrowExc(!(parameters.ParseStream<kParseCommentsFlag | kParseNanAndInfFlag>(isw).HasParseError()), std::ifstream json_input_stream_error(filename.c_str()); ,
+                     "Parsing errors world builder file: Error(offset " << (unsigned)parameters.GetErrorOffset()
+                     << "): " << GetParseError_En(parameters.GetParseError()) << std::endl << std::endl
+                     << " Showing 50 chars before and after: "
+                     << std::string((std::istreambuf_iterator<char>(json_input_stream_error.seekg(0, json_input_stream_error.beg))),
+                                    std::istreambuf_iterator<char>()).substr((unsigned)parameters.GetErrorOffset() <= 50
+                                                                             ?
+                                                                             0
+                                                                             :
+                                                                             (unsigned)parameters.GetErrorOffset() - 50, 100
+                                                                            ) << std::endl << std::endl
+                     << " Showing 5 chars before and after: "
+                     << std::string((std::istreambuf_iterator<char>(json_input_stream_error.seekg(0, json_input_stream_error.beg))),
+                                    std::istreambuf_iterator<char>()).substr((unsigned)parameters.GetErrorOffset() <= 5
+                                                                             ? 0
+                                                                             :
+                                                                             (unsigned)parameters.GetErrorOffset()-5,
+                                                                             ((unsigned)parameters.GetErrorOffset() + 10 > json_input_stream_error.seekg(0,ios::end).tellg()
+                                                                              ?
+                                                                              (unsigned int)json_input_stream.tellg()-(unsigned)parameters.GetErrorOffset()
+                                                                              :
+                                                                              10)
+                                                                            ));
 
     WBAssertThrow(parameters.IsObject(), "World builder file is is not an object.");
     json_input_stream.close();
@@ -422,7 +428,7 @@ namespace WorldBuilder
             // get thickness
             Value *point_array = Pointer((base  + "/thickness").c_str()).Get(parameters);
             Point<2> thickness(invalid);
-            if (point_array != NULL)
+            if (point_array != NULL) // is required, turn into assertthrow
               {
                 if (point_array->Size() == 1)
                   {
@@ -459,7 +465,7 @@ namespace WorldBuilder
             // get thickness
             point_array = Pointer((base  + "/angle").c_str()).Get(parameters);
             Point<2> angle(invalid);
-            if (point_array != NULL)
+            if (point_array != NULL) // is required, turn into assertthrow
               {
                 if (point_array->Size() == 1)
                   {

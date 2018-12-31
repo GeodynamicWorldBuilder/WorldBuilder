@@ -67,7 +67,7 @@ namespace WorldBuilder
                             "A list with the labels of the composition which are present there.");
           prm.declare_entry("fractions", Types::Array(Types::Double(1.0),1),
                             "TA list of compositional fractions corresponding to the compositions list.");
-          prm.declare_entry("operation", Types::String("replace"),
+          prm.declare_entry("operation", Types::String("replace", std::vector<std::string> {"replace"}),
                             "Whether the value should replace any value previously defined at this location (replace) or "
                             "add the value to the previously define value (add). Replacing implies that all values not "
                             "explicitly defined are set to zero.");

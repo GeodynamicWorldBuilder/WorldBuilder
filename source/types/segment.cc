@@ -105,6 +105,25 @@ namespace WorldBuilder
         Pointer((base + "/type").c_str()).Set(declarations,"object");
         Pointer((base + "/additionalProperties").c_str()).Set(declarations,false);
         Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
+        std::vector<std::string> restricted_values = {"length", "thickness", "angle"};
+        for (unsigned int i = 0; i < restricted_values.size(); ++i)
+          {
+            if (restricted_values[i] != "")
+              {
+                if (i == 0 && Pointer((base + "/required").c_str()).Get(declarations) == NULL)
+                  {
+                    // The enum array doesn't exist yet, so we create it and fill it.
+                    Pointer((base + "/required/0").c_str()).Create(declarations);
+                    Pointer((base + "/required/0").c_str()).Set(declarations, restricted_values[i].c_str());
+                  }
+                else
+                  {
+                    // The enum array already exist yet, so we add an element to the end.
+                    Pointer((base + "/required/-").c_str()).Set(declarations, restricted_values[i].c_str());
+                  }
+              }
+          }
+
         prm.enter_subsection("properties");
         {
           std::string base = prm.get_full_json_path();
