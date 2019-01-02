@@ -81,3 +81,22 @@ foreach(test_source ${APP_TEST_SOURCES})
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/app/)
 endforeach(test_source)
 
+# visualization tests
+# Create directory for the test results
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/visualization)
+#find all the integration visu files
+file(GLOB_RECURSE VISU_TEST_SOURCES "visualization/*.wb")
+# Run through each sourceUforeach(test_source ${VISU_TEST_SOURCES})
+foreach(test_source ${VISU_TEST_SOURCES})
+        get_filename_component(test_name ${test_source} NAME_WE)
+	set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/visualization/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/visualization/${test_name}.grid")
+        add_test(${test_name}
+                 ${CMAKE_COMMAND} 
+	         -D TEST_NAME=${test_name}
+	         -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/WorldBuilderVisualization${CMAKE_EXECUTABLE_SUFFIX} 
+	         -D TEST_ARGS=${TEST_ARGUMENTS}
+	         -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/visualization/${test_name}.vtu 
+	         -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/visualization/${test_name}.vtu
+	         -P ${CMAKE_SOURCE_DIR}/tests/visualization/run_visualization_tests.cmake
+                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/visualization/)
+endforeach(test_source)
