@@ -232,7 +232,6 @@ namespace WorldBuilder
 
     if (value == NULL)
       {
-        //std::cout << "full json schema path = " << this->get_full_json_schema_path() << std::endl;
         value = Pointer((get_full_json_schema_path() + "/" + name + "/default value").c_str()).Get(declarations);
         WBAssert(value != NULL,
                  "internal error: could not retrieve the default value at: "
@@ -484,16 +483,26 @@ namespace WorldBuilder
             // Get temperature models
             std::vector<std::shared_ptr<Temperature::Interface> > temperature_models;
 
-            //This is a value to look back in the path elements. It is a
-            // bit arbetrary, so might want to look in the future for an alternative.
-            const unsigned int searchback = path.size() > 5 && path[path.size()-4] == "sections" ? 4 : 2;
-            if (this->get_shared_pointers<Temperature::Interface>("temperature models", temperature_models) == false)
+            //This is a value to look back in the path elements.
+            unsigned int searchback = 0;
+            if (this->get_shared_pointers<Temperature::Interface>("temperature models", temperature_models) == false ||
+                Pointer((base + "/temperature model default entry").c_str()).Get(parameters) != NULL)
               {
                 temperature_models = default_temperature_models;
 
-                // we only need to do something when there is a temperature model defined
-                if (Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Get(parameters) != NULL)
+                // find the default value, which is the closest to the current path
+                for (searchback = 0; searchback < path.size(); ++searchback)
                   {
+                    if (Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Get(parameters) != NULL)
+                      {
+                        break;
+                      }
+                  }
+
+                // if we can not find default value for the temperture model, skip it
+                if (searchback < path.size())
+                  {
+
                     // copy the value, this unfortunately removes it.
                     Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Get(parameters)->GetArray());
 
@@ -505,17 +514,31 @@ namespace WorldBuilder
                     Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
 
                     Pointer((base).c_str()).Get(parameters)->AddMember("temperature models", value2, parameters.GetAllocator());
+                    Pointer((base + "/temperature model default entry").c_str()).Set(parameters,true);
                   }
               }
 
+            // now do the same for compositions
             std::vector<std::shared_ptr<Composition::Interface> > composition_models;
-            if (this->get_shared_pointers<Composition::Interface>("composition models", composition_models) == false)
+            if (this->get_shared_pointers<Composition::Interface>("composition models", composition_models) == false ||
+                Pointer((base + "/composition model default entry").c_str()).Get(parameters) != NULL)
               {
                 composition_models = default_composition_models;
 
-                // we only need to do something when there is a composition model defined
-                if (Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Get(parameters) != NULL)
+
+                // find the default value, which is the closest to the current path
+                for (searchback = 0; searchback < path.size(); ++searchback)
                   {
+                    if (Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Get(parameters) != NULL)
+                      {
+                        break;
+                      }
+                  }
+
+                // if we can not find default value for the temperture model, skip it
+                if (searchback < path.size())
+                  {
+
                     // copy the value, this unfortunately removes it.
                     Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Get(parameters)->GetArray());
 
@@ -527,6 +550,7 @@ namespace WorldBuilder
                     Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
 
                     Pointer((base).c_str()).Get(parameters)->AddMember("composition models", value2, parameters.GetAllocator());
+                    Pointer((base + "/composition model default entry").c_str()).Set(parameters,true);
                   }
               }
             vector.push_back(Objects::Segment<Temperature::Interface,Composition::Interface>(length, thickness, top_trunctation, angle, temperature_models, composition_models));
@@ -549,7 +573,6 @@ namespace WorldBuilder
     std::vector<Objects::Segment<Temperature::Interface,Composition::Interface> > vector;
     this->enter_subsection(name);
     const std::string strict_base = this->get_full_json_path();
-    WBAssertThrow(Pointer((strict_base).c_str()).Get(parameters) != NULL, "Could not find " << strict_base << " in parameters.");
     if (Pointer((strict_base).c_str()).Get(parameters) != NULL)
       {
         // get the array of segments
@@ -566,7 +589,7 @@ namespace WorldBuilder
             // get thickness
             Value *point_array = Pointer((base  + "/thickness").c_str()).Get(parameters);
             Point<2> thickness(invalid);
-            if (point_array != NULL)
+            if (point_array != NULL) // is required, turn into assertthrow
               {
                 if (point_array->Size() == 1)
                   {
@@ -603,7 +626,7 @@ namespace WorldBuilder
             // get thickness
             point_array = Pointer((base  + "/angle").c_str()).Get(parameters);
             Point<2> angle(invalid);
-            if (point_array != NULL)
+            if (point_array != NULL) // is required, turn into assertthrow
               {
                 if (point_array->Size() == 1)
                   {
@@ -622,16 +645,26 @@ namespace WorldBuilder
             // Get temperature models
             std::vector<std::shared_ptr<Temperature::Interface> > temperature_models;
 
-            //This is a value to look back in the path elements. It is a
-            // bit arbetrary, so might want to look in the future for an alternative.
-            const unsigned int searchback = path.size() > 5 && path[path.size()-4] == "sections" ? 4 : 2;
-            if (this->get_shared_pointers<Temperature::Interface>("temperature models", temperature_models) == false)
+            //This is a value to look back in the path elements.
+            unsigned int searchback = 0;
+            if (this->get_shared_pointers<Temperature::Interface>("temperature models", temperature_models) == false ||
+                Pointer((base + "/temperature model default entry").c_str()).Get(parameters) != NULL)
               {
                 temperature_models = default_temperature_models;
 
-                // we only need to do something when there is a temperature model defined
-                if (Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Get(parameters) != NULL)
+                // find the default value, which is the closest to the current path
+                for (searchback = 0; searchback < path.size(); ++searchback)
                   {
+                    if (Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Get(parameters) != NULL)
+                      {
+                        break;
+                      }
+                  }
+
+                // if we can not find default value for the temperture model, skip it
+                if (searchback < path.size())
+                  {
+
                     // copy the value, this unfortunately removes it.
                     Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Get(parameters)->GetArray());
 
@@ -643,17 +676,31 @@ namespace WorldBuilder
                     Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
 
                     Pointer((base).c_str()).Get(parameters)->AddMember("temperature models", value2, parameters.GetAllocator());
+                    Pointer((base + "/temperature model default entry").c_str()).Set(parameters,true);
                   }
               }
 
+            // now do the same for compositions
             std::vector<std::shared_ptr<Composition::Interface> > composition_models;
-            if (this->get_shared_pointers<Composition::Interface>("composition models", composition_models) == false)
+            if (this->get_shared_pointers<Composition::Interface>("composition models", composition_models) == false ||
+                Pointer((base + "/composition model default entry").c_str()).Get(parameters) != NULL)
               {
                 composition_models = default_composition_models;
 
-                // we only need to do something when there is a composition model defined
-                if (Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Get(parameters) != NULL)
+
+                // find the default value, which is the closest to the current path
+                for (searchback = 0; searchback < path.size(); ++searchback)
                   {
+                    if (Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Get(parameters) != NULL)
+                      {
+                        break;
+                      }
+                  }
+
+                // if we can not find default value for the temperture model, skip it
+                if (searchback < path.size())
+                  {
+
                     // copy the value, this unfortunately removes it.
                     Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Get(parameters)->GetArray());
 
@@ -665,6 +712,7 @@ namespace WorldBuilder
                     Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
 
                     Pointer((base).c_str()).Get(parameters)->AddMember("composition models", value2, parameters.GetAllocator());
+                    Pointer((base + "/composition model default entry").c_str()).Set(parameters,true);
                   }
               }
             vector.push_back(Objects::Segment<Temperature::Interface,Composition::Interface>(length, thickness, top_trunctation, angle, temperature_models, composition_models));

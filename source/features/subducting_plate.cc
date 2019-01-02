@@ -134,43 +134,6 @@ namespace WorldBuilder
       segment_vector.resize(0);
       segment_vector.resize(n_sections, default_segment_vector);
 
-      prm.enter_subsection("segments");
-      {
-        for (unsigned int i = 0; i < default_segment_vector.size(); ++i)
-          {
-            prm.enter_subsection(std::to_string(i));
-            {
-              prm.enter_subsection("temperature models");
-              {
-                for (unsigned int j = 0; j < default_segment_vector[i].temperature_systems.size(); ++j)
-                  {
-                    prm.enter_subsection(std::to_string(j));
-                    {
-                      default_segment_vector[i].temperature_systems[j]->parse_entries(prm);
-                    }
-                    prm.leave_subsection();
-                  }
-              }
-              prm.leave_subsection();
-
-
-              prm.enter_subsection("composition models");
-              {
-                for (unsigned int j = 0; j < default_segment_vector[i].composition_systems.size(); ++j)
-                  {
-                    prm.enter_subsection(std::to_string(j));
-                    {
-                      default_segment_vector[i].composition_systems[j]->parse_entries(prm);
-                    }
-                    prm.leave_subsection();
-                  }
-              }
-              prm.leave_subsection();
-            }
-            prm.leave_subsection();
-          }
-      }
-      prm.leave_subsection();
 
       // now search whether a section is present, if so, replace the default segments.
       std::vector<std::unique_ptr<Features::SubductingPlate> > sections_vector;
@@ -190,8 +153,41 @@ namespace WorldBuilder
                               << "', trying to change the section of coordinate " << change_coord_number
                               << " while only " << segment_vector.size() << " coordinates are defined.");
 
+                std::vector<std::shared_ptr<Features::SubductingPlateModels::Temperature::Interface> > local_default_temperature_models;
+                std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface>  > local_default_composition_models;
+
+                if (prm.get_shared_pointers<Features::SubductingPlateModels::Temperature::Interface>("temperature models", local_default_temperature_models) == false)
+                  {
+                    // no local temperature model, use global default
+                    local_default_temperature_models = default_temperature_models;
+                    //std::cout << "no local temperature model, use global default" << std::endl;
+                  }
+
+                if (prm.get_shared_pointers<Features::SubductingPlateModels::Composition::Interface>("composition models", local_default_composition_models) == false)
+                  {
+                    // no local composition model, use global default
+                    local_default_composition_models = default_composition_models;
+
+                    //std::cout << "no local composition model, use global default" << std::endl;
+                  }
+
                 segment_vector[change_coord_number] = prm.get_vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
-                                                      Features::SubductingPlateModels::Composition::Interface> >("segments", default_temperature_models, default_composition_models);
+                                                      Features::SubductingPlateModels::Composition::Interface> >("segments", local_default_temperature_models, local_default_composition_models);
+
+
+                // paramters should be changed
+                /*{
+                  using namespace rapidjson;
+                  StringBuffer buffer;
+                  PrettyWriter<StringBuffer, UTF8<>, UTF8<>, CrtAllocator, kWriteNanAndInfFlag> json_writer(buffer);
+                  this->world->parameters.parameters.Accept(json_writer);
+                  std::cout << buffer.GetString();
+                }*/
+
+                WBAssertThrow(segment_vector[change_coord_number].size() == default_segment_vector.size(),
+                              "Error: There are not the same amount of segments in section with coordinate " << change_coord_number
+                              << " (" << segment_vector[change_coord_number].size() << " segments) as in the default segment ("
+                              << default_segment_vector.size() << " segments). This is not allowed.");
 
                 prm.enter_subsection("segments");
                 {
@@ -236,6 +232,45 @@ namespace WorldBuilder
             }
 
         }
+      prm.leave_subsection();
+
+
+      prm.enter_subsection("segments");
+      {
+        for (unsigned int i = 0; i < default_segment_vector.size(); ++i)
+          {
+            prm.enter_subsection(std::to_string(i));
+            {
+              prm.enter_subsection("temperature models");
+              {
+                for (unsigned int j = 0; j < default_segment_vector[i].temperature_systems.size(); ++j)
+                  {
+                    prm.enter_subsection(std::to_string(j));
+                    {
+                      default_segment_vector[i].temperature_systems[j]->parse_entries(prm);
+                    }
+                    prm.leave_subsection();
+                  }
+              }
+              prm.leave_subsection();
+
+
+              prm.enter_subsection("composition models");
+              {
+                for (unsigned int j = 0; j < default_segment_vector[i].composition_systems.size(); ++j)
+                  {
+                    prm.enter_subsection(std::to_string(j));
+                    {
+                      default_segment_vector[i].composition_systems[j]->parse_entries(prm);
+                    }
+                    prm.leave_subsection();
+                  }
+              }
+              prm.leave_subsection();
+            }
+            prm.leave_subsection();
+          }
+      }
       prm.leave_subsection();
 
       maximum_slab_thickness = 0;
