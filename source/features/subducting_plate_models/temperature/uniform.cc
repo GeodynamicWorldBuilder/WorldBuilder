@@ -89,21 +89,25 @@ namespace WorldBuilder
 
         double
         Uniform::get_temperature(const Point<3> &,
-                                 const double depth,
+                                 const double ,
                                  const double ,
                                  double temperature_,
-                                 const double feature_min_depth,
-                                 const double feature_max_depth,
+                                 const double ,
+                                 const double ,
                                  const std::map<std::string,double> &distance_from_plane) const
         {
 
           if (distance_from_plane.at("distanceFromPlane") <= max_depth && distance_from_plane.at("distanceFromPlane") >= min_depth)
-            if (operation == "replace")
-              return temperature;
-            else if ("add")
-              return temperature_ + temperature;
-            else if ("substract")
-              return temperature_ - temperature;
+            {
+              if (operation == "replace")
+                {
+                  return temperature;
+                }
+              else if ("add")
+                return temperature_ + temperature;
+              else if ("substract")
+                return temperature_ - temperature;
+            }
 
           return temperature_;
         }

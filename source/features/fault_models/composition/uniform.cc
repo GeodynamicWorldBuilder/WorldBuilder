@@ -90,7 +90,7 @@ namespace WorldBuilder
 
         double
         Uniform::get_composition(const Point<3> &,
-                                 const double depth,
+                                 const double ,
                                  const unsigned int composition_number,
                                  double composition_,
                                  const double ,

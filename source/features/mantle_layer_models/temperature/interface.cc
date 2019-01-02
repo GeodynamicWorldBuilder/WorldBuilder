@@ -23,7 +23,6 @@
 #include <world_builder/types/object.h>
 #include <world_builder/features/mantle_layer_models/temperature/interface.h>
 #include <world_builder/features/mantle_layer_models/temperature/adiabatic.h>
-#include <world_builder/features/mantle_layer_models/temperature/layers.h>
 #include <world_builder/features/mantle_layer_models/temperature/linear.h>
 #include <world_builder/features/mantle_layer_models/temperature/uniform.h>
 

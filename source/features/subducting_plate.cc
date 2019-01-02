@@ -160,15 +160,12 @@ namespace WorldBuilder
                   {
                     // no local temperature model, use global default
                     local_default_temperature_models = default_temperature_models;
-                    //std::cout << "no local temperature model, use global default" << std::endl;
                   }
 
                 if (prm.get_shared_pointers<Features::SubductingPlateModels::Composition::Interface>("composition models", local_default_composition_models) == false)
                   {
                     // no local composition model, use global default
                     local_default_composition_models = default_composition_models;
-
-                    //std::cout << "no local composition model, use global default" << std::endl;
                   }
 
                 segment_vector[change_coord_number] = prm.get_vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
@@ -211,7 +208,7 @@ namespace WorldBuilder
 
                         prm.enter_subsection("composition models");
                         {
-                          for (unsigned int j = 0; j < segment_vector[change_coord_number][j].composition_systems.size(); ++j)
+                          for (unsigned int j = 0; j < segment_vector[change_coord_number][i].composition_systems.size(); ++j)
                             {
                               prm.enter_subsection(std::to_string(j));
                               {
@@ -409,14 +406,14 @@ namespace WorldBuilder
                       temperature_current_section = temperature_model->get_temperature(position,
                                                                                        depth,
                                                                                        gravity_norm,
-                                                                                       temperature,
+                                                                                       temperature_current_section,
                                                                                        starting_depth,
                                                                                        maximum_depth,
                                                                                        distance_from_planes);
 
-                      WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature
+                      WBAssert(!std::isnan(temperature_current_section), "Temparture is not a number: " << temperature_current_section
                                << ", based on a temperature model with the name " << temperature_model->get_name());
-                      WBAssert(std::isfinite(temperature), "Temparture is not a finite: " << temperature
+                      WBAssert(std::isfinite(temperature_current_section), "Temparture is not a finite: " << temperature_current_section
                                << ", based on a temperature model with the name " << temperature_model->get_name());
 
                     }
@@ -426,14 +423,14 @@ namespace WorldBuilder
                       temperature_next_section = temperature_model->get_temperature(position,
                                                                                     depth,
                                                                                     gravity_norm,
-                                                                                    temperature,
+                                                                                    temperature_next_section,
                                                                                     starting_depth,
                                                                                     maximum_depth,
                                                                                     distance_from_planes);
 
-                      WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature
+                      WBAssert(!std::isnan(temperature_next_section), "Temparture is not a number: " << temperature_next_section
                                << ", based on a temperature model with the name " << temperature_model->get_name());
-                      WBAssert(std::isfinite(temperature), "Temparture is not a finite: " << temperature
+                      WBAssert(std::isfinite(temperature_next_section), "Temparture is not a finite: " << temperature_next_section
                                << ", based on a temperature model with the name " << temperature_model->get_name());
 
                     }

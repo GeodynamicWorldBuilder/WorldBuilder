@@ -79,7 +79,6 @@ namespace WorldBuilder
         void
         Uniform::parse_entries(Parameters &prm)
         {
-
           min_depth = prm.get<double>("min distance fault center");
           max_depth = prm.get<double>("max distance fault center");
           operation = prm.get<std::string>("operation");
@@ -89,17 +88,19 @@ namespace WorldBuilder
 
         double
         Uniform::get_temperature(const Point<3> &,
-                                 const double depth,
+                                 const double ,
                                  const double ,
                                  double temperature_,
-                                 const double feature_min_depth,
-                                 const double feature_max_depth,
+                                 const double ,
+                                 const double ,
                                  const std::map<std::string,double> &distance_from_plane) const
         {
 
           if (std::fabs(distance_from_plane.at("distanceFromPlane")) <= max_depth && std::fabs(distance_from_plane.at("distanceFromPlane")) >= min_depth)
             if (operation == "replace")
-              return temperature;
+              {
+                return temperature;
+              }
             else if ("add")
               return temperature_ + temperature;
             else if ("substract")

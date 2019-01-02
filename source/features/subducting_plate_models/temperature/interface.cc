@@ -25,7 +25,6 @@
 #include <world_builder/types/object.h>
 #include <world_builder/features/subducting_plate_models/temperature/interface.h>
 #include <world_builder/features/subducting_plate_models/temperature/adiabatic.h>
-#include <world_builder/features/subducting_plate_models/temperature/layers.h>
 #include <world_builder/features/subducting_plate_models/temperature/linear.h>
 #include <world_builder/features/subducting_plate_models/temperature/plate_model.h>
 #include <world_builder/features/subducting_plate_models/temperature/uniform.h>

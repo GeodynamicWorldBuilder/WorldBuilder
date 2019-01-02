@@ -31,6 +31,9 @@
 #include <world_builder/types/unsigned_int.h>
 #include <world_builder/types/plugin_system.h>
 
+#include "rapidjson/prettywriter.h"
+#include "rapidjson/stringbuffer.h"
+
 
 namespace WorldBuilder
 {
@@ -199,7 +202,7 @@ namespace WorldBuilder
 
                         prm.enter_subsection("composition models");
                         {
-                          for (unsigned int j = 0; j < segment_vector[change_coord_number][j].composition_systems.size(); ++j)
+                          for (unsigned int j = 0; j < segment_vector[change_coord_number][i].composition_systems.size(); ++j)
                             {
                               prm.enter_subsection(std::to_string(j));
                               {
@@ -379,8 +382,8 @@ namespace WorldBuilder
 
               // Because both sides return positve values, we have to
               // devide the thickness_local by two
-              if (distance_from_plane > 0 &&
-                  distance_from_plane <= thickness_local * 0.5 &&
+              if (std::fabs(distance_from_plane) > 0 &&
+                  std::fabs(distance_from_plane) <= thickness_local * 0.5 &&
                   distance_along_plane > 0 &&
                   distance_along_plane <= max_slab_length)
                 {
@@ -393,16 +396,15 @@ namespace WorldBuilder
                       temperature_current_section = temperature_model->get_temperature(position,
                                                                                        depth,
                                                                                        gravity_norm,
-                                                                                       temperature,
+                                                                                       temperature_current_section,
                                                                                        starting_depth,
                                                                                        maximum_depth,
                                                                                        distance_from_planes);
 
-                      WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature
+                      WBAssert(!std::isnan(temperature_current_section), "Temparture is not a number: " << temperature_current_section
                                << ", based on a temperature model with the name " << temperature_model->get_name());
-                      WBAssert(std::isfinite(temperature), "Temparture is not a finite: " << temperature
+                      WBAssert(std::isfinite(temperature_current_section), "Temparture is not a finite: " << temperature_current_section
                                << ", based on a temperature model with the name " << temperature_model->get_name());
-
                     }
 
                   for (auto &temperature_model: segment_vector[next_section][current_segment].temperature_systems)
@@ -410,17 +412,18 @@ namespace WorldBuilder
                       temperature_next_section = temperature_model->get_temperature(position,
                                                                                     depth,
                                                                                     gravity_norm,
-                                                                                    temperature,
+                                                                                    temperature_next_section,
                                                                                     starting_depth,
                                                                                     maximum_depth,
                                                                                     distance_from_planes);
 
-                      WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature
+                      WBAssert(!std::isnan(temperature_next_section), "Temparture is not a number: " << temperature_next_section
                                << ", based on a temperature model with the name " << temperature_model->get_name());
-                      WBAssert(std::isfinite(temperature), "Temparture is not a finite: " << temperature
+                      WBAssert(std::isfinite(temperature_next_section), "Temparture is not a finite: " << temperature_next_section
                                << ", based on a temperature model with the name " << temperature_model->get_name());
 
                     }
+
 
                   // linear interpolation between current and next section temperatures
                   temperature = temperature_current_section + section_fraction * (temperature_next_section - temperature_current_section);
@@ -508,8 +511,8 @@ namespace WorldBuilder
 
               // Because both sides return positve values, we have to
               // devide the thickness_local by two
-              if (distance_from_plane > 0 &&
-                  distance_from_plane <= thickness_local * 0.5 &&
+              if (std::fabs(distance_from_plane) > 0 &&
+                  std::fabs(distance_from_plane) <= thickness_local * 0.5 &&
                   distance_along_plane > 0 &&
                   distance_along_plane <= max_slab_length)
                 {

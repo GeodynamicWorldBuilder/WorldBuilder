@@ -24,9 +24,9 @@
 
    {"model":"mantle layer", "name":"Sixth mantle layer", "min depth":350e3, "max depth":600e3, "coordinates":[[1250e3,-1e3],[1250e3,500e3],[1750e3,500e3],[1750e3,-1e3]],
      "temperature models":[{"model":"adiabatic"}],
-     "composition models":[{"model":"layers",  "layers":[{"model":"uniform", "compositions":[6], "min depth":350e3, "max depth":425e3},
-                                                         {"model":"uniform", "compositions":[7], "min depth":425e3, "max depth":500e3},
-                                                         {"model":"uniform", "compositions":[8,9], "fractions":[0.25,0.75], "min depth":500e3, "max depth":575e3}]}]}
+     "composition models":[{"model":"uniform", "compositions":[6], "min depth":350e3, "max depth":425e3},
+                           {"model":"uniform", "compositions":[7], "min depth":425e3, "max depth":500e3},
+                           {"model":"uniform", "compositions":[8,9], "fractions":[0.25,0.75], "min depth":500e3, "max depth":575e3}]}
      
     ]
 }

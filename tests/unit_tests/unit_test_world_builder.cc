@@ -1723,6 +1723,77 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world2.temperature(position, 100e3, 10) == Approx(1600.0));
   CHECK(world2.composition(position, 100e3, 0) == 1.0);
 
+
+  file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_cartesian_2.wb";
+  WorldBuilder::World world4(file_name);
+
+  position = {250e3,500e3,800e3};
+  CHECK(world4.temperature(position, 0, 10) == Approx(-1));
+  CHECK(world4.composition(position, 0, 0) == 1.0);
+  CHECK(world4.composition(position, 0, 1) == 0.0);
+  CHECK(world4.composition(position, 0, 2) == 0.0);
+  CHECK(world4.composition(position, 0, 3) == 0.0);
+  CHECK(world4.temperature(position, 1, 10) == Approx(-1));
+  CHECK(world4.composition(position, 1, 0) == 1.0);
+  CHECK(world4.composition(position, 1, 1) == 0.0);
+  CHECK(world4.composition(position, 1, 2) == 0.0);
+  CHECK(world4.composition(position, 1, 3) == 0.0);
+  CHECK(world4.temperature(position, 1e3, 10) == Approx(-1));
+  CHECK(world4.composition(position, 1e3, 0) == 1.0);
+  CHECK(world4.composition(position, 1e3, 1) == 0.0);
+  CHECK(world4.composition(position, 1e3, 2) == 0.0);
+  CHECK(world4.composition(position, 1e3, 3) == 0.0);
+  CHECK(world4.temperature(position, 10e3, 10) == Approx(-1));
+  CHECK(world4.composition(position, 10e3, 0) == 1.0);
+  CHECK(world4.composition(position, 10e3, 1) == 0.0);
+  CHECK(world4.composition(position, 10e3, 2) == 0.0);
+  CHECK(world4.composition(position, 10e3, 3) == 0.0);
+  CHECK(world4.temperature(position, 20e3, 10) == Approx(573.5111391079));
+  CHECK(world4.composition(position, 20e3, 0) == 0.0);
+  CHECK(world4.composition(position, 20e3, 1) == 1.0);
+  CHECK(world4.composition(position, 20e3, 2) == 0.0);
+  CHECK(world4.composition(position, 20e3, 3) == 0.0);
+  CHECK(world4.temperature(position, 30e3, 10) == Approx(1374.5429651305));
+  CHECK(world4.composition(position, 30e3, 0) == 0.0);
+  CHECK(world4.composition(position, 30e3, 1) == 1.0);
+  CHECK(world4.composition(position, 30e3, 2) == 0.0);
+  CHECK(world4.composition(position, 30e3, 3) == 0.0);
+  CHECK(world4.temperature(position, 35e3, 10) == Approx(-3));
+  CHECK(world4.composition(position, 35e3, 0) == 0.0);
+  CHECK(world4.composition(position, 35e3, 1) == 0.0);
+  CHECK(world4.composition(position, 35e3, 2) == 0.25);
+  CHECK(world4.composition(position, 35e3, 3) == 0.75);
+  CHECK(world4.temperature(position, 40e3, 10) == Approx(-3));
+  CHECK(world4.composition(position, 40e3, 0) == 0.0);
+  CHECK(world4.composition(position, 40e3, 1) == 0.0);
+  CHECK(world4.composition(position, 40e3, 2) == 0.25);
+  CHECK(world4.composition(position, 40e3, 3) == 0.75);
+  CHECK(world4.temperature(position, 45e3, 10) == Approx(-3));
+  CHECK(world4.composition(position, 45e3, 0) == 0.0);
+  CHECK(world4.composition(position, 45e3, 1) == 0.0);
+  CHECK(world4.composition(position, 45e3, 2) == 0.25);
+  CHECK(world4.composition(position, 45e3, 3) == 0.75);
+  CHECK(world4.temperature(position, 50e3, 10) == Approx(1622.5575343016));
+  CHECK(world4.composition(position, 50e3, 0) == 0.0);
+  CHECK(world4.composition(position, 50e3, 1) == 0.0);
+  CHECK(world4.composition(position, 50e3, 2) == 0.0);
+  CHECK(world4.composition(position, 50e3, 3) == 0.0);
+  CHECK(world4.temperature(position, 60e3, 10) == Approx(1627.1070617637));
+  CHECK(world4.composition(position, 60e3, 0) == 0.0);
+  CHECK(world4.composition(position, 60e3, 1) == 0.0);
+  CHECK(world4.composition(position, 60e3, 2) == 0.0);
+  CHECK(world4.composition(position, 60e3, 3) == 0.0);
+  CHECK(world4.temperature(position, 80e3, 10) == Approx(1636.2444220394));
+  CHECK(world4.composition(position, 80e3, 0) == 0.0);
+  CHECK(world4.composition(position, 80e3, 1) == 0.0);
+  CHECK(world4.composition(position, 80e3, 2) == 0.0);
+  CHECK(world4.composition(position, 80e3, 3) == 0.0);
+  CHECK(world4.temperature(position, 100e3, 10) == Approx(1645.4330950743));
+  CHECK(world4.composition(position, 100e3, 0) == 0.0);
+  CHECK(world4.composition(position, 100e3, 1) == 0.0);
+  CHECK(world4.composition(position, 100e3, 2) == 0.0);
+  CHECK(world4.composition(position, 100e3, 3) == 0.0);
+
 }
 
 TEST_CASE("WorldBuilder Features: Fault")

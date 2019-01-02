@@ -25,7 +25,6 @@
 #include <world_builder/types/object.h>
 #include <world_builder/features/subducting_plate_models/composition/interface.h>
 #include <world_builder/features/subducting_plate_models/composition/uniform.h>
-#include <world_builder/features/subducting_plate_models/composition/layers.h>
 
 
 namespace WorldBuilder
