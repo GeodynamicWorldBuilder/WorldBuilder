@@ -162,26 +162,26 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
       std::string begin = "";
       if (level_type.size() != 0 && level_type.back() == 1)
         {
-          // this is a properties starting, so first clear all the itemized
+          // this is a properties starting, so first clear all the itemize
           // the lvel_type.push_back(1) has already been done by the key: properties
-          for (unsigned int i = 0; i < itemized_open; ++i)
+          for (unsigned int i = 0; i < itemize_open; ++i)
             {
-              begin += "\\end{itemized}";
+              begin += "\\end{itemize}";
             }
-          itemized_open = 0;
+          itemize_open = 0;
           if (skip_next_push_back == false)
             {
 
               if (level_type.size() <= 2)
-                begin += "\\section{" + get_path() + "} \\begin{itemized}";
+                begin += "\\section{" + get_path() + "}";
               else if (level_type.size() <= 5)
-                begin += "\\subsection{" + get_path() + "} \\begin{itemized}";
+                begin += "\\subsection{" + get_path() + "}";
               else if (level_type.size() <= 7)
-                begin += "\\subsubsection{" + get_path() + "} \\begin{itemized}";
+                begin += "\\subsubsection{" + get_path() + "}";
               else
-                begin += "\\paragraph{" + get_path() + "} \\begin{itemized}";
+                begin += "\\paragraph{" + get_path() + "}";
 
-              itemized_open++;
+              open_new_itemize = true;
               level_type.push_back(0);
             }
           else
@@ -191,41 +191,46 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
         }
       else if (level_type.size() != 0 && level_type.back() == 2)
         {
-          // this is a array starting, so first clear all the itemized
+          // this is a array starting, so first clear all the itemize
           // the lvel_type.push_back(1) has already been done by the key: properties
-          for (unsigned int i = 0; i < itemized_open; ++i)
+          for (unsigned int i = 0; i < itemize_open; ++i)
             {
-              begin += "\\end{itemized}";
+              begin += "\\end{itemize}";
             }
-          itemized_open = 0;
+          itemize_open = 0;
           unsigned int number = array_number.back() + 1;
           array_number.back() = number;
           path.push_back(std::to_string(array_number.back()));
           level_type.push_back(0);
 
           if (level_type.size() <= 2)
-            begin += "\\section{" + get_path() + "} \\begin{itemized}";
+            begin += "\\section{" + get_path() + "}";
           else if (level_type.size() <= 5)
-            begin += "\\subsection{" + get_path() + "} \\begin{itemized}";
+            begin += "\\subsection{" + get_path() + "}";
           else if (level_type.size() <= 7)
-            begin += "\\subsubsection{" + get_path() + "} \\begin{itemized}";
+            begin += "\\subsubsection{" + get_path() + "}";
           else
-            begin += "\\paragraph{" + get_path() + "} \\begin{itemized}";
+            begin += "\\paragraph{" + get_path() + "}";
 
-          itemized_open++;
+          open_new_itemize = true;
         }
       else
         {
+          for (unsigned int i = 0; i < itemize_open; ++i)
+            {
+              begin += "\\end{itemize}";
+            }
+          itemize_open = 0;
           if (level_type.size() <= 2)
-            begin += "\\section{" + get_path() + "} \\begin{itemized}";
+            begin += "\\section{" + get_path() + "}";
           else if (level_type.size() <= 5)
-            begin += "\\subsection{" + get_path() + "} \\begin{itemized}";
+            begin += "\\subsection{" + get_path() + "}";
           else if (level_type.size() <= 7)
-            begin += "\\subsubsection{" + get_path() + "} \\begin{itemized}";
+            begin += "\\subsubsection{" + get_path() + "}";
           else
-            begin += "\\paragraph{" + get_path() + "} \\begin{itemized}";
+            begin += "\\paragraph{" + get_path() + "}";
 
-          itemized_open++;
+          open_new_itemize = true;
           if (level_type.size() > 0 && (level_type.back() != 3 || level_type.size() == 0))
             level_type.push_back(0);
         }
@@ -238,34 +243,53 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
 
     bool Key(const Ch *str, SizeType /*length*/, bool /*copy = false*/)
     {
-      std::string item = "\\item {\\bf " + std::string(str) + "}: ";
+    	std::string item = "";
+
+
       std::string key(str);
       if (key == "properties")
         {
+      	if(open_new_itemize == true)
+      	{
+      		item += "\\begin{itemize}";
+              itemize_open++;
+      	}
           level_type.push_back(1);
           skip_next_push_back = true;
-          item = "";
         }
       else if (key == "oneOf")
         {
           level_type.push_back(2);
           path.push_back(key);
-          item = "";
         }
       else if (key == "items")
         {
+        	if(open_new_itemize == true)
+        	{
+        		item += "\\begin{itemize}";
+                itemize_open++;
+        	}
           level_type.push_back(3);
           path.push_back(key);
-          item = "";
         }
       else if (level_type.size() > 0 && level_type.back() == 1)
         {
           // the level just below properties, these are the sections
           // add to the path
           path.push_back(key);
-          item = "";
         }
+      else
+      {
+        	if(open_new_itemize == true)
+        	{
+        		item += "\\begin{itemize}";
+                itemize_open++;
+        	}
+    	  item += "\\item {\\bf " + std::string(str) + "}: ";
+      }
 
+
+		open_new_itemize = false;
       Base::WriteString(item.c_str(), item.length(), false);
 
       return true;
@@ -281,11 +305,12 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
     bool EndObject(SizeType /*memberCount = 0*/)
     {
       std::string end = "";
-      if (itemized_open > 0)
+      if (itemize_open > 0)
         {
-          end = "\\end{itemized}";
-          itemized_open--;
+          end = "\\end{itemize}";
+          itemize_open--;
         }
+      itemize_open = 0;
 
       if (level_type.size() > 0 && path.size() > 0 &&
           ( level_type.back() == 3 || level_type.back() == 0))
@@ -304,24 +329,24 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
       std::string begin = "";
       if (level_type.size() != 0 && level_type.back() == 2)
         {
-          // this is a properties starting, so first clear all the itemized
+          // this is a properties starting, so first clear all the itemize
           // the lvel_type.push_back(1) has already been done by the key: properties
-          for (unsigned int i = 0; i < itemized_open; ++i)
+          for (unsigned int i = 0; i < itemize_open; ++i)
             {
-              begin += "\\end{itemized}";
+              begin += "\\end{itemize}";
             }
-          itemized_open = 0;
+          itemize_open = 0;
 
           if (level_type.size() <= 2)
-            begin += "\\section{" + get_path() + "} \\begin{itemized}";
+            begin += "\\section{" + get_path() + "}";
           else if (level_type.size() <= 5)
-            begin += "\\subsection{" + get_path() + "} \\begin{itemized}";
+            begin += "\\subsection{" + get_path() + "}";
           else if (level_type.size() <= 7)
-            begin += "\\subsubsection{" + get_path() + "} \\begin{itemized}";
+            begin += "\\subsubsection{" + get_path() + "}";
           else
-            begin += "\\paragraph{" + get_path() + "} \\begin{itemized}";
+            begin += "\\paragraph{" + get_path() + "}";
 
-          itemized_open++;
+          open_new_itemize = true;
           array_number.push_back(0);
         }
       else
@@ -404,12 +429,13 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
       return return_path == "" ? "/" : return_path;
     }
 
-    unsigned int itemized_open = 0;
+    unsigned int itemize_open = 0;
     std::vector<unsigned int> level_type;
     std::vector<unsigned int> array_number;
     bool skip_next_push_back = false;
     bool small_array = false;
     bool first_small_array = false;
+    bool open_new_itemize = false;
 
   private:
     std::vector<std::string> path;

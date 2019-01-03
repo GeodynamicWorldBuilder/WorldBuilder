@@ -54,9 +54,10 @@
 %	BIBLIOGRAPHY AND INDEX
 %----------------------------------------------------------------------------------------
 \usepackage{csquotes}
-\usepackage[style=numeric,citestyle=numeric,sorting=nyt,sortcites=true,autopunct=true,autolang=hyphen,hyperref=true,abbreviate=false,backref=true,backend=biber]{biblatex}
-\addbibresource{bibliography.bib} % BibTeX bibliography file
-\defbibheading{bibempty}{}
+\usepackage{natbib}
+%\usepackage[style=numeric,citestyle=numeric,sorting=nyt,sortcites=true,autopunct=true,autolang=hyphen,hyperref=true,abbreviate=false,backref=true,backend=biber]{biblatex}
+%\addbibresource{bibliography.bib} % BibTeX bibliography file
+%\defbibheading{bibempty}{}
 
 \usepackage{calc} % For simpler calculation - used for spacing the index letter headings correctly
 \usepackage{makeidx} % Required to make an index
@@ -364,6 +365,30 @@ innerbottommargin=5pt]{codeBox}
 \newtcblisting[auto counter]{bashcode}[2][]{sharp corners, 
     fonttitle=\bfseries, colframe=ocre!60, listing only, top=0pt, bottom=0pt, left=20pt, lefttitle=0pt,
     listing options={basicstyle=\ttfamily,language=bash, commentstyle=\color{mygreen}, numberstyle=\small\emptyaccsupp\bf\color{mygray}, columns=flexible, numbers=left, stepnumber=1, showspaces=false, showstringspaces=false}, before=\vspace{10pt}\noindent, after=\vspace{10pt}, title=Listing \thetcbcounter: #2, #1}
+
+%\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+\lstdefinelanguage{JavaScript}{
+  keywords={break, case, catch, continue, debugger, default, delete, do, else, false, finally, for, function, if, in, instanceof, new, null, return, switch, this, throw, true, try, typeof, var, void, while, with},
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]",
+  basicstyle=\normalsize,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  sensitive=true
+}
+
+    
+\newtcblisting[auto counter]{javascriptcode}[3][]{sharp corners, 
+    fonttitle=\bfseries, colframe=ocre!60, listing only, top=0pt, bottom=0pt, left=20pt, lefttitle=0pt,label=#3,
+    listing options={basicstyle=\ttfamily, language=javascript, commentstyle=\color{mygreen}, numberstyle=\small\emptyaccsupp\bf\color{mygray}, columns=flexible, numbers=left, stepnumber=1, showspaces=false, showstringspaces=false}, before=\vspace{10pt}\noindent, after=\vspace{10pt}, title=Listing \thetcbcounter: #2,  #1}
     
 \newtcblisting[auto counter]{fortrancode}[2][]{sharp corners, 
     fonttitle=\bfseries, colframe=ocre!60, listing only, top=0pt, bottom=0pt, left=20pt, lefttitle=0pt,
@@ -558,3 +583,4 @@ addtohook={%
 \fi
 }
 }
+
