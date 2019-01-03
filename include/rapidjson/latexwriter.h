@@ -171,12 +171,12 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
           itemize_open = 0;
           if (skip_next_push_back == false)
             {
-
-              if (level_type.size() <= 2)
+        	  //begin += "A";
+              if (section_level <= 2)
                 begin += "\\section{" + get_path() + "}";
-              else if (level_type.size() <= 5)
+              else if (section_level <= 5)
                 begin += "\\subsection{" + get_path() + "}";
-              else if (level_type.size() <= 7)
+              else if (section_level <= 8)
                 begin += "\\subsubsection{" + get_path() + "}";
               else
                 begin += "\\paragraph{" + get_path() + "}";
@@ -202,12 +202,15 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
           array_number.back() = number;
           path.push_back(std::to_string(array_number.back()));
           level_type.push_back(0);
+          // have arrrays (/oneOf/1) as new section level
+          section_level++;
 
-          if (level_type.size() <= 2)
+    	  //begin += "B";
+          if (section_level <= 2)
             begin += "\\section{" + get_path() + "}";
-          else if (level_type.size() <= 5)
+          else if (section_level <= 5)
             begin += "\\subsection{" + get_path() + "}";
-          else if (level_type.size() <= 7)
+          else if (section_level <= 8)
             begin += "\\subsubsection{" + get_path() + "}";
           else
             begin += "\\paragraph{" + get_path() + "}";
@@ -221,11 +224,13 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
               begin += "\\end{itemize}";
             }
           itemize_open = 0;
-          if (level_type.size() <= 2)
+
+    	  //begin += "C";
+          if (section_level <= 2)
             begin += "\\section{" + get_path() + "}";
-          else if (level_type.size() <= 5)
+          else if (section_level <= 5)
             begin += "\\subsection{" + get_path() + "}";
-          else if (level_type.size() <= 7)
+          else if (section_level <= 8)
             begin += "\\subsubsection{" + get_path() + "}";
           else
             begin += "\\paragraph{" + get_path() + "}";
@@ -234,6 +239,8 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
           if (level_type.size() > 0 && (level_type.back() != 3 || level_type.size() == 0))
             level_type.push_back(0);
         }
+
+      //begin += "SL: " + std::to_string(section_level) + ", ";
 
       Base::WriteString(begin.c_str(), begin.size(), false);
       Base::os_->Put('\n');
@@ -269,6 +276,7 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
         		item += "\\begin{itemize}";
                 itemize_open++;
         	}
+      	  section_level++;
           level_type.push_back(3);
           path.push_back(key);
         }
@@ -276,6 +284,8 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
         {
           // the level just below properties, these are the sections
           // add to the path
+
+      	  section_level++;
           path.push_back(key);
         }
       else
@@ -284,10 +294,12 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
         	{
         		item += "\\begin{itemize}";
                 itemize_open++;
+
         	}
     	  item += "\\item {\\bf " + std::string(str) + "}: ";
       }
 
+      //item += "SL: " + std::to_string(section_level) + ", ";
 
 		open_new_itemize = false;
       Base::WriteString(item.c_str(), item.length(), false);
@@ -309,12 +321,23 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
         {
           end = "\\end{itemize}";
           itemize_open--;
+          //if(level_type.back() == 3)
+            //section_level = section_level > 0 ? section_level-1 : 0;
         }
       itemize_open = 0;
 
+      if(level_type.back() == 0 || level_type.back() == 3)
+          section_level = section_level > 0 ? section_level-1 : 0;
+
+      //end += "SL: " + std::to_string(section_level) + ", ";
+
       if (level_type.size() > 0 && path.size() > 0 &&
           ( level_type.back() == 3 || level_type.back() == 0))
+      {
+
+          //section_level = section_level > 0 ? section_level-1 : 0;
         path.pop_back();
+      }
 
       if (level_type.size() > 0)
         level_type.pop_back();
@@ -336,16 +359,20 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
               begin += "\\end{itemize}";
             }
           itemize_open = 0;
-
-          if (level_type.size() <= 2)
+/*
+    	  begin += "D";
+          if (section_level <= 2)
             begin += "\\section{" + get_path() + "}";
-          else if (level_type.size() <= 5)
+          else if (section_level <= 5)
             begin += "\\subsection{" + get_path() + "}";
-          else if (level_type.size() <= 7)
+          else if (section_level <= 8)
             begin += "\\subsubsection{" + get_path() + "}";
           else
             begin += "\\paragraph{" + get_path() + "}";
+*/
+          //section_level++;
 
+          //begin += "SL: " + std::to_string(section_level) + ", ";
           open_new_itemize = true;
           array_number.push_back(0);
         }
@@ -371,6 +398,9 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
         {
           array_number.pop_back();
           level_type.pop_back();
+          //section_level = section_level > 0 ? section_level-1 : 0;
+
+          //end += "SL: " + std::to_string(section_level) + ", ";
           if (path.size() > 0)
             path.pop_back();
         }
@@ -436,6 +466,7 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
     bool small_array = false;
     bool first_small_array = false;
     bool open_new_itemize = false;
+    unsigned int section_level = 0;
 
   private:
     std::vector<std::string> path;
