@@ -100,3 +100,19 @@ foreach(test_source ${VISU_TEST_SOURCES})
 	         -P ${CMAKE_SOURCE_DIR}/tests/visualization/run_visualization_tests.cmake
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/visualization/)
 endforeach(test_source)
+
+#test fortran compilation
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran)
+add_test(NAME compile_simple_fortran_example 
+	 COMMAND gfortran${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/example.f90 -L../../lib/ -lWorldBuilder -lstdc++ -I../../mod/ 
+	 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
+
+add_test(run_simple_fortran_example
+	 ${CMAKE_COMMAND}
+                 -D TEST_NAME=run_simple_fortran_example
+                 -D TEST_PROGRAM=${CMAKE_BINARY_DIR}/tests/fortran/a.out${CMAKE_EXECUTABLE_SUFFIX}
+                 -D TEST_ARGS=
+                 -D TEST_OUTPUT=${CMAKE_CURRENT_SOURCE_DIR}/fortran/run_simple_fortran_example.log
+                 -D TEST_REFERENCE=${CMAKE_BINARY_DIR}/tests/fortran/run_simple_fortran_example.log
+                 -P ${CMAKE_SOURCE_DIR}/tests/fortran/run_fortran_tests.cmake
+                 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/) 
