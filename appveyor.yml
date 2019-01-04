@@ -22,7 +22,6 @@ build_script:
   - set PATH=C:\msys64\mingw64\bin;C:\msys64\usr\bin;%PATH%
   - pacman --noconfirm -Syu
   - pacman --noconfirm -S dos2unix
-  - pacman --noconfirm -S mingw-w64-x86_64-boost
   - mkdir install
   - mkdir build
   - cd build

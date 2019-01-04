@@ -23,25 +23,27 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-
-#include <boost/property_tree/ptree.hpp>
-
-#include <world_builder/types/interface.h>
-#include <world_builder/types/constant_layer.h>
-#include <world_builder/types/double.h>
-#include <world_builder/types/string.h>
-#include <world_builder/types/segment.h>
-#include <world_builder/types/point.h>
-#include <world_builder/types/array.h>
-#include <world_builder/types/list.h>
-#include <world_builder/types/unsigned_int.h>
+#include <memory>
 
 
+#include <rapidjson/document.h>
+#include "rapidjson/schema.h"
 
-using boost::property_tree::ptree;
+#include <world_builder/point.h>
 
 namespace WorldBuilder
 {
+  namespace Types
+  {
+    class Interface;
+    template<int dim>
+    class Point;
+    class Double;
+    class String;
+    class Segment;
+    class Array;
+    class UnsignedInt;
+  }
 
   namespace Features
   {
@@ -77,7 +79,7 @@ namespace WorldBuilder
        * \param filename A string with the path to the world builder file
        * \param world A reference to the World class
        */
-      Parameters(std::string &filename, World &);
+      Parameters(World &world);
 
       /**
        * Destructor
@@ -85,41 +87,61 @@ namespace WorldBuilder
       ~Parameters();
 
       /**
-       * Loads an entry into the parameter class from the world builder file,
-       * where the name is the key in the file relative to the nesting in the
-       * world builder file. Note that classes receive the subtree which is
-       * relevant for them, so the they only have to account for their nesting.
-       *
-       * Note that for the array and list, default values are not implemented.
-       *
-       * \param name The name of the parameter which should be loaded
-       * \param required Determines whether a value is required to be present.
-       * When it isn't present, and the value is set to true, an assert is
-       * thrown. If it is set to false and the value is not found, the default
-       * value is used.
-       * \param type A value of class Type. Note that these may be nested.
-       *
-       * \return Returns whether the value was found.
-       *
-       * @see enter_subsection()
-       * @see leave_subsection()
-       * @see Types::Interface
+       * Todo
        */
-      bool load_entry(const std::string &name, const bool required, const Types::Interface &type);
+      void initialize(std::string &filename, bool has_output_dir = false, std::string output_dir = "");
 
       /**
-       * Sets an entry into the parameter class, where the name is the key in
-       * the file relative to the nesting defined by the enter_subsection and
-       * leave_subsection functions. Note that classes receive the subtree which
-       * is relevant for them, so the they only have to account for their nesting.
-       *
-       * Note that for the array and list, default values are not implemented.
-       *
-       * @see enter_subsection()
-       * @see leave_subsection()
-       * @see Types::Interface
+       * Todo
        */
-      void set_entry(const std::string &name, const Types::Interface &type);
+      template<class T>
+      T get(const std::string &name);
+
+      /**
+       * Todo
+       */
+      template<class T>
+      std::vector<T> get_vector(const std::string &name);
+
+      /**
+       * Todo
+       */
+      template<class T, class A, class B>
+      std::vector<T> get_vector(const std::string &name, std::vector<std::shared_ptr<A> > &, std::vector<std::shared_ptr<B> > &);
+
+      /**
+       * Todo
+       */
+      template<class T>
+      std::unique_ptr<T> get_unique_pointer(const std::string &name);
+
+      /**
+       * Todo
+       */
+      template<class T>
+      bool
+      get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<T> > &);
+
+      /**
+       * Todo
+       */
+      template<class T>
+      bool
+      get_shared_pointers(const std::string &name, std::vector<std::shared_ptr<T> > &);
+
+      /**
+       * Todo
+       */
+      bool
+      check_entry(const std::string &name) const;
+
+      /**
+       * Todo
+       */
+      void declare_entry(const std::string name,
+                         const Types::Interface &type,
+                         const std::string documentation);
+
 
       /**
        * This function is used to enter a subsection. It appends to the path
@@ -139,69 +161,6 @@ namespace WorldBuilder
        */
       void leave_subsection();
 
-      /**
-       * This function retrieves an unsigned int from the parameter class with
-       * the key in variable name, based on the path. Note the path rules for
-       * called classes explained in the parameter class explanation.
-       * \param name The key where the variable is stored.
-       */
-      unsigned int get_unsigned_int(const std::string &name) const;
-
-      /**
-       * This function retrieves a double from the parameter class with
-       * the key in variable name, based on the path. Note the path rules for
-       * called classes explained in the parameter class explanation.
-       * \param name The key where the variable is stored.
-       */
-      double get_double(const std::string &name) const;
-
-      /**
-       * This function retrieves a string from the parameter class with
-       * the key in variable name, based on the path. Note the path rules for
-       * called classes explained in the parameter class explanation.
-       * \param name The key where the variable is stored.
-       */
-      std::string get_string(const std::string &name) const;
-
-      // get_array(const std::string& name);
-
-
-      /**
-       * This function retrieves a point from the parameter class with
-       * the key in variable name, based on the path. Note the path rules for
-       * called classes explained in the parameter class explanation.
-       * \param name The key where the variable is stored.
-       * \return Point
-       */
-      template<int dim>
-      Point<dim> get_point(const std::string &name) const;
-
-      // TODO:
-      //template<class T>
-      //T get(const std::string &name);
-
-
-      /**
-       * This function retrieves a Type::Array from the parameter class with
-       * the key in variable name, based on the path. Note the path rules for
-       * called classes explained in the parameter class explanation.
-       * \param name The key where the variable is stored. The array contains
-       * the underlying type and the indeces where the values are stored.
-       * \return Types::Array
-       */
-      const Types::Array &get_array(const std::string &name) const;
-
-      /**
-       * Returns the array with pointers to the requested type. The reason a
-       * raw pointer is returned is that caller is not responsible for the
-       * classes pointed at in the return vector or has ownership on them.
-       * This function is currently implemented for the Types Double, Segment,
-       * ConstantLayer, Point2D and Point3D.
-       * \param name The key where the variable is stored. The array contains
-       * \return std::vector<T*>
-       */
-      template<class T>
-      const std::vector<T> get_array(const std::string &name) const;
 
       /**
        * A reference to the World class. This is needed to create the features.
@@ -221,114 +180,10 @@ namespace WorldBuilder
        */
       std::vector<std::string> path;
 
+      rapidjson::Document declarations;
+      rapidjson::Document parameters;
 
-      /**
-       * The boost property tree, used to read in the data from a json file.
-       */
-      ptree tree;
 
-      /**
-       * This variable contains a pointer to the a part of the tree. This
-       * variable is not responsible for the tree, so using a raw pointer.
-       * @see tree
-       */
-      ptree *local_tree;
-
-      /**
-       * An unordered map used to store and retrieve the indices where the
-       * variables in this class are stored based on the path key.
-       * @see path
-       * @see get_current_path()
-       */
-      std::unordered_map<std::string,unsigned int> string_to_type_map;
-
-      /**
-       * A vector which stores all the UnsignedInt types. These can be
-       * retrieved with the help of the string_to_type_map and the
-       * get_unsigned_int() function.
-       * @see string_to_type_map
-       * @see get_unsigned_int()
-       * @see Types::UnsignedInt
-       */
-      std::vector<Types::UnsignedInt> vector_unsigned_int;
-
-      /**
-       * A vector which stores all the Double types. These can be
-       * retrieved with the help of the string_to_type_map and the
-       * get_double() function.
-       * @see string_to_type_map
-       * @see get_double()
-       * @see Types::Double
-       */
-      std::vector<Types::Double> vector_double;
-
-      /**
-       * A vector which stores all the String types. These can be
-       * retrieved with the help of the string_to_type_map and the
-       * get_string() function.
-       * @see string_to_type_map
-       * @see get_string()
-       * @see Types::String
-       */
-      std::vector<Types::String> vector_string;
-
-      /**
-       * A vector which stores all the Segment types. These can be
-       * retrieved with the help of the string_to_type_map and the
-       * get_segment() function.
-       * @see string_to_type_map
-       * @see get_segment()
-       * @see Types::Segment
-       */
-      std::vector<Types::Segment> vector_segment;
-
-      /**
-       * A vector which stores all the ConstantLayer types. These can
-       * be retrieved with the help of the string_to_type_map and the
-       * get_segment() function.
-       * @see string_to_type_map
-       * @see get_constant_layer()
-       * @see Types::ConstantLayer
-       */
-      std::vector<Types::ConstantLayer> vector_constant_layer;
-
-      /**
-       * A vector which stores all the Array types. These can be
-       * retrieved with the help of the string_to_type_map and the
-       * get_array() function.
-       * @see string_to_type_map
-       * @see get_array()
-       * @see Types::Array
-       */
-      std::vector<Types::Array> vector_array;
-
-      /**
-       * A vector which stores all the List types. These can be
-       * retrieved with the help of the string_to_type_map.
-       * @see string_to_type_map
-       * @see Types::List
-       */
-      std::vector<Types::List> vector_list;
-
-      /**
-       * A vector which stores all the Point<2> types. These can be
-       * retrieved with the help of the string_to_type_map and the
-       * get_Point<2>() function.
-       * @see string_to_type_map
-       * @see get_point<2>()
-       * @see Types::Point
-       */
-      std::vector<Types::Point<2> > vector_point_2d;
-
-      /**
-       * A vector which stores all the Point<3> types. These can be
-       * retrieved with the help of the string_to_type_map and the
-       * get_Point<3>() function.
-       * @see string_to_type_map
-       * @see get_point<3>()
-       * @see Types::Point
-       */
-      std::vector<Types::Point<3> > vector_point_3d;
 
 
       /**
@@ -349,10 +204,25 @@ namespace WorldBuilder
 
       /**
        * This function return the current path as stored in the path variable
+       * as a string in json pointer format.
+       * \return std::string
+       */
+      std::string get_full_json_path(unsigned int max_size = std::numeric_limits<unsigned int>::max()) const;
+
+      /**
+       * todo: Warning: do not use before declarations is filled.
+       * This function return the current path as stored in the path variable
+       * as a string in json pointer format.
+       * \return std::string
+       */
+      std::string get_full_json_schema_path() const;
+
+      /**
+       * This function return the current path as stored in the path variable
        * as a string.
        * \return std::string
        */
-      std::string get_full_path() const;
+      //std::string get_full_path() const;
 
       /**
        * This function return the current path as stored in the path variable
@@ -360,22 +230,9 @@ namespace WorldBuilder
        * with the boost property tree.
        * \return std::string
        */
-      std::string get_full_path_without_arrays() const;
+      //std::string get_full_path_without_arrays() const;
 
     private:
-      /**
-       * A helper function which performs the actual work for load_entry().
-       * This used to keep the input for the public load_entry function simple.
-       * @see load_entry()
-       */
-      bool load_entry(const std::string &name, const bool required, const Types::Interface &type, unsigned int &location);
-
-      /**
-       * A helper function which performs the actual work for set_entry(). This
-       * used to keep the input for the public load_entry function simple.
-       * @see load_entry()
-       */
-      void set_entry(const std::string &name, const Types::Interface &type, unsigned int &location);
 
 
       /**

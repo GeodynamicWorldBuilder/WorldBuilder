@@ -5,3 +5,4 @@ codecov:
 ignore:
   - tests/.*
   - visualization/.*
+  - include/.*

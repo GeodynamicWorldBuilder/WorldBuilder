@@ -19,6 +19,8 @@
 
 #include <sstream>
 
+#include "rapidjson/pointer.h"
+
 #include <world_builder/config.h>
 #include <world_builder/world.h>
 #include <world_builder/utilities.h>
@@ -26,9 +28,17 @@
 #include <world_builder/point.h>
 #include <world_builder/nan.h>
 #include <world_builder/parameters.h>
+#include <world_builder/coordinate_systems/interface.h>
 #include <world_builder/types/interface.h>
-#include <world_builder/types/feature.h>
-#include <world_builder/types/coordinate_system.h>
+
+#include <world_builder/types/array.h>
+#include <world_builder/types/bool.h>
+#include <world_builder/types/double.h>
+#include <world_builder/types/string.h>
+#include <world_builder/types/object.h>
+#include <world_builder/types/point.h>
+#include <world_builder/types/unsigned_int.h>
+#include <world_builder/types/plugin_system.h>
 
 
 namespace WorldBuilder
@@ -37,105 +47,218 @@ namespace WorldBuilder
 
   using namespace Utilities;
 
-  World::World(std::string filename)
+  World::World(std::string filename, bool has_output_dir, std::string output_dir)
     :
-    parameters(filename,*this),
+    parameters(*this),
+    surface_coord_conversions(invalid),
     dim(NaN::ISNAN)
   {
-    this->declare_and_parse(parameters);
+    this->declare_entries(parameters);
+
+    parameters.initialize(filename, has_output_dir, output_dir);
+
+    this->parse_entries(parameters);
   }
 
   World::~World()
   {}
 
-  void World::declare_and_parse(Parameters &prm)
+  void World::declare_entries(Parameters &prm)
   {
+    prm.enter_subsection("properties");
+    {
+      prm.declare_entry("", Types::Object({"version", "features"}), "Root object");
+
+      prm.declare_entry("version", Types::String(""),"The major and minor version number for which the input file was written.");
+
+      prm.declare_entry("cross section", Types::Array(Types::Point<2>(),2,2),"This is an array of two points along where the cross section is taken");
+
+      prm.declare_entry("potential mantle temperature", Types::Double(1600),
+                        "The potential temperature of the mantle at the surface in Kelvin.");
+      prm.declare_entry("surface temperature", Types::Double(293.15),
+                        "The temperature at the surface in Kelvin.");
+      prm.declare_entry("force surface temperature", Types::Bool(false),
+                        "Force the provided surface temperature to be set at the surface");
+      prm.declare_entry("thermal expansion coefficient", Types::Double(3.5e-5),
+                        "The thermal expansion coefficient in $K^{-1}$.");
+      prm.declare_entry("specific heat", Types::Double(1250),
+                        "The specific heat in $J kg^{-1} K^{-1}.$");
+      prm.declare_entry("thermal diffusivity", Types::Double(0.804e-6),
+                        "The thermal diffusivity in $m^{2} s^{-1}$.");
+
+      prm.declare_entry("maximum distance between coordinates",Types::Double(0),
+                        "This enforces a maximum distance (in degree for spherical coordinates "
+                        "or meter in cartesian coordinates) between coordinates in the model. "
+                        "If the distance is larger, extra points are added by interpolation. "
+                        "Requires interpolation to be not 'none'.");
+
+      prm.declare_entry("interpolation",Types::String("none"),
+                        "What type of interpolation should be used to enforce the minimum points per "
+                        "distance parameter. Options are none, linear and monotone spline.");
+
+
+      prm.declare_entry("coordinate system", Types::PluginSystem("cartesian", CoordinateSystems::Interface::declare_entries, {"model"}, false),"A coordinate system. Cartesian or spherical.");
+      prm.declare_entry("features", Types::PluginSystem("",Features::Interface::declare_entries, {"model", "coordinates"}),"A list of features.");
+
+
+    }
+    prm.leave_subsection();
+
+  }
+
+
+  void World::parse_entries(Parameters &prm)
+  {
+    using namespace rapidjson;
+
     /**
      * First load the major version number in the file and check the major
      * version number of the program.
      */
-    prm.load_entry("version", true, Types::String("",
-                                                  "The major version number for which the input file was written."));
 
     WBAssertThrow(Version::MAJOR == "0"
-                  && prm.get_string("version") == Version::MAJOR + "." + Version::MINOR
+                  && prm.get<std::string>("version") == Version::MAJOR + "." + Version::MINOR
                   || Version::MAJOR != "0"
-                  && prm.get_string("version") == Version::MAJOR,
+                  && prm.get<std::string>("version") == Version::MAJOR,
                   "The major and minor version combination (for major version 0) or the major "
                   "version (for major versions after 0) for which is input file was written "
                   "is not the same as the version of the World Builder you are running. This means "
                   "That there may have been incompatible changes made between the versions. "
                   "Verify those changes and wheter they affect your model. If this is not "
-                  "the case, adjust the version number in the input file.");
+                  "the case, adjust the version number in the input file. The provided version "
+                  "number is \"" << prm.get<std::string>("version") << "\".");
 
     /**
      * Seconly load the coordinate system parameters.
      */
-    prm.load_entry("coordinate system", false, Types::CoordinateSystem("cartesian","This determines the coordinate system"));
+    prm.coordinate_system = prm.get_unique_pointer<CoordinateSystems::Interface>("coordinate system");
+    prm.coordinate_system->parse_entries(prm);
+
+    prm.get_unique_pointers<Features::Interface>("features",prm.features);
+
+    const bool set_cross_section = prm.check_entry("cross section");
 
     const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 
-    /**
-     * Temperature parameters.
-     */
-    prm.load_entry("potential mantle temperature", false,
-                   Types::Double(1600,"The potential temperature of the mantle at the surface in Kelvin."));
-    prm.load_entry("surface temperature", false,
-                   Types::Double(293.15,"The temperature at the surface in Kelvin."));
-    prm.load_entry("force surface temperature", false,
-                   Types::String("false","Force the provided surface temperature to be set at the surface"));
-    prm.load_entry("thermal expansion coefficient", false,
-                   Types::Double(3.5e-5,"The thermal expansion coefficient in $K^{-1}$."));
-    prm.load_entry("specific heat", false, Types::Double(1250,"The specific heat in $J kg^{-1} K^{-1}."));
-    prm.load_entry("thermal diffusivity", false, Types::Double(0.804e-6,"Set the thermal diffusivity in $m^{2} s^{-1}$."));
-
-    /**
-     * Model rotation parameters.
-     */
-    prm.load_entry("surface rotation angle", false,
-                   Types::Double(0,"The angle with which the model should be rotated around the surface rotation point."));
-    prm.load_entry("surface rotation point", false,
-                   Types::Point<2>(Point<2>(0,0, coordinate_system), "The point where should be rotated around."));
-
-    /**
-     * Model descretisation parameters.
-     */
-    prm.load_entry("minimum points per distance", false,
-                   Types::Double(std::numeric_limits<double>::max(),"This enforces that there is at least every distance interval"
-                                 "(in degree for spherical coordinates or meter in cartesian coordinates) a point."));
-    prm.load_entry("interpolation", false,
-                   Types::String("none", "What type of interpolation should be used to enforce the minimum points per "
-                                 "distance parameter. Options are none, linear and monotone spline."));
-
-
-    bool set = prm.load_entry("cross section", false,
-                              Types::Array(
-                                Types::Point<2>(Point<2>(0,0, coordinate_system),"A point in the cross section."),
-                                "This is an array of two points along where the cross section is taken"));
-
-    if (set)
+    if (set_cross_section == true)
       {
         dim = 2;
-        std::vector<Types::Point<2> > cross_section = prm.get_array<Types::Point<2> >("cross section");
+        std::vector<Point<2> > cross_section_natural = prm.get_vector<Point<2> >("cross section");
 
-        WBAssertThrow(cross_section.size() == 2, "The cross section should contain two points, but it contains "
+        WBAssertThrow(cross_section_natural.size() == 2, "The cross section should contain two points, but it contains "
                       << cross_section.size() << " points.");
+
+        for (unsigned int i = 0; i < cross_section_natural.size(); ++i)
+          cross_section.push_back(cross_section_natural[i]  * (coordinate_system == spherical ? const_pi / 180.0 : 1.0));
+
 
         /**
          * pre-compute stuff for the cross section
          */
-        Point<2> surface_coord_conversions = (cross_section[0]-cross_section[1]) * (coordinate_system == spherical ? const_pi / 180.0 : 1.0);
+        surface_coord_conversions = cross_section[0]-cross_section[1];
         surface_coord_conversions *= -1/(surface_coord_conversions.norm());
-        prm.set_entry("surface coordinate conversions",
-                      Types::Point<2>(surface_coord_conversions, surface_coord_conversions, "An internal value which is precomputed."));
+
+
       }
     else
       {
         dim = 3;
       }
 
-    prm.load_entry("features", true, Types::List(
-                     Types::Feature("These are the features"), "A list of features."));
+    /**
+     * Temperature parameters.
+     */
+    potential_mantle_temperature = prm.get<double>("potential mantle temperature");
+    surface_temperature = prm.get<double>("surface temperature");
+    surface_temperature = prm.get<double>("surface temperature");
+    force_surface_temperature = prm.get<bool>("force surface temperature");
+    thermal_expansion_coefficient = prm.get<double>("thermal expansion coefficient");
+    specific_heat = prm.get<double>("specific heat");
+    thermal_diffusivity = prm.get<double>("thermal diffusivity");
+
+    /**
+     * Model discretiation paramters
+     */
+    maximum_distance_between_coordinates = prm.get<double>("maximum distance between coordinates");
+    interpolation = prm.get<std::string>("interpolation");
+
+    /**
+     * Now load the features. Some features use for example temperature values,
+     * so it is important that this is parsed the last.
+     */
+    prm.enter_subsection("features");
+    {
+      for (unsigned int i = 0; i < prm.features.size(); ++i)
+        {
+          prm.enter_subsection(std::to_string(i));
+          {
+            prm.features[i]->parse_entries(prm);
+          }
+          prm.leave_subsection();
+        }
+    }
+    prm.leave_subsection();
+
+
+
+
+
+    /*
+        prm.load_entry("potential mantle temperature", false,
+                       Types::Double(1600,"The potential temperature of the mantle at the surface in Kelvin."));
+        prm.load_entry("surface temperature", false,
+                       Types::Double(293.15,"The temperature at the surface in Kelvin."));
+        prm.load_entry("force surface temperature", false,
+                       Types::String("false","Force the provided surface temperature to be set at the surface"));
+        prm.load_entry("thermal expansion coefficient", false,
+                       Types::Double(3.5e-5,"The thermal expansion coefficient in $K^{-1}$."));
+        prm.load_entry("specific heat", false, Types::Double(1250,"The specific heat in $J kg^{-1} K^{-1}."));
+        prm.load_entry("thermal diffusivity", false, Types::Double(0.804e-6,"Set the thermal diffusivity in $m^{2} s^{-1}$."));
+
+        / **
+         * Model rotation parameters.
+         * /
+        prm.load_entry("surface rotation angle", false,
+                       Types::Double(0,"The angle with which the model should be rotated around the surface rotation point."));
+        prm.load_entry("surface rotation point", false,
+                       Types::Point<2>(Point<2>(0,0, coordinate_system), "The point where should be rotated around."));
+
+        / **
+         * Model descretisation parameters.
+         * /
+        prm.load_entry("minimum points per distance", false,
+                       Types::Double(std::numeric_limits<double>::max(),"This enforces that there is at least every distance interval"
+                                     "(in degree for spherical coordinates or meter in cartesian coordinates) a point."));
+        prm.load_entry("interpolation", false,
+                       Types::String("none", "What type of interpolation should be used to enforce the minimum points per "
+                                     "distance parameter. Options are none, linear and monotone spline."));
+
+
+        bool set = prm.load_entry("cross section", false,
+                                  Types::Array(
+                                    Types::Point<2>(Point<2>(0,0, coordinate_system),"A point in the cross section."),
+                                    "This is an array of two points along where the cross section is taken"));
+
+        if (set)
+          {
+            dim = 2;
+            std::vector<Types::Point<2> > cross_section = prm.get_array<Types::Point<2> >("cross section");
+
+            WBAssertThrow(cross_section.size() == 2, "The cross section should contain two points, but it contains "
+                          << cross_section.size() << " points.");
+
+            / **
+             * pre-compute stuff for the cross section
+             * /
+            Point<2> surface_coord_conversions = (cross_section[0]-cross_section[1]) * (coordinate_system == spherical ? const_pi / 180.0 : 1.0);
+            surface_coord_conversions *= -1/(surface_coord_conversions.norm());
+            prm.set_entry("surface coordinate conversions",
+                          Types::Point<2>(surface_coord_conversions, surface_coord_conversions, "An internal value which is precomputed."));
+          }
+        else
+          {
+            dim = 3;
+          }*/
 
   }
 
@@ -157,6 +280,7 @@ namespace WorldBuilder
         point_natural[1] = std::sqrt(point[0]*point[0]+point[1]*point[1]);
         point_natural[0] = std::atan2(point[1],point[0]);
       }
+    /*
     // Todo: merge this into one line
     const Types::Array &cross_section_natural = parameters.get_array("cross section");
 
@@ -172,8 +296,8 @@ namespace WorldBuilder
              "Internal error: Cross section should contain two points, but it contains "
              << cross_section.size() <<  " points.");
 
-    const WorldBuilder::Point<2> &surface_coord_conversions = this->parameters.get_point<2>("surface coordinate conversions");
-
+    //const WorldBuilder::Point<2> &surface_coord_conversions = this->parameters.get_point<2>("surface coordinate conversions");
+    */
     Point<3> coord_3d(coordinate_system);
     if (coordinate_system == spherical)
       {
@@ -202,18 +326,26 @@ namespace WorldBuilder
     // We receive the cartesian points from the user.
     Point<3> point(point_,cartesian);
 
-    if (std::fabs(depth) < 2.0 * std::numeric_limits<double>::epsilon() && this->parameters.get_string("force surface temperature") == "true")
-      return this->parameters.get_double("surface temperature");
+    if (std::fabs(depth) < 2.0 * std::numeric_limits<double>::epsilon() && force_surface_temperature == true)
+      return this->surface_temperature;
 
-    double temperature = this->parameters.get_double("potential mantle temperature") *
-                         std::exp(((this->parameters.get_double("thermal expansion coefficient") * gravity_norm) /
-                                   this->parameters.get_double("specific heat")) * depth);
+    double temperature = potential_mantle_temperature *
+                         std::exp(((thermal_expansion_coefficient * gravity_norm) /
+                                   specific_heat) * depth);
 
 
     for (std::vector<std::unique_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
       {
         temperature = (*it)->temperature(point,depth,gravity_norm,temperature);
+
+        WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature
+                 << ", based on a feature with the name " << (*it)->get_name());
+        WBAssert(std::isfinite(temperature), "Temparture is not a finite: " << temperature
+                 << ", based on a feature with the name " << (*it)->get_name());
       }
+
+    WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature);
+    WBAssert(std::isfinite(temperature), "Temparture is not a finite: " << temperature);
 
     return temperature;
   }
@@ -236,7 +368,7 @@ namespace WorldBuilder
         point_natural[1] = std::sqrt(point[0]*point[0]+point[1]*point[1]);
         point_natural[0] = std::atan2(point[1],point[0]);
       }
-
+    /*
     // Todo: merge this into one line
     const Types::Array &cross_section_natural = this->parameters.get_array("cross section");
     std::vector<Point<2> > cross_section;
@@ -246,8 +378,8 @@ namespace WorldBuilder
     WBAssert(cross_section.size() == 2, "Internal error: Cross section should contain two points, but it contains "
              << cross_section.size() <<  " points.");
 
-    const WorldBuilder::Point<2> &surface_coord_conversions = this->parameters.get_point<2>("surface coordinate conversions");
-
+    //const WorldBuilder::Point<2> &surface_coord_conversions = this->parameters.get_point<2>("surface coordinate conversions");
+    */
     Point<3> coord_3d(coordinate_system);
     if (coordinate_system == spherical)
       {
@@ -278,7 +410,16 @@ namespace WorldBuilder
     for (std::vector<std::unique_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
       {
         composition = (*it)->composition(point,depth,composition_number, composition);
+
+        WBAssert(!std::isnan(composition), "Composition is not a number: " << composition
+                 << ", based on a feature with the name " << (*it)->get_name());
+        WBAssert(std::isfinite(composition), "Composition is not a finite: " << composition
+                 << ", based on a feature with the name " << (*it)->get_name());
       }
+
+    WBAssert(!std::isnan(composition), "Composition is not a number: " << composition);
+    WBAssert(std::isfinite(composition), "Composition is not a finite: " << composition);
+
 
     return composition;
   }

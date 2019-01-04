@@ -17,7 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <boost/algorithm/string.hpp>
+#include <algorithm>
 
 #include <world_builder/features/interface.h>
 #include <world_builder/features/continental_plate.h>
@@ -27,6 +27,12 @@
 #include <world_builder/features/mantle_layer.h>
 #include <world_builder/assert.h>
 #include <world_builder/utilities.h>
+
+
+#include <world_builder/types/array.h>
+#include <world_builder/types/point.h>
+#include <world_builder/types/string.h>
+#include <world_builder/types/object.h>
 
 
 namespace WorldBuilder
@@ -42,20 +48,60 @@ namespace WorldBuilder
     {}
 
     void
-    Interface::declare_interface_entries(Parameters &prm, const CoordinateSystem coordinate_system)
+    Interface::declare_entries(Parameters &prm, const std::string &parent_name, const std::vector<std::string> &required_entries)
     {
-      // Get the name
-      prm.load_entry("name", true, Types::String("","The name which the user has given to the feature."));
-      name = prm.get_string("name");
 
-      // Get the list of coordinates where the subduction zone is located
-      bool set = prm.load_entry("coordinates", true, Types::Array(
-                                  Types::Point<2>(Point<2>(0,0,coordinate_system),"desciption point cross section"),
-                                  "An array of Points representing an array of coordinates where the feature is located."));
+      unsigned int counter = 0;
+      for (auto  it = get_declare_map().begin(); it != get_declare_map().end(); ++it )
+        {
+          prm.enter_subsection("oneOf");
+          {
+            prm.enter_subsection(std::to_string(counter));
+            {
 
-      WBAssertThrow(set == true, "A list of coordinates is required for every feature.");
+              prm.enter_subsection("properties");
+              {
+                prm.declare_entry("", Types::Object(required_entries), "feature object");
 
-      std::vector<Types::Point<2>> typed_coordinates =  prm.get_array<Types::Point<2> >("coordinates");
+                prm.declare_entry("model", Types::String("",it->first),
+                                  "The name which the user has given to the feature.");
+                prm.declare_entry("name", Types::String(""),
+                                  "The name which the user has given to the feature.");
+                prm.declare_entry("coordinates", Types::Array(Types::Point<2>(), true),
+                                  "An array of 2d Points representing an array of coordinates where the feature is located.");
+
+
+                WBAssert(it->second != NULL, "No declare entries given.");
+                it->second(prm, parent_name, {});
+              }
+              prm.leave_subsection();
+            }
+            prm.leave_subsection();
+          }
+          prm.leave_subsection();
+
+          counter++;
+
+        }
+    }
+    void
+    Interface::declare_interface_entries(Parameters &prm,
+                                         const CoordinateSystem coordinate_system)
+    {
+      this->coordinates = prm.get_vector<Point<2> >("coordinates");
+    }
+
+    void
+    Interface::get_coordinates(const std::string name, Parameters &prm, const CoordinateSystem coordinate_system)
+    {
+
+      coordinates = prm.get_vector<Point<2> >("coordinates");
+      if (coordinate_system == CoordinateSystem::spherical)
+        for (auto &coordinate: coordinates)
+          coordinate *= const_pi / 180.0;
+
+      std::string interpolation = this->world->interpolation;
+      /*std::vector<Types::Point<2>> typed_coordinates =  prm.get_array<Types::Point<2> >("coordinates");
 
       original_number_of_coordinates = typed_coordinates.size();
       coordinates.resize(original_number_of_coordinates, Point<2>(coordinate_system));
@@ -69,8 +115,10 @@ namespace WorldBuilder
       prm.leave_subsection();
       prm.leave_subsection();
       std::string interpolation = prm.get_string("interpolation");
-
+      */
       // the one_dimensional_coordinates is always needed, so fill it.
+      original_number_of_coordinates = coordinates.size();
+      //std:cout << "original_number_of_coordinates = " << original_number_of_coordinates << std::endl;
       std::vector<double> one_dimensional_coordinates_local(original_number_of_coordinates,0.0);
       for (unsigned int j=0; j<original_number_of_coordinates; ++j)
         {
@@ -82,10 +130,10 @@ namespace WorldBuilder
           WBAssertThrow(interpolation == "linear" || interpolation == "monotone spline",
                         "For interpolation, linear and monotone spline are the onlyl allowed values.");
 
-          double minimum_points_per_distance = prm.get_double("minimum points per distance") *
-                                               (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
+          double maximum_distance_between_coordinates = this->world->maximum_distance_between_coordinates *
+                                                        (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
 
-          if (minimum_points_per_distance > 0)
+          if (maximum_distance_between_coordinates > 0)
             {
               std::vector<double> x_list(original_number_of_coordinates,0.0);
               std::vector<double> y_list(original_number_of_coordinates,0.0);
@@ -112,7 +160,7 @@ namespace WorldBuilder
                                      coordinate_system);
 
                   const double length = (P1 - P2).norm();
-                  const int parts = std::ceil(length / minimum_points_per_distance);
+                  const int parts = std::ceil(length / maximum_distance_between_coordinates);
                   for (int j = 1; j < parts; j++)
                     {
                       const double x_position3 = i_plane+(double(j)/double(parts));
@@ -126,15 +174,18 @@ namespace WorldBuilder
             }
         }
       one_dimensional_coordinates = one_dimensional_coordinates_local;
-      prm.enter_subsection("objects");
-      prm.enter_subsection(name);
+      //prm.enter_subsection("objects");
+      //prm.enter_subsection(name);
     }
 
+
     void
-    Interface::registerType(
-      const std::string &name, ObjectFactory *factory)
+    Interface::registerType(const std::string &name,
+                            void ( *declare_entries)(Parameters &, const std::string &,const std::vector<std::string> &),
+                            ObjectFactory *factory)
     {
       get_factory_map()[name] = factory;
+      get_declare_map()[name] = declare_entries;
     }
 
     std::unique_ptr<Interface>

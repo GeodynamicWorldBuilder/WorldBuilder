@@ -47,4 +47,16 @@ namespace WorldBuilder
           throw std::runtime_error(smessage.str()); \
         } \
     } while (false)
+
+
+#   define WBAssertThrowExc(condition, exc, message) \
+  do { \
+      if (! (condition)) { \
+          exc \
+          std::stringstream smessage; \
+          smessage << "AssertThrow `" #condition "` failed in " << __FILE__ \
+                   << " at line " << __LINE__ << ": " << message << std::endl; \
+          throw std::runtime_error(smessage.str()); \
+        } \
+    } while (false)
 }

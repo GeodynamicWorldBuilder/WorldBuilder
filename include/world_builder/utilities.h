@@ -23,13 +23,10 @@
 #include <vector>
 #include <map>
 
-#include <boost/property_tree/json_parser.hpp>
-
 #include <world_builder/point.h>
 #include <world_builder/coordinate_system.h>
 #include <world_builder/coordinate_systems/interface.h>
 
-using boost::property_tree::ptree;
 
 namespace WorldBuilder
 {
@@ -198,45 +195,6 @@ namespace WorldBuilder
     unsigned int
     string_to_unsigned_int(const std::string &string);
 
-    /**
-     * Returns a value from the property tree and asserts with
-     * the path and value in the error message when the value
-     * was not present.
-     */
-    boost::optional<std::string>
-    get_from_ptree(const ptree &tree,
-                   const std::string &path,
-                   const std::string &key,
-                   const bool required = true,
-                   const std::string &path_separator = ".");
-
-
-    /**
-     * Returns a value from the property tree and asserts with
-     * the path and value in the error message when the value
-     * was not present.
-     */
-    boost::optional<std::string>
-    get_from_ptree_abs(const ptree &tree,
-                       const std::string &path,
-                       const std::string &key,
-                       const bool required = true,
-                       const std::string &path_separator = ".");
-
-    //std::string
-    //escape_string(std::string &original);
-
-    /**
-     * This is a helper function for print tree which helps with indenting the
-     * entries based on their nesting level
-     */
-    std::string indent(int level);
-
-    /**
-     * This function prints a boost property tree as a json type file to the
-     * screen.
-     */
-    std::string print_tree (const ptree &pt, int level);
 
     /**
      * Cross product between two 3d points.

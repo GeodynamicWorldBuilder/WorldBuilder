@@ -19,29 +19,19 @@
 #include <world_builder/types/double.h>
 #include <world_builder/assert.h>
 #include <world_builder/utilities.h>
+#include <world_builder/parameters.h>
 
 namespace WorldBuilder
 {
   namespace Types
   {
-    Double::Double(double default_value, std::string description)
+    Double::Double(const double default_value)
       :
-      value(default_value),
-      default_value(default_value),
-      description(description)
+      default_value(default_value)
     {
       this->type_name = Types::type::Double;
     }
 
-    Double::Double(double value, double default_value, std::string description)
-      :
-      value(value),
-      default_value(default_value),
-      description(description)
-    {
-      this->type_name = Types::type::Double;
-
-    }
 
     Double::~Double ()
     {}
@@ -49,9 +39,22 @@ namespace WorldBuilder
     std::unique_ptr<Interface>
     Double::clone() const
     {
-      return std::unique_ptr<Interface>(new Double(value, default_value, description));
+      return std::unique_ptr<Interface>(new Double(default_value));
     }
 
+    void
+    Double::write_schema(Parameters &prm,
+                         const std::string &name,
+                         const std::string &documentation) const
+    {
+      using namespace rapidjson;
+      Document &declarations = prm.declarations;
+      const std::string base = prm.get_full_json_path() + "/" + name;
+
+      Pointer((base + "/default value").c_str()).Set(declarations,default_value);
+      Pointer((base + "/type").c_str()).Set(declarations,"number");
+      Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
+    }
   }
 }
 

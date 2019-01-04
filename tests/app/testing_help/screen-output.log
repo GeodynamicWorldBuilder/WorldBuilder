@@ -1,8 +1,3 @@
-
-TODO: Write description how to use this.
-
-Allowed options:
-  --help                produce help message
-  --files arg           list of files, starting with the World Builder file and
-                        data file(s) after it.
-
+This program allows to use the world builder library directly with a world builder file and a data file. The data file will be filled with intitial conditions from the world as set by the world builder file.
+Besides providing two files, where the first is the world builder file and the second is the data file, the available options are: 
+-h or --help to get this help screen.

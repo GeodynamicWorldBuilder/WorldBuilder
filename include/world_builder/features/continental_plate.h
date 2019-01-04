@@ -23,6 +23,9 @@
 #include <world_builder/features/interface.h>
 #include <world_builder/world.h>
 
+#include <world_builder/features/continental_plate_models/temperature/interface.h>
+#include <world_builder/features/continental_plate_models/composition/interface.h>
+
 
 namespace WorldBuilder
 {
@@ -56,8 +59,16 @@ namespace WorldBuilder
         /**
          * declare and read in the world builder file into the parameters class
          */
+        static
+        void declare_entries(Parameters &prm,
+                             const std::string &parent_name = "",
+                             const std::vector<std::string> &required_entries = {});
+
+        /**
+         * declare and read in the world builder file into the parameters class
+         */
         virtual
-        void decare_entries();
+        void parse_entries(Parameters &prm);
 
 
         /**
@@ -85,24 +96,25 @@ namespace WorldBuilder
 
 
       private:
-        // constant temperature submodule parameters
-        double temperature_submodule_constant_depth;
-        double temperature_submodule_constant_temperature;
+        /**
+         * A vector containing all the pointers to the temperature models. This vector is
+         * responsible for the features and has ownership over them. Therefore
+         * unique pointers are used.
+         * @see Features
+         */
+        std::vector<std::unique_ptr<Features::ContinentalPlateModels::Temperature::Interface> > temperature_models;
 
-        // linear submodule parameters
-        double temperature_submodule_linear_depth;
-        double temperature_submodule_linear_top_temperature;
-        double temperature_submodule_linear_bottom_temperature;
+        /**
+         * A vector containing all the pointers to the composition models. This vector is
+         * responsible for the features and has ownership over them. Therefore
+         * unique pointers are used.
+         * @see Features
+         */
+        std::vector<std::unique_ptr<Features::ContinentalPlateModels::Composition::Interface> > composition_models;
 
-        // constant composition submodule parameters
-        double composition_submodule_constant_depth;
-        std::vector<unsigned int> composition_submodule_constant_composition;
-        std::vector<double> composition_submodule_constant_value;
+        double min_depth;
+        double max_depth;
 
-        // constant layers composition submodule parameters
-        std::vector<std::vector<unsigned int> > composition_submodule_constant_layers_compositions;
-        std::vector<std::vector<double> > composition_submodule_constant_layers_value;
-        std::vector<double> composition_submodule_constant_layers_thicknesses;
     };
 
 

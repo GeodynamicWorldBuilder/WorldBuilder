@@ -19,11 +19,23 @@
 #include <world_builder/types/point.h>
 #include <world_builder/assert.h>
 #include <world_builder/utilities.h>
+#include <world_builder/parameters.h>
 
 namespace WorldBuilder
 {
   namespace Types
   {
+
+    template <int dim>
+    Point<dim>::Point()
+      :
+      value(WorldBuilder::Point<dim>(CoordinateSystem::cartesian)),
+      default_value(WorldBuilder::Point<dim>(CoordinateSystem::cartesian)),
+      description("")
+    {
+      this->type_name = dim == 2 ? Types::type::Point2D : Types::type::Point3D;
+    }
+
     template <int dim>
     Point<dim>::Point(const WorldBuilder::Point<dim> &default_value, const std::string &description)
       :
@@ -53,6 +65,24 @@ namespace WorldBuilder
     Point<dim>::clone() const
     {
       return std::unique_ptr<Interface>(new Point(value, default_value, description));
+    }
+
+    template<int dim>
+    void
+    Point<dim>::write_schema(Parameters &prm,
+                             const std::string &name,
+                             const std::string &documentation) const
+    {
+      using namespace rapidjson;
+      Document &declarations = prm.declarations;
+      const std::string base = prm.get_full_json_path() + "/" + name;
+
+      Pointer((base + "/type").c_str()).Set(declarations,"array");
+      Pointer((base + "/minItems").c_str()).Set(declarations,dim);
+      Pointer((base + "/maxItems").c_str()).Set(declarations,dim);
+      Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
+      Pointer((base + "/items/type").c_str()).Set(declarations,"number");
+      // todo: default value
     }
 
 

@@ -23,14 +23,10 @@
 #include <map>
 #include <vector>
 
-#include <boost/property_tree/ptree.hpp>
-
 #include <world_builder/world.h>
 #include <world_builder/parameters.h>
 #include <world_builder/point.h>
 
-
-using boost::property_tree::ptree;
 using namespace std;
 
 namespace WorldBuilder
@@ -60,17 +56,34 @@ namespace WorldBuilder
         virtual
         ~Interface();
 
+
         /**
-         * Declare the entries stored in the interface, which
-         * are the name and coordinates.
+         * depricated
          */
-        void declare_interface_entries(Parameters &prm, const CoordinateSystem coordinate_system);
+        void
+        declare_interface_entries(Parameters &prm,
+                                  const CoordinateSystem coordinate_system);
+        /**
+         * helper function to parse coordinates.
+         */
+        void
+        get_coordinates(const std::string name,
+                        Parameters &prm,
+                        const CoordinateSystem coordinate_system);
+
+        /**
+         * declare and read in the world builder file into the parameters class
+         */
+        static
+        void declare_entries(Parameters &prm,
+                             const std::string &parent_name,
+                             const std::vector<std::string> &required_entries);
 
         /**
          * declare and read in the world builder file into the parameters class
          */
         virtual
-        void decare_entries() = 0;
+        void parse_entries(Parameters &prm) = 0;
 
 
         /**
@@ -97,7 +110,14 @@ namespace WorldBuilder
          * registration of the object factory.
          */
         static void registerType(const std::string &name,
+                                 void ( *)(Parameters &, const std::string &, const std::vector<std::string> &required_entries),
                                  ObjectFactory *factory);
+
+        const std::string get_name() const
+        {
+          return name;
+        };
+
 
         /**
          * A function to create a new type. This is part of the automatic
@@ -156,6 +176,16 @@ namespace WorldBuilder
           static std::map<std::string, ObjectFactory *> factories;
           return factories;
         }
+
+        static std::map<std::string, void ( *)(Parameters &,
+                                               const std::string &,
+                                               const std::vector<std::string>& required_entries)> &get_declare_map()
+        {
+          static std::map<std::string, void ( *)(Parameters &,
+                                                 const std::string &,
+                                                 const std::vector<std::string>& required_entries)> declares;
+          return declares;
+        }
     };
 
 
@@ -179,7 +209,7 @@ namespace WorldBuilder
     public: \
       klass##Factory() \
       { \
-        Interface::registerType(#name, this); \
+        Interface::registerType(#name, klass::declare_entries, this); \
       } \
       virtual std::unique_ptr<Interface> create(World *world) { \
         return std::unique_ptr<Interface>(new klass(world)); \

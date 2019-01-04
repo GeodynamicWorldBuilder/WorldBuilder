@@ -20,15 +20,12 @@
 #ifndef _world_builder_coordinate_systems_interface_h
 #define _world_builder_coordinate_systems_interface_h
 
-#include <boost/property_tree/ptree.hpp>
-
 #include <world_builder/coordinate_system.h>
 #include <world_builder/parameters.h>
 #include <world_builder/utilities.h>
 #include <world_builder/world.h>
+#include <world_builder/types/string.h>
 
-
-using boost::property_tree::ptree;
 
 namespace WorldBuilder
 {
@@ -55,11 +52,18 @@ namespace WorldBuilder
         ~Interface();
 
         /**
-         * Read in the world builder file, and does parsing and preparation for the model to start.
+         * declare and read in the world builder file into the parameters class
          */
-        // Todo: might have to rename this function, or split it up.
+        static
+        void declare_entries(Parameters &prm,
+                             const std::string &parent_name,
+                             const std::vector<std::string> &required_entries);
+
+        /**
+         * declare and read in the world builder file into the parameters class
+         */
         virtual
-        void decare_entries() = 0;
+        void parse_entries(Parameters &prm) = 0;
 
         /**
          * Returns what the natural coordinate system for this geometry model is.
@@ -105,6 +109,7 @@ namespace WorldBuilder
          * registration of the object factory.
          */
         static void registerType(const std::string &name,
+                                 void ( *)(Parameters &, const std::string &),
                                  ObjectFactory *factory);
 
         /**
@@ -120,11 +125,18 @@ namespace WorldBuilder
         WorldBuilder::World *world;
 
 
+
       private:
         static std::map<std::string, ObjectFactory *> &get_factory_map()
         {
           static std::map<std::string, ObjectFactory *> factories;
           return factories;
+        }
+
+        static std::map<std::string, void ( *)(Parameters &,const std::string &)> &get_declare_map()
+        {
+          static std::map<std::string, void ( *)(Parameters &,const std::string &)> declares;
+          return declares;
         }
     };
 
@@ -150,7 +162,7 @@ namespace WorldBuilder
     public: \
       klass##Factory() \
       { \
-        Interface::registerType(#name, this); \
+        Interface::registerType(#name, klass::declare_entries, this); \
       } \
       virtual std::unique_ptr<Interface> create(World *world) { \
         return std::unique_ptr<Interface>(new klass(world)); \

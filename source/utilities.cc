@@ -17,7 +17,9 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <boost/lexical_cast.hpp>
+#include <iostream>
+#include <iomanip>
+#include <algorithm>
 
 #include <world_builder/assert.h>
 #include <world_builder/coordinate_systems/interface.h>
@@ -371,15 +373,11 @@ namespace WorldBuilder
       while ((s.size() > 0) && (s[s.size() - 1] == ' '))
         s.erase(s.end() - 1);
 
-      double d = 0;
-      try
-        {
-          d =  boost::lexical_cast<double>(s);
-        }
-      catch (const boost::bad_lexical_cast &e)
-        {
-          WBAssertThrow(false, "Conversion of \"" << string << "\" to double failed (bad cast): " << e.what() << std::endl);
-        }
+      std::istringstream i(s);
+      double d;
+      char c;
+      if (!(i >> d) || i.get(c))
+        WBAssertThrow(false, "Could not convert \"" + s + "\" to a double.");
 
       return d;
     }
@@ -394,15 +392,11 @@ namespace WorldBuilder
       while ((s.size() > 0) && (s[s.size() - 1] == ' '))
         s.erase(s.end() - 1);
 
-      int d = 0;
-      try
-        {
-          d =  boost::lexical_cast<int>(s);
-        }
-      catch (const boost::bad_lexical_cast &e)
-        {
-          WBAssertThrow(false, "Conversion of \"" << string << "\" to int failed (bad cast): " << e.what() << std::endl);
-        }
+      std::istringstream i(s);
+      int d;
+      char c;
+      if (!(i >> d) || i.get(c))
+        WBAssertThrow(false, "Could not convert \"" + s + "\" to an int.");
 
       return d;
     }
@@ -418,95 +412,16 @@ namespace WorldBuilder
       while ((s.size() > 0) && (s[s.size() - 1] == ' '))
         s.erase(s.end() - 1);
 
-      unsigned int d = 0;
-      try
-        {
-          d =  boost::lexical_cast<unsigned int>(s);
-        }
-      catch (const boost::bad_lexical_cast &e)
-        {
-          WBAssertThrow(false, "Conversion of \"" << string << "\" to unsigned int failed (bad cast): " << e.what() << std::endl);
-        }
+
+      std::istringstream i(s);
+      unsigned int d;
+      char c;
+      if (!(i >> d) || i.get(c))
+        WBAssertThrow(false, "Could not convert \"" + s + "\" to an unsigned int.");
 
       return d;
     }
 
-    boost::optional<std::string>
-    get_from_ptree(const ptree &tree,
-                   const std::string &path,
-                   const std::string &key,
-                   const bool required,
-                   const std::string &path_separator)
-    {
-      boost::optional<std::string> value  = tree.get_optional<std::string> (key);
-      WBAssertThrow ((value && required == true) || required == false, "Entry undeclared: " + path + path_separator + key +
-                     ". Tree: " << std::endl << print_tree(tree,0) << std::endl);
-      return value;
-    }
-
-    boost::optional<std::string>
-    get_from_ptree_abs(const ptree &tree,
-                       const std::string &path,
-                       const std::string &key,
-                       const bool required,
-                       const std::string &path_separator)
-    {
-      std::string use_path = path == "" ? key : path + path_separator + key;
-      boost::optional<std::string> value  = tree.get_optional<std::string> (use_path);
-      WBAssertThrow ((value && required == true) || required == false, "Entry undeclared: " + use_path +
-                     ". Tree: " << std::endl << print_tree(tree,0) << std::endl);
-      return value;
-    }
-
-    /*std::string
-    escape_string(std::string &original)
-    {
-      // first escape the escape character. Lets say we start with  "abc &amp;[ ]"
-      //std::replace( s.begin(), s.end(), '&', '&amp');
-      // This now became "abc &ampamp[ ]". Escape the other characters:
-      //std::replace( s.begin(), s.end(), ' ', '&spa');
-      // This now became "abc&spa&ampamp[&spa]"
-      //std::replace( s.begin(), s.end(), '[', 'lsqb');
-    }*/
-
-    std::string indent(int level)
-    {
-      std::string s;
-      for (int i=0; i<level; i++) s += "  ";
-      return s;
-    }
-
-    std::string print_tree (const ptree &pt, int level)
-    {
-      std::stringstream ss;
-      if (pt.empty())
-        {
-          ss << "\""<< pt.data()<< "\"";
-        }
-
-      else
-        {
-          if (level) ss << std::endl;
-
-          ss << indent(level) << "{" << std::endl;
-
-          for (ptree::const_iterator pos = pt.begin(); pos != pt.end();)
-            {
-              ss << indent(level+1) << "\"" << pos->first << "\": ";
-
-              ss << print_tree(pos->second, level + 1);
-              ++pos;
-              if (pos != pt.end())
-                {
-                  ss << ",";
-                }
-              ss << std::endl;
-            }
-          ss << indent(level) << " }";
-        }
-
-      return ss.str();
-    }
 
     Point<3>
     cross_product(const Point<3> &a, const Point<3> &b)
@@ -530,6 +445,15 @@ namespace WorldBuilder
                                       std::vector<double> global_x_list)
     {
       // TODO: Assert that point_list, plane_segment_angles and plane_segment_lenghts have the same size.
+      /*WBAssert(point_list.size() == plane_segment_lengths.size(),
+               "Internal error: The size of point_list (" << point_list.size()
+               << ") and plane_segment_lengths (" << plane_segment_lengths.size() << ") are different.");
+      WBAssert(point_list.size() == plane_segment_angles.size(),
+               "Internal error: The size of point_list (" << point_list.size()
+               << ") and plane_segment_angles (" << plane_segment_angles.size() << ") are different.");
+      WBAssert(point_list.size() == plane_segment_angles.size(),
+               "Internal error: The size of point_list (" << point_list.size()
+               << ") and global_x_list (" << global_x_list.size() << ") are different.");*/
       if (global_x_list.size() == 0)
         {
           // fill it
@@ -685,7 +609,9 @@ namespace WorldBuilder
               Point<3> y_axis = closest_point_on_line_cartesian - closest_point_on_line_bottom_cartesian;
 
               WBAssert(y_axis.norm() != 0,
-                       "Internal error: The y_axis.norm() is zero. Y_axis is " << y_axis[0] << ":" << y_axis[1] << ":" << y_axis[2]);
+                       "Internal error: The y_axis.norm() is zero. Y_axis is " << y_axis[0] << ":" << y_axis[1] << ":" << y_axis[2]
+                       << ". closest_point_on_line_cartesian = " << closest_point_on_line_cartesian[0] << ":" << closest_point_on_line_cartesian[1] << ":" << closest_point_on_line_cartesian[2]
+                       << ", closest_point_on_line_bottom_cartesian = " << closest_point_on_line_bottom_cartesian[0] << ":" << closest_point_on_line_bottom_cartesian[1] << ":" << closest_point_on_line_bottom_cartesian[2]);
 
               WBAssert(!std::isnan(y_axis[0]),
                        "Internal error: The y_axis variable is not a number: " << y_axis[0]);
@@ -814,6 +740,25 @@ namespace WorldBuilder
                   // This interpolates different properties between P1 and P2 (the
                   // points of the plane at the surface)
                   const double degree_90_to_rad = 0.5 * const_pi;
+
+                  WBAssert(plane_segment_angles.size() > original_next_section,
+                           "Error: original_next_section = " << original_next_section
+                           << ", and plane_segment_angles.size() = " << plane_segment_angles.size());
+
+
+                  WBAssert(plane_segment_angles[original_next_section].size() > current_segment,
+                           "Error: current_segment = "  << current_segment
+                           << ", and current_segment.size() = " << plane_segment_angles[original_next_section].size());
+
+                  /*std::cout << "plane_segment_angles = " << plane_segment_angles[original_current_section][current_segment][1] << std::endl;
+                  std::cout << "fraction_CPL_P1P2 = " << fraction_CPL_P1P2 << std::endl;
+                  std::cout << "original_next_section = " << original_next_section << std::endl;
+                  std::cout << "plane_segment_angles.size() = " << plane_segment_angles.size() << std::endl;
+                  std::cout << "current_segment = " << current_segment << std::endl;
+                  std::cout << "plane_segment_angles[original_next_section].size() = " << plane_segment_angles[original_next_section].size() << std::endl;
+                  std::cout << "add_angle = " << add_angle << std::endl;
+                  */
+
                   const double interpolated_angle_top    = plane_segment_angles[original_current_section][current_segment][0]
                                                            + fraction_CPL_P1P2 * (plane_segment_angles[original_next_section][current_segment][0]
                                                                                   - plane_segment_angles[original_current_section][current_segment][0])

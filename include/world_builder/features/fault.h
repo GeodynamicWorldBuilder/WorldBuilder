@@ -22,6 +22,10 @@
 
 #include <world_builder/features/interface.h>
 #include <world_builder/world.h>
+#include <world_builder/types/segment.h>
+
+#include <world_builder/features/fault_models/temperature/interface.h>
+#include <world_builder/features/fault_models/composition/interface.h>
 
 
 namespace WorldBuilder
@@ -56,9 +60,16 @@ namespace WorldBuilder
         /**
          * declare and read in the world builder file into the parameters class
          */
-        virtual
-        void decare_entries();
+        static
+        void declare_entries(Parameters &prm,
+                             const std::string &parent_name = "",
+                             const std::vector<std::string> &required_entries = {});
 
+        /**
+         * declare and read in the world builder file into the parameters class
+         */
+        virtual
+        void parse_entries(Parameters &prm);
 
         /**
          * Returns a temperature based on the given position, depth in the model,
@@ -85,6 +96,21 @@ namespace WorldBuilder
 
 
       private:
+        std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface> > default_temperature_models;
+        std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface>  > default_composition_models;
+
+        std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
+            Features::FaultModels::Composition::Interface> > default_segment_vector;
+
+        std::vector< std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
+            Features::FaultModels::Composition::Interface> > > sections_segment_vector;
+
+        // This vector stores segments to this coordiante/section.
+        //First used (raw) pointers to the segment relevant to this coordinate/section,
+        // but I do not trust it won't fail when memory is moved. So storing the all the data now.
+        std::vector<std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
+            Features::FaultModels::Composition::Interface> > > segment_vector;
+
         // todo: the memory of this can be greatly improved by
         // or using a plugin system for the submodules, or
         // putting the variables in a union. Although the memory
@@ -114,10 +140,11 @@ namespace WorldBuilder
         /**
          * A point on the surface to which the fault dips.
          */
-        Point<2> reference_point;
+        WorldBuilder::Point<2> reference_point;
 
         std::vector<std::vector<double> > slab_segment_lengths;
         std::vector<std::vector<Point<2> > > slab_segment_thickness;
+        std::vector<std::vector<Point<2> > > slab_segment_top_truncation;
         std::vector<std::vector<Point<2> > > slab_segment_angles;
         std::vector<double> total_slab_length;
         double maximum_total_slab_length;

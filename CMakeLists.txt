@@ -56,10 +56,6 @@ include_directories("include/" "tests/")
 # Add source directory
 file(GLOB_RECURSE SOURCES "source/*.cc" "source/*.f90")
 
-#add Boost
-find_package(Boost REQUIRED COMPONENTS program_options REQUIRED)
-include_directories(${Boost_INCLUDE_DIR})
-
 # Provide "indent" target for indenting all headers and source files
 ADD_CUSTOM_TARGET(indent
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
@@ -105,8 +101,8 @@ set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/mod)
 add_library(WorldBuilder ${SOURCES})
 add_executable(WorldBuilderApp "${CMAKE_CURRENT_SOURCE_DIR}/app/main.cc")
 add_executable(WorldBuilderVisualization "${CMAKE_CURRENT_SOURCE_DIR}/visualization/main.cc")
-target_link_libraries (WorldBuilderApp WorldBuilder ${Boost_LIBRARIES})
-target_link_libraries (WorldBuilderVisualization WorldBuilder ${Boost_LIBRARIES})
+target_link_libraries (WorldBuilderApp WorldBuilder) 
+target_link_libraries (WorldBuilderVisualization WorldBuilder) 
 
 # binary:
 install (TARGETS WorldBuilder EXPORT WorldBuilder  DESTINATION bin)

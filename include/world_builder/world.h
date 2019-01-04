@@ -20,12 +20,8 @@
 #ifndef _world_builder_world_h
 #define _world_builder_world_h
 
-
-#include <boost/property_tree/ptree.hpp>
-
 #include <world_builder/parameters.h>
 
-using boost::property_tree::ptree;
 
 
 namespace WorldBuilder
@@ -44,17 +40,23 @@ namespace WorldBuilder
        * Constructor. This constructor requires a atring with the location of
        * the world builder file to initialize the world..
        */
-      World(std::string filename);
+      World(std::string filename, bool has_output_dir = false, std::string output_dir = "");
 
       /**
        * Destructor
        */
       ~World();
 
+
+      /**
+       * Describe what the world builder file should look like
+       */
+      static void declare_entries(Parameters &prm);
+
       /**
        * read in the world builder file
        */
-      void declare_and_parse(Parameters &parameters);
+      void parse_entries(Parameters &parameters);
 
       /**
        * Returns the temperature based on a 2d Cartesian point, the depth in the
@@ -80,10 +82,6 @@ namespace WorldBuilder
        */
       double composition(const std::array<double, 3> &point, const double depth, const unsigned int composition_number) const;
 
-      /**
-       * Stores the path separtor used for the property tree.
-       */
-      static const char path_seperator = '.';
 
 
       /**
@@ -91,6 +89,57 @@ namespace WorldBuilder
        * from the parameter file or which are set directly.
        */
       Parameters parameters;
+
+      /**
+       * Todo
+       */
+      std::vector<Point<2> > cross_section;
+
+      /**
+       * Todo
+       */
+      Point<2> surface_coord_conversions;
+
+      /**
+       * Todo
+       */
+      double potential_mantle_temperature;
+
+      /**
+       * Todo
+       */
+      double surface_temperature;
+
+      /**
+       * Todo
+       */
+      bool force_surface_temperature;
+
+      /**
+       * Todo
+       */
+      double thermal_expansion_coefficient;
+
+      /**
+       * Todo
+       */
+      double specific_heat;
+
+      /**
+       * Todo
+       */
+      double thermal_diffusivity;
+
+      /**
+       * Todo
+       */
+      double maximum_distance_between_coordinates;
+
+      /**
+       * Todo
+       */
+      std::string interpolation;
+
 
     private:
       /**

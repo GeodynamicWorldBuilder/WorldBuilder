@@ -22,6 +22,7 @@
 
 #include <world_builder/types/interface.h>
 #include <world_builder/point.h>
+#include <world_builder/types/plugin_system.h>
 
 
 namespace WorldBuilder
@@ -30,26 +31,39 @@ namespace WorldBuilder
   {
 
     /**
-     * This class represents a double value with documentation
+     * This class represents a segment value with documentation
      */
     class Segment : public Interface
     {
       public:
         /**
+         * A constructor
+         */
+        Segment(const double default_length,
+                const WorldBuilder::Point<2> default_thickness,
+                const WorldBuilder::Point<2> default_top_truncation,
+                const WorldBuilder::Point<2> default_angle,
+                const Types::Interface &temperature_pugin_system,
+                const Types::Interface &composition_pugin_system);
+
+        /**
          * A constructor for the load_entry function
          */
-        Segment(double default_value_length,
-                Point<2> default_value_thickness,
-                Point<2> default_value_angle,
+        Segment(double default_length,
+                WorldBuilder::Point<2> default_thickness,
+                WorldBuilder::Point<2> default_angle,
                 std::string description);
 
         /**
          * A constructor for the clone and set_entry function
          */
-        Segment(double   value_length,    double   default_value_length,
-                Point<2> value_thickness, Point<2> default_value_thickness,
-                Point<2> value_angle,     Point<2> default_value_angle,
-                std::string description);
+        Segment(const double default_length,
+                const WorldBuilder::Point<2> default_thickness,
+                const WorldBuilder::Point<2> default_top_truncation,
+                const WorldBuilder::Point<2> default_angle,
+                const std::unique_ptr<Types::Interface> &temperature_pugin_system_,
+                const std::unique_ptr<Types::Interface> &composition_pugin_system_);
+
 
         /**
          * Destructor
@@ -63,13 +77,79 @@ namespace WorldBuilder
         virtual
         std::unique_ptr<Interface> clone() const;
 
+        /**
+         * Todo
+         */
+        virtual
+        void write_schema(Parameters &prm,
+                          const std::string &name,
+                          const std::string &documentation) const;
+
+
         double value_length;
-        double default_value_length;
-        Point<2> value_thickness;
-        Point<2> default_value_thickness;
-        Point<2> value_angle;
-        Point<2> default_value_angle;
-        std::string description;
+        double default_length;
+        WorldBuilder::Point<2> value_thickness;
+        WorldBuilder::Point<2> default_thickness;
+        WorldBuilder::Point<2> default_top_truncation;
+        WorldBuilder::Point<2> value_angle;
+        WorldBuilder::Point<2> default_angle;
+        std::unique_ptr<Types::Interface> temperature_pugin_system;
+        std::unique_ptr<Types::Interface> composition_pugin_system;
+
+      private:
+
+    };
+  }
+
+  namespace Objects
+  {
+
+    /**
+      * This class represents an actual segment
+      */
+    template <class A, class B>
+    class Segment : public Types::Interface
+    {
+      public:
+
+        /**
+         * A constructor for the clone and set_entry function
+         */
+        Segment(const double default_length,
+                const WorldBuilder::Point<2> default_thickness,
+                const WorldBuilder::Point<2> default_top_truncation,
+                const WorldBuilder::Point<2> default_angle,
+                const std::vector<std::shared_ptr<A> > &temperature_systems,
+                const std::vector<std::shared_ptr<B> > &composition_systems);
+
+        /**
+         * Destructor
+         */
+        ~Segment();
+
+        /**
+         * Clone. The caller of clone is responsible for the lifetime of it,
+         * so return a unique pionter.
+         */
+        virtual
+        std::unique_ptr<Interface> clone() const;
+
+        /**
+         * Todo
+         */
+        virtual
+        void write_schema(Parameters &prm,
+                          const std::string &name,
+                          const std::string &documentation) const;
+
+
+        double value_length;
+        double default_length;
+        WorldBuilder::Point<2> value_thickness;
+        WorldBuilder::Point<2> value_top_truncation;
+        WorldBuilder::Point<2> value_angle;
+        std::vector<std::shared_ptr<A> > temperature_systems;
+        std::vector<std::shared_ptr<B> > composition_systems;
 
       private:
 

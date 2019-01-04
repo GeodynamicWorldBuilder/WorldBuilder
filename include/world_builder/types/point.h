@@ -39,6 +39,12 @@ namespace WorldBuilder
     class Point : public Interface
     {
       public:
+
+        /**
+         * A constructor used for the load_entry function
+         */
+        Point();
+
         /**
          * A constructor used for the load_entry function
          */
@@ -59,6 +65,14 @@ namespace WorldBuilder
          */
         virtual
         std::unique_ptr<Interface> clone() const;
+
+        /**
+         * Todo
+         */
+        virtual
+        void write_schema(Parameters &prm,
+                          const std::string &name,
+                          const std::string &documentation) const;
 
         /**
          * dot product

@@ -17,17 +17,11 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <boost/algorithm/string.hpp>
+#include <algorithm>
 
 #include <world_builder/assert.h>
 
-#include <world_builder/types/array.h>
-#include <world_builder/types/double.h>
-#include <world_builder/types/feature.h>
 #include <world_builder/types/interface.h>
-#include <world_builder/types/list.h>
-#include <world_builder/types/segment.h>
-#include <world_builder/types/string.h>
 
 
 namespace WorldBuilder

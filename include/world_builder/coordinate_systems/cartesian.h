@@ -53,11 +53,16 @@ namespace WorldBuilder
         ~Cartesian();
 
         /**
-         * Read in the world builder file, and does parsing and preparation for the model to start.
+         * declare and read in the world builder file into the parameters class
          */
-        // Todo: might have to rename this function, or split it up.
+        static
+        void declare_entries(Parameters &prm, const std::string &parent_name = "");
+
+        /**
+         * declare and read in the world builder file into the parameters class
+         */
         virtual
-        void decare_entries();
+        void parse_entries(Parameters &prm);
 
         /**
          * Returns what the natural coordinate system for this Coordinate System is.

@@ -19,29 +19,31 @@
 #include <world_builder/types/unsigned_int.h>
 #include <world_builder/assert.h>
 #include <world_builder/utilities.h>
+#include <world_builder/parameters.h>
+
+#include <world_builder/nan.h>
 
 namespace WorldBuilder
 {
   namespace Types
   {
-    UnsignedInt::UnsignedInt(unsigned int default_value, std::string description)
+    UnsignedInt::UnsignedInt(unsigned int default_value)
       :
-      value(default_value),
-      default_value(default_value),
-      description(description)
+      value(0),
+      default_value(default_value)
     {
       this->type_name = Types::type::UnsignedInt;
     }
 
-    UnsignedInt::UnsignedInt(unsigned int value, unsigned int default_value, std::string description)
+
+    UnsignedInt::UnsignedInt(unsigned int value, unsigned int default_value)
       :
       value(value),
-      default_value(default_value),
-      description(description)
+      default_value(default_value)
     {
       this->type_name = Types::type::UnsignedInt;
-
     }
+
 
     UnsignedInt::~UnsignedInt ()
     {}
@@ -49,9 +51,23 @@ namespace WorldBuilder
     std::unique_ptr<Interface>
     UnsignedInt::clone() const
     {
-      return std::unique_ptr<Interface>(new UnsignedInt(value, default_value, description));
+      return std::unique_ptr<Interface>(new UnsignedInt(value, default_value));
     }
 
+    void
+    UnsignedInt::write_schema(Parameters &prm,
+                              const std::string &name,
+                              const std::string &documentation) const
+    {
+      using namespace rapidjson;
+      Document &declarations = prm.declarations;
+
+      const std::string base = prm.get_full_json_path() + "/" + name;
+      Pointer((base + "/default value").c_str()).Set(declarations,default_value);
+      Pointer((base + "/type").c_str()).Set(declarations,"integer");
+      Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
+
+    }
   }
 }
 

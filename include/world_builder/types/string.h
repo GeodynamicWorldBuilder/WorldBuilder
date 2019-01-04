@@ -40,7 +40,22 @@ namespace WorldBuilder
         /**
          * constructor
          */
-        String(std::string default_value, std::string description);
+        String(const std::string default_value);
+
+        /**
+         * constructor
+         */
+        String(const std::string default_value, const std::string restricted_value);
+
+        /**
+         * constructor
+         */
+        String(const std::string default_value, const std::vector<std::string> &restricted_values);
+
+        /**
+         * constructor
+         */
+        //String(std::string default_value, std::string description);
 
 
         /**
@@ -54,20 +69,24 @@ namespace WorldBuilder
         ~String();
 
         /**
+         * Todo
+         */
+        virtual
+        void write_schema(Parameters &prm,
+                          const std::string &name,
+                          const std::string &documentation) const;
+
+        /**
          * clone
          */
         virtual
         std::unique_ptr<Interface> clone() const;
 
-        /**
-         * Set value
-         */
-        virtual
-        void set_value(std::string value);
 
         std::string value;
         std::string default_value;
         std::string description;
+        std::vector<std::string> restricted_values;
     };
   }
 }

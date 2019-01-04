@@ -43,31 +43,10 @@ namespace WorldBuilder
         /**
          * Constructor for the declaration
          */
-        Array(const Interface &type, const std::string &description);
-
-        /**
-         * Copy constructor which does not copy the inner_type_ptr.
-         */
-        Array(const Array &type);
-
-        /**
-         * Constructor for copying and cloning
-         */
-        Array(const std::vector<unsigned int> &inner_type_index, const Types::type inner_type, const std::string &description);
-
-
-        /**
-         * access index (const)
-         */
-        //template<class T>
-        //const T &operator[](const unsigned int index) const;
-
-
-        /**
-         * access index
-         */
-        //Types::Interface
-        //T &operator[](const unsigned int index);
+        Array(const Interface &type,
+              const unsigned int min_items = 0,
+              const unsigned int max_items = std::numeric_limits<unsigned int>::max(),
+              const bool unique_items = false);
 
 
         /**
@@ -83,6 +62,14 @@ namespace WorldBuilder
          */
         virtual
         std::unique_ptr<Interface>   clone() const;
+
+        /**
+         * Todo
+         */
+        virtual
+        void write_schema(Parameters &prm,
+                          const std::string &name,
+                          const std::string &documentation) const;
 
         /**
          * An enum of the type which this class points to
@@ -101,22 +88,27 @@ namespace WorldBuilder
          */
         std::unique_ptr<Interface> inner_type_ptr;
 
-        /**
-         * This class is sometimes responsible for the object it points to, but
-         * sometimes it is not responsible for the object is points to.
-         * When it is responsible the unique_inner_type points to it and the
-         * inner_type should have size zero. When it is not responsible,
-         * unique_inner_type should point to the nullptr and inner_type should
-         * have a size larger then zero.
-         * @see inner_type_ptr
-         */
-        std::vector<unsigned int> inner_type_index;
 
         /**
-         * The description of what this array and the values within represent.
-         * This is meant for documentation pruposes.
+         * Todo
          */
-        std::string description;
+        bool required;
+
+        /**
+         * Todo
+         */
+        unsigned int min_items;
+
+        /**
+         * Todo
+         */
+        unsigned int max_items;
+
+        /**
+         * Todo
+         */
+        bool unique_items;
+
 
     };
   }

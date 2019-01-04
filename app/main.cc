@@ -17,18 +17,21 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include <algorithm>
 #include <exception>
 #include <iostream>
-
-#include <boost/program_options.hpp>
-#include <boost/property_tree/json_parser.hpp>
+#include <fstream>
 
 #include <world_builder/assert.h>
 #include <world_builder/utilities.h>
 #include <world_builder/world.h>
 
-namespace po = boost::program_options;
 using namespace WorldBuilder::Utilities;
+
+bool find_command_line_option(char **begin, char **end, const std::string &option)
+{
+  return std::find(begin, end, option) != end;
+}
 
 int main(int argc, char **argv)
 {
@@ -41,72 +44,49 @@ int main(int argc, char **argv)
   unsigned int dim = 3;
   unsigned int compositions = 0;
 
-  try
+  if (find_command_line_option(argv, argv+argc, "-h") || find_command_line_option(argv, argv+argc, "--help"))
     {
-      po::options_description desc("Allowed options");
-      desc.add_options()
-      ("help", "produce help message")
-      ("files", po::value<std::vector<std::string> >(), "list of files, starting with the World Builder "
-       "file and data file(s) after it.");
-
-      po::positional_options_description p;
-      p.add("files", -1);
-
-      po::variables_map vm;
-      po::store(po::command_line_parser(argc, argv).options(desc).positional(p).run(), vm);
-      po::notify(vm);
-
-      if (vm.count("help"))
-        {
-          std::cout << std::endl << "TODO: Write description how to use this." << std::endl << std::endl;
-          std::cout << desc << "\n";
-          return 0;
-        }
-
-      if (!vm.count("files"))
-        {
-          std::cout << "Error: There where no files passed to the World Builder, use --help for more " << std::endl
-                    << "information on how  to use the World Builder app." << std::endl;
-          return 0;
-        }
-
-      std::vector<std::string> file_names = vm["files"].as<std::vector<std::string> >();
-
-      if (file_names.size() < 2)
-        {
-          std::cout << "Error:  The World Builder app requires at least two files, a World Builder file " << std::endl
-                    << "and a data file to convert." << std::endl;
-          return 0;
-        }
-
-      wb_file = file_names[0];
-      // Todo: Is it useful to check whether the string is empty?
-
-
-      data_file = file_names[1];
-      // Todo: Is it useful to check whether the string is empty?
-
+      std::cout << "This program allows to use the world builder library directly with a world builder file and a data file. "
+                "The data file will be filled with intitial conditions from the world as set by the world builder file." << std::endl
+                << "Besides providing two files, where the first is the world builder file and the second is the data file, the available options are: " << std::endl
+                << "-h or --help to get this help screen." << std::endl;
+      return 0;
     }
-  catch (std::exception &e)
+
+  if (argc == 1)
     {
-      std::cerr << "error: " << e.what() << "\n";
-      return 1;
+      std::cout << "Error: There where no files passed to the World Builder, use --help for more " << std::endl
+                << "information on how  to use the World Builder app." << std::endl;
+      return 0;
     }
-  catch (...)
+
+
+  if (argc == 2)
     {
-      std::cerr << "Exception of unknown type!\n";
-      return 1;
+      std::cout << "Error:  The World Builder app requires at least two files, a World Builder file " << std::endl
+                << "and a data file to convert." << std::endl;
+      return 0;
     }
+
+  if (argc != 3)
+    {
+      std::cout << "Only two command line arguments may be given, which should be the world builder file location and the data file location (in that order). " << std::endl;
+      return 0;
+    }
+
+  wb_file = argv[1];
+  data_file = argv[2];
 
   /**
    * Try to start the world builder
    */
   std::unique_ptr<WorldBuilder::World> world;
-  try
-    {
-      world = std::unique_ptr<WorldBuilder::World>(new WorldBuilder::World(wb_file));
-    }
-  catch (std::exception &e)
+  //try
+  {
+    std::string output_dir = wb_file.substr(0,wb_file.find_last_of("/\\") + 1);
+    world = std::unique_ptr<WorldBuilder::World>(new WorldBuilder::World(wb_file, true, output_dir));
+  }
+  /*catch (std::exception &e)
     {
       std::cerr << "Could not start the World builder, error: " << e.what() << "\n";
       return 1;
@@ -115,33 +95,13 @@ int main(int argc, char **argv)
     {
       std::cerr << "Exception of unknown type!\n";
       return 1;
-    }
+    }*/
 
 
   /**
    * Read the data from the data files
    */
-  // if config file is available, parse it
-  /*  if(config_file != "")
-    {
-      // Get world builder file and check wether it exists
-      WBAssertThrow(access( config_file.c_str(), F_OK ) != -1,
-          "Could not find the provided convig file at the specified location: " + config_file);
 
-
-      // Now read in the world builder file into a file stream and
-      // put it into a boost property tree.
-      //std::ifstream json_input_stream(config_file.c_str());
-      ptree tree;
-      tree.read_json(config_file, tree);
-
-      if(boost::optional<unsigned int> value = tree.get_optional<unsigned int>("dim"))
-          dim = value.get();
-
-      if(boost::optional<unsigned int> value = tree.get_optional<unsigned int>("compositions"))
-          compositions = value.get();
-
-    }*/
   std::string line;
   std::ifstream data_stream(data_file);
 
@@ -166,12 +126,12 @@ int main(int argc, char **argv)
   // Read config from data if pressent
   for (unsigned int i = 0; i < data.size(); ++i)
     {
-      if (data[i][0] == "#" && data[i][1] == "dim" && data[i][2] == "=")
+      if (data[i].size() > 0 && data[i][0] == "#" && data[i][1] == "dim" && data[i][2] == "=")
         {
           dim = string_to_unsigned_int(data[i][3]);
         }
 
-      if (data[i][0] == "#" && data[i][1] == "compositions" && data[i][2] == "=")
+      if (data[i].size() > 0 && data[i][0] == "#" && data[i][1] == "compositions" && data[i][2] == "=")
         compositions = string_to_unsigned_int(data[i][3]);
 
     }
@@ -180,7 +140,7 @@ int main(int argc, char **argv)
     {
       case 2:
         // set the header
-        std::cout << "# x z d T ";
+        std::cout << "# x z d g T ";
 
         for (unsigned int c = 0; c < compositions; ++c)
           std::cout << "c" << c << " ";
@@ -211,7 +171,7 @@ int main(int argc, char **argv)
         break;
       case 3:
         // set the header
-        std::cout << "# x y z d T ";
+        std::cout << "# x y z d g T ";
 
         for (unsigned int c = 0; c < compositions; ++c)
           std::cout << "c" << c << " ";

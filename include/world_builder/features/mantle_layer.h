@@ -23,6 +23,9 @@
 #include <world_builder/features/interface.h>
 #include <world_builder/world.h>
 
+#include <world_builder/features/mantle_layer_models/temperature/interface.h>
+#include <world_builder/features/mantle_layer_models/composition/interface.h>
+
 
 namespace WorldBuilder
 {
@@ -56,8 +59,16 @@ namespace WorldBuilder
         /**
          * declare and read in the world builder file into the parameters class
          */
+        static
+        void declare_entries(Parameters &prm,
+                             const std::string &parent_name = "",
+                             const std::vector<std::string> &required_entries = {});
+
+        /**
+         * declare and read in the world builder file into the parameters class
+         */
         virtual
-        void decare_entries();
+        void parse_entries(Parameters &prm);
 
 
         /**
@@ -85,8 +96,27 @@ namespace WorldBuilder
 
 
       private:
-        // global parameters
+        /**
+         * A vector containing all the pointers to the temperature models. This vector is
+         * responsible for the features and has ownership over them. Therefore
+         * unique pointers are used.
+         * @see Features
+         */
+        std::vector<std::unique_ptr<Features::MantleLayerModels::Temperature::Interface> > temperature_models;
+
+        /**
+         * A vector containing all the pointers to the composition models. This vector is
+         * responsible for the features and has ownership over them. Therefore
+         * unique pointers are used.
+         * @see Features
+         */
+        std::vector<std::unique_ptr<Features::MantleLayerModels::Composition::Interface> > composition_models;
+
         double min_depth;
+        double max_depth;
+
+        // global parameters
+        //double min_depth;
 
         // constant temperature submodule parameters
         double temperature_submodule_constant_depth;

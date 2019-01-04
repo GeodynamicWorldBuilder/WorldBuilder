@@ -37,12 +37,7 @@ namespace WorldBuilder
         /**
          * A constructor for the load_entry function
          */
-        Double(double default_value, std::string description);
-
-        /**
-         * A constructor for the clone and set_entry function
-         */
-        Double(double value, double default_value, std::string description);
+        Double(const double default_value);
 
         /**
          * Destructor
@@ -56,9 +51,15 @@ namespace WorldBuilder
         virtual
         std::unique_ptr<Interface> clone() const;
 
-        double value;
+        /**
+         * Todo
+         */
+        virtual
+        void write_schema(Parameters &prm,
+                          const std::string &name,
+                          const std::string &documentation) const;
+
         double default_value;
-        std::string description;
 
       private:
 

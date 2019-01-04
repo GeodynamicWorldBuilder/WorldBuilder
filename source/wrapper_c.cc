@@ -29,9 +29,9 @@ extern "C" {
    * to it. This pointer can then be used to call the temperature and composition
    * functions. When done call the release world function to destroy the object.
    */
-  void create_world(void **ptr_ptr_world, const char *world_builder_file)
+  void create_world(void **ptr_ptr_world, const char *world_builder_file, bool has_output_dir, std::string output_dir)
   {
-    WorldBuilder::World *a = new WorldBuilder::World(std::string(world_builder_file));
+    WorldBuilder::World *a = new WorldBuilder::World(std::string(world_builder_file), has_output_dir, output_dir);
 
     *ptr_ptr_world = reinterpret_cast<void *>(a);
   }

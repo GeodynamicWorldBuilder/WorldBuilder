@@ -22,6 +22,8 @@
 
 #include <world_builder/features/interface.h>
 #include <world_builder/world.h>
+#include <world_builder/features/oceanic_plate_models/temperature/interface.h>
+#include <world_builder/features/oceanic_plate_models/composition/interface.h>
 
 
 namespace WorldBuilder
@@ -56,8 +58,16 @@ namespace WorldBuilder
         /**
          * declare and read in the world builder file into the parameters class
          */
+        static
+        void declare_entries(Parameters &prm,
+                             const std::string &parent_name = "",
+                             const std::vector<std::string> &required_entries = {});
+
+        /**
+         * declare and read in the world builder file into the parameters class
+         */
         virtual
-        void decare_entries();
+        void parse_entries(Parameters &prm);
 
 
         /**
@@ -85,31 +95,24 @@ namespace WorldBuilder
 
 
       private:
-        // constant temperature submodule parameters
-        double temperature_submodule_constant_depth;
-        double temperature_submodule_constant_temperature;
+        /**
+         * A vector containing all the pointers to the temperature models. This vector is
+         * responsible for the features and has ownership over them. Therefore
+         * unique pointers are used.
+         * @see Features
+         */
+        std::vector<std::unique_ptr<Features::OceanicPlateModels::Temperature::Interface> > temperature_models;
 
-        // linear submodule parameters
-        double temperature_submodule_linear_depth;
-        double temperature_submodule_linear_top_temperature;
-        double temperature_submodule_linear_bottom_temperature;
+        /**
+         * A vector containing all the pointers to the composition models. This vector is
+         * responsible for the features and has ownership over them. Therefore
+         * unique pointers are used.
+         * @see Features
+         */
+        std::vector<std::unique_ptr<Features::OceanicPlateModels::Composition::Interface> > composition_models;
 
-        // plate model submodule parameters
-        double temperature_submodule_plate_model_depth;
-        double temperature_submodule_plate_model_top_temperature;
-        double temperature_submodule_plate_model_bottom_temperature;
-        std::vector<Point<2> > temperature_submodule_plate_model_ridge_points;
-        double temperature_submodule_plate_model_spreading_velocity;
-
-        // constant composition submodule parameters
-        double composition_submodule_constant_depth;
-        std::vector<unsigned int> composition_submodule_constant_composition;
-        std::vector<double> composition_submodule_constant_value;
-
-        // constant layers composition submodule parameters
-        std::vector<std::vector<unsigned int> > composition_submodule_constant_layers_compositions;
-        std::vector<std::vector<double> > composition_submodule_constant_layers_value;
-        std::vector<double> composition_submodule_constant_layers_thicknesses;
+        double min_depth;
+        double max_depth;
     };
   }
 }
