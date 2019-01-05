@@ -102,17 +102,34 @@ foreach(test_source ${VISU_TEST_SOURCES})
 endforeach(test_source)
 
 #test fortran compilation
+#if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+#set(CMAKE_FORTRAN_CLANG_LIB_FLAG "-undefined dynamic_lookup")
+	#endif()
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran)
+add_test(NAME compile_simple_fortran_test 
+	COMMAND gfortran${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/test.f90 -L../../lib/ -lWorldBuilder -I../../mod/ ${CMAKE_Fortran_FLAGS_COVERAGE} -o test${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_EXE_LINKER_FLAGS} #${CMAKE_FORTRAN_CLANG_LIB_FLAG} 
+	 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
+
+add_test(run_simple_fortran_test
+	 ${CMAKE_COMMAND}
+                 -D TEST_NAME=run_simple_fortran_test
+                 -D TEST_PROGRAM=${CMAKE_BINARY_DIR}/tests/fortran/test${CMAKE_EXECUTABLE_SUFFIX}
+                 -D TEST_ARGS=${CMAKE_CURRENT_SOURCE_DIR}/data/continental_plate.wb
+                 -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/fortran/run_simple_fortran_test.log
+		 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/fortran/run_simple_fortran_test.log
+                 -P ${CMAKE_SOURCE_DIR}/tests/fortran/run_fortran_tests.cmake
+                 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/) 
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran)
 add_test(NAME compile_simple_fortran_example 
-	 COMMAND gfortran${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/example.f90 -L../../lib/ -lWorldBuilder -lstdc++ -I../../mod/ 
+	COMMAND gfortran${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/example.f90 -L../../lib/ -lWorldBuilder -I../../mod/ ${CMAKE_Fortran_FLAGS_COVERAGE} -o example${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_EXE_LINKER_FLAGS} #${CMAKE_FORTRAN_CLANG_LIB_FLAG} 
 	 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
 
 add_test(run_simple_fortran_example
 	 ${CMAKE_COMMAND}
                  -D TEST_NAME=run_simple_fortran_example
-                 -D TEST_PROGRAM=${CMAKE_BINARY_DIR}/tests/fortran/a.out${CMAKE_EXECUTABLE_SUFFIX}
-                 -D TEST_ARGS=
-                 -D TEST_OUTPUT=${CMAKE_CURRENT_SOURCE_DIR}/fortran/run_simple_fortran_example.log
-                 -D TEST_REFERENCE=${CMAKE_BINARY_DIR}/tests/fortran/run_simple_fortran_example.log
+                 -D TEST_PROGRAM=${CMAKE_BINARY_DIR}/tests/fortran/example${CMAKE_EXECUTABLE_SUFFIX}
+                 -D TEST_ARGS=${CMAKE_CURRENT_SOURCE_DIR}/data/continental_plate.wb
+                 -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/fortran/run_simple_fortran_example.log
+		 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/fortran/run_simple_fortran_example.log
                  -P ${CMAKE_SOURCE_DIR}/tests/fortran/run_fortran_tests.cmake
                  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/) 

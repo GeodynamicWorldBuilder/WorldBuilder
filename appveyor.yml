@@ -32,4 +32,17 @@ build_script:
   - cd ..  
 
 
-test_script: ctest -VV
+test_script: 
+  - ctest -VV  
+  - ls
+  - ls tests
+  - ls tests/fortran
+  - cd tests/fortran
+  - ls
+  - test.exe
+  - example.exe 
+after_test:
+  - ctest -VV
+  - ls
+  - ls tests
+  - ls tests/fortran

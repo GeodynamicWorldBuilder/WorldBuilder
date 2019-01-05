@@ -66,8 +66,10 @@ ADD_CUSTOM_TARGET(indent
 
 if (NOT MSVC AND NOT APPLE)
    SET(CMAKE_CXX_FLAGS "-std=c++11 -fopenmp -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Wswitch -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing")
+   SET(CMAKE_EXE_LINKER_FLAGS "-lstdc++")
 elseif(APPLE)
-   SET(CMAKE_CXX_FLAGS "-std=c++11 -Xpreprocessor -fopenmp -lomp -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Wswitch -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing")
+   SET(CMAKE_CXX_FLAGS "-std=c++11 -Xpreprocessor -fopenmp -lomp ${OpenMP_CXX_FLAGS} -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Wswitch -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -undefined dynamic_lookup -stdlib=libc++")
+   SET(CMAKE_EXE_LINKER_FLAGS "-lc++${OpenMP_EXE_LINKER_FLAGS}") #-stdlib=libc++")
 else()
     SET(CMAKE_CXX_FLAGS "/W3")
 endif()
@@ -83,12 +85,14 @@ IF ( CMAKE_BUILD_TYPE STREQUAL Coverage )
   SET( CMAKE_VERBOSE_MAKEFILE on )
   SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} ")
   SET(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_DEBUG} --coverage -fprofile-arcs -ftest-coverage ")
+  SET(CMAKE_Fortran_FLAGS_COVERAGE --coverage)
   SET(CMAKE_EXE_LINKER_FLAGS_COVERAGE "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --coverage -fprofile-arcs -ftest-coverage ")
   SET(CMAKE_SHARED_LINKER_FLAGS_COVERAGE "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} --coverage -fprofile-arcs -ftest-coverage ")
 
 MARK_AS_ADVANCED(
     CMAKE_CXX_FLAGS_COVERAGE
     CMAKE_C_FLAGS_COVERAGE
+    CMAKE_Fortran_FLAGS_COVERAGE
     CMAKE_EXE_LINKER_FLAGS_COVERAGE
     CMAKE_SHARED_LINKER_FLAGS_COVERAGE )
 ENDIF()
