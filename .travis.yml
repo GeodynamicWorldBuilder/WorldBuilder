@@ -17,8 +17,7 @@ script:
   - gfortran --version
   - mkdir build
   - mkdir install
-  - cd build
-  - cmake .. -G "${MAKE_FILE_GENERATOR}" ${CMAKE_EXTRA_ARGS} ${MAC_COMPILER_EXTRA}
+  - cmake . -G "${MAKE_FILE_GENERATOR}" ${CMAKE_EXTRA_ARGS} ${MAC_COMPILER_EXTRA}
   - make -j 2
   - ctest -VV
   - if [ "${RUN_COVERALLS}" = "TRUE" ]; then
@@ -32,7 +31,7 @@ script:
     fi
 after_success:
     - if [ "${RUN_COVERALLS}" = "TRUE" ]; then
-        coveralls -i ../source -i ../app --gcov-options '\-lp'; 
+        coveralls -i source -i app --gcov-options '\-lp'; 
       fi
     - if [ "${RUN_COVERALLS}" = "TRUE" ]; then
         bash <(curl -s https://codecov.io/bash);
