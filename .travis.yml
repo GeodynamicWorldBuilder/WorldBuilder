@@ -32,7 +32,7 @@ script:
     fi
 after_success:
     - if [ "${RUN_COVERALLS}" = "TRUE" ]; then
-        coveralls -i source -i app --gcov-options '\-lp'; 
+        coveralls -i ../source -i ../app --gcov-options '\-lp'; 
       fi
     - if [ "${RUN_COVERALLS}" = "TRUE" ]; then
         bash <(curl -s https://codecov.io/bash);
