@@ -120,8 +120,3 @@ matrix:
          - MAKE_FILE_GENERATOR="MinGW Makefiles"
          - FC=gfortran
          - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS}  -DCMAKE_SH="CMAKE_SH-NOTFOUND" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_VERBOSE_MAKEFILE=ON -DBUILD_SHARED_LIBS=ON"
-      addons:
-        apt:
-           packages:
-              - gfortran
-              - make
