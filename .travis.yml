@@ -10,11 +10,14 @@ before_install:
   - echo ${FC}
   - gcc --version
   - gcov --version
+  - make --version
 script:
   - gcc --version
   - gcov --version
   - gfortran --version
-  - cmake . ${CMAKE_EXTRA_ARGS} ${MAC_COMPILER_EXTRA}
+  - mkdir build
+  - mkdir install
+  - cmake . -G "${MAKE_FILE_GENERATOR}" ${CMAKE_EXTRA_ARGS} ${MAC_COMPILER_EXTRA}
   - make -j 2
   - ctest -VV
   - if [ "${RUN_COVERALLS}" = "TRUE" ]; then
@@ -49,6 +52,7 @@ matrix:
       compiler: 
         - g++-6
       env: 
+         - MAKE_FILE_GENERATOR="Unix Makefiles"
          - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Coverage"
          - RUN_COVERALLS="TRUE"
          - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6 && FC=gfortran && sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-6 --slave /usr/bin/gcov gcov /usr/bin/gcov-6 && sudo update-alternatives --config gcc && gcc --version && gcov --version && mkdir astyle && cd astyle && wget 'https://sourceforge.net/projects/astyle/files/astyle/astyle 2.04/astyle_2.04_linux.tar.gz' && tar -zxvf astyle_2.04_linux.tar.gz && cd astyle/build/gcc && make && sudo make install && cd ../../../../ && pip install --user cpp-coveralls"
@@ -66,6 +70,7 @@ matrix:
       compiler:
         - g++-6
       env:
+         - MAKE_FILE_GENERATOR="Unix Makefiles"
          - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Release"
          - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6 && FC=gfortran"
       addons:
@@ -83,8 +88,9 @@ matrix:
       compiler: 
         - clang-3.6
       env: 
-        - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6 && GC=gfortran" 
-        - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug"
+         - MAKE_FILE_GENERATOR="Unix Makefiles"
+         - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6 && GC=gfortran" 
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug"
       addons:
         apt:
           sources:
@@ -101,7 +107,15 @@ matrix:
         - clang
       osx_image: xcode10
       env: 
-        - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && brew install gcc || true  && brew link --overwrite gcc && brew install libomp || brew upgrade libomp || true && export LDFLAGS="-L/usr/local/opt/llvm/lib" && export CPPFLAGS="-I/usr/local/opt/llvm/include" && export CC=/usr/local/opt/llvm/bin/clang && export  CXX=/usr/local/opt/llvm/bin/clang++ && export FC=gfortran" 
-        - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug -DOpenMP_CXX_FLAGS="-Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include" -DOpenMP_CXX_LIB_NAMES="omp" -DOpenMP_omp_LIBRARY=/usr/local/opt/libomp/lib/libomp.dylib"
+         - MAKE_FILE_GENERATOR="Unix Makefiles"
+         - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && brew install gcc || true  && brew link --overwrite gcc && brew install libomp || brew upgrade libomp || true && export LDFLAGS="-L/usr/local/opt/llvm/lib" && export CPPFLAGS="-I/usr/local/opt/llvm/include" && export CC=/usr/local/opt/llvm/bin/clang && export  CXX=/usr/local/opt/llvm/bin/clang++ && export FC=gfortran" 
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug -DOpenMP_CXX_FLAGS="-Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include" -DOpenMP_CXX_LIB_NAMES="omp" -DOpenMP_omp_LIBRARY=/usr/local/opt/libomp/lib/libomp.dylib"
 
-
+    - name: "windows debug"
+      os: windows
+      language: cpp 
+      env:
+         - MATRIX_EVAL="which gcc && which mingw32-make.exe && ln -s /c/ProgramData/chocolatey/bin/mingw32-make.exe /c/ProgramData/chocolatey/bin/make.exe && which make"
+         - MAKE_FILE_GENERATOR="MinGW Makefiles"
+         - FC=gfortran
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS}  -DCMAKE_SH="CMAKE_SH-NOTFOUND" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_VERBOSE_MAKEFILE=ON -DBUILD_SHARED_LIBS=ON"
