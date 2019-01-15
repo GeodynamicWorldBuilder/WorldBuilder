@@ -155,12 +155,12 @@ namespace WorldBuilder
 
 
         double
-        PlateModel::get_temperature(const Point<3> &position,
-                                    const double depth,
+        PlateModel::get_temperature(const Point<3> &,
+                                    const double,
                                     const double gravity_norm,
                                     double temperature_,
-                                    const double feature_min_depth,
-                                    const double feature_max_depth,
+                                    const double,
+                                    const double,
                                     const std::map<std::string,double> &distance_from_planes) const
         {
 

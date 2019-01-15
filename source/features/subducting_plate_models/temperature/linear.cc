@@ -91,11 +91,11 @@ namespace WorldBuilder
 
         double
         Linear::get_temperature(const Point<3> &,
-                                const double depth,
+                                const double,
                                 const double gravity_norm,
                                 double temperature,
-                                const double feature_min_depth,
-                                const double feature_max_depth,
+                                const double,
+                                const double,
                                 const std::map<std::string,double> &distance_from_plane) const
         {
           if (distance_from_plane.at("distanceFromPlane") <= max_depth && distance_from_plane.at("distanceFromPlane") >= min_depth)
