@@ -12,6 +12,6 @@ z_min = 5451000
 z_max = 6371000
 
 # grid properties
-n_cell_x = 150
-n_cell_y = 180
-n_cell_z = 45
+n_cell_x = 50 #150
+n_cell_y = 60 #180
+n_cell_z = 15 #45
