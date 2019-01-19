@@ -786,37 +786,46 @@ namespace WorldBuilder
                     {
                       // The angle is constant. It is easy find find the end of
                       // this segment and the distance.
-                      end_segment[0] += interpolated_segment_length * std::sin(degree_90_to_rad - interpolated_angle_top);
-                      end_segment[1] -= interpolated_segment_length * std::cos(degree_90_to_rad - interpolated_angle_top);
-
-                      Point<2> begin_end_segment = end_segment - begin_segment;
-                      Point<2> normal_2d_plane(-begin_end_segment[0],begin_end_segment[1], cartesian);
-                      normal_2d_plane /= normal_2d_plane.norm();
-
-                      // Now find the distance of a point to this line.
-                      // Based on http://geomalgorithms.com/a02-_lines.html.
-                      const Point<2> BSP_ESP = end_segment - begin_segment;
-                      const Point<2> BSP_CP = check_point_2d - begin_segment;
-
-                      const double c1 = BSP_ESP * BSP_CP;
-                      const double c2 = BSP_ESP * BSP_ESP;
-
-                      if (c1 < 0 || c2 < c1)
+                      if (interpolated_segment_length != 0)
                         {
-                          new_distance = INFINITY;
-                          new_along_plane_distance = INFINITY;
-                        }
-                      else
-                        {
-                          const Point<2> Pb = begin_segment + (c1/c2) * BSP_ESP;
-                          const double side_of_line =  (begin_segment[0] - end_segment[0]) * (check_point_2d[1] - begin_segment[1])
-                                                       - (begin_segment[1] - end_segment[1]) * (check_point_2d[0] - begin_segment[0])
-                                                       < 0 ? -1.0 : 1.0;
+                          end_segment[0] += interpolated_segment_length * std::sin(degree_90_to_rad - interpolated_angle_top);
+                          end_segment[1] -= interpolated_segment_length * std::cos(degree_90_to_rad - interpolated_angle_top);
 
-                          new_distance = side_of_line * (check_point_2d - Pb).norm();
-                          new_along_plane_distance = (begin_segment - Pb).norm();
-                        }
+                          Point<2> begin_end_segment = end_segment - begin_segment;
+                          Point<2> normal_2d_plane(-begin_end_segment[0],begin_end_segment[1], cartesian);
+                          WBAssert(normal_2d_plane.norm() != 0, "Internal Error: normal_2d_plane.norm() is zero, which should not happen. "
+                                   << "Extra info: begin_end_segment[0] = " << begin_end_segment[0]
+                                   << ", begin_end_segment[1] = " << begin_end_segment[1]
+                                   << ", end_segment: [" << end_segment[0] << "," << end_segment[1] << "]"
+                                   << ", begin_segment: [" << begin_segment[0] << "," << begin_segment[1] << "]"
+                                  );
+                          normal_2d_plane /= normal_2d_plane.norm();
 
+                          // Now find the distance of a point to this line.
+                          // Based on http://geomalgorithms.com/a02-_lines.html.
+                          const Point<2> BSP_ESP = end_segment - begin_segment;
+                          const Point<2> BSP_CP = check_point_2d - begin_segment;
+
+                          const double c1 = BSP_ESP * BSP_CP;
+                          const double c2 = BSP_ESP * BSP_ESP;
+
+                          if (c1 < 0 || c2 < c1)
+                            {
+                              new_distance = INFINITY;
+                              new_along_plane_distance = INFINITY;
+                            }
+                          else
+                            {
+                              const Point<2> Pb = begin_segment + (c1/c2) * BSP_ESP;
+                              const double side_of_line =  (begin_segment[0] - end_segment[0]) * (check_point_2d[1] - begin_segment[1])
+                                                           - (begin_segment[1] - end_segment[1]) * (check_point_2d[0] - begin_segment[0])
+                                                           < 0 ? -1.0 : 1.0;
+
+                              new_distance = side_of_line * (check_point_2d - Pb).norm();
+                              new_along_plane_distance = (begin_segment - Pb).norm();
+                            }
+
+                        }
                     }
                   else
                     {
