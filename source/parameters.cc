@@ -863,7 +863,7 @@ namespace WorldBuilder
 
         for (unsigned int i = 0; i < array->Size(); ++i )
           {
-            vector.push_back(std::move(std::unique_ptr<Features::SubductingPlate>(new Features::SubductingPlate(&world))));
+            vector.push_back(std::unique_ptr<Features::SubductingPlate>(new Features::SubductingPlate(&world)));
           }
       }
     else
@@ -886,7 +886,7 @@ namespace WorldBuilder
 
         for (unsigned int i = 0; i < array->Size(); ++i )
           {
-            vector.push_back(std::move(std::unique_ptr<Features::Fault>(new Features::Fault(&world))));
+            vector.push_back(std::unique_ptr<Features::Fault>(new Features::Fault(&world)));
           }
       }
     else

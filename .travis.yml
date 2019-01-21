@@ -109,7 +109,7 @@ matrix:
       env: 
          - MAKE_FILE_GENERATOR="Unix Makefiles"
          - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && brew install gcc || true  && brew link --overwrite gcc && brew install libomp || brew upgrade libomp || true && export LDFLAGS="-L/usr/local/opt/llvm/lib" && export CPPFLAGS="-I/usr/local/opt/llvm/include" && export CC=/usr/local/opt/llvm/bin/clang && export  CXX=/usr/local/opt/llvm/bin/clang++ && export FC=gfortran" 
-         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug -DOpenMP_CXX_FLAGS="-Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include" -DOpenMP_CXX_LIB_NAMES="omp" -DOpenMP_omp_LIBRARY=/usr/local/opt/libomp/lib/libomp.dylib"
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug -DOpenMP_CXX_FLAGS="-Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include -lomp" -DOpenMP_CXX_LIB_NAMES="omp" -DOpenMP_omp_LIBRARY=/usr/local/opt/libomp/lib/libomp.dylib"
 
     - name: "windows debug"
       os: windows

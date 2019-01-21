@@ -155,9 +155,11 @@ int main(int argc, char **argv)
               WBAssertThrow(data[i].size() == dim + 2, "The file needs to contain dim + 2 entries, but contains " << data[i].size() << " entries "
                             " on line " << i+1 << " of the data file.  Dim is " << dim << ".");
 
-              std::array<double,2> coords = {string_to_double(data[i][0]),
-                                             string_to_double(data[i][1])
-                                            };
+              std::array<double,2> coords = {{
+                  string_to_double(data[i][0]),
+                  string_to_double(data[i][1])
+                }
+              };
               std::cout << data[i][0] << " " << data[i][1] << " " << data[i][2] << " " << data[i][3] << " ";
               std::cout << world->temperature(coords, string_to_double(data[i][2]), string_to_double(data[i][3]))  << " ";
 
@@ -184,10 +186,12 @@ int main(int argc, char **argv)
             {
               WBAssertThrow(data[i].size() == dim + 2, "The file needs to contain dim + 2 entries, but contains " << data[i].size() << " entries "
                             " on line " << i+1 << " of the data file. Dim is " << dim << ".");
-              std::array<double,3> coords = {string_to_double(data[i][0]),
-                                             string_to_double(data[i][1]),
-                                             string_to_double(data[i][2])
-                                            };
+              std::array<double,3> coords = {{
+                  string_to_double(data[i][0]),
+                  string_to_double(data[i][1]),
+                  string_to_double(data[i][2])
+                }
+              };
 
 
               std::cout << data[i][0] << " " << data[i][1] << " " << data[i][2] << " " << data[i][3] << " " << data[i][4] << " ";

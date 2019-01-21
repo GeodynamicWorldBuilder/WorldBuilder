@@ -13,7 +13,7 @@
 // specific language governing permissions and limitations under the License.
 
 #ifndef RAPIDJSON_LATEXWRITER_H_
-#define RAPIDJSON_lATEXWRITER_H_
+#define RAPIDJSON_LATEXWRITER_H_
 
 #include "writer.h"
 #include <iostream>
@@ -415,7 +415,7 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
         \param type Type of the root of json.
         \note When using LatexWriter::RawValue(), the result json may not be indented correctly.
     */
-    bool RawValue(const Ch *json, size_t length, Type type)
+    bool RawValue(const Ch *json, size_t length, Type /*type*/)
     {
       RAPIDJSON_ASSERT(json != 0);
       return Base::EndValue(Base::WriteRawValue(json, length));
