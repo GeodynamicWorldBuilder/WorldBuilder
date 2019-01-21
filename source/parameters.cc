@@ -182,6 +182,7 @@ namespace WorldBuilder
     const std::string base = this->get_full_json_path();
     const Value *value = Pointer((base + "/" + name).c_str()).Get(parameters);
 
+#ifdef debug
     bool required = false;
     if (Pointer((base + "/required").c_str()).Get(declarations) != NULL)
       {
@@ -196,7 +197,7 @@ namespace WorldBuilder
 
     WBAssert(value != NULL || required == false,
              "Internal error: Value \"" << base << "/" << name << "/type\" not found in the input file, while it was set as required.");
-
+#endif
     if (value == NULL)
       {
         value = Pointer((get_full_json_schema_path() + "/" + name + "/default value").c_str()).Get(declarations);
@@ -214,7 +215,7 @@ namespace WorldBuilder
   {
     const std::string base = this->get_full_json_path();
     const Value *value = Pointer((base + "/" + name).c_str()).Get(parameters);
-
+#ifdef debug
     bool required = false;
     if (Pointer((base + "/required").c_str()).Get(declarations) != NULL)
       {
@@ -229,7 +230,7 @@ namespace WorldBuilder
 
     WBAssert(value != NULL || required == false,
              "Internal error: Value \"" << base << "/" << name << "/type\" not found in the input file, while it was set as required.");
-
+#endif
     if (value == NULL)
       {
         value = Pointer((get_full_json_schema_path() + "/" + name + "/default value").c_str()).Get(declarations);
@@ -257,6 +258,7 @@ namespace WorldBuilder
     const std::string base = this->get_full_json_path();
     const Value *value = Pointer((base + "/" + name).c_str()).Get(parameters);
 
+#ifdef debug
     bool required = false;
     if (Pointer((base + "/required").c_str()).Get(declarations) != NULL)
       {
@@ -271,7 +273,7 @@ namespace WorldBuilder
 
     WBAssert(value != NULL || required == false,
              "Internal error: Value \"" << base << "/" << name << "/type\" not found in the input file, while it was set as required.");
-
+#endif
     if (value == NULL)
       {
         value = Pointer((get_full_json_schema_path() + "/" + name + "/default value").c_str()).Get(declarations);
@@ -290,6 +292,7 @@ namespace WorldBuilder
     const std::string base = this->get_full_json_path();
     const Value *value = Pointer((base + "/" + name).c_str()).Get(parameters);
 
+#ifdef debug
     bool required = false;
     if (Pointer((base + "/required").c_str()).Get(declarations) != NULL)
       {
@@ -304,7 +307,7 @@ namespace WorldBuilder
 
     WBAssert(value != NULL || required == false,
              "Internal error: Value \"" << base << "/" << name << "/type\" not found in the input file, while it was set as required.");
-
+#endif
     if (value == NULL)
       {
         value = Pointer((get_full_json_schema_path() + "/" + name + "/default value").c_str()).Get(declarations);
@@ -325,6 +328,7 @@ namespace WorldBuilder
     const std::string strict_base = this->get_full_json_path();
     const Value *array = Pointer((strict_base + "/" + name).c_str()).Get(parameters);
 
+#ifdef debug
     bool required = false;
     if (Pointer((strict_base + "/required").c_str()).Get(declarations) != NULL)
       {
@@ -339,7 +343,7 @@ namespace WorldBuilder
 
     WBAssert(array != NULL || required == false,
              "Internal error: Value \"" << strict_base << "/" << name << "/type\" not found in the input file, while it was set as required.");
-
+#endif
     if (array != NULL)
       {
         //Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
@@ -795,6 +799,7 @@ namespace WorldBuilder
     const std::string base = this->get_full_json_path();
     Value *value = Pointer((base + "/" + name + "/model").c_str()).Get(parameters);
 
+#ifdef debug
     bool required = false;
     if (Pointer((base + "/required").c_str()).Get(declarations) != NULL)
       for (auto &v : Pointer((base + "/required").c_str()).Get(declarations)->GetArray())
@@ -807,7 +812,7 @@ namespace WorldBuilder
 
     WBAssert(value != NULL || required == false,
              "Internal error: Value \"" << base << "/" << name << "/model\" not found in the input file, while it was set as required.");
-
+#endif
     if (value == NULL)
       {
         value = Pointer((get_full_json_schema_path() + "/" + name + "/default value").c_str()).Get(declarations);
@@ -974,7 +979,9 @@ namespace WorldBuilder
                 // This means we have to take a sneak peak to figure out how to get to the
                 // next value.
                 unsigned int size = Pointer((base_path + "/items/oneOf").c_str()).Get(declarations)->Size();
+#ifdef debug
                 bool found = false;
+#endif
                 unsigned int index = 0;
                 for (; index < size; ++index)
                   {
@@ -990,13 +997,17 @@ namespace WorldBuilder
                     if (declarations_string == parameters_string)
                       {
                         // found it for index i;
+#ifdef debug
                         found = true;
+#endif
                         break;
                       }
                   }
+#ifdef debug
                 WBAssert(found == true,
                          "Internal error: This is an array with several possible values, "
                          "but could not find the correct value " << collapse + "/" + path[i] + "/items/oneOf");
+#endif
                 collapse += "/" + path[i] + "/items/oneOf/" + std::to_string(index) + "/properties";
                 // add one to i, to skip the array
                 ++i;
