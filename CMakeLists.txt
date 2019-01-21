@@ -29,10 +29,14 @@ ADD_CUSTOM_TARGET(indent
 
 
 if (NOT MSVC AND NOT APPLE)
-   SET(CMAKE_CXX_FLAGS "-std=c++11 -fopenmp -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Wswitch -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing")
+   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER MATCHES "[Cc]lang")
+       SET(CMAKE_CXX_FLAGS "-std=c++11 -fopenmp -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Wswitch -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing")
+   else()
+       SET(CMAKE_CXX_FLAGS "-std=c++11 -fopenmp -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing")
+   endif()
    SET(CMAKE_EXE_LINKER_FLAGS "-lstdc++")
 elseif(APPLE)
-   SET(CMAKE_CXX_FLAGS "-std=c++11 -Xpreprocessor -fopenmp -lomp ${OpenMP_CXX_FLAGS} -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Wswitch -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -undefined dynamic_lookup -stdlib=libc++")
+   SET(CMAKE_CXX_FLAGS "-std=c++11 -Xpreprocessor -fopenmp ${OpenMP_CXX_FLAGS} -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -stdlib=libc++")
    SET(CMAKE_EXE_LINKER_FLAGS "-lc++${OpenMP_EXE_LINKER_FLAGS}") #-stdlib=libc++")
 else()
     SET(CMAKE_CXX_FLAGS "/W3")
