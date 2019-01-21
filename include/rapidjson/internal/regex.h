@@ -270,7 +270,8 @@ RAPIDJSON_DIAG_OFF(4512) // assignment operator could not be generated
 
                   case '{':
                   {
-                    unsigned n, m;
+                    unsigned n = 0;
+                    unsigned m = 0;
                     if (!ParseUnsigned(ds, &n))
                       return;
 
