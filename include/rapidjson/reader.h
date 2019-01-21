@@ -41,7 +41,7 @@
 RAPIDJSON_DIAG_PUSH
 RAPIDJSON_DIAG_OFF(old-style-cast)
 RAPIDJSON_DIAG_OFF(padded)
-RAPIDJSON_DIAG_OFF(switch -enum)
+//RAPIDJSON_DIAG_OFF(switch -enum)
 #elif defined(_MSC_VER)
 RAPIDJSON_DIAG_PUSH
 RAPIDJSON_DIAG_OFF(4127)  // conditional expression is constant
@@ -49,8 +49,8 @@ RAPIDJSON_DIAG_OFF(4702)  // unreachable code
 #endif
 
 #ifdef __GNUC__
-  RAPIDJSON_DIAG_PUSH
-  RAPIDJSON_DIAG_OFF(effc++)
+RAPIDJSON_DIAG_PUSH
+RAPIDJSON_DIAG_OFF(effc++)
 #endif
 
 //!@cond RAPIDJSON_HIDDEN_FROM_DOXYGEN
@@ -59,103 +59,103 @@ RAPIDJSON_DIAG_OFF(4702)  // unreachable code
 #define RAPIDJSON_PARSE_ERROR_EARLY_RETURN(value) \
   RAPIDJSON_MULTILINEMACRO_BEGIN \
   if (RAPIDJSON_UNLIKELY(HasParseError())) { return value; } \
-RAPIDJSON_MULTILINEMACRO_END
+  RAPIDJSON_MULTILINEMACRO_END
 #endif
 #define RAPIDJSON_PARSE_ERROR_EARLY_RETURN_VOID \
   RAPIDJSON_PARSE_ERROR_EARLY_RETURN(RAPIDJSON_NOTHING)
 //!@endcond
 
-  /*! \def RAPIDJSON_PARSE_ERROR_NORETURN
-      \ingroup RAPIDJSON_ERRORS
-      \brief Macro to indicate a parse error.
-      \param parseErrorCode \ref rapidjson::ParseErrorCode of the error
-      \param offset  position of the error in JSON input (\c size_t)
+/*! \def RAPIDJSON_PARSE_ERROR_NORETURN
+    \ingroup RAPIDJSON_ERRORS
+    \brief Macro to indicate a parse error.
+    \param parseErrorCode \ref rapidjson::ParseErrorCode of the error
+    \param offset  position of the error in JSON input (\c size_t)
 
-      This macros can be used as a customization point for the internal
-      error handling mechanism of RapidJSON.
+    This macros can be used as a customization point for the internal
+    error handling mechanism of RapidJSON.
 
-      A common usage model is to throw an exception instead of requiring the
-      caller to explicitly check the \ref rapidjson::GenericReader::Parse's
-      return value:
+    A common usage model is to throw an exception instead of requiring the
+    caller to explicitly check the \ref rapidjson::GenericReader::Parse's
+    return value:
 
-      \code
-      #define RAPIDJSON_PARSE_ERROR_NORETURN(parseErrorCode,offset) \
-         throw ParseException(parseErrorCode, #parseErrorCode, offset)
+    \code
+    #define RAPIDJSON_PARSE_ERROR_NORETURN(parseErrorCode,offset) \
+       throw ParseException(parseErrorCode, #parseErrorCode, offset)
 
-      #include <stdexcept>               // std::runtime_error
-      #include "rapidjson/error/error.h" // rapidjson::ParseResult
+    #include <stdexcept>               // std::runtime_error
+    #include "rapidjson/error/error.h" // rapidjson::ParseResult
 
-      struct ParseException : std::runtime_error, rapidjson::ParseResult {
-        ParseException(rapidjson::ParseErrorCode code, const char* msg, size_t offset)
-          : std::runtime_error(msg), ParseResult(code, offset) {}
-      };
+    struct ParseException : std::runtime_error, rapidjson::ParseResult {
+      ParseException(rapidjson::ParseErrorCode code, const char* msg, size_t offset)
+        : std::runtime_error(msg), ParseResult(code, offset) {}
+    };
 
-      #include "rapidjson/reader.h"
-      \endcode
+    #include "rapidjson/reader.h"
+    \endcode
 
-      \see RAPIDJSON_PARSE_ERROR, rapidjson::GenericReader::Parse
-   */
+    \see RAPIDJSON_PARSE_ERROR, rapidjson::GenericReader::Parse
+ */
 #ifndef RAPIDJSON_PARSE_ERROR_NORETURN
 #define RAPIDJSON_PARSE_ERROR_NORETURN(parseErrorCode, offset) \
   RAPIDJSON_MULTILINEMACRO_BEGIN \
   RAPIDJSON_ASSERT(!HasParseError()); /* Error can only be assigned once */ \
-SetParseError(parseErrorCode, offset); \
-RAPIDJSON_MULTILINEMACRO_END
+  SetParseError(parseErrorCode, offset); \
+  RAPIDJSON_MULTILINEMACRO_END
 #endif
 
-  /*! \def RAPIDJSON_PARSE_ERROR
-      \ingroup RAPIDJSON_ERRORS
-      \brief (Internal) macro to indicate and handle a parse error.
-      \param parseErrorCode \ref rapidjson::ParseErrorCode of the error
-      \param offset  position of the error in JSON input (\c size_t)
+/*! \def RAPIDJSON_PARSE_ERROR
+    \ingroup RAPIDJSON_ERRORS
+    \brief (Internal) macro to indicate and handle a parse error.
+    \param parseErrorCode \ref rapidjson::ParseErrorCode of the error
+    \param offset  position of the error in JSON input (\c size_t)
 
-      Invokes RAPIDJSON_PARSE_ERROR_NORETURN and stops the parsing.
+    Invokes RAPIDJSON_PARSE_ERROR_NORETURN and stops the parsing.
 
-      \see RAPIDJSON_PARSE_ERROR_NORETURN
-      \hideinitializer
-   */
+    \see RAPIDJSON_PARSE_ERROR_NORETURN
+    \hideinitializer
+ */
 #ifndef RAPIDJSON_PARSE_ERROR
 #define RAPIDJSON_PARSE_ERROR(parseErrorCode, offset) \
   RAPIDJSON_MULTILINEMACRO_BEGIN \
   RAPIDJSON_PARSE_ERROR_NORETURN(parseErrorCode, offset); \
-RAPIDJSON_PARSE_ERROR_EARLY_RETURN_VOID; \
-RAPIDJSON_MULTILINEMACRO_END
+  RAPIDJSON_PARSE_ERROR_EARLY_RETURN_VOID; \
+  RAPIDJSON_MULTILINEMACRO_END
 #endif
 
 #include "error/error.h" // ParseErrorCode, ParseResult
 
-  RAPIDJSON_NAMESPACE_BEGIN
+RAPIDJSON_NAMESPACE_BEGIN
 
 ///////////////////////////////////////////////////////////////////////////////
 // ParseFlag
 
-  /*! \def RAPIDJSON_PARSE_DEFAULT_FLAGS
-      \ingroup RAPIDJSON_CONFIG
-      \brief User-defined kParseDefaultFlags definition.
+/*! \def RAPIDJSON_PARSE_DEFAULT_FLAGS
+    \ingroup RAPIDJSON_CONFIG
+    \brief User-defined kParseDefaultFlags definition.
 
-      User can define this as any \c ParseFlag combinations.
-  */
+    User can define this as any \c ParseFlag combinations.
+*/
 #ifndef RAPIDJSON_PARSE_DEFAULT_FLAGS
 #define RAPIDJSON_PARSE_DEFAULT_FLAGS kParseNoFlags
 #endif
 
 //! Combination of parseFlags
-  /*! \see Reader::Parse, Document::Parse, Document::ParseInsitu, Document::ParseStream
-   */
-  enum ParseFlag
-  {
-    kParseNoFlags = 0,              //!< No flags are set.
-    kParseInsituFlag = 1,           //!< In-situ(destructive) parsing.
-    kParseValidateEncodingFlag = 2, //!< Validate encoding of JSON strings.
-    kParseIterativeFlag = 4,        //!< Iterative(constant complexity in terms of function call stack size) parsing.
-    kParseStopWhenDoneFlag = 8,     //!< After parsing a complete JSON root from stream, stop further processing the rest of stream. When this flag is used, parser will not generate kParseErrorDocumentRootNotSingular error.
-    kParseFullPrecisionFlag = 16,   //!< Parse number in full precision (but slower).
-    kParseCommentsFlag = 32,        //!< Allow one-line (//) and multi-line (/**/) comments.
-    kParseNumbersAsStringsFlag = 64,    //!< Parse all numbers (ints/doubles) as strings.
-    kParseTrailingCommasFlag = 128, //!< Allow trailing commas at the end of objects and arrays.
-    kParseNanAndInfFlag = 256,      //!< Allow parsing NaN, Inf, Infinity, -Inf and -Infinity as doubles.
-    kParseDefaultFlags = RAPIDJSON_PARSE_DEFAULT_FLAGS  //!< Default parse flags. Can be customized by defining RAPIDJSON_PARSE_DEFAULT_FLAGS
-  };
+/*! \see Reader::Parse, Document::Parse, Document::ParseInsitu, Document::ParseStream
+ */
+enum ParseFlag
+{
+  kParseNoFlags = 0,              //!< No flags are set.
+  kParseInsituFlag = 1,           //!< In-situ(destructive) parsing.
+  kParseValidateEncodingFlag = 2, //!< Validate encoding of JSON strings.
+  kParseIterativeFlag = 4,        //!< Iterative(constant complexity in terms of function call stack size) parsing.
+  kParseStopWhenDoneFlag = 8,     //!< After parsing a complete JSON root from stream, stop further processing the rest of stream. When this flag is used, parser will not generate kParseErrorDocumentRootNotSingular error.
+  kParseFullPrecisionFlag = 16,   //!< Parse number in full precision (but slower).
+  kParseCommentsFlag = 32,        //!< Allow one-line (//) and multi-line (/**/) comments.
+  kParseNumbersAsStringsFlag = 64,    //!< Parse all numbers (ints/doubles) as strings.
+  kParseTrailingCommasFlag = 128, //!< Allow trailing commas at the end of objects and arrays.
+  kParseNanAndInfFlag = 256,      //!< Allow parsing NaN, Inf, Infinity, -Inf and -Infinity as doubles.
+  kParseDefaultFlags = RAPIDJSON_PARSE_DEFAULT_FLAGS  //!< Default parse flags. Can be customized by defining RAPIDJSON_PARSE_DEFAULT_FLAGS
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 // Handler
