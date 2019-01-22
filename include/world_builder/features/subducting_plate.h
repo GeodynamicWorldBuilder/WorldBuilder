@@ -151,29 +151,6 @@ namespace WorldBuilder
         double maximum_total_slab_length;
         double maximum_slab_thickness;
 
-        // constant temperature submodule parameters
-        double temperature_submodule_constant_depth;
-        double temperature_submodule_constant_temperature;
-        std::string temperature_submodule_constant_operation;
-
-        // plate model submodule parameters
-        double temperature_submodule_plate_model_density;
-        double temperature_submodule_plate_model_plate_velocity;
-        double temperature_submodule_plate_model_thermal_conductivity;
-        double temperature_submodule_plate_model_Thermal_expansion_coefficient;
-        double temperature_submodule_plate_model_specific_heat;
-
-        // constant composition submodule parameters
-        double composition_submodule_constant_depth;
-        std::vector<unsigned int> composition_submodule_constant_composition;
-        std::vector<double> composition_submodule_constant_value;
-
-        // constant layers composition submodule parameters
-        std::vector<std::vector<unsigned int> > composition_submodule_constant_layers_compositions;
-        std::vector<std::vector<double> > composition_submodule_constant_layers_value;
-        std::vector<double> composition_submodule_constant_layers_thicknesses;
-
-
     };
   }
 }

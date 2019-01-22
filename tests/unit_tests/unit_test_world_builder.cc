@@ -87,26 +87,26 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
   Point<2> p2(cartesian);
   Point<3> p3(cartesian);
 
-  CHECK(p2.get_array() == std::array<double,2> {0,0});
-  CHECK(p3.get_array() == std::array<double,3> {0,0,0});
+  CHECK(p2.get_array() == std::array<double,2> {{0,0}});
+  CHECK(p3.get_array() == std::array<double,3> {{0,0,0}});
 
-  const Point<2> p2_array(std::array<double,2> {1,2},cartesian);
-  const Point<3> p3_array(std::array<double,3> {1,2,3},cartesian);
+  const Point<2> p2_array(std::array<double,2> {{1,2}},cartesian);
+  const Point<3> p3_array(std::array<double,3> {{1,2,3}},cartesian);
 
-  CHECK(p2_array.get_array() == std::array<double,2> {1,2});
-  CHECK(p3_array.get_array() == std::array<double,3> {1,2,3});
+  CHECK(p2_array.get_array() == std::array<double,2> {{1,2}});
+  CHECK(p3_array.get_array() == std::array<double,3> {{1,2,3}});
 
   const Point<2> p2_point(p2_array);
   const Point<3> p3_point(p3_array);
 
-  CHECK(p2_point.get_array() == std::array<double,2> {1,2});
-  CHECK(p3_point.get_array() == std::array<double,3> {1,2,3});
+  CHECK(p2_point.get_array() == std::array<double,2> {{1,2}});
+  CHECK(p3_point.get_array() == std::array<double,3> {{1,2,3}});
 
   const Point<2> p2_explicit(3,4,cartesian);
   const Point<3> p3_explicit(4,5,6,cartesian);
 
-  CHECK(p2_explicit.get_array() == std::array<double,2> {3,4});
-  CHECK(p3_explicit.get_array() == std::array<double,3> {4,5,6});
+  CHECK(p2_explicit.get_array() == std::array<double,2> {{3,4}});
+  CHECK(p3_explicit.get_array() == std::array<double,3> {{4,5,6}});
 
 
   // Test Point operators
@@ -115,21 +115,21 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
   p2 = p2_array;
   p3 = p3_array;
 
-  CHECK(p2.get_array() == std::array<double,2> {1,2});
-  CHECK(p3.get_array() == std::array<double,3> {1,2,3});
+  CHECK(p2.get_array() == std::array<double,2> {{1,2}});
+  CHECK(p3.get_array() == std::array<double,3> {{1,2,3}});
 
   // Test multiply operator
   p2 = 2 * p2 * 1.0;
   p3 = 2 * p3 * 1.0;
 
-  CHECK(p2.get_array() == std::array<double,2> {2,4});
-  CHECK(p3.get_array() == std::array<double,3> {2,4,6});
+  CHECK(p2.get_array() == std::array<double,2> {{2,4}});
+  CHECK(p3.get_array() == std::array<double,3> {{2,4,6}});
 
   p2 *= 2;
   p3 *= 2;
 
-  CHECK(p2.get_array() == std::array<double,2> {4,8});
-  CHECK(p3.get_array() == std::array<double,3> {4,8,12});
+  CHECK(p2.get_array() == std::array<double,2> {{4,8}});
+  CHECK(p3.get_array() == std::array<double,3> {{4,8,12}});
 
   // Test dot operator
   CHECK(p2_array * p2_explicit == 11);
@@ -139,27 +139,27 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
   p2 = p2 + p2;
   p3 = p3 + p3;
 
-  CHECK(p2.get_array() == std::array<double,2> {8,16});
-  CHECK(p3.get_array() == std::array<double,3> {8,16,24});
+  CHECK(p2.get_array() == std::array<double,2> {{8,16}});
+  CHECK(p3.get_array() == std::array<double,3> {{8,16,24}});
 
   p2 += p2;
   p3 += p3;
 
-  CHECK(p2.get_array() == std::array<double,2> {16,32});
-  CHECK(p3.get_array() == std::array<double,3> {16,32,48});
+  CHECK(p2.get_array() == std::array<double,2> {{16,32}});
+  CHECK(p3.get_array() == std::array<double,3> {{16,32,48}});
 
   // Test subtract operator
   p2 = p2 - (0.5 * p2);
   p3 = p3 - (0.5 * p3);
 
-  CHECK(p2.get_array() == std::array<double,2> {8,16});
-  CHECK(p3.get_array() == std::array<double,3> {8,16,24});
+  CHECK(p2.get_array() == std::array<double,2> {{8,16}});
+  CHECK(p3.get_array() == std::array<double,3> {{8,16,24}});
 
   p2 -=  (0.5 * p2);
   p3 -=  (0.5 * p3);
 
-  CHECK(p2.get_array() == std::array<double,2> {4,8});
-  CHECK(p3.get_array() == std::array<double,3> {4,8,12});
+  CHECK(p2.get_array() == std::array<double,2> {{4,8}});
+  CHECK(p3.get_array() == std::array<double,3> {{4,8,12}});
 
   // Test coordinate system
   //CHECK(p2.get_coordinate_system() == CoordinateSystem::cartesian);
@@ -176,8 +176,8 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
   std::array<double,2> an2 = Utilities::convert_point_to_array(p2_point);
   std::array<double,3> an3 = Utilities::convert_point_to_array(p3_point);
 
-  CHECK(an2 == std::array<double,2> {1,2});
-  CHECK(an3 == std::array<double,3> {1,2,3});
+  CHECK(an2 == std::array<double,2> {{1,2}});
+  CHECK(an3 == std::array<double,3> {{1,2,3}});
 
   CHECK_THROWS_WITH(Point<2>(1,2,3,cartesian),Contains("Can't use the 3d constructor in 2d."));
   CHECK_THROWS_WITH(Point<3>(1,2,cartesian),Contains("Can't use the 2d constructor in 3d."));
@@ -229,8 +229,8 @@ TEST_CASE("WorldBuilder Utilities: string to conversions")
   const Point<2> p2(1,2,cartesian);
   const Point<3> p3(1,2,3,cartesian);
 
-  CHECK(Utilities::convert_point_to_array(p2) == std::array<double,2> {1,2});
-  CHECK(Utilities::convert_point_to_array(p3) == std::array<double,3> {1,2,3});
+  CHECK(Utilities::convert_point_to_array(p2) == std::array<double,2> {{1,2}});
+  CHECK(Utilities::convert_point_to_array(p3) == std::array<double,3> {{1,2,3}});
 
   // Test coordinate system
   CHECK(Utilities::string_to_coordinate_system("cartesian") == CoordinateSystem::cartesian);
@@ -242,8 +242,8 @@ TEST_CASE("WorldBuilder Utilities: string to conversions")
 TEST_CASE("WorldBuilder Utilities: interpolation")
 {
   Utilities::interpolation linear;
-  std::vector<double> x = {0,1,2,6};
-  std::vector<double> y = {10,5,5,35};
+  std::vector<double> x = {{0,1,2,6}};
+  std::vector<double> y = {{10,5,5,35}};
   linear.set_points(x,y,false);
   CHECK(linear(-1) == Approx(15.0));
   CHECK(linear(-0.9) == Approx(14.5));
@@ -429,26 +429,26 @@ TEST_CASE("WorldBuilder Utilities: Point in polygon")
   check_points[8] = Point<2>(11.5,12,cartesian);
 
   std::vector<std::array<bool,2> > awnsers(9);
-  awnsers[0] = {false,false};
-  awnsers[1] = {true,false};
-  awnsers[2] = {true,false};
-  awnsers[3] = {true,false};
-  awnsers[4] = {true,false};
-  awnsers[5] = {false,false};
-  awnsers[6] = {true,false};
-  awnsers[7] = {false,false};
-  awnsers[8] = {false,true};
+  awnsers[0] = {{false,false}};
+  awnsers[1] = {{true,false}};
+  awnsers[2] = {{true,false}};
+  awnsers[3] = {{true,false}};
+  awnsers[4] = {{true,false}};
+  awnsers[5] = {{false,false}};
+  awnsers[6] = {{true,false}};
+  awnsers[7] = {{false,false}};
+  awnsers[8] = {{false,true}};
 
   std::vector<std::array<double,2> > awnsers_signed_distance(9);
-  awnsers_signed_distance[0] = {-std::sqrt(2), -std::sqrt(11 * 11 + 11 * 11)};
-  awnsers_signed_distance[1] = {0,-std::sqrt(10 * 10 + 10 * 10)};
-  awnsers_signed_distance[2] = {0,-std::sqrt(125)};
-  awnsers_signed_distance[3] = {0,-std::sqrt(125)};
-  awnsers_signed_distance[4] = {0,-std::sqrt(50)};
-  awnsers_signed_distance[5] = {-std::sqrt(0.01 * 0.01),-std::sqrt(5 * 5 + 4.99 * 4.99)};
-  awnsers_signed_distance[6] = {1,-std::sqrt(9 * 9 + 9 * 9)};
-  awnsers_signed_distance[7] = {-10.2591422643,-0.3535533906};
-  awnsers_signed_distance[8] = {-9.5524865873,0.3535533906};
+  awnsers_signed_distance[0] = {{-std::sqrt(2), -std::sqrt(11 * 11 + 11 * 11)}};
+  awnsers_signed_distance[1] = {{0,-std::sqrt(10 * 10 + 10 * 10)}};
+  awnsers_signed_distance[2] = {{0,-std::sqrt(125)}};
+  awnsers_signed_distance[3] = {{0,-std::sqrt(125)}};
+  awnsers_signed_distance[4] = {{0,-std::sqrt(50)}};
+  awnsers_signed_distance[5] = {{-std::sqrt(0.01 * 0.01),-std::sqrt(5 * 5 + 4.99 * 4.99)}};
+  awnsers_signed_distance[6] = {{1,-std::sqrt(9 * 9 + 9 * 9)}};
+  awnsers_signed_distance[7] = {{-10.2591422643,-0.3535533906}};
+  awnsers_signed_distance[8] = {{-9.5524865873,0.3535533906}};
 
   for (unsigned int i = 0; i < check_points.size(); ++i)
     {
@@ -479,21 +479,21 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",NULL));
 
   // Test the natural coordinate system
-  Utilities::NaturalCoordinate nca1(std::array<double,3> {1,2,3},*cartesian);
-  CHECK(nca1.get_coordinates() == std::array<double,3> {1,2,3});
-  CHECK(nca1.get_surface_coordinates() == std::array<double,2> {1,2});
+  Utilities::NaturalCoordinate nca1(std::array<double,3> {{1,2,3}},*cartesian);
+  CHECK(nca1.get_coordinates() == std::array<double,3> {{1,2,3}});
+  CHECK(nca1.get_surface_coordinates() == std::array<double,2> {{1,2}});
   CHECK(nca1.get_depth_coordinate() == 3);
 
   Utilities::NaturalCoordinate ncp1(Point<3>(1,2,3,CoordinateSystem::cartesian),*cartesian);
-  CHECK(ncp1.get_coordinates() == std::array<double,3> {1,2,3});
-  CHECK(ncp1.get_surface_coordinates() == std::array<double,2> {1,2});
+  CHECK(ncp1.get_coordinates() == std::array<double,3> {{1,2,3}});
+  CHECK(ncp1.get_surface_coordinates() == std::array<double,2> {{1,2}});
   CHECK(ncp1.get_depth_coordinate() == 3);
 
 
   unique_ptr<CoordinateSystems::Interface> spherical(CoordinateSystems::Interface::create("spherical",NULL));
 
   // Test the natural coordinate system
-  Utilities::NaturalCoordinate nsa1(std::array<double,3> {1,2,3},*spherical);
+  Utilities::NaturalCoordinate nsa1(std::array<double,3> {{1,2,3}},*spherical);
   std::array<double,3> nsa1_array = nsa1.get_coordinates();
   CHECK(nsa1_array[0] == Approx(std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0)));
   CHECK(nsa1_array[1] == Approx(1.1071487178));
@@ -525,12 +525,12 @@ TEST_CASE("WorldBuilder Utilities: Coordinate systems transformations")
     Point<3> spherical(Utilities::cartesian_to_spherical_coordinates(Point<3>(cartesian.get_array(),CoordinateSystem::cartesian)), CoordinateSystem::spherical);
 
     compare_vectors_approx(std::vector<double>(std::begin(spherical.get_array()), std::end(spherical.get_array())),
-                           std::vector<double> {std::sqrt(3*3+4*4+5*5),0.927295218001613,0.7853982});
+    std::vector<double> {{std::sqrt(3*3+4*4+5*5),0.927295218001613,0.7853982}});
 
     Point<3> cartesian_back(Utilities::spherical_to_cartesian_coordinates(spherical.get_array()), CoordinateSystem::cartesian);
 
     compare_vectors_approx(std::vector<double>(std::begin(cartesian_back.get_array()), std::end(cartesian_back.get_array())),
-                           std::vector<double> {3,4,5});
+    std::vector<double> {{3,4,5}});
   }
 
   {
@@ -539,12 +539,12 @@ TEST_CASE("WorldBuilder Utilities: Coordinate systems transformations")
     Point<3> spherical(Utilities::cartesian_to_spherical_coordinates(Point<3>(cartesian.get_array(),CoordinateSystem::cartesian)), CoordinateSystem::spherical);
 
     compare_vectors_approx(std::vector<double>(std::begin(spherical.get_array()), std::end(spherical.get_array())),
-                           std::vector<double> {std::sqrt(2*2+1*1+6*6),-2.6779450446,1.2140629383});
+    std::vector<double> {{std::sqrt(2*2+1*1+6*6),-2.6779450446,1.2140629383}});
 
     Point<3> cartesian_back(Utilities::spherical_to_cartesian_coordinates(spherical.get_array()), CoordinateSystem::cartesian);
 
     compare_vectors_approx(std::vector<double>(std::begin(cartesian_back.get_array()), std::end(cartesian_back.get_array())),
-                           std::vector<double> {-2,-1,6});
+    std::vector<double> {{-2,-1,6}});
   }
 
 
@@ -556,17 +556,17 @@ TEST_CASE("WorldBuilder Utilities: cross product")
   const Point<3> unit_y(0,1,0,cartesian);
   const Point<3> unit_z(0,0,1,cartesian);
 
-  compare_3d_arrays_approx(Utilities::cross_product(unit_x, unit_x).get_array(), std::array<double,3> {0,0,0});
-  compare_3d_arrays_approx(Utilities::cross_product(unit_x, unit_y).get_array(), std::array<double,3> {0,0,1});
-  compare_3d_arrays_approx(Utilities::cross_product(unit_x, unit_z).get_array(), std::array<double,3> {0,-1,0});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_x, unit_x).get_array(), std::array<double,3> {{0,0,0}});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_x, unit_y).get_array(), std::array<double,3> {{0,0,1}});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_x, unit_z).get_array(), std::array<double,3> {{0,-1,0}});
 
-  compare_3d_arrays_approx(Utilities::cross_product(unit_y, unit_x).get_array(), std::array<double,3> {0,0,-1});
-  compare_3d_arrays_approx(Utilities::cross_product(unit_y, unit_y).get_array(), std::array<double,3> {0,0,0});
-  compare_3d_arrays_approx(Utilities::cross_product(unit_y, unit_z).get_array(), std::array<double,3> {1,0,0});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_y, unit_x).get_array(), std::array<double,3> {{0,0,-1}});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_y, unit_y).get_array(), std::array<double,3> {{0,0,0}});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_y, unit_z).get_array(), std::array<double,3> {{1,0,0}});
 
-  compare_3d_arrays_approx(Utilities::cross_product(unit_z, unit_x).get_array(), std::array<double,3> {0,1,0});
-  compare_3d_arrays_approx(Utilities::cross_product(unit_z, unit_y).get_array(), std::array<double,3> {-1,0,0});
-  compare_3d_arrays_approx(Utilities::cross_product(unit_z, unit_z).get_array(), std::array<double,3> {0,0,0});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_z, unit_x).get_array(), std::array<double,3> {{0,1,0}});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_z, unit_y).get_array(), std::array<double,3> {{-1,0,0}});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_z, unit_z).get_array(), std::array<double,3> {{0,0,0}});
 
 
   const double sqrt2 = sqrt(0.5);
@@ -578,23 +578,23 @@ TEST_CASE("WorldBuilder Utilities: cross product")
   const Point<3> unit_xz(sqrt2,0,sqrt2,cartesian);
   const Point<3> unit_yz(0,sqrt2,sqrt2,cartesian);
 
-  compare_3d_arrays_approx(Utilities::cross_product(unit_xy, sqrt2_x).get_array(), std::array<double,3> {0,0,-0.5});
-  compare_3d_arrays_approx(Utilities::cross_product(unit_xy, sqrt2_y).get_array(), std::array<double,3> {0,0,0.5});
-  compare_3d_arrays_approx(Utilities::cross_product(unit_xy, sqrt2_z).get_array(), std::array<double,3> {0.5,-0.5,0});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_xy, sqrt2_x).get_array(), std::array<double,3> {{0,0,-0.5}});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_xy, sqrt2_y).get_array(), std::array<double,3> {{0,0,0.5}});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_xy, sqrt2_z).get_array(), std::array<double,3> {{0.5,-0.5,0}});
 
-  compare_3d_arrays_approx(Utilities::cross_product(unit_xz, sqrt2_x).get_array(), std::array<double,3> {0,0.5,0});
-  compare_3d_arrays_approx(Utilities::cross_product(unit_xz, sqrt2_y).get_array(), std::array<double,3> {-0.5,0,0.5});
-  compare_3d_arrays_approx(Utilities::cross_product(unit_xz, sqrt2_z).get_array(), std::array<double,3> {0,-0.5,0});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_xz, sqrt2_x).get_array(), std::array<double,3> {{0,0.5,0}});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_xz, sqrt2_y).get_array(), std::array<double,3> {{-0.5,0,0.5}});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_xz, sqrt2_z).get_array(), std::array<double,3> {{0,-0.5,0}});
 
-  compare_3d_arrays_approx(Utilities::cross_product(unit_yz, sqrt2_x).get_array(), std::array<double,3> {0,0.5,-0.5});
-  compare_3d_arrays_approx(Utilities::cross_product(unit_yz, sqrt2_y).get_array(), std::array<double,3> {-0.5,0,0});
-  compare_3d_arrays_approx(Utilities::cross_product(unit_yz, sqrt2_z).get_array(), std::array<double,3> {0.5,0,0});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_yz, sqrt2_x).get_array(), std::array<double,3> {{0,0.5,-0.5}});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_yz, sqrt2_y).get_array(), std::array<double,3> {{-0.5,0,0}});
+  compare_3d_arrays_approx(Utilities::cross_product(unit_yz, sqrt2_z).get_array(), std::array<double,3> {{0.5,0,0}});
 
   const Point<3> point1(2,3,4,cartesian);
   const Point<3> point2(5,6,7,cartesian);
 
-  compare_3d_arrays_approx(Utilities::cross_product(point1, point2).get_array(), std::array<double,3> {-3,6,-3});
-  compare_3d_arrays_approx(Utilities::cross_product(point2, point1).get_array(), std::array<double,3> {3,-6,3});
+  compare_3d_arrays_approx(Utilities::cross_product(point1, point2).get_array(), std::array<double,3> {{-3,6,-3}});
+  compare_3d_arrays_approx(Utilities::cross_product(point2, point1).get_array(), std::array<double,3> {{3,-6,3}});
 }
 
 TEST_CASE("WorldBuilder C wrapper")
@@ -676,8 +676,8 @@ TEST_CASE("WorldBuilder Coordinate Systems: Interface")
 
   interface->declare_entries(world.parameters, "", {});
 
-  CHECK(interface->cartesian_to_natural_coordinates(std::array<double,3> {1,2,3}) == std::array<double,3> {1,2,3});
-  CHECK(interface->natural_to_cartesian_coordinates(std::array<double,3> {1,2,3}) == std::array<double,3> {1,2,3});
+  CHECK(interface->cartesian_to_natural_coordinates(std::array<double,3> {{1,2,3}}) == std::array<double,3> {{1,2,3}});
+  CHECK(interface->natural_to_cartesian_coordinates(std::array<double,3> {{1,2,3}}) == std::array<double,3> {{1,2,3}});
 
   CHECK(interface->natural_coordinate_system() == CoordinateSystem::cartesian);
 
@@ -690,8 +690,8 @@ TEST_CASE("WorldBuilder Coordinate Systems: Cartesian")
   //todo:fix
   //cartesian->declare_entries();
 
-  CHECK(cartesian->cartesian_to_natural_coordinates(std::array<double,3> {1,2,3}) == std::array<double,3> {1,2,3});
-  CHECK(cartesian->natural_to_cartesian_coordinates(std::array<double,3> {1,2,3}) == std::array<double,3> {1,2,3});
+  CHECK(cartesian->cartesian_to_natural_coordinates(std::array<double,3> {{1,2,3}}) == std::array<double,3> {{1,2,3}});
+  CHECK(cartesian->natural_to_cartesian_coordinates(std::array<double,3> {{1,2,3}}) == std::array<double,3> {{1,2,3}});
 
   CHECK(cartesian->natural_coordinate_system() == CoordinateSystem::cartesian);
 
@@ -726,11 +726,11 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
   }
   world.parameters.leave_subsection();
 
-  std::array<double,3> spherical_array = spherical->cartesian_to_natural_coordinates(std::array<double,3> {1,2,3});
+  std::array<double,3> spherical_array = spherical->cartesian_to_natural_coordinates(std::array<double,3> {{1,2,3}});
   CHECK(spherical_array[0] == Approx(std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0)));
   CHECK(spherical_array[1] == Approx(1.1071487178));
   CHECK(spherical_array[2] == Approx(0.9302740141));
-  std::array<double,3> cartesian_array = spherical->natural_to_cartesian_coordinates(std::array<double,3> {std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0),1.1071487178,0.9302740141});
+  std::array<double,3> cartesian_array = spherical->natural_to_cartesian_coordinates(std::array<double,3> {{std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0),1.1071487178,0.9302740141}});
   CHECK(cartesian_array[0] == Approx(1));
   CHECK(cartesian_array[1] == Approx(2));
   CHECK(cartesian_array[2] == Approx(3));
@@ -797,10 +797,10 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
   std::unique_ptr<Features::Interface> continental_plate = Features::Interface::create("continental plate", &world1);
 
   // Check continental plate through the world
-  std::array<double,3> position = {0,0,0};
+  std::array<double,3> position = {{0,0,0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
 
-  position = {250e3,500e3,0};
+  position = {{250e3,500e3,0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(150));
   CHECK(world1.temperature(position, 74e3, 10) == Approx(150));
   CHECK(world1.temperature(position, 76e3, 10) == Approx(100));
@@ -830,7 +830,7 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
   CHECK(world1.composition(position, 260e3, 4) == 0.0);
   CHECK(world1.composition(position, 260e3, 5) == 0.0);
 
-  position = {1500e3,1500e3,0};
+  position = {{1500e3,1500e3,0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(20));
   CHECK(world1.temperature(position, 240e3, 10) == Approx(21.3901871732));
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
@@ -854,7 +854,7 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
   CHECK(world1.composition(position, 260e3, 4) == 0.0);
   CHECK(world1.composition(position, 260e3, 5) == 0.0);
 
-  position = {250e3,1750e3,0};
+  position = {{250e3,1750e3,0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
   CHECK(world1.temperature(position, 240e3, 10) == Approx(1659.0985664065));
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
@@ -878,7 +878,7 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
   CHECK(world1.composition(position, 260e3, 4) == 0.0);
   CHECK(world1.composition(position, 260e3, 5) == 0.0);
 
-  position = {750e3,250e3,0};
+  position = {{750e3,250e3,0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(10));
   CHECK(world1.temperature(position, 240e3, 10) == Approx(48.4));
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
@@ -905,7 +905,7 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
   CHECK(world1.composition(position, 260e3, 5) == 0.0);
 
   // the constant layers test
-  position = {1500e3,250e3,0};
+  position = {{1500e3,250e3,0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(10));
   CHECK(world1.temperature(position, 240e3, 10) == Approx(48.4));
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
@@ -984,10 +984,10 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
   std::unique_ptr<Features::Interface> mantle_layer = Features::Interface::create("mantle layer", &world1);
 
   // Check continental plate through the world
-  std::array<double,3> position = {0,0,0};
+  std::array<double,3> position = {{0,0,0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
 
-  position = {250e3,501e3,0};
+  position = {{250e3,501e3,0}};
   CHECK(world1.temperature(position, 0+100e3, 10) == Approx(150));
   CHECK(world1.temperature(position, 240e3+100e3, 10) == Approx(150));
   CHECK(world1.temperature(position, 260e3+100e3, 10) == Approx(1769.6886536946));
@@ -1011,7 +1011,7 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
   CHECK(world1.composition(position, 260e3+200e3, 4) == 0.0);
   CHECK(world1.composition(position, 260e3+200e3, 5) == 0.0);
 
-  position = {1500e3,1500e3,0};
+  position = {{1500e3,1500e3,0}};
   CHECK(world1.temperature(position, 0+150e3, 10) == Approx(20));
   CHECK(world1.temperature(position, 240e3+150e3, 10) == Approx(20));
   CHECK(world1.temperature(position, 260e3+150e3, 10) == Approx(1794.6385365126));
@@ -1035,7 +1035,7 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
   CHECK(world1.composition(position, 260e3+150e3, 4) == 0.0);
   CHECK(world1.composition(position, 260e3+150e3, 5) == 0.0);
 
-  position = {250e3,1750e3,0};
+  position = {{250e3,1750e3,0}};
   CHECK(world1.temperature(position, 0+250e3, 10) == Approx(293.15));
   CHECK(world1.temperature(position, 240e3+250e3, 10) == Approx(1778.5465550447));
   CHECK(world1.temperature(position, 260e3+250e3, 10) == Approx(1845.598526046));
@@ -1059,7 +1059,7 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
   CHECK(world1.composition(position, 260e3+250e3, 4) == 0.0);
   CHECK(world1.composition(position, 260e3+250e3, 5) == 0.0);
 
-  position = {750e3,250e3,0};
+  position = {{750e3,250e3,0}};
   CHECK(world1.temperature(position, 0+300e3, 10) == Approx(10));
   CHECK(world1.temperature(position, 240e3+300e3, 10) == Approx(48.4));
   CHECK(world1.temperature(position, 260e3+300e3, 10) == Approx(1871.6186210824));
@@ -1086,7 +1086,7 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
   CHECK(world1.composition(position, 260e3+300e3, 5) == 0.0);
 
   // the constant layers test
-  position = {1500e3,250e3,0};
+  position = {{1500e3,250e3,0}};
   CHECK(world1.temperature(position, 0+350e3, 10) == Approx(1764.7404561736));
   CHECK(world1.temperature(position, 240e3+350e3, 10) == Approx(1887.4064334793));
   CHECK(world1.temperature(position, 260e3+350e3, 10) == Approx(1898.0055593602));
@@ -1174,7 +1174,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
 
   // Check continental plate through the world
   // 2d
-  std::array<double,2> position_2d = {0,0};
+  std::array<double,2> position_2d = {{0,0}};
   CHECK(world1.temperature(position_2d, 0, 10) == Approx(1600));
   CHECK(world1.temperature(position_2d, 240e3, 10) == Approx(1711.2149738521));
   CHECK(world1.temperature(position_2d, 260e3, 10) == Approx(1720.8246597128));
@@ -1186,7 +1186,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   CHECK(world1.composition(position_2d, 0, 5) == 0.0);
   CHECK(world1.composition(position_2d, 0, 6) == 0.0);
   // 3d
-  std::array<double,3> position = {0,0,0};
+  std::array<double,3> position = {{0,0,0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
   CHECK(world1.temperature(position, 240e3, 10) == Approx(1711.2149738521));
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
@@ -1198,7 +1198,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   CHECK(world1.composition(position, 0, 5) == 0.0);
   CHECK(world1.composition(position, 0, 6) == 0.0);
 
-  position = {250e3,500e3,0};
+  position = {{250e3,500e3,0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(150));
   CHECK(world1.temperature(position, 240e3, 10) == Approx(150));
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
@@ -1212,7 +1212,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   CHECK(world1.composition(position, 0, 5) == 0.0);
   CHECK(world1.composition(position, 0, 6) == 0.0);
 
-  position = {1500e3,1500e3,0};
+  position = {{1500e3,1500e3,0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(20));
   CHECK(world1.temperature(position, 240e3, 10) == Approx(20));
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
@@ -1226,7 +1226,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   CHECK(world1.composition(position, 0, 5) == 0.0);
   CHECK(world1.composition(position, 0, 6) == 0.0);
 
-  position = {250e3,1750e3,0};
+  position = {{250e3,1750e3,0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
   CHECK(world1.temperature(position, 240e3, 10) == Approx(1659.0985664065));
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
@@ -1240,7 +1240,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   CHECK(world1.composition(position, 0, 5) == 0.0);
   CHECK(world1.composition(position, 0, 6) == 0.0);
 
-  position = {750e3,250e3,0};
+  position = {{750e3,250e3,0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(10));
   CHECK(world1.temperature(position, 240e3, 10) == Approx(48.4));
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
@@ -1256,7 +1256,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   CHECK(world1.composition(position, 260e3, 5) == 0.0);
   CHECK(world1.composition(position, 260e3, 6) == 0.0);
 
-  position = {1500e3, 0, 0};
+  position = {{1500e3, 0, 0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
   CHECK(world1.temperature(position, 10, 10) == Approx(303.6570169192));
   CHECK(world1.temperature(position, 240e3, 10) == Approx(1710.9310013));
@@ -1270,20 +1270,20 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   CHECK(world1.composition(position, 0, 6) == 0.0);
 
   // test symmetry
-  position = {1600e3, 0, 0};
+  position = {{1600e3, 0, 0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
   CHECK(world1.temperature(position, 10, 10) == Approx(293.6215585565));
   CHECK(world1.temperature(position, 240e3, 10) == Approx(1711.2149738521));
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
 
-  position = {1400e3, 0, 0};
+  position = {{1400e3, 0, 0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
   CHECK(world1.temperature(position, 10, 10) == Approx(293.6215585565));
   CHECK(world1.temperature(position, 240e3, 10) == Approx(1711.2149738521));
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
 
   // the constant layers test
-  position = {200e3,200e3,0};
+  position = {{200e3,200e3,0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
   CHECK(world1.temperature(position, 240e3, 10) == Approx(1708.6787610897));
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
@@ -1371,7 +1371,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   std::unique_ptr<WorldBuilder::CoordinateSystems::Interface> &coordinate_system = world2.parameters.coordinate_system;
 
   // 2d
-  position_2d = {6371000,0};
+  position_2d = {{6371000,0}};
   CHECK(world2.temperature(position_2d, 0, 10) == Approx(1600));
   CHECK(world2.composition(position_2d, 0, 0) == 0.0);
   CHECK(world2.composition(position_2d, 0, 1) == 0.0);
@@ -1382,7 +1382,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   CHECK(world2.composition(position_2d, 0, 6) == 0.0);
 
   // 3d
-  position = {6371000,0,0};
+  position = {{6371000,0,0}};
   CHECK(world2.temperature(position, 0, 10) == Approx(1600));
   CHECK(world2.composition(position, 0, 0) == 0.0);
   CHECK(world2.composition(position, 0, 1) == 0.0);
@@ -1392,7 +1392,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   CHECK(world2.composition(position, 0, 5) == 0.0);
   CHECK(world2.composition(position, 0, 6) == 0.0);
 
-  position = {6371000, -5 * dtr,-5 * dtr};
+  position = {{6371000, -5 * dtr,-5 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
   CHECK(world2.temperature(position, 0, 10) == Approx(150));
   CHECK(world2.temperature(position, 240e3, 10) == Approx(150));
@@ -1405,7 +1405,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   CHECK(world2.composition(position, 0, 5) == 0.0);
   CHECK(world2.composition(position, 0, 6) == 0.0);
 
-  position = {6371000, 5 * dtr,-5 * dtr};
+  position = {{6371000, 5 * dtr,-5 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
   CHECK(world2.temperature(position, 0, 10) == Approx(20));
   CHECK(world2.temperature(position, 240e3, 10) == Approx(20));
@@ -1420,7 +1420,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   CHECK(world2.composition(position, 0, 5) == 0.0);
   CHECK(world2.composition(position, 0, 6) == 0.0);
 
-  position = {6371000, 5 * dtr,5 * dtr};
+  position = {{6371000, 5 * dtr,5 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
   CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
   CHECK(world2.temperature(position, 240e3, 10) == Approx(1659.0985664065));
@@ -1435,7 +1435,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   CHECK(world2.composition(position, 0, 5) == 0.0);
   CHECK(world2.composition(position, 0, 6) == 0.0);
 
-  position = {6371000, -15 * dtr, -15 * dtr};
+  position = {{6371000, -15 * dtr, -15 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
   CHECK(world2.temperature(position, 0, 10) == Approx(10));
   CHECK(world2.temperature(position, 240e3, 10) == Approx(48.4));
@@ -1452,7 +1452,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   CHECK(world2.composition(position, 260e3, 5) == 0.0);
   CHECK(world2.composition(position, 260e3, 6) == 0.0);
 
-  position = {6371000, 15 * dtr, -19 * dtr};
+  position = {{6371000, 15 * dtr, -19 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
   CHECK(world2.temperature(position, 0, 0) == Approx(293.15));
   CHECK(world2.temperature(position, 10, 10) == Approx(303.6570169192));
@@ -1469,14 +1469,14 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   CHECK(world2.composition(position, 260e3, 6) == 0.0);
 
   // test symmetry
-  position = {6371000, 16 * dtr, -19 * dtr};
+  position = {{6371000, 16 * dtr, -19 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
   CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
   CHECK(world2.temperature(position, 10, 10) == Approx(293.596373966));
   CHECK(world2.temperature(position, 240e3, 10) == Approx(1711.2149738521));
   CHECK(world2.temperature(position, 260e3, 10) == Approx(1720.8246597128));
 
-  position = {6371000, 14 * dtr, -19 * dtr};
+  position = {{6371000, 14 * dtr, -19 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
   CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
   CHECK(world2.temperature(position, 10, 10) == Approx(293.596373966));
@@ -1484,7 +1484,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   CHECK(world2.temperature(position, 260e3, 10) == Approx(1720.8246597128));
 
   // test bend
-  position = {6371000, 12.5 * dtr, -12.5 * dtr};
+  position = {{6371000, 12.5 * dtr, -12.5 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
   CHECK(world2.temperature(position, 0, 0) == Approx(293.15));
   CHECK(world2.temperature(position, 10, 10) == Approx(303.6570169192));
@@ -1502,7 +1502,7 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   std::unique_ptr<Features::Interface> continental_plate = Features::Interface::create("Subducting Plate", &world1);
 
   // Check continental plate through the world
-  std::array<double,3> position = {0,0,800e3};
+  std::array<double,3> position = {{0,0,800e3}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600.0));
   CHECK(world1.temperature(position, 240e3, 10) == Approx(1711.2149738521));
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
@@ -1514,7 +1514,7 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.composition(position, 0, 5) == 0.0);
   CHECK(world1.composition(position, 0, 6) == 0.0);
 
-  position = {250e3,500e3,800e3};
+  position = {{250e3,500e3,800e3}};
   // results strongly dependent on the summation number of the McKenzie temperature.
   CHECK(world1.temperature(position, 0, 10) == Approx(1616.7957367454));
   CHECK(world1.temperature(position, 1, 10) == Approx(1607.4818890612)); // we are in the plate for sure (colder than anywhere in the mantle)
@@ -1562,7 +1562,7 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.composition(position, 0, 6) == 0.0);
 
 
-  position = {250e3,600e3,800e3};
+  position = {{250e3,600e3,800e3}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
   CHECK(world1.temperature(position, 10, 10) == Approx(1600.0044800063));
   CHECK(world1.temperature(position, 100e3, 10) == Approx(1645.4330950743));
@@ -1608,7 +1608,7 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.composition(position, 0, 5) == 0.0);
   CHECK(world1.composition(position, 0, 6) == 0.0);
 
-  position = {650e3,650e3,800e3};
+  position = {{650e3,650e3,800e3}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
   CHECK(world1.temperature(position, 10, 10) == Approx(1600.0044800063));
   CHECK(world1.temperature(position, 100e3, 10) == Approx(4.3590710784));
@@ -1654,7 +1654,7 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.composition(position, 0, 5) == 0.0);
   CHECK(world1.composition(position, 0, 6) == 0.0);
 
-  position = {700e3,675e3,800e3};
+  position = {{700e3,675e3,800e3}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
   CHECK(world1.temperature(position, 10, 10) == Approx(1600.0044800063));
   CHECK(world1.temperature(position, 100e3, 10) == Approx(4.4592312705));
@@ -1703,7 +1703,7 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   std::string file_name2 = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_cartesian.wb";
   WorldBuilder::World world2(file_name2);
 
-  position = {250e3,500e3,800e3};
+  position = {{250e3,500e3,800e3}};
   CHECK(world2.temperature(position, 0, 10) == Approx(1615.4703444765));
   CHECK(world2.composition(position, 0, 0) == 1.0);
   CHECK(world2.temperature(position, 1, 10) == Approx(1602.2389716513));
@@ -1727,7 +1727,7 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_cartesian_2.wb";
   WorldBuilder::World world4(file_name);
 
-  position = {250e3,500e3,800e3};
+  position = {{250e3,500e3,800e3}};
   CHECK(world4.temperature(position, 0, 10) == Approx(-1));
   CHECK(world4.composition(position, 0, 0) == 1.0);
   CHECK(world4.composition(position, 0, 1) == 0.0);
@@ -1806,7 +1806,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   std::unique_ptr<Features::Interface> fault = Features::Interface::create("fault", &world1);
 
   // Check fault plate through the world
-  std::array<double,3> position = {0,0,800e3};
+  std::array<double,3> position = {{0,0,800e3}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
   CHECK(world1.temperature(position, 220e3, 10) == Approx(1701.6589518333));
   CHECK(world1.temperature(position, 230e3, 10) == Approx(965.8099855202));
@@ -1818,7 +1818,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world1.composition(position, 0, 5) == 0.0);
   CHECK(world1.composition(position, 0, 6) == 0.0);
 
-  position = {250e3,500e3,800e3};
+  position = {{250e3,500e3,800e3}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600.0));
   CHECK(world1.temperature(position, 10, 10) == Approx(150));
   CHECK(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(150.0));
@@ -1841,7 +1841,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world1.composition(position, 0, 6) == 0.0);
 
 
-  position = {250e3,250e3,800e3};
+  position = {{250e3,250e3,800e3}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600.0));
   CHECK(world1.temperature(position, 1, 10) == Approx(293.1595620855));
   CHECK(world1.temperature(position, 5, 10) == Approx(293.1978104273));
@@ -1880,19 +1880,19 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world1.composition(position, 0, 5) == 0.0);
   CHECK(world1.composition(position, 0, 6) == 0.0);
 
-  position = {250e3,250e3,800e3};
+  position = {{250e3,250e3,800e3}};
   CHECK(world1.composition(position, 1, 0) == 1.0);
   CHECK(world1.composition(position, 1, 1) == 0.0);
   CHECK(world1.composition(position, 1, 2) == 0.0);
-  position = {250e3,250e3-std::sqrt(2) * 33e3 * 0.5 + 1, 800e3};
+  position = {{250e3,250e3-std::sqrt(2) * 33e3 * 0.5 + 1, 800e3}};
   CHECK(world1.composition(position, 1, 0) == 1.0);
   CHECK(world1.composition(position, 1, 1) == 0.0);
   CHECK(world1.composition(position, 1, 2) == 0.0);
-  position = {250e3,250e3-std::sqrt(2) * 66e3 * 0.5 + 1, 800e3};
+  position = {{250e3,250e3-std::sqrt(2) * 66e3 * 0.5 + 1, 800e3}};
   CHECK(world1.composition(position, 1, 0) == 0.0);
   CHECK(world1.composition(position, 1, 1) == 1.0);
   CHECK(world1.composition(position, 1, 2) == 0.0);
-  position = {250e3,250e3-std::sqrt(2) * 99e3 * 0.5 + 1, 800e3};
+  position = {{250e3,250e3-std::sqrt(2) * 99e3 * 0.5 + 1, 800e3}};
   CHECK(world1.composition(position, 1, 0) == 0.0);
   CHECK(world1.composition(position, 1, 1) == 0.0);
   CHECK(world1.composition(position, 1, 2) == 0.25);
@@ -1902,7 +1902,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   WorldBuilder::World world2(file_name2);
 
   // Check fault plate through the world
-  position = {0,0,800e3};
+  position = {{0,0,800e3}};
   CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
   CHECK(world2.temperature(position, 220e3, 10) == Approx(1701.6589518333));
   CHECK(world2.temperature(position, 230e3, 10) == Approx(100.0));
@@ -1914,7 +1914,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world2.composition(position, 0, 5) == 0.0);
   CHECK(world2.composition(position, 0, 6) == 0.0);
 
-  position = {250e3,500e3,800e3};
+  position = {{250e3,500e3,800e3}};
   CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
   CHECK(world2.temperature(position, 10, 10) == Approx(150));
   CHECK(world2.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(150.0));
@@ -1937,7 +1937,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world2.composition(position, 0, 6) == 0.0);
 
 
-  position = {250e3,250e3,800e3};
+  position = {{250e3,250e3,800e3}};
   CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
   CHECK(world2.temperature(position, 1, 10) == Approx(100.0));
   CHECK(world2.temperature(position, 5, 10) == Approx(100.0));
@@ -1976,19 +1976,19 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world2.composition(position, 0, 5) == 0.0);
   CHECK(world2.composition(position, 0, 6) == 0.0);
 
-  position = {250e3,250e3,800e3};
+  position = {{250e3,250e3,800e3}};
   CHECK(world2.composition(position, 1, 0) == 1.0);
   CHECK(world2.composition(position, 1, 1) == 0.0);
   CHECK(world2.composition(position, 1, 2) == 0.0);
-  position = {250e3,250e3-std::sqrt(2) * 33e3 * 0.5 + 1, 800e3};
+  position = {{250e3,250e3-std::sqrt(2) * 33e3 * 0.5 + 1, 800e3}};
   CHECK(world2.composition(position, 1, 0) == 1.0);
   CHECK(world2.composition(position, 1, 1) == 0.0);
   CHECK(world2.composition(position, 1, 2) == 0.0);
-  position = {250e3,250e3-std::sqrt(2) * 66e3 * 0.5 + 1, 800e3};
+  position = {{250e3,250e3-std::sqrt(2) * 66e3 * 0.5 + 1, 800e3}};
   CHECK(world2.composition(position, 1, 0) == 0.0);
   CHECK(world2.composition(position, 1, 1) == 1.0);
   CHECK(world2.composition(position, 1, 2) == 0.0);
-  position = {250e3,250e3-std::sqrt(2) * 99e3 * 0.5 + 1, 800e3};
+  position = {{250e3,250e3-std::sqrt(2) * 99e3 * 0.5 + 1, 800e3}};
   CHECK(world2.composition(position, 1, 0) == 0.0);
   CHECK(world2.composition(position, 1, 1) == 0.0);
   CHECK(world2.composition(position, 1, 2) == 0.25);
@@ -2003,7 +2003,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   std::unique_ptr<Features::Interface> continental_plate = Features::Interface::create("Fault", &world3);
 
   // Check fault through the world
-  position = {0,0,800e3};
+  position = {{0,0,800e3}};
   CHECK(world3.temperature(position, 0, 10) == Approx(1600.0));
   CHECK(world3.temperature(position, 240e3, 10) == Approx(1711.2149738521));
   CHECK(world3.temperature(position, 260e3, 10) == Approx(1720.8246597128));
@@ -2015,7 +2015,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world3.composition(position, 0, 5) == 0.0);
   CHECK(world3.composition(position, 0, 6) == 0.0);
 
-  position = {250e3,500e3,800e3};
+  position = {{250e3,500e3,800e3}};
   //adibatic temperature
   CHECK(world3.temperature(position, 0, 10) == Approx(1600));
   CHECK(world3.temperature(position, 1, 10) == Approx(1600.0004480001));
@@ -2059,7 +2059,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world3.composition(position, 0, 6) == 0.0);
 
 
-  position = {250e3,600e3,800e3};
+  position = {{250e3,600e3,800e3}};
   CHECK(world3.temperature(position, 0, 10) == Approx(1600));
   CHECK(world3.temperature(position, 10, 10) == Approx(1600.0044800063));
   CHECK(world3.temperature(position, 100e3, 10) == Approx(1.0));
@@ -2105,7 +2105,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world3.composition(position, 0, 5) == 0.0);
   CHECK(world3.composition(position, 0, 6) == 0.0);
 
-  position = {650e3,650e3,800e3};
+  position = {{650e3,650e3,800e3}};
   CHECK(world3.temperature(position, 0, 10) == Approx(4.3590710784));
   CHECK(world3.temperature(position, 10, 10) == Approx(4.3590710784));
   CHECK(world3.temperature(position, 100e3, 10) == Approx(4.3590710784));
@@ -2151,7 +2151,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world3.composition(position, 0, 5) == Approx(0.6409289216));
   CHECK(world3.composition(position, 0, 6) == 0.0);
 
-  position = {700e3,675e3,800e3};
+  position = {{700e3,675e3,800e3}};
   CHECK(world3.temperature(position, 0, 10) == Approx(4.4592312705));
   CHECK(world3.temperature(position, 10, 10) == Approx(4.4592312705));
   CHECK(world3.temperature(position, 100e3, 10) == Approx(4.4592312705));
@@ -2201,7 +2201,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/fault_different_angles_cartesian.wb";
   WorldBuilder::World world4(file_name);
 
-  position = {250e3,501e3,800e3};
+  position = {{250e3,501e3,800e3}};
   CHECK(world4.temperature(position, 0, 10) == Approx(-1));
   CHECK(world4.composition(position, 0, 0) == 1.0);
   CHECK(world4.temperature(position, 1, 10) == Approx(-1));
@@ -2236,47 +2236,47 @@ TEST_CASE("WorldBuilder Features: coordinate interpolation")
     std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/interpolation_none_cartesian.wb";
     WorldBuilder::World world1(file_name);
 
-    std::array<double,3> position = {374e3,875e3,800e3};
+    std::array<double,3> position = {{374e3,875e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(150));
     CHECK(world1.composition(position, 0, 0) == 1.0);
-    position = {376e3,875e3,800e3};
+    position = {{376e3,875e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(1600));
     CHECK(world1.composition(position, 0, 0) == 0.0);
 
-    position = {375e3,874e3,800e3};
+    position = {{375e3,874e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(1600));
     CHECK(world1.composition(position, 0, 0) == 0.0);
-    position = {375e3,876e3,800e3};
+    position = {{375e3,876e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(150));
     CHECK(world1.composition(position, 0, 0) == 1.0);
 
 
-    position = {374e3,625e3,800e3};
+    position = {{374e3,625e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(150));
     CHECK(world1.composition(position, 0, 0) == 1.0);
-    position = {376e3,625e3,800e3};
+    position = {{376e3,625e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(1600));
     CHECK(world1.composition(position, 0, 0) == 0.0);
 
-    position = {375e3,624e3,800e3};
+    position = {{375e3,624e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(150));
     CHECK(world1.composition(position, 0, 0) == 1.0);
-    position = {375e3,626e3,800e3};
+    position = {{375e3,626e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(1600));
     CHECK(world1.composition(position, 0, 0) == 0.0);
 
 
-    position = {638e3,425e3,800e3};
+    position = {{638e3,425e3,800e3}};
     CHECK(world1.temperature(position, 1e3, 10) == Approx(150));
     CHECK(world1.composition(position, 1e3, 0) == 1.0);
-    position = {637e3,425e3,800e3};
+    position = {{637e3,425e3,800e3}};
     CHECK(world1.temperature(position, 10, 10) == Approx(1600));
     CHECK(world1.composition(position, 10, 0) == 0.0);
 
-    position = {625e3,200e3,800e3};
+    position = {{625e3,200e3,800e3}};
     CHECK(world1.temperature(position, 10, 10) == Approx(150));
     CHECK(world1.composition(position, 10, 0) == 1.0);
-    position = {624e3,200e3,800e3};
+    position = {{624e3,200e3,800e3}};
     CHECK(world1.temperature(position, 10, 10) == Approx(1600));
     CHECK(world1.composition(position, 10, 0) == 0.0);
   }
@@ -2285,47 +2285,47 @@ TEST_CASE("WorldBuilder Features: coordinate interpolation")
     std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/interpolation_linear_cartesian.wb";
     WorldBuilder::World world1(file_name);
 
-    std::array<double,3> position = {374e3,875e3,800e3};
+    std::array<double,3> position = {{374e3,875e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(150));
     CHECK(world1.composition(position, 0, 0) == 1.0);
-    position = {376e3,875e3,800e3};
+    position = {{376e3,875e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(1600));
     CHECK(world1.composition(position, 0, 0) == 0.0);
 
-    position = {375e3,874e3,800e3};
+    position = {{375e3,874e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(1600));
     CHECK(world1.composition(position, 0, 0) == 0.0);
-    position = {375e3,876e3,800e3};
+    position = {{375e3,876e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(150));
     CHECK(world1.composition(position, 0, 0) == 1.0);
 
 
-    position = {374e3,625e3,800e3};
+    position = {{374e3,625e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(150));
     CHECK(world1.composition(position, 0, 0) == 1.0);
-    position = {376e3,625e3,800e3};
+    position = {{376e3,625e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(1600));
     CHECK(world1.composition(position, 0, 0) == 0.0);
 
-    position = {375e3,624e3,800e3};
+    position = {{375e3,624e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(150));
     CHECK(world1.composition(position, 0, 0) == 1.0);
-    position = {375e3,626e3,800e3};
+    position = {{375e3,626e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(1600));
     CHECK(world1.composition(position, 0, 0) == 0.0);
 
 
-    position = {638e3,425e3,800e3};
+    position = {{638e3,425e3,800e3}};
     CHECK(world1.temperature(position, 1e3, 10) == Approx(150));
     CHECK(world1.composition(position, 1e3, 0) == 1.0);
-    position = {637e3,425e3,800e3};
+    position = {{637e3,425e3,800e3}};
     CHECK(world1.temperature(position, 10, 10) == Approx(1600));
     CHECK(world1.composition(position, 10, 0) == 0.0);
 
-    position = {625e3,200e3,800e3};
+    position = {{625e3,200e3,800e3}};
     CHECK(world1.temperature(position, 10, 10) == Approx(150));
     CHECK(world1.composition(position, 10, 0) == 1.0);
-    position = {624e3,200e3,800e3};
+    position = {{624e3,200e3,800e3}};
     CHECK(world1.temperature(position, 10, 10) == Approx(1600));
     CHECK(world1.composition(position, 10, 0) == 0.0);
   }
@@ -2334,59 +2334,59 @@ TEST_CASE("WorldBuilder Features: coordinate interpolation")
     std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/interpolation_monotone_spline_cartesian.wb";
     WorldBuilder::World world1(file_name);
 
-    std::array<double,3> position = {374e3,875e3,800e3};
+    std::array<double,3> position = {{374e3,875e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(1600));
     CHECK(world1.composition(position, 0, 0) == 0.0);
-    position = {376e3,875e3,800e3};
+    position = {{376e3,875e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(1600));
     CHECK(world1.composition(position, 0, 0) == 0.0);
-    position = {350e3,900e3,800e3};
+    position = {{350e3,900e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(150));
     CHECK(world1.composition(position, 0, 0) == 1.0);
 
-    position = {375e3,874e3,800e3};
+    position = {{375e3,874e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(1600));
     CHECK(world1.composition(position, 0, 0) == 0.0);
-    position = {375e3,876e3,800e3};
+    position = {{375e3,876e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(1600));
     CHECK(world1.composition(position, 0, 0) == 0.0);
 
 
-    position = {374e3,625e3,800e3};
+    position = {{374e3,625e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(1600));
     CHECK(world1.composition(position, 0, 0) == 0.0);
-    position = {376e3,625e3,800e3};
+    position = {{376e3,625e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(1600));
     CHECK(world1.composition(position, 0, 0) == 0.0);
-    position = {350e3,600e3,800e3};
+    position = {{350e3,600e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(150));
     CHECK(world1.composition(position, 0, 0) == 1.0);
 
-    position = {375e3,624e3,800e3};
+    position = {{375e3,624e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(1600));
     CHECK(world1.composition(position, 0, 0) == 0.0);
-    position = {375e3,626e3,800e3};
+    position = {{375e3,626e3,800e3}};
     CHECK(world1.temperature(position, 0, 10) == Approx(1600));
     CHECK(world1.composition(position, 0, 0) == 0.0);
 
 
-    position = {638e3,425e3,800e3};
+    position = {{638e3,425e3,800e3}};
     CHECK(world1.temperature(position, 10, 10) == Approx(1600));
     CHECK(world1.composition(position, 10, 0) == 0.0);
-    position = {637e3,425e3,800e3};
+    position = {{637e3,425e3,800e3}};
     CHECK(world1.temperature(position, 10, 10) == Approx(1600));
     CHECK(world1.composition(position, 10, 0) == 0.0);
-    position = {617.5e3,445e3,800e3};
+    position = {{617.5e3,445e3,800e3}};
     CHECK(world1.temperature(position, 1e3, 10) == Approx(150));
     CHECK(world1.composition(position, 1e3, 0) == 1.0);
 
-    position = {625e3,200e3,800e3};
+    position = {{625e3,200e3,800e3}};
     CHECK(world1.temperature(position, 10, 10) == Approx(1600));
     CHECK(world1.composition(position, 10, 0) == 0.0);
-    position = {624e3,200e3,800e3};
+    position = {{624e3,200e3,800e3}};
     CHECK(world1.temperature(position, 10, 10) == Approx(1600));
     CHECK(world1.composition(position, 10, 0) == 0.0);
-    position = {607e3,180e3,800e3};
+    position = {{607e3,180e3,800e3}};
     CHECK(world1.temperature(position, 3e3, 10) == Approx(150));
     CHECK(world1.composition(position, 3e3, 0) == 1.0);
   }
@@ -2506,19 +2506,19 @@ TEST_CASE("WorldBuilder Types: Point 2d")
 
   // Test Point operators
 
-  const TYPE point_array(std::array<double,2> {1,2},cartesian);
+  const TYPE point_array(std::array<double,2> {{1,2}},cartesian);
   const TYPE point_explicit(3,4,cartesian);
 
   Types::TYPE type_point_array(point_array, point_array, "test array");
   Types::TYPE type_point_explicit(point_explicit, point_explicit, "test array");
 
-  CHECK(type_point_array.value.get_array() == std::array<double,2> {1,2});
-  CHECK(type_point_explicit.value.get_array() == std::array<double,2> {3,4});
+  CHECK(type_point_array.value.get_array() == std::array<double,2> {{1,2}});
+  CHECK(type_point_explicit.value.get_array() == std::array<double,2> {{3,4}});
 
   // Test multiply operator
   TYPE point = 2 * type_point_array * 1.0;
 
-  CHECK(point.get_array() == std::array<double,2> {2,4});
+  CHECK(point.get_array() == std::array<double,2> {{2,4}});
 
   // Test dot operator
   CHECK(type_point_array * type_point_explicit == 11);
@@ -2526,12 +2526,12 @@ TEST_CASE("WorldBuilder Types: Point 2d")
   // Test add operator
   point = type_point_array + type_point_explicit;
 
-  CHECK(point.get_array() == std::array<double,2> {4,6});
+  CHECK(point.get_array() == std::array<double,2> {{4,6}});
 
   // Test subtract operator
   point = type_point_explicit - type_point_array;
 
-  CHECK(point.get_array() == std::array<double,2> {2,2});
+  CHECK(point.get_array() == std::array<double,2> {{2,2}});
 
   // test the access operator
   CHECK(type_point_array[0] == 1);
@@ -2588,24 +2588,24 @@ TEST_CASE("WorldBuilder Types: Point 3d")
 
   // Test Point operators
 
-  const TYPE point_array(std::array<double,3> {1,2,3},cartesian);
+  const TYPE point_array(std::array<double,3> {{1,2,3}},cartesian);
   const TYPE point_explicit(4,5,6,cartesian);
 
   Types::TYPE type_point_array(point_array, point_array, "test array");
   Types::TYPE type_point_explicit(point_explicit, point_explicit, "test array");
 
-  CHECK(type_point_array.value.get_array() == std::array<double,3> {1,2,3});
-  CHECK(type_point_explicit.value.get_array() == std::array<double,3> {4,5,6});
+  CHECK(type_point_array.value.get_array() == std::array<double,3> {{1,2,3}});
+  CHECK(type_point_explicit.value.get_array() == std::array<double,3> {{4,5,6}});
 
   // Test multiply operator
   TYPE point = 2 * type_point_array;
 
-  CHECK(point.get_array() == std::array<double,3> {2,4,6});
+  CHECK(point.get_array() == std::array<double,3> {{2,4,6}});
 
   // Test multiply operator
   point = type_point_array * 2;
 
-  CHECK(point.get_array() == std::array<double,3> {2,4,6});
+  CHECK(point.get_array() == std::array<double,3> {{2,4,6}});
 
   // Test dot operator
   CHECK(type_point_array * type_point_explicit == 32);
@@ -2613,12 +2613,12 @@ TEST_CASE("WorldBuilder Types: Point 3d")
   // Test add operator
   point = type_point_array + type_point_explicit;
 
-  CHECK(point.get_array() == std::array<double,3> {5,7,9});
+  CHECK(point.get_array() == std::array<double,3> {{5,7,9}});
 
   // Test subtract operator
   point = type_point_explicit - type_point_array;
 
-  CHECK(point.get_array() == std::array<double,3> {3,3,3});
+  CHECK(point.get_array() == std::array<double,3> {{3,3,3}});
 
   // test the access operator
   CHECK(type_point_array[0] == 1);
@@ -2658,7 +2658,7 @@ TEST_CASE("WorldBuilder Types: Coordinate System")
 TEST_CASE("WorldBuilder Types: PluginSystem")
 {
 #define TYPE PluginSystem
-  Types::TYPE type("test", Features::ContinentalPlate::declare_entries, std::vector<std::string> {"test required"}, false);
+  Types::TYPE type("test", Features::ContinentalPlate::declare_entries, std::vector<std::string> {{"test required"}}, false);
   CHECK(type.default_value == "test");
   CHECK(type.required_entries[0] == "test required");
   CHECK(type.allow_multiple == false);
@@ -5736,7 +5736,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     const double dtr = Utilities::const_pi/180.0;
     // slab goes down and up again
     // origin
-    std::array<double,3> position = {6371000 - 0, 0 * dtr, 0 * dtr};
+    std::array<double,3> position = {{6371000 - 0, 0 * dtr, 0 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
     CHECK(world.temperature(position, 0, 10) == Approx(0));
     CHECK(world.temperature(position, 1, 10) == 0);
@@ -5744,7 +5744,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     CHECK(world.temperature(position, 210e3, 10) == Approx(1696.9009710498));
 
     // ~330 km
-    position = {6371000 - 0, 0 * dtr, -3 * dtr};
+    position = {{6371000 - 0, 0 * dtr, -3 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
     CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
     CHECK(world.temperature(position, 50e3, 10) == Approx(1622.5575343016));
@@ -5754,7 +5754,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
 
 
     // ~1100 km
-    position = {6371000 - 0, 0 * dtr, -10 * dtr};
+    position = {{6371000 - 0, 0 * dtr, -10 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
     CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
     CHECK(world.temperature(position, 95e3, 10) == Approx(1643.1311005134));
@@ -5764,7 +5764,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
 
 
     // ~2200 km
-    position = {6371000 - 0, 0 * dtr, -20 * dtr};
+    position = {{6371000 - 0, 0 * dtr, -20 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
     CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
     CHECK(world.temperature(position, 1, 10) == 0.0);
@@ -5780,7 +5780,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
 
     const double dtr = Utilities::const_pi/180.0;
     // origin
-    std::array<double,3> position = {6371000 - 0, 0 * dtr, 0 * dtr};
+    std::array<double,3> position = {{6371000 - 0, 0 * dtr, 0 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
     CHECK(world.temperature(position, 0, 10) == Approx(0.0));
     CHECK(world.temperature(position, 1, 10) == 0);
@@ -5788,7 +5788,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     CHECK(world.temperature(position, 210e3, 10) == Approx(1696.9009710498));
 
     // ~330 km
-    position = {6371000 - 0, 0 * dtr, -3 * dtr};
+    position = {{6371000 - 0, 0 * dtr, -3 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
     CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
     CHECK(world.temperature(position, 50e3, 10) == Approx(1622.5575343016));
@@ -5798,7 +5798,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
 
 
     // ~1100 km
-    position = {6371000 - 0, 0 * dtr, -10 * dtr};
+    position = {{6371000 - 0, 0 * dtr, -10 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
     CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
     CHECK(world.temperature(position, 150e3, 10) == Approx(1668.6311660012));
@@ -5808,7 +5808,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
 
 
     // ~1100 km
-    position = {6371000 - 0, 0 * dtr, -20 * dtr};
+    position = {{6371000 - 0, 0 * dtr, -20 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
     CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
     CHECK(world.temperature(position, 350e3, 10) == Approx(1764.7404561736));

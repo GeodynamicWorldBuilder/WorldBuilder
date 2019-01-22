@@ -28,15 +28,15 @@ namespace WorldBuilder
   template<>
   Point<3>::Point(const CoordinateSystem coordinate_system_)
     :
-    point({0,0,0}),
-        coordinate_system(coordinate_system_)
+    point({{0,0,0}}),
+  coordinate_system(coordinate_system_)
   {}
 
   template<>
   Point<2>::Point(const CoordinateSystem coordinate_system_)
     :
-    point({0,0}),
-        coordinate_system(coordinate_system_)
+    point({{0,0}}),
+  coordinate_system(coordinate_system_)
   {}
 
   template<int dim>
@@ -64,15 +64,15 @@ namespace WorldBuilder
   template<>
   Point<2>::Point(const double x, const double y, const CoordinateSystem coordinate_system_)
     :
-    point({x,y}),
-        coordinate_system(coordinate_system_)
+    point({{x,y}}),
+  coordinate_system(coordinate_system_)
   {}
 
   template<>
   Point<3>::Point(const double /*x*/, const double /*y*/, CoordinateSystem coordinate_system_)
     :
-    point({std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(), std::numeric_limits<double>::signaling_NaN()}),
-        coordinate_system(coordinate_system_)
+    point({{std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(), std::numeric_limits<double>::signaling_NaN()}}),
+  coordinate_system(coordinate_system_)
   {
     WBAssertThrow(false,"Can't use the 2d constructor in 3d.");
   }
@@ -81,8 +81,8 @@ namespace WorldBuilder
   template<>
   Point<2>::Point(const double /*x*/, const double /*y*/, const double /*z*/, CoordinateSystem coordinate_system_)
     :
-    point({std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN()}),
-        coordinate_system(coordinate_system_)
+    point({{std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN()}}),
+  coordinate_system(coordinate_system_)
   {
     WBAssertThrow(false,"Can't use the 3d constructor in 2d.");
   }
@@ -91,8 +91,8 @@ namespace WorldBuilder
   template<>
   Point<3>::Point(const double x, const double y, const double z, CoordinateSystem coordinate_system_)
     :
-    point({x,y,z}),
-        coordinate_system(coordinate_system_)
+    point({{x,y,z}}),
+  coordinate_system(coordinate_system_)
   {}
 
 

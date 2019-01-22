@@ -44,9 +44,9 @@ namespace WorldBuilder
           :
           min_depth(NaN::DSNAN),
           max_depth(NaN::DSNAN),
-          top_temperature(NaN::DSNAN),
-          bottom_temperature(NaN::DSNAN),
-          spreading_velocity(NaN::DSNAN),
+          //top_temperature(NaN::DSNAN),
+          //bottom_temperature(NaN::DSNAN),
+          //spreading_velocity(NaN::DSNAN),
           operation("")
         {
           this->world = world_;

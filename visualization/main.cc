@@ -45,8 +45,8 @@ void project_on_sphere(double radius, double &x_, double &y_, double &z_)
   double x = x_;
   double y = y_;
   double z = z_;
-  const WorldBuilder::Point<3> in_point(std::array<double,3> {x,y,z}, WorldBuilder::CoordinateSystem::cartesian);
-  WorldBuilder::Point<3> output_point(std::array<double,3> {0,0,0}, WorldBuilder::CoordinateSystem::cartesian);
+  const WorldBuilder::Point<3> in_point(std::array<double,3> {{x,y,z}}, WorldBuilder::CoordinateSystem::cartesian);
+  WorldBuilder::Point<3> output_point(std::array<double,3> {{0,0,0}}, WorldBuilder::CoordinateSystem::cartesian);
   double r = in_point.norm();
   double theta = std::atan2(in_point[1],in_point[0]);
   double phi = std::acos(in_point[2]/r);
@@ -1319,7 +1319,7 @@ int main(int argc, char **argv)
       #pragma omp parallel for num_threads(number_of_threads)
       for (unsigned int i = 0; i < n_p; ++i)
         {
-          std::array<double,2> coords = {grid_x[i], grid_z[i]};
+          std::array<double,2> coords = {{grid_x[i], grid_z[i]}};
           temp_vector[i] = world->temperature(coords, grid_depth[i], gravity);
         }
     }
@@ -1328,7 +1328,7 @@ int main(int argc, char **argv)
       #pragma omp parallel for num_threads(number_of_threads)
       for (unsigned int i = 0; i < n_p; ++i)
         {
-          std::array<double,3> coords = {grid_x[i], grid_y[i], grid_z[i]};
+          std::array<double,3> coords = {{grid_x[i], grid_y[i], grid_z[i]}};
           temp_vector[i] = world->temperature(coords, grid_depth[i], gravity);
         }
     }
@@ -1356,7 +1356,7 @@ int main(int argc, char **argv)
           #pragma omp parallel for num_threads(number_of_threads)
           for (unsigned int i = 0; i < n_p; ++i)
             {
-              std::array<double,2> coords = {grid_x[i], grid_z[i]};
+              std::array<double,2> coords = {{grid_x[i], grid_z[i]}};
               temp_vector[i] =  world->composition(coords, grid_depth[i], c);
             }
         }
@@ -1365,7 +1365,7 @@ int main(int argc, char **argv)
           #pragma omp parallel for num_threads(number_of_threads)
           for (unsigned int i = 0; i < n_p; ++i)
             {
-              std::array<double,3> coords = {grid_x[i], grid_y[i], grid_z[i]};
+              std::array<double,3> coords = {{grid_x[i], grid_y[i], grid_z[i]}};
               temp_vector[i] =  world->composition(coords, grid_depth[i], c);
             }
         }

@@ -37,11 +37,6 @@ namespace WorldBuilder
   namespace Features
   {
     MantleLayer::MantleLayer(WorldBuilder::World *world_)
-      :
-      temperature_submodule_constant_depth(NaN::DSNAN),
-      temperature_submodule_constant_temperature(NaN::DSNAN),
-      composition_submodule_constant_depth(NaN::DSNAN),
-      composition_submodule_constant_composition(NaN::ISNAN)
     {
       this->world = world_;
       this->name = "mantle layer";
