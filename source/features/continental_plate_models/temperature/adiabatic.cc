@@ -132,8 +132,8 @@ namespace WorldBuilder
                                    const double depth,
                                    const double gravity_norm,
                                    double temperature,
-                                   const double feature_min_depth,
-                                   const double feature_max_depth) const
+                                   const double,
+                                   const double) const
         {
 
           if (depth <= max_depth && depth >= min_depth)

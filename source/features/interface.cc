@@ -86,13 +86,15 @@ namespace WorldBuilder
     }
     void
     Interface::declare_interface_entries(Parameters &prm,
-                                         const CoordinateSystem coordinate_system)
+                                         const CoordinateSystem )
     {
       this->coordinates = prm.get_vector<Point<2> >("coordinates");
     }
 
     void
-    Interface::get_coordinates(const std::string name, Parameters &prm, const CoordinateSystem coordinate_system)
+    Interface::get_coordinates(const std::string,
+                               Parameters &prm,
+                               const CoordinateSystem coordinate_system)
     {
 
       coordinates = prm.get_vector<Point<2> >("coordinates");

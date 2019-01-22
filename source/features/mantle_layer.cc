@@ -37,11 +37,6 @@ namespace WorldBuilder
   namespace Features
   {
     MantleLayer::MantleLayer(WorldBuilder::World *world_)
-      :
-      temperature_submodule_constant_depth(NaN::DSNAN),
-      temperature_submodule_constant_temperature(NaN::DSNAN),
-      composition_submodule_constant_depth(NaN::DSNAN),
-      composition_submodule_constant_composition(NaN::ISNAN)
     {
       this->world = world_;
       this->name = "mantle layer";
@@ -55,7 +50,7 @@ namespace WorldBuilder
     void
     MantleLayer::declare_entries(Parameters &prm,
                                  const std::string &,
-                                 const std::vector<std::string> &required_entries)
+                                 const std::vector<std::string> &)
     {
       prm.declare_entry("min depth", Types::Double(0),
                         "The depth to which this feature is present");

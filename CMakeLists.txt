@@ -3,44 +3,8 @@ cmake_minimum_required (VERSION 2.6)
 project(WorldBuilder C CXX Fortran)
 
 # load in version info and export it
-FILE(STRINGS "${CMAKE_SOURCE_DIR}/VERSION" WORLD_BUILDER_VERSION LIMIT_COUNT 1)
-
-string(REPLACE "-" "." VERSION_LIST_TEMP ${WORLD_BUILDER_VERSION})
-string(REPLACE "." ";" VERSION_LIST ${VERSION_LIST_TEMP})
-list(LENGTH VERSION_LIST VERSION_LENGTH)
-list(GET VERSION_LIST 0 WORLD_BUILDER_VERSION_MAJOR)
-list(GET VERSION_LIST 1 WORLD_BUILDER_VERSION_MINOR)
-list(GET VERSION_LIST 2 WORLD_BUILDER_VERSION_PATCH)
-if (${VERSION_LENGTH} GREATER 3)
-list(GET VERSION_LIST 3 WORLD_BUILDER_VERSION_LABEL)
-endif()
-# the commit's SHA1, and whether the building workspace was dirty or not
-find_package(Git)
-execute_process(COMMAND
-  "${GIT_EXECUTABLE}" describe --match=NeVeRmAtCh --always --abbrev=40 --dirty
-  WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-  OUTPUT_VARIABLE GIT_SHA1
-  ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-execute_process(COMMAND
-  "${GIT_EXECUTABLE}" rev-parse --abbrev-ref HEAD
-  WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-  OUTPUT_VARIABLE GIT_BRANCH
-  ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-# the date of the commit
-execute_process(COMMAND
-  "${GIT_EXECUTABLE}" log -1 --format=%ad --date=local
-  WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-  OUTPUT_VARIABLE GIT_DATE
-  ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-# the subject of the commit
-execute_process(COMMAND
-  "${GIT_EXECUTABLE}" log -1 --format=%s
-  WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-  OUTPUT_VARIABLE GIT_COMMIT_SUBJECT
-  ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
+SET(WORLD_BUILDER_SOURCE_DIR ${CMAKE_SOURCE_DIR})
+INCLUDE("${CMAKE_SOURCE_DIR}/cmake/version.cmake")
 
 message(STATUS "Building the Geodynamic World Builder version ${WORLD_BUILDER_VERSION} in ${CMAKE_BUILD_TYPE} mode")
 
@@ -65,10 +29,14 @@ ADD_CUSTOM_TARGET(indent
 
 
 if (NOT MSVC AND NOT APPLE)
-   SET(CMAKE_CXX_FLAGS "-std=c++11 -fopenmp -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Wswitch -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing")
+   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER MATCHES "[Cc]lang")
+       SET(CMAKE_CXX_FLAGS "-std=c++11 -fopenmp -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Wswitch -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing")
+   else()
+       SET(CMAKE_CXX_FLAGS "-std=c++11 -fopenmp -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing")
+   endif()
    SET(CMAKE_EXE_LINKER_FLAGS "-lstdc++")
 elseif(APPLE)
-   SET(CMAKE_CXX_FLAGS "-std=c++11 -Xpreprocessor -fopenmp -lomp ${OpenMP_CXX_FLAGS} -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Wswitch -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -undefined dynamic_lookup -stdlib=libc++")
+   SET(CMAKE_CXX_FLAGS "-std=c++11 -Xpreprocessor -fopenmp ${OpenMP_CXX_FLAGS} -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -stdlib=libc++")
    SET(CMAKE_EXE_LINKER_FLAGS "-lc++${OpenMP_EXE_LINKER_FLAGS}") #-stdlib=libc++")
 else()
     SET(CMAKE_CXX_FLAGS "/W3")
@@ -106,7 +74,11 @@ add_library(WorldBuilder ${SOURCES})
 add_executable(WorldBuilderApp "${CMAKE_CURRENT_SOURCE_DIR}/app/main.cc")
 add_executable(WorldBuilderVisualization "${CMAKE_CURRENT_SOURCE_DIR}/visualization/main.cc")
 target_link_libraries (WorldBuilderApp WorldBuilder) 
-target_link_libraries (WorldBuilderVisualization WorldBuilder) 
+if(NOT APPLE)
+  target_link_libraries (WorldBuilderVisualization WorldBuilder) 
+else()
+  target_link_libraries (WorldBuilderVisualization WorldBuilder omp) 
+endif()
 
 # binary:
 install (TARGETS WorldBuilder EXPORT WorldBuilder  DESTINATION bin)

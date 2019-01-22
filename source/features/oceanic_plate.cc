@@ -56,7 +56,7 @@ namespace WorldBuilder
     void
     OceanicPlate::declare_entries(Parameters &prm,
                                   const std::string &,
-                                  const std::vector<std::string> &required_entries)
+                                  const std::vector<std::string> &)
     {
       prm.declare_entry("min depth", Types::Double(0),
                         "The depth to which this feature is present");

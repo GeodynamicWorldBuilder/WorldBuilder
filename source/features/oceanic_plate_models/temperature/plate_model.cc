@@ -148,8 +148,8 @@ namespace WorldBuilder
                                     const double depth,
                                     const double gravity_norm,
                                     double temperature_,
-                                    const double feature_min_depth,
-                                    const double feature_max_depth) const
+                                    const double,
+                                    const double) const
         {
 
           double temperature = temperature_;
