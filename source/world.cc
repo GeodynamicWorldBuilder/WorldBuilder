@@ -123,10 +123,15 @@ namespace WorldBuilder
                   "The major and minor version combination (for major version 0) or the major "
                   "version (for major versions after 0) for which is input file was written "
                   "is not the same as the version of the World Builder you are running. This means "
-                  "That there may have been incompatible changes made between the versions. "
+                  "That there may have been incompatible changes made between the versions. \n\n"
                   "Verify those changes and wheter they affect your model. If this is not "
-                  "the case, adjust the version number in the input file. The provided version "
-                  "number is \"" << prm.get<std::string>("version") << "\".");
+                  "the case, adjust the version number in the input file. \n\nThe provided version "
+                  "number is \"" << prm.get<std::string>("version") << "\", while the used world builder "
+                  "has  (major.minor) version \"" << Version::MAJOR << "." << Version::MINOR << "\". "
+                  "If you created this file from scratch, fill set the version number to \"" <<
+                  Version::MAJOR << "." << Version::MINOR << "\" to continue. If you got the world builder "
+                  "file from somewhere, make sure that the output is what you expect it to be, because "
+                  "backwards incompatible changes may have been made to the code.");
 
     /**
      * Seconly load the coordinate system parameters.
