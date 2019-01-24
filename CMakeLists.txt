@@ -11,14 +11,14 @@ message(STATUS "Building the Geodynamic World Builder version ${WORLD_BUILDER_VE
 set (WORLD_BUILDER_SOURCE_DIR ${PROJECT_SOURCE_DIR})
 
 # generate version.cc
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/source/config.cc.in" "${PROJECT_SOURCE_DIR}/source/config.cc" @ONLY)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/source/config.cc.in" "${CMAKE_BINARY_DIR}/source/config.cc" @ONLY)
 
 
 # Add include directory
 include_directories("include/" "tests/") 
 
 # Add source directory
-file(GLOB_RECURSE SOURCES "source/*.cc" "source/*.f90")
+file(GLOB_RECURSE SOURCES "source/*.cc" "source/*.f90" "${CMAKE_BINARY_DIR}/source/*.cc")
 
 # Provide "indent" target for indenting all headers and source files
 ADD_CUSTOM_TARGET(indent
