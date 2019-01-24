@@ -35,13 +35,14 @@ file(TO_NATIVE_PATH "${TEST_OUTPUT}" TEST_NATIVE_OUTPUT)
 file(TO_NATIVE_PATH "${TEST_REFERENCE}" TEST_NATIVE_REFERENCE)
 
 FIND_PROGRAM(DIFF_EXECUTABLE
-	     NAMES diff FC
+	     NAMES numdiff diff FC
 	     HINTS ${DIFF_DIR}
 	     PATH_SUFFIXES bin
 	     )
 
  IF(NOT DIFF_EXECUTABLE MATCHES "-NOTFOUND")
 	 SET(TEST_DIFF ${DIFF_EXECUTABLE})
+         message("found diff program: ${DIFF_EXECUTABLE}")
  ELSE()
 	     MESSAGE(FATAL_ERROR
 		     "Could not find diff or fc. This is required for running the testsuite.\n"
@@ -70,9 +71,13 @@ ENDIF()
 
 # now compare the output with the reference
 execute_process(
-	COMMAND ${CMAKE_COMMAND} -E compare_files ${TEST_NATIVE_OUTPUT} ${TEST_NATIVE_REFERENCE}
+        COMMAND ${TEST_DIFF} -q ${TEST_NATIVE_OUTPUT} ${TEST_NATIVE_REFERENCE}
   RESULT_VARIABLE TEST_RESULT
   )
+#execute_process(
+#	COMMAND ${CMAKE_COMMAND} -E compare_files ${TEST_NATIVE_OUTPUT} ${TEST_NATIVE_REFERENCE}
+#  RESULT_VARIABLE TEST_RESULT
+#  )
 
 # again, if return value is !=0 scream and shout
 if( TEST_RESULT )
