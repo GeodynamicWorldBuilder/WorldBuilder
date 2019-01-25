@@ -46,7 +46,7 @@ cache:
 
 matrix:
   include:
-    - name: "linux gcc6 coverage"
+    - name: "linux gcc 6 coverage"
       sudo: true
       os: linux
       compiler: 
@@ -65,7 +65,7 @@ matrix:
             - gfortran-6
             - cmake
 
-    - name: "linux gcc release"
+    - name: "linux gcc 6 release"
       sudo: false
       compiler:
         - g++-6
@@ -81,7 +81,25 @@ matrix:
             - g++-6
             - gfortran
             - cmake
+
+    - name: "linux gcc 4.9 debug"
+      sudo: false
+      compiler:
+        - g++-4.9
+      env:
+         - MAKE_FILE_GENERATOR="Unix Makefiles"
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug"
+         - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9 && FC=gfortran"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-4.9
+            - gfortran
+            - cmake
        
+
     - name: "linux clang"
       sudo: false
       os: linux

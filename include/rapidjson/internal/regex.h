@@ -732,7 +732,7 @@ namespace internal
         std::memset(stateSet_, 0, stateSetSize);
 
         bool matched = AddState(*current, regex_.root_);
-        unsigned codepoint;
+        unsigned codepoint = 0;
         while (!current->Empty() && (codepoint = ds.Take()) != 0)
           {
             std::memset(stateSet_, 0, stateSetSize);
