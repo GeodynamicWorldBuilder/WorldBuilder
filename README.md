@@ -14,7 +14,7 @@ For more information see the the [GWB site](https://geodynamicworldbuilder.githu
 ## What do I do when I have a question or want to request a feature?
 If you have a question about the code and you can not find the awnser easily in the documentation or the question is already raised as an [issue](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues), please let us know through making an [issue on github](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/new). This is also the prefered method for asking for new features for the GWB.
 
-## I found a mistake in the documetation or code, what should I do?
+## I found a mistake in the documentation or code, what should I do?
 Please do not keep it to yourself and let us know. Others will also profit from mistakes being found and fixed. Even if it is just a typo in the documentation feel free to raise an issue or, even better, make a pull request to fix the issue.
 
 ## How to cite?
