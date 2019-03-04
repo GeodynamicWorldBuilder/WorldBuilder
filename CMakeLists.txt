@@ -6,6 +6,8 @@ project(WorldBuilder C CXX Fortran)
 SET(WORLD_BUILDER_SOURCE_DIR ${CMAKE_SOURCE_DIR})
 INCLUDE("${CMAKE_SOURCE_DIR}/cmake/version.cmake")
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 message(STATUS "Building the Geodynamic World Builder version ${WORLD_BUILDER_VERSION} in ${CMAKE_BUILD_TYPE} mode")
 
 set (WORLD_BUILDER_SOURCE_DIR ${PROJECT_SOURCE_DIR})
