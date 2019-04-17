@@ -10,23 +10,27 @@ configuration:
   - Debug
 
 environment:
-  CMAKE_GENERATOR: -G"MSYS Makefiles"
+  CMAKE_GENERATOR: -G"MinGW Makefiles"
   VCPKG_ARCH: x64-windows
 
 init:
   - cmd: set PATH=%MINGW_DIR%;%PATH%
+  - cmd: ls C:\msys64\mingw64\bin
+  - cmd: ls C:\msys64\usr\bin
 
 before_build:
 
 build_script:
-  - set PATH=C:\msys64\mingw64\bin;C:\msys64\usr\bin;%PATH%
+  - set PATH=%PATH%;C:\msys64\mingw64\bin;C:\msys64\usr\bin\
   - pacman --noconfirm -Syu
   - pacman --noconfirm -S dos2unix
+  - which cmake
+  - which make
   - mkdir install
   - mkdir build
   - cd build
-  - cmake %CMAKE_GENERATOR% -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_VERBOSE_MAKEFILE=ON -DBUILD_SHARED_LIBS=ON ..
-  - make -j 2 
+  - cmake %CMAKE_GENERATOR% -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_SH="CMAKE_SH-NOTFOUND" -DCMAKE_VERBOSE_MAKEFILE=ON .. 
+  - cmake --build . --config %configuration%
   - cd bin
   - WorldBuilderApp.exe
   - cd ..  
