@@ -76,11 +76,14 @@ set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/mod)
 add_library(WorldBuilder ${SOURCES})
 add_executable(WorldBuilderApp "${CMAKE_CURRENT_SOURCE_DIR}/app/main.cc")
 add_executable(WorldBuilderVisualization "${CMAKE_CURRENT_SOURCE_DIR}/visualization/main.cc")
-target_link_libraries (WorldBuilderApp WorldBuilder) 
+
+# Make sure that the whole library is loaded, so the registration is done correctly.
+SET(GWB_LIBRARY_WHOLE -Wl,--whole-archive WorldBuilder -Wl,--no-whole-archive)
+target_link_libraries (WorldBuilderApp ${GWB_LIBRARY_WHOLE}) 
 if(NOT APPLE)
-  target_link_libraries (WorldBuilderVisualization WorldBuilder) 
+  target_link_libraries (WorldBuilderVisualization ${GWB_LIBRARY_WHOLE}) 
 else()
-  target_link_libraries (WorldBuilderVisualization WorldBuilder omp) 
+  target_link_libraries (WorldBuilderVisualization ${GWB_LIBRARY_WHOLE} omp) 
 endif()
 
 # binary:
