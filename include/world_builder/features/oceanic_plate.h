@@ -30,12 +30,6 @@ namespace WorldBuilder
 {
   namespace Features
   {
-
-    /**
-     * Register header file
-     */
-    WB_REGISTER_FEATURE_HEADER(OceanicPlate)
-
     /**
      * This class represents a oceanic plate and can implement submodules
      * for temperature and composition. These submodules determine what

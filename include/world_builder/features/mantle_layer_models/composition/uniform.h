@@ -33,11 +33,6 @@ namespace WorldBuilder
       namespace Composition
       {
         /**
-         * Register header file
-         */
-        WB_REGISTER_FEATURE_MANTLE_LAYER_COMPOSITION_MODEL_HEADER(Uniform)
-
-        /**
          * This class represents a mantle layer and can implement submodules
          * for temperature and composition. These submodules determine what
          * the returned temperature or composition of the temperature and composition

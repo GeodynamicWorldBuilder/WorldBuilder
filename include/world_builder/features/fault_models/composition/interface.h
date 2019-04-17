@@ -149,7 +149,6 @@ namespace WorldBuilder
          * to ensure that the static variable is actually initialized.
          */
 #define WB_REGISTER_FEATURE_FAULT_COMPOSITION_MODEL(klass,name) \
-  int make_sure_compilation_unit_referenced##klass() { return 0; } \
   class klass##Factory : public ObjectFactory { \
     public: \
       klass##Factory() \
@@ -161,15 +160,6 @@ namespace WorldBuilder
       } \
   }; \
   static klass##Factory global_##klass##Factory;
-
-        /**
-         * A macro which should be in every derived header file to automatically
-         * register it. Because this is a library, we need some extra measures
-         * to ensure that the static variable is actually initialized.
-         */
-#define WB_REGISTER_FEATURE_FAULT_COMPOSITION_MODEL_HEADER(klass) \
-  extern int make_sure_compilation_unit_referenced##klass(); \
-  static int never_actually_used##klass = make_sure_compilation_unit_referenced##klass();
 
       }
     }
