@@ -18,11 +18,9 @@ foreach(test_source ${UNIT_TEST_SOURCES})
     else()
       SET(GWB_LIBRARY_WHOLE -Wl,-force_load WorldBuilder)
     endif()
-	#if(NOT APPLE)
-      target_link_libraries(${test_name} ${Boost_LIBRARIES} ${GWB_LIBRARY_WHOLE})
-    #else()
-    #  target_link_libraries(${test_name} ${Boost_LIBRARIES} ${GWB_LIBRARY_WHOLE_APPLE})
-    #endif()
+	
+     target_link_libraries(${test_name} ${Boost_LIBRARIES} ${GWB_LIBRARY_WHOLE})
+
 
 	# Move testing binaries into a testBin directory
         set_target_properties(${test_name} PROPERTIES
