@@ -31,7 +31,7 @@ namespace WorldBuilder
     /**
      * Register header file
      */
-    WB_REGISTER_COORDINATE_SYSTEM_HEADER(Cartesian)
+    //WB_REGISTER_COORDINATE_SYSTEM_HEADER(Cartesian)
 
 
     /**

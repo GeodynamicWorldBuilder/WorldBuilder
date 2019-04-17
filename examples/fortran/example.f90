@@ -8,7 +8,7 @@ IMPLICIT NONE
   INTEGER :: composition_number = 3
   REAL*8 :: composition
   character(len=256) :: file_name = "../../tests/data/continental_plate.wb"//C_NULL_CHAR
-  logical :: has_output_dir = .false.
+  logical(1) :: has_output_dir = .false.
   character(len=256) :: output_dir = "../../doc/manual/"//C_NULL_CHAR
 
   ! Show how to call the functions.

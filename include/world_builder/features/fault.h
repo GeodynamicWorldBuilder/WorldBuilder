@@ -32,12 +32,6 @@ namespace WorldBuilder
 {
   namespace Features
   {
-
-    /**
-     * Register header file
-     */
-    WB_REGISTER_FEATURE_HEADER(Fault)
-
     /**
      * This class represents a fault and can implement submodules
      * for temperature and composition. These submodules determine what

@@ -32,12 +32,6 @@ namespace WorldBuilder
 {
   namespace Features
   {
-
-    /**
-     * Register header file
-     */
-    WB_REGISTER_FEATURE_HEADER(SubductingPlate)
-
     /**
      * This class represents a subducting plate and can implement submodules
      * for temperature and composition. These submodules determine what

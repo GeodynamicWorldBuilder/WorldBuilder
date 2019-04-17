@@ -33,11 +33,6 @@ namespace WorldBuilder
       namespace Temperature
       {
         /**
-         * Register header file
-         */
-        WB_REGISTER_FEATURE_CONTINENTAL_TEMPERATURE_MODEL_HEADER(Linear)
-
-        /**
          * This class represents a oceanic plate and can implement submodules
          * for temperature and composition. These submodules determine what
          * the returned temperature or composition of the temperature and composition
