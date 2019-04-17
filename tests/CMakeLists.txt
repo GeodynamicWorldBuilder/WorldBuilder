@@ -14,7 +14,12 @@ foreach(test_source ${UNIT_TEST_SOURCES})
 
     # Make sure that the whole library is loaded, so the registration is done correctly.
     SET(GWB_LIBRARY_WHOLE -Wl,--whole-archive WorldBuilder -Wl,--no-whole-archive)
-    target_link_libraries(${test_name} ${Boost_LIBRARIES} ${GWB_LIBRARY_WHOLE})
+    SET(GWB_LIBRARY_WHOLE_APPLE -Wl,--all_load WorldBuilder -Wl,--noall_load) 
+	if(NOT APPLE)
+      target_link_libraries(${test_name} ${Boost_LIBRARIES} ${GWB_LIBRARY_WHOLE})
+    else()
+      target_link_libraries(${test_name} ${Boost_LIBRARIES} ${GWB_LIBRARY_WHOLE_APPLE})
+    endif()
 
 	# Move testing binaries into a testBin directory
         set_target_properties(${test_name} PROPERTIES

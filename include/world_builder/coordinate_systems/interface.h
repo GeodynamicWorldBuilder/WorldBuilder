@@ -174,10 +174,10 @@ namespace WorldBuilder
      * register it. Because this is a library, we need some extra measures
      * to ensure that the static variable is actually initialized.
      */
-/*#define WB_REGISTER_COORDINATE_SYSTEM_HEADER(klass) \
-  extern int make_sure_compilation_unit_referenced##klass(); \
-  static int never_actually_used##klass = make_sure_compilation_unit_referenced##klass();
-*/
+    /*#define WB_REGISTER_COORDINATE_SYSTEM_HEADER(klass) \
+      extern int make_sure_compilation_unit_referenced##klass(); \
+      static int never_actually_used##klass = make_sure_compilation_unit_referenced##klass();
+    */
   }
 }
 

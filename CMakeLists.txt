@@ -79,11 +79,12 @@ add_executable(WorldBuilderVisualization "${CMAKE_CURRENT_SOURCE_DIR}/visualizat
 
 # Make sure that the whole library is loaded, so the registration is done correctly.
 SET(GWB_LIBRARY_WHOLE -Wl,--whole-archive WorldBuilder -Wl,--no-whole-archive)
+SET(GWB_LIBRARY_WHOLE_APPLE -Wl,--all_load WorldBuilder -Wl,--noall_load)
 target_link_libraries (WorldBuilderApp ${GWB_LIBRARY_WHOLE}) 
 if(NOT APPLE)
   target_link_libraries (WorldBuilderVisualization ${GWB_LIBRARY_WHOLE}) 
 else()
-  target_link_libraries (WorldBuilderVisualization ${GWB_LIBRARY_WHOLE} omp) 
+  target_link_libraries (WorldBuilderVisualization ${GWB_LIBRARY_WHOLE_APPLE} omp) 
 endif()
 
 # binary:
