@@ -162,7 +162,7 @@ namespace WorldBuilder
                                      coordinate_system);
 
                   const double length = (P1 - P2).norm();
-                  const int parts = std::ceil(length / maximum_distance_between_coordinates);
+                  const int parts = (int)std::ceil(length / maximum_distance_between_coordinates);
                   for (int j = 1; j < parts; j++)
                     {
                       const double x_position3 = i_plane+(double(j)/double(parts));

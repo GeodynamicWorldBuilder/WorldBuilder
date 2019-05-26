@@ -506,11 +506,11 @@ namespace WorldBuilder
 
       for (unsigned int i_section=0; i_section < point_list.size()-1; ++i_section)
         {
-          const double current_section = i_section;
-          const double next_section = i_section+1;
+          const unsigned int current_section = i_section;
+          const unsigned int next_section = i_section+1;
           // translate to orignal coordinates current and next section
-          const double original_current_section = std::floor(global_x_list[i_section]);
-          const double original_next_section = original_current_section + 1;
+          const unsigned int original_current_section = (unsigned int)std::floor(global_x_list[i_section]);
+          const unsigned int original_next_section = original_current_section + 1;
           // see on what side the line P1P2 reference point is. This is based on the determinant
           const double reference_on_side_of_line = (point_list[next_section][0] - point_list[current_section][0])
                                                    * (reference_point[1] - point_list[current_section][1])
@@ -691,7 +691,7 @@ namespace WorldBuilder
               double average_angle = 0.0;
               for (unsigned int i_segment = 0; i_segment < plane_segment_lengths[original_current_section].size(); i_segment++)
                 {
-                  const double current_segment = i_segment;
+                  const unsigned int current_segment = i_segment;
 
                   // compute the angle between the the previous begin and end if
                   // the depth method is angle_at_begin_segment_with_surface.
