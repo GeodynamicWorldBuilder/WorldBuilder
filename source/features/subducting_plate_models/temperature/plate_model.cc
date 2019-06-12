@@ -187,7 +187,7 @@ namespace WorldBuilder
 
           // gravity in original in cm/s^2, here in m/s^2, thickness original in km, here in meter. So 100/1000=0.1
           const double H = specific_heat
-                           / (thermal_expansion_coefficient * gravity_norm * 0.1 * thickness_local);
+                           / (thermal_expansion_coefficient * gravity_norm * thickness_local);
 
           WBAssert(!std::isnan(H), "Internal error: H is not a number: " << H << ".");
 
@@ -205,8 +205,12 @@ namespace WorldBuilder
                              :
                              distance_along_plane)
                             / thickness_local;
-          double temp = exp((x_scaled * sin(average_angle)
-                             - z_scaled * cos(average_angle)) / H);
+          // the paper uses `(x_scaled * sin(average_angle) - z_scaled * cos(average_angle))` to compute the
+          // depth (execpt that you do not use average angles since they only have on angle). On recomputing
+          // their result it seems to me (Menno) that it should have been `(1-z_scaled)` instead of `z_scaled`.
+          // To avoid this whole problem we just use the depth directly since we have that.
+          // todo: get the local thickniss out of H, that prevents an other division.
+          double temp = exp((distance_from_plane / thickness_local)/ H);
 
           WBAssert(!std::isnan(z_scaled), "Internal error: z_scaled is not a number: " << z_scaled << ".");
           WBAssert(!std::isnan(x_scaled), "Internal error: x_scaled is not a number: " << x_scaled << ".");
@@ -222,7 +226,8 @@ namespace WorldBuilder
                      (exp((R - std::pow(R * R + i * i * const_pi * const_pi, 0.5)) * x_scaled))
                      * (sin(i * const_pi * z_scaled));
             }
-          temperature = temp * (potential_mantle_temperature + (surface_temperature - 273.15) * (z_scaled)
+          // todo: investiage wheter this 273.15 should just be the surface temperature.
+          temperature = temp * (potential_mantle_temperature
                                 + 2.0 * (potential_mantle_temperature - 273.15) * sum);
 
           WBAssert(!std::isnan(temperature), "Internal error: temperature is not a number: " << temperature << ".");
