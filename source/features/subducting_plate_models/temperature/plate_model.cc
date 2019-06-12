@@ -117,40 +117,6 @@ namespace WorldBuilder
 
           potential_mantle_temperature = this->world->potential_mantle_temperature;
           surface_temperature = this->world->surface_temperature;
-
-          /*
-           prm.load_entry("depth", true, Types::Double(NaN::DSNAN,"The depth in meters to which the temperature rises (or lowers) to."));
-          temperature_submodule_plate_model_depth = prm.get_double("depth");
-
-          prm.load_entry("top temperature", false, Types::Double(293.15,"The temperature in degree Kelvin a the top of this block. If this value is not set, the "));
-          temperature_submodule_plate_model_top_temperature = prm.get_double("top temperature");
-
-
-          prm.load_entry("bottom temperature", false, Types::Double(NaN::DQNAN,"The temperature in degree Kelvin a the bottom of this block."));
-          temperature_submodule_plate_model_bottom_temperature = prm.get_double("bottom temperature");
-
-          prm.load_entry("ridge points", true,
-                         Types::Array(Types::Point<2>(Point<2>({0,0},coordinate_system),
-                                                      "A 2d point on the line where the subducting ridge is located."),
-                                      "A list of 2d points which define the location of the ridge."));
-          std::vector<Types::Point<2> > temp_ridge_points = prm.get_array<Types::Point<2> >("ridge points");
-
-          const double dtr = prm.coordinate_system->natural_coordinate_system() == spherical ? const_pi / 180.0 : 1.0;
-          WBAssertThrow(temp_ridge_points.size() >= 2,
-                        "Need at least two points to form the ridge of the subducting plate, "
-                        << temp_ridge_points.size() << " points where given.");
-          temperature_submodule_plate_model_ridge_points.resize(temp_ridge_points.size(),Point<2>(coordinate_system));
-          for (unsigned int i = 0; i < temp_ridge_points.size(); ++i)
-            {
-              temperature_submodule_plate_model_ridge_points[i] = temp_ridge_points[i].value * dtr;
-            }
-
-          prm.load_entry("spreading velocity", true, Types::Double(NaN::DSNAN,
-                                                                   "The spreading velocity of the plate in meter per year. "
-                                                                   "This is the velocity with which one side moves away from the ridge."));
-          // directly convert from meter per year to meter per second.
-          temperature_submodule_plate_model_spreading_velocity = prm.get_double("spreading velocity")/31557600;
-           */
         }
 
 
