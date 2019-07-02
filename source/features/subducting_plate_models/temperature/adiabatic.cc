@@ -134,10 +134,11 @@ namespace WorldBuilder
                                    double temperature,
                                    const double ,
                                    const double ,
-                                   const std::map<std::string,double> &) const
+                                   const std::map<std::string,double> &distance_from_planes) const
         {
 
-          if (depth <= max_depth && depth >= min_depth)
+          const double distance_from_plane = distance_from_planes.at("distanceFromPlane");
+          if (distance_from_plane <= max_depth && distance_from_plane >= min_depth)
             {
               const double adabatic_temperature = potential_mantle_temperature *
                                                   std::exp(((thermal_expansion_coefficient * gravity_norm) /

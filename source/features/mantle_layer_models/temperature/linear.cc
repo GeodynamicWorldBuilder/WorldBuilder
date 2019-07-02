@@ -119,7 +119,7 @@ namespace WorldBuilder
 
                 }
 
-              return top_temperature +
+              return top_temperature_local +
                      (depth - min_depth_local) * ((bottom_temperature_local - top_temperature_local) / (max_depth_local - min_depth_local));
 
             }

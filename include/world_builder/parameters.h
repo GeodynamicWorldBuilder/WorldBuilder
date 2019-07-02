@@ -42,6 +42,7 @@ namespace WorldBuilder
     class String;
     class Segment;
     class Array;
+    class Bool;
     class UnsignedInt;
   }
 
