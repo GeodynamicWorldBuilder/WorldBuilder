@@ -82,9 +82,6 @@ namespace WorldBuilder
             // plate model temperature submodule parameters
             double min_depth;
             double max_depth;
-//            double top_temperature;
-//            double bottom_temperature;
-//            double spreading_velocity;
             double density;
             double plate_velocity;
             double thermal_conductivity;
@@ -92,6 +89,7 @@ namespace WorldBuilder
             double specific_heat;
             double potential_mantle_temperature;
             double surface_temperature;
+            bool adiabatic_heating;
             std::string operation;
 
         };

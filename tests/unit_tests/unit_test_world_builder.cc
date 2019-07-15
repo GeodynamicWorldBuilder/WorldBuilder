@@ -1516,18 +1516,18 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
 
   position = {{250e3,500e3,800e3}};
   // results strongly dependent on the summation number of the McKenzie temperature.
-  CHECK(world1.temperature(position, 0, 10) == Approx(1616.7957367454));
-  CHECK(world1.temperature(position, 1, 10) == Approx(1607.4818890612)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 5, 10) == Approx(1571.2135069216)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 10, 10) == Approx(1528.0459485492)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 100, 10) == Approx(1068.1100810682)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 500, 10) == Approx(894.9450953737)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 1000, 10) == Approx(847.7577529978)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 5000, 10) == Approx(638.1862559148)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 10e3, 10) == Approx(542.3510458781));
-  CHECK(world1.temperature(position, 25e3, 10) == Approx(551.5599843184));
-  CHECK(world1.temperature(position, 50e3, 10) == Approx(756.7177819132));
-  CHECK(world1.temperature(position, 75e3, 10) == Approx(986.4816608584));
+  CHECK(world1.temperature(position, 0, 10) == Approx(1599.9999999994));
+  CHECK(world1.temperature(position, 1, 10) == Approx(1590.6681048292)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 5, 10) == Approx(1554.3294579725)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 10, 10) == Approx(1511.0782994151)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 100, 10) == Approx(1050.2588653774)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 500, 10) == Approx(876.8637089978)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 1000, 10) == Approx(829.7197877204)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 5000, 10) == Approx(620.6827823798)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 10e3, 10) == Approx(525.727843761));
+  CHECK(world1.temperature(position, 25e3, 10) == Approx(538.4605698191));
+  CHECK(world1.temperature(position, 50e3, 10) == Approx(751.6318639633));
+  CHECK(world1.temperature(position, 75e3, 10) == Approx(991.5852995579));
   CHECK(world1.temperature(position, 150e3, 10) == Approx(1668.6311660012));
   //CHECK(world1.temperature(position, std::sqrt(2) * 100e3 - 1, 10) == Approx(150.0));
   //CHECK(world1.temperature(position, std::sqrt(2) * 100e3 + 1, 10) == Approx(1664.6283561404));
@@ -1704,23 +1704,23 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   WorldBuilder::World world2(file_name2);
 
   position = {{250e3,500e3,800e3}};
-  CHECK(world2.temperature(position, 0, 10) == Approx(1615.4703444765));
+  CHECK(world2.temperature(position, 0, 10) == Approx(1599.9999999994));
   CHECK(world2.composition(position, 0, 0) == 1.0);
-  CHECK(world2.temperature(position, 1, 10) == Approx(1602.2389716513));
+  CHECK(world2.temperature(position, 1, 10) == Approx(1586.7321267113));
   CHECK(world2.composition(position, 1, 0) == 1.0);
-  CHECK(world2.temperature(position, 1e3, 10) == Approx(252.1645713879));
+  CHECK(world2.temperature(position, 1e3, 10) == Approx(233.1298084984));
   CHECK(world2.composition(position, 1e3, 0) == 1.0);
-  CHECK(world2.temperature(position, 10e3, 10) == Approx(428.0876423223));
+  CHECK(world2.temperature(position, 10e3, 10) == Approx(412.3206666645));
   CHECK(world2.composition(position, 10e3, 0) == 1.0);
-  CHECK(world2.temperature(position, 20e3, 10) == Approx(555.8731102111));
+  CHECK(world2.temperature(position, 20e3, 10) == Approx(544.1584323159));
   CHECK(world2.composition(position, 20e3, 0) == 1.0);
-  CHECK(world2.temperature(position, 40e3, 10) == Approx(815.6811256009));
+  CHECK(world2.temperature(position, 40e3, 10) == Approx(814.1198929245));
   CHECK(world2.composition(position, 40e3, 0) == 1.0);
-  CHECK(world2.temperature(position, 60e3, 10) == Approx(1076.6671650689));
+  CHECK(world2.temperature(position, 60e3, 10) == Approx(1087.9994157551));
   CHECK(world2.composition(position, 60e3, 0) == 1.0);
-  CHECK(world2.temperature(position, 80e3, 10) == Approx(1338.1548821219));
+  CHECK(world2.temperature(position, 80e3, 10) == Approx(1365.1437340828));
   CHECK(world2.composition(position, 80e3, 0) == 1.0);
-  CHECK(world2.temperature(position, 100e3, 10) == Approx(1600.0));
+  CHECK(world2.temperature(position, 100e3, 10) == Approx(1645.4330950743));
   CHECK(world2.composition(position, 100e3, 0) == 1.0);
 
 
