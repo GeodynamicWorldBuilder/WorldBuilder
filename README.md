@@ -20,4 +20,4 @@ Please do not keep it to yourself and let us know. Others will also profit from 
 ## How to cite?
 There is currently a publication for this code [accepted in Solid Earth](https://www.solid-earth-discuss.net/se-2019-24/), which means that it can already be cited as:
 
-Fraters, M., Thieulot, C., van den Berg, A., and Spakman, W.: The Geodynamic World Builder: a solution for complex initial conditions in numerical modelling, Solid Earth Discuss., [https://doi.org/10.5194/se-2019-24](https://doi.org/10.5194/se-2019-24), in review, 2019.
+Fraters, M., Thieulot, C., van den Berg, A., and Spakman, W.: The Geodynamic World Builder: a solution for complex initial conditions in numerical modelling, Solid Earth Discuss., [https://doi.org/10.5194/se-2019-24](https://doi.org/10.5194/se-2019-24), accepted, 2019.
