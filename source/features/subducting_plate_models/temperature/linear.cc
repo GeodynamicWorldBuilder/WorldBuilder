@@ -70,7 +70,7 @@ namespace WorldBuilder
                             "If the value is below zero, the an adiabatic temperature is used.");
 
           prm.declare_entry("bottom temperature", Types::Double(-1),
-                            "The temperature at the top in degree Kelvin of this feature. "
+                            "The temperature at the bottom in degree Kelvin of this feature. "
                             "If the value is below zero, an adiabatic temperature is used.");
 
           prm.declare_entry("operation", Types::String("replace"),
