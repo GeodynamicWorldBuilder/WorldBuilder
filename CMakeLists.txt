@@ -1,6 +1,6 @@
-
+include(CheckLanguage)
 cmake_minimum_required (VERSION 2.6)
-project(WorldBuilder C CXX Fortran)
+project(WorldBuilder C CXX)
 
 # load in version info and export it
 SET(WORLD_BUILDER_SOURCE_DIR ${CMAKE_SOURCE_DIR})
@@ -15,12 +15,28 @@ set (WORLD_BUILDER_SOURCE_DIR ${PROJECT_SOURCE_DIR})
 # generate version.cc
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/source/config.cc.in" "${CMAKE_BINARY_DIR}/source/config.cc" @ONLY)
 
+# finding support for different languages
+# finding a fortran compiler
+check_language(Fortran)
+if(CMAKE_Fortran_COMPILER)
+  enable_language(Fortran)
+  message(STATUS "Found Fortran support. Enabling Fortran wrapper and tests.")
+else()
+  message(STATUS "Did not find Fortran support. Disabling Fortran wrapper and tests.")
+endif()
 
 # Add include directory
 include_directories("include/" "tests/") 
 
 # Add source directory
-file(GLOB_RECURSE SOURCES "source/*.cc" "source/*.f90" "${CMAKE_BINARY_DIR}/source/*.cc")
+file(GLOB_RECURSE SOURCES_CXX "source/*.cc" "${CMAKE_BINARY_DIR}/source/*.cc")
+
+if(CMAKE_Fortran_COMPILER)
+  file(GLOB_RECURSE SOURCES_FORTAN "source/*.f90")
+endif()
+
+set(SOURCES ${SOURCES_CXX} ${SOURCES_FORTAN})
+
 
 # Provide "indent" target for indenting all headers and source files
 ADD_CUSTOM_TARGET(indent

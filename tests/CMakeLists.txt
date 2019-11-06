@@ -1,6 +1,13 @@
 # Unit test testing
 #find all the unit test files
-file(GLOB_RECURSE UNIT_TEST_SOURCES "unit_tests/*.cc" "unit_tests/*.f90")
+file(GLOB_RECURSE UNIT_TEST_SOURCES_CXX "unit_tests/*.cc")
+
+if(CMAKE_Fortran_COMPILER)
+  file(GLOB_RECURSE UNIT_TEST_SOURCES_FORTAN "unit_tests/*.f90")
+endif()
+
+set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES_CXX} ${UNIT_TEST_SOURCES_FORTAN})
+
 
 #set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin/)
 
@@ -109,22 +116,20 @@ foreach(test_source ${VISU_TEST_SOURCES})
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/visualization/)
 endforeach(test_source)
 
-#test fortran compilation
-#if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-#set(CMAKE_FORTRAN_CLANG_LIB_FLAG "-undefined dynamic_lookup")
-	#endif()
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran)
-if(NOT APPLE)
-  add_test(NAME compile_simple_fortran_test
-	COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/test.f90 -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I../../mod/ ${CMAKE_Fortran_FLAGS_COVERAGE} -o test${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_EXE_LINKER_FLAGS} 
-	 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
-else()
-  add_test(NAME compile_simple_fortran_test
-	COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/test.f90 -L../../lib/ -Wl,-force_load,../../lib/libWorldBuilder.a -I../../mod/ ${CMAKE_Fortran_FLAGS_COVERAGE} -o test${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_EXE_LINKER_FLAGS} 
-	 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
-endif()
-add_test(run_simple_fortran_test
-	 ${CMAKE_COMMAND}
+#test fortran compilation if compiler found
+if(CMAKE_Fortran_COMPILER)
+  file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran)
+  if(NOT APPLE)
+    add_test(NAME compile_simple_fortran_test
+             COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/test.f90 -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I../../mod/ ${CMAKE_Fortran_FLAGS_COVERAGE} -o test${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_EXE_LINKER_FLAGS} 
+	     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
+  else()
+    add_test(NAME compile_simple_fortran_test
+	    COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/test.f90 -L../../lib/ -Wl,-force_load,../../lib/libWorldBuilder.a -I../../mod/ ${CMAKE_Fortran_FLAGS_COVERAGE} -o test${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_EXE_LINKER_FLAGS} 
+	    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
+  endif()
+  add_test(run_simple_fortran_test
+           ${CMAKE_COMMAND}
                  -D TEST_NAME=run_simple_fortran_test
                  -D TEST_PROGRAM=${CMAKE_BINARY_DIR}/tests/fortran/test${CMAKE_EXECUTABLE_SUFFIX}
                  -D TEST_ARGS=${CMAKE_CURRENT_SOURCE_DIR}/data/continental_plate.wb
@@ -132,19 +137,19 @@ add_test(run_simple_fortran_test
 		 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/fortran/run_simple_fortran_test.log
                  -P ${CMAKE_SOURCE_DIR}/tests/fortran/run_fortran_tests.cmake
                  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/) 
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran)
+  file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran)
 
-if(NOT APPLE)
-  add_test(NAME compile_simple_fortran_example 
-	COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/example.f90 -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I../../mod/ ${CMAKE_Fortran_FLAGS_COVERAGE} -o example${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_EXE_LINKER_FLAGS} 
-	 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
-else()
-  add_test(NAME compile_simple_fortran_example 
-	COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/example.f90 -L../../lib/ -Wl,-force_load,../../lib/libWorldBuilder.a -I../../mod/ ${CMAKE_Fortran_FLAGS_COVERAGE} -o example${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_EXE_LINKER_FLAGS} 
-	 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
-endif()
-add_test(run_simple_fortran_example
-	 ${CMAKE_COMMAND}
+  if(NOT APPLE)
+    add_test(NAME compile_simple_fortran_example 
+	     COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/example.f90 -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I../../mod/ ${CMAKE_Fortran_FLAGS_COVERAGE} -o example${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_EXE_LINKER_FLAGS} 
+	     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
+  else()
+    add_test(NAME compile_simple_fortran_example 
+	     COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/example.f90 -L../../lib/ -Wl,-force_load,../../lib/libWorldBuilder.a -I../../mod/ ${CMAKE_Fortran_FLAGS_COVERAGE} -o example${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_EXE_LINKER_FLAGS} 
+	     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
+  endif()
+  add_test(run_simple_fortran_example
+	   ${CMAKE_COMMAND}
                  -D TEST_NAME=run_simple_fortran_example
                  -D TEST_PROGRAM=${CMAKE_BINARY_DIR}/tests/fortran/example${CMAKE_EXECUTABLE_SUFFIX}
                  -D TEST_ARGS=${CMAKE_CURRENT_SOURCE_DIR}/data/continental_plate.wb
@@ -152,3 +157,4 @@ add_test(run_simple_fortran_example
 		 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/fortran/run_simple_fortran_example.log
                  -P ${CMAKE_SOURCE_DIR}/tests/fortran/run_fortran_tests.cmake
                  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/) 
+ endif()
