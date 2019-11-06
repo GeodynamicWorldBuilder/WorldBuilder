@@ -14,7 +14,6 @@ before_install:
 script:
   - gcc --version
   - gcov --version
-  - gfortran --version
   - mkdir build
   - mkdir install
   - cmake . -G "${MAKE_FILE_GENERATOR}" ${CMAKE_EXTRA_ARGS} ${MAC_COMPILER_EXTRA}
@@ -55,7 +54,7 @@ matrix:
          - MAKE_FILE_GENERATOR="Unix Makefiles"
          - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Coverage"
          - RUN_COVERALLS="TRUE"
-         - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6 && FC=gfortran && sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-6 --slave /usr/bin/gcov gcov /usr/bin/gcov-6 && sudo update-alternatives --config gcc && gcc --version && gcov --version && mkdir astyle && cd astyle && wget 'https://sourceforge.net/projects/astyle/files/astyle/astyle 2.04/astyle_2.04_linux.tar.gz' && tar -zxvf astyle_2.04_linux.tar.gz && cd astyle/build/gcc && make && sudo make install && cd ../../../../ && pip install --user cpp-coveralls"
+         - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6 && FC=gfortran && sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-6 --slave /usr/bin/gcov gcov /usr/bin/gcov-6 && sudo update-alternatives --config gcc && gcc --version && gcov --version && gfortran --version && mkdir astyle && cd astyle && wget 'https://sourceforge.net/projects/astyle/files/astyle/astyle 2.04/astyle_2.04_linux.tar.gz' && tar -zxvf astyle_2.04_linux.tar.gz && cd astyle/build/gcc && make && sudo make install && cd ../../../../ && pip install --user cpp-coveralls"
       addons:
         apt:
           sources:
@@ -72,7 +71,7 @@ matrix:
       env:
          - MAKE_FILE_GENERATOR="Unix Makefiles"
          - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Release"
-         - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6 && FC=gfortran"
+         - MATRIX_EVAL="gfortran --version && CC=gcc-6 && CXX=g++-6 && FC=gfortran"
       addons:
         apt:
           sources:
@@ -89,7 +88,7 @@ matrix:
       env:
          - MAKE_FILE_GENERATOR="Unix Makefiles"
          - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug"
-         - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9 && FC=gfortran"
+         - MATRIX_EVAL="gfortran --version && CC=gcc-4.9 && CXX=g++-4.9 && FC=gfortran"
       addons:
         apt:
           sources:
@@ -100,6 +99,23 @@ matrix:
             - cmake
        
 
+    - name: "linux gcc 4.9 debug no fortan"
+      sudo: false
+      compiler:
+        - g++-4.9
+      env:
+         - MAKE_FILE_GENERATOR="Unix Makefiles"
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug"
+         - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9" 
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-4.9
+            - cmake
+       
+
     - name: "linux clang"
       sudo: false
       os: linux
@@ -107,7 +123,7 @@ matrix:
         - clang-3.6
       env: 
          - MAKE_FILE_GENERATOR="Unix Makefiles"
-         - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6 && GC=gfortran" 
+         - MATRIX_EVAL="gfortran --version && CC=clang-3.6 && CXX=clang++-3.6 && GC=gfortran" 
          - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug"
       addons:
         apt:
