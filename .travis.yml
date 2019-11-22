@@ -145,17 +145,39 @@ matrix:
          - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && which clang && ls -lh /Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/ && ls -lh /Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ && brew install gcc || true  && brew link --overwrite gcc && brew install libomp || brew upgrade libomp || true  && export LDFLAGS="-L/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib" && export CPPFLAGS="-I/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include" && export CC=/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang && export  CXX=/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ && export FC=gfortran" 
          - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug -DOpenMP_CXX_FLAGS="-Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include -lomp" -DOpenMP_CXX_LIB_NAMES="omp" -DOpenMP_omp_LIBRARY=/usr/local/opt/libomp/lib/libomp.dylib"
 
-    - name: "osx clang xcode 11.2"
+    - name: "osx clang xcode 10 2"
       sudo: false
       os: osx
       compiler: 
         - clang
-      osx_image: xcode11.2
+      osx_image: xcode10
       env: 
          - MAKE_FILE_GENERATOR="Unix Makefiles"
          - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && which clang && ls -lh /Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/ && ls -lh /Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ && brew install gcc || true  && brew link --overwrite gcc && brew install libomp || brew upgrade libomp || true  && export LDFLAGS="-L/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib" && export CPPFLAGS="-I/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include" && export CC=/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang && export  CXX=/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ && export FC=gfortran" 
-         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug -DOpenMP_CXX_FLAGS="-Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include -lomp" -DOpenMP_CXX_LIB_NAMES="omp" -DOpenMP_omp_LIBRARY=/usr/local/opt/libomp/lib/libomp.dylib"
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug -DOpenMP_CXX_LIB_NAMES=omp -DOpenMP_omp_LIBRARY=/usr/local/opt/libomp/lib/libomp.dylib"
 
+    - name: "osx clang xcode 10 3"
+      sudo: false
+      os: osx
+      compiler: 
+        - clang
+      osx_image: xcode10
+      env: 
+         - MAKE_FILE_GENERATOR="Unix Makefiles"
+         - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && which clang && ls -lh /Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/ && ls -lh /Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ && brew install gcc || true  && brew link --overwrite gcc && brew install libomp || brew upgrade libomp || true  && export LDFLAGS="-L/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib" && export CPPFLAGS="-I/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include" && export CC=/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang && export  CXX=/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ && export FC=gfortran" 
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug -DOpenMP_omp_LIBRARY=/usr/local/opt/libomp/lib/libomp.dylib"
+ 
+    - name: "osx clang xcode 10 4"
+      sudo: false
+      os: osx
+      compiler: 
+        - clang
+      osx_image: xcode10
+      env: 
+         - MAKE_FILE_GENERATOR="Unix Makefiles"
+         - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && which clang && ls -lh /Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/ && ls -lh /Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ && brew install gcc || true  && brew link --overwrite gcc && brew install libomp || brew upgrade libomp || true  && export LDFLAGS="-L/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib" && export CPPFLAGS="-I/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include" && export CC=/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang && export  CXX=/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ && export FC=gfortran" 
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug"
+ 
     - name: "windows debug"
       os: windows
       language: cpp 
