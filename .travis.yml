@@ -142,7 +142,7 @@ matrix:
       osx_image: xcode11.2
       env: 
          - MAKE_FILE_GENERATOR="Unix Makefiles"
-         - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && which clang && ls -lh /Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/ && ls -lh /Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ && brew install gcc || true  && brew link --overwrite gcc && brew install libomp || brew upgrade libomp || true  && export LDFLAGS="-L/Applications/Xcode-11.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib" && export CPPFLAGS="-I/Applications/Xcode-11.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include" && export CC=/Applications/Xcode-11.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang && export  CXX=/Applications/Xcode-11.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ && export FC=gfortran" 
+         - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && which clang && ls -lh /Applications/Xcode-11.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/ && ls -lh /Applications/Xcode-11.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ && brew install gcc || true  && brew link --overwrite gcc && brew install libomp || brew upgrade libomp || true  && export LDFLAGS="-L/Applications/Xcode-11.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib" && export CPPFLAGS="-I/Applications/Xcode-11.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include" && export CC=/Applications/Xcode-11.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang && export  CXX=/Applications/Xcode-11.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ && export FC=gfortran" 
          - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug"
 
     - name: "osx clang xcode 10.0 no gcc"
@@ -153,7 +153,7 @@ matrix:
       osx_image: xcode10
       env: 
          - MAKE_FILE_GENERATOR="Unix Makefiles"
-         - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && which clang && ls -lh /Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/ && ls -lh /Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ && brew install libomp || brew upgrade libomp || true  && export LDFLAGS="-L/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib" && export CPPFLAGS="-I/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include" && export CC=/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang && export  CXX=/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++" 
+         - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && which clang && ls -lh /Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/ && ls -lh /Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ && brew install libomp || brew upgrade libomp || true" 
          - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug"
 
     - name: "osx clang xcode 10.0"
@@ -167,15 +167,37 @@ matrix:
          - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && which clang && ls -lh /Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/ && ls -lh /Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ && brew install gcc || true  && brew link --overwrite gcc && brew install libomp || brew upgrade libomp || true  && export LDFLAGS="-L/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib" && export CPPFLAGS="-I/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include" && export CC=/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang && export  CXX=/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ && export FC=gfortran" 
          - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug"
  
-    - name: "osx clang xcode 6.4"
+    - name: "osx clang xcode 9.0"
       sudo: false
       os: osx
       compiler: 
         - clang
-      osx_image: xcode6.4
+      osx_image: xcode9
       env: 
          - MAKE_FILE_GENERATOR="Unix Makefiles"
-         - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && which clang && ls -lh /Applications/Xcode-6.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/ && ls -lh /Applications/Xcode-6.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ && brew install gcc || true  && brew link --overwrite gcc && brew install libomp || brew upgrade libomp || true  && export LDFLAGS="-L/Applications/Xcode-6.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib" && export CPPFLAGS="-I/Applications/Xcode-6.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include" && export CC=/Applications/Xcode-6.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang && export  CXX=/Applications/Xcode-6.4.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ && export FC=gfortran" 
+         - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && which clang && ls -lh /Applications/Xcode-9.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/ && ls -lh /Applications/Xcode-9.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ && brew install libomp || brew upgrade libomp || true  && export LDFLAGS="-L/Applications/Xcode-9.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib" && export CPPFLAGS="-I/Applications/Xcode-9.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include" && export CC=/Applications/Xcode-9.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang && export  CXX=/Applications/Xcode-9.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ && export FC=gfortran" 
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug"
+ 
+    - name: "osx clang xcode 8.0"
+      sudo: false
+      os: osx
+      compiler: 
+        - clang
+      osx_image: xcode8
+      env: 
+         - MAKE_FILE_GENERATOR="Unix Makefiles"
+         - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && which clang && ls -lh /Applications/Xcode-8.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/ && ls -lh /Applications/Xcode-8.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ && brew install libomp || brew upgrade libomp || true  && export LDFLAGS="-L/Applications/Xcode-8.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib" && export CPPFLAGS="-I/Applications/Xcode-8.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include" && export CC=/Applications/Xcode-8.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang && export  CXX=/Applications/Xcode-8.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ && export FC=gfortran" 
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug"
+ 
+    - name: "osx clang xcode 7.3"
+      sudo: false
+      os: osx
+      compiler: 
+        - clang
+      osx_image: xcode7.3
+      env: 
+         - MAKE_FILE_GENERATOR="Unix Makefiles"
+         - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && which clang && ls -lh /Applications/Xcode-7.3.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/ && ls -lh /Applications/Xcode-7.3.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ && brew install libomp || brew upgrade libomp || true  && export LDFLAGS="-L/Applications/Xcode-7.3.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib" && export CPPFLAGS="-I/Applications/Xcode-7.3.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include" && export CC=/Applications/Xcode-7.3.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang && export  CXX=/Applications/Xcode-7.3.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ && export FC=gfortran" 
          - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug"
  
     - name: "windows debug"
