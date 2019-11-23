@@ -25,6 +25,33 @@ else()
   message(STATUS "Did not find Fortran support. Disabling Fortran wrapper and tests.")
 endif()
 
+#finding support for makeing a python wrapper
+#find swig
+FIND_PACKAGE(SWIG)
+if(SWIG_FOUND)
+  INCLUDE(${SWIG_USE_FILE})
+  SET(CMAKE_SWIG_FLAGS "")
+else()
+  SET(MAKE_PYTHON_WRAPPER FALSE)
+  message(STATUS "SWIG was not found, disableling python wrapper compilation.")
+endif()
+
+#find python libs
+FIND_PACKAGE(PythonLibs)
+if(PythonLibs_FOUND)
+  INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_PATH})
+  include_directories(${PYTHON_INCLUDE_DIRS})
+else()
+  message(STATUS "Python was not found, disableling python wrapper compilation.")
+endif()
+
+find_package(PythonInterp)
+
+if(SWIG_FOUND AND PythonLibs)
+  SET(MAKE_PYTHON_WRAPPER TRUE)
+  message(STATUS "Both SWIG and Python are found, enableling python wrapper compilation.")
+endif()
+
 # Add include directory
 include_directories("include/" "tests/") 
 
@@ -87,6 +114,7 @@ ENDIF()
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_SWIG_OUTDIR ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/mod)
 
@@ -105,6 +133,14 @@ if(NOT APPLE)
   target_link_libraries (WorldBuilderVisualization ${GWB_LIBRARY_WHOLE}) 
 else()
   target_link_libraries (WorldBuilderVisualization ${GWB_LIBRARY_WHOLE}) 
+endif()
+
+if(MAKE_PYTHON_WRAPPER)
+  SET(CMAKE_SWIG_FLAGS "")
+  SET_SOURCE_FILES_PROPERTIES(SOURCE source/wrapper_cpp.i PROPERTIES CPLUSPLUS ON)
+  SWIG_ADD_MODULE(gwb_python python source/wrapper_cpp.i )
+  SWIG_LINK_LIBRARIES(gwb_python ${PYTHON_LIBRARIES} ${GWB_LIBRARY_WHOLE})
+  set_target_properties(_gwb_python PROPERTIES PREFIX "_" OUTPUT_NAME "gwb")
 endif()
 
 # binary:
