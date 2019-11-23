@@ -29,6 +29,7 @@
 #include <iostream>
 #include <array>
 #include <fstream>
+#include <thread>
 
 #include <world_builder/assert.h>
 #include <world_builder/nan.h>
@@ -38,6 +39,74 @@
 
 using namespace WorldBuilder;
 using namespace WorldBuilder::Utilities;
+
+
+/**
+ * A very simple threadpool class. The threadpool currently only supports a
+ * parallel for function, to easily parallelize the for function.
+ *
+ * Todo: might need something more advanced and safe in the future.
+ */
+class ThreadPool
+{
+  public:
+
+    /**
+     * Constructor
+     */
+    explicit ThreadPool(unsigned int number_of_threads)
+    {
+      pool.resize(number_of_threads);
+    }
+
+    /**
+     * A function which allows to parallelize for loops.
+     */
+    template<typename Callable>
+    void parallel_for(unsigned int start, unsigned int end, Callable func)
+    {
+      // Deterimine the size of the slice for the loop
+      unsigned int n = end - start + 1;
+      unsigned int slice = (unsigned int) std::round(n / double(pool.size()));
+      slice = std::max(slice, unsigned(1));
+
+      // Function which loops the passed function func
+      auto loop_function = [&func] (unsigned int k1, unsigned int k2)
+      {
+        for (unsigned int k = k1; k < k2; k++)
+          {
+            func(k);
+          }
+      };
+
+      // Launch jobs
+      unsigned int i1 = start;
+      unsigned int i2 = std::min(start + slice, end);
+      for (unsigned i = 0; i + 1 < pool.size() && i1 < end; ++i)
+        {
+          pool[i] = std::thread(loop_function, i1, i2);
+          i1 = i2;
+          i2 = std::min(i2 + slice, end);
+        }
+      if (i1 < end)
+        {
+          pool[pool.size()-1] = std::thread(loop_function, i1, end);
+        }
+
+      // Wait for jobs to finish
+      for (std::thread &t : pool)
+        {
+          if (t.joinable())
+            {
+              t.join();
+            }
+        }
+    }
+
+  private:
+    std::vector<std::thread> pool;
+
+};
 
 
 void project_on_sphere(double radius, double &x_, double &y_, double &z_)
@@ -232,6 +301,10 @@ int main(int argc, char **argv)
       return 1;
     }
 
+  /**
+   * start the thread pool
+   */
+  ThreadPool pool(number_of_threads);
 
   /**
    * Read the data from the data files
@@ -1316,21 +1389,19 @@ int main(int argc, char **argv)
   std::vector<double> temp_vector(n_p);
   if (dim == 2)
     {
-      #pragma omp parallel for num_threads(number_of_threads)
-      for (unsigned int i = 0; i < n_p; ++i)
-        {
-          std::array<double,2> coords = {{grid_x[i], grid_z[i]}};
-          temp_vector[i] = world->temperature(coords, grid_depth[i], gravity);
-        }
+      pool.parallel_for(0, n_p, [&] (unsigned int i)
+      {
+        std::array<double,2> coords = {{grid_x[i], grid_z[i]}};
+        temp_vector[i] = world->temperature(coords, grid_depth[i], gravity);
+      });
     }
   else
     {
-      #pragma omp parallel for num_threads(number_of_threads)
-      for (unsigned int i = 0; i < n_p; ++i)
-        {
-          std::array<double,3> coords = {{grid_x[i], grid_y[i], grid_z[i]}};
-          temp_vector[i] = world->temperature(coords, grid_depth[i], gravity);
-        }
+      pool.parallel_for(0, n_p, [&] (unsigned int i)
+      {
+        std::array<double,3> coords = {{grid_x[i], grid_y[i], grid_z[i]}};
+        temp_vector[i] = world->temperature(coords, grid_depth[i], gravity);
+      });
     }
 
   std::cout << "[5/5] Writing the paraview file: stage 2 of 3, writing temperatures                    \r";
@@ -1351,23 +1422,22 @@ int main(int argc, char **argv)
       std::cout.flush();
 
       myfile << "<DataArray type=\"Float32\" Name=\"Composition " << c << "\" Format=\"ascii\">" << std::endl;
+
       if (dim == 2)
         {
-          #pragma omp parallel for num_threads(number_of_threads)
-          for (unsigned int i = 0; i < n_p; ++i)
-            {
-              std::array<double,2> coords = {{grid_x[i], grid_z[i]}};
-              temp_vector[i] =  world->composition(coords, grid_depth[i], c);
-            }
+          pool.parallel_for(0, n_p, [&] (unsigned int i)
+          {
+            std::array<double,2> coords = {{grid_x[i], grid_z[i]}};
+            temp_vector[i] =  world->composition(coords, grid_depth[i], c);
+          });
         }
       else
         {
-          #pragma omp parallel for num_threads(number_of_threads)
-          for (unsigned int i = 0; i < n_p; ++i)
-            {
-              std::array<double,3> coords = {{grid_x[i], grid_y[i], grid_z[i]}};
-              temp_vector[i] =  world->composition(coords, grid_depth[i], c);
-            }
+          pool.parallel_for(0, n_p, [&] (unsigned int i)
+          {
+            std::array<double,3> coords = {{grid_x[i], grid_y[i], grid_z[i]}};
+            temp_vector[i] =  world->composition(coords, grid_depth[i], c);
+          });
         }
 
 
