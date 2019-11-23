@@ -46,6 +46,7 @@
 
 #include <world_builder/utilities.h>
 #include <world_builder/wrapper_c.h>
+#include <world_builder/wrapper_cpp.h>
 using namespace WorldBuilder;
 
 using Catch::Matchers::Contains;
@@ -660,6 +661,63 @@ TEST_CASE("WorldBuilder C wrapper")
   CHECK(composition == 1.0);
 
   release_world(*ptr_ptr_world);
+}
+
+TEST_CASE("WorldBuilder CPP wrapper")
+{
+  // First test a world builder file with a cross section defined
+  std::string file = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb1.json";
+
+  wrapper_cpp::WorldBuilderWrapper world(file);
+
+  double temperature = 0;
+
+  temperature = world.temperature_2d(1, 2, 0, 10);
+  CHECK(temperature == Approx(1600));
+  temperature = world.temperature_3d(1, 2, 3, 0, 10);
+  CHECK(temperature == Approx(1600));
+  temperature = world.temperature_2d(550e3, 0, 0, 10);
+  CHECK(temperature == Approx(150));
+  temperature = world.temperature_3d(120e3, 500e3, 0, 0, 10);
+  CHECK(temperature == Approx(150));
+
+  // Test the compositions
+  double composition = 0.0;
+
+  composition = world.composition_2d(1, 2, 0, 2);
+  CHECK(composition == 0.0);
+  composition = world.composition_3d(1, 2, 3, 0, 2);
+  CHECK(composition == 0.0);
+  composition = world.composition_2d(550e3, 0, 0, 3);
+  CHECK(composition == 1.0);
+  composition = world.composition_3d(120e3, 500e3, 0, 0, 3);
+  CHECK(composition == 1.0);
+
+
+  // Now test a world builder file without a cross section defined
+  file = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb2.json";
+
+  wrapper_cpp::WorldBuilderWrapper world2(file);
+
+
+  CHECK_THROWS_WITH(world2.temperature_2d(1, 2, 0, 10),
+                    Contains("This function can only be called when the cross section "
+                             "variable in the world builder file has been set. Dim is 3."));
+  temperature = world2.temperature_3d(1, 2, 3, 0, 10);
+  CHECK(temperature == Approx(1600));
+  temperature = world2.temperature_3d(120e3, 500e3, 0, 0, 10);
+  CHECK(temperature == Approx(150));
+
+  // Test the compositions
+  CHECK_THROWS_WITH(world2.composition_2d(1, 2, 0, 2),
+                    Contains("This function can only be called when the cross section "
+                             "variable in the world builder file has been set. Dim is 3."));
+
+  composition = world2.composition_3d(1, 2, 3, 0, 2);
+  CHECK(composition == 0.0);
+  composition = world2.composition_3d(120e3, 500e3, 0, 0, 3);
+  CHECK(composition == 1.0);
+
 }
 
 
