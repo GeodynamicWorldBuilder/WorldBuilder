@@ -220,16 +220,34 @@ There are many ways to install the prerequisites of the \WB{} per operating syst
 \begin{enumerate}
     \item run in a terminal \hl{sudo apt install cmake}
 \end{enumerate}
-\subsubsection{OSX}
+\subsubsection{OSX no fortran compiler needed (recomended for normal use)}
+The world builder can create a fortran wrapper to be able to link to fortran programs. If you don't explicitly need a fortran wrapper to be build you can use the following instructions:
+\begin{enumerate}
+    \item if not already installed, install homebrew. Run in a terminal:\\ \hl{/usr/bin/ruby -e "\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"}
+    \item run in a terminal \hl{brew install cmake} 
+\end{enumerate}
+Note that if you already had a fortran compiler installed and cmake can find it, the fortran wrapper will still be build.
+\subsubsection{OSX before Xcode 10 with fortran compiler}
 \begin{enumerate}
     \item if not already installed, install homebrew. Run in a terminal:\\ \hl{/usr/bin/ruby -e "\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"}
     \item run in a terminal \hl{brew install cmake} 
     \item run in a terminal \hl{brew install gcc || true  \&\& brew link --overwrite gcc} 
-    \item run in a terminal \hl{brew install libomp || brew upgrade libomp || true}
     \item run in a terminal \hl{export LDFLAGS="-L/usr/local/opt/llvm/lib"}
     \item run in a terminal \hl{export CPPFLAGS="-I/usr/local/opt/llvm/include"}
     \item run in a terminal \hl{export CC=/usr/local/opt/llvm/bin/clang}
-    \item run in a terminal \hl{export  CXX=/usr/local/opt/llvm/bin/clang++}
+    \item run in a terminal \hl{export CXX=/usr/local/opt/llvm/bin/clang++}
+    \item run in a terminal \hl{export FC=gfortran"}
+\end{enumerate}
+\subsubsection{OSX from Xcode 10 with fortran compiler}
+You will need to check where clang is installed. It should be installed in a folder called /Applications/Xcode.X.X.app/ or something similair, where the X represents a number. For Xcode 10 for example, use the following:
+\begin{enumerate}
+    \item if not already installed, install homebrew. Run in a terminal:\\ \hl{/usr/bin/ruby -e "\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"}
+    \item run in a terminal \hl{brew install cmake} 
+    \item run in a terminal \hl{brew install gcc || true  \&\& brew link --overwrite gcc} 
+    \item run in a terminal \hl{export LDFLAGS="-L/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib"}
+    \item run in a terminal \hl{export CPPFLAGS="-I/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"}
+    \item run in a terminal \hl{export CC=/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/clang}
+    \item run in a terminal \hl{export CXX=/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/clang++}
     \item run in a terminal \hl{export FC=gfortran"}
 \end{enumerate}
 \subsubsection{Windows}
