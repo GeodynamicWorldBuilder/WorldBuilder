@@ -63,6 +63,7 @@ matrix:
             - g++-6
             - gfortran-6
             - cmake
+            - swig
 
     - name: "linux gcc 6 release"
       sudo: false
