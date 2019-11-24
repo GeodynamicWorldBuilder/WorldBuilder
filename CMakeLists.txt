@@ -41,11 +41,11 @@ FIND_PACKAGE(PythonLibs)
 if(PythonLibs_FOUND)
   INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_PATH})
   include_directories(${PYTHON_INCLUDE_DIRS})
+  find_package(PythonInterp REQUIRED)
 else()
   message(STATUS "Python was not found, disableling python wrapper compilation.")
 endif()
 
-find_package(PythonInterp)
 
 if(SWIG_FOUND AND PythonLibs_FOUND)
   SET(MAKE_PYTHON_WRAPPER TRUE)

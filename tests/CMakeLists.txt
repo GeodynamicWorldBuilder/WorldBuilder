@@ -116,7 +116,7 @@ foreach(test_source ${VISU_TEST_SOURCES})
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/visualization/)
 endforeach(test_source)
 
-#test fortran compilation if compiler found
+#test fortran compilation and wrapper if compiler found
 if(CMAKE_Fortran_COMPILER)
   file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran)
   if(NOT APPLE)
@@ -157,4 +157,31 @@ if(CMAKE_Fortran_COMPILER)
 		 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/fortran/run_simple_fortran_example.log
                  -P ${CMAKE_SOURCE_DIR}/tests/fortran/run_fortran_tests.cmake
                  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/) 
+ endif()
+
+#test python compilation and wrapper if compiler found
+if(SWIG_FOUND AND PythonLibs_FOUND)
+  file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/python)
+
+   add_test(run_simple_python_test
+           ${CMAKE_COMMAND}
+                 -D TEST_NAME=run_simple_python_test
+                 -D TEST_PROGRAM=${PYTHON_EXECUTABLE}
+                 -D TEST_ARGS=${CMAKE_CURRENT_SOURCE_DIR}/python/test.py
+		 -D TEST_INPUT=
+                 -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/python/run_simple_python_test.log
+		 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/python/run_simple_python_test.log
+                 -P ${CMAKE_SOURCE_DIR}/tests/python/run_python_tests.cmake
+                 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/python/) 
+
+  add_test(run_simple_python_example
+	   ${CMAKE_COMMAND}
+                 -D TEST_NAME=run_simple_python_example
+                 -D TEST_PROGRAM=${PYTHON_EXECUTABLE}
+                 -D TEST_ARGS=${CMAKE_CURRENT_SOURCE_DIR}/python/example.py 
+		 -D TEST_INPUT=${CMAKE_CURRENT_SOURCE_DIR}/data/continental_plate.wb
+                 -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/python/run_simple_python_example.log
+		 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/python/run_simple_python_example.log
+                 -P ${CMAKE_SOURCE_DIR}/tests/python/run_python_tests.cmake
+                 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/python/) 
  endif()
