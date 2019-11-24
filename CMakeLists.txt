@@ -26,13 +26,13 @@ else()
 endif()
 
 #finding support for makeing a python wrapper
+SET(MAKE_PYTHON_WRAPPER FALSE)
 #find swig
 FIND_PACKAGE(SWIG)
 if(SWIG_FOUND)
   INCLUDE(${SWIG_USE_FILE})
   SET(CMAKE_SWIG_FLAGS "")
 else()
-  SET(MAKE_PYTHON_WRAPPER FALSE)
   message(STATUS "SWIG was not found, disableling python wrapper compilation.")
 endif()
 
@@ -47,7 +47,7 @@ endif()
 
 find_package(PythonInterp)
 
-if(SWIG_FOUND AND PythonLibs)
+if(SWIG_FOUND AND PythonLibs_FOUND)
   SET(MAKE_PYTHON_WRAPPER TRUE)
   message(STATUS "Both SWIG and Python are found, enableling python wrapper compilation.")
 endif()
