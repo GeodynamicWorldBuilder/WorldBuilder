@@ -1,6 +1,14 @@
-include(CheckLanguage)
 cmake_minimum_required (VERSION 2.6)
 project(WorldBuilder C CXX)
+
+# SWIG: use standard target name.
+if(POLICY CMP0078)
+  cmake_policy(SET CMP0078 NEW)
+endif()
+## SWIG: use SWIG_MODULE_NAME property.
+if(POLICY CMP0086)
+  cmake_policy(SET CMP0086 NEW)
+endif()
 
 # load in version info and export it
 SET(WORLD_BUILDER_SOURCE_DIR ${CMAKE_SOURCE_DIR})
@@ -17,12 +25,17 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/source/config.cc.in" "${CMAKE_BINARY
 
 # finding support for different languages
 # finding a fortran compiler
-check_language(Fortran)
-if(CMAKE_Fortran_COMPILER)
-  enable_language(Fortran)
-  message(STATUS "Found Fortran support. Enabling Fortran wrapper and tests.")
+if(${CMAKE_VERSION} VERSION_LESS "2.8.8") 
+  message(STATUS "Fortran not supported with cmake version lower than  2.8.8. Please upgrade your camke version if you need it. Disabling Fortran wrapper and tests.")
 else()
-  message(STATUS "Did not find Fortran support. Disabling Fortran wrapper and tests.")
+  include(CheckLanguage)
+  check_language(Fortran)
+  if(CMAKE_Fortran_COMPILER)
+    enable_language(Fortran)
+    message(STATUS "Found Fortran support. Enabling Fortran wrapper and tests.")
+  else()
+    message(STATUS "Did not find Fortran support. Disabling Fortran wrapper and tests.")
+  endif()
 endif()
 
 #finding support for makeing a python wrapper
@@ -37,17 +50,33 @@ else()
 endif()
 
 #find python libs
-FIND_PACKAGE(PythonLibs)
-if(PythonLibs_FOUND)
-  INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_PATH})
-  include_directories(${PYTHON_INCLUDE_DIRS})
-  find_package(PythonInterp REQUIRED)
+if(${CMAKE_VERSION} VERSION_LESS "3.12.0") 
+  FIND_PACKAGE(PythonLibs 3.0)
+  FIND_PACKAGE(PythonInterp 3.0)
+
+    if(PYTHONLIBS_FOUND AND PYTHONINTERP_FOUND)
+      SET(Python_FOUND TRUE)
+      SET(Python_EXECUTABLE ${PYTHON_EXECUTABLE})
+      SET(Python_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS})
+      SET(Python_LIBRARIES ${PYTHON_LIBRARIES})
+      SET(Python_LIBRARIES_RELEASE ${PYTHON_LIBRARIES_RELEASE})
+      include_directories(${PYTHON_INCLUDE_DIRS})
+    else()
+      SET(Python_FOUND FALSE)
+      message(STATUS "Python was not found. Disableling python wrapper compilation.")
+    endif()
+
 else()
-  message(STATUS "Python was not found, disableling python wrapper compilation.")
+  FIND_PACKAGE(Python COMPONENTS Interpreter Development)
+  if(Python_FOUND)
+    include_directories(${Python_INCLUDE_DIRS})
+  else()
+    message(STATUS "Python was not found, disableling python wrapper compilation.")
+  endif()
 endif()
 
 
-if(SWIG_FOUND AND PythonLibs_FOUND)
+if(SWIG_FOUND AND Python_FOUND)
   SET(MAKE_PYTHON_WRAPPER TRUE)
   message(STATUS "Both SWIG and Python are found, enableling python wrapper compilation.")
 endif()
@@ -86,7 +115,8 @@ elseif(APPLE)
    SET(CMAKE_CXX_FLAGS "-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -stdlib=libc++ -Wuninitialized -Werror=uninitialized")
    SET(CMAKE_EXE_LINKER_FLAGS "-lc++") #-stdlib=libc++")
 else()
-    SET(CMAKE_CXX_FLAGS "/W3")
+    SET(CMAKE_CXX_FLAGS "/W3 -std=c++11")
+     #-stdlib=libc++")
 endif()
 
 
@@ -112,19 +142,37 @@ MARK_AS_ADVANCED(
     CMAKE_SHARED_LINKER_FLAGS_COVERAGE )
 ENDIF()
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_SWIG_OUTDIR ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/mod)
+foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
+  string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
+  set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_BINARY_DIR}/bin)
+  set( CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_BINARY_DIR}/lib)
+  set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_BINARY_DIR}/lib)
+endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
+
+if(MAKE_PYTHON_WRAPPER)
+  set(CMAKE_SWIG_OUTDIR ${CMAKE_BINARY_DIR}/lib)
+endif()
+if(CMAKE_Fortran_COMPILER)
+  set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/mod)
+endif()
 
 add_library(WorldBuilder ${SOURCES})
+
+if(MSVC)
+  SET(CMAKE_EXE_LINKER_FLAGS "/WHOLEARCHIVE:${CMAKE_CURRENT_BINARY_DIR}/lib/WorldBuilder.lib")
+endif()
+
 add_executable(WorldBuilderApp "${CMAKE_CURRENT_SOURCE_DIR}/app/main.cc")
 add_executable(WorldBuilderVisualization "${CMAKE_CURRENT_SOURCE_DIR}/visualization/main.cc")
 
 # Make sure that the whole library is loaded, so the registration is done correctly.
-if(NOT APPLE)
+if(NOT APPLE AND NOT MSVC)
   SET(GWB_LIBRARY_WHOLE -Wl,--whole-archive WorldBuilder -Wl,--no-whole-archive)
+elseif(MSVC)
+  SET(GWB_LIBRARY_WHOLE WorldBuilder)
 else()
   SET(GWB_LIBRARY_WHOLE -Wl,-force_load WorldBuilder)
 endif()
@@ -136,20 +184,74 @@ else()
 endif()
 
 if(MAKE_PYTHON_WRAPPER)
-  SET(CMAKE_SWIG_FLAGS "")
-  SET_SOURCE_FILES_PROPERTIES(SOURCE source/wrapper_cpp.i PROPERTIES CPLUSPLUS ON)
-  SWIG_ADD_MODULE(gwb_python python source/wrapper_cpp.i )
-  SWIG_LINK_LIBRARIES(gwb_python ${PYTHON_LIBRARIES} ${GWB_LIBRARY_WHOLE})
-  set_target_properties(_gwb_python PROPERTIES PREFIX "_" OUTPUT_NAME "gwb")
+
+  # Add swig module
+  SET(CMAKE_SWIG_FLAGS "-D_SWIG_WIN32 /WHOLEARCHIVE:${CMAKE_CURRENT_BINARY_DIR}/lib/WorldBuilder.lib")
+  SET_SOURCE_FILES_PROPERTIES(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/source/wrapper_cpp.i PROPERTIES CPLUSPLUS ON)
+  if(${CMAKE_VERSION} VERSION_LESS "3.8.0") 
+    swig_add_module(gwb python ${CMAKE_CURRENT_SOURCE_DIR}/source/wrapper_cpp.i)
+  else()
+    swig_add_library(gwb LANGUAGE python SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/source/wrapper_cpp.i)
+  endif()
+
+  # visual studio has a problem with finding the debug version of python (pythonxx_d.dll),
+  # so force release usage.
+  if(WIN32 AND MSVC)
+  set(BUILD_SHARED_LIBS OFF)
+    swig_link_libraries(gwb ${GWB_LIBRARY_WHOLE} ${Python_LIBRARY_RELEASE})
+
+    if(POLICY CMP0078)
+      SET_TARGET_PROPERTIES(gwb PROPERTIES LINK_FLAGS "/WHOLEARCHIVE:WorldBuilder")
+    else()
+      SET_TARGET_PROPERTIES(_gwb PROPERTIES LINK_FLAGS "/WHOLEARCHIVE:WorldBuilder")
+    endif()
+
+  else()
+    swig_link_libraries(gwb ${GWB_LIBRARY_WHOLE} ${Python_LIBRARIES})
+  endif()
+  
+  if(POLICY CMP0078)
+    set_target_properties(gwb PROPERTIES PREFIX "_" OUTPUT_NAME "gwb")
+  else()
+    set_target_properties(_gwb PROPERTIES PREFIX "_" OUTPUT_NAME "gwb")
+  endif()
+
+  # Files to install with Python
+  if(WIN32)
+    set(PYTHON_INSTALL_FILES
+            ${CMAKE_CURRENT_BINARY_DIR}/lib/gwb.py
+            ${CMAKE_CURRENT_BINARY_DIR}/lib/_gwb.pyd)
+  else()
+    set(PYTHON_INSTALL_FILES
+            ${CMAKE_CURRENT_BINARY_DIR}/lib/gwb.py
+            ${CMAKE_CURRENT_BINARY_DIR}/lib/_gwb.so)
+  endif()
+  # Configure setup.py and copy to output directory
+  set(SETUP_PY_IN ${CMAKE_CURRENT_SOURCE_DIR}/cmake/setup.py.in)
+  set(SETUP_PY_OUT ${CMAKE_CURRENT_BINARY_DIR}/lib/setup.py)
+  configure_file(${SETUP_PY_IN} ${SETUP_PY_OUT})
+
+  # Install target to call setup.py
+  add_custom_target(install-python
+          DEPENDS _gwb
+          COMMAND ${Python_EXECUTABLE} ${SETUP_PY_OUT} install)
 endif()
 
 # binary:
+install(CODE "message(Installing...)")
 install (TARGETS WorldBuilder EXPORT WorldBuilder  DESTINATION bin)
-install (DIRECTORY ${CMAKE_Fortran_MODULE_DIRECTORY}/ DESTINATION include)
 install (EXPORT WorldBuilder  DESTINATION bin)
 
+if(CMAKE_Fortran_COMPILER)
+  install (FILES ${CMAKE_CURRENT_BINARY_DIR}/mod/worldbuilder.mod DESTINATION include)
+endif()
+
+if(MAKE_PYTHON_WRAPPER)
+  install(CODE "execute_process(COMMAND ${Python_EXECUTABLE} ${SETUP_PY_OUT} install)")
+endif()
+
 # headers:
-INSTALL(DIRECTORY include/
+INSTALL(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
   DESTINATION include
   COMPONENT includes
   FILES_MATCHING PATTERN "*.h")
