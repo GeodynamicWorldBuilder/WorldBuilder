@@ -13,31 +13,33 @@ set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES_CXX} ${UNIT_TEST_SOURCES_FORTAN})
 
 # Run through each source
 foreach(test_source ${UNIT_TEST_SOURCES})
-        # Extract the filename without an extension (NAME_WE)
-        get_filename_component(test_name ${test_source} NAME_WE)
+  # Extract the filename without an extension (NAME_WE)
+  get_filename_component(test_name ${test_source} NAME_WE)
 
-        # Add compile target
-        add_executable(${test_name} ${test_source})
+  # Add compile target
+  add_executable(${test_name} ${test_source})
 
-    # Make sure that the whole library is loaded, so the registration is done correctly.
-	if(NOT APPLE)
-      SET(GWB_LIBRARY_WHOLE -Wl,--whole-archive WorldBuilder -Wl,--no-whole-archive)  
-    else()
-      SET(GWB_LIBRARY_WHOLE -Wl,-force_load WorldBuilder)
-    endif()
+  # Make sure that the whole library is loaded, so the registration is done correctly.
+  if(NOT APPLE)
+    SET(GWB_LIBRARY_WHOLE -Wl,--whole-archive WorldBuilder -Wl,--no-whole-archive)  
+  elseif(MSVC)
+    SET(GWB_LIBRARY_WHOLE WorldBuilder)
+    SET(CMAKE_EXE_LINKER_FLAGS "/WHOLEARCHIVE:libworldbuilder")
+  else()
+    SET(GWB_LIBRARY_WHOLE -Wl,-force_load WorldBuilder)
+  endif()
 	
-     target_link_libraries(${test_name} ${Boost_LIBRARIES} ${GWB_LIBRARY_WHOLE})
+  target_link_libraries(${test_name} ${GWB_LIBRARY_WHOLE})
 
+  #Move testing binaries into a testBin directory
+  set_target_properties(${test_name} PROPERTIES
+                        RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR}/bin/)
 
-	# Move testing binaries into a testBin directory
-        set_target_properties(${test_name} PROPERTIES
-            RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR}/bin/)
-
-        #Finally add it to test execution -
-        #Notice the WORKING_DIRECTORY and COMMAND
-        add_test(NAME ${test_name}
-                 WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
-		 COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${test_name})
+  #Finally add it to test execution -
+  #Notice the WORKING_DIRECTORY and COMMAND
+  add_test(NAME ${test_name}
+           WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+           COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${test_name})
 endforeach(test_source)
 
 # App testing
@@ -160,13 +162,13 @@ if(CMAKE_Fortran_COMPILER)
  endif()
 
 #test python compilation and wrapper if compiler found
-if(SWIG_FOUND AND PythonLibs_FOUND)
+if(MAKE_PYTHON_WRAPPER)
   file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/python)
 
    add_test(run_simple_python_test
            ${CMAKE_COMMAND}
                  -D TEST_NAME=run_simple_python_test
-                 -D TEST_PROGRAM=${PYTHON_EXECUTABLE}
+                 -D TEST_PROGRAM=${Python_EXECUTABLE}
                  -D TEST_ARGS=${CMAKE_CURRENT_SOURCE_DIR}/python/test.py
 		 -D TEST_INPUT=
                  -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/python/run_simple_python_test.log
@@ -174,14 +176,14 @@ if(SWIG_FOUND AND PythonLibs_FOUND)
                  -P ${CMAKE_SOURCE_DIR}/tests/python/run_python_tests.cmake
                  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/python/) 
 
-  add_test(run_simple_python_example
-	   ${CMAKE_COMMAND}
+    add_test(run_simple_python_example
+	    ${CMAKE_COMMAND}
                  -D TEST_NAME=run_simple_python_example
-                 -D TEST_PROGRAM=${PYTHON_EXECUTABLE}
+                 -D TEST_PROGRAM=${Python_EXECUTABLE}
                  -D TEST_ARGS=${CMAKE_CURRENT_SOURCE_DIR}/python/example.py 
-		 -D TEST_INPUT=${CMAKE_CURRENT_SOURCE_DIR}/data/continental_plate.wb
+		             -D TEST_INPUT=${CMAKE_CURRENT_SOURCE_DIR}/data/continental_plate.wb
                  -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/python/run_simple_python_example.log
-		 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/python/run_simple_python_example.log
+		             -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/python/run_simple_python_example.log
                  -P ${CMAKE_SOURCE_DIR}/tests/python/run_python_tests.cmake
                  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/python/) 
- endif()
+endif()
