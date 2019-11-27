@@ -79,7 +79,9 @@ namespace WorldBuilder
         std::ofstream file;
         // write out declarations
         file.open (output_dir + "world_buider_declarations.tex");
+
         WBAssertThrow(file.is_open(), "Error: Could not open file '" + output_dir + "world_buider_declarations.tex' for string the tex declarations.");
+
         LatexWriter<StringBuffer, UTF8<>, UTF8<>, CrtAllocator, kWriteNanAndInfFlag> tex_writer(buffer);
         declarations.Accept(tex_writer);
         file << buffer.GetString();

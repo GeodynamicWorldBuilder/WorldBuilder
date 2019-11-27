@@ -317,8 +317,10 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
           itemize_open--;
         }
       itemize_open = 0;
-
-      if (level_type.back() == 0 || level_type.back() == 3)
+      // If this assert fails it could be an indicator that
+      // the world builder library is not fuly linked to the
+      // appllication.
+      if (level_type.size() > 0 && (level_type.back() == 0 || level_type.back() == 3))
         section_level = section_level > 0 ? section_level-1 : 0;
 
 
