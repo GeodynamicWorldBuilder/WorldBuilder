@@ -44,7 +44,7 @@ SET(MAKE_PYTHON_WRAPPER FALSE)
 FIND_PACKAGE(SWIG)
 if(SWIG_FOUND)
   INCLUDE(${SWIG_USE_FILE})
-  SET(CMAKE_SWIG_FLAGS "")
+SET(CMAKE_SWIG_FLAGS "")
 else()
   message(STATUS "SWIG was not found, disableling python wrapper compilation.")
 endif()
@@ -185,8 +185,13 @@ endif()
 
 if(MAKE_PYTHON_WRAPPER)
 
+  if(POLICY CMP0078)
+    SET(TARGET gwb)
+  else()
+    SET(TARGET _gwb)
+  endif()
+
   # Add swig module
-  SET(CMAKE_SWIG_FLAGS "-D_SWIG_WIN32 /WHOLEARCHIVE:${CMAKE_CURRENT_BINARY_DIR}/lib/WorldBuilder.lib")
   SET_SOURCE_FILES_PROPERTIES(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/source/wrapper_cpp.i PROPERTIES CPLUSPLUS ON)
   if(${CMAKE_VERSION} VERSION_LESS "3.8.0") 
     swig_add_module(gwb python ${CMAKE_CURRENT_SOURCE_DIR}/source/wrapper_cpp.i)
@@ -194,27 +199,24 @@ if(MAKE_PYTHON_WRAPPER)
     swig_add_library(gwb LANGUAGE python SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/source/wrapper_cpp.i)
   endif()
 
+  # see https://github.com/swig/swig/issues/1259 for more info.
+  if(SWIG_VERSION VERSION_LESS "4.0.1" AND NOT MSVC)
+    set_target_properties(${TARGET} PROPERTIES COMPILE_FLAGS "-Wno-cast-qual")
+  endif()
+
   # visual studio has a problem with finding the debug version of python (pythonxx_d.dll),
   # so force release usage.
   if(WIN32 AND MSVC)
-  set(BUILD_SHARED_LIBS OFF)
+    SET(CMAKE_SWIG_FLAGS "-D_SWIG_WIN32 /WHOLEARCHIVE:${CMAKE_CURRENT_BINARY_DIR}/lib/WorldBuilder.lib")
     swig_link_libraries(gwb ${GWB_LIBRARY_WHOLE} ${Python_LIBRARY_RELEASE})
 
-    if(POLICY CMP0078)
-      SET_TARGET_PROPERTIES(gwb PROPERTIES LINK_FLAGS "/WHOLEARCHIVE:WorldBuilder")
-    else()
-      SET_TARGET_PROPERTIES(_gwb PROPERTIES LINK_FLAGS "/WHOLEARCHIVE:WorldBuilder")
-    endif()
+    SET_TARGET_PROPERTIES(${TARGET} PROPERTIES LINK_FLAGS "/WHOLEARCHIVE:WorldBuilder")
 
   else()
     swig_link_libraries(gwb ${GWB_LIBRARY_WHOLE} ${Python_LIBRARIES})
   endif()
   
-  if(POLICY CMP0078)
-    set_target_properties(gwb PROPERTIES PREFIX "_" OUTPUT_NAME "gwb")
-  else()
-    set_target_properties(_gwb PROPERTIES PREFIX "_" OUTPUT_NAME "gwb")
-  endif()
+  set_target_properties(${TARGET} PROPERTIES PREFIX "_" OUTPUT_NAME "gwb")
 
   # Files to install with Python
   if(WIN32)
