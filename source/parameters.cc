@@ -203,9 +203,9 @@ namespace WorldBuilder
     if (value == NULL)
       {
         value = Pointer((get_full_json_schema_path() + "/" + name + "/default value").c_str()).Get(declarations);
-        WBAssert(value != NULL,
-                 "internal error: could not retrieve the default value at: "
-                 << base + "/" + name + "/default value");
+        WBAssertThrow(value != NULL,
+                      "internal error: could not retrieve the default value at: "
+                      << base + "/" + name + "/default value");
       }
 
     return value->GetString();
@@ -236,9 +236,9 @@ namespace WorldBuilder
     if (value == NULL)
       {
         value = Pointer((get_full_json_schema_path() + "/" + name + "/default value").c_str()).Get(declarations);
-        WBAssert(value != NULL,
-                 "internal error: could not retrieve the default value at: "
-                 << get_full_json_schema_path() + "/" + name + "/default value, for value: " << base + "/" + name);
+        WBAssertThrow(value != NULL,
+                      "internal error: could not retrieve the default value at: "
+                      << get_full_json_schema_path() + "/" + name + "/default value, for value: " << base + "/" + name);
       }
 
     double return_value;
@@ -279,9 +279,9 @@ namespace WorldBuilder
     if (value == NULL)
       {
         value = Pointer((get_full_json_schema_path() + "/" + name + "/default value").c_str()).Get(declarations);
-        WBAssert(value != NULL,
-                 "internal error: could not retrieve the default value at: "
-                 << base + "/" + name + "/default value");
+        WBAssertThrow(value != NULL,
+                      "internal error: could not retrieve the default value at: "
+                      << base + "/" + name + "/default value");
       }
 
     return value->GetUint();
@@ -313,9 +313,9 @@ namespace WorldBuilder
     if (value == NULL)
       {
         value = Pointer((get_full_json_schema_path() + "/" + name + "/default value").c_str()).Get(declarations);
-        WBAssert(value != NULL,
-                 "internal error: could not retrieve the default value at: "
-                 << base + "/" + name + "/default value");
+        WBAssertThrow(value != NULL,
+                      "internal error: could not retrieve the default value at: "
+                      << base + "/" + name + "/default value");
       }
 
     return value->GetUint();
@@ -347,9 +347,9 @@ namespace WorldBuilder
     if (value == NULL)
       {
         value = Pointer((get_full_json_schema_path() + "/" + name + "/default value").c_str()).Get(declarations);
-        WBAssert(value != NULL,
-                 "internal error: could not retrieve the default value at: "
-                 << base + "/" + name + "/default value");
+        WBAssertThrow(value != NULL,
+                      "internal error: could not retrieve the default value at: "
+                      << base + "/" + name + "/default value");
       }
 
     return value->GetBool();
@@ -783,9 +783,19 @@ namespace WorldBuilder
       }
     else
       {
-        size_t min_size = Pointer((this->get_full_json_schema_path()  + "/" + name + "/minItems").c_str()).Get(declarations)->GetUint();
+        const Value *value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/minItems").c_str()).Get(declarations);
+        WBAssertThrow(value != NULL,
+                      "internal error: could not retrieve the minItems value at: "
+                      << this->get_full_json_schema_path() + "/" + name + "/minItems");
 
-        double default_value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/items/default value").c_str()).Get(declarations)->GetDouble();
+        size_t min_size = value->GetUint();
+
+        value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/items/default value").c_str()).Get(declarations);
+        WBAssertThrow(value != NULL,
+                      "internal error: could not retrieve the default value at: "
+                      << this->get_full_json_schema_path() + "/" + name + "/default value");
+
+        double default_value = value->GetDouble();
 
         // set to min size
         for (size_t i = 0; i < min_size; ++i)
@@ -815,9 +825,19 @@ namespace WorldBuilder
       }
     else
       {
-        size_t min_size = Pointer((this->get_full_json_schema_path()  + "/" + name + "/minItems").c_str()).Get(declarations)->GetUint();
+        const Value *value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/minItems").c_str()).Get(declarations);
+        WBAssertThrow(value != NULL,
+                      "internal error: could not retrieve the minItems value at: "
+                      << this->get_full_json_schema_path() + "/" + name + "/minItems");
 
-        size_t default_value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/items/default value").c_str()).Get(declarations)->GetUint();
+        size_t min_size = value->GetUint();
+
+        value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/items/default value").c_str()).Get(declarations);
+        WBAssertThrow(value != NULL,
+                      "internal error: could not retrieve the default value at: "
+                      << this->get_full_json_schema_path() + "/" + name + "/default value");
+
+        size_t default_value = value->GetUint();
 
         // set to min size
         for (size_t i = 0; i < min_size; ++i)
@@ -847,7 +867,12 @@ namespace WorldBuilder
       }
     else
       {
-        size_t min_size = Pointer((this->get_full_json_schema_path()  + "/" + name + "/minItems").c_str()).Get(declarations)->GetUint();
+        const Value *value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/minItems").c_str()).Get(declarations);
+        WBAssertThrow(value != NULL,
+                      "internal error: could not retrieve the minItems value at: "
+                      << this->get_full_json_schema_path() + "/" + name + "/minItems value");
+
+        size_t min_size = value->GetUint();
 
         unsigned int default_value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/items/default value").c_str()).Get(declarations)->GetUint();
 
@@ -884,9 +909,9 @@ namespace WorldBuilder
     if (value == NULL)
       {
         value = Pointer((get_full_json_schema_path() + "/" + name + "/default value").c_str()).Get(declarations);
-        WBAssert(value != NULL,
-                 "internal error: could not retrieve the default value at: "
-                 << base + "/" + name + "/default value. Make sure the value has been declared.");
+        WBAssertThrow(value != NULL,
+                      "internal error: could not retrieve the default value at: "
+                      << base + "/" + name + "/default value. Make sure the value has been declared.");
       }
 
     return T::create(value->GetString(),&world);

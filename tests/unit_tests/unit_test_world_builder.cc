@@ -3072,7 +3072,99 @@ TEST_CASE("WorldBuilder Parameters")
   WorldBuilder::World world(file_name);
 
   Parameters prm(world);
-  prm.initialize(file_name);
+  prm.initialize(file);
+
+  CHECK_THROWS_WITH(prm.get<unsigned int>("non existent unsigned int"),
+                    Contains("internal error: could not retrieve the default value at"));
+
+  CHECK(prm.get<unsigned int>("unsigned int") == 4);
+
+  CHECK_THROWS_WITH(prm.get<size_t>("non existent unsigned int"),
+                    Contains("internal error: could not retrieve the default value at"));
+
+  CHECK(prm.get<size_t>("unsigned int") == 4);
+
+
+  CHECK_THROWS_WITH(prm.get<double>("non existent double"),
+                    Contains("internal error: could not retrieve the default value at"));
+
+  CHECK(prm.get<double>("double") == Approx(1.23456e2));
+
+
+  CHECK_THROWS_WITH(prm.get<std::string>("non existent string"),
+                    Contains("internal error: could not retrieve the default value at"));
+
+  CHECK(prm.get<std::string>("string") == "mystring 0");
+
+  CHECK_THROWS_WITH(prm.get_vector<unsigned int>("non existent unsigned int vector"),
+                    Contains("internal error: could not retrieve the minItems value at"));
+
+
+  prm.enter_subsection("properties");
+  {
+    prm.declare_entry("now existent unsigned int vector",
+                      Types::Array(Types::UnsignedInt(1),2),
+                      "This is an array of two points along where the cross section is taken");
+  }
+  prm.leave_subsection();
+
+  std::vector<unsigned int> v_int = prm.get_vector<unsigned int>("now existent unsigned int vector");
+  CHECK(v_int.size() == 2);
+  CHECK(v_int[0] == 1);
+  CHECK(v_int[1] == 1);
+
+  v_int = prm.get_vector<unsigned int>("unsigned int array");
+  CHECK(v_int.size() == 3);
+  CHECK(v_int[0] == 25);
+  CHECK(v_int[1] == 26);
+  CHECK(v_int[2] == 27);
+
+  CHECK_THROWS_WITH(prm.get_vector<size_t>("non existent unsigned int vector"),
+                    Contains("internal error: could not retrieve the minItems value"));
+
+
+
+  std::vector<size_t> v_size_t = prm.get_vector<size_t>("now existent unsigned int vector");
+  CHECK(v_size_t.size() == 2);
+  CHECK(v_size_t[0] == 1);
+  CHECK(v_size_t[1] == 1);
+
+  v_size_t = prm.get_vector<size_t>("unsigned int array");
+  CHECK(v_size_t.size() == 3);
+  CHECK(v_size_t[0] == 25);
+  CHECK(v_size_t[1] == 26);
+  CHECK(v_size_t[2] == 27);
+
+
+  CHECK_THROWS_WITH(prm.get_vector<double>("non existent double vector"),
+                    Contains("internal error: could not retrieve the minItems value at"));
+
+  prm.enter_subsection("properties");
+  {
+    prm.declare_entry("now existent double vector",
+                      Types::Array(Types::Double(2.4),2),
+                      "This is an array of two points along where the cross section is taken");
+  }
+  prm.leave_subsection();
+
+  std::vector<double> v_double = prm.get_vector<double>("now existent double vector");
+  CHECK(v_double.size() == 2);
+  CHECK(v_double[0] == 2.4);
+  CHECK(v_double[1] == 2.4);
+
+  v_double = prm.get_vector<double>("double array");
+  CHECK(v_double.size() == 3);
+  CHECK(v_double[0] == 25.2);
+  CHECK(v_double[1] == 26.3);
+  CHECK(v_double[2] == 27.4);
+
+
+  /*CHECK_THROWS_WITH(prm.get_vector<std::string>("non existent string vector"),
+                    Contains("internal error: could not retrieve the default value at"));
+
+  std::vector<std::string> v_string = prm.get_vector<std::string>("string array");
+  CHECK(v_string[0] == "abc");
+  CHECK(v_string[1] == "def");*/
 
   //prm.load_entry("Coordinate system", false, Types::CoordinateSystem("cartesian","This determines the coordinate system"));
 
