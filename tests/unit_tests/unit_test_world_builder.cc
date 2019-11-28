@@ -1623,7 +1623,7 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   position = {{250e3,600e3,800e3}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
   CHECK(world1.temperature(position, 10, 10) == Approx(1600.0044800063));
-  CHECK(world1.temperature(position, 100e3, 10) == Approx(1645.4330950743));
+  CHECK(world1.temperature(position, 100e3-1, 10) == Approx(1645.4330950743));
   CHECK(world1.temperature(position, 100e3+1, 10) == Approx(1.0000424264));
   CHECK(world1.temperature(position, 101e3, 10) == Approx(1.0424264069));
   CHECK(world1.temperature(position, 110e3, 10) == Approx(1.4242640687));
@@ -1637,11 +1637,11 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.composition(position, 10, 1) == 0.0);
   CHECK(world1.composition(position, 10, 2) == 0.0);
   CHECK(world1.composition(position, 10, 3) == 0.0);
-  CHECK(world1.composition(position, 100e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3, 4) == Approx(0.0));
+  CHECK(world1.composition(position, 100e3-1, 0) == Approx(0.0));
+  CHECK(world1.composition(position, 100e3-1, 1) == Approx(0.0));
+  CHECK(world1.composition(position, 100e3-1, 2) == Approx(0.0));
+  CHECK(world1.composition(position, 100e3-1, 3) == Approx(0.0));
+  CHECK(world1.composition(position, 100e3-1, 4) == Approx(0.0));
   CHECK(world1.composition(position, 100e3+1, 0) == Approx(0.0));
   CHECK(world1.composition(position, 100e3+1, 1) == Approx(0.0));
   CHECK(world1.composition(position, 100e3+1, 2) == Approx(0.0));
@@ -2120,7 +2120,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   position = {{250e3,600e3,800e3}};
   CHECK(world3.temperature(position, 0, 10) == Approx(1600));
   CHECK(world3.temperature(position, 10, 10) == Approx(1600.0044800063));
-  CHECK(world3.temperature(position, 100e3, 10) == Approx(1.0));
+  CHECK(world3.temperature(position, 100e3-1, 10) == Approx(1.0000424264));
   CHECK(world3.temperature(position, 100e3+1, 10) == Approx(1.0000424264));
   CHECK(world3.temperature(position, 101e3, 10) == Approx(1.0424264069));
   CHECK(world3.temperature(position, 110e3, 10) == Approx(1.4242640687));
@@ -2134,11 +2134,11 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world3.composition(position, 10, 1) == 0.0);
   CHECK(world3.composition(position, 10, 2) == 0.0);
   CHECK(world3.composition(position, 10, 3) == 0.0);
-  CHECK(world3.composition(position, 100e3, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3, 3) == Approx(1.0));
-  CHECK(world3.composition(position, 100e3, 4) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3-1, 0) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3-1, 1) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3-1, 2) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3-1, 3) == Approx(1.0));
+  CHECK(world3.composition(position, 100e3-1, 4) == Approx(0.0));
   CHECK(world3.composition(position, 100e3+1, 0) == Approx(0.0));
   CHECK(world3.composition(position, 100e3+1, 1) == Approx(0.0));
   CHECK(world3.composition(position, 100e3+1, 2) == Approx(0.0));
@@ -3701,7 +3701,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  cartesian_system,
                                                  false);
 
-  CHECK(distance_from_planes["distanceFromPlane"] == Approx(-3.97205e-15)); // practically zero
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(std::sqrt(10*10+10*10)));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
@@ -3723,11 +3723,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(std::sqrt(10*10+10*10)));
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(7.10543e-16)); // practically zero
+  CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14); // practically zero
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
-  CHECK(distance_from_planes["segmentFraction"] == Approx(5.0243e-17)); // practically zero
+  CHECK(std::fabs(distance_from_planes["segmentFraction"]) < 1e-14); // practically zero
 
   // center square test 3
   position[1] = 20;
@@ -3742,7 +3742,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  cartesian_system,
                                                  false);
 
-  CHECK(distance_from_planes["distanceFromPlane"] == Approx(-3.97205e-15)); // practically zero
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(std::sqrt(10*10+10*10)));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
@@ -3845,11 +3845,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
-  CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY); // practically zero
+  CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY);
   CHECK(distance_from_planes["sectionFraction"] == 0.0);
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
-  CHECK(distance_from_planes["segmentFraction"] == 0.0); // practically zero
+  CHECK(std::fabs(distance_from_planes["segmentFraction"]) < 1e-14); // practically zero
 
   // beyond end section square test 9
   position[0] = 25;
@@ -3865,11 +3865,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
-  CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY); // practically zero
+  CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY);
   CHECK(distance_from_planes["sectionFraction"] == 0.0);
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
-  CHECK(distance_from_planes["segmentFraction"] == 0.0); // practically zero
+  CHECK(std::fabs(distance_from_planes["segmentFraction"]) < 1e-14); // practically zero
 
 
   // beyond end section square test 10
@@ -3933,11 +3933,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(3.5355339059));
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(17.6776695297)); // practically zero
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(17.6776695297));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
-  CHECK(distance_from_planes["segmentFraction"] == Approx(0.0176776695)); // practically zero
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.0176776695));
 
 
   // beyond end section square test 11 (only positve version)
@@ -3956,11 +3956,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  true);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(3.5355339059));
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(17.6776695297)); // practically zero
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(17.6776695297));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
-  CHECK(distance_from_planes["segmentFraction"] == Approx(0.0176776695)); // practically zero
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.0176776695));
 
   // add coordinate
   position[0] = 25;
@@ -3987,7 +3987,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  cartesian_system,
                                                  false);
 
-  CHECK(distance_from_planes["distanceFromPlane"] == Approx(-3.97205e-15)); // practically zero
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(std::sqrt(10*10+10*10)));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 1);
