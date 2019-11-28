@@ -71,12 +71,12 @@ namespace WorldBuilder
        * exact arithmetic this algorithm would work (also see polygon
        * in point test).
        */
-      int pointNo = point_list.size();
-      int    wn = 0;    // the  winding number counter
-      int   j=pointNo-1;
+      size_t pointNo = point_list.size();
+      size_t    wn = 0;    // the  winding number counter
+      size_t   j=pointNo-1;
 
       // loop through all edges of the polygon
-      for (int i=0; i<pointNo; i++)
+      for (size_t i=0; i<pointNo; i++)
         {
           // edge from V[i] to  V[i+1]
           if (point_list[j][1] <= point[1])
@@ -169,7 +169,7 @@ namespace WorldBuilder
        *
        */
 
-      const unsigned int n_poly_points = point_list.size();
+      const size_t n_poly_points = point_list.size();
       WBAssertThrow(n_poly_points >= 3, "Not enough polygon points were specified.");
 
       // Initialize a vector of distances for each point of the polygon with a very large distance
@@ -1013,7 +1013,7 @@ namespace WorldBuilder
       assert(x.size() == y.size());
       m_x = x;
       m_y = y;
-      const unsigned int n = x.size();
+      const size_t n = x.size();
       for (unsigned int i = 0; i < n-1; i++)
         {
           assert(m_x[i] < m_x[i+1]);

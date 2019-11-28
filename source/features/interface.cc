@@ -122,7 +122,7 @@ namespace WorldBuilder
       original_number_of_coordinates = coordinates.size();
       //std:cout << "original_number_of_coordinates = " << original_number_of_coordinates << std::endl;
       std::vector<double> one_dimensional_coordinates_local(original_number_of_coordinates,0.0);
-      for (unsigned int j=0; j<original_number_of_coordinates; ++j)
+      for (size_t j=0; j<original_number_of_coordinates; ++j)
         {
           one_dimensional_coordinates_local[j] = j;
         }
@@ -140,7 +140,7 @@ namespace WorldBuilder
               std::vector<double> x_list(original_number_of_coordinates,0.0);
               std::vector<double> y_list(original_number_of_coordinates,0.0);
               std::vector<Point<2> > coordinate_list_local = coordinates;
-              for (unsigned int j=0; j<original_number_of_coordinates; ++j)
+              for (size_t j=0; j<original_number_of_coordinates; ++j)
                 {
                   x_list[j] = coordinates[j][0];
                   y_list[j] = coordinates[j][1];
@@ -150,8 +150,8 @@ namespace WorldBuilder
               x_spline.set_points(one_dimensional_coordinates_local, x_list, interpolation == "linear" ? false : true);
               y_spline.set_points(one_dimensional_coordinates_local, y_list, interpolation == "linear" ? false : true);
 
-              unsigned int additional_parts = 0;
-              for (unsigned int i_plane=0; i_plane<original_number_of_coordinates-1; ++i_plane)
+              size_t additional_parts = 0;
+              for (size_t i_plane=0; i_plane<original_number_of_coordinates-1; ++i_plane)
                 {
                   const Point<2> P1 (x_spline(one_dimensional_coordinates_local[i_plane + additional_parts]),
                                      y_spline(one_dimensional_coordinates_local[i_plane + additional_parts]),
@@ -162,8 +162,8 @@ namespace WorldBuilder
                                      coordinate_system);
 
                   const double length = (P1 - P2).norm();
-                  const int parts = (int)std::ceil(length / maximum_distance_between_coordinates);
-                  for (int j = 1; j < parts; j++)
+                  const size_t parts = (int)std::ceil(length / maximum_distance_between_coordinates);
+                  for (size_t j = 1; j < parts; j++)
                     {
                       const double x_position3 = i_plane+(double(j)/double(parts));
                       const Point<2> P3(x_spline(x_position3), y_spline(x_position3), coordinate_system);

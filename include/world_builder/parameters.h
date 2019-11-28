@@ -208,7 +208,7 @@ namespace WorldBuilder
        * as a string in json pointer format.
        * \return std::string
        */
-      std::string get_full_json_path(unsigned int max_size = std::numeric_limits<unsigned int>::max()) const;
+      std::string get_full_json_path(size_t max_size = std::numeric_limits<size_t>::max()) const;
 
       /**
        * todo: Warning: do not use before declarations is filled.
@@ -240,7 +240,7 @@ namespace WorldBuilder
        * This is used for the get relative path functions. It stores how many
        * top entries of the path should be ignored.
        */
-      unsigned int path_level;
+      size_t path_level;
 
       /**
        * A function which returns the relative path, which is the full path

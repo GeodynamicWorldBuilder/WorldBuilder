@@ -115,7 +115,7 @@ elseif(APPLE)
    SET(CMAKE_CXX_FLAGS "-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -stdlib=libc++ -Wuninitialized -Werror=uninitialized")
    SET(CMAKE_EXE_LINKER_FLAGS "-lc++") #-stdlib=libc++")
 else()
-    SET(CMAKE_CXX_FLAGS "/W3 -std=c++11")
+    SET(CMAKE_CXX_FLAGS "/W3 /EHsc -std=c++11")
      #-stdlib=libc++")
 endif()
 
