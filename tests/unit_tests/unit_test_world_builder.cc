@@ -46,6 +46,7 @@
 
 #include <world_builder/utilities.h>
 #include <world_builder/wrapper_c.h>
+#include <world_builder/wrapper_cpp.h>
 using namespace WorldBuilder;
 
 using Catch::Matchers::Contains;
@@ -660,6 +661,63 @@ TEST_CASE("WorldBuilder C wrapper")
   CHECK(composition == 1.0);
 
   release_world(*ptr_ptr_world);
+}
+
+TEST_CASE("WorldBuilder CPP wrapper")
+{
+  // First test a world builder file with a cross section defined
+  std::string file = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb1.json";
+
+  wrapper_cpp::WorldBuilderWrapper world(file);
+
+  double temperature = 0;
+
+  temperature = world.temperature_2d(1, 2, 0, 10);
+  CHECK(temperature == Approx(1600));
+  temperature = world.temperature_3d(1, 2, 3, 0, 10);
+  CHECK(temperature == Approx(1600));
+  temperature = world.temperature_2d(550e3, 0, 0, 10);
+  CHECK(temperature == Approx(150));
+  temperature = world.temperature_3d(120e3, 500e3, 0, 0, 10);
+  CHECK(temperature == Approx(150));
+
+  // Test the compositions
+  double composition = 0.0;
+
+  composition = world.composition_2d(1, 2, 0, 2);
+  CHECK(composition == 0.0);
+  composition = world.composition_3d(1, 2, 3, 0, 2);
+  CHECK(composition == 0.0);
+  composition = world.composition_2d(550e3, 0, 0, 3);
+  CHECK(composition == 1.0);
+  composition = world.composition_3d(120e3, 500e3, 0, 0, 3);
+  CHECK(composition == 1.0);
+
+
+  // Now test a world builder file without a cross section defined
+  file = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb2.json";
+
+  wrapper_cpp::WorldBuilderWrapper world2(file);
+
+
+  CHECK_THROWS_WITH(world2.temperature_2d(1, 2, 0, 10),
+                    Contains("This function can only be called when the cross section "
+                             "variable in the world builder file has been set. Dim is 3."));
+  temperature = world2.temperature_3d(1, 2, 3, 0, 10);
+  CHECK(temperature == Approx(1600));
+  temperature = world2.temperature_3d(120e3, 500e3, 0, 0, 10);
+  CHECK(temperature == Approx(150));
+
+  // Test the compositions
+  CHECK_THROWS_WITH(world2.composition_2d(1, 2, 0, 2),
+                    Contains("This function can only be called when the cross section "
+                             "variable in the world builder file has been set. Dim is 3."));
+
+  composition = world2.composition_3d(1, 2, 3, 0, 2);
+  CHECK(composition == 0.0);
+  composition = world2.composition_3d(120e3, 500e3, 0, 0, 3);
+  CHECK(composition == 1.0);
+
 }
 
 
@@ -1565,7 +1623,7 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   position = {{250e3,600e3,800e3}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
   CHECK(world1.temperature(position, 10, 10) == Approx(1600.0044800063));
-  CHECK(world1.temperature(position, 100e3, 10) == Approx(1645.4330950743));
+  CHECK(world1.temperature(position, 100e3-1, 10) == Approx(1645.4330950743));
   CHECK(world1.temperature(position, 100e3+1, 10) == Approx(1.0000424264));
   CHECK(world1.temperature(position, 101e3, 10) == Approx(1.0424264069));
   CHECK(world1.temperature(position, 110e3, 10) == Approx(1.4242640687));
@@ -1579,11 +1637,11 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.composition(position, 10, 1) == 0.0);
   CHECK(world1.composition(position, 10, 2) == 0.0);
   CHECK(world1.composition(position, 10, 3) == 0.0);
-  CHECK(world1.composition(position, 100e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3, 4) == Approx(0.0));
+  CHECK(world1.composition(position, 100e3-1, 0) == Approx(0.0));
+  CHECK(world1.composition(position, 100e3-1, 1) == Approx(0.0));
+  CHECK(world1.composition(position, 100e3-1, 2) == Approx(0.0));
+  CHECK(world1.composition(position, 100e3-1, 3) == Approx(0.0));
+  CHECK(world1.composition(position, 100e3-1, 4) == Approx(0.0));
   CHECK(world1.composition(position, 100e3+1, 0) == Approx(0.0));
   CHECK(world1.composition(position, 100e3+1, 1) == Approx(0.0));
   CHECK(world1.composition(position, 100e3+1, 2) == Approx(0.0));
@@ -2062,7 +2120,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   position = {{250e3,600e3,800e3}};
   CHECK(world3.temperature(position, 0, 10) == Approx(1600));
   CHECK(world3.temperature(position, 10, 10) == Approx(1600.0044800063));
-  CHECK(world3.temperature(position, 100e3, 10) == Approx(1.0));
+  CHECK(world3.temperature(position, 100e3-1, 10) == Approx(1.0000424264));
   CHECK(world3.temperature(position, 100e3+1, 10) == Approx(1.0000424264));
   CHECK(world3.temperature(position, 101e3, 10) == Approx(1.0424264069));
   CHECK(world3.temperature(position, 110e3, 10) == Approx(1.4242640687));
@@ -2076,11 +2134,11 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world3.composition(position, 10, 1) == 0.0);
   CHECK(world3.composition(position, 10, 2) == 0.0);
   CHECK(world3.composition(position, 10, 3) == 0.0);
-  CHECK(world3.composition(position, 100e3, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3, 3) == Approx(1.0));
-  CHECK(world3.composition(position, 100e3, 4) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3-1, 0) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3-1, 1) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3-1, 2) == Approx(0.0));
+  CHECK(world3.composition(position, 100e3-1, 3) == Approx(1.0));
+  CHECK(world3.composition(position, 100e3-1, 4) == Approx(0.0));
   CHECK(world3.composition(position, 100e3+1, 0) == Approx(0.0));
   CHECK(world3.composition(position, 100e3+1, 1) == Approx(0.0));
   CHECK(world3.composition(position, 100e3+1, 2) == Approx(0.0));
@@ -3014,7 +3072,99 @@ TEST_CASE("WorldBuilder Parameters")
   WorldBuilder::World world(file_name);
 
   Parameters prm(world);
-  prm.initialize(file_name);
+  prm.initialize(file);
+
+  CHECK_THROWS_WITH(prm.get<unsigned int>("non existent unsigned int"),
+                    Contains("internal error: could not retrieve the default value at"));
+
+  CHECK(prm.get<unsigned int>("unsigned int") == 4);
+
+  CHECK_THROWS_WITH(prm.get<size_t>("non existent unsigned int"),
+                    Contains("internal error: could not retrieve the default value at"));
+
+  CHECK(prm.get<size_t>("unsigned int") == 4);
+
+
+  CHECK_THROWS_WITH(prm.get<double>("non existent double"),
+                    Contains("internal error: could not retrieve the default value at"));
+
+  CHECK(prm.get<double>("double") == Approx(1.23456e2));
+
+
+  CHECK_THROWS_WITH(prm.get<std::string>("non existent string"),
+                    Contains("internal error: could not retrieve the default value at"));
+
+  CHECK(prm.get<std::string>("string") == "mystring 0");
+
+  CHECK_THROWS_WITH(prm.get_vector<unsigned int>("non existent unsigned int vector"),
+                    Contains("internal error: could not retrieve the minItems value at"));
+
+
+  prm.enter_subsection("properties");
+  {
+    prm.declare_entry("now existent unsigned int vector",
+                      Types::Array(Types::UnsignedInt(1),2),
+                      "This is an array of two points along where the cross section is taken");
+  }
+  prm.leave_subsection();
+
+  std::vector<unsigned int> v_int = prm.get_vector<unsigned int>("now existent unsigned int vector");
+  CHECK(v_int.size() == 2);
+  CHECK(v_int[0] == 1);
+  CHECK(v_int[1] == 1);
+
+  v_int = prm.get_vector<unsigned int>("unsigned int array");
+  CHECK(v_int.size() == 3);
+  CHECK(v_int[0] == 25);
+  CHECK(v_int[1] == 26);
+  CHECK(v_int[2] == 27);
+
+  CHECK_THROWS_WITH(prm.get_vector<size_t>("non existent unsigned int vector"),
+                    Contains("internal error: could not retrieve the minItems value"));
+
+
+
+  std::vector<size_t> v_size_t = prm.get_vector<size_t>("now existent unsigned int vector");
+  CHECK(v_size_t.size() == 2);
+  CHECK(v_size_t[0] == 1);
+  CHECK(v_size_t[1] == 1);
+
+  v_size_t = prm.get_vector<size_t>("unsigned int array");
+  CHECK(v_size_t.size() == 3);
+  CHECK(v_size_t[0] == 25);
+  CHECK(v_size_t[1] == 26);
+  CHECK(v_size_t[2] == 27);
+
+
+  CHECK_THROWS_WITH(prm.get_vector<double>("non existent double vector"),
+                    Contains("internal error: could not retrieve the minItems value at"));
+
+  prm.enter_subsection("properties");
+  {
+    prm.declare_entry("now existent double vector",
+                      Types::Array(Types::Double(2.4),2),
+                      "This is an array of two points along where the cross section is taken");
+  }
+  prm.leave_subsection();
+
+  std::vector<double> v_double = prm.get_vector<double>("now existent double vector");
+  CHECK(v_double.size() == 2);
+  CHECK(v_double[0] == 2.4);
+  CHECK(v_double[1] == 2.4);
+
+  v_double = prm.get_vector<double>("double array");
+  CHECK(v_double.size() == 3);
+  CHECK(v_double[0] == 25.2);
+  CHECK(v_double[1] == 26.3);
+  CHECK(v_double[2] == 27.4);
+
+
+  /*CHECK_THROWS_WITH(prm.get_vector<std::string>("non existent string vector"),
+                    Contains("internal error: could not retrieve the default value at"));
+
+  std::vector<std::string> v_string = prm.get_vector<std::string>("string array");
+  CHECK(v_string[0] == "abc");
+  CHECK(v_string[1] == "def");*/
 
   //prm.load_entry("Coordinate system", false, Types::CoordinateSystem("cartesian","This determines the coordinate system"));
 
@@ -3643,7 +3793,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  cartesian_system,
                                                  false);
 
-  CHECK(distance_from_planes["distanceFromPlane"] == Approx(-3.97205e-15)); // practically zero
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(std::sqrt(10*10+10*10)));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
@@ -3665,11 +3815,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(std::sqrt(10*10+10*10)));
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(7.10543e-16)); // practically zero
+  CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14); // practically zero
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
-  CHECK(distance_from_planes["segmentFraction"] == Approx(5.0243e-17)); // practically zero
+  CHECK(std::fabs(distance_from_planes["segmentFraction"]) < 1e-14); // practically zero
 
   // center square test 3
   position[1] = 20;
@@ -3684,7 +3834,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  cartesian_system,
                                                  false);
 
-  CHECK(distance_from_planes["distanceFromPlane"] == Approx(-3.97205e-15)); // practically zero
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(std::sqrt(10*10+10*10)));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
@@ -3787,11 +3937,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
-  CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY); // practically zero
+  CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY);
   CHECK(distance_from_planes["sectionFraction"] == 0.0);
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
-  CHECK(distance_from_planes["segmentFraction"] == 0.0); // practically zero
+  CHECK(std::fabs(distance_from_planes["segmentFraction"]) < 1e-14); // practically zero
 
   // beyond end section square test 9
   position[0] = 25;
@@ -3807,11 +3957,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
-  CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY); // practically zero
+  CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY);
   CHECK(distance_from_planes["sectionFraction"] == 0.0);
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 0);
-  CHECK(distance_from_planes["segmentFraction"] == 0.0); // practically zero
+  CHECK(std::fabs(distance_from_planes["segmentFraction"]) < 1e-14); // practically zero
 
 
   // beyond end section square test 10
@@ -3875,11 +4025,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  false);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(3.5355339059));
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(17.6776695297)); // practically zero
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(17.6776695297));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
-  CHECK(distance_from_planes["segmentFraction"] == Approx(0.0176776695)); // practically zero
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.0176776695));
 
 
   // beyond end section square test 11 (only positve version)
@@ -3898,11 +4048,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  true);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(3.5355339059));
-  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(17.6776695297)); // practically zero
+  CHECK(distance_from_planes["distanceAlongPlane"] == Approx(17.6776695297));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 0);
   CHECK(distance_from_planes["segment"] == 1);
-  CHECK(distance_from_planes["segmentFraction"] == Approx(0.0176776695)); // practically zero
+  CHECK(distance_from_planes["segmentFraction"] == Approx(0.0176776695));
 
   // add coordinate
   position[0] = 25;
@@ -3929,7 +4079,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  cartesian_system,
                                                  false);
 
-  CHECK(distance_from_planes["distanceFromPlane"] == Approx(-3.97205e-15)); // practically zero
+  CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(std::sqrt(10*10+10*10)));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
   CHECK(distance_from_planes["section"] == 1);

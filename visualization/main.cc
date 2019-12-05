@@ -375,11 +375,11 @@ int main(int argc, char **argv)
         z_max = string_to_double(data[i][2]);
 
       if (data[i][0] == "n_cell_x" && data[i][1] == "=")
-        n_cell_x = string_to_double(data[i][2]);
+        n_cell_x = string_to_unsigned_int(data[i][2]);
       if (data[i][0] == "n_cell_y" && data[i][1] == "=")
-        n_cell_y = string_to_double(data[i][2]);
+        n_cell_y = string_to_unsigned_int(data[i][2]);
       if (data[i][0] == "n_cell_z" && data[i][1] == "=")
-        n_cell_z = string_to_double(data[i][2]);
+        n_cell_z = string_to_unsigned_int(data[i][2]);
 
     }
 
@@ -394,13 +394,19 @@ int main(int argc, char **argv)
 
 
   WBAssertThrow(n_cell_x != 0, "n_cell_z may not be equal to zero: " << n_cell_x << ".");
-  WBAssertThrow(!std::isnan(n_cell_x), "n_cell_z is not a number:" << n_cell_x << ".");
+  // int's cannot generally be nan's (see https://stackoverflow.com/questions/3949457/can-an-integer-be-nan-in-c),
+  // but visual studio is giving problems over this, so it is taken out for now.
+  //WBAssertThrow(!std::isnan(n_cell_x), "n_cell_z is not a number:" << n_cell_x << ".");
 
   WBAssertThrow(dim == 3 || n_cell_z != 0, "In 3d n_cell_z may not be equal to zero: " << n_cell_y << ".");
-  WBAssertThrow(!std::isnan(n_cell_z), "n_cell_z is not a number:" << n_cell_y << ".");
+  // int's cannot generally be nan's (see https://stackoverflow.com/questions/3949457/can-an-integer-be-nan-in-c),
+  // but visual studio is giving problems over this, so it is taken out for now.
+  //WBAssertThrow(!std::isnan(n_cell_z), "n_cell_z is not a number:" << n_cell_y << ".");
 
   WBAssertThrow(n_cell_z != 0, "n_cell_z may not be equal to zero: " << n_cell_z << ".");
-  WBAssertThrow(!std::isnan(n_cell_z), "n_cell_z is not a number:" << n_cell_z << ".");
+  // int's cannot generally be nan's (see https://stackoverflow.com/questions/3949457/can-an-integer-be-nan-in-c),
+  // but visual studio is giving problems over this, so it is taken out for now.
+  //WBAssertThrow(!std::isnan(n_cell_z), "n_cell_z is not a number:" << n_cell_z << ".");
 
 
 
@@ -452,11 +458,11 @@ int main(int argc, char **argv)
   WBAssertThrow(dim == 2 || dim == 3, "Dimension should be 2d or 3d.");
   if (grid_type == "cartesian")
     {
-      n_cell = n_cell_x * n_cell_z * (dim == 3 ? n_cell_y : 1.0);
+      n_cell = n_cell_x * n_cell_z * (dim == 3 ? n_cell_y : 1);
       if (compress_size == false && dim == 3)
         n_p = n_cell * 8 ; // it shouldn't matter for 2d in the output, so just do 3d.
       else
-        n_p = (n_cell_x + 1) * (n_cell_z + 1) * (dim == 3 ? (n_cell_y + 1) : 1.0);
+        n_p = (n_cell_x + 1) * (n_cell_z + 1) * (dim == 3 ? (n_cell_y + 1) : 1);
 
 
       double dx = (x_max - x_min) / n_cell_x;
@@ -652,7 +658,7 @@ int main(int argc, char **argv)
       double lr = outer_radius - inner_radius;
       double dr = lr/n_cell_z;
 
-      unsigned int n_cell_t = (2 * const_pi * outer_radius)/dr;
+      unsigned int n_cell_t = (unsigned int)((2.0 * const_pi * outer_radius)/dr);
 
       // compute the ammount of cells
       n_cell = n_cell_t *n_cell_z;
@@ -697,7 +703,7 @@ int main(int argc, char **argv)
         {
           for (unsigned int i = 1; i <= n_cell_t; ++i)
             {
-              std::vector<double> cell_connectivity(4);
+              std::vector<unsigned int> cell_connectivity(4);
               cell_connectivity[0] = counter + 1;
               cell_connectivity[1] = counter + 1 + 1;
               cell_connectivity[2] = i + j * n_cell_t + 1;
@@ -733,11 +739,11 @@ int main(int argc, char **argv)
       double opening_angle_long_rad = (x_max - x_min);
       double opening_angle_lat_rad =  (y_max - y_min);
 
-      n_cell = n_cell_x * n_cell_z * (dim == 3 ? n_cell_y : 1.0);
+      n_cell = n_cell_x * n_cell_z * (dim == 3 ? n_cell_y : 1);
       if (compress_size == false && dim == 3)
         n_p = n_cell * 8 ; // it shouldn't matter for 2d in the output, so just do 3d.
       else
-        n_p = (n_cell_x + 1) * (n_cell_z + 1) * (dim == 3 ? (n_cell_y + 1) : 1.0);
+        n_p = (n_cell_x + 1) * (n_cell_z + 1) * (dim == 3 ? (n_cell_y + 1) : 1);
 
       double dlong = opening_angle_long_rad / n_cell_x;
       double dlat = opening_angle_lat_rad / n_cell_y;

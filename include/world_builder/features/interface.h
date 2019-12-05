@@ -140,7 +140,7 @@ namespace WorldBuilder
          * number of original coordinates, before adding
          * more automatically.
          */
-        unsigned int original_number_of_coordinates;
+        size_t original_number_of_coordinates;
 
         /**
          * The coordinates at the surface of the feature

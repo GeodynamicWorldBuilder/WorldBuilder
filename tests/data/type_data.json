@@ -1,10 +1,12 @@
 {
 "unsigned int":4,
-"double":"1.23456e2",
+"double":1.23456e2,
 "string":"mystring 0",
-"2d point": ["10", "11"],
-"3d point": ["12", "13", "14"],
-"double array" :[25,26,27],
+"2d point": [10, 11],
+"3d point": [12, 13, 14],
+"unsigned int array" :[25,26,27],
+"double array" :[25.2,26.3,27.4],
+"string array" :["abc","def"],
 "point<2> array": [[10,11], [12,13], [14,15]],
 "point<3> array": [[20,21,22], [23,24,25], [26,27,28]],
 "subsection 1":
