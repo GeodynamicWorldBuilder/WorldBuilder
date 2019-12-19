@@ -111,13 +111,13 @@ matrix:
          - MATRIX_EVAL="sudo apt install python-setuptools && CC=gcc-6 && CXX=g++-6 && FC=gfortran && sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-6 --slave /usr/bin/gcov gcov /usr/bin/gcov-6 && sudo update-alternatives --config gcc && gcc --version && gcov --version && gfortran --version && mkdir astyle && cd astyle && wget 'https://sourceforge.net/projects/astyle/files/astyle/astyle 2.04/astyle_2.04_linux.tar.gz' && tar -zxvf astyle_2.04_linux.tar.gz && cd astyle/build/gcc && make && sudo make install && cd ../../../../ && pip install --user cpp-coveralls" # && export PYTHONPATH=$PYTHONPATH:$TRAVIS_BUILD_DIR/build/lib"
       addons:
         coverity_scan:
-            project:
-              name: "GeodynamicWorldBuilder/WorldBuilder"
-              description: "An initial conditions generator for geodynamic models."
-            notification_email: geodynamicworldbuilder@outlook.com
-            build_command_prepend: "cmake ."
-            build_command: "make"
-            branch_pattern: coverity_scan
+          project:
+            name: "GeodynamicWorldBuilder/WorldBuilder"
+            description: "An initial conditions generator for geodynamic models."
+          notification_email: geodynamicworldbuilder@outlook.com
+          build_command_prepend: "cmake ."
+          build_command: "make"
+          branch_pattern: coverity_scan
         apt:
           sources:
             - ubuntu-toolchain-r-test
