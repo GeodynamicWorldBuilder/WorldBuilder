@@ -307,7 +307,9 @@ namespace WorldBuilder
       WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
                                                                       *(world->parameters.coordinate_system));
 
-      // todo: explain
+      // The depth variable is the distance from the surface to the position, the depth
+      // coordinate is the distance from the bottom of the model to the position and
+      // the starting radius is the distance from the bottom of the model to the surface.
       const double starting_radius = natural_coordinate.get_depth_coordinate() + depth - starting_depth;
 
       WBAssert(starting_radius != 0, "Internal error: starting_radius can not be zero. "
