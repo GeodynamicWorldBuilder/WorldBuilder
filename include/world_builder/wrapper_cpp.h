@@ -21,6 +21,7 @@
 #define _world_builder_wrapper_cpp_h
 
 #include <string>
+#include <vector>
 
 namespace wrapper_cpp
 {
@@ -67,6 +68,43 @@ namespace wrapper_cpp
        */
       double composition_3d(double x, double y, double z, double depth, unsigned int composition_number);
 
+      /**
+       * This function return the temperature at a specific location given x, z, depth and
+       * gravity.
+       */
+      std::vector<double> temperature_2d(std::vector<double> x, std::vector<double> z, std::vector<double> depth, std::vector<double> gravity);
+
+      /**
+       * test
+       */
+      void temperature_2d(double *p_output, unsigned int n_output, double *p_x, unsigned int n_x, double *p_z, unsigned int n_z, double *p_depth, unsigned int n_depth, double *p_gravity, unsigned int n_gravity);//, double* p_z, unsigned int n_z, double* p_depth, unsigned int n_depth, double* gp_ravity, unsigned int n_gravity);
+
+      /**
+       * This function return the temperature at a specific location given x, z, depth and
+       * gravity.
+       */
+      std::vector<double> temperature_3d(std::vector<double> x, std::vector<double> y, std::vector<double> z, std::vector<double> depth, std::vector<double> gravity);
+
+      /**
+       * test
+       */
+      void temperature_3d(double *p_output, unsigned int n_output,
+                          double *p_x, unsigned int n_x,
+                          double *p_y, unsigned int n_y,
+                          double *p_z, unsigned int n_z,
+                          double *p_depth, unsigned int n_depth,
+                          double *p_gravity, unsigned int n_gravity);//, double* p_z, unsigned int n_z, double* p_depth, unsigned int n_depth, double* gp_ravity, unsigned int n_gravity);
+
+
+      /**
+       * This function return the composition at a specific location given x, z, depth.
+       */
+      std::vector<double> composition_2d(std::vector<double> x, std::vector<double> z, std::vector<double> depth, unsigned int composition);
+
+      /**
+       * test
+       */
+      void composition_2d(double *p_output, unsigned int n_output, double *p_x, unsigned int n_x, double *p_z, unsigned int n_z, double *p_depth, unsigned int n_depth, double *p_compositions,unsigned int n_compositions);//, double* p_z, unsigned int n_z, double* p_depth, unsigned int n_depth, double* gp_ravity, unsigned int n_gravity);
 
     private:
       void *ptr_ptr_world;
