@@ -199,6 +199,7 @@ int main(int argc, char **argv)
 
   //commmon
   std::string grid_type = "chunk";
+  double surface_depth = 0;
 
   unsigned int n_cell_x = NaN::ISNAN; // x or long
   unsigned int n_cell_y = NaN::ISNAN; // y or lat
@@ -358,6 +359,11 @@ int main(int argc, char **argv)
           dim = string_to_unsigned_int(data[i][2]);
         }
 
+      if (data[i][0] == "surface" && data[i][1] == "depth" && data[i][2] == "=")
+        {
+          surface_depth = string_to_double(data[i][3]);
+        }
+
       if (data[i][0] == "compositions" && data[i][1] == "=")
         compositions = string_to_unsigned_int(data[i][2]);
 
@@ -475,7 +481,7 @@ int main(int argc, char **argv)
       WBAssertThrow(!std::isnan(dz), "dz is not a number:" << dz << ".");
 
       // todo: determine wheter a input variable is desirable for this.
-      double surface = z_max;
+      double surface = z_max-surface_depth;
 
       grid_x.resize(n_p);
       grid_z.resize(n_p);
