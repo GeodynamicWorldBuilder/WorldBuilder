@@ -168,7 +168,7 @@ if(MAKE_PYTHON_WRAPPER)
    add_test(run_simple_python_test
            ${CMAKE_COMMAND}
                  -D TEST_NAME=run_simple_python_test
-                 -D TEST_PROGRAM=${Python_EXECUTABLE}
+                 -D TEST_PROGRAM=${Python3_EXECUTABLE}
                  -D TEST_ARGS=${CMAKE_CURRENT_SOURCE_DIR}/python/test.py
 		 -D TEST_INPUT=
                  -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/python/run_simple_python_test.log
@@ -179,11 +179,22 @@ if(MAKE_PYTHON_WRAPPER)
     add_test(run_simple_python_example
 	    ${CMAKE_COMMAND}
                  -D TEST_NAME=run_simple_python_example
-                 -D TEST_PROGRAM=${Python_EXECUTABLE}
+                 -D TEST_PROGRAM=${Python3_EXECUTABLE}
                  -D TEST_ARGS=${CMAKE_CURRENT_SOURCE_DIR}/python/example.py 
-		             -D TEST_INPUT=${CMAKE_CURRENT_SOURCE_DIR}/data/continental_plate.wb
+		 -D TEST_INPUT=${CMAKE_CURRENT_SOURCE_DIR}/data/continental_plate.wb
                  -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/python/run_simple_python_example.log
-		             -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/python/run_simple_python_example.log
+		 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/python/run_simple_python_example.log
+                 -P ${CMAKE_SOURCE_DIR}/tests/python/run_python_tests.cmake
+                 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/python/) 
+
+    add_test(run_simple_python_numpy_example
+	    ${CMAKE_COMMAND}
+                 -D TEST_NAME=run_simple_python_numpy_example
+                 -D TEST_PROGRAM=${Python3_EXECUTABLE}
+                 -D TEST_ARGS=${CMAKE_CURRENT_SOURCE_DIR}/python/run_simple_python_numpy_example.py 
+		 -D TEST_INPUT=${CMAKE_CURRENT_SOURCE_DIR}/data/continental_plate.wb
+                 -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/python/run_simple_python_numpy_example.log
+		 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/python/run_simple_python_numpy_example.log
                  -P ${CMAKE_SOURCE_DIR}/tests/python/run_python_tests.cmake
                  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/python/) 
 endif()

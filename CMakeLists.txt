@@ -55,11 +55,11 @@ if(${CMAKE_VERSION} VERSION_LESS "3.12.0")
   FIND_PACKAGE(PythonInterp 3.0)
 
     if(PYTHONLIBS_FOUND AND PYTHONINTERP_FOUND)
-      SET(Python_FOUND TRUE)
-      SET(Python_EXECUTABLE ${PYTHON_EXECUTABLE})
-      SET(Python_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS})
-      SET(Python_LIBRARIES ${PYTHON_LIBRARIES})
-      SET(Python_LIBRARIES_RELEASE ${PYTHON_LIBRARIES_RELEASE})
+      SET(Python3_FOUND TRUE)
+      SET(Python3_EXECUTABLE ${PYTHON_EXECUTABLE})
+      SET(Python3_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS})
+      SET(Python3_LIBRARIES ${PYTHON_LIBRARIES})
+      SET(Python3_LIBRARIES_RELEASE ${PYTHON_LIBRARIES_RELEASE})
       include_directories(${PYTHON_INCLUDE_DIRS})
     else()
       SET(Python_FOUND FALSE)
@@ -67,18 +67,31 @@ if(${CMAKE_VERSION} VERSION_LESS "3.12.0")
     endif()
 
 else()
-  FIND_PACKAGE(Python COMPONENTS Interpreter Development)
-  if(Python_FOUND)
-    include_directories(${Python_INCLUDE_DIRS})
+  if(${CMAKE_VERSION} VERSION_LESS "3.12.0") 
+    FIND_PACKAGE(Python3 COMPONENTS Interpreter Development)
   else()
-    message(STATUS "Python was not found, disableling python wrapper compilation.")
+    FIND_PACKAGE(Python3 COMPONENTS Interpreter Development NumPy)
+    if(NOT Python3_FOUND)
+      FIND_PACKAGE(Python3 COMPONENTS Interpreter Development)
+    endif()
+  endif()
+  if(Python3_FOUND)
+    include_directories(${Python3_INCLUDE_DIRS})
+  else()
+    message(STATUS "Python 3 was not found, disableling python wrapper compilation.")
+  endif()
+  if(Python3_NumPy_FOUND)
+    message(STATUS "Python 3 NUMPY was found.")
+    include_directories(${Python3_NumPy_INCLUDE_DIRS})
+  else()
+    message(STATUS "Python 3 NUMPY was not found, this may be because it was not installed or because you have a cmake version lower than 3.14.")
   endif()
 endif()
 
 
-if(SWIG_FOUND AND Python_FOUND)
+if(SWIG_FOUND AND Python3_FOUND)
   SET(MAKE_PYTHON_WRAPPER TRUE)
-  message(STATUS "Both SWIG and Python are found, enableling python wrapper compilation.")
+    message(STATUS "Both SWIG and Python 3 are found, enableling python wrapper compilation.")
 endif()
 
 # Add include directory
@@ -192,6 +205,7 @@ if(MAKE_PYTHON_WRAPPER)
   endif()
 
   # Add swig module
+  SET(CMAKE_SWIG_FLAGS "-py3")
   SET_SOURCE_FILES_PROPERTIES(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/source/wrapper_cpp.i PROPERTIES CPLUSPLUS ON)
   if(${CMAKE_VERSION} VERSION_LESS "3.8.0") 
     swig_add_module(gwb python ${CMAKE_CURRENT_SOURCE_DIR}/source/wrapper_cpp.i)
@@ -208,12 +222,12 @@ if(MAKE_PYTHON_WRAPPER)
   # so force release usage.
   if(WIN32 AND MSVC)
     SET(CMAKE_SWIG_FLAGS "-D_SWIG_WIN32 /WHOLEARCHIVE:${CMAKE_CURRENT_BINARY_DIR}/lib/WorldBuilder.lib")
-    swig_link_libraries(gwb ${GWB_LIBRARY_WHOLE} ${Python_LIBRARY_RELEASE})
+    swig_link_libraries(gwb ${GWB_LIBRARY_WHOLE} ${Python3_LIBRARY_RELEASE})
 
     SET_TARGET_PROPERTIES(${TARGET} PROPERTIES LINK_FLAGS "/WHOLEARCHIVE:WorldBuilder")
 
   else()
-    swig_link_libraries(gwb ${GWB_LIBRARY_WHOLE} ${Python_LIBRARIES})
+    swig_link_libraries(gwb ${GWB_LIBRARY_WHOLE} ${Python3_LIBRARIES})
   endif()
   
   set_target_properties(${TARGET} PROPERTIES PREFIX "_" OUTPUT_NAME "gwb")
@@ -236,7 +250,7 @@ if(MAKE_PYTHON_WRAPPER)
   # Install target to call setup.py
   add_custom_target(install-python
           DEPENDS _gwb
-          COMMAND ${Python_EXECUTABLE} ${SETUP_PY_OUT} install)
+          COMMAND ${Python3_EXECUTABLE} ${SETUP_PY_OUT} install)
 endif()
 
 # binary:
@@ -249,7 +263,7 @@ if(CMAKE_Fortran_COMPILER)
 endif()
 
 if(MAKE_PYTHON_WRAPPER)
-  install(CODE "execute_process(COMMAND ${Python_EXECUTABLE} ${SETUP_PY_OUT} install)")
+  install(CODE "execute_process(COMMAND ${Python3_EXECUTABLE} ${SETUP_PY_OUT} install)")
 endif()
 
 # headers:
