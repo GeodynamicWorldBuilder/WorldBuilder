@@ -1,0 +1,19 @@
+# ouput variables
+grid_type = chunk
+dim = 3
+surface depth = 200e3
+compress size = true
+compositions = 0
+
+# domain of the grid
+x_max = 10
+x_min = 0
+y_max = 10
+y_min = 0
+z_min = 6051000
+z_max = 6571000
+
+# grid properties
+n_cell_x = 10 
+n_cell_y = 10 
+n_cell_z = 10 
