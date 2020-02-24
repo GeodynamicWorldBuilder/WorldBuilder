@@ -190,6 +190,13 @@ namespace WorldBuilder
 
 
     /**
+     * Converts a string to a bool
+     */
+    bool
+    string_to_bool(const std::string &string);
+
+
+    /**
      * Converts a string to a unsigned int
      */
     unsigned int
