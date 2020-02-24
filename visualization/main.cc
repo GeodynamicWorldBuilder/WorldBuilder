@@ -201,6 +201,8 @@ int main(int argc, char **argv)
   std::string grid_type = "chunk";
   double surface_depth = 0;
 
+  bool compress_size = false;
+
   unsigned int n_cell_x = NaN::ISNAN; // x or long
   unsigned int n_cell_y = NaN::ISNAN; // y or lat
   unsigned int n_cell_z = NaN::ISNAN; // z or depth
@@ -364,6 +366,11 @@ int main(int argc, char **argv)
           surface_depth = string_to_double(data[i][3]);
         }
 
+      if (data[i][0] == "compress" && data[i][1] == "size" && data[i][2] == "=")
+        {
+          compress_size = string_to_bool(data[i][3]);
+        }
+
       if (data[i][0] == "compositions" && data[i][1] == "=")
         compositions = string_to_unsigned_int(data[i][2]);
 
@@ -451,7 +458,6 @@ int main(int argc, char **argv)
   std::vector<std::vector<unsigned int> > grid_connectivity(0);
 
 
-  bool compress_size = false;
 
 
 
@@ -698,7 +704,7 @@ int main(int argc, char **argv)
               double theta = xi / l_outer * 2.0 * const_pi;
               grid_x[counter] = std::cos(theta) * (inner_radius + zi);
               grid_z[counter] = std::sin(theta) * (inner_radius + zi);
-              grid_depth[counter] = outer_radius - std::sqrt(grid_x[counter] * grid_x[counter] + grid_z[counter] * grid_z [counter]);
+              grid_depth[counter] = outer_radius - std::sqrt(grid_x[counter] * grid_x[counter] + grid_z[counter] * grid_z [counter]) - surface_depth;
               counter++;
             }
         }
@@ -771,7 +777,7 @@ int main(int argc, char **argv)
               {
                 grid_x[counter] = x_min + (i-1) * dlong;
                 grid_z[counter] = inner_radius + (j-1) * dr;
-                grid_depth[counter] = lr - (j-1) * dr;
+                grid_depth[counter] = lr - surface_depth - (j-1) * dr;
                 counter++;
               }
         }
@@ -786,7 +792,7 @@ int main(int argc, char **argv)
                       grid_x[counter] = x_min + (i-1) * dlong;
                       grid_y[counter] = y_min + (j-1) * dlat;
                       grid_z[counter] = inner_radius + (k-1) * dr;
-                      grid_depth[counter] = lr - (k-1) * dr;
+                      grid_depth[counter] = lr - surface_depth - (k-1) * dr;
                       counter++;
                     }
             }
@@ -803,49 +809,49 @@ int main(int argc, char **argv)
                           grid_x[counter] = x_min + i * dlong;
                           grid_y[counter] = y_min + j * dlat;
                           grid_z[counter] = inner_radius + k * dr;
-                          grid_depth[counter] = lr - k * dr;
+                          grid_depth[counter] = lr - surface_depth - k * dr;
                           counter++;
                           // position 1 of this cell
                           grid_x[counter] = x_min + (i + 1) * dlong;
                           grid_y[counter] = y_min + j * dlat;
                           grid_z[counter] = inner_radius + k * dr;
-                          grid_depth[counter] = lr - k * dr;
+                          grid_depth[counter] = lr - surface_depth - k * dr;
                           counter++;
                           // position 2 of this cell
                           grid_x[counter] = x_min + (i + 1) * dlong;
                           grid_y[counter] = y_min + (j + 1) * dlat;
                           grid_z[counter] = inner_radius + k * dr;
-                          grid_depth[counter] = lr - k * dr;
+                          grid_depth[counter] = lr - surface_depth - k * dr;
                           counter++;
                           // position 3 of this cell
                           grid_x[counter] = x_min + i * dlong;
                           grid_y[counter] = y_min + (j + 1) * dlat;
                           grid_z[counter] = inner_radius + k * dr;
-                          grid_depth[counter] = lr - k * dr;
+                          grid_depth[counter] = lr - surface_depth - k * dr;
                           counter++;
                           // position 0 of this cell
                           grid_x[counter] = x_min + i * dlong;
                           grid_y[counter] = y_min + j * dlat;
                           grid_z[counter] = inner_radius + (k + 1) * dr;
-                          grid_depth[counter] = lr - (k + 1) * dr;
+                          grid_depth[counter] = lr - surface_depth - (k + 1) * dr;
                           counter++;
                           // position 1 of this cell
                           grid_x[counter] = x_min + (i + 1) * dlong;
                           grid_y[counter] = y_min + j * dlat;
                           grid_z[counter] = inner_radius + (k + 1) * dr;
-                          grid_depth[counter] = lr - (k + 1) * dr;
+                          grid_depth[counter] = lr - surface_depth - (k + 1) * dr;
                           counter++;
                           // position 2 of this cell
                           grid_x[counter] = x_min + (i + 1) * dlong;
                           grid_y[counter] = y_min + (j + 1) * dlat;
                           grid_z[counter] = inner_radius + (k + 1) * dr;
-                          grid_depth[counter] = lr - (k + 1) * dr;
+                          grid_depth[counter] = lr - surface_depth - (k + 1) * dr;
                           counter++;
                           // position 3 of this cell
                           grid_x[counter] = x_min + i * dlong;
                           grid_y[counter] = y_min + (j + 1) * dlat;
                           grid_z[counter] = inner_radius + (k + 1) * dr;
-                          grid_depth[counter] = lr - (k + 1) * dr;
+                          grid_depth[counter] = lr - surface_depth - (k + 1) * dr;
                           WBAssert(counter < n_p, "Assert counter smaller then n_P: counter = " << counter << ", n_p = " << n_p);
                           counter++;
                         }
