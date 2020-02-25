@@ -16,4 +16,4 @@ z_max = 6571000
 # grid properties
 n_cell_x = 10 
 n_cell_y = 10 
-n_cell_z = 10 
+n_cell_z = 9 
