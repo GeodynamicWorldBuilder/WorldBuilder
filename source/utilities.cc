@@ -608,8 +608,9 @@ namespace WorldBuilder
               // Todo: Assert that the norm of the axis are not equal to zero.
               Point<3> y_axis = closest_point_on_line_cartesian - closest_point_on_line_bottom_cartesian;
 
-              WBAssert(y_axis.norm() != 0,
-                       "Internal error: The y_axis.norm() is zero. Y_axis is " << y_axis[0] << ":" << y_axis[1] << ":" << y_axis[2]
+              WBAssert(std::abs(y_axis.norm()) > std::numeric_limits<double>::epsilon(),
+                       "World Builder error: Cannot detemine the up direction in the model. This is most likely due to the provided start radius being zero."
+                       << " Techical details: The y_axis.norm() is zero. Y_axis is " << y_axis[0] << ":" << y_axis[1] << ":" << y_axis[2]
                        << ". closest_point_on_line_cartesian = " << closest_point_on_line_cartesian[0] << ":" << closest_point_on_line_cartesian[1] << ":" << closest_point_on_line_cartesian[2]
                        << ", closest_point_on_line_bottom_cartesian = " << closest_point_on_line_bottom_cartesian[0] << ":" << closest_point_on_line_bottom_cartesian[1] << ":" << closest_point_on_line_bottom_cartesian[2]);
 
