@@ -25,9 +25,9 @@ namespace WorldBuilder
 {
   namespace Types
   {
-    Bool::Bool(const bool default_value)
+    Bool::Bool(const bool default_value_)
       :
-      default_value(default_value)
+      default_value(default_value_)
     {
       this->type_name = Types::type::Bool;
     }

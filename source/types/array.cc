@@ -26,16 +26,16 @@ namespace WorldBuilder
   namespace Types
   {
     Array::Array(const Interface &type,
-                 const unsigned int min_items,
-                 const unsigned int max_items,
-                 const bool unique_items)
+                 const unsigned int min_items_,
+                 const unsigned int max_items_,
+                 const bool unique_items_)
       :
       inner_type(type.get_type()),
       inner_type_ptr(type.clone()),
       required(false),
-      min_items(min_items),
-      max_items(max_items),
-      unique_items(unique_items)
+      min_items(min_items_),
+      max_items(max_items_),
+      unique_items(unique_items_)
     {
       this->type_name = Types::type::Array;
     }

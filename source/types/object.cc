@@ -24,11 +24,11 @@ namespace WorldBuilder
 {
   namespace Types
   {
-    Object::Object(const std::vector<std::string> required,
-                   const bool additional_properties)
+    Object::Object(const std::vector<std::string> required_,
+                   const bool additional_properties_)
       :
-      required(required),
-      additional_properties(additional_properties)
+      required(required_),
+      additional_properties(additional_properties_)
     {
       this->type_name = Types::type::Object;
     }

@@ -140,7 +140,7 @@ namespace WorldBuilder
       prm.get_unique_pointers("sections", sections_vector);
 
       prm.enter_subsection("sections");
-      for (unsigned int i = 0; i < n_sections; ++i)
+      for (unsigned int i_section = 0; i_section < n_sections; ++i_section)
         {
           // first check whether this section/coordinate has a a special overwrite
           for (unsigned int i_sector = 0; i_sector < sections_vector.size(); ++i_sector)
@@ -316,7 +316,7 @@ namespace WorldBuilder
       // the starting radius is the distance from the bottom of the model to the surface.
       const double starting_radius = natural_coordinate.get_depth_coordinate() + depth - starting_depth;
 
-      WBAssert(starting_radius != 0, "Internal error: starting_radius can not be zero. "
+      WBAssert(std::abs(starting_radius) > std::numeric_limits<double>::epsilon(), "World Builder error: starting_radius can not be zero. "
                << "Position = " << position[0] << ":" << position[1] << ":" << position[2]
                << ", natural_coordinate.get_depth_coordinate() = " << natural_coordinate.get_depth_coordinate()
                << ", depth = " << depth

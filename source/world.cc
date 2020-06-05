@@ -116,10 +116,10 @@ namespace WorldBuilder
      * version number of the program.
      */
 
-    WBAssertThrow(Version::MAJOR == "0"
-                  && prm.get<std::string>("version") == Version::MAJOR + "." + Version::MINOR
-                  || Version::MAJOR != "0"
-                  && prm.get<std::string>("version") == Version::MAJOR,
+    WBAssertThrow((Version::MAJOR == "0"
+                   && prm.get<std::string>("version") == Version::MAJOR + "." + Version::MINOR)
+                  || (Version::MAJOR != "0"
+                      && prm.get<std::string>("version") == Version::MAJOR),
                   "The major and minor version combination (for major version 0) or the major "
                   "version (for major versions after 0) for which is input file was written "
                   "is not the same as the version of the World Builder you are running. This means "

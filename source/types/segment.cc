@@ -31,20 +31,20 @@ namespace WorldBuilder
 {
   namespace Types
   {
-    Segment::Segment(const double default_length,
-                     const WorldBuilder::Point<2> default_thickness,
-                     const WorldBuilder::Point<2> default_top_truncation,
-                     const WorldBuilder::Point<2> default_angle,
+    Segment::Segment(const double default_length_,
+                     const WorldBuilder::Point<2> default_thickness_,
+                     const WorldBuilder::Point<2> default_top_truncation_,
+                     const WorldBuilder::Point<2> default_angle_,
                      const Types::Interface &temperature_pugin_system_,
                      const Types::Interface &composition_pugin_system_)
       :
-      value_length(default_length),
-      default_length(default_length),
-      value_thickness(default_thickness),
-      default_thickness(default_thickness),
-      default_top_truncation(default_top_truncation),
-      value_angle(default_angle),
-      default_angle(default_angle),
+      value_length(default_length_),
+      default_length(default_length_),
+      value_thickness(default_thickness_),
+      default_thickness(default_thickness_),
+      default_top_truncation(default_top_truncation_),
+      value_angle(default_angle_),
+      default_angle(default_angle_),
       temperature_pugin_system(temperature_pugin_system_.clone()),
       composition_pugin_system(composition_pugin_system_.clone())
     {
@@ -53,20 +53,20 @@ namespace WorldBuilder
 
 
     // todo update function
-    Segment::Segment(const double default_length,
-                     const WorldBuilder::Point<2> default_thickness,
-                     const WorldBuilder::Point<2> default_top_truncation,
-                     const WorldBuilder::Point<2> default_angle,
+    Segment::Segment(const double default_length_,
+                     const WorldBuilder::Point<2> default_thickness_,
+                     const WorldBuilder::Point<2> default_top_truncation_,
+                     const WorldBuilder::Point<2> default_angle_,
                      const std::unique_ptr<Types::Interface> &temperature_pugin_system_,
                      const std::unique_ptr<Types::Interface> &composition_pugin_system_)
       :
-      value_length(default_length),
-      default_length(default_length),
-      value_thickness(default_thickness),
-      default_thickness(default_thickness),
-      default_top_truncation(default_top_truncation),
-      value_angle(default_angle),
-      default_angle(default_angle),
+      value_length(default_length_),
+      default_length(default_length_),
+      value_thickness(default_thickness_),
+      default_thickness(default_thickness_),
+      default_top_truncation(default_top_truncation_),
+      value_angle(default_angle_),
+      default_angle(default_angle_),
       temperature_pugin_system(temperature_pugin_system_->clone()),
       composition_pugin_system(composition_pugin_system_->clone())
     {
@@ -126,7 +126,7 @@ namespace WorldBuilder
 
         prm.enter_subsection("properties");
         {
-          std::string base = prm.get_full_json_path();
+          base = prm.get_full_json_path();
           Pointer((base + "/length/type").c_str()).Set(declarations,"number");
 
           Pointer((base + "/thickness/type").c_str()).Set(declarations,"array");
@@ -158,20 +158,20 @@ namespace WorldBuilder
   {
     // todo update function
     template<class A, class B>
-    Segment<A,B>::Segment(const double default_length,
-                          const WorldBuilder::Point<2> default_thickness,
-                          const WorldBuilder::Point<2> default_top_truncation,
-                          const WorldBuilder::Point<2> default_angle,
-                          const std::vector<std::shared_ptr<A> > &temperature_systems,
-                          const std::vector<std::shared_ptr<B> > &composition_systems)
+    Segment<A,B>::Segment(const double default_length_,
+                          const WorldBuilder::Point<2> default_thickness_,
+                          const WorldBuilder::Point<2> default_top_truncation_,
+                          const WorldBuilder::Point<2> default_angle_,
+                          const std::vector<std::shared_ptr<A> > &temperature_systems_,
+                          const std::vector<std::shared_ptr<B> > &composition_systems_)
       :
-      value_length(default_length),
-      default_length(default_length),
-      value_thickness(default_thickness),
-      value_top_truncation(default_top_truncation),
-      value_angle(default_angle),
-      temperature_systems(temperature_systems),
-      composition_systems(composition_systems)
+      value_length(default_length_),
+      default_length(default_length_),
+      value_thickness(default_thickness_),
+      value_top_truncation(default_top_truncation_),
+      value_angle(default_angle_),
+      temperature_systems(temperature_systems_),
+      composition_systems(composition_systems_)
     {
       this->type_name = Types::type::Segment;
 

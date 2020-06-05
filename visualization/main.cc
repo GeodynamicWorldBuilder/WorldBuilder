@@ -40,6 +40,12 @@
 using namespace WorldBuilder;
 using namespace WorldBuilder::Utilities;
 
+// function declarations
+void project_on_sphere(double, double &, double &, double &);
+void lay_points(double, double, double, double, double, double, double, double, double, double, double, double, std::vector<double> &, std::vector<double> &, std::vector<double> &, std::vector<bool> &, unsigned int);
+std::vector<std::string> get_command_line_options_vector(int argc, char **argv);
+bool find_command_line_option(char **begin, char **end, const std::string &option);
+
 
 /**
  * A very simple threadpool class. The threadpool currently only supports a
@@ -313,7 +319,6 @@ int main(int argc, char **argv)
   std::cout.flush();
 
 
-  std::string line;
   std::ifstream data_stream(data_file);
 
   // if config file is available, parse it
