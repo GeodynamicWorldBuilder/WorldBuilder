@@ -21,6 +21,7 @@
 #define _world_builder_features_fault_temperature_linear_h
 
 #include <world_builder/features/fault_models/temperature/interface.h>
+#include <world_builder/features/utilities.h>
 #include <world_builder/world.h>
 
 
@@ -84,7 +85,7 @@ namespace WorldBuilder
             double max_depth;
             double top_temperature;
             double bottom_temperature;
-            std::string operation;
+            Utilities::Operations operation;
 
         };
       }

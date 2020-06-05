@@ -68,10 +68,6 @@ namespace WorldBuilder
           prm.declare_entry("temperature", Types::Double(293.15),
                             "The temperature in degree Kelvin which this feature should have");
 
-          prm.declare_entry("operation", Types::String("replace", std::vector<std::string> {"replace", "add", "substract"}),
-                            "Whether the value should replace any value previously defined at this location (replace), "
-                            "add the value to the previously define value (add) or substract the value to the previously "
-                            "define value (substract).");
 
         }
 

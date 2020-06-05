@@ -82,11 +82,6 @@ namespace WorldBuilder
           prm.declare_entry("ridge coordinates", Types::Array(Types::Point<2>(),2),
                             "A list of 2d points which define the location of the ridge.");
 
-          prm.declare_entry("operation", Types::String("replace", std::vector<std::string> {"replace", "add", "substract"}),
-                            "Whether the value should replace any value previously defined at this location (replace), "
-                            "add the value to the previously define value (add) or substract the value to the previously "
-                            "define value (substract).");
-
         }
 
         void

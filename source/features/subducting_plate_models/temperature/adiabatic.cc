@@ -80,11 +80,6 @@ namespace WorldBuilder
                             "The specific heat in $J kg^{-1} K^{-1}$. "
                             "If the value is lower then zero, the global value is used.");
 
-          prm.declare_entry("operation", Types::String("replace",std::vector<std::string> {"replace", "add", "substract"}),
-                            "Whether the value should replace any value previously defined at this location (replace), "
-                            "add the value to the previously define value (add) or substract the value to the previously "
-                            "define value (substract).");
-
         }
 
         void

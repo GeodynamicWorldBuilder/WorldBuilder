@@ -62,6 +62,11 @@ namespace WorldBuilder
                         prm.declare_entry("model", Types::String("",it->first),
                                           "The name of the temperature model.");
 
+                        prm.declare_entry("operation", Types::String("replace", std::vector<std::string> {"replace", "add", "subtract"}),
+                                          "Whether the value should replace any value previously defined at this location (replace), "
+                                          "add the value to the previously define value (add) or subtract the value to the previously "
+                                          "define value (subtract).");
+
                         it->second(prm, parent_name);
                       }
                       prm.leave_subsection();

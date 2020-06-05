@@ -34,7 +34,7 @@ namespace WorldBuilder
     {
       enum class Operations
       {
-        REPLACE,ADD,SUBSTRACT
+        REPLACE,ADD,SUBTRACT
       };
 
       /**
@@ -45,7 +45,7 @@ namespace WorldBuilder
 
 
       /**
-       * Applies different opertions such as replace, add and substract to the original values
+       * Applies different opertions such as replace, add and subtract to the original values
        */
       inline double
       apply_operation(const Utilities::Operations operation,
@@ -62,7 +62,7 @@ namespace WorldBuilder
               return old_value + new_value;
               break;
 
-            case Utilities::Operations::SUBSTRACT:
+            case Utilities::Operations::SUBTRACT:
               return old_value - new_value;
 
             default:

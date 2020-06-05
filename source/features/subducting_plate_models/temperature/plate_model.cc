@@ -91,11 +91,6 @@ namespace WorldBuilder
           prm.declare_entry("specific heat", Types::Double(-1),
                             "The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.");
 
-          prm.declare_entry("operation", Types::String("replace", std::vector<std::string> {"replace", "add", "substract"}),
-                            "Whether the value should replace any value previously defined at this location (replace), "
-                            "add the value to the previously define value (add) or substract the value to the previously "
-                            "define value (substract).");
-
           prm.declare_entry("adiabatic heating", Types::Bool(true),
                             "Wheter adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),"
                             "which is the result obtained from McKenzie 1969.");

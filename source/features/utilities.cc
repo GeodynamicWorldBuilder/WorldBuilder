@@ -29,7 +29,7 @@ namespace WorldBuilder
       string_operations_to_enum(const std::string &string)
       {
         if (string == "add") return Operations::ADD;
-        if (string == "substract") return Operations::SUBSTRACT;
+        if (string == "subtract") return Operations::SUBTRACT;
 
         WBAssert(string == "replace", "Could not find operation: " << string << ".");
         return Operations::REPLACE;
