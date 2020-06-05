@@ -97,22 +97,7 @@ namespace WorldBuilder
 
           if (depth <= max_depth && depth >= min_depth)
             {
-              switch (operation)
-                {
-                  case Utilities::Operations::REPLACE:
-                    return temperature;
-                    break;
-
-                  case Utilities::Operations::ADD:
-                    return temperature_ + temperature;
-                    break;
-
-                  case Utilities::Operations::SUBSTRACT:
-                    return temperature_ - temperature;
-
-                  default:
-                    WBAssert(false,"Operation not found for continental plate models: uniform.");
-                }
+              return Utilities::apply_operation(operation,temperature_,temperature);
             }
 
           return temperature_;

@@ -155,22 +155,7 @@ namespace WorldBuilder
               WBAssert(std::isfinite(adabatic_temperature),
                        "adabatic_temperature is not a finite: " << adabatic_temperature << ".");
 
-              switch (operation)
-                {
-                  case Utilities::Operations::REPLACE:
-                    return adabatic_temperature;
-                    break;
-
-                  case Utilities::Operations::ADD:
-                    return temperature_ + adabatic_temperature;
-                    break;
-
-                  case Utilities::Operations::SUBSTRACT:
-                    return temperature_ - adabatic_temperature;
-
-                  default:
-                    WBAssert(false,"Operation not found for continental plate models: uniform.");
-                }
+              return Utilities::apply_operation(operation,temperature_,adabatic_temperature);
             }
 
           return temperature_;

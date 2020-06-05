@@ -18,7 +18,6 @@
 */
 
 #include <world_builder/features/utilities.h>
-#include <world_builder/assert.h>
 
 namespace WorldBuilder
 {
