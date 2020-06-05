@@ -45,7 +45,7 @@ namespace WorldBuilder
           potential_mantle_temperature(NaN::DSNAN),
           thermal_expansion_coefficient(NaN::DSNAN),
           specific_heat(NaN::DSNAN),
-          operation("")
+          operation(Utilities::Operations::REPLACE)
         {
           this->world = world_;
           this->name = "adiabatic";
@@ -93,7 +93,7 @@ namespace WorldBuilder
 
           min_depth = prm.get<double>("min distance slab top");
           max_depth = prm.get<double>("max distance slab top");
-          operation = prm.get<std::string>("operation");
+          operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
 
           potential_mantle_temperature = prm.get<double>("potential mantle temperature");
           if (potential_mantle_temperature < 0)
@@ -131,7 +131,7 @@ namespace WorldBuilder
         Adiabatic::get_temperature(const Point<3> &,
                                    const double depth,
                                    const double gravity_norm,
-                                   double temperature,
+                                   double temperature_,
                                    const double ,
                                    const double ,
                                    const std::map<std::string,double> &distance_from_planes) const
@@ -156,16 +156,26 @@ namespace WorldBuilder
               WBAssert(std::isfinite(adabatic_temperature),
                        "adabatic_temperature is not a finite: " << adabatic_temperature << ".");
 
-              if (operation == "replace")
-                return adabatic_temperature;
-              else if ("add")
-                return temperature + adabatic_temperature;
-              else if ("substract")
-                return temperature - adabatic_temperature;
+              switch (operation)
+                {
+                  case Utilities::Operations::REPLACE:
+                    return adabatic_temperature;
+                    break;
+
+                  case Utilities::Operations::ADD:
+                    return temperature_ + adabatic_temperature;
+                    break;
+
+                  case Utilities::Operations::SUBSTRACT:
+                    return temperature_ - adabatic_temperature;
+
+                  default:
+                    WBAssert(false,"Operation not found for continental plate models: uniform.");
+                }
             }
 
 
-          return temperature;
+          return temperature_;
         }
 
         WB_REGISTER_FEATURE_CONTINENTAL_TEMPERATURE_MODEL(Adiabatic, adiabatic)

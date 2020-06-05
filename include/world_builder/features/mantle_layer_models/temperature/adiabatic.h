@@ -21,6 +21,7 @@
 #define _world_builder_features_mantle_layer_temperature_adiabatic_h
 
 #include <world_builder/features/mantle_layer_models/temperature/interface.h>
+#include <world_builder/features/utilities.h>
 #include <world_builder/world.h>
 
 
@@ -97,7 +98,7 @@ namespace WorldBuilder
              */
             double specific_heat;
 
-            std::string operation;
+            Utilities::Operations operation;
 
         };
       }

@@ -43,7 +43,7 @@ namespace WorldBuilder
           min_depth(NaN::DSNAN),
           max_depth(NaN::DSNAN),
           temperature(NaN::DSNAN),
-          operation("")
+          operation(Utilities::Operations::REPLACE)
         {
           this->world = world_;
           this->name = "uniform";
@@ -82,7 +82,7 @@ namespace WorldBuilder
 
           min_depth = prm.get<double>("min distance slab top");
           max_depth = prm.get<double>("max distance slab top");
-          operation = prm.get<std::string>("operation");
+          operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
           temperature = prm.get<double>("temperature");
         }
 
@@ -99,14 +99,22 @@ namespace WorldBuilder
 
           if (distance_from_plane.at("distanceFromPlane") <= max_depth && distance_from_plane.at("distanceFromPlane") >= min_depth)
             {
-              if (operation == "replace")
+              switch (operation)
                 {
-                  return temperature;
+                  case Utilities::Operations::REPLACE:
+                    return temperature;
+                    break;
+
+                  case Utilities::Operations::ADD:
+                    return temperature_ + temperature;
+                    break;
+
+                  case Utilities::Operations::SUBSTRACT:
+                    return temperature_ - temperature;
+
+                  default:
+                    WBAssert(false,"Operation not found for continental plate models: uniform.");
                 }
-              else if ("add")
-                return temperature_ + temperature;
-              else if ("substract")
-                return temperature_ - temperature;
             }
 
           return temperature_;

@@ -21,6 +21,7 @@
 #define _world_builder_features_oceanic_plate_temperature_uniform_h
 
 #include <world_builder/features/oceanic_plate_models/temperature/interface.h>
+#include <world_builder/features/utilities.h>
 #include <world_builder/world.h>
 
 
@@ -82,7 +83,7 @@ namespace WorldBuilder
             double min_depth;
             double max_depth;
             double temperature;
-            std::string operation;
+            Utilities::Operations operation;
 
         };
       }

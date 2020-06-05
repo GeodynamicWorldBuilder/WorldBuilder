@@ -21,6 +21,7 @@
 #define _world_builder_features_fault_temperature_adiabatic_h
 
 #include <world_builder/features/fault_models/temperature/interface.h>
+#include <world_builder/features/utilities.h>
 #include <world_builder/world.h>
 
 
@@ -98,7 +99,7 @@ namespace WorldBuilder
              */
             double specific_heat;
 
-            std::string operation;
+            Utilities::Operations operation;
 
         };
       }

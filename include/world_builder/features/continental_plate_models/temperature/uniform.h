@@ -21,6 +21,7 @@
 #define _world_builder_features_continental_plate_temperature_uniform_h
 
 #include <world_builder/features/continental_plate_models/temperature/interface.h>
+#include <world_builder/features/utilities.h>
 #include <world_builder/world.h>
 
 
@@ -82,7 +83,7 @@ namespace WorldBuilder
             double min_depth;
             double max_depth;
             double temperature;
-            std::string operation;
+            Utilities::Operations operation;
 
         };
       }

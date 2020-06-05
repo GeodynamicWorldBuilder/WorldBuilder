@@ -47,7 +47,7 @@ namespace WorldBuilder
           top_temperature(NaN::DSNAN),
           bottom_temperature(NaN::DSNAN),
           spreading_velocity(NaN::DSNAN),
-          operation("")
+          operation(Utilities::Operations::REPLACE)
         {
           this->world = world_;
           this->name = "plate model";
@@ -95,7 +95,7 @@ namespace WorldBuilder
 
           min_depth = prm.get<double>("min depth");
           max_depth = prm.get<double>("max depth");
-          operation = prm.get<std::string>("operation");
+          operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
           top_temperature = prm.get<double>("top temperature");
           bottom_temperature = prm.get<double>("bottom temperature");
           spreading_velocity = prm.get<double>("spreading velocity")/31557600;
@@ -206,12 +206,22 @@ namespace WorldBuilder
                        << ", age = " << age << ".");
 
 
-              if (operation == "replace")
-                return temperature;
-              else if ("add")
-                return temperature_ + temperature;
-              else if ("substract")
-                return temperature_ - temperature;
+              switch (operation)
+                {
+                  case Utilities::Operations::REPLACE:
+                    return temperature;
+                    break;
+
+                  case Utilities::Operations::ADD:
+                    return temperature_ + temperature;
+                    break;
+
+                  case Utilities::Operations::SUBSTRACT:
+                    return temperature_ - temperature;
+
+                  default:
+                    WBAssert(false,"Operation not found for continental plate models: uniform.");
+                }
 
             }
           return temperature_;
