@@ -1002,7 +1002,7 @@ This is a program which can be used to query the \WB{} from the command line, by
 
 \section{Using the World Builder Visualizer}
 \label{section:using_the_visualizer}
-This program helps with visualizing the \WB{} file by producing pvd files which can be opened with visualization programs like \paraview{}. It requires a \WB{} file and a grid file. A grid file is a file which contains information about what part of the \WB{} domain should be visualized. An example of a grid file can be found in Listing \ref{lst:code_example_grid_file}.
+This program helps with visualizing the \WB{} file by producing pvd files which can be opened with visualization programs like \paraview{}. It requires a \WB{} file and a grid file. A grid file is a file which contains information about what part of the \WB{} domain should be visualized. An example of a 3d cartesian grid file can be found in Listing \ref{lst:code_example_grid_file}.
 
 \begin{bashcode}[label={lst:code_example_grid_file}]{An example of a grid file for a 3d Cartesian grid.}
 # ouput variables
@@ -1022,6 +1022,25 @@ z_max = 750e3
 n_cell_x = 160
 n_cell_y = 80
 n_cell_z = 60
+\end{bashcode}
+
+When youare using a model which contains a sticky air layer, you want to make sure that depth 0 is at the surface. This means that the top of the domain is no longer the the surface, so you need to tell the visualizer at what depth you want to set the surface. An example of this case is shown in Listing \ref{lst:code_example_grid_file_sticky_air}.
+\begin{bashcode}[label={lst:code_example_grid_file}]{An example of a grid file for a 2d Cartesian grid when you want to use a sticky air free surface of 100km. This file was made to be used in combination with the 2D subduction rift sticky air cookbook.}
+# ouput variables
+grid_type = cartesian
+dim = 2
+surface depth = 100e3
+compositions = 6
+
+# domain of the grid
+x_min = 0e3
+x_max = 2000e3
+z_min = 0e3
+z_max = 850e3
+
+# grid properties
+n_cell_x = 1600
+n_cell_z = 600
 \end{bashcode}
 
 \section{Final comments}

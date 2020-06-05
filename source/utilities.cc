@@ -401,6 +401,30 @@ namespace WorldBuilder
       return d;
     }
 
+    bool
+    string_to_bool(const std::string &string)
+    {
+      // trim whitespace on either side of the text if necessary
+      std::string s = string;
+      while ((s.size() > 0) && (s[0] == ' '))
+        s.erase(s.begin());
+      while ((s.size() > 0) && (s[s.size() - 1] == ' '))
+        s.erase(s.end() - 1);
+
+      if (s == "false")
+        {
+          return false;
+        }
+      else if (s == "true" )
+        {
+          return true;
+        }
+
+      WBAssertThrow(false, "Could not convert \"" + s + "\" to a boolian.");
+
+      return false;
+    }
+
 
     unsigned int
     string_to_unsigned_int(const std::string &string)

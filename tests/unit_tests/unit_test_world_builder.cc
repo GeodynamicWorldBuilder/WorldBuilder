@@ -190,6 +190,18 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
 
 TEST_CASE("WorldBuilder Utilities: string to conversions")
 {
+  // Test string to bool conversion
+  CHECK(Utilities::string_to_bool("true") == true);
+  CHECK(Utilities::string_to_bool(" false ") == false);
+  CHECK(Utilities::string_to_bool(" true ") == true);
+
+  CHECK_THROWS_WITH(Utilities::string_to_bool("1a"),
+                    Contains("Could not convert \"1a\" to a boolian."));
+  CHECK_THROWS_WITH(Utilities::string_to_bool("a1"),
+                    Contains("Could not convert \"a1\" to a boolian."));
+  CHECK_THROWS_WITH(Utilities::string_to_bool("a"),
+                    Contains("Could not convert \"a\" to a boolian."));
+
   // Test string to number conversion
   CHECK(Utilities::string_to_double("1") == 1.0);
   CHECK(Utilities::string_to_double(" 1 ") == 1.0);
