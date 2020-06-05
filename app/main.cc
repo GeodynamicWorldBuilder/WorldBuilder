@@ -26,6 +26,8 @@
 #include <world_builder/utilities.h>
 #include <world_builder/world.h>
 
+#include <app/main.h>
+
 using namespace WorldBuilder::Utilities;
 
 bool find_command_line_option(char **begin, char **end, const std::string &option)
@@ -101,8 +103,6 @@ int main(int argc, char **argv)
   /**
    * Read the data from the data files
    */
-
-  std::string line;
   std::ifstream data_stream(data_file);
 
   // move the data into a vector of strings

@@ -27,19 +27,19 @@ namespace WorldBuilder
 {
   namespace Types
   {
-    UnsignedInt::UnsignedInt(unsigned int default_value)
+    UnsignedInt::UnsignedInt(unsigned int default_value_)
       :
       value(0),
-      default_value(default_value)
+      default_value(default_value_)
     {
       this->type_name = Types::type::UnsignedInt;
     }
 
 
-    UnsignedInt::UnsignedInt(unsigned int value, unsigned int default_value)
+    UnsignedInt::UnsignedInt(unsigned int value_, unsigned int default_value_)
       :
-      value(value),
-      default_value(default_value)
+      value(value_),
+      default_value(default_value_)
     {
       this->type_name = Types::type::UnsignedInt;
     }

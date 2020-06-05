@@ -25,9 +25,9 @@ namespace WorldBuilder
 {
   namespace Types
   {
-    Double::Double(const double default_value)
+    Double::Double(const double default_value_)
       :
-      default_value(default_value)
+      default_value(default_value_)
     {
       this->type_name = Types::type::Double;
     }

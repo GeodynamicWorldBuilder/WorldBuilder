@@ -135,14 +135,15 @@ class LatexWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, 
     {
       RAPIDJSON_ASSERT(str != 0);
       if (small_array == true)
-        if (first_small_array == true)
-          first_small_array = false;
-        else
-          {
-            Base::os_->Put(',');
-            Base::os_->Put(' ');
-          }
-
+        {
+          if (first_small_array == true)
+            first_small_array = false;
+          else
+            {
+              Base::os_->Put(',');
+              Base::os_->Put(' ');
+            }
+        }
       Base::EndValue(Base::WriteString(str, length, false));
 
       if (small_array == false)

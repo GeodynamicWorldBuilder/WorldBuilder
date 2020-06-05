@@ -37,6 +37,8 @@
 #include <world_builder/world.h>
 #include <world_builder/coordinate_system.h>
 
+#include <visualization/main.h>
+
 using namespace WorldBuilder;
 using namespace WorldBuilder::Utilities;
 
@@ -313,7 +315,6 @@ int main(int argc, char **argv)
   std::cout.flush();
 
 
-  std::string line;
   std::ifstream data_stream(data_file);
 
   // if config file is available, parse it

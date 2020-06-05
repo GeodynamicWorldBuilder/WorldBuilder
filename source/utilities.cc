@@ -92,7 +92,7 @@ namespace WorldBuilder
                       // P left of  edge
                       ++wn;            // have  a valid up intersect
                     }
-                  else if ( is_left == 0)
+                  else if ( std::abs(is_left) < std::numeric_limits<double>::epsilon())
                     {
                       // The point is exactly on the infinite line.
                       // determine if it is on the segment
@@ -123,7 +123,7 @@ namespace WorldBuilder
                       // P right of  edge
                       --wn;            // have  a valid down intersect
                     }
-                  else if ( is_left == 0)
+                  else if (std::abs(is_left) < std::numeric_limits<double>::epsilon())
                     {
                       // This code is to make sure that the boundaries are included in the polygon.
                       // The point is exactly on the infinite line.
@@ -555,7 +555,7 @@ namespace WorldBuilder
               const Point<2> unit_normal_to_plane_spherical = P1P2 / P1P2.norm();
               const Point<2> closest_point_on_line_plus_normal_to_plane_spherical = closest_point_on_line_2d + 1e-8 * (closest_point_on_line_2d.norm() > 1.0 ? closest_point_on_line_2d.norm() : 1.0) * unit_normal_to_plane_spherical;
 
-              WBAssert(closest_point_on_line_plus_normal_to_plane_spherical.norm() != 0.0,
+              WBAssert(std::fabs(closest_point_on_line_plus_normal_to_plane_spherical.norm()) > std::numeric_limits<double>::epsilon(),
                        "Internal error: The norm of variable 'closest_point_on_line_plus_normal_to_plane_spherical' "
                        "is  zero, while this may not happen.");
 
@@ -787,14 +787,14 @@ namespace WorldBuilder
                     {
                       // The angle is constant. It is easy find find the end of
                       // this segment and the distance.
-                      if (interpolated_segment_length != 0)
+                      if (std::fabs(interpolated_segment_length) > std::numeric_limits<double>::epsilon())
                         {
                           end_segment[0] += interpolated_segment_length * std::sin(degree_90_to_rad - interpolated_angle_top);
                           end_segment[1] -= interpolated_segment_length * std::cos(degree_90_to_rad - interpolated_angle_top);
 
                           Point<2> begin_end_segment = end_segment - begin_segment;
                           Point<2> normal_2d_plane(-begin_end_segment[0],begin_end_segment[1], cartesian);
-                          WBAssert(normal_2d_plane.norm() != 0, "Internal Error: normal_2d_plane.norm() is zero, which should not happen. "
+                          WBAssert(std::fabs(normal_2d_plane.norm()) > std::numeric_limits<double>::epsilon(), "Internal Error: normal_2d_plane.norm() is zero, which should not happen. "
                                    << "Extra info: begin_end_segment[0] = " << begin_end_segment[0]
                                    << ", begin_end_segment[1] = " << begin_end_segment[1]
                                    << ", end_segment: [" << end_segment[0] << "," << end_segment[1] << "]"
@@ -942,9 +942,9 @@ namespace WorldBuilder
                       // Furthermore, when the check point is at the same location as
                       // the center of the circle, we count that point as belonging
                       // to the top of the top segment (0 degree).
-                      double check_point_angle = CPCR_norm == 0 ? 2.0 * const_pi : (check_point_2d[0] <= center_circle[0]
-                                                                                    ? std::acos(dot_product/(CPCR_norm * radius_angle_circle))
-                                                                                    : 2.0 * const_pi - std::acos(dot_product/(CPCR_norm * radius_angle_circle)));
+                      double check_point_angle = std::fabs(CPCR_norm) < std::numeric_limits<double>::epsilon() ? 2.0 * const_pi : (check_point_2d[0] <= center_circle[0]
+                                                 ? std::acos(dot_product/(CPCR_norm * radius_angle_circle))
+                                                 : 2.0 * const_pi - std::acos(dot_product/(CPCR_norm * radius_angle_circle)));
                       check_point_angle = difference_in_angle_along_segment >= 0 ? const_pi - check_point_angle : 2.0 * const_pi - check_point_angle;
 
                       // In the case that it is exactly 2 * pi, bring it back to zero
@@ -982,14 +982,14 @@ namespace WorldBuilder
                       segment_fraction = new_along_plane_distance / interpolated_segment_length;
                       total_average_angle = (average_angle * total_length
                                              + 0.5 * (interpolated_angle_top + interpolated_angle_bottom  - 2 * add_angle) * new_along_plane_distance);
-                      total_average_angle = (total_average_angle == 0 ? 0 : total_average_angle /
+                      total_average_angle = (std::fabs(total_average_angle) < std::numeric_limits<double>::epsilon() ? 0 : total_average_angle /
                                              (total_length + new_along_plane_distance));
                     }
 
                   // increase average angle
                   average_angle = (average_angle * total_length +
                                    0.5 * (interpolated_angle_top + interpolated_angle_bottom  - 2 * add_angle) * interpolated_segment_length);
-                  average_angle = (average_angle == 0 ? 0 : average_angle /
+                  average_angle = (std::fabs(average_angle) < std::numeric_limits<double>::epsilon() ? 0 : average_angle /
                                    (total_length + interpolated_segment_length));
                   // increase the total length for the next segment.
                   total_length += interpolated_segment_length;

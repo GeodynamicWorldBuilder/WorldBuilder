@@ -61,9 +61,9 @@ using namespace rapidjson;
 
 namespace WorldBuilder
 {
-  Parameters::Parameters(World &world)
+  Parameters::Parameters(World &world_)
     :
-    world(world)
+    world(world_)
   {
   }
 
