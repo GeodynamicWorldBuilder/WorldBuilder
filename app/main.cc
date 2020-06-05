@@ -26,10 +26,9 @@
 #include <world_builder/utilities.h>
 #include <world_builder/world.h>
 
-using namespace WorldBuilder::Utilities;
+#include <app/main.h>
 
-// function declarations
-bool find_command_line_option(char **begin, char **end, const std::string &option);
+using namespace WorldBuilder::Utilities;
 
 bool find_command_line_option(char **begin, char **end, const std::string &option)
 {

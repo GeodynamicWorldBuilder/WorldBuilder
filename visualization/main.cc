@@ -37,14 +37,10 @@
 #include <world_builder/world.h>
 #include <world_builder/coordinate_system.h>
 
+#include <visualization/main.h>
+
 using namespace WorldBuilder;
 using namespace WorldBuilder::Utilities;
-
-// function declarations
-void project_on_sphere(double, double &, double &, double &);
-void lay_points(double, double, double, double, double, double, double, double, double, double, double, double, std::vector<double> &, std::vector<double> &, std::vector<double> &, std::vector<bool> &, unsigned int);
-std::vector<std::string> get_command_line_options_vector(int argc, char **argv);
-bool find_command_line_option(char **begin, char **end, const std::string &option);
 
 
 /**
