@@ -27,12 +27,14 @@
           {"coordinate":2, "segments":[{"length":200e3, "thickness":[100e3,200e3], "angle":[45], 
                                         "temperature models":[{"model":"uniform", "max distance slab top":66e3, "temperature":10},
                                                               {"model":"uniform", "min distance slab top":66e3, "max distance slab top":133e3, "temperature":11},
-                                                              {"model":"uniform", "min distance slab top":133e3, "max distance slab top":199e3, "temperature":12}]}, 
+                                                              {"model":"adiabatic", "min distance slab top":133e3, "max distance slab top":166e3},
+                                                              {"model":"uniform", "min distance slab top":166e3, "max distance slab top":199e3, "temperature":12}]}, 
                                        {"length":100e3, "thickness":[100e3], "angle":[30]}, {"length":150e3, "thickness":[100e3], "angle":[30]}]},
           {"coordinate":3, "segments":[{"length":200e3, "thickness":[200e3,200e3], "angle":[30],
                                         "temperature models":[{"model":"uniform", "max distance slab top":66e3, "temperature":10},
                                                               {"model":"uniform", "min distance slab top":66e3, "max distance slab top":133e3, "temperature":11},
-                                                              {"model":"uniform", "min distance slab top":133e3, "max distance slab top":199e3, "temperature":12}]}, 
+                                                              {"model":"adiabatic", "min distance slab top":133e3, "max distance slab top":166e3},
+                                                              {"model":"uniform", "min distance slab top":166e3, "max distance slab top":199e3, "temperature":12}]}, 
                                        {"length":100e3, "thickness":[100e3], "angle":[30]}, {"length":150e3, "thickness":[100e3,0], "angle":[70]}]}
          ]},
 

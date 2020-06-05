@@ -21,6 +21,7 @@
 #define _world_builder_features_subducting_plate_temperature_plate_model_h
 
 #include <world_builder/features/subducting_plate_models/temperature/interface.h>
+#include <world_builder/features/utilities.h>
 #include <world_builder/world.h>
 
 
@@ -90,7 +91,7 @@ namespace WorldBuilder
             double potential_mantle_temperature;
             double surface_temperature;
             bool adiabatic_heating;
-            std::string operation;
+            Utilities::Operations operation;
 
         };
       }

@@ -21,6 +21,7 @@
 #define _world_builder_features_oceanic_plate_temperature_plate_model_h
 
 #include <world_builder/features/oceanic_plate_models/temperature/interface.h>
+#include <world_builder/features/utilities.h>
 #include <world_builder/world.h>
 
 
@@ -85,7 +86,7 @@ namespace WorldBuilder
             double bottom_temperature;
             double spreading_velocity;
             std::vector<Point<2> > ridge_coordinates;
-            std::string operation;
+            Utilities::Operations operation;
 
         };
       }
