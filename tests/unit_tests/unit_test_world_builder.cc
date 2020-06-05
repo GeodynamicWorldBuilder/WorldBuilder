@@ -1758,6 +1758,15 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.composition(position, 0, 5) == 0.0);
   CHECK(world1.composition(position, 0, 6) == 0.0);
 
+  position = {{700e3,155e3,800e3}};
+  CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+  CHECK(world1.temperature(position, 10, 10) == Approx(1600.0044800063));
+  CHECK(world1.temperature(position, 100e3, 10) == Approx(11));
+  CHECK(world1.temperature(position, 150e3, 10) == Approx(11));
+  CHECK(world1.temperature(position, 200e3, 10) == Approx(1692.1562939786));
+  CHECK(world1.temperature(position, 250e3, 10) == Approx(12));
+  CHECK(world1.temperature(position, 300e3, 10) == Approx(1740.2062300941));
+
   std::string file_name2 = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_cartesian.wb";
   WorldBuilder::World world2(file_name2);
 
