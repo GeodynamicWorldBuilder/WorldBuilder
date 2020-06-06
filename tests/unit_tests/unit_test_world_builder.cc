@@ -133,8 +133,8 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
   CHECK(p3.get_array() == std::array<double,3> {{4,8,12}});
 
   // Test dot operator
-  CHECK(p2_array * p2_explicit == 11);
-  CHECK(p3_array * p3_explicit == 32);
+  CHECK(p2_array * p2_explicit == Approx(11.0));
+  CHECK(p3_array * p3_explicit == Approx(32.0));
 
   // Test add operator
   p2 = p2 + p2;
@@ -167,7 +167,7 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
   //CHECK(p3.get_coordinate_system() == CoordinateSystem::cartesian);
 
   // Test norm and norm_square
-  CHECK(p2.norm_square() == 80);
+  CHECK(p2.norm_square() == Approx(80.0));
   CHECK(p3.norm_square() == Approx(224));
 
   CHECK(p2.norm() == std::sqrt(80));
@@ -202,8 +202,8 @@ TEST_CASE("WorldBuilder Utilities: string to conversions")
   CHECK_THROWS_WITH(Utilities::string_to_double("a"),
                     Contains("Could not convert \"a\" to a double."));
 
-  CHECK(Utilities::string_to_int("2") == 2);
-  CHECK(Utilities::string_to_int(" 2 ") == 2);
+  CHECK(Utilities::string_to_int("2") == Approx(2.0));
+  CHECK(Utilities::string_to_int(" 2 ") == Approx(2.0));
 
   CHECK_THROWS_WITH(Utilities::string_to_int(" 2.02 "),
                     Contains("Could not convert \"2.02\" to an int."));
@@ -214,8 +214,8 @@ TEST_CASE("WorldBuilder Utilities: string to conversions")
   CHECK_THROWS_WITH(Utilities::string_to_int("b"),
                     Contains("Could not convert \"b\" to an int."));
 
-  CHECK(Utilities::string_to_unsigned_int("3") == 3);
-  CHECK(Utilities::string_to_unsigned_int(" 3 ") == 3);
+  CHECK(Utilities::string_to_unsigned_int("3") == Approx(3.0));
+  CHECK(Utilities::string_to_unsigned_int(" 3 ") == Approx(3.0));
 
   CHECK_THROWS_WITH(Utilities::string_to_unsigned_int(" 3.03 "),
                     Contains("Could not convert \"3.03\" to an unsigned int."));
@@ -483,12 +483,12 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   Utilities::NaturalCoordinate nca1(std::array<double,3> {{1,2,3}},*cartesian);
   CHECK(nca1.get_coordinates() == std::array<double,3> {{1,2,3}});
   CHECK(nca1.get_surface_coordinates() == std::array<double,2> {{1,2}});
-  CHECK(nca1.get_depth_coordinate() == 3);
+  CHECK(nca1.get_depth_coordinate() == Approx(3.0));
 
   Utilities::NaturalCoordinate ncp1(Point<3>(1,2,3,CoordinateSystem::cartesian),*cartesian);
   CHECK(ncp1.get_coordinates() == std::array<double,3> {{1,2,3}});
   CHECK(ncp1.get_surface_coordinates() == std::array<double,2> {{1,2}});
-  CHECK(ncp1.get_depth_coordinate() == 3);
+  CHECK(ncp1.get_depth_coordinate() == Approx(3.0));
 
 
   unique_ptr<CoordinateSystems::Interface> spherical(CoordinateSystems::Interface::create("spherical",NULL));
@@ -2463,20 +2463,20 @@ TEST_CASE("WorldBuilder Types: Double")
 {
 #define TYPE Double
   Types::TYPE type(1);
-  CHECK(type.default_value == 1);
+  CHECK(type.default_value == Approx(1.0));
   CHECK(type.get_type() == Types::type::TYPE);
 
   Types::TYPE type_copy(type);
-  CHECK(type_copy.default_value == 1);
+  CHECK(type_copy.default_value == Approx(1.0));
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
   Types::TYPE type_explicit(3);
-  CHECK(type_explicit.default_value == 3);
+  CHECK(type_explicit.default_value == Approx(3.0));
   CHECK(type_explicit.get_type() == Types::type::TYPE);
 
   std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
-  CHECK(type_clone_natural->default_value == 3);
+  CHECK(type_clone_natural->default_value == Approx(3.0));
   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 #undef TYPE
 }
@@ -2485,27 +2485,27 @@ TEST_CASE("WorldBuilder Types: Double")
 {
 #define TYPE UnsignedInt
   Types::TYPE type(1,"test");
-  CHECK(type.value == 1);
-  CHECK(type.default_value == 1);
+  CHECK(type.value == Approx(1.0));
+  CHECK(type.default_value == Approx(1.0));
   CHECK(type.description == "test");
   CHECK(type.get_type() == Types::type::TYPE);
 
   Types::TYPE type_copy(type);
-  CHECK(type_copy.value == 1);
-  CHECK(type_copy.default_value == 1);
+  CHECK(type_copy.value == Approx(1.0));
+  CHECK(type_copy.default_value == Approx(1.0));
   CHECK(type_copy.description == "test");
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
   Types::TYPE type_explicit(2, 3, "test explicit");
-  CHECK(type_explicit.value == 2);
-  CHECK(type_explicit.default_value == 3);
+  CHECK(type_explicit.value == Approx(2.0));
+  CHECK(type_explicit.default_value == Approx(3.0));
   CHECK(type_explicit.description == "test explicit");
   CHECK(type_explicit.get_type() == Types::type::TYPE);
 
   std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
-  CHECK(type_clone_natural->value == 2);
-  CHECK(type_clone_natural->default_value == 3);
+  CHECK(type_clone_natural->value == Approx(2.0));
+  CHECK(type_clone_natural->default_value == Approx(3.0));
   CHECK(type_clone_natural->description == "test explicit");
   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 #undef TYPE
@@ -2588,7 +2588,7 @@ TEST_CASE("WorldBuilder Types: Point 2d")
   CHECK(point.get_array() == std::array<double,2> {{2,4}});
 
   // Test dot operator
-  CHECK(type_point_array * type_point_explicit == 11);
+  CHECK(type_point_array * type_point_explicit == Approx(11.0));
 
   // Test add operator
   point = type_point_array + type_point_explicit;
@@ -2601,10 +2601,10 @@ TEST_CASE("WorldBuilder Types: Point 2d")
   CHECK(point.get_array() == std::array<double,2> {{2,2}});
 
   // test the access operator
-  CHECK(type_point_array[0] == 1);
+  CHECK(type_point_array[0] == Approx(1.0));
 
   type_point_array[0] = 2;
-  CHECK(type_point_array[0] == 2);
+  CHECK(type_point_array[0] == Approx(2.0));
 #undef TYPE
 }
 
@@ -2612,43 +2612,43 @@ TEST_CASE("WorldBuilder Types: Point 3d")
 {
 #define TYPE Point<3>
   Types::TYPE type(TYPE(1,2,3,cartesian),"test");
-  CHECK(type.value[0] == 1);
-  CHECK(type.value[1] == 2);
-  CHECK(type.value[2] == 3);
-  CHECK(type.default_value[0] == 1);
-  CHECK(type.default_value[1] == 2);
-  CHECK(type.default_value[2] == 3);
+  CHECK(type.value[0] == Approx(1.0));
+  CHECK(type.value[1] == Approx(2.0));
+  CHECK(type.value[2] == Approx(3.0));
+  CHECK(type.default_value[0] == Approx(1.0));
+  CHECK(type.default_value[1] == Approx(2.0));
+  CHECK(type.default_value[2] == Approx(3.0));
   CHECK(type.description == "test");
   CHECK(type.get_type() == Types::type::Point3D);
 
   Types::TYPE type_copy(type);
-  CHECK(type_copy.value[0] == 1);
-  CHECK(type_copy.value[1] == 2);
-  CHECK(type_copy.value[2] == 3);
-  CHECK(type_copy.default_value[0] == 1);
-  CHECK(type_copy.default_value[1] == 2);
-  CHECK(type_copy.default_value[2] == 3);
+  CHECK(type_copy.value[0] == Approx(1.0));
+  CHECK(type_copy.value[1] == Approx(2.0));
+  CHECK(type_copy.value[2] == Approx(3.0));
+  CHECK(type_copy.default_value[0] == Approx(1.0));
+  CHECK(type_copy.default_value[1] == Approx(2.0));
+  CHECK(type_copy.default_value[2] == Approx(3.0));
   CHECK(type_copy.description == "test");
   CHECK(type_copy.get_type() == Types::type::Point3D);
 
   Types::TYPE type_explicit(TYPE(4,5,6,cartesian), TYPE(7,8,9,cartesian), "test explicit");
-  CHECK(type_explicit.value[0] == 4);
-  CHECK(type_explicit.value[1] == 5);
-  CHECK(type_explicit.value[2] == 6);
-  CHECK(type_explicit.default_value[0] == 7);
-  CHECK(type_explicit.default_value[1] == 8);
-  CHECK(type_explicit.default_value[2] == 9);
+  CHECK(type_explicit.value[0] == Approx(4.0));
+  CHECK(type_explicit.value[1] == Approx(5.0));
+  CHECK(type_explicit.value[2] == Approx(6.0));
+  CHECK(type_explicit.default_value[0] == Approx(7.0));
+  CHECK(type_explicit.default_value[1] == Approx(8.0));
+  CHECK(type_explicit.default_value[2] == Approx(9.0));
   CHECK(type_explicit.description == "test explicit");
   CHECK(type_explicit.get_type() == Types::type::Point3D);
 
   std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
-  CHECK(type_clone_natural->value[0] == 4);
-  CHECK(type_clone_natural->value[1] == 5);
-  CHECK(type_clone_natural->value[2] == 6);
-  CHECK(type_clone_natural->default_value[0] == 7);
-  CHECK(type_clone_natural->default_value[1] == 8);
-  CHECK(type_clone_natural->default_value[2] == 9);
+  CHECK(type_clone_natural->value[0] == Approx(4.0));
+  CHECK(type_clone_natural->value[1] == Approx(5.0));
+  CHECK(type_clone_natural->value[2] == Approx(6.0));
+  CHECK(type_clone_natural->default_value[0] == Approx(7.0));
+  CHECK(type_clone_natural->default_value[1] == Approx(8.0));
+  CHECK(type_clone_natural->default_value[2] == Approx(9.0));
   CHECK(type_clone_natural->description == "test explicit");
   CHECK(type_clone_natural->get_type() == Types::type::Point3D);
 
@@ -2675,7 +2675,7 @@ TEST_CASE("WorldBuilder Types: Point 3d")
   CHECK(point.get_array() == std::array<double,3> {{2,4,6}});
 
   // Test dot operator
-  CHECK(type_point_array * type_point_explicit == 32);
+  CHECK(type_point_array * type_point_explicit == Approx(32.0));
 
   // Test add operator
   point = type_point_array + type_point_explicit;
@@ -2688,13 +2688,13 @@ TEST_CASE("WorldBuilder Types: Point 3d")
   CHECK(point.get_array() == std::array<double,3> {{3,3,3}});
 
   // test the access operator
-  CHECK(type_point_array[0] == 1);
+  CHECK(type_point_array[0] == Approx(1.0));
 
   type_point_array[0] = 2;
-  CHECK(type_point_array[0] == 2);
+  CHECK(type_point_array[0] == Approx(2.0));
 
   // const test the access operator
-  CHECK(point_array[0] == 1);
+  CHECK(point_array[0] == Approx(1.0));
 
 #undef TYPE
 }
@@ -2759,37 +2759,37 @@ TEST_CASE("WorldBuilder Types: Segment Object")
   type (1.0, thickness, top_trucation, angle,
         std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface> >(),
         std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface> >());
-  CHECK(type.value_length == 1);
-  CHECK(type.value_thickness[0] == 1);
-  CHECK(type.value_thickness[1] == 2);
-  CHECK(type.value_top_truncation[0] == 3);
-  CHECK(type.value_top_truncation[1] == 4);
-  CHECK(type.value_angle[0] == 5);
-  CHECK(type.value_angle[1] == 6);
+  CHECK(type.value_length == Approx(1.0));
+  CHECK(type.value_thickness[0] == Approx(1.0));
+  CHECK(type.value_thickness[1] == Approx(2.0));
+  CHECK(type.value_top_truncation[0] == Approx(3.0));
+  CHECK(type.value_top_truncation[1] == Approx(4.0));
+  CHECK(type.value_angle[0] == Approx(5.0));
+  CHECK(type.value_angle[1] == Approx(6.0));
   CHECK(type.get_type() == Types::type::TYPE);
 
   Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface>
   type_copy(type);
-  CHECK(type_copy.value_length == 1);
-  CHECK(type_copy.value_thickness[0] == 1);
-  CHECK(type_copy.value_thickness[1] == 2);
-  CHECK(type_copy.value_top_truncation[0] == 3);
-  CHECK(type_copy.value_top_truncation[1] == 4);
-  CHECK(type_copy.value_angle[0] == 5);
-  CHECK(type_copy.value_angle[1] == 6);
+  CHECK(type_copy.value_length == Approx(1.0));
+  CHECK(type_copy.value_thickness[0] == Approx(1.0));
+  CHECK(type_copy.value_thickness[1] == Approx(2.0));
+  CHECK(type_copy.value_top_truncation[0] == Approx(3.0));
+  CHECK(type_copy.value_top_truncation[1] == Approx(4.0));
+  CHECK(type_copy.value_angle[0] == Approx(5.0));
+  CHECK(type_copy.value_angle[1] == Approx(6.0));
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
   std::unique_ptr<Types::Interface> type_clone = type_copy.clone();
   Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface>
   *type_clone_natural = dynamic_cast<Objects::TYPE<Features::FaultModels::Temperature::Interface,
    Features::FaultModels::Composition::Interface> *>(type_clone.get());
-  CHECK(type_clone_natural->value_length == 1);
-  CHECK(type_clone_natural->value_thickness[0] == 1);
-  CHECK(type_clone_natural->value_thickness[1] == 2);
-  CHECK(type_clone_natural->value_top_truncation[0] == 3);
-  CHECK(type_clone_natural->value_top_truncation[1] == 4);
-  CHECK(type_clone_natural->value_angle[0] == 5);
-  CHECK(type_clone_natural->value_angle[1] == 6);
+  CHECK(type_clone_natural->value_length == Approx(1.0));
+  CHECK(type_clone_natural->value_thickness[0] == Approx(1.0));
+  CHECK(type_clone_natural->value_thickness[1] == Approx(2.0));
+  CHECK(type_clone_natural->value_top_truncation[0] == Approx(3.0));
+  CHECK(type_clone_natural->value_top_truncation[1] == Approx(4.0));
+  CHECK(type_clone_natural->value_angle[0] == Approx(5.0));
+  CHECK(type_clone_natural->value_angle[1] == Approx(6.0));
   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 
 #undef TYPE
@@ -2811,7 +2811,7 @@ TEST_CASE("WorldBuilder Types: Array")
   Types::TYPE type_explicit(std::vector<unsigned int> {1,2}, Types::type::Double, "array test explicit");
   CHECK(type_explicit.inner_type == Types::type::Double);
   CHECK(type_explicit.inner_type_ptr.get() == nullptr);
-  CHECK(type_explicit.inner_type_index.size() == 2);
+  CHECK(type_explicit.inner_type_index.size() == Approx(2.0));
   CHECK(type_explicit.description == "array test explicit");
   CHECK(type_explicit.get_type() == Types::type::TYPE);*/
 
@@ -2821,14 +2821,14 @@ TEST_CASE("WorldBuilder Types: Array")
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
   CHECK(type_clone_natural->inner_type == Types::type::Double);
   CHECK(type_clone_natural->inner_type_ptr.get() == nullptr);
-  CHECK(type_clone_natural->inner_type_index.size() == 2);
+  CHECK(type_clone_natural->inner_type_index.size() == Approx(2.0));
   CHECK(type_clone_natural->description == "array test explicit");
   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 
   Types::TYPE type_copy2(*type_clone_natural);
   CHECK(type_copy2.inner_type == Types::type::Double);
   CHECK(type_copy2.inner_type_ptr.get() == nullptr);
-  CHECK(type_copy2.inner_type_index.size() == 2);
+  CHECK(type_copy2.inner_type_index.size() == Approx(2.0));
   CHECK(type_copy2.description == "array test explicit");
   CHECK(type_copy2.get_type() == Types::type::TYPE);*/
 
@@ -2839,14 +2839,14 @@ TEST_CASE("WorldBuilder Types: Object")
 {
 #define TYPE Object
   Types::TYPE type(std::vector<std::string> {"test1","test2"},true);
-  CHECK(type.required.size() == 2);
+  CHECK(type.required.size() == Approx(2.0));
   CHECK(type.required[0] == "test1");
   CHECK(type.required[1] == "test2");
   CHECK(type.additional_properties == true);
   CHECK(type.get_type() == Types::type::TYPE);
 
   Types::TYPE type_copy(type);
-  CHECK(type_copy.required.size() == 2);
+  CHECK(type_copy.required.size() == Approx(2.0));
   CHECK(type_copy.required[0] == "test1");
   CHECK(type_copy.required[1] == "test2");
   CHECK(type_copy.additional_properties == true);
@@ -2854,14 +2854,14 @@ TEST_CASE("WorldBuilder Types: Object")
 
   std::unique_ptr<Types::Interface> type_clone = type_copy.clone();
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
-  CHECK(type_clone_natural->required.size() == 2);
+  CHECK(type_clone_natural->required.size() == Approx(2.0));
   CHECK(type_clone_natural->required[0] == "test1");
   CHECK(type_clone_natural->required[1] == "test2");
   CHECK(type_clone_natural->additional_properties == true);
   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 
   Types::TYPE type_copy2(*type_clone_natural);
-  CHECK(type_copy2.required.size() == 2);
+  CHECK(type_copy2.required.size() == Approx(2.0));
   CHECK(type_copy2.required[0] == "test1");
   CHECK(type_copy2.required[1] == "test2");
   CHECK(type_copy2.additional_properties == true);
@@ -3086,12 +3086,12 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK_THROWS_WITH(prm.get<unsigned int>("non existent unsigned int"),
                     Contains("internal error: could not retrieve the default value at"));
 
-  CHECK(prm.get<unsigned int>("unsigned int") == 4);
+  CHECK(prm.get<unsigned int>("unsigned int") == Approx(4.0));
 
   CHECK_THROWS_WITH(prm.get<size_t>("non existent unsigned int"),
                     Contains("internal error: could not retrieve the default value at"));
 
-  CHECK(prm.get<size_t>("unsigned int") == 4);
+  CHECK(prm.get<size_t>("unsigned int") == Approx(4.0));
 
 
   CHECK_THROWS_WITH(prm.get<double>("non existent double"),
@@ -3118,15 +3118,15 @@ TEST_CASE("WorldBuilder Parameters")
   prm.leave_subsection();
 
   std::vector<unsigned int> v_int = prm.get_vector<unsigned int>("now existent unsigned int vector");
-  CHECK(v_int.size() == 2);
-  CHECK(v_int[0] == 1);
-  CHECK(v_int[1] == 1);
+  CHECK(v_int.size() == Approx(2.0));
+  CHECK(v_int[0] == Approx(1.0));
+  CHECK(v_int[1] == Approx(1.0));
 
   v_int = prm.get_vector<unsigned int>("unsigned int array");
-  CHECK(v_int.size() == 3);
-  CHECK(v_int[0] == 25);
-  CHECK(v_int[1] == 26);
-  CHECK(v_int[2] == 27);
+  CHECK(v_int.size() == Approx(3.0));
+  CHECK(v_int[0] == Approx(25.0));
+  CHECK(v_int[1] == Approx(26.0));
+  CHECK(v_int[2] == Approx(27.0));
 
   CHECK_THROWS_WITH(prm.get_vector<size_t>("non existent unsigned int vector"),
                     Contains("internal error: could not retrieve the minItems value"));
@@ -3134,15 +3134,15 @@ TEST_CASE("WorldBuilder Parameters")
 
 
   std::vector<size_t> v_size_t = prm.get_vector<size_t>("now existent unsigned int vector");
-  CHECK(v_size_t.size() == 2);
-  CHECK(v_size_t[0] == 1);
-  CHECK(v_size_t[1] == 1);
+  CHECK(v_size_t.size() == Approx(2.0));
+  CHECK(v_size_t[0] == Approx(1.0));
+  CHECK(v_size_t[1] == Approx(1.0));
 
   v_size_t = prm.get_vector<size_t>("unsigned int array");
-  CHECK(v_size_t.size() == 3);
-  CHECK(v_size_t[0] == 25);
-  CHECK(v_size_t[1] == 26);
-  CHECK(v_size_t[2] == 27);
+  CHECK(v_size_t.size() == Approx(3.0));
+  CHECK(v_size_t[0] == Approx(25.0));
+  CHECK(v_size_t[1] == Approx(26.0));
+  CHECK(v_size_t[2] == Approx(27.0));
 
 
   CHECK_THROWS_WITH(prm.get_vector<double>("non existent double vector"),
@@ -3157,12 +3157,12 @@ TEST_CASE("WorldBuilder Parameters")
   prm.leave_subsection();
 
   std::vector<double> v_double = prm.get_vector<double>("now existent double vector");
-  CHECK(v_double.size() == 2);
+  CHECK(v_double.size() == Approx(2.0));
   CHECK(v_double[0] == Approx(2.4));
   CHECK(v_double[1] == Approx(2.4));
 
   v_double = prm.get_vector<double>("double array");
-  CHECK(v_double.size() == 3);
+  CHECK(v_double.size() == Approx(3.0));
   CHECK(v_double[0] == Approx(25.2));
   CHECK(v_double[1] == Approx(26.3));
   CHECK(v_double[2] == Approx(27.4));
@@ -3186,13 +3186,13 @@ TEST_CASE("WorldBuilder Parameters")
                     Contains("Could not find entry 'non existent unsigned int' not found. Make sure it is loaded or set"));
   #endif
   CHECK(prm.load_entry("non existent unsigned int", false, Types::UnsignedInt(1,"description")) == false);
-  CHECK(prm.get_unsigned_int("non existent unsigned int") == 1);
+  CHECK(prm.get_unsigned_int("non existent unsigned int") == Approx(1.0));
 
   prm.set_entry("new unsigned int", Types::UnsignedInt(2,"description"));
-  CHECK(prm.get_unsigned_int("new unsigned int") == 2);
+  CHECK(prm.get_unsigned_int("new unsigned int") == Approx(2.0));
 
   prm.load_entry("unsigned int", true, Types::UnsignedInt(3,"description"));
-  CHECK(prm.get_unsigned_int("unsigned int") == 4);*/
+  CHECK(prm.get_unsigned_int("unsigned int") == Approx(4.0));*/
 // Todo: redo this with the new type system.
   /*
     // Test the Double functions
@@ -3204,10 +3204,10 @@ TEST_CASE("WorldBuilder Parameters")
                       Contains("Could not find entry 'non existent double' not found. Make sure it is loaded or set"));
   #endif
     CHECK(prm.load_entry("non existent double", false, Types::Double(1,"description")) == false);
-    CHECK(prm.get_double("non existent double") == 1);
+    CHECK(prm.get_double("non existent double") == Approx(1.0));
 
     prm.set_entry("new double", Types::Double(2,"description"));
-    CHECK(prm.get_double("new double") == 2);
+    CHECK(prm.get_double("new double") == Approx(2.0));
 
     prm.load_entry("double", true, Types::Double(3,"description"));
     CHECK(prm.get_double("double") == 1.23456e2);
@@ -3274,7 +3274,7 @@ TEST_CASE("WorldBuilder Parameters")
     CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
 
   #ifndef NDEBUG
-    CHECK(prm.get_array<Types::Double>("non exitent double array").size() == 1);
+    CHECK(prm.get_array<Types::Double>("non exitent double array").size() == Approx(1.0));
     CHECK(prm.get_array<Types::Double>("non exitent double array")[0].value == Approx(2.0));
     CHECK(prm.get_array<Types::Double>("non exitent double array")[0].description == "description");
   #endif
@@ -3282,15 +3282,15 @@ TEST_CASE("WorldBuilder Parameters")
 
     prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
     std::vector<Types::Double> set_typed_double =  prm.get_array<Types::Double >("new double array");
-    CHECK(set_typed_double.size() == 0);
+    CHECK(set_typed_double.size() == Approx(0.0));
     // This is not desired behavior, but it is not implemented yet.
 
     prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
     std::vector<Types::Double> true_loaded_typed_double =  prm.get_array<Types::Double >("double array");
-    CHECK(true_loaded_typed_double.size() == 3);
-    CHECK(true_loaded_typed_double[0].value == 25);
-    CHECK(true_loaded_typed_double[1].value == 26);
-    CHECK(true_loaded_typed_double[2].value == 27);
+    CHECK(true_loaded_typed_double.size() == Approx(3.0));
+    CHECK(true_loaded_typed_double[0].value == Approx(25.0));
+    CHECK(true_loaded_typed_double[1].value == Approx(26.0));
+    CHECK(true_loaded_typed_double[2].value == Approx(27.0));
 
 
     // Test the Array<Types::Point<2> > functions
@@ -3311,12 +3311,12 @@ TEST_CASE("WorldBuilder Parameters")
 
     prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
     std::vector<Types::Point<2> > set_typed_point_2d = prm.get_array<Types::Point<2> >("new point<2> array");
-    CHECK(set_typed_point_2d.size() == 0);
+    CHECK(set_typed_point_2d.size() == Approx(0.0));
     // This is not desired behavior, but it is not implemented yet.
 
     prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
     std::vector<Types::Point<2> > true_loaded_typed_point_2d =  prm.get_array<Types::Point<2> >("point<2> array");
-    CHECK(true_loaded_typed_point_2d.size() == 3);
+    CHECK(true_loaded_typed_point_2d.size() == Approx(3.0));
     CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {10,11});
     CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {12,13});
     CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {14,15});
@@ -3340,12 +3340,12 @@ TEST_CASE("WorldBuilder Parameters")
 
     prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
     std::vector<Types::Point<3> > set_typed_point_3d = prm.get_array<Types::Point<3> >("new point<3> array");
-    CHECK(set_typed_point_3d.size() == 0);
+    CHECK(set_typed_point_3d.size() == Approx(0.0));
     // This is not desired behavior, but it is not implemented yet.
 
     prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
     std::vector<Types::Point<3> > true_loaded_typed_point_3d =  prm.get_array<Types::Point<3> >("point<3> array");
-    CHECK(true_loaded_typed_point_3d.size() == 3);
+    CHECK(true_loaded_typed_point_3d.size() == Approx(3.0));
     CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {20,21,22});
     CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {23,24,25});
     CHECK(true_loaded_typed_point_3d[2].value.get_array() == std::array<double,3> {26,27,28});
@@ -3380,13 +3380,13 @@ TEST_CASE("WorldBuilder Parameters")
       #endif
 
       CHECK(prm.load_entry("non existent unsigned int", false, Types::UnsignedInt(1,"description")) == false);
-      CHECK(prm.get_unsigned_int("non existent unsigned int") == 1);
+      CHECK(prm.get_unsigned_int("non existent unsigned int") == Approx(1.0));
 
       prm.set_entry("new unsigned int", Types::UnsignedInt(2,"description"));
-      CHECK(prm.get_unsigned_int("new unsigned int") == 2);
+      CHECK(prm.get_unsigned_int("new unsigned int") == Approx(2.0));
 
       prm.load_entry("unsigned int", true, Types::UnsignedInt(3,"description"));
-      CHECK(prm.get_unsigned_int("unsigned int") == 5);* /
+      CHECK(prm.get_unsigned_int("unsigned int") == Approx(5.0));* /
 
 
       // Test the Double functions
@@ -3399,10 +3399,10 @@ TEST_CASE("WorldBuilder Parameters")
   #endif
 
       CHECK(prm.load_entry("non existent double", false, Types::Double(2,"description")) == false);
-      CHECK(prm.get_double("non existent double") == 2);
+      CHECK(prm.get_double("non existent double") == Approx(2.0));
 
       prm.set_entry("new double", Types::Double(3,"description"));
-      CHECK(prm.get_double("new double") == 3);
+      CHECK(prm.get_double("new double") == Approx(3.0));
 
       prm.load_entry("double", true, Types::Double(4,"description"));
       CHECK(prm.get_double("double") == 2.23456e2);
@@ -3468,7 +3468,7 @@ TEST_CASE("WorldBuilder Parameters")
                         Contains("Could not find entry 'non existent double array' not found. Make sure it is loaded or set"));
 
       CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
-      CHECK(prm.get_array<Types::Double>("non exitent double array").size() == 1);
+      CHECK(prm.get_array<Types::Double>("non exitent double array").size() == Approx(1.0));
       CHECK(prm.get_array<Types::Double>("non exitent double array")[0].value == Approx(2.0));
       CHECK(prm.get_array<Types::Double>("non exitent double array")[0].description == "description");
       // This is not desired behavior, but it is not implemented yet.
@@ -3476,15 +3476,15 @@ TEST_CASE("WorldBuilder Parameters")
 
       prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
       std::vector<Types::Double > set_typed_double =  prm.get_array<Types::Double >("new double array");
-      CHECK(set_typed_double.size() == 0);
+      CHECK(set_typed_double.size() == Approx(0.0));
       // This is not desired behavior, but it is not implemented yet.
 
       prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
       std::vector<Types::Double > true_loaded_typed_double =  prm.get_array<Types::Double >("double array");
-      CHECK(true_loaded_typed_double.size() == 3);
-      CHECK(true_loaded_typed_double[0].value == 35);
-      CHECK(true_loaded_typed_double[1].value == 36);
-      CHECK(true_loaded_typed_double[2].value == 37);
+      CHECK(true_loaded_typed_double.size() == Approx(3.0));
+      CHECK(true_loaded_typed_double[0].value == Approx(35.0));
+      CHECK(true_loaded_typed_double[1].value == Approx(36.0));
+      CHECK(true_loaded_typed_double[2].value == Approx(37.0));
 
       // Test the Array<Types::Point<2> > functions
       CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2,cartesian),"description"),"description")),
@@ -3502,12 +3502,12 @@ TEST_CASE("WorldBuilder Parameters")
 
       prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
       std::vector<Types::Point<2> > set_typed_point_2d = prm.get_array<Types::Point<2> >("new point<2> array");
-      CHECK(set_typed_point_2d.size() == 0);
+      CHECK(set_typed_point_2d.size() == Approx(0.0));
       // This is not desired behavior, but it is not implemented yet.
 
       prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
       std::vector<Types::Point<2> > true_loaded_typed_point_2d =  prm.get_array<Types::Point<2> >("point<2> array");
-      CHECK(true_loaded_typed_point_2d.size() == 3);
+      CHECK(true_loaded_typed_point_2d.size() == Approx(3.0));
       CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {20,21});
       CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {22,23});
       CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {24,25});
@@ -3529,12 +3529,12 @@ TEST_CASE("WorldBuilder Parameters")
 
       prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
       std::vector<Types::Point<3> > set_typed_point_3d = prm.get_array<Types::Point<3> >("new point<3> array");
-      CHECK(set_typed_point_3d.size() == 0);
+      CHECK(set_typed_point_3d.size() == Approx(0.0));
       // This is not desired behavior, but it is not implemented yet.
 
       prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
       std::vector<Types::Point<3> > true_loaded_typed_point_3d =  prm.get_array<Types::Point<3> >("point<3> array");
-      CHECK(true_loaded_typed_point_3d.size() == 3);
+      CHECK(true_loaded_typed_point_3d.size() == Approx(3.0));
       CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {30,31,32});
       CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {33,34,35});
       CHECK(true_loaded_typed_point_3d[2].value.get_array() == std::array<double,3> {36,37,38});
@@ -3568,13 +3568,13 @@ TEST_CASE("WorldBuilder Parameters")
         #endif
 
         CHECK(prm.load_entry("non existent unsigned int", false, Types::UnsignedInt(1,"description")) == false);
-        CHECK(prm.get_unsigned_int("non existent unsigned int") == 1);
+        CHECK(prm.get_unsigned_int("non existent unsigned int") == Approx(1.0));
 
         prm.set_entry("new unsigned int", Types::UnsignedInt(2,"description"));
-        CHECK(prm.get_unsigned_int("new unsigned int") == 2);
+        CHECK(prm.get_unsigned_int("new unsigned int") == Approx(2.0));
 
         prm.load_entry("unsigned int", true, Types::UnsignedInt(3,"description"));
-        CHECK(prm.get_unsigned_int("unsigned int") == 6);* /
+        CHECK(prm.get_unsigned_int("unsigned int") == Approx(6.0));* /
 
 
         // Test the Double functions
@@ -3587,10 +3587,10 @@ TEST_CASE("WorldBuilder Parameters")
   #endif
 
         CHECK(prm.load_entry("non existent double", false, Types::Double(4,"description")) == false);
-        CHECK(prm.get_double("non existent double") == 4);
+        CHECK(prm.get_double("non existent double") == Approx(4.0));
 
         prm.set_entry("new double", Types::Double(5,"description"));
-        CHECK(prm.get_double("new double") == 5);
+        CHECK(prm.get_double("new double") == Approx(5.0));
 
         prm.load_entry("double", true, Types::Double(6,"description"));
         CHECK(prm.get_double("double") == 3.23456e2);
@@ -3658,21 +3658,21 @@ TEST_CASE("WorldBuilder Parameters")
 
         CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
 
-        CHECK(prm.get_array<Types::Double >("non exitent double array").size() == 1);
+        CHECK(prm.get_array<Types::Double >("non exitent double array").size() == Approx(1.0));
         CHECK(prm.get_array<Types::Double >("non exitent double array")[0].value == Approx(2.0));
         CHECK(prm.get_array<Types::Double >("non exitent double array")[0].description == "description");
 
         prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
         std::vector<Types::Double > set_typed_double =  prm.get_array<Types::Double >("new double array");
-        CHECK(set_typed_double.size() == 0);
+        CHECK(set_typed_double.size() == Approx(0.0));
         // This is not desired behavior, but it is not implemented yet.
 
         prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
         std::vector<Types::Double > true_loaded_typed_double =  prm.get_array<Types::Double >("double array");
-        CHECK(true_loaded_typed_double.size() == 3);
-        CHECK(true_loaded_typed_double[0].value == 45);
-        CHECK(true_loaded_typed_double[1].value == 46);
-        CHECK(true_loaded_typed_double[2].value == 47);
+        CHECK(true_loaded_typed_double.size() == Approx(3.0));
+        CHECK(true_loaded_typed_double[0].value == Approx(45.0));
+        CHECK(true_loaded_typed_double[1].value == Approx(46.0));
+        CHECK(true_loaded_typed_double[2].value == Approx(47.0));
 
 
         // Test the Array<Types::Point<2> > functions
@@ -3694,12 +3694,12 @@ TEST_CASE("WorldBuilder Parameters")
 
         prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
         std::vector<Types::Point<2> > set_typed_point_2d = prm.get_array<Types::Point<2> >("new point<2> array");
-        CHECK(set_typed_point_2d.size() == 0);
+        CHECK(set_typed_point_2d.size() == Approx(0.0));
         // This is not desired behavior, but it is not implemented yet.
 
         prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
         std::vector<Types::Point<2> > true_loaded_typed_point_2d =  prm.get_array<Types::Point<2> >("point<2> array");
-        CHECK(true_loaded_typed_point_2d.size() == 3);
+        CHECK(true_loaded_typed_point_2d.size() == Approx(3.0));
         CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {40,41});
         CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {42,43});
         CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {44,45});
@@ -3724,12 +3724,12 @@ TEST_CASE("WorldBuilder Parameters")
 
         prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
         std::vector<Types::Point<3> > set_typed_point_3d = prm.get_array<Types::Point<3> >("new point<3> array");
-        CHECK(set_typed_point_3d.size() == 0);
+        CHECK(set_typed_point_3d.size() == Approx(0.0));
         // This is not desired behavior, but it is not implemented yet.
 
         prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
         std::vector<Types::Point<3> > true_loaded_typed_point_3d =  prm.get_array<Types::Point<3> >("point<3> array");
-        CHECK(true_loaded_typed_point_3d.size() == 3);
+        CHECK(true_loaded_typed_point_3d.size() == Approx(3.0));
         CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {40,41,42});
         CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {43,44,45});
         CHECK(true_loaded_typed_point_3d[2].value.get_array() == std::array<double,3> {46,47,48});
@@ -3805,8 +3805,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(std::sqrt(10*10+10*10)));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
 
@@ -3826,8 +3826,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(std::sqrt(10*10+10*10)));
   CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14); // practically zero
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(std::fabs(distance_from_planes["segmentFraction"]) < 1e-14); // practically zero
 
   // center square test 3
@@ -3846,8 +3846,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(std::sqrt(10*10+10*10)));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // center square test 4
@@ -3866,8 +3866,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(std::sqrt(10*10+10*10)));
   CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14); // practically zero
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(std::fabs(distance_from_planes["segmentFraction"]) < 1e-14); // practically zero
 
   // center square test 5
@@ -3887,8 +3887,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(sqrt(20*20+20*20))); // practically zero
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0707106781)); // practically zero
 
   // begin section square test 6
@@ -3907,8 +3907,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(sqrt(20*20+20*20))); // practically zero
   CHECK(std::fabs(distance_from_planes["sectionFraction"]) < 1e-14);
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0707106781)); // practically zero
 
 
@@ -3928,8 +3928,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(sqrt(20*20+20*20))); // practically zero
   CHECK(distance_from_planes["sectionFraction"] == Approx(1.0));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0707106781)); // practically zero
 
   // before begin section square test 8
@@ -3948,8 +3948,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
   CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY);
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.0));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(std::fabs(distance_from_planes["segmentFraction"]) < 1e-14); // practically zero
 
   // beyond end section square test 9
@@ -3968,8 +3968,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
   CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY);
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.0));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(std::fabs(distance_from_planes["segmentFraction"]) < 1e-14); // practically zero
 
 
@@ -3991,8 +3991,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(-3.5355339059));
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(10.6066017178));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.75));
 
   // beyond end section square test 10 (only positive version)
@@ -4013,8 +4013,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(3.5355339059));
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(10.6066017178));
   CHECK(distance_from_planes["sectionFraction"] ==  Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.75));
 
 
@@ -4036,8 +4036,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(3.5355339059));
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(17.6776695297));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0176776695));
 
 
@@ -4059,8 +4059,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(3.5355339059));
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(17.6776695297));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0176776695));
 
   // add coordinate
@@ -4091,8 +4091,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(std::sqrt(10*10+10*10)));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 1);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(1.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // different angle
@@ -4122,8 +4122,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(10.8239219938));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.7653668647));
 
   // check interpolation 1 (in the middle of a segment with 22.5 degree and a segement with 45)
@@ -4144,8 +4144,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(12.0268977387)); // practically zero
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 1);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(1.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.8504300948));
 
   // check interpolation 2 (at the end of the segment at 45 degree)
@@ -4166,8 +4166,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(14.1421356237)); // practically zero
   CHECK(distance_from_planes["sectionFraction"] == Approx(1.0));
-  CHECK(distance_from_planes["section"] == 1);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(1.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // check length interpolation with 90 degree angles for simplicity
@@ -4209,8 +4209,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(100.0)); // practically zero
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // check length interpolation first segment center 2
@@ -4231,8 +4231,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(101.0)); // practically zero
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.01));
 
   // check length interpolation first segment center 3
@@ -4253,8 +4253,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(200.0));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
 
@@ -4277,8 +4277,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
   CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY);
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.0));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0));
 
 
@@ -4301,8 +4301,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(75.0)); // practically zero
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 1);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(1.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // check length interpolation second segment center 2
@@ -4323,8 +4323,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(76.0)); // practically zero
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 1);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(1.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.01333333333333));
 
   // check length interpolation second segment center 3
@@ -4345,8 +4345,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(150.0));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 1);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(1.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
 
@@ -4369,8 +4369,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
   CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY);
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.0));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0));
 
   // Now check the end of the second segment, each segment should have a length of 50.
@@ -4392,8 +4392,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(50.0)); // practically zero
   CHECK(distance_from_planes["sectionFraction"] == Approx(1.0));
-  CHECK(distance_from_planes["section"] == 1);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(1.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // check length interpolation second segment center 2
@@ -4414,8 +4414,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(51.0)); // practically zero
   CHECK(distance_from_planes["sectionFraction"] == Approx(1.0));
-  CHECK(distance_from_planes["section"] == 1);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(1.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.02));
 
   // check length interpolation second segment center 3
@@ -4436,8 +4436,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(100.0));
   CHECK(distance_from_planes["sectionFraction"] == Approx(1.0));
-  CHECK(distance_from_planes["section"] == 1);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(1.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
 
@@ -4460,8 +4460,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
   CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY);
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.0));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0));
 }
 
@@ -4539,8 +4539,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // curve test 2
@@ -4561,8 +4561,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(5.0)); // checked that it should be about 5 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // curve test 3
@@ -4583,8 +4583,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(-5.0)); // checked that it should be about -5 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
 
@@ -4606,8 +4606,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // curve test 5
@@ -4628,8 +4628,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(-10.0)); // checked that it should be about -10 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // curve test 6
@@ -4654,8 +4654,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   // where the check point has angle 0. This means that the distanceAlongPlate is zero.
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(0.0));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0));
 
 
@@ -4677,8 +4677,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
   CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY);
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.0));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0));
 
   // curve test 8
@@ -4704,8 +4704,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 5));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // curve test 9
@@ -4726,8 +4726,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45.0 * Utilities::const_pi/180 * 5));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
 
@@ -4763,8 +4763,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // curve test 11
@@ -4785,8 +4785,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.5));
 
   // curve test 12
@@ -4807,8 +4807,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(135.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.5));
 
 
@@ -4830,8 +4830,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // curve test 14
@@ -4866,8 +4866,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.5));
 
   // curve test 15
@@ -4888,8 +4888,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // curve test 16
@@ -4910,8 +4910,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(-1.0)); // checked that it should be about -1 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // curve test 16
@@ -4932,8 +4932,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(1.0)); // checked that it should be about -1 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // curve test 17
@@ -4954,8 +4954,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(270.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
 
@@ -4977,8 +4977,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(-1.0)); // checked that it should be about 1 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(270.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // curve test 19
@@ -4999,8 +4999,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(1.0)); // checked that it should be about 1 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(270.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
 
@@ -5036,8 +5036,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0/3.0));
 
   // curve test 21
@@ -5058,8 +5058,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(2.0/3.0));
 
   // curve test 21
@@ -5080,8 +5080,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(270.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // curve test 22
@@ -5102,8 +5102,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(315.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // curve test start 45 degree 1
@@ -5141,8 +5141,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(-7.3205080757)); // checked that it should be about -7.3 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(9.5531661812));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.2163468959));
 
   // curve test change reference point 1
@@ -5167,8 +5167,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
   CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY);
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.0));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0));
 
   // curve test change reference point 2
@@ -5189,8 +5189,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(2.3463313527)); // checked that it should be about 2.3 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(11.780972451));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.5));
 
   // curve test angle interpolation 1
@@ -5229,8 +5229,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(2.0/3.0));
 
   // curve test reverse angle 1
@@ -5268,8 +5268,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // curve test reverse angle 2
@@ -5290,8 +5290,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // curve test reverse angle 3
@@ -5312,8 +5312,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(135.0 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.5));
 
   // curve test reverse angle 4
@@ -5336,8 +5336,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.1 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0011111111));
 
 
@@ -5359,8 +5359,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.001 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.000011111111));
 
   // curve test reverse angle 6
@@ -5395,8 +5395,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
   // curve test reverse angle 6
@@ -5418,7 +5418,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
   CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
@@ -5441,8 +5441,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
 
@@ -5465,8 +5465,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(46 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0222222222));
 
 
@@ -5490,8 +5490,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(0.0697227738)); // checked that it should be small positive this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx((90 - 44.4093) * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0131266424));
 
   // curve test reverse angle 9
@@ -5513,8 +5513,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(-0.0692053058)); // checked that it should be small negative this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx((90 - 43.585) * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.031445048));
 
   // curve test reverse angle 10
@@ -5536,8 +5536,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90 * Utilities::const_pi/180 * 10));
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 1);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(1.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(1.0));
 
 
@@ -5561,8 +5561,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14);
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0));
 
   // global_x_list test 2
@@ -5584,8 +5584,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14);
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.25));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0));
 
   // global_x_list test 3
@@ -5607,8 +5607,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14);
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.375));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0));
 
   // global_x_list test 4
@@ -5630,8 +5630,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14);
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0));
 
   // global_x_list test 5
@@ -5652,8 +5652,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-12);
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.75));
-  CHECK(distance_from_planes["section"] == 1);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(1.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(std::fabs(distance_from_planes["segmentFraction"]) < 1e-12);
 
 
@@ -5677,8 +5677,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14);
   CHECK(distance_from_planes["sectionFraction"] == Approx(1.0));
-  CHECK(distance_from_planes["section"] == 1);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(1.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.0));
 
 }
@@ -5732,8 +5732,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
   CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14);
   CHECK(std::fabs(distance_from_planes["sectionFraction"]) < 1e-14);
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(std::fabs(distance_from_planes["segmentFraction"]) < 1e-14);
 
 
@@ -5754,8 +5754,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
   CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14);
   CHECK(distance_from_planes["sectionFraction"] == Approx(1.0));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(std::fabs(distance_from_planes["segmentFraction"]) < 1e-14);
 
 
@@ -5780,8 +5780,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
   CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14);
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(std::fabs(distance_from_planes["segmentFraction"]) < 1e-14);
 
 
@@ -5802,8 +5802,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(10*sqrt(2)/4)); // checked it with a geometric drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(10*sqrt(2)/4)); // checked it with a geometric drawing
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.25));
 
 
@@ -5824,8 +5824,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(10*sqrt(2)/2)); // checked it with a geometric drawing
   CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14); // checked it with a geometric drawing
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(std::fabs(distance_from_planes["segmentFraction"]) < 1e-14);
 
 
@@ -5846,8 +5846,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);  // checked it with a geometric drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(10*sqrt(2)/2)); // checked it with a geometric drawing
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.5));
 
 // spherical curve test 1
@@ -5879,8 +5879,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(4.072033215));  // see comment at the top of the test
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(6.6085171895)); // see comment at the top of the test
   CHECK(distance_from_planes["sectionFraction"] == Approx(0.5));
-  CHECK(distance_from_planes["section"] == 0);
-  CHECK(distance_from_planes["segment"] == 0);
+  CHECK(distance_from_planes["section"] == Approx(0.0));
+  CHECK(distance_from_planes["segment"] == Approx(0.0));
   CHECK(distance_from_planes["segmentFraction"] == Approx(0.4672927318));
 }
 
@@ -5898,8 +5898,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     std::array<double,3> position = {{6371000 - 0, 0 * dtr, 0 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
     CHECK(world.temperature(position, 0, 10) == Approx(0));
-    CHECK(world.temperature(position, 1, 10) == 0);
-    CHECK(world.temperature(position, 200e3, 10) == 0);
+    CHECK(world.temperature(position, 1, 10) == Approx(0.0));
+    CHECK(world.temperature(position, 200e3, 10) == Approx(0.0));
     CHECK(world.temperature(position, 210e3, 10) == Approx(1696.9009710498));
 
     // ~330 km
@@ -5907,8 +5907,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
     CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
     CHECK(world.temperature(position, 50e3, 10) == Approx(1622.5575343016));
-    CHECK(world.temperature(position, 75e3, 10) == 0);
-    CHECK(world.temperature(position, 250e3, 10) == 0);
+    CHECK(world.temperature(position, 75e3, 10) == Approx(0.0));
+    CHECK(world.temperature(position, 250e3, 10) == Approx(0.0));
     CHECK(world.temperature(position, 275e3, 10) == Approx(1728.0673222282));
 
 
@@ -5917,8 +5917,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
     CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
     CHECK(world.temperature(position, 95e3, 10) == Approx(1643.1311005134));
-    CHECK(world.temperature(position, 100e3, 10) == 0);
-    CHECK(world.temperature(position, 300e3, 10) == 0);
+    CHECK(world.temperature(position, 100e3, 10) == Approx(0.0));
+    CHECK(world.temperature(position, 300e3, 10) == Approx(0.0));
     CHECK(world.temperature(position, 305e3, 10) == Approx(1742.6442250145));
 
 
@@ -5927,7 +5927,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
     CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
     CHECK(world.temperature(position, 1, 10) == Approx(0.0));
-    CHECK(world.temperature(position, 200e3, 10) == 0);
+    CHECK(world.temperature(position, 200e3, 10) == Approx(0.0));
     CHECK(world.temperature(position, 205e3, 10) == Approx(1694.5269718775));
     CHECK(world.temperature(position, 570e3, 10) == Approx(1876.8664968188));
   }
@@ -5942,8 +5942,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     std::array<double,3> position = {{6371000 - 0, 0 * dtr, 0 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
     CHECK(world.temperature(position, 0, 10) == Approx(0.0));
-    CHECK(world.temperature(position, 1, 10) == 0);
-    CHECK(world.temperature(position, 200e3, 10) == 0);
+    CHECK(world.temperature(position, 1, 10) == Approx(0.0));
+    CHECK(world.temperature(position, 200e3, 10) == Approx(0.0));
     CHECK(world.temperature(position, 210e3, 10) == Approx(1696.9009710498));
 
     // ~330 km
@@ -5951,8 +5951,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
     CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
     CHECK(world.temperature(position, 50e3, 10) == Approx(1622.5575343016));
-    CHECK(world.temperature(position, 75e3, 10) == 0);
-    CHECK(world.temperature(position, 250e3, 10) == 0);
+    CHECK(world.temperature(position, 75e3, 10) == Approx(0.0));
+    CHECK(world.temperature(position, 250e3, 10) == Approx(0.0));
     CHECK(world.temperature(position, 275e3, 10) == Approx(1728.0673222282));
 
 
@@ -5961,8 +5961,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
     CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
     CHECK(world.temperature(position, 150e3, 10) == Approx(1668.6311660012));
-    CHECK(world.temperature(position, 175e3, 10) == 0);
-    CHECK(world.temperature(position, 380e3, 10) == 0);
+    CHECK(world.temperature(position, 175e3, 10) == Approx(0.0));
+    CHECK(world.temperature(position, 380e3, 10) == Approx(0.0));
     CHECK(world.temperature(position, 385e3, 10) == Approx(1782.119932987));
 
 
@@ -5971,8 +5971,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
     CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
     CHECK(world.temperature(position, 350e3, 10) == Approx(1764.7404561736));
-    CHECK(world.temperature(position, 355e3, 10) == 0);
-    CHECK(world.temperature(position, 565e3, 10) == 0);
+    CHECK(world.temperature(position, 355e3, 10) == Approx(0.0));
+    CHECK(world.temperature(position, 565e3, 10) == Approx(0.0));
     CHECK(world.temperature(position, 570e3, 10) == Approx(1876.8664968188));
   }
 
