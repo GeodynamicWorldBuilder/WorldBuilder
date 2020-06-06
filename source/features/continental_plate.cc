@@ -72,24 +72,6 @@ namespace WorldBuilder
       prm.declare_entry("composition models",
                         Types::PluginSystem("", Features::ContinentalPlateModels::Composition::Interface::declare_entries, {"model"}),
                         "A list of composition models.");
-
-      /* Todo
-      // prevent infinite recursion
-      if (parent_name != "items")
-        {
-          // This only happens if we are not in sections
-          prm.declare_entry("sections", Types::Array(Types::PluginSystem("",Features::ContinentalPlate::declare_entries, {"coordinate"}, false)),"A list of features.");
-        }
-      else
-        {
-
-          // this only happens in sections
-          prm.declare_entry("coordinate", Types::UnsignedInt(0),
-                            "The coordinate which should be overwritten");
-
-          prm.leave_subsection();
-        }
-        */
     }
 
     void

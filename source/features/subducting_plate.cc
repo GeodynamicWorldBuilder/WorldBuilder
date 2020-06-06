@@ -172,15 +172,6 @@ namespace WorldBuilder
                                                       Features::SubductingPlateModels::Composition::Interface> >("segments", local_default_temperature_models, local_default_composition_models);
 
 
-                // paramters should be changed
-                /*{
-                  using namespace rapidjson;
-                  StringBuffer buffer;
-                  PrettyWriter<StringBuffer, UTF8<>, UTF8<>, CrtAllocator, kWriteNanAndInfFlag> json_writer(buffer);
-                  this->world->parameters.parameters.Accept(json_writer);
-                  std::cout << buffer.GetString();
-                }*/
-
                 WBAssertThrow(segment_vector[change_coord_number].size() == default_segment_vector.size(),
                               "Error: There are not the same amount of segments in section with coordinate " << change_coord_number
                               << " (" << segment_vector[change_coord_number].size() << " segments) as in the default segment ("

@@ -57,11 +57,6 @@ namespace WorldBuilder
         void
         Adiabatic::declare_entries(Parameters &prm, const std::string &)
         {
-
-          // Add temperature to the required parameters.
-          //prm.declare_entry("", Types::Object({"temperature"}), "Temperature model object");
-
-
           prm.declare_entry("min depth", Types::Double(0),
                             "The depth in meters from which the temperature of this feature is present.");
 
