@@ -170,8 +170,8 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
   CHECK(p2.norm_square() == Approx(80.0));
   CHECK(p3.norm_square() == Approx(224));
 
-  CHECK(p2.norm() == std::sqrt(80));
-  CHECK(p3.norm() == std::sqrt(224));
+  CHECK(p2.norm() == Approx(std::sqrt(80)));
+  CHECK(p3.norm() == Approx(std::sqrt(224)));
 
   // Test Point utility classes
   std::array<double,2> an2 = Utilities::convert_point_to_array(p2_point);
@@ -2537,35 +2537,35 @@ TEST_CASE("WorldBuilder Types: Point 2d")
 {
 #define TYPE Point<2>
   Types::TYPE type(TYPE(1,2,cartesian),"test");
-  CHECK(type.value[0] == TYPE(1,2,cartesian)[0]);
-  CHECK(type.value[1] == TYPE(1,2,cartesian)[1]);
-  CHECK(type.default_value[0] == TYPE(1,2,cartesian)[0]);
-  CHECK(type.default_value[1] == TYPE(1,2,cartesian)[1]);
+  CHECK(type.value[0] == Approx(TYPE(1,2,cartesian)[0]));
+  CHECK(type.value[1] == Approx(TYPE(1,2,cartesian)[1]));
+  CHECK(type.default_value[0] == Approx(TYPE(1,2,cartesian)[0]));
+  CHECK(type.default_value[1] == Approx(TYPE(1,2,cartesian)[1]));
   CHECK(type.description == "test");
   CHECK(type.get_type() == Types::type::Point2D);
 
   Types::TYPE type_copy(type);
-  CHECK(type_copy.value[0] == TYPE(1,2,cartesian)[0]);
-  CHECK(type_copy.value[1] == TYPE(1,2,cartesian)[1]);
-  CHECK(type.default_value[0] == TYPE(1,2,cartesian)[0]);
-  CHECK(type.default_value[1] == TYPE(1,2,cartesian)[1]);
+  CHECK(type_copy.value[0] == Approx(TYPE(1,2,cartesian)[0]));
+  CHECK(type_copy.value[1] == Approx(TYPE(1,2,cartesian)[1]));
+  CHECK(type.default_value[0] == Approx(TYPE(1,2,cartesian)[0]));
+  CHECK(type.default_value[1] == Approx(TYPE(1,2,cartesian)[1]));
   CHECK(type_copy.description == "test");
   CHECK(type_copy.get_type() == Types::type::Point2D);
 
   Types::TYPE type_explicit(TYPE(3,4,cartesian), TYPE(5,6,cartesian), "test explicit");
-  CHECK(type_explicit.value[0] == TYPE(3,4,cartesian)[0]);
-  CHECK(type_explicit.value[1] == TYPE(3,4,cartesian)[1]);
-  CHECK(type_explicit.default_value[0] == TYPE(5,6,cartesian)[0]);
-  CHECK(type_explicit.default_value[1] == TYPE(5,6,cartesian)[1]);
+  CHECK(type_explicit.value[0] == Approx(TYPE(3,4,cartesian)[0]));
+  CHECK(type_explicit.value[1] == Approx(TYPE(3,4,cartesian)[1]));
+  CHECK(type_explicit.default_value[0] == Approx(TYPE(5,6,cartesian)[0]));
+  CHECK(type_explicit.default_value[1] == Approx(TYPE(5,6,cartesian)[1]));
   CHECK(type_explicit.description == "test explicit");
   CHECK(type_explicit.get_type() == Types::type::Point2D);
 
   std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
-  CHECK(type_clone_natural->value[0] == TYPE(3,4,cartesian)[0]);
-  CHECK(type_clone_natural->value[1] == TYPE(3,4,cartesian)[1]);
-  CHECK(type_clone_natural->default_value[0] == TYPE(5,6,cartesian)[0]);
-  CHECK(type_clone_natural->default_value[1] == TYPE(5,6,cartesian)[1]);
+  CHECK(type_clone_natural->value[0] == Approx(TYPE(3,4,cartesian)[0]));
+  CHECK(type_clone_natural->value[1] == Approx(TYPE(3,4,cartesian)[1]));
+  CHECK(type_clone_natural->default_value[0] == Approx(TYPE(5,6,cartesian)[0]));
+  CHECK(type_clone_natural->default_value[1] == Approx(TYPE(5,6,cartesian)[1]));
   CHECK(type_clone_natural->description == "test explicit");
   CHECK(type_clone_natural->get_type() == Types::type::Point2D);
 
