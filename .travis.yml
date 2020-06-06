@@ -95,7 +95,7 @@ matrix:
 
     - name: "linux trusty gcc 6 coverage fortran python"
       os: linux
-      dist: trusty
+      dist: bionic
       sudo: true
       compiler: 
         - g++-6
