@@ -103,21 +103,7 @@ namespace WorldBuilder
           coordinate *= const_pi / 180.0;
 
       std::string interpolation = this->world->interpolation;
-      /*std::vector<Types::Point<2>> typed_coordinates =  prm.get_array<Types::Point<2> >("coordinates");
 
-      original_number_of_coordinates = typed_coordinates.size();
-      coordinates.resize(original_number_of_coordinates, Point<2>(coordinate_system));
-      for (unsigned int i = 0; i < original_number_of_coordinates; ++i)
-        {
-          coordinates[i] = typed_coordinates[i].value *
-                           (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
-        }
-
-      // perform interpolation if required.
-      prm.leave_subsection();
-      prm.leave_subsection();
-      std::string interpolation = prm.get_string("interpolation");
-      */
       // the one_dimensional_coordinates is always needed, so fill it.
       original_number_of_coordinates = coordinates.size();
       //std:cout << "original_number_of_coordinates = " << original_number_of_coordinates << std::endl;
@@ -176,8 +162,6 @@ namespace WorldBuilder
             }
         }
       one_dimensional_coordinates = one_dimensional_coordinates_local;
-      //prm.enter_subsection("objects");
-      //prm.enter_subsection(name);
     }
 
 

@@ -751,15 +751,6 @@ namespace WorldBuilder
                            "Error: current_segment = "  << current_segment
                            << ", and current_segment.size() = " << plane_segment_angles[original_next_section].size());
 
-                  /*std::cout << "plane_segment_angles = " << plane_segment_angles[original_current_section][current_segment][1] << std::endl;
-                  std::cout << "fraction_CPL_P1P2 = " << fraction_CPL_P1P2 << std::endl;
-                  std::cout << "original_next_section = " << original_next_section << std::endl;
-                  std::cout << "plane_segment_angles.size() = " << plane_segment_angles.size() << std::endl;
-                  std::cout << "current_segment = " << current_segment << std::endl;
-                  std::cout << "plane_segment_angles[original_next_section].size() = " << plane_segment_angles[original_next_section].size() << std::endl;
-                  std::cout << "add_angle = " << add_angle << std::endl;
-                  */
-
                   const double interpolated_angle_top    = plane_segment_angles[original_current_section][current_segment][0]
                                                            + fraction_CPL_P1P2 * (plane_segment_angles[original_next_section][current_segment][0]
                                                                                   - plane_segment_angles[original_current_section][current_segment][0])
