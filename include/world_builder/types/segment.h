@@ -43,8 +43,9 @@ namespace WorldBuilder
                 const WorldBuilder::Point<2> default_thickness,
                 const WorldBuilder::Point<2> default_top_truncation,
                 const WorldBuilder::Point<2> default_angle,
-                const Types::Interface &temperature_pugin_system,
-                const Types::Interface &composition_pugin_system);
+                const Types::Interface &temperature_plugin_system,
+                const Types::Interface &composition_plugin_system,
+                const Types::Interface &lattice_properties_systems);
 
         /**
          * A constructor for the load_entry function
@@ -99,7 +100,7 @@ namespace WorldBuilder
     /**
       * This class represents an actual segment
       */
-    template <class A, class B>
+    template <class A, class B, class C>
     class Segment : public Types::Interface
     {
       public:
@@ -112,7 +113,8 @@ namespace WorldBuilder
                 const WorldBuilder::Point<2> default_top_truncation,
                 const WorldBuilder::Point<2> default_angle,
                 const std::vector<std::shared_ptr<A> > &temperature_systems,
-                const std::vector<std::shared_ptr<B> > &composition_systems);
+                const std::vector<std::shared_ptr<B> > &composition_systems,
+                const std::vector<std::shared_ptr<C> > &lattice_properties_systems);
 
         /**
          * Copy constructor
@@ -139,6 +141,7 @@ namespace WorldBuilder
         WorldBuilder::Point<2> value_angle;
         std::vector<std::shared_ptr<A> > temperature_systems;
         std::vector<std::shared_ptr<B> > composition_systems;
+        std::vector<std::shared_ptr<C> > lattice_properties_systems;
 
       protected:
         Segment *clone_impl() const override final

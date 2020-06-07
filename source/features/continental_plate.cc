@@ -184,6 +184,39 @@ namespace WorldBuilder
       return composition;
     }
 
+    std::pair<std::vector<std::array<double,9> >, std::vector<double> >
+    ContinentalPlate::lattice_properties(const Point<3> &position,
+                                         const double depth,
+                                         const unsigned int composition_number,
+                                         std::pair<std::vector<std::array<double,9> >, std::vector<double> > lattice_properties) const
+    {
+      WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
+                                                                      *(world->parameters.coordinate_system));
+
+      if (depth <= max_depth && depth >= min_depth &&
+          Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
+                                                                  world->parameters.coordinate_system->natural_coordinate_system())))
+        {
+          for (auto &latice_properties_model: latice_properties_models)
+            {
+              lattice_properties = latice_properties_model->get_lattice_properties(position,
+                                                                                   depth,
+                                                                                   composition_number,
+                                                                                   lattice_properties,
+                                                                                   min_depth,
+                                                                                   max_depth);
+
+              /*WBAssert(!std::isnan(composition), "Composition is not a number: " << composition
+                       << ", based on a temperature model with the name " << composition_model->get_name());
+              WBAssert(std::isfinite(composition), "Composition is not a finite: " << composition
+                       << ", based on a temperature model with the name " << composition_model->get_name());*/
+
+            }
+        }
+
+      return lattice_properties;
+    }
+
     WB_REGISTER_FEATURE(ContinentalPlate, continental plate)
 
   }

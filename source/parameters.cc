@@ -44,19 +44,25 @@
 
 #include <world_builder/features/continental_plate_models/temperature/interface.h>
 #include <world_builder/features/continental_plate_models/composition/interface.h>
+#include <world_builder/features/continental_plate_models/lattice_properties/interface.h>
 #include <world_builder/features/oceanic_plate_models/temperature/interface.h>
 #include <world_builder/features/oceanic_plate_models/composition/interface.h>
+#include <world_builder/features/oceanic_plate_models/lattice_properties/interface.h>
 #include <world_builder/features/mantle_layer_models/temperature/interface.h>
 #include <world_builder/features/mantle_layer_models/composition/interface.h>
+#include <world_builder/features/mantle_layer_models/lattice_properties/interface.h>
 #include <world_builder/features/subducting_plate_models/temperature/interface.h>
 #include <world_builder/features/subducting_plate_models/composition/interface.h>
+#include <world_builder/features/subducting_plate_models/lattice_properties/interface.h>
 
 #include <world_builder/features/subducting_plate.h>
 #include <world_builder/features/subducting_plate_models/temperature/interface.h>
 #include <world_builder/features/subducting_plate_models/composition/interface.h>
+#include <world_builder/features/subducting_plate_models/lattice_properties/interface.h>
 #include <world_builder/features/fault.h>
 #include <world_builder/features/fault_models/temperature/interface.h>
 #include <world_builder/features/fault_models/composition/interface.h>
+#include <world_builder/features/fault_models/lattice_properties/interface.h>
 
 using namespace rapidjson;
 
@@ -488,13 +494,16 @@ namespace WorldBuilder
 
 
   template<>
-  std::vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,Features::SubductingPlateModels::Composition::Interface> >
-  Parameters::get_vector(const std::string &name,
-                         std::vector<std::shared_ptr<Features::SubductingPlateModels::Temperature::Interface> > &default_temperature_models,
-                         std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface> > &default_composition_models)
+  std::vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
+      Features::SubductingPlateModels::Composition::Interface,
+      Features::SubductingPlateModels::LatticeProperties::Interface> >
+      Parameters::get_vector(const std::string &name,
+                             std::vector<std::shared_ptr<Features::SubductingPlateModels::Temperature::Interface> > &default_temperature_models,
+                             std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface> > &default_composition_models,
+                             std::vector<std::shared_ptr<Features::SubductingPlateModels::LatticeProperties::Interface> > &default_lattice_properties_models)
   {
     using namespace Features::SubductingPlateModels;
-    std::vector<Objects::Segment<Temperature::Interface,Composition::Interface> > vector;
+    std::vector<Objects::Segment<Temperature::Interface,Composition::Interface,LatticeProperties::Interface> > vector;
     this->enter_subsection(name);
     const std::string strict_base = this->get_full_json_path();
     if (Pointer((strict_base).c_str()).Get(parameters) != NULL)
@@ -639,7 +648,43 @@ namespace WorldBuilder
                     Pointer((base + "/composition model default entry").c_str()).Set(parameters,true);
                   }
               }
-            vector.push_back(Objects::Segment<Temperature::Interface,Composition::Interface>(length, thickness, top_trunctation, angle, temperature_models, composition_models));
+
+            // now do the same for lattice properties
+            std::vector<std::shared_ptr<LatticeProperties::Interface> > lattice_properties_models;
+            if (this->get_shared_pointers<LatticeProperties::Interface>("lattice properties models", lattice_properties_models) == false ||
+                Pointer((base + "/lattice properties model default entry").c_str()).Get(parameters) != NULL)
+              {
+                lattice_properties_models = default_lattice_properties_models;
+
+
+                // find the default value, which is the closest to the current path
+                for (searchback = 0; searchback < path.size(); ++searchback)
+                  {
+                    if (Pointer((this->get_full_json_path(path.size()-searchback) + "/lattice properties models").c_str()).Get(parameters) != NULL)
+                      {
+                        break;
+                      }
+                  }
+
+                // if we can not find default value for the temperture model, skip it
+                if (searchback < path.size())
+                  {
+
+                    // copy the value, this unfortunately removes it.
+                    Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/lattice properties models").c_str()).Get(parameters)->GetArray());
+
+                    // now copy it
+                    Value value2;
+                    value2.CopyFrom(value1, parameters.GetAllocator());
+
+                    // now we should have 2x the same value, so put it back and place it in the correct location.
+                    Pointer((this->get_full_json_path(path.size()-searchback) + "/lattice properties models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
+
+                    Pointer((base).c_str()).Get(parameters)->AddMember("lattice properties models", value2, parameters.GetAllocator());
+                    Pointer((base + "/lattice properties model default entry").c_str()).Set(parameters,true);
+                  }
+              }
+            vector.push_back(Objects::Segment<Temperature::Interface,Composition::Interface,LatticeProperties::Interface>(length, thickness, top_trunctation, angle, temperature_models, composition_models, lattice_properties_models));
 
             this->leave_subsection();
           }
@@ -650,13 +695,14 @@ namespace WorldBuilder
 
 
   template<>
-  std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,Features::FaultModels::Composition::Interface> >
+  std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,Features::FaultModels::Composition::Interface, Features::FaultModels::LatticeProperties::Interface> >
   Parameters::get_vector(const std::string &name,
                          std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface> > &default_temperature_models,
-                         std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface> > &default_composition_models)
+                         std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface> > &default_composition_models,
+                         std::vector<std::shared_ptr<Features::FaultModels::LatticeProperties::Interface> > &default_lattice_properties_models)
   {
     using namespace Features::FaultModels;
-    std::vector<Objects::Segment<Temperature::Interface,Composition::Interface> > vector;
+    std::vector<Objects::Segment<Temperature::Interface,Composition::Interface,LatticeProperties::Interface> > vector;
     this->enter_subsection(name);
     const std::string strict_base = this->get_full_json_path();
     if (Pointer((strict_base).c_str()).Get(parameters) != NULL)
@@ -801,7 +847,43 @@ namespace WorldBuilder
                     Pointer((base + "/composition model default entry").c_str()).Set(parameters,true);
                   }
               }
-            vector.push_back(Objects::Segment<Temperature::Interface,Composition::Interface>(length, thickness, top_trunctation, angle, temperature_models, composition_models));
+
+            // now do the same for lattice propertiess
+            std::vector<std::shared_ptr<LatticeProperties::Interface> > lattice_properties_models;
+            if (this->get_shared_pointers<LatticeProperties::Interface>("lattice properties models", lattice_properties_models) == false ||
+                Pointer((base + "/lattice properties model default entry").c_str()).Get(parameters) != NULL)
+              {
+                lattice_properties_models = default_lattice_properties_models;
+
+
+                // find the default value, which is the closest to the current path
+                for (searchback = 0; searchback < path.size(); ++searchback)
+                  {
+                    if (Pointer((this->get_full_json_path(path.size()-searchback) + "/lattice properties models").c_str()).Get(parameters) != NULL)
+                      {
+                        break;
+                      }
+                  }
+
+                // if we can not find default value for the temperture model, skip it
+                if (searchback < path.size())
+                  {
+
+                    // copy the value, this unfortunately removes it.
+                    Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/lattice properties models").c_str()).Get(parameters)->GetArray());
+
+                    // now copy it
+                    Value value2;
+                    value2.CopyFrom(value1, parameters.GetAllocator());
+
+                    // now we should have 2x the same value, so put it back and place it in the correct location.
+                    Pointer((this->get_full_json_path(path.size()-searchback) + "/lattice properties models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
+
+                    Pointer((base).c_str()).Get(parameters)->AddMember("lattice_properties models", value2, parameters.GetAllocator());
+                    Pointer((base + "/lattice properties model default entry").c_str()).Set(parameters,true);
+                  }
+              }
+            vector.push_back(Objects::Segment<Temperature::Interface,Composition::Interface,LatticeProperties::Interface>(length, thickness, top_trunctation, angle, temperature_models, composition_models, lattice_properties_models));
 
             this->leave_subsection();
           }
@@ -1225,6 +1307,7 @@ namespace WorldBuilder
    */
   template std::unique_ptr<CoordinateSystems::Interface> Parameters::get_unique_pointer<CoordinateSystems::Interface>(const std::string &name);
 
+
   /**
    * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
    * Note that the variable with this name has to be loaded before this function is called.
@@ -1232,6 +1315,7 @@ namespace WorldBuilder
   template bool
   Parameters::get_unique_pointers<Features::Interface>(const std::string &name,
                                                        std::vector<std::unique_ptr<Features::Interface> > &vector);
+
 
   /**
    * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -1250,6 +1334,16 @@ namespace WorldBuilder
       std::vector<std::unique_ptr<Features::ContinentalPlateModels::Composition::Interface> > &vector);
 
   /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_unique_pointers<Features::ContinentalPlateModels::LatticeProperties::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::ContinentalPlateModels::LatticeProperties::Interface> > &vector);
+
+
+
+  /**
    * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
    * Note that the variable with this name has to be loaded before this function is called.
    */
@@ -1264,6 +1358,16 @@ namespace WorldBuilder
   template bool
   Parameters::get_unique_pointers<Features::OceanicPlateModels::Composition::Interface>(const std::string &name,
       std::vector<std::unique_ptr<Features::OceanicPlateModels::Composition::Interface> > &vector);
+
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_unique_pointers<Features::OceanicPlateModels::LatticeProperties::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::OceanicPlateModels::LatticeProperties::Interface> > &vector);
+
+
 
   /**
    * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -1282,6 +1386,16 @@ namespace WorldBuilder
       std::vector<std::unique_ptr<Features::MantleLayerModels::Composition::Interface> > &vector);
 
   /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_unique_pointers<Features::MantleLayerModels::LatticeProperties::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::MantleLayerModels::LatticeProperties::Interface> > &vector);
+
+
+
+  /**
    * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
    * Note that the variable with this name has to be loaded before this function is called.
    */
@@ -1298,6 +1412,16 @@ namespace WorldBuilder
       std::vector<std::unique_ptr<Features::SubductingPlateModels::Composition::Interface> > &vector);
 
   /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_unique_pointers<Features::SubductingPlateModels::LatticeProperties::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::SubductingPlateModels::LatticeProperties::Interface> > &vector);
+
+
+
+  /**
    * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
    * Note that the variable with this name has to be loaded before this function is called.
    */
@@ -1312,6 +1436,13 @@ namespace WorldBuilder
   template bool
   Parameters::get_unique_pointers<Features::FaultModels::Composition::Interface>(const std::string &name,
                                                                                  std::vector<std::unique_ptr<Features::FaultModels::Composition::Interface> > &vector);
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_unique_pointers<Features::FaultModels::LatticeProperties::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::FaultModels::LatticeProperties::Interface> > &vector);
 
 
 
@@ -1331,6 +1462,14 @@ namespace WorldBuilder
   Parameters::get_shared_pointers<Features::SubductingPlateModels::Composition::Interface>(const std::string &name,
       std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface> > &vector);
 
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_shared_pointers<Features::SubductingPlateModels::LatticeProperties::Interface>(const std::string &name,
+      std::vector<std::shared_ptr<Features::SubductingPlateModels::LatticeProperties::Interface> > &vector);
+
 
   /**
    * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -1347,6 +1486,13 @@ namespace WorldBuilder
   template bool
   Parameters::get_shared_pointers<Features::FaultModels::Composition::Interface>(const std::string &name,
                                                                                  std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface> > &vector);
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_shared_pointers<Features::FaultModels::LatticeProperties::Interface>(const std::string &name,
+      std::vector<std::shared_ptr<Features::FaultModels::LatticeProperties::Interface> > &vector);
 
 
 

@@ -339,5 +339,70 @@ namespace WorldBuilder
     return composition;
   }
 
+
+
+  std::pair<std::vector<std::array<double,9> >, std::vector<double> >
+  World::lattices_properties(const std::array<double,2> &point,
+                             const double depth,
+                             const unsigned int composition_number) const
+  {
+    // turn it into a 3d coordinate and call the 3d temperature function
+    WBAssertThrow(dim == 2, "This function can only be called when the cross section "
+                  "variable in the world builder file has been set. Dim is "
+                  << dim << ".");
+
+    const CoordinateSystem coordinate_system = this->parameters.coordinate_system->natural_coordinate_system();
+
+    Point<2> point_natural(point[0], point[1],coordinate_system);
+    if (coordinate_system == spherical)
+      {
+        point_natural[1] = std::sqrt(point[0]*point[0]+point[1]*point[1]);
+        point_natural[0] = std::atan2(point[1],point[0]);
+      }
+
+    Point<3> coord_3d(coordinate_system);
+    if (coordinate_system == spherical)
+      {
+        coord_3d[0] = point_natural[1];
+        coord_3d[1] = cross_section[0][0] + point_natural[0] * surface_coord_conversions[0];
+        coord_3d[2] = cross_section[0][1] + point_natural[0] * surface_coord_conversions[1];
+      }
+    else
+      {
+        coord_3d[0] = cross_section[0][0] + point_natural[0] * surface_coord_conversions[0];
+        coord_3d[1] = cross_section[0][1] + point_natural[0] * surface_coord_conversions[1];
+        coord_3d[2] = point_natural[1];
+      }
+
+    std::array<double, 3> point_3d_cartesian = this->parameters.coordinate_system->natural_to_cartesian_coordinates(coord_3d.get_array());
+
+    return lattices_properties(point_3d_cartesian, depth, composition_number);
+  }
+
+  std::pair<std::vector<std::array<double,9> >, std::vector<double> >
+  World::lattices_properties(const std::array<double,3> &point_,
+                             const double depth,
+                             const unsigned int composition_number) const
+  {
+    // We receive the cartesian points from the user.
+    Point<3> point(point_,cartesian);
+    std::pair<std::vector<std::array<double,9> >, std::vector<double> > lattices_properties;
+    for (std::vector<std::unique_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
+      {
+        lattices_properties = (*it)->lattice_properties(point,depth,composition_number, lattices_properties);
+
+        /*WBAssert(!std::isnan(composition), "Composition is not a number: " << composition
+                 << ", based on a feature with the name " << (*it)->get_name());
+        WBAssert(std::isfinite(composition), "Composition is not a finite: " << composition
+                 << ", based on a feature with the name " << (*it)->get_name());*/
+      }
+
+    /*WBAssert(!std::isnan(composition), "Composition is not a number: " << composition);
+    WBAssert(std::isfinite(composition), "Composition is not a finite: " << composition);*/
+
+
+    return lattices_properties;
+  }
+
 }
 
