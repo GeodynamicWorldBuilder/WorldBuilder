@@ -29,6 +29,7 @@
 
 #include <world_builder/features/interface.h>
 #include <world_builder/features/continental_plate.h>
+#include <world_builder/features/fault_models/lattice_properties/interface.h>
 #include <world_builder/features/fault_models/temperature/uniform.h>
 #include <world_builder/features/fault_models/composition/uniform.h>
 
@@ -2816,10 +2817,11 @@ TEST_CASE("WorldBuilder Types: Segment Object")
   WorldBuilder::Point<2> thickness(1,2,invalid);
   WorldBuilder::Point<2> top_trucation(3,4,invalid);
   WorldBuilder::Point<2> angle(5,6,invalid);
-  Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface>
+  Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface, Features::FaultModels::LatticeProperties::Interface>
   type (1.0, thickness, top_trucation, angle,
         std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface> >(),
-        std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface> >());
+        std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface> >(),
+        std::vector<std::shared_ptr<Features::FaultModels::LatticeProperties::Interface> >());
   CHECK(type.value_length == Approx(1.0));
   CHECK(type.value_thickness[0] == Approx(1.0));
   CHECK(type.value_thickness[1] == Approx(2.0));
@@ -2829,7 +2831,7 @@ TEST_CASE("WorldBuilder Types: Segment Object")
   CHECK(type.value_angle[1] == Approx(6.0));
   CHECK(type.get_type() == Types::type::TYPE);
 
-  Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface>
+  Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface, Features::FaultModels::LatticeProperties::Interface>
   type_copy(type);
   CHECK(type_copy.value_length == Approx(1.0));
   CHECK(type_copy.value_thickness[0] == Approx(1.0));
@@ -2841,9 +2843,10 @@ TEST_CASE("WorldBuilder Types: Segment Object")
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
   std::unique_ptr<Types::Interface> type_clone = type_copy.clone();
-  Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface>
+  Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface, Features::FaultModels::LatticeProperties::Interface>
   *type_clone_natural = dynamic_cast<Objects::TYPE<Features::FaultModels::Temperature::Interface,
-   Features::FaultModels::Composition::Interface> *>(type_clone.get());
+   Features::FaultModels::Composition::Interface,
+   Features::FaultModels::LatticeProperties::Interface> *>(type_clone.get());
   CHECK(type_clone_natural->value_length == Approx(1.0));
   CHECK(type_clone_natural->value_thickness[0] == Approx(1.0));
   CHECK(type_clone_natural->value_thickness[1] == Approx(2.0));
