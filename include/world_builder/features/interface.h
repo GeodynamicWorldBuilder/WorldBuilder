@@ -110,9 +110,9 @@ namespace WorldBuilder
          */
         virtual
         WorldBuilder::grains grains(const Point<3> &position,
-                                                                                   const double depth,
-                                                                                   const unsigned int composition_number,
-                                                                                   WorldBuilder::grains value) const = 0;
+                                    const double depth,
+                                    const unsigned int composition_number,
+                                    WorldBuilder::grains value) const = 0;
 
 
         /**
