@@ -184,10 +184,10 @@ namespace WorldBuilder
 
 
     std::pair<std::vector<std::array<double,9> >, std::vector<double> >
-    OceanicPlate::lattice_properties(const Point<3> &position,
-                                     const double depth,
-                                     const unsigned int composition_number,
-                                     std::pair<std::vector<std::array<double,9> >, std::vector<double> > lattice_properties) const
+    OceanicPlate::grains(const Point<3> &position,
+                         const double depth,
+                         const unsigned int composition_number,
+                         std::pair<std::vector<std::array<double,9> >, std::vector<double> > grains) const
     {
       WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
                                                                       *(world->parameters.coordinate_system));
@@ -196,14 +196,14 @@ namespace WorldBuilder
           Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
                                                                   world->parameters.coordinate_system->natural_coordinate_system())))
         {
-          for (auto &latice_properties_model: latice_properties_models)
+          for (auto &grains_model: grains_models)
             {
-              lattice_properties = latice_properties_model->get_lattice_properties(position,
-                                                                                   depth,
-                                                                                   composition_number,
-                                                                                   lattice_properties,
-                                                                                   min_depth,
-                                                                                   max_depth);
+              grains = grains_model->get_grains(position,
+                                                depth,
+                                                composition_number,
+                                                grains,
+                                                min_depth,
+                                                max_depth);
 
               /*WBAssert(!std::isnan(composition), "Composition is not a number: " << composition
                        << ", based on a temperature model with the name " << composition_model->get_name());
@@ -213,7 +213,7 @@ namespace WorldBuilder
             }
         }
 
-      return lattice_properties;
+      return grains;
     }
 
     /**

@@ -105,14 +105,14 @@ namespace WorldBuilder
                            double value) const = 0;
 
         /**
-         * Returns a value for the requested lattice propeties based on the
+         * Returns a value for the requested grains based on the
          * given position and composition number
          */
         virtual
-        std::pair<std::vector<std::array<double,9> >, std::vector<double> > lattice_properties(const Point<3> &position,
-            const double depth,
-            const unsigned int composition_number,
-            std::pair<std::vector<std::array<double,9> >, std::vector<double> > value) const = 0;
+        std::pair<std::vector<std::array<double,9> >, std::vector<double> > grains(const Point<3> &position,
+                                                                                   const double depth,
+                                                                                   const unsigned int composition_number,
+                                                                                   std::pair<std::vector<std::array<double,9> >, std::vector<double> > value) const = 0;
 
 
         /**

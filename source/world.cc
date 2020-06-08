@@ -342,9 +342,9 @@ namespace WorldBuilder
 
 
   std::pair<std::vector<std::array<double,9> >, std::vector<double> >
-  World::lattices_properties(const std::array<double,2> &point,
-                             const double depth,
-                             const unsigned int composition_number) const
+  World::grains(const std::array<double,2> &point,
+                const double depth,
+                const unsigned int composition_number) const
   {
     // turn it into a 3d coordinate and call the 3d temperature function
     WBAssertThrow(dim == 2, "This function can only be called when the cross section "
@@ -376,20 +376,20 @@ namespace WorldBuilder
 
     std::array<double, 3> point_3d_cartesian = this->parameters.coordinate_system->natural_to_cartesian_coordinates(coord_3d.get_array());
 
-    return lattices_properties(point_3d_cartesian, depth, composition_number);
+    return grains(point_3d_cartesian, depth, composition_number);
   }
 
   std::pair<std::vector<std::array<double,9> >, std::vector<double> >
-  World::lattices_properties(const std::array<double,3> &point_,
-                             const double depth,
-                             const unsigned int composition_number) const
+  World::grains(const std::array<double,3> &point_,
+                const double depth,
+                const unsigned int composition_number) const
   {
     // We receive the cartesian points from the user.
     Point<3> point(point_,cartesian);
-    std::pair<std::vector<std::array<double,9> >, std::vector<double> > lattices_properties;
+    std::pair<std::vector<std::array<double,9> >, std::vector<double> > grains;
     for (std::vector<std::unique_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
       {
-        lattices_properties = (*it)->lattice_properties(point,depth,composition_number, lattices_properties);
+        grains = (*it)->grains(point,depth,composition_number, grains);
 
         /*WBAssert(!std::isnan(composition), "Composition is not a number: " << composition
                  << ", based on a feature with the name " << (*it)->get_name());
@@ -401,7 +401,7 @@ namespace WorldBuilder
     WBAssert(std::isfinite(composition), "Composition is not a finite: " << composition);*/
 
 
-    return lattices_properties;
+    return grains;
   }
 
 }

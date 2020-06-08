@@ -79,12 +79,12 @@ namespace WorldBuilder
       /*prm.declare_entry("segments", Types::Array(Types::Segment(0,Point<2>(0,0,invalid),Point<2>(0,0,invalid),Point<2>(0,0,invalid),
                                                                 Types::PluginSystem("", Features::SubductingPlateModels::Temperature::Interface::declare_entries, {"model"}),
                                                                 Types::PluginSystem("", Features::SubductingPlateModels::Composition::Interface::declare_entries, {"model"}),
-                                                                Types::PluginSystem("", Features::SubductingPlateModels::LatticeProperties::Interface::declare_entries, {"model"}))),
+                                                                Types::PluginSystem("", Features::SubductingPlateModels::Grains::Interface::declare_entries, {"model"}))),
                         "The depth to which this feature is present");*/
       prm.declare_entry("segments", Types::Array(Types::Segment(0,Point<2>(0,0,invalid),Point<2>(0,0,invalid),Point<2>(0,0,invalid),
                                                                 Types::PluginSystem("", Features::SubductingPlateModels::Temperature::Interface::declare_entries, {"model"}),
                                                                 Types::PluginSystem("", Features::SubductingPlateModels::Composition::Interface::declare_entries, {"model"}),
-                                                                Types::PluginSystem("", Features::SubductingPlateModels::LatticeProperties::Interface::declare_entries, {"model"}))),
+                                                                Types::PluginSystem("", Features::SubductingPlateModels::Grains::Interface::declare_entries, {"model"}))),
                         "The depth to which this feature is present");
 
       prm.declare_entry("temperature models",
@@ -128,15 +128,15 @@ namespace WorldBuilder
 
       default_temperature_models.resize(0);
       default_composition_models.resize(0);
-      default_lattice_properties_models.resize(0);
+      default_grains_models.resize(0);
       prm.get_shared_pointers<Features::SubductingPlateModels::Temperature::Interface>("temperature models", default_temperature_models);
       prm.get_shared_pointers<Features::SubductingPlateModels::Composition::Interface>("composition models", default_composition_models);
-      prm.get_shared_pointers<Features::SubductingPlateModels::LatticeProperties::Interface>("lattice properties models", default_lattice_properties_models);
+      prm.get_shared_pointers<Features::SubductingPlateModels::Grains::Interface>("grains models", default_grains_models);
 
       // get the default segments.
       default_segment_vector = prm.get_vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
       Features::SubductingPlateModels::Composition::Interface,
-      Features::SubductingPlateModels::LatticeProperties::Interface> >("segments", default_temperature_models, default_composition_models, default_lattice_properties_models);
+      Features::SubductingPlateModels::Grains::Interface> >("segments", default_temperature_models, default_composition_models, default_grains_models);
 
 
       // This vector stores segments to this coordiante/section.
@@ -166,7 +166,7 @@ namespace WorldBuilder
 
                 std::vector<std::shared_ptr<Features::SubductingPlateModels::Temperature::Interface> > local_default_temperature_models;
                 std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface>  > local_default_composition_models;
-                std::vector<std::shared_ptr<Features::SubductingPlateModels::LatticeProperties::Interface>  > local_default_lattice_properties_models;
+                std::vector<std::shared_ptr<Features::SubductingPlateModels::Grains::Interface>  > local_default_grains_models;
 
                 if (prm.get_shared_pointers<Features::SubductingPlateModels::Temperature::Interface>("temperature models", local_default_temperature_models) == false)
                   {
@@ -180,15 +180,15 @@ namespace WorldBuilder
                     local_default_composition_models = default_composition_models;
                   }
 
-                if (prm.get_shared_pointers<Features::SubductingPlateModels::LatticeProperties::Interface>("lattice properties models", local_default_lattice_properties_models) == false)
+                if (prm.get_shared_pointers<Features::SubductingPlateModels::Grains::Interface>("grains models", local_default_grains_models) == false)
                   {
                     // no local composition model, use global default
-                    local_default_lattice_properties_models = default_lattice_properties_models;
+                    local_default_grains_models = default_grains_models;
                   }
 
                 segment_vector[change_coord_number] = prm.get_vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
                                                       Features::SubductingPlateModels::Composition::Interface,
-                                                      Features::SubductingPlateModels::LatticeProperties::Interface> >("segments", local_default_temperature_models, local_default_composition_models, local_default_lattice_properties_models);
+                                                      Features::SubductingPlateModels::Grains::Interface> >("segments", local_default_temperature_models, local_default_composition_models, local_default_grains_models);
 
 
                 WBAssertThrow(segment_vector[change_coord_number].size() == default_segment_vector.size(),
@@ -588,10 +588,10 @@ namespace WorldBuilder
 
 
     std::pair<std::vector<std::array<double,9> >, std::vector<double> >
-    SubductingPlate::lattice_properties(const Point<3> &position,
-                                        const double depth,
-                                        const unsigned int composition_number,
-                                        std::pair<std::vector<std::array<double,9> >, std::vector<double> > lattice_properties) const
+    SubductingPlate::grains(const Point<3> &position,
+                            const double depth,
+                            const unsigned int composition_number,
+                            std::pair<std::vector<std::array<double,9> >, std::vector<double> > grains) const
     {
 
       WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
@@ -653,11 +653,11 @@ namespace WorldBuilder
 
               // if the thickness is zero, we don't need to compute anything, so return.
               if (std::fabs(thickness_local) < 2.0 * std::numeric_limits<double>::epsilon())
-                return lattice_properties;
+                return grains;
 
               // if the thickness is smaller than what is truncated off at the top, we don't need to compute anything, so return.
               if (thickness_local < top_truncation_local)
-                return lattice_properties;
+                return grains;
 
               const double max_slab_length = total_slab_length[current_section] +
                                              section_fraction *
@@ -669,18 +669,18 @@ namespace WorldBuilder
                   distance_along_plane <= max_slab_length)
                 {
                   // Inside the slab!
-                  std::pair<std::vector<std::array<double,9> >, std::vector<double> >  lattice_properties_current_section = lattice_properties;
-                  std::pair<std::vector<std::array<double,9> >, std::vector<double> >  lattice_properties_next_section = lattice_properties;
+                  std::pair<std::vector<std::array<double,9> >, std::vector<double> >  grains_current_section = grains;
+                  std::pair<std::vector<std::array<double,9> >, std::vector<double> >  grains_next_section = grains;
 
-                  for (auto &lattice_properties_model: segment_vector[current_section][current_segment].lattice_properties_systems)
+                  for (auto &grains_model: segment_vector[current_section][current_segment].grains_systems)
                     {
-                      lattice_properties_current_section = lattice_properties_model->get_lattice_properties(position,
-                                                           depth,
-                                                           composition_number,
-                                                           lattice_properties_current_section,
-                                                           starting_depth,
-                                                           maximum_depth,
-                                                           distance_from_planes);
+                      grains_current_section = grains_model->get_grains(position,
+                                                                        depth,
+                                                                        composition_number,
+                                                                        grains_current_section,
+                                                                        starting_depth,
+                                                                        maximum_depth,
+                                                                        distance_from_planes);
 
                       /*WBAssert(!std::isnan(composition_current_section), "Composition_current_section is not a number: " << composition_current_section
                                << ", based on a temperature model with the name " << composition_model->get_name());
@@ -689,15 +689,15 @@ namespace WorldBuilder
 
                     }
 
-                  for (auto &lattice_properties_model: segment_vector[next_section][current_segment].lattice_properties_systems)
+                  for (auto &grains_model: segment_vector[next_section][current_segment].grains_systems)
                     {
-                      lattice_properties_next_section = lattice_properties_model->get_lattice_properties(position,
-                                                        depth,
-                                                        composition_number,
-                                                        lattice_properties_next_section,
-                                                        starting_depth,
-                                                        maximum_depth,
-                                                        distance_from_planes);
+                      grains_next_section = grains_model->get_grains(position,
+                                                                     depth,
+                                                                     composition_number,
+                                                                     grains_next_section,
+                                                                     starting_depth,
+                                                                     maximum_depth,
+                                                                     distance_from_planes);
 
                       /*WBAssert(!std::isnan(composition_next_section), "Composition_next_section is not a number: " << composition_next_section
                                << ", based on a temperature model with the name " << composition_model->get_name());
@@ -715,7 +715,7 @@ namespace WorldBuilder
             }
         }
 
-      return lattice_properties;
+      return grains;
     }
 
     /**

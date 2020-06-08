@@ -24,10 +24,10 @@
 
 #include <world_builder/features/subducting_plate_models/temperature/interface.h>
 #include <world_builder/features/subducting_plate_models/composition/interface.h>
-#include <world_builder/features/subducting_plate_models/lattice_properties/interface.h>
+#include <world_builder/features/subducting_plate_models/grains/interface.h>
 #include <world_builder/features/fault_models/temperature/interface.h>
 #include <world_builder/features/fault_models/composition/interface.h>
-#include <world_builder/features/fault_models/lattice_properties/interface.h>
+#include <world_builder/features/fault_models/grains/interface.h>
 
 namespace WorldBuilder
 {
@@ -39,7 +39,7 @@ namespace WorldBuilder
                      const WorldBuilder::Point<2> default_angle_,
                      const Types::Interface &temperature_plugin_system_,
                      const Types::Interface &composition_plugin_system_,
-                     const Types::Interface &lattice_properties_plugin_system_)
+                     const Types::Interface &grains_plugin_system_)
       :
       value_length(default_length_),
       default_length(default_length_),
@@ -50,7 +50,7 @@ namespace WorldBuilder
       default_angle(default_angle_),
       temperature_plugin_system(temperature_plugin_system_.clone()),
       composition_plugin_system(composition_plugin_system_.clone()),
-      lattice_properties_plugin_system(lattice_properties_plugin_system_.clone())
+      grains_plugin_system(grains_plugin_system_.clone())
     {
       this->type_name = Types::type::Segment;
     }
@@ -67,7 +67,7 @@ namespace WorldBuilder
       default_angle(other.default_angle),
       temperature_plugin_system(other.temperature_plugin_system->clone()),
       composition_plugin_system(other.composition_plugin_system->clone(),
-      composition_plugin_system(other.lattice_plugin_system->clone())
+      composition_plugin_system(other.grains_plugin_system->clone())
     {
       this->type_name = Types::type::Segment;
     }
@@ -133,7 +133,7 @@ namespace WorldBuilder
 
           temperature_plugin_system->write_schema(prm, "temperature models", "");
           composition_plugin_system->write_schema(prm, "composition models", "");
-          lattice_properties_plugin_system->write_schema(prm, "lattice_properties models", "");
+          grains_plugin_system->write_schema(prm, "grains models", "");
         }
         prm.leave_subsection();
       }
@@ -152,7 +152,7 @@ namespace WorldBuilder
                             const WorldBuilder::Point<2> default_angle_,
                             const std::vector<std::shared_ptr<A> > &temperature_systems_,
                             const std::vector<std::shared_ptr<B> > &composition_systems_,
-                            const std::vector<std::shared_ptr<C> > &lattice_properties_systems_)
+                            const std::vector<std::shared_ptr<C> > &grains_systems_)
       :
       value_length(default_length_),
       default_length(default_length_),
@@ -161,7 +161,7 @@ namespace WorldBuilder
       value_angle(default_angle_),
       temperature_systems(temperature_systems_),
       composition_systems(composition_systems_),
-      lattice_properties_systems(lattice_properties_systems_)
+      grains_systems(grains_systems_)
     {
       this->type_name = Types::type::Segment;
 
@@ -177,7 +177,7 @@ namespace WorldBuilder
       value_angle(other.value_angle),
       temperature_systems(other.temperature_systems),
       composition_systems(other.composition_systems,
-      composition_systems(other.lattice_systems)
+      composition_systems(other.grains_systems)
     {
       this->type_name = Types::type::Segment;
     }
@@ -201,14 +201,14 @@ namespace WorldBuilder
     * Note that the variable with this name has to be loaded before this function is called.
     */
     template class
-    Segment<Features::SubductingPlateModels::Temperature::Interface,Features::SubductingPlateModels::Composition::Interface,Features::SubductingPlateModels::LatticeProperties::Interface>;
+    Segment<Features::SubductingPlateModels::Temperature::Interface,Features::SubductingPlateModels::Composition::Interface,Features::SubductingPlateModels::Grains::Interface>;
 
     /**
     * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
     * Note that the variable with this name has to be loaded before this function is called.
     */
     template class
-    Segment<Features::FaultModels::Temperature::Interface,Features::FaultModels::Composition::Interface,Features::FaultModels::LatticeProperties::Interface>;
+    Segment<Features::FaultModels::Temperature::Interface,Features::FaultModels::Composition::Interface,Features::FaultModels::Grains::Interface>;
 
     /**
     * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.

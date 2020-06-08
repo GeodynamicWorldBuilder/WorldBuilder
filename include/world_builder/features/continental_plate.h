@@ -25,7 +25,7 @@
 
 #include <world_builder/features/continental_plate_models/temperature/interface.h>
 #include <world_builder/features/continental_plate_models/composition/interface.h>
-#include <world_builder/features/continental_plate_models/lattice_properties/interface.h>
+#include <world_builder/features/continental_plate_models/grains/interface.h>
 
 
 namespace WorldBuilder
@@ -86,17 +86,17 @@ namespace WorldBuilder
                            double value) const override final;
 
         /**
-         * Returns a lattice properties (rotation matrix and grain size)
+         * Returns a grains (rotation matrix and grain size)
          * based on the given position, depth in the model,
          * the composition which is being requested and the current value
          * of that composition at this location and depth.
          */
         virtual
         std::pair<std::vector<std::array<double,9> >, std::vector<double> >
-        lattice_properties(const Point<3> &position,
-                           const double depth,
-                           const unsigned int composition_number,
-                           std::pair<std::vector<std::array<double,9> >, std::vector<double> > value) const;
+        grains(const Point<3> &position,
+               const double depth,
+               const unsigned int composition_number,
+               std::pair<std::vector<std::array<double,9> >, std::vector<double> > value) const;
 
 
 
@@ -118,12 +118,12 @@ namespace WorldBuilder
         std::vector<std::unique_ptr<Features::ContinentalPlateModels::Composition::Interface> > composition_models;
 
         /**
-         * A vector containing all the pointers to the latice properties models. This vector is
+         * A vector containing all the pointers to the grains models. This vector is
          * responsible for the features and has ownership over them. Therefore
          * unique pointers are used.
          * @see Features
          */
-        std::vector<std::unique_ptr<Features::ContinentalPlateModels::LatticeProperties::Interface> > latice_properties_models;
+        std::vector<std::unique_ptr<Features::ContinentalPlateModels::Grains::Interface> > grains_models;
 
 
         double min_depth;

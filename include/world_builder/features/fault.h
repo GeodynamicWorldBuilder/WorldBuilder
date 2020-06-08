@@ -26,7 +26,7 @@
 
 #include <world_builder/features/fault_models/temperature/interface.h>
 #include <world_builder/features/fault_models/composition/interface.h>
-#include <world_builder/features/fault_models/lattice_properties/interface.h>
+#include <world_builder/features/fault_models/grains/interface.h>
 
 
 namespace WorldBuilder
@@ -86,39 +86,39 @@ namespace WorldBuilder
                            double composition_value) const override final;
 
         /**
-         * Returns a lattice properties (rotation matrix and grain size)
+         * Returns a grains (rotation matrix and grain size)
          * based on the given position, depth in the model,
          * the composition which is being requested and the current value
          * of that composition at this location and depth.
          */
         virtual
         std::pair<std::vector<std::array<double,9> >, std::vector<double> >
-        lattice_properties(const Point<3> &position,
-                           const double depth,
-                           const unsigned int composition_number,
-                           std::pair<std::vector<std::array<double,9> >, std::vector<double> > value) const;
+        grains(const Point<3> &position,
+               const double depth,
+               const unsigned int composition_number,
+               std::pair<std::vector<std::array<double,9> >, std::vector<double> > value) const;
 
 
 
       private:
         std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface> > default_temperature_models;
         std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface>  > default_composition_models;
-        std::vector<std::shared_ptr<Features::FaultModels::LatticeProperties::Interface>  > default_lattice_properties_models;
+        std::vector<std::shared_ptr<Features::FaultModels::Grains::Interface>  > default_grains_models;
 
         std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
             Features::FaultModels::Composition::Interface,
-            Features::FaultModels::LatticeProperties::Interface> > default_segment_vector;
+            Features::FaultModels::Grains::Interface> > default_segment_vector;
 
         std::vector< std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
             Features::FaultModels::Composition::Interface,
-            Features::FaultModels::LatticeProperties::Interface> > > sections_segment_vector;
+            Features::FaultModels::Grains::Interface> > > sections_segment_vector;
 
         // This vector stores segments to this coordiante/section.
         //First used (raw) pointers to the segment relevant to this coordinate/section,
         // but I do not trust it won't fail when memory is moved. So storing the all the data now.
         std::vector<std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
             Features::FaultModels::Composition::Interface,
-            Features::FaultModels::LatticeProperties::Interface> > > segment_vector;
+            Features::FaultModels::Grains::Interface> > > segment_vector;
 
         // todo: the memory of this can be greatly improved by
         // or using a plugin system for the submodules, or
