@@ -21,6 +21,7 @@
 #define _world_builder_world_h
 
 #include <world_builder/parameters.h>
+#include <world_builder/grains.h>
 
 
 
@@ -86,7 +87,7 @@ namespace WorldBuilder
        * Returns the grain orientations and sizes based on a 2d Cartesian point, the depth in
        * the model at that point and the gravity norm at that point.
        */
-      std::pair<std::vector<std::array<double,9> >, std::vector<double> > grains(const std::array<double, 2> &point,
+      WorldBuilder::grains grains(const std::array<double, 2> &point,
                                                                                  const double depth,
                                                                                  const unsigned int composition_number) const;
 
@@ -94,7 +95,7 @@ namespace WorldBuilder
        * Returns the grain orientations and sizes based on a 3d Cartesian point, the depth in
        * the model at that point and the gravity norm at that point.
        */
-      std::pair<std::vector<std::array<double,9> >, std::vector<double> > grains(const std::array<double, 3> &point,
+      WorldBuilder::grains grains(const std::array<double, 3> &point,
                                                                                  const double depth,
                                                                                  const unsigned int composition_number) const;
 

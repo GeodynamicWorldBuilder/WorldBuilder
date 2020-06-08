@@ -341,7 +341,7 @@ namespace WorldBuilder
 
 
 
-  std::pair<std::vector<std::array<double,9> >, std::vector<double> >
+  WorldBuilder::grains
   World::grains(const std::array<double,2> &point,
                 const double depth,
                 const unsigned int composition_number) const
@@ -379,14 +379,14 @@ namespace WorldBuilder
     return grains(point_3d_cartesian, depth, composition_number);
   }
 
-  std::pair<std::vector<std::array<double,9> >, std::vector<double> >
+  WorldBuilder::grains
   World::grains(const std::array<double,3> &point_,
                 const double depth,
                 const unsigned int composition_number) const
   {
     // We receive the cartesian points from the user.
     Point<3> point(point_,cartesian);
-    std::pair<std::vector<std::array<double,9> >, std::vector<double> > grains;
+    WorldBuilder::grains grains;
     for (std::vector<std::unique_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
       {
         grains = (*it)->grains(point,depth,composition_number, grains);

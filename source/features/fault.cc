@@ -602,11 +602,11 @@ namespace WorldBuilder
     }
 
 
-    std::pair<std::vector<std::array<double,9> >, std::vector<double> >
+    WorldBuilder::grains
     Fault::grains(const Point<3> &position,
                   const double depth,
                   const unsigned int composition_number,
-                  std::pair<std::vector<std::array<double,9> >, std::vector<double> > grains) const
+                  WorldBuilder::grains grains) const
     {
       WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
                                                                       *(world->parameters.coordinate_system));
@@ -685,8 +685,8 @@ namespace WorldBuilder
                   distance_along_plane <= max_slab_length)
                 {
                   // Inside the fault!
-                  std::pair<std::vector<std::array<double,9> >, std::vector<double> >  grains_current_section = grains;
-                  std::pair<std::vector<std::array<double,9> >, std::vector<double> >  grains_next_section = grains;
+                  WorldBuilder::grains  grains_current_section = grains;
+                  WorldBuilder::grains  grains_next_section = grains;
 
                   for (auto &grains_model: segment_vector[current_section][current_segment].grains_systems)
                     {

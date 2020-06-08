@@ -95,11 +95,11 @@ namespace WorldBuilder
          * of that composition at this location and depth.
          */
         virtual
-        std::pair<std::vector<std::array<double,9> >, std::vector<double> >
+        WorldBuilder::grains
         grains(const Point<3> &position,
                const double depth,
                const unsigned int composition_number,
-               std::pair<std::vector<std::array<double,9> >, std::vector<double> > value) const;
+               WorldBuilder::grains value) const;
 
 
 
