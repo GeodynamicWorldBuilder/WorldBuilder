@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2018 by the authors of the World Builder code.
+  Copyright (C) 2020 by the authors of the World Builder code.
 
   This file is part of the World Builder.
 
@@ -23,16 +23,16 @@
 #include <world_builder/assert.h>
 #include <world_builder/types/string.h>
 #include <world_builder/types/object.h>
-#include <world_builder/features/continental_plate_models/composition/interface.h>
+#include <world_builder/features/mantle_layer_models/grains/interface.h>
 
 
 namespace WorldBuilder
 {
   namespace Features
   {
-    namespace ContinentalPlateModels
+    namespace MantleLayerModels
     {
-      namespace Composition
+      namespace Grains
       {
         Interface::Interface()
         {}
@@ -45,7 +45,35 @@ namespace WorldBuilder
                                    const std::string &parent_name,
                                    const std::vector<std::string> &required_entries)
         {
-          prm.declare_model_entries("composition",parent_name, get_declare_map(),required_entries);
+          unsigned int counter = 0;
+          for ( auto it = get_declare_map().begin(); it != get_declare_map().end(); ++it )
+            {
+              // prevent infinite recursion
+              if (it->first != parent_name)
+                {
+                  prm.enter_subsection("oneOf");
+                  {
+                    prm.enter_subsection(std::to_string(counter));
+                    {
+                      prm.enter_subsection("properties");
+                      {
+                        prm.declare_entry("", Types::Object(required_entries), "grains object");
+
+                        prm.declare_entry("model", Types::String("",it->first),
+                                          "The name of the grains model.");
+
+                        it->second(prm, parent_name);
+                      }
+                      prm.leave_subsection();
+                    }
+                    prm.leave_subsection();
+                  }
+                  prm.leave_subsection();
+
+                  counter++;
+
+                }
+            }
         }
 
 
