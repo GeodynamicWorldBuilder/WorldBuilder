@@ -39,23 +39,16 @@ namespace WorldBuilder
          */
         UnsignedInt(unsigned int default_value = 0);
 
-
         /**
-         * A constructor for the clone and set_entry function
+         * Copy constructor
          */
-        UnsignedInt(unsigned int value, unsigned int default_value);
+        UnsignedInt(UnsignedInt const &other);
 
         /**
          * Destructor
          */
         ~UnsignedInt();
 
-        /**
-         * Clone. The caller of clone is responsible for the lifetime of it,
-         * so return a unique pionter.
-         */
-        virtual
-        std::unique_ptr<Interface> clone() const;
 
         /**
          * Todo
@@ -68,6 +61,14 @@ namespace WorldBuilder
         unsigned int value;
         unsigned int default_value;
 
+      protected:
+        /**
+         * This implements the actual cloneing for the clone function in the base class.
+         */
+        virtual UnsignedInt *clone_impl() const override
+        {
+          return new UnsignedInt(*this);
+        };
       private:
 
     };

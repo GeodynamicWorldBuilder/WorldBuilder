@@ -35,8 +35,8 @@ namespace WorldBuilder
                      const WorldBuilder::Point<2> default_thickness_,
                      const WorldBuilder::Point<2> default_top_truncation_,
                      const WorldBuilder::Point<2> default_angle_,
-                     const Types::Interface &temperature_pugin_system_,
-                     const Types::Interface &composition_pugin_system_)
+                     const Types::Interface &temperature_plugin_system_,
+                     const Types::Interface &composition_plugin_system_)
       :
       value_length(default_length_),
       default_length(default_length_),
@@ -45,50 +45,32 @@ namespace WorldBuilder
       default_top_truncation(default_top_truncation_),
       value_angle(default_angle_),
       default_angle(default_angle_),
-      temperature_pugin_system(temperature_pugin_system_.clone()),
-      composition_pugin_system(composition_pugin_system_.clone())
+      temperature_plugin_system(temperature_plugin_system_.clone()),
+      composition_plugin_system(composition_plugin_system_.clone())
     {
       this->type_name = Types::type::Segment;
     }
 
 
-    // todo update function
-    Segment::Segment(const double default_length_,
-                     const WorldBuilder::Point<2> default_thickness_,
-                     const WorldBuilder::Point<2> default_top_truncation_,
-                     const WorldBuilder::Point<2> default_angle_,
-                     const std::unique_ptr<Types::Interface> &temperature_pugin_system_,
-                     const std::unique_ptr<Types::Interface> &composition_pugin_system_)
+    Segment::Segment(Segment const &other)
       :
-      value_length(default_length_),
-      default_length(default_length_),
-      value_thickness(default_thickness_),
-      default_thickness(default_thickness_),
-      default_top_truncation(default_top_truncation_),
-      value_angle(default_angle_),
-      default_angle(default_angle_),
-      temperature_pugin_system(temperature_pugin_system_->clone()),
-      composition_pugin_system(composition_pugin_system_->clone())
+      value_length(other.default_length),
+      default_length(other.default_length),
+      value_thickness(other.default_thickness),
+      default_thickness(other.default_thickness),
+      default_top_truncation(other.default_top_truncation),
+      value_angle(other.default_angle),
+      default_angle(other.default_angle),
+      temperature_plugin_system(other.temperature_plugin_system->clone()),
+      composition_plugin_system(other.composition_plugin_system->clone())
     {
       this->type_name = Types::type::Segment;
-
     }
 
 
     Segment::~Segment ()
     {}
 
-    // todo update function
-    std::unique_ptr<Interface>
-    Segment::clone() const
-    {
-      return std::unique_ptr<Interface>(new Segment(default_length,
-                                                    default_thickness,
-                                                    default_top_truncation,
-                                                    default_angle,
-                                                    temperature_pugin_system,
-                                                    composition_pugin_system));
-    }
 
 
     void
@@ -144,8 +126,8 @@ namespace WorldBuilder
           Pointer((base + "/angle/maxItems").c_str()).Set(declarations,2);
           Pointer((base + "/angle/items/type").c_str()).Set(declarations,"number");
 
-          temperature_pugin_system->write_schema(prm, "temperature models", "");
-          composition_pugin_system->write_schema(prm, "composition models", "");
+          temperature_plugin_system->write_schema(prm, "temperature models", "");
+          composition_plugin_system->write_schema(prm, "composition models", "");
         }
         prm.leave_subsection();
       }
@@ -178,21 +160,22 @@ namespace WorldBuilder
     }
 
     template<class A, class B>
+    Segment<A,B>::Segment(Segment const &other)
+      :
+      value_length(other.value_length),
+      default_length(other.default_length),
+      value_thickness(other.value_thickness),
+      value_top_truncation(other.value_top_truncation),
+      value_angle(other.value_angle),
+      temperature_systems(other.temperature_systems),
+      composition_systems(other.composition_systems)
+    {
+      this->type_name = Types::type::Segment;
+    }
+
+    template<class A, class B>
     Segment<A,B>::~Segment ()
     {}
-
-    // todo update function
-    template<class A, class B>
-    std::unique_ptr<Types::Interface>
-    Segment<A,B>::clone() const
-    {
-      return std::unique_ptr<Types::Interface>(new Segment(default_length,
-                                                           value_thickness,
-                                                           value_top_truncation,
-                                                           value_angle,
-                                                           temperature_systems,
-                                                           composition_systems));
-    }
 
     template<class A, class B>
     void

@@ -36,23 +36,17 @@ namespace WorldBuilder
     }
 
 
-    UnsignedInt::UnsignedInt(unsigned int value_, unsigned int default_value_)
+    UnsignedInt::UnsignedInt(UnsignedInt const &other)
       :
-      value(value_),
-      default_value(default_value_)
+      value(other.value),
+      default_value(other.default_value)
     {
       this->type_name = Types::type::UnsignedInt;
     }
 
-
     UnsignedInt::~UnsignedInt ()
     {}
 
-    std::unique_ptr<Interface>
-    UnsignedInt::clone() const
-    {
-      return std::unique_ptr<Interface>(new UnsignedInt(value, default_value));
-    }
 
     void
     UnsignedInt::write_schema(Parameters &prm,

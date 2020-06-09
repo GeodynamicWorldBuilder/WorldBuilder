@@ -40,16 +40,14 @@ namespace WorldBuilder
         Double(const double default_value);
 
         /**
+         * Copy constructor
+         */
+        Double(Double const &other);
+
+        /**
          * Destructor
          */
         ~Double();
-
-        /**
-         * Clone. The caller of clone is responsible for the lifetime of it,
-         * so return a unique pionter.
-         */
-        virtual
-        std::unique_ptr<Interface> clone() const;
 
         /**
          * Todo
@@ -60,6 +58,12 @@ namespace WorldBuilder
                           const std::string &documentation) const;
 
         double default_value;
+
+      protected:
+        virtual Double *clone_impl() const override
+        {
+          return new Double(*this);
+        };
 
       private:
 

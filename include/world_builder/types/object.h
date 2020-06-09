@@ -47,18 +47,14 @@ namespace WorldBuilder
                const bool additional_properties = false);
 
         /**
+         * Copy constructor
+         */
+        Object(Object const &other);
+
+        /**
          * Destructor
          */
         ~Object();
-
-
-        /**
-         * Clone. The caller will be responsible for the liftime of this
-         * object, return a unique pointer. This clone can only be used
-         * when inner_type.size() == 0.
-         */
-        virtual
-        std::unique_ptr<Interface>   clone() const;
 
         /**
          * Todo
@@ -75,6 +71,11 @@ namespace WorldBuilder
         std::vector<std::string> required;
         bool additional_properties;
 
+      protected:
+        virtual Object *clone_impl() const override
+        {
+          return new Object(*this);
+        };
 
     };
   }

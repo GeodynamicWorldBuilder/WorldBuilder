@@ -41,7 +41,7 @@ namespace WorldBuilder
     }
 
 
-    PluginSystem::PluginSystem(PluginSystem &plugin_system)
+    PluginSystem::PluginSystem(PluginSystem const &plugin_system)
       :
       default_value(plugin_system.default_value),
       declare_entries(plugin_system.declare_entries),
@@ -53,12 +53,6 @@ namespace WorldBuilder
 
     PluginSystem::~PluginSystem ()
     {}
-
-    std::unique_ptr<Interface>
-    PluginSystem::clone() const
-    {
-      return std::unique_ptr<Interface>(new PluginSystem(default_value, declare_entries, required_entries, allow_multiple));
-    }
 
     void
     PluginSystem::write_schema(Parameters &prm,

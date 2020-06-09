@@ -2803,19 +2803,19 @@ TEST_CASE("WorldBuilder Types: Array")
   CHECK(type.inner_type_ptr.get() != nullptr);
   CHECK(type.get_type() == Types::type::TYPE);
 
-  /*Types::TYPE type_copy(type);
+  Types::TYPE type_copy(type);
   CHECK(type_copy.inner_type == Types::type::Double);
-  CHECK(type_copy.inner_type_ptr.get() == nullptr);
+  CHECK(type_copy.inner_type_ptr.get() != nullptr);
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
-  Types::TYPE type_explicit(std::vector<unsigned int> {1,2}, Types::type::Double, "array test explicit");
+  /*Types::TYPE type_explicit(std::vector<unsigned int> {1,2}, Types::type::Double, "array test explicit");
   CHECK(type_explicit.inner_type == Types::type::Double);
   CHECK(type_explicit.inner_type_ptr.get() == nullptr);
   CHECK(type_explicit.inner_type_index.size() == Approx(2.0));
   CHECK(type_explicit.description == "array test explicit");
   CHECK(type_explicit.get_type() == Types::type::TYPE);*/
 
-  CHECK_THROWS_WITH(type.clone(),Contains("Error: Cloning Arrays is currently not possible."));
+  //CHECK_THROWS_WITH(type.clone(),Contains("Error: Cloning Arrays is currently not possible."));
   /*
   std::unique_ptr<Types::Interface> type_clone = type_explicit.clone()
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());

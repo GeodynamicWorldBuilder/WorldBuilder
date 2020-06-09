@@ -48,20 +48,16 @@ namespace WorldBuilder
               const unsigned int max_items = std::numeric_limits<unsigned int>::max(),
               const bool unique_items = false);
 
+        /**
+         * Constructor for cloning an array.
+         */
+        Array(Array const &other);
+
 
         /**
          * Destructor
          */
         ~Array();
-
-
-        /**
-         * Clone. The caller will be responsible for the liftime of this
-         * object, return a unique pointer. This clone can only be used
-         * when inner_type.size() == 0.
-         */
-        virtual
-        std::unique_ptr<Interface>   clone() const;
 
         /**
          * Todo
@@ -109,7 +105,11 @@ namespace WorldBuilder
          */
         bool unique_items;
 
-
+      protected:
+        virtual Array *clone_impl() const override
+        {
+          return new Array(*this);
+        };
     };
   }
 }

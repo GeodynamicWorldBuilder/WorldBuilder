@@ -55,27 +55,15 @@ namespace WorldBuilder
                 std::string description);
 
         /**
-         * A constructor for the clone and set_entry function
+         * Copy constructor
          */
-        Segment(const double default_length,
-                const WorldBuilder::Point<2> default_thickness,
-                const WorldBuilder::Point<2> default_top_truncation,
-                const WorldBuilder::Point<2> default_angle,
-                const std::unique_ptr<Types::Interface> &temperature_pugin_system_,
-                const std::unique_ptr<Types::Interface> &composition_pugin_system_);
+        Segment(Segment const &other);
 
 
         /**
          * Destructor
          */
         ~Segment();
-
-        /**
-         * Clone. The caller of clone is responsible for the lifetime of it,
-         * so return a unique pionter.
-         */
-        virtual
-        std::unique_ptr<Interface> clone() const;
 
         /**
          * Todo
@@ -93,9 +81,14 @@ namespace WorldBuilder
         WorldBuilder::Point<2> default_top_truncation;
         WorldBuilder::Point<2> value_angle;
         WorldBuilder::Point<2> default_angle;
-        std::unique_ptr<Types::Interface> temperature_pugin_system;
-        std::unique_ptr<Types::Interface> composition_pugin_system;
+        std::unique_ptr<Types::Interface> temperature_plugin_system;
+        std::unique_ptr<Types::Interface> composition_plugin_system;
 
+      protected:
+        virtual Segment *clone_impl() const override
+        {
+          return new Segment(*this);
+        };
       private:
 
     };
@@ -123,16 +116,14 @@ namespace WorldBuilder
                 const std::vector<std::shared_ptr<B> > &composition_systems);
 
         /**
+         * Copy constructor
+         */
+        Segment(Segment const &other);
+
+        /**
          * Destructor
          */
         ~Segment();
-
-        /**
-         * Clone. The caller of clone is responsible for the lifetime of it,
-         * so return a unique pionter.
-         */
-        virtual
-        std::unique_ptr<Interface> clone() const;
 
         /**
          * Todo
@@ -151,6 +142,11 @@ namespace WorldBuilder
         std::vector<std::shared_ptr<A> > temperature_systems;
         std::vector<std::shared_ptr<B> > composition_systems;
 
+      protected:
+        virtual Segment *clone_impl() const override
+        {
+          return new Segment(*this);
+        };
       private:
 
     };

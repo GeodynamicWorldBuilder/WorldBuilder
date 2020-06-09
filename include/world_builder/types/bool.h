@@ -40,16 +40,15 @@ namespace WorldBuilder
         Bool(const bool default_value);
 
         /**
+         * Copy constructor
+         */
+        Bool(Bool const &other);
+
+        /**
          * Destructor
          */
         ~Bool();
 
-        /**
-         * Clone. The caller of clone is responsible for the lifetime of it,
-         * so return a unique pionter.
-         */
-        virtual
-        std::unique_ptr<Interface> clone() const;
 
         /**
          * Todo
@@ -60,6 +59,12 @@ namespace WorldBuilder
                           const std::string &documentation) const;
 
         bool default_value;
+
+      protected:
+        virtual Bool *clone_impl() const override
+        {
+          return new Bool(*this);
+        };
 
       private:
 

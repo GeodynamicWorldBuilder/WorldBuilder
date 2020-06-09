@@ -56,15 +56,14 @@ namespace WorldBuilder
         Point(const WorldBuilder::Point<dim> &value, const WorldBuilder::Point<dim> &default_value, const std::string &description);
 
         /**
+         * Copy constructor
+         */
+        Point(Point const &other);
+
+        /**
          * Destructor
          */
         ~Point();
-
-        /**
-         * clone
-         */
-        virtual
-        std::unique_ptr<Interface> clone() const;
 
         /**
          * Todo
@@ -112,6 +111,12 @@ namespace WorldBuilder
         WorldBuilder::Point<dim> value;
         WorldBuilder::Point<dim> default_value;
         std::string description;
+
+      protected:
+        virtual Point *clone_impl() const override
+        {
+          return new Point(*this);
+        };
 
       private:
 
