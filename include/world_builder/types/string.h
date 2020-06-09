@@ -64,6 +64,11 @@ namespace WorldBuilder
         String(std::string value, std::string default_value, std::string description);
 
         /**
+         * Copy constructor
+         */
+        String(String const &other);
+
+        /**
          * Destructor
          */
         ~String();
@@ -76,17 +81,18 @@ namespace WorldBuilder
                           const std::string &name,
                           const std::string &documentation) const;
 
-        /**
-         * clone
-         */
-        virtual
-        std::unique_ptr<Interface> clone() const;
-
 
         std::string value;
         std::string default_value;
         std::string description;
         std::vector<std::string> restricted_values;
+
+
+      protected:
+        virtual String *clone_impl() const override
+        {
+          return new String(*this);
+        };
     };
   }
 }

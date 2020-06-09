@@ -60,15 +60,18 @@ namespace WorldBuilder
     }
 
     template <int dim>
-    Point<dim>::~Point ()
-    {}
+    Point<dim>::Point(Point const &other)
+      :
+      value(other.value),
+      default_value(other.default_value),
+      description(other.description)
+    {
+      this->type_name = dim == 2 ? Types::type::Point2D : Types::type::Point3D;
+    }
 
     template <int dim>
-    std::unique_ptr<Interface>
-    Point<dim>::clone() const
-    {
-      return std::unique_ptr<Interface>(new Point(value, default_value, description));
-    }
+    Point<dim>::~Point ()
+    {}
 
     template<int dim>
     void

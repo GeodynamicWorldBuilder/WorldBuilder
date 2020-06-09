@@ -33,14 +33,18 @@ namespace WorldBuilder
     }
 
 
+    Double::Double(Double const &other)
+      :
+      default_value(other.default_value)
+    {
+      this->type_name = Types::type::Double;
+    }
+
+
+
     Double::~Double ()
     {}
 
-    std::unique_ptr<Interface>
-    Double::clone() const
-    {
-      return std::unique_ptr<Interface>(new Double(default_value));
-    }
 
     void
     Double::write_schema(Parameters &prm,

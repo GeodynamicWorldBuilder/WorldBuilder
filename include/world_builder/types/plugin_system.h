@@ -48,18 +48,12 @@ namespace WorldBuilder
         /**
          * Copy constructor
          */
-        PluginSystem(PluginSystem &feature);
+        PluginSystem(PluginSystem const &feature);
 
         /**
          * Destructor
          */
         ~PluginSystem();
-
-        /**
-         * clone
-         */
-        virtual
-        std::unique_ptr<Interface> clone() const;
 
         /**
          * Todo
@@ -74,6 +68,12 @@ namespace WorldBuilder
         void( *declare_entries)(Parameters &, const std::string &, const std::vector<std::string> &);
         std::vector<std::string> required_entries;
         bool allow_multiple;
+
+      protected:
+        virtual PluginSystem *clone_impl() const override
+        {
+          return new PluginSystem(*this);
+        };
 
       private:
 

@@ -40,15 +40,21 @@ namespace WorldBuilder
       this->type_name = Types::type::Array;
     }
 
+    Array::Array(Array const &other)
+      :
+      inner_type(other.inner_type),
+      inner_type_ptr(other.inner_type_ptr->clone()),
+      required(other.required),
+      min_items(other.min_items),
+      max_items(other.max_items),
+      unique_items(other.unique_items)
+    {
+      this->type_name = Types::type::Array;
+    }
+
     Array::~Array ()
     {}
 
-    std::unique_ptr<Interface>
-    Array::clone() const
-    {
-      WBAssertThrow(false,"Error: Cloning Arrays is currently not possible.");
-      return std::unique_ptr<Interface>(new Bool(true));
-    }
 
     void
     Array::write_schema(Parameters &prm,

@@ -43,6 +43,14 @@ namespace WorldBuilder
       this->type_name = Types::type::String;
     }
 
+    String::String(String const &other)
+      :
+      value(other.value),
+      default_value(other.default_value)
+    {
+      this->type_name = Types::type::String;
+    }
+
 
     String::String(const std::string default_value_,
                    const std::vector<std::string> &restricted_values_)
@@ -106,11 +114,6 @@ namespace WorldBuilder
         }
     }
 
-    std::unique_ptr<Interface>
-    String::clone() const
-    {
-      return std::unique_ptr<Interface>(new String(value, default_value, description));
-    }
   }
 }
 

@@ -33,14 +33,16 @@ namespace WorldBuilder
       this->type_name = Types::type::Object;
     }
 
+    Object::Object(Object const &other)
+      :
+      required(other.required),
+      additional_properties(other.additional_properties)
+    {
+      this->type_name = Types::type::Object;
+    }
+
     Object::~Object ()
     {}
-
-    std::unique_ptr<Interface>
-    Object::clone() const
-    {
-      return std::unique_ptr<Interface>(new Object(required, additional_properties));
-    }
 
     void
     Object::write_schema(Parameters &prm,
