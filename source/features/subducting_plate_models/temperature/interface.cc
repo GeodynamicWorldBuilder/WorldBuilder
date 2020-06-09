@@ -48,10 +48,14 @@ namespace WorldBuilder
                                    const std::string &parent_name,
                                    const std::vector<std::string> &required_entries)
         {
+          // The type needs to be stored in a separte value, otherwise there are memory issues
+          const Types::String type = Types::String("replace", std::vector<std::string> {"replace", "add", "subtract"});
+
           prm.declare_model_entries("temperature",parent_name, get_declare_map(),required_entries,
           {
+            std::tuple<std::string,const WorldBuilder::Types::Interface &, std::string>
             {
-              "operation", Types::String("replace", std::vector<std::string> {"replace", "add", "subtract"}),
+              "operation", type,
               "Whether the value should replace any value previously defined at this location (replace), "
               "add the value to the previously define value (add) or subtract the value to the previously "
               "define value (subtract)."
