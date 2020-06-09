@@ -143,43 +143,58 @@ ADD_CUSTOM_TARGET(indent
   )
 
   SET(WB_LINKER_OPTIONS "")
+  SET(WB_VISU_LINKER_OPTIONS "")
+  SET(WB_COMPILER_OPTIONS_INTERFACE "")
+  SET(WB_COMPILER_OPTIONS_PRIVATE "")
+  SET(WB_VISU_COMPILER_OPTIONS_PRIVATE "")
 
 if (NOT MSVC AND NOT APPLE)
    #TODO: if other compiles need to be threaded, see https://computing.llnl.gov/tutorials/pthreads/#Compiling to add the correct cases.
    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER MATCHES "[Cc]lang")
-       target_compile_options(WorldBuilder PRIVATE -pedantic -fPIC -Wall -Wextra $<$<COMPILE_LANGUAGE:CXX>:-Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Wswitch -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wuninitialized -Werror=uninitialized -Wdangling-else>)
+       SET(WB_COMPILER_OPTIONS_PRIVATE -pedantic -fPIC -Wall -Wextra $<$<COMPILE_LANGUAGE:CXX>:-Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Wswitch -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wuninitialized -Werror=uninitialized -Wdangling-else>)
    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Intel")
-       target_compile_options(WorldBuilder PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -pthread -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsign-compare -Woverloaded-virtual -Wno-parentheses -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized>)
+   SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -pthread -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsign-compare -Woverloaded-virtual -Wno-parentheses -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized>)
    else()
 	# gcc linux
-       target_compile_options(WorldBuilder PRIVATE -pedantic -fPIC -Wall -Wextra  $<$<COMPILE_LANGUAGE:CXX>:-Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wshadow -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>)
+       SET(WB_COMPILER_OPTIONS_PRIVATE -pedantic -fPIC -Wall -Wextra  $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wshadow -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>)
        include(CheckCXXCompilerFlag)
        check_cxx_compiler_flag(-Wsuggest-override SUGGEST_OVERWRITE_CXX_COMPILE_FLAG)
        if(SUGGEST_OVERWRITE_CXX_COMPILE_FLAG)
-           target_compile_options(WorldBuilder PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-Wsuggest-override>)
+       SET(WB_COMPILER_OPTIONS_PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE} $<$<COMPILE_LANGUAGE:CXX>:-Wsuggest-override>)
        endif()
    endif()
-   SET(WB_LINKER_OPTIONS "-lstdc++")
-   target_link_options(WorldBuilderVisualization PRIVATE ${WB_LINKER_OPTIONS} -pthread)
+   SET(WB_LINKER_OPTIONS -lstdc++)
+   SET(WB_VISU_LINKER_OPTIONS -pthread)
 elseif(APPLE)
-    target_compile_options(WorldBuilder PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -stdlib=libc++ -Wuninitialized -Werror=uninitialized -Wdangling-else>)
-    SET(WB_LINKER_OPTIONS "-lc++")
+    SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -stdlib=libc++ -Wuninitialized -Werror=uninitialized -Wdangling-else>)
+    SET(WB_LINKER_OPTIONS -lc++)
 else()
-    target_compile_options(WorldBuilder PRIVATE $<$<COMPILE_LANGUAGE:CXX>:/W3 /EHsc -std=c++11>)
+    #MSVS
+    SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:CXX>:/W3 /EHsc -std=c++11>)
+    SET(WB_LINKER_OPTIONS /WHOLEARCHIVE:${CMAKE_CURRENT_BINARY_DIR}/lib/WorldBuilder.lib)
 endif()
 
-target_link_options(WorldBuilder INTERFACE ${WB_LINKER_OPTIONS})
+target_compile_options(WorldBuilder INTERFACE ${WB_COMPILER_OPTIONS_INTERFACE} PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE})
+
+if(${CMAKE_VERSION} VERSION_LESS "3.13.0") 
+    SET(CMAKE_EXE_LINKER_FLAGS ${WB_LINKER_OPTIONS} ${WB_VISU_LINKER_OPTIONS})
+else()
+    target_link_options(WorldBuilder INTERFACE ${WB_LINKER_OPTIONS})
+    target_link_options(WorldBuilderVisualization PRIVATE ${WB_LINKER_OPTIONS} ${WB_VISU_LINKER_OPTIONS})
+endif()
 
 
 IF ( CMAKE_BUILD_TYPE STREQUAL Coverage )
   SET(CMAKE_VERBOSE_MAKEFILE on )
   target_compile_options(WorldBuilder INTERFACE --coverage -fprofile-arcs -ftest-coverage)
-  target_link_options(WorldBuilder INTERFACE --coverage -fprofile-arcs -ftest-coverage )
+  if(${CMAKE_VERSION} VERSION_LESS "3.13.0") 
+    SET(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} --coverage -fprofile-arcs -ftest-coverage)
+  else()
+    target_link_options(WorldBuilder INTERFACE --coverage -fprofile-arcs -ftest-coverage )
+  endif()
 endif()
 
-if(MSVC)
-  target_link_options(WorldBuilder INTERFACE /WHOLEARCHIVE:${CMAKE_CURRENT_BINARY_DIR}/lib/WorldBuilder.lib)
-endif()
+
 
 # Make sure that the whole library is loaded, so the registration is done correctly.
 if(NOT APPLE AND NOT MSVC)
