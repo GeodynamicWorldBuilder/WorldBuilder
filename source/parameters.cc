@@ -33,6 +33,7 @@
 #include <world_builder/parameters.h>
 #include <world_builder/utilities.h>
 
+#include <world_builder/types/object.h>
 #include <world_builder/types/point.h>
 #include <world_builder/types/double.h>
 #include <world_builder/types/string.h>
@@ -1030,6 +1031,53 @@ namespace WorldBuilder
   Parameters::leave_subsection()
   {
     path.pop_back();
+  }
+
+
+
+  void
+  Parameters::declare_model_entries(const std::string model_group_name,
+                                    const std::string &parent_name,
+                                    std::map<std::string, void ( *)(Parameters &,const std::string &)> declare_map,
+                                    const std::vector<std::string> &required_entries,
+                                    const std::vector<std::tuple<std::string,const WorldBuilder::Types::Interface &, std::string> > &extra_declarations)
+  {
+    unsigned int counter = 0;
+    for ( auto it = declare_map.begin(); it != declare_map.end(); ++it )
+      {
+        typedef std::tuple<std::string,const WorldBuilder::Types::Interface &, std::string> DeclareEntry;
+        // prevent infinite recursion
+        if (it->first != parent_name)
+          {
+            enter_subsection("oneOf");
+            {
+              enter_subsection(std::to_string(counter));
+              {
+                enter_subsection("properties");
+                {
+                  declare_entry("", Types::Object(required_entries), model_group_name + " object");
+
+                  declare_entry("model", Types::String("",it->first),
+                                "The name of the " + model_group_name + " model.");
+
+                  for (DeclareEntry extra_declaration : extra_declarations)
+                    {
+                      declare_entry(std::get<0>(extra_declaration),std::get<1>(extra_declaration),std::get<2>(extra_declaration));
+                    }
+
+
+                  it->second(*this, parent_name);
+                }
+                leave_subsection();
+              }
+              leave_subsection();
+            }
+            leave_subsection();
+
+            counter++;
+
+          }
+      }
   }
 
 
