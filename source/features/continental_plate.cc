@@ -70,6 +70,9 @@ namespace WorldBuilder
       prm.declare_entry("composition models",
                         Types::PluginSystem("", Features::ContinentalPlateModels::Composition::Interface::declare_entries, {"model"}),
                         "A list of composition models.");
+      prm.declare_entry("grains models",
+                        Types::PluginSystem("", Features::ContinentalPlateModels::Grains::Interface::declare_entries, {"model"}),
+                        "A list of grains models.");
     }
 
     void
