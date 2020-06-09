@@ -1039,11 +1039,13 @@ namespace WorldBuilder
   Parameters::declare_model_entries(const std::string model_group_name,
                                     const std::string &parent_name,
                                     std::map<std::string, void ( *)(Parameters &,const std::string &)> declare_map,
-                                    const std::vector<std::string> &required_entries)
+                                    const std::vector<std::string> &required_entries,
+                                    const std::vector<std::tuple<std::string,const WorldBuilder::Types::Interface &, std::string> > &extra_declarations)
   {
     unsigned int counter = 0;
     for ( auto it = declare_map.begin(); it != declare_map.end(); ++it )
       {
+        typedef std::tuple<std::string,const WorldBuilder::Types::Interface &, std::string> DeclareEntry;
         // prevent infinite recursion
         if (it->first != parent_name)
           {
@@ -1057,6 +1059,12 @@ namespace WorldBuilder
 
                   declare_entry("model", Types::String("",it->first),
                                 "The name of the " + model_group_name + " model.");
+
+                  for (DeclareEntry extra_declaration : extra_declarations)
+                    {
+                      declare_entry(std::get<0>(extra_declaration),std::get<1>(extra_declaration),std::get<2>(extra_declaration));
+                    }
+
 
                   it->second(*this, parent_name);
                 }

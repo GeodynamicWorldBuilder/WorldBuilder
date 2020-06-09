@@ -164,13 +164,19 @@ namespace WorldBuilder
       void leave_subsection();
 
       /**
-       * todo
+       * A utilties function for declaring plugin model entries. This always contains a model declaration entry with the plugin name.
+       * @param model_group_name The name of the model group which is declared.
+       * @param parent_name The name of the parent declaration group.
+       * @param declaration_map A map containing plugin names and plugin declaration functions
+       * @param requried_entries A vector containing what entries should be required from the user. Default value is empty.
+       * @param extra_declarations A vector containing extra declarations common to all plugins in this group. Default value is empty.
        */
       void
       declare_model_entries(const std::string model_group_name,
                             const std::string &parent_name,
                             std::map<std::string, void ( *)(Parameters &,const std::string &)> declare_map,
-                            const std::vector<std::string> &required_entries = {});
+                            const std::vector<std::string> &required_entries = {},
+                            const std::vector<std::tuple<std::string,const WorldBuilder::Types::Interface &, std::string> > &extra_declarations = {});
 
 
       /**
