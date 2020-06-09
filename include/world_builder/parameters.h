@@ -23,6 +23,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <map>
 #include <memory>
 
 
@@ -161,6 +162,15 @@ namespace WorldBuilder
        * @see enter_subsection()
        */
       void leave_subsection();
+
+      /**
+       * todo
+       */
+      void
+      declare_model_entries(const std::string model_group_name,
+                            const std::string &parent_name,
+                            std::map<std::string, void ( *)(Parameters &,const std::string &)> declare_map,
+                            const std::vector<std::string> &required_entries = {});
 
 
       /**
