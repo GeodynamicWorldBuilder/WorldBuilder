@@ -50,7 +50,7 @@ namespace WorldBuilder
             {
               prm.enter_subsection("properties");
               {
-                prm.declare_entry("", Types::Object(required_entries), "Coordinate sysetm object");
+                prm.declare_entry("", Types::Object(required_entries), "Coordinate system object");
 
                 prm.declare_entry("model",Types::String("",it->first),
                                   "The name which the user has given to the feature.");
