@@ -62,7 +62,7 @@ namespace WorldBuilder
          * declare and read in the world builder file into the parameters class
          */
         virtual
-        void parse_entries(Parameters &prm);
+        void parse_entries(Parameters &prm) final;
 
 
         /**
@@ -73,7 +73,7 @@ namespace WorldBuilder
         double temperature(const Point<3> &position,
                            const double depth,
                            const double gravity,
-                           double temperature) const;
+                           double temperature) const final;
 
         /**
          * Returns a value for the requests composition (0 is not present,
@@ -82,10 +82,10 @@ namespace WorldBuilder
          * of that composition at this location and depth.
          */
         virtual
-        double composition(const Point<3> &position,
-                           const double depth,
-                           const unsigned int composition_number,
-                           double value) const;
+        double (composition)(const Point<3> &position,
+                             const double depth,
+                             const unsigned int composition_number,
+                             double value) const final;
 
 
 

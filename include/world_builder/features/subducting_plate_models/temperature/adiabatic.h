@@ -62,7 +62,7 @@ namespace WorldBuilder
              * declare and read in the world builder file into the parameters class
              */
             virtual
-            void parse_entries(Parameters &prm);
+            void parse_entries(Parameters &prm) final;
 
 
             /**
@@ -76,7 +76,7 @@ namespace WorldBuilder
                                    double temperature,
                                    const double feature_min_depth,
                                    const double feature_max_depth,
-                                   const std::map<std::string,double> &distance_from_planes) const;
+                                   const std::map<std::string,double> &distance_from_planes) const final;
 
 
           private:

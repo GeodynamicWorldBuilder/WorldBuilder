@@ -61,7 +61,7 @@ namespace WorldBuilder
         virtual
         void write_schema(Parameters &prm,
                           const std::string &name,
-                          const std::string &documentation) const;
+                          const std::string &documentation) const final;
 
 
         std::string default_value;
@@ -70,7 +70,7 @@ namespace WorldBuilder
         bool allow_multiple;
 
       protected:
-        virtual PluginSystem *clone_impl() const override
+        virtual PluginSystem *clone_impl() const final
         {
           return new PluginSystem(*this);
         };
