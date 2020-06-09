@@ -26,7 +26,8 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/source/config.cc.in" "${CMAKE_BINARY
 # finding support for different languages
 # finding a fortran compiler
 if(${CMAKE_VERSION} VERSION_LESS "2.8.8") 
-  message(STATUS "Fortran not supported with cmake version lower than  2.8.8. Please upgrade your camke version if you need it. Disabling Fortran wrapper and tests.")
+  message(STATUS "Fortran not supported with cmake version lower than  2.8.8. Please upgrade your cmake version if you need it. Disabling Fortran wrapper and tests.")
+  SET(CMAKE_Fortran_COMPILER FALSE)
 else()
   include(CheckLanguage)
   check_language(Fortran)
@@ -150,6 +151,24 @@ add_library(WorldBuilder ${SOURCES})
 add_executable(WorldBuilderApp "${CMAKE_CURRENT_SOURCE_DIR}/app/main.cc")
 add_executable(WorldBuilderVisualization "${CMAKE_CURRENT_SOURCE_DIR}/visualization/main.cc")
 
+if(MAKE_PYTHON_WRAPPER)
+
+  if(POLICY CMP0078)
+    SET(TARGET gwb)
+  else()
+    SET(TARGET _gwb)
+  endif()
+
+  # Add swig module
+  SET_SOURCE_FILES_PROPERTIES(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/source/wrapper_cpp.i PROPERTIES CPLUSPLUS ON)
+  if(${CMAKE_VERSION} VERSION_LESS "3.8.0") 
+    swig_add_module(gwb python ${CMAKE_CURRENT_SOURCE_DIR}/source/wrapper_cpp.i)
+  else()
+    swig_add_library(gwb LANGUAGE python SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/source/wrapper_cpp.i)
+  endif()
+
+endif()
+
 
 # Provide "indent" target for indenting all headers and source files
 ADD_CUSTOM_TARGET(indent
@@ -157,6 +176,17 @@ ADD_CUSTOM_TARGET(indent
   COMMAND ./doc/indent
   COMMENT "Indenting all the World Builder header and source files..."
   )
+
+
+
+IF ( CMAKE_BUILD_TYPE STREQUAL Coverage )
+  SET(CMAKE_VERBOSE_MAKEFILE on )
+  SET(WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW --coverage -fprofile-arcs -ftest-coverage)
+  SET(WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_OLD "--coverage -fprofile-arcs -ftest-coverage")
+
+  ## for old versions of cmake
+  SET(WB_FORTRAN_COMPILER_FLAGS_COVERAGE "--coverage")
+endif()
 
   SET(WB_LINKER_OPTIONS "")
   SET(WB_VISU_LINKER_OPTIONS "")
@@ -167,19 +197,44 @@ ADD_CUSTOM_TARGET(indent
 if (NOT MSVC AND NOT APPLE)
    #TODO: if other compiles need to be threaded, see https://computing.llnl.gov/tutorials/pthreads/#Compiling to add the correct cases.
    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER MATCHES "[Cc]lang")
-       SET(WB_COMPILER_OPTIONS_PRIVATE -pedantic -fPIC -Wall -Wextra $<$<COMPILE_LANGUAGE:CXX>:-Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Wswitch -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wuninitialized -Werror=uninitialized -Wdangling-else>)
+      # Preventing issues with older cmake compilers (<2.8.11) which do not support VERSION_GREATER_EQUAL
+      # cmake vesrion 3.12.0 introduces COMPILE_LANGUAGE:FORTAN, otherwise this would be >=2.8.11
+      if(NOT ${CMAKE_VERSION} VERSION_LESS "3.12.0") 
+        SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:FORTAN>:-pedantic -fPIC -Wall -Wextra>  $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wshadow -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>)
+      else()
+        SET(WB_COMPILER_OPTIONS_PRIVATE "-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wshadow -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>")
+      endif()
    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Intel")
    SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -pthread -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsign-compare -Woverloaded-virtual -Wno-parentheses -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized>)
    else()
-	# gcc linux
-       SET(WB_COMPILER_OPTIONS_PRIVATE -pedantic -fPIC -Wall -Wextra  $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wshadow -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>)
+      # gcc linux
+
+      # Preventing issues with older cmake compilers (<2.8.11) which do not support VERSION_GREATER_EQUAL
+      # cmake vesrion 3.12.0 introduces COMPILE_LANGUAGE:FORTAN, otherwise this would be >=2.8.11
+      if(NOT ${CMAKE_VERSION} VERSION_LESS "3.12.0") 
+         SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:FORTAN>:-pedantic -fPIC -Wall -Wextra>  $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wshadow -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>)
+       else()
+         SET(WB_COMPILER_OPTIONS_PRIVATE "-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wshadow -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>")
+       endif()
+
        include(CheckCXXCompilerFlag)
        check_cxx_compiler_flag(-Wsuggest-override SUGGEST_OVERWRITE_CXX_COMPILE_FLAG)
        if(SUGGEST_OVERWRITE_CXX_COMPILE_FLAG)
-       SET(WB_COMPILER_OPTIONS_PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE} $<$<COMPILE_LANGUAGE:CXX>:-Wsuggest-override>)
+         if(NOT ${CMAKE_VERSION} VERSION_LESS "3.12.0") # Preventing issues with older cmake compilers which do not support VERSION_GREATER_EQUAL
+           SET(WB_COMPILER_OPTIONS_PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE} $<$<COMPILE_LANGUAGE:CXX>:-Wsuggest-override>)
+         endif()
        endif()
    endif()
-   SET(WB_LINKER_OPTIONS "-lstdc++")
+   IF ( CMAKE_BUILD_TYPE STREQUAL Coverage )
+     if(NOT ${CMAKE_VERSION} VERSION_LESS "3.13.0") # Preventing issues with older cmake compilers which do not support VERSION_GREATER_EQUAL
+     SET(WB_LINKER_OPTIONS -lstdc++ --coverage -fprofile-arcs -ftest-coverage)
+     else()
+      SET(WB_LINKER_OPTIONS "-lstdc++ --coverage -fprofile-arcs -ftest-coverage")
+     endif()
+   else()
+     SET(WB_LINKER_OPTIONS -lstdc++)
+   endif()
+
    SET(WB_VISU_LINKER_OPTIONS "-pthread")
 elseif(APPLE)
     SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -stdlib=libc++ -Wuninitialized -Werror=uninitialized -Wdangling-else>)
@@ -187,35 +242,28 @@ elseif(APPLE)
 else()
     #MSVS
     SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:CXX>:/W3 /EHsc -std=c++11>)
-    SET(WB_LINKER_OPTIONS /WHOLEARCHIVE:${CMAKE_CURRENT_BINARY_DIR}/lib/WorldBuilder.lib)
+    SET(WB_LINKER_OPTIONS  /WHOLEARCHIVE:${CMAKE_CURRENT_BINARY_DIR}/lib/WorldBuilder.lib)
 endif()
 
-if(${CMAKE_VERSION} VERSION_LESS "2.11.0") 
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${WB_COMPILER_OPTIONS_INTERFACE} ${WB_COMPILER_OPTIONS_PRIVATE}")
+
+
+if(${CMAKE_VERSION} VERSION_LESS "3.12.0") 
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${WB_COMPILER_OPTIONS_INTERFACE} ${WB_COMPILER_OPTIONS_PRIVATE} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_OLD}")
 else()
-  target_compile_options(WorldBuilder INTERFACE ${WB_COMPILER_OPTIONS_INTERFACE} PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE})
-  target_compile_options(WorldBuilderApp INTERFACE ${WB_COMPILER_OPTIONS_INTERFACE} PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE})
-  target_compile_options(WorldBuilderVisualization INTERFACE ${WB_COMPILER_OPTIONS_INTERFACE} PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE})
+  target_compile_options(WorldBuilder INTERFACE ${WB_COMPILER_OPTIONS_INTERFACE} PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW})
+  target_compile_options(WorldBuilderApp INTERFACE ${WB_COMPILER_OPTIONS_INTERFACE} PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW})
+  target_compile_options(WorldBuilderVisualization INTERFACE ${WB_COMPILER_OPTIONS_INTERFACE} PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW})
 endif()
 
 if(${CMAKE_VERSION} VERSION_LESS "3.13.0") 
-    SET(CMAKE_EXE_LINKER_FLAGS "${WB_LINKER_OPTIONS} ${WB_VISU_LINKER_OPTIONS}")
+    SET(CMAKE_EXE_LINKER_FLAGS "${WB_LINKER_OPTIONS} ${WB_VISU_LINKER_OPTIONS} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_OLD}")
 else()
-    target_link_options(WorldBuilder INTERFACE ${WB_LINKER_OPTIONS})
-    target_link_options(WorldBuilderApp INTERFACE ${WB_LINKER_OPTIONS})
-    target_link_options(WorldBuilderVisualization PRIVATE ${WB_LINKER_OPTIONS} ${WB_VISU_LINKER_OPTIONS})
+    target_link_options(WorldBuilder INTERFACE ${WB_LINKER_OPTIONS} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW})
+    target_link_options(WorldBuilderApp INTERFACE ${WB_LINKER_OPTIONS} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW})
+    target_link_options(WorldBuilderVisualization INTERFACE ${WB_LINKER_OPTIONS} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW})
+    target_link_options(WorldBuilderVisualization PRIVATE  ${WB_VISU_LINKER_OPTIONS} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW})
 endif()
 
-
-IF ( CMAKE_BUILD_TYPE STREQUAL Coverage )
-  SET(CMAKE_VERBOSE_MAKEFILE on )
-  target_compile_options(WorldBuilder INTERFACE --coverage -fprofile-arcs -ftest-coverage)
-  if(${CMAKE_VERSION} VERSION_LESS "3.13.0") 
-    SET(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} --coverage -fprofile-arcs -ftest-coverage)
-  else()
-    target_link_options(WorldBuilder INTERFACE --coverage -fprofile-arcs -ftest-coverage )
-  endif()
-endif()
 
 
 
@@ -233,23 +281,13 @@ target_link_libraries (WorldBuilderVisualization ${GWB_LIBRARY_WHOLE})
 
 if(MAKE_PYTHON_WRAPPER)
 
-  if(POLICY CMP0078)
-    SET(TARGET gwb)
-  else()
-    SET(TARGET _gwb)
-  endif()
-
-  # Add swig module
-  SET_SOURCE_FILES_PROPERTIES(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/source/wrapper_cpp.i PROPERTIES CPLUSPLUS ON)
-  if(${CMAKE_VERSION} VERSION_LESS "3.8.0") 
-    swig_add_module(gwb python ${CMAKE_CURRENT_SOURCE_DIR}/source/wrapper_cpp.i)
-  else()
-    swig_add_library(gwb LANGUAGE python SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/source/wrapper_cpp.i)
-  endif()
-
   # see https://github.com/swig/swig/issues/1259 for more info.
   if(SWIG_VERSION VERSION_LESS "4.0.1" AND NOT MSVC)
     set_target_properties(${TARGET} PROPERTIES COMPILE_FLAGS "-Wno-cast-qual")
+  endif()
+
+  IF ( CMAKE_BUILD_TYPE STREQUAL Coverage )
+    set_target_properties(${TARGET} PROPERTIES COMPILE_FLAGS "--coverage -fprofile-arcs -ftest-coverage")
   endif()
 
   # visual studio has a problem with finding the debug version of python (pythonxx_d.dll),
@@ -258,10 +296,12 @@ if(MAKE_PYTHON_WRAPPER)
     SET(CMAKE_SWIG_FLAGS "-D_SWIG_WIN32 /WHOLEARCHIVE:${CMAKE_CURRENT_BINARY_DIR}/lib/WorldBuilder.lib")
     swig_link_libraries(gwb ${GWB_LIBRARY_WHOLE} ${Python_LIBRARY_RELEASE})
 
-    SET_TARGET_PROPERTIES(${TARGET} PROPERTIES LINK_FLAGS "/WHOLEARCHIVE:WorldBuilder")
-
   else()
-    swig_link_libraries(gwb ${GWB_LIBRARY_WHOLE} ${Python_LIBRARIES})
+    IF ( CMAKE_BUILD_TYPE STREQUAL Coverage )
+      swig_link_libraries(gwb ${GWB_LIBRARY_WHOLE} ${Python_LIBRARIES} --coverage -fprofile-arcs -ftest-coverage)
+    else()
+      swig_link_libraries(gwb ${GWB_LIBRARY_WHOLE} ${Python_LIBRARIES})
+    endif()
   endif()
   
   set_target_properties(${TARGET} PROPERTIES PREFIX "_" OUTPUT_NAME "gwb")

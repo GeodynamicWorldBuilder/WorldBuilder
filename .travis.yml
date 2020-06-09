@@ -155,7 +155,6 @@ matrix:
             - gfortran
             - cmake
        
-
     - name: "linux precise gcc 4.9 debug"
       os: linux
       dist: precise
@@ -173,7 +172,6 @@ matrix:
           packages:
             - g++-4.9
             - cmake
-       
 
     - name: "linux trusty clang fortran python"
       os: linux
