@@ -65,7 +65,7 @@ namespace WorldBuilder
         virtual
         void write_schema(Parameters &prm,
                           const std::string &name,
-                          const std::string &documentation) const;
+                          const std::string &documentation) const final;
 
         /**
          * An enum of the type which this class points to
@@ -106,7 +106,7 @@ namespace WorldBuilder
         bool unique_items;
 
       protected:
-        virtual Array *clone_impl() const override
+        virtual Array *clone_impl() const final
         {
           return new Array(*this);
         };
