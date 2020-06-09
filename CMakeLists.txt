@@ -116,6 +116,22 @@ if(CMAKE_Fortran_COMPILER)
   set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/mod)
 endif()
 
+if(MAKE_PYTHON_WRAPPER)
+  # Files to install with Python
+  if(WIN32)
+    set(PYTHON_INSTALL_FILES
+            ${CMAKE_CURRENT_BINARY_DIR}/lib/gwb.py
+            ${CMAKE_CURRENT_BINARY_DIR}/lib/_gwb.pyd)
+  else()
+    set(PYTHON_INSTALL_FILES
+            ${CMAKE_CURRENT_BINARY_DIR}/lib/gwb.py
+            ${CMAKE_CURRENT_BINARY_DIR}/lib/_gwb.so)
+  endif()
+  # Configure setup.py and copy to output directory
+  set(SETUP_PY_IN ${CMAKE_CURRENT_SOURCE_DIR}/cmake/setup.py.in)
+  set(SETUP_PY_OUT ${CMAKE_CURRENT_BINARY_DIR}/lib/setup.py)
+  configure_file(${SETUP_PY_IN} ${SETUP_PY_OUT})
+endif()
 
 # Add include directory
 include_directories("include/" "tests/") 
@@ -163,8 +179,8 @@ if (NOT MSVC AND NOT APPLE)
        SET(WB_COMPILER_OPTIONS_PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE} $<$<COMPILE_LANGUAGE:CXX>:-Wsuggest-override>)
        endif()
    endif()
-   SET(WB_LINKER_OPTIONS -lstdc++)
-   SET(WB_VISU_LINKER_OPTIONS -pthread)
+   SET(WB_LINKER_OPTIONS "-lstdc++")
+   SET(WB_VISU_LINKER_OPTIONS "-pthread")
 elseif(APPLE)
     SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -stdlib=libc++ -Wuninitialized -Werror=uninitialized -Wdangling-else>)
     SET(WB_LINKER_OPTIONS -lc++)
@@ -175,11 +191,14 @@ else()
 endif()
 
 target_compile_options(WorldBuilder INTERFACE ${WB_COMPILER_OPTIONS_INTERFACE} PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE})
+target_compile_options(WorldBuilderApp INTERFACE ${WB_COMPILER_OPTIONS_INTERFACE} PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE})
+target_compile_options(WorldBuilderVisualization INTERFACE ${WB_COMPILER_OPTIONS_INTERFACE} PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE})
 
 if(${CMAKE_VERSION} VERSION_LESS "3.13.0") 
-    SET(CMAKE_EXE_LINKER_FLAGS ${WB_LINKER_OPTIONS} ${WB_VISU_LINKER_OPTIONS})
+    SET(CMAKE_EXE_LINKER_FLAGS "${WB_LINKER_OPTIONS} ${WB_VISU_LINKER_OPTIONS}")
 else()
     target_link_options(WorldBuilder INTERFACE ${WB_LINKER_OPTIONS})
+    target_link_options(WorldBuilderApp INTERFACE ${WB_LINKER_OPTIONS})
     target_link_options(WorldBuilderVisualization PRIVATE ${WB_LINKER_OPTIONS} ${WB_VISU_LINKER_OPTIONS})
 endif()
 
@@ -243,20 +262,6 @@ if(MAKE_PYTHON_WRAPPER)
   
   set_target_properties(${TARGET} PROPERTIES PREFIX "_" OUTPUT_NAME "gwb")
 
-  # Files to install with Python
-  if(WIN32)
-    set(PYTHON_INSTALL_FILES
-            ${CMAKE_CURRENT_BINARY_DIR}/lib/gwb.py
-            ${CMAKE_CURRENT_BINARY_DIR}/lib/_gwb.pyd)
-  else()
-    set(PYTHON_INSTALL_FILES
-            ${CMAKE_CURRENT_BINARY_DIR}/lib/gwb.py
-            ${CMAKE_CURRENT_BINARY_DIR}/lib/_gwb.so)
-  endif()
-  # Configure setup.py and copy to output directory
-  set(SETUP_PY_IN ${CMAKE_CURRENT_SOURCE_DIR}/cmake/setup.py.in)
-  set(SETUP_PY_OUT ${CMAKE_CURRENT_BINARY_DIR}/lib/setup.py)
-  configure_file(${SETUP_PY_IN} ${SETUP_PY_OUT})
 
   # Install target to call setup.py
   add_custom_target(install-python
