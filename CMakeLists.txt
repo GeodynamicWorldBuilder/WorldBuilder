@@ -81,50 +81,8 @@ if(SWIG_FOUND AND Python_FOUND)
   message(STATUS "Both SWIG and Python are found, enableling python wrapper compilation.")
 endif()
 
-# Add include directory
-include_directories("include/" "tests/") 
-
-# Add source directory
-file(GLOB_RECURSE SOURCES_CXX "source/*.cc" "${CMAKE_BINARY_DIR}/source/*.cc")
-
-if(CMAKE_Fortran_COMPILER)
-  file(GLOB_RECURSE SOURCES_FORTAN "source/*.f90")
-endif()
-
-set(SOURCES ${SOURCES_CXX} ${SOURCES_FORTAN})
-
-
-# Provide "indent" target for indenting all headers and source files
-ADD_CUSTOM_TARGET(indent
-  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-  COMMAND ./doc/indent
-  COMMENT "Indenting all the World Builder header and source files..."
-  )
-
-if (NOT MSVC AND NOT APPLE)
-   #TODO: if other compiles need to be threaded, see https://computing.llnl.gov/tutorials/pthreads/#Compiling to add the correct cases.
-   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER MATCHES "[Cc]lang")
-       SET(CMAKE_CXX_FLAGS "-std=c++11 -pthread -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Wswitch -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wuninitialized -Werror=uninitialized -Wdangling-else")
-   elseif(CMAKE_CXX_COMPILER_ID MATCHES "Intel")
-       SET(CMAKE_CXX_FLAGS "-std=c++11 -pthread -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsign-compare -Woverloaded-virtual -Wno-parentheses -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized")
-   else()
-	# gcc linux
-       SET(CMAKE_CXX_FLAGS "-std=c++11 -pthread -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wshadow -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused")
-       include(CheckCXXCompilerFlag)
-       check_cxx_compiler_flag(-Wsuggest-override SUGGEST_OVERWRITE_CXX_COMPILE_FLAG)
-       if(SUGGEST_OVERWRITE_CXX_COMPILE_FLAG)
-           SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wsuggest-override")
-       endif()
-   endif()
-   SET(CMAKE_EXE_LINKER_FLAGS "-lstdc++")
-elseif(APPLE)
-   SET(CMAKE_CXX_FLAGS "-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -stdlib=libc++ -Wuninitialized -Werror=uninitialized -Wdangling-else")
-   SET(CMAKE_EXE_LINKER_FLAGS "-lc++") #-stdlib=libc++")
-else()
-    SET(CMAKE_CXX_FLAGS "/W3 /EHsc -std=c++11")
-     #-stdlib=libc++")
-endif()
-
+# Add dependencies are found, now set compiler output directories.
+# This needs to be done before the add library and add executable functions.
 
 IF(NOT CMAKE_BUILD_TYPE)
    SET(CMAKE_BUILD_TYPE Debug
@@ -133,13 +91,6 @@ IF(NOT CMAKE_BUILD_TYPE)
 ENDIF(NOT CMAKE_BUILD_TYPE)
 
 IF ( CMAKE_BUILD_TYPE STREQUAL Coverage )
-  SET( CMAKE_VERBOSE_MAKEFILE on )
-  SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} ")
-  SET(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_DEBUG} --coverage -fprofile-arcs -ftest-coverage ")
-  SET(CMAKE_Fortran_FLAGS_COVERAGE --coverage)
-  SET(CMAKE_EXE_LINKER_FLAGS_COVERAGE "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --coverage -fprofile-arcs -ftest-coverage ")
-  SET(CMAKE_SHARED_LINKER_FLAGS_COVERAGE "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} --coverage -fprofile-arcs -ftest-coverage ")
-
 MARK_AS_ADVANCED(
     CMAKE_CXX_FLAGS_COVERAGE
     CMAKE_C_FLAGS_COVERAGE
@@ -165,14 +116,70 @@ if(CMAKE_Fortran_COMPILER)
   set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/mod)
 endif()
 
-add_library(WorldBuilder ${SOURCES})
 
-if(MSVC)
-  SET(CMAKE_EXE_LINKER_FLAGS "/WHOLEARCHIVE:${CMAKE_CURRENT_BINARY_DIR}/lib/WorldBuilder.lib")
+# Add include directory
+include_directories("include/" "tests/") 
+
+# Add source directory
+file(GLOB_RECURSE SOURCES_CXX "source/*.cc" "${CMAKE_BINARY_DIR}/source/*.cc")
+
+if(CMAKE_Fortran_COMPILER)
+  file(GLOB_RECURSE SOURCES_FORTAN "source/*.f90")
 endif()
+
+set(SOURCES ${SOURCES_CXX} ${SOURCES_FORTAN})
+
+add_library(WorldBuilder ${SOURCES})
 
 add_executable(WorldBuilderApp "${CMAKE_CURRENT_SOURCE_DIR}/app/main.cc")
 add_executable(WorldBuilderVisualization "${CMAKE_CURRENT_SOURCE_DIR}/visualization/main.cc")
+
+
+# Provide "indent" target for indenting all headers and source files
+ADD_CUSTOM_TARGET(indent
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND ./doc/indent
+  COMMENT "Indenting all the World Builder header and source files..."
+  )
+
+  SET(WB_LINKER_OPTIONS "")
+
+if (NOT MSVC AND NOT APPLE)
+   #TODO: if other compiles need to be threaded, see https://computing.llnl.gov/tutorials/pthreads/#Compiling to add the correct cases.
+   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER MATCHES "[Cc]lang")
+       target_compile_options(WorldBuilder PRIVATE -pedantic -fPIC -Wall -Wextra $<$<COMPILE_LANGUAGE:CXX>:-Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Wswitch -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wuninitialized -Werror=uninitialized -Wdangling-else>)
+   elseif(CMAKE_CXX_COMPILER_ID MATCHES "Intel")
+       target_compile_options(WorldBuilder PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -pthread -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsign-compare -Woverloaded-virtual -Wno-parentheses -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized>)
+   else()
+	# gcc linux
+       target_compile_options(WorldBuilder PRIVATE -pedantic -fPIC -Wall -Wextra  $<$<COMPILE_LANGUAGE:CXX>:-Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wshadow -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>)
+       include(CheckCXXCompilerFlag)
+       check_cxx_compiler_flag(-Wsuggest-override SUGGEST_OVERWRITE_CXX_COMPILE_FLAG)
+       if(SUGGEST_OVERWRITE_CXX_COMPILE_FLAG)
+           target_compile_options(WorldBuilder PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-Wsuggest-override>)
+       endif()
+   endif()
+   SET(WB_LINKER_OPTIONS "-lstdc++")
+   target_link_options(WorldBuilderVisualization PRIVATE ${WB_LINKER_OPTIONS} -pthread)
+elseif(APPLE)
+    target_compile_options(WorldBuilder PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -stdlib=libc++ -Wuninitialized -Werror=uninitialized -Wdangling-else>)
+    SET(WB_LINKER_OPTIONS "-lc++")
+else()
+    target_compile_options(WorldBuilder PRIVATE $<$<COMPILE_LANGUAGE:CXX>:/W3 /EHsc -std=c++11>)
+endif()
+
+target_link_options(WorldBuilder INTERFACE ${WB_LINKER_OPTIONS})
+
+
+IF ( CMAKE_BUILD_TYPE STREQUAL Coverage )
+  SET(CMAKE_VERBOSE_MAKEFILE on )
+  target_compile_options(WorldBuilder INTERFACE --coverage -fprofile-arcs -ftest-coverage)
+  target_link_options(WorldBuilder INTERFACE --coverage -fprofile-arcs -ftest-coverage )
+endif()
+
+if(MSVC)
+  target_link_options(WorldBuilder INTERFACE /WHOLEARCHIVE:${CMAKE_CURRENT_BINARY_DIR}/lib/WorldBuilder.lib)
+endif()
 
 # Make sure that the whole library is loaded, so the registration is done correctly.
 if(NOT APPLE AND NOT MSVC)
@@ -183,11 +190,8 @@ else()
   SET(GWB_LIBRARY_WHOLE -Wl,-force_load WorldBuilder)
 endif()
 target_link_libraries (WorldBuilderApp ${GWB_LIBRARY_WHOLE})
-if(NOT APPLE)
-  target_link_libraries (WorldBuilderVisualization ${GWB_LIBRARY_WHOLE}) 
-else()
-  target_link_libraries (WorldBuilderVisualization ${GWB_LIBRARY_WHOLE}) 
-endif()
+target_link_libraries (WorldBuilderVisualization ${GWB_LIBRARY_WHOLE}) 
+
 
 if(MAKE_PYTHON_WRAPPER)
 
