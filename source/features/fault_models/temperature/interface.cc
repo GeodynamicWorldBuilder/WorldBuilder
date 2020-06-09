@@ -47,39 +47,15 @@ namespace WorldBuilder
                                    const std::string &parent_name,
                                    const std::vector<std::string> &required_entries)
         {
-          unsigned int counter = 0;
-          for (auto it = get_declare_map().begin(); it != get_declare_map().end(); ++it )
+          prm.declare_model_entries("temperature",parent_name, get_declare_map(),required_entries,
+          {
             {
-              // prevent infinite recursion
-              if (it->first != parent_name)
-                {
-                  prm.enter_subsection("oneOf");
-                  {
-                    prm.enter_subsection(std::to_string(counter));
-                    {
-                      prm.enter_subsection("properties");
-                      {
-                        prm.declare_entry("", Types::Object(required_entries), "Temperature object");
-
-                        prm.declare_entry("model", Types::String("",it->first),
-                                          "The name of the temperature model.");
-
-                        prm.declare_entry("operation", Types::String("replace", std::vector<std::string> {"replace", "add", "subtract"}),
-                                          "Whether the value should replace any value previously defined at this location (replace), "
-                                          "add the value to the previously define value (add) or subtract the value to the previously "
-                                          "define value (subtract).");
-
-                        it->second(prm, parent_name);
-                      }
-                      prm.leave_subsection();
-                    }
-                    prm.leave_subsection();
-                  }
-                  prm.leave_subsection();
-
-                  counter++;
-                }
+              "operation", Types::String("replace", std::vector<std::string> {"replace", "add", "subtract"}),
+              "Whether the value should replace any value previously defined at this location (replace), "
+              "add the value to the previously define value (add) or subtract the value to the previously "
+              "define value (subtract)."
             }
+          });
         }
 
 
