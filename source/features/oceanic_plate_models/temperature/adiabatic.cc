@@ -156,7 +156,7 @@ namespace WorldBuilder
           return temperature_;
         }
 
-        WB_REGISTER_FEATURE_CONTINENTAL_TEMPERATURE_MODEL(Adiabatic, adiabatic)
+        WB_REGISTER_FEATURE_OCEANIC_PLATE_TEMPERATURE_MODEL(Adiabatic, adiabatic)
       }
     }
   }

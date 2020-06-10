@@ -98,7 +98,7 @@ namespace WorldBuilder
           return temperature_;
         }
 
-        WB_REGISTER_FEATURE_CONTINENTAL_TEMPERATURE_MODEL(Uniform, uniform)
+        WB_REGISTER_FEATURE_CONTINENTAL_PLATE_TEMPERATURE_MODEL(Uniform, uniform)
       }
     }
   }

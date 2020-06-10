@@ -148,7 +148,7 @@ namespace WorldBuilder
          * register it. Because this is a library, we need some extra measures
          * to ensure that the static variable is actually initialized.
          */
-#define WB_REGISTER_FEATURE_CONTINENTAL_TEMPERATURE_MODEL(klass,name) \
+#define WB_REGISTER_FEATURE_CONTINENTAL_PLATE_TEMPERATURE_MODEL(klass,name) \
   class klass##Factory : public ObjectFactory { \
     public: \
       klass##Factory() \
