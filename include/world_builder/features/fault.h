@@ -70,10 +70,10 @@ namespace WorldBuilder
          * gravity and current temperature.
          */
         virtual
-        double (temperature)(const Point<3> &position,
-                             const double depth,
-                             const double gravity,
-                             double temperature) const override final;
+        double temperature(const Point<3> &position,
+                           const double depth,
+                           const double gravity,
+                           double temperature) const override final;
 
         /**
          * Returns a value for the requests composition (0 is not present,
@@ -82,10 +82,10 @@ namespace WorldBuilder
          * of that composition at this location and depth.
          */
         virtual
-        double (composition)(const Point<3> &position,
-                             const double depth,
-                             const unsigned int composition_number,
-                             double composition_value) const override final;
+        double composition(const Point<3> &position,
+                           const double depth,
+                           const unsigned int composition_number,
+                           double composition_value) const override final;
 
 
 

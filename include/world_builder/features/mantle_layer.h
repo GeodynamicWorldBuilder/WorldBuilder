@@ -82,10 +82,10 @@ namespace WorldBuilder
          * of that composition at this location and depth.
          */
         virtual
-        double (composition)(const Point<3> &position,
-                             const double depth,
-                             const unsigned int composition_number,
-                             double value) const override final;
+        double composition(const Point<3> &position,
+                           const double depth,
+                           const unsigned int composition_number,
+                           double value) const override final;
 
 
 
