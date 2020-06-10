@@ -98,7 +98,7 @@ namespace WorldBuilder
         grains(const Point<3> &position,
                const double depth,
                const unsigned int composition_number,
-               WorldBuilder::grains value) const;
+               WorldBuilder::grains value) const override final;
 
 
 

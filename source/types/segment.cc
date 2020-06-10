@@ -66,8 +66,8 @@ namespace WorldBuilder
       value_angle(other.default_angle),
       default_angle(other.default_angle),
       temperature_plugin_system(other.temperature_plugin_system->clone()),
-      composition_plugin_system(other.composition_plugin_system->clone(),
-      composition_plugin_system(other.grains_plugin_system->clone())
+      composition_plugin_system(other.composition_plugin_system->clone()),
+      grains_plugin_system(other.grains_plugin_system->clone())
     {
       this->type_name = Types::type::Segment;
     }
@@ -168,7 +168,7 @@ namespace WorldBuilder
     }
 
     template<class A, class B, class C>
-    Segment<A,B>::Segment(Segment const &other)
+    Segment<A,B,C>::Segment(Segment const &other)
       :
       value_length(other.value_length),
       default_length(other.default_length),
@@ -176,14 +176,14 @@ namespace WorldBuilder
       value_top_truncation(other.value_top_truncation),
       value_angle(other.value_angle),
       temperature_systems(other.temperature_systems),
-      composition_systems(other.composition_systems,
-      composition_systems(other.grains_systems)
+      composition_systems(other.composition_systems),
+      grains_systems(other.grains_systems)
     {
       this->type_name = Types::type::Segment;
     }
 
     template<class A, class B, class C>
-    Segment<A,B>::~Segment ()
+    Segment<A,B,C>::~Segment ()
     {}
 
     template<class A, class B, class C>
