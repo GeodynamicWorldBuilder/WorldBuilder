@@ -61,7 +61,7 @@ namespace WorldBuilder
              * declare and read in the world builder file into the parameters class
              */
             virtual
-            void parse_entries(Parameters &prm) final;
+            void parse_entries(Parameters &prm) override final;
 
 
             /**
@@ -74,7 +74,7 @@ namespace WorldBuilder
                                    const unsigned int composition_number,
                                    double composition,
                                    const double feature_min_depth,
-                                   const double feature_max_depth) const final;
+                                   const double feature_max_depth) const override final;
 
 
           private:

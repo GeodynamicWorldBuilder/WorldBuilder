@@ -56,7 +56,7 @@ namespace WorldBuilder
         virtual
         void write_schema(Parameters &prm,
                           const std::string &name,
-                          const std::string &documentation) const final;
+                          const std::string &documentation) const override final;
 
         unsigned int value;
         unsigned int default_value;
@@ -65,7 +65,7 @@ namespace WorldBuilder
         /**
          * This implements the actual cloneing for the clone function in the base class.
          */
-        UnsignedInt *clone_impl() const final
+        UnsignedInt *clone_impl() const override final
         {
           return new UnsignedInt(*this);
         };

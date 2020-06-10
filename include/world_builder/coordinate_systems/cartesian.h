@@ -62,13 +62,13 @@ namespace WorldBuilder
          * declare and read in the world builder file into the parameters class
          */
         virtual
-        void parse_entries(Parameters &prm) final;
+        void parse_entries(Parameters &prm) override final;
 
         /**
          * Returns what the natural coordinate system for this Coordinate System is.
          */
         virtual
-        CoordinateSystem natural_coordinate_system() const final;
+        CoordinateSystem natural_coordinate_system() const override final;
 
         /**
          * Returns what method should be used to go down with an angle into
@@ -76,7 +76,7 @@ namespace WorldBuilder
          * \sa DepthMethod
          */
         virtual
-        DepthMethod depth_method() const final;
+        DepthMethod depth_method() const override final;
 
         /**
          * Takes the Cartesian points (x,z or x,y,z) and returns standardized
@@ -86,7 +86,7 @@ namespace WorldBuilder
          * latitude) in 3d.
          */
         virtual
-        std::array<double,3> cartesian_to_natural_coordinates(const std::array<double,3> &position) const final;
+        std::array<double,3> cartesian_to_natural_coordinates(const std::array<double,3> &position) const override final;
 
         /**
          * Undoes the action of cartesian_to_natural_coordinates, and turns the
@@ -94,7 +94,7 @@ namespace WorldBuilder
          * Cartesian coordinates.
          */
         virtual
-        std::array<double,3> natural_to_cartesian_coordinates(const std::array<double,3> &position) const final;
+        std::array<double,3> natural_to_cartesian_coordinates(const std::array<double,3> &position) const override final;
 
 
         /**
@@ -102,7 +102,7 @@ namespace WorldBuilder
          * The input is two 3d points at that depth. It is implemented as the
          */
         virtual
-        double distance_between_points_at_same_depth(const Point<3> &point_1, const Point<3> &point_2) const final;
+        double distance_between_points_at_same_depth(const Point<3> &point_1, const Point<3> &point_2) const override final;
 
 
       private:

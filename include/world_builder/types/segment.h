@@ -71,7 +71,7 @@ namespace WorldBuilder
         virtual
         void write_schema(Parameters &prm,
                           const std::string &name,
-                          const std::string &documentation) const final;
+                          const std::string &documentation) const override final;
 
 
         double value_length;
@@ -85,7 +85,7 @@ namespace WorldBuilder
         std::unique_ptr<Types::Interface> composition_plugin_system;
 
       protected:
-        Segment *clone_impl() const  final
+        Segment *clone_impl() const  override final
         {
           return new Segment(*this);
         };
@@ -131,7 +131,7 @@ namespace WorldBuilder
         virtual
         void write_schema(Parameters &prm,
                           const std::string &name,
-                          const std::string &documentation) const final;
+                          const std::string &documentation) const override final;
 
 
         double value_length;
@@ -143,7 +143,7 @@ namespace WorldBuilder
         std::vector<std::shared_ptr<B> > composition_systems;
 
       protected:
-        Segment *clone_impl() const final
+        Segment *clone_impl() const override final
         {
           return new Segment(*this);
         };
