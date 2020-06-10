@@ -19,6 +19,16 @@ foreach(test_source ${UNIT_TEST_SOURCES})
   # Add compile target
   add_executable(${test_name} ${test_source})
 
+  if(NOT ${CMAKE_VERSION} VERSION_LESS "3.12.0") # Preventing issues with older cmake compilers which do not support VERSION_GREATER_EQUAL
+    target_compile_options(${test_name} INTERFACE ${WB_COMPILER_OPTIONS_INTERFACE} PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE})
+  endif()
+
+  if(${CMAKE_VERSION} VERSION_LESS "3.13.0") 
+    SET(CMAKE_EXE_LINKER_FLAGS "${WB_LINKER_OPTIONS}")
+  else()
+    target_link_options(${test_name} INTERFACE ${WB_LINKER_OPTIONS})
+  endif()
+
   # Make sure that the whole library is loaded, so the registration is done correctly.
   if(NOT APPLE)
     SET(GWB_LIBRARY_WHOLE -Wl,--whole-archive WorldBuilder -Wl,--no-whole-archive)  
@@ -123,11 +133,11 @@ if(CMAKE_Fortran_COMPILER)
   file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran)
   if(NOT APPLE)
     add_test(NAME compile_simple_fortran_test
-             COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/test.f90 -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I../../mod/ ${CMAKE_Fortran_FLAGS_COVERAGE} -o test${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_EXE_LINKER_FLAGS} 
+             COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/test.f90 -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lstdc++ 
 	     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
   else()
     add_test(NAME compile_simple_fortran_test
-	    COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/test.f90 -L../../lib/ -Wl,-force_load,../../lib/libWorldBuilder.a -I../../mod/ ${CMAKE_Fortran_FLAGS_COVERAGE} -o test${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_EXE_LINKER_FLAGS} 
+	    COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/test.f90 -L../../lib/ -Wl,-force_load,../../lib/libWorldBuilder.a -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lc++ 
 	    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
   endif()
   add_test(run_simple_fortran_test
@@ -143,11 +153,11 @@ if(CMAKE_Fortran_COMPILER)
 
   if(NOT APPLE)
     add_test(NAME compile_simple_fortran_example 
-	     COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/example.f90 -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I../../mod/ ${CMAKE_Fortran_FLAGS_COVERAGE} -o example${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_EXE_LINKER_FLAGS} 
+	     COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/example.f90 -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lstdc++ 
 	     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
   else()
     add_test(NAME compile_simple_fortran_example 
-	     COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/example.f90 -L../../lib/ -Wl,-force_load,../../lib/libWorldBuilder.a -I../../mod/ ${CMAKE_Fortran_FLAGS_COVERAGE} -o example${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_EXE_LINKER_FLAGS} 
+	     COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/example.f90 -L../../lib/ -Wl,-force_load,../../lib/libWorldBuilder.a -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lc++ 
 	     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
   endif()
   add_test(run_simple_fortran_example

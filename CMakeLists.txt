@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 2.8.4)
 project(WorldBuilder C CXX)
 
 # SWIG: use standard target name.
@@ -26,7 +26,8 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/source/config.cc.in" "${CMAKE_BINARY
 # finding support for different languages
 # finding a fortran compiler
 if(${CMAKE_VERSION} VERSION_LESS "2.8.8") 
-  message(STATUS "Fortran not supported with cmake version lower than  2.8.8. Please upgrade your camke version if you need it. Disabling Fortran wrapper and tests.")
+  message(STATUS "Fortran not supported with cmake version lower than  2.8.8. Please upgrade your cmake version if you need it. Disabling Fortran wrapper and tests.")
+  SET(CMAKE_Fortran_COMPILER FALSE)
 else()
   include(CheckLanguage)
   check_language(Fortran)
@@ -81,50 +82,8 @@ if(SWIG_FOUND AND Python_FOUND)
   message(STATUS "Both SWIG and Python are found, enableling python wrapper compilation.")
 endif()
 
-# Add include directory
-include_directories("include/" "tests/") 
-
-# Add source directory
-file(GLOB_RECURSE SOURCES_CXX "source/*.cc" "${CMAKE_BINARY_DIR}/source/*.cc")
-
-if(CMAKE_Fortran_COMPILER)
-  file(GLOB_RECURSE SOURCES_FORTAN "source/*.f90")
-endif()
-
-set(SOURCES ${SOURCES_CXX} ${SOURCES_FORTAN})
-
-
-# Provide "indent" target for indenting all headers and source files
-ADD_CUSTOM_TARGET(indent
-  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-  COMMAND ./doc/indent
-  COMMENT "Indenting all the World Builder header and source files..."
-  )
-
-if (NOT MSVC AND NOT APPLE)
-   #TODO: if other compiles need to be threaded, see https://computing.llnl.gov/tutorials/pthreads/#Compiling to add the correct cases.
-   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER MATCHES "[Cc]lang")
-       SET(CMAKE_CXX_FLAGS "-std=c++11 -pthread -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Wswitch -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wuninitialized -Werror=uninitialized -Wdangling-else")
-   elseif(CMAKE_CXX_COMPILER_ID MATCHES "Intel")
-       SET(CMAKE_CXX_FLAGS "-std=c++11 -pthread -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsign-compare -Woverloaded-virtual -Wno-parentheses -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized")
-   else()
-	# gcc linux
-       SET(CMAKE_CXX_FLAGS "-std=c++11 -pthread -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wshadow -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused")
-       include(CheckCXXCompilerFlag)
-       check_cxx_compiler_flag(-Wsuggest-override SUGGEST_OVERWRITE_CXX_COMPILE_FLAG)
-       if(SUGGEST_OVERWRITE_CXX_COMPILE_FLAG)
-           SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wsuggest-override")
-       endif()
-   endif()
-   SET(CMAKE_EXE_LINKER_FLAGS "-lstdc++")
-elseif(APPLE)
-   SET(CMAKE_CXX_FLAGS "-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -stdlib=libc++ -Wuninitialized -Werror=uninitialized -Wdangling-else")
-   SET(CMAKE_EXE_LINKER_FLAGS "-lc++") #-stdlib=libc++")
-else()
-    SET(CMAKE_CXX_FLAGS "/W3 /EHsc -std=c++11")
-     #-stdlib=libc++")
-endif()
-
+# Add dependencies are found, now set compiler output directories.
+# This needs to be done before the add library and add executable functions.
 
 IF(NOT CMAKE_BUILD_TYPE)
    SET(CMAKE_BUILD_TYPE Debug
@@ -133,13 +92,6 @@ IF(NOT CMAKE_BUILD_TYPE)
 ENDIF(NOT CMAKE_BUILD_TYPE)
 
 IF ( CMAKE_BUILD_TYPE STREQUAL Coverage )
-  SET( CMAKE_VERBOSE_MAKEFILE on )
-  SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} ")
-  SET(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_DEBUG} --coverage -fprofile-arcs -ftest-coverage ")
-  SET(CMAKE_Fortran_FLAGS_COVERAGE --coverage)
-  SET(CMAKE_EXE_LINKER_FLAGS_COVERAGE "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --coverage -fprofile-arcs -ftest-coverage ")
-  SET(CMAKE_SHARED_LINKER_FLAGS_COVERAGE "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} --coverage -fprofile-arcs -ftest-coverage ")
-
 MARK_AS_ADVANCED(
     CMAKE_CXX_FLAGS_COVERAGE
     CMAKE_C_FLAGS_COVERAGE
@@ -165,29 +117,39 @@ if(CMAKE_Fortran_COMPILER)
   set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/mod)
 endif()
 
-add_library(WorldBuilder ${SOURCES})
-
-if(MSVC)
-  SET(CMAKE_EXE_LINKER_FLAGS "/WHOLEARCHIVE:${CMAKE_CURRENT_BINARY_DIR}/lib/WorldBuilder.lib")
+if(MAKE_PYTHON_WRAPPER)
+  # Files to install with Python
+  if(WIN32)
+    set(PYTHON_INSTALL_FILES
+            ${CMAKE_CURRENT_BINARY_DIR}/lib/gwb.py
+            ${CMAKE_CURRENT_BINARY_DIR}/lib/_gwb.pyd)
+  else()
+    set(PYTHON_INSTALL_FILES
+            ${CMAKE_CURRENT_BINARY_DIR}/lib/gwb.py
+            ${CMAKE_CURRENT_BINARY_DIR}/lib/_gwb.so)
+  endif()
+  # Configure setup.py and copy to output directory
+  set(SETUP_PY_IN ${CMAKE_CURRENT_SOURCE_DIR}/cmake/setup.py.in)
+  set(SETUP_PY_OUT ${CMAKE_CURRENT_BINARY_DIR}/lib/setup.py)
+  configure_file(${SETUP_PY_IN} ${SETUP_PY_OUT})
 endif()
+
+# Add include directory
+include_directories("include/" "tests/") 
+
+# Add source directory
+file(GLOB_RECURSE SOURCES_CXX "source/*.cc" "${CMAKE_BINARY_DIR}/source/*.cc")
+
+if(CMAKE_Fortran_COMPILER)
+  file(GLOB_RECURSE SOURCES_FORTAN "source/*.f90")
+endif()
+
+set(SOURCES ${SOURCES_CXX} ${SOURCES_FORTAN})
+
+add_library(WorldBuilder ${SOURCES})
 
 add_executable(WorldBuilderApp "${CMAKE_CURRENT_SOURCE_DIR}/app/main.cc")
 add_executable(WorldBuilderVisualization "${CMAKE_CURRENT_SOURCE_DIR}/visualization/main.cc")
-
-# Make sure that the whole library is loaded, so the registration is done correctly.
-if(NOT APPLE AND NOT MSVC)
-  SET(GWB_LIBRARY_WHOLE -Wl,--whole-archive WorldBuilder -Wl,--no-whole-archive)
-elseif(MSVC)
-  SET(GWB_LIBRARY_WHOLE WorldBuilder)
-else()
-  SET(GWB_LIBRARY_WHOLE -Wl,-force_load WorldBuilder)
-endif()
-target_link_libraries (WorldBuilderApp ${GWB_LIBRARY_WHOLE})
-if(NOT APPLE)
-  target_link_libraries (WorldBuilderVisualization ${GWB_LIBRARY_WHOLE}) 
-else()
-  target_link_libraries (WorldBuilderVisualization ${GWB_LIBRARY_WHOLE}) 
-endif()
 
 if(MAKE_PYTHON_WRAPPER)
 
@@ -205,9 +167,127 @@ if(MAKE_PYTHON_WRAPPER)
     swig_add_library(gwb LANGUAGE python SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/source/wrapper_cpp.i)
   endif()
 
+endif()
+
+
+# Provide "indent" target for indenting all headers and source files
+ADD_CUSTOM_TARGET(indent
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND ./doc/indent
+  COMMENT "Indenting all the World Builder header and source files..."
+  )
+
+
+
+IF ( CMAKE_BUILD_TYPE STREQUAL Coverage )
+  SET(CMAKE_VERBOSE_MAKEFILE on )
+  SET(WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW --coverage -fprofile-arcs -ftest-coverage)
+  SET(WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_OLD "--coverage -fprofile-arcs -ftest-coverage")
+
+  ## for old versions of cmake
+  SET(WB_FORTRAN_COMPILER_FLAGS_COVERAGE "--coverage")
+endif()
+
+  SET(WB_LINKER_OPTIONS "")
+  SET(WB_VISU_LINKER_OPTIONS "")
+  SET(WB_COMPILER_OPTIONS_INTERFACE "")
+  SET(WB_COMPILER_OPTIONS_PRIVATE "")
+  SET(WB_VISU_COMPILER_OPTIONS_PRIVATE "")
+
+if (NOT MSVC AND NOT APPLE)
+   #TODO: if other compiles need to be threaded, see https://computing.llnl.gov/tutorials/pthreads/#Compiling to add the correct cases.
+   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER MATCHES "[Cc]lang")
+      # Preventing issues with older cmake compilers (<2.8.11) which do not support VERSION_GREATER_EQUAL
+      # cmake vesrion 3.12.0 introduces COMPILE_LANGUAGE:FORTAN, otherwise this would be >=2.8.11
+      if(NOT ${CMAKE_VERSION} VERSION_LESS "3.12.0") 
+        SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:FORTAN>:-pedantic -fPIC -Wall -Wextra>  $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wshadow -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>)
+      else()
+        SET(WB_COMPILER_OPTIONS_PRIVATE "-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wshadow -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>")
+      endif()
+   elseif(CMAKE_CXX_COMPILER_ID MATCHES "Intel")
+   SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -pthread -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsign-compare -Woverloaded-virtual -Wno-parentheses -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized>)
+   else()
+      # gcc linux
+
+      # Preventing issues with older cmake compilers (<2.8.11) which do not support VERSION_GREATER_EQUAL
+      # cmake vesrion 3.12.0 introduces COMPILE_LANGUAGE:FORTAN, otherwise this would be >=2.8.11
+      if(NOT ${CMAKE_VERSION} VERSION_LESS "3.12.0") 
+         SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:FORTAN>:-pedantic -fPIC -Wall -Wextra>  $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wshadow -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>)
+       else()
+         SET(WB_COMPILER_OPTIONS_PRIVATE "-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wshadow -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>")
+       endif()
+
+       include(CheckCXXCompilerFlag)
+       check_cxx_compiler_flag(-Wsuggest-override SUGGEST_OVERWRITE_CXX_COMPILE_FLAG)
+       if(SUGGEST_OVERWRITE_CXX_COMPILE_FLAG)
+         if(NOT ${CMAKE_VERSION} VERSION_LESS "3.12.0") # Preventing issues with older cmake compilers which do not support VERSION_GREATER_EQUAL
+           SET(WB_COMPILER_OPTIONS_PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE} $<$<COMPILE_LANGUAGE:CXX>:-Wsuggest-override>)
+         endif()
+       endif()
+   endif()
+   IF ( CMAKE_BUILD_TYPE STREQUAL Coverage )
+     if(NOT ${CMAKE_VERSION} VERSION_LESS "3.13.0") # Preventing issues with older cmake compilers which do not support VERSION_GREATER_EQUAL
+     SET(WB_LINKER_OPTIONS -lstdc++ --coverage -fprofile-arcs -ftest-coverage)
+     else()
+      SET(WB_LINKER_OPTIONS "-lstdc++ --coverage -fprofile-arcs -ftest-coverage")
+     endif()
+   else()
+     SET(WB_LINKER_OPTIONS -lstdc++)
+   endif()
+
+   SET(WB_VISU_LINKER_OPTIONS "-pthread")
+elseif(APPLE)
+    SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -stdlib=libc++ -Wuninitialized -Werror=uninitialized -Wdangling-else>)
+    SET(WB_LINKER_OPTIONS -lc++)
+else()
+    #MSVS
+    SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:CXX>:/W3 /EHsc -std=c++11>)
+    SET(WB_LINKER_OPTIONS  /WHOLEARCHIVE:${CMAKE_CURRENT_BINARY_DIR}/lib/WorldBuilder.lib)
+endif()
+
+
+
+if(${CMAKE_VERSION} VERSION_LESS "3.12.0") 
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${WB_COMPILER_OPTIONS_INTERFACE} ${WB_COMPILER_OPTIONS_PRIVATE} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_OLD}")
+else()
+  target_compile_options(WorldBuilder INTERFACE ${WB_COMPILER_OPTIONS_INTERFACE} PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW})
+  target_compile_options(WorldBuilderApp INTERFACE ${WB_COMPILER_OPTIONS_INTERFACE} PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW})
+  target_compile_options(WorldBuilderVisualization INTERFACE ${WB_COMPILER_OPTIONS_INTERFACE} PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW})
+endif()
+
+if(${CMAKE_VERSION} VERSION_LESS "3.13.0") 
+    SET(CMAKE_EXE_LINKER_FLAGS "${WB_LINKER_OPTIONS} ${WB_VISU_LINKER_OPTIONS} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_OLD}")
+else()
+    target_link_options(WorldBuilder INTERFACE ${WB_LINKER_OPTIONS} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW})
+    target_link_options(WorldBuilderApp INTERFACE ${WB_LINKER_OPTIONS} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW})
+    target_link_options(WorldBuilderVisualization INTERFACE ${WB_LINKER_OPTIONS} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW})
+    target_link_options(WorldBuilderVisualization PRIVATE  ${WB_VISU_LINKER_OPTIONS} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW})
+endif()
+
+
+
+
+# Make sure that the whole library is loaded, so the registration is done correctly.
+if(NOT APPLE AND NOT MSVC)
+  SET(GWB_LIBRARY_WHOLE -Wl,--whole-archive WorldBuilder -Wl,--no-whole-archive)
+elseif(MSVC)
+  SET(GWB_LIBRARY_WHOLE WorldBuilder)
+else()
+  SET(GWB_LIBRARY_WHOLE -Wl,-force_load WorldBuilder)
+endif()
+target_link_libraries (WorldBuilderApp ${GWB_LIBRARY_WHOLE})
+target_link_libraries (WorldBuilderVisualization ${GWB_LIBRARY_WHOLE}) 
+
+
+if(MAKE_PYTHON_WRAPPER)
+
   # see https://github.com/swig/swig/issues/1259 for more info.
   if(SWIG_VERSION VERSION_LESS "4.0.1" AND NOT MSVC)
     set_target_properties(${TARGET} PROPERTIES COMPILE_FLAGS "-Wno-cast-qual")
+  endif()
+
+  IF ( CMAKE_BUILD_TYPE STREQUAL Coverage )
+    set_target_properties(${TARGET} PROPERTIES COMPILE_FLAGS "--coverage -fprofile-arcs -ftest-coverage")
   endif()
 
   # visual studio has a problem with finding the debug version of python (pythonxx_d.dll),
@@ -216,28 +296,16 @@ if(MAKE_PYTHON_WRAPPER)
     SET(CMAKE_SWIG_FLAGS "-D_SWIG_WIN32 /WHOLEARCHIVE:${CMAKE_CURRENT_BINARY_DIR}/lib/WorldBuilder.lib")
     swig_link_libraries(gwb ${GWB_LIBRARY_WHOLE} ${Python_LIBRARY_RELEASE})
 
-    SET_TARGET_PROPERTIES(${TARGET} PROPERTIES LINK_FLAGS "/WHOLEARCHIVE:WorldBuilder")
-
   else()
-    swig_link_libraries(gwb ${GWB_LIBRARY_WHOLE} ${Python_LIBRARIES})
+    IF ( CMAKE_BUILD_TYPE STREQUAL Coverage )
+      swig_link_libraries(gwb ${GWB_LIBRARY_WHOLE} ${Python_LIBRARIES} --coverage -fprofile-arcs -ftest-coverage)
+    else()
+      swig_link_libraries(gwb ${GWB_LIBRARY_WHOLE} ${Python_LIBRARIES})
+    endif()
   endif()
   
   set_target_properties(${TARGET} PROPERTIES PREFIX "_" OUTPUT_NAME "gwb")
 
-  # Files to install with Python
-  if(WIN32)
-    set(PYTHON_INSTALL_FILES
-            ${CMAKE_CURRENT_BINARY_DIR}/lib/gwb.py
-            ${CMAKE_CURRENT_BINARY_DIR}/lib/_gwb.pyd)
-  else()
-    set(PYTHON_INSTALL_FILES
-            ${CMAKE_CURRENT_BINARY_DIR}/lib/gwb.py
-            ${CMAKE_CURRENT_BINARY_DIR}/lib/_gwb.so)
-  endif()
-  # Configure setup.py and copy to output directory
-  set(SETUP_PY_IN ${CMAKE_CURRENT_SOURCE_DIR}/cmake/setup.py.in)
-  set(SETUP_PY_OUT ${CMAKE_CURRENT_BINARY_DIR}/lib/setup.py)
-  configure_file(${SETUP_PY_IN} ${SETUP_PY_OUT})
 
   # Install target to call setup.py
   add_custom_target(install-python
