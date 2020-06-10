@@ -112,7 +112,7 @@ namespace WorldBuilder
             }
           return composition;
         }
-        WB_REGISTER_FEATURE_CONTINENTAL_COMPOSITION_MODEL(Uniform, uniform)
+        WB_REGISTER_FEATURE_OCEANIC_PLATE_COMPOSITION_MODEL(Uniform, uniform)
       }
     }
   }

@@ -148,14 +148,14 @@ namespace WorldBuilder
          * register it. Because this is a library, we need some extra measures
          * to ensure that the static variable is actually initialized.
          */
-#define WB_REGISTER_FEATURE_CONTINENTAL_COMPOSITION_MODEL(klass,name) \
+#define WB_REGISTER_FEATURE_CONTINENTAL_PLATE_COMPOSITION_MODEL(klass,name) \
   class klass##Factory : public ObjectFactory { \
     public: \
       klass##Factory() \
       { \
         Interface::registerType(#name, klass::declare_entries, this); \
       } \
-      virtual std::unique_ptr<Interface> create(World *world) final { \
+      std::unique_ptr<Interface> create(World *world) override final { \
         return std::unique_ptr<Interface>(new klass(world)); \
       } \
   }; \

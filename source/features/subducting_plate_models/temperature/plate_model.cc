@@ -239,7 +239,7 @@ namespace WorldBuilder
           return temperature_;
         }
 
-        WB_REGISTER_FEATURE_CONTINENTAL_TEMPERATURE_MODEL(PlateModel, plate model)
+        WB_REGISTER_FEATURE_SUBDUCTING_PLATE_TEMPERATURE_MODEL(PlateModel, plate model)
       }
     }
   }

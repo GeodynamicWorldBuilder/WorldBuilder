@@ -200,9 +200,9 @@ if (NOT MSVC AND NOT APPLE)
       # Preventing issues with older cmake compilers (<2.8.11) which do not support VERSION_GREATER_EQUAL
       # cmake vesrion 3.12.0 introduces COMPILE_LANGUAGE:FORTAN, otherwise this would be >=2.8.11
       if(NOT ${CMAKE_VERSION} VERSION_LESS "3.12.0") 
-        SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:FORTAN>:-pedantic -fPIC -Wall -Wextra>  $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wshadow -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>)
+        SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:FORTAN>:-pedantic -fPIC -Wall -Wextra>  $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Werror=uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wmissing-declarations -Wredundant-decls -Wshadow -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>)
       else()
-        SET(WB_COMPILER_OPTIONS_PRIVATE "-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wshadow -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>")
+        SET(WB_COMPILER_OPTIONS_PRIVATE "-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Werror=uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wmissing-declarations -Wredundant-decls -Wshadow -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>")
       endif()
    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Intel")
    SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -pthread -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsign-compare -Woverloaded-virtual -Wno-parentheses -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized>)
@@ -212,18 +212,31 @@ if (NOT MSVC AND NOT APPLE)
       # Preventing issues with older cmake compilers (<2.8.11) which do not support VERSION_GREATER_EQUAL
       # cmake vesrion 3.12.0 introduces COMPILE_LANGUAGE:FORTAN, otherwise this would be >=2.8.11
       if(NOT ${CMAKE_VERSION} VERSION_LESS "3.12.0") 
-         SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:FORTAN>:-pedantic -fPIC -Wall -Wextra>  $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wshadow -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>)
-       else()
-         SET(WB_COMPILER_OPTIONS_PRIVATE "-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wshadow -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>")
-       endif()
+        SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:FORTAN>:-pedantic -fPIC -Wall -Wextra>  $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>)
+      else()
+        SET(WB_COMPILER_OPTIONS_PRIVATE "-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>")
+      endif()
 
-       include(CheckCXXCompilerFlag)
-       check_cxx_compiler_flag(-Wsuggest-override SUGGEST_OVERWRITE_CXX_COMPILE_FLAG)
-       if(SUGGEST_OVERWRITE_CXX_COMPILE_FLAG)
-         if(NOT ${CMAKE_VERSION} VERSION_LESS "3.12.0") # Preventing issues with older cmake compilers which do not support VERSION_GREATER_EQUAL
-           SET(WB_COMPILER_OPTIONS_PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE} $<$<COMPILE_LANGUAGE:CXX>:-Wsuggest-override>)
-         endif()
-       endif()
+      # adding flags is a hassle before cmake 3.12.0, and these flags are mostly useful for development, so just ignore those flags.
+      if(NOT ${CMAKE_VERSION} VERSION_LESS "3.12.0") # Preventing issues with older cmake compilers which do not support VERSION_GREATER_EQUAL
+        include(CheckCXXCompilerFlag)
+
+        check_cxx_compiler_flag(-Wsuggest-override SUGGEST_OVERWRITE_CXX_COMPILE_FLAG)
+        if(SUGGEST_OVERWRITE_CXX_COMPILE_FLAG)
+          SET(WB_COMPILER_OPTIONS_PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE} $<$<COMPILE_LANGUAGE:CXX>:-Wsuggest-override>)
+        endif()
+
+        check_cxx_compiler_flag(-Wno-placement-new NO_PLACEMENT_NEW_CXX_COMPILE_FLAG)
+        if(NO_PLACEMENT_NEW_CXX_COMPILE_FLAG)
+          SET(WB_COMPILER_OPTIONS_PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE} $<$<COMPILE_LANGUAGE:CXX>:-Wno-placement-new>)
+        endif()
+
+        # untill 4.9.0 Wshadow is too strict: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=57709,
+        # but still some issues in 4.9.0, so only add it after 5.0.0.
+        if(CMAKE_COMPILER_IS_GNUCC AND NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.0.0)
+          SET(WB_COMPILER_OPTIONS_PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE} $<$<COMPILE_LANGUAGE:CXX>:-Wshadow>)
+        endif()
+      endif()
    endif()
    IF ( CMAKE_BUILD_TYPE STREQUAL Coverage )
      if(NOT ${CMAKE_VERSION} VERSION_LESS "3.13.0") # Preventing issues with older cmake compilers which do not support VERSION_GREATER_EQUAL

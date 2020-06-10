@@ -71,7 +71,7 @@ namespace WorldBuilder
         virtual
         void write_schema(Parameters &prm,
                           const std::string &name,
-                          const std::string &documentation) const final;
+                          const std::string &documentation) const override final;
 
         /**
          * dot product
@@ -113,7 +113,7 @@ namespace WorldBuilder
         std::string description;
 
       protected:
-        virtual Point *clone_impl() const final
+        Point *clone_impl() const override final
         {
           return new Point(*this);
         };

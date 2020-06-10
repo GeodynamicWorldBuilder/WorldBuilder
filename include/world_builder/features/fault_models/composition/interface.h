@@ -155,7 +155,7 @@ namespace WorldBuilder
       { \
         Interface::registerType(#name, klass::declare_entries, this); \
       } \
-      virtual std::unique_ptr<Interface> create(World *world) final { \
+      std::unique_ptr<Interface> create(World *world) override final { \
         return std::unique_ptr<Interface>(new klass(world)); \
       } \
   }; \
