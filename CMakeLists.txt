@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 2.8.4)
 project(WorldBuilder C CXX)
 
 # SWIG: use standard target name.
