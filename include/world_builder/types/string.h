@@ -89,7 +89,7 @@ namespace WorldBuilder
 
 
       protected:
-        virtual String *clone_impl() const  final
+        String *clone_impl() const  final
         {
           return new String(*this);
         };

@@ -61,7 +61,7 @@ namespace WorldBuilder
         bool default_value;
 
       protected:
-        virtual Bool *clone_impl() const final
+        Bool *clone_impl() const final
         {
           return new Bool(*this);
         };

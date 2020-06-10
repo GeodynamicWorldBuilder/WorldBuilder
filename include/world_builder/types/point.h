@@ -113,7 +113,7 @@ namespace WorldBuilder
         std::string description;
 
       protected:
-        virtual Point *clone_impl() const final
+        Point *clone_impl() const final
         {
           return new Point(*this);
         };

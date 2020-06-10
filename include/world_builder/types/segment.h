@@ -85,7 +85,7 @@ namespace WorldBuilder
         std::unique_ptr<Types::Interface> composition_plugin_system;
 
       protected:
-        virtual Segment *clone_impl() const  final
+        Segment *clone_impl() const  final
         {
           return new Segment(*this);
         };
@@ -143,7 +143,7 @@ namespace WorldBuilder
         std::vector<std::shared_ptr<B> > composition_systems;
 
       protected:
-        virtual Segment *clone_impl() const final
+        Segment *clone_impl() const final
         {
           return new Segment(*this);
         };

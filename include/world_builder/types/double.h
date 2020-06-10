@@ -60,7 +60,7 @@ namespace WorldBuilder
         double default_value;
 
       protected:
-        virtual Double *clone_impl() const final
+        Double *clone_impl() const final
         {
           return new Double(*this);
         };

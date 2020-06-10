@@ -106,7 +106,7 @@ namespace WorldBuilder
         bool unique_items;
 
       protected:
-        virtual Array *clone_impl() const final
+        Array *clone_impl() const final
         {
           return new Array(*this);
         };

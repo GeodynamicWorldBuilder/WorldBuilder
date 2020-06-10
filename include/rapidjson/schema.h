@@ -2139,7 +2139,7 @@ class GenericSchemaValidator :
 
     //! Checks whether the current state is valid.
     // Implementation of ISchemaValidator
-    virtual bool IsValid() const final
+    bool IsValid() const final
     {
       return valid_;
     }
@@ -2519,7 +2519,7 @@ class GenericSchemaValidator :
 #undef RAPIDJSON_SCHEMA_HANDLE_VALUE_
 
     // Implementation of ISchemaStateFactory<SchemaType>
-    virtual ISchemaValidator *CreateSchemaValidator(const SchemaType &root) final
+    ISchemaValidator *CreateSchemaValidator(const SchemaType &root) final
     {
       return new (GetStateAllocator().Malloc(sizeof(GenericSchemaValidator))) GenericSchemaValidator(*schemaDocument_, root, documentStack_.template Bottom<char>(), documentStack_.GetSize(),
 #if RAPIDJSON_SCHEMA_VERBOSE
@@ -2528,36 +2528,36 @@ class GenericSchemaValidator :
       &GetStateAllocator());
     }
 
-    virtual void DestroySchemaValidator(ISchemaValidator *validator) final
+    void DestroySchemaValidator(ISchemaValidator *validator) final
     {
       GenericSchemaValidator *v = static_cast<GenericSchemaValidator *>(validator);
       v->~GenericSchemaValidator();
       StateAllocator::Free(v);
     }
 
-    virtual void *CreateHasher() final
+    void *CreateHasher() final
     {
       return new (GetStateAllocator().Malloc(sizeof(HasherType))) HasherType(&GetStateAllocator());
     }
 
-    virtual uint64_t GetHashCode(void *hasher) final
+    uint64_t GetHashCode(void *hasher) final
     {
       return static_cast<HasherType *>(hasher)->GetHashCode();
     }
 
-    virtual void DestroryHasher(void *hasher) final
+    void DestroryHasher(void *hasher) final
     {
       HasherType *h = static_cast<HasherType *>(hasher);
       h->~HasherType();
       StateAllocator::Free(h);
     }
 
-    virtual void *MallocState(size_t size) final
+    void *MallocState(size_t size) final
     {
       return GetStateAllocator().Malloc(size);
     }
 
-    virtual void FreeState(void *p) final
+    void FreeState(void *p) final
     {
       StateAllocator::Free(p);
     }

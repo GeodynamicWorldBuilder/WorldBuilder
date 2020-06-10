@@ -72,7 +72,7 @@ namespace WorldBuilder
         bool additional_properties;
 
       protected:
-        virtual Object *clone_impl() const final
+        Object *clone_impl() const final
         {
           return new Object(*this);
         };

@@ -65,7 +65,7 @@ namespace WorldBuilder
         /**
          * This implements the actual cloneing for the clone function in the base class.
          */
-        virtual UnsignedInt *clone_impl() const final
+        UnsignedInt *clone_impl() const final
         {
           return new UnsignedInt(*this);
         };

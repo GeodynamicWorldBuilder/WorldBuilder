@@ -70,7 +70,7 @@ namespace WorldBuilder
         bool allow_multiple;
 
       protected:
-        virtual PluginSystem *clone_impl() const final
+        PluginSystem *clone_impl() const final
         {
           return new PluginSystem(*this);
         };
