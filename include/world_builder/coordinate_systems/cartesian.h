@@ -61,13 +61,12 @@ namespace WorldBuilder
         /**
          * declare and read in the world builder file into the parameters class
          */
-        virtual
         void parse_entries(Parameters &prm) override final;
+
 
         /**
          * Returns what the natural coordinate system for this Coordinate System is.
          */
-        virtual
         CoordinateSystem natural_coordinate_system() const override final;
 
         /**
@@ -75,7 +74,6 @@ namespace WorldBuilder
          * the domain.
          * \sa DepthMethod
          */
-        virtual
         DepthMethod depth_method() const override final;
 
         /**
@@ -85,7 +83,6 @@ namespace WorldBuilder
          * model it  will be (radius, longitude) in 2d and (radius, longitude,
          * latitude) in 3d.
          */
-        virtual
         std::array<double,3> cartesian_to_natural_coordinates(const std::array<double,3> &position) const override final;
 
         /**
@@ -93,7 +90,6 @@ namespace WorldBuilder
          * coordinate system which is most 'natural' to the geometry model into
          * Cartesian coordinates.
          */
-        virtual
         std::array<double,3> natural_to_cartesian_coordinates(const std::array<double,3> &position) const override final;
 
 
@@ -101,7 +97,6 @@ namespace WorldBuilder
          * Computes the distance between two points which are on the same depth.
          * The input is two 3d points at that depth. It is implemented as the
          */
-        virtual
         double distance_between_points_at_same_depth(const Point<3> &point_1, const Point<3> &point_2) const override final;
 
 

@@ -61,7 +61,6 @@ namespace WorldBuilder
             /**
              * declare and read in the world builder file into the parameters class
              */
-            virtual
             void parse_entries(Parameters &prm) override final;
 
 
@@ -69,7 +68,6 @@ namespace WorldBuilder
              * Returns a temperature based on the given position, depth in the model,
              * gravity and current temperature.
              */
-            virtual
             double get_temperature(const Point<3> &position,
                                    const double depth,
                                    const double gravity,
