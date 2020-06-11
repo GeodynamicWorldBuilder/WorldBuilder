@@ -436,6 +436,49 @@ namespace WorldBuilder
     return vector;
   }
 
+  template<>
+  std::vector<std::array<std::array<double,3>,3> >
+  Parameters::get_vector(const std::string &name)
+  {
+    std::vector<std::array<std::array<double,3>,3>  > vector;
+    const std::string strict_base = this->get_full_json_path();
+    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != NULL)
+      {
+        Value *array1 = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+        for (size_t i = 0; i < array1->Size(); ++i )
+          {
+            const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
+            Value *array2 = Pointer((base).c_str()).Get(parameters);
+            std::array<std::array<double,3>,3> array;
+
+            for (size_t j = 0; j < array2->Size(); ++j )
+              {
+                const std::string base_extended = base + "/" + std::to_string(j);
+                //let's assume that the file is correct, because it has been checked with the json schema.
+                // So there are exactly three values.
+                double value1, value2, value3;
+
+                try
+                  {
+                    value1 = Pointer((base_extended + "/0").c_str()).Get(parameters)->GetDouble();
+                    value2 = Pointer((base_extended + "/1").c_str()).Get(parameters)->GetDouble();
+                    value3 = Pointer((base_extended + "/2").c_str()).Get(parameters)->GetDouble();
+                  }
+                catch (...)
+                  {
+                    WBAssertThrow(false, "Could not convert values of " << base << " into doubles.");
+                  }
+                array[j][0] = value1;
+                array[j][1] = value2;
+                array[j][2] = value3;
+              }
+            vector.push_back(array);
+          }
+      }
+    return vector;
+  }
+
 
   template<>
   std::vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,Features::SubductingPlateModels::Composition::Interface> >
