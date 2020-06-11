@@ -153,8 +153,8 @@ namespace WorldBuilder
         WBAssertThrow(cross_section_natural.size() == 2, "The cross section should contain two points, but it contains "
                       << cross_section.size() << " points.");
 
-        for (unsigned int i = 0; i < cross_section_natural.size(); ++i)
-          cross_section.push_back(cross_section_natural[i]  * (coordinate_system == spherical ? const_pi / 180.0 : 1.0));
+        for (auto it : cross_section_natural)
+          cross_section.push_back(it *  (coordinate_system == spherical ? const_pi / 180.0 : 1.0));
 
 
         /**
@@ -260,14 +260,14 @@ namespace WorldBuilder
                                    specific_heat) * depth);
 
 
-    for (std::vector<std::unique_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
+    for (auto &&it : parameters.features)
       {
-        temperature = (*it)->temperature(point,depth,gravity_norm,temperature);
+        temperature = it->temperature(point,depth,gravity_norm,temperature);
 
         WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature
-                 << ", based on a feature with the name " << (*it)->get_name());
+                 << ", based on a feature with the name " << it->get_name());
         WBAssert(std::isfinite(temperature), "Temparture is not a finite: " << temperature
-                 << ", based on a feature with the name " << (*it)->get_name());
+                 << ", based on a feature with the name " << it->get_name());
       }
 
     WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature);
@@ -322,14 +322,14 @@ namespace WorldBuilder
     // We receive the cartesian points from the user.
     Point<3> point(point_,cartesian);
     double composition = 0;
-    for (std::vector<std::unique_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
+    for (auto &&it : parameters.features)
       {
-        composition = (*it)->composition(point,depth,composition_number, composition);
+        composition = it->composition(point,depth,composition_number, composition);
 
         WBAssert(!std::isnan(composition), "Composition is not a number: " << composition
-                 << ", based on a feature with the name " << (*it)->get_name());
+                 << ", based on a feature with the name " << it->get_name());
         WBAssert(std::isfinite(composition), "Composition is not a finite: " << composition
-                 << ", based on a feature with the name " << (*it)->get_name());
+                 << ", based on a feature with the name " << it->get_name());
       }
 
     WBAssert(!std::isnan(composition), "Composition is not a number: " << composition);
