@@ -62,14 +62,12 @@ namespace WorldBuilder
         /**
          * declare and read in the world builder file into the parameters class
          */
-        virtual
         void parse_entries(Parameters &prm) override final;
 
         /**
          * Returns a temperature based on the given position, depth in the model,
          * gravity and current temperature.
          */
-        virtual
         double temperature(const Point<3> &position,
                            const double depth,
                            const double gravity,
@@ -81,7 +79,6 @@ namespace WorldBuilder
          * the composition which is being requested and the current value
          * of that composition at this location and depth.
          */
-        virtual
         double composition(const Point<3> &position,
                            const double depth,
                            const unsigned int composition_number,

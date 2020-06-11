@@ -68,7 +68,6 @@ namespace WorldBuilder
         /**
          * Todo
          */
-        virtual
         void write_schema(Parameters &prm,
                           const std::string &name,
                           const std::string &documentation) const override final;
@@ -85,7 +84,7 @@ namespace WorldBuilder
         std::unique_ptr<Types::Interface> composition_plugin_system;
 
       protected:
-        Segment *clone_impl() const  override final
+        Segment *clone_impl() const override final
         {
           return new Segment(*this);
         };
@@ -128,7 +127,6 @@ namespace WorldBuilder
         /**
          * Todo
          */
-        virtual
         void write_schema(Parameters &prm,
                           const std::string &name,
                           const std::string &documentation) const override final;
