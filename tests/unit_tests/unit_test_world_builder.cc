@@ -3108,6 +3108,10 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK_THROWS_WITH(prm.get_vector<unsigned int>("non existent unsigned int vector"),
                     Contains("internal error: could not retrieve the minItems value at"));
 
+  typedef std::array<std::array<double,3>,3> array_3x3;
+  CHECK_THROWS_WITH(prm.get_vector<array_3x3>("vector of 3x3 arrays nan"),
+                    Contains("Could not convert values of /vector of 3x3 arrays nan/0 into doubles."));
+
 
   prm.enter_subsection("properties");
   {
@@ -3162,10 +3166,33 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK(v_double[1] == Approx(2.4));
 
   v_double = prm.get_vector<double>("double array");
-  CHECK(v_double.size() == Approx(3.0));
+  CHECK(v_double.size() == 3);
   CHECK(v_double[0] == Approx(25.2));
   CHECK(v_double[1] == Approx(26.3));
   CHECK(v_double[2] == Approx(27.4));
+
+
+  std::vector<std::array<std::array<double,3>,3> > v_3x3_array = prm.get_vector<std::array<std::array<double,3>,3> >("vector of 3x3 arrays");
+  CHECK(v_3x3_array.size() == 2);
+  CHECK(v_3x3_array[0][0][0] == Approx(0.0));
+  CHECK(v_3x3_array[0][0][1] == Approx(1.0));
+  CHECK(v_3x3_array[0][0][2] == Approx(2.0));
+  CHECK(v_3x3_array[0][1][0] == Approx(3.0));
+  CHECK(v_3x3_array[0][1][1] == Approx(4.0));
+  CHECK(v_3x3_array[0][1][2] == Approx(5.0));
+  CHECK(v_3x3_array[0][2][0] == Approx(6.0));
+  CHECK(v_3x3_array[0][2][1] == Approx(7.0));
+  CHECK(v_3x3_array[0][2][2] == Approx(8.0));
+
+  CHECK(v_3x3_array[1][0][0] == Approx(9.0));
+  CHECK(v_3x3_array[1][0][1] == Approx(10.0));
+  CHECK(v_3x3_array[1][0][2] == Approx(11.0));
+  CHECK(v_3x3_array[1][1][0] == Approx(12.0));
+  CHECK(v_3x3_array[1][1][1] == Approx(13.0));
+  CHECK(v_3x3_array[1][1][2] == Approx(14.0));
+  CHECK(v_3x3_array[1][2][0] == Approx(15.0));
+  CHECK(v_3x3_array[1][2][1] == Approx(16.0));
+  CHECK(v_3x3_array[1][2][2] == Approx(17.0));
 
 
   /*CHECK_THROWS_WITH(prm.get_vector<std::string>("non existent string vector"),
