@@ -108,7 +108,7 @@ namespace WorldBuilder
       starting_depth = prm.get<double>("min depth");
       maximum_depth = prm.get<double>("max depth");
 
-      const unsigned int n_sections = this->original_number_of_coordinates;
+      const size_t n_sections = this->original_number_of_coordinates;
 
       reference_point = prm.get<Point<2> >("dip point");
 
@@ -329,10 +329,10 @@ namespace WorldBuilder
           const double distance_from_plane = distance_from_planes["distanceFromPlane"];
           const double distance_along_plane = distance_from_planes["distanceAlongPlane"];
           const double section_fraction = distance_from_planes["sectionFraction"];
-          const unsigned int current_section = (unsigned int)std::floor(one_dimensional_coordinates[(unsigned int)distance_from_planes["section"]]);
-          const unsigned int next_section = current_section + 1;
-          const unsigned int current_segment = (unsigned int)distance_from_planes["segment"]; // the original value was a unsigned in, converting it back.
-          //const unsigned int next_segment = current_segment + 1;
+          const size_t current_section = static_cast<size_t>(std::floor(one_dimensional_coordinates[static_cast<size_t>(distance_from_planes["section"])]));
+          const size_t next_section = current_section + 1;
+          const size_t current_segment = static_cast<size_t>(distance_from_planes["segment"]); // the original value was a unsigned in, converting it back.
+          //const size_t next_segment = current_segment + 1;
           const double segment_fraction = distance_from_planes["segmentFraction"];
 
           if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)
@@ -457,10 +457,10 @@ namespace WorldBuilder
           const double distance_from_plane = distance_from_planes["distanceFromPlane"];
           const double distance_along_plane = distance_from_planes["distanceAlongPlane"];
           const double section_fraction = distance_from_planes["sectionFraction"];
-          const unsigned int current_section = (unsigned int)std::floor(one_dimensional_coordinates[(unsigned int)distance_from_planes["section"]]);
-          const unsigned int next_section = current_section + 1;
-          const unsigned int current_segment = (unsigned int)distance_from_planes["segment"]; // the original value was a unsigned int, turning it back.
-          //const unsigned int next_segment = current_segment + 1;
+          const size_t current_section = static_cast<size_t>(std::floor(one_dimensional_coordinates[static_cast<size_t>(distance_from_planes["section"])]));
+          const size_t next_section = current_section + 1;
+          const size_t current_segment = static_cast<size_t>(distance_from_planes["segment"]); // the original value was a unsigned int, turning it back.
+          //const size_t next_segment = current_segment + 1;
           const double segment_fraction = distance_from_planes["segmentFraction"];
 
           if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)

@@ -482,7 +482,7 @@ namespace WorldBuilder
                                             natural_coordinate_system);
 
       // The section which is checked.
-      double section = 0.0;
+      size_t section = 0;
 
       // The 'horizontal' fraction between the points at the surface.
       double section_fraction = 0.0;
@@ -504,13 +504,13 @@ namespace WorldBuilder
 
       // loop over all the planes to find out which one is closest to the point.
 
-      for (unsigned int i_section=0; i_section < point_list.size()-1; ++i_section)
+      for (size_t i_section=0; i_section < point_list.size()-1; ++i_section)
         {
-          const unsigned int current_section = i_section;
-          const unsigned int next_section = i_section+1;
+          const size_t current_section = i_section;
+          const size_t next_section = i_section+1;
           // translate to orignal coordinates current and next section
-          const unsigned int original_current_section = (unsigned int)std::floor(global_x_list[i_section]);
-          const unsigned int original_next_section = original_current_section + 1;
+          const size_t original_current_section = static_cast<size_t>(std::floor(global_x_list[i_section]));
+          const size_t original_next_section = original_current_section + 1;
           // see on what side the line P1P2 reference point is. This is based on the determinant
           const double reference_on_side_of_line = (point_list[next_section][0] - point_list[current_section][0])
                                                    * (reference_point[1] - point_list[current_section][1])
@@ -549,7 +549,7 @@ namespace WorldBuilder
             {
               // now figure out where the point is in relation with the user
               // defined coordinates
-              const double fraction_CPL_P1P2 = global_x_list[i_section] - (int)global_x_list[i_section]
+              const double fraction_CPL_P1P2 = global_x_list[i_section] - static_cast<int>(global_x_list[i_section])
                                                + (global_x_list[i_section+1]-global_x_list[i_section]) * fraction_CPL_P1P2_strict;
 
               const Point<2> unit_normal_to_plane_spherical = P1P2 / P1P2.norm();
@@ -992,7 +992,7 @@ namespace WorldBuilder
       return_values["distanceAlongPlane"] = along_plane_distance;
       return_values["sectionFraction"] = section_fraction;
       return_values["segmentFraction"] = segment_fraction;
-      return_values["section"] = section;
+      return_values["section"] = static_cast<double>(section);
       return_values["segment"] = segment;
       return_values["averageAngle"] = total_average_angle;
       return return_values;
@@ -1020,7 +1020,7 @@ namespace WorldBuilder
            * interpolation spline.
            */
           std::vector<double> dys(n-1), dxs(n-1), ms(n-1);
-          for (unsigned int i=0; i < n-1; i++)
+          for (size_t i=0; i < n-1; i++)
             {
               dxs[i] = x[i+1]-x[i];
               dys[i] = y[i+1]-y[i];
@@ -1031,7 +1031,7 @@ namespace WorldBuilder
           m_c.resize(n);
           m_c[0] = 0;
 
-          for (unsigned int i = 0; i < n-2; i++)
+          for (size_t i = 0; i < n-2; i++)
             {
               const double m0 = ms[i];
               const double m1 = ms[i+1];
@@ -1053,7 +1053,7 @@ namespace WorldBuilder
           // Get b and c coefficients
           m_a.resize(n);
           m_b.resize(n);
-          for (unsigned int i = 0; i < m_c.size()-1; i++)
+          for (size_t i = 0; i < m_c.size()-1; i++)
             {
               const double c1 = m_c[i];
               const double m0 = ms[i];
@@ -1069,7 +1069,7 @@ namespace WorldBuilder
           m_a.resize(n);
           m_b.resize(n);
           m_c.resize(n);
-          for (unsigned int i = 0; i<n-1; i++)
+          for (size_t i = 0; i<n-1; i++)
             {
               m_a[i] = 0.0;
               m_b[i] = 0.0;
@@ -1094,7 +1094,7 @@ namespace WorldBuilder
       // find the closest point m_x[idx] < x, idx=0 even if x<m_x[0]
       std::vector<double>::const_iterator it;
       it = std::lower_bound(m_x.begin(),m_x.end(),x);
-      int idx = std::max( int(it-m_x.begin())-1, 0);
+      size_t idx = static_cast<size_t>(std::max( static_cast<int>(it-m_x.begin())-1, 0));
 
       double h = x-m_x[idx];
       double interpol;

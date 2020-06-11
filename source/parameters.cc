@@ -115,25 +115,25 @@ namespace WorldBuilder
     //WBAssertThrow(!parameters.ParseStream<kParseCommentsFlag>(isw).HasParseError(), "Parsing erros world builder file");
 
     WBAssertThrowExc(!(parameters.ParseStream<kParseCommentsFlag | kParseNanAndInfFlag>(isw).HasParseError()), std::ifstream json_input_stream_error(filename.c_str()); ,
-                     "Parsing errors world builder file: Error(offset " << (unsigned)parameters.GetErrorOffset()
+                     "Parsing errors world builder file: Error(offset " << static_cast<unsigned>(parameters.GetErrorOffset())
                      << "): " << GetParseError_En(parameters.GetParseError()) << std::endl << std::endl
                      << " Showing 50 chars before and after: "
                      << std::string((std::istreambuf_iterator<char>(json_input_stream_error.seekg(0, json_input_stream_error.beg))),
-                                    std::istreambuf_iterator<char>()).substr((unsigned)parameters.GetErrorOffset() <= 50
+                                    std::istreambuf_iterator<char>()).substr(static_cast<unsigned>(parameters.GetErrorOffset()) <= 50
                                                                              ?
                                                                              0
                                                                              :
-                                                                             (unsigned)parameters.GetErrorOffset() - 50, 100
+                                                                             static_cast<unsigned>(parameters.GetErrorOffset()) - 50, 100
                                                                             ) << std::endl << std::endl
                      << " Showing 5 chars before and after: "
                      << std::string((std::istreambuf_iterator<char>(json_input_stream_error.seekg(0, json_input_stream_error.beg))),
-                                    std::istreambuf_iterator<char>()).substr((unsigned)parameters.GetErrorOffset() <= 5
+                                    std::istreambuf_iterator<char>()).substr(static_cast<unsigned>(parameters.GetErrorOffset()) <= 5
                                                                              ? 0
                                                                              :
-                                                                             (unsigned)parameters.GetErrorOffset()-5,
-                                                                             ((unsigned)parameters.GetErrorOffset() + 10 > json_input_stream_error.seekg(0,ios::end).tellg()
+                                                                             static_cast<unsigned>(parameters.GetErrorOffset())-5,
+                                                                             (static_cast<unsigned>(parameters.GetErrorOffset()) + 10 > json_input_stream_error.seekg(0,ios::end).tellg()
                                                                               ?
-                                                                              (size_t)json_input_stream.tellg()-(unsigned)parameters.GetErrorOffset()
+                                                                              static_cast<unsigned>(json_input_stream.tellg())-static_cast<unsigned>(parameters.GetErrorOffset())
                                                                               :
                                                                               10)
                                                                             ));
@@ -383,26 +383,21 @@ namespace WorldBuilder
 #endif
     if (array != NULL)
       {
-        //Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+        const std::string base = strict_base + "/" + name;
+        //let's assume that the file is correct, because it has been checked with the json schema.
+        // So there are exactly two values.
+        double value1, value2;
 
-        for (size_t i = 0; i < array->Size(); ++i )
+        try
           {
-            const std::string base = strict_base + "/" + name;
-            //let's assume that the file is correct, because it has been checked with the json schema.
-            // So there are exactly two values.
-            double value1, value2;
-
-            try
-              {
-                value1 = Pointer((base + "/0").c_str()).Get(parameters)->GetDouble();
-                value2 = Pointer((base + "/1").c_str()).Get(parameters)->GetDouble();
-              }
-            catch (...)
-              {
-                WBAssertThrow(false, "Could not convert values of " << base << " into Point<2>, because it could not convert the sub-elements into doubles.");
-              }
-            return Point<2>(value1,value2,this->coordinate_system->natural_coordinate_system());
+            value1 = Pointer((base + "/0").c_str()).Get(parameters)->GetDouble();
+            value2 = Pointer((base + "/1").c_str()).Get(parameters)->GetDouble();
           }
+        catch (...)
+          {
+            WBAssertThrow(false, "Could not convert values of " << base << " into Point<2>, because it could not convert the sub-elements into doubles.");
+          }
+        return Point<2>(value1,value2,this->coordinate_system->natural_coordinate_system());
       }
     WBAssertThrow(false, "default values not implemented in get<Point<2> >. Looked in: " + strict_base + "/" << name);
 

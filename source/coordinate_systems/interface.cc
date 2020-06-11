@@ -42,7 +42,7 @@ namespace WorldBuilder
     {
 
       unsigned int counter = 0;
-      for (auto  it = get_declare_map().begin(); it != get_declare_map().end(); ++it )
+      for (auto it : get_declare_map())
         {
           prm.enter_subsection("oneOf");
           {
@@ -52,10 +52,10 @@ namespace WorldBuilder
               {
                 prm.declare_entry("", Types::Object(required_entries), "Coordinate system object");
 
-                prm.declare_entry("model",Types::String("",it->first),
+                prm.declare_entry("model",Types::String("",it.first),
                                   "The name which the user has given to the feature.");
 
-                it->second(prm, parent_name);
+                it.second(prm, parent_name);
               }
               prm.leave_subsection();
             }
