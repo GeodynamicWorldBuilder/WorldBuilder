@@ -156,7 +156,8 @@ namespace WorldBuilder
   Point<dim>::operator-(const Point<dim> &point_) const
   {
     WBAssert(coordinate_system == point_.get_coordinate_system(),
-             "Cannot substract two points which represent different coordinate systems. Internal has type " << (int)coordinate_system << ", other point has type " << (int)point_.get_coordinate_system());
+             "Cannot substract two points which represent different coordinate systems. Internal has type " << static_cast<int>(coordinate_system)
+             << ", other point has type " << static_cast<int>(point_.get_coordinate_system()));
     Point<dim> point_tmp(point,coordinate_system);
     point_tmp -= point_;
 

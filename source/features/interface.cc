@@ -52,7 +52,7 @@ namespace WorldBuilder
     {
 
       unsigned int counter = 0;
-      for (auto  it = get_declare_map().begin(); it != get_declare_map().end(); ++it )
+      for (auto  it : get_declare_map())
         {
           prm.enter_subsection("oneOf");
           {
@@ -63,7 +63,7 @@ namespace WorldBuilder
               {
                 prm.declare_entry("", Types::Object(required_entries), "feature object");
 
-                prm.declare_entry("model", Types::String("",it->first),
+                prm.declare_entry("model", Types::String("",it.first),
                                   "The name which the user has given to the feature.");
                 prm.declare_entry("name", Types::String(""),
                                   "The name which the user has given to the feature.");
@@ -71,8 +71,8 @@ namespace WorldBuilder
                                   "An array of 2d Points representing an array of coordinates where the feature is located.");
 
 
-                WBAssert(it->second != NULL, "No declare entries given.");
-                it->second(prm, parent_name, {});
+                WBAssert(it.second != NULL, "No declare entries given.");
+                it.second(prm, parent_name, {});
               }
               prm.leave_subsection();
             }
@@ -106,11 +106,11 @@ namespace WorldBuilder
 
       // the one_dimensional_coordinates is always needed, so fill it.
       original_number_of_coordinates = coordinates.size();
-      //std:cout << "original_number_of_coordinates = " << original_number_of_coordinates << std::endl;
+
       std::vector<double> one_dimensional_coordinates_local(original_number_of_coordinates,0.0);
       for (size_t j=0; j<original_number_of_coordinates; ++j)
         {
-          one_dimensional_coordinates_local[j] = j;
+          one_dimensional_coordinates_local[j] = static_cast<double>(j);
         }
 
       if (interpolation != "none")
@@ -148,13 +148,13 @@ namespace WorldBuilder
                                      coordinate_system);
 
                   const double length = (P1 - P2).norm();
-                  const size_t parts = (int)std::ceil(length / maximum_distance_between_coordinates);
+                  const size_t parts = static_cast<size_t>(std::ceil(length / maximum_distance_between_coordinates));
                   for (size_t j = 1; j < parts; j++)
                     {
-                      const double x_position3 = i_plane+(double(j)/double(parts));
+                      const double x_position3 = static_cast<double>(i_plane) + static_cast<double>(j)/static_cast<double>(parts);
                       const Point<2> P3(x_spline(x_position3), y_spline(x_position3), coordinate_system);
-                      one_dimensional_coordinates_local.insert(one_dimensional_coordinates_local.begin() + additional_parts + i_plane + 1, x_position3);
-                      coordinate_list_local.insert(coordinate_list_local.begin() + additional_parts + i_plane + 1, P3);
+                      one_dimensional_coordinates_local.insert(one_dimensional_coordinates_local.begin() + static_cast<std::vector<double>::difference_type>(additional_parts + i_plane + 1), x_position3);
+                      coordinate_list_local.insert(coordinate_list_local.begin() + static_cast<std::vector<double>::difference_type>(additional_parts + i_plane + 1), P3);
                       additional_parts++;
                     }
                 }
