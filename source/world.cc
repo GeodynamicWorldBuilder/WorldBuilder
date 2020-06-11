@@ -344,7 +344,8 @@ namespace WorldBuilder
   WorldBuilder::grains
   World::grains(const std::array<double,2> &point,
                 const double depth,
-                const unsigned int composition_number) const
+                const unsigned int composition_number,
+                size_t number_of_grains) const
   {
     // turn it into a 3d coordinate and call the 3d temperature function
     WBAssertThrow(dim == 2, "This function can only be called when the cross section "
@@ -376,17 +377,20 @@ namespace WorldBuilder
 
     std::array<double, 3> point_3d_cartesian = this->parameters.coordinate_system->natural_to_cartesian_coordinates(coord_3d.get_array());
 
-    return grains(point_3d_cartesian, depth, composition_number);
+    return grains(point_3d_cartesian, depth, composition_number,number_of_grains);
   }
 
   WorldBuilder::grains
   World::grains(const std::array<double,3> &point_,
                 const double depth,
-                const unsigned int composition_number) const
+                const unsigned int composition_number,
+                size_t number_of_grains) const
   {
     // We receive the cartesian points from the user.
     Point<3> point(point_,cartesian);
     WorldBuilder::grains grains;
+    grains.sizes.resize(number_of_grains,0);
+    grains.rotation_matrices.resize(number_of_grains);
     for (std::vector<std::unique_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
       {
         grains = (*it)->grains(point,depth,composition_number, grains);

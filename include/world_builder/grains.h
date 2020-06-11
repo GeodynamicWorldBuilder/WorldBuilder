@@ -33,11 +33,11 @@ namespace WorldBuilder
   struct grains
   {
     // The sizes of the grains
-    std::vector<double> size;
+    std::vector<double> sizes;
 
     // the rotation matrices of the latices of the grains.
     // todo: convention.
-    std::vector<std::array<std::array<double,3>,3> > rotation_matrix;
+    std::vector<std::array<std::array<double,3>,3> > rotation_matrices;
   };
 }
 

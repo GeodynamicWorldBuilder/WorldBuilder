@@ -89,7 +89,8 @@ namespace WorldBuilder
        */
       WorldBuilder::grains grains(const std::array<double, 2> &point,
                                   const double depth,
-                                  const unsigned int composition_number) const;
+                                  const unsigned int composition_number,
+                                  size_t number_of_grains) const;
 
       /**
        * Returns the grain orientations and sizes based on a 3d Cartesian point, the depth in
@@ -97,7 +98,8 @@ namespace WorldBuilder
        */
       WorldBuilder::grains grains(const std::array<double, 3> &point,
                                   const double depth,
-                                  const unsigned int composition_number) const;
+                                  const unsigned int composition_number,
+                                  size_t number_of_grains) const;
 
 
 
