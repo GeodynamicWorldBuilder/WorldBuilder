@@ -118,6 +118,7 @@ inline void compare_vectors_array3_array3_approx(
     }
 }
 
+<<<<<<< HEAD
 /**
  * Compare two rotation matrices
  */
@@ -143,6 +144,8 @@ inline void compare_rotation_matrices_approx(
            computed[2][0] == Approx(-expected[2][0]) && computed[2][1] == Approx(-expected[2][1]) && computed[2][2] == Approx(-expected[2][2]))));
 }
 
+=======
+>>>>>>> Expand continental plate unit test for grains.
 
 TEST_CASE("WorldBuilder Point: Testing initialize and operators")
 {
@@ -920,6 +923,7 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
   std::array<double,3> position = {{0,0,0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
 
+  // the feature with composition 3
   position = {{250e3,500e3,0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(150));
   CHECK(world1.temperature(position, 74e3, 10) == Approx(150));
@@ -950,6 +954,23 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
   CHECK(world1.composition(position, 260e3, 4) == Approx(0.0));
   CHECK(world1.composition(position, 260e3, 5) == Approx(0.0));
 
+  // check grains
+  {
+    WorldBuilder::grains grains = world1.grains(position, 0, 0, 3);
+    compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
+    std::array<std::array<double, 3>, 3> array_1 = {{{{1,2,3}},{{4,5,6}},{{7,8,9}}}};
+    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
+    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+
+    grains = world1.grains(position, 0, 1, 3);
+    std::array<std::array<double, 3>, 3> array_2 = {{{{10,11,12}},{{13,14,15}},{{16,17,18}}}};
+    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
+
+    compare_vectors_approx(grains.sizes, {0.2,0.2,0.2});
+    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+  }
+
+  // the feature with composition 2
   position = {{1500e3,1500e3,0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(20));
   CHECK(world1.temperature(position, 240e3, 10) == Approx(21.3901871732));
@@ -973,6 +994,22 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
   CHECK(world1.composition(position, 260e3, 3) == Approx(0.0));
   CHECK(world1.composition(position, 260e3, 4) == Approx(0.0));
   CHECK(world1.composition(position, 260e3, 5) == Approx(0.0));
+
+  // check grains
+  {
+    WorldBuilder::grains grains = world1.grains(position, 0, 0, 3);
+    compare_vectors_approx(grains.sizes, {0.3,0.3,0.3});
+    std::array<std::array<double, 3>, 3> array_1 = {{{{10,20,30}},{{40,50,60}},{{70,80,90}}}};
+    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
+    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+
+    grains = world1.grains(position, 0, 1, 3);
+    std::array<std::array<double, 3>, 3> array_2 = {{{{100,110,120}},{{130,140,150}},{{160,170,180}}}};
+    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
+
+    compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
+    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+  }
 
   position = {{250e3,1750e3,0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
