@@ -3113,6 +3113,15 @@ TEST_CASE("WorldBuilder Parameters")
                     Contains("Could not convert values of /vector of 3x3 arrays nan/0 into doubles."));
 
 
+  typedef std::array<std::array<double,3>,3> array_3x3;
+  CHECK_THROWS_WITH(prm.get_vector<array_3x3>("vector of 3x3 arrays not 3x3 1"),
+                    Contains("Array 0 is supposed to be a 3x3 array, but the inner array dimensions of 0 is 2."));
+
+
+  CHECK_THROWS_WITH(prm.get_vector<array_3x3>("vector of 3x3 arrays not 3x3 2"),
+                    Contains("Array 1 is supposed to be a 3x3 array, but the outer array dimensions is 2."));
+
+
   prm.enter_subsection("properties");
   {
     prm.declare_entry("now existent unsigned int vector",

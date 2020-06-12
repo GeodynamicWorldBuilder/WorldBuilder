@@ -455,12 +455,15 @@ namespace WorldBuilder
             // Filed a question at: https://sourceforge.net/p/cppcheck/discussion/general/thread/429759f85e/
             // cppcheck-suppress constStatement
             std::array<std::array<double,3>,3> array;
-
+            WBAssertThrow(array2->Size() == 3, "Array " << i << " is supposed to be a 3x3 array, but the outer array dimensions is "
+                          << array2->Size() << ".");
             for (size_t j = 0; j < array2->Size(); ++j )
               {
                 const std::string base_extended = base + "/" + std::to_string(j);
-                //let's assume that the file is correct, because it has been checked with the json schema.
-                // So there are exactly three values.
+
+                WBAssertThrow(Pointer((base_extended).c_str()).Get(parameters)->Size() == 3,
+                              "Array " << i << " is supposed to be a 3x3 array, but the inner array dimensions of "
+                              << j << " is " << Pointer((base_extended).c_str()).Get(parameters)->Size() << ".");
                 double value1, value2, value3;
 
                 try
