@@ -99,8 +99,9 @@ namespace WorldBuilder
 
       coordinates = prm.get_vector<Point<2> >("coordinates");
       if (coordinate_system == CoordinateSystem::spherical)
-        for (auto &coordinate: coordinates)
-          coordinate *= const_pi / 180.0;
+        std::transform(coordinates.begin(),coordinates.end(), coordinates.begin(),
+                       [](WorldBuilder::Point<2> p) -> WorldBuilder::Point<2> { return p *const_pi / 180.0;});
+
 
       std::string interpolation = this->world->interpolation;
 

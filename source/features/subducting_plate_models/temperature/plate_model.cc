@@ -148,7 +148,6 @@ namespace WorldBuilder
                                     const double,
                                     const std::map<std::string,double> &distance_from_planes) const
         {
-          double temperature = temperature_;
           const double thickness_local = std::min(distance_from_planes.at("thicknessLocal"), max_depth);
           const double distance_from_plane = distance_from_planes.at("distanceFromPlane");
           const double distance_along_plane = distance_from_planes.at("distanceAlongPlane");
@@ -226,8 +225,8 @@ namespace WorldBuilder
                          * (sin(i * const_pi * z_scaled));
                 }
               // todo: investiage wheter this 273.15 should just be the surface temperature.
-              temperature = temp * (potential_mantle_temperature
-                                    + 2.0 * (potential_mantle_temperature - 273.15) * sum);
+              double temperature = temp * (potential_mantle_temperature
+                                           + 2.0 * (potential_mantle_temperature - 273.15) * sum);
 
               WBAssert(!std::isnan(temperature), "Internal error: temperature is not a number: " << temperature << ".");
               WBAssert(std::isfinite(temperature), "Internal error: temperature is not finite: " << temperature << ".");

@@ -112,9 +112,6 @@ namespace WorldBuilder
                                     const double,
                                     const double) const
         {
-
-          double temperature = temperature_;
-
           if (depth <= max_depth && depth >= min_depth)
             {
               WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
@@ -174,7 +171,7 @@ namespace WorldBuilder
               //const double spreading_velocity = spreading_velocity;
               const double thermal_diffusivity = this->world->thermal_diffusivity;
               const double age = distance_ridge / spreading_velocity;
-              temperature = top_temperature + (bottom_temperature_local - top_temperature) * (depth / max_depth);
+              double temperature = top_temperature + (bottom_temperature_local - top_temperature) * (depth / max_depth);
 
               for (int i = 1; i<sommation_number+1; ++i)
                 {
