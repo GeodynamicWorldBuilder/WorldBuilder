@@ -450,6 +450,10 @@ namespace WorldBuilder
           {
             const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
             Value *array2 = Pointer((base).c_str()).Get(parameters);
+
+            // Not sure why cppcheck it is generating the warning
+            // Filed a question at: https://sourceforge.net/p/cppcheck/discussion/general/thread/429759f85e/
+            // cppcheck-suppress constStatement
             std::array<std::array<double,3>,3> array;
 
             for (size_t j = 0; j < array2->Size(); ++j )
