@@ -170,12 +170,21 @@ if(MAKE_PYTHON_WRAPPER)
 endif()
 
 
-# Provide "indent" target for indenting all headers and source files
+# Provide "indent" target for indenting all headers and source files with astyle
 ADD_CUSTOM_TARGET(indent
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   COMMAND ./doc/indent
   COMMENT "Indenting all the World Builder header and source files..."
   )
+
+# Provide "formatting" target for indenting all headers and source files. 
+# This will first run clang-format and then astyle.
+ADD_CUSTOM_TARGET(format
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  COMMAND ./doc/format
+  COMMENT "Formatting all the World Builder header and source files..."
+  )
+
 
 
 
