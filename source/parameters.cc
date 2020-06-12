@@ -436,6 +436,56 @@ namespace WorldBuilder
     return vector;
   }
 
+  template<>
+  std::vector<std::array<std::array<double,3>,3> >
+  Parameters::get_vector(const std::string &name)
+  {
+    std::vector<std::array<std::array<double,3>,3>  > vector;
+    const std::string strict_base = this->get_full_json_path();
+    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != NULL)
+      {
+        Value *array1 = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+        for (size_t i = 0; i < array1->Size(); ++i )
+          {
+            const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
+            Value *array2 = Pointer((base).c_str()).Get(parameters);
+
+            // Not sure why cppcheck it is generating the warning
+            // Filed a question at: https://sourceforge.net/p/cppcheck/discussion/general/thread/429759f85e/
+            // cppcheck-suppress constStatement
+            std::array<std::array<double,3>,3> array;
+            WBAssertThrow(array2->Size() == 3, "Array " << i << " is supposed to be a 3x3 array, but the outer array dimensions is "
+                          << array2->Size() << ".");
+            for (size_t j = 0; j < array2->Size(); ++j )
+              {
+                const std::string base_extended = base + "/" + std::to_string(j);
+
+                WBAssertThrow(Pointer((base_extended).c_str()).Get(parameters)->Size() == 3,
+                              "Array " << i << " is supposed to be a 3x3 array, but the inner array dimensions of "
+                              << j << " is " << Pointer((base_extended).c_str()).Get(parameters)->Size() << ".");
+                double value1, value2, value3;
+
+                try
+                  {
+                    value1 = Pointer((base_extended + "/0").c_str()).Get(parameters)->GetDouble();
+                    value2 = Pointer((base_extended + "/1").c_str()).Get(parameters)->GetDouble();
+                    value3 = Pointer((base_extended + "/2").c_str()).Get(parameters)->GetDouble();
+                  }
+                catch (...)
+                  {
+                    WBAssertThrow(false, "Could not convert values of " << base << " into doubles.");
+                  }
+                array[j][0] = value1;
+                array[j][1] = value2;
+                array[j][2] = value3;
+              }
+            vector.push_back(array);
+          }
+      }
+    return vector;
+  }
+
 
   template<>
   std::vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,Features::SubductingPlateModels::Composition::Interface> >
