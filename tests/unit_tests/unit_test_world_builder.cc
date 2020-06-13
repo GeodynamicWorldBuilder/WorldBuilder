@@ -1577,6 +1577,22 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   CHECK(world2.composition(position, 0, 5) == Approx(0.0));
   CHECK(world2.composition(position, 0, 6) == Approx(0.0));
 
+  // check grains
+  {
+    WorldBuilder::grains grains = world2.grains(position, 240e3, 0, 3);
+    compare_vectors_approx(grains.sizes, {0.3,0.3,0.3});
+    std::array<std::array<double, 3>, 3> array_1 = {{{{10,20,30}},{{40,50,60}},{{70,80,90}}}};
+    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
+    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+
+    grains = world2.grains(position, 240e3, 1, 3);
+    std::array<std::array<double, 3>, 3> array_2 = {{{{100,110,120}},{{130,140,150}},{{160,170,180}}}};
+    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
+
+    compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
+    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+  }
+
   position = {{6371000, 5 * dtr,5 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
   CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
@@ -1591,6 +1607,22 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   CHECK(world2.composition(position, 260e3, 4) == Approx(0.0));
   CHECK(world2.composition(position, 0, 5) == Approx(0.0));
   CHECK(world2.composition(position, 0, 6) == Approx(0.0));
+
+  // check grains
+  {
+    WorldBuilder::grains grains = world2.grains(position, 240e3, 0, 3);
+    compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
+    std::array<std::array<double, 3>, 3> array_1 = {{{{1,2,3}},{{4,5,6}},{{7,8,9}}}};
+    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
+    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+
+    grains = world2.grains(position, 240e3, 1, 3);
+    std::array<std::array<double, 3>, 3> array_2 = {{{{10,11,12}},{{13,14,15}},{{16,17,18}}}};
+    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
+
+    compare_vectors_approx(grains.sizes, {0.2,0.2,0.2});
+    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+  }
 
   position = {{6371000, -15 * dtr, -15 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);

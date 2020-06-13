@@ -23,6 +23,7 @@
 #include <vector>
 #include <map>
 
+
 #include <world_builder/world.h>
 #include <world_builder/parameters.h>
 #include <world_builder/point.h>
@@ -75,7 +76,7 @@ namespace WorldBuilder
 
 
             /**
-             * takes composition and position and returns a composition.
+             * takes composition and position and returns grains.
              */
             virtual
             WorldBuilder::grains
@@ -148,7 +149,7 @@ namespace WorldBuilder
          * register it. Because this is a library, we need some extra measures
          * to ensure that the static variable is actually initialized.
          */
-#define WB_REGISTER_FEATURE_CONTINENTAL_GRAINS_MODEL(klass,name) \
+#define WB_REGISTER_FEATURE_OCEANIC_PLATE_GRAINS_MODEL(klass,name) \
   class klass##Factory : public ObjectFactory { \
     public: \
       klass##Factory() \
