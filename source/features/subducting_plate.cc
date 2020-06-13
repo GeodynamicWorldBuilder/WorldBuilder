@@ -64,6 +64,8 @@ namespace WorldBuilder
                                      const std::string &parent_name,
                                      const std::vector<std::string> & /*required_entries*/)
     {
+      // This statment is needed because of the recursion associated with
+      // the sections entry.
       if (parent_name == "items")
         prm.enter_subsection("properties");
 

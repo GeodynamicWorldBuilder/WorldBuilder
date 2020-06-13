@@ -58,8 +58,6 @@ namespace WorldBuilder
                                       const std::string &parent_name,
                                       const std::vector<std::string> &required_entries)
     {
-      if (parent_name == "items")
-        prm.enter_subsection("properties");
       prm.declare_entry("", Types::Object(required_entries), "continental plate object");
 
       prm.declare_entry("min depth", Types::Double(0),
