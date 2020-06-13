@@ -109,6 +109,22 @@ namespace WorldBuilder
           }
       }
       prm.leave_subsection();
+
+
+      prm.get_unique_pointers<Features::MantleLayerModels::Grains::Interface>("grains models", grains_models);
+
+      prm.enter_subsection("grains models");
+      {
+        for (unsigned int i = 0; i < grains_models.size(); ++i)
+          {
+            prm.enter_subsection(std::to_string(i));
+            {
+              grains_models[i]->parse_entries(prm);
+            }
+            prm.leave_subsection();
+          }
+      }
+      prm.leave_subsection();
     }
 
 

@@ -23,6 +23,7 @@
 #include <vector>
 #include <map>
 
+
 #include <world_builder/world.h>
 #include <world_builder/parameters.h>
 #include <world_builder/point.h>
@@ -75,7 +76,7 @@ namespace WorldBuilder
 
 
             /**
-             * takes composition and position and returns a composition.
+             * takes composition and position and returns grains.
              */
             virtual
             WorldBuilder::grains
