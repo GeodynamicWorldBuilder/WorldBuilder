@@ -2071,6 +2071,23 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world1.composition(position, 0, 6) == Approx(0.0));
 
 
+  // check grains
+  {
+    WorldBuilder::grains grains = world1.grains(position, 10, 0, 3);
+    compare_vectors_approx(grains.sizes, {0.3,0.3,0.3});
+    std::array<std::array<double, 3>, 3> array_1 = {{{{10,20,30}},{{40,50,60}},{{70,80,90}}}};
+    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
+    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+
+    grains = world1.grains(position, 10, 1, 3);
+    std::array<std::array<double, 3>, 3> array_2 = {{{{100,110,120}},{{130,140,150}},{{160,170,180}}}};
+    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
+
+    compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
+    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+  }
+
+
   position = {{250e3,250e3,800e3}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600.0));
   CHECK(world1.temperature(position, 1, 10) == Approx(293.1595620855));
@@ -2109,6 +2126,62 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world1.composition(position, 0, 4) == Approx(0.0));
   CHECK(world1.composition(position, 0, 5) == Approx(0.0));
   CHECK(world1.composition(position, 0, 6) == Approx(0.0));
+
+
+  // check grains
+  {
+    {
+      // layer 1
+      WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0, 3);
+      std::array<std::array<double, 3>, 3> array_1 = {{{{101,201,301}},{{401,501,601}},{{701,801,901}}}};
+      std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
+
+      compare_vectors_approx(grains.sizes, {0.4,0.4,0.4});
+      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+
+      grains = world1.grains(position, std::sqrt(2) * 33e3 * 0.5 - 1, 1, 3);
+      std::array<std::array<double, 3>, 3> array_2 = {{{{1001,1101,1201}},{{1301,1401,1501}},{{1601,1701,1801}}}};
+      std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
+
+      compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
+      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    }
+
+    {
+      // layer 2
+      WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 33e3 * 0.5 + 1, 0, 3);
+      std::array<std::array<double, 3>, 3> array_1 = {{{{102,202,302}},{{402,502,602}},{{702,802,902}}}};
+      std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
+
+      compare_vectors_approx(grains.sizes, {0.5,0.5,0.5});
+      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+
+      grains = world1.grains(position, std::sqrt(2) * 33e3 * 0.5 + 1, 1, 3);
+      std::array<std::array<double, 3>, 3> array_2 = {{{{1002,1102,1202}},{{1302,1402,1502}},{{1602,1702,1802}}}};
+      std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
+
+      compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
+      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    }
+
+    {
+      // layer 3
+      WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 99e3 * 0.5 - 1, 0, 3);
+      std::array<std::array<double, 3>, 3> array_1 = {{{{103,203,303}},{{403,503,603}},{{703,803,903}}}};
+      std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
+
+      compare_vectors_approx(grains.sizes, {0.6,0.6,0.6});
+      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+
+      grains = world1.grains(position, std::sqrt(2) * 99e3 * 0.5 - 1, 1, 3);
+      std::array<std::array<double, 3>, 3> array_2 = {{{{1003,1103,1203}},{{1303,1403,1503}},{{1603,1703,1803}}}};
+      std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
+
+      compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
+      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    }
+  }
+
 
   position = {{250e3,250e3,800e3}};
   CHECK(world1.composition(position, 1, 0) == Approx(1.0));

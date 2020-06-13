@@ -12,7 +12,12 @@
            {"coordinate":2, "segments":[{"length":200e3, "thickness":[200e3,100e3], "angle":[30]}, {"length":100e3, "thickness":[100e3], "angle":[30]}, {"length":150e3, "thickness":[100e3,0], "angle":[70]}]}
          ],
          "temperature models":[{"model":"uniform", "temperature":150}],
-         "composition models":[{"model":"uniform", "compositions":[3,4], "fractions":[0.25,0.75]}]},
+         "composition models":[{"model":"uniform", "compositions":[3,4], "fractions":[0.25,0.75]}],
+         "grains models":[
+                          {"model":"uniform", "compositions":[0,1], // olivine and enstatie
+                           "rotation matrices":[[[10,20,30],[40,50,60],[70,80,90]],[[100,110,120],[130,140,150],[160,170,180]]],
+                           "grain sizes":[0.3,-1]}
+]},
 
     {"model":"fault", "name":"Second fault", "coordinates":[[0e3,250e3],[500e3,250e3],[1000e3,500e3]], "dip point":[0,-1],
          "segments":[{"length":200e3, "thickness":[100e3,100e3], "angle":[45]}, {"length":200e3, "thickness":[100e3], "angle":[60]}, {"length":150e3, "thickness":[100e3,100e3], "angle":[90]}],
@@ -24,7 +29,18 @@
          "temperature models":[{"model":"linear", "max distance fault center":100e3}],
          "composition models":[{"model":"uniform", "compositions":[0],"max distance fault center":16.5e3},
                                {"model":"uniform", "compositions":[1], "min distance fault center":16.5e3, "max distance fault center":33e3},
-                               {"model":"uniform", "compositions":[2,3], "fractions":[0.25,0.75], "min distance fault center":33e3, "max distance fault center":49.5e3}]},
+                               {"model":"uniform", "compositions":[2,3], "fractions":[0.25,0.75], "min distance fault center":33e3, "max distance fault center":49.5e3}],
+         "grains models":[
+                          {"model":"uniform", "compositions":[0,1],"max distance fault center":16.5e3, 
+                           "rotation matrices":[[[101,201,301],[401,501,601],[701,801,901]],[[1001,1101,1201],[1301,1401,1501],[1601,1701,1801]]],
+                           "grain sizes":[0.4,-1]},
+                          {"model":"uniform", "compositions":[0,1],"min distance fault center":16.5e3, "max distance fault center":33e3, 
+                           "rotation matrices":[[[102,202,302],[402,502,602],[702,802,902]],[[1002,1102,1202],[1302,1402,1502],[1602,1702,1802]]],
+                           "grain sizes":[0.5,-1]},
+                          {"model":"uniform", "compositions":[0,1],"min distance fault center":33e3, "max distance fault center":49.5e3, 
+                           "rotation matrices":[[[103,203,303],[403,503,603],[703,803,903]],[[1003,1103,1203],[1303,1403,1503],[1603,1703,1803]]],
+                           "grain sizes":[0.6,-1]}
+]},
 
     {"model":"fault", "name":"none fault", "coordinates":[[0e3,250e3],[500e3,250e3],[1000e3,500e3]], "dip point":[0,-1],
          "segments":[{"length":200e3, "thickness":[100e3,100e3], "angle":[45]}, {"length":200e3, "thickness":[100e3], "angle":[60]}, {"length":150e3, "thickness":[100e3,100e3], "angle":[90]}],

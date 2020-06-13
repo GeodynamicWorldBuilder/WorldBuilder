@@ -724,6 +724,17 @@ namespace WorldBuilder
 
                   // linear interpolation between current and next section temperatures
                   // todo: component wise averaging?
+                  for (size_t i = 0; i < grains.sizes.size(); i++)
+                    {
+                      grains.sizes[i] = grains_current_section.sizes[i] + section_fraction * (grains_next_section.sizes[i] - grains_current_section.sizes[i]);
+                    }
+
+                  // todo: average two rotations matrices
+                  // I could turn the rotation matrices into quaternions: https://stackoverflow.com/questions/21455139/matrix-rotation-to-quaternion
+                  // and then use this algoritm to compute the weighted average: https://github.com/tolgabirdal/averaging_quaternions/blob/master/wavg_quaternion_markley.m
+                  // then turn it back into a rotatation matrix: https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation (see conversion section)
+                  grains.rotation_matrices = grains_current_section.rotation_matrices;
+
                   //composition = composition_current_section + section_fraction * (composition_next_section - composition_current_section);
 
 
