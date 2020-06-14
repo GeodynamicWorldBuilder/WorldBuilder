@@ -34,6 +34,8 @@
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
 
+#include "glm/glm.h"
+
 
 namespace WorldBuilder
 {
@@ -730,11 +732,25 @@ namespace WorldBuilder
                     }
 
                   // todo: average two rotations matrices
+                  // 1:
+                  // Compute a bingham average.
+                  // 2:
                   // I could turn the rotation matrices into quaternions: https://stackoverflow.com/questions/21455139/matrix-rotation-to-quaternion
                   // and then use this algoritm to compute the weighted average: https://github.com/tolgabirdal/averaging_quaternions/blob/master/wavg_quaternion_markley.m
                   // then turn it back into a rotatation matrix: https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation (see conversion section)
+
+                  glm::quaternion::quat quat_current = glm::quaternion::quat_cast(grains_current_section.rotation_matrices[0]);
+                  glm::quaternion::quat quat_next = glm::quaternion::quat_cast(grains_next_section.rotation_matrices[0]);
+
+                  glm::quaternion::quat quat_average = glm::quaternion::slerp(quat_current,quat_next,section_fraction);
+
+                  grains.rotation_matrices[0] = glm::quaternion::mat3_cast(quat_average);
+
                   grains.rotation_matrices = grains_current_section.rotation_matrices;
 
+                  // mix = x * (1.0 - a) + y * a;
+                  // x - a*x + y*a
+                  // x + a(y-x)
                   //composition = composition_current_section + section_fraction * (composition_next_section - composition_current_section);
 
 
