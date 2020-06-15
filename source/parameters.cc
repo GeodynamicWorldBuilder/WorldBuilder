@@ -1042,7 +1042,7 @@ namespace WorldBuilder
   bool
   Parameters::get_shared_pointers(const std::string &name, std::vector<std::shared_ptr<T> > &vector)
   {
-    //vector.resize(0);
+    vector.resize(0);
     const std::string strict_base = this->get_full_json_path();
     if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != NULL)
       {
