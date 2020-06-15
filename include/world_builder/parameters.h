@@ -78,7 +78,6 @@ namespace WorldBuilder
     public:
       /**
        * Constructor
-       * \param filename A string with the path to the world builder file
        * \param world A reference to the World class
        */
       Parameters(World &world);
@@ -89,56 +88,86 @@ namespace WorldBuilder
       ~Parameters();
 
       /**
-       * Todo
+       * Initializes the parameter file
+       * \param filename A string with the path to the world builder file
+       * \param has_output_dir A bool indicating whether the world builder may write out information.
+       * \param output_dir A string with the path to the directory where it can output information if allowed by has_output_dir
        */
       void initialize(std::string &filename, bool has_output_dir = false, std::string output_dir = "");
 
       /**
-       * Todo
+       * A generic get function to retrieve setting from the parameter file.
+       * Note that this is dependent on the current path/subsection which you are in.
+       * \param name The name of the entry to retrieved
+       * @see path
+       * @see enter_subsection()
+       * @see leave_subsection()
        */
       template<class T>
       T get(const std::string &name);
 
       /**
-       * Todo
+       * A specialized verions of get which can retun vecors/arrays.
+       * \param name The name of the entry to retrieved
        */
       template<class T>
       std::vector<T> get_vector(const std::string &name);
 
       /**
-       * Todo
+       * A specialized verions of get which can retun vecors/arrays.
+       * This version is designed for the plugin system.
+       * \param name The name of the entry to retrieved
        */
       template<class T, class A, class B>
       std::vector<T> get_vector(const std::string &name, std::vector<std::shared_ptr<A> > &, std::vector<std::shared_ptr<B> > &);
 
       /**
-       * Todo
+       * A specialized verions of get which can retun unique pointers.
+       * \param name The name of the entry to retrieved
        */
       template<class T>
       std::unique_ptr<T> get_unique_pointer(const std::string &name);
 
       /**
-       * Todo
+       * A specialized verions of get which can retun unique pointers as an argument
+       * and returns a bool to indicate whether it was successfull or not.
+       * Note that this function will erase all information in the vector.
+       * \param name The name of the entry to retrieved
+       * \param vector A vector of unique pointers.
        */
       template<class T>
       bool
-      get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<T> > &);
+      get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<T> > &vector);
 
       /**
-       * Todo
+       * A specialized verions of get which can retun shared pointers as an argument
+       * and returns a bool to indicate whether it was successfull or not.
+       * Note that this function will erase all information in the vector.
+       * \param name The name of the entry to retrieved
+       * \param vector A vector of shared pointers.
        */
       template<class T>
       bool
       get_shared_pointers(const std::string &name, std::vector<std::shared_ptr<T> > &);
 
       /**
-       * Todo
+       * Checks for the existance of an entry in the parameter file.
+       * Return true when an entry is specified and false when it is not.
+       * This is independent of whether an entry has been declared or not.
+       * The main intended usage is to check whether the user has provided
+       * the specified entry in the user supplied parameters file, since
+       * the get functions may use default values.
+       * \param name The name of the entry to be checked.
        */
       bool
       check_entry(const std::string &name) const;
 
       /**
-       * Todo
+       * Declares the existance an entry in the parameters class.
+       * Default values are supplied by the type.
+       * \param name The name of the entry to be declared
+       * \param type The type of entry (e.g. Double, Array, etc.)
+       * \param documentation A string containing information about this parameter.
        */
       void declare_entry(const std::string name,
                          const Types::Interface &type,
