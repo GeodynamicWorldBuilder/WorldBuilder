@@ -1116,6 +1116,65 @@ namespace WorldBuilder
       return interpol;
     }
 
+
+    double wrap_angle(const double angle)
+    {
+      return angle - 360.0*std::floor(angle/360.0);
+    }
+
+    std::array<double,3>
+    euler_angles_from_rotation_matrix(const std::array<std::array<double,3>,3> &rotation_matrix)
+    {
+      const double rad_to_degree = 180.0/const_pi;
+      std::array<double,3> euler_angles;
+      //const double s2 = std::sqrt(rotation_matrix[2][1] * rotation_matrix[2][1] + rotation_matrix[2][0] * rotation_matrix[2][0]);
+      std::ostringstream os;
+      for (size_t i = 0; i < 3; i++)
+        for (size_t j = 0; j < 3; j++)
+          WBAssert(abs(rotation_matrix[i][j]) <= 1.0,
+                   "rotation_matrix[" + std::to_string(i) + "][" + std::to_string(j) +
+                   "] is larger than one: " + std::to_string(rotation_matrix[i][j]) + ". rotation_matrix = \n"
+                   + std::to_string(rotation_matrix[0][0]) + " " + std::to_string(rotation_matrix[0][1]) + " " + std::to_string(rotation_matrix[0][2]) + "\n"
+                   + std::to_string(rotation_matrix[1][0]) + " " + std::to_string(rotation_matrix[1][1]) + " " + std::to_string(rotation_matrix[1][2]) + "\n"
+                   + std::to_string(rotation_matrix[2][0]) + " " + std::to_string(rotation_matrix[2][1]) + " " + std::to_string(rotation_matrix[2][2]));
+
+
+      const double theta = std::acos(rotation_matrix[2][2]);
+      const double phi1  = std::atan2(rotation_matrix[2][0]/-sin(theta),rotation_matrix[2][1]/-sin(theta));
+      const double phi2  = std::atan2(rotation_matrix[0][2]/-sin(theta),rotation_matrix[1][2]/sin(theta));
+
+      euler_angles[0] = wrap_angle(phi1 * rad_to_degree);
+      euler_angles[1] = wrap_angle(theta * rad_to_degree);
+      euler_angles[2] = wrap_angle(phi2 * rad_to_degree);
+
+      return euler_angles;
+    }
+
+    std::array<std::array<double,3>,3>
+    euler_angles_to_rotation_matrix(double phi1_d, double theta_d, double phi2_d)
+    {
+
+      const double degree_to_rad = const_pi/180.0;
+      const double phi1 = phi1_d * degree_to_rad;
+      const double theta = theta_d * degree_to_rad;
+      const double phi2 = phi2_d * degree_to_rad;
+      std::array<std::array<double,3>,3> rot_matrix;
+
+
+      rot_matrix[0][0] = cos(phi2)*cos(phi1) - cos(theta)*sin(phi1)*sin(phi2);
+      rot_matrix[0][1] = -cos(phi2)*sin(phi1) - cos(theta)*cos(phi1)*sin(phi2);
+      rot_matrix[0][2] = -sin(phi2)*sin(theta);
+
+      rot_matrix[1][0] = sin(phi2)*cos(phi1) + cos(theta)*sin(phi1)*cos(phi2);
+      rot_matrix[1][1] = -sin(phi2)*sin(phi1) + cos(theta)*cos(phi1)*cos(phi2);
+      rot_matrix[1][2] = cos(phi2)*sin(theta);
+
+      rot_matrix[2][0] = -sin(theta)*sin(phi1);
+      rot_matrix[2][1] = -sin(theta)*cos(phi1);
+      rot_matrix[2][2] = cos(theta);
+      return rot_matrix;
+    }
+
     template const std::array<double,2> convert_point_to_array<2>(const Point<2> &point_);
     template const std::array<double,3> convert_point_to_array<3>(const Point<3> &point_);
   }
