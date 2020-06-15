@@ -443,6 +443,38 @@ namespace WorldBuilder
   }
 
   template<>
+  std::vector<std::array<double,3> >
+  Parameters::get_vector(const std::string &name)
+  {
+    std::vector<std::array<double,3> > vector;
+    const std::string strict_base = this->get_full_json_path();
+    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != NULL)
+      {
+        Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+        for (size_t i = 0; i < array->Size(); ++i )
+          {
+            const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
+            //let's assume that the file is correct, because it has been checked with the json schema.
+            // So there are exactly three values.
+            try
+              {
+                const double value1 = Pointer((base + "/0").c_str()).Get(parameters)->GetDouble();
+                const double value2 = Pointer((base + "/1").c_str()).Get(parameters)->GetDouble();
+                const double value3 = Pointer((base + "/2").c_str()).Get(parameters)->GetDouble();
+                vector.push_back({value1,value2,value3});
+              }
+            catch (...)
+              {
+                WBAssertThrow(false, "Could not convert values of " << base << " into doubles.");
+              }
+          }
+      }
+
+    return vector;
+  }
+
+  template<>
   std::vector<std::array<std::array<double,3>,3> >
   Parameters::get_vector(const std::string &name)
   {

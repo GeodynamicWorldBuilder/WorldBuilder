@@ -15,7 +15,8 @@
          "composition models":[{"model":"uniform", "compositions":[3,4], "fractions":[0.25,0.75]}],
          "grains models":[
                           {"model":"uniform", "compositions":[0,1], // olivine and enstatie
-                           "rotation matrices":[[[10,20,30],[40,50,60],[70,80,90]],[[100,110,120],[130,140,150],[160,170,180]]],
+                           //"rotation matrices":[[[10,20,30],[40,50,60],[70,80,90]],[[100,110,120],[130,140,150],[160,170,180]]],
+                           "Euler angles z-x-z":[[10,20,30],[40,50,60]],
                            "grain sizes":[0.3,-1]}
 ]},
 
@@ -32,7 +33,8 @@
                                {"model":"uniform", "compositions":[2,3], "fractions":[0.25,0.75], "min distance fault center":33e3, "max distance fault center":49.5e3}],
          "grains models":[
                           {"model":"uniform", "compositions":[0,1],"max distance fault center":16.5e3, 
-                           "rotation matrices":[[[101,201,301],[401,501,601],[701,801,901]],[[1001,1101,1201],[1301,1401,1501],[1601,1701,1801]]],
+                           //"rotation matrices":[[[101,201,301],[401,501,601],[701,801,901]],[[1001,1101,1201],[1301,1401,1501],[1601,1701,1801]]],
+                           "Euler angles z-x-z":[[10,20,30],[40,50,60]],
                            "grain sizes":[0.4,-1]},
                           {"model":"uniform", "compositions":[0,1],"min distance fault center":16.5e3, "max distance fault center":33e3, 
                            "rotation matrices":[[[102,202,302],[402,502,602],[702,802,902]],[[1002,1102,1202],[1302,1402,1502],[1602,1702,1802]]],

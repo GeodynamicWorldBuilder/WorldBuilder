@@ -58,7 +58,7 @@ namespace WorldBuilder
         Uniform::declare_entries(Parameters &prm, const std::string &)
         {
           // Add compositions, rotation matrices and grain size models to the required parameters.
-          prm.declare_entry("", Types::Object({"compositions","rotation matrices"}), "Uniform grains model object");
+          prm.declare_entry("", Types::Object({"compositions"}), "Uniform grains model object");
 
 
           prm.declare_entry("min distance fault center", Types::Double(0),
@@ -71,6 +71,10 @@ namespace WorldBuilder
 
           prm.declare_entry("rotation matrices", Types::Array(Types::Array(Types::Array(Types::Double(0),3,3),3,3),0),
                             "A list with the labels of the grains which are present there for each compositions.");
+
+          prm.declare_entry("Euler angles z-x-z", Types::Array(Types::Array(Types::Double(0),3,3),0),
+                            "A list with the z-x-z Euler angles of the grains which are present there for each compositions.");
+
           prm.declare_entry("orientation operation", Types::String("replace", std::vector<std::string> {"replace", "multiply"}),
                             "Whether the value should replace any value previously defined at this location (replace) or "
                             "add the value to the previously define value (add, not implemented). Replacing implies that all values not "
@@ -89,7 +93,34 @@ namespace WorldBuilder
           min_depth = prm.get<double>("min distance fault center");
           max_depth = prm.get<double>("max distance fault center");
           compositions = prm.get_vector<unsigned int>("compositions");
-          rotation_matrices = prm.get_vector<std::array<std::array<double,3>,3> >("rotation matrices");
+
+          const bool set_euler_angles = prm.check_entry("Euler angles z-x-z");
+          const bool set_rotation_matrices = prm.check_entry("rotation matrices");
+
+          WBAssertThrow(!(set_euler_angles == true && set_rotation_matrices == true),
+                        "Only Euler angles or Rotation matrices may be set, but both are set for " << prm.get_full_json_path());
+
+
+          WBAssertThrow(!(set_euler_angles == false && set_rotation_matrices == false),
+                        "Euler angles or Rotation matrices have to be set, but neither are set for " << prm.get_full_json_path());
+
+          if (set_euler_angles)
+            {
+              std::vector<std::array<double,3> > euler_angles_vector = prm.get_vector<std::array<double,3> >("Euler angles z-x-z");
+              rotation_matrices.resize(euler_angles_vector.size());
+              for (size_t i = 0; i<euler_angles_vector.size(); ++i)
+                {
+                  //std::cout << "EA" << i << ": " << euler_angles_vector[i][0] << " " << euler_angles_vector[i][1] << " " << euler_angles_vector[i][2] << std::endl;
+                  rotation_matrices[i] = Utilities::euler_angles_to_rotation_matrix(euler_angles_vector[i][0],euler_angles_vector[i][1],euler_angles_vector[i][2]);
+                  //std::cout << "RM" << i << ": " << rotation_matrices[i][0][0] << " " << rotation_matrices[i][0][1] << " " << rotation_matrices[i][0][2] << std::endl;
+                }
+
+            }
+          else
+            {
+              rotation_matrices = prm.get_vector<std::array<std::array<double,3>,3> >("rotation matrices");
+            }
+
           operation = prm.get<std::string>("orientation operation");
           grain_sizes = prm.get_vector<double>("grain sizes");
 
