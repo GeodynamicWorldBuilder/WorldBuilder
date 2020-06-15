@@ -281,6 +281,25 @@ namespace WorldBuilder
          */
         std::vector<double> m_a, m_b, m_c, m_y;
     };
+
+
+    /**
+     * Ensure angle is between 0 and 360 degrees
+     */
+    double wrap_angle(const double angle);
+
+
+    /**
+     * Transorm a rotation matrix into euler angles
+     */
+    std::array<double,3>
+    euler_angles_from_rotation_matrix(const std::array<std::array<double,3>,3> &rotation_matrix);
+
+    /**
+     * Transform euler angles into a rotation matrix
+     */
+    std::array<std::array<double,3>,3>
+    euler_angles_to_rotation_matrix(double phi1, double theta, double phi2);
   }
 }
 

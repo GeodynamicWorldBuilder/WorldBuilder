@@ -47,9 +47,22 @@
 #include <world_builder/utilities.h>
 #include <world_builder/wrapper_c.h>
 #include <world_builder/wrapper_cpp.h>
+
+#include "glm/glm.h"
+
 using namespace WorldBuilder;
 
 using Catch::Matchers::Contains;
+
+/**
+ * normalize 3d array
+ */
+inline
+std::array<double,3> normalize(std::array<double,3> array)
+{
+  const double norm = sqrt(array[0] * array[0] + array[1] * array[1] + array[2] * array[2] );
+  return {array[0]/norm,array[1]/norm,array[2]/norm};
+}
 
 /**
  * Compare the given two std::vector<double> entries with an epsilon (using Catch::Approx)
@@ -79,6 +92,54 @@ inline void compare_3d_arrays_approx(
       INFO("vector index i=" << i << ": ");
       CHECK(computed[i] == Approx(expected[i]));
     }
+}
+
+/**
+ * Compare the given two std::vector<std::array<std::array<double,3>,3> > entries with an epsilon (using Catch::Approx)
+ */
+inline void compare_vectors_array3_array3_approx(
+  const std::vector<std::array<std::array<double,3>,3> > &computed,
+  const std::vector<std::array<std::array<double,3>,3> > &expected)
+{
+  CHECK(computed.size() == expected.size());
+  for (unsigned int i=0; i< computed.size(); ++i)
+    {
+      CHECK(computed[i].size() == expected[i].size());
+      for (unsigned int j=0; j< computed.size(); ++j)
+        {
+          CHECK(computed[j].size() == expected[j].size());
+          for (unsigned int k=0; k< computed.size(); ++k)
+            {
+              INFO("vector index i:j:k =" << i << ":" << j << ":" << k << " = ");
+              CHECK(computed[i][j][k] == Approx(expected[i][j][k]));
+            }
+        }
+    }
+}
+
+/**
+ * Compare two rotation matrices
+ */
+inline void compare_rotation_matrices_approx(
+  const std::array<std::array<double,3>,3> &computed,
+  const std::array<std::array<double,3>,3> &expected)
+{
+  // sign of eigenvector is not important
+  INFO("rotation matrices are not the same: \n" <<
+       "expected = " << expected[0][0] << " " << expected[0][1] << " " << expected[0][2] << "\n" <<
+       "           " << expected[1][0] << " " << expected[1][1] << " " << expected[1][2] << "\n" <<
+       "           " << expected[2][0] << " " << expected[2][1] << " " << expected[2][2] << "\n" <<
+       "computed = " << computed[0][0] << " " << computed[0][1] << " " << computed[0][2] << "\n" <<
+       "           " << computed[1][0] << " " << computed[1][1] << " " << computed[1][2] << "\n" <<
+       "           " << computed[2][0] << " " << computed[2][1] << " " << computed[2][2] << "\n" );
+  CHECK((
+          (computed[0][0] == Approx(expected[0][0]) && computed[0][1] == Approx(expected[0][1]) && computed[0][2] == Approx(expected[0][2]) &&
+           computed[1][0] == Approx(expected[1][0]) && computed[1][1] == Approx(expected[1][1]) && computed[1][2] == Approx(expected[1][2]) &&
+           computed[2][0] == Approx(expected[2][0]) && computed[2][1] == Approx(expected[2][1]) && computed[2][2] == Approx(expected[2][2]))
+          ||
+          (computed[0][0] == Approx(-expected[0][0]) && computed[0][1] == Approx(-expected[0][1]) && computed[0][2] == Approx(-expected[0][2]) &&
+           computed[1][0] == Approx(-expected[1][0]) && computed[1][1] == Approx(-expected[1][1]) && computed[1][2] == Approx(-expected[1][2]) &&
+           computed[2][0] == Approx(-expected[2][0]) && computed[2][1] == Approx(-expected[2][1]) && computed[2][2] == Approx(-expected[2][2]))));
 }
 
 
@@ -3798,6 +3859,138 @@ TEST_CASE("WorldBuilder Parameters")
 
 
 }
+
+
+TEST_CASE("Euler angle functions")
+{
+  // note, this is only testing consitency (can it convert back and forth) and
+  // it only works for rotation matrices which are defined in the same way (z-x-z).
+  {
+    auto rot1 = Utilities::euler_angles_to_rotation_matrix(-85,340,56);
+    auto ea1 = Utilities::euler_angles_from_rotation_matrix(rot1);
+    auto rot2 = Utilities::euler_angles_to_rotation_matrix(ea1[0],ea1[1],ea1[2]);
+    compare_rotation_matrices_approx(rot2, rot1);
+    auto ea2 = Utilities::euler_angles_from_rotation_matrix(rot2);
+    compare_3d_arrays_approx(ea2,ea1);
+    auto rot3 = Utilities::euler_angles_to_rotation_matrix(ea2[0],ea2[1],ea2[2]);
+    compare_rotation_matrices_approx(rot3, rot2);
+  }
+
+  {
+    std::array<double,3> ea0 = {{20,30,40}};
+    auto rot0 = Utilities::euler_angles_to_rotation_matrix(20,30,40);
+    auto ea1 = Utilities::euler_angles_from_rotation_matrix(rot0);
+    compare_3d_arrays_approx(ea1,ea0);
+    auto rot2 = Utilities::euler_angles_to_rotation_matrix(ea1[0],ea1[1],ea1[2]);
+    compare_rotation_matrices_approx(rot2, rot0);
+    auto ea2 = Utilities::euler_angles_from_rotation_matrix(rot2);
+    compare_3d_arrays_approx(ea2,ea1);
+    auto rot3 = Utilities::euler_angles_to_rotation_matrix(ea2[0],ea2[1],ea2[2]);
+    compare_rotation_matrices_approx(rot3, rot2);
+  }
+  /*
+  {
+    std::array<std::array<double,3>,3> rot1 = {{{{0.36,0.48,-0.8}},{{-0.8,0.6,0}}, {{0.48,0.64, 0.6}}}};
+    auto ea1 = Utilities::euler_angles_from_rotation_matrix(rot1);
+    auto rot2 = Utilities::euler_angles_to_rotation_matrix(ea1[0],ea1[1],ea1[2]);
+    std::cout << "flag 1 " << std::endl;
+    compare_rotation_matrices_approx(rot2, rot1);
+    std::cout << "flag 2 " << std::endl;
+    auto ea2 = Utilities::euler_angles_from_rotation_matrix(rot2);
+    std::cout << "flag 3 " << std::endl;
+    compare_3d_arrays_approx(ea2,ea1);
+    std::cout << "flag 4 " << std::endl;
+    auto rot3 = Utilities::euler_angles_to_rotation_matrix(ea2[0],ea2[1],ea2[2]);
+    compare_rotation_matrices_approx(rot3, rot2);
+    std::cout << "flag 5 " << std::endl;
+  }*/
+}
+
+TEST_CASE("glm functions")
+{
+
+  {
+    // This shows that two equal rotation matrices average in the same rotation matrix
+    std::array<std::array<double,3>,3> rot1 = {{{{0.36,0.48,-0.8}},{{-0.8,0.6,0}}, {{0.48,0.64, 0.6}}}}; //{{normalize({{1,2,3}}),normalize({{4,5,6}}),normalize({{7,8,9}})}};
+    glm::quaternion::quat quat_current = glm::quaternion::quat_cast(rot1);
+    glm::quaternion::quat quat_next = glm::quaternion::quat_cast(rot1);
+
+    glm::quaternion::quat quat_average = glm::quaternion::slerp(quat_current,quat_next,0.5);
+
+    std::array<std::array<double,3>,3> result1 = glm::quaternion::mat3_cast(quat_average);
+
+    auto ea1 = Utilities::euler_angles_from_rotation_matrix(rot1);
+    auto ear = Utilities::euler_angles_from_rotation_matrix(result1);
+
+    compare_rotation_matrices_approx(result1, rot1);
+    compare_3d_arrays_approx(ea1,ear);
+  }
+
+  {
+    // This shows that a very small difference in the rotation matrix causes a very small difference in the resulting rotation matrix.
+    std::array<std::array<double,3>,3> rot1 = {{{{0.360000,0.480000,-0.800000}},{{-0.800000,0.600000,0.000000000}}, {{0.480000,0.640000, 0.600000}}}};
+    std::array<std::array<double,3>,3> rot2 = {{{{0.350000,0.480000,-0.800000}},{{-0.800000,0.600000,0.000000000}}, {{0.480000,0.640000, 0.600000}}}};
+    std::array<std::array<double,3>,3> expt = {{{{0.358746,0.479687,-0.800314}},{{-0.800314,0.599216,0.000626838}}, {{0.479687,0.640627, 0.599216}}}};
+
+    glm::quaternion::quat quat_current = glm::quaternion::quat_cast(rot1);
+    glm::quaternion::quat quat_next = glm::quaternion::quat_cast(rot2);
+
+    glm::quaternion::quat quat_average = glm::quaternion::slerp(quat_current,quat_next,0.5);
+
+    std::array<std::array<double,3>,3> result1 = glm::quaternion::mat3_cast(quat_average);
+
+    compare_rotation_matrices_approx(result1, expt);
+  }
+
+  {
+    // This shows that a small difference in the rotation matrix causes a small difference in the resulting rotation matrix.
+    std::array<std::array<double,3>,3> rot1 = {{{{0.360000,0.480000,-0.800000}},{{-0.800000,0.600000,0.000000000}}, {{0.480000,0.640000, 0.600000}}}};
+    std::array<std::array<double,3>,3> rot2 = {{{{0.300000,0.480000,-0.800000}},{{-0.800000,0.600000,0.000000000}}, {{0.480000,0.640000, 0.600000}}}};
+    std::array<std::array<double,3>,3> expt = {{{{0.352343,0.478108,-0.801937}},{{-0.801937,0.595214,0.00381737}}, {{0.478108,0.64384, 0.595214}}}};
+
+    glm::quaternion::quat quat_current = glm::quaternion::quat_cast(rot1);
+    glm::quaternion::quat quat_next = glm::quaternion::quat_cast(rot2);
+
+    glm::quaternion::quat quat_average = glm::quaternion::slerp(quat_current,quat_next,0.5);
+
+    std::array<std::array<double,3>,3> result1 = glm::quaternion::mat3_cast(quat_average);
+
+    compare_rotation_matrices_approx(result1, expt);
+  }
+
+  {
+    // This shows that a small difference in the rotation matrix causes a small difference in the resulting rotation matrix.
+    std::array<std::array<double,3>,3> rot1 = {{{{0.360000,0.480000,-0.800000}},{{-0.800000,0.600000,0.000000000}}, {{0.480000,0.640000, 0.600000}}}};
+    std::array<std::array<double,3>,3> rot2 = {{{{0.300000,0.450000,-0.800000}},{{-0.800000,0.600000,0.000000000}}, {{0.480000,0.640000, 0.600000}}}};
+    std::array<std::array<double,3>,3> expt = {{{{0.359933,0.470563,-0.800028}},{{-0.794392,0.602804,0.000000000}}, {{0.480017,0.640022, 0.595214}}}};
+
+    glm::quaternion::quat quat_current = glm::quaternion::quat_cast(rot1);
+    glm::quaternion::quat quat_next = glm::quaternion::quat_cast(rot2);
+
+    glm::quaternion::quat quat_average = glm::quaternion::slerp(quat_current,quat_next,0.5);
+
+    std::array<std::array<double,3>,3> result1 = glm::quaternion::mat3_cast(quat_average);
+
+    compare_rotation_matrices_approx(result1, expt);
+  }
+
+  {
+    // This shows that a significant difference in the rotation matrix causes a significat difference in the resulting rotation matrix.
+    std::array<std::array<double,3>,3> rot1 = {{{{0.360000,0.480000,-0.800000}},{{-0.800000,0.600000,0.000000000}}, {{0.480000,0.640000, 0.600000}}}};
+    std::array<std::array<double,3>,3> rot2 = {{{{0.200000,0.250000,-0.400000}},{{-0.500000,0.200000,0.300000000}}, {{0.380000,0.840000, 0.500000}}}};
+    std::array<std::array<double,3>,3> expt = {{{{0.522182,0.380182,-0.6678}},{{-0.661608,0.683361,-0.0679593}}, {{0.390859,0.545715, 0.675687}}}};
+
+    glm::quaternion::quat quat_current = glm::quaternion::quat_cast(rot1);
+    glm::quaternion::quat quat_next = glm::quaternion::quat_cast(rot2);
+
+    glm::quaternion::quat quat_average = glm::quaternion::slerp(quat_current,quat_next,0.5);
+
+    std::array<std::array<double,3>,3> result1 = glm::quaternion::mat3_cast(quat_average);
+
+    compare_rotation_matrices_approx(result1, expt);
+  }
+}
+
 
 TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes cartesian part 1")
 {
