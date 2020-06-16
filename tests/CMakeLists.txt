@@ -1,3 +1,20 @@
+# find diff program
+FIND_PROGRAM(DIFF_EXECUTABLE
+	     NAMES numdiff diff FC
+	     HINTS ${DIFF_DIR}
+	     PATH_SUFFIXES bin
+	     )
+
+ IF(NOT DIFF_EXECUTABLE MATCHES "-NOTFOUND")
+	 SET(TEST_DIFF ${DIFF_EXECUTABLE})
+	 MESSAGE(STATUS "Found ${DIFF_EXECUTABLE} to test the difference between files.")
+ ELSE()
+	     MESSAGE(FATAL_ERROR
+		     "Could not find diff or fc. This is required for running the testsuite.\n"
+		     "Please specify TEST_DIFF by hand."
+		     )
+ENDIF()
+
 # Unit test testing
 #find all the unit test files
 file(GLOB_RECURSE UNIT_TEST_SOURCES_CXX "unit_tests/*.cc")
