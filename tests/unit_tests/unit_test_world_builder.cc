@@ -111,8 +111,10 @@ inline void compare_vectors_array3_array3_approx(
           CHECK(computed[j].size() == expected[j].size());
           for (unsigned int k=0; k< computed.size(); ++k)
             {
-              INFO("vector index i:j:k =" << i << ":" << j << ":" << k << " = ");
-              CHECK(computed[i][j][k] == Approx(expected[i][j][k]));
+              INFO("vector index i:j:k =" << i << ":" << j << ":" << k
+                   << " = computed: " << computed[i][j][k] << ", expected: " <<  expected[i][j][k]
+                   << ", diff = " << computed[i][j][k] - expected[i][j][k] << ", eps = " << std::numeric_limits<double>::epsilon());
+              CHECK(std::fabs(computed[i][j][k] - expected[i][j][k]) <= 100.0 * std::numeric_limits<double>::epsilon());
             }
         }
     }
@@ -2067,29 +2069,22 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world1.composition(position, 0, 5) == Approx(0.0));
   CHECK(world1.composition(position, 0, 6) == Approx(0.0));
 
-  std::cout << "flag a1a" << std::endl;
   // check grains
   {
     WorldBuilder::grains grains = world1.grains(position, 10, 0, 3);
     compare_vectors_approx(grains.sizes, {0.3,0.3,0.3});
-    std::cout << "flag a1a1" << std::endl;
     std::array<std::array<double, 3>, 3> array_1  = Utilities::euler_angles_to_rotation_matrix(10,20,30);
     std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
     compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-    std::cout << "flag a1a2" << std::endl;
 
     grains = world1.grains(position, 10, 1, 3);
-    std::array<std::array<double, 3>, 3> array_2 = Utilities::euler_angles_to_rotation_matrix(40,50,60);//{{{{100,110,120}},{{130,140,150}},{{160,170,180}}}};
+    std::array<std::array<double, 3>, 3> array_2 = Utilities::euler_angles_to_rotation_matrix(40,50,60);
     std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
 
-    std::cout << "flag a1a3" << std::endl;
     compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
-    std::cout << "flag a1a4" << std::endl;
     compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
-    std::cout << "flag a1a5" << std::endl;
   }
 
-  std::cout << "flag a1b" << std::endl;
 
   position = {{250e3,250e3,800e3}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600.0));
@@ -2131,64 +2126,58 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world1.composition(position, 0, 6) == Approx(0.0));
 
 
-  std::cout << "flag a2a" << std::endl;
   // check grains
   {
     {
       // layer 1
       WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0, 3);
-      std::array<std::array<double, 3>, 3> array_1 = {{{{101,201,301}},{{401,501,601}},{{701,801,901}}}};
+      std::array<std::array<double, 3>, 3> array_1  = Utilities::euler_angles_to_rotation_matrix(10,20,30);
       std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
 
       compare_vectors_approx(grains.sizes, {0.4,0.4,0.4});
       compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
 
       grains = world1.grains(position, std::sqrt(2) * 33e3 * 0.5 - 1, 1, 3);
-      std::array<std::array<double, 3>, 3> array_2 = {{{{1001,1101,1201}},{{1301,1401,1501}},{{1601,1701,1801}}}};
+      std::array<std::array<double, 3>, 3> array_2 = Utilities::euler_angles_to_rotation_matrix(40,50,60);
       std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
 
       compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
       compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
     }
 
-    std::cout << "flag a2b" << std::endl;
-    std::cout << "flag a3a" << std::endl;
     {
       // layer 2
       WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 33e3 * 0.5 + 1, 0, 3);
-      std::array<std::array<double, 3>, 3> array_1 = {{{{102,202,302}},{{402,502,602}},{{702,802,902}}}};
+      std::array<std::array<double, 3>, 3> array_1 = Utilities::euler_angles_to_rotation_matrix(-10,-25,35);
       std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
 
       compare_vectors_approx(grains.sizes, {0.5,0.5,0.5});
       compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
 
       grains = world1.grains(position, std::sqrt(2) * 33e3 * 0.5 + 1, 1, 3);
-      std::array<std::array<double, 3>, 3> array_2 = {{{{1002,1102,1202}},{{1302,1402,1502}},{{1602,1702,1802}}}};
+      std::array<std::array<double, 3>, 3> array_2  =  Utilities::euler_angles_to_rotation_matrix(45,-55,65);
       std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
 
       compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
       compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
     }
 
-    std::cout << "flag a3b" << std::endl;
-    std::cout << "flag a4a" << std::endl;
     {
       // layer 3
       WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 99e3 * 0.5 - 1, 0, 3);
-      std::array<std::array<double, 3>, 3> array_1 = {{{{103,203,303}},{{403,503,603}},{{703,803,903}}}};
+      std::array<std::array<double, 3>, 3> array_1 = Utilities::euler_angles_to_rotation_matrix(220,320,240);
       std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
 
       compare_vectors_approx(grains.sizes, {0.6,0.6,0.6});
       compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
 
       grains = world1.grains(position, std::sqrt(2) * 99e3 * 0.5 - 1, 1, 3);
-      std::array<std::array<double, 3>, 3> array_2 = {{{{1003,1103,1203}},{{1303,1403,1503}},{{1603,1703,1803}}}};
+      std::array<std::array<double, 3>, 3> array_2 = Utilities::euler_angles_to_rotation_matrix(520,620,270);
       std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
 
       compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
       compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
     }
-    std::cout << "flag a4b" << std::endl;
   }
 
 
@@ -2369,7 +2358,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world3.composition(position, 0, 4) == Approx(0.0));
   CHECK(world3.composition(position, 0, 5) == Approx(0.0));
   CHECK(world3.composition(position, 0, 6) == Approx(0.0));
-  std::cout << "flag 1a" << std::endl;
+
   {
     WorldBuilder::grains grains = world3.grains(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0, 3);
     std::array<std::array<double, 3>, 3> array_1 = {{{{-1,0,0}},{{0,1,0}},{{0,0,-1}}}};
@@ -2385,7 +2374,6 @@ TEST_CASE("WorldBuilder Features: Fault")
     compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
     compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
   }
-  std::cout << "flag 1b" << std::endl;
 
   position = {{250e3,600e3,800e3}};
   CHECK(world3.temperature(position, 0, 10) == Approx(1600));
@@ -2433,23 +2421,21 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world3.composition(position, 0, 5) == Approx(0.0));
   CHECK(world3.composition(position, 0, 6) == Approx(0.0));
 
-  std::cout << "flag 2a" << std::endl;
   {
-    WorldBuilder::grains grains = world3.grains(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0, 3);
+    WorldBuilder::grains grains = world3.grains(position, 101e3+1, 0, 3);
     std::array<std::array<double, 3>, 3> array_1 = {{{{-1,0,0}},{{0,1,0}},{{0,0,-1}}}};
     std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
 
     compare_vectors_approx(grains.sizes, {0.4,0.4,0.4});
     compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
 
-    grains = world3.grains(position, std::sqrt(2) * 33e3 * 0.5 - 1, 1, 3);
+    grains = world3.grains(position, 101e3+1, 1, 3);
     std::array<std::array<double, 3>, 3> array_2 = {{{{-1,0,0}},{{0,1,0}},{{0,0,-1}}}};
     std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
 
     compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
     compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
   }
-  std::cout << "flag 2b" << std::endl;
 
   position = {{650e3,650e3,800e3}};
   CHECK(world3.temperature(position, 0, 10) == Approx(4.3590710784));
@@ -2497,23 +2483,27 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world3.composition(position, 0, 5) == Approx(0.6409289216));
   CHECK(world3.composition(position, 0, 6) == Approx(0.0));
 
-  std::cout << "flag 3a" << std::endl;
   {
-    WorldBuilder::grains grains = world3.grains(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0, 3);
-    std::array<std::array<double, 3>, 3> array_1 = {{{{-1,0,0}},{{0,1,0}},{{0,0,-1}}}};
+    WorldBuilder::grains grains = world3.grains(position, 100e3+1, 0, 3);
+    std::array<std::array<double, 3>, 3> array_1 = Utilities::euler_angles_to_rotation_matrix(180,135.4473098406,0);
     std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
 
-    compare_vectors_approx(grains.sizes, {0.4,0.4,0.4});
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+    compare_vectors_approx(grains.sizes, {0.2718142157,0.2718142157,0.2718142157});
+    //compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[0]), {180,135.4473098406,0});
+    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[1]), {180,135.4473098406,0});
+    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[2]), {180,135.4473098406,0});
 
-    grains = world3.grains(position, std::sqrt(2) * 33e3 * 0.5 - 1, 1, 3);
-    std::array<std::array<double, 3>, 3> array_2 = {{{{-1,0,0}},{{0,1,0}},{{0,0,-1}}}};
+    grains = world3.grains(position, 100e3+1, 1, 3);
+    std::array<std::array<double, 3>, 3> array_2 = Utilities::euler_angles_to_rotation_matrix(220,320,240);
     std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
 
     compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    //compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[0]), {180,153.4593755586,0});
+    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[1]), {180,153.4593755586,0});
+    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[2]), {180,153.4593755586,0});
   }
-  std::cout << "flag 3b" << std::endl;
 
   position = {{700e3,675e3,800e3}};
   CHECK(world3.temperature(position, 0, 10) == Approx(4.4592312705));
@@ -4115,9 +4105,6 @@ TEST_CASE("Euler angle functions")
   }
   {
     auto rot1 = Utilities::euler_angles_to_rotation_matrix(90,180,270);
-    std::cout << "[["<< rot1[0][0] << "," << rot1[0][1] << "," << rot1[0][2] << "]" <<
-              ",[" << rot1[1][0] << "," << rot1[1][1] << "," << rot1[1][2] << "]" <<
-              ",[" << rot1[2][0] << "," << rot1[2][1] << "," << rot1[2][2] << "]]" << std::endl;
     auto ea1 = Utilities::euler_angles_from_rotation_matrix(rot1);
     auto rot2 = Utilities::euler_angles_to_rotation_matrix(ea1[0],ea1[1],ea1[2]);
     compare_rotation_matrices_approx(rot2, rot1);
@@ -4139,22 +4126,6 @@ TEST_CASE("Euler angle functions")
     auto rot3 = Utilities::euler_angles_to_rotation_matrix(ea2[0],ea2[1],ea2[2]);
     compare_rotation_matrices_approx(rot3, rot2);
   }
-  /*
-  {
-    std::array<std::array<double,3>,3> rot1 = {{{{0.36,0.48,-0.8}},{{-0.8,0.6,0}}, {{0.48,0.64, 0.6}}}};
-    auto ea1 = Utilities::euler_angles_from_rotation_matrix(rot1);
-    auto rot2 = Utilities::euler_angles_to_rotation_matrix(ea1[0],ea1[1],ea1[2]);
-    std::cout << "flag 1 " << std::endl;
-    compare_rotation_matrices_approx(rot2, rot1);
-    std::cout << "flag 2 " << std::endl;
-    auto ea2 = Utilities::euler_angles_from_rotation_matrix(rot2);
-    std::cout << "flag 3 " << std::endl;
-    compare_3d_arrays_approx(ea2,ea1);
-    std::cout << "flag 4 " << std::endl;
-    auto rot3 = Utilities::euler_angles_to_rotation_matrix(ea2[0],ea2[1],ea2[2]);
-    compare_rotation_matrices_approx(rot3, rot2);
-    std::cout << "flag 5 " << std::endl;
-  }*/
 }
 
 

@@ -213,20 +213,14 @@ namespace WorldBuilder
         static_assert(std::numeric_limits<double>::is_iec559, "'slerp' only accept floating-point inputs");
 
         quat z = y;
-        //std::cout << "qy1: " << y.w << " " << y.x << " " << y.y << " " << y.z << std::endl;
-        //std::cout << "qz1: " << z.w << " " << z.x << " " << z.y << " " << z.z << std::endl;
 
         double cosTheta = dot(x, y);
-
-        // std::cout << "cosTheta = " << cosTheta << std::endl;
 
         // If cosTheta < 0, the interpolation will take the long way around the sphere.
         // To fix this, one quat must be negated.
         if (cosTheta < static_cast<double>(0))
           {
             z = -y;
-            //std::cout << "qy2: " << y.w << " " << y.x << " " << y.y << " " << y.z << std::endl;
-            //std::cout << "qz2: " << z.w << " " << z.x << " " << z.y << " " << z.z << std::endl;
 
             cosTheta = -cosTheta;
           }
@@ -234,7 +228,6 @@ namespace WorldBuilder
         // Perform a linear interpolation when cosTheta is close to 1 to avoid side effect of sin(angle) becoming a zero denominator
         if (cosTheta > 1.0 - std::numeric_limits<double>::epsilon())
           {
-            //std::cout << "flag glm 1" << std::endl;
             // Linear interpolation
             return quat(
                      mix(x.w, z.w, a),
@@ -244,7 +237,6 @@ namespace WorldBuilder
           }
         else
           {
-            //std::cout << "flag glm 2" << std::endl;
             // Essential Mathematics, page 467
             double angle = acos(cosTheta);
             return (sin((1.0 - a) * angle) * x + sin(a * angle) * z) / sin(angle);

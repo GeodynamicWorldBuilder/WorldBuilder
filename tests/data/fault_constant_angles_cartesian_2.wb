@@ -5,14 +5,18 @@
 "features":
 [
      {"model":"fault", "name":"First subducting plate", "coordinates":[[0e3,500e3],[500e3,500e3],[501e3,500e3],[1000e3,750e3]], "dip point":[2200e3,2200e3],
-         "segments":[{"length":200e3, "thickness":[100e3,100e3], "angle":[45,45], "temperature models":[{"model":"linear", "max distance fault center":100e3, "top temperature":1, "bottom temperature":7}],"composition models":[{"model":"uniform", "compositions":[3]}]}, 
+         "segments":[{"length":200e3, "thickness":[100e3,100e3], "angle":[45,45], 
+                      "temperature models":[{"model":"linear", "max distance fault center":100e3, "top temperature":1, "bottom temperature":7}],
+                      "composition models":[{"model":"uniform", "compositions":[3]}]}, 
                      {"length":200e3, "thickness":[100e3,100e3], "angle":[60,60], "temperature models":[{"model":"uniform", "temperature":2}]}, 
                      {"length":150e3, "thickness":[100e3,100e3], "angle":[90,90], "temperature models":[{"model":"uniform", "temperature":3}]}],
          "sections":
          [
-           {"coordinate":2, "segments":[{"length":200e3, "thickness":[100e3,100e3], "top truncation":[0], "angle":[45],"temperature models":[{"model":"uniform", "temperature":4}],"composition models":[{"model":"uniform", "compositions":[5]}],
-         "grains models":[{"model":"uniform", "compositions":[0,1], "grain sizes":[0.2,-1],
-                           "rotation matrices":[[[-0.5,0,0],[0,1,0],[0,0,-1]],[[-0.5,0,0],[0,1,0],[0,0,-1]]]}]
+           {"coordinate":2, "segments":[{"length":200e3, "thickness":[100e3,100e3], "top truncation":[0], "angle":[45],
+            "temperature models":[{"model":"uniform", "temperature":4}],
+            "composition models":[{"model":"uniform", "compositions":[5]}],
+            "grains models":[{"model":"uniform", "compositions":[0,1], "grain sizes":[0.2,-1],
+                              "rotation matrices":[[[-0.5,0,0],[0,0.2,0],[0,0,-1]],[[-0.5,0,0],[0,1,0],[0,0,-1]]]}]
 }, 
                                         {"length":150e3, "thickness":[100e3], "top truncation":[0], "angle":[40],"temperature models":[{"model":"uniform", "temperature":5}],
                                           "grains models":[{"model":"uniform", "compositions":[0,1], "grain sizes":[0.2,-1],

@@ -729,39 +729,18 @@ namespace WorldBuilder
                   for (size_t i = 0; i < grains.sizes.size(); i++)
                     {
                       grains.sizes[i] = grains_current_section.sizes[i] + section_fraction * (grains_next_section.sizes[i] - grains_current_section.sizes[i]);
-                      //std::cout << "gs " << i << "= " << grains_current_section.sizes[i] << " + " << section_fraction << " * (" << grains_next_section.sizes[i] << " - " << grains_current_section.sizes[i] << ") = " << grains.sizes[i] << std::endl;
                     }
 
                   // average two rotations matrices throu quaternions.
                   for (size_t i = 0; i < grains_current_section.rotation_matrices.size(); i++)
                     {
-                      //std::cout << "RMc" << i << ": " << grains_current_section.rotation_matrices[i][0][0] << " " << grains_current_section.rotation_matrices[i][0][1] << " " << grains_current_section.rotation_matrices[i][0][2]
-                      //          << " " << grains_current_section.rotation_matrices[i][1][0] << " " << grains_current_section.rotation_matrices[i][1][1] << " " << grains_current_section.rotation_matrices[i][1][2]
-                      //          << " " << grains_current_section.rotation_matrices[i][2][0] << " " << grains_current_section.rotation_matrices[i][2][1] << " " << grains_current_section.rotation_matrices[i][2][2] << std::endl;
-                      //std::cout << "RMn" << i << ": " << grains_next_section.rotation_matrices[i][0][0] << " " << grains_next_section.rotation_matrices[i][0][1] << " " << grains_next_section.rotation_matrices[i][0][2]
-                      //          << " " << grains_next_section.rotation_matrices[i][1][0] << " " << grains_next_section.rotation_matrices[i][1][1] << " " << grains_next_section.rotation_matrices[i][1][2]
-                      //          << " " << grains_next_section.rotation_matrices[i][2][0] << " " << grains_next_section.rotation_matrices[i][2][1] << " " << grains_next_section.rotation_matrices[i][2][2] << std::endl;
-
                       glm::quaternion::quat quat_current = glm::quaternion::quat_cast(grains_current_section.rotation_matrices[i]);
                       glm::quaternion::quat quat_next = glm::quaternion::quat_cast(grains_next_section.rotation_matrices[i]);
 
-                      //std::cout << std::endl;
-                      //std::cout << "qc" << i << ": " << quat_current.w << " " << quat_current.x << " " << quat_current.y << " " << quat_current.z << std::endl;
-                      //std::cout << "qn" << i << ": " << quat_next.w << " " << quat_next.x << " " << quat_next.y << " " << quat_next.z << std::endl;
-
                       glm::quaternion::quat quat_average = glm::quaternion::slerp(quat_current,quat_next,section_fraction);
 
-                      //std::cout << "qa" << i << ": " << quat_average.w << " " << quat_average.x << " " << quat_average.y << " " << quat_average.z << std::endl;
-
-                      //std::cout << std::endl;
                       grains.rotation_matrices[i] = glm::quaternion::mat3_cast(quat_average);
-                      //std::cout << "RMf" << i << ": " << grains.rotation_matrices[i][0][0] << " " << grains.rotation_matrices[i][0][1] << " " << grains.rotation_matrices[i][0][2]
-                      //          << grains.rotation_matrices[i][1][0] << " " << grains.rotation_matrices[i][1][1] << " " << grains.rotation_matrices[i][1][2]
-                      //          << grains.rotation_matrices[i][2][0] << " " << grains.rotation_matrices[i][2][1] << " " << grains.rotation_matrices[i][2][2] << std::endl;
                     }
-
-                  //grains.rotation_matrices = grains_current_section.rotation_matrices;
-
                 }
             }
         }
