@@ -110,9 +110,7 @@ namespace WorldBuilder
               rotation_matrices.resize(euler_angles_vector.size());
               for (size_t i = 0; i<euler_angles_vector.size(); ++i)
                 {
-                  //std::cout << "EA" << i << ": " << euler_angles_vector[i][0] << " " << euler_angles_vector[i][1] << " " << euler_angles_vector[i][2] << std::endl;
                   rotation_matrices[i] = Utilities::euler_angles_to_rotation_matrix(euler_angles_vector[i][0],euler_angles_vector[i][1],euler_angles_vector[i][2]);
-                  //std::cout << "RM" << i << ": " << rotation_matrices[i][0][0] << " " << rotation_matrices[i][0][1] << " " << rotation_matrices[i][0][2] << std::endl;
                 }
 
             }

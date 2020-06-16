@@ -106,6 +106,7 @@ namespace WorldBuilder
           if (set_euler_angles)
             {
               std::vector<std::array<double,3> > euler_angles_vector = prm.get_vector<std::array<double,3> >("Euler angles z-x-z");
+              rotation_matrices.resize(euler_angles_vector.size());
               for (size_t i = 0; i<euler_angles_vector.size(); ++i)
                 {
                   rotation_matrices[i] = Utilities::euler_angles_to_rotation_matrix(euler_angles_vector[i][0],euler_angles_vector[i][1],euler_angles_vector[i][2]);
