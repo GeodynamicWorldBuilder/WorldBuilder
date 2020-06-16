@@ -120,7 +120,7 @@ namespace WorldBuilder
 
       inline double dot(quat u, quat v)
       {
-        return u.w * v.w + u.x * v.x + u.y * v.y + u.w * v.z;
+        return u.w * v.w + u.x * v.x + u.y * v.y + u.z * v.z;
       }
 
       inline double mix(double const     &x,
