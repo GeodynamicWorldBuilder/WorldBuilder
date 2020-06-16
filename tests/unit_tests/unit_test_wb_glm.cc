@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2018 by the authors of the World Builder code.
+  Copyright (C) 2020 by the authors of the World Builder code.
 
   This file is part of the World Builder.
 
@@ -70,8 +70,103 @@ inline void compare_rotation_matrices_approx(
            computed[2][0] == Approx(-expected[2][0]) && computed[2][1] == Approx(-expected[2][1]) && computed[2][2] == Approx(-expected[2][2]))));
 }
 
+inline
+void
+compare_quaternions(
+  const glm::quaternion::quat &computed,
+  const glm::quaternion::quat &expected
+)
+{
+  CHECK(computed.w == Approx(expected.w));
+  CHECK(computed.x == Approx(expected.x));
+  CHECK(computed.y == Approx(expected.y));
+  CHECK(computed.z == Approx(expected.z));
+}
 
-TEST_CASE("glm functions")
+TEST_CASE("glm quat basic functions")
+{
+  typedef glm::quaternion::quat QT;
+  QT q1(2,3,4,5);
+  QT q2(6,7,8,9);
+  QT q3(9,8,7,6);
+
+
+  QT q_res = -q1;
+  compare_quaternions(q_res, QT(-2,-3,-4,-5));
+
+  q_res = q1 + q2;
+  compare_quaternions(q_res, QT(8,10,12,14));
+
+  q_res = q2 - q1;
+  compare_quaternions(q_res, QT(-4,-4,-4,-4));
+  q_res = q3 - q1;
+  compare_quaternions(q_res, QT(-7,-5,-3,-1));
+
+
+  q_res = q1 * 2.0;
+  compare_quaternions(q_res, QT(4,6,8,10));
+  q_res = 2.0 * q1;
+  compare_quaternions(q_res, QT(4,6,8,10));
+
+
+  q_res = (2.0 * q1) / 2.0;
+  compare_quaternions(q_res, q1);
+
+  CHECK(glm::quaternion::dot(q1,q2) ==  Approx(110.0));
+  CHECK(glm::quaternion::dot(q2,q3) ==  Approx(220.0));
+  CHECK(glm::quaternion::dot(q2,-q3) ==  Approx(-220.0));
+  CHECK(glm::quaternion::dot(-q2,-q3) ==  Approx(220.0));
+
+  double res = glm::quaternion::mix(0.0,1.0,0.0);
+  CHECK(res == Approx(0.0));
+
+  res = glm::quaternion::mix(0.0,1.0,0.25);
+  CHECK(res == Approx(Approx(0.25)));
+
+  res = glm::quaternion::mix(0.0,1.0,0.5);
+  CHECK(res == Approx(0.5));
+
+  res = glm::quaternion::mix(0.0,1.0,0.75);
+  CHECK(res == Approx(0.75));
+
+  res = glm::quaternion::mix(0.0,1.0,1.0);
+  CHECK(res == Approx(1.0));
+
+
+  res = glm::quaternion::mix(1.0,0.0,0.0);
+  CHECK(res == Approx(1.0));
+
+  res = glm::quaternion::mix(1.0,0.0,0.25);
+  CHECK(res == Approx(0.75));
+
+  res = glm::quaternion::mix(1.0,0.0,0.5);
+  CHECK(res == Approx(0.5));
+
+  res = glm::quaternion::mix(1.0,0.0,0.75);
+  CHECK(res == Approx(0.25));
+
+  res = glm::quaternion::mix(1.0,0.0,1.0);
+  CHECK(res == Approx(0.0));
+
+
+  res = glm::quaternion::mix(-3.0,1.0,0.0);
+  CHECK(res == Approx(-3.0));
+
+  res = glm::quaternion::mix(-3.0,1.0,0.25);
+  CHECK(res == Approx(-2.0));
+
+  res = glm::quaternion::mix(-3.0,1.0,0.5);
+  CHECK(res == Approx(-1.0));
+
+  res = glm::quaternion::mix(-3.0,1.0,0.75);
+  CHECK(res == Approx(0.0));
+
+  res = glm::quaternion::mix(-3.0,1.0,1.0);
+  CHECK(res == Approx(1.0));
+
+}
+
+TEST_CASE("glm quat slerp functions")
 {
   {
     // This shows that two equal rotation matrices average in the same rotation matrix
