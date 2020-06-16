@@ -220,7 +220,7 @@ namespace WorldBuilder
           }
 
         // Perform a linear interpolation when cosTheta is close to 1 to avoid side effect of sin(angle) becoming a zero denominator
-        if (cosTheta > static_cast<double>(1) - numeric_limits<double>::epsilon())
+        if (cosTheta > 1.0 - std::numeric_limits<double>::epsilon())
           {
             // Linear interpolation
             return quat(
@@ -233,7 +233,7 @@ namespace WorldBuilder
           {
             // Essential Mathematics, page 467
             double angle = acos(cosTheta);
-            return (sin((static_cast<double>(1) - a) * angle) * x + sin(a * angle) * z) / sin(angle);
+            return (sin((1.0 - a) * angle) * x + sin(a * angle) * z) / sin(angle);
           }
       }
     }
