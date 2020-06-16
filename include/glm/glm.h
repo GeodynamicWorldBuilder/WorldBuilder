@@ -89,6 +89,11 @@ namespace WorldBuilder
           return quat(-w, -x, -y, -z);
         }
 
+        const quat operator-(quat &p) const
+        {
+          return quat(p.w-w, p.x-x, p.y-y, p.z-z);
+        }
+
         quat operator*(double const &s) const
         {
           return quat(
