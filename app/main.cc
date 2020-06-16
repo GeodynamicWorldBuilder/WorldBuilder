@@ -238,7 +238,7 @@ int main(int argc, char **argv)
 
               for (unsigned int gc = 0; gc < grain_compositions; ++gc)
                 {
-                  WorldBuilder::grains grains = world->grains(coords, string_to_double(data[i][2]), gc, number_of_grains);
+                  WorldBuilder::grains grains = world->grains(coords, string_to_double(data[i][3]), gc, number_of_grains);
                   for (unsigned int g = 0; g < number_of_grains; ++g)
                     {
                       std::cout << grains.sizes[g]  << " "

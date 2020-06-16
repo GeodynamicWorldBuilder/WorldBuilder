@@ -145,7 +145,6 @@ namespace WorldBuilder
     {
       WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
                                                                       *(world->parameters.coordinate_system));
-
       if (depth <= max_depth && depth >= min_depth &&
           Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
                                                                   world->parameters.coordinate_system->natural_coordinate_system())))
