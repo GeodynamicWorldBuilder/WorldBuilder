@@ -784,6 +784,38 @@ TEST_CASE("WorldBuilder CPP wrapper")
 
 }
 
+TEST_CASE("WorldBuilder World random")
+{
+  // The world builder uses a deterministic random number generator. This is on prorpose
+  // because even though you might want to use random numbers, the result should be
+  // reproducable. Note that when the world builder is used in for example MPI programs
+  // you should supply the world builder created each MPI process a different seed. You
+  // can use the MPI RANK for this (seed is seed + MPI_RANK). Because the generator is
+  // deterministic (known and documented algorithm), we can test the results and they
+  // should be the same even for different compilers and machines.
+  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate_spherical.wb";
+  WorldBuilder::World world1(file_name, false, "", 1);
+  // same result as https://en.cppreference.com/w/cpp/numeric/random/mersenne_twister_engine/seed
+  CHECK(world1.get_random_number_engine()() == 1791095845);
+  CHECK(world1.get_random_number_engine()() == 4282876139);
+  std::uniform_real_distribution<> dist(1.0,2.0);
+  CHECK(dist(world1.get_random_number_engine()) == Approx(1.9325573614));
+  CHECK(dist(world1.get_random_number_engine()) == Approx(1.1281244478));
+
+  // test wheter the seed indeed changes the resuls
+  WorldBuilder::World world2(file_name, false, "", 2);
+  CHECK(world2.get_random_number_engine()() == 1872583848);
+  CHECK(world2.get_random_number_engine()() == 794921487);
+  CHECK(dist(world2.get_random_number_engine()) == Approx(1.9315408636));
+  CHECK(dist(world2.get_random_number_engine()) == Approx(1.947730611));
+
+  // Test reproducability with the same seed.
+  WorldBuilder::World world3(file_name, false, "", 1);
+  CHECK(world3.get_random_number_engine()() == 1791095845);
+  CHECK(world3.get_random_number_engine()() == 4282876139);
+  CHECK(dist(world3.get_random_number_engine()) == Approx(1.9325573614));
+  CHECK(dist(world3.get_random_number_engine()) == Approx(1.1281244478));
+}
 
 TEST_CASE("WorldBuilder Coordinate Systems: Interface")
 {
