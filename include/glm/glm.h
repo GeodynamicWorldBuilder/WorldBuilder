@@ -221,6 +221,7 @@ namespace WorldBuilder
         if (cosTheta < static_cast<double>(0))
           {
             z = -y;
+
             cosTheta = -cosTheta;
           }
 

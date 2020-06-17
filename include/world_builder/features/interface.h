@@ -104,6 +104,16 @@ namespace WorldBuilder
                            const unsigned int composition_number,
                            double value) const = 0;
 
+        /**
+         * Returns a value for the requested grains based on the
+         * given position and composition number
+         */
+        virtual
+        WorldBuilder::grains grains(const Point<3> &position,
+                                    const double depth,
+                                    const unsigned int composition_number,
+                                    WorldBuilder::grains value) const = 0;
+
 
         /**
          * A function to register a new type. This is part of the automatic

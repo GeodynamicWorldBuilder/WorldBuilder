@@ -24,7 +24,6 @@
 #include <world_builder/types/string.h>
 #include <world_builder/types/object.h>
 #include <world_builder/features/continental_plate_models/composition/interface.h>
-#include <world_builder/features/continental_plate_models/composition/uniform.h>
 
 
 namespace WorldBuilder

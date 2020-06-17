@@ -34,6 +34,8 @@
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
 
+#include "glm/glm.h"
+
 
 namespace WorldBuilder
 {
@@ -72,7 +74,8 @@ namespace WorldBuilder
 
       prm.declare_entry("segments", Types::Array(Types::Segment(0,Point<2>(0,0,invalid),Point<2>(0,0,invalid),Point<2>(0,0,invalid),
                                                                 Types::PluginSystem("", Features::FaultModels::Temperature::Interface::declare_entries, {"model"}),
-                                                                Types::PluginSystem("", Features::FaultModels::Composition::Interface::declare_entries, {"model"}))),
+                                                                Types::PluginSystem("", Features::FaultModels::Composition::Interface::declare_entries, {"model"}),
+                                                                Types::PluginSystem("", Features::FaultModels::Grains::Interface::declare_entries, {"model"}))),
                         "The depth to which this feature is present");
 
       prm.declare_entry("temperature models",
@@ -81,6 +84,9 @@ namespace WorldBuilder
       prm.declare_entry("composition models",
                         Types::PluginSystem("", Features::FaultModels::Composition::Interface::declare_entries, {"model"}),
                         "A list of composition models.");
+      prm.declare_entry("grains models",
+                        Types::PluginSystem("", Features::FaultModels::Grains::Interface::declare_entries, {"model"}),
+                        "A list of grains models.");
 
       if (parent_name != "items")
         {
@@ -116,12 +122,15 @@ namespace WorldBuilder
 
       default_temperature_models.resize(0);
       default_composition_models.resize(0);
+      default_grains_models.resize(0);
       prm.get_shared_pointers<Features::FaultModels::Temperature::Interface>("temperature models", default_temperature_models);
       prm.get_shared_pointers<Features::FaultModels::Composition::Interface>("composition models", default_composition_models);
+      prm.get_shared_pointers<Features::FaultModels::Grains::Interface>("grains models", default_grains_models);
 
       // get the default segments.
       default_segment_vector = prm.get_vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
-      Features::FaultModels::Composition::Interface> >("segments", default_temperature_models, default_composition_models);
+      Features::FaultModels::Composition::Interface,
+      Features::FaultModels::Grains::Interface> >("segments", default_temperature_models, default_composition_models,default_grains_models);
 
 
       // This vector stores segments to this coordiante/section.
@@ -151,6 +160,7 @@ namespace WorldBuilder
 
                 std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface> > local_default_temperature_models;
                 std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface>  > local_default_composition_models;
+                std::vector<std::shared_ptr<Features::FaultModels::Grains::Interface>  > local_default_grains_models;
 
                 if (prm.get_shared_pointers<Features::FaultModels::Temperature::Interface>("temperature models", local_default_temperature_models) == false)
                   {
@@ -164,8 +174,15 @@ namespace WorldBuilder
                     local_default_composition_models = default_composition_models;
                   }
 
+                if (prm.get_shared_pointers<Features::FaultModels::Grains::Interface>("grains models", local_default_grains_models) == false)
+                  {
+                    // no local grains model, use global default
+                    local_default_grains_models = default_grains_models;
+                  }
+
                 segment_vector[change_coord_number] = prm.get_vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
-                                                      Features::FaultModels::Composition::Interface> >("segments", local_default_temperature_models, local_default_composition_models);
+                                                      Features::FaultModels::Composition::Interface,
+                                                      Features::FaultModels::Grains::Interface> >("segments", local_default_temperature_models, local_default_composition_models, local_default_grains_models);
 
                 WBAssertThrow(segment_vector[change_coord_number].size() == default_segment_vector.size(),
                               "Error: There are not the same amount of segments in section with coordinate " << change_coord_number
@@ -199,6 +216,20 @@ namespace WorldBuilder
                               prm.enter_subsection(std::to_string(j));
                               {
                                 segment_vector[change_coord_number][i].composition_systems[j]->parse_entries(prm);
+                              }
+                              prm.leave_subsection();
+                            }
+                        }
+                        prm.leave_subsection();
+
+
+                        prm.enter_subsection("grains models");
+                        {
+                          for (unsigned int j = 0; j < segment_vector[change_coord_number][i].grains_systems.size(); ++j)
+                            {
+                              prm.enter_subsection(std::to_string(j));
+                              {
+                                segment_vector[change_coord_number][i].grains_systems[j]->parse_entries(prm);
                               }
                               prm.leave_subsection();
                             }
@@ -245,6 +276,20 @@ namespace WorldBuilder
                     prm.enter_subsection(std::to_string(j));
                     {
                       default_segment_vector[i].composition_systems[j]->parse_entries(prm);
+                    }
+                    prm.leave_subsection();
+                  }
+              }
+              prm.leave_subsection();
+
+
+              prm.enter_subsection("grains models");
+              {
+                for (unsigned int j = 0; j < default_segment_vector[i].grains_systems.size(); ++j)
+                  {
+                    prm.enter_subsection(std::to_string(j));
+                    {
+                      default_segment_vector[i].grains_systems[j]->parse_entries(prm);
                     }
                     prm.leave_subsection();
                   }
@@ -555,9 +600,152 @@ namespace WorldBuilder
                 }
             }
         }
-
-
       return composition;
+    }
+
+
+    WorldBuilder::grains
+    Fault::grains(const Point<3> &position,
+                  const double depth,
+                  const unsigned int composition_number,
+                  WorldBuilder::grains grains) const
+    {
+      WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
+                                                                      *(world->parameters.coordinate_system));
+      // todo: explain
+      const double starting_radius = natural_coordinate.get_depth_coordinate() + depth - starting_depth;
+
+      // todo: explain and check -starting_depth
+      if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness)
+        {
+          // todo: explain
+          // This function only returns positive values, because we want
+          // the fault to be centered around the line provided by the user.
+          std::map<std::string,double> distance_from_planes =
+            Utilities::distance_point_from_curved_planes(position,
+                                                         reference_point,
+                                                         coordinates,
+                                                         slab_segment_lengths,
+                                                         slab_segment_angles,
+                                                         starting_radius,
+                                                         this->world->parameters.coordinate_system,
+                                                         true,
+                                                         one_dimensional_coordinates);
+
+          const double distance_from_plane = distance_from_planes["distanceFromPlane"];
+          const double distance_along_plane = distance_from_planes["distanceAlongPlane"];
+          const double section_fraction = distance_from_planes["sectionFraction"];
+          const size_t current_section = static_cast<size_t>(std::floor(one_dimensional_coordinates[static_cast<size_t>(distance_from_planes["section"])]));
+          const size_t next_section = current_section + 1;
+          const size_t current_segment = static_cast<size_t>(distance_from_planes["segment"]); // the original value was a unsigned int, turning it back.
+          //const size_t next_segment = current_segment + 1;
+          const double segment_fraction = distance_from_planes["segmentFraction"];
+
+          if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)
+            {
+              // We want to do both section (horizontal) and segment (vertical) interpolation.
+
+              const double thickness_up = slab_segment_thickness[current_section][current_segment][0]
+                                          + section_fraction
+                                          * (slab_segment_thickness[next_section][current_segment][0]
+                                             - slab_segment_thickness[current_section][current_segment][0]);
+              const double thickness_down = slab_segment_thickness[current_section][current_segment][1]
+                                            + section_fraction
+                                            * (slab_segment_thickness[next_section][current_segment][1]
+                                               - slab_segment_thickness[current_section][current_segment][1]);
+              const double thickness_local = thickness_up + segment_fraction * (thickness_down - thickness_up);
+
+              // secondly for top truncation
+              const double top_truncation_up = slab_segment_top_truncation[current_section][current_segment][0]
+                                               + section_fraction
+                                               * (slab_segment_top_truncation[next_section][current_segment][0]
+                                                  - slab_segment_top_truncation[current_section][current_segment][0]);
+              const double top_truncation_down = slab_segment_top_truncation[current_section][current_segment][1]
+                                                 + section_fraction
+                                                 * (slab_segment_top_truncation[next_section][current_segment][1]
+                                                    - slab_segment_top_truncation[current_section][current_segment][1]);
+              const double top_truncation_local = top_truncation_up + segment_fraction * (top_truncation_down - top_truncation_up);
+
+              // if the thickness is zero, we don't need to compute anything, so return.
+              if (std::fabs(thickness_local) < 2.0 * std::numeric_limits<double>::epsilon())
+                return grains;
+
+              // if the thickness is smaller than what is truncated off at the top, we don't need to compute anything, so return.
+              if (thickness_local < top_truncation_local)
+                return grains;
+
+              const double max_slab_length = total_slab_length[current_section] +
+                                             section_fraction *
+                                             (total_slab_length[next_section] - total_slab_length[current_section]);
+
+
+              // Because both sides return positve values, we have to
+              // devide the thickness_local by two
+              if (std::fabs(distance_from_plane) > 0 &&
+                  std::fabs(distance_from_plane) <= thickness_local * 0.5 &&
+                  distance_along_plane > 0 &&
+                  distance_along_plane <= max_slab_length)
+                {
+                  // Inside the fault!
+                  WorldBuilder::grains  grains_current_section = grains;
+                  WorldBuilder::grains  grains_next_section = grains;
+
+                  for (auto &grains_model: segment_vector[current_section][current_segment].grains_systems)
+                    {
+                      grains_current_section = grains_model->get_grains(position,
+                                                                        depth,
+                                                                        composition_number,
+                                                                        grains_current_section,
+                                                                        starting_depth,
+                                                                        maximum_depth,
+                                                                        distance_from_planes);
+
+                      /*WBAssert(!std::isnan(composition_current_section), "Composition_current_section is not a number: " << composition_current_section
+                               << ", based on a temperature model with the name " << composition_model->get_name());
+                      WBAssert(std::isfinite(composition_current_section), "Composition_current_section is not a finite: " << composition_current_section
+                               << ", based on a temperature model with the name " << composition_model->get_name());*/
+
+                    }
+
+                  for (auto &grains_model: segment_vector[next_section][current_segment].grains_systems)
+                    {
+                      grains_next_section = grains_model->get_grains(position,
+                                                                     depth,
+                                                                     composition_number,
+                                                                     grains_next_section,
+                                                                     starting_depth,
+                                                                     maximum_depth,
+                                                                     distance_from_planes);
+
+                      /*WBAssert(!std::isnan(composition_next_section), "Composition_next_section is not a number: " << composition_next_section
+                               << ", based on a temperature model with the name " << composition_model->get_name());
+                      WBAssert(std::isfinite(composition_next_section), "Composition_next_section is not a finite: " << composition_next_section
+                               << ", based on a temperature model with the name " << composition_model->get_name());*/
+
+                    }
+
+                  // linear interpolation between current and next section temperatures
+                  for (size_t i = 0; i < grains.sizes.size(); i++)
+                    {
+                      grains.sizes[i] = grains_current_section.sizes[i] + section_fraction * (grains_next_section.sizes[i] - grains_current_section.sizes[i]);
+                    }
+
+                  // average two rotations matrices throu quaternions.
+                  for (size_t i = 0; i < grains_current_section.rotation_matrices.size(); i++)
+                    {
+                      glm::quaternion::quat quat_current = glm::quaternion::quat_cast(grains_current_section.rotation_matrices[i]);
+                      glm::quaternion::quat quat_next = glm::quaternion::quat_cast(grains_next_section.rotation_matrices[i]);
+
+                      glm::quaternion::quat quat_average = glm::quaternion::slerp(quat_current,quat_next,section_fraction);
+
+                      grains.rotation_matrices[i] = glm::quaternion::mat3_cast(quat_average);
+                    }
+                }
+            }
+        }
+
+      // todo: fix to an averged value
+      return grains;
     }
 
     /**

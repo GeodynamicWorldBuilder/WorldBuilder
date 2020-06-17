@@ -25,6 +25,7 @@
 
 #include <world_builder/features/mantle_layer_models/temperature/interface.h>
 #include <world_builder/features/mantle_layer_models/composition/interface.h>
+#include <world_builder/features/mantle_layer_models/grains/interface.h>
 
 
 namespace WorldBuilder
@@ -87,6 +88,19 @@ namespace WorldBuilder
                            double value) const override final;
 
 
+        /**
+         * Returns a grains (rotation matrix and grain size)
+         * based on the given position, depth in the model,
+         * the composition which is being requested and the current value
+         * of that composition at this location and depth.
+         */
+        virtual
+        WorldBuilder::grains
+        grains(const Point<3> &position,
+               const double depth,
+               const unsigned int composition_number,
+               WorldBuilder::grains value) const override final;
+
 
 
       private:
@@ -105,6 +119,14 @@ namespace WorldBuilder
          * @see Features
          */
         std::vector<std::unique_ptr<Features::MantleLayerModels::Composition::Interface> > composition_models;
+
+        /**
+         * A vector containing all the pointers to the grains models. This vector is
+         * responsible for the features and has ownership over them. Therefore
+         * unique pointers are used.
+         * @see Features
+         */
+        std::vector<std::unique_ptr<Features::MantleLayerModels::Grains::Interface> > grains_models;
 
         double min_depth;
         double max_depth;
