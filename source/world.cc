@@ -47,11 +47,12 @@ namespace WorldBuilder
 
   using namespace Utilities;
 
-  World::World(std::string filename, bool has_output_dir, std::string output_dir)
+  World::World(std::string filename, bool has_output_dir, std::string output_dir, double random_number_seed)
     :
     parameters(*this),
     surface_coord_conversions(invalid),
-    dim(NaN::ISNAN)
+    dim(NaN::ISNAN),
+    random_number_engine(random_number_seed)
   {
     this->declare_entries(parameters);
 
@@ -406,6 +407,12 @@ namespace WorldBuilder
 
 
     return grains;
+  }
+
+  std::mt19937 &
+  World::get_random_number_engine()
+  {
+    return random_number_engine;
   }
 
 }
