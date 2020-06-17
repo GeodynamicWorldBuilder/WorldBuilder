@@ -11,6 +11,9 @@ endif( NOT TEST_OUTPUT )
 if( NOT TEST_REFERENCE )
   message( FATAL_ERROR "Require TEST_REFERENCE to be defined" )
 endif( NOT TEST_REFERENCE )
+if( NOT TEST_DIFF )
+message( FATAL_ERROR "Require TEST_DIFF to be defined" )
+endif( NOT TEST_DIFF )
 
 # create a directory for the test
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/app/${TEST_NAME})

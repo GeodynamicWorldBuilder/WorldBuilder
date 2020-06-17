@@ -81,7 +81,8 @@ IF(CMAKE_RUN_APP_TESTS)
      -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/WorldBuilderApp${CMAKE_EXECUTABLE_SUFFIX} 
   	 -D TEST_ARGS=--help 
   	 -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/app/testing_help/screen-output.log 
-  	 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/app/testing_help/screen-output.log
+     -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/app/testing_help/screen-output.log
+     -D TEST_DIFF=${TEST_DIFF}
   	 -P ${CMAKE_SOURCE_DIR}/tests/app/run_app_tests.cmake
            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/app/)
   
@@ -93,6 +94,7 @@ IF(CMAKE_RUN_APP_TESTS)
   	 -D TEST_ARGS= 
   	 -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/app/testing_no_file/screen-output.log 
   	 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/app/testing_no_file/screen-output.log
+     -D TEST_DIFF=${TEST_DIFF}
   	 -P ${CMAKE_SOURCE_DIR}/tests/app/run_app_tests.cmake
            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/app/)
   
@@ -105,6 +107,7 @@ IF(CMAKE_RUN_APP_TESTS)
   	 -D TEST_ARGS=non_existend_file
   	 -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/app/testing_one_file/screen-output.log 
   	 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/app/testing_one_file/screen-output.log
+     -D TEST_DIFF=${TEST_DIFF}
   	 -P ${CMAKE_SOURCE_DIR}/tests/app/run_app_tests.cmake
            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/app/)
   
@@ -122,6 +125,7 @@ IF(CMAKE_RUN_APP_TESTS)
   	         -D TEST_ARGS=${TEST_ARGUMENTS}
   	         -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/app/${test_name}/screen-output.log 
   	         -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/app/${test_name}/screen-output.log
+             -D TEST_DIFF=${TEST_DIFF}
   	         -P ${CMAKE_SOURCE_DIR}/tests/app/run_app_tests.cmake
                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/app/)
   endforeach(test_source)
