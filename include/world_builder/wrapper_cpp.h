@@ -36,7 +36,7 @@ namespace wrapper_cpp
       /**
        * constructor
        */
-      WorldBuilderWrapper(std::string filename, bool has_output_dir = false, std::string output_dir = "");
+      WorldBuilderWrapper(std::string filename, bool has_output_dir = false, std::string output_dir = "", const double random_number_seed = 1.0);
 
       /**
        * destructor

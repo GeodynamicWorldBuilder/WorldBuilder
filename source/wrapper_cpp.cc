@@ -24,10 +24,10 @@
 using namespace WorldBuilder;
 namespace wrapper_cpp
 {
-  WorldBuilderWrapper::WorldBuilderWrapper(std::string filename, bool has_output_dir, std::string output_dir)
+  WorldBuilderWrapper::WorldBuilderWrapper(std::string filename, bool has_output_dir, std::string output_dir, const double random_number_seed)
     : ptr_ptr_world(NULL)
   {
-    WorldBuilder::World *a = new WorldBuilder::World(filename, has_output_dir, output_dir);
+    WorldBuilder::World *a = new WorldBuilder::World(filename, has_output_dir, output_dir, random_number_seed);
     ptr_ptr_world = reinterpret_cast<void *>(a);
   }
 
