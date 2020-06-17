@@ -5,6 +5,8 @@
 "2d point": [10, 11],
 "3d point": [12, 13, 14],
 "unsigned int array" :[25,26,27],
+"bool array" :[true,false,true,false,true,false],
+"bool array nob" :[true,false,true,false,"True","false"],
 "double array" :[25.2,26.3,27.4],
 "string array" :["abc","def"],
 "point<2> array": [[10,11], [12,13], [14,15]],

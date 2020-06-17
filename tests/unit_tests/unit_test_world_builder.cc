@@ -3499,6 +3499,9 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK_THROWS_WITH(prm.get_vector<unsigned int>("non existent unsigned int vector"),
                     Contains("internal error: could not retrieve the minItems value at"));
 
+  CHECK_THROWS_WITH(prm.get_vector<bool>("non existent bool vector"),
+                    Contains("internal error: could not retrieve the minItems value at"));
+
 
   typedef std::array<double,3> array_3d;
   CHECK_THROWS_WITH(prm.get_vector<array_3d>("vector of 3d arrays nan"),
@@ -3552,6 +3555,35 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK(v_size_t[0] == Approx(25.0));
   CHECK(v_size_t[1] == Approx(26.0));
   CHECK(v_size_t[2] == Approx(27.0));
+
+
+  CHECK_THROWS_WITH(prm.get_vector<size_t>("non existent unsigned int vector"),
+                    Contains("internal error: could not retrieve the minItems value"));
+
+  prm.enter_subsection("properties");
+  {
+    prm.declare_entry("now existent bool vector",
+                      Types::Array(Types::Bool(true),2),
+                      "This is an array of two bools.");
+  }
+  prm.leave_subsection();
+
+  std::vector<bool> v_bool = prm.get_vector<bool>("now existent bool vector");
+  CHECK(v_bool.size() == 2.0);
+  CHECK(v_bool[0] == true);
+  CHECK(v_bool[1] == true);
+
+  v_bool = prm.get_vector<bool>("bool array");
+  CHECK(v_bool.size() == Approx(6.0));
+  CHECK(v_bool[0] == true);
+  CHECK(v_bool[1] == false);
+  CHECK(v_bool[2] == true);
+  CHECK(v_bool[3] == false);
+  CHECK(v_bool[4] == true);
+  CHECK(v_bool[1] == false);
+
+  CHECK_THROWS_WITH(prm.get_vector<bool>("bool array nob"),
+                    Contains("IsBool()"));
 
 
   CHECK_THROWS_WITH(prm.get_vector<double>("non existent double vector"),
