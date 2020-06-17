@@ -411,6 +411,43 @@ namespace WorldBuilder
   }
 
   template<>
+  std::vector<bool>
+  Parameters::get_vector(const std::string &name)
+  {
+    std::vector<bool> vector;
+    const std::string strict_base = this->get_full_json_path();
+    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != NULL)
+      {
+        Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+        for (size_t i = 0; i < array->Size(); ++i )
+          {
+            const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
+
+            vector.push_back(Pointer(base.c_str()).Get(parameters)->GetBool());
+          }
+      }
+    else
+      {
+        const Value *value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/minItems").c_str()).Get(declarations);
+        WBAssertThrow(value != NULL,
+                      "internal error: could not retrieve the minItems value at: "
+                      << this->get_full_json_schema_path() + "/" + name + "/minItems value");
+
+        size_t min_size = value->GetUint();
+
+        bool default_value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/items/default value").c_str()).Get(declarations)->GetBool();
+
+        // set to min size
+        for (size_t i = 0; i < min_size; ++i)
+          {
+            vector.push_back(default_value);
+          }
+      }
+    return vector;
+  }
+
+  template<>
   std::vector<Point<2> >
   Parameters::get_vector(const std::string &name)
   {
