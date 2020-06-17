@@ -725,7 +725,6 @@ namespace WorldBuilder
                     }
 
                   // linear interpolation between current and next section temperatures
-                  // todo: component wise averaging?
                   for (size_t i = 0; i < grains.sizes.size(); i++)
                     {
                       grains.sizes[i] = grains_current_section.sizes[i] + section_fraction * (grains_next_section.sizes[i] - grains_current_section.sizes[i]);

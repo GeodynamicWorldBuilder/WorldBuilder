@@ -149,7 +149,7 @@ namespace WorldBuilder
          * register it. Because this is a library, we need some extra measures
          * to ensure that the static variable is actually initialized.
          */
-#define WB_REGISTER_FEATURE_CONTINENTAL_GRAINS_MODEL(klass,name) \
+#define WB_REGISTER_FEATURE_SUBDUCTING_PLATE_GRAINS_MODEL(klass,name) \
   class klass##Factory : public ObjectFactory { \
     public: \
       klass##Factory() \

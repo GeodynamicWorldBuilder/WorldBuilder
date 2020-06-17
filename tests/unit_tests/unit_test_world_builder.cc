@@ -1768,10 +1768,10 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.composition(position, std::sqrt(2) * 66e3 - 1, 1) == Approx(1.0));
   CHECK(world1.composition(position, std::sqrt(2) * 66e3 + 1, 1) == Approx(0.0));
   CHECK(world1.composition(position, std::sqrt(2) * 66e3 - 1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 66e3 + 1, 2) == Approx(0.25));
-  CHECK(world1.composition(position, std::sqrt(2) * 66e3 + 1, 3) == Approx(0.75));
-  CHECK(world1.composition(position, std::sqrt(2) * 99e3 - 1, 2) == Approx(0.25));
-  CHECK(world1.composition(position, std::sqrt(2) * 99e3 - 1, 3) == Approx(0.75));
+  CHECK(world1.composition(position, std::sqrt(2) * 66e3 + 1, 2) == Approx(0.35));
+  CHECK(world1.composition(position, std::sqrt(2) * 66e3 + 1, 3) == Approx(0.65));
+  CHECK(world1.composition(position, std::sqrt(2) * 99e3 - 1, 2) == Approx(0.35));
+  CHECK(world1.composition(position, std::sqrt(2) * 99e3 - 1, 3) == Approx(0.65));
   CHECK(world1.composition(position, std::sqrt(2) * 99e3 + 1, 2) == Approx(0.0));
   // this comes form the first subducting plate
   CHECK(world1.composition(position, std::sqrt(2) * 99e3 + 1, 3) == Approx(1.0));
@@ -1781,7 +1781,22 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.composition(position, 0, 5) == Approx(0.0));
   CHECK(world1.composition(position, 0, 6) == Approx(0.0));
 
+  // check grains
+  {
+    WorldBuilder::grains grains = world1.grains(position, 10, 0, 3);
+    compare_vectors_approx(grains.sizes, {0.3,0.3,0.3});
+    std::array<std::array<double, 3>, 3> array_1  = Utilities::euler_angles_to_rotation_matrix(10,20,30);
+    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
+    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
 
+    grains = world1.grains(position, 10, 1, 3);
+    std::array<std::array<double, 3>, 3> array_2 = Utilities::euler_angles_to_rotation_matrix(40,50,60);
+    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
+
+    compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
+    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+  }
+  
   position = {{250e3,600e3,800e3}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
   CHECK(world1.temperature(position, 10, 10) == Approx(1600.0044800063));
@@ -1928,6 +1943,61 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.temperature(position, 200e3, 10) == Approx(1692.1562939786));
   CHECK(world1.temperature(position, 250e3, 10) == Approx(12));
   CHECK(world1.temperature(position, 300e3, 10) == Approx(1740.2062300941));
+
+  // check grains
+  {
+    {
+      // layer 1
+      WorldBuilder::grains grains = world1.grains(position, 80e3, 0, 3);
+      std::array<std::array<double, 3>, 3> array_1  = Utilities::euler_angles_to_rotation_matrix(10,20,30);
+      std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
+
+      compare_vectors_approx(grains.sizes, {0.4,0.4,0.4});
+      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+
+      grains = world1.grains(position, 80e3, 1, 3);
+      std::array<std::array<double, 3>, 3> array_2 = Utilities::euler_angles_to_rotation_matrix(40,50,60);
+      std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
+
+      compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
+      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    }
+
+    {
+      // layer 2
+      WorldBuilder::grains grains = world1.grains(position, 100e3, 0, 3);
+      std::array<std::array<double, 3>, 3> array_1 = Utilities::euler_angles_to_rotation_matrix(-10,-25,35);
+      std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
+
+      compare_vectors_approx(grains.sizes, {0.5,0.5,0.5});
+      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+
+      grains = world1.grains(position, 100e3, 1, 3);
+      std::array<std::array<double, 3>, 3> array_2  =  Utilities::euler_angles_to_rotation_matrix(45,-55,65);
+      std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
+
+      compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
+      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    }
+
+    {
+      // layer 3
+      WorldBuilder::grains grains = world1.grains(position, 250e3, 0, 3);
+      std::array<std::array<double, 3>, 3> array_1 = Utilities::euler_angles_to_rotation_matrix(220,320,240);
+      std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
+
+      compare_vectors_approx(grains.sizes, {0.6,0.6,0.6});
+      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+
+      grains = world1.grains(position, 250e3, 1, 3);
+      std::array<std::array<double, 3>, 3> array_2 = Utilities::euler_angles_to_rotation_matrix(520,620,270);
+      std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
+
+      compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
+      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    }
+  }
+
 
   std::string file_name2 = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_cartesian.wb";
   WorldBuilder::World world2(file_name2);

@@ -31,12 +31,13 @@
 #include <world_builder/types/plugin_system.h>
 #include <world_builder/types/unsigned_int.h>
 
-//temp
 #include <rapidjson/istreamwrapper.h>
 #include "rapidjson/pointer.h"
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/error/en.h"
+
+#include "glm/glm.h"
 
 
 
@@ -231,6 +232,19 @@ namespace WorldBuilder
                             }
                         }
                         prm.leave_subsection();
+
+                        prm.enter_subsection("grains models");
+                        {
+                          for (unsigned int j = 0; j < segment_vector[change_coord_number][i].grains_systems.size(); ++j)
+                            {
+                              prm.enter_subsection(std::to_string(j));
+                              {
+                                segment_vector[change_coord_number][i].grains_systems[j]->parse_entries(prm);
+                              }
+                              prm.leave_subsection();
+                            }
+                        }
+                        prm.leave_subsection();
                       }
                       prm.leave_subsection();
                     }
@@ -272,6 +286,20 @@ namespace WorldBuilder
                     prm.enter_subsection(std::to_string(j));
                     {
                       default_segment_vector[i].composition_systems[j]->parse_entries(prm);
+                    }
+                    prm.leave_subsection();
+                  }
+              }
+              prm.leave_subsection();
+
+
+              prm.enter_subsection("grains models");
+              {
+                for (unsigned int j = 0; j < default_segment_vector[i].grains_systems.size(); ++j)
+                  {
+                    prm.enter_subsection(std::to_string(j));
+                    {
+                      default_segment_vector[i].grains_systems[j]->parse_entries(prm);
                     }
                     prm.leave_subsection();
                   }
@@ -710,8 +738,21 @@ namespace WorldBuilder
                     }
 
                   // linear interpolation between current and next section temperatures
-                  // todo: component wise averaging?
-                  //composition = composition_current_section + section_fraction * (composition_next_section - composition_current_section);
+                  for (size_t i = 0; i < grains.sizes.size(); i++)
+                    {
+                      grains.sizes[i] = grains_current_section.sizes[i] + section_fraction * (grains_next_section.sizes[i] - grains_current_section.sizes[i]);
+                    }
+
+                  // average two rotations matrices throu quaternions.
+                  for (size_t i = 0; i < grains_current_section.rotation_matrices.size(); i++)
+                    {
+                      glm::quaternion::quat quat_current = glm::quaternion::quat_cast(grains_current_section.rotation_matrices[i]);
+                      glm::quaternion::quat quat_next = glm::quaternion::quat_cast(grains_next_section.rotation_matrices[i]);
+
+                      glm::quaternion::quat quat_average = glm::quaternion::slerp(quat_current,quat_next,section_fraction);
+
+                      grains.rotation_matrices[i] = glm::quaternion::mat3_cast(quat_average);
+                    }
 
 
                 }
