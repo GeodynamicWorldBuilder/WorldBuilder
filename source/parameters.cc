@@ -462,7 +462,7 @@ namespace WorldBuilder
                 const double value1 = Pointer((base + "/0").c_str()).Get(parameters)->GetDouble();
                 const double value2 = Pointer((base + "/1").c_str()).Get(parameters)->GetDouble();
                 const double value3 = Pointer((base + "/2").c_str()).Get(parameters)->GetDouble();
-                vector.push_back({value1,value2,value3});
+                vector.push_back({{value1,value2,value3}});
               }
             catch (...)
               {

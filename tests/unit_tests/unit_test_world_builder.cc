@@ -1796,7 +1796,7 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
     compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
     compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
   }
-  
+
   position = {{250e3,600e3,800e3}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
   CHECK(world1.temperature(position, 10, 10) == Approx(1600.0044800063));
@@ -3466,6 +3466,11 @@ TEST_CASE("WorldBuilder Parameters")
 
   CHECK_THROWS_WITH(prm.get_vector<unsigned int>("non existent unsigned int vector"),
                     Contains("internal error: could not retrieve the minItems value at"));
+
+
+  typedef std::array<double,3> array_3d;
+  CHECK_THROWS_WITH(prm.get_vector<array_3d>("vector of 3d arrays nan"),
+                    Contains("Could not convert values of /vector of 3d arrays nan/0 into doubles."));
 
   typedef std::array<std::array<double,3>,3> array_3x3;
   CHECK_THROWS_WITH(prm.get_vector<array_3x3>("vector of 3x3 arrays nan"),
