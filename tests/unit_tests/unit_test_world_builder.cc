@@ -1737,6 +1737,38 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   CHECK(world2.composition(position, 260e3, 5) == Approx(0.0));
   CHECK(world2.composition(position, 260e3, 6) == Approx(0.0));
 
+  // check grains layer 1
+  {
+    WorldBuilder::grains grains = world2.grains(position, 0, 0, 2);
+    compare_vectors_approx(grains.sizes, {0.5,0.5}); // was 0.2, but is normalized
+    // these are random numbers, but they should stay the same.
+    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.9582241838,-0.07911030008,-0.2748599171}},{{-0.1099528091,-0.7852541367,0.6093326847}},{{-0.2640393784,0.6140989344,0.7437511045}}}};
+    std::array<std::array<double, 3>, 3> array_2 = {{{{-0.2124629855,0.07025627985,0.9746402079}},{{0.06298075396,-0.9943536315,0.08540655858}},{{0.9751373772,0.07952930755,0.2068385477}}}};
+    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
+
+    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+    grains = world2.grains(position, 0, 1, 2);
+    std::array<std::array<double, 3>, 3> array_3 = {{{{-0.8434546455,-0.3219802991,-0.4300150555}},{{-0.23850553,0.9417033479,-0.2372971063}},{{0.4813516106,-0.09758837799,-0.8710781454}}}};
+    std::array<std::array<double, 3>, 3> array_4 = {{{{-0.3695282689,-0.1240881435,0.9208968407}},{{-0.9061330384,-0.1714186601,-0.3867021588}},{{0.2058440555,-0.9773524316,-0.04909632573}}}};
+    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_3,array_4};
+
+    compare_vectors_approx(grains.sizes, {0.4434528938,0.2295772202});
+    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+  }
+
+  // check grains layer 2
+  {
+    WorldBuilder::grains grains = world2.grains(position, 150e3, 0, 2);
+    compare_vectors_approx(grains.sizes, {0.471427737,0.528572263});
+    CHECK(grains.sizes[0] + grains.sizes[1] == Approx(1.0));
+    // these are random numbers, but they should stay the same.
+    std::array<std::array<double, 3>, 3> array_1 = {{{{0.6535959261,0.5566812833,-0.5127556087}},{{0.3237701162,0.4067148135,0.8542575562}},{{0.6840944944,-0.7243542016,0.08559038145}}}};
+    std::array<std::array<double, 3>, 3> array_2 = {{{{0.937444582,0.1583937415,-0.3100146421}},{{0.3453462197,-0.5355813035,0.7706417169}},{{-0.04397322126,-0.8294962869,-0.5567784711}}}};
+    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
+    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+
+  }
+
   position = {{6371000, 15 * dtr, -19 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
   CHECK(world2.temperature(position, 0, 0) == Approx(293.15));
