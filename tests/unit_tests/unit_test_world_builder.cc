@@ -3416,7 +3416,7 @@ TEST_CASE("WorldBuilder Types: Array")
   /*Types::TYPE type_explicit(std::vector<unsigned int> {1,2}, Types::type::Double, "array test explicit");
   CHECK(type_explicit.inner_type == Types::type::Double);
   CHECK(type_explicit.inner_type_ptr.get() == nullptr);
-  CHECK(type_explicit.inner_type_index.size() == Approx(2.0));
+  CHECK(type_explicit.inner_type_index.size() == 2);
   CHECK(type_explicit.description == "array test explicit");
   CHECK(type_explicit.get_type() == Types::type::TYPE);*/
 
@@ -3426,14 +3426,14 @@ TEST_CASE("WorldBuilder Types: Array")
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
   CHECK(type_clone_natural->inner_type == Types::type::Double);
   CHECK(type_clone_natural->inner_type_ptr.get() == nullptr);
-  CHECK(type_clone_natural->inner_type_index.size() == Approx(2.0));
+  CHECK(type_clone_natural->inner_type_index.size() == 2);
   CHECK(type_clone_natural->description == "array test explicit");
   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 
   Types::TYPE type_copy2(*type_clone_natural);
   CHECK(type_copy2.inner_type == Types::type::Double);
   CHECK(type_copy2.inner_type_ptr.get() == nullptr);
-  CHECK(type_copy2.inner_type_index.size() == Approx(2.0));
+  CHECK(type_copy2.inner_type_index.size() == 2);
   CHECK(type_copy2.description == "array test explicit");
   CHECK(type_copy2.get_type() == Types::type::TYPE);*/
 
@@ -3444,14 +3444,14 @@ TEST_CASE("WorldBuilder Types: Object")
 {
 #define TYPE Object
   Types::TYPE type(std::vector<std::string> {"test1","test2"},true);
-  CHECK(type.required.size() == Approx(2.0));
+  CHECK(type.required.size() == 2);
   CHECK(type.required[0] == "test1");
   CHECK(type.required[1] == "test2");
   CHECK(type.additional_properties == true);
   CHECK(type.get_type() == Types::type::TYPE);
 
   Types::TYPE type_copy(type);
-  CHECK(type_copy.required.size() == Approx(2.0));
+  CHECK(type_copy.required.size() == 2);
   CHECK(type_copy.required[0] == "test1");
   CHECK(type_copy.required[1] == "test2");
   CHECK(type_copy.additional_properties == true);
@@ -3459,14 +3459,14 @@ TEST_CASE("WorldBuilder Types: Object")
 
   std::unique_ptr<Types::Interface> type_clone = type_copy.clone();
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
-  CHECK(type_clone_natural->required.size() == Approx(2.0));
+  CHECK(type_clone_natural->required.size() == 2);
   CHECK(type_clone_natural->required[0] == "test1");
   CHECK(type_clone_natural->required[1] == "test2");
   CHECK(type_clone_natural->additional_properties == true);
   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 
   Types::TYPE type_copy2(*type_clone_natural);
-  CHECK(type_copy2.required.size() == Approx(2.0));
+  CHECK(type_copy2.required.size() == 2);
   CHECK(type_copy2.required[0] == "test1");
   CHECK(type_copy2.required[1] == "test2");
   CHECK(type_copy2.additional_properties == true);
@@ -3744,12 +3744,12 @@ TEST_CASE("WorldBuilder Parameters")
   prm.leave_subsection();
 
   std::vector<unsigned int> v_int = prm.get_vector<unsigned int>("now existent unsigned int vector");
-  CHECK(v_int.size() == Approx(2.0));
+  CHECK(v_int.size() == 2);
   CHECK(v_int[0] == Approx(1.0));
   CHECK(v_int[1] == Approx(1.0));
 
   v_int = prm.get_vector<unsigned int>("unsigned int array");
-  CHECK(v_int.size() == Approx(3.0));
+  CHECK(v_int.size() == 3);
   CHECK(v_int[0] == Approx(25.0));
   CHECK(v_int[1] == Approx(26.0));
   CHECK(v_int[2] == Approx(27.0));
@@ -3760,12 +3760,12 @@ TEST_CASE("WorldBuilder Parameters")
 
 
   std::vector<size_t> v_size_t = prm.get_vector<size_t>("now existent unsigned int vector");
-  CHECK(v_size_t.size() == Approx(2.0));
+  CHECK(v_size_t.size() == 2);
   CHECK(v_size_t[0] == Approx(1.0));
   CHECK(v_size_t[1] == Approx(1.0));
 
   v_size_t = prm.get_vector<size_t>("unsigned int array");
-  CHECK(v_size_t.size() == Approx(3.0));
+  CHECK(v_size_t.size() == 3);
   CHECK(v_size_t[0] == Approx(25.0));
   CHECK(v_size_t[1] == Approx(26.0));
   CHECK(v_size_t[2] == Approx(27.0));
@@ -3783,12 +3783,12 @@ TEST_CASE("WorldBuilder Parameters")
   prm.leave_subsection();
 
   std::vector<bool> v_bool = prm.get_vector<bool>("now existent bool vector");
-  CHECK(v_bool.size() == 2.0);
+  CHECK(v_bool.size() == 2);
   CHECK(v_bool[0] == true);
   CHECK(v_bool[1] == true);
 
   v_bool = prm.get_vector<bool>("bool array");
-  CHECK(v_bool.size() == Approx(6.0));
+  CHECK(v_bool.size() == 6);
   CHECK(v_bool[0] == true);
   CHECK(v_bool[1] == false);
   CHECK(v_bool[2] == true);
@@ -3812,7 +3812,7 @@ TEST_CASE("WorldBuilder Parameters")
   prm.leave_subsection();
 
   std::vector<double> v_double = prm.get_vector<double>("now existent double vector");
-  CHECK(v_double.size() == Approx(2.0));
+  CHECK(v_double.size() == 2);
   CHECK(v_double[0] == Approx(2.4));
   CHECK(v_double[1] == Approx(2.4));
 
@@ -3952,7 +3952,7 @@ TEST_CASE("WorldBuilder Parameters")
     CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
 
   #ifndef NDEBUG
-    CHECK(prm.get_array<Types::Double>("non exitent double array").size() == Approx(1.0));
+    CHECK(prm.get_array<Types::Double>("non exitent double array").size() == 1);
     CHECK(prm.get_array<Types::Double>("non exitent double array")[0].value == Approx(2.0));
     CHECK(prm.get_array<Types::Double>("non exitent double array")[0].description == "description");
   #endif
@@ -3960,12 +3960,12 @@ TEST_CASE("WorldBuilder Parameters")
 
     prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
     std::vector<Types::Double> set_typed_double =  prm.get_array<Types::Double >("new double array");
-    CHECK(set_typed_double.size() == Approx(0.0));
+    CHECK(set_typed_double.size() == 0);
     // This is not desired behavior, but it is not implemented yet.
 
     prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
     std::vector<Types::Double> true_loaded_typed_double =  prm.get_array<Types::Double >("double array");
-    CHECK(true_loaded_typed_double.size() == Approx(3.0));
+    CHECK(true_loaded_typed_double.size() == 3);
     CHECK(true_loaded_typed_double[0].value == Approx(25.0));
     CHECK(true_loaded_typed_double[1].value == Approx(26.0));
     CHECK(true_loaded_typed_double[2].value == Approx(27.0));
@@ -3989,12 +3989,12 @@ TEST_CASE("WorldBuilder Parameters")
 
     prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
     std::vector<Types::Point<2> > set_typed_point_2d = prm.get_array<Types::Point<2> >("new point<2> array");
-    CHECK(set_typed_point_2d.size() == Approx(0.0));
+    CHECK(set_typed_point_2d.size() == 0);
     // This is not desired behavior, but it is not implemented yet.
 
     prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
     std::vector<Types::Point<2> > true_loaded_typed_point_2d =  prm.get_array<Types::Point<2> >("point<2> array");
-    CHECK(true_loaded_typed_point_2d.size() == Approx(3.0));
+    CHECK(true_loaded_typed_point_2d.size() == 3);
     CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {10,11});
     CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {12,13});
     CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {14,15});
@@ -4018,12 +4018,12 @@ TEST_CASE("WorldBuilder Parameters")
 
     prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
     std::vector<Types::Point<3> > set_typed_point_3d = prm.get_array<Types::Point<3> >("new point<3> array");
-    CHECK(set_typed_point_3d.size() == Approx(0.0));
+    CHECK(set_typed_point_3d.size() == 0);
     // This is not desired behavior, but it is not implemented yet.
 
     prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
     std::vector<Types::Point<3> > true_loaded_typed_point_3d =  prm.get_array<Types::Point<3> >("point<3> array");
-    CHECK(true_loaded_typed_point_3d.size() == Approx(3.0));
+    CHECK(true_loaded_typed_point_3d.size() == 3);
     CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {20,21,22});
     CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {23,24,25});
     CHECK(true_loaded_typed_point_3d[2].value.get_array() == std::array<double,3> {26,27,28});
@@ -4146,7 +4146,7 @@ TEST_CASE("WorldBuilder Parameters")
                         Contains("Could not find entry 'non existent double array' not found. Make sure it is loaded or set"));
 
       CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
-      CHECK(prm.get_array<Types::Double>("non exitent double array").size() == Approx(1.0));
+      CHECK(prm.get_array<Types::Double>("non exitent double array").size() == 1);
       CHECK(prm.get_array<Types::Double>("non exitent double array")[0].value == Approx(2.0));
       CHECK(prm.get_array<Types::Double>("non exitent double array")[0].description == "description");
       // This is not desired behavior, but it is not implemented yet.
@@ -4154,12 +4154,12 @@ TEST_CASE("WorldBuilder Parameters")
 
       prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
       std::vector<Types::Double > set_typed_double =  prm.get_array<Types::Double >("new double array");
-      CHECK(set_typed_double.size() == Approx(0.0));
+      CHECK(set_typed_double.size() == 0);
       // This is not desired behavior, but it is not implemented yet.
 
       prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
       std::vector<Types::Double > true_loaded_typed_double =  prm.get_array<Types::Double >("double array");
-      CHECK(true_loaded_typed_double.size() == Approx(3.0));
+      CHECK(true_loaded_typed_double.size() == 3);
       CHECK(true_loaded_typed_double[0].value == Approx(35.0));
       CHECK(true_loaded_typed_double[1].value == Approx(36.0));
       CHECK(true_loaded_typed_double[2].value == Approx(37.0));
@@ -4180,12 +4180,12 @@ TEST_CASE("WorldBuilder Parameters")
 
       prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
       std::vector<Types::Point<2> > set_typed_point_2d = prm.get_array<Types::Point<2> >("new point<2> array");
-      CHECK(set_typed_point_2d.size() == Approx(0.0));
+      CHECK(set_typed_point_2d.size() == 0);
       // This is not desired behavior, but it is not implemented yet.
 
       prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
       std::vector<Types::Point<2> > true_loaded_typed_point_2d =  prm.get_array<Types::Point<2> >("point<2> array");
-      CHECK(true_loaded_typed_point_2d.size() == Approx(3.0));
+      CHECK(true_loaded_typed_point_2d.size() == 3);
       CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {20,21});
       CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {22,23});
       CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {24,25});
@@ -4207,12 +4207,12 @@ TEST_CASE("WorldBuilder Parameters")
 
       prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
       std::vector<Types::Point<3> > set_typed_point_3d = prm.get_array<Types::Point<3> >("new point<3> array");
-      CHECK(set_typed_point_3d.size() == Approx(0.0));
+      CHECK(set_typed_point_3d.size() == 0);
       // This is not desired behavior, but it is not implemented yet.
 
       prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
       std::vector<Types::Point<3> > true_loaded_typed_point_3d =  prm.get_array<Types::Point<3> >("point<3> array");
-      CHECK(true_loaded_typed_point_3d.size() == Approx(3.0));
+      CHECK(true_loaded_typed_point_3d.size() == 3);
       CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {30,31,32});
       CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {33,34,35});
       CHECK(true_loaded_typed_point_3d[2].value.get_array() == std::array<double,3> {36,37,38});
@@ -4336,18 +4336,18 @@ TEST_CASE("WorldBuilder Parameters")
 
         CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Double(2,"description"),"description")) == false);
 
-        CHECK(prm.get_array<Types::Double >("non exitent double array").size() == Approx(1.0));
+        CHECK(prm.get_array<Types::Double >("non exitent double array").size() == 1);
         CHECK(prm.get_array<Types::Double >("non exitent double array")[0].value == Approx(2.0));
         CHECK(prm.get_array<Types::Double >("non exitent double array")[0].description == "description");
 
         prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
         std::vector<Types::Double > set_typed_double =  prm.get_array<Types::Double >("new double array");
-        CHECK(set_typed_double.size() == Approx(0.0));
+        CHECK(set_typed_double.size() == 0);
         // This is not desired behavior, but it is not implemented yet.
 
         prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
         std::vector<Types::Double > true_loaded_typed_double =  prm.get_array<Types::Double >("double array");
-        CHECK(true_loaded_typed_double.size() == Approx(3.0));
+        CHECK(true_loaded_typed_double.size() == 3);
         CHECK(true_loaded_typed_double[0].value == Approx(45.0));
         CHECK(true_loaded_typed_double[1].value == Approx(46.0));
         CHECK(true_loaded_typed_double[2].value == Approx(47.0));
@@ -4372,12 +4372,12 @@ TEST_CASE("WorldBuilder Parameters")
 
         prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
         std::vector<Types::Point<2> > set_typed_point_2d = prm.get_array<Types::Point<2> >("new point<2> array");
-        CHECK(set_typed_point_2d.size() == Approx(0.0));
+        CHECK(set_typed_point_2d.size() == 0);
         // This is not desired behavior, but it is not implemented yet.
 
         prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
         std::vector<Types::Point<2> > true_loaded_typed_point_2d =  prm.get_array<Types::Point<2> >("point<2> array");
-        CHECK(true_loaded_typed_point_2d.size() == Approx(3.0));
+        CHECK(true_loaded_typed_point_2d.size() == 3);
         CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {40,41});
         CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {42,43});
         CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {44,45});
@@ -4402,12 +4402,12 @@ TEST_CASE("WorldBuilder Parameters")
 
         prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
         std::vector<Types::Point<3> > set_typed_point_3d = prm.get_array<Types::Point<3> >("new point<3> array");
-        CHECK(set_typed_point_3d.size() == Approx(0.0));
+        CHECK(set_typed_point_3d.size() == 0);
         // This is not desired behavior, but it is not implemented yet.
 
         prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
         std::vector<Types::Point<3> > true_loaded_typed_point_3d =  prm.get_array<Types::Point<3> >("point<3> array");
-        CHECK(true_loaded_typed_point_3d.size() == Approx(3.0));
+        CHECK(true_loaded_typed_point_3d.size() == 3);
         CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {40,41,42});
         CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {43,44,45});
         CHECK(true_loaded_typed_point_3d[2].value.get_array() == std::array<double,3> {46,47,48});
