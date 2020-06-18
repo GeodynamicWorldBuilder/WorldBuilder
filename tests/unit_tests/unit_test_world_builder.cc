@@ -2772,6 +2772,100 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world3.composition(position, 0, 5) == Approx(0.5407687295));
   CHECK(world3.composition(position, 0, 6) == Approx(0.0));
 
+  position = {{750e3,35e3,800e3}};
+  CHECK(world3.temperature(position, 0, 10) == Approx(12));
+  CHECK(world3.temperature(position, 10, 10) == Approx(12));
+  CHECK(world3.temperature(position, 5e3, 10) == Approx(12));
+  CHECK(world3.temperature(position, 10e3, 10) == Approx(11));
+  CHECK(world3.temperature(position, 15e3, 10) == Approx(11));
+  CHECK(world3.temperature(position, 20e3, 10) == Approx(11));
+  CHECK(world3.temperature(position, 25e3, 10) == Approx(11));
+  CHECK(world3.temperature(position, 30e3, 10) == Approx(11));
+  CHECK(world3.temperature(position, 35e3, 10) == Approx(11));
+  CHECK(world3.temperature(position, 40e3, 10) == Approx(11));
+  CHECK(world3.temperature(position, 45e3, 10) == Approx(11));
+  CHECK(world3.temperature(position, 50e3, 10) == Approx(10.5));
+  CHECK(world3.temperature(position, 55e3, 10) == Approx(10.5));
+  CHECK(world3.temperature(position, 60e3, 10) == Approx(10.5));
+  CHECK(world3.temperature(position, 65e3, 10) == Approx(10.5));
+  CHECK(world3.temperature(position, 70e3, 10) == Approx(10.5));
+  CHECK(world3.temperature(position, 72.5e3, 10) == Approx(10.5));
+  CHECK(world3.temperature(position, 75e3, 10) == Approx(10.5));
+  CHECK(world3.temperature(position, 80e3, 10) == Approx(10));
+  CHECK(world3.temperature(position, 85e3, 10) == Approx(10));
+  CHECK(world3.temperature(position, 90e3, 10) == Approx(10));
+  CHECK(world3.temperature(position, 95e3, 10) == Approx(10));
+  CHECK(world3.temperature(position, 100e3, 10) == Approx(10));
+  CHECK(world3.temperature(position, 105e3, 10) == Approx(10.5));
+  CHECK(world3.temperature(position, 110e3, 10) == Approx(10.5));
+  CHECK(world3.temperature(position, 115e3, 10) == Approx(10.5));
+  CHECK(world3.temperature(position, 120e3, 10) == Approx(10.5));
+  CHECK(world3.temperature(position, 125e3, 10) == Approx(10.5));
+  CHECK(world3.temperature(position, 130e3, 10) == Approx(11));
+  CHECK(world3.temperature(position, 135e3, 10) == Approx(11));
+  CHECK(world3.temperature(position, 150e3, 10) == Approx(11));
+  CHECK(world3.temperature(position, 160e3, 10) == Approx(11));
+  CHECK(world3.temperature(position, 170e3, 10) == Approx(11));
+  CHECK(world3.temperature(position, 175e3, 10) == Approx(12));
+  CHECK(world3.temperature(position, 180e3, 10) == Approx(1682.706702284));
+  CHECK(world3.temperature(position, 190e3, 10) == Approx(1687.4248834214));
+  CHECK(world3.temperature(position, 200e3, 10) == Approx(1692.1562939786));
+  CHECK(world3.temperature(position, 250e3, 10) == Approx(1716.0130900067));
+  CHECK(world3.temperature(position, 300e3, 10) == Approx(1740.2062300941));
+
+  // check grains layer 1
+  {
+    WorldBuilder::grains grains = world3.grains(position, 95e3, 0, 2);
+    compare_vectors_approx(grains.sizes, {0.5,0.5}); // was 0.2, but is normalized
+
+    // these are random numbers, but they should stay the same.
+    // note that the values are different from for example the continental plate since
+    // this performs a interpolation between segments of the slab.
+
+    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.8841073844,-0.1312960784,-0.4484589977}},{{-0.4639013434,0.3618800113,0.8086027461}},{{0.05612197756,0.9229323904,-0.3808492174}}}};
+    std::array<std::array<double, 3>, 3> array_2 = {{{{-0.2568202195,-0.0592025578,0.9646441997}},{{-0.5750059457,-0.7928848317,-0.2017468859}},{{0.7767956856,-0.6064888299,0.1695870338}}}};
+    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
+    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+
+    grains = world3.grains(position, 95e3, 1, 2);
+
+    std::array<std::array<double, 3>, 3> array_3 = {{{{0.6521279994,0.6032912374,0.459095584}},{{-0.5017626042,0.7974338311,-0.3351620115}},{{-0.5682986551,-0.01178846375,0.8227379113}}}};
+    std::array<std::array<double, 3>, 3> array_4 = {{{{-0.7358966282,0.4557371955,-0.5007591849}},{{0.6726233448,0.4071992867,-0.6178726219}},{{-0.07767875296,-0.791512697,-0.6061960589}}}};
+    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_3,array_4};
+
+    compare_vectors_approx(grains.sizes, {0.8843655798,0.5257196065});
+    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+  }
+
+  // check grains layer 2 bottom (because of the randomness it will have different values.)
+  {
+    WorldBuilder::grains grains = world3.grains(position, 150e3, 0, 2);
+
+    compare_vectors_approx(grains.sizes, {0.6692173347,0.3307826653});
+    CHECK(grains.sizes[0] + grains.sizes[1] == Approx(1.0));
+    // these are random numbers, but they should stay the same.
+    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.5791315939,0.7367092885,-0.3490931411}},{{-0.1853986251,-0.5360105647,-0.8236018603}},{{-0.7938727522,-0.4122524697,0.4470055419}}}};
+    std::array<std::array<double, 3>, 3> array_2 = {{{{0.6418405971,0.7328740545,-0.2256906471}},{{-0.6739597786,0.3987178861,-0.6219342924}},{{-0.3658126088,0.5512890961,0.7498409616}}}};
+    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
+    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+
+  }
+
+  // check grains layer 2 top
+  {
+    WorldBuilder::grains grains = world3.grains(position, 35e3, 0, 2);
+
+    compare_vectors_approx(grains.sizes, {0.3070168208,0.6929831792});
+    CHECK(grains.sizes[0] + grains.sizes[1] == Approx(1.0));
+    // these are random numbers, but they should stay the same.
+
+    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.6634752307,-0.3450403529,0.663888374}},{{-0.2770374165,-0.7109563284,-0.646367828}},{{0.6950186243,-0.6127709638,0.376112826}}}};
+    std::array<std::array<double, 3>, 3> array_2 = {{{{0.6976381754,-0.134849869,0.7036451443}},{{-0.1367834457,-0.9891309921,-0.05394598614}},{{0.7032718288,-0.05861222805,-0.7085007703}}}};
+    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
+    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+
+  }
+
 
   file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/fault_different_angles_cartesian.wb";
   WorldBuilder::World world4(file_name);
@@ -2803,6 +2897,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world4.composition(position, 80e3, 0) == Approx(0.0));
   CHECK(world4.temperature(position, 100e3, 10) == Approx(1645.4330950743));
   CHECK(world4.composition(position, 100e3, 0) == Approx(0.0));
+
 }
 
 TEST_CASE("WorldBuilder Features: coordinate interpolation")
