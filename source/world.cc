@@ -47,7 +47,7 @@ namespace WorldBuilder
 
   using namespace Utilities;
 
-  World::World(std::string filename, bool has_output_dir, std::string output_dir, double random_number_seed)
+  World::World(std::string filename, bool has_output_dir, std::string output_dir, unsigned long random_number_seed)
     :
     parameters(*this),
     surface_coord_conversions(invalid),

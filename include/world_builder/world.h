@@ -58,7 +58,7 @@ namespace WorldBuilder
        * documented algorithm), we can test the results and they should be the same even for different
        * compilers and machines.
        */
-      World(std::string filename, bool has_output_dir = false, std::string output_dir = "", double random_number_seed = 1);
+      World(std::string filename, bool has_output_dir = false, std::string output_dir = "", unsigned long random_number_seed = 1);
 
       /**
        * Destructor
