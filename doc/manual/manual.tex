@@ -1051,9 +1051,39 @@ There are several conversions used when writing code. Because the code is still 
     \item all function names are snake case (function\_name).
     \item all class names are camel case (ClassName).
 \end{enumerate}
-\chapter{Structure of the code}
-Currently the code is changing to rapidly for it to be useful to write this section.
-\chapter*{Bibliography}
+\chapter{Structure and flow of the code}
+From version 0.2.0 to version 0.3.0 the structure has mostly been stabelized. On a high level the structure is very similair to that of \aspect{}, 
+with an extensive modular plugin system. Also the way to declare and parse parameters is very similair to \aspect{} and DEAL.II. Besides being a 
+good and proven strucutre for these kind of codes, these similairities are also on propose to allow for an easy transition for \WB{} and \aspect{}
+developers between the codes. This is also reflected in having similair conventions and the use of exactly the same indenting tool and version 
+astyle (2.04). 
+
+The \GWB{} currently consists of three parts: the core library, the App and the Visualizer. The App and Visualizer are self contained
+with their own main program and use the core library. The core library has a includes/world\_builder folder and a source folder containing
+all the header files and source files respectively. The source folder contains three folders and several files. The files in this folder are a 
+combination of core files glueing the WB together, configuration files and wrapper files the for the interfaces to different programming languages.
+The most important files here are world.cc and parameters.cc. The file world.cc contains the world class which other programs use to interact with 
+the world builder library. The parameters.cc file contains the Parameters class which deals with loading and parsing the world builder file (.wb). 
+The load and parsing process is quite involved, but the high level version of it is that the core files and each plugin declares what parameters are 
+available and what values are allowed for that parameter. These declarations build a JSON schema (Remember that the world builder files use JSON syntax).
+Then this schema is used to see if the provided world builder file is valid according to that schema. If the world builder file passes the schema check 
+phase, the actual parsing phase starts. This means that the core files and plugins will load the information in the world builder file into memory and
+can perform extra checks on those values. After this phase is done, the plugins do not have access anymore to the parameters class. This is also the 
+last pahse of the construction of the world class.
+
+The three folders contain plugin systems. Writing a new plugin for the coordinate system and types is as easy as copying an exsiting plugin (both in the 
+include and source folders!) and modifying it for your own purposes. The plugins in the features plugin system are a bit more complicated since they have 
+their owns plugin systems. If you want tomake a whole new feature you are adviced to make an issue on github so that you can get help with it from the 
+developers and to allow discussion on the best approach. The features folder contains a folder for each features plugin (system). Each of those folders 
+contains a folder for the output provided by the world builder. That is at time of writing temperature, compositions and grains (experimental). Eeach of 
+those folders contains an interface file and at least one plugin. Adding a new plugin is, like with the coordinate and types plugins as easy as copying 
+and modifing one of those plugins (again, you need to do that for both the include and source files. So if you want to for example add a new temperature 
+plugin for the oceanic plate plugin system called "my cool oceanic plate temperature", you could copy the plate\_model.cc to my\_cool\_temperature.cc and 
+uniform.h to my\_cool\_temperature.h in their respective folders. You will need to change plate\_model to my\_cool\_temperature, PlateModel to MyCoolTemperature,
+etc.
+
+In depth question of the structure and flow of the code can always be asked on github as an issue.
+%\chapter*{Bibliography}
 \bibliographystyle{apalike}
 \bibliography{bibliography}
 \addcontentsline{toc}{chapter}{\textcolor{ocre}{Bibliography}}
