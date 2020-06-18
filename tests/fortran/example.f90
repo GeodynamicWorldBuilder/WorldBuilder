@@ -1,11 +1,12 @@
 program test
 use WorldBuilder
-
+USE, INTRINSIC :: ISO_C_BINDING, ONLY: C_LONG
 IMPLICIT NONE
 
   ! Declare the types which will be needed.
-  REAL*8 :: temperature,x=120e3,y=500e3,z=0,depth=0,gravity = 10,random_number_seed = 1.0
+  REAL*8 :: temperature,x=120e3,y=500e3,z=0,depth=0,gravity = 10
   INTEGER :: composition_number = 3
+  INTEGER(C_LONG) :: random_number_seed = 1
   REAL*8 :: composition
   !character(len=256) :: path
   INTEGER*4 :: k = 1
