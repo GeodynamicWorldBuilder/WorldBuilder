@@ -75,7 +75,7 @@ namespace WorldBuilder
           prm.declare_entry("Euler angles z-x-z", Types::Array(Types::Array(Types::Double(0),3,3),0),
                             "A list with the z-x-z Euler angles of the grains which are present there for each compositions.");
 
-          prm.declare_entry("orientation operation", Types::String("replace", std::vector<std::string> {"replace", "multiply"}),
+          prm.declare_entry("orientation operation", Types::String("replace", std::vector<std::string> {"replace"}),
                             "Whether the value should replace any value previously defined at this location (replace) or "
                             "add the value to the previously define value (add, not implemented). Replacing implies that all values not "
                             "explicitly defined are set to zero.");
