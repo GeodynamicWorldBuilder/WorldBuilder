@@ -286,7 +286,7 @@ The problem with Fortran with Visual Studio is that you need to install a Fortra
     \item make a build directory and enter it.
 \end{enumerate}
 For every configuration except Windows with Visual Studio
-\begin{enuemrate}
+\begin{enumerate}
     \item run cmake by entering: \hl{cmake ..} and make sure cmake finds all the dependencies.
     \item for production runs set build type to release by entering \hl{make release}.
     \item run make with the amount of threads you want to use (e.g. use 8 processes: \hl{make -j 8}).
@@ -396,7 +396,7 @@ The \GWB{} is installed by default in aspect starting with the next release (2.2
 \\
  If the \WB{} submodule is initialized, \aspect{}'s \cmake{} configuration will automatically find it and use it. When cloning the \aspect{} repository, add the \hl{--recursive} flag (e.g. \hl{git clone --recursive git@github.com:geodynamics/aspect.git}), to automatically initialize the git submodule. If you already cloned \aspect{}, use the command \hl{git submodule update --init --recursive}. 
 \end{remark}
- \\
+ 
  When \aspect{} as been successfully compiled with the \WB{}, set the \aspect{} global input parameter \hl{World builder file} to the \WB{} file location. 
 
 
