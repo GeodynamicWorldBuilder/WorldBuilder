@@ -36,7 +36,7 @@ foreach(test_source ${UNIT_TEST_SOURCES})
   # Add compile target
   add_executable(${test_name} ${test_source})
 
-  if(NOT ${CMAKE_VERSION} VERSION_LESS "3.12.0") # Preventing issues with older cmake compilers which do not support VERSION_GREATER_EQUAL
+  if(NOT ${CMAKE_VERSION} VERSION_LESS "2.8.12") # Preventing issues with older cmake compilers which do not support VERSION_GREATER_EQUAL
     target_compile_options(${test_name} INTERFACE ${WB_COMPILER_OPTIONS_INTERFACE} PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE})
   endif()
 

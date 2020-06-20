@@ -205,9 +205,9 @@ if (NOT MSVC AND NOT APPLE)
    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER MATCHES "[Cc]lang")
       # Preventing issues with older cmake compilers (<2.8.11) which do not support VERSION_GREATER_EQUAL
       # cmake vesrion 3.12.0 introduces COMPILE_LANGUAGE:FORTAN, otherwise this would be >=2.8.11
-      if(NOT ${CMAKE_VERSION} VERSION_LESS "3.12.0") 
-        SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:FORTAN>:-pedantic -fPIC -Wall -Wextra>  
-        $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -pedantic -fPIC -Wall -Wextra -Wmost -Wconversion -Wunreachable-code -Wuninitialized -Wold-style-cast -Wshadow -Wfloat-equal -Wpointer-arith -Wwrite-strings 
+      if(NOT ${CMAKE_VERSION} VERSION_LESS "2.8.12") 
+        SET(WB_COMPILER_OPTIONS_PRIVATE -pedantic -fPIC -Wall -Wextra  
+        $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -Wmost -Wconversion -Wunreachable-code -Wuninitialized -Wold-style-cast -Wshadow -Wfloat-equal -Wpointer-arith -Wwrite-strings 
         -Wsynth -Wsign-compare -Woverloaded-virtual -Wliteral-range -Wparentheses -Wunused-local-typedefs -Wcast-qual -fstrict-aliasing -Werror=uninitialized -Wundef 
         -Wcast-align -Wmissing-declarations -Wredundant-decls -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wunused>)
       else()
@@ -220,14 +220,14 @@ if (NOT MSVC AND NOT APPLE)
 
       # Preventing issues with older cmake compilers (<2.8.11) which do not support VERSION_GREATER_EQUAL
       # cmake vesrion 3.12.0 introduces COMPILE_LANGUAGE:FORTAN, otherwise this would be >=2.8.11
-      if(NOT ${CMAKE_VERSION} VERSION_LESS "3.12.0") 
-        SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:FORTAN>:-pedantic -fPIC -Wall -Wextra>  $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>)
+      if(NOT ${CMAKE_VERSION} VERSION_LESS "2.8.12") 
+        SET(WB_COMPILER_OPTIONS_PRIVATE -pedantic -fPIC -Wall -Wextra  $<$<COMPILE_LANGUAGE:CXX>:-std=c++11 -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>)
       else()
         SET(WB_COMPILER_OPTIONS_PRIVATE "-std=c++11 -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>")
       endif()
 
       # adding flags is a hassle before cmake 3.12.0, and these flags are mostly useful for development, so just ignore those flags.
-      if(NOT ${CMAKE_VERSION} VERSION_LESS "3.12.0") # Preventing issues with older cmake compilers which do not support VERSION_GREATER_EQUAL
+      if(NOT ${CMAKE_VERSION} VERSION_LESS "2.8.12") # Preventing issues with older cmake compilers which do not support VERSION_GREATER_EQUAL
         include(CheckCXXCompilerFlag)
 
         check_cxx_compiler_flag(-Wsuggest-override SUGGEST_OVERWRITE_CXX_COMPILE_FLAG)
@@ -269,7 +269,7 @@ endif()
 
 
 
-if(${CMAKE_VERSION} VERSION_LESS "3.12.0") 
+if(${CMAKE_VERSION} VERSION_LESS "2.8.12") 
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${WB_COMPILER_OPTIONS_INTERFACE} ${WB_COMPILER_OPTIONS_PRIVATE} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_OLD}")
 else()
   target_compile_options(WorldBuilder INTERFACE ${WB_COMPILER_OPTIONS_INTERFACE} PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW})
@@ -280,10 +280,10 @@ endif()
 if(${CMAKE_VERSION} VERSION_LESS "3.13.0") 
     SET(CMAKE_EXE_LINKER_FLAGS "${WB_LINKER_OPTIONS} ${WB_VISU_LINKER_OPTIONS} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_OLD}")
 else()
-    target_link_options(WorldBuilder INTERFACE ${WB_LINKER_OPTIONS} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW})
-    target_link_options(WorldBuilderApp INTERFACE ${WB_LINKER_OPTIONS} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW})
-    target_link_options(WorldBuilderVisualization INTERFACE ${WB_LINKER_OPTIONS} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW})
-    target_link_options(WorldBuilderVisualization PRIVATE  ${WB_VISU_LINKER_OPTIONS} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW})
+    target_link_options(WorldBuilder INTERFACE ${WB_LINKER_OPTIONS})
+    target_link_options(WorldBuilderApp INTERFACE ${WB_LINKER_OPTIONS} )
+    target_link_options(WorldBuilderVisualization INTERFACE ${WB_LINKER_OPTIONS})
+    target_link_options(WorldBuilderVisualization PRIVATE  ${WB_VISU_LINKER_OPTIONS})
 endif()
 
 
