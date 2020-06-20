@@ -218,6 +218,17 @@ matrix:
          - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && which clang && brew install swig || true" 
          - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug"
 
+    - name: "osx clang fortran python"
+      sudo: false
+      os: osx
+      compiler: 
+        - clang
+      osx_image: xcode11.6
+      env: 
+         - MAKE_FILE_GENERATOR="Unix Makefiles"
+         - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && which clang && brew install swig || true" 
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug"
+
     - name: "windows debug mingw fortran"
       os: windows
       language: cpp 
