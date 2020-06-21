@@ -62,7 +62,7 @@ inline
 std::array<double,3> normalize(std::array<double,3> array)
 {
   const double norm = sqrt(array[0] * array[0] + array[1] * array[1] + array[2] * array[2] );
-  return {array[0]/norm,array[1]/norm,array[2]/norm};
+  return {{array[0]/norm,array[1]/norm,array[2]/norm}};
 }
 
 /**
@@ -2711,9 +2711,9 @@ TEST_CASE("WorldBuilder Features: Fault")
 
     compare_vectors_approx(grains.sizes, {0.2718142157,0.2718142157,0.2718142157});
     //compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[0]), {180,135.4473098406,0});
-    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[1]), {180,135.4473098406,0});
-    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[2]), {180,135.4473098406,0});
+    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[0]), {{180,135.4473098406,0}});
+    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[1]), {{180,135.4473098406,0}});
+    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[2]), {{180,135.4473098406,0}});
 
     grains = world3.grains(position, 100e3+1, 1, 3);
     std::array<std::array<double, 3>, 3> array_2 = Utilities::euler_angles_to_rotation_matrix(220,320,240);
@@ -2721,9 +2721,9 @@ TEST_CASE("WorldBuilder Features: Fault")
 
     compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
     //compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
-    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[0]), {180,153.4593755586,0});
-    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[1]), {180,153.4593755586,0});
-    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[2]), {180,153.4593755586,0});
+    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[0]), {{180,153.4593755586,0}});
+    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[1]), {{180,153.4593755586,0}});
+    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[2]), {{180,153.4593755586,0}});
   }
 
   position = {{700e3,675e3,800e3}};
