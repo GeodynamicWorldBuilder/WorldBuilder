@@ -16,6 +16,8 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+#ifndef WORLD_BUILDER_ASSERT_H_
+#define WORLD_BUILDER_ASSERT_H_
 
 #include <iostream>
 #include <string>
@@ -60,3 +62,5 @@ namespace WorldBuilder
         } \
     } while (false)
 }
+
+#endif
