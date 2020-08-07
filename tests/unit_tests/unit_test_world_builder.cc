@@ -541,7 +541,7 @@ TEST_CASE("WorldBuilder Utilities: Point in polygon")
 TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
 {
   // Cartesian
-  unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",NULL));
+  std::unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",NULL));
 
   // Test the natural coordinate system
   Utilities::NaturalCoordinate nca1(std::array<double,3> {{1,2,3}},*cartesian);
@@ -555,7 +555,7 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   CHECK(ncp1.get_depth_coordinate() == Approx(3.0));
 
 
-  unique_ptr<CoordinateSystems::Interface> spherical(CoordinateSystems::Interface::create("spherical",NULL));
+  std::unique_ptr<CoordinateSystems::Interface> spherical(CoordinateSystems::Interface::create("spherical",NULL));
 
   // Test the natural coordinate system
   Utilities::NaturalCoordinate nsa1(std::array<double,3> {{1,2,3}},*spherical);
@@ -826,7 +826,7 @@ TEST_CASE("WorldBuilder Coordinate Systems: Interface")
                     Contains("Internal error: Plugin with name '!not_implemented_coordinate_system!' is not found. "
                              "The size of factories is "));
 
-  unique_ptr<CoordinateSystems::Interface> interface(CoordinateSystems::Interface::create("cartesian",&world));
+  std::unique_ptr<CoordinateSystems::Interface> interface(CoordinateSystems::Interface::create("cartesian",&world));
 
   interface->declare_entries(world.parameters, "", {});
 
@@ -839,7 +839,7 @@ TEST_CASE("WorldBuilder Coordinate Systems: Interface")
 
 TEST_CASE("WorldBuilder Coordinate Systems: Cartesian")
 {
-  unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",NULL));
+  std::unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",NULL));
 
   //todo:fix
   //cartesian->declare_entries();
@@ -868,7 +868,7 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
 
   WorldBuilder::World world(file_name);
 
-  unique_ptr<CoordinateSystems::Interface> spherical(CoordinateSystems::Interface::create("spherical", &world));
+  std::unique_ptr<CoordinateSystems::Interface> spherical(CoordinateSystems::Interface::create("spherical", &world));
 
   world.parameters.enter_subsection("coordinate system");
   {

@@ -137,7 +137,7 @@ namespace WorldBuilder
                                                                              ? 0
                                                                              :
                                                                              static_cast<unsigned>(parameters.GetErrorOffset())-5,
-                                                                             (static_cast<unsigned>(parameters.GetErrorOffset()) + 10 > json_input_stream_error.seekg(0,ios::end).tellg()
+                                                                             (static_cast<unsigned>(parameters.GetErrorOffset()) + 10 > json_input_stream_error.seekg(0,std::ios::end).tellg()
                                                                               ?
                                                                               static_cast<unsigned>(json_input_stream.tellg())-static_cast<unsigned>(parameters.GetErrorOffset())
                                                                               :
