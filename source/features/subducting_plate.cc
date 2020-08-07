@@ -39,7 +39,7 @@
 
 #include "glm/glm.h"
 
-
+using namespace std;
 
 namespace WorldBuilder
 {
