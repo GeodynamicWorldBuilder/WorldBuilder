@@ -27,8 +27,6 @@
 #include <world_builder/parameters.h>
 #include <world_builder/point.h>
 
-using namespace std;
-
 namespace WorldBuilder
 {
   class World;
@@ -150,7 +148,7 @@ namespace WorldBuilder
          * number of original coordinates, before adding
          * more automatically.
          */
-        size_t original_number_of_coordinates;
+        std::size_t original_number_of_coordinates;
 
         /**
          * The coordinates at the surface of the feature
