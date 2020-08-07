@@ -306,6 +306,11 @@ if(MAKE_PYTHON_WRAPPER)
   # see https://github.com/swig/swig/issues/1259 for more info.
   if(SWIG_VERSION VERSION_LESS "4.0.1" AND NOT MSVC)
     set_target_properties(${TARGET} PROPERTIES COMPILE_FLAGS "-Wno-cast-qual")
+  elseif(SWIG_VERSION VERSION_GREATER_EQUAL "4.0.1" AND APPLE)
+    # see https://github.com/swig/swig/issues/1790 for mor info.
+    # this could be made more specific, but decrecation for the rest will be
+    # testers will still be tested. TODO: only do this for the file which needs it
+    set_target_properties(${TARGET} PROPERTIES COMPILE_FLAGS "-Wno-error=deprecated-declarations")
   endif()
 
   IF ( CMAKE_BUILD_TYPE STREQUAL Coverage )
