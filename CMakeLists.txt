@@ -156,7 +156,45 @@ endif()
 
 set(SOURCES ${SOURCES_CXX} ${SOURCES_FORTAN})
 
+set(CMAKE_UNITY_BUILD_BATCH_SIZE  5000)
+
+# Special treatment of some files for unity builds. We disable the unity
+# build for them.
+SET(UNITY_DISABLE_FILES
+  "source/parameters.cc;source/point.cc;")
+
+FOREACH(_source_file ${UNITY_DISABLE_FILES})
+  SET(_full_name "${CMAKE_SOURCE_DIR}/${_source_file}")
+  LIST(FIND SOURCES ${_full_name} _index)
+  IF(_index EQUAL -1)
+    MESSAGE(FATAL_ERROR "could not find ${_full_name}.")
+  ENDIF()
+
+  SET_PROPERTY(SOURCE ${_source_file} PROPERTY SKIP_UNITY_BUILD_INCLUSION TRUE)
+ENDFOREACH()
+
 add_library(WorldBuilder ${SOURCES})
+
+IF(NOT CMAKE_VERSION VERSION_LESS 3.16)
+  SET(WB_UNITY_BUILD ON CACHE BOOL "Combine source files into less compile targets to speedup compile time. Currently only supported for cmake 3.16 and newer versions.")
+ELSE()
+  SET(WB_UNITY_BUILD OFF CACHE BOOL "Combine source files into less compile targets to speedup compile time. Currently only supported for cmake 3.16 and newer versions." FORCE)
+ENDIF()
+
+IF (WB_UNITY_BUILD)
+  IF (NOT CMAKE_VERSION VERSION_LESS 3.16)
+    SET_PROPERTY(TARGET WorldBuilder PROPERTY UNITY_BUILD TRUE)
+    MESSAGE(STATUS "Combining source files into unity build.")
+  ELSEIF(CMAKE_VERSION VERSION_LESS 3.16)
+    MESSAGE(FATAL_ERROR "ASPECT_UNITY_BUILD is currently only supported for CMake 3.16 and newer versions.")
+  ENDIF()
+ELSE()
+  IF (NOT CMAKE_VERSION VERSION_LESS 3.16)
+    SET_PROPERTY(TARGET WorldBuilder PROPERTY UNITY_BUILD FALSE)
+  ENDIF()
+
+  MESSAGE(STATUS "Disabling unity build.")
+ENDIF()
 
 add_executable(WorldBuilderApp "${CMAKE_CURRENT_SOURCE_DIR}/app/main.cc")
 add_executable(WorldBuilderVisualization "${CMAKE_CURRENT_SOURCE_DIR}/visualization/main.cc")
