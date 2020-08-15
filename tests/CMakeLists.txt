@@ -194,7 +194,7 @@ if(CMAKE_Fortran_COMPILER)
               COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/example.f90 -L../../lib/ -lWorldBuilder -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lstdc++ 
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
     else()
-      add_test(NAME compile_simple_fortran_test
+      add_test(NAME compile_simple_fortran_example
                COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/example.f90 -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lstdc++ 
          WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
     endif()
@@ -204,8 +204,8 @@ if(CMAKE_Fortran_COMPILER)
               COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/example.f90 -L../../lib/ ../../lib/libWorldBuilder.so -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lc++ 
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
     else()
-      add_test(NAME compile_simple_fortran_test
-	      COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/test.f90 -L../../lib/ -Wl,-force_load,../../lib/libWorldBuilder.a -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lc++ 
+      add_test(NAME compile_simple_fortran_example
+	      COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/example.f90 -L../../lib/ -Wl,-force_load,../../lib/libWorldBuilder.a -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lc++ 
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
     endif()
   endif()
