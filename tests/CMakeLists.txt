@@ -47,11 +47,12 @@ foreach(test_source ${UNIT_TEST_SOURCES})
   endif()
 
   # Make sure that the whole library is loaded, so the registration is done correctly.
-  if(NOT APPLE)
-    SET(GWB_LIBRARY_WHOLE -Wl,--whole-archive WorldBuilder -Wl,--no-whole-archive)  
+  if(WB_LIB_BUILD_SHARED)
+    SET(GWB_LIBRARY_WHOLE WorldBuilder)
+  elseif(NOT APPLE AND NOT MSVC)
+    SET(GWB_LIBRARY_WHOLE -Wl,--whole-archive WorldBuilder -Wl,--no-whole-archive)
   elseif(MSVC)
     SET(GWB_LIBRARY_WHOLE WorldBuilder)
-    SET(CMAKE_EXE_LINKER_FLAGS "/WHOLEARCHIVE:libworldbuilder")
   else()
     SET(GWB_LIBRARY_WHOLE -Wl,-force_load WorldBuilder)
   endif()
@@ -154,15 +155,28 @@ endforeach(test_source)
 #test fortran compilation and wrapper if compiler found
 if(CMAKE_Fortran_COMPILER)
   file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran)
-  if(NOT APPLE)
-    add_test(NAME compile_simple_fortran_test
-             COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/test.f90 -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lstdc++ 
-	     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
+  if(NOT APPLE)  
+    if(${WB_LIB_BUILD_SHARED})
+      add_test(NAME compile_simple_fortran_test
+              COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/test.f90 -L../../lib/ -lWorldBuilder -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lstdc++ 
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
+    else()
+      add_test(NAME compile_simple_fortran_test
+               COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/test.f90 -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lstdc++ 
+         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
+    endif()
   else()
-    add_test(NAME compile_simple_fortran_test
-	    COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/test.f90 -L../../lib/ -Wl,-force_load,../../lib/libWorldBuilder.a -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lc++ 
-	    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
+    if(${WB_LIB_BUILD_SHARED})
+      add_test(NAME compile_simple_fortran_test
+              COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/test.f90 -L../../lib/ ../../lib/libWorldBuilder.so -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lc++ 
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
+    else()
+      add_test(NAME compile_simple_fortran_test
+	      COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/test.f90 -L../../lib/ -Wl,-force_load,../../lib/libWorldBuilder.a -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lc++ 
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
+    endif()
   endif()
+
   add_test(run_simple_fortran_test
            ${CMAKE_COMMAND}
                  -D TEST_NAME=run_simple_fortran_test
@@ -174,15 +188,28 @@ if(CMAKE_Fortran_COMPILER)
                  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/) 
   file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran)
 
-  if(NOT APPLE)
-    add_test(NAME compile_simple_fortran_example 
-	     COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/example.f90 -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lstdc++ 
-	     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
+  if(NOT APPLE)  
+    if(${WB_LIB_BUILD_SHARED})
+      add_test(NAME compile_simple_fortran_example
+              COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/example.f90 -L../../lib/ -lWorldBuilder -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lstdc++ 
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
+    else()
+      add_test(NAME compile_simple_fortran_test
+               COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/example.f90 -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lstdc++ 
+         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
+    endif()
   else()
-    add_test(NAME compile_simple_fortran_example 
-	     COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/example.f90 -L../../lib/ -Wl,-force_load,../../lib/libWorldBuilder.a -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lc++ 
-	     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
+    if(${WB_LIB_BUILD_SHARED})
+      add_test(NAME compile_simple_fortran_example
+              COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/example.f90 -L../../lib/ ../../lib/libWorldBuilder.so -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lc++ 
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
+    else()
+      add_test(NAME compile_simple_fortran_test
+	      COMMAND ${CMAKE_Fortran_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/fortran/test.f90 -L../../lib/ -Wl,-force_load,../../lib/libWorldBuilder.a -I../../mod/ ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_FORTRAN_COMPILER_FLAGS_COVERAGE} -lc++ 
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
+    endif()
   endif()
+
   add_test(run_simple_fortran_example
 	   ${CMAKE_COMMAND}
                  -D TEST_NAME=run_simple_fortran_example

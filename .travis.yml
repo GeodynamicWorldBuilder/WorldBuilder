@@ -86,13 +86,13 @@ matrix:
             - cmake
             - python3-setuptools
 
-    - name: "linux focal gcc release fortran python STATIC"
+    - name: "linux focal gcc debug fortran python STATIC"
       os: linux
       dist: focal
       sudo: false
       env:
          - MAKE_FILE_GENERATOR="Unix Makefiles"
-         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Release" -DWB_LIB_BUILD_SHARED=FALSE
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug -DWB_LIB_BUILD_SHARED=FALSE"
          - MATRIX_EVAL="export PATH=/usr/bin/:$PATH"
       addons:
         apt:

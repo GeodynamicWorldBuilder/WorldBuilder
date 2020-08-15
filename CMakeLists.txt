@@ -156,7 +156,6 @@ endif()
 
 set(SOURCES ${SOURCES_CXX} ${SOURCES_FORTAN})
 
-set(CMAKE_UNITY_BUILD_BATCH_SIZE  5000)
 
 # Special treatment of some files for unity builds. We disable the unity
 # build for them.
@@ -349,6 +348,7 @@ elseif(MSVC)
 else()
   SET(GWB_LIBRARY_WHOLE -Wl,-force_load WorldBuilder)
 endif()
+
 target_link_libraries (WorldBuilderApp ${GWB_LIBRARY_WHOLE})
 target_link_libraries (WorldBuilderVisualization ${GWB_LIBRARY_WHOLE}) 
 
