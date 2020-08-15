@@ -71,10 +71,28 @@ matrix:
     - name: "linux focal gcc release fortran python"
       os: linux
       dist: focal
-      sudo: true
+      sudo: false
       env:
          - MAKE_FILE_GENERATOR="Unix Makefiles"
          - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Release" -DCMAKE_UNITY_BUILD_BATCH_SIZE=100000 # this is the strictest test for the unity build.
+         - MATRIX_EVAL="export PATH=/usr/bin/:$PATH"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gfortran
+            - swig
+            - cmake
+            - python3-setuptools
+
+    - name: "linux focal gcc release fortran python STATIC"
+      os: linux
+      dist: focal
+      sudo: false
+      env:
+         - MAKE_FILE_GENERATOR="Unix Makefiles"
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Release" -DWB_LIB_BUILD_SHARED=FALSE
          - MATRIX_EVAL="export PATH=/usr/bin/:$PATH"
       addons:
         apt:
@@ -97,6 +115,18 @@ matrix:
          - MAKE_FILE_GENERATOR="Visual Studio 15 2017 Win64"
          - FC=gfortran
          - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS}  -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE=ON"
+
+    - name: "windows debug VS 2017 python STATIC"
+      os: windows
+      language: cpp 
+      env:
+         - MATRIX_EVAL="which gcc && choco install python --version=3.8.0 -y && choco install swig --version=4.0.1 -y" 
+         - PYTHONPATH=C:/Python38/Lib 
+         - PYTHONHOME=C:/Python38
+         - PATH=C:/Python38:${PATH}
+         - MAKE_FILE_GENERATOR="Visual Studio 15 2017 Win64"
+         - FC=gfortran
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS}  -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE=ON -DWB_LIB_BUILD_SHARED=FALSE"
 
     - name: "windows release VS 2017 python"
       os: windows
@@ -192,15 +222,38 @@ matrix:
 
     - name: "linux trusty clang fortran python"
       os: linux
-      dist: trusty
+      dist: focal
       sudo: false
       os: linux
       compiler: 
         - clang-3.6
       env: 
          - MAKE_FILE_GENERATOR="Unix Makefiles"
-         - MATRIX_EVAL="gfortran --version && CC=clang-3.6 && CXX=clang++-3.6 && GC=gfortran" 
+         - MATRIX_EVAL="gfortran --version && CC=clang-3.6 && CXX=clang++-3.6 && GC=gfortran && export PATH=/usr/bin/:$PATH" 
          - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=-Werror"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.6
+          packages:
+            - clang-3.6
+            - gfortran 
+            - cmake
+            - swig
+            - python3-setuptools
+
+    - name: "linux trusty clang fortran python STATIC"
+      os: linux
+      dist: focal
+      sudo: false
+      os: linux
+      compiler: 
+        - clang-3.6
+      env: 
+         - MAKE_FILE_GENERATOR="Unix Makefiles"
+         - MATRIX_EVAL="gfortran --version && CC=clang-3.6 && CXX=clang++-3.6 && GC=gfortran && export PATH=/usr/bin/:$PATH" 
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=-Werror -DWB_LIB_BUILD_SHARED=FALSE"
       addons:
         apt:
           sources:
@@ -240,11 +293,22 @@ matrix:
       os: osx
       compiler: 
         - clang
-      osx_image: xcode11.6
+      osx_image: xcode12
       env: 
          - MAKE_FILE_GENERATOR="Unix Makefiles"
          - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && which clang && brew install swig || true" 
          - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=-Werror"
+
+    - name: "osx clang fortran python STATIC"
+      sudo: false
+      os: osx
+      compiler: 
+        - clang
+      osx_image: xcode12
+      env: 
+         - MAKE_FILE_GENERATOR="Unix Makefiles"
+         - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && which clang && brew install swig || true" 
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=-Werror  -DWB_LIB_BUILD_SHARED=FALSE"
 
     - name: "windows debug mingw fortran"
       os: windows
@@ -268,12 +332,9 @@ matrix:
       os: linux
       dist: xenial
       sudo: false
-      compiler:
-        #- g++-6
       env:
          - MAKE_FILE_GENERATOR="Unix Makefiles"
          - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Release"
-         #- MATRIX_EVAL="gfortran --version && CC=gcc-6 && CXX=g++-6 && FC=gfortran"
       addons:
         apt:
           sources:
