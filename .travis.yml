@@ -68,6 +68,23 @@ cache:
 
 matrix:
   include:
+    - name: "linux focal gcc release fortran python"
+      os: linux
+      dist: focal
+      sudo: true
+      env:
+         - MAKE_FILE_GENERATOR="Unix Makefiles"
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Release" -DCMAKE_UNITY_BUILD_BATCH_SIZE=100000 # this is the strictest test for the unity build.
+         - MATRIX_EVAL="export PATH=/usr/bin/:$PATH"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gfortran
+            - swig
+            - cmake
+            - python3-setuptools
 
     - name: "windows debug VS 2017 python"
       os: windows
@@ -270,12 +287,9 @@ matrix:
       os: linux
       dist: bionic
       sudo: false
-      compiler:
-        #- g++-6
       env:
          - MAKE_FILE_GENERATOR="Unix Makefiles"
          - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Release"
-         #- MATRIX_EVAL="gfortran --version && CC=gcc-6 && CXX=g++-6 && FC=gfortran"
       addons:
         apt:
           sources:
@@ -284,3 +298,4 @@ matrix:
             - gfortran
             - swig
             - python3-setuptools
+
