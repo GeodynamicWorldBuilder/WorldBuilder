@@ -156,7 +156,6 @@ endif()
 
 set(SOURCES ${SOURCES_CXX} ${SOURCES_FORTAN})
 
-set(CMAKE_UNITY_BUILD_BATCH_SIZE  5000)
 
 # Special treatment of some files for unity builds. We disable the unity
 # build for them.
@@ -173,7 +172,15 @@ FOREACH(_source_file ${UNITY_DISABLE_FILES})
   SET_PROPERTY(SOURCE ${_source_file} PROPERTY SKIP_UNITY_BUILD_INCLUSION TRUE)
 ENDFOREACH()
 
-add_library(WorldBuilder ${SOURCES})
+SET(WB_LIB_BUILD_SHARED ON CACHE BOOL "Whether to build and link a shared or static library version of the World Builder library.")
+
+if(${WB_LIB_BUILD_SHARED})
+  add_library(WorldBuilder SHARED ${SOURCES})
+  Message(STATUS "Build the World Builder library as a shared library.")
+else()
+  add_library(WorldBuilder STATIC ${SOURCES})
+  Message(STATUS "Build the World Builder library as a static library.")
+endif()
 
 IF(NOT CMAKE_VERSION VERSION_LESS 3.16)
   SET(WB_UNITY_BUILD ON CACHE BOOL "Combine source files into less compile targets to speedup compile time. Currently only supported for cmake 3.16 and newer versions.")
@@ -332,13 +339,16 @@ endif()
 
 
 # Make sure that the whole library is loaded, so the registration is done correctly.
-if(NOT APPLE AND NOT MSVC)
+if(WB_LIB_BUILD_SHARED)
+  SET(GWB_LIBRARY_WHOLE WorldBuilder)
+elseif(NOT APPLE AND NOT MSVC)
   SET(GWB_LIBRARY_WHOLE -Wl,--whole-archive WorldBuilder -Wl,--no-whole-archive)
 elseif(MSVC)
   SET(GWB_LIBRARY_WHOLE WorldBuilder)
 else()
   SET(GWB_LIBRARY_WHOLE -Wl,-force_load WorldBuilder)
 endif()
+
 target_link_libraries (WorldBuilderApp ${GWB_LIBRARY_WHOLE})
 target_link_libraries (WorldBuilderVisualization ${GWB_LIBRARY_WHOLE}) 
 
