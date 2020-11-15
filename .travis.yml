@@ -240,10 +240,10 @@ matrix:
       os: osx
       compiler: 
         - clang
-      osx_image: xcode11.6
+      osx_image: xcode12.2 # latest
       env: 
          - MAKE_FILE_GENERATOR="Unix Makefiles"
-         - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && which clang && brew install swig || true" 
+         - MATRIX_EVAL="export PATH=$TRAVIS_ROOT/bin:$PATH && export MACOSX_DEPLOYMENT_TARGET=10.15 && which clang && brew install swig || true" # && CC=/usr/bin/clang && CXX=/usr/bin/clang++"
          - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=-Werror"
 
     - name: "windows debug mingw fortran"
