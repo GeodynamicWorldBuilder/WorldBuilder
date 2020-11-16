@@ -5,14 +5,14 @@
 int main(int argc, char *argv[]) {
   // Declare the types which will be needed.
   void * ptr_world =  NULL;
-  double temperature;
+  double temperature = 0.0;
   double x = 120e3;
   double y = 500e3;
   double z = 0;
   double depth = 0;
   double gravity = 10;
   unsigned int composition_number = 3;
-  unsigned int random_number_seed = 1.0; // use a random number seed larger than zero
+  unsigned int random_number_seed = 1; // use a random number seed larger than zero
   double composition = 0;
   bool has_output_dir = 0; // false
   char output_dir[] = "../../doc/manual/";
@@ -28,6 +28,7 @@ int main(int argc, char *argv[]) {
 
   // Show how to call the functions.
   printf("create world \n");
+  
   create_world(&ptr_world, argv[1], &has_output_dir, output_dir, random_number_seed);
 
   printf("2d temperature: \n");
