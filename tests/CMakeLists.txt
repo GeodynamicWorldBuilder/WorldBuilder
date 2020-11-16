@@ -151,6 +151,63 @@ foreach(test_source ${VISU_TEST_SOURCES})
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/visualization/)
 endforeach(test_source)
 
+
+#test C compilation and wrapper if compiler found
+  file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C)
+  if(NOT MSVC AND NOT APPLE)
+    add_test(NAME compile_simple_C_test
+             COMMAND ${CMAKE_C_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/C/test.c -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I../../inlcude/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lstdc++ -lm
+	     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
+  elseif(APPLE)
+    add_test(NAME compile_simple_C_test
+	    COMMAND ${CMAKE_C_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/C/test.c -L${CMAKE_BINARY_DIR}/lib/ -Wl,-force_load,${CMAKE_BINARY_DIR}/lib/libWorldBuilder.a -I../../inlcude/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lc++ -lm -I/usr/include/ -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/
+      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)  
+  else()
+    #MSVS
+    add_test(NAME compile_simple_C_test 
+      COMMAND ${CMAKE_C_COMPILER} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/C/test.c /W3 /EHsc /RTC1 /MDd /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\WorldBuilder.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/WorldBuilder.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/WorldBuilder.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:test${CMAKE_EXECUTABLE_SUFFIX} 
+      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
+  endif()
+  set_tests_properties(compile_simple_C_test PROPERTIES TIMEOUT 60) 
+  add_test(run_simple_C_test
+           ${CMAKE_COMMAND}
+                 -D TEST_NAME=run_simple_C_test
+                 -D TEST_PROGRAM=${CMAKE_BINARY_DIR}/tests/C/test${CMAKE_EXECUTABLE_SUFFIX}
+                 -D TEST_ARGS=${CMAKE_CURRENT_SOURCE_DIR}/data/continental_plate.wb
+                 -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/C/run_simple_C_test.log
+		 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/C/run_simple_C_test.log
+                 -P ${CMAKE_SOURCE_DIR}/tests/C/run_C_tests.cmake
+                 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/) 
+  file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C)
+  set_tests_properties(run_simple_C_test PROPERTIES TIMEOUT 60) 
+
+  if(NOT MSVC AND NOT APPLE)
+    add_test(NAME compile_simple_C_example 
+	     COMMAND ${CMAKE_C_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/C/example.c -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I${CMAKE_SOURCE_DIR}/include/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lstdc++ -lm
+	     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
+  elseif(APPLE)
+    add_test(NAME compile_simple_C_example 
+	     COMMAND ${CMAKE_C_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/C/example.c -L${CMAKE_BINARY_DIR}/lib/ -Wl,-force_load,${CMAKE_BINARY_DIR}/lib/libWorldBuilder.a -I${CMAKE_SOURCE_DIR}/include/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lc++ -lm -I/usr/include/ -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/
+       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
+  else()
+    #MSVS
+    add_test(NAME compile_simple_C_example 
+    COMMAND ${CMAKE_C_COMPILER} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/C/example.c /W3 /EHsc /RTC1 /MDd /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\WorldBuilder.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/WorldBuilder.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/WorldBuilder.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:example${CMAKE_EXECUTABLE_SUFFIX} 
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
+  endif()
+  set_tests_properties(compile_simple_C_example PROPERTIES TIMEOUT 60) 
+  add_test(run_simple_C_example
+	   ${CMAKE_COMMAND}
+                 -D TEST_NAME=run_simple_C_example
+                 -D TEST_PROGRAM=${CMAKE_BINARY_DIR}/tests/C/example${CMAKE_EXECUTABLE_SUFFIX}
+                 -D TEST_ARGS=${CMAKE_CURRENT_SOURCE_DIR}/data/continental_plate.wb
+                 -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/C/run_simple_C_example.log
+		 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/C/run_simple_C_example.log
+                 -P ${CMAKE_SOURCE_DIR}/tests/C/run_C_tests.cmake
+                 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/) 
+  set_tests_properties(run_simple_C_example PROPERTIES TIMEOUT 60) 
+
+
 #test fortran compilation and wrapper if compiler found
 if(CMAKE_Fortran_COMPILER)
   file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran)

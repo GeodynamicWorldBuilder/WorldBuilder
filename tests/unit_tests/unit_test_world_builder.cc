@@ -46,7 +46,9 @@
 #include <world_builder/types/unsigned_int.h>
 
 #include <world_builder/utilities.h>
+extern "C" {
 #include <world_builder/wrapper_c.h>
+}
 #include <world_builder/wrapper_cpp.h>
 
 #include "glm/glm.h"
@@ -669,8 +671,9 @@ TEST_CASE("WorldBuilder C wrapper")
   void *ptr_world = NULL;
   void **ptr_ptr_world = &ptr_world;
   const char *world_builder_file = file.c_str();
+  bool has_output_dir = false;
 
-  create_world(ptr_ptr_world, world_builder_file);
+  create_world(ptr_ptr_world, world_builder_file, &has_output_dir, "", 1.0);
 
   double temperature = 0;
 
@@ -702,8 +705,9 @@ TEST_CASE("WorldBuilder C wrapper")
   ptr_world = NULL;
   ptr_ptr_world = &ptr_world;
   const char *world_builder_file2 = file.c_str();
+  has_output_dir = false;
 
-  create_world(ptr_ptr_world, world_builder_file2);
+  create_world(ptr_ptr_world, world_builder_file2, &has_output_dir, "", 1.0);
 
 
   CHECK_THROWS_WITH(temperature_2d(*ptr_ptr_world, 1, 2, 0, 10, &temperature),
