@@ -1874,13 +1874,13 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.temperature(position, 5, 10) == Approx(1554.3294579725)); // we are in the plate for sure (colder than anywhere in the mantle)
   CHECK(world1.temperature(position, 10, 10) == Approx(1511.0782994151)); // we are in the plate for sure (colder than anywhere in the mantle)
   CHECK(world1.temperature(position, 100, 10) == Approx(1050.2588653774)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 500, 10) == Approx(876.8637089978)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 1000, 10) == Approx(829.7197877204)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 5000, 10) == Approx(620.6827823798)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 10e3, 10) == Approx(525.727843761));
-  CHECK(world1.temperature(position, 25e3, 10) == Approx(538.4605698191));
-  CHECK(world1.temperature(position, 50e3, 10) == Approx(751.6318639633));
-  CHECK(world1.temperature(position, 75e3, 10) == Approx(991.5852995579));
+  CHECK(world1.temperature(position, 500, 10) == Approx(876.8996655758)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 1000, 10) == Approx(829.7878359145)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 5000, 10) == Approx(620.9373458573)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 10e3, 10) == Approx(526.1591705397));
+  CHECK(world1.temperature(position, 25e3, 10) == Approx(539.5656824584));
+  CHECK(world1.temperature(position, 50e3, 10) == Approx(754.7202618956));
+  CHECK(world1.temperature(position, 75e3, 10) == Approx(997.7030956234));
   CHECK(world1.temperature(position, 150e3, 10) == Approx(1668.6311660012));
   //CHECK(world1.temperature(position, std::sqrt(2) * 100e3 - 1, 10) == Approx(150.0));
   //CHECK(world1.temperature(position, std::sqrt(2) * 100e3 + 1, 10) == Approx(1664.6283561404));
