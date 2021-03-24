@@ -178,7 +178,3 @@ jobs:
       - name: Codecov
         run: bash <(curl -s https://codecov.io/bash);
         shell: bash
-
-      - name: Coveralls
-        run: /home/runner/.local/bin/coveralls --root ${{github.workspace}} --build-root ${{github.workspace}}/build/ -i source -i app --gcov-options '\-lp';
-        shell: bash
