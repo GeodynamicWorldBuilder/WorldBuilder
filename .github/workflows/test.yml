@@ -1,0 +1,184 @@
+name: Github CI
+
+on: [push, pull_request]
+
+jobs:
+  test_indentation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install astyle
+        shell: bash
+        run: cd .. && mkdir astyle && cd astyle && wget 'https://sourceforge.net/projects/astyle/files/astyle/astyle 2.04/astyle_2.04_linux.tar.gz' && tar -zxvf astyle_2.04_linux.tar.gz && cd astyle/build/gcc && make && sudo make install && cd ../../../../
+      
+      - name: Create Build Environment
+        run: | 
+              mkdir build;
+              cd build;
+
+      - name: Configure CMake
+        shell: bash
+        working-directory: ${{github.workspace}}/build
+        run: cmake ..
+
+      - name: Indenting
+        shell: bash
+        working-directory: ${{github.workspace}}/build
+        run: make indent
+
+      - name: Indenting
+        shell: bash
+        working-directory: ${{github.workspace}}/build
+        run: git status
+
+      - name: check indentation
+        shell: bash
+        working-directory: ${{github.workspace}}/build
+        run: | 
+              if [[ "$(git status | grep 'modified' --count)" -gt "0" ]]; then 
+                 git diff > diff.log; 
+                 cat diff.log; 
+                 exit 1; 
+              fi
+
+  test_linux_and_macos:
+    needs: test_indentation
+    strategy: 
+      fail-fast: false
+      matrix: 
+        os: ['ubuntu-latest','macos-latest']
+        build_type: ['Release', 'Debug']
+      
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name:  Install optional dependencies
+      run:   |
+         if [ "$RUNNER_OS" == "Linux" ]; then
+            sudo apt install gfortran swig python3-setuptools
+         elif [ "$RUNNER_OS" == "macOS" ]; then
+            sudo brew install swig || true    
+         else          
+            echo "$RUNNER_OS not supported"
+            exit 1
+         fi
+      shell: bash
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{github.workspace}}/build
+
+    - name: Configure CMake
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS=-Werror
+
+    - name: Build gwb
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: cmake --build . --config ${{ matrix.build_type }}
+
+    - name: Install gwb Linux and macOS
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: sudo cmake --install . --config ${{ matrix.build_type }}
+
+    - name: Test gwb
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: ctest -VV -C ${{ matrix.build_type }}
+      
+
+  test_windows:
+    needs: test_indentation
+    strategy: 
+      fail-fast: false
+      matrix: 
+        os: ['windows-latest']
+        build_type: ['Release', 'Debug']
+        build_system: ['MinGW Makefiles','Visual Studio 15 2017 Win64']
+      
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name:  Install optional dependencies
+      run:  choco install swig -version=4.0.1 -y
+      shell: bash
+
+    - uses: ilammy/msvc-dev-cmd@v1
+        
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{github.workspace}}/build
+
+    - name: Configure CMake
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+
+    - name: Build gwb
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: cmake --build . --config ${{ matrix.build_type }}
+
+    - name: Install gwb windows
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: cmake --install . --config ${{ matrix.build_type }}
+
+    - name: Test gwb
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: ctest -VV -C ${{ matrix.build_type }}
+      
+
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name:  Install optional dependencies
+        run: sudo apt install gfortran swig python3-setuptools
+        shell: bash
+
+      - name: extend path
+        run: echo $PATH && export PATH=$PATH:/home/runner/.local/bin && echo $PATH && export PYTHONPATH=$PYTHONPATH:/home/runner/.local/bin
+      
+      - name: Install coveralls
+        run: pip install --user cpp-coveralls 
+        shell: bash
+         
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{github.workspace}}/build
+
+      - name: Configure CMake
+        shell: bash
+        working-directory: ${{github.workspace}}/build
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Coverage
+
+      - name: Build gwb
+        working-directory: ${{github.workspace}}/build
+        shell: bash
+        run: cmake --build . --config Coverage
+
+
+      - name: Install gwb
+        working-directory: ${{github.workspace}}/build
+        shell: bash
+        run: sudo cmake --install . --config Coverage
+
+      - name: Test gwb
+        working-directory: ${{github.workspace}}/build
+        shell: bash
+        run: ctest -VV -C Coverage
+
+      - name: Codecov
+        run: bash <(curl -s https://codecov.io/bash);
+        shell: bash
+
+      - name: Coveralls
+        run: /home/runner/.local/bin/coveralls --root ${{github.workspace}} --build-root ${{github.workspace}}/build/ -i source -i app --gcov-options '\-lp';
+        shell: bash

@@ -164,9 +164,15 @@ endforeach(test_source)
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)  
   else()
     #MSVS
-    add_test(NAME compile_simple_C_test 
-      COMMAND ${CMAKE_C_COMPILER} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/C/test.c /W3 /EHsc /RTC1 /MDd /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\WorldBuilder.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/WorldBuilder.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/WorldBuilder.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:test${CMAKE_EXECUTABLE_SUFFIX} 
+    if(CMAKE_BUILD_TYPE STREQUAL Debug)
+      add_test(NAME compile_simple_C_test 
+        COMMAND ${CMAKE_C_COMPILER} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/C/test.c /W3 /EHsc /RTC1 /MDd /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\WorldBuilder.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/WorldBuilder.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/WorldBuilder.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:test${CMAKE_EXECUTABLE_SUFFIX} 
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
+    else()
+      add_test(NAME compile_simple_C_test 
+      COMMAND ${CMAKE_C_COMPILER} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/C/test.c /W3 /EHsc /RTC1 /MD /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\WorldBuilder.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/WorldBuilder.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/WorldBuilder.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:test${CMAKE_EXECUTABLE_SUFFIX} 
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
+    endif()
   endif()
   set_tests_properties(compile_simple_C_test PROPERTIES TIMEOUT 60) 
   add_test(run_simple_C_test
@@ -191,9 +197,15 @@ endforeach(test_source)
        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
   else()
     #MSVS
-    add_test(NAME compile_simple_C_example 
-    COMMAND ${CMAKE_C_COMPILER} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/C/example.c /W3 /EHsc /RTC1 /MDd /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\WorldBuilder.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/WorldBuilder.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/WorldBuilder.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:example${CMAKE_EXECUTABLE_SUFFIX} 
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
+    if(CMAKE_BUILD_TYPE STREQUAL Debug)
+      add_test(NAME compile_simple_C_example 
+      COMMAND ${CMAKE_C_COMPILER} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/C/example.c /W3 /EHsc /RTC1 /MDd /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\WorldBuilder.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/WorldBuilder.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/WorldBuilder.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:example${CMAKE_EXECUTABLE_SUFFIX} 
+      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
+    else()
+      add_test(NAME compile_simple_C_example 
+      COMMAND ${CMAKE_C_COMPILER} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/C/example.c /W3 /EHsc /RTC1 /MD /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\WorldBuilder.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/WorldBuilder.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/WorldBuilder.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:example${CMAKE_EXECUTABLE_SUFFIX} 
+      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
+    endif()
   endif()
   set_tests_properties(compile_simple_C_example PROPERTIES TIMEOUT 60) 
   add_test(run_simple_C_example
