@@ -151,13 +151,13 @@ namespace WorldBuilder
          */
         WorldBuilder::Point<2> reference_point;
 
-        std::vector<std::vector<double> > slab_segment_lengths;
-        std::vector<std::vector<Point<2> > > slab_segment_thickness;
-        std::vector<std::vector<Point<2> > > slab_segment_top_truncation;
-        std::vector<std::vector<Point<2> > > slab_segment_angles;
-        std::vector<double> total_slab_length;
-        double maximum_total_slab_length;
-        double maximum_slab_thickness;
+        std::vector<std::vector<double> > fault_segment_lengths;
+        std::vector<std::vector<Point<2> > > fault_segment_thickness;
+        std::vector<std::vector<Point<2> > > fault_segment_top_truncation;
+        std::vector<std::vector<Point<2> > > fault_segment_angles;
+        std::vector<double> total_fault_length;
+        double maximum_total_fault_length;
+        double maximum_fault_thickness;
 
 
     };
