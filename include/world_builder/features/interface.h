@@ -145,6 +145,11 @@ namespace WorldBuilder
         std::string name;
 
         /**
+         * The type of interpolation used to get the line position between the points.
+         */
+        std::string interpolation;
+
+        /**
          * number of original coordinates, before adding
          * more automatically.
          */

@@ -70,7 +70,10 @@ namespace WorldBuilder
                 prm.declare_entry("coordinates", Types::Array(Types::Point<2>(), true),
                                   "An array of 2d Points representing an array of coordinates where the feature is located.");
 
-
+                prm.declare_entry("interpolation",Types::String("global"),
+                                  "What type of interpolation should be used to enforce the minimum points per "
+                                  "distance parameter. Options are global, none, linear and monotone spline. If this "
+                                  "value is set to global, the global value for interpolation is used.");
                 WBAssert(it.second != NULL, "No declare entries given.");
                 it.second(prm, parent_name, {});
               }
@@ -103,7 +106,8 @@ namespace WorldBuilder
                        [](WorldBuilder::Point<2> p) -> WorldBuilder::Point<2> { return p *const_pi / 180.0;});
 
 
-      std::string interpolation = this->world->interpolation;
+      // If global is given, we use the global interpolation setting, otherwise use the provided value.
+      interpolation = prm.get<std::string>("interpolation") == "global" ? this->world->interpolation : prm.get<std::string>("interpolation");
 
       // the one_dimensional_coordinates is always needed, so fill it.
       original_number_of_coordinates = coordinates.size();
@@ -117,7 +121,8 @@ namespace WorldBuilder
       if (interpolation != "none")
         {
           WBAssertThrow(interpolation == "linear" || interpolation == "monotone spline",
-                        "For interpolation, linear and monotone spline are the onlyl allowed values.");
+                        "For interpolation, linear and monotone spline are the only allowed values. "
+                        << "You provided " << interpolation << ".");
 
           double maximum_distance_between_coordinates = this->world->maximum_distance_between_coordinates *
                                                         (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
