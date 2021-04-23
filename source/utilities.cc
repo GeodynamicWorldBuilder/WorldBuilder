@@ -1146,6 +1146,126 @@ namespace WorldBuilder
       return interpol;
     }
 
+    double interpolation::derivative (double x) const
+    {
+      size_t n = m_x.size();
+      // find the closest point m_x[idx] < x, idx=0 even if x<m_x[0]
+      std::vector<double>::const_iterator it;
+      it = std::lower_bound(m_x.begin(),m_x.end(),x);
+      int idx = std::max( int(it-m_x.begin())-1, 0);
+
+      double h = x-m_x[idx];
+      double interpol;
+      if (x<m_x[0])
+        {
+          // extrapolation to the left
+          interpol = 2.0*m_b[0]*h + m_c[0];
+        }
+      else if (x>m_x[n-1])
+        {
+          // extrapolation to the right
+          interpol = 2.0*m_b[n-1]*h + m_c[n-1];
+        }
+      else
+        {
+          // interpolation
+          interpol = 3.0*m_a[idx]*h*h + 2.0*m_b[idx]*h + m_c[idx];
+        }
+      return interpol;
+    }
+
+    std::pair<double,double> interpolation::newton_update(double x, double p) const
+    {
+      size_t n = m_x.size();
+      // find the closest point m_x[idx] < x, idx=0 even if x<m_x[0]
+      std::vector<double>::const_iterator it;
+      it = std::lower_bound(m_x.begin(),m_x.end(),x);
+      int idx = std::max( int(it-m_x.begin())-1, 0);
+
+      double f = 0;
+      double df = 0;
+      if (x<m_x[0])
+        {
+          // extrapolation to the left
+          //interpol = ((m_b[0])*h + m_c[0])*h + m_y[0];
+          double h = x-m_x[0];
+          double a = m_a[0];
+          double b = m_b[0];
+          double c = m_c[0];
+          double d = m_y[0];
+          f = (p-(b*h*h*h+c*h+d))*(2*b*h+c);
+          df = -20*a*b*h*h*h  -(6*b*b)*h*h  +6*(-b*c)*h   + (2*p*b-c*c-2*b*d);
+        }
+      else if (x>m_x[n-1])
+        {
+          // extrapolation to the right
+          //interpol = ((m_b[n-1])*h + m_c[n-1])*h + m_y[n-1];
+          double h = x-m_x[n-1];
+          double a = m_a[n-1];
+          double b = m_b[n-1];
+          double c = m_c[n-1];
+          double d = m_y[n-1];
+          f = (p-(b*h*h*h+c*h+d))*(2*b*h+c);
+          df = -20*a*b*h*h*h  -(6*b*b)*h*h  +6*(-b*c)*h   + (2*p*b-c*c-2*b*d);
+        }
+      else
+        {
+          // interpolation
+          //interpol = ((m_a[idx]*h + m_b[idx])*h + m_c[idx])*h + m_y[idx];
+          double h = x-m_x[idx];
+          double a = m_a[idx];
+          double b = m_b[idx];
+          double c = m_c[idx];
+          double d = m_y[idx];
+          f = (p-(a*h*h*h+b*h*h*h+c*h+d))*(3*a*h*h+2*b*h+c);
+          df = -15*a*a*h*h*h*h -20*a*b*h*h*h  -(12*a*c+6*b*b)*h*h  +6*(p*a-b*c-a*d)*h   + (2*p*b-c*c-2*b*d);
+        }
+
+
+      return std::pair<double,double>(f,df);
+    }
+
+    double interpolation::residual_closest_point(double x, double p) const
+    {
+      size_t n = m_x.size();
+      std::vector<double>::const_iterator it;
+      it = std::lower_bound(m_x.begin(),m_x.end(),x);
+      int idx = std::max( int(it-m_x.begin())-1, 0);
+      if (x<m_x[0])
+        {
+          // extrapolation to the left
+          //interpol = ((m_b[0])*h + m_c[0])*h + m_y[0];
+          double h = x-m_x[0];
+          double a = m_a[0];
+          double b = m_b[0];
+          double c = m_c[0];
+          double d = m_y[0];
+          return (p-(b*h*h*h+c*h+d))*(2*b*h+c);
+        }
+      else if (x>m_x[n-1])
+        {
+          // extrapolation to the right
+          //interpol = ((m_b[n-1])*h + m_c[n-1])*h + m_y[n-1];
+          double h = x-m_x[n-1];
+          double a = m_a[n-1];
+          double b = m_b[n-1];
+          double c = m_c[n-1];
+          double d = m_y[n-1];
+          return (p-(b*h*h*h+c*h+d))*(2*b*h+c);
+        }
+      else
+        {
+          // interpolation
+          //interpol = ((m_a[idx]*h + m_b[idx])*h + m_c[idx])*h + m_y[idx];
+          double h = x-m_x[idx];
+          double a = m_a[idx];
+          double b = m_b[idx];
+          double c = m_c[idx];
+          double d = m_y[idx];
+          return (p-(a*h*h*h+b*h*h*h+c*h+d))*(3*a*h*h+2*b*h+c);
+        }
+    }
+
 
     double wrap_angle(const double angle)
     {
