@@ -105,9 +105,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name:  Install optional dependencies
-      run:  choco install swig -version=4.0.1 -y
-      shell: bash
+    # python in combination with cmake seems to be broken on github actions windows
+    # todo: fix it
+    #- name:  Install optional dependencies
+    #  run:  choco install swig -version=4.0.1 -y
+    #  shell: bash
 
     - uses: ilammy/msvc-dev-cmd@v1
         
@@ -128,6 +130,7 @@ jobs:
       working-directory: ${{github.workspace}}/build
       shell: bash
       run: cmake --install . --config ${{ matrix.build_type }}
+
 
     - name: Test gwb
       working-directory: ${{github.workspace}}/build
