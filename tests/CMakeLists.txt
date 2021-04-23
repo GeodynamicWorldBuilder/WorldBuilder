@@ -267,6 +267,19 @@ if(CMAKE_Fortran_COMPILER)
 if(MAKE_PYTHON_WRAPPER)
   file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/python)
 
+
+  add_test(run_python_version_test
+  ${CMAKE_COMMAND}
+      -D TEST_NAME=run_python_version_test
+      -D TEST_PROGRAM=${Python_EXECUTABLE}
+      -D TEST_ARGS=--version
+      -D TEST_INPUT=
+      -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/python/run_python_version_test.log
+      -D TEST_REFERENCE=${CMAKE_BINARY_DIR}/tests/python/run_python_version_test.log # the output is not important
+      -P ${CMAKE_SOURCE_DIR}/tests/python/run_python_tests.cmake
+     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/python/)   
+
+
    add_test(run_simple_python_test
            ${CMAKE_COMMAND}
                  -D TEST_NAME=run_simple_python_test
@@ -277,6 +290,8 @@ if(MAKE_PYTHON_WRAPPER)
 		 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/python/run_simple_python_test.log
                  -P ${CMAKE_SOURCE_DIR}/tests/python/run_python_tests.cmake
                  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/python/) 
+
+             
 
     add_test(run_simple_python_example
 	    ${CMAKE_COMMAND}
