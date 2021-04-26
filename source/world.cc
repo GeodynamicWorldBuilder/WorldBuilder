@@ -95,7 +95,8 @@ namespace WorldBuilder
 
       prm.declare_entry("interpolation",Types::String("none"),
                         "What type of interpolation should be used to enforce the minimum points per "
-                        "distance parameter. Options are none, linear and monotone spline.");
+                        "distance parameter. Options are none, linear, monotone spline and "
+                        "contious monotone spline interpolation.");
 
 
       prm.declare_entry("coordinate system", Types::PluginSystem("cartesian", CoordinateSystems::Interface::declare_entries, {"model"}, false),"A coordinate system. Cartesian or spherical.");

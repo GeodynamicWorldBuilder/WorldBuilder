@@ -72,7 +72,8 @@ namespace WorldBuilder
 
                 prm.declare_entry("interpolation",Types::String("global"),
                                   "What type of interpolation should be used to enforce the minimum points per "
-                                  "distance parameter. Options are global, none, linear and monotone spline. If this "
+                                  "distance parameter. Options are global, none, linear, monotone spline and "
+                                  "contious monotone spline interpolation. If this "
                                   "value is set to global, the global value for interpolation is used.");
                 WBAssert(it.second != NULL, "No declare entries given.");
                 it.second(prm, parent_name, {});
@@ -118,7 +119,7 @@ namespace WorldBuilder
           one_dimensional_coordinates_local[j] = static_cast<double>(j);
         }
 
-      if (interpolation != "none")
+      if (interpolation != "none" && interpolation != "contious monotone spline")
         {
           WBAssertThrow(interpolation == "linear" || interpolation == "monotone spline",
                         "For interpolation, linear and monotone spline are the only allowed values. "
