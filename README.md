@@ -4,6 +4,7 @@
 [![Documentation](https://codedocs.xyz/GeodynamicWorldBuilder/WorldBuilder.svg)](https://codedocs.xyz/GeodynamicWorldBuilder/WorldBuilder/index.html)
 [![Coverage Status](https://coveralls.io/repos/github/GeodynamicWorldBuilder/WorldBuilder/badge.svg?branch=master)](https://coveralls.io/github/GeodynamicWorldBuilder/WorldBuilder?branch=master)
 [![codecov](https://codecov.io/gh/GeodynamicWorldBuilder/WorldBuilder/branch/master/graph/badge.svg)](https://codecov.io/gh/GeodynamicWorldBuilder/WorldBuilder)
+[![Mastodon Follow](https://img.shields.io/mastodon/follow/106136314313793382?domain=https%3A%2F%2Fsocial.mfraters.net&style=social)](https://social.mfraters.net/@world_builder)
 
 # The Geodynamic World Builder (GWB)
 ## What is the Geodynamic World Builder?
