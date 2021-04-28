@@ -4,6 +4,7 @@
 [![Documentation](https://codedocs.xyz/GeodynamicWorldBuilder/WorldBuilder.svg)](https://codedocs.xyz/GeodynamicWorldBuilder/WorldBuilder/index.html)
 [![Coverage Status](https://coveralls.io/repos/github/GeodynamicWorldBuilder/WorldBuilder/badge.svg?branch=master)](https://coveralls.io/github/GeodynamicWorldBuilder/WorldBuilder?branch=master)
 [![codecov](https://codecov.io/gh/GeodynamicWorldBuilder/WorldBuilder/branch/master/graph/badge.svg)](https://codecov.io/gh/GeodynamicWorldBuilder/WorldBuilder)
+[![Mastodon Follow](https://img.shields.io/mastodon/follow/106136314313793382?domain=https%3A%2F%2Fsocial.mfraters.net&style=social)](https://social.mfraters.net/@world_builder)
 
 # The Geodynamic World Builder (GWB)
 ## What is the Geodynamic World Builder?
@@ -26,3 +27,9 @@ And cite the specific version of the software used. Version 0.3.0 can be cited a
 
 Menno Fraters and others. 2019, October 23. The Geodynamic World Builder v0.3.0. Zenodo. [https://doi.org/10.5281/zenodo.3900603](https://doi.org/10.5281/zenodo.3900603).
 
+## How can I follow the progress of this project
+There are multiple ways in which you can follow this project:
+ 1. Watch the repository on github. This will give you an update of what happening in the repository. This happens automatically and you can set it up to notify you for different kind of events. 
+ 2. Follow the [world builder Mastodon account](https://social.mfraters.net/@world_builder). This is a manually updated feed which updates when there are new release or major new features merged in the main branch. More general new related to the project may also be posted.
+ 3. Subscribe the the Mastodon RSS feed: https://social.mfraters.net/@world_builder.rss. This will show exactly the same information as the mastodon account, but you can use any RSS reader.
+ 4. Visit the [world builder website](https://geodynamicworldbuilder.github.io/). Besides all kind of useful information and links, it also contains a RSS feed viewer the world builder Mastodon account.
