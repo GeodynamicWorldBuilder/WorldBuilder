@@ -171,6 +171,11 @@ namespace WorldBuilder
          */
         std::vector<double> one_dimensional_coordinates;
 
+        /**
+         * The x and y spline
+         */
+        Utilities::interpolation x_spline, y_spline;
+
 
         /**
          * The name of the temperature submodule used by this feature.

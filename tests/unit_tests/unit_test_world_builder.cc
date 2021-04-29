@@ -4530,6 +4530,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
 
   double starting_radius = 10;
+  Utilities::interpolation x_spline, y_spline;
 
   std::map<std::string,double> distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
@@ -4539,7 +4540,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(std::sqrt(10*10+10*10)));
@@ -4560,7 +4563,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(std::sqrt(10*10+10*10)));
   CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14); // practically zero
@@ -4580,7 +4585,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(std::sqrt(10*10+10*10)));
@@ -4600,7 +4607,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(std::sqrt(10*10+10*10)));
   CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14); // practically zero
@@ -4621,7 +4630,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(sqrt(20*20+20*20))); // practically zero
@@ -4641,7 +4652,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(sqrt(20*20+20*20))); // practically zero
@@ -4662,7 +4675,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(sqrt(20*20+20*20))); // practically zero
@@ -4682,7 +4697,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
   CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY);
@@ -4702,7 +4719,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
   CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY);
@@ -4725,7 +4744,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(-3.5355339059));
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(10.6066017178));
@@ -4747,7 +4768,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 true);
+                                                 true,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(3.5355339059));
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(10.6066017178));
@@ -4770,7 +4793,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(3.5355339059));
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(17.6776695297));
@@ -4793,7 +4818,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 true);
+                                                 true,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(3.5355339059));
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(17.6776695297));
@@ -4825,7 +4852,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(std::sqrt(10*10+10*10)));
@@ -4856,7 +4885,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(10.8239219938));
@@ -4878,7 +4909,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(12.0268977387)); // practically zero
@@ -4900,7 +4933,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(14.1421356237)); // practically zero
@@ -4943,7 +4978,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(100.0)); // practically zero
@@ -4965,7 +5002,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(101.0)); // practically zero
@@ -4987,7 +5026,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(200.0));
@@ -5011,7 +5052,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
   CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY);
@@ -5035,7 +5078,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(75.0)); // practically zero
@@ -5057,7 +5102,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(76.0)); // practically zero
@@ -5079,7 +5126,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(150.0));
@@ -5103,7 +5152,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
   CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY);
@@ -5126,7 +5177,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(50.0)); // practically zero
@@ -5148,7 +5201,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(51.0)); // practically zero
@@ -5170,7 +5225,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(100.0));
@@ -5194,7 +5251,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
   CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY);
@@ -5265,6 +5324,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[1] = 0;
   position[2] = 0;
 
+  Utilities::interpolation x_spline, y_spline;
+
   std::map<std::string,double> distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  reference_point,
@@ -5273,7 +5334,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
@@ -5295,7 +5358,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(5.0)); // checked that it should be about 5 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
@@ -5317,7 +5382,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(-5.0)); // checked that it should be about -5 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
@@ -5340,7 +5407,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45.0 * Utilities::const_pi/180 * 10));
@@ -5362,7 +5431,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(-10.0)); // checked that it should be about -10 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45.0 * Utilities::const_pi/180 * 10));
@@ -5384,7 +5455,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(10.0)); // checked that it should be about 10 this with a drawing
   // This is a special case where the point coincides with the center of the circle.
@@ -5411,7 +5484,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
   CHECK(distance_from_planes["distanceAlongPlane"] == INFINITY);
@@ -5438,7 +5513,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 5));
@@ -5460,7 +5537,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45.0 * Utilities::const_pi/180 * 5));
@@ -5497,7 +5576,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
@@ -5519,7 +5600,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45.0 * Utilities::const_pi/180 * 10));
@@ -5541,7 +5624,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(135.0 * Utilities::const_pi/180 * 10));
@@ -5564,7 +5649,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * Utilities::const_pi/180 * 10));
@@ -5600,7 +5687,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
@@ -5622,7 +5711,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * Utilities::const_pi/180 * 10));
@@ -5644,7 +5735,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(-1.0)); // checked that it should be about -1 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * Utilities::const_pi/180 * 10));
@@ -5666,7 +5759,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(1.0)); // checked that it should be about -1 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * Utilities::const_pi/180 * 10));
@@ -5688,7 +5783,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(270.0 * Utilities::const_pi/180 * 10));
@@ -5711,7 +5808,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(-1.0)); // checked that it should be about 1 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(270.0 * Utilities::const_pi/180 * 10));
@@ -5733,7 +5832,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(1.0)); // checked that it should be about 1 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(270.0 * Utilities::const_pi/180 * 10));
@@ -5770,7 +5871,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
@@ -5792,7 +5895,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * Utilities::const_pi/180 * 10));
@@ -5814,7 +5919,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(270.0 * Utilities::const_pi/180 * 10));
@@ -5836,7 +5943,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(315.0 * Utilities::const_pi/180 * 10));
@@ -5875,7 +5984,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(-7.3205080757)); // checked that it should be about -7.3 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(9.5531661812));
@@ -5900,7 +6011,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   // checked that distanceFromPlane should be infinity (it is on the other side of the circle this with a drawing
   CHECK(distance_from_planes["distanceFromPlane"] == INFINITY);
@@ -5923,7 +6036,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(2.3463313527)); // checked that it should be about 2.3 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(11.780972451));
@@ -5963,7 +6078,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
@@ -6002,7 +6119,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.0 * Utilities::const_pi/180 * 10));
@@ -6024,7 +6143,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(180.0 * Utilities::const_pi/180 * 10));
@@ -6046,7 +6167,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(135.0 * Utilities::const_pi/180 * 10));
@@ -6070,7 +6193,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.1 * Utilities::const_pi/180 * 10));
@@ -6093,7 +6218,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90.001 * Utilities::const_pi/180 * 10));
@@ -6129,7 +6256,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45 * Utilities::const_pi/180 * 10));
@@ -6152,7 +6281,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45 * Utilities::const_pi/180 * 10));
@@ -6175,7 +6306,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(45 * Utilities::const_pi/180 * 10));
@@ -6199,7 +6332,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(46 * Utilities::const_pi/180 * 10));
@@ -6224,7 +6359,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(0.0697227738)); // checked that it should be small positive this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx((90 - 44.4093) * Utilities::const_pi/180 * 10));
@@ -6247,7 +6384,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(-0.0692053058)); // checked that it should be small negative this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx((90 - 43.585) * Utilities::const_pi/180 * 10));
@@ -6270,7 +6409,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(90 * Utilities::const_pi/180 * 10));
@@ -6295,6 +6436,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
+                                                 x_spline,
+                                                 y_spline,
   {0,1,2});
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
@@ -6318,6 +6461,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
+                                                 x_spline,
+                                                 y_spline,
   {0,0.5,1});
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
@@ -6341,6 +6486,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
+                                                 x_spline,
+                                                 y_spline,
   {0,0.5,1});
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
@@ -6364,6 +6511,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
+                                                 x_spline,
+                                                 y_spline,
   {0,0.5,1});
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
@@ -6386,6 +6535,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
+                                                 x_spline,
+                                                 y_spline,
   {0,0.5,1});
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
@@ -6411,6 +6562,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
+                                                 x_spline,
+                                                 y_spline,
   {0,0.5,1});
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // checked that it should be about 0 this with a drawing
@@ -6457,6 +6610,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
 
   double starting_radius = 10;
+  Utilities::interpolation x_spline, y_spline;
 
   std::map<std::string,double> distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
@@ -6466,7 +6620,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
   CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14);
@@ -6488,7 +6644,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
   CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14);
@@ -6514,7 +6672,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14); // practically zero
   CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14);
@@ -6536,7 +6696,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(10*sqrt(2)/4)); // checked it with a geometric drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(10*sqrt(2)/4)); // checked it with a geometric drawing
@@ -6558,7 +6720,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(10*sqrt(2)/2)); // checked it with a geometric drawing
   CHECK(std::fabs(distance_from_planes["distanceAlongPlane"]) < 1e-14); // checked it with a geometric drawing
@@ -6580,7 +6744,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes["distanceFromPlane"]) < 1e-14);  // checked it with a geometric drawing
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(10*sqrt(2)/2)); // checked it with a geometric drawing
@@ -6605,6 +6771,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
 
   position = Point<3>(10*sqrt(2)/2,0 * dtr,0 * dtr,spherical);
   position = Point<3>(world.parameters.coordinate_system->natural_to_cartesian_coordinates(position.get_array()),cartesian);
+
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  reference_point,
@@ -6613,7 +6780,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
-                                                 false);
+                                                 false,
+                                                 x_spline,
+                                                 y_spline);
 
   CHECK(distance_from_planes["distanceFromPlane"] == Approx(4.072033215));  // see comment at the top of the test
   CHECK(distance_from_planes["distanceAlongPlane"] == Approx(6.6085171895)); // see comment at the top of the test

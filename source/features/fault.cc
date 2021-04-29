@@ -372,6 +372,8 @@ namespace WorldBuilder
                                                                        starting_radius,
                                                                        this->world->parameters.coordinate_system,
                                                                        true,
+                                                                       this->x_spline,
+                                                                       this->y_spline,
                                                                        one_dimensional_coordinates);
 
           const double distance_from_plane = distance_from_planes["distanceFromPlane"];
@@ -500,6 +502,8 @@ namespace WorldBuilder
                                                                        starting_radius,
                                                                        this->world->parameters.coordinate_system,
                                                                        true,
+                                                                       this->x_spline,
+                                                                       this->y_spline,
                                                                        one_dimensional_coordinates);
 
           const double distance_from_plane = distance_from_planes["distanceFromPlane"];
@@ -631,6 +635,8 @@ namespace WorldBuilder
                                                                        starting_radius,
                                                                        this->world->parameters.coordinate_system,
                                                                        true,
+                                                                       this->x_spline,
+                                                                       this->y_spline,
                                                                        one_dimensional_coordinates);
 
           const double distance_from_plane = distance_from_planes["distanceFromPlane"];

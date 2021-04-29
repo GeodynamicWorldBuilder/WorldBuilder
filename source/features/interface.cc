@@ -119,7 +119,7 @@ namespace WorldBuilder
           one_dimensional_coordinates_local[j] = static_cast<double>(j);
         }
 
-      if (interpolation != "none" && interpolation != "contious monotone spline")
+      if (interpolation != "none")
         {
           WBAssertThrow(interpolation == "linear" || interpolation == "monotone spline",
                         "For interpolation, linear and monotone spline are the only allowed values. "
@@ -139,7 +139,6 @@ namespace WorldBuilder
                   y_list[j] = coordinates[j][1];
                 }
 
-              WorldBuilder::Utilities::interpolation x_spline, y_spline;
               x_spline.set_points(one_dimensional_coordinates_local, x_list, interpolation == "linear" ? false : true);
               y_spline.set_points(one_dimensional_coordinates_local, y_list, interpolation == "linear" ? false : true);
 

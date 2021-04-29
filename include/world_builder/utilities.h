@@ -201,50 +201,6 @@ namespace WorldBuilder
      */
     Point<3> cross_product(const Point<3> &a, const Point<3> &b);
 
-    /**
-     * Computes the distance of a point to a curved plane.
-     * TODO: add more info on how this works/is implemented.
-     * \param point This is the cartesian point of which we want to know the
-     * distance to the curved planes
-     * \param reference_point This is a 2d point in natural coordinates at the
-     * surface which the curved planes dip towards. Natural coordinates are in
-     * cartesian (x,y,z) in meters and in spherical radius in meters and longitude
-     * and latitude in radians.
-     * \param point_list This is a vector of 2d Points in natural coordinates at the
-     * surface which define the line along the surface at which the curved planes
-     * start. Natural coordinates are in cartesian (x,y,z) in meters and in spherical
-     * radius in meters and longitude and latitude in radians.
-     * \param plane_segment_lengths This is a vector of vectors of doubles. It contains
-     * the length of every segment at point in the point_list (in the same order as
-     * the point_list.
-     * \param plane_segment_angles This is a vector of vectors of 2d points. It contains
-     * the begin and end angle of every segment at point in the point_list (in the same
-     * order as the point_list.
-     * \param start_depth This value contains the depth at which the plane starts. This
-     * means that the start_depth effectively becomes the surface for this slab.
-     * \param coordinate_system This is a reference to the coordinate system of the
-     * World Builder. This is used to convert cartesian to natural coordinates and back.
-     * \param only_positive This value deterines whether only the the part below the
-     * plane should count as distance or both sides of the plane. It is called only_positive
-     * because the area below the plane, the distance is positve, and above the plane the
-     * distance is negative.
-     * \param global_x_list This is a list of one dimensional coorindates, with zero or the
-     * amount of coordinates entries, used for interpolation. An empty list is interpretated
-     * as a list filled with {0,1,2,...,number of coordinates}. Filling this list with other
-     * values changes the returned section fraction. It allows for, for example, adding
-     * extra coordinates automatically, and still reference the user provided coordinates by
-     * the original number. Note that no whole numbers may be skiped. So for a list of 4 points,
-     * {0,0.5,1,2} is allowed, but {0,2,3,4} is not.
-     */
-    std::map<std::string,double> distance_point_from_curved_planes(const Point<3> &point,
-                                                                   const Point<2> &reference_point,
-                                                                   const std::vector<Point<2> > &point_list,
-                                                                   const std::vector<std::vector<double> > &plane_segment_lengths,
-                                                                   const std::vector<std::vector<Point<2> > > &plane_segment_angles,
-                                                                   const double start_depth,
-                                                                   const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
-                                                                   const bool only_positive,
-                                                                   std::vector<double> global_x_list = {});
 
     /**
      * Class for linear and monotone spline interpolation
@@ -292,6 +248,54 @@ namespace WorldBuilder
          */
         std::vector<double> m_a, m_b, m_c, m_y;
     };
+
+    /**
+     * Computes the distance of a point to a curved plane.
+     * TODO: add more info on how this works/is implemented.
+     * \param point This is the cartesian point of which we want to know the
+     * distance to the curved planes
+     * \param reference_point This is a 2d point in natural coordinates at the
+     * surface which the curved planes dip towards. Natural coordinates are in
+     * cartesian (x,y,z) in meters and in spherical radius in meters and longitude
+     * and latitude in radians.
+     * \param point_list This is a vector of 2d Points in natural coordinates at the
+     * surface which define the line along the surface at which the curved planes
+     * start. Natural coordinates are in cartesian (x,y,z) in meters and in spherical
+     * radius in meters and longitude and latitude in radians.
+     * \param plane_segment_lengths This is a vector of vectors of doubles. It contains
+     * the length of every segment at point in the point_list (in the same order as
+     * the point_list.
+     * \param plane_segment_angles This is a vector of vectors of 2d points. It contains
+     * the begin and end angle of every segment at point in the point_list (in the same
+     * order as the point_list.
+     * \param start_depth This value contains the depth at which the plane starts. This
+     * means that the start_depth effectively becomes the surface for this slab.
+     * \param coordinate_system This is a reference to the coordinate system of the
+     * World Builder. This is used to convert cartesian to natural coordinates and back.
+     * \param only_positive This value deterines whether only the the part below the
+     * plane should count as distance or both sides of the plane. It is called only_positive
+     * because the area below the plane, the distance is positve, and above the plane the
+     * distance is negative.
+     * \param global_x_list This is a list of one dimensional coorindates, with zero or the
+     * amount of coordinates entries, used for interpolation. An empty list is interpretated
+     * as a list filled with {0,1,2,...,number of coordinates}. Filling this list with other
+     * values changes the returned section fraction. It allows for, for example, adding
+     * extra coordinates automatically, and still reference the user provided coordinates by
+     * the original number. Note that no whole numbers may be skiped. So for a list of 4 points,
+     * {0,0.5,1,2} is allowed, but {0,2,3,4} is not.
+     */
+    std::map<std::string,double> distance_point_from_curved_planes(const Point<3> &point,
+                                                                   const Point<2> &reference_point,
+                                                                   const std::vector<Point<2> > &point_list,
+                                                                   const std::vector<std::vector<double> > &plane_segment_lengths,
+                                                                   const std::vector<std::vector<Point<2> > > &plane_segment_angles,
+                                                                   const double start_depth,
+                                                                   const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
+                                                                   const bool only_positive,
+                                                                   interpolation spline_x,
+                                                                   interpolation spline_y,
+                                                                   std::vector<double> global_x_list = {});
+
 
 
     /**
