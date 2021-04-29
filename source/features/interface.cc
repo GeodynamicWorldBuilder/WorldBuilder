@@ -119,11 +119,11 @@ namespace WorldBuilder
           one_dimensional_coordinates_local[j] = static_cast<double>(j);
         }
 
-      if (interpolation_type != WorldBuilder::Utilities::InterplationType::None)
+      if (interpolation_type != WorldBuilder::Utilities::InterpolationType::None)
         {
-          WBAssertThrow(interpolation_type == WorldBuilder::Utilities::InterplationType::Linear ||
-                        interpolation_type == WorldBuilder::Utilities::InterplationType::MonotoneSpline ||
-                        interpolation_type == WorldBuilder::Utilities::InterplationType::ContinuousMonotoneSpline,
+          WBAssertThrow(interpolation_type == WorldBuilder::Utilities::InterpolationType::Linear ||
+                        interpolation_type == WorldBuilder::Utilities::InterpolationType::MonotoneSpline ||
+                        interpolation_type == WorldBuilder::Utilities::InterpolationType::ContinuousMonotoneSpline,
                         "For interpolation, linear and monotone spline are the only allowed values. "
                         << "You provided " << interpolation_type_string << ".");
 
@@ -145,10 +145,10 @@ namespace WorldBuilder
 
               x_spline.set_points(one_dimensional_coordinates_local,
                                   x_list,
-                                  interpolation_type == WorldBuilder::Utilities::InterplationType::Linear ? false : true);
+                                  interpolation_type == WorldBuilder::Utilities::InterpolationType::Linear ? false : true);
               y_spline.set_points(one_dimensional_coordinates_local,
                                   y_list,
-                                  interpolation_type == WorldBuilder::Utilities::InterplationType::Linear ? false : true);
+                                  interpolation_type == WorldBuilder::Utilities::InterpolationType::Linear ? false : true);
 
               size_t additional_parts = 0;
               for (size_t i_plane=0; i_plane<original_number_of_coordinates-1; ++i_plane)

@@ -147,7 +147,7 @@ namespace WorldBuilder
         /**
          * The type of interpolation used to get the line position between the points.
          */
-        Utilities::InterplationType interpolation_type;
+        Utilities::InterpolationType interpolation_type;
 
         /**
          * number of original coordinates, before adding

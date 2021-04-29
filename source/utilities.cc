@@ -442,8 +442,9 @@ namespace WorldBuilder
                                       const double start_radius,
                                       const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                       const bool only_positive,
-                                      interpolation spline_x,
-                                      interpolation spline_y,
+                                      const InterpolationType interpolation_type,
+                                      const interpolation spline_x,
+                                      const interpolation spline_y,
                                       std::vector<double> global_x_list)
     {
       // TODO: Assert that point_list, plane_segment_angles and plane_segment_lenghts have the same size.

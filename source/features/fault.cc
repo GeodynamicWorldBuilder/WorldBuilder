@@ -372,6 +372,7 @@ namespace WorldBuilder
                                                                        starting_radius,
                                                                        this->world->parameters.coordinate_system,
                                                                        true,
+                                                                       interpolation_type,
                                                                        this->x_spline,
                                                                        this->y_spline,
                                                                        one_dimensional_coordinates);
@@ -502,6 +503,7 @@ namespace WorldBuilder
                                                                        starting_radius,
                                                                        this->world->parameters.coordinate_system,
                                                                        true,
+                                                                       interpolation_type,
                                                                        this->x_spline,
                                                                        this->y_spline,
                                                                        one_dimensional_coordinates);
@@ -635,6 +637,7 @@ namespace WorldBuilder
                                                                        starting_radius,
                                                                        this->world->parameters.coordinate_system,
                                                                        true,
+                                                                       interpolation_type,
                                                                        this->x_spline,
                                                                        this->y_spline,
                                                                        one_dimensional_coordinates);

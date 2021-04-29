@@ -204,7 +204,7 @@ namespace WorldBuilder
     /**
      * Enum class for interolation type
      */
-    enum class InterplationType
+    enum class InterpolationType
     {
       None,
       Linear,
@@ -217,30 +217,30 @@ namespace WorldBuilder
     /**
      * A function to turn strings into interpolation type enums.
      */
-    static InterplationType string_to_interpolation_type (const std::string string)
+    static InterpolationType string_to_interpolation_type (const std::string string)
     {
       if (string == "none")
         {
-          return InterplationType::None;
+          return InterpolationType::None;
         }
       else if (string == "linear")
         {
-          return InterplationType::Linear;
+          return InterpolationType::Linear;
         }
       else if  (string == "monotone spline")
         {
-          return InterplationType::MonotoneSpline;
+          return InterpolationType::MonotoneSpline;
         }
       else if (string == "continuous monotone spline")
         {
-          return InterplationType::ContinuousMonotoneSpline;
+          return InterpolationType::ContinuousMonotoneSpline;
         }
 
       WBAssertThrow(false,
                     "You provided an interpolation type which is not supported: " << string <<
                     ". The options are none, linear, monotone spline and continuous monotone spline.");
 
-      return InterplationType::Invalid;
+      return InterpolationType::Invalid;
     }
 
     /**
@@ -317,6 +317,10 @@ namespace WorldBuilder
      * plane should count as distance or both sides of the plane. It is called only_positive
      * because the area below the plane, the distance is positve, and above the plane the
      * distance is negative.
+     * \param interpolation_type This value determines what interpolation type should be used
+     * when determining the location with respect to the curved plane.
+     * \param spline_x the spline representing the x coordinate.
+     * \param spline_y the spline representing the y coordinate.
      * \param global_x_list This is a list of one dimensional coorindates, with zero or the
      * amount of coordinates entries, used for interpolation. An empty list is interpretated
      * as a list filled with {0,1,2,...,number of coordinates}. Filling this list with other
@@ -333,8 +337,9 @@ namespace WorldBuilder
                                                                    const double start_depth,
                                                                    const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                                                    const bool only_positive,
-                                                                   interpolation spline_x,
-                                                                   interpolation spline_y,
+                                                                   const InterpolationType interpolation_type,
+                                                                   const interpolation spline_x,
+                                                                   const interpolation spline_y,
                                                                    std::vector<double> global_x_list = {});
 
 
