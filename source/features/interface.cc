@@ -121,7 +121,9 @@ namespace WorldBuilder
 
       if (interpolation != "none")
         {
-          WBAssertThrow(interpolation == "linear" || interpolation == "monotone spline",
+          WBAssertThrow(interpolation == "linear" ||
+                        interpolation == "monotone spline" ||
+                        interpolation == "contious monotone spline",
                         "For interpolation, linear and monotone spline are the only allowed values. "
                         << "You provided " << interpolation << ".");
 
@@ -130,6 +132,8 @@ namespace WorldBuilder
 
           if (maximum_distance_between_coordinates > 0)
             {
+              // I don't think this is usefull for contious monotone spline, although it might
+              // help in a spherical case like for the linear case.
               std::vector<double> x_list(original_number_of_coordinates,0.0);
               std::vector<double> y_list(original_number_of_coordinates,0.0);
               std::vector<Point<2> > coordinate_list_local = coordinates;
