@@ -100,7 +100,6 @@ namespace WorldBuilder
                                Parameters &prm,
                                const CoordinateSystem coordinate_system)
     {
-
       coordinates = prm.get_vector<Point<2> >("coordinates");
       if (coordinate_system == CoordinateSystem::spherical)
         std::transform(coordinates.begin(),coordinates.end(), coordinates.begin(),
@@ -108,7 +107,8 @@ namespace WorldBuilder
 
 
       // If global is given, we use the global interpolation setting, otherwise use the provided value.
-      interpolation = prm.get<std::string>("interpolation") == "global" ? this->world->interpolation : prm.get<std::string>("interpolation");
+      const std::string interpolation_type_string = prm.get<std::string>("interpolation") == "global" ? this->world->interpolation : prm.get<std::string>("interpolation");
+      interpolation_type = WorldBuilder::Utilities::string_to_interpolation_type(interpolation_type_string);
 
       // the one_dimensional_coordinates is always needed, so fill it.
       original_number_of_coordinates = coordinates.size();
@@ -119,13 +119,13 @@ namespace WorldBuilder
           one_dimensional_coordinates_local[j] = static_cast<double>(j);
         }
 
-      if (interpolation != "none")
+      if (interpolation_type != WorldBuilder::Utilities::InterplationType::None)
         {
-          WBAssertThrow(interpolation == "linear" ||
-                        interpolation == "monotone spline" ||
-                        interpolation == "contious monotone spline",
+          WBAssertThrow(interpolation_type == WorldBuilder::Utilities::InterplationType::Linear ||
+                        interpolation_type == WorldBuilder::Utilities::InterplationType::MonotoneSpline ||
+                        interpolation_type == WorldBuilder::Utilities::InterplationType::ContinuousMonotoneSpline,
                         "For interpolation, linear and monotone spline are the only allowed values. "
-                        << "You provided " << interpolation << ".");
+                        << "You provided " << interpolation_type_string << ".");
 
           double maximum_distance_between_coordinates = this->world->maximum_distance_between_coordinates *
                                                         (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
@@ -143,8 +143,12 @@ namespace WorldBuilder
                   y_list[j] = coordinates[j][1];
                 }
 
-              x_spline.set_points(one_dimensional_coordinates_local, x_list, interpolation == "linear" ? false : true);
-              y_spline.set_points(one_dimensional_coordinates_local, y_list, interpolation == "linear" ? false : true);
+              x_spline.set_points(one_dimensional_coordinates_local,
+                                  x_list,
+                                  interpolation_type == WorldBuilder::Utilities::InterplationType::Linear ? false : true);
+              y_spline.set_points(one_dimensional_coordinates_local,
+                                  y_list,
+                                  interpolation_type == WorldBuilder::Utilities::InterplationType::Linear ? false : true);
 
               size_t additional_parts = 0;
               for (size_t i_plane=0; i_plane<original_number_of_coordinates-1; ++i_plane)

@@ -147,7 +147,7 @@ namespace WorldBuilder
         /**
          * The type of interpolation used to get the line position between the points.
          */
-        std::string interpolation;
+        Utilities::InterplationType interpolation_type;
 
         /**
          * number of original coordinates, before adding
@@ -174,7 +174,7 @@ namespace WorldBuilder
         /**
          * The x and y spline
          */
-        Utilities::interpolation x_spline, y_spline;
+        WorldBuilder::Utilities::interpolation x_spline, y_spline;
 
 
         /**

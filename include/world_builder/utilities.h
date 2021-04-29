@@ -201,6 +201,47 @@ namespace WorldBuilder
      */
     Point<3> cross_product(const Point<3> &a, const Point<3> &b);
 
+    /**
+     * Enum class for interolation type
+     */
+    enum class InterplationType
+    {
+      None,
+      Linear,
+      MonotoneSpline,
+      ContinuousMonotoneSpline,
+      Invalid,
+    };
+
+
+    /**
+     * A function to turn strings into interpolation type enums.
+     */
+    static InterplationType string_to_interpolation_type (const std::string string)
+    {
+      if (string == "none")
+        {
+          return InterplationType::None;
+        }
+      else if (string == "linear")
+        {
+          return InterplationType::Linear;
+        }
+      else if  (string == "monotone spline")
+        {
+          return InterplationType::MonotoneSpline;
+        }
+      else if (string == "continuous monotone spline")
+        {
+          return InterplationType::ContinuousMonotoneSpline;
+        }
+
+      WBAssertThrow(false,
+                    "You provided an interpolation type which is not supported: " << string <<
+                    ". The options are none, linear, monotone spline and continuous monotone spline.");
+
+      return InterplationType::Invalid;
+    }
 
     /**
      * Class for linear and monotone spline interpolation
