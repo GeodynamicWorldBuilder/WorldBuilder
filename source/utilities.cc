@@ -502,102 +502,124 @@ namespace WorldBuilder
                     "Only the depth methods none, angle_at_starting_point_with_surface and "
                     "angle_at_begin_segment_with_surface are implemented");
 
+
       // loop over all the planes to find out which one is closest to the point.
 
+      double min_distance_check_point_surface_2d_line = INFINITY;
+      unsigned int i_section_min_distance = 0;
+      Point<2> closest_point_on_line_2d(0,0,natural_coordinate_system);
+      Point<2> closest_point_on_line_2d_temp(0,0,natural_coordinate_system);
+      double fraction_CPL_P1P2_strict =  INFINITY; // or NAN?
       for (size_t i_section=0; i_section < point_list.size()-1; ++i_section)
         {
           const size_t current_section = i_section;
           const size_t next_section = i_section+1;
-          // translate to orignal coordinates current and next section
-          const size_t original_current_section = static_cast<size_t>(std::floor(global_x_list[i_section]));
-          const size_t original_next_section = original_current_section + 1;
-          // see on what side the line P1P2 reference point is. This is based on the determinant
-          const double reference_on_side_of_line = (point_list[next_section][0] - point_list[current_section][0])
-                                                   * (reference_point[1] - point_list[current_section][1])
-                                                   - (point_list[next_section][1] - point_list[current_section][1])
-                                                   * (reference_point[0] - point_list[current_section][0])
-                                                   < 0 ? 1 : -1;
-
-
 
           const Point<2> P1(point_list[current_section]);
-
           const Point<2> P2(point_list[next_section]);
 
           const Point<2> P1P2 = P2 - P1;
           const Point<2> P1PC = check_point_surface_2d - P1;
 
-
           // Compute the closest point on the line P1 to P2 from the check
           // point at the surface. We do this in natural coordinates on
           // purpose, because in spherical coordinates it is more accurate.
-          Point<2> closest_point_on_line_2d = P1 + ((P1PC * P1P2) / (P1P2 * P1P2)) * P1P2;
-
+          closest_point_on_line_2d_temp = P1 + ((P1PC * P1P2) / (P1P2 * P1P2)) * P1P2;
 
           // compute what fraction of the distance between P1 and P2 the
           // closest point lies.
-          const Point<2> P1CPL = closest_point_on_line_2d - P1;
+          Point<2> P1CPL = closest_point_on_line_2d_temp - P1;
 
           // This determines where the check point is between the coordinates
           // in the coordinate list.
-          const double fraction_CPL_P1P2_strict = (P1CPL * P1P2 <= 0 ? -1.0 : 1.0)
-                                                  * (1 - (P1P2.norm() - P1CPL.norm()) / P1P2.norm());
+          double fraction_CPL_P1P2_strict_temp = (P1CPL * P1P2 <= 0 ? -1.0 : 1.0)
+                                                 * (1 - (P1P2.norm() - P1CPL.norm()) / P1P2.norm());
 
-          // If the point on the line does not lay between point P1 and P2
-          // then ignore it. Otherwise continue.
-          if (fraction_CPL_P1P2_strict >= 0 && fraction_CPL_P1P2_strict <= 1.0)
+
+          Point<2> CPLCPS2 = closest_point_on_line_2d_temp - check_point_surface_2d;
+
+          // If fraction_CPL_P1P2_strict_temp is between 0 and 1 it means that the point can be projected perpendicual to the line segment. We only conder points which are
+          // perpendicular to a line segment.
+          // There can be mutliple lines segment to which a point is perpundicual. Choose the point which is closed in 2D (x-y).
+          if (fraction_CPL_P1P2_strict_temp >= 0. && fraction_CPL_P1P2_strict_temp <= 1. && CPLCPS2.norm() < min_distance_check_point_surface_2d_line)
             {
-              // now figure out where the point is in relation with the user
-              // defined coordinates
-              const double fraction_CPL_P1P2 = global_x_list[i_section] - static_cast<int>(global_x_list[i_section])
-                                               + (global_x_list[i_section+1]-global_x_list[i_section]) * fraction_CPL_P1P2_strict;
+              min_distance_check_point_surface_2d_line = CPLCPS2.norm();
+              i_section_min_distance = i_section;
+              closest_point_on_line_2d = closest_point_on_line_2d_temp;
+              fraction_CPL_P1P2_strict = fraction_CPL_P1P2_strict_temp;
+            }
+        }
 
-              const Point<2> unit_normal_to_plane_spherical = P1P2 / P1P2.norm();
-              const Point<2> closest_point_on_line_plus_normal_to_plane_spherical = closest_point_on_line_2d + 1e-8 * (closest_point_on_line_2d.norm() > 1.0 ? closest_point_on_line_2d.norm() : 1.0) * unit_normal_to_plane_spherical;
+      // If the point on the line does not lay between point P1 and P2
+      // then ignore it. Otherwise continue.
+      if (fraction_CPL_P1P2_strict >= 0.0 && fraction_CPL_P1P2_strict <= 1.0)
+        {
+          // now figure out where the point is in relation with the user
+          // get P1 and P2 back
+          const size_t current_section = i_section_min_distance;
+          const size_t next_section = i_section_min_distance+1;
+          // translate to orignal coordinates current and next section
+          const size_t original_current_section = static_cast<size_t>(std::floor(global_x_list[i_section_min_distance]));
+          const size_t original_next_section = original_current_section + 1;
+          const Point<2> P1(point_list[current_section]);
 
-              WBAssert(std::fabs(closest_point_on_line_plus_normal_to_plane_spherical.norm()) > std::numeric_limits<double>::epsilon(),
-                       "Internal error: The norm of variable 'closest_point_on_line_plus_normal_to_plane_spherical' "
-                       "is  zero, while this may not happen.");
+          const Point<2> P2(point_list[next_section]);
 
-              // We now need 3d points from this point on, so make them.
-              // The order of a Cartesian coordinate is x,y,z and the order of
-              // a spherical coordinate it radius, long, lat (in rad).
-              const Point<3> closest_point_on_line_surface(bool_cartesian ? closest_point_on_line_2d[0] : start_radius,
-                                                           bool_cartesian ? closest_point_on_line_2d[1] : closest_point_on_line_2d[0],
-                                                           bool_cartesian ? start_radius : closest_point_on_line_2d[1],
-                                                           natural_coordinate_system);
+          const Point<2> P1P2 = P2 - P1;
 
-              Point<3> closest_point_on_line_bottom = closest_point_on_line_surface;
-              closest_point_on_line_bottom[bool_cartesian ? 2 : 0] = 0;
-
-              const Point<3> closest_point_on_line_plus_normal_to_plane_surface_spherical(bool_cartesian ? closest_point_on_line_plus_normal_to_plane_spherical[0] : start_radius,
-                                                                                          bool_cartesian ? closest_point_on_line_plus_normal_to_plane_spherical[1] : closest_point_on_line_plus_normal_to_plane_spherical[0],
-                                                                                          bool_cartesian ? start_radius : closest_point_on_line_plus_normal_to_plane_spherical[1],
-                                                                                          natural_coordinate_system);
-
-              // Now that we have both the check point and the
-              // closest_point_on_line, we need to push them to cartesian.
-              const Point<3> check_point_cartesian(check_point);
-              const Point<3> check_point_surface_cartesian(coordinate_system->natural_to_cartesian_coordinates(check_point_surface.get_array()),cartesian);
-              const Point<3> closest_point_on_line_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_surface.get_array()),cartesian);
-              const Point<3> closest_point_on_line_bottom_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_bottom.get_array()),cartesian);
-              const Point<3> closest_point_on_line_plus_normal_to_plane_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_plus_normal_to_plane_surface_spherical.get_array()),cartesian);
+          // defined coordinates
+          const double fraction_CPL_P1P2 = global_x_list[i_section_min_distance] - static_cast<int>(global_x_list[i_section_min_distance])
+                                           + (global_x_list[i_section_min_distance+1]-global_x_list[i_section_min_distance]) * fraction_CPL_P1P2_strict;
 
 
-              // if the two points are the same, we don't need to search any further
-              if (std::fabs((check_point_cartesian - closest_point_on_line_cartesian).norm()) < 2e-14)
-                {
-                  distance = 0.0;
-                  along_plane_distance = 0.0;
-                  section = current_section;
-                  section_fraction = fraction_CPL_P1P2;
-                  segment = 0;
-                  segment_fraction = 0.0;
-                  total_average_angle = plane_segment_angles[original_current_section][0][0]
-                                        + fraction_CPL_P1P2 * (plane_segment_angles[original_next_section][0][0]
-                                                               - plane_segment_angles[original_current_section][0][0]);
-                  break;
-                }
+          const Point<2> unit_normal_to_plane_spherical = P1P2 / P1P2.norm();
+          const Point<2> closest_point_on_line_plus_normal_to_plane_spherical = closest_point_on_line_2d + 1e-8 * (closest_point_on_line_2d.norm() > 1.0 ? closest_point_on_line_2d.norm() : 1.0) * unit_normal_to_plane_spherical;
+
+          WBAssert(std::fabs(closest_point_on_line_plus_normal_to_plane_spherical.norm()) > std::numeric_limits<double>::epsilon(),
+                   "Internal error: The norm of variable 'closest_point_on_line_plus_normal_to_plane_spherical' "
+                   "is  zero, while this may not happen.");
+
+          // We now need 3d points from this point on, so make them.
+          // The order of a Cartesian coordinate is x,y,z and the order of
+          // a spherical coordinate it radius, long, lat (in rad).
+          const Point<3> closest_point_on_line_surface(bool_cartesian ? closest_point_on_line_2d[0] : start_radius,
+                                                       bool_cartesian ? closest_point_on_line_2d[1] : closest_point_on_line_2d[0],
+                                                       bool_cartesian ? start_radius : closest_point_on_line_2d[1],
+                                                       natural_coordinate_system);
+
+          Point<3> closest_point_on_line_bottom = closest_point_on_line_surface;
+          closest_point_on_line_bottom[bool_cartesian ? 2 : 0] = 0;
+
+          const Point<3> closest_point_on_line_plus_normal_to_plane_surface_spherical(bool_cartesian ? closest_point_on_line_plus_normal_to_plane_spherical[0] : start_radius,
+                                                                                      bool_cartesian ? closest_point_on_line_plus_normal_to_plane_spherical[1] : closest_point_on_line_plus_normal_to_plane_spherical[0],
+                                                                                      bool_cartesian ? start_radius : closest_point_on_line_plus_normal_to_plane_spherical[1],
+                                                                                      natural_coordinate_system);
+
+          // Now that we have both the check point and the
+          // closest_point_on_line, we need to push them to cartesian.
+          const Point<3> check_point_cartesian(check_point);
+          const Point<3> check_point_surface_cartesian(coordinate_system->natural_to_cartesian_coordinates(check_point_surface.get_array()),cartesian);
+          const Point<3> closest_point_on_line_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_surface.get_array()),cartesian);
+          const Point<3> closest_point_on_line_bottom_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_bottom.get_array()),cartesian);
+          const Point<3> closest_point_on_line_plus_normal_to_plane_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_plus_normal_to_plane_surface_spherical.get_array()),cartesian);
+
+
+          // If the point to check is on the line, we don't need to search any further, because we know the distance is zero.
+          if (std::fabs((check_point_cartesian - closest_point_on_line_cartesian).norm()) < 2e-14)
+            {
+              distance = 0.0;
+              along_plane_distance = 0.0;
+              section = current_section;
+              section_fraction = fraction_CPL_P1P2;
+              segment = 0;
+              segment_fraction = 0.0;
+              total_average_angle = plane_segment_angles[original_current_section][0][0]
+                                    + fraction_CPL_P1P2 * (plane_segment_angles[original_next_section][0][0]
+                                                           - plane_segment_angles[original_current_section][0][0]);
+
+            }
+          else
+            {
 
               Point<3> normal_to_plane = closest_point_on_line_plus_normal_to_plane_cartesian - closest_point_on_line_cartesian;
               normal_to_plane = normal_to_plane / normal_to_plane.norm();
@@ -645,6 +667,13 @@ namespace WorldBuilder
                               uy*ux*vx + uz*vx + uy*uy*vy + uy*uz*vz - ux*vz,
                               uz*ux*vx - uy*vx + uz*uy*vy + ux*vy + uz*uz*vz,
                               cartesian);
+
+              // see on what side the line P1P2 reference point is. This is based on the determinant
+              const double reference_on_side_of_line = (point_list[next_section][0] - point_list[current_section][0])
+                                                       * (reference_point[1] - point_list[current_section][1])
+                                                       - (point_list[next_section][1] - point_list[current_section][1])
+                                                       * (reference_point[0] - point_list[current_section][0])
+                                                       < 0 ? 1 : -1;
 
               WBAssert(!std::isnan(x_axis[0]),
                        "Internal error: The x_axis variable is not a number: " << x_axis[0]);
@@ -987,6 +1016,7 @@ namespace WorldBuilder
                 }
             }
         }
+
       std::map<std::string, double> return_values;
       return_values["distanceFromPlane"] = distance;
       return_values["distanceAlongPlane"] = along_plane_distance;
