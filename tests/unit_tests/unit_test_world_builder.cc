@@ -2953,6 +2953,22 @@ TEST_CASE("WorldBuilder Features: coordinate interpolation")
     position = {{624e3,200e3,800e3}};
     CHECK(world1.temperature(position, 10, 10) == Approx(1600));
     CHECK(world1.composition(position, 10, 0) == Approx(0.0));
+
+
+    position = {{925e3,625e3,800e3}};
+    CHECK(world1.temperature(position, 10, 10) == Approx(1600));
+    CHECK(world1.composition(position, 10, 0) == Approx(0.0));
+    position = {{925e3,625e3,800e3}};
+    CHECK(world1.temperature(position, 50e3, 10) == Approx(150));
+    CHECK(world1.composition(position, 50e3, 0) == Approx(1.0));
+
+
+    position = {{675e3,150e3,800e3}};
+    CHECK(world1.temperature(position, 10, 10) == Approx(1600));
+    CHECK(world1.composition(position, 10, 0) == Approx(0.0));
+    position = {{675e3,150e3,800e3}};
+    CHECK(world1.temperature(position, 150e3, 10) == Approx(1668.6311660012)); // This used to contain slab material, but not anymore.
+    CHECK(world1.composition(position, 150e3, 0) == Approx(0.0));
   }
 
   {
