@@ -437,12 +437,47 @@ namespace WorldBuilder
               const double max_slab_length = total_slab_length[current_section] +
                                              section_fraction *
                                              (total_slab_length[next_section] - total_slab_length[current_section]);
+                                                          if (
+            //(position[0] > 50000 && position[0] < 60000 && position[1] > 100000 && position[1] < 110000 && position[2] > 240000 && position[2] < 260000)
+            //||
+            //(position[0] > -20000 && position[0] < -10000 && position[1] > 140000 && position[1] < 150000 && position[2] > 240000 && position[2] < 250000)
+            //||
+            //(position[0] > -100000 && position[0] < -90000 && position[1] > 250000 && position[1] < 260000 && position[2] > 160000 && position[2] < 170000)
+            //||
+                (position[0] > -28000 && position[0] < -32000 && position[1] > 118000 && position[1] < 122000 && position[2] > 18000 && position[2] < 22000)
+                ||
+                (position[0] > -56000 && position[0] < -52000 && position[1] > 72000 && position[1] < 75000 && position[2] > 50000 && position[2] < 55000)
+                ||
+                (position[0] > 4000 && position[0] < 7000 && position[1] > 8000 && position[1] < 11000 && position[2] > 70000 && position[2] < 75000)
+                ||
+                (position[0] > 14000 && position[0] < 17000 && position[1] > 18000 && position[1] < 21000 && position[2] > 70000 && position[2] < 75000)
+          )
+            std::cout << "J. distance_from_plane " << distance_from_plane << ", top_truncation_local " << top_truncation_local << ", thickness_local = " <<thickness_local << ", max_slab_length = " << max_slab_length << 
+             ", distance_along_plane = " << distance_along_plane << std::endl;
 
               if (distance_from_plane >= top_truncation_local &&
                   distance_from_plane <= thickness_local &&
                   distance_along_plane >= 0 &&
                   distance_along_plane <= max_slab_length)
                 {
+
+                                                                            if (
+            //(position[0] > 50000 && position[0] < 60000 && position[1] > 100000 && position[1] < 110000 && position[2] > 240000 && position[2] < 260000)
+            //||
+            //(position[0] > -20000 && position[0] < -10000 && position[1] > 140000 && position[1] < 150000 && position[2] > 240000 && position[2] < 250000)
+            //||
+            //(position[0] > -100000 && position[0] < -90000 && position[1] > 250000 && position[1] < 260000 && position[2] > 160000 && position[2] < 170000)
+            //||
+                (position[0] > -28000 && position[0] < -32000 && position[1] > 118000 && position[1] < 122000 && position[2] > 18000 && position[2] < 22000)
+                ||
+                (position[0] > -56000 && position[0] < -52000 && position[1] > 72000 && position[1] < 75000 && position[2] > 50000 && position[2] < 55000)
+                ||
+                (position[0] > 4000 && position[0] < 7000 && position[1] > 8000 && position[1] < 11000 && position[2] > 70000 && position[2] < 75000)
+                ||
+                (position[0] > 14000 && position[0] < 17000 && position[1] > 18000 && position[1] < 21000 && position[2] > 70000 && position[2] < 75000)
+          )
+            std::cout << "K. distance_from_plane " << distance_from_plane << ", top_truncation_local " << top_truncation_local << ", thickness_local = " <<thickness_local << ", max_slab_length = " << max_slab_length << 
+             ", distance_along_plane = " << distance_along_plane << std::endl;
                   // Inside the slab!
                   double temperature_current_section = temperature;
                   double temperature_next_section = temperature;
@@ -486,6 +521,23 @@ namespace WorldBuilder
                 }
             }
         }
+
+                                                                  if (
+            //(position[0] > 50000 && position[0] < 60000 && position[1] > 100000 && position[1] < 110000 && position[2] > 240000 && position[2] < 260000)
+            //||
+            //(position[0] > -20000 && position[0] < -10000 && position[1] > 140000 && position[1] < 150000 && position[2] > 240000 && position[2] < 250000)
+            //||
+            //(position[0] > -100000 && position[0] < -90000 && position[1] > 250000 && position[1] < 260000 && position[2] > 160000 && position[2] < 170000)
+            //||
+                (position[0] > -28000 && position[0] < -32000 && position[1] > 118000 && position[1] < 122000 && position[2] > 18000 && position[2] < 22000)
+                ||
+                (position[0] > -56000 && position[0] < -52000 && position[1] > 72000 && position[1] < 75000 && position[2] > 50000 && position[2] < 55000)
+                ||
+                (position[0] > 4000 && position[0] < 7000 && position[1] > 8000 && position[1] < 11000 && position[2] > 70000 && position[2] < 75000)
+                ||
+                (position[0] > 14000 && position[0] < 17000 && position[1] > 18000 && position[1] < 21000 && position[2] > 70000 && position[2] < 75000)
+          )
+            std::cout << "L. temperature " << temperature << std::endl;
       return temperature;
     }
 

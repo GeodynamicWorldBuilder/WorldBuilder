@@ -274,7 +274,22 @@ namespace WorldBuilder
 
     WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature);
     WBAssert(std::isfinite(temperature), "Temparture is not a finite: " << temperature);
-
+                                                                  if (
+            //(position[0] > 50000 && position[0] < 60000 && position[1] > 100000 && position[1] < 110000 && position[2] > 240000 && position[2] < 260000)
+            //||
+            //(position[0] > -20000 && position[0] < -10000 && position[1] > 140000 && position[1] < 150000 && position[2] > 240000 && position[2] < 250000)
+            //||
+            //(position[0] > -100000 && position[0] < -90000 && position[1] > 250000 && position[1] < 260000 && position[2] > 160000 && position[2] < 170000)
+            //||
+                (point_[0] > -28000 && point_[0] < -32000 && point_[1] > 118000 && point_[1] < 122000 && point_[2] > 18000 && point_[2] < 22000)
+                ||
+                //(point_[0] > -56000 && point_[0] < -52000 && point_[1] > 72000 && point_[1] < 75000 && point_[2] > 50000 && point_[2] < 55000)
+                //||
+                (point_[0] > 4000 && point_[0] < 7000 && point_[1] > 8000 && point_[1] < 11000 && point_[2] > 70000 && point_[2] < 75000)
+                ||
+                (point_[0] > 14000 && point_[0] < 17000 && point_[1] > 18000 && point_[1] < 21000 && point_[2] > 70000 && point_[2] < 75000)
+          )
+            std::cout << "M. temperature " << temperature << std::endl << std::endl;
     return temperature;
   }
 
