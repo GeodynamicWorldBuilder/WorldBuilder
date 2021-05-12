@@ -539,6 +539,21 @@ namespace WorldBuilder
                                                  * (1 - (P1P2.norm() - P1CPL.norm()) / P1P2.norm());
 
 
+        //if(interpolation_type == InterpolationType::ContinuousMonotoneSpline)
+        //{
+        //  if (fraction_CPL_P1P2_strict_temp < 0. && fraction_CPL_P1P2_strict_temp > -1.0)
+        //  {
+        //    fraction_CPL_P1P2_strict_temp = 0;
+        //    closest_point_on_line_2d_temp = P1;
+        //  }
+        //  if (fraction_CPL_P1P2_strict_temp > 1. && fraction_CPL_P1P2_strict_temp < 2.0)
+        //  {
+        //    fraction_CPL_P1P2_strict_temp = 1.0;
+        //    closest_point_on_line_2d_temp = P2;
+        //  }
+        //}
+
+
           Point<2> CPLCPS2 = closest_point_on_line_2d_temp - check_point_surface_2d;
 
           // If fraction_CPL_P1P2_strict_temp is between 0 and 1 it means that the point can be projected perpendicual to the line segment. We only conder points which are
@@ -555,7 +570,7 @@ namespace WorldBuilder
                 //||
                 //(check_point[0] > -58000 && check_point[0] < -52000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 220000 && check_point[2] < 225000)
                 //||
-                (check_point[0] > -34000 && check_point[0] < -28000 && check_point[1] > 118000 && check_point[1] < 125000 && check_point[2] > 18000 && check_point[2] < 22000)
+                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
                 ||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
@@ -566,7 +581,7 @@ namespace WorldBuilder
             std::cout << std::endl << "A.01, i_section = " << i_section << ", fraction_CPL_P1P2_strict_temp = " << fraction_CPL_P1P2_strict_temp << std::endl;
           if ((interpolation_type != InterpolationType::ContinuousMonotoneSpline && fraction_CPL_P1P2_strict_temp >= 0. && fraction_CPL_P1P2_strict_temp <= 1. && CPLCPS2.norm() < min_distance_check_point_surface_2d_line)
               || (interpolation_type == InterpolationType::ContinuousMonotoneSpline //&& CPLCPS2.norm() < min_distance_check_point_surface_2d_line
-                  && (std::fabs(fraction_CPL_P1P2_strict_temp) < std::fabs(fraction_CPL_P1P2_strict) && fraction_CPL_P1P2_strict_temp > 0)
+                  && (std::fabs(fraction_CPL_P1P2_strict_temp) < std::fabs(fraction_CPL_P1P2_strict) && fraction_CPL_P1P2_strict_temp >= 0.0)
                   //|| 1.0-std::fabs(fraction_CPL_P1P2_strict_temp) < std::fabs(fraction_CPL_P1P2_strict)
                   //|| std::fabs(fraction_CPL_P1P2_strict_temp) < 1.0 - std::fabs(fraction_CPL_P1P2_strict) || 1.0 - std::fabs(fraction_CPL_P1P2_strict_temp) < 1.0 - std::fabs(fraction_CPL_P1P2_strict) )
                   //&& fraction_CPL_P1P2_strict_temp > -1.0 && fraction_CPL_P1P2_strict_temp <= 1.
@@ -579,7 +594,8 @@ namespace WorldBuilder
             }
         }
 
-
+if(fraction_CPL_P1P2_strict < INFINITY)
+{
 
               if (
                 //(check_point[0] > 50000 && check_point[0] < 60000 && check_point[1] > 100000 && check_point[1] < 110000 && check_point[2] > 240000 && check_point[2] < 260000)
@@ -590,7 +606,7 @@ namespace WorldBuilder
                 //||
                 //(check_point[0] > -58000 && check_point[0] < -52000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 220000 && check_point[2] < 225000)
                 //||
-                (check_point[0] > -34000 && check_point[0] < -28000 && check_point[1] > 118000 && check_point[1] < 124000 && check_point[2] > 18000 && check_point[2] < 22000)
+                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
                 ||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
@@ -632,7 +648,7 @@ namespace WorldBuilder
                 //||
                 //(check_point[0] > -58000 && check_point[0] < -52000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 220000 && check_point[2] < 225000)
                 //||
-                (check_point[0] > -34000 && check_point[0] < -28000 && check_point[1] > 118000 && check_point[1] < 124000 && check_point[2] > 18000 && check_point[2] < 22000)
+                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
                 ||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
@@ -662,7 +678,7 @@ namespace WorldBuilder
                 //||
                 //(check_point[0] > -58000 && check_point[0] < -52000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 220000 && check_point[2] < 225000)
                 //||
-                (check_point[0] > -34000 && check_point[0] < -28000 && check_point[1] > 118000 && check_point[1] < 124000 && check_point[2] > 18000 && check_point[2] < 22000)
+                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
                 ||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
@@ -699,13 +715,13 @@ namespace WorldBuilder
                 //||
                 //(check_point[0] > -58000 && check_point[0] < -52000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 220000 && check_point[2] < 225000)
                 //||
-                (check_point[0] > -34000 && check_point[0] < -28000 && check_point[1] > 118000 && check_point[1] < 124000 && check_point[2] > 18000 && check_point[2] < 22000)
-                ||
+                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
+                //||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
-                (check_point[0] > 4000 && check_point[0] < 7000 && check_point[1] > 8000 && check_point[1] < 11000 && check_point[2] > 70000 && check_point[2] < 75000)
-                ||
-                (check_point[0] > 14000 && check_point[0] < 17000 && check_point[1] > 18000 && check_point[1] < 21000 && check_point[2] > 70000 && check_point[2] < 75000)
+                //(check_point[0] > 4000 && check_point[0] < 7000 && check_point[1] > 8000 && check_point[1] < 11000 && check_point[2] > 70000 && check_point[2] < 75000)
+                //||
+                //(check_point[0] > 14000 && check_point[0] < 17000 && check_point[1] > 18000 && check_point[1] < 21000 && check_point[2] > 70000 && check_point[2] < 75000)
               )
                 std::cout << "B " << check_point[0] << ":" << check_point[1] << ":" << check_point[2]  << ":  " << i << ": solution = " << solution << ", inital_residual = " << inital_residual << ", temp_residual = " << temp_residual << ", relative_residual = " << relative_residual << ", residual_x = " << residual_x << ", residual_y = " << residual_y << ", x_spline_update.first = " << x_spline_update.first << ", update = " << (x_spline_update.first + y_spline_update.first)/(x_spline_update.second + y_spline_update.second) << std::endl;
 
@@ -715,11 +731,13 @@ namespace WorldBuilder
 
               double factor = 1;
               double line_search_relative_residual = relative_residual;
-              for (unsigned int i_line_search = 0; i_line_search < 10; i_line_search++)
+              //for (unsigned int i_line_search = 0; i_line_search < 25; i_line_search++)
                 {
-                  if (line_search_relative_residual > 1.0 && (line_search_relative_residual >= relative_residual || fabs(newton_update) > 1.0))
+                  // do not allow steps which are too large (limit 0.15). Use the fact that we know the order of magitude of what the update should be ( ~0.1)
+                  if ( fabs(newton_update) > 0.1)
                     {
-                      factor *= 2./3.;
+                      //factor *= 2./3.;
+                      factor = 0.1/fabs(newton_update);
                       temp_solution = solution - factor*newton_update;
                       residual_x = x_spline.residual_closest_point(temp_solution,check_point_surface_2d[0]);
                       residual_y = y_spline.residual_closest_point(temp_solution,check_point_surface_2d[1]);
@@ -745,13 +763,13 @@ namespace WorldBuilder
                 //||
                 //(check_point[0] > -58000 && check_point[0] < -52000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 220000 && check_point[2] < 225000)
                 //||
-                (check_point[0] > -34000 && check_point[0] < -28000 && check_point[1] > 118000 && check_point[1] < 124000 && check_point[2] > 18000 && check_point[2] < 22000)
-                ||
+                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
+                //||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
-                (check_point[0] > 4000 && check_point[0] < 7000 && check_point[1] > 8000 && check_point[1] < 11000 && check_point[2] > 70000 && check_point[2] < 75000)
-                ||
-                (check_point[0] > 14000 && check_point[0] < 17000 && check_point[1] > 18000 && check_point[1] < 21000 && check_point[2] > 70000 && check_point[2] < 75000)
+                //(check_point[0] > 4000 && check_point[0] < 7000 && check_point[1] > 8000 && check_point[1] < 11000 && check_point[2] > 70000 && check_point[2] < 75000)
+                //||
+                //(check_point[0] > 14000 && check_point[0] < 17000 && check_point[1] > 18000 && check_point[1] < 21000 && check_point[2] > 70000 && check_point[2] < 75000)
               )
                 std::cout << "B.1 " << check_point[0] << ":" << check_point[1] << ":" << check_point[2]  << ":  " << i << ": factor = " << factor << ", update = " << factor*(x_spline_update.first + y_spline_update.first)/(x_spline_update.second + y_spline_update.second) << ", relative_residual = " << relative_residual << std::endl;
 
@@ -766,28 +784,31 @@ namespace WorldBuilder
                 //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
                 //||
                 //(check_point[0] > -58000 && check_point[0] < -52000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 220000 && check_point[2] < 
-                (check_point[0] > -34000 && check_point[0] < -28000 && check_point[1] > 118000 && check_point[1] < 124000 && check_point[2] > 18000 && check_point[2] < 22000)
-                ||
+                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
+                //||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
-                (check_point[0] > 4000 && check_point[0] < 7000 && check_point[1] > 8000 && check_point[1] < 11000 && check_point[2] > 70000 && check_point[2] < 75000)
-                ||
-                (check_point[0] > 14000 && check_point[0] < 17000 && check_point[1] > 18000 && check_point[1] < 21000 && check_point[2] > 70000 && check_point[2] < 75000)
+                //(check_point[0] > 4000 && check_point[0] < 7000 && check_point[1] > 8000 && check_point[1] < 11000 && check_point[2] > 70000 && check_point[2] < 75000)
+                //||
+                //(check_point[0] > 14000 && check_point[0] < 17000 && check_point[1] > 18000 && check_point[1] < 21000 && check_point[2] > 70000 && check_point[2] < 75000)
               )
                 std::cout << "C. " << check_point[0] << ":" << check_point[1] << ":" << check_point[2]  << ":  i = " << i << ", residual low: " <<  residual << "/" << inital_residual << " = " << residual/inital_residual <<  std::endl;
-              if (residual/inital_residual < 1e-7)
+              if (residual/inital_residual < 1e-16)
                 {
 
                   break;
                 }
             }
+
+            if(fabs(solution) < 1e-20)
+            solution = 1e-20;
           double dx = x_spline.derivative(solution);
           double dy = y_spline.derivative(solution);
 
           Point<2> closest_point_on_spline_2d(x_spline(solution),y_spline(solution),natural_coordinate_system);
 
           double current_section_double = (double)i_section_min_distance + (solution - global_x_list[i_section_min_distance]);
-          if(current_section_double > -10*std::numeric_limits<double>::epsilon() && current_section_double < 0)
+          if(current_section_double > -1e-10 && current_section_double < 0)
             current_section_double = 0.0;
 
               if (
@@ -799,13 +820,13 @@ namespace WorldBuilder
                 //||
                 //(check_point[0] > -58000 && check_point[0] < -52000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 220000 && check_point[2] < 225000)
                 //||
-                (check_point[0] > -34000 && check_point[0] < -28000 && check_point[1] > 118000 && check_point[1] < 124000 && check_point[2] > 18000 && check_point[2] < 22000)
-                ||
+                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
+                //||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
-                (check_point[0] > 4000 && check_point[0] < 7000 && check_point[1] > 8000 && check_point[1] < 11000 && check_point[2] > 70000 && check_point[2] < 75000)
-                ||
-                (check_point[0] > 14000 && check_point[0] < 17000 && check_point[1] > 18000 && check_point[1] < 21000 && check_point[2] > 70000 && check_point[2] < 75000)
+                //(check_point[0] > 4000 && check_point[0] < 7000 && check_point[1] > 8000 && check_point[1] < 11000 && check_point[2] > 70000 && check_point[2] < 75000)
+                //||
+                //(check_point[0] > 14000 && check_point[0] < 17000 && check_point[1] > 18000 && check_point[1] < 21000 && check_point[2] > 70000 && check_point[2] < 75000)
               )
             std::cout << "D. " << check_point[0] << ":" << check_point[1] << ":" << check_point[2] << ": closest_point_on_spline_2d " << closest_point_on_spline_2d[0] <<":" << closest_point_on_spline_2d[1] << ", solution = " << solution
                       << ", i_section_min_distance = " << i_section_min_distance << ", global_x_list[i_section_min_distance] = " << global_x_list[i_section_min_distance]
@@ -816,11 +837,12 @@ namespace WorldBuilder
                       << ", std::numeric_limits<double>::epsilon() = " << std::numeric_limits<double>::epsilon() << std::endl;
 
 current_section_double = floor(current_section_double);
-
+//current_section_double = -1.0;
           // For the maximum global_x_list, one is subtracted, because size is one larger than the largest index (which starts at 0)
           // and one is subtracted because we need to be able to add one to the current to get the next section.
-          if ( current_section_double >= 0 && current_section_double <= global_x_list[point_list.size()-2] && std::fabs(solution) >= std::numeric_limits<double>::epsilon())
+          if ( current_section_double >= 0 && current_section_double <= global_x_list[point_list.size()-2])// && solution != 0.0)//>= std::numeric_limits<double>::epsilon())
             {
+//std::cout << " current_section_double = " << current_section_double << std::endl;
               if (
                 //(check_point[0] > 50000 && check_point[0] < 60000 && check_point[1] > 100000 && check_point[1] < 110000 && check_point[2] > 240000 && check_point[2] < 260000)
                 //||
@@ -828,15 +850,17 @@ current_section_double = floor(current_section_double);
                 //||
                 //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
                 //||
-                (check_point[0] > -34000 && check_point[0] < -28000 && check_point[1] > 118000 && check_point[1] < 124000 && check_point[2] > 18000 && check_point[2] < 22000)
+                //(check_point[0] > -58000 && check_point[0] < -52000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 220000 && check_point[2] < 225000)
+                //||
+                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
                 ||
-                (check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
-                ||
+                //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
+                //||
                 (check_point[0] > 4000 && check_point[0] < 7000 && check_point[1] > 8000 && check_point[1] < 11000 && check_point[2] > 70000 && check_point[2] < 75000)
                 ||
                 (check_point[0] > 14000 && check_point[0] < 17000 && check_point[1] > 18000 && check_point[1] < 21000 && check_point[2] > 70000 && check_point[2] < 75000)
               )
-                std::cout << "E. closest_point_on_spline_2d " << closest_point_on_spline_2d[0] <<":" << closest_point_on_spline_2d[1] << ", solution = " << solution <<  std::endl;
+                std::cout << "E. closest_point_on_spline_2d " << closest_point_on_spline_2d[0] <<":" << closest_point_on_spline_2d[1] << ", solution = " << solution << ", floor(current_section_double) = "<< floor(current_section_double) << std::endl;
 
               //std::cout << "Hello! 1" << std::endl;
               continue_computation = true;
@@ -1201,7 +1225,7 @@ current_section_double = floor(current_section_double);
             //||
             //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
             //||
-                (check_point[0] > -34000 && check_point[0] < -28000 && check_point[1] > 118000 && check_point[1] < 124000 && check_point[2] > 18000 && check_point[2] < 22000)
+                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
                 ||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
@@ -1383,7 +1407,7 @@ current_section_double = floor(current_section_double);
             //||
             //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
             //||
-                (check_point[0] > -34000 && check_point[0] < -28000 && check_point[1] > 118000 && check_point[1] < 124000 && check_point[2] > 18000 && check_point[2] < 22000)
+                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
                 ||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
@@ -1536,7 +1560,7 @@ current_section_double = floor(current_section_double);
             //||
             //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
             //||
-                (check_point[0] > -34000 && check_point[0] < -28000 && check_point[1] > 118000 && check_point[1] < 124000 && check_point[2] > 18000 && check_point[2] < 22000)
+                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
                 ||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
@@ -1581,6 +1605,7 @@ current_section_double = floor(current_section_double);
               total_length += interpolated_segment_length;
             }
         }
+}
 
                                                           if (
             //(check_point[0] > 50000 && check_point[0] < 60000 && check_point[1] > 100000 && check_point[1] < 110000 && check_point[2] > 240000 && check_point[2] < 260000)
@@ -1589,7 +1614,7 @@ current_section_double = floor(current_section_double);
             //||
             //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
             //||
-                (check_point[0] > -34000 && check_point[0] < -28000 && check_point[1] > 118000 && check_point[1] < 124000 && check_point[2] > 18000 && check_point[2] < 22000)
+                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 ||

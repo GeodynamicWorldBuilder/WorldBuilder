@@ -444,9 +444,9 @@ namespace WorldBuilder
             //||
             //(position[0] > -100000 && position[0] < -90000 && position[1] > 250000 && position[1] < 260000 && position[2] > 160000 && position[2] < 170000)
             //||
-                (position[0] > -28000 && position[0] < -32000 && position[1] > 118000 && position[1] < 122000 && position[2] > 18000 && position[2] < 22000)
-                ||
-                (position[0] > -56000 && position[0] < -52000 && position[1] > 72000 && position[1] < 75000 && position[2] > 50000 && position[2] < 55000)
+                (position[0] > -26000 && position[0] < -22000 && position[1] > 41000 && position[1] < 44000 && position[2] > 70000 && position[2] < 75000)
+                //||
+                //(position[0] > -52000 && position[0] < -49000 && position[1] > 72000 && position[1] < 75000 && position[2] > 70000 && position[2] < 75000)
                 ||
                 (position[0] > 4000 && position[0] < 7000 && position[1] > 8000 && position[1] < 11000 && position[2] > 70000 && position[2] < 75000)
                 ||
@@ -461,16 +461,16 @@ namespace WorldBuilder
                   distance_along_plane <= max_slab_length)
                 {
 
-                                                                            if (
+                                                          if (
             //(position[0] > 50000 && position[0] < 60000 && position[1] > 100000 && position[1] < 110000 && position[2] > 240000 && position[2] < 260000)
             //||
             //(position[0] > -20000 && position[0] < -10000 && position[1] > 140000 && position[1] < 150000 && position[2] > 240000 && position[2] < 250000)
             //||
             //(position[0] > -100000 && position[0] < -90000 && position[1] > 250000 && position[1] < 260000 && position[2] > 160000 && position[2] < 170000)
             //||
-                (position[0] > -28000 && position[0] < -32000 && position[1] > 118000 && position[1] < 122000 && position[2] > 18000 && position[2] < 22000)
-                ||
-                (position[0] > -56000 && position[0] < -52000 && position[1] > 72000 && position[1] < 75000 && position[2] > 50000 && position[2] < 55000)
+                (position[0] > -26000 && position[0] < -22000 && position[1] > 41000 && position[1] < 44000 && position[2] > 70000 && position[2] < 75000)
+                //||
+                //(position[0] > -52000 && position[0] < -49000 && position[1] > 72000 && position[1] < 75000 && position[2] > 70000 && position[2] < 75000)
                 ||
                 (position[0] > 4000 && position[0] < 7000 && position[1] > 8000 && position[1] < 11000 && position[2] > 70000 && position[2] < 75000)
                 ||
@@ -522,16 +522,16 @@ namespace WorldBuilder
             }
         }
 
-                                                                  if (
+                                                          if (
             //(position[0] > 50000 && position[0] < 60000 && position[1] > 100000 && position[1] < 110000 && position[2] > 240000 && position[2] < 260000)
             //||
             //(position[0] > -20000 && position[0] < -10000 && position[1] > 140000 && position[1] < 150000 && position[2] > 240000 && position[2] < 250000)
             //||
             //(position[0] > -100000 && position[0] < -90000 && position[1] > 250000 && position[1] < 260000 && position[2] > 160000 && position[2] < 170000)
             //||
-                (position[0] > -28000 && position[0] < -32000 && position[1] > 118000 && position[1] < 122000 && position[2] > 18000 && position[2] < 22000)
-                ||
-                (position[0] > -56000 && position[0] < -52000 && position[1] > 72000 && position[1] < 75000 && position[2] > 50000 && position[2] < 55000)
+                (position[0] > -26000 && position[0] < -22000 && position[1] > 41000 && position[1] < 44000 && position[2] > 70000 && position[2] < 75000)
+                //||
+                //(position[0] > -52000 && position[0] < -49000 && position[1] > 72000 && position[1] < 75000 && position[2] > 70000 && position[2] < 75000)
                 ||
                 (position[0] > 4000 && position[0] < 7000 && position[1] > 8000 && position[1] < 11000 && position[2] > 70000 && position[2] < 75000)
                 ||
