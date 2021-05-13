@@ -179,10 +179,10 @@ namespace WorldBuilder
       std::vector<Point<2> > shifted_point_list(n_poly_points, Point<2>(point.get_coordinate_system()));
       shifted_point_list[0] = point_list[n_poly_points-1];
 
-      for (unsigned int i = 0; i < n_poly_points-1; ++i)
+      for (size_t i = 0; i < n_poly_points-1; ++i)
         shifted_point_list[i+1] = point_list[i];
 
-      for (unsigned int i = 0; i < n_poly_points; ++i)
+      for (size_t i = 0; i < n_poly_points; ++i)
         {
           // Create vector along the polygon line segment
           Point<2> vector_segment = shifted_point_list[i] - point_list[i];
@@ -358,7 +358,7 @@ namespace WorldBuilder
     convert_point_to_array(const Point<dim> &point_)
     {
       std::array<double,dim> array;
-      for (unsigned int i = 0; i < dim; ++i)
+      for (size_t i = 0; i < dim; ++i)
         array[i] = point_[i];
       return array;
     }
@@ -414,10 +414,10 @@ namespace WorldBuilder
 
 
       std::istringstream i(s);
-      unsigned int d;
+      size_t d;
       char c;
       if (!(i >> d) || i.get(c))
-        WBAssertThrow(false, "Could not convert \"" + s + "\" to an unsigned int.");
+        WBAssertThrow(false, "Could not convert \"" + s + "\" to an size_t.");
 
       return d;
     }
@@ -461,7 +461,7 @@ namespace WorldBuilder
         {
           // fill it
           global_x_list.resize(point_list.size());
-          for (unsigned int i = 0; i < point_list.size(); ++i)
+          for (size_t i = 0; i < point_list.size(); ++i)
             global_x_list[i] = i;
         }
       WBAssertThrow(global_x_list.size() == point_list.size(), "The given global_x_list doesn't have "
@@ -491,7 +491,7 @@ namespace WorldBuilder
       double section_fraction = 0.0;
 
       // What segment the point on the line is in.
-      unsigned int segment = 0;
+      size_t segment = 0;
 
       // The 'vertical' fraction, indicates how far in the current segment the
       // point on the line is.
@@ -509,7 +509,7 @@ namespace WorldBuilder
       // loop over all the planes to find out which one is closest to the point.
 
       double min_distance_check_point_surface_2d_line = INFINITY;
-      unsigned int i_section_min_distance = 0;
+      size_t i_section_min_distance = 0;
       Point<2> closest_point_on_line_2d(0,0,natural_coordinate_system);
       Point<2> closest_point_on_line_2d_temp(0,0,natural_coordinate_system);
       double fraction_CPL_P1P2_strict =  INFINITY; // or NAN?
@@ -539,19 +539,24 @@ namespace WorldBuilder
                                                  * (1 - (P1P2.norm() - P1CPL.norm()) / P1P2.norm());
 
 
-        //if(interpolation_type == InterpolationType::ContinuousMonotoneSpline)
-        //{
-        //  if (fraction_CPL_P1P2_strict_temp < 0. && fraction_CPL_P1P2_strict_temp > -1.0)
-        //  {
-        //    fraction_CPL_P1P2_strict_temp = 0;
-        //    closest_point_on_line_2d_temp = P1;
-        //  }
-        //  if (fraction_CPL_P1P2_strict_temp > 1. && fraction_CPL_P1P2_strict_temp < 2.0)
-        //  {
-        //    fraction_CPL_P1P2_strict_temp = 1.0;
-        //    closest_point_on_line_2d_temp = P2;
-        //  }
-        //}
+        if(interpolation_type == InterpolationType::ContinuousMonotoneSpline)
+        {
+         if (fraction_CPL_P1P2_strict < 0)
+            closest_point_on_line_2d = P1;
+         if (fraction_CPL_P1P2_strict > 0)
+           closest_point_on_line_2d = P2;
+          //if (fraction_CPL_P1P2_strict_temp < 0. && fraction_CPL_P1P2_strict_temp > -1.0)
+          //{
+          //  fraction_CPL_P1P2_strict_temp = 0;
+          //  closest_point_on_line_2d_temp = P1;
+          //}
+          //if (fraction_CPL_P1P2_strict_temp > 1. && fraction_CPL_P1P2_strict_temp < 2.0)
+          //{
+          //  fraction_CPL_P1P2_strict_temp = 1.0;
+          //  closest_point_on_line_2d_temp = P2;
+          //}
+          P1CPL = closest_point_on_line_2d_temp - P1;
+        }
 
 
           Point<2> CPLCPS2 = closest_point_on_line_2d_temp - check_point_surface_2d;
@@ -570,31 +575,31 @@ namespace WorldBuilder
                 //||
                 //(check_point[0] > -58000 && check_point[0] < -52000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 220000 && check_point[2] < 225000)
                 //||
-                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
-                ||
+               (check_point[0] > 12000 && check_point[0] < 14000 && check_point[1] > 112000 && check_point[1] < 122000 && check_point[2] > 70000 && check_point[2] < 75000)
+                //||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
-                (check_point[0] > 4000 && check_point[0] < 7000 && check_point[1] > 8000 && check_point[1] < 11000 && check_point[2] > 70000 && check_point[2] < 75000)
-                ||
-                (check_point[0] > 14000 && check_point[0] < 17000 && check_point[1] > 18000 && check_point[1] < 21000 && check_point[2] > 70000 && check_point[2] < 75000)
+                //(check_point[0] > 4000 && check_point[0] < 7000 && check_point[1] > 8000 && check_point[1] < 11000 && check_point[2] > 70000 && check_point[2] < 75000)
+                //||
+                //(check_point[0] > 14000 && check_point[0] < 17000 && check_point[1] > 18000 && check_point[1] < 21000 && check_point[2] > 70000 && check_point[2] < 75000)
               )
             std::cout << std::endl << "A.01, i_section = " << i_section << ", fraction_CPL_P1P2_strict_temp = " << fraction_CPL_P1P2_strict_temp << std::endl;
           if ((interpolation_type != InterpolationType::ContinuousMonotoneSpline && fraction_CPL_P1P2_strict_temp >= 0. && fraction_CPL_P1P2_strict_temp <= 1. && CPLCPS2.norm() < min_distance_check_point_surface_2d_line)
-              || (interpolation_type == InterpolationType::ContinuousMonotoneSpline //&& CPLCPS2.norm() < min_distance_check_point_surface_2d_line
-                  && (std::fabs(fraction_CPL_P1P2_strict_temp) < std::fabs(fraction_CPL_P1P2_strict) && fraction_CPL_P1P2_strict_temp >= 0.0)
+              || (interpolation_type == InterpolationType::ContinuousMonotoneSpline && P1CPL.norm() < min_distance_check_point_surface_2d_line
+                  //&& (std::fabs(fraction_CPL_P1P2_strict_temp) < std::fabs(fraction_CPL_P1P2_strict) && fraction_CPL_P1P2_strict_temp >= 0.0)
                   //|| 1.0-std::fabs(fraction_CPL_P1P2_strict_temp) < std::fabs(fraction_CPL_P1P2_strict)
                   //|| std::fabs(fraction_CPL_P1P2_strict_temp) < 1.0 - std::fabs(fraction_CPL_P1P2_strict) || 1.0 - std::fabs(fraction_CPL_P1P2_strict_temp) < 1.0 - std::fabs(fraction_CPL_P1P2_strict) )
                   //&& fraction_CPL_P1P2_strict_temp > -1.0 && fraction_CPL_P1P2_strict_temp <= 1.
                  ))
             {
-              min_distance_check_point_surface_2d_line = CPLCPS2.norm();
+              min_distance_check_point_surface_2d_line = P1CPL.norm();
               i_section_min_distance = i_section;
               closest_point_on_line_2d = closest_point_on_line_2d_temp;
               fraction_CPL_P1P2_strict = fraction_CPL_P1P2_strict_temp;
             }
         }
 
-if(fraction_CPL_P1P2_strict < INFINITY)
+//if(fraction_CPL_P1P2_strict < INFINITY)
 {
 
               if (
@@ -606,13 +611,13 @@ if(fraction_CPL_P1P2_strict < INFINITY)
                 //||
                 //(check_point[0] > -58000 && check_point[0] < -52000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 220000 && check_point[2] < 225000)
                 //||
-                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
-                ||
+               (check_point[0] > 12000 && check_point[0] < 14000 && check_point[1] > 112000 && check_point[1] < 122000 && check_point[2] > 70000 && check_point[2] < 75000)
+                //||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
-                (check_point[0] > 4000 && check_point[0] < 7000 && check_point[1] > 8000 && check_point[1] < 11000 && check_point[2] > 70000 && check_point[2] < 75000)
-                ||
-                (check_point[0] > 14000 && check_point[0] < 17000 && check_point[1] > 18000 && check_point[1] < 21000 && check_point[2] > 70000 && check_point[2] < 75000)
+                //(check_point[0] > 4000 && check_point[0] < 7000 && check_point[1] > 8000 && check_point[1] < 11000 && check_point[2] > 70000 && check_point[2] < 75000)
+                //||
+                //(check_point[0] > 14000 && check_point[0] < 17000 && check_point[1] > 18000 && check_point[1] < 21000 && check_point[2] > 70000 && check_point[2] < 75000)
               )
         std::cout << "A. " << check_point[0] << ":" << check_point[1] << ":" << check_point[2]  << ":  chose section " << i_section_min_distance <<", closest_point_on_line_2d =  " << closest_point_on_line_2d[0] << ":" << closest_point_on_line_2d[1] << ", fraction_CPL_P1P2_strict = " <<  fraction_CPL_P1P2_strict << std::endl;
 
@@ -632,277 +637,155 @@ if(fraction_CPL_P1P2_strict < INFINITY)
       bool continue_computation = false;
       if (interpolation_type == InterpolationType::ContinuousMonotoneSpline)
         {
-          // we now have an initial guess for our Newton method to find out what the
-          // actual closest point is to the spline.
+                 // we now have an initial guess for our Newton method to find out what the
+        // actual closest point is to the spline.
 
-          double solution = global_x_list[i_section_min_distance] + fraction_CPL_P1P2_strict;// - floor(fraction_CPL_P1P2_strict); // todo check for negative numbers?
+        double solution = global_x_list[i_section_min_distance];
 
-          //        if(check_point_surface_2d[0] < 0)
+        //        if(check_point_surface_2d[0] < 0)
+        //std::cout << std::endl << "initial guessclosted point on line = " << x_spline(solution) << ":" << y_spline(solution) << std::endl;
 
-              if (
-                //(check_point[0] > 50000 && check_point[0] < 60000 && check_point[1] > 100000 && check_point[1] < 110000 && check_point[2] > 240000 && check_point[2] < 260000)
-                //||
-                //(check_point[0] > -20000 && check_point[0] < -10000 && check_point[1] > 140000 && check_point[1] < 150000 && check_point[2] > 240000 && check_point[2] < 250000)
-                //||
-                //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
-                //||
-                //(check_point[0] > -58000 && check_point[0] < -52000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 220000 && check_point[2] < 225000)
-                //||
-                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
-                ||
-                //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
-                //||
-                (check_point[0] > 4000 && check_point[0] < 7000 && check_point[1] > 8000 && check_point[1] < 11000 && check_point[2] > 70000 && check_point[2] < 75000)
-                ||
-                (check_point[0] > 14000 && check_point[0] < 17000 && check_point[1] > 18000 && check_point[1] < 21000 && check_point[2] > 70000 && check_point[2] < 75000)
-              )
-            std::cout << "" << check_point[0] << ":" << check_point[1]  << ":  initial guess closted point on line = " << x_spline(solution) << ":" << y_spline(solution) << std::endl;
+        //       if(check_point_surface_2d[0] < 0)
 
-          //       if(check_point_surface_2d[0] < 0)
+        //if (check_point[0]>225000 && check_point[0]<227000 && check_point[1] > 13332 && check_point[1] < 13334 && check_point[2] < 121000 && check_point[2] > 119000)
+        //  std::cout << "initial solution = " << solution << ", solution,check_point_surface_2d = " << check_point_surface_2d[0] << ":" << check_point_surface_2d[1] << std::endl;
+        // compute initial residual
+        double residual_x = x_spline.residual_closest_point(solution,check_point_surface_2d[0]);
+        double residual_y = y_spline.residual_closest_point(solution,check_point_surface_2d[1]);
+        double inital_residual = fabs(residual_x+residual_y);
+        double residual = inital_residual;
 
-          //if (check_point[0]>225000 && check_point[0]<227000 && check_point[1] > 13332 && check_point[1] < 13334 && check_point[2] < 121000 && check_point[2] > 119000)
+        // copmute a newton update
+        for (size_t i =0; i < 25; i++)
+          {
+            //std::cout << "x = ";
+            std::pair<double,double> x_spline_update = x_spline.newton_update(solution,check_point_surface_2d[0]);
 
+            //std::cout << "y = ";
+            std::pair<double,double> y_spline_update = y_spline.newton_update(solution,check_point_surface_2d[1]);
+            double temp_solution = solution;
+            temp_solution = solution - (x_spline_update.first + y_spline_update.first)/(x_spline_update.second + y_spline_update.second);
+            // compute residual
+            residual_x = x_spline.residual_closest_point(temp_solution,check_point_surface_2d[0]);
+            residual_y = y_spline.residual_closest_point(temp_solution,check_point_surface_2d[1]);
+            double temp_residual = fabs(residual_x+residual_y);
+            double relative_residual = temp_residual/inital_residual;
 
-          // compute initial residual
-          double residual_x = x_spline.residual_closest_point(solution,check_point_surface_2d[0]);
-          double residual_y = y_spline.residual_closest_point(solution,check_point_surface_2d[1]);
-          double inital_residual = fabs(residual_x)+fabs(residual_y);
-          double residual = inital_residual;
+            //if (check_point[0]>225000 && check_point[0]<227000 && check_point[1] > 13332 && check_point[1] < 13334 && check_point[2] < 121000 && check_point[2] > 119000)
+            //  std::cout << i << ": solution = " << solution << ", inital_residual = " << inital_residual << ", temp_residual = " << temp_residual << ", relative_residual = " << relative_residual << ", residual_x = " << residual_x << ", residual_y = " << residual_y << ", x_spline_update.first = " << x_spline_update.first << ", update = " << (x_spline_update.first + y_spline_update.first)/(x_spline_update.second + y_spline_update.second) << std::endl;
 
-              if (
-                //(check_point[0] > 50000 && check_point[0] < 60000 && check_point[1] > 100000 && check_point[1] < 110000 && check_point[2] > 240000 && check_point[2] < 260000)
-                //||
-                //(check_point[0] > -20000 && check_point[0] < -10000 && check_point[1] > 140000 && check_point[1] < 150000 && check_point[2] > 240000 && check_point[2] < 250000)
-                //||
-                //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
-                //||
-                //(check_point[0] > -58000 && check_point[0] < -52000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 220000 && check_point[2] < 225000)
-                //||
-                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
-                ||
-                //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
-                //||
-                (check_point[0] > 4000 && check_point[0] < 7000 && check_point[1] > 8000 && check_point[1] < 11000 && check_point[2] > 70000 && check_point[2] < 75000)
-                ||
-                (check_point[0] > 14000 && check_point[0] < 17000 && check_point[1] > 18000 && check_point[1] < 21000 && check_point[2] > 70000 && check_point[2] < 75000)
-              )
-            std::cout << "" << check_point[0] << ":" << check_point[1] << ":" << check_point[2]  << ":  initial solution = " << solution << ", solution,check_point_surface_2d = " << check_point_surface_2d[0] << ":" << check_point_surface_2d[1] 
-            << ", residual_x = " << residual_x << ", residual_y = " << residual_y << ", inital_residual = " << inital_residual << std::endl;
-          
+            double factor = 1;
+            for (size_t i_line_search = 0; i_line_search < 50; i_line_search++)
+              {
+                factor *= 2./3.;
+                if (temp_residual > residual)
+                  {
+                    temp_solution = solution - factor*(x_spline_update.first + y_spline_update.first)/(x_spline_update.second + y_spline_update.second);
+                    residual_x = x_spline.residual_closest_point(temp_solution,check_point_surface_2d[0]);
+                    residual_y = y_spline.residual_closest_point(temp_solution,check_point_surface_2d[1]);
+                    temp_residual = fabs(residual_x+residual_y);
+                    relative_residual = temp_residual/inital_residual;
 
-          // copmute a newton update
-          for (unsigned int i =0; i < 25; i++)
-            {
-              std::pair<double,double> x_spline_update = x_spline.newton_update(solution,check_point_surface_2d[0]);
-              std::pair<double,double> y_spline_update = y_spline.newton_update(solution,check_point_surface_2d[1]);
-              double temp_solution = solution;
-              double newton_update = (x_spline_update.first + y_spline_update.first)/(x_spline_update.second + y_spline_update.second);
-              temp_solution = solution - newton_update;
-              // compute residual
-              residual_x = x_spline.residual_closest_point(temp_solution,check_point_surface_2d[0]);
-              residual_y = y_spline.residual_closest_point(temp_solution,check_point_surface_2d[1]);
-              double temp_residual = fabs(residual_x)+fabs(residual_y);
-              double relative_residual = temp_residual/inital_residual;
+            //if (check_point[0]>225000 && check_point[0]<227000 && check_point[1] > 13332 && check_point[1] < 13334 && check_point[2] < 121000 && check_point[2] > 119000)
+            //        std::cout << i << ": line search solution " << i_line_search << " = " << solution << ", inital_residual = " << inital_residual << ", temp_residual = " << temp_residual << ", relative_residual = " << relative_residual << ", residual_x = " << residual_x << ", residual_y = " << residual_y << ", x_spline_update.first = " << x_spline_update.first << ", udpate = " << (x_spline_update.first + y_spline_update.first)/(x_spline_update.second + y_spline_update.second) << std::endl;
 
+                  }
+                else
+                  {
+                    break;
+                  }
 
+              }
+            solution = temp_solution;
+            residual = temp_residual;
+            if(residual/inital_residual < 1e-7)
+            break;
+          }
+        double dx = x_spline.derivative(solution);
+        double dy = y_spline.derivative(solution);
 
-              if (
-                //(check_point[0] > 50000 && check_point[0] < 60000 && check_point[1] > 100000 && check_point[1] < 110000 && check_point[2] > 240000 && check_point[2] < 260000)
-                //||
-                //(check_point[0] > -20000 && check_point[0] < -10000 && check_point[1] > 140000 && check_point[1] < 150000 && check_point[2] > 240000 && check_point[2] < 250000)
-                //||
-                //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
-                //||
-                //(check_point[0] > -58000 && check_point[0] < -52000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 220000 && check_point[2] < 225000)
-                //||
-                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
-                //||
-                //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
-                //||
-                //(check_point[0] > 4000 && check_point[0] < 7000 && check_point[1] > 8000 && check_point[1] < 11000 && check_point[2] > 70000 && check_point[2] < 75000)
-                //||
-                //(check_point[0] > 14000 && check_point[0] < 17000 && check_point[1] > 18000 && check_point[1] < 21000 && check_point[2] > 70000 && check_point[2] < 75000)
-              )
-                std::cout << "B " << check_point[0] << ":" << check_point[1] << ":" << check_point[2]  << ":  " << i << ": solution = " << solution << ", inital_residual = " << inital_residual << ", temp_residual = " << temp_residual << ", relative_residual = " << relative_residual << ", residual_x = " << residual_x << ", residual_y = " << residual_y << ", x_spline_update.first = " << x_spline_update.first << ", update = " << (x_spline_update.first + y_spline_update.first)/(x_spline_update.second + y_spline_update.second) << std::endl;
+//      if(check_point[0]==282000 && check_point[1] > 125332 && check_point[1] < 125334 && check_point[2] < 290000 && check_point[2] > 260000)
+        //    std::cout  << ", solution,check_point_surface_2d = " << check_point_surface_2d[0] << ":" << check_point_surface_2d[1]  << ", closted point on line guess = " << x_spline(global_x_list[i_section_min_distance]) << ":" << y_spline(global_x_list[i_section_min_distance]) << ", solution guess = " << global_x_list[i_section_min_distance] <<  ", closted point on line found = " << x_spline(solution) << ":" << y_spline(solution) << ", solution = " << solution << std::endl;
+
+        //if(check_point_surface_2d[0] > 0)
+        //std::cout  << ", solution,check_point_surface_2d = " << check_point_surface_2d[0] << ":" << check_point_surface_2d[1]  << ", closted point on line guess = " << x_spline(global_x_list[i_section_min_distance]) << ":" << y_spline(global_x_list[i_section_min_distance]) << ", solution guess = " << global_x_list[i_section_min_distance] <<  ", closted point on line found = " << x_spline(solution) << ":" << y_spline(solution) << ", solution = " << solution << std::endl;
+
+        Point<2> closest_point_on_spline_2d(x_spline(solution),y_spline(solution),natural_coordinate_system);
+
+        /*if (check_point[0]>225000 && check_point[0]<227000 && check_point[1] > 3900 && check_point[1] < 4100 && check_point[2] < 121000 && check_point[2] > 119000)
+          std::cout << "flag 3a: solution = " << solution << ", residual = " << residual
+                    << ", closest_point_on_spline_2d = " << closest_point_on_spline_2d[0] << ":" << closest_point_on_spline_2d[1]
+                    << ", global_x_list[point_list.size()] = " << global_x_list[point_list.size()]<< ", global_x_list[0] = " << global_x_list[0]
+                    << ", global_x_list[point_list.size()-1] = " << global_x_list[point_list.size()-1]<< std::endl;
 
 
-              //if (check_point[0]>225000 && check_point[0]<227000 && check_point[1] > 13332 && check_point[1] < 13334 && check_point[2] < 121000 && check_point[2] > 119000)
-              //  std::cout << i << ": solution = " << solution << ", inital_residual = " << inital_residual << ", temp_residual = " << temp_residual << ", relative_residual = " << relative_residual << ", residual_x = " << residual_x << ", residual_y = " << residual_y << ", x_spline_update.first = " << x_spline_update.first << ", update = " << (x_spline_update.first + y_spline_update.first)/(x_spline_update.second + y_spline_update.second) << std::endl;
+        if (check_point[0]>225000 && check_point[0]<227000 && check_point[1] > 13332 && check_point[1] < 13334 && check_point[2] < 121000 && check_point[2] > 119000)
+          std::cout << "flag 3b: solution = " << solution << ", residual = " << residual
+                    << ", closest_point_on_spline_2d = " << closest_point_on_spline_2d[0] << ":" << closest_point_on_spline_2d[1]
+                    << ", global_x_list[point_list.size()] = " << global_x_list[point_list.size()]<< ", global_x_list[0] = " << global_x_list[0]
+                    << ", global_x_list[point_list.size()-1] = " << global_x_list[point_list.size()-1]<< std::endl;*/
 
-              double factor = 1;
-              double line_search_relative_residual = relative_residual;
-              //for (unsigned int i_line_search = 0; i_line_search < 25; i_line_search++)
-                {
-                  // do not allow steps which are too large (limit 0.15). Use the fact that we know the order of magitude of what the update should be ( ~0.1)
-                  if ( fabs(newton_update) > 0.1)
-                    {
-                      //factor *= 2./3.;
-                      factor = 0.1/fabs(newton_update);
-                      temp_solution = solution - factor*newton_update;
-                      residual_x = x_spline.residual_closest_point(temp_solution,check_point_surface_2d[0]);
-                      residual_y = y_spline.residual_closest_point(temp_solution,check_point_surface_2d[1]);
-                      temp_residual = fabs(residual_x)+fabs(residual_y);
-                      line_search_relative_residual = temp_residual/inital_residual;
+        if (solution > 1e-15 && solution < global_x_list[point_list.size()-1] && i_section_min_distance - (solution - global_x_list[i_section_min_distance]) > 0)
+          {
 
-                      //if (check_point[0]>225000 && check_point[0]<227000 && check_point[1] > 13332 && check_point[1] < 13334 && check_point[2] < 121000 && check_point[2] > 119000)
-                      //        std::cout << i << ": line search solution " << i_line_search << " = " << solution << ", inital_residual = " << inital_residual << ", temp_residual = " << temp_residual << ", relative_residual = " << relative_residual << ", residual_x = " << residual_x << ", residual_y = " << residual_y << ", x_spline_update.first = " << x_spline_update.first << ", udpate = " << (x_spline_update.first + y_spline_update.first)/(x_spline_update.second + y_spline_update.second) << std::endl;
-
-                    }
-                  else
-                    {
-                      break;
-                    }
-
-                }
-                              if (
-                //(check_point[0] > 50000 && check_point[0] < 60000 && check_point[1] > 100000 && check_point[1] < 110000 && check_point[2] > 240000 && check_point[2] < 260000)
-                //||
-                //(check_point[0] > -20000 && check_point[0] < -10000 && check_point[1] > 140000 && check_point[1] < 150000 && check_point[2] > 240000 && check_point[2] < 250000)
-                //||
-                //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
-                //||
-                //(check_point[0] > -58000 && check_point[0] < -52000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 220000 && check_point[2] < 225000)
-                //||
-                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
-                //||
-                //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
-                //||
-                //(check_point[0] > 4000 && check_point[0] < 7000 && check_point[1] > 8000 && check_point[1] < 11000 && check_point[2] > 70000 && check_point[2] < 75000)
-                //||
-                //(check_point[0] > 14000 && check_point[0] < 17000 && check_point[1] > 18000 && check_point[1] < 21000 && check_point[2] > 70000 && check_point[2] < 75000)
-              )
-                std::cout << "B.1 " << check_point[0] << ":" << check_point[1] << ":" << check_point[2]  << ":  " << i << ": factor = " << factor << ", update = " << factor*(x_spline_update.first + y_spline_update.first)/(x_spline_update.second + y_spline_update.second) << ", relative_residual = " << relative_residual << std::endl;
-
-              solution = temp_solution;
-              residual = temp_residual;
-
-              if (
-                //(check_point[0] > 50000 && check_point[0] < 60000 && check_point[1] > 100000 && check_point[1] < 110000 && check_point[2] > 240000 && check_point[2] < 260000)
-                //||
-                //(check_point[0] > -20000 && check_point[0] < -10000 && check_point[1] > 140000 && check_point[1] < 150000 && check_point[2] > 240000 && check_point[2] < 250000)
-                //||
-                //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
-                //||
-                //(check_point[0] > -58000 && check_point[0] < -52000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 220000 && check_point[2] < 
-                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
-                //||
-                //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
-                //||
-                //(check_point[0] > 4000 && check_point[0] < 7000 && check_point[1] > 8000 && check_point[1] < 11000 && check_point[2] > 70000 && check_point[2] < 75000)
-                //||
-                //(check_point[0] > 14000 && check_point[0] < 17000 && check_point[1] > 18000 && check_point[1] < 21000 && check_point[2] > 70000 && check_point[2] < 75000)
-              )
-                std::cout << "C. " << check_point[0] << ":" << check_point[1] << ":" << check_point[2]  << ":  i = " << i << ", residual low: " <<  residual << "/" << inital_residual << " = " << residual/inital_residual <<  std::endl;
-              if (residual/inital_residual < 1e-16)
-                {
-
-                  break;
-                }
-            }
-
-            if(fabs(solution) < 1e-20)
-            solution = 1e-20;
-          double dx = x_spline.derivative(solution);
-          double dy = y_spline.derivative(solution);
-
-          Point<2> closest_point_on_spline_2d(x_spline(solution),y_spline(solution),natural_coordinate_system);
-
-          double current_section_double = (double)i_section_min_distance + (solution - global_x_list[i_section_min_distance]);
-          if(current_section_double > -1e-10 && current_section_double < 0)
-            current_section_double = 0.0;
-
-              if (
-                //(check_point[0] > 50000 && check_point[0] < 60000 && check_point[1] > 100000 && check_point[1] < 110000 && check_point[2] > 240000 && check_point[2] < 260000)
-                //||
-                //(check_point[0] > -20000 && check_point[0] < -10000 && check_point[1] > 140000 && check_point[1] < 150000 && check_point[2] > 240000 && check_point[2] < 250000)
-                //||
-                //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
-                //||
-                //(check_point[0] > -58000 && check_point[0] < -52000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 220000 && check_point[2] < 225000)
-                //||
-                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
-                //||
-                //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
-                //||
-                //(check_point[0] > 4000 && check_point[0] < 7000 && check_point[1] > 8000 && check_point[1] < 11000 && check_point[2] > 70000 && check_point[2] < 75000)
-                //||
-                //(check_point[0] > 14000 && check_point[0] < 17000 && check_point[1] > 18000 && check_point[1] < 21000 && check_point[2] > 70000 && check_point[2] < 75000)
-              )
-            std::cout << "D. " << check_point[0] << ":" << check_point[1] << ":" << check_point[2] << ": closest_point_on_spline_2d " << closest_point_on_spline_2d[0] <<":" << closest_point_on_spline_2d[1] << ", solution = " << solution
-                      << ", i_section_min_distance = " << i_section_min_distance << ", global_x_list[i_section_min_distance] = " << global_x_list[i_section_min_distance]
-                      << ", point_list.size() = " << point_list.size() << ", global_x_list[point_list.size()-1] = " << global_x_list[point_list.size()-1]
-                      << ", current_section_double: " << current_section_double
-                      << ". global_x_list[point_list.size()-1] = " << global_x_list[point_list.size()-1]
-                      << ". global_x_list[point_list.size()-2] = " << global_x_list[point_list.size()-2] 
-                      << ", std::numeric_limits<double>::epsilon() = " << std::numeric_limits<double>::epsilon() << std::endl;
-
-current_section_double = floor(current_section_double);
-//current_section_double = -1.0;
-          // For the maximum global_x_list, one is subtracted, because size is one larger than the largest index (which starts at 0)
-          // and one is subtracted because we need to be able to add one to the current to get the next section.
-          if ( current_section_double >= 0 && current_section_double <= global_x_list[point_list.size()-2])// && solution != 0.0)//>= std::numeric_limits<double>::epsilon())
-            {
-//std::cout << " current_section_double = " << current_section_double << std::endl;
-              if (
-                //(check_point[0] > 50000 && check_point[0] < 60000 && check_point[1] > 100000 && check_point[1] < 110000 && check_point[2] > 240000 && check_point[2] < 260000)
-                //||
-                //(check_point[0] > -20000 && check_point[0] < -10000 && check_point[1] > 140000 && check_point[1] < 150000 && check_point[2] > 240000 && check_point[2] < 250000)
-                //||
-                //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
-                //||
-                //(check_point[0] > -58000 && check_point[0] < -52000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 220000 && check_point[2] < 225000)
-                //||
-                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
-                ||
-                //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
-                //||
-                (check_point[0] > 4000 && check_point[0] < 7000 && check_point[1] > 8000 && check_point[1] < 11000 && check_point[2] > 70000 && check_point[2] < 75000)
-                ||
-                (check_point[0] > 14000 && check_point[0] < 17000 && check_point[1] > 18000 && check_point[1] < 21000 && check_point[2] > 70000 && check_point[2] < 75000)
-              )
-                std::cout << "E. closest_point_on_spline_2d " << closest_point_on_spline_2d[0] <<":" << closest_point_on_spline_2d[1] << ", solution = " << solution << ", floor(current_section_double) = "<< floor(current_section_double) << std::endl;
-
-              //std::cout << "Hello! 1" << std::endl;
               continue_computation = true;
-              // we need to compute the section which we are in. This might have changed in the Newton iteration.
-              //
-              const double diff = solution - global_x_list[i_section_min_distance];
-              current_section = floor(current_section_double);//(unsigned int) floor(i_section_min_distance-diff);
-              WBAssert((current_section >= 0 && current_section <= point_list.size()-2), "current_section wrong: " << current_section << ", because of solution, which is " << solution
-                       << ", i_section_min_distance = " << i_section_min_distance << ", or diff = " << diff << " current_section_double = " << current_section_double);
-              next_section = current_section+1;
-              // translate to orignal coordinates current and next section
-              original_current_section = static_cast<size_t>(std::floor(global_x_list[current_section]));//(unsigned int)std::floor(solution);//
-              original_next_section = original_current_section + 1;
+            // we need to compute the section which we are in. This might have changed in the Newton iteration.
+            //
+            const double diff = solution - global_x_list[i_section_min_distance];
+            current_section = (size_t) floor(i_section_min_distance-diff);
+            WBAssert((current_section >= 0 && current_section <= point_list.size()-1), "current_section wrong: " << current_section << ", because of solution, which is " << solution 
+            << ", i_section_min_distance = " << i_section_min_distance << ", or diff = " << diff);
+            //i_section = current_section;
+            next_section = current_section+1;
+            // translate to orignal coordinates current and next section
+            original_current_section = (size_t)std::floor(solution);
+            original_next_section = original_current_section + 1;
+            //std::cout << "original_current_section = " << original_current_section << ", original_next_section = " << original_next_section << ", solution = " << solution << std::endl;
+            // see on what side the line P1P2 reference point is. This is based on the determinant
+            //const double reference_on_side_of_line = (point_list[next_section][0] - point_list[current_section][0])
+            //                                         * (reference_point[1] - point_list[current_section][1])
+            //                                         - (point_list[next_section][1] - point_list[current_section][1])
+            //                                         * (reference_point[0] - point_list[current_section][0])
+            //                                         < 0 ? 1 : -1;
 
-              const Point<2> P1(point_list[current_section]);
+//std::cout << "point_list.size() = " << point_list.size() << ", current_section = " << current_section << std::endl;
+            const Point<2> P1(point_list[current_section]);
 
-              const Point<2> P2(point_list[next_section]);
+            const Point<2> P2(point_list[next_section]);
+
+            const Point<2> P1P2 = P2 - P1;
+            const Point<2> P1PC = check_point_surface_2d - P1;
 
 
+            // compute what fraction of the distance between P1 and P2 the
+            // closest point lies.
+            Point<2> P1CPL = closest_point_on_spline_2d - P1;
 
-              const Point<2> P1P2 = P2 - P1;
-              const Point<2> P1PC = check_point_surface_2d - P1;
+            fraction_CPL_P1P2_strict = solution-floor(solution);
 
+            /*if (check_point[0]>225000 && check_point[0]<227000 && check_point[1] > 3900 && check_point[1] < 4100 && check_point[2] < 121000 && check_point[2] > 119000)
+              std::cout << "flag 4a: diff = " << diff << ", current_section = " << current_section
+                        << ", original_current_section = " << original_current_section << ", fraction_CPL_P1P2_strict = " << fraction_CPL_P1P2_strict << std::endl;
 
-              // compute what fraction of the distance between P1 and P2 the
-              // closest point lies.
-              Point<2> P1CPL = closest_point_on_spline_2d - P1;
+            if (check_point[0]>225000 && check_point[0]<227000 && check_point[1] > 13332 && check_point[1] < 13334 && check_point[2] < 121000 && check_point[2] > 119000)
+              std::cout << "flag 4b:diff = " << diff << ", current_section = " << current_section
+                        << ", original_current_section = " << original_current_section << ", fraction_CPL_P1P2_strict = " << fraction_CPL_P1P2_strict << std::endl;*/
 
-              fraction_CPL_P1P2_strict = solution-floor(solution);
-
+            // If the point on the line does not lay between point P1 and P2
+            // then ignore it. Otherwise continue.
+            //if ((i_section != 0 || i_section != point_list.size()-1) || fraction_CPL_P1P2_strict >= 0 && fraction_CPL_P1P2_strict <= 1.0)
+            //if (fraction_CPL_P1P2_strict >= 0 && fraction_CPL_P1P2_strict <= 1.0)
+            {
               //fraction_CPL_P1P2_strict= std::min(std::max(fraction_CPL_P1P2_strict,1.0),0.0);
               // now figure out where the point is in relation with the user
               // defined coordinates
-              fraction_CPL_P1P2 = fraction_CPL_P1P2_strict;
+              fraction_CPL_P1P2 = fraction_CPL_P1P2_strict;//global_x_list[i_section] - (int)global_x_list[i_section]
+              //+ (global_x_list[i_section+1]-global_x_list[i_section]) * fraction_CPL_P1P2_strict;
 
               const Point<2> unit_normal_to_plane_spherical = Point<2>(-dy,dx,natural_coordinate_system)/Point<2>(-dy,dx,natural_coordinate_system).norm();// P1P2 / P1P2.norm();
-              WBAssert(unit_normal_to_plane_spherical.norm() > 0,
-                       "Internal error: The norm of variable 'unit_normal_to_plane_spherical' "
-                       "is  zero, while this may not happen. Relevant values: dy = " << dy << ", dx = " << dx << ".");
               const Point<2> closest_point_on_line_plus_normal_to_plane_spherical = closest_point_on_spline_2d + 1e-8 * (closest_point_on_spline_2d.norm() > 1.0 ? closest_point_on_spline_2d.norm() : 1.0) * unit_normal_to_plane_spherical;
 
-              WBAssert(closest_point_on_line_plus_normal_to_plane_spherical.norm() > 0,
+              WBAssert(closest_point_on_line_plus_normal_to_plane_spherical.norm() != 0.0,
                        "Internal error: The norm of variable 'closest_point_on_line_plus_normal_to_plane_spherical' "
                        "is  zero, while this may not happen.");
 
@@ -924,16 +807,16 @@ current_section_double = floor(current_section_double);
 
               // Now that we have both the check point and the
               // closest_point_on_line, we need to push them to cartesian.
-              const Point<3> check_point_surface_cartesian(coordinate_system->natural_to_cartesian_coordinates(check_point_surface.get_array()),cartesian);
-              closest_point_on_line_cartesian = Point<3>(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_surface.get_array()),cartesian);
-              closest_point_on_line_bottom_cartesian = Point<3>(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_bottom.get_array()),cartesian);
-              const Point<3> closest_point_on_line_plus_normal_to_plane_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_plus_normal_to_plane_surface_spherical.get_array()),cartesian);
+              Point<3> check_point_cartesian = Point<3>(check_point);
+              Point<3> check_point_surface_cartesian =  Point<3>(coordinate_system->natural_to_cartesian_coordinates(check_point_surface.get_array()),cartesian);
+              closest_point_on_line_cartesian =  Point<3>(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_surface.get_array()),cartesian);
+              closest_point_on_line_bottom_cartesian= Point<3>(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_bottom.get_array()),cartesian);
+              Point<3> closest_point_on_line_plus_normal_to_plane_cartesian =  Point<3>(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_plus_normal_to_plane_surface_spherical.get_array()),cartesian);
 
 
               // if the two points are the same, we don't need to search any further
-              if (std::fabs((check_point - closest_point_on_line_cartesian).norm()) < 2e-14)
+              if (std::fabs((check_point_cartesian - closest_point_on_line_cartesian).norm()) < 2e-14)
                 {
-                  std::cout << "Hello! 2a" << std::endl;
                   distance = 0.0;
                   along_plane_distance = 0.0;
                   section = current_section;
@@ -943,31 +826,60 @@ current_section_double = floor(current_section_double);
                   total_average_angle = plane_segment_angles[original_current_section][0][0]
                                         + fraction_CPL_P1P2 * (plane_segment_angles[original_next_section][0][0]
                                                                - plane_segment_angles[original_current_section][0][0]);
-
-                  std::map<std::string, double> return_values;
-                  return_values["distanceFromPlane"] = distance;
-                  return_values["distanceAlongPlane"] = along_plane_distance;
-                  return_values["sectionFraction"] = section_fraction;
-                  return_values["segmentFraction"] = segment_fraction;
-                  return_values["section"] = static_cast<double>(section);
-                  return_values["segment"] = segment;
-                  return_values["averageAngle"] = total_average_angle;
-                  return return_values;
+                  //break;
                 }
               else
                 {
-                  //std::cout << "Hello! 2b" << std::endl;
-                  Point<3> normal_to_plane  = closest_point_on_line_plus_normal_to_plane_cartesian - closest_point_on_line_cartesian;
 
+
+                  /*if (check_point[0]>225000 && check_point[0]<227000 && check_point[1] > 3900 && check_point[1] < 4100 && check_point[2] < 121000 && check_point[2] > 119000)
+                    std::cout << "flag 5a: unit_normal_to_plane_spherical = " << unit_normal_to_plane_spherical[0] << ":" << unit_normal_to_plane_spherical[1]
+                              << ", CPL_surface = " << closest_point_on_line_surface[0] << ":" << closest_point_on_line_surface[1]
+                              << ", CPL_cartesian = " << closest_point_on_line_cartesian[0] << ":" << closest_point_on_line_cartesian[1]
+                              << ", CPL_plus_normal_to_plane_cartesian = " << closest_point_on_line_plus_normal_to_plane_cartesian[0] << ":" << closest_point_on_line_plus_normal_to_plane_cartesian[1]  << std::endl << std::endl;
+
+
+                  if (check_point[0]>225000 && check_point[0]<227000 && check_point[1] > 13332 && check_point[1] < 13334 && check_point[2] < 121000 && check_point[2] > 119000)
+                    std::cout << "flag 5b: unit_normal_to_plane_spherical = " << unit_normal_to_plane_spherical[0] << ":" << unit_normal_to_plane_spherical[1]
+                              << ", CPL_surface = " << closest_point_on_line_surface[0] << ":" << closest_point_on_line_surface[1]
+                              << ", CPL_cartesian = " << closest_point_on_line_cartesian[0] << ":" << closest_point_on_line_cartesian[1]
+                              << ", CPL_plus_normal_to_plane_cartesian = " << closest_point_on_line_plus_normal_to_plane_cartesian[0] << ":" << closest_point_on_line_plus_normal_to_plane_cartesian[1]  << std::endl << std::endl;
+*/
+
+
+                  Point<3> normal_to_plane  = closest_point_on_line_plus_normal_to_plane_cartesian - closest_point_on_line_cartesian;
+                  /*if (check_point[0]>225000 && check_point[0]<227000 && check_point[1] > 3900 && check_point[1] < 4100 && check_point[2] < 121000 && check_point[2] > 119000)
+                    std::cout << "flag 5.0a: normal_to_plane = " << normal_to_plane[0] << ":" << normal_to_plane[1]
+                              << ", dx = " << dx
+                              << ", dy = " << dy << std::endl;
+
+
+                  if (check_point[0]>225000 && check_point[0]<227000 && check_point[1] > 13332 && check_point[1] < 13334 && check_point[2] < 121000 && check_point[2] > 119000)
+                    std::cout << "flag 5.0b: normal_to_plane = " << normal_to_plane[0] << ":" << normal_to_plane[1]
+                              << ", dx = " << dx
+                              << ", dy = " << dy << std::endl;*/
                   normal_to_plane = normal_to_plane / normal_to_plane.norm();
+
+
+                  /*if (check_point[0]>225000 && check_point[0]<227000 && check_point[1] > 3900 && check_point[1] < 4100 && check_point[2] < 121000 && check_point[2] > 119000)
+                    std::cout << "flag 5.01a: normal_to_plane = " << normal_to_plane[0] << ":" << normal_to_plane[1]
+                              << ", dx = " << dx
+                              << ", dy = " << dy << std::endl;
+
+
+                  if (check_point[0]>225000 && check_point[0]<227000 && check_point[1] > 13332 && check_point[1] < 13334 && check_point[2] < 121000 && check_point[2] > 119000)
+                    std::cout << "flag 5.01b: normal_to_plane = " << normal_to_plane[0] << ":" << normal_to_plane[1]
+                              << ", dx = " << dx
+                              << ", dy = " << dy << std::endl;*/
+
 
                   // The y-axis is from the bottom/center to the closest_point_on_line,
                   // the x-axis is 90 degrees rotated from that, so we rotate around
                   // the line P1P2.
                   // Todo: Assert that the norm of the axis are not equal to zero.
-                  y_axis = closest_point_on_line_cartesian - closest_point_on_line_bottom_cartesian;
+                 y_axis = closest_point_on_line_cartesian - closest_point_on_line_bottom_cartesian;
 
-                  WBAssert(y_axis.norm() > 0,
+                  WBAssert(y_axis.norm() != 0,
                            "Internal error: The y_axis.norm() is zero. Y_axis is " << y_axis[0] << ":" << y_axis[1] << ":" << y_axis[2]
                            << ". closest_point_on_line_cartesian = " << closest_point_on_line_cartesian[0] << ":" << closest_point_on_line_cartesian[1] << ":" << closest_point_on_line_cartesian[2]
                            << ", closest_point_on_line_bottom_cartesian = " << closest_point_on_line_bottom_cartesian[0] << ":" << closest_point_on_line_bottom_cartesian[1] << ":" << closest_point_on_line_bottom_cartesian[2]);
@@ -990,6 +902,7 @@ current_section_double = floor(current_section_double);
                   WBAssert(!std::isnan(y_axis[2]),
                            "Internal error: The y_axis variable is not a number: " << y_axis[2]);
 
+
                   // shorthand notation for computing the x_axis
                   double vx = y_axis[0];
                   double vy = y_axis[1];
@@ -1004,10 +917,9 @@ current_section_double = floor(current_section_double);
                                    cartesian);*/
 
                   x_axis = Point<3>(-dy,
-                                    dx,
-                                    0,
-                                    cartesian);
-
+                                  dx,
+                                  0,
+                                  cartesian);
 
 
                   WBAssert(!std::isnan(x_axis[0]),
@@ -1016,33 +928,24 @@ current_section_double = floor(current_section_double);
                            "Internal error: The x_axis variable is not a number: " << x_axis[1]);
                   WBAssert(!std::isnan(x_axis[2]),
                            "Internal error: The x_axis variable is not a number: " << x_axis[2]);
+            // see on what side the line P1P2 reference point is. This is based on the determinant
+            const double reference_on_side_of_line = (point_list[next_section][0] - point_list[current_section][0])
+                                                     * (reference_point[1] - point_list[current_section][1])
+                                                     - (point_list[next_section][1] - point_list[current_section][1])
+                                                     * (reference_point[0] - point_list[current_section][0])
+                                                     < 0 ? -1 : 1;
+                           x_axis = x_axis *(reference_on_side_of_line / x_axis.norm()); 
 
-                  bool between_spline_and_curve = (closest_point_on_line_2d - check_point_surface_2d).norm() < (closest_point_on_line_2d - closest_point_on_spline_2d).norm() ? true : false;
 
-                  // now check what side the reference point is compared to line P1P2
-                  const double reference_on_side_of_line = (point_list[next_section][0] - point_list[current_section][0])
-                                                           * (reference_point[1] - point_list[current_section][1])
-                                                           - (point_list[next_section][1] - point_list[current_section][1])
-                                                           * (reference_point[0] - point_list[current_section][0])
-                                                           < 0 ? -1 : 1;
-                  // in the case that the check point is between the spline and the curve, we need to know what side
-                  // of the line the curve is.
-                  //const double spline_on_side_of_line = 1;
-                  const double spline_on_side_of_line = (point_list[next_section][0] - point_list[current_section][0])
-                                                        * (closest_point_on_spline_2d[1] - point_list[current_section][1])
-                                                        - (point_list[next_section][1] - point_list[current_section][1])
-                                                        * (closest_point_on_spline_2d[0] - point_list[current_section][0])
-                                                        < 0 ? 1 : 1;
-
-                  // if the check point is not between the spline and the line, use the solutoin from reference_on_side_of_line.
-                  // if the closest_point_on_spline_2d is between the spline and the line, and the spline is on the same side as the reference,
-                  // flip, otherwise keep it.
-                  //const double reference_on_side_of_curve = (check_point_surface_2d - closest_point_on_line_2d).norm() > (check_point_surface_2d - closest_point_on_spline_2d).norm() ? -1 : 1;
-                  const double reference_on_side_of_curve = between_spline_and_curve ? reference_on_side_of_line*spline_on_side_of_line : reference_on_side_of_line;
-                  x_axis = x_axis *(reference_on_side_of_curve / x_axis.norm());
-
+                  WBAssert(!std::isnan(x_axis[0]),
+                           "Internal error: The x_axis variable is not a number: " << x_axis[0]);
+                  WBAssert(!std::isnan(x_axis[1]),
+                           "Internal error: The x_axis variable is not a number: " << x_axis[1]);
+                  WBAssert(!std::isnan(x_axis[2]),
+                           "Internal error: The x_axis variable is not a number: " << x_axis[2]);
                 }
             }
+        }
         }
       else
         {
@@ -1225,7 +1128,7 @@ current_section_double = floor(current_section_double);
             //||
             //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
             //||
-                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
+               (check_point[0] > 12000 && check_point[0] < 14000 && check_point[1] > 112000 && check_point[1] < 122000 && check_point[2] > 70000 && check_point[2] < 75000)
                 ||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
@@ -1273,9 +1176,9 @@ current_section_double = floor(current_section_double);
           double total_length = 0.0;
           double add_angle = 0.0;
           double average_angle = 0.0;
-          for (unsigned int i_segment = 0; i_segment < plane_segment_lengths[original_current_section].size(); i_segment++)
+          for (size_t i_segment = 0; i_segment < plane_segment_lengths[original_current_section].size(); i_segment++)
             {
-              const unsigned int current_segment = i_segment;
+              const size_t current_segment = i_segment;
 
               // compute the angle between the the previous begin and end if
               // the depth method is angle_at_begin_segment_with_surface.
@@ -1407,7 +1310,7 @@ current_section_double = floor(current_section_double);
             //||
             //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
             //||
-                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
+               (check_point[0] > 12000 && check_point[0] < 14000 && check_point[1] > 112000 && check_point[1] < 122000 && check_point[2] > 70000 && check_point[2] < 75000)
                 ||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
@@ -1560,7 +1463,7 @@ current_section_double = floor(current_section_double);
             //||
             //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
             //||
-                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
+               (check_point[0] > 12000 && check_point[0] < 14000 && check_point[1] > 112000 && check_point[1] < 122000 && check_point[2] > 70000 && check_point[2] < 75000)
                 ||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
@@ -1614,7 +1517,7 @@ current_section_double = floor(current_section_double);
             //||
             //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
             //||
-                (check_point[0] > -26000 && check_point[0] < -22000 && check_point[1] > 41000 && check_point[1] < 44000 && check_point[2] > 70000 && check_point[2] < 75000)
+               (check_point[0] > 12000 && check_point[0] < 14000 && check_point[1] > 112000 && check_point[1] < 122000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 ||
@@ -1646,7 +1549,7 @@ current_section_double = floor(current_section_double);
       m_x = x;
       m_y = y;
       const size_t n = x.size();
-      for (unsigned int i = 0; i < n-1; i++)
+      for (size_t i = 0; i < n-1; i++)
         {
           assert(m_x[i] < m_x[i+1]);
         }
