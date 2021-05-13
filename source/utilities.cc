@@ -465,10 +465,11 @@ namespace WorldBuilder
 //|| (check_point[0] > -108000 && check_point[0] < -104000 && check_point[1] > 208000 && check_point[1] < 212000 && check_point[2] > 61000 && check_point[2] < 68000)
 //||
 //(check_point[0] > -42000 && check_point[0] < -38000 && check_point[1] > 8000 && check_point[1] < 12000 && check_point[2] > 120000 && check_point[2] < 124000) ||
-        (check_point[0] > -52000 && check_point[0] < -48000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 120000 && check_point[2] < 124000) ||
-        (check_point[0] > -58000 && check_point[0] < -53000 && check_point[1] > 43000 && check_point[1] < 48000 && check_point[2] > 120000 && check_point[2] < 124000) ||
-        (check_point[0] > -58000 && check_point[0] < -53000 && check_point[1] > 33000 && check_point[1] < 38000 && check_point[2] > 120000 && check_point[2] < 124000) ||
-        (check_point[0] > -58000 && check_point[0] < -53000 && check_point[1] > 23000 && check_point[1] < 28000 && check_point[2] > 120000 && check_point[2] < 124000);
+       // (check_point[0] > -52000 && check_point[0] < -48000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 120000 && check_point[2] < 124000) ||
+       // (check_point[0] > -58000 && check_point[0] < -53000 && check_point[1] > 43000 && check_point[1] < 48000 && check_point[2] > 120000 && check_point[2] < 124000) ||
+       // (check_point[0] > -58000 && check_point[0] < -53000 && check_point[1] > 33000 && check_point[1] < 38000 && check_point[2] > 120000 && check_point[2] < 124000) ||
+       // (check_point[0] > -58000 && check_point[0] < -53000 && check_point[1] > 23000 && check_point[1] < 28000 && check_point[2] > 120000 && check_point[2] < 124000) ||
+        (check_point[0] > -124000 && check_point[0] < -120000 && check_point[1] > 146000 && check_point[1] < 150000 && check_point[2] > 120000 && check_point[2] < 124000);
 
       if (global_x_list.size() == 0)
         {
@@ -678,7 +679,7 @@ namespace WorldBuilder
                   //  std::cout << i << ": solution = " << solution << ", inital_residual = " << inital_residual << ", temp_residual = " << temp_residual << ", relative_residual = " << relative_residual << ", residual_x = " << residual_x << ", residual_y = " << residual_y << ", x_spline_update.first = " << x_spline_update.first << ", update = " << (x_spline_update.first + y_spline_update.first)/(x_spline_update.second + y_spline_update.second) << std::endl;
 
                   double factor = 1;
-                  for (size_t i_line_search = 0; i_line_search < 10; i_line_search++)
+                  for (size_t i_line_search = 0; i_line_search < 25; i_line_search++)
                     {
                       if (temp_residual > residual)
                         {

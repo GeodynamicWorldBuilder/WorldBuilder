@@ -358,10 +358,11 @@ namespace WorldBuilder
 //|| (position[0] > -108000 && position[0] < -104000 && position[1] > 208000 && position[1] < 212000 && position[2] > 61000 && position[2] < 68000)
 //||
 //(position[0] > -42000 && position[0] < -38000 && position[1] > 8000 && position[1] < 12000 && position[2] > 120000 && position[2] < 124000) ||
-        (position[0] > -52000 && position[0] < -48000 && position[1] > 38000 && position[1] < 42000 && position[2] > 120000 && position[2] < 124000) ||
-        (position[0] > -58000 && position[0] < -53000 && position[1] > 43000 && position[1] < 48000 && position[2] > 120000 && position[2] < 124000) ||
-        (position[0] > -58000 && position[0] < -53000 && position[1] > 33000 && position[1] < 38000 && position[2] > 120000 && position[2] < 124000) ||
-        (position[0] > -58000 && position[0] < -53000 && position[1] > 23000 && position[1] < 28000 && position[2] > 120000 && position[2] < 124000);
+        //(position[0] > -52000 && position[0] < -48000 && position[1] > 38000 && position[1] < 42000 && position[2] > 120000 && position[2] < 124000) ||
+        //(position[0] > -58000 && position[0] < -53000 && position[1] > 43000 && position[1] < 48000 && position[2] > 120000 && position[2] < 124000) ||
+        //(position[0] > -58000 && position[0] < -53000 && position[1] > 33000 && position[1] < 38000 && position[2] > 120000 && position[2] < 124000) ||
+        //(position[0] > -58000 && position[0] < -53000 && position[1] > 23000 && position[1] < 28000 && position[2] > 120000 && position[2] < 124000) ||
+        (position[0] > -124000 && position[0] < -120000 && position[1] > 146000 && position[1] < 150000 && position[2] > 120000 && position[2] < 124000);
 
       WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
                                                                       *(world->parameters.coordinate_system));
