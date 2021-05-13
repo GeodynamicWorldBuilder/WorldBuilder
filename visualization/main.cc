@@ -1415,22 +1415,22 @@ int main(int argc, char **argv)
         std::array<double,3> coords = {{grid_x[i], grid_y[i], grid_z[i]}};
         temp_vector[i] = world->temperature(coords, grid_depth[i], gravity);
 
-                                                                          if (
-            //(position[0] > 50000 && position[0] < 60000 && position[1] > 100000 && position[1] < 110000 && position[2] > 240000 && position[2] < 260000)
-            //||
-            //(position[0] > -20000 && position[0] < -10000 && position[1] > 140000 && position[1] < 150000 && position[2] > 240000 && position[2] < 250000)
-            //||
-            //(position[0] > -100000 && position[0] < -90000 && position[1] > 250000 && position[1] < 260000 && position[2] > 160000 && position[2] < 170000)
-            //||
-                (coords[0] > -28000 && coords[0] < -32000 && coords[1] > 118000 && coords[1] < 122000 && coords[2] > 18000 && coords[2] < 22000)
-                ||
-                //(coords[0] > -56000 && coords[0] < -52000 && coords[1] > 72000 && coords[1] < 75000 && coords[2] > 50000 && coords[2] < 55000)
-                //||
-                (coords[0] > 4000 && coords[0] < 7000 && coords[1] > 8000 && coords[1] < 11000 && coords[2] > 70000 && coords[2] < 75000)
-                ||
-                (coords[0] > 14000 && coords[0] < 17000 && coords[1] > 18000 && coords[1] < 21000 && coords[2] > 70000 && coords[2] < 75000)
-          )
-            std::cout << "N. temperature " << temp_vector[i] << std::endl << std::endl;
+        if (
+          //(position[0] > 50000 && position[0] < 60000 && position[1] > 100000 && position[1] < 110000 && position[2] > 240000 && position[2] < 260000)
+          //||
+          //(position[0] > -20000 && position[0] < -10000 && position[1] > 140000 && position[1] < 150000 && position[2] > 240000 && position[2] < 250000)
+          //||
+          //(position[0] > -100000 && position[0] < -90000 && position[1] > 250000 && position[1] < 260000 && position[2] > 160000 && position[2] < 170000)
+          //||
+          (coords[0] > -28000 && coords[0] < -32000 && coords[1] > 118000 && coords[1] < 122000 && coords[2] > 18000 && coords[2] < 22000)
+          ||
+          //(coords[0] > -56000 && coords[0] < -52000 && coords[1] > 72000 && coords[1] < 75000 && coords[2] > 50000 && coords[2] < 55000)
+          //||
+          (coords[0] > 4000 && coords[0] < 7000 && coords[1] > 8000 && coords[1] < 11000 && coords[2] > 70000 && coords[2] < 75000)
+          ||
+          (coords[0] > 14000 && coords[0] < 17000 && coords[1] > 18000 && coords[1] < 21000 && coords[2] > 70000 && coords[2] < 75000)
+        )
+          std::cout << "N. temperature " << temp_vector[i] << std::endl << std::endl;
       });
     }
 
