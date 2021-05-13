@@ -539,24 +539,24 @@ namespace WorldBuilder
                                                  * (1 - (P1P2.norm() - P1CPL.norm()) / P1P2.norm());
 
 
-        if(interpolation_type == InterpolationType::ContinuousMonotoneSpline)
-        {
-         if (fraction_CPL_P1P2_strict < 0)
-            closest_point_on_line_2d = P1;
-         if (fraction_CPL_P1P2_strict > 0)
-           closest_point_on_line_2d = P2;
-          //if (fraction_CPL_P1P2_strict_temp < 0. && fraction_CPL_P1P2_strict_temp > -1.0)
-          //{
-          //  fraction_CPL_P1P2_strict_temp = 0;
-          //  closest_point_on_line_2d_temp = P1;
-          //}
-          //if (fraction_CPL_P1P2_strict_temp > 1. && fraction_CPL_P1P2_strict_temp < 2.0)
-          //{
-          //  fraction_CPL_P1P2_strict_temp = 1.0;
-          //  closest_point_on_line_2d_temp = P2;
-          //}
-          P1CPL = closest_point_on_line_2d_temp - P1;
-        }
+        //if(interpolation_type == InterpolationType::ContinuousMonotoneSpline)
+        //{
+        // if (fraction_CPL_P1P2_strict < 0)
+        //    closest_point_on_line_2d = P1;
+        // if (fraction_CPL_P1P2_strict > 0)
+        //   closest_point_on_line_2d = P2;
+        //  //if (fraction_CPL_P1P2_strict_temp < 0. && fraction_CPL_P1P2_strict_temp > -1.0)
+        //  //{
+        //  //  fraction_CPL_P1P2_strict_temp = 0;
+        //  //  closest_point_on_line_2d_temp = P1;
+        //  //}
+        //  //if (fraction_CPL_P1P2_strict_temp > 1. && fraction_CPL_P1P2_strict_temp < 2.0)
+        //  //{
+        //  //  fraction_CPL_P1P2_strict_temp = 1.0;
+        //  //  closest_point_on_line_2d_temp = P2;
+        //  //}
+        //  P1CPL = closest_point_on_line_2d_temp - P1;
+        //}
 
 
           Point<2> CPLCPS2 = closest_point_on_line_2d_temp - check_point_surface_2d;
@@ -575,7 +575,7 @@ namespace WorldBuilder
                 //||
                 //(check_point[0] > -58000 && check_point[0] < -52000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 220000 && check_point[2] < 225000)
                 //||
-               (check_point[0] > 12000 && check_point[0] < 14000 && check_point[1] > 112000 && check_point[1] < 122000 && check_point[2] > 70000 && check_point[2] < 75000)
+               (check_point[0] > -52000 && check_point[0] < -50000 && check_point[1] > 101416 && check_point[1] < 104416 && check_point[2] > 54000 && check_point[2] < 58000)
                 //||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
@@ -585,14 +585,14 @@ namespace WorldBuilder
               )
             std::cout << std::endl << "A.01, i_section = " << i_section << ", fraction_CPL_P1P2_strict_temp = " << fraction_CPL_P1P2_strict_temp << std::endl;
           if ((interpolation_type != InterpolationType::ContinuousMonotoneSpline && fraction_CPL_P1P2_strict_temp >= 0. && fraction_CPL_P1P2_strict_temp <= 1. && CPLCPS2.norm() < min_distance_check_point_surface_2d_line)
-              || (interpolation_type == InterpolationType::ContinuousMonotoneSpline && P1CPL.norm() < min_distance_check_point_surface_2d_line
+              || (interpolation_type == InterpolationType::ContinuousMonotoneSpline && CPLCPS2.norm() < min_distance_check_point_surface_2d_line
                   //&& (std::fabs(fraction_CPL_P1P2_strict_temp) < std::fabs(fraction_CPL_P1P2_strict) && fraction_CPL_P1P2_strict_temp >= 0.0)
                   //|| 1.0-std::fabs(fraction_CPL_P1P2_strict_temp) < std::fabs(fraction_CPL_P1P2_strict)
                   //|| std::fabs(fraction_CPL_P1P2_strict_temp) < 1.0 - std::fabs(fraction_CPL_P1P2_strict) || 1.0 - std::fabs(fraction_CPL_P1P2_strict_temp) < 1.0 - std::fabs(fraction_CPL_P1P2_strict) )
                   //&& fraction_CPL_P1P2_strict_temp > -1.0 && fraction_CPL_P1P2_strict_temp <= 1.
                  ))
             {
-              min_distance_check_point_surface_2d_line = P1CPL.norm();
+              min_distance_check_point_surface_2d_line = CPLCPS2.norm();
               i_section_min_distance = i_section;
               closest_point_on_line_2d = closest_point_on_line_2d_temp;
               fraction_CPL_P1P2_strict = fraction_CPL_P1P2_strict_temp;
@@ -611,7 +611,7 @@ namespace WorldBuilder
                 //||
                 //(check_point[0] > -58000 && check_point[0] < -52000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 220000 && check_point[2] < 225000)
                 //||
-               (check_point[0] > 12000 && check_point[0] < 14000 && check_point[1] > 112000 && check_point[1] < 122000 && check_point[2] > 70000 && check_point[2] < 75000)
+               (check_point[0] > -52000 && check_point[0] < -50000 && check_point[1] > 101416 && check_point[1] < 104416 && check_point[2] > 54000 && check_point[2] < 58000)
                 //||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
@@ -656,8 +656,12 @@ namespace WorldBuilder
         double residual = inital_residual;
 
         // copmute a newton update
-        for (size_t i =0; i < 25; i++)
-          {
+        for (size_t i_newton =0; i_newton < 25; i_newton++)
+          {              if (
+               (check_point[0] > -52000 && check_point[0] < -48000 && check_point[1] > 100416 && check_point[1] < 104416 && check_point[2] > 52000 && check_point[2] < 58000)
+              )
+        std::cout << "B. " << check_point[0] << ":" << check_point[1] << ":" << check_point[2]  << " iteration " << i_newton << ":  solution " << solution <<", inital_residual =  " << inital_residual << ", residual = " << residual << ", fraction_CPL_P1P2_strict = " <<  fraction_CPL_P1P2_strict << std::endl;
+
             //std::cout << "x = ";
             std::pair<double,double> x_spline_update = x_spline.newton_update(solution,check_point_surface_2d[0]);
 
@@ -1128,7 +1132,7 @@ namespace WorldBuilder
             //||
             //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
             //||
-               (check_point[0] > 12000 && check_point[0] < 14000 && check_point[1] > 112000 && check_point[1] < 122000 && check_point[2] > 70000 && check_point[2] < 75000)
+               (check_point[0] > -52000 && check_point[0] < -50000 && check_point[1] > 101416 && check_point[1] < 104416 && check_point[2] > 54000 && check_point[2] < 58000)
                 ||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
@@ -1310,7 +1314,7 @@ namespace WorldBuilder
             //||
             //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
             //||
-               (check_point[0] > 12000 && check_point[0] < 14000 && check_point[1] > 112000 && check_point[1] < 122000 && check_point[2] > 70000 && check_point[2] < 75000)
+               (check_point[0] > -52000 && check_point[0] < -50000 && check_point[1] > 101416 && check_point[1] < 104416 && check_point[2] > 54000 && check_point[2] < 58000)
                 ||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
@@ -1463,7 +1467,7 @@ namespace WorldBuilder
             //||
             //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
             //||
-               (check_point[0] > 12000 && check_point[0] < 14000 && check_point[1] > 112000 && check_point[1] < 122000 && check_point[2] > 70000 && check_point[2] < 75000)
+               (check_point[0] > -52000 && check_point[0] < -50000 && check_point[1] > 101416 && check_point[1] < 104416 && check_point[2] > 54000 && check_point[2] < 58000)
                 ||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 //||
@@ -1517,7 +1521,7 @@ namespace WorldBuilder
             //||
             //(check_point[0] > -100000 && check_point[0] < -90000 && check_point[1] > 250000 && check_point[1] < 260000 && check_point[2] > 160000 && check_point[2] < 170000)
             //||
-               (check_point[0] > 12000 && check_point[0] < 14000 && check_point[1] > 112000 && check_point[1] < 122000 && check_point[2] > 70000 && check_point[2] < 75000)
+               (check_point[0] > -52000 && check_point[0] < -50000 && check_point[1] > 101416 && check_point[1] < 104416 && check_point[2] > 54000 && check_point[2] < 58000)
                 //||
                 //(check_point[0] > -52000 && check_point[0] < -49000 && check_point[1] > 72000 && check_point[1] < 75000 && check_point[2] > 70000 && check_point[2] < 75000)
                 ||
