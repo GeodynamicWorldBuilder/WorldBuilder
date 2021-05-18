@@ -465,31 +465,31 @@ namespace WorldBuilder
 //|| (check_point[0] > -108000 && check_point[0] < -104000 && check_point[1] > 208000 && check_point[1] < 212000 && check_point[2] > 61000 && check_point[2] < 68000)
 //||
 //(check_point[0] > -42000 && check_point[0] < -38000 && check_point[1] > 8000 && check_point[1] < 12000 && check_point[2] > 120000 && check_point[2] < 124000) ||
-        // (check_point[0] > -52000 && check_point[0] < -48000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 120000 && check_point[2] < 124000) ||
-        // (check_point[0] > -58000 && check_point[0] < -53000 && check_point[1] > 43000 && check_point[1] < 48000 && check_point[2] > 120000 && check_point[2] < 124000) ||
-        // (check_point[0] > -58000 && check_point[0] < -53000 && check_point[1] > 33000 && check_point[1] < 38000 && check_point[2] > 120000 && check_point[2] < 124000) ||
-        // (check_point[0] > -58000 && check_point[0] < -53000 && check_point[1] > 23000 && check_point[1] < 28000 && check_point[2] > 120000 && check_point[2] < 124000) ||
-        //(check_point[0] > -124000 && check_point[0] < -120000 && check_point[1] > 146000 && check_point[1] < 150000 && check_point[2] > 120000 && check_point[2] < 124000 ||
-        //(check_point[0] > -51000 && check_point[0] < -49000 && check_point[1] > -51000 && check_point[1] < -49000 && check_point[2] > 190000 && check_point[2] < 210000)||
-        //(check_point[0] > 100000 && check_point[0] < 104000 && check_point[1] > 180000 && check_point[1] < 182000 && check_point[2] > 96000 && check_point[2] < 100000)||
-        //(check_point[0] > 100000 && check_point[0] < 104000 && check_point[1] > 210000 && check_point[1] < 214000 && check_point[2] > 96000 && check_point[2] < 100000)//||
-        //(check_point[0] > -134000 && check_point[0] < -130000 && check_point[1] > 280000 && check_point[1] < 320000 && check_point[2] > 50000 && check_point[2] < 54000)
-        //(check_point[0] > 8000 && check_point[0] < 12000 && check_point[1] > 48000 && check_point[1] < 52000 && check_point[2] > 180000 && check_point[2] < 184000)
-        //(check_point[0] > -102000 && check_point[0] < -98000 && check_point[1] > 160000 && check_point[1] < 164000 && check_point[2] > 100000 && check_point[2] < 104000) ||
-        //(check_point[0] > -102000 && check_point[0] < -98000 && check_point[1] > 200000 && check_point[1] < 204000 && check_point[2] > 100000 && check_point[2] < 104000)||
-        //(check_point[0] > -82000 && check_point[0] < -78000 && check_point[1] > 200000 && check_point[1] < 204000 && check_point[2] > 100000 && check_point[2] < 104000)||
-        //(check_point[0] > -82000 && check_point[0] < -78000 && check_point[1] > 250000 && check_point[1] < 254000 && check_point[2] > 100000 && check_point[2] < 104000)||
-        //(check_point[0] > -134000 && check_point[0] < -130000 && check_point[1] > 320000 && check_point[1] < 324000 && check_point[2] > 70000 && check_point[2] < 74000)||
-        //(check_point[0] > -114000 && check_point[0] < -110000 && check_point[1] > 320000 && check_point[1] < 324000 && check_point[2] > 70000 && check_point[2] < 74000)||
-        //(check_point[0] > -154000 && check_point[0] < -150000 && check_point[1] > 320000 && check_point[1] < 324000 && check_point[2] > 70000 && check_point[2] < 74000)||
-        //(check_point[0] > -115000 && check_point[0] < -111000 && check_point[1] > 300000 && check_point[1] < 304000 && check_point[2] > 70000 && check_point[2] < 74000)
-        //(check_point[0] > -112000 && check_point[0] < -108000 && check_point[1] > 298000 && check_point[1] < 302000 && check_point[2] > 70000 && check_point[2] < 74000)
-        //(check_point[0] > -154000 && check_point[0] < -150000 && check_point[1] > 200000 && check_point[1] < 204000 && check_point[2] > 70000 && check_point[2] < 74000) ||
-        //(check_point[0] > -204000 && check_point[0] < -200000 && check_point[1] > 150000 && check_point[1] < 154000 && check_point[2] > 70000 && check_point[2] < 74000) //||
-        //(check_point[0] > -104000 && check_point[0] < -100000 && check_point[1] > 120000 && check_point[1] < 124000 && check_point[2] > 150000 && check_point[2] < 1504000)||
-        //(check_point[0] > -163600 && check_point[0] < -163260 && check_point[1] > 124000 && check_point[1] < 128000 && check_point[2] > -10 && check_point[2] < 10)||
-        //(check_point[0] > -14000 && check_point[0] < -10000 && check_point[1] > 70000 && check_point[1] < 74000 && check_point[2] > 150000 && check_point[2] < 1504000)
-        //;
+      // (check_point[0] > -52000 && check_point[0] < -48000 && check_point[1] > 38000 && check_point[1] < 42000 && check_point[2] > 120000 && check_point[2] < 124000) ||
+      // (check_point[0] > -58000 && check_point[0] < -53000 && check_point[1] > 43000 && check_point[1] < 48000 && check_point[2] > 120000 && check_point[2] < 124000) ||
+      // (check_point[0] > -58000 && check_point[0] < -53000 && check_point[1] > 33000 && check_point[1] < 38000 && check_point[2] > 120000 && check_point[2] < 124000) ||
+      // (check_point[0] > -58000 && check_point[0] < -53000 && check_point[1] > 23000 && check_point[1] < 28000 && check_point[2] > 120000 && check_point[2] < 124000) ||
+      //(check_point[0] > -124000 && check_point[0] < -120000 && check_point[1] > 146000 && check_point[1] < 150000 && check_point[2] > 120000 && check_point[2] < 124000 ||
+      //(check_point[0] > -51000 && check_point[0] < -49000 && check_point[1] > -51000 && check_point[1] < -49000 && check_point[2] > 190000 && check_point[2] < 210000)||
+      //(check_point[0] > 100000 && check_point[0] < 104000 && check_point[1] > 180000 && check_point[1] < 182000 && check_point[2] > 96000 && check_point[2] < 100000)||
+      //(check_point[0] > 100000 && check_point[0] < 104000 && check_point[1] > 210000 && check_point[1] < 214000 && check_point[2] > 96000 && check_point[2] < 100000)//||
+      //(check_point[0] > -134000 && check_point[0] < -130000 && check_point[1] > 280000 && check_point[1] < 320000 && check_point[2] > 50000 && check_point[2] < 54000)
+      //(check_point[0] > 8000 && check_point[0] < 12000 && check_point[1] > 48000 && check_point[1] < 52000 && check_point[2] > 180000 && check_point[2] < 184000)
+      //(check_point[0] > -102000 && check_point[0] < -98000 && check_point[1] > 160000 && check_point[1] < 164000 && check_point[2] > 100000 && check_point[2] < 104000) ||
+      //(check_point[0] > -102000 && check_point[0] < -98000 && check_point[1] > 200000 && check_point[1] < 204000 && check_point[2] > 100000 && check_point[2] < 104000)||
+      //(check_point[0] > -82000 && check_point[0] < -78000 && check_point[1] > 200000 && check_point[1] < 204000 && check_point[2] > 100000 && check_point[2] < 104000)||
+      //(check_point[0] > -82000 && check_point[0] < -78000 && check_point[1] > 250000 && check_point[1] < 254000 && check_point[2] > 100000 && check_point[2] < 104000)||
+      //(check_point[0] > -134000 && check_point[0] < -130000 && check_point[1] > 320000 && check_point[1] < 324000 && check_point[2] > 70000 && check_point[2] < 74000)||
+      //(check_point[0] > -114000 && check_point[0] < -110000 && check_point[1] > 320000 && check_point[1] < 324000 && check_point[2] > 70000 && check_point[2] < 74000)||
+      //(check_point[0] > -154000 && check_point[0] < -150000 && check_point[1] > 320000 && check_point[1] < 324000 && check_point[2] > 70000 && check_point[2] < 74000)||
+      //(check_point[0] > -115000 && check_point[0] < -111000 && check_point[1] > 300000 && check_point[1] < 304000 && check_point[2] > 70000 && check_point[2] < 74000)
+      //(check_point[0] > -112000 && check_point[0] < -108000 && check_point[1] > 298000 && check_point[1] < 302000 && check_point[2] > 70000 && check_point[2] < 74000)
+      //(check_point[0] > -154000 && check_point[0] < -150000 && check_point[1] > 200000 && check_point[1] < 204000 && check_point[2] > 70000 && check_point[2] < 74000) ||
+      //(check_point[0] > -204000 && check_point[0] < -200000 && check_point[1] > 150000 && check_point[1] < 154000 && check_point[2] > 70000 && check_point[2] < 74000) //||
+      //(check_point[0] > -104000 && check_point[0] < -100000 && check_point[1] > 120000 && check_point[1] < 124000 && check_point[2] > 150000 && check_point[2] < 1504000)||
+      //(check_point[0] > -163600 && check_point[0] < -163260 && check_point[1] > 124000 && check_point[1] < 128000 && check_point[2] > -10 && check_point[2] < 10)||
+      //(check_point[0] > -14000 && check_point[0] < -10000 && check_point[1] > 70000 && check_point[1] < 74000 && check_point[2] > 150000 && check_point[2] < 1504000)
+      //;
 
       if (global_x_list.size() == 0)
         {
@@ -574,8 +574,8 @@ namespace WorldBuilder
 
 
           if (in_point)
-            std::cout << "A.04 " << check_point[0] << ":" << check_point[1] << ":" << check_point[2]  << ":  fraction_CPL_P1P2_strict_temp = " << fraction_CPL_P1P2_strict_temp <<  ",  P1 = " << P1[0] << ":" << P1[1] << ", P2 = " << P2[0] << ":" << P2[1]   <<", closest_point_on_line_2d =  " << closest_point_on_line_2d_temp[0] << ":" << closest_point_on_line_2d_temp[1] 
-            <<", P1CLP = " << P1CPL[0] << ":" << P1CPL[1] << ", P1CPL * P1P2 = " << P1CPL * P1P2 <<  std::endl;
+            std::cout << "A.04 " << check_point[0] << ":" << check_point[1] << ":" << check_point[2]  << ":  fraction_CPL_P1P2_strict_temp = " << fraction_CPL_P1P2_strict_temp <<  ",  P1 = " << P1[0] << ":" << P1[1] << ", P2 = " << P2[0] << ":" << P2[1]   <<", closest_point_on_line_2d =  " << closest_point_on_line_2d_temp[0] << ":" << closest_point_on_line_2d_temp[1]
+                      <<", P1CLP = " << P1CPL[0] << ":" << P1CPL[1] << ", P1CPL * P1P2 = " << P1CPL *P1P2 <<  std::endl;
 
           //if(interpolation_type == InterpolationType::ContinuousMonotoneSpline)
           //{
@@ -626,9 +626,9 @@ namespace WorldBuilder
             std::cout << std::endl << "A.04, i_section = " << i_section << ", fraction_CPL_P1P2_strict_temp = " << fraction_CPL_P1P2_strict_temp << std::endl;
           if ((interpolation_type != InterpolationType::ContinuousMonotoneSpline && fraction_CPL_P1P2_strict_temp >= 0. && fraction_CPL_P1P2_strict_temp <= 1. && CPLCPS2.norm() < min_distance_check_point_surface_2d_line)
               || (interpolation_type == InterpolationType::ContinuousMonotoneSpline //&& CPLCPS2.norm() < min_distance_check_point_surface_2d_line
-              && (std::fabs(fraction_CPL_P1P2_strict_temp) < std::fabs(fraction_CPL_P1P2_strict))// && fraction_CPL_P1P2_strict_temp >= -1.0)
-              //&& i_section + fraction_CPL_P1P2_strict_temp > 0 && i_section + fraction_CPL_P1P2_strict_temp <=  point_list.size()-1
-              //&& ((global_x_list[i_section] + fraction_CPL_P1P2_strict_temp > 0.0) || global_x_list[i_section] > 0)
+                  && (std::fabs(fraction_CPL_P1P2_strict_temp) < std::fabs(fraction_CPL_P1P2_strict))// && fraction_CPL_P1P2_strict_temp >= -1.0)
+                  //&& i_section + fraction_CPL_P1P2_strict_temp > 0 && i_section + fraction_CPL_P1P2_strict_temp <=  point_list.size()-1
+                  //&& ((global_x_list[i_section] + fraction_CPL_P1P2_strict_temp > 0.0) || global_x_list[i_section] > 0)
                   //|| 1.0-std::fabs(fraction_CPL_P1P2_strict_temp) < std::fabs(fraction_CPL_P1P2_strict)
                   //|| std::fabs(fraction_CPL_P1P2_strict_temp) < 1.0 - std::fabs(fraction_CPL_P1P2_strict) || 1.0 - std::fabs(fraction_CPL_P1P2_strict_temp) < 1.0 - std::fabs(fraction_CPL_P1P2_strict) )
                   //&& fraction_CPL_P1P2_strict_temp > -1.0 && fraction_CPL_P1P2_strict_temp <= 1.
@@ -683,7 +683,7 @@ namespace WorldBuilder
               double inital_residual = fabs(residual_x)+fabs(residual_y);
               double residual = inital_residual;
 
-                if(in_point)
+              if (in_point)
                 {
                   std::cout << "A.06 xolution = " << solution << std::endl;
                 }
@@ -699,40 +699,40 @@ namespace WorldBuilder
               double y_distance_to_reference_point = y_spline(min_estimate_solution)-check_point_surface_2d[1];
               double minimum_distance_to_reference_point = sqrt(x_distance_to_reference_point*x_distance_to_reference_point + y_distance_to_reference_point*y_distance_to_reference_point);
               for (size_t i_estimate = 1; i_estimate < 25.*(global_x_list[point_list.size()-1]+ 2.0/25); i_estimate++)
-              {
-                min_estimate_solution_temp = min_estimate_solution_temp + 1.0/25.;
-
-
-              double x_minimum_estimate_residual_temp = x_spline.residual_closest_point(min_estimate_solution_temp,check_point_surface_2d[0]);
-              double y_minimum_estimate_residual_temp = y_spline.residual_closest_point(min_estimate_solution_temp,check_point_surface_2d[1]);
-              double minimum_estimate_residual_temp = fabs(x_minimum_estimate_residual_temp)+fabs(y_minimum_estimate_residual_temp);
-
-
-              double x_distance_to_reference_point_temp = x_spline(min_estimate_solution_temp)-check_point_surface_2d[0];
-              double y_distance_to_reference_point_temp = y_spline(min_estimate_solution_temp)-check_point_surface_2d[1];
-              double minimum_distance_to_reference_point_temp = sqrt(x_distance_to_reference_point_temp*x_distance_to_reference_point_temp + y_distance_to_reference_point_temp*y_distance_to_reference_point_temp);
-                if(in_point)
                 {
-                  std::cout << "A.07 minimum_estimate_residual = " << minimum_estimate_residual << ", minimum_estimate_residual_temp = " << minimum_estimate_residual_temp << ", min_estimate_solution = " << min_estimate_solution 
-                  << ", x_minimum_estimate_residual_temp = " << x_minimum_estimate_residual_temp << ", y_minimum_estimate_residual_temp = " << y_minimum_estimate_residual_temp 
-                  << ", i_estimate = " << i_estimate << ", (double)i_estimate/10. = " << (double)i_estimate/100. << std::endl;
+                  min_estimate_solution_temp = min_estimate_solution_temp + 1.0/25.;
+
+
+                  double x_minimum_estimate_residual_temp = x_spline.residual_closest_point(min_estimate_solution_temp,check_point_surface_2d[0]);
+                  double y_minimum_estimate_residual_temp = y_spline.residual_closest_point(min_estimate_solution_temp,check_point_surface_2d[1]);
+                  double minimum_estimate_residual_temp = fabs(x_minimum_estimate_residual_temp)+fabs(y_minimum_estimate_residual_temp);
+
+
+                  double x_distance_to_reference_point_temp = x_spline(min_estimate_solution_temp)-check_point_surface_2d[0];
+                  double y_distance_to_reference_point_temp = y_spline(min_estimate_solution_temp)-check_point_surface_2d[1];
+                  double minimum_distance_to_reference_point_temp = sqrt(x_distance_to_reference_point_temp*x_distance_to_reference_point_temp + y_distance_to_reference_point_temp*y_distance_to_reference_point_temp);
+                  if (in_point)
+                    {
+                      std::cout << "A.07 minimum_estimate_residual = " << minimum_estimate_residual << ", minimum_estimate_residual_temp = " << minimum_estimate_residual_temp << ", min_estimate_solution = " << min_estimate_solution
+                                << ", x_minimum_estimate_residual_temp = " << x_minimum_estimate_residual_temp << ", y_minimum_estimate_residual_temp = " << y_minimum_estimate_residual_temp
+                                << ", i_estimate = " << i_estimate << ", (double)i_estimate/10. = " << (double)i_estimate/100. << std::endl;
+                    }
+
+                  if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
+                    {
+                      minimum_estimate_residual = minimum_estimate_residual_temp;
+                      minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
+                      min_estimate_solution = min_estimate_solution_temp;
+                    }
+
+                  if (in_point)
+                    {
+                      std::cout << "A.08 minimum_distance_to_reference_point = " << minimum_distance_to_reference_point << ", minimum_distance_to_reference_point_temp = " << minimum_distance_to_reference_point_temp << ", min_estimate_solution_temp = " << min_estimate_solution_temp << ", solution = " << solution << ", x_minimum_estimate_residual_temp = " << x_minimum_estimate_residual_temp << ", y_minimum_estimate_residual_temp = " << y_minimum_estimate_residual_temp << std::endl;
+                    }
                 }
 
-              if(fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
-              {
-                minimum_estimate_residual = minimum_estimate_residual_temp;
-                minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
-                min_estimate_solution = min_estimate_solution_temp;
-              }
-
-                if(in_point)
-                {
-                  std::cout << "A.08 minimum_distance_to_reference_point = " << minimum_distance_to_reference_point << ", minimum_distance_to_reference_point_temp = " << minimum_distance_to_reference_point_temp << ", min_estimate_solution_temp = " << min_estimate_solution_temp << ", solution = " << solution << ", x_minimum_estimate_residual_temp = " << x_minimum_estimate_residual_temp << ", y_minimum_estimate_residual_temp = " << y_minimum_estimate_residual_temp << std::endl;
-                }
-              }
-              
-solution = min_estimate_solution;
-                if(in_point)
+              solution = min_estimate_solution;
+              if (in_point)
                 {
                   std::cout << "A.09 xolution = " << solution << std::endl;
                 }
@@ -760,10 +760,10 @@ solution = min_estimate_solution;
                   double temp_solution = solution;
                   double newton_update = (x_spline_update.first + y_spline_update.first)/(x_spline_update.second + y_spline_update.second);
 
-                  if(!isfinite(newton_update))
-                  {
-                    break;
-                  }
+                  if (!isfinite(newton_update))
+                    {
+                      break;
+                    }
                   WBAssert(!isnan(newton_update), "newton_update is not a number or not finite. Relevant variables: newton_update = " << newton_update << ", temp_solution = " << temp_solution
                            << ", solution = " << solution << ", x_spline_update.first = " << x_spline_update.first << ", y_spline_update.first = " << y_spline_update.first << ",  x_spline_update.second = "
                            << x_spline_update.second  << ",  y_spline_update.second = " << y_spline_update.second << ",  check_point = " << check_point[0] << ":" <<  check_point[1] << ":" <<  check_point[2] << ".");
@@ -787,23 +787,23 @@ solution = min_estimate_solution;
 
                   double factor = 1;
 
-                  if(newton_update > 0.15 && newton_update > 0.0)
-                  {
-                    factor = 0.15/newton_update;
-                                              //newton_update = factor*(x_spline_update.first + y_spline_update.first)/(x_spline_update.second + y_spline_update.second);
-                          temp_solution = solution -factor* newton_update;
-                          residual_x = x_spline.residual_closest_point(temp_solution,check_point_surface_2d[0]);
-                          residual_y = y_spline.residual_closest_point(temp_solution,check_point_surface_2d[1]);
-                          temp_residual = fabs(residual_x)+fabs(residual_y);
-                          relative_residual = temp_residual/inital_residual;
-                  }
+                  if (newton_update > 0.15 && newton_update > 0.0)
+                    {
+                      factor = 0.15/newton_update;
+                      //newton_update = factor*(x_spline_update.first + y_spline_update.first)/(x_spline_update.second + y_spline_update.second);
+                      temp_solution = solution -factor* newton_update;
+                      residual_x = x_spline.residual_closest_point(temp_solution,check_point_surface_2d[0]);
+                      residual_y = y_spline.residual_closest_point(temp_solution,check_point_surface_2d[1]);
+                      temp_residual = fabs(residual_x)+fabs(residual_y);
+                      relative_residual = temp_residual/inital_residual;
+                    }
 
                   factor *= aternating_factor;
 
-         
+
                   for (size_t i_line_search = 0; i_line_search < 25; i_line_search++)
                     {
-   
+
                       if (temp_residual > 0.9*residual)
                         {
                           factor *= 2./3.;
@@ -825,20 +825,20 @@ solution = min_estimate_solution;
 
                     }
 
-                       if(
-                         (fabs(old_old_old_newton_update-old_newton_update) < 1e-7 && fabs(old_old_newton_update-newton_update) < 1e-7 && ((old_old_old_newton_update<0) != (newton_update<0))) 
-                      )
-                      {
-                        aternating_factor *= 0.5;
-                      }
+                  if (
+                    (fabs(old_old_old_newton_update-old_newton_update) < 1e-7 && fabs(old_old_newton_update-newton_update) < 1e-7 && ((old_old_old_newton_update<0) != (newton_update<0)))
+                  )
+                    {
+                      aternating_factor *= 0.5;
+                    }
 
                   if (in_point)
                     std::cout << "D. " << check_point[0] << ":" << check_point[1] << ":" << check_point[2]  << " iteration " << i_newton << ":  solution " << solution
                               <<", inital_residual =  " << inital_residual << ", residual = " << residual << ", factor = " <<  factor << ", temp_solution = " << temp_solution
-                              << ", final newton update = " << factor*newton_update << ", original newton update = " << newton_update << ", global_x_list[i_section_min_distance] = " << global_x_list[i_section_min_distance]
-                              << ", i_section_min_distance = " << i_section_min_distance << ", residual/inital_residual = "<< residual/inital_residual 
-                              << ", fabs(old_old_newton_update-old_newton_update) = " << fabs(old_old_newton_update-old_newton_update) 
-                              << ",  fabs(old_newton_update-newton_update) = " << fabs(old_newton_update-newton_update) << ", fabs(solution-global_x_list[point_list.size()-1]) =" << fabs(solution-global_x_list[point_list.size()-1]) 
+                              << ", final newton update = " << factor *newton_update << ", original newton update = " << newton_update << ", global_x_list[i_section_min_distance] = " << global_x_list[i_section_min_distance]
+                              << ", i_section_min_distance = " << i_section_min_distance << ", residual/inital_residual = "<< residual/inital_residual
+                              << ", fabs(old_old_newton_update-old_newton_update) = " << fabs(old_old_newton_update-old_newton_update)
+                              << ",  fabs(old_newton_update-newton_update) = " << fabs(old_newton_update-newton_update) << ", fabs(solution-global_x_list[point_list.size()-1]) =" << fabs(solution-global_x_list[point_list.size()-1])
                               << ", fabs(old_old_old_newton_update-old_newton_update) =" << fabs(old_old_old_newton_update-old_newton_update) << ", fabs(old_old_newton_update-newton_update) = "
                               << fabs(old_old_newton_update-newton_update) << ", aternating_factor = " << aternating_factor << std::endl;
 
@@ -849,15 +849,15 @@ solution = min_estimate_solution;
 
                   // Besides making sure that the relative residual is small enough, also check wheter the update is sufficiently smaller than the solution
                   // to prevent ossilations between posive and negative values from dominationg the solution.
-                  if ((residual/inital_residual <=1e-52 && newton_update < 0.1*solution) 
-                  || (fabs(old_old_old_newton_update-old_old_newton_update) < 1e-30 && fabs(old_old_newton_update-old_newton_update) < 1e-30 && fabs(old_newton_update-newton_update) < 1e-30) // in the last four iterations the newton update has been the same. There is no point in iterating further and we can probably safely abort
-                  //||(fabs(old_old_old_newton_update-old_newton_update) < 1e-7 && fabs(old_old_newton_update-newton_update) < 1e-7 && ((old_old_old_newton_update<0) != (newton_update<0))) 
-                  )
+                  if ((residual/inital_residual <=1e-52 && newton_update < 0.1*solution)
+                      || (fabs(old_old_old_newton_update-old_old_newton_update) < 1e-30 && fabs(old_old_newton_update-old_newton_update) < 1e-30 && fabs(old_newton_update-newton_update) < 1e-30) // in the last four iterations the newton update has been the same. There is no point in iterating further and we can probably safely abort
+                      //||(fabs(old_old_old_newton_update-old_newton_update) < 1e-7 && fabs(old_old_newton_update-newton_update) < 1e-7 && ((old_old_old_newton_update<0) != (newton_update<0)))
+                     )
                     break;
 
-                    old_old_old_newton_update = old_old_newton_update;
-                    old_old_newton_update = old_newton_update;
-                    old_newton_update = newton_update;
+                  old_old_old_newton_update = old_old_newton_update;
+                  old_old_newton_update = old_newton_update;
+                  old_newton_update = newton_update;
                 }
               WBAssert(!isnan(solution), "Solution is not a number. Relevant variables: = " << solution << ",  check_point = " << check_point[0] << ":" <<  check_point[1] << ":" <<  check_point[2] << ".");
 
@@ -866,17 +866,17 @@ solution = min_estimate_solution;
               //if (fabs(solution) <= 1e-52 )//1e5*nextafter(0.0,1.0))
               //  break;//solution = 1e-52;//1e5*nextafter(0.0,1.0);
 
-                if(in_point)
+              if (in_point)
                 std::cout << "fabs(solution-global_x_list[point_list.size()-1]) = " << fabs(solution-global_x_list[point_list.size()-1]) << std::endl;
 
-              if(fabs(solution-global_x_list[point_list.size()-1]) < 5.0*nextafter(0.0,1.0))
-              {
-                if(in_point)
-                  std::cout << "change solution..."<< std::endl;
-                solution = global_x_list[point_list.size()-1] - std::numeric_limits<double>::epsilon();
-              }
+              if (fabs(solution-global_x_list[point_list.size()-1]) < 5.0*nextafter(0.0,1.0))
+                {
+                  if (in_point)
+                    std::cout << "change solution..."<< std::endl;
+                  solution = global_x_list[point_list.size()-1] - std::numeric_limits<double>::epsilon();
+                }
 
-                if(in_point)
+              if (in_point)
                 std::cout << "solution = " << solution << ", diff = " << fabs(solution-global_x_list[point_list.size()-1]) << std::endl;
 
               double dx = x_spline.derivative(solution);
@@ -897,7 +897,7 @@ solution = min_estimate_solution;
                 std::cout << "E. " << check_point[0] << ":" << check_point[1] << ":" << check_point[2]  << ":  solution " << solution
                           <<", inital_residual =  " << inital_residual << ", residual = " << residual << ", global_x_list[point_list.size()-1] = " <<  global_x_list[point_list.size()-1]
                           << ",  i_section_min_distance + (solution - global_x_list[i_section_min_distance]) = " << global_x_list[i_section_min_distance] + solution << ", global_x_list[i_section_min_distance] = " << global_x_list[i_section_min_distance]
-                          << ", i_section_min_distance = " << i_section_min_distance << ", residual/inital_residual = " << residual/inital_residual 
+                          << ", i_section_min_distance = " << i_section_min_distance << ", residual/inital_residual = " << residual/inital_residual
                           << ", continue_computation = " << continue_computation << ", solution-2.0 = " << solution-2.0 << std::endl;
 
               if (solution > 0 && floor(solution) <= global_x_list[point_list.size()-2] && floor(solution)  >= 0)
@@ -1136,9 +1136,9 @@ solution = min_estimate_solution;
                                  "Internal error: The x_axis[1] variable is not a number: " << x_axis[1] << ". Relevant values: reference_on_side_of_line = " << reference_on_side_of_line << ",  x_axis.norm() = " <<  x_axis.norm() << ".");
                         WBAssert(!std::isnan(x_axis[2]),
                                  "Internal error: The x_axis[2] variable is not a number: " << x_axis[2] << ". Relevant values: reference_on_side_of_line = " << reference_on_side_of_line << ",  x_axis.norm() = " <<  x_axis.norm() << ".");
-                      
-              if (in_point)
-                std::cout << "F.end. x_axis " << x_axis[0] <<":" << x_axis[1] <<":" << x_axis[2] << ", y_axis " << y_axis[0] <<":" << y_axis[1] << ":" << y_axis[2] << ", cp = " << check_point[0]  <<  std::endl;
+
+                        if (in_point)
+                          std::cout << "F.end. x_axis " << x_axis[0] <<":" << x_axis[1] <<":" << x_axis[2] << ", y_axis " << y_axis[0] <<":" << y_axis[1] << ":" << y_axis[2] << ", cp = " << check_point[0]  <<  std::endl;
 
                       }
                   }
