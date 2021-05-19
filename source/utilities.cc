@@ -694,7 +694,6 @@ namespace WorldBuilder
               double x_minimum_estimate_residual = x_spline.residual_closest_point(min_estimate_solution,check_point_surface_2d[0]);
               double y_minimum_estimate_residual = y_spline.residual_closest_point(min_estimate_solution,check_point_surface_2d[1]);
               double minimum_estimate_residual = fabs(x_minimum_estimate_residual)+fabs(y_minimum_estimate_residual);
-              double minimum_estimate_residual_temp = std::numeric_limits<double>::signaling_NaN();
               double x_distance_to_reference_point = x_spline(min_estimate_solution)-check_point_surface_2d[0];
               double y_distance_to_reference_point = y_spline(min_estimate_solution)-check_point_surface_2d[1];
               double minimum_distance_to_reference_point = sqrt(x_distance_to_reference_point*x_distance_to_reference_point + y_distance_to_reference_point*y_distance_to_reference_point);
