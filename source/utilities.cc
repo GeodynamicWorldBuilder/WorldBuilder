@@ -541,7 +541,7 @@ namespace WorldBuilder
 
           Point<2> CPLCPS2 = closest_point_on_line_2d_temp - check_point_surface_2d;
 
-          // If fraction_CPL_P1P2_strict_temp is between 0 and 1 it means that the point can be projected perpendicual to the line segment. We only conder points which are
+          // If fraction_CPL_P1P2_strict_temp is between 0 and 1 it means that the point can be projected perpendicual to the line segment. For the non-contiuous case we only conder points which are
           // perpendicular to a line segment.
           // There can be mutliple lines segment to which a point is perpundicual. Choose the point which is closed in 2D (x-y).
 
@@ -559,10 +559,9 @@ namespace WorldBuilder
             }
         }
 
-      if (fraction_CPL_P1P2_strict < INFINITY)// && ((global_x_list[i_section_min_distance] + fraction_CPL_P1P2_strict > 0.0) || global_x_list[i_section_min_distance] > 0))
+      if (fraction_CPL_P1P2_strict < INFINITY)
         {
           // now compute the relevant x and y axis
-          // Todo: initialte with NaN's?
           double fraction_CPL_P1P2 = std::numeric_limits<double>::signaling_NaN();
           Point<3> x_axis(std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),cartesian);
           Point<3> y_axis(std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),cartesian);
@@ -639,14 +638,12 @@ namespace WorldBuilder
                   if (fabs(x_spline_update.first) <= 10.*nextafter(0.0,1.0) && fabs(y_spline_update.first) <= 10.*nextafter(0.0,1.0))
                     break;
 
-                  //WBAssert(x_spline_update.second + y_spline_update.second > 1e-40, "x_spline_update.second + y_spline_update.second is zero. Relevant variables:, solution = " << solution << ", x_spline_update.first = " << x_spline_update.first << ", y_spline_update.first = " << y_spline_update.first << ",  x_spline_update.second = " << x_spline_update.second  << ",  y_spline_update.second = " << y_spline_update.second << ",  check_point = " << check_point[0] << ":" <<  check_point[1] << ":" <<  check_point[2] << ".");
                   double temp_solution = solution;
                   double newton_update = (x_spline_update.first + y_spline_update.first)/(x_spline_update.second + y_spline_update.second);
 
-                  if (!isfinite(newton_update))
-                    {
-                      break;
-                    }
+                  WBAssert(isfinite(newton_update), "The newton update is not finite. Relevant variables: newton_update = " << newton_update << ", temp_solution = " << temp_solution
+                           << ", solution = " << solution << ", x_spline_update.first = " << x_spline_update.first << ", y_spline_update.first = " << y_spline_update.first << ",  x_spline_update.second = "
+                           << x_spline_update.second  << ",  y_spline_update.second = " << y_spline_update.second << ",  check_point = " << check_point[0] << ":" <<  check_point[1] << ":" <<  check_point[2] << ".");
                   WBAssert(!isnan(newton_update), "newton_update is not a number or not finite. Relevant variables: newton_update = " << newton_update << ", temp_solution = " << temp_solution
                            << ", solution = " << solution << ", x_spline_update.first = " << x_spline_update.first << ", y_spline_update.first = " << y_spline_update.first << ",  x_spline_update.second = "
                            << x_spline_update.second  << ",  y_spline_update.second = " << y_spline_update.second << ",  check_point = " << check_point[0] << ":" <<  check_point[1] << ":" <<  check_point[2] << ".");
@@ -872,37 +869,13 @@ namespace WorldBuilder
                       WBAssert(!std::isnan(x_axis[2]),
                                "Internal error: The x_axis[2] variable is not a number: " << x_axis[2]);
 
-                      if (x_axis.norm() <=  10.*nextafter(0.0,1.0))
-                        {
+                      // If we can't find a good axis through the newton method, we might want to fall back on how the axis is computed in the
+                      // non-contious method, but I can't find a case where I trigger this issue.
+                      WBAssert(x_axis.norm() >  10.*nextafter(0.0,1.0), "The norm of the x_axis is smaller than zero. Please report this to the developers "
+                               << "with the world builder file and the following relvant variables: "
+                               << "check_point =  " << std::setprecision(12) << check_point[0] << " " << check_point[1] << " " << check_point[2] << " " << start_radius
+                               <<  "x_axis: " << x_axis[0] << ":" <<  x_axis[1] << ":" <<  x_axis[2] << ".");
 
-                          // shorthand notation for computing the x_axis
-                          double vx = y_axis[0];
-                          double vy = y_axis[1];
-                          double vz = y_axis[2];
-                          double ux = normal_to_plane[0];
-                          double uy = normal_to_plane[1];
-                          double uz = normal_to_plane[2];
-                          x_axis = Point<3>(ux*ux*vx + ux*uy*vy - uz*vy + uy*uz*vz + uy*vz,
-                                            uy*ux*vx + uz*vx + uy*uy*vy + uy*uz*vz - ux*vz,
-                                            uz*ux*vx - uy*vx + uz*uy*vy + ux*vy + uz*uz*vz,
-                                            cartesian);
-
-                          WBAssert(!std::isnan(x_axis[0]),
-                                   "Internal error: The x_axis[0] variable is not a number: " << x_axis[0] << ". Relevant values: vx = " << vx << ",  vy = " <<  vy <<",  vy = " <<  vz <<
-                                   ", uxy = " <<  ux << ",  uy = " <<  uy << ",  uz = " <<  uz <<".");
-                          WBAssert(!std::isnan(x_axis[1]),
-                                   "Internal error: The x_axis[1] variable is not a number: " << x_axis[1]);
-                          WBAssert(!std::isnan(x_axis[2]),
-                                   "Internal error: The x_axis[2] variable is not a number: " << x_axis[2]);
-                        }
-
-
-                      WBAssert(!std::isnan(x_axis[0]),
-                               "Internal error: The x_axis[0] variable is not a number: " << x_axis[0]);
-                      WBAssert(!std::isnan(x_axis[1]),
-                               "Internal error: The x_axis[1] variable is not a number: " << x_axis[1]);
-                      WBAssert(!std::isnan(x_axis[2]),
-                               "Internal error: The x_axis[2] variable is not a number: " << x_axis[2]);
                       // see on what side the line P1P2 reference point is. This is based on the determinant
                       const double reference_on_side_of_line = (point_list[next_section][0] - point_list[current_section][0])
                                                                * (reference_point[1] - point_list[current_section][1])
@@ -1611,10 +1584,7 @@ namespace WorldBuilder
           double c = m_c[0];
           double d = m_y[0];
           f = (p-(b*h*h*h+c*h+d))*(2*b*h+c);
-          //std::cout << "1. f = " << f << ", x = " << x << ", m_x[idx] = " << m_x[idx] << ", h = " << h << ", a = " << a << ", b = " << b << ", c = " << c << ", d = " << d << std::endl;
           df = -20*a*b*h*h*h  -(6*b*b)*h*h  +6*(-b*c)*h   + (2*p*b-c*c-2*b*d);
-          //f = (p-(b*h*h*h+c*h+d))*(2*b*h+c);
-          //df = -8*b*b*h*h*h -3*b*c*h*h -4*b*c*h -2*b*d +2*b*p - c*c;
         }
       else if (x>m_x[n-1])
         {
@@ -1626,11 +1596,7 @@ namespace WorldBuilder
           double c = m_c[n-1];
           double d = m_y[n-1];
           f = (p-(b*h*h*h+c*h+d))*(2*b*h+c);
-          //std::cout << "2. f = " << f << ", x = " << x << ", m_x[idx] = " << m_x[idx] << ", h = " << h << ", a = " << a << ", b = " << b << ", c = " << c << ", d = " << d << std::endl;
-
           df = -20*a*b*h*h*h  -(6*b*b)*h*h  +6*(-b*c)*h   + (2*p*b-c*c-2*b*d);
-          //f = (p-(b*h*h*h+c*h+d))*(2*b*h+c);
-          //df = -8*b*b*h*h*h -3*b*c*h*h -4*b*c*h -2*b*d +2*b*p - c*c;
         }
       else
         {
@@ -1642,10 +1608,7 @@ namespace WorldBuilder
           double c = m_c[idx];
           double d = m_y[idx];
           f = (p-(a*h*h*h+b*h*h*h+c*h+d))*(3*a*h*h+2*b*h+c);
-          //std::cout << "3. f = " << f << ", x = " << x << ", m_x[idx] = " << m_x[idx] << ", h = " << h << ", p = " << p << ", a = " << a << ", b = " << b << ", c = " << c << ", d = " << d << std::endl;
           df = -15*a*a*h*h*h*h -20*a*b*h*h*h  -(12*a*c+6*b*b)*h*h  +6*(p*a-b*c-a*d)*h   + (2*p*b-c*c-2*b*d);
-          //f = 36*a*a*h*h*h + 36*a*b*h*h + 12*a*c*h - 12*a*h*p + 8*b*b*h + 4*b*c - 4*b*p;
-          //df = 108*a*a*h*h + 72*a*b*h + 12*a*c - 12*a*p + 8*b*b;
         }
 
 
