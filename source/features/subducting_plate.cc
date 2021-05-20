@@ -352,35 +352,6 @@ namespace WorldBuilder
 
 
 
-      bool in_point = false;
-//                (position[0] > -156666.7 && position[0] < -151666 && position[1] > 173200 && position[1] < 178200 && position[2] > 58000 && position[2] < 62000)
-//               || (position[0] > -88000 && position[0] < -84000 && position[1] > 208000 && position[1] < 212000 && position[2] > 71000 && position[2] < 78000)
-//|| (position[0] > -108000 && position[0] < -104000 && position[1] > 208000 && position[1] < 212000 && position[2] > 61000 && position[2] < 68000)
-//||
-//(position[0] > -42000 && position[0] < -38000 && position[1] > 8000 && position[1] < 12000 && position[2] > 120000 && position[2] < 124000) ||
-      //(position[0] > -52000 && position[0] < -48000 && position[1] > 38000 && position[1] < 42000 && position[2] > 120000 && position[2] < 124000) ||
-      //(position[0] > -58000 && position[0] < -53000 && position[1] > 43000 && position[1] < 48000 && position[2] > 120000 && position[2] < 124000) ||
-      //(position[0] > -58000 && position[0] < -53000 && position[1] > 33000 && position[1] < 38000 && position[2] > 120000 && position[2] < 124000) ||
-      //(position[0] > -58000 && position[0] < -53000 && position[1] > 23000 && position[1] < 28000 && position[2] > 120000 && position[2] < 124000) ||
-      //(position[0] >  100000 && position[0] < 104000 && position[1] > 180000 && position[1] < 184000 && position[2] > 90000 && position[2] < 110000)||
-      //(position[0] > 100000 && position[0] < 104000 && position[1] > 210000 && position[1] < 214000 && position[2] > 96000 && position[2] < 100000)//||
-      //(position[0] > -134000 && position[0] < -130000 && position[1] > 280000 && position[1] < 320000 && position[2] > 50000 && position[2] < 54000)
-      //(position[0] > 8000 && position[0] < 12000 && position[1] > 48000 && position[1] < 52000 && position[2] > 180000 && position[2] < 184000)
-      //(position[0] > -102000 && position[0] < -98000 && position[1] > 160000 && position[1] < 164000 && position[2] > 100000 && position[2] < 104000) ||
-      //(position[0] > -102000 && position[0] < -98000 && position[1] > 200000 && position[1] < 204000 && position[2] > 100000 && position[2] < 104000)||
-      //(position[0] > -82000 && position[0] < -78000 && position[1] > 200000 && position[1] < 204000 && position[2] > 100000 && position[2] < 104000)||
-      //(position[0] > -82000 && position[0] < -78000 && position[1] > 250000 && position[1] < 254000 && position[2] > 100000 && position[2] < 104000)||
-      //(position[0] > -134000 && position[0] < -130000 && position[1] > 320000 && position[1] < 324000 && position[2] > 70000 && position[2] < 74000)||
-      //(position[0] > -114000 && position[0] < -110000 && position[1] > 320000 && position[1] < 324000 && position[2] > 70000 && position[2] < 74000)||
-      //(position[0] > -154000 && position[0] < -150000 && position[1] > 320000 && position[1] < 324000 && position[2] > 70000 && position[2] < 74000) ||
-      //(position[0] > -115000 && position[0] < -111000 && position[1] > 300000 && position[1] < 304000 && position[2] > 70000 && position[2] < 74000)
-      //(position[0] > -112000 && position[0] < -108000 && position[1] > 298000 && position[1] < 302000 && position[2] > 70000 && position[2] < 74000)
-      //(position[0] > -154000 && position[0] < -150000 && position[1] > 200000 && position[1] < 204000 && position[2] > 70000 && position[2] < 74000) ||
-      //(position[0] > -204000 && position[0] < -200000 && position[1] > 150000 && position[1] < 154000 && position[2] > 70000 && position[2] < 74000) ||
-      //(position[0] > -104000 && position[0] < -100000 && position[1] > 120000 && position[1] < 124000 && position[2] > 150000 && position[2] < 1504000) ||
-      //(position[0] > -14000 && position[0] < -10000 && position[1] > 70000 && position[1] < 74000 && position[2] > 150000 && position[2] < 1504000)
-      //;
-
       WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
                                                                       *(world->parameters.coordinate_system));
 
@@ -469,18 +440,12 @@ namespace WorldBuilder
               const double max_slab_length = total_slab_length[current_section] +
                                              section_fraction *
                                              (total_slab_length[next_section] - total_slab_length[current_section]);
-              if (in_point)
-                std::cout << "J. distance_from_plane " << distance_from_plane << ", top_truncation_local " << top_truncation_local << ", thickness_local = " <<thickness_local << ", max_slab_length = " << max_slab_length <<
-                          ", distance_along_plane = " << distance_along_plane << std::endl;
 
               if (distance_from_plane >= top_truncation_local &&
                   distance_from_plane <= thickness_local &&
                   distance_along_plane >= 0 &&
                   distance_along_plane <= max_slab_length)
                 {
-                  if (in_point)
-                    std::cout << "K. distance_from_plane " << distance_from_plane << ", top_truncation_local " << top_truncation_local << ", thickness_local = " <<thickness_local << ", max_slab_length = " << max_slab_length <<
-                              ", distance_along_plane = " << distance_along_plane << std::endl;
                   // Inside the slab!
                   double temperature_current_section = temperature;
                   double temperature_next_section = temperature;
@@ -525,8 +490,6 @@ namespace WorldBuilder
             }
         }
 
-      if (in_point)
-        std::cout << "L. temperature " << temperature << std::endl;
       return temperature;
     }
 
