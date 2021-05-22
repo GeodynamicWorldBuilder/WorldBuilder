@@ -446,7 +446,7 @@ int main(int argc, char **argv)
   std::vector<std::vector<size_t> > grid_connectivity(0);
 
 
-  bool compress_size = false;
+  bool compress_size = true;
 
 
 
@@ -1319,80 +1319,86 @@ int main(int argc, char **argv)
   std::cout.flush();
 
 
-  std::cout << "[5/5] Writing the paraview file: stage 1 of 3, writing header part 1                              \r";
+  std::cout << "[5/5] Writing the paraview file: stage 1 of 3, preparing writing header part 1                              \r";
   std::cout.flush();
 
   std::string base_filename = wb_file.substr(wb_file.find_last_of("/\\") + 1);
   std::string::size_type const p(base_filename.find_last_of('.'));
   std::string file_without_extension = base_filename.substr(0, p);
 
+  std::stringstream buffer;
   std::ofstream myfile;
   myfile.open (file_without_extension + ".vtu");
-  myfile << "<?xml version=\"1.0\" ?> " << std::endl;
-  myfile << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"LittleEndian\">" << std::endl;
-  myfile << "<UnstructuredGrid>" << std::endl;
-  myfile << "<FieldData>" << std::endl;
-  myfile << "<DataArray type=\"Float32\" Name=\"TIME\" NumberOfTuples=\"1\" format=\"ascii\">0</DataArray>" << std::endl;
-  myfile << "</FieldData>" << std::endl;
-  myfile << "<Piece NumberOfPoints=\""<< n_p << "\" NumberOfCells=\"" << n_cell << "\">" << std::endl;
-  myfile << "  <Points>" << std::endl;
-  myfile << "    <DataArray type=\"Float32\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+  buffer << "<?xml version=\"1.0\" ?> " << std::endl;
+  buffer << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"LittleEndian\">" << std::endl;
+  buffer << "<UnstructuredGrid>" << std::endl;
+  buffer << "<FieldData>" << std::endl;
+  buffer << "<DataArray type=\"Float32\" Name=\"TIME\" NumberOfTuples=\"1\" format=\"ascii\">0</DataArray>" << std::endl;
+  buffer << "</FieldData>" << std::endl;
+  buffer << "<Piece NumberOfPoints=\""<< n_p << "\" NumberOfCells=\"" << n_cell << "\">" << std::endl;
+  buffer << "  <Points>" << std::endl;
+  buffer << "    <DataArray type=\"Float32\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
   if (dim == 2)
     for (size_t i = 0; i < n_p; ++i)
-      myfile << grid_x[i] << " " << grid_z[i] << " " << "0.0" << std::endl;
+      buffer << grid_x[i] << " " << grid_z[i] << " " << "0.0" << std::endl;
   else
     for (size_t i = 0; i < n_p; ++i)
       {
-        myfile << grid_x[i] << " " << grid_y[i] << " " << grid_z[i] << std::endl;
+        buffer << grid_x[i] << " " << grid_y[i] << " " << grid_z[i] << std::endl;
       }
-  std::cout << "[5/5] Writing the paraview file: stage 1 of 3, writing header part 2                              \r";
+  std::cout << "[5/5] Writing the paraview file: stage 1 of 3, preparing writing header part 2                              \r";
   std::cout.flush();
-  myfile << "    </DataArray>" << std::endl;
-  myfile << "  </Points>" << std::endl;
-  myfile << std::endl;
-  myfile << "  <Cells>" << std::endl;
-  myfile << "    <DataArray type=\"Int32\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
+  buffer << "    </DataArray>" << std::endl;
+  buffer << "  </Points>" << std::endl;
+  buffer << std::endl;
+  buffer << "  <Cells>" << std::endl;
+  buffer << "    <DataArray type=\"Int32\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
   if (dim == 2)
     for (size_t i = 0; i < n_cell; ++i)
-      myfile << grid_connectivity[i][0] << " " <<grid_connectivity[i][1] << " " << grid_connectivity[i][2] << " " << grid_connectivity[i][3] << std::endl;
+      buffer << grid_connectivity[i][0] << " " <<grid_connectivity[i][1] << " " << grid_connectivity[i][2] << " " << grid_connectivity[i][3] << std::endl;
   else
     for (size_t i = 0; i < n_cell; ++i)
-      myfile << grid_connectivity[i][0] << " " <<grid_connectivity[i][1] << " " << grid_connectivity[i][2] << " " << grid_connectivity[i][3]  << " "
+      buffer << grid_connectivity[i][0] << " " <<grid_connectivity[i][1] << " " << grid_connectivity[i][2] << " " << grid_connectivity[i][3]  << " "
              << grid_connectivity[i][4] << " " <<grid_connectivity[i][5] << " " << grid_connectivity[i][6] << " " << grid_connectivity[i][7]<< std::endl;
-  myfile << "    </DataArray>" << std::endl;
-  myfile << "    <DataArray type=\"Int32\" Name=\"offsets\" format=\"ascii\">" << std::endl;
+  buffer << "    </DataArray>" << std::endl;
+  buffer << "    <DataArray type=\"Int32\" Name=\"offsets\" format=\"ascii\">" << std::endl;
   if (dim == 2)
     for (size_t i = 1; i <= n_cell; ++i)
-      myfile << i * 4 << " ";
+      buffer << i * 4 << " ";
   else
     for (size_t i = 1; i <= n_cell; ++i)
-      myfile << i * 8 << " ";
-  myfile << std::endl << "    </DataArray>" << std::endl;
-  myfile << "    <DataArray type=\"UInt8\" Name=\"types\" format=\"ascii\">" << std::endl;
+      buffer << i * 8 << " ";
+  buffer << std::endl << "    </DataArray>" << std::endl;
+  buffer << "    <DataArray type=\"UInt8\" Name=\"types\" format=\"ascii\">" << std::endl;
   if (dim == 2)
     for (size_t i = 0; i < n_cell; ++i)
-      myfile << "9" << " ";
+      buffer << "9" << " ";
   else
     for (size_t i = 0; i < n_cell; ++i)
-      myfile << "12" << " ";
-  myfile <<  std::endl <<"    </DataArray>" << std::endl;
-  myfile << "  </Cells>" << std::endl;
+      buffer << "12" << " ";
+  buffer <<  std::endl <<"    </DataArray>" << std::endl;
+  buffer << "  </Cells>" << std::endl;
 
-  myfile << "  <PointData Scalars=\"scalars\">" << std::endl;
+  buffer << "  <PointData Scalars=\"scalars\">" << std::endl;
 
-  myfile << "<DataArray type=\"Float32\" Name=\"Depth\" format=\"ascii\">" << std::endl;
+  buffer << "<DataArray type=\"Float32\" Name=\"Depth\" format=\"ascii\">" << std::endl;
 
   for (size_t i = 0; i < n_p; ++i)
     {
-      myfile <<  grid_depth[i] << std::endl;
+      buffer <<  grid_depth[i] << std::endl;
     }
-  myfile << "</DataArray>" << std::endl;
+  buffer << "</DataArray>" << std::endl;
 
+
+  std::cout << "[5/5] Writing the paraview file: stage 1 of 3, writing header                    \r";
+  std::cout.flush();
+  myfile << buffer.str();
+  buffer.str(std::string());
 
   std::cout << "[5/5] Writing the paraview file: stage 2 of 3, computing temperatures                    \r";
   std::cout.flush();
 
-  myfile << "    <DataArray type=\"Float32\" Name=\"Temperature\" format=\"ascii\">" << std::endl;
+  buffer << "    <DataArray type=\"Float32\" Name=\"Temperature\" format=\"ascii\">" << std::endl;
   std::vector<double> temp_vector(n_p);
   if (dim == 2)
     {
@@ -1411,13 +1417,19 @@ int main(int argc, char **argv)
       });
     }
 
-  std::cout << "[5/5] Writing the paraview file: stage 2 of 3, writing temperatures                    \r";
+  std::cout << "[5/5] Writing the paraview file: stage 2 of 3, preparing to write temperatures                    \r";
   std::cout.flush();
 
   for (size_t i = 0; i < n_p; ++i)
-    myfile << temp_vector[i]  << std::endl;
-  myfile << "    </DataArray>" << std::endl;
+    buffer << temp_vector[i]  << std::endl;
+  buffer << "    </DataArray>" << std::endl;
 
+
+  std::cout << "[5/5] Writing the paraview file: stage 2 of 3, writing temperatures                    \r";
+
+
+  myfile << buffer.str();
+  buffer.str(std::string());
 
   std::cout << "[5/5] Writing the paraview file: stage 3 of 3, writing compositions                     \r";
   std::cout.flush();
@@ -1428,7 +1440,7 @@ int main(int argc, char **argv)
                 << c << " of " << compositions-1 << "            \r";
       std::cout.flush();
 
-      myfile << "<DataArray type=\"Float32\" Name=\"Composition " << c << "\" Format=\"ascii\">" << std::endl;
+      buffer << "<DataArray type=\"Float32\" Name=\"Composition " << c << "\" Format=\"ascii\">" << std::endl;
 
       if (dim == 2)
         {
@@ -1447,23 +1459,32 @@ int main(int argc, char **argv)
           });
         }
 
-
-      std::cout << "[5/5] Writing the paraview file: stage 2 of 3, writing composition "
+      std::cout << "[5/5] Writing the paraview file: stage 2 of 3, preparing to write composition "
                 << c << " of " << compositions-1 << "            \r";
       std::cout.flush();
 
       for (size_t i = 0; i < n_p; ++i)
-        myfile << temp_vector[i]  << std::endl;
+        buffer << temp_vector[i]  << std::endl;
 
-      myfile << "</DataArray>" << std::endl;
+      buffer << "</DataArray>" << std::endl;
+
+
+      std::cout << "[5/5] Writing the paraview file: stage 2 of 3, writing composition "
+                << c << " of " << compositions-1 << "            \r";
+
+      myfile << buffer.str();
+      buffer.str(std::string());
     }
 
-  myfile << "  </PointData>" << std::endl;
+  buffer << "  </PointData>" << std::endl;
 
 
-  myfile << " </Piece>" << std::endl;
-  myfile << " </UnstructuredGrid>" << std::endl;
-  myfile << "</VTKFile>" << std::endl;
+  buffer << " </Piece>" << std::endl;
+  buffer << " </UnstructuredGrid>" << std::endl;
+  buffer << "</VTKFile>" << std::endl;
+
+  myfile << buffer.str();
+  buffer.str(std::string());
 
   std::cout << "                                                                                \r";
   std::cout.flush();
