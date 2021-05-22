@@ -6,6 +6,8 @@ jobs:
   benchmarks:
     strategy: 
       fail-fast: false
+    permissions:
+      pull-requests: write
     runs-on: ubuntu-latest
 
     steps:
@@ -133,3 +135,64 @@ jobs:
       with:
         name: benchmark_results
         path: benchmark_results/
+
+    - name: 'Download artifact'
+      uses: actions/github-script@v3.1.0
+      with:
+        script: |
+          var artifacts = await github.actions.listWorkflowRunArtifacts({
+             owner: context.repo.owner,
+             repo: context.repo.repo,
+             run_id: ${{github.event.workflow_run.id }},
+          });
+          var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+            return artifact.name == "benchmark_results"
+          })[0];
+          var download = await github.actions.downloadArtifact({
+             owner: context.repo.owner,
+             repo: context.repo.repo,
+             artifact_id: matchArtifact.id,
+             archive_format: 'zip',
+          });
+          var fs = require('fs');
+          fs.writeFileSync('${{github.workspace}}/benchmark_results.zip', Buffer.from(download.data));
+    - run: unzip benchmark_results.zip
+
+    - name: cat analyze
+      id: output_result
+      run: |
+            cat ${{github.workspace}}/analyze_1.log;
+            cat ${{github.workspace}}/analyze_2.log;
+            echo "::set-output name=wall_time_1_master_mean::$(cat ${{github.workspace}}/analyze_1.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $2}')";
+            echo "::set-output name=wall_time_1_master_std_dev::$(cat ${{github.workspace}}/analyze_1.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $4}')";
+            echo "::set-output name=wall_time_1_master_samples::$(cat ${{github.workspace}}/analyze_1.log | grep samples | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $2}')";
+            echo "::set-output name=wall_time_1_feature_mean::$(cat ${{github.workspace}}/analyze_1.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $5}')";
+            echo "::set-output name=wall_time_1_feature_std_dev::$(cat ${{github.workspace}}/analyze_1.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $7}')";
+            echo "::set-output name=wall_time_1_feature_samples::$(cat ${{github.workspace}}/analyze_1.log | grep samples | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $3}')";
+            echo "::set-output name=wall_time_1_CI_low::$(cat ${{github.workspace}}/analyze_1.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | sed 's/\[/ /g' | sed 's/\]/ /g' | awk '{print $8}')";
+            echo "::set-output name=wall_time_1_CI_high::$(cat ${{github.workspace}}/analyze_1.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | sed 's/\[/ /g' | sed 's/\]/ /g' | awk '{print $10}')";
+            echo "::set-output name=wall_time_2_master_mean::$(cat ${{github.workspace}}/analyze_2.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $2}')";
+            echo "::set-output name=wall_time_2_master_std_dev::$(cat ${{github.workspace}}/analyze_2.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $4}')";
+            echo "::set-output name=wall_time_2_master_samples::$(cat ${{github.workspace}}/analyze_2.log | grep samples | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $2}')";
+            echo "::set-output name=wall_time_2_feature_mean::$(cat ${{github.workspace}}/analyze_2.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $5}')";
+            echo "::set-output name=wall_time_2_feature_std_dev::$(cat ${{github.workspace}}/analyze_2.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $7}')";
+            echo "::set-output name=wall_time_2_feature_samples::$(cat ${{github.workspace}}/analyze_2.log | grep samples | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $3}')";
+            echo "::set-output name=wall_time_2_CI_low::$(cat ${{github.workspace}}/analyze_2.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | sed 's/\[/ /g' | sed 's/\]/ /g' | awk '{print $8}')";
+            echo "::set-output name=wall_time_2_CI_high::$(cat ${{github.workspace}}/analyze_2.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | sed 's/\[/ /g' | sed 's/\]/ /g' | awk '{print $10}')";
+    - name: Find Comment
+      uses: peter-evans/find-comment@v1
+      id: fc
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-author: 'github-actions[bot]'
+    - name: Create or update comment
+      uses: peter-evans/create-or-update-comment@v1
+      with:
+        comment-id: ${{ steps.fc.outputs.comment-id }}
+        issue-number: ${{ github.event.pull_request.number }}
+        body: |
+               | Benchmark | Master | Feature | Difference (99.9% CI) |
+               | --- | --- | --- | --- |
+               | Slab interpolation simple none | ${{ steps.output_result.outputs.wall_time_1_master_mean }} ± ${{ steps.output_result.outputs.wall_time_1_master_std_dev }} (s=${{ steps.output_result.outputs.wall_time_1_master_samples }})| ${{ steps.output_result.outputs.wall_time_1_feature_mean }} ± ${{ steps.output_result.outputs.wall_time_1_feature_std_dev }} (s=${{ steps.output_result.outputs.wall_time_1_feature_samples }})| ${{ steps.output_result.outputs.wall_time_1_CI_low }} .. ${{ steps.output_result.outputs.wall_time_1_CI_high }} |
+               | Slab interpolation curved simple none | ${{ steps.output_result.outputs.wall_time_2_master_mean }} ± ${{ steps.output_result.outputs.wall_time_2_master_std_dev }} (s=${{ steps.output_result.outputs.wall_time_2_master_samples }})| ${{ steps.output_result.outputs.wall_time_2_feature_mean }} ± ${{ steps.output_result.outputs.wall_time_2_feature_std_dev }} (s=${{ steps.output_result.outputs.wall_time_2_feature_samples }})| ${{ steps.output_result.outputs.wall_time_2_CI_low }} .. ${{ steps.output_result.outputs.wall_time_2_CI_high }} |
+        edit-mode: replace
