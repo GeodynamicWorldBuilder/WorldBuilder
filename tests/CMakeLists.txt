@@ -17,58 +17,63 @@ ENDIF()
 
 # Unit test testing
 #find all the unit test files
-file(GLOB_RECURSE UNIT_TEST_SOURCES_CXX "unit_tests/*.cc")
+SET(WB_INCLUDE_UNIT_TEST TRUE
+CACHE STRING "Whether to include unit tests or not in the build.")
 
-if(CMAKE_Fortran_COMPILER)
-  file(GLOB_RECURSE UNIT_TEST_SOURCES_FORTAN "unit_tests/*.f90")
+if(WB_INCLUDE_UNIT_TEST)
+  file(GLOB_RECURSE UNIT_TEST_SOURCES_CXX "unit_tests/*.cc")
+
+  if(CMAKE_Fortran_COMPILER)
+    file(GLOB_RECURSE UNIT_TEST_SOURCES_FORTAN "unit_tests/*.f90")
+  endif()
+
+  set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES_CXX} ${UNIT_TEST_SOURCES_FORTAN})
+
+
+
+  #set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin/)
+  
+  # Run through each source
+  foreach(test_source ${UNIT_TEST_SOURCES})
+    # Extract the filename without an extension (NAME_WE)
+    get_filename_component(test_name ${test_source} NAME_WE)
+  
+    # Add compile target
+    add_executable(${test_name} ${test_source})
+  
+    if(NOT ${CMAKE_VERSION} VERSION_LESS "2.8.13") # Preventing issues with older cmake compilers which do not support VERSION_GREATER_EQUAL
+      target_compile_options(${test_name} INTERFACE ${WB_COMPILER_OPTIONS_INTERFACE} PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE})
+    endif()
+  
+    if(${CMAKE_VERSION} VERSION_LESS "3.13.0") 
+      SET(CMAKE_EXE_LINKER_FLAGS "${WB_LINKER_OPTIONS}")
+    else()
+      target_link_options(${test_name} INTERFACE ${WB_LINKER_OPTIONS})
+    endif()
+  
+    # Make sure that the whole library is loaded, so the registration is done correctly.
+    if(NOT APPLE)
+      SET(GWB_LIBRARY_WHOLE -Wl,--whole-archive WorldBuilder -Wl,--no-whole-archive)  
+    elseif(MSVC)
+      SET(GWB_LIBRARY_WHOLE WorldBuilder)
+      SET(CMAKE_EXE_LINKER_FLAGS "/WHOLEARCHIVE:libworldbuilder")
+    else()
+      SET(GWB_LIBRARY_WHOLE -Wl,-force_load WorldBuilder)
+    endif()
+  
+    target_link_libraries(${test_name} ${GWB_LIBRARY_WHOLE})
+  
+    #Move testing binaries into a testBin directory
+    set_target_properties(${test_name} PROPERTIES
+                          RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR}/bin/)
+  
+    #Finally add it to test execution -
+    #Notice the WORKING_DIRECTORY and COMMAND
+    add_test(NAME ${test_name}
+             WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+             COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${test_name})
+  endforeach(test_source)
 endif()
-
-set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES_CXX} ${UNIT_TEST_SOURCES_FORTAN})
-
-
-#set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin/)
-
-# Run through each source
-foreach(test_source ${UNIT_TEST_SOURCES})
-  # Extract the filename without an extension (NAME_WE)
-  get_filename_component(test_name ${test_source} NAME_WE)
-
-  # Add compile target
-  add_executable(${test_name} ${test_source})
-
-  if(NOT ${CMAKE_VERSION} VERSION_LESS "2.8.13") # Preventing issues with older cmake compilers which do not support VERSION_GREATER_EQUAL
-    target_compile_options(${test_name} INTERFACE ${WB_COMPILER_OPTIONS_INTERFACE} PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE})
-  endif()
-
-  if(${CMAKE_VERSION} VERSION_LESS "3.13.0") 
-    SET(CMAKE_EXE_LINKER_FLAGS "${WB_LINKER_OPTIONS}")
-  else()
-    target_link_options(${test_name} INTERFACE ${WB_LINKER_OPTIONS})
-  endif()
-
-  # Make sure that the whole library is loaded, so the registration is done correctly.
-  if(NOT APPLE)
-    SET(GWB_LIBRARY_WHOLE -Wl,--whole-archive WorldBuilder -Wl,--no-whole-archive)  
-  elseif(MSVC)
-    SET(GWB_LIBRARY_WHOLE WorldBuilder)
-    SET(CMAKE_EXE_LINKER_FLAGS "/WHOLEARCHIVE:libworldbuilder")
-  else()
-    SET(GWB_LIBRARY_WHOLE -Wl,-force_load WorldBuilder)
-  endif()
-	
-  target_link_libraries(${test_name} ${GWB_LIBRARY_WHOLE})
-
-  #Move testing binaries into a testBin directory
-  set_target_properties(${test_name} PROPERTIES
-                        RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR}/bin/)
-
-  #Finally add it to test execution -
-  #Notice the WORKING_DIRECTORY and COMMAND
-  add_test(NAME ${test_name}
-           WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
-           COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${test_name})
-endforeach(test_source)
-
 # App testing
 IF(CMAKE_RUN_APP_TESTS)
   # Create directory for the test results
