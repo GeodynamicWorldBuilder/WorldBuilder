@@ -115,12 +115,12 @@ jobs:
     - name: run benchmark 1
       run: |
             cd ${{github.workspace}}/cbdr/;
-            time cargo run --release sample --timeout=60s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/slab_interpolation_simple_none.wb ${{github.workspace}}/feature/source/tests/visualization/gridfile.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/slab_interpolation_simple_none.wb ${{github.workspace}}/feature/source/tests/visualization/gridfile.grid" > ${{github.workspace}}/result_1.csv
+            time cargo run --release sample --timeout=90s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/slab_interpolation_simple_none.wb ${{github.workspace}}/feature/source/tests/visualization/gridfile.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/slab_interpolation_simple_none.wb ${{github.workspace}}/feature/source/tests/visualization/gridfile.grid" > ${{github.workspace}}/result_1.csv
     
     - name: run benchmark 2
       run: |
             cd ${{github.workspace}}/cbdr/;
-            time cargo run --release sample --timeout=60s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/slab_interpolation_simple_curved_none.wb ${{github.workspace}}/feature/source/tests/visualization/gridfile.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/slab_interpolation_simple_curved_none.wb ${{github.workspace}}/feature/source/tests/visualization/gridfile.grid" > ${{github.workspace}}/result_2.csv
+            time cargo run --release sample --timeout=90s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/slab_interpolation_simple_curved_none.wb ${{github.workspace}}/feature/source/tests/visualization/gridfile.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/slab_interpolation_simple_curved_none.wb ${{github.workspace}}/feature/source/tests/visualization/gridfile.grid" > ${{github.workspace}}/result_2.csv
     
     - name: cat
       run: |
