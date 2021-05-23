@@ -42,6 +42,7 @@ jobs:
       - name: cat analyze
         id: output_result
         run: |
+              cat ${{github.workspace}}/NR;
               cat ${{github.workspace}}/analyze_1.log;
               cat ${{github.workspace}}/analyze_2.log;
               echo "::set-output name=pull_request_number::$(cat ${{github.workspace}}/NR)";
@@ -65,15 +66,17 @@ jobs:
       - name: Find Comment
         continue-on-error: true
         uses: peter-evans/find-comment@v1
-        id: fc
+        id: find_comment
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ steps.output_result.outputs.pull_request_number }}
           comment-author: 'github-actions[bot]'
 
       - name: Create or update comment
         uses: peter-evans/create-or-update-comment@v1
         with:
-          comment-id: ${{ steps.fc.outputs.comment-id }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          comment-id: ${{ steps.find_comment.outputs.comment-id }}
           issue-number: ${{ steps.output_result.outputs.pull_request_number }}
           body: |
                  | Benchmark | Master | Feature | Difference (99.9% CI) |
