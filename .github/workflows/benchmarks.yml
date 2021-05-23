@@ -126,6 +126,7 @@ jobs:
       run: |
             cd ${{github.workspace}}/cbdr/;
             mkdir ${{github.workspace}}/benchmark_results/;
+            echo "${{ github.event.number }}" > ${{github.workspace}}/benchmark_results/NR
             RUST_BACKTRACE=1 cat ${{github.workspace}}/result_1.csv | cargo run --release analyze --disable-dynamic-printing > ${{github.workspace}}/benchmark_results/analyze_1.log ||:;
             RUST_BACKTRACE=1 cat ${{github.workspace}}/result_2.csv | cargo run --release analyze --disable-dynamic-printing > ${{github.workspace}}/benchmark_results/analyze_2.log ||:;
             analyze_contents_1_var=$(cat ${{github.workspace}}/benchmark_results/analyze_1.log);

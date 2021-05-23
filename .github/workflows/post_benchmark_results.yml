@@ -10,6 +10,8 @@ on:
 
 jobs:
   upload:
+    strategy: 
+      fail-fast: false
     runs-on: ubuntu-latest
     if: >
       ${{ github.event.workflow_run.event == 'pull_request' &&
@@ -42,6 +44,7 @@ jobs:
         run: |
               cat ${{github.workspace}}/analyze_1.log;
               cat ${{github.workspace}}/analyze_2.log;
+              echo "::set-output name=pull_request_number::$(cat ${{github.workspace}}/NR)";
               echo "::set-output name=wall_time_1_master_mean::$(cat ${{github.workspace}}/analyze_1.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $2}')";
               echo "::set-output name=wall_time_1_master_std_dev::$(cat ${{github.workspace}}/analyze_1.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $4}')";
               echo "::set-output name=wall_time_1_master_samples::$(cat ${{github.workspace}}/analyze_1.log | grep samples | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $2}')";
@@ -64,14 +67,14 @@ jobs:
         uses: peter-evans/find-comment@v1
         id: fc
         with:
-          issue-number: ${{ github.event.pull_request.number }}
+          issue-number: ${{ steps.output_result.outputs.pull_request_number }}
           comment-author: 'github-actions[bot]'
 
       - name: Create or update comment
         uses: peter-evans/create-or-update-comment@v1
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
-          issue-number: ${{ github.event.pull_request.number }}
+          issue-number: ${{ steps.output_result.outputs.pull_request_number }}
           body: |
                  | Benchmark | Master | Feature | Difference (99.9% CI) |
                  | --- | --- | --- | --- |
