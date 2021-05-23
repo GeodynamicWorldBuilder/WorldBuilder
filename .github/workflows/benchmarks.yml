@@ -67,7 +67,7 @@ jobs:
       with:
         path: |
           ${{github.workspace}}/master/build/
-        key: ${{ runner.os }}-gwb-master-v2}}
+        key: ${{ runner.os }}-gwb-master-v3}}
 
 
     - name: retrieve cache feature
@@ -75,11 +75,13 @@ jobs:
       with:
         path: |
           ${{github.workspace}}/feature/build/
-        key: ${{ runner.os }}-gwb-feature-${{ github.event.number }}-v2}}
+        key: ${{ runner.os }}-gwb-feature-${{ github.event.number }}-v3}}
 
 
     - name: Create Build Environment
-      run: cmake -E make_directory ${{github.workspace}}/master/build
+      run: |
+            sudo apt install ninja-build;
+            cmake -E make_directory ${{github.workspace}}/master/build;
 
     - name: Configure CMake
       shell: bash
@@ -87,13 +89,12 @@ jobs:
       run: |
             pwd;
             ls;
-            cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Werror -DWB_INCLUDE_UNIT_TEST=FALSE ${{github.workspace}}/master/source/;
+            cmake  -G"Ninja" $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Werror -DWB_INCLUDE_UNIT_TEST=FALSE ${{github.workspace}}/master/source/;
 
     - name: Build gwb
       working-directory: ${{github.workspace}}/master/build
       shell: bash
-      run: cmake --build ${{github.workspace}}/master/build --config Release 
-
+      run: ninja
 
 
     - name: Create Build Environment
@@ -105,12 +106,12 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{github.workspace}}/feature/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Werror -DWB_INCLUDE_UNIT_TEST=FALSE ${{github.workspace}}/feature/source/
+      run: cmake -G"Ninja" $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Werror -DWB_INCLUDE_UNIT_TEST=FALSE ${{github.workspace}}/feature/source/
 
     - name: Build gwb
       working-directory: ${{github.workspace}}/feature/build
       shell: bash
-      run: cmake --build ${{github.workspace}}/feature/build --config Release 
+      run: ninja
 
     - name: run benchmark 1
       run: |
