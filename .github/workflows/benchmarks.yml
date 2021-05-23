@@ -21,27 +21,16 @@ jobs:
         profile: minimal
         toolchain: stable
 
+
+    - name: cmake version
+      run: cmake --version
+
     - name: Checkout cbdr
       uses: actions/checkout@v2
       with:
         repository: MFraters/cbdr
         ref: github_actions_fix
         path: cbdr
-
-
-    - name: Checkout feature
-      uses: actions/checkout@v2
-      with:
-        path: feature/source
-
-    - name: Checkout master
-      uses: actions/checkout@v2
-      with:
-        ref: master
-        path: master/source
-
-    - name: cmake version
-      run: cmake --version
 
     - name: retrieve cache cbdr
       uses: actions/cache@v2
@@ -54,19 +43,15 @@ jobs:
           ~/.cargo/git/
           target/
           ./target/
+          ${{github.workspace}}/cbdr/
           ${{github.workspace}}/cbdr/target/
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-
-    - name: cd Build Environment
-      run: |
-            cd ${{github.workspace}}/cbdr/;
-            cargo build --release;
 
     - name: retrieve cache master
       uses: actions/cache@v2
       with:
         path: |
-          ${{github.workspace}}/master/build/
+          ${{github.workspace}}/master/
         key: ${{ runner.os }}-gwb-master-v3}}
 
 
@@ -74,8 +59,36 @@ jobs:
       uses: actions/cache@v2
       with:
         path: |
-          ${{github.workspace}}/feature/build/
+          ${{github.workspace}}/feature/
         key: ${{ runner.os }}-gwb-feature-${{ github.event.number }}-v3}}
+
+    - name: Checkout cbdr
+      uses: actions/checkout@v2
+      with:
+        repository: MFraters/cbdr
+        ref: github_actions_fix
+        path: cbdr
+        clean: false
+
+
+    - name: Checkout feature
+      uses: actions/checkout@v2
+      with:
+        path: feature/source
+        clean: false
+
+    - name: Checkout master
+      uses: actions/checkout@v2
+      with:
+        ref: master
+        path: master/source
+        clean: false
+
+    - name: cd Build Environment
+      run: |
+            cd ${{github.workspace}}/cbdr/;
+            cargo build --release;
+
 
 
     - name: Create Build Environment
@@ -106,7 +119,10 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{github.workspace}}/feature/build
-      run: cmake -G"Ninja" $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Werror -DWB_INCLUDE_UNIT_TEST=FALSE ${{github.workspace}}/feature/source/
+      run: |
+            pwd;
+            ls;
+            cmake -G"Ninja" $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Werror -DWB_INCLUDE_UNIT_TEST=FALSE ${{github.workspace}}/feature/source/;
 
     - name: Build gwb
       working-directory: ${{github.workspace}}/feature/build
