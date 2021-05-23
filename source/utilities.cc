@@ -559,7 +559,9 @@ namespace WorldBuilder
             }
         }
 
-      if (fraction_CPL_P1P2_strict < INFINITY)
+      if (fraction_CPL_P1P2_strict < INFINITY
+          &&
+          (interpolation_type == InterpolationType::ContinuousMonotoneSpline || (interpolation_type != InterpolationType::ContinuousMonotoneSpline && fraction_CPL_P1P2_strict >= 0. && fraction_CPL_P1P2_strict <= 1.)))
         {
           // now compute the relevant x and y axis
           double fraction_CPL_P1P2 = std::numeric_limits<double>::signaling_NaN();
