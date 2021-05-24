@@ -16,9 +16,24 @@ jobs:
       with:
         cmake-version: '3.16.x'
 
-    - name: Use cmake
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+
+    - name: cmake version
       run: cmake --version
-    - uses: actions/cache@v2
+
+    - name: Checkout cbdr
+      uses: actions/checkout@v2
+      with:
+        repository: MFraters/cbdr
+        ref: github_actions_fix
+        path: cbdr
+
+    - name: retrieve cache cbdr
+      uses: actions/cache@v2
       with:
         path: |
           ~/.cargo/bin/
@@ -28,50 +43,58 @@ jobs:
           ~/.cargo/git/
           target/
           ./target/
-          ${{github.workspace}}/
-          ${{github.workspace}}/master/
-          ${{github.workspace}}/master/build/
+          ${{github.workspace}}/cbdr/
+          ${{github.workspace}}/cbdr/target/
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
-
-    - uses: actions-rs/toolchain@v1
+    - name: retrieve cache master
+      uses: actions/cache@v2
       with:
-        profile: minimal
-        toolchain: stable
+        path: |
+          ${{github.workspace}}/master/
+        key: ${{ runner.os }}-gwb-master-v3}}
 
-    - name: Checkout
+
+    - name: retrieve cache feature
+      uses: actions/cache@v2
+      with:
+        path: |
+          ${{github.workspace}}/feature/
+        key: ${{ runner.os }}-gwb-feature-${{ github.event.number }}-v3}}
+
+    - name: Checkout cbdr
       uses: actions/checkout@v2
       with:
         repository: MFraters/cbdr
         ref: github_actions_fix
         path: cbdr
+        clean: false
 
+
+    - name: Checkout feature
+      uses: actions/checkout@v2
+      with:
+        path: feature/source
+        clean: false
+
+    - name: Checkout master
+      uses: actions/checkout@v2
+      with:
+        ref: master
+        path: master/source
+        clean: false
 
     - name: cd Build Environment
       run: |
             cd ${{github.workspace}}/cbdr/;
             cargo build --release;
 
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        path: feature
 
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        ref: master
-        path: master
 
     - name: Create Build Environment
-      run: cmake -E make_directory ${{github.workspace}}/master/build
-
-
-    - name: cd Build Environment
       run: |
-            cd ${{github.workspace}}/master/build;
-            pwd;
-            ls;
+            sudo apt install ninja-build;
+            cmake -E make_directory ${{github.workspace}}/master/build;
 
     - name: Configure CMake
       shell: bash
@@ -79,13 +102,12 @@ jobs:
       run: |
             pwd;
             ls;
-            cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Werror -DWB_INCLUDE_UNIT_TEST=FALSE ${{github.workspace}}/master/;
+            cmake  -G"Ninja" $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Werror -DWB_INCLUDE_UNIT_TEST=FALSE ${{github.workspace}}/master/source/;
 
     - name: Build gwb
       working-directory: ${{github.workspace}}/master/build
       shell: bash
-      run: cmake --build ${{github.workspace}}/master/build --config Release 
-
+      run: ninja
 
 
     - name: Create Build Environment
@@ -97,22 +119,25 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{github.workspace}}/feature/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Werror -DWB_INCLUDE_UNIT_TEST=FALSE ${{github.workspace}}/feature/
+      run: |
+            pwd;
+            ls;
+            cmake -G"Ninja" $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Werror -DWB_INCLUDE_UNIT_TEST=FALSE ${{github.workspace}}/feature/source/;
 
     - name: Build gwb
       working-directory: ${{github.workspace}}/feature/build
       shell: bash
-      run: cmake --build ${{github.workspace}}/feature/build --config Release 
+      run: ninja
 
     - name: run benchmark 1
       run: |
             cd ${{github.workspace}}/cbdr/;
-            time cargo run --release sample --timeout=60s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/tests/app/slab_interpolation_simple_none.wb ${{github.workspace}}/feature/tests/visualization/gridfile.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/tests/app/slab_interpolation_simple_none.wb ${{github.workspace}}/feature/tests/visualization/gridfile.grid" > ${{github.workspace}}/result_1.csv
+            time cargo run --release sample --timeout=120s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/slab_interpolation_simple_none.wb ${{github.workspace}}/feature/source/tests/visualization/gridfile.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/slab_interpolation_simple_none.wb ${{github.workspace}}/feature/source/tests/visualization/gridfile.grid" > ${{github.workspace}}/result_1.csv
     
     - name: run benchmark 2
       run: |
             cd ${{github.workspace}}/cbdr/;
-            time cargo run --release sample --timeout=60s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/tests/app/slab_interpolation_simple_curved_none.wb ${{github.workspace}}/feature/tests/visualization/gridfile.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/tests/app/slab_interpolation_simple_curved_none.wb ${{github.workspace}}/feature/tests/visualization/gridfile.grid" > ${{github.workspace}}/result_2.csv
+            time cargo run --release sample --timeout=120s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/slab_interpolation_simple_curved_none.wb ${{github.workspace}}/feature/source/tests/visualization/gridfile.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/slab_interpolation_simple_curved_none.wb ${{github.workspace}}/feature/source/tests/visualization/gridfile.grid" > ${{github.workspace}}/result_2.csv
     
     - name: cat
       run: |
