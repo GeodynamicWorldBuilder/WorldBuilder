@@ -905,167 +905,161 @@ namespace WorldBuilder
 
               // If the point on the line does not lay between point P1 and P2
               // then ignore it. Otherwise continue.
-              if (fraction_CPL_P1P2_strict >= 0.0 && fraction_CPL_P1P2_strict <= 1.0)
-                {
-                  continue_computation = true;
-                  // now figure out where the point is in relation with the user
-                  // get P1 and P2 back
+              //if (fraction_CPL_P1P2_strict >= 0.0 && fraction_CPL_P1P2_strict <= 1.0)
+              {
+                continue_computation = true;
+                // now figure out where the point is in relation with the user
+                // get P1 and P2 back
 
-                  const Point<2> P1(point_list[current_section]);
+                const Point<2> P1(point_list[current_section]);
 
-                  const Point<2> P2(point_list[next_section]);
+                const Point<2> P2(point_list[next_section]);
 
-                  const Point<2> P1P2 = P2 - P1;
+                const Point<2> P1P2 = P2 - P1;
 
-                  // defined coordinates
-                  fraction_CPL_P1P2 = global_x_list[i_section_min_distance] - static_cast<int>(global_x_list[i_section_min_distance])
-                                      + (global_x_list[i_section_min_distance+1]-global_x_list[i_section_min_distance]) * fraction_CPL_P1P2_strict;
-
-
-                  const Point<2> unit_normal_to_plane_spherical = P1P2 / P1P2.norm();
-                  const Point<2> closest_point_on_line_plus_normal_to_plane_spherical = closest_point_on_line_2d + 1e-8 * (closest_point_on_line_2d.norm() > 1.0 ? closest_point_on_line_2d.norm() : 1.0) * unit_normal_to_plane_spherical;
-
-                  WBAssert(std::fabs(closest_point_on_line_plus_normal_to_plane_spherical.norm()) > std::numeric_limits<double>::epsilon(),
-                           "Internal error: The norm of variable 'closest_point_on_line_plus_normal_to_plane_spherical' "
-                           "is  zero, while this may not happen.");
-
-                  // We now need 3d points from this point on, so make them.
-                  // The order of a Cartesian coordinate is x,y,z and the order of
-                  // a spherical coordinate it radius, long, lat (in rad).
-                  const Point<3> closest_point_on_line_surface(bool_cartesian ? closest_point_on_line_2d[0] : start_radius,
-                                                               bool_cartesian ? closest_point_on_line_2d[1] : closest_point_on_line_2d[0],
-                                                               bool_cartesian ? start_radius : closest_point_on_line_2d[1],
-                                                               natural_coordinate_system);
-
-                  Point<3> closest_point_on_line_bottom = closest_point_on_line_surface;
-                  closest_point_on_line_bottom[bool_cartesian ? 2 : 0] = 0;
-
-                  WBAssert(!std::isnan(closest_point_on_line_bottom[0]),
-                           "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom[0]);
-                  WBAssert(!std::isnan(closest_point_on_line_bottom[1]),
-                           "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom[1]);
-                  WBAssert(!std::isnan(closest_point_on_line_bottom[2]),
-                           "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom[2]);
-
-                  const Point<3> closest_point_on_line_plus_normal_to_plane_surface_spherical(bool_cartesian ? closest_point_on_line_plus_normal_to_plane_spherical[0] : start_radius,
-                                                                                              bool_cartesian ? closest_point_on_line_plus_normal_to_plane_spherical[1] : closest_point_on_line_plus_normal_to_plane_spherical[0],
-                                                                                              bool_cartesian ? start_radius : closest_point_on_line_plus_normal_to_plane_spherical[1],
-                                                                                              natural_coordinate_system);
-
-                  // Now that we have both the check point and the
-                  // closest_point_on_line, we need to push them to cartesian.
-                  const Point<3> check_point_surface_cartesian(coordinate_system->natural_to_cartesian_coordinates(check_point_surface.get_array()),cartesian);
-                  closest_point_on_line_cartesian = Point<3>(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_surface.get_array()),cartesian);
-                  closest_point_on_line_bottom_cartesian = Point<3>(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_bottom.get_array()),cartesian);
-                  const Point<3> closest_point_on_line_plus_normal_to_plane_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_plus_normal_to_plane_surface_spherical.get_array()),cartesian);
+                // defined coordinates
+                fraction_CPL_P1P2 = global_x_list[i_section_min_distance] - static_cast<int>(global_x_list[i_section_min_distance])
+                                    + (global_x_list[i_section_min_distance+1]-global_x_list[i_section_min_distance]) * fraction_CPL_P1P2_strict;
 
 
-                  WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[0]),
-                           "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[0]);
-                  WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[1]),
-                           "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[1]);
-                  WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[2]),
-                           "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[2]);
+                const Point<2> unit_normal_to_plane_spherical = P1P2 / P1P2.norm();
+                const Point<2> closest_point_on_line_plus_normal_to_plane_spherical = closest_point_on_line_2d + 1e-8 * (closest_point_on_line_2d.norm() > 1.0 ? closest_point_on_line_2d.norm() : 1.0) * unit_normal_to_plane_spherical;
 
-                  // If the point to check is on the line, we don't need to search any further, because we know the distance is zero.
-                  if (std::fabs((check_point - closest_point_on_line_cartesian).norm()) < 2e-14)
-                    {
-                      distance = 0.0;
-                      along_plane_distance = 0.0;
-                      section = current_section;
-                      section_fraction = fraction_CPL_P1P2;
-                      segment = 0;
-                      segment_fraction = 0.0;
-                      total_average_angle = plane_segment_angles[original_current_section][0][0]
-                                            + fraction_CPL_P1P2 * (plane_segment_angles[original_next_section][0][0]
-                                                                   - plane_segment_angles[original_current_section][0][0]);
+                WBAssert(std::fabs(closest_point_on_line_plus_normal_to_plane_spherical.norm()) > std::numeric_limits<double>::epsilon(),
+                         "Internal error: The norm of variable 'closest_point_on_line_plus_normal_to_plane_spherical' "
+                         "is  zero, while this may not happen.");
 
-                      std::map<std::string, double> return_values;
-                      return_values["distanceFromPlane"] = distance;
-                      return_values["distanceAlongPlane"] = along_plane_distance;
-                      return_values["sectionFraction"] = section_fraction;
-                      return_values["segmentFraction"] = segment_fraction;
-                      return_values["section"] = static_cast<double>(section);
-                      return_values["segment"] = segment;
-                      return_values["averageAngle"] = total_average_angle;
-                      return return_values;
+                // We now need 3d points from this point on, so make them.
+                // The order of a Cartesian coordinate is x,y,z and the order of
+                // a spherical coordinate it radius, long, lat (in rad).
+                const Point<3> closest_point_on_line_surface(bool_cartesian ? closest_point_on_line_2d[0] : start_radius,
+                                                             bool_cartesian ? closest_point_on_line_2d[1] : closest_point_on_line_2d[0],
+                                                             bool_cartesian ? start_radius : closest_point_on_line_2d[1],
+                                                             natural_coordinate_system);
 
-                    }
-                  else
-                    {
+                Point<3> closest_point_on_line_bottom = closest_point_on_line_surface;
+                closest_point_on_line_bottom[bool_cartesian ? 2 : 0] = 0;
 
-                      Point<3> normal_to_plane = closest_point_on_line_plus_normal_to_plane_cartesian - closest_point_on_line_cartesian;
-                      normal_to_plane = normal_to_plane / normal_to_plane.norm();
+                WBAssert(!std::isnan(closest_point_on_line_bottom[0]),
+                         "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom[0]);
+                WBAssert(!std::isnan(closest_point_on_line_bottom[1]),
+                         "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom[1]);
+                WBAssert(!std::isnan(closest_point_on_line_bottom[2]),
+                         "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom[2]);
 
-                      // The y-axis is from the bottom/center to the closest_point_on_line,
-                      // the x-axis is 90 degrees rotated from that, so we rotate around
-                      // the line P1P2.
-                      // Todo: Assert that the norm of the axis are not equal to zero.
-                      y_axis = closest_point_on_line_cartesian - closest_point_on_line_bottom_cartesian;
+                const Point<3> closest_point_on_line_plus_normal_to_plane_surface_spherical(bool_cartesian ? closest_point_on_line_plus_normal_to_plane_spherical[0] : start_radius,
+                                                                                            bool_cartesian ? closest_point_on_line_plus_normal_to_plane_spherical[1] : closest_point_on_line_plus_normal_to_plane_spherical[0],
+                                                                                            bool_cartesian ? start_radius : closest_point_on_line_plus_normal_to_plane_spherical[1],
+                                                                                            natural_coordinate_system);
 
-                      WBAssert(std::abs(y_axis.norm()) > std::numeric_limits<double>::epsilon(),
-                               "World Builder error: Cannot detemine the up direction in the model. This is most likely due to the provided start radius being zero."
-                               << " Techical details: The y_axis.norm() is zero. Y_axis is " << y_axis[0] << ":" << y_axis[1] << ":" << y_axis[2]
-                               << ". closest_point_on_line_cartesian = " << closest_point_on_line_cartesian[0] << ":" << closest_point_on_line_cartesian[1] << ":" << closest_point_on_line_cartesian[2]
-                               << ", closest_point_on_line_bottom_cartesian = " << closest_point_on_line_bottom_cartesian[0] << ":" << closest_point_on_line_bottom_cartesian[1] << ":" << closest_point_on_line_bottom_cartesian[2]);
-
-                      WBAssert(!std::isnan(y_axis[0]),
-                               "Internal error: The y_axis variable is not a number: " << y_axis[0]);
-                      WBAssert(!std::isnan(y_axis[1]),
-                               "Internal error: The y_axis variable is not a number: " << y_axis[1]);
-                      WBAssert(!std::isnan(y_axis[2]),
-                               "Internal error: The y_axis variable is not a number: " << y_axis[2]);
+                // Now that we have both the check point and the
+                // closest_point_on_line, we need to push them to cartesian.
+                const Point<3> check_point_surface_cartesian(coordinate_system->natural_to_cartesian_coordinates(check_point_surface.get_array()),cartesian);
+                closest_point_on_line_cartesian = Point<3>(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_surface.get_array()),cartesian);
+                closest_point_on_line_bottom_cartesian = Point<3>(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_bottom.get_array()),cartesian);
+                const Point<3> closest_point_on_line_plus_normal_to_plane_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_plus_normal_to_plane_surface_spherical.get_array()),cartesian);
 
 
-                      y_axis = y_axis / y_axis.norm();
+                WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[0]),
+                         "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[0]);
+                WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[1]),
+                         "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[1]);
+                WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[2]),
+                         "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[2]);
+
+                // If the point to check is on the line, we don't need to search any further, because we know the distance is zero.
+                if (std::fabs((check_point - closest_point_on_line_cartesian).norm()) < 2e-14)
+                  {
+                    total_average_angle = plane_segment_angles[original_current_section][0][0]
+                                          + fraction_CPL_P1P2 * (plane_segment_angles[original_next_section][0][0]
+                                                                 - plane_segment_angles[original_current_section][0][0]);
+
+                    std::map<std::string, double> return_values;
+                    return_values["distanceFromPlane"] = 0.0;
+                    return_values["distanceAlongPlane"] = 0.0;
+                    return_values["sectionFraction"] = fraction_CPL_P1P2;
+                    return_values["segmentFraction"] = 0.0;
+                    return_values["section"] = static_cast<double>(current_section);
+                    return_values["segment"] = 0;
+                    return_values["averageAngle"] = total_average_angle;
+                    return return_values;
+
+                  }
+                else
+                  {
+
+                    Point<3> normal_to_plane = closest_point_on_line_plus_normal_to_plane_cartesian - closest_point_on_line_cartesian;
+                    normal_to_plane = normal_to_plane / normal_to_plane.norm();
+
+                    // The y-axis is from the bottom/center to the closest_point_on_line,
+                    // the x-axis is 90 degrees rotated from that, so we rotate around
+                    // the line P1P2.
+                    // Todo: Assert that the norm of the axis are not equal to zero.
+                    y_axis = closest_point_on_line_cartesian - closest_point_on_line_bottom_cartesian;
+
+                    WBAssert(std::abs(y_axis.norm()) > std::numeric_limits<double>::epsilon(),
+                             "World Builder error: Cannot detemine the up direction in the model. This is most likely due to the provided start radius being zero."
+                             << " Techical details: The y_axis.norm() is zero. Y_axis is " << y_axis[0] << ":" << y_axis[1] << ":" << y_axis[2]
+                             << ". closest_point_on_line_cartesian = " << closest_point_on_line_cartesian[0] << ":" << closest_point_on_line_cartesian[1] << ":" << closest_point_on_line_cartesian[2]
+                             << ", closest_point_on_line_bottom_cartesian = " << closest_point_on_line_bottom_cartesian[0] << ":" << closest_point_on_line_bottom_cartesian[1] << ":" << closest_point_on_line_bottom_cartesian[2]);
+
+                    WBAssert(!std::isnan(y_axis[0]),
+                             "Internal error: The y_axis variable is not a number: " << y_axis[0]);
+                    WBAssert(!std::isnan(y_axis[1]),
+                             "Internal error: The y_axis variable is not a number: " << y_axis[1]);
+                    WBAssert(!std::isnan(y_axis[2]),
+                             "Internal error: The y_axis variable is not a number: " << y_axis[2]);
 
 
-                      WBAssert(!std::isnan(y_axis[0]),
-                               "Internal error: The y_axis variable is not a number: " << y_axis[0]);
-                      WBAssert(!std::isnan(y_axis[1]),
-                               "Internal error: The y_axis variable is not a number: " << y_axis[1]);
-                      WBAssert(!std::isnan(y_axis[2]),
-                               "Internal error: The y_axis variable is not a number: " << y_axis[2]);
+                    y_axis = y_axis / y_axis.norm();
 
 
-                      // shorthand notation for computing the x_axis
-                      double vx = y_axis[0];
-                      double vy = y_axis[1];
-                      double vz = y_axis[2];
-                      double ux = normal_to_plane[0];
-                      double uy = normal_to_plane[1];
-                      double uz = normal_to_plane[2];
-
-                      x_axis = Point<3>(ux*ux*vx + ux*uy*vy - uz*vy + uy*uz*vz + uy*vz,
-                                        uy*ux*vx + uz*vx + uy*uy*vy + uy*uz*vz - ux*vz,
-                                        uz*ux*vx - uy*vx + uz*uy*vy + ux*vy + uz*uz*vz,
-                                        cartesian);
-
-                      // see on what side the line P1P2 reference point is. This is based on the determinant
-                      const double reference_on_side_of_line = (point_list[next_section][0] - point_list[current_section][0])
-                                                               * (reference_point[1] - point_list[current_section][1])
-                                                               - (point_list[next_section][1] - point_list[current_section][1])
-                                                               * (reference_point[0] - point_list[current_section][0])
-                                                               < 0 ? 1 : -1;
-
-                      WBAssert(!std::isnan(x_axis[0]),
-                               "Internal error: The x_axis variable is not a number: " << x_axis[0]);
-                      WBAssert(!std::isnan(x_axis[1]),
-                               "Internal error: The x_axis variable is not a number: " << x_axis[1]);
-                      WBAssert(!std::isnan(x_axis[2]),
-                               "Internal error: The x_axis variable is not a number: " << x_axis[2]);
-
-                      x_axis = x_axis *(reference_on_side_of_line / x_axis.norm());
+                    WBAssert(!std::isnan(y_axis[0]),
+                             "Internal error: The y_axis variable is not a number: " << y_axis[0]);
+                    WBAssert(!std::isnan(y_axis[1]),
+                             "Internal error: The y_axis variable is not a number: " << y_axis[1]);
+                    WBAssert(!std::isnan(y_axis[2]),
+                             "Internal error: The y_axis variable is not a number: " << y_axis[2]);
 
 
-                      WBAssert(!std::isnan(x_axis[0]),
-                               "Internal error: The x_axis variable is not a number: " << x_axis[0]);
-                      WBAssert(!std::isnan(x_axis[1]),
-                               "Internal error: The x_axis variable is not a number: " << x_axis[1]);
-                      WBAssert(!std::isnan(x_axis[2]),
-                               "Internal error: The x_axis variable is not a number: " << x_axis[2]);
-                    }
-                }
+                    // shorthand notation for computing the x_axis
+                    double vx = y_axis[0];
+                    double vy = y_axis[1];
+                    double vz = y_axis[2];
+                    double ux = normal_to_plane[0];
+                    double uy = normal_to_plane[1];
+                    double uz = normal_to_plane[2];
+
+                    x_axis = Point<3>(ux*ux*vx + ux*uy*vy - uz*vy + uy*uz*vz + uy*vz,
+                                      uy*ux*vx + uz*vx + uy*uy*vy + uy*uz*vz - ux*vz,
+                                      uz*ux*vx - uy*vx + uz*uy*vy + ux*vy + uz*uz*vz,
+                                      cartesian);
+
+                    // see on what side the line P1P2 reference point is. This is based on the determinant
+                    const double reference_on_side_of_line = (point_list[next_section][0] - point_list[current_section][0])
+                                                             * (reference_point[1] - point_list[current_section][1])
+                                                             - (point_list[next_section][1] - point_list[current_section][1])
+                                                             * (reference_point[0] - point_list[current_section][0])
+                                                             < 0 ? 1 : -1;
+
+                    WBAssert(!std::isnan(x_axis[0]),
+                             "Internal error: The x_axis variable is not a number: " << x_axis[0]);
+                    WBAssert(!std::isnan(x_axis[1]),
+                             "Internal error: The x_axis variable is not a number: " << x_axis[1]);
+                    WBAssert(!std::isnan(x_axis[2]),
+                             "Internal error: The x_axis variable is not a number: " << x_axis[2]);
+
+                    x_axis = x_axis *(reference_on_side_of_line / x_axis.norm());
+
+
+                    WBAssert(!std::isnan(x_axis[0]),
+                             "Internal error: The x_axis variable is not a number: " << x_axis[0]);
+                    WBAssert(!std::isnan(x_axis[1]),
+                             "Internal error: The x_axis variable is not a number: " << x_axis[1]);
+                    WBAssert(!std::isnan(x_axis[2]),
+                             "Internal error: The x_axis variable is not a number: " << x_axis[2]);
+                  }
+              }
             }
 
           if (continue_computation)
