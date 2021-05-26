@@ -229,8 +229,8 @@ ADD_CUSTOM_TARGET(indent
 
 IF ( CMAKE_BUILD_TYPE STREQUAL Coverage )
   SET(CMAKE_VERBOSE_MAKEFILE on )
-  SET(WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW --coverage -fprofile-arcs -ftest-coverage)
-  SET(WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_OLD "--coverage -fprofile-arcs -ftest-coverage")
+  SET(WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW --coverage -fprofile-arcs -ftest-coverage -g)
+  SET(WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_OLD "--coverage -fprofile-arcs -ftest-coverage -g")
 
   ## for old versions of cmake
   SET(WB_FORTRAN_COMPILER_FLAGS_COVERAGE "--coverage")
