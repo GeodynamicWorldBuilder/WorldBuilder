@@ -561,7 +561,6 @@ namespace WorldBuilder
           if (fabs(fraction_CPL_P1P2_strict) < INFINITY && fraction_CPL_P1P2_strict >= 0. && fraction_CPL_P1P2_strict <= 1.)
             {
               // now compute the relevant x and y axis
-              double fraction_CPL_P1P2 = std::numeric_limits<double>::signaling_NaN();
               Point<3> x_axis(std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),cartesian);
               Point<3> y_axis(std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),cartesian);
               Point<3> closest_point_on_line_cartesian(std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),cartesian);
@@ -580,8 +579,8 @@ namespace WorldBuilder
               const Point<2> P1P2 = P2 - P1;
 
               // defined coordinates
-              fraction_CPL_P1P2 = global_x_list[i_section_min_distance] - static_cast<int>(global_x_list[i_section_min_distance])
-                                  + (global_x_list[i_section_min_distance+1]-global_x_list[i_section_min_distance]) * fraction_CPL_P1P2_strict;
+              const double fraction_CPL_P1P2 = global_x_list[i_section_min_distance] - static_cast<int>(global_x_list[i_section_min_distance])
+                                               + (global_x_list[i_section_min_distance+1]-global_x_list[i_section_min_distance]) * fraction_CPL_P1P2_strict;
 
               const Point<2> unit_normal_to_plane_spherical = P1P2 / P1P2.norm();
               const Point<2> closest_point_on_line_plus_normal_to_plane_spherical = closest_point_on_line_2d + 1e-8 * (closest_point_on_line_2d.norm() > 1.0 ? closest_point_on_line_2d.norm() : 1.0) * unit_normal_to_plane_spherical;
@@ -665,12 +664,12 @@ namespace WorldBuilder
 
 
                   // shorthand notation for computing the x_axis
-                  double vx = y_axis[0];
-                  double vy = y_axis[1];
-                  double vz = y_axis[2];
-                  double ux = normal_to_plane[0];
-                  double uy = normal_to_plane[1];
-                  double uz = normal_to_plane[2];
+                  const double vx = y_axis[0];
+                  const double vy = y_axis[1];
+                  const double vz = y_axis[2];
+                  const double ux = normal_to_plane[0];
+                  const double uy = normal_to_plane[1];
+                  const double uz = normal_to_plane[2];
 
                   x_axis = Point<3>(ux*ux*vx + ux*uy*vy - uz*vy + uy*uz*vz + uy*vz,
                                     uy*ux*vx + uz*vx + uy*uy*vy + uy*uz*vz - ux*vz,
@@ -1064,7 +1063,6 @@ namespace WorldBuilder
           double parts = 5;
           // get a better estimate for the closest point between P1 and P2.
           double min_estimate_solution = 0;
-          solution = min_estimate_solution;
           double min_estimate_solution_temp = min_estimate_solution;
           double x_distance_to_reference_point = x_spline(min_estimate_solution)-check_point_surface_2d[0];
           double y_distance_to_reference_point = y_spline(min_estimate_solution)-check_point_surface_2d[1];
@@ -1088,11 +1086,6 @@ namespace WorldBuilder
           double search_step = 0.5/parts;
           for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
             {
-              const double x_distance_to_reference_point_ref = x_spline(0.209375)-check_point_surface_2d[0];
-              const double y_distance_to_reference_point_ref = y_spline(0.209375)-check_point_surface_2d[1];
-              const double minimum_distance_to_reference_point_ref = sqrt(x_distance_to_reference_point_ref*x_distance_to_reference_point_ref + y_distance_to_reference_point_ref*y_distance_to_reference_point_ref);
-
-
               const double x_distance_to_reference_point_min = x_spline(min_estimate_solution-search_step)-check_point_surface_2d[0];
               const double y_distance_to_reference_point_min = y_spline(min_estimate_solution-search_step)-check_point_surface_2d[1];
               const double minimum_distance_to_reference_point_min = sqrt(x_distance_to_reference_point_min*x_distance_to_reference_point_min + y_distance_to_reference_point_min*y_distance_to_reference_point_min);
@@ -1127,7 +1120,6 @@ namespace WorldBuilder
           Point<3> closest_point_on_line_cartesian(std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),cartesian);
           Point<3> closest_point_on_line_bottom_cartesian(std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),cartesian);
           size_t current_section = i_section_min_distance;
-          size_t next_section = i_section_min_distance+1;
           // translate to orignal coordinates current and next section
           size_t original_current_section = static_cast<size_t>(std::floor(global_x_list[i_section_min_distance]));
           size_t original_next_section = original_current_section + 1;
@@ -1136,13 +1128,11 @@ namespace WorldBuilder
             {
               continue_computation = true;
               // we need to compute the section which we are in. This might have changed.
-              //
-              const double diff = solution - global_x_list[i_section_min_distance];
               current_section = (size_t) floor(solution);
               WBAssert((solution >= 0 && current_section <= point_list.size()-2), "current_section wrong: " << current_section << ", because of solution, which is " << solution
                        << ", i_section_min_distance = " << i_section_min_distance << ", or diff = ");
 
-              next_section = current_section+1;
+              size_t next_section = current_section+1;
               // translate to orignal coordinates current and next section
               original_current_section = floor(solution);
               original_next_section = original_current_section + 1;
@@ -1151,11 +1141,6 @@ namespace WorldBuilder
               const Point<2> P2(x_spline(solution+1e-10),y_spline(solution+1e-10),natural_coordinate_system);
 
               const Point<2> P1P2 = P2 - P1;
-              const Point<2> P1PC = check_point_surface_2d - P1;
-
-              // compute what fraction of the distance between P1 and P2 the
-              // closest point lies.
-              Point<2> P1CPL = closest_point_on_spline_2d - P1;
 
               fraction_CPL_P1P2_strict = solution-floor(solution);
 
@@ -1197,7 +1182,6 @@ namespace WorldBuilder
               // Now that we have both the check point and the
               // closest_point_on_line, we need to push them to cartesian.
               Point<3> check_point_cartesian = Point<3>(check_point);
-              Point<3> check_point_surface_cartesian =  Point<3>(coordinate_system->natural_to_cartesian_coordinates(check_point_surface.get_array()),cartesian);
               closest_point_on_line_cartesian =  Point<3>(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_surface.get_array()),cartesian);
               closest_point_on_line_bottom_cartesian= Point<3>(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_bottom.get_array()),cartesian);
               Point<3> closest_point_on_line_plus_normal_to_plane_cartesian =  Point<3>(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_plus_normal_to_plane_surface_spherical.get_array()),cartesian);
