@@ -264,17 +264,6 @@ namespace WorldBuilder
          */
         double operator() (double x) const;
 
-        /**
-         * get the derivative
-         */
-        double derivative(double x) const;
-        /**
-         * get the derivative
-         */
-        std::pair<double,double> newton_update(double x, double p) const;
-
-        double residual_closest_point(double x, double p) const;
-
       private:
         /**
          * x coordinates of points
