@@ -129,33 +129,38 @@ jobs:
       shell: bash
       run: ninja
 
-    - name: run benchmark 1
+    - name: prepare benchmarks
+      shell: bash
       run: |
             cd ${{github.workspace}}/cbdr/;
-            time cargo run --release sample --timeout=120s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/slab_interpolation_simple_none.wb ${{github.workspace}}/feature/source/tests/visualization/gridfile.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/slab_interpolation_simple_none.wb ${{github.workspace}}/feature/source/tests/visualization/gridfile.grid" > ${{github.workspace}}/result_1.csv
+            mkdir -p ${{github.workspace}}/benchmark_results/;
+            echo "${{ github.event.number }}" > ${{github.workspace}}/benchmark_results/NR
+
+    - name: run benchmark 1
+      env:
+        benchmark_number: 1
+        benchmark_name: slab_interpolation_simple_none
+        benchmark_gridfile: cartesian_subducting_plate_gridfile
+      shell: bash
+      run: |
+            cd ${{github.workspace}}/cbdr/;
+            time cargo run --release sample --timeout=120s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" > ${{github.workspace}}/result_1.csv;
+            cat ${{github.workspace}}/result_${{env.benchmark_number}}.csv;
+            cat ${{github.workspace}}/result_${{env.benchmark_number}}.csv | cargo run --release analyze --disable-dynamic-printing > ${{github.workspace}}/benchmark_results/analyze_${{env.benchmark_number}}.log ||:;
+            cat ${{github.workspace}}/benchmark_results/analyze_${{env.benchmark_number}}.log
     
     - name: run benchmark 2
+      env:
+        benchmark_number: 2
+        benchmark_name: slab_interpolation_simple_curved_none
+        benchmark_gridfile: cartesian_subducting_plate_gridfile
+      shell: bash
       run: |
             cd ${{github.workspace}}/cbdr/;
-            time cargo run --release sample --timeout=120s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/slab_interpolation_simple_curved_none.wb ${{github.workspace}}/feature/source/tests/visualization/gridfile.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/slab_interpolation_simple_curved_none.wb ${{github.workspace}}/feature/source/tests/visualization/gridfile.grid" > ${{github.workspace}}/result_2.csv
-    
-    - name: cat
-      run: |
-          cat ${{github.workspace}}/result_1.csv;
-          cat ${{github.workspace}}/result_2.csv;
-
-    - name: change dir
-      run: cd ${{github.workspace}}/cbdr/
-
-    - name: output benchmark results
-      run: |
-            cd ${{github.workspace}}/cbdr/;
-            mkdir ${{github.workspace}}/benchmark_results/;
-            echo "${{ github.event.number }}" > ${{github.workspace}}/benchmark_results/NR
-            RUST_BACKTRACE=1 cat ${{github.workspace}}/result_1.csv | cargo run --release analyze --disable-dynamic-printing > ${{github.workspace}}/benchmark_results/analyze_1.log ||:;
-            RUST_BACKTRACE=1 cat ${{github.workspace}}/result_2.csv | cargo run --release analyze --disable-dynamic-printing > ${{github.workspace}}/benchmark_results/analyze_2.log ||:;
-            analyze_contents_1_var=$(cat ${{github.workspace}}/benchmark_results/analyze_1.log);
-            analyze_contents_2_var=$(cat ${{github.workspace}}/benchmark_results/analyze_2.log);
+            time cargo run --release sample --timeout=120s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" > ${{github.workspace}}/result_1.csv;
+            cat ${{github.workspace}}/result_${{env.benchmark_number}}.csv;
+            cat ${{github.workspace}}/result_${{env.benchmark_number}}.csv | cargo run --release analyze --disable-dynamic-printing > ${{github.workspace}}/benchmark_results/analyze_${{env.benchmark_number}}.log ||:;
+            cat ${{github.workspace}}/benchmark_results/analyze_${{env.benchmark_number}}.log
 
     - uses: actions/upload-artifact@v2
       with:
