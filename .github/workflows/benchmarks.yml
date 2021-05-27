@@ -144,7 +144,7 @@ jobs:
       shell: bash
       run: |
             cd ${{github.workspace}}/cbdr/;
-            time cargo run --release sample --timeout=120s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" > ${{github.workspace}}/result_${{env.benchmark_number}}.csv;
+            time cargo run --release sample --timeout=300s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" > ${{github.workspace}}/result_${{env.benchmark_number}}.csv;
             cat ${{github.workspace}}/result_${{env.benchmark_number}}.csv;
             cat ${{github.workspace}}/result_${{env.benchmark_number}}.csv | cargo run --release analyze --disable-dynamic-printing > ${{github.workspace}}/benchmark_results/analyze_${{env.benchmark_number}}.log ||:;
             cat ${{github.workspace}}/benchmark_results/analyze_${{env.benchmark_number}}.log
@@ -157,7 +157,7 @@ jobs:
       shell: bash
       run: |
             cd ${{github.workspace}}/cbdr/;
-            time cargo run --release sample --timeout=120s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" > ${{github.workspace}}/result_${{env.benchmark_number}}.csv;
+            time cargo run --release sample --timeout=300s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" > ${{github.workspace}}/result_${{env.benchmark_number}}.csv;
             cat ${{github.workspace}}/result_${{env.benchmark_number}}.csv;
             cat ${{github.workspace}}/result_${{env.benchmark_number}}.csv | cargo run --release analyze --disable-dynamic-printing > ${{github.workspace}}/benchmark_results/analyze_${{env.benchmark_number}}.log ||:;
             cat ${{github.workspace}}/benchmark_results/analyze_${{env.benchmark_number}}.log
@@ -171,7 +171,7 @@ jobs:
       shell: bash
       run: |
             cd ${{github.workspace}}/cbdr/;
-            time cargo run --release sample --timeout=120s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" > ${{github.workspace}}/result_${{env.benchmark_number}}.csv;
+            time cargo run --release sample --timeout=300s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" > ${{github.workspace}}/result_${{env.benchmark_number}}.csv;
             cat ${{github.workspace}}/result_${{env.benchmark_number}}.csv;
             cat ${{github.workspace}}/result_${{env.benchmark_number}}.csv | cargo run --release analyze --disable-dynamic-printing > ${{github.workspace}}/benchmark_results/analyze_${{env.benchmark_number}}.log ||:;
             cat ${{github.workspace}}/benchmark_results/analyze_${{env.benchmark_number}}.log
@@ -184,7 +184,7 @@ jobs:
       shell: bash
       run: |
             cd ${{github.workspace}}/cbdr/;
-            time cargo run --release sample --timeout=120s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" > ${{github.workspace}}/result_${{env.benchmark_number}}.csv;
+            time cargo run --release sample --timeout=300s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" > ${{github.workspace}}/result_${{env.benchmark_number}}.csv;
             cat ${{github.workspace}}/result_${{env.benchmark_number}}.csv;
             cat ${{github.workspace}}/result_${{env.benchmark_number}}.csv | cargo run --release analyze --disable-dynamic-printing > ${{github.workspace}}/benchmark_results/analyze_${{env.benchmark_number}}.log ||:;
             cat ${{github.workspace}}/benchmark_results/analyze_${{env.benchmark_number}}.log
@@ -198,7 +198,7 @@ jobs:
       shell: bash
       run: |
             cd ${{github.workspace}}/cbdr/;
-            time cargo run --release sample --timeout=120s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" > ${{github.workspace}}/result_${{env.benchmark_number}}.csv;
+            time cargo run --release sample --timeout=300s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" > ${{github.workspace}}/result_${{env.benchmark_number}}.csv;
             cat ${{github.workspace}}/result_${{env.benchmark_number}}.csv;
             cat ${{github.workspace}}/result_${{env.benchmark_number}}.csv | cargo run --release analyze --disable-dynamic-printing > ${{github.workspace}}/benchmark_results/analyze_${{env.benchmark_number}}.log ||:;
             cat ${{github.workspace}}/benchmark_results/analyze_${{env.benchmark_number}}.log
