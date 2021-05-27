@@ -30,6 +30,8 @@
 #include <world_builder/types/plugin_system.h>
 #include <world_builder/features/continental_plate_models/grains/uniform.h>
 
+#include <algorithm>
+
 
 namespace WorldBuilder
 {
@@ -146,18 +148,10 @@ namespace WorldBuilder
                 {
                   if (compositions[i] == composition_number)
                     {
-                      for (auto &&it_rotation_matrices : grains_local.rotation_matrices)
-                        {
-                          it_rotation_matrices = rotation_matrices[i];
-                        }
+                      std::fill(grains_local.rotation_matrices.begin(),grains_local.rotation_matrices.end(),rotation_matrices[i]);
 
                       const double size = grain_sizes[i] < 0 ? 1.0/static_cast<double>(grains_local.sizes.size()) :  grain_sizes[i];
-
-                      for (auto &&it_sizes : grains_local.sizes)
-                        {
-                          it_sizes = size;
-                        }
-
+                      std::fill(grains_local.sizes.begin(),grains_local.sizes.end(),size);
 
                       return grains_local;
                     }
