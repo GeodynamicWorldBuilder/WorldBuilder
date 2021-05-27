@@ -1,13 +1,30 @@
-name: benchmark_4
+name: benchmarks
 
 on: [pull_request]
 
 jobs:
   benchmarks:
-    strategy: 
+    strategy:
       fail-fast: false
-    permissions:
-      pull-requests: write
+      matrix:
+        benchmark_number: [1,2,3,4,5]
+        include:
+          - benchmark_number: 1
+            benchmark_name: 'slab_interpolation_simple_none'
+            benchmark_gridfile: 'cartesian_subducting_plate_gridfile'
+          - benchmark_number: 2
+            benchmark_name: 'slab_interpolation_simple_curved_none'
+            benchmark_gridfile: 'cartesian_subducting_plate_gridfile'
+          - benchmark_number: 3
+            benchmark_name: 'spherical_slab_interpolation_simple_none'
+            benchmark_gridfile: 'spherical_subducting_plate_gridfile'
+          - benchmark_number: 4
+            benchmark_name: 'slab_interpolation_simple_curved_CMS'
+            benchmark_gridfile: 'cartesian_subducting_plate_gridfile'
+          - benchmark_number: 5
+            benchmark_name: 'spherical_slab_interpolation_simple_CMS'
+            benchmark_gridfile: 'spherical_subducting_plate_gridfile'
+
     runs-on: ubuntu-latest
 
     steps:
@@ -133,22 +150,19 @@ jobs:
       shell: bash
       run: |
             cd ${{github.workspace}}/cbdr/;
-            mkdir -p ${{github.workspace}}/benchmark_4_results/;
+            mkdir -p ${{github.workspace}}/benchmark_${{matrix.benchmark_number}}_results/;
+            echo "${{ github.event.number }}" > ${{github.workspace}}/benchmark_${{matrix.benchmark_number}}_results/NR
 
-    - name: run benchmark 4
-      env:
-        benchmark_number: 4
-        benchmark_name: slab_interpolation_simple_curved_CMS
-        benchmark_gridfile: cartesian_subducting_plate_gridfile
+    - name: run benchmark
       shell: bash
       run: |
             cd ${{github.workspace}}/cbdr/;
-            time cargo run --release sample --timeout=600s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/${{env.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{env.benchmark_gridfile}}.grid" > ${{github.workspace}}/result_${{env.benchmark_number}}.csv;
-            cat ${{github.workspace}}/result_${{env.benchmark_number}}.csv;
-            cat ${{github.workspace}}/result_${{env.benchmark_number}}.csv | cargo run --release analyze --disable-dynamic-printing > ${{github.workspace}}/benchmark_4_results/analyze_${{env.benchmark_number}}.log ||:;
-            cat ${{github.workspace}}/benchmark_4_results/analyze_${{env.benchmark_number}}.log
-
+            time cargo run --release sample --timeout=900s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/${{matrix.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{matrix.benchmark_gridfile}}.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/${{matrix.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{matrix.benchmark_gridfile}}.grid" > ${{github.workspace}}/result_${{matrix.benchmark_number}}.csv;
+            cat ${{github.workspace}}/result_${{matrix.benchmark_number}}.csv;
+            cat ${{github.workspace}}/result_${{matrix.benchmark_number}}.csv | cargo run --release analyze --disable-dynamic-printing > ${{github.workspace}}/benchmark_${{matrix.benchmark_number}}_results/analyze_${{matrix.benchmark_number}}.log ||:;
+            cat ${{github.workspace}}/benchmark_${{matrix.benchmark_number}}_results/analyze_${{matrix.benchmark_number}}.log
+    
     - uses: actions/upload-artifact@v2
       with:
-        name: benchmark_4_results
-        path: benchmark_4_results/
+        name: benchmark_${{matrix.benchmark_number}}_results
+        path: benchmark_${{matrix.benchmark_number}}_results/
