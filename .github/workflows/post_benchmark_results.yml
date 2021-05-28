@@ -4,7 +4,7 @@ name: post benchmark results in pull request
 # access to secrets
 on:
   workflow_run:
-    workflows: ["benchmark_1","benchmark_2","benchmark_3","benchmark_4","benchmark_5"]
+    workflows: ["benchmarks"]
     types:
       - completed
 
