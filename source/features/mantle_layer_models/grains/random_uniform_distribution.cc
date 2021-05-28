@@ -17,6 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include <algorithm>
+
 #include <world_builder/utilities.h>
 #include <world_builder/assert.h>
 #include <world_builder/nan.h>
