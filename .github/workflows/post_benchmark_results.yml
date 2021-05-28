@@ -27,7 +27,7 @@ jobs:
                run_id: ${{github.event.workflow_run.id }},
             });
             var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
-              return artifact.name == " benchmark_1_results"
+              return artifact.name == "benchmark_1_results"
             })[0];
             var download = await github.actions.downloadArtifact({
                owner: context.repo.owner,
@@ -36,9 +36,9 @@ jobs:
                archive_format: 'zip',
             });
             var fs = require('fs');
-            fs.writeFileSync('${{github.workspace}}/ benchmark_1_results.zip', Buffer.from(download.data));
+            fs.writeFileSync('${{github.workspace}}/benchmark_1_results.zip', Buffer.from(download.data));
             var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
-              return artifact.name == " benchmark_2_results"
+              return artifact.name == "benchmark_2_results"
             })[0];
             var download = await github.actions.downloadArtifact({
                owner: context.repo.owner,
@@ -47,9 +47,9 @@ jobs:
                archive_format: 'zip',
             });
             var fs = require('fs');
-            fs.writeFileSync('${{github.workspace}}/ benchmark_2_results.zip', Buffer.from(download.data));
+            fs.writeFileSync('${{github.workspace}}/benchmark_2_results.zip', Buffer.from(download.data));
             var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
-              return artifact.name == "  benchmark_3_results"
+              return artifact.name == "benchmark_3_results"
             })[0];
             var download = await github.actions.downloadArtifact({
                owner: context.repo.owner,
@@ -58,9 +58,9 @@ jobs:
                archive_format: 'zip',
             });
             var fs = require('fs');
-            fs.writeFileSync('${{github.workspace}}/  benchmark_3_results.zip', Buffer.from(download.data));
+            fs.writeFileSync('${{github.workspace}}/benchmark_3_results.zip', Buffer.from(download.data));
             var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
-              return artifact.name == "  benchmark_4_results"
+              return artifact.name == "benchmark_4_results"
             })[0];
             var download = await github.actions.downloadArtifact({
                owner: context.repo.owner,
@@ -69,9 +69,9 @@ jobs:
                archive_format: 'zip',
             });
             var fs = require('fs');
-            fs.writeFileSync('${{github.workspace}}/  benchmark_4_results.zip', Buffer.from(download.data));
+            fs.writeFileSync('${{github.workspace}}/benchmark_4_results.zip', Buffer.from(download.data));
             var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
-              return artifact.name == "  benchmark_5_results"
+              return artifact.name == "benchmark_5_results"
             })[0];
             var download = await github.actions.downloadArtifact({
                owner: context.repo.owner,
@@ -80,7 +80,7 @@ jobs:
                archive_format: 'zip',
             });
             var fs = require('fs');
-            fs.writeFileSync('${{github.workspace}}/  benchmark_5_results.zip', Buffer.from(download.data));
+            fs.writeFileSync('${{github.workspace}}/benchmark_5_results.zip', Buffer.from(download.data));
       - run: |
               unzip benchmark_1_results.zip;
               unzip benchmark_2_results.zip;
