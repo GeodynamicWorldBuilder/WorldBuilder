@@ -89,7 +89,7 @@ jobs:
               unzip benchmark_5_results.zip;
 
       - name: retrieve pull request number
-        id: output_result
+        id: retrieve_pull_request_number
         run: |
               cat ${{github.workspace}}/NR;
               echo "::set-output name=pull_request_number::$(cat ${{github.workspace}}/NR)";
@@ -97,7 +97,7 @@ jobs:
       - name: retrieve benchmark 1
         env:
           benchmark_number: 1
-        id: output_result
+        id: retrieve_benchmark_1
         run: |
               cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log;
               echo "::set-output name=wall_time_${{env.benchmark_number}}_master_mean::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $2}')";
@@ -112,7 +112,7 @@ jobs:
       - name: retrieve benchmark 2
         env:
           benchmark_number: 2
-        id: output_result
+        id: retrieve_benchmark_2
         run: |
               cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log;
               echo "::set-output name=wall_time_${{env.benchmark_number}}_master_mean::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $2}')";
@@ -127,7 +127,7 @@ jobs:
       - name: retrieve benchmark 3
         env:
           benchmark_number: 3
-        id: output_result
+        id: retrieve_benchmark_3
         run: |
               cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log;
               echo "::set-output name=wall_time_${{env.benchmark_number}}_master_mean::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $2}')";
@@ -142,7 +142,7 @@ jobs:
       - name: retrieve benchmark 4
         env:
           benchmark_number: 4
-        id: output_result
+        id: retrieve_benchmark_4
         run: |
               cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log;
               echo "::set-output name=wall_time_${{env.benchmark_number}}_master_mean::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $2}')";
@@ -157,7 +157,7 @@ jobs:
       - name: retrieve benchmark 5
         env:
           benchmark_number: 5
-        id: output_result
+        id: retrieve_benchmark_5
         run: |
               cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log;
               echo "::set-output name=wall_time_${{env.benchmark_number}}_master_mean::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $2}')";
