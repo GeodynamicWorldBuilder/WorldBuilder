@@ -98,6 +98,43 @@ jobs:
       working-directory: ${{github.workspace}}/build
       shell: bash
       run: ctest -VV -C ${{ matrix.build_type }}
+
+
+  test_linux_non_unity_no_optional_dependencies:
+    needs: test_indentation
+    strategy: 
+      fail-fast: false
+      matrix: 
+        os: ['ubuntu-latest']
+        build_type: ['Debug']
+      
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{github.workspace}}/build
+
+    - name: Configure CMake
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS=-Werror -DWB_UNITY_BUILD=OFF
+
+    - name: Build gwb
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: cmake --build . --config ${{ matrix.build_type }}
+
+    - name: Install gwb Linux and macOS
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: sudo cmake --install . --config ${{ matrix.build_type }}
+
+    - name: Test gwb
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: ctest -VV -C ${{ matrix.build_type }}
       
 
   test_windows:
