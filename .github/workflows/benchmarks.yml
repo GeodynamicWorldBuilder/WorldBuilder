@@ -146,12 +146,18 @@ jobs:
       shell: bash
       run: ninja
 
-    - name: prepare benchmarks
+    - name: make results dir
       shell: bash
       run: |
-            cd ${{github.workspace}}/cbdr/;
-            mkdir -p ${{github.workspace}}/benchmark_${{matrix.benchmark_number}}_results/;
-            echo "${{ github.event.number }}" > ${{github.workspace}}/benchmark_${{matrix.benchmark_number}}_results/NR
+            rm -rf ${{github.workspace}}/benchmark_${{matrix.benchmark_number}}_results/;
+            mkdir -p ${{github.workspace}}/benchmark_${{matrix.benchmark_number}}_results/
+
+    - name: store pull request number
+      shell: bash
+      if: matrix.benchmark_number == 1
+      run: |
+              echo "${{matrix.benchmark_number}}";
+              echo "${{ github.event.number }}" > ${{github.workspace}}/benchmark_${{matrix.benchmark_number}}_results/NR
 
     - name: run benchmark
       shell: bash
