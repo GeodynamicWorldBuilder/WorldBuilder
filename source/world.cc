@@ -17,6 +17,11 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#ifdef WB_WITH_MPI
+#define OMPI_SKIP_MPICXX 1
+#include <mpi.h>
+#endif
+
 #include <sstream>
 
 #include "rapidjson/pointer.h"
@@ -43,8 +48,6 @@
 
 namespace WorldBuilder
 {
-
-
   using namespace Utilities;
 
   World::World(std::string filename, bool has_output_dir, std::string output_dir, unsigned long random_number_seed)
@@ -54,6 +57,20 @@ namespace WorldBuilder
     dim(NaN::ISNAN),
     random_number_engine(random_number_seed)
   {
+#ifdef WB_WITH_MPI
+    int mpi_initialized;
+    MPI_Initialized(&mpi_initialized);
+    if (!mpi_initialized)
+      {
+        int argc;
+        char **argv;
+        MPI_Init(&argc,&argv);
+      }
+    MPI_Comm_rank(MPI_COMM_WORLD, &MPI_RANK);
+#else
+    MPI_RANK = 0;
+#endif
+
     this->declare_entries(parameters);
 
     parameters.initialize(filename, has_output_dir, output_dir);
@@ -100,8 +117,8 @@ namespace WorldBuilder
 
 
       prm.declare_entry("coordinate system", Types::PluginSystem("cartesian", CoordinateSystems::Interface::declare_entries, {"model"}, false),"A coordinate system. Cartesian or spherical.");
-      prm.declare_entry("features", Types::PluginSystem("",Features::Interface::declare_entries, {"model", "coordinates"}),"A list of features.");
 
+      prm.declare_entry("features", Types::PluginSystem("",Features::Interface::declare_entries, {"model", "coordinates"}),"A list of features.");
 
     }
     prm.leave_subsection();
