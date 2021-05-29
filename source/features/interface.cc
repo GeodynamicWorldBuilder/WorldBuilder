@@ -41,6 +41,40 @@ namespace WorldBuilder
 
   namespace Features
   {
+    namespace Internal
+    {
+
+
+
+      /**
+       * A function to turn strings into interpolation type enums.
+       */
+      static InterpolationType string_to_interpolation_type (const std::string string)
+      {
+        if (string == "none")
+          {
+            return InterpolationType::None;
+          }
+        else if (string == "linear")
+          {
+            return InterpolationType::Linear;
+          }
+        else if  (string == "monotone spline")
+          {
+            return InterpolationType::MonotoneSpline;
+          }
+        else if (string == "continuous monotone spline")
+          {
+            return InterpolationType::ContinuousMonotoneSpline;
+          }
+
+        WBAssertThrow(false,
+                      "You provided an interpolation type which is not supported: " << string <<
+                      ". The options are none, linear, monotone spline and continuous monotone spline.");
+
+        return InterpolationType::Invalid;
+      }
+    }
     Interface::Interface()
     {}
 
@@ -108,7 +142,7 @@ namespace WorldBuilder
 
       // If global is given, we use the global interpolation setting, otherwise use the provided value.
       const std::string interpolation_type_string = prm.get<std::string>("interpolation") == "global" ? this->world->interpolation : prm.get<std::string>("interpolation");
-      interpolation_type = WorldBuilder::Utilities::string_to_interpolation_type(interpolation_type_string);
+      interpolation_type = WorldBuilder::Features::Internal::string_to_interpolation_type(interpolation_type_string);
 
       // the one_dimensional_coordinates is always needed, so fill it.
       original_number_of_coordinates = coordinates.size();

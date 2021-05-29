@@ -213,36 +213,6 @@ namespace WorldBuilder
       Invalid,
     };
 
-
-    /**
-     * A function to turn strings into interpolation type enums.
-     */
-    static InterpolationType string_to_interpolation_type (const std::string string)
-    {
-      if (string == "none")
-        {
-          return InterpolationType::None;
-        }
-      else if (string == "linear")
-        {
-          return InterpolationType::Linear;
-        }
-      else if  (string == "monotone spline")
-        {
-          return InterpolationType::MonotoneSpline;
-        }
-      else if (string == "continuous monotone spline")
-        {
-          return InterpolationType::ContinuousMonotoneSpline;
-        }
-
-      WBAssertThrow(false,
-                    "You provided an interpolation type which is not supported: " << string <<
-                    ". The options are none, linear, monotone spline and continuous monotone spline.");
-
-      return InterpolationType::Invalid;
-    }
-
     /**
      * Class for linear and monotone spline interpolation
      */
