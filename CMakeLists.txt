@@ -59,21 +59,11 @@ endif()
 # Find MPI if available.
 find_package(MPI)
 
-if(MPI_FOUND AND (${CMAKE_VERSION} VERSION_GREATER "3.1.0" OR ${CMAKE_VERSION} VERSION_EQUAL "3.1.0") )
+if(MPI_FOUND AND ${CMAKE_VERSION} VERSION_GREATER "3.9.0" )
   message(STATUS "MPI found.")
-  if(NOT TARGET MPI::MPI_CXX)
-    add_library(MPI::MPI_CXX IMPORTED INTERFACE)
-
-    set_property(TARGET MPI::MPI_CXX
-                 PROPERTY INTERFACE_COMPILE_OPTIONS ${MPI_CXX_COMPILE_FLAGS})
-    set_property(TARGET MPI::MPI_CXX
-                 PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${MPI_CXX_INCLUDE_PATH}")
-    set_property(TARGET MPI::MPI_CXX
-                 PROPERTY INTERFACE_LINK_LIBRARIES ${MPI_CXX_LINK_FLAGS} ${MPI_CXX_LIBRARIES})
-  endif()
   set(USE_MPI TRUE CACHE STRING "Whether or not to enable MPI when compiling the world builder.")
 else()
-  message(STATUS "MPI not found or cmake version lower than 3.1.0.")
+  message(STATUS "MPI not found or cmake version lower than 3.9.0.")
   set(USE_MPI FALSE CACHE STRING "Whether or not to enable MPI when compiling the world builder." FORCE)
 endif()
 
@@ -373,11 +363,11 @@ else()
   SET(GWB_LIBRARY_WHOLE -Wl,-force_load WorldBuilder)
 endif()
 if(${USE_MPI})
-  target_link_libraries (WorldBuilder  PUBLIC MPI::MPI_CXX)
-  target_link_libraries (WorldBuilderApp  PUBLIC MPI::MPI_CXX ${GWB_LIBRARY_WHOLE} )
-  target_link_libraries (WorldBuilderVisualization  PUBLIC MPI::MPI_CXX ${GWB_LIBRARY_WHOLE} ) 
+  target_link_libraries (WorldBuilder PUBLIC MPI::MPI_CXX)
+  target_link_libraries (WorldBuilderApp PUBLIC MPI::MPI_CXX ${GWB_LIBRARY_WHOLE} )
+  target_link_libraries (WorldBuilderVisualization PUBLIC MPI::MPI_CXX ${GWB_LIBRARY_WHOLE} ) 
 else()
-  target_link_libraries (WorldBuilderApp  ${GWB_LIBRARY_WHOLE} )
+  target_link_libraries (WorldBuilderApp ${GWB_LIBRARY_WHOLE} )
   target_link_libraries (WorldBuilderVisualization ${GWB_LIBRARY_WHOLE} ) 
 endif()
 

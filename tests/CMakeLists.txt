@@ -61,7 +61,11 @@ if(WB_INCLUDE_UNIT_TEST)
       SET(GWB_LIBRARY_WHOLE -Wl,-force_load WorldBuilder)
     endif()
   
-    target_link_libraries(${test_name} ${GWB_LIBRARY_WHOLE} ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES})
+    if(${USE_MPI})
+      target_link_libraries(${test_name} PUBLIC MPI::MPI_CXX ${GWB_LIBRARY_WHOLE})
+    else()
+      target_link_libraries(${test_name} ${GWB_LIBRARY_WHOLE})
+    endif()
   
     #Move testing binaries into a testBin directory
     set_target_properties(${test_name} PROPERTIES
@@ -194,7 +198,7 @@ endforeach(test_source)
 
   if(NOT MSVC AND NOT APPLE)
     add_test(NAME compile_simple_C_example 
-	     COMMAND ${CMAKE_C_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/C/example.c -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I${CMAKE_SOURCE_DIR}/include/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lstdc++ -lm  ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
+	     COMMAND ${CMAKE_C_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/C/example.c -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I${CMAKE_SOURCE_DIR}/include/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lstdc++ -lm  -L${MPI_C_LIBRARIES} -L${MPI_CXX_LIBRARIES}
 	     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
   elseif(APPLE)
     add_test(NAME compile_simple_C_example 
@@ -204,7 +208,7 @@ endforeach(test_source)
     #MSVS
     if(CMAKE_BUILD_TYPE STREQUAL Debug)
       add_test(NAME compile_simple_C_example 
-      COMMAND ${CMAKE_C_COMPILER} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/C/example.c /W3 /EHsc /RTC1 /MDd /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\WorldBuilder.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/WorldBuilder.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/WorldBuilder.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:example${CMAKE_EXECUTABLE_SUFFIX} ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
+      COMMAND ${CMAKE_C_COMPILER} /I${CMAKE_SOURCE_DIR}\\include ${CMAKE_CURRENT_SOURCE_DIR}/C/example.c /W3 /EHsc /RTC1 /MDd /link /INCREMENTAL /NOLOGO ${CMAKE_BINARY_DIR}\\lib\\WorldBuilder.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /IMPLIB:${CMAKE_BINARY_DIR}/lib/WorldBuilder.lib /WHOLEARCHIVE:${CMAKE_BINARY_DIR}/lib/WorldBuilder.lib ${WB_C_COMPILER_FLAGS_COVERAGE} /out:example${CMAKE_EXECUTABLE_SUFFIX} -L${MPI_C_LIBRARIES} -L${MPI_CXX_LIBRARIES}
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
     else()
       add_test(NAME compile_simple_C_example 

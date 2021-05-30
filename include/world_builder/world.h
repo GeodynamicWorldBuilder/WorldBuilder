@@ -124,6 +124,11 @@ namespace WorldBuilder
       int MPI_RANK;
 
       /**
+       * The MPI size. Set to one if MPI is not available.
+       */
+      int MPI_SIZE;
+
+      /**
        * Return a reference to the mt19937 random number.
        * The seed is provided to the world builder at construction.
        */

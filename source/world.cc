@@ -62,13 +62,17 @@ namespace WorldBuilder
     MPI_Initialized(&mpi_initialized);
     if (!mpi_initialized)
       {
-        int argc;
-        char **argv;
-        MPI_Init(&argc,&argv);
+        MPI_RANK = 0;
+        MPI_SIZE = 1;
       }
-    MPI_Comm_rank(MPI_COMM_WORLD, &MPI_RANK);
+    else
+      {
+        MPI_Comm_rank(MPI_COMM_WORLD, &MPI_RANK);
+        MPI_Comm_size(MPI_COMM_WORLD, &MPI_SIZE);
+      }
 #else
     MPI_RANK = 0;
+    MPI_SIZE = 1;
 #endif
 
     this->declare_entries(parameters);
