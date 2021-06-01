@@ -184,6 +184,54 @@ jobs:
       run: ctest -VV -C ${{ matrix.build_type }}
       
 
+  test_linux_and_macos_mpi:
+    needs: test_indentation
+    strategy: 
+      fail-fast: false
+      matrix: 
+        os: ['ubuntu-latest','macos-latest']
+        build_type: ['Release']
+      
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name:  Install optional dependencies
+      run:   |
+         if [ "$RUNNER_OS" == "Linux" ]; then
+            sudo apt install gfortran swig python3-setuptools openmpi-bin
+         elif [ "$RUNNER_OS" == "macOS" ]; then
+            sudo brew install swig open-mpi || true    
+         else          
+            echo "$RUNNER_OS not supported"
+            exit 1
+         fi
+      shell: bash
+      
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{github.workspace}}/build
+
+    - name: Configure CMake
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS=-Werror
+
+    - name: Build gwb
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: cmake --build . --config ${{ matrix.build_type }}
+
+    - name: Install gwb Linux and macOS
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: sudo cmake --install . --config ${{ matrix.build_type }}
+
+    - name: Test gwb
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: ctest -VV -C ${{ matrix.build_type }}
+
   coverage:
     runs-on: ubuntu-latest
     steps:
@@ -245,3 +293,64 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: ${{github.workspace}}/build/coverage_filtered.info
+
+  linux-cmake_mpi:
+    needs: [test_indentation,coverage]
+    strategy: 
+      fail-fast: false
+      matrix: 
+        os: ['ubuntu-latest']
+        cmake_version: ['2.8.10','2.8.12','3.1.x','3.16.x', '3.20.x']
+        use_mpi: ['TRUE','FALSE']
+        build_type: ['Release']
+      
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name:  Install optional dependencies
+      run:   |
+         if [ "$RUNNER_OS" == "Linux" ]; then
+            sudo apt install gfortran swig python3-setuptools openmpi-bin
+         elif [ "$RUNNER_OS" == "macOS" ]; then
+            sudo brew install swig open-mpi || true    
+         else          
+            echo "$RUNNER_OS not supported"
+            exit 1
+         fi
+      shell: bash
+
+    - name: Setup cmake
+      uses: jwlawson/actions-setup-cmake@v1.9
+      with:
+        cmake-version: ${{ matrix.cmake_version }} 
+            
+    - name: Use cmake
+      run: cmake --version
+
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{github.workspace}}/build
+
+    - name: Configure CMake
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: |
+            cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS=-Werror -DUSE_MPI=${{ matrix.use_mpi }};
+            cat ${{github.workspace}}/build/CMakeFiles/CMakeError.log ||:;
+
+    - name: Build gwb
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: cmake --build . --config ${{ matrix.build_type }}
+
+    - name: Install gwb Linux and macOS
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: sudo cmake --install . --config ${{ matrix.build_type }}
+
+    - name: Test gwb
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: ctest -VV -C ${{ matrix.build_type }}
+
