@@ -669,12 +669,12 @@ namespace WorldBuilder
           Point<3> closest_point_on_line_bottom = closest_point_on_line_surface;
           closest_point_on_line_bottom[bool_cartesian ? 2 : 0] = 0;
 
-          WBAssert(!std::isnan(closest_point_on_line_bottom[0]),
-                   "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom[0]);
-          WBAssert(!std::isnan(closest_point_on_line_bottom[1]),
-                   "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom[1]);
-          WBAssert(!std::isnan(closest_point_on_line_bottom[2]),
-                   "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom[2]);
+          WBAssert(!std::isnan(closest_point_on_line_bottom[0])
+                   ||
+                   !std::isnan(closest_point_on_line_bottom[1])
+                   ||
+                   !std::isnan(closest_point_on_line_bottom[2]),
+                   "Internal error: The y_axis variable contains not a number: " << closest_point_on_line_bottom);
 
           const Point<3> closest_point_on_line_plus_normal_to_plane_surface_spherical(bool_cartesian ? closest_point_on_line_plus_normal_to_plane_spherical[0] : start_radius,
                                                                                       bool_cartesian ? closest_point_on_line_plus_normal_to_plane_spherical[1] : closest_point_on_line_plus_normal_to_plane_spherical[0],
@@ -711,9 +711,9 @@ namespace WorldBuilder
 
               WBAssert(std::abs(y_axis.norm()) > std::numeric_limits<double>::epsilon(),
                        "World Builder error: Cannot detemine the up direction in the model. This is most likely due to the provided start radius being zero."
-                       << " Techical details: The y_axis.norm() is zero. Y_axis is " << y_axis[0] << ":" << y_axis[1] << ":" << y_axis[2]
-                       << ". closest_point_on_line_cartesian = " << closest_point_on_line_cartesian[0] << ":" << closest_point_on_line_cartesian[1] << ":" << closest_point_on_line_cartesian[2]
-                       << ", closest_point_on_line_bottom_cartesian = " << closest_point_on_line_bottom_cartesian[0] << ":" << closest_point_on_line_bottom_cartesian[1] << ":" << closest_point_on_line_bottom_cartesian[2]);
+                       << " Techical details: The y_axis.norm() is zero. Y_axis is " << y_axis
+                       << ". closest_point_on_line_cartesian = " << closest_point_on_line_cartesian
+                       << ", closest_point_on_line_bottom_cartesian = " << closest_point_on_line_bottom_cartesian);
 
               WBAssert(!std::isnan(y_axis[0]),
                        "Internal error: The y_axis variable is not a number: " << y_axis[0]);
@@ -787,7 +787,7 @@ namespace WorldBuilder
             }
 
           WBAssert(!std::isnan(x_axis[0]),
-                   "Internal error: The x_axis[0] variable is not a number: " << x_axis[0] << ". Relevant values:  check_point = " << check_point[0] << ":" <<  check_point[1] << ":" <<  check_point[2] << ".");
+                   "Internal error: The x_axis[0] variable is not a number: " << x_axis[0] << ". Relevant values:  check_point = " << check_point << ".");
           WBAssert(!std::isnan(x_axis[1]),
                    "Internal error: The x_axis[1] variable is not a number: " << x_axis[1]);
           WBAssert(!std::isnan(x_axis[2]),
@@ -832,8 +832,8 @@ namespace WorldBuilder
 
                   WBAssert(!std::isnan(add_angle_inner),
                            "Internal error: The add_angle_inner variable is not a number: " << add_angle_inner
-                           << ". Variables: begin_segment = " << begin_segment[0] << ":" << begin_segment[1]
-                           << ", end_segment = " << end_segment[0] << ":" << end_segment[1]
+                           << ". Variables: begin_segment = " << begin_segment
+                           << ", end_segment = " << end_segment
                            << ", begin_segment * end_segment / (begin_segment.norm() * end_segment.norm()) = "
                            << std::setprecision(32) << begin_segment * end_segment / (begin_segment.norm() * end_segment.norm())
                            << ".");
@@ -849,8 +849,8 @@ namespace WorldBuilder
 
                   WBAssert(!std::isnan(add_angle),
                            "Internal error: The add_angle variable is not a number: " << add_angle
-                           << ". Variables: begin_segment = " << begin_segment[0] << ":" << begin_segment[1]
-                           << ", end_segment = " << end_segment[0] << ":" << end_segment[1]
+                           << ". Variables: begin_segment = " << begin_segment
+                           << ", end_segment = " << end_segment
                            << ", begin_segment * end_segment / (begin_segment.norm() * end_segment.norm()) = "
                            << std::setprecision(32) << begin_segment * end_segment / (begin_segment.norm() * end_segment.norm())
                            << ", std::acos(begin_segment * end_segment / (begin_segment.norm() * end_segment.norm())) = "
