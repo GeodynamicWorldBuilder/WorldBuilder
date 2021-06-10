@@ -165,7 +165,7 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{github.workspace}}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DWB_ENABLE_PYTHON=FALSE
 
     - name: Build gwb
       working-directory: ${{github.workspace}}/build
@@ -317,6 +317,7 @@ jobs:
     - name:  Install optional dependencies
       run:   |
          if [ "$RUNNER_OS" == "Linux" ]; then
+            sudo apt update;
             sudo apt install gfortran swig python3-setuptools openmpi-bin
          elif [ "$RUNNER_OS" == "macOS" ]; then
             sudo brew install open-mpi || true    
