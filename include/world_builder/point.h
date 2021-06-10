@@ -22,6 +22,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <array>
+#include <iostream>
 
 #include <world_builder/coordinate_system.h>
 
@@ -164,6 +165,21 @@ namespace WorldBuilder
       * x_i * x_i + y_i * y_i + z_i * z_i in 3d.
       */
       double norm_square() const;
+
+      /**
+       * Outputs the values of the point to std cout separated by spaces. This does not
+       * output the coordinate system.
+       */
+      friend std::ostream &operator<<( std::ostream &output, const Point<dim> &point )
+      {
+        for (unsigned int i = 0; i < dim-1; i++)
+          {
+            output <<  point[i] << " ";
+          }
+        output << point[dim-1];
+
+        return output;
+      }
 
 
     private:
