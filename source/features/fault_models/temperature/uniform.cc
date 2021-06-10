@@ -61,10 +61,10 @@ namespace WorldBuilder
 
 
           prm.declare_entry("min distance fault center", Types::Double(0),
-                            "todo The depth in meters from which the composition of this feature is present.");
+                            "The distance in meters from which the composition of this feature is present.");
 
           prm.declare_entry("max distance fault center", Types::Double(std::numeric_limits<double>::max()),
-                            "todo The depth in meters to which the composition of this feature is present.");
+                            "The distance in meters to which the composition of this feature is present.");
 
           prm.declare_entry("temperature", Types::Double(293.15),
                             "The temperature in degree Kelvin which this feature should have");

@@ -60,9 +60,9 @@ namespace WorldBuilder
           prm.declare_entry("", Types::Object({"compositions"}), "Uniform compositional model object");
 
           prm.declare_entry("min distance fault center", Types::Double(0),
-                            "todo The depth in meters from which the composition of this feature is present.");
+                            "The distance in meters from which the composition of this feature is present.");
           prm.declare_entry("max distance fault center", Types::Double(std::numeric_limits<double>::max()),
-                            "todo The depth in meters to which the composition of this feature is present.");
+                            "The distance in meters to which the composition of this feature is present.");
           prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
                             "A list with the labels of the composition which are present there.");
           prm.declare_entry("fractions", Types::Array(Types::Double(1.0),1),
