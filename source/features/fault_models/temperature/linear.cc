@@ -42,8 +42,8 @@ namespace WorldBuilder
           :
           min_depth(NaN::DSNAN),
           max_depth(NaN::DSNAN),
-          top_temperature(NaN::DSNAN),
-          bottom_temperature(NaN::DSNAN),
+          center_temperature(NaN::DSNAN),
+          side_temperature(NaN::DSNAN),
           operation(Utilities::Operations::REPLACE)
         {
           this->world = world_;
@@ -82,8 +82,8 @@ namespace WorldBuilder
           max_depth = prm.get<double>("max distance fault center");
           WBAssert(max_depth >= min_depth, "max depth needs to be larger or equal to min depth.");
           operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
-          top_temperature = prm.get<double>("center temperature");
-          bottom_temperature = prm.get<double>("side temperature");
+          center_temperature = prm.get<double>("center temperature");
+          side_temperature = prm.get<double>("side temperature");
         }
 
 
@@ -102,25 +102,25 @@ namespace WorldBuilder
               const double min_depth_local = min_depth;
               const double max_depth_local = max_depth;
 
-              double top_temperature_local = top_temperature;
-              if (top_temperature_local < 0)
+              double center_temperature_local = center_temperature;
+              if (center_temperature_local < 0)
                 {
-                  top_temperature_local =  this->world->potential_mantle_temperature *
-                                           std::exp(((this->world->thermal_expansion_coefficient * gravity_norm) /
-                                                     this->world->specific_heat) * min_depth_local);
-                }
-
-              double bottom_temperature_local = bottom_temperature;
-              if (bottom_temperature_local < 0)
-                {
-                  bottom_temperature_local =  this->world->potential_mantle_temperature *
+                  center_temperature_local =  this->world->potential_mantle_temperature *
                                               std::exp(((this->world->thermal_expansion_coefficient * gravity_norm) /
-                                                        this->world->specific_heat) * max_depth_local);
+                                                        this->world->specific_heat) * min_depth_local);
                 }
 
-              const double new_temperature =   top_temperature +
+              double side_temperature_local = side_temperature;
+              if (side_temperature_local < 0)
+                {
+                  side_temperature_local =  this->world->potential_mantle_temperature *
+                                            std::exp(((this->world->thermal_expansion_coefficient * gravity_norm) /
+                                                      this->world->specific_heat) * max_depth_local);
+                }
+
+              const double new_temperature =   center_temperature +
                                                (std::fabs(distance_from_planes.at("distanceFromPlane")) - min_depth_local) *
-                                               ((bottom_temperature_local - top_temperature_local) / (max_depth_local - min_depth_local));
+                                               ((side_temperature_local - center_temperature_local) / (max_depth_local - min_depth_local));
 
               return Utilities::apply_operation(operation,temperature_,new_temperature);
 
