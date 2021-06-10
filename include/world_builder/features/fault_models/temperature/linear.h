@@ -81,8 +81,8 @@ namespace WorldBuilder
             // linear temperature submodule parameters
             double min_depth;
             double max_depth;
-            double top_temperature;
-            double bottom_temperature;
+            double center_temperature;
+            double side_temperature;
             Utilities::Operations operation;
 
         };
