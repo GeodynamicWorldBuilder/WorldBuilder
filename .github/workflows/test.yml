@@ -68,11 +68,6 @@ jobs:
       run:   |
          if [ "$RUNNER_OS" == "Linux" ]; then
             sudo apt install gfortran swig python3-setuptools
-         elif [ "$RUNNER_OS" == "macOS" ]; then
-            sudo brew install swig || true    
-         else          
-            echo "$RUNNER_OS not supported"
-            exit 1
          fi
       shell: bash
       
@@ -82,7 +77,12 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{github.workspace}}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS=-Werror
+      run: |
+            if [ "$RUNNER_OS" == "Linux" ]; then
+              cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS=-Werror
+            else
+              cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS=-Werror -DWB_ENABLE_PYTHON=FALSE
+            fi
 
     - name: Build gwb
       working-directory: ${{github.workspace}}/build
@@ -202,7 +202,7 @@ jobs:
          if [ "$RUNNER_OS" == "Linux" ]; then
             sudo apt install gfortran swig python3-setuptools openmpi-bin
          elif [ "$RUNNER_OS" == "macOS" ]; then
-            sudo brew install swig open-mpi || true    
+            sudo brew install open-mpi || true    
          else          
             echo "$RUNNER_OS not supported"
             exit 1
@@ -215,7 +215,12 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{github.workspace}}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS=-Werror
+      run: |
+            if [ "$RUNNER_OS" == "Linux" ]; then
+              cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS=-Werror
+            else
+              cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS=-Werror -DWB_ENABLE_PYTHON=FALSE
+            fi
 
     - name: Build gwb
       working-directory: ${{github.workspace}}/build
@@ -314,7 +319,7 @@ jobs:
          if [ "$RUNNER_OS" == "Linux" ]; then
             sudo apt install gfortran swig python3-setuptools openmpi-bin
          elif [ "$RUNNER_OS" == "macOS" ]; then
-            sudo brew install swig open-mpi || true    
+            sudo brew install open-mpi || true    
          else          
             echo "$RUNNER_OS not supported"
             exit 1
