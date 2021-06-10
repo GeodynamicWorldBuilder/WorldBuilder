@@ -65,12 +65,12 @@ namespace WorldBuilder
           prm.declare_entry("max distance fault center", Types::Double(std::numeric_limits<double>::max()),
                             "The minimum distance to the center of the fault. This determines where the linear temperature end.");
 
-          prm.declare_entry("top temperature", Types::Double(293.15),
-                            "The temperature at the top in degree Kelvin of this feature."
+          prm.declare_entry("center temperature", Types::Double(293.15),
+                            "The temperature at the center of this feature in degree Kelvin."
                             "If the value is below zero, the an adiabatic temperature is used.");
 
-          prm.declare_entry("bottom temperature", Types::Double(-1),
-                            "The temperature at the top in degree Kelvin of this feature. "
+          prm.declare_entry("side temperature", Types::Double(-1),
+                            "The temperature at the sides of this feature in degree Kelvin. "
                             "If the value is below zero, an adiabatic temperature is used.");
 
         }
@@ -82,8 +82,8 @@ namespace WorldBuilder
           max_depth = prm.get<double>("max distance fault center");
           WBAssert(max_depth >= min_depth, "max depth needs to be larger or equal to min depth.");
           operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
-          top_temperature = prm.get<double>("top temperature");
-          bottom_temperature = prm.get<double>("bottom temperature");
+          top_temperature = prm.get<double>("center temperature");
+          bottom_temperature = prm.get<double>("side temperature");
         }
 
 
