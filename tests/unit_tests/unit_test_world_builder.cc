@@ -3228,6 +3228,12 @@ TEST_CASE("WorldBuilder Types: Point 2d")
 
   type_point_array[0] = 2;
   CHECK(type_point_array[0] == Approx(2.0));
+
+  // Thest the point output stream.
+  std::ostringstream stream;
+  stream << point_array;
+  std::string str =  stream.str();
+  CHECK(str == "1 2");
 #undef TYPE
 }
 
@@ -3318,6 +3324,12 @@ TEST_CASE("WorldBuilder Types: Point 3d")
 
   // const test the access operator
   CHECK(point_array[0] == Approx(1.0));
+
+  // Thest the point output stream.
+  std::ostringstream stream;
+  stream << point_array;
+  std::string str =  stream.str();
+  CHECK(str == "1 2 3");
 
 #undef TYPE
 }
