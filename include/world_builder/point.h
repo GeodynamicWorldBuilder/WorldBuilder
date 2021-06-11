@@ -151,7 +151,23 @@ namespace WorldBuilder
         return point[index];
       }
 
+      /**
+       * Computes the distance between this and a given point.
+       * In spherical coordinates it returns the central angle in radians.
+       */
+      double
+      distance(const Point<dim> &two) const;
 
+      /**
+       * Computes the cheapest relative distance between this and a given point.
+       * The return value itself is only guartenteed to have the property that a
+       * larger value is further away.
+       * In the current implementation that means for the cartasian case the squared
+       * value is returned and for the spherical value the result of the havearsine
+       * function without asin and sqrt is returned.
+       */
+      double
+      cheap_relative_distance(const Point<dim> &two) const;
 
       /**
        * return the internal array which stores the point data.
