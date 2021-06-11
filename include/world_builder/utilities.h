@@ -65,8 +65,24 @@ namespace WorldBuilder
     double
     signed_distance_to_polygon(const std::vector<Point<2> > &point_list_,
                                const Point<2> &point_);
+    /**
+     * Takes the list of the fault coordinates and computes a bounding box
+     * based on the minimum and maximum x,y values in the list, and an
+     * additional buffer zone computed using the maximum fault length.
+     * Currenly, only implemented for the spherical coordinates.
+     */
+    std::vector<Point<2> >
+    get_bounding_box (const Point<2> &point,
+                      const std::vector<Point<2> > &point_list,
+                      std::size_t original_number_of_coordinates,
+                      const double buffer_around_fault);
 
-
+    /**
+     * Takes the list of coordinates and the maximum fault extent to define the
+     * bounding box, and returns true if the point lies inside the box and false otherwise.
+     */
+    bool bounding_box_contains_point (const std::vector<Point<2> > &point_list,
+                                      const Point<2> &point);
     /*
     * A class that represents a point in a chosen coordinate system.
     */

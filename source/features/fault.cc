@@ -26,6 +26,7 @@
 #include "world_builder/types/point.h"
 #include "world_builder/types/unsigned_int.h"
 #include "world_builder/world.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -325,6 +326,10 @@ namespace WorldBuilder
           total_fault_length[i] = local_total_fault_length;
           maximum_total_fault_length = std::max(maximum_total_fault_length, local_total_fault_length);
         }
+
+      const double buffer_zone = maximum_fault_thickness + maximum_fault_thickness;
+      bounding_box_coordinates = WorldBuilder::Utilities::get_bounding_box (
+                                   reference_point, coordinates, original_number_of_coordinates, buffer_zone);
     }
 
 
@@ -468,6 +473,7 @@ namespace WorldBuilder
       return temperature;
     }
 
+
     double
     Fault::composition(const Point<3> &position,
                        const NaturalCoordinate &position_in_natural_coordinates,
@@ -479,7 +485,9 @@ namespace WorldBuilder
       const double starting_radius = position_in_natural_coordinates.get_depth_coordinate() + depth - starting_depth;
 
       // todo: explain and check -starting_depth
-      if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_fault_length + maximum_fault_thickness)
+      if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_fault_length + maximum_fault_thickness
+          && WorldBuilder::Utilities::bounding_box_contains_point (bounding_box_coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
+                                                                   world->parameters.coordinate_system->natural_coordinate_system())) )
         {
           // todo: explain
           // This function only returns positive values, because we want

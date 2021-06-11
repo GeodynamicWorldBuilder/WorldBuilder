@@ -207,6 +207,60 @@ namespace WorldBuilder
     }
 
 
+    std::vector<Point<2> >
+    get_bounding_box (const Point<2> &point,
+                      const std::vector<Point<2> > &point_list,
+                      std::size_t original_number_of_coordinates,
+                      const double buffer_around_fault)
+    {
+      std::vector<double> x_list(original_number_of_coordinates,0.0);
+      std::vector<double> y_list(original_number_of_coordinates,0.0);
+
+      for (size_t j=0; j<original_number_of_coordinates; ++j)
+        {
+          x_list[j] = point_list[j][0];
+          y_list[j] = point_list[j][1];
+        }
+
+      // Corner coordinates of the bounding polygon
+      std::vector<Point<2> > bounding_box (4, point);
+
+      // The bounding box currently is hard-coded to include buffer zone based on the spherical geometry.
+      const double bounding_buffer_zone = 2.* (buffer_around_fault) / (const_pi * 2. * 6371000.) ;
+
+      // The bounding box corners defined from (x0, y0) in clockwise direction
+      bounding_box[0][0] = *std::min_element(x_list.begin(), x_list.end()) - bounding_buffer_zone;
+      bounding_box[0][1] = *std::min_element(y_list.begin(), y_list.end()) - bounding_buffer_zone;
+
+      bounding_box[1][0] = *std::min_element(x_list.begin(), x_list.end()) - bounding_buffer_zone;
+      bounding_box[1][1] = *std::max_element(y_list.begin(), y_list.end()) + bounding_buffer_zone;
+
+      bounding_box[2][0] = *std::max_element(x_list.begin(), x_list.end()) + bounding_buffer_zone;
+      bounding_box[2][1] = *std::max_element(y_list.begin(), y_list.end()) + bounding_buffer_zone;
+
+      bounding_box[3][0] = *std::max_element(x_list.begin(), x_list.end()) + bounding_buffer_zone;
+      bounding_box[3][1] = *std::min_element(y_list.begin(), y_list.end()) - bounding_buffer_zone;
+
+      return bounding_box;
+    }
+
+
+    bool
+    bounding_box_contains_point (const std::vector<Point<2> > &point_list,
+                                 const Point<2> &point)
+    {
+      for (size_t i=0; i<point_list.size(); i++)
+        {
+          // The points in the point_list correspond to the get_bounding_polygon() output.
+          if (point[0] < point_list[2][0] && point[0] > point_list[0][0] && point[1] < point_list[1][1] && point[1] > point_list[0][1])
+            return true;
+          else
+            return false;
+        }
+      return true;
+    }
+
+
     NaturalCoordinate::NaturalCoordinate(const std::array<double,3> &position,
                                          const CoordinateSystems::Interface &coordinate_system_)
     {

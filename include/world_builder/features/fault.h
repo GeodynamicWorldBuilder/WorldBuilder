@@ -179,6 +179,8 @@ namespace WorldBuilder
         double maximum_total_fault_length;
         double maximum_fault_thickness;
 
+        std::vector<Point<2> > bounding_box_coordinates;
+
 
     };
   } // namespace Features
