@@ -6991,3 +6991,29 @@ TEST_CASE("WorldBuilder parameters: invalid 1")
 
 }
 
+TEST_CASE("Fast sin functions")
+{
+  for (int i = -400; i < 400; i++)
+    {
+      const double angle = (WorldBuilder::Utilities::const_pi/100.)*(double)i;
+      CHECK(fabs(FT::sin(angle)-std::sin(angle)) < 1.2e-5);
+    }
+
+  for (int i = -400; i < 400; i++)
+    {
+      const double angle = (WorldBuilder::Utilities::const_pi/100.)*(double)i;
+      CHECK(fabs(FT::cos(angle)-std::cos(angle)) < 1.2e-5);
+    }
+}
+
+TEST_CASE("Fast version of fmod")
+{
+  CHECK(FT::fmod(0,1) == Approx(std::fmod(0,1)));
+  CHECK(FT::fmod(0.2,1) == Approx(std::fmod(0.2,1)));
+  CHECK(FT::fmod(1,1) == Approx(std::fmod(1,1)));
+  CHECK(FT::fmod(5.3,2) == Approx(std::fmod(5.3,2)));
+  CHECK(FT::fmod(18.5,4.2) == Approx(std::fmod(18.5,4.2)));
+  CHECK(std::isnan(FT::fmod(1,0)));
+  CHECK(std::isnan(std::fmod(1,0)));
+}
+
