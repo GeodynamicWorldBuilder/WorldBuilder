@@ -232,7 +232,7 @@ namespace WorldBuilder
         /**
          * Evaluate at point @p x.
          */
-        double operator() (double x) const;
+        double operator() (const double x) const;
 
       private:
         /**
