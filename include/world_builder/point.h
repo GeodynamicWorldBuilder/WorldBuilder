@@ -25,6 +25,7 @@
 #include <iostream>
 
 #include <world_builder/coordinate_system.h>
+#include <world_builder/assert.h>
 
 namespace WorldBuilder
 {
@@ -133,13 +134,23 @@ namespace WorldBuilder
       /**
        * access index (const)
        */
-      const double &operator[](const unsigned int index) const;
+      inline
+      const double &operator[](const unsigned int index) const
+      {
+        WBAssert(index <= dim, "Can't ask for element " << index << " in an point with dimension " << dim << ".");
+        return point[index];
+      }
 
 
       /**
        * access index
        */
-      double &operator[](const unsigned int index);
+      inline double &operator[](const unsigned int index)
+      {
+        WBAssert(index <= dim, "Can't ask for element " << index << " in an point with dimension " << dim << ".");
+        return point[index];
+      }
+
 
 
       /**

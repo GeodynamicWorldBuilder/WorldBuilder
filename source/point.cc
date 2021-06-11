@@ -205,30 +205,6 @@ namespace WorldBuilder
   }
 
 
-  /**
-   * access index
-   */
-  template<int dim>
-  const double &
-  Point<dim>::operator[](const unsigned int index) const
-  {
-    WBAssertThrow(index <= dim, "Can't ask for element " << index << " in an point with dimension " << dim << ".");
-    return point[index];
-  }
-
-
-  /**
-   * access index
-   */
-  template<int dim>
-  double &
-  Point<dim>::operator[](const unsigned int index)
-  {
-    WBAssertThrow(index <= dim, "Can't ask for element " << index << " in an point with dimension " << dim << ".");
-    return point[index];
-  }
-
-
   template<int dim>
   const std::array<double,dim> &
   Point<dim>::get_array() const
