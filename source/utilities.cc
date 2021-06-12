@@ -512,20 +512,23 @@ namespace WorldBuilder
       Point<2> closest_point_on_line_2d_temp(0,0,natural_coordinate_system);
       double fraction_CPL_P1P2_strict =  INFINITY; // or NAN?
       double fraction_CPL_P1P2 = INFINITY;
-      Point<2> P1_closest(std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),natural_coordinate_system);
-      Point<2> P2_closest(std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),natural_coordinate_system);
 
       bool continue_computation = false;
       if (interpolation_type != InterpolationType::ContinuousMonotoneSpline)
         {
           // loop over all the planes to find out which one is closest to the point.
-
           for (size_t i_section=0; i_section < point_list.size()-1; ++i_section)
             {
               const Point<2> P1(point_list[i_section]);
               const Point<2> P2(point_list[i_section+1]);
 
               const Point<2> P1P2 = P2 - P1;
+              const double P1P2_norm = P1P2.norm();
+              if (P1P2_norm < 1e-14)
+                {
+                  // P1 and P2 are at exactly the same location. Just continue.
+                  continue;
+                }
               const Point<2> P1PC = check_point_surface_2d - P1;
 
               // Compute the closest point on the line P1 to P2 from the check
@@ -539,79 +542,74 @@ namespace WorldBuilder
 
               // This determines where the check point is between the coordinates
               // in the coordinate list.
-              double fraction_CPL_P1P2_strict_temp = (P1CPL * P1P2 <= 0 ? -1.0 : 1.0)
-                                                     * (1 - (P1P2.norm() - P1CPL.norm()) / P1P2.norm());
+              double fraction_CPL_P1P2_strict_temp = (P1CPL * P1P2 <= 0 ? -1.0 : 1.0) * (1 - (P1P2.norm() - P1CPL.norm()) / P1P2.norm());
 
-              Point<2> CPLCPS2 = closest_point_on_line_2d_temp - check_point_surface_2d;
-
+              double min_distance_check_point_surface_2d_line_temp = closest_point_on_line_2d_temp.cheap_relative_distance(check_point_surface_2d);//(closest_point_on_line_2d_temp - check_point_surface_2d).norm();//closest_point_on_line_2d_temp.distance(check_point_surface_2d);
               // If fraction_CPL_P1P2_strict_temp is between 0 and 1 it means that the point can be projected perpendicual to the line segment. For the non-contiuous case we only conder points which are
               // perpendicular to a line segment.
               // There can be mutliple lines segment to which a point is perpundicual. Choose the point which is closed in 2D (x-y).
-              if (fraction_CPL_P1P2_strict_temp >= 0. && fraction_CPL_P1P2_strict_temp <= 1. && CPLCPS2.norm() < min_distance_check_point_surface_2d_line)
+              if (fraction_CPL_P1P2_strict_temp >= 0. && fraction_CPL_P1P2_strict_temp <= 1. && fabs(min_distance_check_point_surface_2d_line_temp) < fabs(min_distance_check_point_surface_2d_line))
                 {
-                  min_distance_check_point_surface_2d_line = CPLCPS2.norm();
+                  min_distance_check_point_surface_2d_line = min_distance_check_point_surface_2d_line_temp;
                   i_section_min_distance = i_section;
                   closest_point_on_line_2d = closest_point_on_line_2d_temp;
                   fraction_CPL_P1P2_strict = fraction_CPL_P1P2_strict_temp;
                 }
             }
-
           // If the point on the line does not lay between point P1 and P2
           // then ignore it. Otherwise continue.
           continue_computation = (fabs(fraction_CPL_P1P2_strict) < INFINITY && fraction_CPL_P1P2_strict >= 0. && fraction_CPL_P1P2_strict <= 1.);
 
           fraction_CPL_P1P2 = global_x_list[i_section_min_distance] - static_cast<int>(global_x_list[i_section_min_distance])
                               + (global_x_list[i_section_min_distance+1]-global_x_list[i_section_min_distance]) * fraction_CPL_P1P2_strict;
-          P1_closest =  point_list[i_section_min_distance];
-          P2_closest = point_list[i_section_min_distance+1];
         }
       else
         {
-          // Compute the clostest point on the spline as a double.
-          double parts = 5;
-          // get a better estimate for the closest point between P1 and P2.
+          // get an estimate for the closest point between P1 and P2.
+          const double parts = 3;
           double min_estimate_solution = 0;
           double min_estimate_solution_temp = min_estimate_solution;
-          double x_distance_to_reference_point = x_spline(min_estimate_solution)-check_point_surface_2d[0];
-          double y_distance_to_reference_point = y_spline(min_estimate_solution)-check_point_surface_2d[1];
-          double minimum_distance_to_reference_point = sqrt(x_distance_to_reference_point*x_distance_to_reference_point + y_distance_to_reference_point*y_distance_to_reference_point);
-          for (size_t i_estimate = 0; i_estimate < parts*(global_x_list[point_list.size()-1]); i_estimate++)
-            {
-              min_estimate_solution_temp = min_estimate_solution_temp + 1.0/parts;
+          Point<2> splines(x_spline(min_estimate_solution),y_spline(min_estimate_solution), natural_coordinate_system);
+          double minimum_distance_to_reference_point = splines.cheap_relative_distance(check_point_surface_2d);
 
-              const double x_distance_to_reference_point_temp = x_spline(min_estimate_solution_temp)-check_point_surface_2d[0];
-              const double y_distance_to_reference_point_temp = y_spline(min_estimate_solution_temp)-check_point_surface_2d[1];
-              const double minimum_distance_to_reference_point_temp = sqrt(x_distance_to_reference_point_temp*x_distance_to_reference_point_temp + y_distance_to_reference_point_temp*y_distance_to_reference_point_temp);
+          // Compute the clostest point on the spline as a double.
+          for (size_t i_estimate = 0; i_estimate <= parts*(global_x_list[point_list.size()-1])+1; i_estimate++)
+            {
+              splines[0] = x_spline(min_estimate_solution_temp);
+              splines[1] = y_spline(min_estimate_solution_temp);
+              const double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance(check_point_surface_2d);
 
               if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
                 {
                   minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
                   min_estimate_solution = min_estimate_solution_temp;
                 }
-
+              min_estimate_solution_temp = min_estimate_solution_temp + 1.0/parts;
             }
 
           // search above and below the solution and replace if the distance is smaller.
-          double search_step = 0.5/parts;
+          double search_step = 1./parts;
           for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
             {
-              const double x_distance_to_reference_point_min = x_spline(min_estimate_solution-search_step)-check_point_surface_2d[0];
-              const double y_distance_to_reference_point_min = y_spline(min_estimate_solution-search_step)-check_point_surface_2d[1];
-              const double minimum_distance_to_reference_point_min = sqrt(x_distance_to_reference_point_min*x_distance_to_reference_point_min + y_distance_to_reference_point_min*y_distance_to_reference_point_min);
+              splines[0] = x_spline(min_estimate_solution-search_step);
+              splines[1] = y_spline(min_estimate_solution-search_step);
+              const double minimum_distance_to_reference_point_min = splines.cheap_relative_distance(check_point_surface_2d);
 
-              const double x_distance_to_reference_point_plus = x_spline(min_estimate_solution+search_step)-check_point_surface_2d[0];
-              const double y_distance_to_reference_point_plus = y_spline(min_estimate_solution+search_step)-check_point_surface_2d[1];
-              const double minimum_distance_to_reference_point_plus = sqrt(x_distance_to_reference_point_plus*x_distance_to_reference_point_plus + y_distance_to_reference_point_plus*y_distance_to_reference_point_plus);
 
-              if (minimum_distance_to_reference_point_min < minimum_distance_to_reference_point)
-                {
-                  min_estimate_solution = min_estimate_solution-search_step;
-                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_min;
-                }
-              else if (minimum_distance_to_reference_point_plus < minimum_distance_to_reference_point)
+              splines[0] = x_spline(min_estimate_solution+search_step);
+              splines[1] = y_spline(min_estimate_solution+search_step);
+              const double minimum_distance_to_reference_point_plus = splines.cheap_relative_distance(check_point_surface_2d);
+
+
+              if (minimum_distance_to_reference_point_plus < minimum_distance_to_reference_point)
                 {
                   min_estimate_solution = min_estimate_solution+search_step;
                   minimum_distance_to_reference_point = minimum_distance_to_reference_point_plus;
+                }
+              else if (minimum_distance_to_reference_point_min < minimum_distance_to_reference_point)
+                {
+                  min_estimate_solution = min_estimate_solution-search_step;
+                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_min;
                 }
               else
                 {
@@ -622,8 +620,6 @@ namespace WorldBuilder
 
           continue_computation = (solution > 0 && floor(solution) <= global_x_list[point_list.size()-2] && floor(solution)  >= 0);
 
-          P1_closest = Point<2>(x_spline(solution-1e-10),y_spline(solution-1e-10),natural_coordinate_system);
-          P2_closest = Point<2>(x_spline(solution+1e-10),y_spline(solution+1e-10),natural_coordinate_system);
           closest_point_on_line_2d = Point<2>(x_spline(solution),y_spline(solution),natural_coordinate_system);
           i_section_min_distance = (size_t) floor(solution);
           fraction_CPL_P1P2 = solution-floor(solution);
@@ -632,32 +628,6 @@ namespace WorldBuilder
 
       if (continue_computation)
         {
-          // now compute the relevant x and y axis
-          Point<3> x_axis(std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),cartesian);
-          Point<3> y_axis(std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),cartesian);
-          Point<3> closest_point_on_line_cartesian(std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),cartesian);
-          Point<3> closest_point_on_line_bottom_cartesian(std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),std::numeric_limits<double>::signaling_NaN(),cartesian);
-          size_t current_section = i_section_min_distance;
-          size_t next_section = i_section_min_distance+1;
-
-          // translate to orignal coordinates current and next section
-          size_t original_current_section = static_cast<size_t>(std::floor(global_x_list[i_section_min_distance]));
-          size_t original_next_section = original_current_section + 1;
-
-          // now figure out where the point is in relation with the user
-          // get P1 and P2 back
-          const Point<2> &P1 = P1_closest;
-          const Point<2> &P2 = P2_closest;
-          const Point<2> P1P2 = P2 - P1;
-
-          // defined coordinates
-          const Point<2> unit_normal_to_plane_spherical = P1P2 / P1P2.norm();
-          const Point<2> closest_point_on_line_plus_normal_to_plane_spherical = closest_point_on_line_2d + 1e-8 * (closest_point_on_line_2d.norm() > 1.0 ? closest_point_on_line_2d.norm() : 1.0) * unit_normal_to_plane_spherical;
-
-          WBAssert(std::fabs(closest_point_on_line_plus_normal_to_plane_spherical.norm()) > std::numeric_limits<double>::epsilon(),
-                   "Internal error: The norm of variable 'closest_point_on_line_plus_normal_to_plane_spherical' "
-                   "is  zero, while this may not happen.");
-
           // We now need 3d points from this point on, so make them.
           // The order of a Cartesian coordinate is x,y,z and the order of
           // a spherical coordinate it radius, long, lat (in rad).
@@ -676,17 +646,11 @@ namespace WorldBuilder
                    !std::isnan(closest_point_on_line_bottom[2]),
                    "Internal error: The y_axis variable contains not a number: " << closest_point_on_line_bottom);
 
-          const Point<3> closest_point_on_line_plus_normal_to_plane_surface_spherical(bool_cartesian ? closest_point_on_line_plus_normal_to_plane_spherical[0] : start_radius,
-                                                                                      bool_cartesian ? closest_point_on_line_plus_normal_to_plane_spherical[1] : closest_point_on_line_plus_normal_to_plane_spherical[0],
-                                                                                      bool_cartesian ? start_radius : closest_point_on_line_plus_normal_to_plane_spherical[1],
-                                                                                      natural_coordinate_system);
-
           // Now that we have both the check point and the
           // closest_point_on_line, we need to push them to cartesian.
-          const Point<3> check_point_surface_cartesian(coordinate_system->natural_to_cartesian_coordinates(check_point_surface.get_array()),cartesian);
-          closest_point_on_line_cartesian = Point<3>(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_surface.get_array()),cartesian);
-          closest_point_on_line_bottom_cartesian = Point<3>(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_bottom.get_array()),cartesian);
-          const Point<3> closest_point_on_line_plus_normal_to_plane_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_plus_normal_to_plane_surface_spherical.get_array()),cartesian);
+          Point<3>closest_point_on_line_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_surface.get_array()),cartesian);
+          Point<3> closest_point_on_line_bottom_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_bottom.get_array()),cartesian);
+          Point<3> check_point_surface_cartesian(coordinate_system->natural_to_cartesian_coordinates(check_point_surface.get_array()),cartesian);
 
 
           WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[0]),
@@ -696,18 +660,131 @@ namespace WorldBuilder
           WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[2]),
                    "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[2]);
 
-          // If the point to check is on the line, we don't need to search any further, because we know the distance is zero.
-          if (std::fabs((check_point - closest_point_on_line_cartesian).norm()) > 2e-14)
+
+          // translate to orignal coordinates current and next section
+          size_t original_current_section = static_cast<size_t>(std::floor(global_x_list[i_section_min_distance]));
+          size_t original_next_section = original_current_section + 1;
+
+
+          // These are the mostly likely cases for the x and y axis, so initialize them to these values. They will be checked
+          // in the else statement or replaced in the if statement.
+          Point<3> y_axis = closest_point_on_line_cartesian - closest_point_on_line_bottom_cartesian;
+          Point<3> x_axis = closest_point_on_line_cartesian - check_point_surface_cartesian;
+
+          // This are accouting for corner cases.
+          // If the point to check is exactly on or below the line, we can not compute the x-axis with this method.
+          // We could use an other method where we use the two point before and after it, but we can also
+          // just nudge it into a direction, which seems to work very well.
+          if (std::fabs((check_point_surface - closest_point_on_line_surface).norm()) < 2e-14)
+            {
+              // If the point to check is on the line, we don't need to search any further, because we know the distance is zero.
+              if (std::fabs((check_point - closest_point_on_line_cartesian).norm()) > 2e-14)
+                {
+                  const Point<2> P1(point_list[i_section_min_distance]);
+                  const Point<2> P2(point_list[i_section_min_distance+1]);
+
+                  const Point<2> P1P2 = P2 - P1;
+                  const double P1P2_norm = P1P2.norm();
+                  const Point<2> unit_normal_to_plane_spherical = P1P2 / P1P2.norm();
+                  const Point<2> closest_point_on_line_plus_normal_to_plane_spherical = closest_point_on_line_2d + 1e-8 * (closest_point_on_line_2d.norm() > 1.0 ? closest_point_on_line_2d.norm() : 1.0) * unit_normal_to_plane_spherical;
+
+                  WBAssert(std::fabs(closest_point_on_line_plus_normal_to_plane_spherical.norm()) > std::numeric_limits<double>::epsilon(),
+                           "Internal error: The norm of variable 'closest_point_on_line_plus_normal_to_plane_spherical' "
+                           "is  zero, while this may not happen.");
+
+                  const Point<3> closest_point_on_line_plus_normal_to_plane_surface_spherical(bool_cartesian ? closest_point_on_line_plus_normal_to_plane_spherical[0] : start_radius,
+                                                                                              bool_cartesian ? closest_point_on_line_plus_normal_to_plane_spherical[1] : closest_point_on_line_plus_normal_to_plane_spherical[0],
+                                                                                              bool_cartesian ? start_radius : closest_point_on_line_plus_normal_to_plane_spherical[1],
+                                                                                              natural_coordinate_system);
+                  const Point<3> closest_point_on_line_plus_normal_to_plane_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_plus_normal_to_plane_surface_spherical.get_array()),cartesian);
+                  Point<3> normal_to_plane = closest_point_on_line_plus_normal_to_plane_cartesian - closest_point_on_line_cartesian;
+                  normal_to_plane = normal_to_plane / normal_to_plane.norm();
+
+                  // The y-axis is from the bottom/center to the closest_point_on_line,
+                  // the x-axis is 90 degrees rotated from that, so we rotate around
+                  // the line P1P2.
+                  // Todo: Assert that the norm of the axis are not equal to zero.
+                  y_axis = closest_point_on_line_cartesian - closest_point_on_line_bottom_cartesian;
+
+                  WBAssert(std::abs(y_axis.norm()) > std::numeric_limits<double>::epsilon(),
+                           "World Builder error: Cannot detemine the up direction in the model. This is most likely due to the provided start radius being zero."
+                           << " Techical details: The y_axis.norm() is zero. Y_axis is " << y_axis[0] << ":" << y_axis[1] << ":" << y_axis[2]
+                           << ". closest_point_on_line_cartesian = " << closest_point_on_line_cartesian[0] << ":" << closest_point_on_line_cartesian[1] << ":" << closest_point_on_line_cartesian[2]
+                           << ", closest_point_on_line_bottom_cartesian = " << closest_point_on_line_bottom_cartesian[0] << ":" << closest_point_on_line_bottom_cartesian[1] << ":" << closest_point_on_line_bottom_cartesian[2]);
+
+                  WBAssert(!std::isnan(y_axis[0]),
+                           "Internal error: The y_axis variable is not a number: " << y_axis[0]);
+                  WBAssert(!std::isnan(y_axis[1]),
+                           "Internal error: The y_axis variable is not a number: " << y_axis[1]);
+                  WBAssert(!std::isnan(y_axis[2]),
+                           "Internal error: The y_axis variable is not a number: " << y_axis[2]);
+
+                  y_axis = y_axis / y_axis.norm();
+
+                  WBAssert(!std::isnan(y_axis[0]),
+                           "Internal error: The y_axis variable is not a number: " << y_axis[0]);
+                  WBAssert(!std::isnan(y_axis[1]),
+                           "Internal error: The y_axis variable is not a number: " << y_axis[1]);
+                  WBAssert(!std::isnan(y_axis[2]),
+                           "Internal error: The y_axis variable is not a number: " << y_axis[2]);
+
+
+                  // shorthand notation for computing the x_axis
+                  const double vx = y_axis[0];
+                  const double vy = y_axis[1];
+                  const double vz = y_axis[2];
+                  const double ux = normal_to_plane[0];
+                  const double uy = normal_to_plane[1];
+                  const double uz = normal_to_plane[2];
+
+                  x_axis = Point<3>(ux*ux*vx + ux*uy*vy - uz*vy + uy*uz*vz + uy*vz,
+                                    uy*ux*vx + uz*vx + uy*uy*vy + uy*uz*vz - ux*vz,
+                                    uz*ux*vx - uy*vx + uz*uy*vy + ux*vy + uz*uz*vz,
+                                    cartesian);
+
+                  // see on what side the line P1P2 reference point is. This is based on the determinant
+                  const double reference_on_side_of_line = (point_list[i_section_min_distance+1][0] - point_list[i_section_min_distance][0])
+                                                           * (reference_point[1] - point_list[i_section_min_distance][1])
+                                                           - (point_list[i_section_min_distance+1][1] - point_list[i_section_min_distance][1])
+                                                           * (reference_point[0] - point_list[i_section_min_distance][0])
+                                                           < 0 ? 1 : -1;
+
+                  WBAssert(!std::isnan(x_axis[0]),
+                           "Internal error: The x_axis variable is not a number: " << x_axis[0]);
+                  WBAssert(!std::isnan(x_axis[1]),
+                           "Internal error: The x_axis variable is not a number: " << x_axis[1]);
+                  WBAssert(!std::isnan(x_axis[2]),
+                           "Internal error: The x_axis variable is not a number: " << x_axis[2]);
+
+                  x_axis = x_axis *(reference_on_side_of_line / x_axis.norm());
+
+                  WBAssert(!std::isnan(x_axis[0]),
+                           "Internal error: The x_axis variable is not a number: " << x_axis[0]);
+                  WBAssert(!std::isnan(x_axis[1]),
+                           "Internal error: The x_axis variable is not a number: " << x_axis[1]);
+                  WBAssert(!std::isnan(x_axis[2]),
+                           "Internal error: The x_axis variable is not a number: " << x_axis[2]);
+                }
+              else
+                {
+                  total_average_angle = plane_segment_angles[original_current_section][0][0]
+                                        + fraction_CPL_P1P2 * (plane_segment_angles[original_next_section][0][0]
+                                                               - plane_segment_angles[original_current_section][0][0]);
+
+                  std::map<std::string, double> return_values;
+                  return_values["distanceFromPlane"] = 0.0;
+                  return_values["distanceAlongPlane"] = 0.0;
+                  return_values["sectionFraction"] = fraction_CPL_P1P2;
+                  return_values["segmentFraction"] = 0.0;
+                  return_values["section"] = static_cast<double>(i_section_min_distance);
+                  return_values["segment"] = 0;
+                  return_values["averageAngle"] = total_average_angle;
+                  return return_values;
+                }
+            }
+          else
             {
 
-              Point<3> normal_to_plane = closest_point_on_line_plus_normal_to_plane_cartesian - closest_point_on_line_cartesian;
-              normal_to_plane = normal_to_plane / normal_to_plane.norm();
-
-              // The y-axis is from the bottom/center to the closest_point_on_line,
-              // the x-axis is 90 degrees rotated from that, so we rotate around
-              // the line P1P2.
-              // Todo: Assert that the norm of the axis are not equal to zero.
-              y_axis = closest_point_on_line_cartesian - closest_point_on_line_bottom_cartesian;
 
               WBAssert(std::abs(y_axis.norm()) > std::numeric_limits<double>::epsilon(),
                        "World Builder error: Cannot detemine the up direction in the model. This is most likely due to the provided start radius being zero."
@@ -732,25 +809,18 @@ namespace WorldBuilder
                        "Internal error: The y_axis variable is not a number: " << y_axis[2]);
 
 
-              // shorthand notation for computing the x_axis
-              const double vx = y_axis[0];
-              const double vy = y_axis[1];
-              const double vz = y_axis[2];
-              const double ux = normal_to_plane[0];
-              const double uy = normal_to_plane[1];
-              const double uz = normal_to_plane[2];
-
-              x_axis = Point<3>(ux*ux*vx + ux*uy*vy - uz*vy + uy*uz*vz + uy*vz,
-                                uy*ux*vx + uz*vx + uy*uy*vy + uy*uz*vz - ux*vz,
-                                uz*ux*vx - uy*vx + uz*uy*vy + ux*vy + uz*uz*vz,
-                                cartesian);
-
-              // see on what side the line P1P2 reference point is. This is based on the determinant
-              const double reference_on_side_of_line = (point_list[next_section][0] - point_list[current_section][0])
-                                                       * (reference_point[1] - point_list[current_section][1])
-                                                       - (point_list[next_section][1] - point_list[current_section][1])
-                                                       * (reference_point[0] - point_list[current_section][0])
-                                                       < 0 ? 1 : -1;
+              // check whether the check point and the reference point are on the same side, if not, change the side.
+              const bool reference_on_side_of_line_bool = (point_list[i_section_min_distance+1][0] - point_list[i_section_min_distance][0])
+                                                          * (reference_point[1] - point_list[i_section_min_distance][1])
+                                                          - (point_list[i_section_min_distance+1][1] - point_list[i_section_min_distance][1])
+                                                          * (reference_point[0] - point_list[i_section_min_distance][0])
+                                                          < 0;
+              const bool checkpoint_on_side_of_line_bool = (point_list[i_section_min_distance+1][0] - point_list[i_section_min_distance][0])
+                                                           * (check_point_surface_2d[1] - point_list[i_section_min_distance][1])
+                                                           - (point_list[i_section_min_distance+1][1] - point_list[i_section_min_distance][1])
+                                                           * (check_point_surface_2d[0] - point_list[i_section_min_distance][0])
+                                                           < 0;
+              const double reference_on_side_of_line = reference_on_side_of_line_bool == checkpoint_on_side_of_line_bool ? -1 : 1;
 
               WBAssert(!std::isnan(x_axis[0]),
                        "Internal error: The x_axis variable is not a number: " << x_axis[0]);
@@ -758,6 +828,8 @@ namespace WorldBuilder
                        "Internal error: The x_axis variable is not a number: " << x_axis[1]);
               WBAssert(!std::isnan(x_axis[2]),
                        "Internal error: The x_axis variable is not a number: " << x_axis[2]);
+
+              WBAssert(x_axis.norm() > 0.0, "x_axis norm is zero");
 
               x_axis = x_axis *(reference_on_side_of_line / x_axis.norm());
 
@@ -767,22 +839,6 @@ namespace WorldBuilder
                        "Internal error: The x_axis variable is not a number: " << x_axis[1]);
               WBAssert(!std::isnan(x_axis[2]),
                        "Internal error: The x_axis variable is not a number: " << x_axis[2]);
-            }
-          else
-            {
-              total_average_angle = plane_segment_angles[original_current_section][0][0]
-                                    + fraction_CPL_P1P2 * (plane_segment_angles[original_next_section][0][0]
-                                                           - plane_segment_angles[original_current_section][0][0]);
-
-              std::map<std::string, double> return_values;
-              return_values["distanceFromPlane"] = 0.0;
-              return_values["distanceAlongPlane"] = 0.0;
-              return_values["sectionFraction"] = fraction_CPL_P1P2;
-              return_values["segmentFraction"] = 0.0;
-              return_values["section"] = static_cast<double>(current_section);
-              return_values["segment"] = 0;
-              return_values["averageAngle"] = total_average_angle;
-              return return_values;
 
             }
 
@@ -815,7 +871,6 @@ namespace WorldBuilder
                    "Internal error: The begin_segment variable is not a number: " << begin_segment[1]);
 
           Point<2> end_segment = begin_segment;
-
 
           double total_length = 0.0;
           double add_angle = 0.0;
@@ -1096,7 +1151,7 @@ namespace WorldBuilder
                   // case is that we only want positive distances.
                   distance = only_positive ? std::fabs(new_distance) : new_distance;
                   along_plane_distance = new_along_plane_distance + total_length;
-                  section = current_section;
+                  section = i_section_min_distance;
                   section_fraction = fraction_CPL_P1P2;
                   segment = i_segment;
                   segment_fraction = new_along_plane_distance / interpolated_segment_length;
@@ -1115,7 +1170,6 @@ namespace WorldBuilder
               total_length += interpolated_segment_length;
             }
         }
-
 
       std::map<std::string, double> return_values;
       return_values["distanceFromPlane"] = distance;
@@ -1219,32 +1273,22 @@ namespace WorldBuilder
         }
     }
 
-    double interpolation::operator() (double x) const
+    double interpolation::operator() (const double x) const
     {
-      size_t n = m_x.size();
+      const size_t mx_size_min = m_x.size()-1;
+      // Todo: The following two lines would work if m_x can be assumed to be [0,1,2,3,...]
+      // Which would allow to optimize m_x away completely. I can only do that once I get
+      // rid of the non-contiuous interpolation schemes, because the contiuous one doesn't
+      // need any extra items in m_x.
+      //const size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
+      //const double h = x-m_x[idx];
       // find the closest point m_x[idx] < x, idx=0 even if x<m_x[0]
       std::vector<double>::const_iterator it;
       it = std::lower_bound(m_x.begin(),m_x.end(),x);
       size_t idx = static_cast<size_t>(std::max( static_cast<int>(it-m_x.begin())-1, 0));
 
       double h = x-m_x[idx];
-      double interpol;
-      if (x<m_x[0])
-        {
-          // extrapolation to the left
-          interpol = ((m_b[0])*h + m_c[0])*h + m_y[0];
-        }
-      else if (x>m_x[n-1])
-        {
-          // extrapolation to the right
-          interpol = ((m_b[n-1])*h + m_c[n-1])*h + m_y[n-1];
-        }
-      else
-        {
-          // interpolation
-          interpol = ((m_a[idx]*h + m_b[idx])*h + m_c[idx])*h + m_y[idx];
-        }
-      return interpol;
+      return (((x >= m_x[0] && x <= m_x[mx_size_min] ? m_a[idx]*h : 0) + m_b[idx])*h + m_c[idx])*h + m_y[idx];
     }
 
     double wrap_angle(const double angle)

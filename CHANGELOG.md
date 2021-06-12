@@ -25,6 +25,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - The Vizualizer now uses compressed output by default. This decreases the file size and increases perforamnce. \[Menno Fraters; 2021-05-22; [#239](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/239)\]
 - The Vizualizer buffers output before it writes it to a file. This increases performance. \[Menno Fraters; 2021-05-22; [#239](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/239)\]
 - In the fault temperature model linear, the entiry top temperature is changed to center temperature and the entry bottom temperature is changed to side temperature, since this represents the actual sides more accurately. \[Menno Fraters; 2021-07-09; [#260](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/260)\]
+- A large overhoal of the distance_point_from_curved_planes function improving the accuracy in spherical coordinates. This may slighty change the results, but it should be an improvement both in accuracy and performance. Also makes available a coordinate system independent distrance function and some fast trigonometric functions. \[Menno Fraters; 2021-06-11; [#255](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/255)\]
 
 ### Fixed
 - Fixed namespaces, adding `WorldBuilder::` where needed. \[Timo Heister; 2020-08-10; [#205](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/205)\] 
