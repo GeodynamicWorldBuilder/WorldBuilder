@@ -63,14 +63,18 @@ namespace WorldBuilder
                             "The distance in meters from which the composition of this feature is present.");
 
           prm.declare_entry("side distance fault center", Types::Double(std::numeric_limits<double>::max()),
-                            "The distance over which the composition is reduced from 1 t0 0.");
+                            "The distance over which the composition is reduced from 1 to 0.");
 
-          prm.declare_entry("center composition", Types::Double(1),
+          prm.declare_entry("center composition", Types::Double(1.),
                             "The composition at the center of the fault.");
 
           prm.declare_entry("side composition", Types::Double(0),
                             "The composition at the sides of this feature.");
 
+          prm.declare_entry("operation", Types::String("replace", std::vector<std::string> {"replace"}),
+                            "Whether the value should replace any value previously defined at this location (replace) or "
+                            "add the value to the previously define value (add, not implemented). Replacing implies that all values not "
+                            "explicitly defined are set to zero.");
         }
 
         void
@@ -101,12 +105,12 @@ namespace WorldBuilder
             {
               const double min_dist_local = min_distance;
               const double side_dist_local = side_distance;
-              
+
               // Hyperbolic tangent goes from 0 to 1 over approximately x=(0, 2) without any arguements. The function is written
               // so that the composition returned 1 to 0 over the side_distance
-              const double composition = center_composition - (center_composition - side_composition) * 
+              const double composition = center_composition - (center_composition - side_composition) *
                                          std::tanh( 2 *(std::fabs(distance_from_plane.at("distanceFromPlane")) - min_dist_local)/side_dist_local);
-              
+
               return composition;
             }
 
