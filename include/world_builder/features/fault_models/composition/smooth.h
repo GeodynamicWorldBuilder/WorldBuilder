@@ -83,6 +83,7 @@ namespace WorldBuilder
             double side_distance;
             double center_composition;
             double side_composition;
+            unsigned int compositions;
             std::string operation;
 
         };
