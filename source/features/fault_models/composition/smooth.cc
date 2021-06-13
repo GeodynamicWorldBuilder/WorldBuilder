@@ -44,7 +44,11 @@ namespace WorldBuilder
           side_distance(NaN::DSNAN),
           center_composition(NaN::DSNAN),
           side_composition(NaN::DSNAN),
+<<<<<<< HEAD
           operation(Utilities::Operations::MAX)
+=======
+          operation("")
+>>>>>>> Added a plugin for smooth transition of fault composition.
         {
           this->world = world_;
           this->name = "smooth";
