@@ -82,6 +82,7 @@ namespace WorldBuilder
           operation = prm.get<std::string>("operation");
           center_composition = prm.get<double>("center composition");
           side_composition = prm.get<double>("side composition");
+          compositions = prm.get<double>("compositions");
         }
 
 
