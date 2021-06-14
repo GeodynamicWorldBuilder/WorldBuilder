@@ -86,14 +86,14 @@ namespace WorldBuilder
           operation = prm.get<std::string>("operation");
           center_composition = prm.get<double>("center composition");
           side_composition = prm.get<double>("side composition");
-          compositions = prm.get<double>("compositions");
+          compositions = prm.get<unsigned int>("compositions");
         }
 
 
         double
         Smooth::get_composition( const Point<3> &,
                                  const double ,
-                                 const unsigned int /*composition_number*/,
+                                 const unsigned int composition_number,
                                  double composition_,
                                  const double ,
                                  const double ,
@@ -101,17 +101,17 @@ namespace WorldBuilder
         {
           double composition = composition_;
 
-          if (std::fabs(distance_from_plane.at("distanceFromPlane")) <= side_distance && std::fabs(distance_from_plane.at("distanceFromPlane")) >= min_distance)
+          const double dist_to_plane = std::fabs(distance_from_plane.at("distanceFromPlane"));
+          if (dist_to_plane <= 2*dist_to_plane)
             {
-              const double min_dist_local = min_distance;
-              const double side_dist_local = side_distance;
+              if (compositions == composition_number)
+                {
+                  // Hyperbolic tangent goes from 0 to 1 over approximately x=(0, 2) without any arguements. The function is written
+                  // so that the composition returned 1 to 0 over the side_distance on either sides.
+                  composition = (center_composition - std::tanh(10*(dist_to_plane - side_distance)/side_distance ) )/2 ;
 
-              // Hyperbolic tangent goes from 0 to 1 over approximately x=(0, 2) without any arguements. The function is written
-              // so that the composition returned 1 to 0 over the side_distance
-              const double composition = center_composition - (center_composition - side_composition) *
-                                         std::tanh( 2 *(std::fabs(distance_from_plane.at("distanceFromPlane")) - min_dist_local)/side_dist_local);
-
-              return composition;
+                  return composition;
+                }
             }
 
           return composition;
