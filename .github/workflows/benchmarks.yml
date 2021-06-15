@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        benchmark_number: [1,2,3,4,5]
+        benchmark_number: [1,2,3,4,5,6]
         include:
           - benchmark_number: 1
             benchmark_name: 'slab_interpolation_simple_none'
@@ -23,6 +23,9 @@ jobs:
             benchmark_gridfile: 'cartesian_subducting_plate_gridfile'
           - benchmark_number: 5
             benchmark_name: 'spherical_slab_interpolation_simple_CMS'
+            benchmark_gridfile: 'spherical_subducting_plate_gridfile'
+          - benchmark_number: 6
+            benchmark_name: 'spherical_fault_interpolation_simple_none'
             benchmark_gridfile: 'spherical_subducting_plate_gridfile'
 
     runs-on: ubuntu-latest
