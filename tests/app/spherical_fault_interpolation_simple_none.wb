@@ -1,11 +1,10 @@
 {
   "version":"0.4",
   "coordinate system":{"model":"spherical","depth method":"starting point"},
-  "interpolation":"continuous monotone spline",
   "features":
   [
     {
-       "model":"subducting plate", "name":"Antilles slab", "dip point":[-10,10],
+       "model":"fault", "name":"Big in model slab", "dip point":[-10,10],
        "coordinates":[[0,0],[10,10],[25,15],[35,35]], 
        "segments":
        [
