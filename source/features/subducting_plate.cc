@@ -535,8 +535,6 @@ namespace WorldBuilder
           if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)
             {
               // We want to do both section (horizontal) and segment (vertical) interpolation.
-
-              // We want to do both section (horizontal) and segment (vertical) interpolation.
               // first for thickness
               const double thickness_up = slab_segment_thickness[current_section][current_segment][0]
                                           + section_fraction
@@ -578,7 +576,6 @@ namespace WorldBuilder
                   distance_along_plane <= max_slab_length)
                 {
                   // Inside the slab!
-
                   double composition_current_section = composition;
                   double composition_next_section = composition;
 
@@ -669,8 +666,6 @@ namespace WorldBuilder
 
           if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)
             {
-              // We want to do both section (horizontal) and segment (vertical) interpolation.
-
               // We want to do both section (horizontal) and segment (vertical) interpolation.
               // first for thickness
               const double thickness_up = slab_segment_thickness[current_section][current_segment][0]
