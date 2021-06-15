@@ -15,7 +15,7 @@
        "temperature models":[{"model":"uniform", "temperature":600}]
     },
     {
-       "model":"fault", "name":"Big out model slab", "dip point":[-10,10],
+       "model":"subducting plate", "name":"Out model slab", "dip point":[-10,10],
        "coordinates":[[120,120],[130,130],[145,135],[165,165]], 
        "segments":
        [
@@ -25,7 +25,7 @@
        "temperature models":[{"model":"uniform", "temperature":600}]
     },
     {
-       "model":"fault", "name":"Big out model slab", "dip point":[10,-10],
+       "model":"subducting plate", "name":"Out model slab", "dip point":[10,-10],
        "coordinates":[[120,120],[130,130],[145,135],[165,165]], 
        "segments":
        [
