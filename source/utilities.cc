@@ -684,7 +684,6 @@ namespace WorldBuilder
                   const Point<2> P2(point_list[i_section_min_distance+1]);
 
                   const Point<2> P1P2 = P2 - P1;
-                  const double P1P2_norm = P1P2.norm();
                   const Point<2> unit_normal_to_plane_spherical = P1P2 / P1P2.norm();
                   const Point<2> closest_point_on_line_plus_normal_to_plane_spherical = closest_point_on_line_2d + 1e-8 * (closest_point_on_line_2d.norm() > 1.0 ? closest_point_on_line_2d.norm() : 1.0) * unit_normal_to_plane_spherical;
 
