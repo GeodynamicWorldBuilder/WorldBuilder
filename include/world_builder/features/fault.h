@@ -25,6 +25,7 @@
 #include "world_builder/features/fault_models/grains/interface.h"
 #include "world_builder/features/fault_models/temperature/interface.h"
 #include "world_builder/types/segment.h"
+#include "world_builder/bounding_box.h"
 
 
 namespace WorldBuilder
@@ -105,6 +106,18 @@ namespace WorldBuilder
                            double composition_value) const override final;
 
         /**
+         * Computes the bounding points for a BoundingBox object using two extreme points in all the surface
+         * coordinates and an additional buffer zone that accounts for the fault thickness and length. The first and second
+         * points correspond to the lower left and the upper right corners of the bounding box, respectively (see the
+         * documentation in include/bounding_box.h).
+         * For the spherical system, the buffer zone along the longitudal direction is calculated using the
+         * correponding latitude points.
+         */
+
+        BoundingBox<2>  get_bounding_box (const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
+                                          const double depth) const;
+
+        /**
          * Returns a grains (rotation matrix and grain size) based on the
          * given position, depth in the model, the composition (e.g. representing
          * olvine and/or enstatite) which is being requested and the current value
@@ -179,8 +192,13 @@ namespace WorldBuilder
         double maximum_total_fault_length;
         double maximum_fault_thickness;
 
-        std::vector<Point<2> > bounding_box_coordinates;
-
+        double min_along_x;
+        double max_along_x;
+        double min_along_y;
+        double max_along_y;
+        double min_lat_cos_inv;
+        double max_lat_cos_inv;
+        double buffer_around_fault_cartesian;
 
     };
   } // namespace Features
