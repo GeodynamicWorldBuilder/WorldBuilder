@@ -71,7 +71,11 @@ namespace WorldBuilder
           prm.declare_entry("side composition", Types::Double(0),
                             "The composition at the sides of this feature.");
 
+<<<<<<< HEAD
           prm.declare_entry("operation", Types::String("max", std::vector<std::string> {"max"}),
+=======
+          prm.declare_entry("operation", Types::String("add", std::vector<std::string> {"add"}),
+>>>>>>> Changes in transtion width.
                             "Whether the value should replace any value previously defined at this location (replace) or "
                             "add the value to the previously define value (add, not implemented). Replacing implies that all values not "
                             "explicitly defined are set to zero.");
