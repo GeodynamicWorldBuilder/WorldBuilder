@@ -71,7 +71,7 @@ namespace WorldBuilder
           prm.declare_entry("side composition", Types::Double(0),
                             "The composition at the sides of this feature.");
 
-          prm.declare_entry("operation", Types::String("replace", std::vector<std::string> {"replace"}),
+          prm.declare_entry("operation", Types::String("add", std::vector<std::string> {"add"}),
                             "Whether the value should replace any value previously defined at this location (replace) or "
                             "add the value to the previously define value (add, not implemented). Replacing implies that all values not "
                             "explicitly defined are set to zero.");
@@ -108,7 +108,7 @@ namespace WorldBuilder
                 {
                   // Hyperbolic tangent goes from 0 to 1 over approximately x=(0, 2) without any arguements. The function is written
                   // so that the composition returned 1 to 0 over the side_distance on either sides.
-                  composition = (center_composition - std::tanh(10*(dist_to_plane - side_distance)/side_distance ) )/2 ;
+                  composition = (center_composition - std::tanh(10*(dist_to_plane - side_distance/2)/side_distance ) )/2 ;
 
                   return composition;
                 }
