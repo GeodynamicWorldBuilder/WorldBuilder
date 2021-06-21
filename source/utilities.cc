@@ -43,10 +43,9 @@ namespace WorldBuilder
           return (polygon_contains_point_implementation(point_list, point) ||
                   polygon_contains_point_implementation(point_list, other_point));
         }
-      else
-        {
-          return polygon_contains_point_implementation(point_list, point);
-        }
+
+      return polygon_contains_point_implementation(point_list, point);
+
     }
 
     bool
@@ -344,10 +343,9 @@ namespace WorldBuilder
     {
       if (coordinate_system == "cartesian")
         return CoordinateSystem::cartesian;
-      else if (coordinate_system == "spherical")
+      if (coordinate_system == "spherical")
         return CoordinateSystem::spherical;
-      else
-        WBAssertThrow(false, "Coordinate system not implemented.");
+      WBAssertThrow(false, "Coordinate system not implemented.");
 
       return invalid;
     }

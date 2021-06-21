@@ -55,15 +55,15 @@ namespace WorldBuilder
           {
             return InterpolationType::None;
           }
-        else if (string == "linear")
+        if (string == "linear")
           {
             return InterpolationType::Linear;
           }
-        else if  (string == "monotone spline")
+        if  (string == "monotone spline")
           {
             return InterpolationType::MonotoneSpline;
           }
-        else if (string == "continuous monotone spline")
+        if (string == "continuous monotone spline")
           {
             return InterpolationType::ContinuousMonotoneSpline;
           }
