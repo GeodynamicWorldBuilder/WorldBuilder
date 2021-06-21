@@ -1239,11 +1239,11 @@ namespace WorldBuilder
                                     const std::vector<std::tuple<std::string,const WorldBuilder::Types::Interface &, std::string> > &extra_declarations)
   {
     unsigned int counter = 0;
-    for ( auto it = declare_map.begin(); it != declare_map.end(); ++it )
+    for (auto &it : declare_map)
       {
         typedef std::tuple<std::string,const WorldBuilder::Types::Interface &, std::string> DeclareEntry;
         // prevent infinite recursion
-        if (it->first != parent_name)
+        if (it.first != parent_name)
           {
             enter_subsection("oneOf");
             {
@@ -1253,7 +1253,7 @@ namespace WorldBuilder
                 {
                   declare_entry("", Types::Object(required_entries), model_group_name + " object");
 
-                  declare_entry("model", Types::String("",it->first),
+                  declare_entry("model", Types::String("",it.first),
                                 "The name of the " + model_group_name + " model.");
 
                   for (DeclareEntry extra_declaration : extra_declarations)
@@ -1262,7 +1262,7 @@ namespace WorldBuilder
                     }
 
 
-                  it->second(*this, parent_name);
+                  it.second(*this, parent_name);
                 }
                 leave_subsection();
               }

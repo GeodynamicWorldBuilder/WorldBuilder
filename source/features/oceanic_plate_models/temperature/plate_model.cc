@@ -97,9 +97,9 @@ namespace WorldBuilder
           ridge_coordinates = prm.get_vector<Point<2> >("ridge coordinates");
 
           const double dtr = prm.coordinate_system->natural_coordinate_system() == spherical ? const_pi / 180.0 : 1.0;
-          for (unsigned int i = 0; i < ridge_coordinates.size(); ++i)
+          for (auto &ridge_coordinate : ridge_coordinates)
             {
-              ridge_coordinates[i] *= dtr;
+              ridge_coordinate *= dtr;
             }
         }
 

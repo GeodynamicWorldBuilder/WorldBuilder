@@ -133,28 +133,28 @@ int main(int argc, char **argv)
 
           // remove the comma's in case it is a comma separated file.
           // TODO: make it split for comma's and/or spaces
-          for (unsigned int i = 0; i < line.size(); ++i)
-            line[i].erase(std::remove(line[i].begin(), line[i].end(), ','), line[i].end());
+          for (auto &line_i : line)
+            line_i.erase(std::remove(line_i.begin(), line_i.end(), ','), line_i.end());
 
           data.push_back(line);
         }
 
       // Read config from data if pressent
-      for (unsigned int i = 0; i < data.size(); ++i)
+      for (auto &line_i : data)
         {
-          if (data[i].size() > 0 && data[i][0] == "#" && data[i][1] == "dim" && data[i][2] == "=")
+          if (line_i.size() > 0 && line_i[0] == "#" && line_i[1] == "dim" && line_i[2] == "=")
             {
-              dim = string_to_unsigned_int(data[i][3]);
+              dim = string_to_unsigned_int(line_i[3]);
             }
 
-          if (data[i].size() > 0 && data[i][0] == "#" && data[i][1] == "compositions" && data[i][2] == "=")
-            compositions = string_to_unsigned_int(data[i][3]);
+          if (line_i.size() > 0 && line_i[0] == "#" && line_i[1] == "compositions" && line_i[2] == "=")
+            compositions = string_to_unsigned_int(line_i[3]);
 
-          if (data[i].size() > 0 && data[i][0] == "#" && data[i][1] == "grain" && data[i][2] == "compositions" && data[i][3] == "=")
-            grain_compositions = string_to_unsigned_int(data[i][4]);
+          if (line_i.size() > 0 && line_i[0] == "#" && line_i[1] == "grain" && line_i[2] == "compositions" && line_i[3] == "=")
+            grain_compositions = string_to_unsigned_int(line_i[4]);
 
-          if (data[i].size() > 0 && data[i][0] == "#" && data[i][1] == "number" && data[i][2] == "of" && data[i][3] == "grains" && data[i][4] == "=")
-            number_of_grains = string_to_unsigned_int(data[i][5]);
+          if (line_i.size() > 0 && line_i[0] == "#" && line_i[1] == "number" && line_i[2] == "of" && line_i[3] == "grains" && line_i[4] == "=")
+            number_of_grains = string_to_unsigned_int(line_i[5]);
 
         }
 

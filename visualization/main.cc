@@ -354,53 +354,53 @@ int main(int argc, char **argv)
 
           // remove the comma's in case it is a comma separated file.
           // TODO: make it split for comma's and/or spaces
-          for (size_t line_i = 0; line_i < line.size(); ++line_i)
-            line[line_i].erase(std::remove(line[line_i].begin(), line[line_i].end(), ','), line[line_i].end());
+          for (auto &line_i : line)
+            line_i.erase(std::remove(line_i.begin(), line_i.end(), ','), line_i.end());
 
           data.push_back(line);
         }
 
       // Read config from data if pressent
-      for (size_t line_i = 0; line_i < data.size(); ++line_i)
+      for (auto &line_i : data)
         {
-          if (data[line_i].size() == 0)
+          if (line_i.size() == 0)
             continue;
 
-          if (data[line_i][0] == "#")
+          if (line_i[0] == "#")
             continue;
 
-          if (data[line_i][0] == "grid_type" && data[line_i][1] == "=")
+          if (line_i[0] == "grid_type" && line_i[1] == "=")
             {
-              grid_type = data[line_i][2];
+              grid_type = line_i[2];
             }
 
-          if (data[line_i][0] == "dim" && data[line_i][1] == "=")
+          if (line_i[0] == "dim" && line_i[1] == "=")
             {
-              dim = string_to_unsigned_int(data[line_i][2]);
+              dim = string_to_unsigned_int(line_i[2]);
             }
 
-          if (data[line_i][0] == "compositions" && data[line_i][1] == "=")
-            compositions = string_to_unsigned_int(data[line_i][2]);
+          if (line_i[0] == "compositions" && line_i[1] == "=")
+            compositions = string_to_unsigned_int(line_i[2]);
 
-          if (data[line_i][0] == "x_min" && data[line_i][1] == "=")
-            x_min = string_to_double(data[line_i][2]);
-          if (data[line_i][0] == "x_max" && data[line_i][1] == "=")
-            x_max = string_to_double(data[line_i][2]);
-          if (data[line_i][0] == "y_min" && data[line_i][1] == "=")
-            y_min = string_to_double(data[line_i][2]);
-          if (data[line_i][0] == "y_max" && data[line_i][1] == "=")
-            y_max = string_to_double(data[line_i][2]);
-          if (data[line_i][0] == "z_min" && data[line_i][1] == "=")
-            z_min = string_to_double(data[line_i][2]);
-          if (data[line_i][0] == "z_max" && data[line_i][1] == "=")
-            z_max = string_to_double(data[line_i][2]);
+          if (line_i[0] == "x_min" && line_i[1] == "=")
+            x_min = string_to_double(line_i[2]);
+          if (line_i[0] == "x_max" && line_i[1] == "=")
+            x_max = string_to_double(line_i[2]);
+          if (line_i[0] == "y_min" && line_i[1] == "=")
+            y_min = string_to_double(line_i[2]);
+          if (line_i[0] == "y_max" && line_i[1] == "=")
+            y_max = string_to_double(line_i[2]);
+          if (line_i[0] == "z_min" && line_i[1] == "=")
+            z_min = string_to_double(line_i[2]);
+          if (line_i[0] == "z_max" && line_i[1] == "=")
+            z_max = string_to_double(line_i[2]);
 
-          if (data[line_i][0] == "n_cell_x" && data[line_i][1] == "=")
-            n_cell_x = string_to_unsigned_int(data[line_i][2]);
-          if (data[line_i][0] == "n_cell_y" && data[line_i][1] == "=")
-            n_cell_y = string_to_unsigned_int(data[line_i][2]);
-          if (data[line_i][0] == "n_cell_z" && data[line_i][1] == "=")
-            n_cell_z = string_to_unsigned_int(data[line_i][2]);
+          if (line_i[0] == "n_cell_x" && line_i[1] == "=")
+            n_cell_x = string_to_unsigned_int(line_i[2]);
+          if (line_i[0] == "n_cell_y" && line_i[1] == "=")
+            n_cell_y = string_to_unsigned_int(line_i[2]);
+          if (line_i[0] == "n_cell_z" && line_i[1] == "=")
+            n_cell_z = string_to_unsigned_int(line_i[2]);
 
         }
 

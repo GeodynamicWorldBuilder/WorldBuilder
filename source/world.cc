@@ -415,9 +415,9 @@ namespace WorldBuilder
     WorldBuilder::grains grains;
     grains.sizes.resize(number_of_grains,0);
     grains.rotation_matrices.resize(number_of_grains);
-    for (std::vector<std::unique_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
+    for (const auto &feature : parameters.features)
       {
-        grains = (*it)->grains(point,depth,composition_number, grains);
+        grains = feature->grains(point,depth,composition_number, grains);
 
         /*WBAssert(!std::isnan(composition), "Composition is not a number: " << composition
                  << ", based on a feature with the name " << (*it)->get_name());
