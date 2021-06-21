@@ -1350,14 +1350,14 @@ int main(int argc, char **argv)
       std::ofstream myfile;
       myfile.open (file_without_extension + ".vtu");
       buffer << "<?xml version=\"1.0\" ?> " << std::endl;
-      buffer << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"LittleEndian\">" << std::endl;
+      buffer << R"(<VTKFile type="UnstructuredGrid" version="0.1" byte_order="LittleEndian">)" << std::endl;
       buffer << "<UnstructuredGrid>" << std::endl;
       buffer << "<FieldData>" << std::endl;
-      buffer << "<DataArray type=\"Float32\" Name=\"TIME\" NumberOfTuples=\"1\" format=\"ascii\">0</DataArray>" << std::endl;
+      buffer << R"(<DataArray type="Float32" Name="TIME" NumberOfTuples="1" format="ascii">0</DataArray>)" << std::endl;
       buffer << "</FieldData>" << std::endl;
       buffer << "<Piece NumberOfPoints=\""<< n_p << "\" NumberOfCells=\"" << n_cell << "\">" << std::endl;
       buffer << "  <Points>" << std::endl;
-      buffer << "    <DataArray type=\"Float32\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+      buffer << R"(    <DataArray type="Float32" NumberOfComponents="3" format="ascii">)" << std::endl;
       if (dim == 2)
         for (size_t i = 0; i < n_p; ++i)
           buffer << grid_x[i] << " " << grid_z[i] << " " << "0.0" << std::endl;
@@ -1372,7 +1372,7 @@ int main(int argc, char **argv)
       buffer << "  </Points>" << std::endl;
       buffer << std::endl;
       buffer << "  <Cells>" << std::endl;
-      buffer << "    <DataArray type=\"Int32\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
+      buffer << R"(    <DataArray type="Int32" Name="connectivity" format="ascii">)" << std::endl;
       if (dim == 2)
         for (size_t i = 0; i < n_cell; ++i)
           buffer << grid_connectivity[i][0] << " " <<grid_connectivity[i][1] << " " << grid_connectivity[i][2] << " " << grid_connectivity[i][3] << std::endl;
@@ -1381,7 +1381,7 @@ int main(int argc, char **argv)
           buffer << grid_connectivity[i][0] << " " <<grid_connectivity[i][1] << " " << grid_connectivity[i][2] << " " << grid_connectivity[i][3]  << " "
                  << grid_connectivity[i][4] << " " <<grid_connectivity[i][5] << " " << grid_connectivity[i][6] << " " << grid_connectivity[i][7]<< std::endl;
       buffer << "    </DataArray>" << std::endl;
-      buffer << "    <DataArray type=\"Int32\" Name=\"offsets\" format=\"ascii\">" << std::endl;
+      buffer << R"(    <DataArray type="Int32" Name="offsets" format="ascii">)" << std::endl;
       if (dim == 2)
         for (size_t i = 1; i <= n_cell; ++i)
           buffer << i * 4 << " ";
@@ -1389,7 +1389,7 @@ int main(int argc, char **argv)
         for (size_t i = 1; i <= n_cell; ++i)
           buffer << i * 8 << " ";
       buffer << std::endl << "    </DataArray>" << std::endl;
-      buffer << "    <DataArray type=\"UInt8\" Name=\"types\" format=\"ascii\">" << std::endl;
+      buffer << R"(    <DataArray type="UInt8" Name="types" format="ascii">)" << std::endl;
       if (dim == 2)
         for (size_t i = 0; i < n_cell; ++i)
           buffer << "9" << " ";
@@ -1401,7 +1401,7 @@ int main(int argc, char **argv)
 
       buffer << "  <PointData Scalars=\"scalars\">" << std::endl;
 
-      buffer << "<DataArray type=\"Float32\" Name=\"Depth\" format=\"ascii\">" << std::endl;
+      buffer << R"(<DataArray type="Float32" Name="Depth" format="ascii">)" << std::endl;
 
       for (size_t i = 0; i < n_p; ++i)
         {
@@ -1418,7 +1418,7 @@ int main(int argc, char **argv)
       std::cout << "[5/5] Writing the paraview file: stage 2 of 3, computing temperatures                    \r";
       std::cout.flush();
 
-      buffer << "    <DataArray type=\"Float32\" Name=\"Temperature\" format=\"ascii\">" << std::endl;
+      buffer << R"(    <DataArray type="Float32" Name="Temperature" format="ascii">)" << std::endl;
       std::vector<double> temp_vector(n_p);
       if (dim == 2)
         {
@@ -1460,7 +1460,7 @@ int main(int argc, char **argv)
                     << c << " of " << compositions-1 << "            \r";
           std::cout.flush();
 
-          buffer << "<DataArray type=\"Float32\" Name=\"Composition " << c << "\" Format=\"ascii\">" << std::endl;
+          buffer << R"(<DataArray type="Float32" Name="Composition )" << c << R"(" Format="ascii">)" << std::endl;
 
           if (dim == 2)
             {

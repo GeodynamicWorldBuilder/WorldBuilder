@@ -44,7 +44,7 @@ namespace WorldBuilder
 
       prm.declare_entry("depth method",
                         Types::String("",std::vector<std::string>({"starting point", "begin segment", "continuous"})),
-                        "Which depth method to use in the spherical case. The available options are \'starting point\' and \'begin segment\'.");
+                        R"(Which depth method to use in the spherical case. The available options are 'starting point' and 'begin segment'.)");
 
 
     }
