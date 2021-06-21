@@ -268,8 +268,9 @@ namespace WorldBuilder
      * \param plane_segment_angles This is a vector of vectors of 2d points. It contains
      * the begin and end angle of every segment at point in the point_list (in the same
      * order as the point_list.
-     * \param start_depth This value contains the depth at which the plane starts. This
-     * means that the start_depth effectively becomes the surface for this slab.
+     * \param start_radius This value contains the radius or height from bottom of the box
+     * at which the plane starts. This means that the start_radius effectively becomes the
+     * surface for this slab.
      * \param coordinate_system This is a reference to the coordinate system of the
      * World Builder. This is used to convert cartesian to natural coordinates and back.
      * \param only_positive This value deterines whether only the the part below the
@@ -293,12 +294,12 @@ namespace WorldBuilder
                                                                    const std::vector<Point<2> > &point_list,
                                                                    const std::vector<std::vector<double> > &plane_segment_lengths,
                                                                    const std::vector<std::vector<Point<2> > > &plane_segment_angles,
-                                                                   const double start_depth,
+                                                                   const double start_radius,
                                                                    const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                                                    const bool only_positive,
                                                                    const InterpolationType interpolation_type,
-                                                                   const interpolation &spline_x,
-                                                                   const interpolation &spline_y,
+                                                                   const interpolation &x_spline,
+                                                                   const interpolation &y_spline,
                                                                    std::vector<double> global_x_list = {});
 
 

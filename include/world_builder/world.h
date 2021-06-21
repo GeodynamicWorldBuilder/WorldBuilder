@@ -74,7 +74,7 @@ namespace WorldBuilder
       /**
        * read in the world builder file
        */
-      void parse_entries(Parameters &parameters);
+      void parse_entries(Parameters &prm);
 
       /**
        * Returns the temperature based on a 2d Cartesian point, the depth in the

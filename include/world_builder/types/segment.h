@@ -45,7 +45,7 @@ namespace WorldBuilder
                 const WorldBuilder::Point<2> &default_angle,
                 const Types::Interface &temperature_plugin_system,
                 const Types::Interface &composition_plugin_system,
-                const Types::Interface &grains_systems);
+                const Types::Interface &grains_plugin_system_);
 
         /**
          * A constructor for the load_entry function

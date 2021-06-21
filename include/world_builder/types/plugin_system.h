@@ -39,7 +39,7 @@ namespace WorldBuilder
         /**
          * constructor
          */
-        PluginSystem(std::string default_vaule,
+        PluginSystem(std::string default_value_,
                      void ( *declare_entries)(Parameters &, const std::string &, const std::vector<std::string> &),
                      std::vector<std::string> required_entries,
                      const bool allow_multiple = true);
@@ -48,7 +48,7 @@ namespace WorldBuilder
         /**
          * Copy constructor
          */
-        PluginSystem(PluginSystem const &feature);
+        PluginSystem(PluginSystem const &plugin_system);
 
         /**
          * Destructor
