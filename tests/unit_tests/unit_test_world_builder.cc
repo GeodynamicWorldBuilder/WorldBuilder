@@ -3830,12 +3830,12 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK_THROWS_WITH(prm.get_vector<array_3d>("vector of 3d arrays nan"),
                     Contains("Could not convert values of /vector of 3d arrays nan/0 into doubles."));
 
-  typedef std::array<std::array<double,3>,3> array_3x3;
+  using array_3x3 = std::array<std::array<double, 3>, 3>;
   CHECK_THROWS_WITH(prm.get_vector<array_3x3>("vector of 3x3 arrays nan"),
                     Contains("Could not convert values of /vector of 3x3 arrays nan/0 into doubles."));
 
 
-  typedef std::array<std::array<double,3>,3> array_3x3;
+  using array_3x3 = std::array<std::array<double, 3>, 3>;
   CHECK_THROWS_WITH(prm.get_vector<array_3x3>("vector of 3x3 arrays not 3x3 1"),
                     Contains("Array 0 is supposed to be a 3x3 array, but the inner array dimensions of 0 is 2."));
 
