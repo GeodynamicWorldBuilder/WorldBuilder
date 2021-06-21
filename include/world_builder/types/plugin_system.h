@@ -39,9 +39,9 @@ namespace WorldBuilder
         /**
          * constructor
          */
-        PluginSystem(const std::string &default_vaule,
+        PluginSystem(std::string default_vaule,
                      void ( *declare_entries)(Parameters &, const std::string &, const std::vector<std::string> &),
-                     const std::vector<std::string> &required_entries,
+                     std::vector<std::string> required_entries,
                      const bool allow_multiple = true);
 
 

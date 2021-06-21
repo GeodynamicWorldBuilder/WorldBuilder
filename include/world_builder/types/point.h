@@ -48,12 +48,12 @@ namespace WorldBuilder
         /**
          * A constructor used for the load_entry function
          */
-        Point(const WorldBuilder::Point<dim> &default_value, const std::string &description);
+        Point(const WorldBuilder::Point<dim> &default_value, std::string description);
 
         /**
          * A constructor used for cloning and the set_entry function
          */
-        Point(const WorldBuilder::Point<dim> &value, const WorldBuilder::Point<dim> &default_value, const std::string &description);
+        Point(const WorldBuilder::Point<dim> &value, const WorldBuilder::Point<dim> &default_value, std::string description);
 
         /**
          * Copy constructor

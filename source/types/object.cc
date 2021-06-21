@@ -20,14 +20,16 @@
 #include <world_builder/assert.h>
 #include <world_builder/parameters.h>
 
+#include <utility>
+
 namespace WorldBuilder
 {
   namespace Types
   {
-    Object::Object(const std::vector<std::string> &required_,
+    Object::Object(std::vector<std::string> required_,
                    const bool additional_properties_)
       :
-      required(required_),
+      required(std::move(required_)),
       additional_properties(additional_properties_)
     {
       this->type_name = Types::type::Object;

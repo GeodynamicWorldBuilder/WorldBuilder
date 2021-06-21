@@ -21,6 +21,8 @@
 #include <world_builder/utilities.h>
 #include <world_builder/parameters.h>
 
+#include <utility>
+
 namespace WorldBuilder
 {
   namespace Types
@@ -38,11 +40,11 @@ namespace WorldBuilder
 
     template <int dim>
     Point<dim>::Point(const WorldBuilder::Point<dim> &default_value_,
-                      const std::string &description_)
+                      std::string description_)
       :
       value(default_value_),
       default_value(default_value_),
-      description(description_)
+      description(std::move(description_))
     {
       this->type_name = dim == 2 ? Types::type::Point2D : Types::type::Point3D;
     }
@@ -50,11 +52,11 @@ namespace WorldBuilder
     template <int dim>
     Point<dim>::Point(const WorldBuilder::Point<dim> &value_,
                       const WorldBuilder::Point<dim> &default_value_,
-                      const std::string &description_)
+                      std::string description_)
       :
       value(value_),
       default_value(default_value_),
-      description(description_)
+      description(std::move(description_))
     {
       this->type_name = dim == 2 ? Types::type::Point2D : Types::type::Point3D;
     }

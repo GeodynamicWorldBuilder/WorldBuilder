@@ -27,19 +27,19 @@ namespace WorldBuilder
   namespace Types
   {
 
-    String::String(const std::string &default_value_)
+    String::String(std::string default_value_)
       :
-      default_value(default_value_),
+      default_value(std::move(default_value_)),
       description(""),
       restricted_values({})
     {
       this->type_name = Types::type::String;
     }
 
-    String::String(const std::string &default_value_,
+    String::String(std::string default_value_,
                    const std::string &restricted_value_)
       :
-      default_value(default_value_),
+      default_value(std::move(default_value_)),
       restricted_values({restricted_value_})
     {
       this->type_name = Types::type::String;
@@ -54,11 +54,11 @@ namespace WorldBuilder
     }
 
 
-    String::String(const std::string &default_value_,
-                   const std::vector<std::string> &restricted_values_)
+    String::String(std::string default_value_,
+                   std::vector<std::string> restricted_values_)
       :
-      default_value(default_value_),
-      restricted_values(restricted_values_)
+      default_value(std::move(default_value_)),
+      restricted_values(std::move(restricted_values_))
     {
       this->type_name = Types::type::String;
     }
