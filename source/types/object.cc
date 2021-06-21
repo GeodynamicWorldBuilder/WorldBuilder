@@ -70,7 +70,7 @@ namespace WorldBuilder
           {
             for (unsigned int i = 0; i < required.size(); ++i)
               {
-                if (i == 0 && Pointer((path + "/required").c_str()).Get(declarations) == NULL)
+                if (i == 0 && Pointer((path + "/required").c_str()).Get(declarations) == nullptr)
                   {
                     // The required array doesn't exist yet, so we create it and fill it.
                     Pointer((path + "/required/0").c_str()).Create(declarations);

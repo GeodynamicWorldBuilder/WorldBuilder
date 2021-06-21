@@ -97,7 +97,7 @@ namespace WorldBuilder
           {
             if (restricted_values[i] != "")
               {
-                if (i == 0 && Pointer((base + "/required").c_str()).Get(declarations) == NULL)
+                if (i == 0 && Pointer((base + "/required").c_str()).Get(declarations) == nullptr)
                   {
                     // The enum array doesn't exist yet, so we create it and fill it.
                     Pointer((base + "/required/0").c_str()).Create(declarations);

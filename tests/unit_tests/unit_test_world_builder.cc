@@ -545,7 +545,7 @@ TEST_CASE("WorldBuilder Utilities: Point in polygon")
 TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
 {
   // Cartesian
-  std::unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",NULL));
+  std::unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",nullptr));
 
   // Test the natural coordinate system
   Utilities::NaturalCoordinate nca1(std::array<double,3> {{1,2,3}},*cartesian);
@@ -559,7 +559,7 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   CHECK(ncp1.get_depth_coordinate() == Approx(3.0));
 
 
-  std::unique_ptr<CoordinateSystems::Interface> spherical(CoordinateSystems::Interface::create("spherical",NULL));
+  std::unique_ptr<CoordinateSystems::Interface> spherical(CoordinateSystems::Interface::create("spherical",nullptr));
 
   // Test the natural coordinate system
   Utilities::NaturalCoordinate nsa1(std::array<double,3> {{1,2,3}},*spherical);
@@ -670,7 +670,7 @@ TEST_CASE("WorldBuilder C wrapper")
 {
   // First test a world builder file with a cross section defined
   std::string file = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb1.json";
-  void *ptr_world = NULL;
+  void *ptr_world = nullptr;
   void **ptr_ptr_world = &ptr_world;
   const char *world_builder_file = file.c_str();
   bool has_output_dir = false;
@@ -704,7 +704,7 @@ TEST_CASE("WorldBuilder C wrapper")
 
   // Now test a world builder file without a cross section defined
   file = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb2.json";
-  ptr_world = NULL;
+  ptr_world = nullptr;
   ptr_ptr_world = &ptr_world;
   const char *world_builder_file2 = file.c_str();
   has_output_dir = false;
@@ -845,7 +845,7 @@ TEST_CASE("WorldBuilder Coordinate Systems: Interface")
 
 TEST_CASE("WorldBuilder Coordinate Systems: Cartesian")
 {
-  std::unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",NULL));
+  std::unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",nullptr));
 
   //todo:fix
   //cartesian->declare_entries();
@@ -4593,7 +4593,7 @@ TEST_CASE("Euler angle functions")
 
 TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes cartesian part 1")
 {
-  std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::Interface::create("cartesian", NULL);;
+  std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::Interface::create("cartesian", nullptr);;
 
   //Todo:fix
   //cartesian_system->declare_entries();
@@ -5384,7 +5384,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
 TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes cartesian part 2")
 {
-  std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::Interface::create("cartesian", NULL);;
+  std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::Interface::create("cartesian", nullptr);;
 
   //todo: fix
   //cartesian_system->declare_entries();

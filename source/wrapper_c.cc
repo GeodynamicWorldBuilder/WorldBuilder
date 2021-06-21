@@ -31,13 +31,13 @@ extern "C" {
   {
     bool has_output_dir = false;
 
-    if (has_output_dir_ != NULL)
+    if (has_output_dir_ != nullptr)
       {
         has_output_dir = *has_output_dir_;
       }
 
     std::string output_dir = "";
-    if (output_dir_ != NULL)
+    if (output_dir_ != nullptr)
       {
         output_dir = *output_dir_;
       }
