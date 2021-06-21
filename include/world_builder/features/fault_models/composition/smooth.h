@@ -82,7 +82,6 @@ namespace WorldBuilder
             double min_distance;
             double side_distance;
             double center_composition;
-            // currenly not using the side composition, but maybe usefu if you want another composition towards the end
             double side_composition;
             unsigned int compositions;
             Utilities::Operations operation;

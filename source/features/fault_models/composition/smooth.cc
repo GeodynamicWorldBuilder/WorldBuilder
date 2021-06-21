@@ -111,6 +111,8 @@ namespace WorldBuilder
               return Utilities::apply_operation(operation,composition_,composition);
             }
 
+          return Utilities::apply_operation(operation,composition_,composition);
+
           return composition;
 
         }
