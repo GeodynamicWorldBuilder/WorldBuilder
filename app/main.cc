@@ -142,18 +142,18 @@ int main(int argc, char **argv)
       // Read config from data if pressent
       for (auto &line_i : data)
         {
-          if (line_i.size() > 0 && line_i[0] == "#" && line_i[1] == "dim" && line_i[2] == "=")
+          if (!line_i.empty() && line_i[0] == "#" && line_i[1] == "dim" && line_i[2] == "=")
             {
               dim = string_to_unsigned_int(line_i[3]);
             }
 
-          if (line_i.size() > 0 && line_i[0] == "#" && line_i[1] == "compositions" && line_i[2] == "=")
+          if (!line_i.empty() && line_i[0] == "#" && line_i[1] == "compositions" && line_i[2] == "=")
             compositions = string_to_unsigned_int(line_i[3]);
 
-          if (line_i.size() > 0 && line_i[0] == "#" && line_i[1] == "grain" && line_i[2] == "compositions" && line_i[3] == "=")
+          if (!line_i.empty() && line_i[0] == "#" && line_i[1] == "grain" && line_i[2] == "compositions" && line_i[3] == "=")
             grain_compositions = string_to_unsigned_int(line_i[4]);
 
-          if (line_i.size() > 0 && line_i[0] == "#" && line_i[1] == "number" && line_i[2] == "of" && line_i[3] == "grains" && line_i[4] == "=")
+          if (!line_i.empty() && line_i[0] == "#" && line_i[1] == "number" && line_i[2] == "of" && line_i[3] == "grains" && line_i[4] == "=")
             number_of_grains = string_to_unsigned_int(line_i[5]);
 
         }

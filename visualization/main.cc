@@ -246,7 +246,7 @@ int main(int argc, char **argv)
         }
 
 
-      if (options_vector.size() == 0)
+      if (options_vector.empty())
         {
           std::cout << "Error: There where no files passed to the World Builder, use --help for more " << std::endl
                     << "information on how  to use the World Builder app." << std::endl;
@@ -363,7 +363,7 @@ int main(int argc, char **argv)
       // Read config from data if pressent
       for (auto &line_i : data)
         {
-          if (line_i.size() == 0)
+          if (line_i.empty())
             continue;
 
           if (line_i[0] == "#")

@@ -99,7 +99,7 @@ namespace WorldBuilder
          * The coordinate that represents the 'surface' directions in the
          * chosen coordinate system.
          */
-        const std::array<double,2> get_surface_coordinates() const;
+        std::array<double,2> get_surface_coordinates() const;
 
         /**
          * The coordinate that represents the 'depth' direction in the chosen
@@ -174,7 +174,7 @@ namespace WorldBuilder
      * Convert point to array
      */
     template<int dim>
-    const std::array<double,dim> convert_point_to_array(const Point<dim> &point);
+    std::array<double,dim> convert_point_to_array(const Point<dim> &point);
 
     /**
      * Converts a string to a double

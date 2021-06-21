@@ -95,7 +95,7 @@ namespace WorldBuilder
         std::vector<std::string> restricted_values = {"length", "thickness", "angle"};
         for (unsigned int i = 0; i < restricted_values.size(); ++i)
           {
-            if (restricted_values[i] != "")
+            if (!restricted_values[i].empty())
               {
                 if (i == 0 && Pointer((base + "/required").c_str()).Get(declarations) == nullptr)
                   {

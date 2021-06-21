@@ -54,7 +54,7 @@ namespace WorldBuilder
       // The object has to be defined just above the properties section.
       // because it is very inconvenient to make this object there, we
       // take care here to do that.
-      WBAssertThrow(prm.path.size() != 0 && prm.path.back() == "properties",
+      WBAssertThrow(!prm.path.empty() && prm.path.back() == "properties",
                     "The Object must be defined in a subsection called properties.");
       prm.leave_subsection();
       {
@@ -66,7 +66,7 @@ namespace WorldBuilder
         Pointer((path + "/documentation").c_str()).Set(declarations,documentation.c_str());
         Pointer((path + "/additionalProperties").c_str()).Set(declarations,additional_properties);
 
-        if (required.size() > 0)
+        if (!required.empty())
           {
             for (unsigned int i = 0; i < required.size(); ++i)
               {
