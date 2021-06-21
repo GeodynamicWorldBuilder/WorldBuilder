@@ -84,7 +84,7 @@ namespace WorldBuilder
   }
 
   World::~World()
-  {}
+    = default;
 
   void World::declare_entries(Parameters &prm)
   {

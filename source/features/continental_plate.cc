@@ -50,7 +50,7 @@ namespace WorldBuilder
     }
 
     ContinentalPlate::~ContinentalPlate()
-    { }
+      = default;
 
 
     void

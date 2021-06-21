@@ -55,7 +55,7 @@ namespace WorldBuilder
         }
 
         RandomUniformDistribution::~RandomUniformDistribution()
-        { }
+          = default;
 
         void
         RandomUniformDistribution::declare_entries(Parameters &prm, const std::string &)

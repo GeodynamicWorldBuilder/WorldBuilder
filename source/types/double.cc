@@ -43,7 +43,7 @@ namespace WorldBuilder
 
 
     Double::~Double ()
-    {}
+      = default;
 
 
     void

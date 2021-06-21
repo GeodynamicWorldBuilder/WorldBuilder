@@ -4602,8 +4602,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   Point<2> reference_point(0,0,cartesian);
 
   std::vector<Point<2> > coordinates;
-  coordinates.push_back(Point<2>(0,10,cartesian));
-  coordinates.push_back(Point<2>(20,10,cartesian));
+  coordinates.emplace_back(0,10,cartesian);
+  coordinates.emplace_back(20,10,cartesian);
 
   std::vector<std::vector<double> > slab_segment_lengths(2);
   slab_segment_lengths[0].push_back(std::sqrt(10*10+10*10));
@@ -4937,7 +4937,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[1] = 0;
   position[2] = 0;
 
-  coordinates.push_back(Point<2>(30,10,cartesian));
+  coordinates.emplace_back(30,10,cartesian);
 
   slab_segment_lengths.resize(3);
   slab_segment_lengths[2].push_back(std::sqrt(10*10+10*10));
@@ -5393,9 +5393,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   Point<2> reference_point(0,0,cartesian);
 
   std::vector<Point<2> > coordinates;
-  coordinates.push_back(Point<2>(0,10,cartesian));
-  coordinates.push_back(Point<2>(20,10,cartesian));
-  coordinates.push_back(Point<2>(30,10,cartesian));
+  coordinates.emplace_back(0,10,cartesian);
+  coordinates.emplace_back(20,10,cartesian);
+  coordinates.emplace_back(30,10,cartesian);
 
   std::vector<std::vector<double> > slab_segment_lengths(3);
   slab_segment_lengths[0].push_back(std::sqrt(10*10+10*10));
@@ -6759,8 +6759,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   Point<2> reference_point(0,0,spherical);
 
   std::vector<Point<2> > coordinates;
-  coordinates.push_back(Point<2>(0 * dtr,10 * dtr,spherical));
-  coordinates.push_back(Point<2>(10 * dtr,10 * dtr,spherical));
+  coordinates.emplace_back(0 * dtr,10 * dtr,spherical);
+  coordinates.emplace_back(10 * dtr,10 * dtr,spherical);
 
   std::vector<std::vector<double> > slab_segment_lengths(2);
   slab_segment_lengths[0].push_back(std::sqrt(10*10+10*10));

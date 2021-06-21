@@ -74,7 +74,7 @@ namespace WorldBuilder
 
 
     Segment::~Segment ()
-    {}
+      = default;
 
 
 
@@ -184,7 +184,7 @@ namespace WorldBuilder
 
     template<class A, class B, class C>
     Segment<A,B,C>::~Segment ()
-    {}
+      = default;
 
     template<class A, class B, class C>
     void

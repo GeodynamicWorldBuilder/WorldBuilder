@@ -32,7 +32,7 @@ namespace WorldBuilder
     }
 
     Spherical::~Spherical()
-    {}
+      = default;
 
     void
     Spherical::declare_entries(Parameters &prm, const std::string &)

@@ -52,7 +52,7 @@ namespace WorldBuilder
         }
 
         Adiabatic::~Adiabatic()
-        { }
+          = default;
 
         void
         Adiabatic::declare_entries(Parameters &prm, const std::string &)

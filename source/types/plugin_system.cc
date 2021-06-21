@@ -54,7 +54,7 @@ namespace WorldBuilder
     }
 
     PluginSystem::~PluginSystem ()
-    {}
+      = default;
 
     void
     PluginSystem::write_schema(Parameters &prm,

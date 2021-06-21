@@ -43,7 +43,7 @@ namespace WorldBuilder
     }
 
     MantleLayer::~MantleLayer()
-    { }
+      = default;
 
 
 

@@ -53,7 +53,7 @@ namespace WorldBuilder
     }
 
     Fault::~Fault()
-    { }
+      = default;
 
 
     void

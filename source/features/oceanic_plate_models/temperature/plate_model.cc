@@ -54,7 +54,7 @@ namespace WorldBuilder
         }
 
         PlateModel::~PlateModel()
-        { }
+          = default;
 
         void
         PlateModel::declare_entries(Parameters &prm, const std::string &)

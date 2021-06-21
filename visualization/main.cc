@@ -179,7 +179,7 @@ std::vector<std::string> get_command_line_options_vector(int argc, char **argv)
 {
   std::vector<std::string> vector;
   for (int i=1; i < argc; ++i)
-    vector.push_back(std::string(argv[i]));
+    vector.emplace_back(argv[i]);
 
   return vector;
 }

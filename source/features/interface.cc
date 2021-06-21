@@ -76,10 +76,10 @@ namespace WorldBuilder
       }
     }
     Interface::Interface()
-    {}
+      = default;
 
     Interface::~Interface ()
-    {}
+      = default;
 
     void
     Interface::declare_entries(Parameters &prm, const std::string &parent_name, const std::vector<std::string> &required_entries)

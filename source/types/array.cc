@@ -53,7 +53,7 @@ namespace WorldBuilder
     }
 
     Array::~Array ()
-    {}
+      = default;
 
 
     void

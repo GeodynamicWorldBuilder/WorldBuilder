@@ -30,7 +30,7 @@ namespace WorldBuilder
     }
 
     Cartesian::~Cartesian()
-    {}
+      = default;
 
     void
     Cartesian::declare_entries(Parameters &, const std::string &)

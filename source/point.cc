@@ -98,7 +98,7 @@ namespace WorldBuilder
 
   template<int dim>
   Point<dim>::~Point()
-  {}
+    = default;
 
   template<int dim>
   Point<dim> &Point<dim>::operator=(const Point<dim> &point_)

@@ -51,7 +51,7 @@ namespace WorldBuilder
         }
 
         Linear::~Linear()
-        { }
+          = default;
 
         void
         Linear::declare_entries(Parameters &prm, const std::string &)

@@ -44,7 +44,7 @@ namespace WorldBuilder
     }
 
     Object::~Object ()
-    {}
+      = default;
 
     void
     Object::write_schema(Parameters &prm,

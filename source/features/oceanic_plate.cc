@@ -50,7 +50,7 @@ namespace WorldBuilder
     }
 
     OceanicPlate::~OceanicPlate()
-    { }
+      = default;
 
 
     void

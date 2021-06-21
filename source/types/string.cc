@@ -84,7 +84,7 @@ namespace WorldBuilder
     }
 
     String::~String ()
-    {}
+      = default;
 
     void
     String::write_schema(Parameters &prm,

@@ -45,7 +45,7 @@ namespace WorldBuilder
     }
 
     UnsignedInt::~UnsignedInt ()
-    {}
+      = default;
 
 
     void

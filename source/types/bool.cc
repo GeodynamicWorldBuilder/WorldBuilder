@@ -42,7 +42,7 @@ namespace WorldBuilder
 
 
     Bool::~Bool ()
-    {}
+      = default;
 
 
     void

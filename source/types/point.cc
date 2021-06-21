@@ -73,7 +73,7 @@ namespace WorldBuilder
 
     template <int dim>
     Point<dim>::~Point ()
-    {}
+      = default;
 
     template<int dim>
     void

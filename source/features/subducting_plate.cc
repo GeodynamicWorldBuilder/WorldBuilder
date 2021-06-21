@@ -56,7 +56,7 @@ namespace WorldBuilder
     }
 
     SubductingPlate::~SubductingPlate()
-    { }
+      = default;
 
 
 

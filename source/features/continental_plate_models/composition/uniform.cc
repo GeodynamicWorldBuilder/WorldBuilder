@@ -51,7 +51,7 @@ namespace WorldBuilder
         }
 
         Uniform::~Uniform()
-        { }
+          = default;
 
         void
         Uniform::declare_entries(Parameters &prm, const std::string &)

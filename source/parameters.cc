@@ -75,7 +75,7 @@ namespace WorldBuilder
   }
 
   Parameters::~Parameters()
-  {}
+    = default;
 
   void Parameters::initialize(std::string &filename, bool has_output_dir, const std::string &output_dir)
   {
@@ -473,7 +473,7 @@ namespace WorldBuilder
               {
                 WBAssertThrow(false, "Could not convert values of " << base << " into doubles.");
               }
-            vector.push_back(Point<2>(value1,value2,this->coordinate_system->natural_coordinate_system()));
+            vector.emplace_back(value1,value2,this->coordinate_system->natural_coordinate_system());
           }
       }
     return vector;
@@ -753,7 +753,7 @@ namespace WorldBuilder
                     Pointer((base + "/grains model default entry").c_str()).Set(parameters,true);
                   }
               }
-            vector.push_back(Objects::Segment<Temperature::Interface,Composition::Interface,Grains::Interface>(length, thickness, top_trunctation, angle, temperature_models, composition_models, grains_models));
+            vector.emplace_back(length, thickness, top_trunctation, angle, temperature_models, composition_models, grains_models);
 
             this->leave_subsection();
           }
@@ -952,7 +952,7 @@ namespace WorldBuilder
                     Pointer((base + "/grains model default entry").c_str()).Set(parameters,true);
                   }
               }
-            vector.push_back(Objects::Segment<Temperature::Interface,Composition::Interface,Grains::Interface>(length, thickness, top_trunctation, angle, temperature_models, composition_models, grains_models));
+            vector.emplace_back(length, thickness, top_trunctation, angle, temperature_models, composition_models, grains_models);
 
             this->leave_subsection();
           }
