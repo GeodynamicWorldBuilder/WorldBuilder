@@ -44,7 +44,7 @@ namespace WorldBuilder
           side_distance(NaN::DSNAN),
           center_composition(NaN::DSNAN),
           side_composition(NaN::DSNAN),
-          operation("")
+          operation(Utilities::Operations::MAX)
         {
           this->world = world_;
           this->name = "smooth";
@@ -83,7 +83,7 @@ namespace WorldBuilder
           min_distance = prm.get<double>("min distance fault center");
           side_distance = prm.get<double>("side distance fault center");
           WBAssert(side_distance >= min_distance, "distance at the side needs to be larger or equal than the min distance.");
-          operation = prm.get<std::string>("operation");
+          operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
           center_composition = prm.get<double>("center composition");
           side_composition = prm.get<double>("side composition");
           compositions = prm.get<unsigned int>("compositions");
@@ -113,6 +113,8 @@ namespace WorldBuilder
                   return composition;
                 }
             }
+
+          return Utilities::apply_operation(operation,composition_,composition);
 
           return composition;
         }
