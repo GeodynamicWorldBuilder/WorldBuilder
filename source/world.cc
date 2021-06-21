@@ -61,7 +61,7 @@ namespace WorldBuilder
 #ifdef WB_WITH_MPI
     int mpi_initialized;
     MPI_Initialized(&mpi_initialized);
-    if (!mpi_initialized)
+    if (mpi_initialized == 0)
       {
         MPI_RANK = 0;
         MPI_SIZE = 1;

@@ -1201,7 +1201,9 @@ namespace WorldBuilder
            * parameters from this algorithm prevent overshooting in the
            * interpolation spline.
            */
-          std::vector<double> dys(n-1), dxs(n-1), ms(n-1);
+          std::vector<double> dys(n-1);
+          std::vector<double> dxs(n-1);
+          std::vector<double> ms(n-1);
           for (size_t i=0; i < n-1; i++)
             {
               dxs[i] = x[i+1]-x[i];

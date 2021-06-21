@@ -392,7 +392,8 @@ namespace WorldBuilder
         const std::string base = strict_base + "/" + name;
         //let's assume that the file is correct, because it has been checked with the json schema.
         // So there are exactly two values.
-        double value1, value2;
+        double value1;
+        double value2;
 
         try
           {
@@ -462,7 +463,8 @@ namespace WorldBuilder
             const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
             //let's assume that the file is correct, because it has been checked with the json schema.
             // So there are exactly two values.
-            double value1, value2;
+            double value1;
+            double value2;
 
             try
               {
@@ -539,7 +541,9 @@ namespace WorldBuilder
                 WBAssertThrow(Pointer((base_extended).c_str()).Get(parameters)->Size() == 3,
                               "Array " << i << " is supposed to be a 3x3 array, but the inner array dimensions of "
                               << j << " is " << Pointer((base_extended).c_str()).Get(parameters)->Size() << ".");
-                double value1, value2, value3;
+                double value1;
+                double value2;
+                double value3;
 
                 try
                   {

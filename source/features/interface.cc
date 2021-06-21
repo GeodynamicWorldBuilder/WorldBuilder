@@ -101,7 +101,7 @@ namespace WorldBuilder
                                   "The name which the user has given to the feature.");
                 prm.declare_entry("name", Types::String(""),
                                   "The name which the user has given to the feature.");
-                prm.declare_entry("coordinates", Types::Array(Types::Point<2>(), true),
+                prm.declare_entry("coordinates", Types::Array(Types::Point<2>(), 1),
                                   "An array of 2d Points representing an array of coordinates where the feature is located.");
 
                 prm.declare_entry("interpolation",Types::String("global"),

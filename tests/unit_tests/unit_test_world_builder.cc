@@ -4619,7 +4619,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
 
   double starting_radius = 10;
-  Utilities::interpolation x_spline, y_spline;
+  Utilities::interpolation x_spline;
+  Utilities::interpolation y_spline;
   Utilities::InterpolationType interpolation_type = Utilities::InterpolationType::None;
 
   std::map<std::string,double> distance_from_planes =
@@ -5443,7 +5444,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[1] = 0;
   position[2] = 0;
 
-  Utilities::interpolation x_spline, y_spline;
+  Utilities::interpolation x_spline;
+  Utilities::interpolation y_spline;
   Utilities::InterpolationType interpolation_type = Utilities::InterpolationType::None;
 
   std::map<std::string,double> distance_from_planes =
@@ -6776,7 +6778,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
 
   double starting_radius = 10;
-  Utilities::interpolation x_spline, y_spline;
+  Utilities::interpolation x_spline;
+  Utilities::interpolation y_spline;
   Utilities::InterpolationType interpolation_type = Utilities::InterpolationType::None;
 
   std::map<std::string,double> distance_from_planes =
