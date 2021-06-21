@@ -33,7 +33,7 @@ namespace WorldBuilder
     {
       enum class Operations
       {
-        REPLACE,ADD,SUBTRACT
+        REPLACE,ADD,SUBTRACT,MAX
       };
 
       /**
@@ -63,6 +63,9 @@ namespace WorldBuilder
 
             case Utilities::Operations::SUBTRACT:
               return old_value - new_value;
+
+            case Utilities::Operations::MAX:
+              return std::max(old_value, new_value);
 
             default:
               WBAssert(false,"Operation not found.");
