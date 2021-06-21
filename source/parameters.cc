@@ -77,7 +77,7 @@ namespace WorldBuilder
   Parameters::~Parameters()
   {}
 
-  void Parameters::initialize(std::string &filename, bool has_output_dir, std::string output_dir)
+  void Parameters::initialize(std::string &filename, bool has_output_dir, const std::string &output_dir)
   {
 
     if (has_output_dir == true)
@@ -170,9 +170,9 @@ namespace WorldBuilder
   }
 
   void
-  Parameters::declare_entry(const std::string name,
+  Parameters::declare_entry(const std::string &name,
                             const Types::Interface &type,
-                            const std::string documentation)
+                            const std::string &documentation)
   {
     type.write_schema(*this,name,documentation);
   }
@@ -422,7 +422,7 @@ namespace WorldBuilder
 
         for (size_t i = 0; i < array->Size(); ++i )
           {
-            const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
+            const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
 
             vector.push_back(Pointer(base.c_str()).Get(parameters)->GetBool());
           }
@@ -459,7 +459,7 @@ namespace WorldBuilder
 
         for (size_t i = 0; i < array->Size(); ++i )
           {
-            const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
+            const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
             //let's assume that the file is correct, because it has been checked with the json schema.
             // So there are exactly two values.
             double value1, value2;
@@ -491,7 +491,7 @@ namespace WorldBuilder
 
         for (size_t i = 0; i < array->Size(); ++i )
           {
-            const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
+            const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
             //let's assume that the file is correct, because it has been checked with the json schema.
             // So there are exactly three values.
             try
@@ -523,7 +523,7 @@ namespace WorldBuilder
 
         for (size_t i = 0; i < array1->Size(); ++i )
           {
-            const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
+            const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
             Value *array2 = Pointer((base).c_str()).Get(parameters);
 
             // Not sure why cppcheck it is generating the warning
@@ -973,7 +973,7 @@ namespace WorldBuilder
 
         for (size_t i = 0; i < array->Size(); ++i )
           {
-            const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
+            const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
 
             vector.push_back(Pointer(base.c_str()).Get(parameters)->GetDouble());
           }
@@ -1015,7 +1015,7 @@ namespace WorldBuilder
 
         for (size_t i = 0; i < array->Size(); ++i )
           {
-            const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
+            const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
 
             vector.push_back(Pointer(base.c_str()).Get(parameters)->GetUint());
           }
@@ -1057,7 +1057,7 @@ namespace WorldBuilder
 
         for (size_t i = 0; i < array->Size(); ++i )
           {
-            const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
+            const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
 
             vector.push_back(Pointer(base.c_str()).Get(parameters)->GetUint());
           }
@@ -1126,7 +1126,7 @@ namespace WorldBuilder
 
         for (size_t i = 0; i < array->Size(); ++i )
           {
-            const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
+            const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
 
             std::string value = Pointer((base + "/model").c_str()).Get(parameters)->GetString();
 
@@ -1201,7 +1201,7 @@ namespace WorldBuilder
 
         for (size_t i = 0; i < array->Size(); ++i )
           {
-            const std::string base = strict_base + "/" + name + "/" + std::to_string(i);
+            const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
 
             std::string value = Pointer((base + "/model").c_str()).Get(parameters)->GetString();
 
@@ -1217,7 +1217,7 @@ namespace WorldBuilder
   }
 
   void
-  Parameters::enter_subsection(const std::string name)
+  Parameters::enter_subsection(const std::string &name)
   {
     path.push_back(name);
     //TODO: WBAssert(is path valid?)
@@ -1232,7 +1232,7 @@ namespace WorldBuilder
 
 
   void
-  Parameters::declare_model_entries(const std::string model_group_name,
+  Parameters::declare_model_entries(const std::string &model_group_name,
                                     const std::string &parent_name,
                                     std::map<std::string, void ( *)(Parameters &,const std::string &)> declare_map,
                                     const std::vector<std::string> &required_entries,

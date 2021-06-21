@@ -40,17 +40,17 @@ namespace WorldBuilder
         /**
          * constructor
          */
-        String(const std::string default_value);
+        String(const std::string &default_value);
 
         /**
          * constructor
          */
-        String(const std::string default_value, const std::string restricted_value);
+        String(const std::string &default_value, const std::string &restricted_value);
 
         /**
          * constructor
          */
-        String(const std::string default_value, const std::vector<std::string> &restricted_values);
+        String(const std::string &default_value, const std::vector<std::string> &restricted_values);
 
         /**
          * constructor

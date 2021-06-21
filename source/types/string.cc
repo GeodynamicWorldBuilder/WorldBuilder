@@ -20,12 +20,14 @@
 #include <world_builder/assert.h>
 #include <world_builder/parameters.h>
 
+#include <utility>
+
 namespace WorldBuilder
 {
   namespace Types
   {
 
-    String::String(const std::string default_value_)
+    String::String(const std::string &default_value_)
       :
       default_value(default_value_),
       description(""),
@@ -34,8 +36,8 @@ namespace WorldBuilder
       this->type_name = Types::type::String;
     }
 
-    String::String(const std::string default_value_,
-                   const std::string restricted_value_)
+    String::String(const std::string &default_value_,
+                   const std::string &restricted_value_)
       :
       default_value(default_value_),
       restricted_values({restricted_value_})
@@ -52,7 +54,7 @@ namespace WorldBuilder
     }
 
 
-    String::String(const std::string default_value_,
+    String::String(const std::string &default_value_,
                    const std::vector<std::string> &restricted_values_)
       :
       default_value(default_value_),
@@ -74,9 +76,9 @@ namespace WorldBuilder
                    std::string default_value_,
                    std::string description_)
       :
-      value(value_),
-      default_value(default_value_),
-      description(description_)
+      value(std::move(value_)),
+      default_value(std::move(default_value_)),
+      description(std::move(description_))
     {
       this->type_name = Types::type::String;
     }

@@ -163,8 +163,8 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
   CHECK(p2_array.get_array() == std::array<double,2> {{1,2}});
   CHECK(p3_array.get_array() == std::array<double,3> {{1,2,3}});
 
-  const Point<2> p2_point(p2_array);
-  const Point<3> p3_point(p3_array);
+  const Point<2> &p2_point(p2_array);
+  const Point<3> &p3_point(p3_array);
 
   CHECK(p2_point.get_array() == std::array<double,2> {{1,2}});
   CHECK(p3_point.get_array() == std::array<double,3> {{1,2,3}});

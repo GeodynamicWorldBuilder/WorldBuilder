@@ -297,8 +297,8 @@ namespace WorldBuilder
                                                                    const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                                                    const bool only_positive,
                                                                    const InterpolationType interpolation_type,
-                                                                   const interpolation spline_x,
-                                                                   const interpolation spline_y,
+                                                                   const interpolation &spline_x,
+                                                                   const interpolation &spline_y,
                                                                    std::vector<double> global_x_list = {});
 
 

@@ -27,7 +27,7 @@ namespace WorldBuilder
   {
     PluginSystem::PluginSystem(const std::string &default_value_,
                                void ( *declare_entries_)(Parameters &, const std::string &, const std::vector<std::string> &),
-                               const std::vector<std::string> required_entries_,
+                               const std::vector<std::string> &required_entries_,
                                const bool allow_multiple_)
       :
       default_value(default_value_),

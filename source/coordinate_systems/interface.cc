@@ -42,7 +42,7 @@ namespace WorldBuilder
     {
 
       unsigned int counter = 0;
-      for (auto it : get_declare_map())
+      for (auto &it : get_declare_map())
         {
           prm.enter_subsection("oneOf");
           {

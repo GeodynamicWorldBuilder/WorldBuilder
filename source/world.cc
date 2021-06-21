@@ -23,6 +23,7 @@
 #endif
 
 #include <sstream>
+#include <utility>
 
 #include "rapidjson/pointer.h"
 
@@ -50,7 +51,7 @@ namespace WorldBuilder
 {
   using namespace Utilities;
 
-  World::World(std::string filename, bool has_output_dir, std::string output_dir, unsigned long random_number_seed)
+  World::World(std::string filename, bool has_output_dir, const std::string &output_dir, unsigned long random_number_seed)
     :
     parameters(*this),
     surface_coord_conversions(invalid),
@@ -176,7 +177,7 @@ namespace WorldBuilder
         WBAssertThrow(cross_section_natural.size() == 2, "The cross section should contain two points, but it contains "
                       << cross_section.size() << " points.");
 
-        for (auto it : cross_section_natural)
+        for (const auto &it : cross_section_natural)
           cross_section.push_back(it *  (coordinate_system == spherical ? const_pi / 180.0 : 1.0));
 
 

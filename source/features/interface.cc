@@ -49,7 +49,7 @@ namespace WorldBuilder
       /**
        * A function to turn strings into interpolation type enums.
        */
-      static InterpolationType string_to_interpolation_type (const std::string string)
+      static InterpolationType string_to_interpolation_type (const std::string &string)
       {
         if (string == "none")
           {
@@ -86,7 +86,7 @@ namespace WorldBuilder
     {
 
       unsigned int counter = 0;
-      for (auto  it : get_declare_map())
+      for (auto  &it : get_declare_map())
         {
           prm.enter_subsection("oneOf");
           {
@@ -130,14 +130,14 @@ namespace WorldBuilder
     }
 
     void
-    Interface::get_coordinates(const std::string,
+    Interface::get_coordinates(const std::string &,
                                Parameters &prm,
                                const CoordinateSystem coordinate_system)
     {
       coordinates = prm.get_vector<Point<2> >("coordinates");
       if (coordinate_system == CoordinateSystem::spherical)
         std::transform(coordinates.begin(),coordinates.end(), coordinates.begin(),
-                       [](WorldBuilder::Point<2> p) -> WorldBuilder::Point<2> { return p *const_pi / 180.0;});
+                       [](const WorldBuilder::Point<2> &p) -> WorldBuilder::Point<2> { return p *const_pi / 180.0;});
 
 
       // If global is given, we use the global interpolation setting, otherwise use the provided value.

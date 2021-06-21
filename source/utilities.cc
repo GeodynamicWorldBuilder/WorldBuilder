@@ -443,8 +443,8 @@ namespace WorldBuilder
                                       const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                       const bool only_positive,
                                       const InterpolationType interpolation_type,
-                                      const interpolation x_spline,
-                                      const interpolation y_spline,
+                                      const interpolation &x_spline,
+                                      const interpolation &y_spline,
                                       std::vector<double> global_x_list)
     {
       // TODO: Assert that point_list, plane_segment_angles and plane_segment_lenghts have the same size.

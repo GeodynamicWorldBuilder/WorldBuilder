@@ -34,9 +34,9 @@ namespace WorldBuilder
   namespace Types
   {
     Segment::Segment(const double default_length_,
-                     const WorldBuilder::Point<2> default_thickness_,
-                     const WorldBuilder::Point<2> default_top_truncation_,
-                     const WorldBuilder::Point<2> default_angle_,
+                     const WorldBuilder::Point<2> &default_thickness_,
+                     const WorldBuilder::Point<2> &default_top_truncation_,
+                     const WorldBuilder::Point<2> &default_angle_,
                      const Types::Interface &temperature_plugin_system_,
                      const Types::Interface &composition_plugin_system_,
                      const Types::Interface &grains_plugin_system_)
@@ -147,9 +147,9 @@ namespace WorldBuilder
     // todo update function
     template<class A, class B, class C>
     Segment<A,B,C>::Segment(const double default_length_,
-                            const WorldBuilder::Point<2> default_thickness_,
-                            const WorldBuilder::Point<2> default_top_truncation_,
-                            const WorldBuilder::Point<2> default_angle_,
+                            const WorldBuilder::Point<2> &default_thickness_,
+                            const WorldBuilder::Point<2> &default_top_truncation_,
+                            const WorldBuilder::Point<2> &default_angle_,
                             const std::vector<std::shared_ptr<A> > &temperature_systems_,
                             const std::vector<std::shared_ptr<B> > &composition_systems_,
                             const std::vector<std::shared_ptr<C> > &grains_systems_)

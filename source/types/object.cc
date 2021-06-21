@@ -24,7 +24,7 @@ namespace WorldBuilder
 {
   namespace Types
   {
-    Object::Object(const std::vector<std::string> required_,
+    Object::Object(const std::vector<std::string> &required_,
                    const bool additional_properties_)
       :
       required(required_),

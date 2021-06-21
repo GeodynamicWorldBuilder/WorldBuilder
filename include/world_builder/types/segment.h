@@ -40,9 +40,9 @@ namespace WorldBuilder
          * A constructor
          */
         Segment(const double default_length,
-                const WorldBuilder::Point<2> default_thickness,
-                const WorldBuilder::Point<2> default_top_truncation,
-                const WorldBuilder::Point<2> default_angle,
+                const WorldBuilder::Point<2> &default_thickness,
+                const WorldBuilder::Point<2> &default_top_truncation,
+                const WorldBuilder::Point<2> &default_angle,
                 const Types::Interface &temperature_plugin_system,
                 const Types::Interface &composition_plugin_system,
                 const Types::Interface &grains_systems);
@@ -110,9 +110,9 @@ namespace WorldBuilder
          * A constructor for the clone and set_entry function
          */
         Segment(const double default_length,
-                const WorldBuilder::Point<2> default_thickness,
-                const WorldBuilder::Point<2> default_top_truncation,
-                const WorldBuilder::Point<2> default_angle,
+                const WorldBuilder::Point<2> &default_thickness,
+                const WorldBuilder::Point<2> &default_top_truncation,
+                const WorldBuilder::Point<2> &default_angle,
                 const std::vector<std::shared_ptr<A> > &temperature_systems,
                 const std::vector<std::shared_ptr<B> > &composition_systems,
                 const std::vector<std::shared_ptr<C> > &grains_systems);
