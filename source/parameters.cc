@@ -473,7 +473,7 @@ namespace WorldBuilder
               }
             catch (...)
               {
-                WBAssertThrow(false, "Could not convert values of " << base << " into doubles.");
+                WBAssertThrow(false, "Could not convert values of " << base << " into a Point<2> array, because it could not convert the sub-elements into doubles.");
               }
             vector.emplace_back(value1,value2,this->coordinate_system->natural_coordinate_system());
           }

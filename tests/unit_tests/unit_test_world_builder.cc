@@ -3318,7 +3318,8 @@ TEST_CASE("WorldBuilder Types: Point 3d")
 {
 #define TYPE Point<3>
   Types::TYPE type(TYPE(1,2,3,cartesian),"test");
-  CHECK(type.value[0] == Approx(1.0));
+  const double &value_0 = type.value[0];
+  CHECK(value_0 == Approx(1.0));
   CHECK(type.value[1] == Approx(2.0));
   CHECK(type.value[2] == Approx(3.0));
   CHECK(type.default_value[0] == Approx(1.0));
@@ -3483,7 +3484,8 @@ TEST_CASE("WorldBuilder Types: Segment Object")
 
   Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface, Features::FaultModels::Grains::Interface>
   type_copy(type);
-  CHECK(type_copy.value_length == Approx(1.0));
+  const double &value_length = type_copy.value_length;
+  CHECK(value_length == Approx(1.0));
   CHECK(type_copy.value_thickness[0] == Approx(1.0));
   CHECK(type_copy.value_thickness[1] == Approx(2.0));
   CHECK(type_copy.value_top_truncation[0] == Approx(3.0));
@@ -3814,6 +3816,9 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK(prm.get<double>("double") == Approx(1.23456e2));
 
 
+  CHECK_THROWS_WITH(prm.get<double>("string"),
+                    Contains("Could not convert values of"));
+
   CHECK_THROWS_WITH(prm.get<std::string>("non existent string"),
                     Contains("internal error: could not retrieve the default value at"));
 
@@ -3925,12 +3930,17 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK(v_double[0] == Approx(2.4));
   CHECK(v_double[1] == Approx(2.4));
 
+  CHECK_THROWS_WITH(prm.get<Point<2> >("string array"),
+                    Contains("Could not convert values of /string array into Point<2>, because it could not convert the sub-elements into doubles."));
+
   v_double = prm.get_vector<double>("double array");
   CHECK(v_double.size() == 3);
   CHECK(v_double[0] == Approx(25.2));
   CHECK(v_double[1] == Approx(26.3));
   CHECK(v_double[2] == Approx(27.4));
 
+  CHECK_THROWS_WITH(prm.get_vector<Point<2> >("point<2> array nan"),
+                    Contains("Could not convert values of /point<2> array nan/0 into a Point<2> array, because it could not convert the sub-elements into doubles."));
 
   std::vector<std::array<std::array<double,3>,3> > v_3x3_array = prm.get_vector<std::array<std::array<double,3>,3> >("vector of 3x3 arrays");
   CHECK(v_3x3_array.size() == 2);
