@@ -117,7 +117,7 @@ namespace WorldBuilder
                                                         this->world->specific_heat) * max_depth_local);
                 }
 
-              const double new_temperature = top_temperature +
+              const double new_temperature = top_temperature_local +
                                              (distance_from_plane.at("distanceFromPlane") - min_depth_local) *
                                              ((bottom_temperature_local - top_temperature_local) / (max_depth_local - min_depth_local));
               return Utilities::apply_operation(operation,temperature_,new_temperature);
