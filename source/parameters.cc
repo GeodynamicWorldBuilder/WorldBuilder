@@ -1285,7 +1285,7 @@ namespace WorldBuilder
   std::string
   Parameters::get_full_json_path(size_t max_size) const
   {
-    std::string collapse = "";
+    std::string collapse;
     for (size_t i = 0; i < path.size() && i < max_size; i++)
       {
         collapse +=  "/" + path[i];

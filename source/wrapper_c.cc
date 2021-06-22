@@ -36,7 +36,7 @@ extern "C" {
         has_output_dir = *has_output_dir_;
       }
 
-    std::string output_dir = "";
+    std::string output_dir;
     if (output_dir_ != nullptr)
       {
         output_dir = *output_dir_;
