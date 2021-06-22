@@ -163,8 +163,8 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
   CHECK(p2_array.get_array() == std::array<double,2> {{1,2}});
   CHECK(p3_array.get_array() == std::array<double,3> {{1,2,3}});
 
-  const Point<2> p2_point(p2_array);
-  const Point<3> p3_point(p3_array);
+  const Point<2> &p2_point(p2_array);
+  const Point<3> &p3_point(p3_array);
 
   CHECK(p2_point.get_array() == std::array<double,2> {{1,2}});
   CHECK(p3_point.get_array() == std::array<double,3> {{1,2,3}});
@@ -545,7 +545,7 @@ TEST_CASE("WorldBuilder Utilities: Point in polygon")
 TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
 {
   // Cartesian
-  std::unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",NULL));
+  std::unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",nullptr));
 
   // Test the natural coordinate system
   Utilities::NaturalCoordinate nca1(std::array<double,3> {{1,2,3}},*cartesian);
@@ -559,7 +559,7 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   CHECK(ncp1.get_depth_coordinate() == Approx(3.0));
 
 
-  std::unique_ptr<CoordinateSystems::Interface> spherical(CoordinateSystems::Interface::create("spherical",NULL));
+  std::unique_ptr<CoordinateSystems::Interface> spherical(CoordinateSystems::Interface::create("spherical",nullptr));
 
   // Test the natural coordinate system
   Utilities::NaturalCoordinate nsa1(std::array<double,3> {{1,2,3}},*spherical);
@@ -670,7 +670,7 @@ TEST_CASE("WorldBuilder C wrapper")
 {
   // First test a world builder file with a cross section defined
   std::string file = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb1.json";
-  void *ptr_world = NULL;
+  void *ptr_world = nullptr;
   void **ptr_ptr_world = &ptr_world;
   const char *world_builder_file = file.c_str();
   bool has_output_dir = false;
@@ -704,7 +704,7 @@ TEST_CASE("WorldBuilder C wrapper")
 
   // Now test a world builder file without a cross section defined
   file = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb2.json";
-  ptr_world = NULL;
+  ptr_world = nullptr;
   ptr_ptr_world = &ptr_world;
   const char *world_builder_file2 = file.c_str();
   has_output_dir = false;
@@ -845,7 +845,7 @@ TEST_CASE("WorldBuilder Coordinate Systems: Interface")
 
 TEST_CASE("WorldBuilder Coordinate Systems: Cartesian")
 {
-  std::unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",NULL));
+  std::unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",nullptr));
 
   //todo:fix
   //cartesian->declare_entries();
@@ -3318,7 +3318,8 @@ TEST_CASE("WorldBuilder Types: Point 3d")
 {
 #define TYPE Point<3>
   Types::TYPE type(TYPE(1,2,3,cartesian),"test");
-  CHECK(type.value[0] == Approx(1.0));
+  const double &value_0 = type.value[0];
+  CHECK(value_0 == Approx(1.0));
   CHECK(type.value[1] == Approx(2.0));
   CHECK(type.value[2] == Approx(3.0));
   CHECK(type.default_value[0] == Approx(1.0));
@@ -3483,7 +3484,8 @@ TEST_CASE("WorldBuilder Types: Segment Object")
 
   Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface, Features::FaultModels::Grains::Interface>
   type_copy(type);
-  CHECK(type_copy.value_length == Approx(1.0));
+  const double &value_length = type_copy.value_length;
+  CHECK(value_length == Approx(1.0));
   CHECK(type_copy.value_thickness[0] == Approx(1.0));
   CHECK(type_copy.value_thickness[1] == Approx(2.0));
   CHECK(type_copy.value_top_truncation[0] == Approx(3.0));
@@ -3814,6 +3816,9 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK(prm.get<double>("double") == Approx(1.23456e2));
 
 
+  CHECK_THROWS_WITH(prm.get<double>("string"),
+                    Contains("Could not convert values of"));
+
   CHECK_THROWS_WITH(prm.get<std::string>("non existent string"),
                     Contains("internal error: could not retrieve the default value at"));
 
@@ -3830,12 +3835,12 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK_THROWS_WITH(prm.get_vector<array_3d>("vector of 3d arrays nan"),
                     Contains("Could not convert values of /vector of 3d arrays nan/0 into doubles."));
 
-  typedef std::array<std::array<double,3>,3> array_3x3;
+  using array_3x3 = std::array<std::array<double, 3>, 3>;
   CHECK_THROWS_WITH(prm.get_vector<array_3x3>("vector of 3x3 arrays nan"),
                     Contains("Could not convert values of /vector of 3x3 arrays nan/0 into doubles."));
 
 
-  typedef std::array<std::array<double,3>,3> array_3x3;
+  using array_3x3 = std::array<std::array<double, 3>, 3>;
   CHECK_THROWS_WITH(prm.get_vector<array_3x3>("vector of 3x3 arrays not 3x3 1"),
                     Contains("Array 0 is supposed to be a 3x3 array, but the inner array dimensions of 0 is 2."));
 
@@ -3925,12 +3930,17 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK(v_double[0] == Approx(2.4));
   CHECK(v_double[1] == Approx(2.4));
 
+  CHECK_THROWS_WITH(prm.get<Point<2> >("string array"),
+                    Contains("Could not convert values of /string array into Point<2>, because it could not convert the sub-elements into doubles."));
+
   v_double = prm.get_vector<double>("double array");
   CHECK(v_double.size() == 3);
   CHECK(v_double[0] == Approx(25.2));
   CHECK(v_double[1] == Approx(26.3));
   CHECK(v_double[2] == Approx(27.4));
 
+  CHECK_THROWS_WITH(prm.get_vector<Point<2> >("point<2> array nan"),
+                    Contains("Could not convert values of /point<2> array nan/0 into a Point<2> array, because it could not convert the sub-elements into doubles."));
 
   std::vector<std::array<std::array<double,3>,3> > v_3x3_array = prm.get_vector<std::array<std::array<double,3>,3> >("vector of 3x3 arrays");
   CHECK(v_3x3_array.size() == 2);
@@ -4593,7 +4603,7 @@ TEST_CASE("Euler angle functions")
 
 TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes cartesian part 1")
 {
-  std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::Interface::create("cartesian", NULL);;
+  std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::Interface::create("cartesian", nullptr);;
 
   //Todo:fix
   //cartesian_system->declare_entries();
@@ -4602,8 +4612,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   Point<2> reference_point(0,0,cartesian);
 
   std::vector<Point<2> > coordinates;
-  coordinates.push_back(Point<2>(0,10,cartesian));
-  coordinates.push_back(Point<2>(20,10,cartesian));
+  coordinates.emplace_back(0,10,cartesian);
+  coordinates.emplace_back(20,10,cartesian);
 
   std::vector<std::vector<double> > slab_segment_lengths(2);
   slab_segment_lengths[0].push_back(std::sqrt(10*10+10*10));
@@ -4619,7 +4629,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
 
   double starting_radius = 10;
-  Utilities::interpolation x_spline, y_spline;
+  Utilities::interpolation x_spline;
+  Utilities::interpolation y_spline;
   Utilities::InterpolationType interpolation_type = Utilities::InterpolationType::None;
 
   std::map<std::string,double> distance_from_planes =
@@ -4937,7 +4948,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[1] = 0;
   position[2] = 0;
 
-  coordinates.push_back(Point<2>(30,10,cartesian));
+  coordinates.emplace_back(30,10,cartesian);
 
   slab_segment_lengths.resize(3);
   slab_segment_lengths[2].push_back(std::sqrt(10*10+10*10));
@@ -5384,7 +5395,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
 TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes cartesian part 2")
 {
-  std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::Interface::create("cartesian", NULL);;
+  std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::Interface::create("cartesian", nullptr);;
 
   //todo: fix
   //cartesian_system->declare_entries();
@@ -5393,9 +5404,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   Point<2> reference_point(0,0,cartesian);
 
   std::vector<Point<2> > coordinates;
-  coordinates.push_back(Point<2>(0,10,cartesian));
-  coordinates.push_back(Point<2>(20,10,cartesian));
-  coordinates.push_back(Point<2>(30,10,cartesian));
+  coordinates.emplace_back(0,10,cartesian);
+  coordinates.emplace_back(20,10,cartesian);
+  coordinates.emplace_back(30,10,cartesian);
 
   std::vector<std::vector<double> > slab_segment_lengths(3);
   slab_segment_lengths[0].push_back(std::sqrt(10*10+10*10));
@@ -5443,7 +5454,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[1] = 0;
   position[2] = 0;
 
-  Utilities::interpolation x_spline, y_spline;
+  Utilities::interpolation x_spline;
+  Utilities::interpolation y_spline;
   Utilities::InterpolationType interpolation_type = Utilities::InterpolationType::None;
 
   std::map<std::string,double> distance_from_planes =
@@ -6759,8 +6771,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   Point<2> reference_point(0,0,spherical);
 
   std::vector<Point<2> > coordinates;
-  coordinates.push_back(Point<2>(0 * dtr,10 * dtr,spherical));
-  coordinates.push_back(Point<2>(10 * dtr,10 * dtr,spherical));
+  coordinates.emplace_back(0 * dtr,10 * dtr,spherical);
+  coordinates.emplace_back(10 * dtr,10 * dtr,spherical);
 
   std::vector<std::vector<double> > slab_segment_lengths(2);
   slab_segment_lengths[0].push_back(std::sqrt(10*10+10*10));
@@ -6776,7 +6788,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
 
   double starting_radius = 10;
-  Utilities::interpolation x_spline, y_spline;
+  Utilities::interpolation x_spline;
+  Utilities::interpolation y_spline;
   Utilities::InterpolationType interpolation_type = Utilities::InterpolationType::None;
 
   std::map<std::string,double> distance_from_planes =

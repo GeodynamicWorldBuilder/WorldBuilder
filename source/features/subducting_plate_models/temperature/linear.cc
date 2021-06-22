@@ -51,10 +51,10 @@ namespace WorldBuilder
         }
 
         Linear::~Linear()
-        { }
+          = default;
 
         void
-        Linear::declare_entries(Parameters &prm, const std::string &)
+        Linear::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
           // Add max depth to the required parameters.
           prm.declare_entry("", Types::Object({"max distance slab top"}), "Temperature model object");
@@ -87,12 +87,12 @@ namespace WorldBuilder
 
 
         double
-        Linear::get_temperature(const Point<3> &,
-                                const double,
+        Linear::get_temperature(const Point<3> & /*position*/,
+                                const double /*depth*/,
                                 const double gravity_norm,
                                 double temperature_,
-                                const double,
-                                const double,
+                                const double /*feature_min_depth*/,
+                                const double /*feature_max_depth*/,
                                 const std::map<std::string,double> &distance_from_plane) const
         {
           if (distance_from_plane.at("distanceFromPlane") <= max_depth && distance_from_plane.at("distanceFromPlane") >= min_depth)

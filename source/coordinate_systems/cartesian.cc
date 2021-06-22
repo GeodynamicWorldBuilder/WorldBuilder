@@ -30,14 +30,14 @@ namespace WorldBuilder
     }
 
     Cartesian::~Cartesian()
+      = default;
+
+    void
+    Cartesian::declare_entries(Parameters & /*unused*/, const std::string & /*unused*/)
     {}
 
     void
-    Cartesian::declare_entries(Parameters &, const std::string &)
-    {}
-
-    void
-    Cartesian::parse_entries(Parameters &)
+    Cartesian::parse_entries(Parameters & /*prm*/)
     {}
 
 

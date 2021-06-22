@@ -23,6 +23,7 @@
 #endif
 
 #include <sstream>
+#include <utility>
 
 #include "rapidjson/pointer.h"
 
@@ -50,7 +51,7 @@ namespace WorldBuilder
 {
   using namespace Utilities;
 
-  World::World(std::string filename, bool has_output_dir, std::string output_dir, unsigned long random_number_seed)
+  World::World(std::string filename, bool has_output_dir, const std::string &output_dir, unsigned long random_number_seed)
     :
     parameters(*this),
     surface_coord_conversions(invalid),
@@ -60,7 +61,7 @@ namespace WorldBuilder
 #ifdef WB_WITH_MPI
     int mpi_initialized;
     MPI_Initialized(&mpi_initialized);
-    if (!mpi_initialized)
+    if (mpi_initialized == 0)
       {
         MPI_RANK = 0;
         MPI_SIZE = 1;
@@ -75,7 +76,7 @@ namespace WorldBuilder
     MPI_SIZE = 1;
 #endif
 
-    this->declare_entries(parameters);
+    WorldBuilder::World::declare_entries(parameters);
 
     parameters.initialize(filename, has_output_dir, output_dir);
 
@@ -83,7 +84,7 @@ namespace WorldBuilder
   }
 
   World::~World()
-  {}
+    = default;
 
   void World::declare_entries(Parameters &prm)
   {
@@ -168,7 +169,7 @@ namespace WorldBuilder
 
     const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 
-    if (set_cross_section == true)
+    if (set_cross_section)
       {
         dim = 2;
         std::vector<Point<2> > cross_section_natural = prm.get_vector<Point<2> >("cross section");
@@ -176,7 +177,7 @@ namespace WorldBuilder
         WBAssertThrow(cross_section_natural.size() == 2, "The cross section should contain two points, but it contains "
                       << cross_section.size() << " points.");
 
-        for (auto it : cross_section_natural)
+        for (const auto &it : cross_section_natural)
           cross_section.push_back(it *  (coordinate_system == spherical ? const_pi / 180.0 : 1.0));
 
 
@@ -275,7 +276,7 @@ namespace WorldBuilder
     // We receive the cartesian points from the user.
     Point<3> point(point_,cartesian);
 
-    if (std::fabs(depth) < 2.0 * std::numeric_limits<double>::epsilon() && force_surface_temperature == true)
+    if (std::fabs(depth) < 2.0 * std::numeric_limits<double>::epsilon() && force_surface_temperature)
       return this->surface_temperature;
 
     double temperature = potential_mantle_temperature *
@@ -414,9 +415,9 @@ namespace WorldBuilder
     WorldBuilder::grains grains;
     grains.sizes.resize(number_of_grains,0);
     grains.rotation_matrices.resize(number_of_grains);
-    for (std::vector<std::unique_ptr<Features::Interface> >::const_iterator it = parameters.features.begin(); it != parameters.features.end(); ++it)
+    for (const auto &feature : parameters.features)
       {
-        grains = (*it)->grains(point,depth,composition_number, grains);
+        grains = feature->grains(point,depth,composition_number, grains);
 
         /*WBAssert(!std::isnan(composition), "Composition is not a number: " << composition
                  << ", based on a feature with the name " << (*it)->get_name());

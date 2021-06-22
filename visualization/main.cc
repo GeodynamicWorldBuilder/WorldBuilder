@@ -179,7 +179,7 @@ std::vector<std::string> get_command_line_options_vector(int argc, char **argv)
 {
   std::vector<std::string> vector;
   for (int i=1; i < argc; ++i)
-    vector.push_back(std::string(argv[i]));
+    vector.emplace_back(argv[i]);
 
   return vector;
 }
@@ -246,7 +246,7 @@ int main(int argc, char **argv)
         }
 
 
-      if (options_vector.size() == 0)
+      if (options_vector.empty())
         {
           std::cout << "Error: There where no files passed to the World Builder, use --help for more " << std::endl
                     << "information on how  to use the World Builder app." << std::endl;
@@ -354,53 +354,53 @@ int main(int argc, char **argv)
 
           // remove the comma's in case it is a comma separated file.
           // TODO: make it split for comma's and/or spaces
-          for (size_t i = 0; i < line.size(); ++i)
-            line[i].erase(std::remove(line[i].begin(), line[i].end(), ','), line[i].end());
+          for (auto &line_i : line)
+            line_i.erase(std::remove(line_i.begin(), line_i.end(), ','), line_i.end());
 
           data.push_back(line);
         }
 
       // Read config from data if pressent
-      for (size_t i = 0; i < data.size(); ++i)
+      for (auto &line_i : data)
         {
-          if (data[i].size() == 0)
+          if (line_i.empty())
             continue;
 
-          if (data[i][0] == "#")
+          if (line_i[0] == "#")
             continue;
 
-          if (data[i][0] == "grid_type" && data[i][1] == "=")
+          if (line_i[0] == "grid_type" && line_i[1] == "=")
             {
-              grid_type = data[i][2];
+              grid_type = line_i[2];
             }
 
-          if (data[i][0] == "dim" && data[i][1] == "=")
+          if (line_i[0] == "dim" && line_i[1] == "=")
             {
-              dim = string_to_unsigned_int(data[i][2]);
+              dim = string_to_unsigned_int(line_i[2]);
             }
 
-          if (data[i][0] == "compositions" && data[i][1] == "=")
-            compositions = string_to_unsigned_int(data[i][2]);
+          if (line_i[0] == "compositions" && line_i[1] == "=")
+            compositions = string_to_unsigned_int(line_i[2]);
 
-          if (data[i][0] == "x_min" && data[i][1] == "=")
-            x_min = string_to_double(data[i][2]);
-          if (data[i][0] == "x_max" && data[i][1] == "=")
-            x_max = string_to_double(data[i][2]);
-          if (data[i][0] == "y_min" && data[i][1] == "=")
-            y_min = string_to_double(data[i][2]);
-          if (data[i][0] == "y_max" && data[i][1] == "=")
-            y_max = string_to_double(data[i][2]);
-          if (data[i][0] == "z_min" && data[i][1] == "=")
-            z_min = string_to_double(data[i][2]);
-          if (data[i][0] == "z_max" && data[i][1] == "=")
-            z_max = string_to_double(data[i][2]);
+          if (line_i[0] == "x_min" && line_i[1] == "=")
+            x_min = string_to_double(line_i[2]);
+          if (line_i[0] == "x_max" && line_i[1] == "=")
+            x_max = string_to_double(line_i[2]);
+          if (line_i[0] == "y_min" && line_i[1] == "=")
+            y_min = string_to_double(line_i[2]);
+          if (line_i[0] == "y_max" && line_i[1] == "=")
+            y_max = string_to_double(line_i[2]);
+          if (line_i[0] == "z_min" && line_i[1] == "=")
+            z_min = string_to_double(line_i[2]);
+          if (line_i[0] == "z_max" && line_i[1] == "=")
+            z_max = string_to_double(line_i[2]);
 
-          if (data[i][0] == "n_cell_x" && data[i][1] == "=")
-            n_cell_x = string_to_unsigned_int(data[i][2]);
-          if (data[i][0] == "n_cell_y" && data[i][1] == "=")
-            n_cell_y = string_to_unsigned_int(data[i][2]);
-          if (data[i][0] == "n_cell_z" && data[i][1] == "=")
-            n_cell_z = string_to_unsigned_int(data[i][2]);
+          if (line_i[0] == "n_cell_x" && line_i[1] == "=")
+            n_cell_x = string_to_unsigned_int(line_i[2]);
+          if (line_i[0] == "n_cell_y" && line_i[1] == "=")
+            n_cell_y = string_to_unsigned_int(line_i[2]);
+          if (line_i[0] == "n_cell_z" && line_i[1] == "=")
+            n_cell_z = string_to_unsigned_int(line_i[2]);
 
         }
 
@@ -480,7 +480,7 @@ int main(int argc, char **argv)
       if (grid_type == "cartesian")
         {
           n_cell = n_cell_x * n_cell_z * (dim == 3 ? n_cell_y : 1);
-          if (compress_size == false && dim == 3)
+          if (!compress_size && dim == 3)
             n_p = n_cell * 8 ; // it shouldn't matter for 2d in the output, so just do 3d.
           else
             n_p = (n_cell_x + 1) * (n_cell_z + 1) * (dim == 3 ? (n_cell_y + 1) : 1);
@@ -523,7 +523,7 @@ int main(int argc, char **argv)
             }
           else
             {
-              if (compress_size == true)
+              if (compress_size)
                 {
                   for (size_t i = 0; i <= n_cell_x; ++i)
                     {
@@ -624,7 +624,7 @@ int main(int argc, char **argv)
             }
           else
             {
-              if (compress_size == true)
+              if (compress_size)
                 {
                   for (size_t i = 1; i <= n_cell_x; ++i)
                     {
@@ -761,7 +761,7 @@ int main(int argc, char **argv)
           double opening_angle_lat_rad =  (y_max - y_min);
 
           n_cell = n_cell_x * n_cell_z * (dim == 3 ? n_cell_y : 1);
-          if (compress_size == false && dim == 3)
+          if (!compress_size && dim == 3)
             n_p = n_cell * 8 ; // it shouldn't matter for 2d in the output, so just do 3d.
           else
             n_p = (n_cell_x + 1) * (n_cell_z + 1) * (dim == 3 ? (n_cell_y + 1) : 1);
@@ -792,7 +792,7 @@ int main(int argc, char **argv)
             }
           else
             {
-              if (compress_size == true)
+              if (compress_size)
                 {
                   for (size_t i = 1; i <= n_cell_x + 1; ++i)
                     for (size_t j = 1; j <= n_cell_y + 1; ++j)
@@ -922,7 +922,7 @@ int main(int argc, char **argv)
             }
           else
             {
-              if (compress_size == true)
+              if (compress_size)
                 {
                   for (size_t i = 1; i <= n_cell_x; ++i)
                     {
@@ -1350,14 +1350,14 @@ int main(int argc, char **argv)
       std::ofstream myfile;
       myfile.open (file_without_extension + ".vtu");
       buffer << "<?xml version=\"1.0\" ?> " << std::endl;
-      buffer << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"LittleEndian\">" << std::endl;
+      buffer << R"(<VTKFile type="UnstructuredGrid" version="0.1" byte_order="LittleEndian">)" << std::endl;
       buffer << "<UnstructuredGrid>" << std::endl;
       buffer << "<FieldData>" << std::endl;
-      buffer << "<DataArray type=\"Float32\" Name=\"TIME\" NumberOfTuples=\"1\" format=\"ascii\">0</DataArray>" << std::endl;
+      buffer << R"(<DataArray type="Float32" Name="TIME" NumberOfTuples="1" format="ascii">0</DataArray>)" << std::endl;
       buffer << "</FieldData>" << std::endl;
       buffer << "<Piece NumberOfPoints=\""<< n_p << "\" NumberOfCells=\"" << n_cell << "\">" << std::endl;
       buffer << "  <Points>" << std::endl;
-      buffer << "    <DataArray type=\"Float32\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+      buffer << R"(    <DataArray type="Float32" NumberOfComponents="3" format="ascii">)" << std::endl;
       if (dim == 2)
         for (size_t i = 0; i < n_p; ++i)
           buffer << grid_x[i] << " " << grid_z[i] << " " << "0.0" << std::endl;
@@ -1372,7 +1372,7 @@ int main(int argc, char **argv)
       buffer << "  </Points>" << std::endl;
       buffer << std::endl;
       buffer << "  <Cells>" << std::endl;
-      buffer << "    <DataArray type=\"Int32\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
+      buffer << R"(    <DataArray type="Int32" Name="connectivity" format="ascii">)" << std::endl;
       if (dim == 2)
         for (size_t i = 0; i < n_cell; ++i)
           buffer << grid_connectivity[i][0] << " " <<grid_connectivity[i][1] << " " << grid_connectivity[i][2] << " " << grid_connectivity[i][3] << std::endl;
@@ -1381,7 +1381,7 @@ int main(int argc, char **argv)
           buffer << grid_connectivity[i][0] << " " <<grid_connectivity[i][1] << " " << grid_connectivity[i][2] << " " << grid_connectivity[i][3]  << " "
                  << grid_connectivity[i][4] << " " <<grid_connectivity[i][5] << " " << grid_connectivity[i][6] << " " << grid_connectivity[i][7]<< std::endl;
       buffer << "    </DataArray>" << std::endl;
-      buffer << "    <DataArray type=\"Int32\" Name=\"offsets\" format=\"ascii\">" << std::endl;
+      buffer << R"(    <DataArray type="Int32" Name="offsets" format="ascii">)" << std::endl;
       if (dim == 2)
         for (size_t i = 1; i <= n_cell; ++i)
           buffer << i * 4 << " ";
@@ -1389,7 +1389,7 @@ int main(int argc, char **argv)
         for (size_t i = 1; i <= n_cell; ++i)
           buffer << i * 8 << " ";
       buffer << std::endl << "    </DataArray>" << std::endl;
-      buffer << "    <DataArray type=\"UInt8\" Name=\"types\" format=\"ascii\">" << std::endl;
+      buffer << R"(    <DataArray type="UInt8" Name="types" format="ascii">)" << std::endl;
       if (dim == 2)
         for (size_t i = 0; i < n_cell; ++i)
           buffer << "9" << " ";
@@ -1401,7 +1401,7 @@ int main(int argc, char **argv)
 
       buffer << "  <PointData Scalars=\"scalars\">" << std::endl;
 
-      buffer << "<DataArray type=\"Float32\" Name=\"Depth\" format=\"ascii\">" << std::endl;
+      buffer << R"(<DataArray type="Float32" Name="Depth" format="ascii">)" << std::endl;
 
       for (size_t i = 0; i < n_p; ++i)
         {
@@ -1418,7 +1418,7 @@ int main(int argc, char **argv)
       std::cout << "[5/5] Writing the paraview file: stage 2 of 3, computing temperatures                    \r";
       std::cout.flush();
 
-      buffer << "    <DataArray type=\"Float32\" Name=\"Temperature\" format=\"ascii\">" << std::endl;
+      buffer << R"(    <DataArray type="Float32" Name="Temperature" format="ascii">)" << std::endl;
       std::vector<double> temp_vector(n_p);
       if (dim == 2)
         {
@@ -1460,7 +1460,7 @@ int main(int argc, char **argv)
                     << c << " of " << compositions-1 << "            \r";
           std::cout.flush();
 
-          buffer << "<DataArray type=\"Float32\" Name=\"Composition " << c << "\" Format=\"ascii\">" << std::endl;
+          buffer << R"(<DataArray type="Float32" Name="Composition )" << c << R"(" Format="ascii">)" << std::endl;
 
           if (dim == 2)
             {

@@ -34,7 +34,7 @@ namespace WorldBuilder
     {}
 
     Interface::~Interface ()
-    {}
+      = default;
 
 
     type

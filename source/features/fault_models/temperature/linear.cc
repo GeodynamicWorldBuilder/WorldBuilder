@@ -51,10 +51,10 @@ namespace WorldBuilder
         }
 
         Linear::~Linear()
-        { }
+          = default;
 
         void
-        Linear::declare_entries(Parameters &prm, const std::string &)
+        Linear::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
           // Add max depth to the required parameters.
           prm.declare_entry("", Types::Object({"max distance fault center"}), "Temperature model object");
@@ -88,7 +88,7 @@ namespace WorldBuilder
 
 
         double
-        Linear::get_temperature(const Point<3> &,
+        Linear::get_temperature(const Point<3> & /*position*/,
                                 const double /*depth*/,
                                 const double gravity_norm,
                                 double temperature_,

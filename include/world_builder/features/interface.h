@@ -66,7 +66,7 @@ namespace WorldBuilder
          * helper function to parse coordinates.
          */
         void
-        get_coordinates(const std::string name,
+        get_coordinates(const std::string &name,
                         Parameters &prm,
                         const CoordinateSystem coordinate_system);
 

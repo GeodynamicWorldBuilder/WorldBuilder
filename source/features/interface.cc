@@ -49,21 +49,21 @@ namespace WorldBuilder
       /**
        * A function to turn strings into interpolation type enums.
        */
-      static InterpolationType string_to_interpolation_type (const std::string string)
+      static InterpolationType string_to_interpolation_type (const std::string &string)
       {
         if (string == "none")
           {
             return InterpolationType::None;
           }
-        else if (string == "linear")
+        if (string == "linear")
           {
             return InterpolationType::Linear;
           }
-        else if  (string == "monotone spline")
+        if  (string == "monotone spline")
           {
             return InterpolationType::MonotoneSpline;
           }
-        else if (string == "continuous monotone spline")
+        if (string == "continuous monotone spline")
           {
             return InterpolationType::ContinuousMonotoneSpline;
           }
@@ -76,17 +76,17 @@ namespace WorldBuilder
       }
     }
     Interface::Interface()
-    {}
+      = default;
 
     Interface::~Interface ()
-    {}
+      = default;
 
     void
     Interface::declare_entries(Parameters &prm, const std::string &parent_name, const std::vector<std::string> &required_entries)
     {
 
       unsigned int counter = 0;
-      for (auto  it : get_declare_map())
+      for (auto  &it : get_declare_map())
         {
           prm.enter_subsection("oneOf");
           {
@@ -101,7 +101,7 @@ namespace WorldBuilder
                                   "The name which the user has given to the feature.");
                 prm.declare_entry("name", Types::String(""),
                                   "The name which the user has given to the feature.");
-                prm.declare_entry("coordinates", Types::Array(Types::Point<2>(), true),
+                prm.declare_entry("coordinates", Types::Array(Types::Point<2>(), 1),
                                   "An array of 2d Points representing an array of coordinates where the feature is located.");
 
                 prm.declare_entry("interpolation",Types::String("global"),
@@ -124,20 +124,20 @@ namespace WorldBuilder
     }
     void
     Interface::declare_interface_entries(Parameters &prm,
-                                         const CoordinateSystem )
+                                         const CoordinateSystem  /*unused*/)
     {
       this->coordinates = prm.get_vector<Point<2> >("coordinates");
     }
 
     void
-    Interface::get_coordinates(const std::string,
+    Interface::get_coordinates(const std::string & /*unused*/,
                                Parameters &prm,
                                const CoordinateSystem coordinate_system)
     {
       coordinates = prm.get_vector<Point<2> >("coordinates");
       if (coordinate_system == CoordinateSystem::spherical)
         std::transform(coordinates.begin(),coordinates.end(), coordinates.begin(),
-                       [](WorldBuilder::Point<2> p) -> WorldBuilder::Point<2> { return p *const_pi / 180.0;});
+                       [](const WorldBuilder::Point<2> &p) -> WorldBuilder::Point<2> { return p *const_pi / 180.0;});
 
 
       // If global is given, we use the global interpolation setting, otherwise use the provided value.
@@ -178,10 +178,10 @@ namespace WorldBuilder
 
           x_spline.set_points(one_dimensional_coordinates_local,
                               x_list,
-                              interpolation_type == WorldBuilder::Utilities::InterpolationType::Linear ? false : true);
+                              interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear);
           y_spline.set_points(one_dimensional_coordinates_local,
                               y_list,
-                              interpolation_type == WorldBuilder::Utilities::InterpolationType::Linear ? false : true);
+                              interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear);
 
           if (maximum_distance_between_coordinates > 0)
             {

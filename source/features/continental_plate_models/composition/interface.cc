@@ -35,10 +35,10 @@ namespace WorldBuilder
       namespace Composition
       {
         Interface::Interface()
-        {}
+          = default;
 
         Interface::~Interface ()
-        {}
+          = default;
 
         void
         Interface::declare_entries(Parameters &prm,

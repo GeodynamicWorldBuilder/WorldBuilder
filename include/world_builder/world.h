@@ -58,7 +58,7 @@ namespace WorldBuilder
        * documented algorithm), we can test the results and they should be the same even for different
        * compilers and machines.
        */
-      World(std::string filename, bool has_output_dir = false, std::string output_dir = "", unsigned long random_number_seed = 1);
+      World(std::string filename, bool has_output_dir = false, const std::string &output_dir = "", unsigned long random_number_seed = 1);
 
       /**
        * Destructor
@@ -74,7 +74,7 @@ namespace WorldBuilder
       /**
        * read in the world builder file
        */
-      void parse_entries(Parameters &parameters);
+      void parse_entries(Parameters &prm);
 
       /**
        * Returns the temperature based on a 2d Cartesian point, the depth in the

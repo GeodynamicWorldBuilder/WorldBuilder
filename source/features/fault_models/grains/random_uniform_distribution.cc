@@ -55,10 +55,10 @@ namespace WorldBuilder
         }
 
         RandomUniformDistribution::~RandomUniformDistribution()
-        { }
+          = default;
 
         void
-        RandomUniformDistribution::declare_entries(Parameters &prm, const std::string &)
+        RandomUniformDistribution::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
           // Add compositions, rotation matrices and grain size models to the required parameters.
           prm.declare_entry("", Types::Object({"compositions"}), "random uniform distribution grains model object");
@@ -110,12 +110,12 @@ namespace WorldBuilder
 
 
         WorldBuilder::grains
-        RandomUniformDistribution::get_grains(const Point<3> &,
-                                              const double,
+        RandomUniformDistribution::get_grains(const Point<3> & /*position*/,
+                                              const double /*depth*/,
                                               const unsigned int composition_number,
                                               WorldBuilder::grains grains_,
-                                              const double,
-                                              const double,
+                                              const double /*feature_min_depth*/,
+                                              const double /*feature_max_depth*/,
                                               const std::map<std::string,double> &distance_from_planes) const
         {
           WorldBuilder::grains  grains_local = grains_;
@@ -194,7 +194,7 @@ namespace WorldBuilder
                           total_size += it_sizes;
                         }
 
-                      if (normalize_grain_sizes[i] == true)
+                      if (normalize_grain_sizes[i])
                         {
                           const double one_over_total_size = 1/total_size;
                           std::transform(grains_local.sizes.begin(), grains_local.sizes.end(), grains_local.sizes.begin(),

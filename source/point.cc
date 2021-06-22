@@ -98,7 +98,7 @@ namespace WorldBuilder
 
   template<int dim>
   Point<dim>::~Point()
-  {}
+    = default;
 
   template<int dim>
   Point<dim> &Point<dim>::operator=(const Point<dim> &point_)
@@ -257,13 +257,12 @@ namespace WorldBuilder
         const double sin_d_long = std::sin(d_longitude * 0.5);
         return 2.0 * asin(sqrt((sin_d_lat * sin_d_lat) + (sin_d_long*sin_d_long) * std::cos(this->point[1]) * std::cos(two[1])));
       }
-    else
-      {
-        // cartesian
-        const double x_distance_to_reference_point = point[0]-two[0];
-        const double y_distance_to_reference_point = point[1]-two[1];
-        return sqrt((x_distance_to_reference_point*x_distance_to_reference_point) + (y_distance_to_reference_point*y_distance_to_reference_point));
-      }
+
+    // cartesian
+    const double x_distance_to_reference_point = point[0]-two[0];
+    const double y_distance_to_reference_point = point[1]-two[1];
+    return sqrt((x_distance_to_reference_point*x_distance_to_reference_point) + (y_distance_to_reference_point*y_distance_to_reference_point));
+
   }
 
 
@@ -281,13 +280,12 @@ namespace WorldBuilder
         const double sin_d_long = FT::sin(d_longitude * 0.5);
         return (sin_d_lat * sin_d_lat) + (sin_d_long*sin_d_long) * FT::cos(this->point[1]) * FT::cos(two[1]);
       }
-    else
-      {
-        // cartesian
-        const double x_distance_to_reference_point = point[0]-two[0];
-        const double y_distance_to_reference_point = point[1]-two[1];
-        return (x_distance_to_reference_point*x_distance_to_reference_point) + (y_distance_to_reference_point*y_distance_to_reference_point);
-      }
+
+    // cartesian
+    const double x_distance_to_reference_point = point[0]-two[0];
+    const double y_distance_to_reference_point = point[1]-two[1];
+    return (x_distance_to_reference_point*x_distance_to_reference_point) + (y_distance_to_reference_point*y_distance_to_reference_point);
+
   }
 
   /**

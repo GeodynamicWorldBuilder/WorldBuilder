@@ -43,10 +43,9 @@ namespace WorldBuilder
           return (polygon_contains_point_implementation(point_list, point) ||
                   polygon_contains_point_implementation(point_list, other_point));
         }
-      else
-        {
-          return polygon_contains_point_implementation(point_list, point);
-        }
+
+      return polygon_contains_point_implementation(point_list, point);
+
     }
 
     bool
@@ -257,7 +256,7 @@ namespace WorldBuilder
     }*/
 
 
-    const std::array<double,2> NaturalCoordinate::get_surface_coordinates() const
+    std::array<double,2> NaturalCoordinate::get_surface_coordinates() const
     {
       std::array<double,2> coordinate;
 
@@ -344,17 +343,16 @@ namespace WorldBuilder
     {
       if (coordinate_system == "cartesian")
         return CoordinateSystem::cartesian;
-      else if (coordinate_system == "spherical")
+      if (coordinate_system == "spherical")
         return CoordinateSystem::spherical;
-      else
-        WBAssertThrow(false, "Coordinate system not implemented.");
+      WBAssertThrow(false, "Coordinate system not implemented.");
 
       return invalid;
     }
 
 
     template<int dim>
-    const std::array<double,dim>
+    std::array<double,dim>
     convert_point_to_array(const Point<dim> &point_)
     {
       std::array<double,dim> array;
@@ -368,9 +366,9 @@ namespace WorldBuilder
     {
       // trim whitespace on either side of the text if necessary
       std::string s = string;
-      while ((s.size() > 0) && (s[0] == ' '))
+      while ((!s.empty()) && (s[0] == ' '))
         s.erase(s.begin());
-      while ((s.size() > 0) && (s[s.size() - 1] == ' '))
+      while ((!s.empty()) && (s[s.size() - 1] == ' '))
         s.erase(s.end() - 1);
 
       std::istringstream i(s);
@@ -387,9 +385,9 @@ namespace WorldBuilder
     {
       // trim whitespace on either side of the text if necessary
       std::string s = string;
-      while ((s.size() > 0) && (s[0] == ' '))
+      while ((!s.empty()) && (s[0] == ' '))
         s.erase(s.begin());
-      while ((s.size() > 0) && (s[s.size() - 1] == ' '))
+      while ((!s.empty()) && (s[s.size() - 1] == ' '))
         s.erase(s.end() - 1);
 
       std::istringstream i(s);
@@ -407,9 +405,9 @@ namespace WorldBuilder
     {
       // trim whitespace on either side of the text if necessary
       std::string s = string;
-      while ((s.size() > 0) && (s[0] == ' '))
+      while ((!s.empty()) && (s[0] == ' '))
         s.erase(s.begin());
-      while ((s.size() > 0) && (s[s.size() - 1] == ' '))
+      while ((!s.empty()) && (s[s.size() - 1] == ' '))
         s.erase(s.end() - 1);
 
 
@@ -443,8 +441,8 @@ namespace WorldBuilder
                                       const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                       const bool only_positive,
                                       const InterpolationType interpolation_type,
-                                      const interpolation x_spline,
-                                      const interpolation y_spline,
+                                      const interpolation &x_spline,
+                                      const interpolation &y_spline,
                                       std::vector<double> global_x_list)
     {
       // TODO: Assert that point_list, plane_segment_angles and plane_segment_lenghts have the same size.
@@ -458,7 +456,7 @@ namespace WorldBuilder
                "Internal error: The size of point_list (" << point_list.size()
                << ") and global_x_list (" << global_x_list.size() << ") are different.");*/
 
-      if (global_x_list.size() == 0)
+      if (global_x_list.empty())
         {
           // fill it
           global_x_list.resize(point_list.size());
@@ -1195,7 +1193,7 @@ namespace WorldBuilder
           assert(m_x[i] < m_x[i+1]);
         }
 
-      if (monotone_spline == true)
+      if (monotone_spline)
         {
           /**
            * This monotone spline algorithm is based on the javascript version
@@ -1203,7 +1201,9 @@ namespace WorldBuilder
            * parameters from this algorithm prevent overshooting in the
            * interpolation spline.
            */
-          std::vector<double> dys(n-1), dxs(n-1), ms(n-1);
+          std::vector<double> dys(n-1);
+          std::vector<double> dxs(n-1);
+          std::vector<double> ms(n-1);
           for (size_t i=0; i < n-1; i++)
             {
               dxs[i] = x[i+1]-x[i];
@@ -1348,8 +1348,8 @@ namespace WorldBuilder
       return rot_matrix;
     }
 
-    template const std::array<double,2> convert_point_to_array<2>(const Point<2> &point_);
-    template const std::array<double,3> convert_point_to_array<3>(const Point<3> &point_);
+    template std::array<double,2> convert_point_to_array<2>(const Point<2> &point_);
+    template std::array<double,3> convert_point_to_array<3>(const Point<3> &point_);
   }
 }
 

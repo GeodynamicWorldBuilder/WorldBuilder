@@ -32,17 +32,17 @@ namespace WorldBuilder
   {
 
     Interface::Interface()
-    {}
+      = default;
 
     Interface::~Interface ()
-    {}
+      = default;
 
     void
     Interface::declare_entries(Parameters &prm, const std::string &parent_name, const std::vector<std::string> &required_entries)
     {
 
       unsigned int counter = 0;
-      for (auto it : get_declare_map())
+      for (auto &it : get_declare_map())
         {
           prm.enter_subsection("oneOf");
           {

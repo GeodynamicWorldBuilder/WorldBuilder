@@ -43,7 +43,7 @@ namespace WorldBuilder
         /**
          * Constructor for the declaration
          */
-        Object(const std::vector<std::string> required = std::vector<std::string>(),
+        Object(std::vector<std::string> required = std::vector<std::string>(),
                const bool additional_properties = false);
 
         /**

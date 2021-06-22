@@ -38,10 +38,10 @@ namespace WorldBuilder
       namespace Temperature
       {
         Interface::Interface()
-        {}
+          = default;
 
         Interface::~Interface ()
-        {}
+          = default;
 
         void
         Interface::declare_entries(Parameters &prm,

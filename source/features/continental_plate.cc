@@ -50,12 +50,12 @@ namespace WorldBuilder
     }
 
     ContinentalPlate::~ContinentalPlate()
-    { }
+      = default;
 
 
     void
     ContinentalPlate::declare_entries(Parameters &prm,
-                                      const std::string &,
+                                      const std::string & /*unused*/,
                                       const std::vector<std::string> &required_entries)
     {
       prm.declare_entry("", Types::Object(required_entries), "continental plate object");
