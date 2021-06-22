@@ -193,7 +193,7 @@ namespace WorldBuilder
                           total_size += it_sizes;
                         }
 
-                      if (normalize_grain_sizes[i] == true)
+                      if (normalize_grain_sizes[i])
                         {
                           const double one_over_total_size = 1/total_size;
                           std::transform(grains_local.sizes.begin(), grains_local.sizes.end(), grains_local.sizes.begin(),

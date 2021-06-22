@@ -1193,7 +1193,7 @@ namespace WorldBuilder
           assert(m_x[i] < m_x[i+1]);
         }
 
-      if (monotone_spline == true)
+      if (monotone_spline)
         {
           /**
            * This monotone spline algorithm is based on the javascript version

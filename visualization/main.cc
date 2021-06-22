@@ -480,7 +480,7 @@ int main(int argc, char **argv)
       if (grid_type == "cartesian")
         {
           n_cell = n_cell_x * n_cell_z * (dim == 3 ? n_cell_y : 1);
-          if (compress_size == false && dim == 3)
+          if (!compress_size && dim == 3)
             n_p = n_cell * 8 ; // it shouldn't matter for 2d in the output, so just do 3d.
           else
             n_p = (n_cell_x + 1) * (n_cell_z + 1) * (dim == 3 ? (n_cell_y + 1) : 1);
@@ -523,7 +523,7 @@ int main(int argc, char **argv)
             }
           else
             {
-              if (compress_size == true)
+              if (compress_size)
                 {
                   for (size_t i = 0; i <= n_cell_x; ++i)
                     {
@@ -624,7 +624,7 @@ int main(int argc, char **argv)
             }
           else
             {
-              if (compress_size == true)
+              if (compress_size)
                 {
                   for (size_t i = 1; i <= n_cell_x; ++i)
                     {
@@ -761,7 +761,7 @@ int main(int argc, char **argv)
           double opening_angle_lat_rad =  (y_max - y_min);
 
           n_cell = n_cell_x * n_cell_z * (dim == 3 ? n_cell_y : 1);
-          if (compress_size == false && dim == 3)
+          if (!compress_size && dim == 3)
             n_p = n_cell * 8 ; // it shouldn't matter for 2d in the output, so just do 3d.
           else
             n_p = (n_cell_x + 1) * (n_cell_z + 1) * (dim == 3 ? (n_cell_y + 1) : 1);
@@ -792,7 +792,7 @@ int main(int argc, char **argv)
             }
           else
             {
-              if (compress_size == true)
+              if (compress_size)
                 {
                   for (size_t i = 1; i <= n_cell_x + 1; ++i)
                     for (size_t j = 1; j <= n_cell_y + 1; ++j)
@@ -922,7 +922,7 @@ int main(int argc, char **argv)
             }
           else
             {
-              if (compress_size == true)
+              if (compress_size)
                 {
                   for (size_t i = 1; i <= n_cell_x; ++i)
                     {

@@ -178,10 +178,10 @@ namespace WorldBuilder
 
           x_spline.set_points(one_dimensional_coordinates_local,
                               x_list,
-                              interpolation_type == WorldBuilder::Utilities::InterpolationType::Linear ? false : true);
+                              interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear);
           y_spline.set_points(one_dimensional_coordinates_local,
                               y_list,
-                              interpolation_type == WorldBuilder::Utilities::InterpolationType::Linear ? false : true);
+                              interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear);
 
           if (maximum_distance_between_coordinates > 0)
             {

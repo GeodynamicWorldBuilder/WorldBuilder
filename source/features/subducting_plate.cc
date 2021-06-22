@@ -172,19 +172,19 @@ namespace WorldBuilder
                 std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface>  > local_default_composition_models;
                 std::vector<std::shared_ptr<Features::SubductingPlateModels::Grains::Interface>  > local_default_grains_models;
 
-                if (prm.get_shared_pointers<Features::SubductingPlateModels::Temperature::Interface>("temperature models", local_default_temperature_models) == false)
+                if (!prm.get_shared_pointers<Features::SubductingPlateModels::Temperature::Interface>("temperature models", local_default_temperature_models))
                   {
                     // no local temperature model, use global default
                     local_default_temperature_models = default_temperature_models;
                   }
 
-                if (prm.get_shared_pointers<Features::SubductingPlateModels::Composition::Interface>("composition models", local_default_composition_models) == false)
+                if (!prm.get_shared_pointers<Features::SubductingPlateModels::Composition::Interface>("composition models", local_default_composition_models))
                   {
                     // no local composition model, use global default
                     local_default_composition_models = default_composition_models;
                   }
 
-                if (prm.get_shared_pointers<Features::SubductingPlateModels::Grains::Interface>("grains models", local_default_grains_models) == false)
+                if (!prm.get_shared_pointers<Features::SubductingPlateModels::Grains::Interface>("grains models", local_default_grains_models))
                   {
                     // no local composition model, use global default
                     local_default_grains_models = default_grains_models;

@@ -80,7 +80,7 @@ namespace WorldBuilder
   void Parameters::initialize(std::string &filename, bool has_output_dir, const std::string &output_dir)
   {
 
-    if (has_output_dir == true)
+    if (has_output_dir)
       {
         StringBuffer buffer;
         std::ofstream file;
@@ -180,7 +180,7 @@ namespace WorldBuilder
   bool
   Parameters::check_entry(const std::string &name) const
   {
-    return Pointer((this->get_full_json_path() + "/" + name).c_str()).Get(parameters) == nullptr ? false : true;
+    return Pointer((this->get_full_json_path() + "/" + name).c_str()).Get(parameters) != nullptr;
   }
 
 
@@ -653,7 +653,7 @@ namespace WorldBuilder
 
             //This is a value to look back in the path elements.
             size_t searchback = 0;
-            if (this->get_shared_pointers<Temperature::Interface>("temperature models", temperature_models) == false ||
+            if (!this->get_shared_pointers<Temperature::Interface>("temperature models", temperature_models) ||
                 Pointer((base + "/temperature model default entry").c_str()).Get(parameters) != nullptr)
               {
                 temperature_models = default_temperature_models;
@@ -688,7 +688,7 @@ namespace WorldBuilder
 
             // now do the same for compositions
             std::vector<std::shared_ptr<Composition::Interface> > composition_models;
-            if (this->get_shared_pointers<Composition::Interface>("composition models", composition_models) == false ||
+            if (!this->get_shared_pointers<Composition::Interface>("composition models", composition_models) ||
                 Pointer((base + "/composition model default entry").c_str()).Get(parameters) != nullptr)
               {
                 composition_models = default_composition_models;
@@ -724,7 +724,7 @@ namespace WorldBuilder
 
             // now do the same for grains
             std::vector<std::shared_ptr<Grains::Interface> > grains_models;
-            if (this->get_shared_pointers<Grains::Interface>("grains models", grains_models) == false ||
+            if (!this->get_shared_pointers<Grains::Interface>("grains models", grains_models) ||
                 Pointer((base + "/grains model default entry").c_str()).Get(parameters) != nullptr)
               {
                 grains_models = default_grains_models;
@@ -852,7 +852,7 @@ namespace WorldBuilder
 
             //This is a value to look back in the path elements.
             size_t searchback = 0;
-            if (this->get_shared_pointers<Temperature::Interface>("temperature models", temperature_models) == false ||
+            if (!this->get_shared_pointers<Temperature::Interface>("temperature models", temperature_models) ||
                 Pointer((base + "/temperature model default entry").c_str()).Get(parameters) != nullptr)
               {
                 temperature_models = default_temperature_models;
@@ -887,7 +887,7 @@ namespace WorldBuilder
 
             // now do the same for compositions
             std::vector<std::shared_ptr<Composition::Interface> > composition_models;
-            if (this->get_shared_pointers<Composition::Interface>("composition models", composition_models) == false ||
+            if (!this->get_shared_pointers<Composition::Interface>("composition models", composition_models) ||
                 Pointer((base + "/composition model default entry").c_str()).Get(parameters) != nullptr)
               {
                 composition_models = default_composition_models;
@@ -923,7 +923,7 @@ namespace WorldBuilder
 
             // now do the same for grains
             std::vector<std::shared_ptr<Grains::Interface> > grains_models;
-            if (this->get_shared_pointers<Grains::Interface>("grains models", grains_models) == false ||
+            if (!this->get_shared_pointers<Grains::Interface>("grains models", grains_models) ||
                 Pointer((base + "/grains model default entry").c_str()).Get(parameters) != nullptr)
               {
                 grains_models = default_grains_models;

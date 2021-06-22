@@ -76,7 +76,7 @@ namespace WorldBuilder
     MPI_SIZE = 1;
 #endif
 
-    this->declare_entries(parameters);
+    WorldBuilder::World::declare_entries(parameters);
 
     parameters.initialize(filename, has_output_dir, output_dir);
 
@@ -169,7 +169,7 @@ namespace WorldBuilder
 
     const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 
-    if (set_cross_section == true)
+    if (set_cross_section)
       {
         dim = 2;
         std::vector<Point<2> > cross_section_natural = prm.get_vector<Point<2> >("cross section");
@@ -276,7 +276,7 @@ namespace WorldBuilder
     // We receive the cartesian points from the user.
     Point<3> point(point_,cartesian);
 
-    if (std::fabs(depth) < 2.0 * std::numeric_limits<double>::epsilon() && force_surface_temperature == true)
+    if (std::fabs(depth) < 2.0 * std::numeric_limits<double>::epsilon() && force_surface_temperature)
       return this->surface_temperature;
 
     double temperature = potential_mantle_temperature *
