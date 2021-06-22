@@ -23,9 +23,9 @@ The developers of the Geodynamic World Builder request that you cite the followi
 
 Fraters, M., Thieulot, C., van den Berg, A., and Spakman, W.: The Geodynamic World Builder: a solution for complex initial conditions in numerical modelling, Solid Earth, [https://doi.org/10.5194/se-10-1785-2019](https://doi.org/10.5194/se-10-1785-2019), 2019.
 
-And cite the specific version of the software used. Version 0.3.0 can be cited as:
+And cite the specific version of the software used. Version 0.4.0 can be cited as:
 
-Menno Fraters and others. 2019, October 23. The Geodynamic World Builder v0.3.0. Zenodo. [https://doi.org/10.5281/zenodo.3900603](https://doi.org/10.5281/zenodo.3900603).
+Menno Fraters and others. 2021, June 22. The Geodynamic World Builder v0.4.0. Zenodo. [https://doi.org/10.5281/zenodo.5014808](https://doi.org/10.5281/zenodo.5014808).
 
 ## How can I follow the progress of this project
 There are multiple ways in which you can follow this project:
