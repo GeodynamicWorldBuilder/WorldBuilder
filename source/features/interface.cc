@@ -107,7 +107,7 @@ namespace WorldBuilder
                 prm.declare_entry("interpolation",Types::String("global"),
                                   "What type of interpolation should be used to enforce the minimum points per "
                                   "distance parameter. Options are global, none, linear, monotone spline and "
-                                  "contious monotone spline interpolation. If this "
+                                  "continuous monotone spline interpolation. If this "
                                   "value is set to global, the global value for interpolation is used.");
                 WBAssert(it.second != NULL, "No declare entries given.");
                 it.second(prm, parent_name, {});
@@ -165,7 +165,7 @@ namespace WorldBuilder
                                                         (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
 
 
-          // I don't think this is usefull for contious monotone spline, although it might
+          // I don't think this is usefull for continuous monotone spline, although it might
           // help in a spherical case like for the linear case.
           std::vector<double> x_list(original_number_of_coordinates,0.0);
           std::vector<double> y_list(original_number_of_coordinates,0.0);
