@@ -48,7 +48,7 @@ namespace WorldBuilder
 
     void
     Object::write_schema(Parameters &prm,
-                         const std::string &,
+                         const std::string & /*name*/,
                          const std::string &documentation) const
     {
       // The object has to be defined just above the properties section.

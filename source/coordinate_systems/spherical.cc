@@ -35,7 +35,7 @@ namespace WorldBuilder
       = default;
 
     void
-    Spherical::declare_entries(Parameters &prm, const std::string &)
+    Spherical::declare_entries(Parameters &prm, const std::string & /*unused*/)
     {
 
       // Add depth method to the requried parameters.

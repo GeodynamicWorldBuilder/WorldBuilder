@@ -63,7 +63,7 @@ namespace WorldBuilder
           = default;
 
         void
-        PlateModel::declare_entries(Parameters &prm, const std::string &)
+        PlateModel::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
 
           // Add temperature to the required parameters.
@@ -140,12 +140,12 @@ namespace WorldBuilder
 
 
         double
-        PlateModel::get_temperature(const Point<3> &,
+        PlateModel::get_temperature(const Point<3> & /*position*/,
                                     const double depth,
                                     const double gravity_norm,
                                     double temperature_,
-                                    const double,
-                                    const double,
+                                    const double /*feature_min_depth*/,
+                                    const double /*feature_max_depth*/,
                                     const std::map<std::string,double> &distance_from_planes) const
         {
           const double thickness_local = std::min(distance_from_planes.at("thicknessLocal"), max_depth);

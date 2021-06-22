@@ -55,7 +55,7 @@ namespace WorldBuilder
           = default;
 
         void
-        Uniform::declare_entries(Parameters &prm, const std::string &)
+        Uniform::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
           // Add compositions, rotation matrices and grain size models to the required parameters.
           prm.declare_entry("", Types::Object({"compositions"}), "Uniform grains model object");
@@ -131,12 +131,12 @@ namespace WorldBuilder
 
 
         WorldBuilder::grains
-        Uniform::get_grains(const Point<3> &,
+        Uniform::get_grains(const Point<3> & /*position*/,
                             const double depth,
                             const unsigned int composition_number,
                             WorldBuilder::grains grains_,
-                            const double ,
-                            const double) const
+                            const double  /*feature_min_depth*/,
+                            const double /*feature_max_depth*/) const
         {
           WorldBuilder::grains  grains_local = grains_;
           if (depth <= max_depth && depth >= min_depth)

@@ -124,13 +124,13 @@ namespace WorldBuilder
     }
     void
     Interface::declare_interface_entries(Parameters &prm,
-                                         const CoordinateSystem )
+                                         const CoordinateSystem  /*unused*/)
     {
       this->coordinates = prm.get_vector<Point<2> >("coordinates");
     }
 
     void
-    Interface::get_coordinates(const std::string &,
+    Interface::get_coordinates(const std::string & /*unused*/,
                                Parameters &prm,
                                const CoordinateSystem coordinate_system)
     {

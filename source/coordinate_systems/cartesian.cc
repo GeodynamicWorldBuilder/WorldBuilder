@@ -33,11 +33,11 @@ namespace WorldBuilder
       = default;
 
     void
-    Cartesian::declare_entries(Parameters &, const std::string &)
+    Cartesian::declare_entries(Parameters & /*unused*/, const std::string & /*unused*/)
     {}
 
     void
-    Cartesian::parse_entries(Parameters &)
+    Cartesian::parse_entries(Parameters & /*prm*/)
     {}
 
 
