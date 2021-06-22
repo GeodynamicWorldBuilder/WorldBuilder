@@ -1132,8 +1132,10 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
 
   // the constant layers test
   position = {{1500e3,250e3,0}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(10));
-  CHECK(world1.temperature(position, 240e3, 10) == Approx(48.4));
+  CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+  CHECK(world1.temperature(position, 1, 10) == Approx(1600.0004016064));
+  CHECK(world1.temperature(position, 240e3, 10) == Approx(1696.3855421687));
+  CHECK(world1.temperature(position, 249.5e3, 10) == Approx(1715.7728649903));
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
 
   CHECK(world1.composition(position, 0, 0) == Approx(0.0));
@@ -1320,7 +1322,10 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
 
   position = {{750e3,250e3,0}};
   CHECK(world1.temperature(position, 0+300e3, 10) == Approx(10));
-  CHECK(world1.temperature(position, 240e3+300e3, 10) == Approx(48.4));
+  CHECK(world1.temperature(position, 95e3+300e3, 10) == Approx(48));
+  CHECK(world1.temperature(position, 105e3+300e3, 10) == Approx(1790.1395481805));
+  CHECK(world1.temperature(position, 145e3+300e3, 10) == Approx(1794.2913173676));
+  CHECK(world1.temperature(position, 155e3+300e3, 10) == Approx(1795.3292596644));
   CHECK(world1.temperature(position, 260e3+300e3, 10) == Approx(1871.6186210824));
 
   CHECK(world1.composition(position, 0+300e3, 0) == Approx(0.0));
@@ -1533,7 +1538,10 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
 
   position = {{750e3,250e3,0}};
   CHECK(world1.temperature(position, 0, 10) == Approx(10));
-  CHECK(world1.temperature(position, 240e3, 10) == Approx(48.4));
+  CHECK(world1.temperature(position, 195e3, 10) == Approx(49));
+  CHECK(world1.temperature(position, 205e3, 10) == Approx(1692.9733466891));
+  CHECK(world1.temperature(position, 247e3, 10) == Approx(1699.8365894579));
+  CHECK(world1.temperature(position, 249e3, 10) == Approx(1715.532673603));
   CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
   CHECK(world1.composition(position, 0, 0) == Approx(0.0));
   CHECK(world1.composition(position, 0, 1) == Approx(0.0));
@@ -1969,15 +1977,46 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
 
   }
 
+  position = {{250e3,550e3,800e3}};
+  CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+  CHECK(world1.temperature(position, 10, 10) == Approx(1600.0044800063));
+  CHECK(world1.temperature(position, 45e3, 10) == Approx(1620.2875431182));
+  CHECK(world1.temperature(position, 50e3-1, 10) == Approx(1622.5570799855));
+  CHECK(world1.temperature(position, 50e3+1, 10) == Approx(1229.3704734991));
+  CHECK(world1.temperature(position, 55e3, 10) == Approx(1277.8134429863));
+  CHECK(world1.temperature(position, 100e3-1, 10) == Approx(5.2425558343));
+  CHECK(world1.temperature(position, 100e3+1, 10) == Approx(5.2427255399));
+  CHECK(world1.temperature(position, 101e3, 10) == Approx(5.3274935009));
+  CHECK(world1.temperature(position, 110e3, 10) == Approx(6.0911688245));
+  CHECK(world1.temperature(position, 150e3, 10) == Approx(1696.0566101348));
+  CHECK(world1.temperature(position, 155e3, 10) == Approx(1708.6036872114));
+  CHECK(world1.temperature(position, 175e3, 10) == Approx(1758.7919955177));
+  CHECK(world1.temperature(position, 200e3, 10) == Approx(1692.1562939786));
+  CHECK(world1.temperature(position, 250e3, 10) == Approx(1716.0130900067));
+  CHECK(world1.temperature(position, 300e3, 10) == Approx(1740.2062300941));
+
   position = {{250e3,600e3,800e3}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
   CHECK(world1.temperature(position, 10, 10) == Approx(1600.0044800063));
-  CHECK(world1.temperature(position, 100e3-1, 10) == Approx(1645.4330950743));
-  CHECK(world1.temperature(position, 100e3+1, 10) == Approx(1.0000424264));
-  CHECK(world1.temperature(position, 101e3, 10) == Approx(1.0424264069));
-  CHECK(world1.temperature(position, 110e3, 10) == Approx(1.4242640687));
-  CHECK(world1.temperature(position, 150e3, 10) == Approx(3.1213203436));
+  CHECK(world1.temperature(position, 45e3, 10) == Approx(1620.2875431182));
+  CHECK(world1.temperature(position, 50e3-1, 10) == Approx(1622.5570799855));
+  CHECK(world1.temperature(position, 50e3+1, 10) == Approx(1622.5579886178));
+  CHECK(world1.temperature(position, 55e3, 10) == Approx(1624.8307056983));
+  CHECK(world1.temperature(position, 100e3-1, 10) == Approx(1645.4326343531));
+  CHECK(world1.temperature(position, 100e3+1, 10) == Approx(1.0000848528));
+  CHECK(world1.temperature(position, 101e3, 10) == Approx(1.0848528137));
+  CHECK(world1.temperature(position, 110e3, 10) == Approx(1.8485281374 ));
+  CHECK(world1.temperature(position, 150e3, 10) == Approx(5.2426406871));
+  CHECK(world1.temperature(position, 155e3, 10) == Approx(5.6669047558));
+  CHECK(world1.temperature(position, 160e3, 10) == Approx(6.0911688245));
+  CHECK(world1.temperature(position, 165e3, 10) == Approx(6.5154328933));
+  CHECK(world1.temperature(position, 170e3, 10) == Approx(6.939696962));
+  CHECK(world1.temperature(position, 175e3, 10) == Approx(2.0));
+  CHECK(world1.temperature(position, 180e3, 10) == Approx(2.0));
+  CHECK(world1.temperature(position, 185e3, 10) == Approx(2.0));
   CHECK(world1.temperature(position, 200e3, 10) == Approx(2.0));
+  CHECK(world1.temperature(position, 250e3, 10) == Approx(2.0));
+  CHECK(world1.temperature(position, 300e3, 10) == Approx(1740.2062300941));
   CHECK(world1.composition(position, 0, 0) == Approx(0.0));
   CHECK(world1.composition(position, 0, 1) == Approx(0.0));
   CHECK(world1.composition(position, 0, 2) == Approx(0.0));
@@ -2280,7 +2319,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   std::array<double,3> position = {{0,0,800e3}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
   CHECK(world1.temperature(position, 220e3, 10) == Approx(1701.6589518333));
-  CHECK(world1.temperature(position, 230e3, 10) == Approx(965.8099855202));
+  CHECK(world1.temperature(position, 230e3, 10) == Approx(1798.05608126));
   CHECK(world1.composition(position, 0, 0) == Approx(0.0));
   CHECK(world1.composition(position, 0, 1) == Approx(0.0));
   CHECK(world1.composition(position, 0, 2) == Approx(0.0));
@@ -2327,19 +2366,40 @@ TEST_CASE("WorldBuilder Features: Fault")
     compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
   }
 
+  position = {{50e3,230e3,800e3}};
+  CHECK(world1.temperature(position, 0, 10) == Approx(1038.773901055));
+  CHECK(world1.temperature(position, 1, 10) == Approx(1038.73661986));
+  CHECK(world1.temperature(position, 5, 10) == Approx(1038.5874950798));
+  CHECK(world1.temperature(position, 10, 10) == Approx(1038.4010891045));
+  CHECK(world1.temperature(position, 100, 10) == Approx(1035.0457815498));
+  CHECK(world1.temperature(position, 500, 10) == Approx(1020.1333035287));
+  CHECK(world1.temperature(position, 1000, 10) == Approx(1001.4927060023));
+  CHECK(world1.temperature(position, 5000, 10) == Approx(852.3679257913));
+  CHECK(world1.temperature(position, std::sqrt(2) * 50e3/2, 10) == Approx(865.6153905719));
+  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(1693.2261574294));
+  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(1693.2261574294));
+  CHECK(world1.temperature(position, 25e3, 10) == Approx(479.5559752638));
+  CHECK(world1.temperature(position, 50e3, 10) == Approx(1411.5858515826));
+  CHECK(world1.temperature(position, 75e3, 10) == Approx(1716.1213324607));
+  CHECK(world1.temperature(position, 80e3, 10) == Approx(1742.8161278431));
+  CHECK(world1.temperature(position, 90e3, 10) == Approx(1796.2057186079));
+  CHECK(world1.temperature(position, 100e3, 10) == Approx(1645.4330950743));
+  CHECK(world1.temperature(position, 150e3, 10) == Approx(1668.6311660012));
+  CHECK(world1.temperature(position, 200e3, 10) == Approx(1692.1562939786));
 
   position = {{250e3,250e3,800e3}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600.0));
-  CHECK(world1.temperature(position, 1, 10) == Approx(293.1595620855));
-  CHECK(world1.temperature(position, 5, 10) == Approx(293.1978104273));
-  CHECK(world1.temperature(position, 10, 10) == Approx(293.2456208547));
-  CHECK(world1.temperature(position, 100, 10) == Approx(294.1062085466));
-  CHECK(world1.temperature(position, 500, 10) == Approx(297.9310427331));
-  CHECK(world1.temperature(position, 1000, 10) == Approx(302.7120854661));
-  CHECK(world1.temperature(position, 5000, 10) == Approx(340.9604273305));
-  CHECK(world1.temperature(position, std::sqrt(2) * 50e3/2, 10) == Approx(631.2207737686));
-  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(969.2819854517));
+  CHECK(world1.temperature(position, 1, 10) == Approx(293.1872811951));
+  CHECK(world1.temperature(position, 5, 10) == Approx(293.3364059753));
+  CHECK(world1.temperature(position, 10, 10) == Approx(293.5228119505));
+  CHECK(world1.temperature(position, 100, 10) == Approx(296.8781195053));
+  CHECK(world1.temperature(position, 500, 10) == Approx(311.7905975264));
+  CHECK(world1.temperature(position, 1000, 10) == Approx(330.4311950528));
+  CHECK(world1.temperature(position, 5000, 10) == Approx(479.5559752638));
+  CHECK(world1.temperature(position, std::sqrt(2) * 50e3/2, 10) == Approx(1611.239291627));
+  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(1799.9946610409));
   CHECK(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(1631.9945206949));
+  CHECK(world1.temperature(position, std::sqrt(2) * 51e3, 10) == Approx(1632.6404283806));
   CHECK(world1.composition(position, 0, 0) == Approx(0.0));
   CHECK(world1.composition(position, 0, 1) == Approx(0.0));
   CHECK(world1.composition(position, 0, 2) == Approx(0.0));
