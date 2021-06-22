@@ -140,17 +140,6 @@ namespace WorldBuilder
      * access index
      */
     template<int dim>
-    const double &
-    Point<dim>::operator[](const unsigned int index) const
-    {
-      return value[index];
-    }
-
-
-    /**
-     * access index
-     */
-    template<int dim>
     double &
     Point<dim>::operator[](const unsigned int index)
     {
