@@ -99,7 +99,7 @@ namespace WorldBuilder
                                  const double ,
                                  const std::map<std::string,double> &distance_from_plane) const
         {
-          double composition = composition_;
+          double composition;
 
           const double dist_to_plane = std::fabs(distance_from_plane.at("distanceFromPlane"));
           if (dist_to_plane <= 2*dist_to_plane)
@@ -115,8 +115,7 @@ namespace WorldBuilder
             }
 
           return Utilities::apply_operation(operation,composition_,composition);
-
-          return composition;
+          
         }
 
         WB_REGISTER_FEATURE_FAULT_COMPOSITION_MODEL (Smooth, smooth)
