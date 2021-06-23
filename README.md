@@ -3,7 +3,8 @@
 [![actions](https://github.com/GeodynamicWorldBuilder/WorldBuilder/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/GeodynamicWorldBuilder/WorldBuilder/actions?query=branch%3Amaster)
 [![Documentation](https://codedocs.xyz/GeodynamicWorldBuilder/WorldBuilder.svg)](https://codedocs.xyz/GeodynamicWorldBuilder/WorldBuilder/index.html)
 [![Coverage Status](https://coveralls.io/repos/github/GeodynamicWorldBuilder/WorldBuilder/badge.svg?branch=master)](https://coveralls.io/github/GeodynamicWorldBuilder/WorldBuilder?branch=master)
-[![codecov](https://codecov.io/gh/GeodynamicWorldBuilder/WorldBuilder/branch/master/graph/badge.svg)](https://codecov.io/gh/GeodynamicWorldBuilder/WorldBuilder)
+[![codecov](https://codecov.io/gh/GeodynamicWorldBuilder/WorldBuilder/branch/master/graph/badge.svg)](https://codecov.io/gh/GeodynamicWorldBuilder/WorldBuilder)  
+[![Matrix space](https://img.shields.io/badge/Chat-matrix.org-brightgreen)](https://matrix.to/#/!vhukRUGUINnZOIutoQ:matrix.org)
 [![Mastodon Follow](https://img.shields.io/mastodon/follow/106136314313793382?domain=https%3A%2F%2Fsocial.mfraters.net&style=social)](https://social.mfraters.net/@world_builder)
 
 # The Geodynamic World Builder (GWB)
@@ -18,6 +19,9 @@ If you have a question about the code and you can not find the answer easily in 
 
 ## I found a mistake in the documentation or code, what should I do?
 Please do not keep it to yourself and let us know. Others will also profit from mistakes being found and fixed. Even if it is just a typo in the documentation feel free to raise an issue or, even better, make a pull request to fix the issue.
+
+## Is there a way to ask a quick question or chat with the developers or other users?
+We are now also experimenting with matrix chat (#gwb:matrix.org). [Matrix](matrix.org) is an open source distributed chat system. Since the main developer is already present on matrix, a special space has been created for the world builder allowing the option for multiple rooms. The space can be found [here](https://matrix.to/#/!vhukRUGUINnZOIutoQ:matrix.org). The matrix system is not limited to one client, but using the [Element](https://element.io) client is generally recommended. Element can be used as a dektop, mobile or web application. Feel free to join!
 
 ## How to cite?
 The developers of the Geodynamic World Builder request that you cite the following publication:
@@ -34,3 +38,4 @@ There are multiple ways in which you can follow this project:
  2. Follow the [world builder Mastodon account](https://social.mfraters.net/@world_builder). This is a manually updated feed which updates when there are new release or major new features merged in the main branch. More general new related to the project may also be posted.
  3. Subscribe the the Mastodon RSS feed: https://social.mfraters.net/@world_builder.rss. This will show exactly the same information as the mastodon account, but you can use any RSS reader.
  4. Visit the [world builder website](https://geodynamicworldbuilder.github.io/). Besides all kind of useful information and links, it also contains a RSS feed viewer the world builder Mastodon account.
+ 5. Join the [Matrix chat rooms](https://matrix.to/#/!vhukRUGUINnZOIutoQ:matrix.org)!
