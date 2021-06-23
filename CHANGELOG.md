@@ -9,6 +9,8 @@ Add new entries a the bottom of the current list in the subheading. Item format:
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
 ## [0.4.0]
 ### Added
 - Added basic unity build. \[Menno Fraters; 2020-08-15; [#206](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/206)\]
