@@ -99,10 +99,11 @@ namespace WorldBuilder
                                  const double ,
                                  const std::map<std::string,double> &distance_from_plane) const
         {
-          double composition;
+          double composition = 0;
 
           const double dist_to_plane = std::fabs(distance_from_plane.at("distanceFromPlane"));
-          if (dist_to_plane <= 2*dist_to_plane)
+
+          if (compositions == composition_number)
             {
               if (compositions == composition_number)
                 {
@@ -114,7 +115,7 @@ namespace WorldBuilder
                 }
             }
 
-          return Utilities::apply_operation(operation,composition_,composition);
+          return composition;
           
         }
 
