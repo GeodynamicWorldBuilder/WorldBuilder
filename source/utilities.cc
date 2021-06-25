@@ -461,7 +461,7 @@ namespace WorldBuilder
           // fill it
           global_x_list.resize(point_list.size());
           for (size_t i = 0; i < point_list.size(); ++i)
-            global_x_list[i] = i;
+            global_x_list[i] = (double)i;
         }
       WBAssertThrow(global_x_list.size() == point_list.size(), "The given global_x_list doesn't have "
                     "the same size as the point list. This is required.");
@@ -774,7 +774,7 @@ namespace WorldBuilder
                   return_values["sectionFraction"] = fraction_CPL_P1P2;
                   return_values["segmentFraction"] = 0.0;
                   return_values["section"] = static_cast<double>(i_section_min_distance);
-                  return_values["segment"] = 0;
+                  return_values["segment"] = 0.;
                   return_values["averageAngle"] = total_average_angle;
                   return return_values;
                 }
@@ -1174,7 +1174,7 @@ namespace WorldBuilder
       return_values["sectionFraction"] = section_fraction;
       return_values["segmentFraction"] = segment_fraction;
       return_values["section"] = static_cast<double>(section);
-      return_values["segment"] = segment;
+      return_values["segment"] = (double)segment;
       return_values["averageAngle"] = total_average_angle;
       return return_values;
     }

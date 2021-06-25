@@ -675,9 +675,9 @@ TEST_CASE("WorldBuilder C wrapper")
   const char *world_builder_file = file.c_str();
   bool has_output_dir = false;
 
-  create_world(ptr_ptr_world, world_builder_file, &has_output_dir, "", 1.0);
+  create_world(ptr_ptr_world, world_builder_file, &has_output_dir, "", 1);
 
-  double temperature = 0;
+  double temperature = 0.;
 
   temperature_2d(*ptr_ptr_world, 1, 2, 0, 10, &temperature);
   CHECK(temperature == Approx(1600));
