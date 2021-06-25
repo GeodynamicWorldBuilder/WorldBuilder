@@ -6792,7 +6792,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   Utilities::interpolation y_spline;
   Utilities::InterpolationType interpolation_type = Utilities::InterpolationType::None;
 
-  std::map<std::string,double> distance_from_planes =
+  WorldBuiler::Utilities::PointPlaneDistance distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  reference_point,
                                                  coordinates,

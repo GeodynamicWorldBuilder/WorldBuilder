@@ -94,10 +94,10 @@ namespace WorldBuilder
                                 double temperature_,
                                 const double /*feature_min_depth*/,
                                 const double /*feature_max_depth*/,
-                                const std::map<std::string,double> &distance_from_planes) const
+                                const WorldBuilder::Utilities::PointPlaneDistance &distance_from_planes) const
         {
 
-          if (std::fabs(distance_from_planes.at("distanceFromPlane")) <= max_depth && std::fabs(distance_from_planes.at("distanceFromPlane")) >= min_depth)
+          if (std::fabs(distance_from_planes.distance_from_plane) <= max_depth && std::fabs(distance_from_planes.distance_from_plane) >= min_depth)
             {
               const double min_depth_local = min_depth;
               const double max_depth_local = max_depth;
@@ -119,7 +119,7 @@ namespace WorldBuilder
                 }
 
               const double new_temperature =   center_temperature_local +
-                                               (std::fabs(distance_from_planes.at("distanceFromPlane")) - min_depth_local) *
+                                               (std::fabs(distance_from_planes.distance_from_plane) - min_depth_local) *
                                                ((side_temperature_local - center_temperature_local) / (max_depth_local - min_depth_local));
 
               return Utilities::apply_operation(operation,temperature_,new_temperature);

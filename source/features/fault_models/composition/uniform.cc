@@ -95,10 +95,10 @@ namespace WorldBuilder
                                  double composition_,
                                  const double  /*feature_min_depth*/,
                                  const double  /*feature_max_depth*/,
-                                 const std::map<std::string,double> &distance_from_plane) const
+                                 const WorldBuilder::Utilities::PointPlaneDistance &distance_from_plane) const
         {
           double composition = composition_;
-          if (std::fabs(distance_from_plane.at("distanceFromPlane")) <= max_depth && std::fabs(distance_from_plane.at("distanceFromPlane")) >= min_depth)
+          if (std::fabs(distance_from_plane.distance_from_plane) <= max_depth && std::fabs(distance_from_plane.distance_from_plane) >= min_depth)
             {
               for (unsigned int i =0; i < compositions.size(); ++i)
                 {
