@@ -144,7 +144,7 @@ jobs:
       matrix: 
         os: ['windows-latest']
         build_type: ['Release', 'Debug']
-        build_system: ['MinGW Makefiles','Visual Studio 15 2017 Win64']
+        build_system: ['MinGW Makefiles','Visual Studio 16 2019']
       
     runs-on: ${{ matrix.os }}
 
@@ -165,7 +165,7 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{github.workspace}}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DWB_ENABLE_PYTHON=FALSE
+      run: cmake -G"${{ matrix.build_system }}" $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DWB_ENABLE_PYTHON=FALSE
 
     - name: Build gwb
       working-directory: ${{github.workspace}}/build
