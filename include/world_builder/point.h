@@ -135,7 +135,7 @@ namespace WorldBuilder
        * access index (const)
        */
       inline
-      const double &operator[](const unsigned int index) const
+      const double &operator[](const size_t index) const
       {
         WBAssert(index <= dim, "Can't ask for element " << index << " in an point with dimension " << dim << ".");
         return point[index];
@@ -145,7 +145,7 @@ namespace WorldBuilder
       /**
        * access index
        */
-      inline double &operator[](const unsigned int index)
+      inline double &operator[](const size_t index)
       {
         WBAssert(index <= dim, "Can't ask for element " << index << " in an point with dimension " << dim << ".");
         return point[index];
@@ -199,7 +199,7 @@ namespace WorldBuilder
        */
       friend std::ostream &operator<<( std::ostream &output, const Point<dim> &point )
       {
-        for (unsigned int i = 0; i < dim-1; i++)
+        for (size_t i = 0; i < dim-1; i++)
           {
             output <<  point[i] << " ";
           }
