@@ -380,7 +380,7 @@ namespace WorldBuilder
                    "Internal error: The size of coordinates (" << coordinates.size()
                    << ") and one_dimensional_coordinates (" << one_dimensional_coordinates.size() << ") are different.");*/
           // todo: explain
-          WorldBuilder::Utilities::PointPlaneDistance distance_from_planes =
+          WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
                                                                        reference_point,
                                                                        coordinates,
@@ -388,7 +388,7 @@ namespace WorldBuilder
                                                                        slab_segment_angles,
                                                                        starting_radius,
                                                                        this->world->parameters.coordinate_system,
-                                                                       true,
+                                                                       false,
                                                                        interpolation_type,
                                                                        this->x_spline,
                                                                        this->y_spline,
@@ -509,7 +509,7 @@ namespace WorldBuilder
       if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness)
         {
           // todo: explain
-          WorldBuilder::Utilities::PointPlaneDistance distance_from_planes =
+          WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
                                                                        reference_point,
                                                                        coordinates,
@@ -517,7 +517,7 @@ namespace WorldBuilder
                                                                        slab_segment_angles,
                                                                        starting_radius,
                                                                        this->world->parameters.coordinate_system,
-                                                                       true,
+                                                                       false,
                                                                        interpolation_type,
                                                                        this->x_spline,
                                                                        this->y_spline,
@@ -641,7 +641,7 @@ namespace WorldBuilder
       if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness)
         {
           // todo: explain
-          WorldBuilder::Utilities::PointPlaneDistance distance_from_planes =
+          WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
                                                                        reference_point,
                                                                        coordinates,
@@ -649,7 +649,7 @@ namespace WorldBuilder
                                                                        slab_segment_angles,
                                                                        starting_radius,
                                                                        this->world->parameters.coordinate_system,
-                                                                       true,
+                                                                       false,
                                                                        interpolation_type,
                                                                        this->x_spline,
                                                                        this->y_spline,

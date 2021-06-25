@@ -363,7 +363,7 @@ namespace WorldBuilder
           // todo: explain
           // This function only returns positive values, because we want
           // the fault to be centered around the line provided by the user.
-          WorldBuilder::Utilities::PointPlaneDistance distance_from_planes =
+          WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
                                                                        reference_point,
                                                                        coordinates,
@@ -494,7 +494,7 @@ namespace WorldBuilder
           // todo: explain
           // This function only returns positive values, because we want
           // the fault to be centered around the line provided by the user.
-          WorldBuilder::Utilities::PointPlaneDistance distance_from_planes =
+          WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
                                                                        reference_point,
                                                                        coordinates,
@@ -628,7 +628,7 @@ namespace WorldBuilder
           // todo: explain
           // This function only returns positive values, because we want
           // the fault to be centered around the line provided by the user.
-          WorldBuilder::Utilities::PointPlaneDistance distance_from_planes =
+          WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
                                                                        reference_point,
                                                                        coordinates,

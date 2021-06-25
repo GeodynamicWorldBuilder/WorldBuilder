@@ -249,14 +249,50 @@ namespace WorldBuilder
         std::vector<double> m_a, m_b, m_c, m_y;
     };
 
-    struct PointPlaneDistance
+    /**
+     * A struct that is used to hold the return values of the function
+     * distance_point_from_curved_planes(). See there for a documentation
+     * of the meaning of the member variables.
+     */
+    struct PointDistanceFromCurvedPlanes
     {
+      /**
+       * The shortest distance between point and plane.
+       */
       double distance_from_plane;
+
+      /**
+       * The distance between edge of the plane and
+       * the point if the point is projected onto the curved plane.
+       */
       double distance_along_plane;
+
+      /**
+       * The fraction of the section that lies before the projected point
+       * on the plane (when looking from the start point of the section).
+       */
       double fraction_of_section;
+
+      /**
+       * The fraction of the segment that lies before the projected point
+       * on the plane (when looking from the start point of the segment).
+       */
       double fraction_of_segment;
+
+      /**
+       * The number of the section that is closest to the point
+       */
       size_t section;
+
+      /**
+       * The number of the segment that is closest to the point.
+       */
       size_t segment;
+
+      /**
+       * The average dip angle of the plane at the location where the
+       * point is projected onto the plane.
+       */
       double average_angle;
 
       // This is unrelated and should not be stored in here, but some
@@ -303,8 +339,14 @@ namespace WorldBuilder
      * extra coordinates automatically, and still reference the user provided coordinates by
      * the original number. Note that no whole numbers may be skiped. So for a list of 4 points,
      * {0,0.5,1,2} is allowed, but {0,2,3,4} is not.
+     * 
+     * The function returns a struct that contains which segment and section of the curved
+     * planes the point is closest to, what fraction of those segment and section lies before
+     * the point (looking from the start of segment/section), the distance
+     * of the point from the plane and the distance of the point along the plane,
+     * and the average angle of the closest segment/section.
      */
-    PointPlaneDistance distance_point_from_curved_planes(const Point<3> &point,
+    PointDistanceFromCurvedPlanes distance_point_from_curved_planes(const Point<3> &point,
                                                                    const Point<2> &reference_point,
                                                                    const std::vector<Point<2> > &point_list,
                                                                    const std::vector<std::vector<double> > &plane_segment_lengths,

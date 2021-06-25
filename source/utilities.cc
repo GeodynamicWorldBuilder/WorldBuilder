@@ -431,7 +431,7 @@ namespace WorldBuilder
       return Point<3>(x,y,z,a.get_coordinate_system());
     }
 
-    PointPlaneDistance
+    PointDistanceFromCurvedPlanes
     distance_point_from_curved_planes(const Point<3> &check_point, // cartesian point in spherical system
                                       const Point<2> &reference_point, // in (rad) spherical coordinates in spherical system
                                       const std::vector<Point<2> > &point_list, // in  (rad) spherical coordinates in spherical system
@@ -768,7 +768,7 @@ namespace WorldBuilder
                                         + fraction_CPL_P1P2 * (plane_segment_angles[original_next_section][0][0]
                                                                - plane_segment_angles[original_current_section][0][0]);
 
-                  PointPlaneDistance return_values;
+                  PointDistanceFromCurvedPlanes return_values;
                   return_values.distance_from_plane = 0.0;
                   return_values.distance_along_plane = 0.0;
                   return_values.fraction_of_section = fraction_CPL_P1P2;
@@ -1168,7 +1168,7 @@ namespace WorldBuilder
             }
         }
 
-      PointPlaneDistance return_values;
+      PointDistanceFromCurvedPlanes return_values;
       return_values.distance_from_plane = distance;
       return_values.distance_along_plane = along_plane_distance;
       return_values.fraction_of_section = section_fraction;

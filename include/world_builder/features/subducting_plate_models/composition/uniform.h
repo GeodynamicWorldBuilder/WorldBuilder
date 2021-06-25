@@ -73,7 +73,7 @@ namespace WorldBuilder
                                    double composition,
                                    const double feature_min_depth,
                                    const double feature_max_depth,
-                                   const WorldBuilder::Utilities::PointPlaneDistance &distance_from_planes) const override final;
+                                   const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes) const override final;
 
 
           private:
