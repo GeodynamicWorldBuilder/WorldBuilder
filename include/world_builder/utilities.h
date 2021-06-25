@@ -339,7 +339,7 @@ namespace WorldBuilder
      * extra coordinates automatically, and still reference the user provided coordinates by
      * the original number. Note that no whole numbers may be skiped. So for a list of 4 points,
      * {0,0.5,1,2} is allowed, but {0,2,3,4} is not.
-     * 
+     *
      * The function returns a struct that contains which segment and section of the curved
      * planes the point is closest to, what fraction of those segment and section lies before
      * the point (looking from the start of segment/section), the distance
@@ -347,17 +347,17 @@ namespace WorldBuilder
      * and the average angle of the closest segment/section.
      */
     PointDistanceFromCurvedPlanes distance_point_from_curved_planes(const Point<3> &point,
-                                                                   const Point<2> &reference_point,
-                                                                   const std::vector<Point<2> > &point_list,
-                                                                   const std::vector<std::vector<double> > &plane_segment_lengths,
-                                                                   const std::vector<std::vector<Point<2> > > &plane_segment_angles,
-                                                                   const double start_radius,
-                                                                   const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
-                                                                   const bool only_positive,
-                                                                   const InterpolationType interpolation_type,
-                                                                   const interpolation &x_spline,
-                                                                   const interpolation &y_spline,
-                                                                   std::vector<double> global_x_list = {});
+                                                                    const Point<2> &reference_point,
+                                                                    const std::vector<Point<2> > &point_list,
+                                                                    const std::vector<std::vector<double> > &plane_segment_lengths,
+                                                                    const std::vector<std::vector<Point<2> > > &plane_segment_angles,
+                                                                    const double start_radius,
+                                                                    const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
+                                                                    const bool only_positive,
+                                                                    const InterpolationType interpolation_type,
+                                                                    const interpolation &x_spline,
+                                                                    const interpolation &y_spline,
+                                                                    std::vector<double> global_x_list = {});
 
 
 
