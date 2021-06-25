@@ -30,18 +30,26 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/source/config.cc.in" "${CMAKE_BINARY
 
 # finding support for different languages
 # finding a fortran compiler
+set(WB_MAKE_FORTRAN_WRAPPER TRUE CACHE STRING "Whether or not to create a Fortran wrapper for the world builder.")
 if(${CMAKE_VERSION} VERSION_LESS "2.8.8") 
   message(STATUS "Fortran not supported with cmake version lower than  2.8.8. Please upgrade your cmake version if you need it. Disabling Fortran wrapper and tests.")
   SET(CMAKE_Fortran_COMPILER FALSE)
-else()
+  set(WB_MAKE_FORTRAN_WRAPPER FALSE CACHE STRING "Whether or not to create a Fortran wrapper for the world builder." FORCE)
+elseif(WB_MAKE_FORTRAN_WRAPPER)
   include(CheckLanguage)
+  message(STATUS "Looking for Fortran support.")
   check_language(Fortran)
   if(CMAKE_Fortran_COMPILER)
     enable_language(Fortran)
-    message(STATUS "Found Fortran support. Enabling Fortran wrapper and tests.")
   else()
-    message(STATUS "Did not find Fortran support. Disabling Fortran wrapper and tests.")
+    set(WB_MAKE_FORTRAN_WRAPPER FALSE CACHE STRING "Whether or not to create a Fortran wrapper for the world builder." FORCE)
   endif()
+endif()
+
+if(WB_MAKE_FORTRAN_WRAPPER)
+  message(STATUS "Found Fortran support. Enabling Fortran wrapper and tests.")
+else()
+  message(STATUS "Did not find Fortran support or it has been requested to be disabled. Disabling Fortran wrapper and tests.")
 endif()
 
 #finding support for makeing a python wrapper
