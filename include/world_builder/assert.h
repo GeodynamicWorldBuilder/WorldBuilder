@@ -26,7 +26,7 @@
 
 namespace WorldBuilder
 {
-#ifndef NDEBUG
+#ifdef DEBUG
 #   define WBAssert(condition, message) \
   do { \
       if (! (condition)) { \
@@ -37,7 +37,7 @@ namespace WorldBuilder
         } \
     } while (false)
 #else
-#   define WBAssert(condition, message) do { } while (false)
+#   define WBAssert(condition, message) {}
 #endif
 
 #   define WBAssertThrow(condition, message) \
