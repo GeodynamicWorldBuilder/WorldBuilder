@@ -12,9 +12,6 @@
 #ifndef GHC_FILESYSTEM_H
 #define GHC_FILESYSTEM_H
 
-#ifndef _WIN32
-#include <sys/param.h>
-#endif
 
 #ifndef GHC_OS_DETECTED
 #if defined(__APPLE__) && defined(__MACH__)
@@ -115,7 +112,6 @@
 #include <dirent.h>
 #include <fcntl.h>
 #include <limits.h>
-#include <sys/param.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/types.h>
@@ -1182,6 +1178,8 @@ GHC_INLINE std::error_code make_error_code(portable_error err)
             return std::error_code(EINVAL, std::system_category());
         case portable_error::is_a_directory:
             return std::error_code(EISDIR, std::system_category());
+        default:
+            std::error_code();
     }
 #endif
     return std::error_code();
@@ -1596,6 +1594,8 @@ GHC_INLINE void path::postprocess_path_with_format(path::format fmt)
         case path::generic_format:
             break;
 #endif
+        default:
+            throw std::runtime_error( "Should not be able to reach this.");
     }
     if (_path.length() > _prefixLength + 2 && _path[_prefixLength] == preferred_separator && _path[_prefixLength + 1] == preferred_separator && _path[_prefixLength + 2] != preferred_separator) {
         impl_string_type::iterator new_end = std::unique(_path.begin() + static_cast<string_type::difference_type>(_prefixLength) + 2, _path.end(), [](path::value_type lhs, path::value_type rhs) { return lhs == rhs && lhs == preferred_separator; });
@@ -6265,6 +6265,7 @@ inline StringStringMap RawBinaryAppendedWriter::appendedAttributes( )
 
 #ifndef VTU11_ZLIBWRITER_IMPL_HPP
 
+#ifdef VTU11_ENABLE_ZLIB
 #include "zlib.h"
 
 namespace vtu11
@@ -6394,7 +6395,7 @@ inline StringStringMap CompressedRawBinaryAppendedWriter::appendedAttributes( )
 }
 
 } // namespace vtu11
-
+#endif // VTU11_ENABLE_ZLIB
 #endif // VTU11_ZLIBWRITER_IMPL_HPP
 
 #ifndef VTU11_VTU11_IMPL_HPP
