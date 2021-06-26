@@ -1346,6 +1346,12 @@ int main(int argc, char **argv)
                 }
             }
         }
+      else
+        {
+          WBAssertThrow(false, "Geometry type '" << grid_type << "' is not a valid geometry type. Valid geometry types are: "
+                        << "'cartesian', 'annulus', 'chunk' and 'sphere'. "
+                        << "Please note that the annulus can only be used in 2d and the sphere can only be used in 3d.");
+        }
 
       // create paraview file.
       std::cout << "[5/6] Preparing to write the paraview file...                                                   \r";
