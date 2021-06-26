@@ -23,9 +23,11 @@
  * the author of GHOST.
  */
 #include <cmath>
+
 #ifdef WB_WITH_MPI
 #include <mpi.h>
 #endif
+
 
 #include <algorithm>
 #include <exception>
@@ -41,6 +43,11 @@
 #include <world_builder/coordinate_system.h>
 
 #include <visualization/main.h>
+
+#include <vtu11/vtu11.hpp>
+
+#undef max
+#undef min
 
 using namespace WorldBuilder;
 using namespace WorldBuilder::Utilities;
@@ -194,7 +201,7 @@ int main(int argc, char **argv)
   /**
    * First parse the command line options
    */
-  std::cout << "[1/5] Parsing file...                         \r";
+  std::cout << "[1/6] Parsing file...                         \r";
   std::string wb_file;
   std::string data_file;
 
@@ -296,7 +303,7 @@ int main(int argc, char **argv)
       /**
        * Try to start the world builder
        */
-      std::cout << "[2/5] Starting the world builder with " << number_of_threads << " threads...                         \r";
+      std::cout << "[2/6] Starting the world builder with " << number_of_threads << " threads...                         \r";
       std::cout.flush();
 
       std::unique_ptr<WorldBuilder::World> world;
@@ -331,7 +338,7 @@ int main(int argc, char **argv)
       /**
        * Read the data from the data files
        */
-      std::cout << "[3/5] Reading grid file...                        \r";
+      std::cout << "[3/6] Reading grid file...                        \r";
       std::cout.flush();
 
 
@@ -360,6 +367,7 @@ int main(int argc, char **argv)
           data.push_back(line);
         }
 
+      std::string vtu_output_format = "RawBinaryCompressed";
       // Read config from data if pressent
       for (auto &line_i : data)
         {
@@ -377,6 +385,11 @@ int main(int argc, char **argv)
           if (line_i[0] == "dim" && line_i[1] == "=")
             {
               dim = string_to_unsigned_int(line_i[2]);
+            }
+
+          if (line_i[0] == "vtu_output_format" && line_i[1] == "=")
+            {
+              vtu_output_format = line_i[2];
             }
 
           if (line_i[0] == "compositions" && line_i[1] == "=")
@@ -474,7 +487,7 @@ int main(int argc, char **argv)
       /**
        * Begin making the grid
        */
-      std::cout << "[4/5] Building the grid...                        \r";
+      std::cout << "[4/6] Building the grid...                        \r";
       std::cout.flush();
       WBAssertThrow(dim == 2 || dim == 3, "Dimension should be 2d or 3d.");
       if (grid_type == "cartesian")
@@ -776,7 +789,7 @@ int main(int argc, char **argv)
           grid_z.resize(n_p);
           grid_depth.resize(n_p);
 
-          std::cout << "[4/5] Building the grid: stage 1 of 3                        \r";
+          std::cout << "[4/6] Building the grid: stage 1 of 3                        \r";
           std::cout.flush();
           size_t counter = 0;
           if (dim == 2)
@@ -869,7 +882,7 @@ int main(int argc, char **argv)
                 }
             }
 
-          std::cout << "[4/5] Building the grid: stage 2 of 3                        \r";
+          std::cout << "[4/6] Building the grid: stage 2 of 3                        \r";
           std::cout.flush();
           if (dim == 2)
             {
@@ -897,7 +910,7 @@ int main(int argc, char **argv)
                   grid_z[i] = radius * std::sin(latitutde);
                 }
             }
-          std::cout << "[4/5] Building the grid: stage 3 of 3                        \r";
+          std::cout << "[4/6] Building the grid: stage 3 of 3                        \r";
           std::cout.flush();
           // compute connectivity. Local to global mapping.
           grid_connectivity.resize(n_cell,std::vector<size_t>((dim-1)*4));
@@ -915,7 +928,7 @@ int main(int argc, char **argv)
                       grid_connectivity[counter][3] = (n_cell_z + 1) * (i    ) + j - 1;
 
                       counter = counter+1;
-                      std::cout << "[4/5] Building the grid: stage 3 of 3 [" << (static_cast<double>(i)/static_cast<double>(n_cell))*100.0 << "%]                       \r";
+                      std::cout << "[4/6] Building the grid: stage 3 of 3 [" << (static_cast<double>(i)/static_cast<double>(n_cell))*100.0 << "%]                       \r";
                       std::cout.flush();
                     }
                 }
@@ -956,7 +969,7 @@ int main(int argc, char **argv)
                       grid_connectivity[i][6] = counter + 6;
                       grid_connectivity[i][7] = counter + 7;
                       counter = counter + 8;
-                      std::cout << "[4/5] Building the grid: stage 3 of 3 [" << (static_cast<double>(i)/static_cast<double>(n_cell))*100.0 << "%]                       \r";
+                      std::cout << "[4/6] Building the grid: stage 3 of 3 [" << (static_cast<double>(i)/static_cast<double>(n_cell))*100.0 << "%]                       \r";
                       std::cout.flush();
                     }
                 }
@@ -1335,11 +1348,7 @@ int main(int argc, char **argv)
         }
 
       // create paraview file.
-      std::cout << "[5/5] Writing the paraview file...                                               \r";
-      std::cout.flush();
-
-
-      std::cout << "[5/5] Writing the paraview file: stage 1 of 3, preparing writing header part 1                              \r";
+      std::cout << "[5/6] Preparing to write the paraview file...                                                   \r";
       std::cout.flush();
 
       std::string base_filename = wb_file.substr(wb_file.find_last_of("/\\") + 1);
@@ -1348,84 +1357,86 @@ int main(int argc, char **argv)
 
       std::stringstream buffer;
       std::ofstream myfile;
-      myfile.open (file_without_extension + ".vtu");
-      buffer << "<?xml version=\"1.0\" ?> " << std::endl;
-      buffer << R"(<VTKFile type="UnstructuredGrid" version="0.1" byte_order="LittleEndian">)" << std::endl;
-      buffer << "<UnstructuredGrid>" << std::endl;
-      buffer << "<FieldData>" << std::endl;
-      buffer << R"(<DataArray type="Float32" Name="TIME" NumberOfTuples="1" format="ascii">0</DataArray>)" << std::endl;
-      buffer << "</FieldData>" << std::endl;
-      buffer << "<Piece NumberOfPoints=\""<< n_p << "\" NumberOfCells=\"" << n_cell << "\">" << std::endl;
-      buffer << "  <Points>" << std::endl;
-      buffer << R"(    <DataArray type="Float32" NumberOfComponents="3" format="ascii">)" << std::endl;
+
+      std::cout << "[5/6] Preparing to write the paraview file: stage 1 of 6, converting the points                              \r";
+      std::cout.flush();
+      std::vector<double> points(grid_x.size()*3, 0.0);
       if (dim == 2)
-        for (size_t i = 0; i < n_p; ++i)
-          buffer << grid_x[i] << " " << grid_z[i] << " " << "0.0" << std::endl;
-      else
         for (size_t i = 0; i < n_p; ++i)
           {
-            buffer << grid_x[i] << " " << grid_y[i] << " " << grid_z[i] << std::endl;
+            points[i*3] = grid_x[i];
+            points[i*3+1] = grid_z[i];
+            // third one is zero
           }
-      std::cout << "[5/5] Writing the paraview file: stage 1 of 3, preparing writing header part 2                              \r";
-      std::cout.flush();
-      buffer << "    </DataArray>" << std::endl;
-      buffer << "  </Points>" << std::endl;
-      buffer << std::endl;
-      buffer << "  <Cells>" << std::endl;
-      buffer << R"(    <DataArray type="Int32" Name="connectivity" format="ascii">)" << std::endl;
-      if (dim == 2)
-        for (size_t i = 0; i < n_cell; ++i)
-          buffer << grid_connectivity[i][0] << " " <<grid_connectivity[i][1] << " " << grid_connectivity[i][2] << " " << grid_connectivity[i][3] << std::endl;
       else
-        for (size_t i = 0; i < n_cell; ++i)
-          buffer << grid_connectivity[i][0] << " " <<grid_connectivity[i][1] << " " << grid_connectivity[i][2] << " " << grid_connectivity[i][3]  << " "
-                 << grid_connectivity[i][4] << " " <<grid_connectivity[i][5] << " " << grid_connectivity[i][6] << " " << grid_connectivity[i][7]<< std::endl;
-      buffer << "    </DataArray>" << std::endl;
-      buffer << R"(    <DataArray type="Int32" Name="offsets" format="ascii">)" << std::endl;
-      if (dim == 2)
-        for (size_t i = 1; i <= n_cell; ++i)
-          buffer << i * 4 << " ";
-      else
-        for (size_t i = 1; i <= n_cell; ++i)
-          buffer << i * 8 << " ";
-      buffer << std::endl << "    </DataArray>" << std::endl;
-      buffer << R"(    <DataArray type="UInt8" Name="types" format="ascii">)" << std::endl;
-      if (dim == 2)
-        for (size_t i = 0; i < n_cell; ++i)
-          buffer << "9" << " ";
-      else
-        for (size_t i = 0; i < n_cell; ++i)
-          buffer << "12" << " ";
-      buffer <<  std::endl <<"    </DataArray>" << std::endl;
-      buffer << "  </Cells>" << std::endl;
-
-      buffer << "  <PointData Scalars=\"scalars\">" << std::endl;
-
-      buffer << R"(<DataArray type="Float32" Name="Depth" format="ascii">)" << std::endl;
-
-      for (size_t i = 0; i < n_p; ++i)
         {
-          buffer <<  grid_depth[i] << std::endl;
+          for (size_t i = 0; i < n_p; ++i)
+            {
+              points[i*3] = grid_x[i];
+              points[i*3+1] = grid_y[i];
+              points[i*3+2] = grid_z[i];
+            }
         }
-      buffer << "</DataArray>" << std::endl;
-
-
-      std::cout << "[5/5] Writing the paraview file: stage 1 of 3, writing header                    \r";
+      std::cout << "[5/6] Preparing to write the paraview file: stage 2 of 6, converting the connectivity                              \r";
       std::cout.flush();
-      myfile << buffer.str();
-      buffer.str(std::string());
+      const double pow_2_dim = pow(2,dim);
+      std::vector<vtu11::VtkIndexType> connectivity(n_cell*pow_2_dim);
+      if (dim == 2)
+        for (size_t i = 0; i < n_cell; ++i)
+          {
+            connectivity[i*pow_2_dim] = grid_connectivity[i][0];
+            connectivity[i*pow_2_dim+1] = grid_connectivity[i][1];
+            connectivity[i*pow_2_dim+2] = grid_connectivity[i][2];
+            connectivity[i*pow_2_dim+3] = grid_connectivity[i][3];
+          }
+      else
+        for (size_t i = 0; i < n_cell; ++i)
+          {
 
-      std::cout << "[5/5] Writing the paraview file: stage 2 of 3, computing temperatures                    \r";
+            connectivity[i*pow_2_dim] = grid_connectivity[i][0];
+            connectivity[i*pow_2_dim+1] = grid_connectivity[i][1];
+            connectivity[i*pow_2_dim+2] = grid_connectivity[i][2];
+            connectivity[i*pow_2_dim+3] = grid_connectivity[i][3];
+            connectivity[i*pow_2_dim+4] = grid_connectivity[i][4];
+            connectivity[i*pow_2_dim+5] = grid_connectivity[i][5];
+            connectivity[i*pow_2_dim+6] = grid_connectivity[i][6];
+            connectivity[i*pow_2_dim+7] = grid_connectivity[i][7];
+          }
+      std::cout << "[5/6] Preparing to write the paraview file: stage 3 of 6, creating the offsets                              \r";
       std::cout.flush();
+      std::vector<vtu11::VtkIndexType> offsets(n_cell);
+      if (dim == 2)
+        for (size_t i = 0; i < n_cell; ++i)
+          offsets[i] = (i+1) * 4;
+      else
+        for (size_t i = 0; i < n_cell; ++i)
+          offsets[i] = (i+1) * 8;
 
-      buffer << R"(    <DataArray type="Float32" Name="Temperature" format="ascii">)" << std::endl;
-      std::vector<double> temp_vector(n_p);
+      std::cout << "[5/6] Preparing to write the paraview file: stage 4 of 6, creating the Data set info                              \r";
+      std::cout.flush();
+      std::vector<vtu11::VtkCellType> types(n_cell, dim == 2 ? 9 : 12);
+
+      // Create tuples with (name, association, number of components) for each data set
+      std::vector<vtu11::DataSetInfo> dataSetInfo
+      {
+        { "Depth", vtu11::DataSetType::PointData, 1 },
+        { "Temperature", vtu11::DataSetType::PointData, 1 },
+      };
+      for (size_t c = 0; c < compositions; ++c)
+        {
+          dataSetInfo.emplace_back(vtu11::DataSetInfo( "Composition "+std::to_string(c), vtu11::DataSetType::PointData, 1 ));
+        }
+
+      std::cout << "[5/6] Preparing to write the paraview file: stage 5 of 6, computing the temperatures                              \r";
+      std::cout.flush();
+      // compute temperature
+      std::vector<double> temperature_vector(n_p);
       if (dim == 2)
         {
           pool.parallel_for(0, n_p, [&] (size_t i)
           {
             std::array<double,2> coords = {{grid_x[i], grid_z[i]}};
-            temp_vector[i] = world->temperature(coords, grid_depth[i], gravity);
+            temperature_vector[i] = world->temperature(coords, grid_depth[i], gravity);
           });
         }
       else
@@ -1433,34 +1444,20 @@ int main(int argc, char **argv)
           pool.parallel_for(0, n_p, [&] (size_t i)
           {
             std::array<double,3> coords = {{grid_x[i], grid_y[i], grid_z[i]}};
-            temp_vector[i] = world->temperature(coords, grid_depth[i], gravity);
+            temperature_vector[i] = world->temperature(coords, grid_depth[i], gravity);
           });
         }
 
-      std::cout << "[5/5] Writing the paraview file: stage 2 of 3, preparing to write temperatures                    \r";
+      std::vector<vtu11::DataSetData> data_set = { grid_depth, temperature_vector};
+      std::cout << "[5/6] Preparing to write the paraview file: stage 6 of 6, computing the compositions                              \r";
       std::cout.flush();
-
-      for (size_t i = 0; i < n_p; ++i)
-        buffer << temp_vector[i]  << std::endl;
-      buffer << "    </DataArray>" << std::endl;
-
-
-      std::cout << "[5/5] Writing the paraview file: stage 2 of 3, writing temperatures                    \r";
-
-
-      myfile << buffer.str();
-      buffer.str(std::string());
-
-      std::cout << "[5/5] Writing the paraview file: stage 3 of 3, writing compositions                     \r";
-      std::cout.flush();
-
+      // compute compositions
+      std::vector<double> temp_vector(n_p);
       for (size_t c = 0; c < compositions; ++c)
         {
-          std::cout << "[5/5] Writing the paraview file: stage 2 of 3, computing composition "
-                    << c << " of " << compositions-1 << "            \r";
+          std::cout << "[5/6] Preparing to write the paraview file: stage 6 of 6, computing composition "
+                    << c << " of " << compositions << "            \r";
           std::cout.flush();
-
-          buffer << R"(<DataArray type="Float32" Name="Composition )" << c << R"(" Format="ascii">)" << std::endl;
 
           if (dim == 2)
             {
@@ -1478,35 +1475,15 @@ int main(int argc, char **argv)
                 temp_vector[i] =  world->composition(coords, grid_depth[i], static_cast<unsigned int>(c));
               });
             }
-
-          std::cout << "[5/5] Writing the paraview file: stage 2 of 3, preparing to write composition "
-                    << c << " of " << compositions-1 << "            \r";
-          std::cout.flush();
-
-          for (size_t i = 0; i < n_p; ++i)
-            buffer << temp_vector[i]  << std::endl;
-
-          buffer << "</DataArray>" << std::endl;
-
-
-          std::cout << "[5/5] Writing the paraview file: stage 2 of 3, writing composition "
-                    << c << " of " << compositions-1 << "            \r";
-
-          myfile << buffer.str();
-          buffer.str(std::string());
+          data_set.emplace_back(temp_vector);
         }
+      std::cout << "[6/6] Writing the paraview file                                                                                \r";
+      std::cout.flush();
 
-      buffer << "  </PointData>" << std::endl;
+      vtu11::Vtu11UnstructuredMesh mesh { points, connectivity, offsets, types };
+      vtu11::writeVtu( file_without_extension + ".vtu", mesh, dataSetInfo, data_set, vtu_output_format );
 
-
-      buffer << " </Piece>" << std::endl;
-      buffer << " </UnstructuredGrid>" << std::endl;
-      buffer << "</VTKFile>" << std::endl;
-
-      myfile << buffer.str();
-      buffer.str(std::string());
-
-      std::cout << "                                                                                \r";
+      std::cout << "                                                                                                               \r";
       std::cout.flush();
     }
 
