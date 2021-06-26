@@ -10,6 +10,11 @@ Add new entries a the bottom of the current list in the subheading. Item format:
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- The World Builder Visualizer can now compress vtu files with zlib and output in binary throught the vtu11 library. ASCII output is still avaiable.  \[Menno Fraters; 2021-06-26; [#282](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/282)\]
+
+### Changed
+- The World Builder Visualizer will now use zlib compression for vtu files by default. If zlib is not available binary output will be used. \[Menno Fraters; 2021-06-26; [#282](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/282)\]
 
 ## [0.4.0]
 ### Added

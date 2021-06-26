@@ -120,6 +120,18 @@ if(SWIG_FOUND AND Python_FOUND)
   message(STATUS "Both SWIG and Python are found, enableling python wrapper compilation.")
 endif()
 
+find_package(ZLIB)
+
+SET(WB_USE_ZLIB TRUE CACHE STRING "Whether or not to use zlib for compiling the world buidler visualizer.")
+if(ZLIB_FOUND AND WB_USE_ZLIB)
+  message(STATUS "Enabling the use of ZLIB.")
+  include_directories(${ZLIB_INCLUDE_DIRS})
+else()
+  message(STATUS "Disabling the use of ZLIB.")
+  SET(WB_USE_ZLIB FALSE CACHE STRING "Whether or not to use zlib for compiling the world buidler visualizer." FORCE)
+endif()
+
+
 # Add dependencies are found, now set compiler output directories.
 # This needs to be done before the add library and add executable functions.
 
@@ -366,6 +378,10 @@ if(${USE_MPI})
   add_definitions(-DWB_WITH_MPI)
 endif()
 
+if(${WB_USE_ZLIB})
+  add_definitions(-DWB_WITH_ZLIB -DVTU11_ENABLE_ZLIB)
+endif()
+
 
 # Make sure that the whole library is loaded, so the registration is done correctly.
 if(NOT APPLE AND NOT MSVC)
@@ -378,10 +394,18 @@ endif()
 if(${USE_MPI})
   target_link_libraries (WorldBuilder PUBLIC MPI::MPI_CXX)
   target_link_libraries (WorldBuilderApp PUBLIC MPI::MPI_CXX ${GWB_LIBRARY_WHOLE} )
-  target_link_libraries (WorldBuilderVisualization PUBLIC MPI::MPI_CXX ${GWB_LIBRARY_WHOLE} ) 
+  if(${WB_USE_ZLIB})
+    target_link_libraries (WorldBuilderVisualization PUBLIC MPI::MPI_CXX ${GWB_LIBRARY_WHOLE} ${ZLIB_LIBRARIES}) 
+  else()
+    target_link_libraries (WorldBuilderVisualization PUBLIC MPI::MPI_CXX ${GWB_LIBRARY_WHOLE}) 
+  endif()
 else()
   target_link_libraries (WorldBuilderApp ${GWB_LIBRARY_WHOLE} )
-  target_link_libraries (WorldBuilderVisualization ${GWB_LIBRARY_WHOLE} ) 
+  if(${WB_USE_ZLIB})
+    target_link_libraries (WorldBuilderVisualization ${GWB_LIBRARY_WHOLE} ${ZLIB_LIBRARIES})
+  else()
+    target_link_libraries (WorldBuilderVisualization ${GWB_LIBRARY_WHOLE} )
+  endif()
 endif()
 
 
