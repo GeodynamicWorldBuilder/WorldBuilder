@@ -21,8 +21,6 @@
 
 #include <algorithm>
 
-
-
 namespace WorldBuilder
 {
   namespace Features

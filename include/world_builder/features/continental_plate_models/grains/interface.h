@@ -21,8 +21,8 @@
 #define _world_builder_features_continental_plate_grains_interface_h
 
 
-#include "world_builder/parameters.h"
 #include "world_builder/grains.h"
+#include "world_builder/parameters.h"
 
 
 namespace WorldBuilder

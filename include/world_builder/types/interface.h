@@ -20,7 +20,8 @@
 #ifndef _world_builder_types_interface_h
 #define _world_builder_types_interface_h
 
-#include <rapidjson/pointer.h>
+#include "rapidjson/pointer.h"
+
 #include <memory>
 
 namespace WorldBuilder

@@ -20,11 +20,11 @@
 #include "world_builder/features/mantle_layer.h"
 
 
-#include "world_builder/types/double.h"
-#include "world_builder/types/plugin_system.h"
 #include "world_builder/features/mantle_layer_models/composition/interface.h"
 #include "world_builder/features/mantle_layer_models/grains/interface.h"
 #include "world_builder/features/mantle_layer_models/temperature/interface.h"
+#include "world_builder/types/double.h"
+#include "world_builder/types/plugin_system.h"
 #include "world_builder/world.h"
 
 

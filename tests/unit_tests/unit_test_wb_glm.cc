@@ -20,12 +20,14 @@
 #define CATCH_CONFIG_MAIN
 
 
-#include <catch2.h>
-#include <array>
+#include "catch2.h"
 
-#include "world_builder/utilities.h"
 #include "glm/glm.h"
+
 #include "world_builder/coordinate_system.h"
+#include "world_builder/utilities.h"
+
+#include <array>
 
 using namespace WorldBuilder;
 

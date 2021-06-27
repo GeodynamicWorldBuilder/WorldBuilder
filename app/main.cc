@@ -17,6 +17,13 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+
+#include "app/main.h"
+
+#include "world_builder/assert.h"
+#include "world_builder/utilities.h"
+#include "world_builder/world.h"
+
 #ifdef WB_WITH_MPI
 #include <mpi.h>
 #endif
@@ -25,11 +32,6 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
-
-#include "world_builder/assert.h"
-#include "world_builder/utilities.h"
-#include "world_builder/world.h"
-#include "app/main.h"
 
 using namespace WorldBuilder::Utilities;
 

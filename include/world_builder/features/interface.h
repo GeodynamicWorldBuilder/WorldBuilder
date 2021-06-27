@@ -21,8 +21,8 @@
 #define _world_builder_features_interface_h
 
 
-#include "world_builder/utilities.h"
 #include "world_builder/grains.h"
+#include "world_builder/utilities.h"
 
 namespace WorldBuilder
 {

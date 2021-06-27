@@ -20,12 +20,10 @@
 #ifndef _world_builder_world_h
 #define _world_builder_world_h
 
-#include <random>
-
-#include "world_builder/parameters.h"
 #include "world_builder/grains.h"
+#include "world_builder/parameters.h"
 
-
+#include <random>
 
 namespace WorldBuilder
 {

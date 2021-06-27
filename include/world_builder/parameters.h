@@ -20,9 +20,9 @@
 #ifndef _world_builder_parameters_h
 #define _world_builder_parameters_h
 
-#include <vector>
 #include <map>
 #include <memory>
+#include <vector>
 
 #include "rapidjson/schema.h"
 #include "world_builder/point.h"

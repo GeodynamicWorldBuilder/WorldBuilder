@@ -20,11 +20,11 @@
 #ifndef _world_builder_point_h
 #define _world_builder_point_h
 #define _USE_MATH_DEFINES
-#include <cmath>
 #include <array>
+#include <cmath>
 
-#include "world_builder/coordinate_system.h"
 #include "world_builder/assert.h"
+#include "world_builder/coordinate_system.h"
 
 namespace WorldBuilder
 {

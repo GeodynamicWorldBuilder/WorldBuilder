@@ -21,10 +21,10 @@
 #define _world_feature_features_fault_h
 
 
-#include "world_builder/types/segment.h"
-#include "world_builder/features/fault_models/temperature/interface.h"
 #include "world_builder/features/fault_models/composition/interface.h"
 #include "world_builder/features/fault_models/grains/interface.h"
+#include "world_builder/features/fault_models/temperature/interface.h"
+#include "world_builder/types/segment.h"
 
 
 namespace WorldBuilder

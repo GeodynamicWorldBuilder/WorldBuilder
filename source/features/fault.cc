@@ -20,11 +20,11 @@
 #include "world_builder/features/fault.h"
 
 
+#include "glm/glm.h"
 #include "world_builder/types/array.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/point.h"
 #include "world_builder/types/unsigned_int.h"
-#include "glm/glm.h"
 #include "world_builder/world.h"
 
 using namespace std;

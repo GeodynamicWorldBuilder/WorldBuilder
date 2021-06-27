@@ -20,12 +20,16 @@
 #ifndef _world_builder_coordinate_systems_interface_h
 #define _world_builder_coordinate_systems_interface_h
 
+#include "world_builder/coordinate_systems/interface.h"
+
+#include "world_builder/coordinate_system.h"
 #include "world_builder/parameters.h"
 #include "world_builder/types/string.h"
 
 
 namespace WorldBuilder
 {
+  class World;
 
   namespace CoordinateSystems
   {

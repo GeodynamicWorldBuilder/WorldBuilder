@@ -28,8 +28,6 @@
 
 namespace WorldBuilder
 {
-  class World;
-  template <int dim> class Point;
 
   using namespace Utilities;
 

@@ -26,11 +26,6 @@
 
 namespace WorldBuilder
 {
-  namespace Types
-  {
-    class Interface;
-  }  // namespace Types
-
   namespace Features
   {
     namespace FaultModels

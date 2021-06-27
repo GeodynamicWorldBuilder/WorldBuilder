@@ -25,8 +25,6 @@
 
 namespace WorldBuilder
 {
-  class World;
-
   namespace CoordinateSystems
   {
     Spherical::Spherical(WorldBuilder::World *world_)

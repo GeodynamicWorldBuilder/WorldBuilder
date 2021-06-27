@@ -21,16 +21,12 @@
 #define _world_builder_features_oceanic_plate_grains_interface_h
 
 
-#include "world_builder/parameters.h"
 #include "world_builder/grains.h"
+#include "world_builder/parameters.h"
 
 
 namespace WorldBuilder
 {
-  class World;
-  class Parameters;
-  template <int dim> class Point;
-
   /**
    * This class is an interface for the specific plate tectonic feature classes,
    * such as oceanic plate, oceanic plate and subduction zone.

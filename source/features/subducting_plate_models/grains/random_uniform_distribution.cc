@@ -32,8 +32,6 @@
 
 namespace WorldBuilder
 {
-  template <int dim> class Point;
-
   using namespace Utilities;
 
   namespace Features

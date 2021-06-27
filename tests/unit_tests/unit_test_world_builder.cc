@@ -19,29 +19,20 @@
 
 #define CATCH_CONFIG_MAIN
 
-#include <catch2.h>
-#include <ext/alloc_traits.h>
-#include <stddef.h>
-#include <iostream>
-#include <memory>
-#include <algorithm>
-#include <array>
-#include <cmath>
-#include <iomanip>
-#include <iterator>
-#include <map>
-#include <random>
-#include <string>
-#include <vector>
+#include "catch2.h"
 
 #include "world_builder/config.h"
+#include "world_builder/coordinate_system.h"
 #include "world_builder/coordinate_systems/interface.h"
 #include "world_builder/features/continental_plate.h"
 #include "world_builder/features/interface.h"
+#include "world_builder/grains.h"
+#include "world_builder/parameters.h"
 #include "world_builder/point.h"
 #include "world_builder/types/array.h"
 #include "world_builder/types/bool.h"
 #include "world_builder/types/double.h"
+#include "world_builder/types/interface.h"
 #include "world_builder/types/object.h"
 #include "world_builder/types/plugin_system.h"
 #include "world_builder/types/point.h"
@@ -49,16 +40,25 @@
 #include "world_builder/types/string.h"
 #include "world_builder/types/unsigned_int.h"
 #include "world_builder/utilities.h"
-#include "world_builder/coordinate_system.h"
-#include "world_builder/grains.h"
-#include "world_builder/parameters.h"
-#include "world_builder/types/interface.h"
 #include "world_builder/world.h"
 
 extern "C" {
 #include "world_builder/wrapper_c.h"
 }
 #include "world_builder/wrapper_cpp.h"
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <iterator>
+#include <map>
+#include <memory>
+#include <random>
+#include <stddef.h>
+#include <string>
+#include <vector>
 
 namespace WorldBuilder
 {

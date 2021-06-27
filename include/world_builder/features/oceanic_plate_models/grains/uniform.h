@@ -25,9 +25,6 @@
 
 namespace WorldBuilder
 {
-  class Parameters;
-  class World;
-  template <int dim> class Point;
 
   namespace Features
   {

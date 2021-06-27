@@ -26,8 +26,6 @@
 
 namespace WorldBuilder
 {
-  class World;
-
   namespace CoordinateSystems
   {
 

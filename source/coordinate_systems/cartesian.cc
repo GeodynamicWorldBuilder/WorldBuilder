@@ -22,9 +22,6 @@
 
 namespace WorldBuilder
 {
-  class Parameters;
-  class World;
-
   namespace CoordinateSystems
   {
     Cartesian::Cartesian(WorldBuilder::World *world_)

@@ -17,9 +17,9 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "world_builder/wrapper_cpp.h"
 
 #include "world_builder/world.h"
-#include "world_builder/wrapper_cpp.h"
 
 using namespace WorldBuilder;
 namespace wrapper_cpp

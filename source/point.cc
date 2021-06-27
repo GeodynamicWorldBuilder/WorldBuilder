@@ -21,9 +21,6 @@
 
 #include <limits>
 
-
-
-
 namespace WorldBuilder
 {
   template<>

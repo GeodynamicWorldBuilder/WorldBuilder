@@ -22,11 +22,10 @@
 
 #include "world_builder/coordinate_systems/interface.h"
 
+#include <string>
 
 namespace WorldBuilder
 {
-  class Parameters;
-  class World;
 
   namespace CoordinateSystems
   {
