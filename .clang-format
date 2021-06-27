@@ -1,0 +1,17 @@
+UseTab: Never
+IndentWidth: 2
+AccessModifierOffset: 0
+NamespaceIndentation: All
+AlignEscapedNewlines: DontAlign
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterEnum: true
+  AfterStruct: true
+  AfterNamespace: true
+  AfterClass: true
+  AfterUnion: true
+  AfterExternBlock: true
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+AlwaysBreakTemplateDeclarations: Yes
