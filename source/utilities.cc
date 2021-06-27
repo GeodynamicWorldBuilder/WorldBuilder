@@ -1183,7 +1183,7 @@ namespace WorldBuilder
                                    const std::vector<double> &y,
                                    bool monotone_spline)
     {
-      WBAssert(x.size() != 0, "Internal error: The x in the set points function is zero.");
+      WBAssert(!x.empty(), "Internal error: The x in the set points function is zero.");
       assert(x.size() == y.size());
       m_x = x;
       m_y = y;

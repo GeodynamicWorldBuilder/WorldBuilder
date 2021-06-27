@@ -149,7 +149,7 @@ namespace WorldBuilder
           WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
                                                                                 world->parameters.coordinate_system->natural_coordinate_system())))
         {
-          for (auto &temperature_model: temperature_models)
+          for (const auto &temperature_model: temperature_models)
             {
               temperature = temperature_model->get_temperature(position,
                                                                depth,
@@ -182,7 +182,7 @@ namespace WorldBuilder
           WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
                                                                                 world->parameters.coordinate_system->natural_coordinate_system())))
         {
-          for (auto &composition_model: composition_models)
+          for (const auto &composition_model: composition_models)
             {
               composition = composition_model->get_composition(position,
                                                                depth,
@@ -215,7 +215,7 @@ namespace WorldBuilder
           WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
                                                                                 world->parameters.coordinate_system->natural_coordinate_system())))
         {
-          for (auto &grains_model: grains_models)
+          for (const auto &grains_model: grains_models)
             {
               grains = grains_model->get_grains(position,
                                                 depth,

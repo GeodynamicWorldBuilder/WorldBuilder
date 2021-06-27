@@ -159,7 +159,7 @@ namespace WorldBuilder
                           double r  = std::sqrt( z );
                           double Vx = std::sin( phi ) * r;
                           double Vy = std::cos( phi ) * r;
-                          double Vz = std::sqrt( 2.f - z );
+                          double Vz = std::sqrt( 2.F - z );
 
                           // Compute the row vector S = Transpose(V) * R, where R is a simple
                           // rotation by theta about the z-axis.  No need to compute Sz since

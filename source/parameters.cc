@@ -1244,7 +1244,7 @@ namespace WorldBuilder
                                     const std::vector<std::tuple<std::string,const WorldBuilder::Types::Interface &, std::string> > &extra_declarations)
   {
     unsigned int counter = 0;
-    for (auto &it : declare_map)
+    for (const auto &it : declare_map)
       {
         typedef std::tuple<std::string,const WorldBuilder::Types::Interface &, std::string> DeclareEntry;
         // prevent infinite recursion
