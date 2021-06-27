@@ -89,10 +89,10 @@ namespace WorldBuilder
                                  WorldBuilder::grains grains_,
                                  const double ,
                                  const double ,
-                                 const std::map<std::string,double> &distance_from_plane) const
+                                 const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_plane) const
         {
           double grains = grains_;
-          if (std::fabs(distance_from_plane.at("distanceFromPlane")) <= max_depth && std::fabs(distance_from_plane.at("distanceFromPlane")) >= min_depth)
+          if (std::fabs(distance_from_plane.distance_from_plane) <= max_depth && std::fabs(distance_from_plane.distance_from_plane)) >= min_depth)
             {
               for (unsigned int i =0; i < compositions.size(); ++i)
                 {

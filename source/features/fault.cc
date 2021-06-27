@@ -363,7 +363,7 @@ namespace WorldBuilder
           // todo: explain
           // This function only returns positive values, because we want
           // the fault to be centered around the line provided by the user.
-          std::map<std::string,double> distance_from_planes =
+          WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
                                                                        reference_point,
                                                                        coordinates,
@@ -377,14 +377,14 @@ namespace WorldBuilder
                                                                        this->y_spline,
                                                                        one_dimensional_coordinates);
 
-          const double distance_from_plane = distance_from_planes["distanceFromPlane"];
-          const double distance_along_plane = distance_from_planes["distanceAlongPlane"];
-          const double section_fraction = distance_from_planes["sectionFraction"];
-          const size_t current_section = static_cast<size_t>(std::floor(one_dimensional_coordinates[static_cast<size_t>(distance_from_planes["section"])]));
+          const double distance_from_plane = distance_from_planes.distance_from_plane;
+          const double distance_along_plane = distance_from_planes.distance_along_plane;
+          const double section_fraction = distance_from_planes.fraction_of_section;
+          const size_t current_section = static_cast<size_t>(std::floor(one_dimensional_coordinates[distance_from_planes.section]));
           const size_t next_section = current_section + 1;
-          const size_t current_segment = static_cast<size_t>(distance_from_planes["segment"]); // the original value was a unsigned in, converting it back.
+          const size_t current_segment = distance_from_planes.segment; // the original value was a unsigned in, converting it back.
           //const size_t next_segment = current_segment + 1;
-          const double segment_fraction = distance_from_planes["segmentFraction"];
+          const double segment_fraction = distance_from_planes.fraction_of_segment;
 
           if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)
             {
@@ -494,7 +494,7 @@ namespace WorldBuilder
           // todo: explain
           // This function only returns positive values, because we want
           // the fault to be centered around the line provided by the user.
-          std::map<std::string,double> distance_from_planes =
+          WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
                                                                        reference_point,
                                                                        coordinates,
@@ -508,14 +508,14 @@ namespace WorldBuilder
                                                                        this->y_spline,
                                                                        one_dimensional_coordinates);
 
-          const double distance_from_plane = distance_from_planes["distanceFromPlane"];
-          const double distance_along_plane = distance_from_planes["distanceAlongPlane"];
-          const double section_fraction = distance_from_planes["sectionFraction"];
-          const size_t current_section = static_cast<size_t>(std::floor(one_dimensional_coordinates[static_cast<size_t>(distance_from_planes["section"])]));
+          const double distance_from_plane = distance_from_planes.distance_from_plane;
+          const double distance_along_plane = distance_from_planes.distance_along_plane;
+          const double section_fraction = distance_from_planes.fraction_of_section;
+          const size_t current_section = static_cast<size_t>(std::floor(one_dimensional_coordinates[distance_from_planes.section]));
           const size_t next_section = current_section + 1;
-          const size_t current_segment = static_cast<size_t>(distance_from_planes["segment"]); // the original value was a unsigned int, turning it back.
+          const size_t current_segment = distance_from_planes.segment;
           //const size_t next_segment = current_segment + 1;
-          const double segment_fraction = distance_from_planes["segmentFraction"];
+          const double segment_fraction = distance_from_planes.fraction_of_segment;
 
           if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)
             {
@@ -628,7 +628,7 @@ namespace WorldBuilder
           // todo: explain
           // This function only returns positive values, because we want
           // the fault to be centered around the line provided by the user.
-          std::map<std::string,double> distance_from_planes =
+          WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
                                                                        reference_point,
                                                                        coordinates,
@@ -642,14 +642,14 @@ namespace WorldBuilder
                                                                        this->y_spline,
                                                                        one_dimensional_coordinates);
 
-          const double distance_from_plane = distance_from_planes["distanceFromPlane"];
-          const double distance_along_plane = distance_from_planes["distanceAlongPlane"];
-          const double section_fraction = distance_from_planes["sectionFraction"];
-          const size_t current_section = static_cast<size_t>(std::floor(one_dimensional_coordinates[static_cast<size_t>(distance_from_planes["section"])]));
+          const double distance_from_plane = distance_from_planes.distance_from_plane;
+          const double distance_along_plane = distance_from_planes.distance_along_plane;
+          const double section_fraction = distance_from_planes.fraction_of_section;
+          const size_t current_section = static_cast<size_t>(std::floor(one_dimensional_coordinates[distance_from_planes.section]));
           const size_t next_section = current_section + 1;
-          const size_t current_segment = static_cast<size_t>(distance_from_planes["segment"]); // the original value was a unsigned int, turning it back.
+          const size_t current_segment = distance_from_planes.segment;
           //const size_t next_segment = current_segment + 1;
-          const double segment_fraction = distance_from_planes["segmentFraction"];
+          const double segment_fraction = distance_from_planes.fraction_of_segment;
 
           if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)
             {

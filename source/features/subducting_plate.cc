@@ -380,7 +380,7 @@ namespace WorldBuilder
                    "Internal error: The size of coordinates (" << coordinates.size()
                    << ") and one_dimensional_coordinates (" << one_dimensional_coordinates.size() << ") are different.");*/
           // todo: explain
-          std::map<std::string,double> distance_from_planes =
+          WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
                                                                        reference_point,
                                                                        coordinates,
@@ -394,14 +394,14 @@ namespace WorldBuilder
                                                                        this->y_spline,
                                                                        one_dimensional_coordinates);
 
-          const double distance_from_plane = distance_from_planes["distanceFromPlane"];
-          const double distance_along_plane = distance_from_planes["distanceAlongPlane"];
-          const double section_fraction = distance_from_planes["sectionFraction"];
-          const size_t current_section = static_cast<size_t>(std::floor(one_dimensional_coordinates[static_cast<size_t>(distance_from_planes["section"])]));
+          const double distance_from_plane = distance_from_planes.distance_from_plane;
+          const double distance_along_plane = distance_from_planes.distance_along_plane;
+          const double section_fraction = distance_from_planes.fraction_of_section;
+          const size_t current_section = static_cast<size_t>(std::floor(one_dimensional_coordinates[distance_from_planes.section]));
           const size_t next_section = current_section + 1;
-          const size_t current_segment = static_cast<size_t>(distance_from_planes["segment"]); // the original value was a unsigned in, converting it back.
+          const size_t current_segment = distance_from_planes.segment; // the original value was a unsigned in, converting it back.
           //const size_t next_segment = current_segment + 1;
-          const double segment_fraction = distance_from_planes["segmentFraction"];
+          const double segment_fraction = distance_from_planes.fraction_of_segment;
 
           if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)
             {
@@ -416,7 +416,7 @@ namespace WorldBuilder
                                             * (slab_segment_thickness[next_section][current_segment][1]
                                                - slab_segment_thickness[current_section][current_segment][1]);
               const double thickness_local = thickness_up + segment_fraction * (thickness_down - thickness_up);
-              distance_from_planes["thicknessLocal"] = thickness_local;
+              distance_from_planes.local_thickness = thickness_local;
 
               // secondly for top truncation
               const double top_truncation_up = slab_segment_top_truncation[current_section][current_segment][0]
@@ -509,7 +509,7 @@ namespace WorldBuilder
       if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness)
         {
           // todo: explain
-          std::map<std::string,double> distance_from_planes =
+          WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
                                                                        reference_point,
                                                                        coordinates,
@@ -523,14 +523,14 @@ namespace WorldBuilder
                                                                        this->y_spline,
                                                                        one_dimensional_coordinates);
 
-          const double distance_from_plane = distance_from_planes["distanceFromPlane"];
-          const double distance_along_plane = distance_from_planes["distanceAlongPlane"];
-          const double section_fraction = distance_from_planes["sectionFraction"];
-          const size_t current_section = static_cast<size_t>(std::floor(one_dimensional_coordinates[static_cast<size_t>(distance_from_planes["section"])]));
+          const double distance_from_plane = distance_from_planes.distance_from_plane;
+          const double distance_along_plane = distance_from_planes.distance_along_plane;
+          const double section_fraction = distance_from_planes.fraction_of_section;
+          const size_t current_section = static_cast<size_t>(std::floor(one_dimensional_coordinates[distance_from_planes.section]));
           const size_t next_section = current_section + 1;
-          const size_t current_segment = static_cast<size_t>(distance_from_planes["segment"]); // the original value was a unsigned in, converting it back.
+          const size_t current_segment = distance_from_planes.segment; // the original value was a unsigned in, converting it back.
           //const size_t next_segment = current_segment + 1;
-          const double segment_fraction = distance_from_planes["segmentFraction"];
+          const double segment_fraction = distance_from_planes.fraction_of_segment;
 
           if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)
             {
@@ -545,7 +545,7 @@ namespace WorldBuilder
                                             * (slab_segment_thickness[next_section][current_segment][1]
                                                - slab_segment_thickness[current_section][current_segment][1]);
               const double thickness_local = thickness_up + segment_fraction * (thickness_down - thickness_up);
-              distance_from_planes["thicknessLocal"] = thickness_local;
+              distance_from_planes.local_thickness = thickness_local;
 
               // secondly for top truncation
               const double top_truncation_up = slab_segment_top_truncation[current_section][current_segment][0]
@@ -641,7 +641,7 @@ namespace WorldBuilder
       if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness)
         {
           // todo: explain
-          std::map<std::string,double> distance_from_planes =
+          WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
                                                                        reference_point,
                                                                        coordinates,
@@ -655,14 +655,14 @@ namespace WorldBuilder
                                                                        this->y_spline,
                                                                        one_dimensional_coordinates);
 
-          const double distance_from_plane = distance_from_planes["distanceFromPlane"];
-          const double distance_along_plane = distance_from_planes["distanceAlongPlane"];
-          const double section_fraction = distance_from_planes["sectionFraction"];
-          const size_t current_section = static_cast<size_t>(std::floor(one_dimensional_coordinates[static_cast<size_t>(distance_from_planes["section"])]));
+          const double distance_from_plane = distance_from_planes.distance_from_plane;
+          const double distance_along_plane = distance_from_planes.distance_along_plane;
+          const double section_fraction = distance_from_planes.fraction_of_section;
+          const size_t current_section = static_cast<size_t>(std::floor(one_dimensional_coordinates[distance_from_planes.section]));
           const size_t next_section = current_section + 1;
-          const size_t current_segment = static_cast<size_t>(distance_from_planes["segment"]); // the original value was a unsigned in, converting it back.
+          const size_t current_segment = distance_from_planes.segment; // the original value was a unsigned in, converting it back.
           //const size_t next_segment = current_segment + 1;
-          const double segment_fraction = distance_from_planes["segmentFraction"];
+          const double segment_fraction = distance_from_planes.fraction_of_segment;
 
           if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)
             {
@@ -677,7 +677,7 @@ namespace WorldBuilder
                                             * (slab_segment_thickness[next_section][current_segment][1]
                                                - slab_segment_thickness[current_section][current_segment][1]);
               const double thickness_local = thickness_up + segment_fraction * (thickness_down - thickness_up);
-              distance_from_planes["thicknessLocal"] = thickness_local;
+              distance_from_planes.local_thickness = thickness_local;
 
               // secondly for top truncation
               const double top_truncation_up = slab_segment_top_truncation[current_section][current_segment][0]

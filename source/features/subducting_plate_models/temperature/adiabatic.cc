@@ -129,10 +129,10 @@ namespace WorldBuilder
                                    double temperature_,
                                    const double  /*feature_min_depth*/,
                                    const double  /*feature_max_depth*/,
-                                   const std::map<std::string,double> &distance_from_planes) const
+                                   const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes) const
         {
 
-          const double distance_from_plane = distance_from_planes.at("distanceFromPlane");
+          const double distance_from_plane = distance_from_planes.distance_from_plane;
           if (distance_from_plane <= max_depth && distance_from_plane >= min_depth)
             {
               const double adabatic_temperature = potential_mantle_temperature *

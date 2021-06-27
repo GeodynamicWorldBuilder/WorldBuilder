@@ -431,7 +431,7 @@ namespace WorldBuilder
       return Point<3>(x,y,z,a.get_coordinate_system());
     }
 
-    std::map<std::string,double>
+    PointDistanceFromCurvedPlanes
     distance_point_from_curved_planes(const Point<3> &check_point, // cartesian point in spherical system
                                       const Point<2> &reference_point, // in (rad) spherical coordinates in spherical system
                                       const std::vector<Point<2> > &point_list, // in  (rad) spherical coordinates in spherical system
@@ -768,14 +768,14 @@ namespace WorldBuilder
                                         + fraction_CPL_P1P2 * (plane_segment_angles[original_next_section][0][0]
                                                                - plane_segment_angles[original_current_section][0][0]);
 
-                  std::map<std::string, double> return_values;
-                  return_values["distanceFromPlane"] = 0.0;
-                  return_values["distanceAlongPlane"] = 0.0;
-                  return_values["sectionFraction"] = fraction_CPL_P1P2;
-                  return_values["segmentFraction"] = 0.0;
-                  return_values["section"] = static_cast<double>(i_section_min_distance);
-                  return_values["segment"] = 0.;
-                  return_values["averageAngle"] = total_average_angle;
+                  PointDistanceFromCurvedPlanes return_values;
+                  return_values.distance_from_plane = 0.0;
+                  return_values.distance_along_plane = 0.0;
+                  return_values.fraction_of_section = fraction_CPL_P1P2;
+                  return_values.fraction_of_segment = 0.0;
+                  return_values.section = i_section_min_distance;
+                  return_values.segment = 0;
+                  return_values.average_angle = total_average_angle;
                   return return_values;
                 }
             }
@@ -1168,14 +1168,14 @@ namespace WorldBuilder
             }
         }
 
-      std::map<std::string, double> return_values;
-      return_values["distanceFromPlane"] = distance;
-      return_values["distanceAlongPlane"] = along_plane_distance;
-      return_values["sectionFraction"] = section_fraction;
-      return_values["segmentFraction"] = segment_fraction;
-      return_values["section"] = static_cast<double>(section);
-      return_values["segment"] = (double)segment;
-      return_values["averageAngle"] = total_average_angle;
+      PointDistanceFromCurvedPlanes return_values;
+      return_values.distance_from_plane = distance;
+      return_values.distance_along_plane = along_plane_distance;
+      return_values.fraction_of_section = section_fraction;
+      return_values.fraction_of_segment = segment_fraction;
+      return_values.section = section;
+      return_values.segment = segment;
+      return_values.average_angle = total_average_angle;
       return return_values;
     }
 
