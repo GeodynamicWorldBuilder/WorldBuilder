@@ -262,8 +262,8 @@ namespace WorldBuilder
       double distance_from_plane;
 
       /**
-       * The distance between edge of the plane and
-       * the point if the point is projected onto the curved plane.
+       * The distance between the the start of the first segment (usually at
+       * the surface) to the provided point following the (curved) plane.
        */
       double distance_along_plane;
 

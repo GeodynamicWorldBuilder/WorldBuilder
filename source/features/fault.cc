@@ -513,7 +513,7 @@ namespace WorldBuilder
           const double section_fraction = distance_from_planes.fraction_of_section;
           const size_t current_section = static_cast<size_t>(std::floor(one_dimensional_coordinates[distance_from_planes.section]));
           const size_t next_section = current_section + 1;
-          const size_t current_segment = distance_from_planes.segment; // the original value was a unsigned in, converting it back.
+          const size_t current_segment = distance_from_planes.segment;
           //const size_t next_segment = current_segment + 1;
           const double segment_fraction = distance_from_planes.fraction_of_segment;
 
@@ -647,7 +647,7 @@ namespace WorldBuilder
           const double section_fraction = distance_from_planes.fraction_of_section;
           const size_t current_section = static_cast<size_t>(std::floor(one_dimensional_coordinates[distance_from_planes.section]));
           const size_t next_section = current_section + 1;
-          const size_t current_segment = distance_from_planes.segment; // the original value was a unsigned in, converting it back.
+          const size_t current_segment = distance_from_planes.segment;
           //const size_t next_segment = current_segment + 1;
           const double segment_fraction = distance_from_planes.fraction_of_segment;
 
