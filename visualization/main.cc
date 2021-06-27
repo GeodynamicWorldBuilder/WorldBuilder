@@ -34,6 +34,7 @@
 #include <iostream>
 #include <array>
 #include <fstream>
+#include <memory>
 #include <thread>
 
 #include <world_builder/assert.h>
@@ -309,7 +310,7 @@ int main(int argc, char **argv)
       std::unique_ptr<WorldBuilder::World> world;
       try
         {
-          world = std::unique_ptr<WorldBuilder::World>(new WorldBuilder::World(wb_file));
+          world = std::make_unique<WorldBuilder::World>(wb_file);
         }
       catch (std::exception &e)
         {

@@ -17,6 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 #include <fstream>
+#include <memory>
 #include <sstream>
 #include <vector>
 #include <tuple>
@@ -1157,7 +1158,7 @@ namespace WorldBuilder
 
         for (size_t i = 0; i < array->Size(); ++i )
           {
-            vector.push_back(std::unique_ptr<Features::SubductingPlate>(new Features::SubductingPlate(&world)));
+            vector.push_back(std::make_unique<Features::SubductingPlate>(&world));
           }
       }
     else
@@ -1180,7 +1181,7 @@ namespace WorldBuilder
 
         for (size_t i = 0; i < array->Size(); ++i )
           {
-            vector.push_back(std::unique_ptr<Features::Fault>(new Features::Fault(&world)));
+            vector.push_back(std::make_unique<Features::Fault>(&world));
           }
       }
     else
@@ -1238,7 +1239,7 @@ namespace WorldBuilder
   void
   Parameters::declare_model_entries(const std::string &model_group_name,
                                     const std::string &parent_name,
-                                    const std::map<std::string, void ( *)(Parameters &,const std::string &)>& declare_map,
+                                    const std::map<std::string, void ( *)(Parameters &,const std::string &)> &declare_map,
                                     const std::vector<std::string> &required_entries,
                                     const std::vector<std::tuple<std::string,const WorldBuilder::Types::Interface &, std::string> > &extra_declarations)
   {
@@ -1331,7 +1332,7 @@ namespace WorldBuilder
 
                     // we need to get the json path relevant for the current declaration string
                     // we are interested in, which requires an offset of 2.
-                    WBAssert(Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters) != NULL, "Could not find model in: " << get_full_json_path(i+2) + "/model");
+                    WBAssert(Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters) != nullptr, "Could not find model in: " << get_full_json_path(i+2) + "/model");
                     std::string parameters_string = Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters)->GetString();
 
                     // currently in our case these are always objects, so go directly to find the option we need.
