@@ -19,10 +19,9 @@
 
 #include "world_builder/point.h"
 
-#include "world_builder/assert.h"
-
-#include <iostream>
 #include <limits>
+
+
 
 
 namespace WorldBuilder

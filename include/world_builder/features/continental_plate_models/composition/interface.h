@@ -20,18 +20,15 @@
 #ifndef _world_builder_features_continental_plate_composition_interface_h
 #define _world_builder_features_continental_plate_composition_interface_h
 
-#include <vector>
-#include <map>
 
-
-#include "world_builder/world.h"
 #include "world_builder/parameters.h"
-#include "world_builder/point.h"
 
 
 namespace WorldBuilder
 {
   class World;
+  class Parameters;
+  template <int dim> class Point;
 
   /**
    * This class is an interface for the specific plate tectonic feature classes,

@@ -18,18 +18,43 @@
 */
 #include "world_builder/types/segment.h"
 
-#include "world_builder/assert.h"
-#include "world_builder/features/fault_models/composition/interface.h"
-#include "world_builder/features/fault_models/grains/interface.h"
-#include "world_builder/features/fault_models/temperature/interface.h"
-#include "world_builder/features/subducting_plate_models/composition/interface.h"
-#include "world_builder/features/subducting_plate_models/grains/interface.h"
-#include "world_builder/features/subducting_plate_models/temperature/interface.h"
-#include "world_builder/parameters.h"
-#include "world_builder/utilities.h"
 
 namespace WorldBuilder
 {
+  namespace Features
+  {
+    namespace FaultModels
+    {
+      namespace Composition
+      {
+        class Interface;
+      }  // namespace Composition
+      namespace Grains
+      {
+        class Interface;
+      }  // namespace Grains
+      namespace Temperature
+      {
+        class Interface;
+      }  // namespace Temperature
+    }  // namespace FaultModels
+    namespace SubductingPlateModels
+    {
+      namespace Composition
+      {
+        class Interface;
+      }  // namespace Composition
+      namespace Grains
+      {
+        class Interface;
+      }  // namespace Grains
+      namespace Temperature
+      {
+        class Interface;
+      }  // namespace Temperature
+    }  // namespace SubductingPlateModels
+  }  // namespace Features
+
   namespace Types
   {
     Segment::Segment(const double default_length_,

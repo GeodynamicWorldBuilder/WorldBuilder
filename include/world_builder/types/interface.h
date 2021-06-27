@@ -20,17 +20,13 @@
 #ifndef _world_builder_types_interface_h
 #define _world_builder_types_interface_h
 
-#include <string>
-#include <vector>
-#include <memory>
-#include <map>
-
-#include <rapidjson/document.h>
 #include <rapidjson/pointer.h>
+#include <memory>
 
 namespace WorldBuilder
 {
   class Parameters;
+
   /**
    * This class is an interface for the specific plate tectonic feature classes,
    * such as continental plate, oceanic plate and subduction zone.

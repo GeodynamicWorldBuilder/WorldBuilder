@@ -19,11 +19,8 @@
 
 #include "world_builder/features/continental_plate_models/grains/interface.h"
 
-#include "world_builder/assert.h"
-#include "world_builder/types/object.h"
-#include "world_builder/types/string.h"
-
 #include <algorithm>
+
 
 namespace WorldBuilder
 {

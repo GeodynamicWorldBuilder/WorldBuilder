@@ -20,7 +20,6 @@
 #ifndef _world_builder_wrapper_c_h
 #define _world_builder_wrapper_c_h
 
-#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -19,11 +19,10 @@
 
 #include "world_builder/features/oceanic_plate_models/grains/interface.h"
 
-#include "world_builder/assert.h"
+#include <algorithm>
+
 #include "world_builder/types/object.h"
 #include "world_builder/types/string.h"
-
-#include <algorithm>
 
 namespace WorldBuilder
 {

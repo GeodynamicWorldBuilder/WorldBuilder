@@ -20,13 +20,17 @@
 #ifndef _world_builder_features_oceanic_plate_temperature_linear_h
 #define _world_builder_features_oceanic_plate_temperature_linear_h
 
+
 #include "world_builder/features/oceanic_plate_models/temperature/interface.h"
 #include "world_builder/features/utilities.h"
-#include "world_builder/world.h"
 
 
 namespace WorldBuilder
 {
+  class Parameters;
+  class World;
+  template <int dim> class Point;
+
   namespace Features
   {
     namespace OceanicPlateModels

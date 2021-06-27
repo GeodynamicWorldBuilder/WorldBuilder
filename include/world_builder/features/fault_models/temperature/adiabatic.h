@@ -20,13 +20,17 @@
 #ifndef _world_builder_features_fault_temperature_adiabatic_h
 #define _world_builder_features_fault_temperature_adiabatic_h
 
+
 #include "world_builder/features/fault_models/temperature/interface.h"
 #include "world_builder/features/utilities.h"
-#include "world_builder/world.h"
 
 
 namespace WorldBuilder
 {
+  class Parameters;
+  class World;
+  template <int dim> class Point;
+
   namespace Features
   {
     namespace FaultModels

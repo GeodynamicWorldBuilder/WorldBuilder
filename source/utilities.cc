@@ -17,14 +17,10 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "world_builder/assert.h"
-#include "world_builder/coordinate_systems/interface.h"
-#include "world_builder/nan.h"
-#include "world_builder/utilities.h"
-
 #include <algorithm>
 #include <iomanip>
-#include <iostream>
+
+#include "world_builder/utilities.h"
 
 
 namespace WorldBuilder
@@ -461,7 +457,7 @@ namespace WorldBuilder
           // fill it
           global_x_list.resize(point_list.size());
           for (size_t i = 0; i < point_list.size(); ++i)
-            global_x_list[i] = (double)i;
+            global_x_list[i] = static_cast<double>(i);
         }
       WBAssertThrow(global_x_list.size() == point_list.size(), "The given global_x_list doesn't have "
                     "the same size as the point list. This is required.");
@@ -571,7 +567,7 @@ namespace WorldBuilder
           double minimum_distance_to_reference_point = splines.cheap_relative_distance(check_point_surface_2d);
 
           // Compute the clostest point on the spline as a double.
-          for (size_t i_estimate = 0; i_estimate <= parts*(global_x_list[point_list.size()-1])+1; i_estimate++)
+          for (size_t i_estimate = 0; i_estimate <= static_cast<size_t>(parts*(global_x_list[point_list.size()-1])+1); i_estimate++)
             {
               splines[0] = x_spline(min_estimate_solution_temp);
               splines[1] = y_spline(min_estimate_solution_temp);
@@ -619,7 +615,7 @@ namespace WorldBuilder
           continue_computation = (solution > 0 && floor(solution) <= global_x_list[point_list.size()-2] && floor(solution)  >= 0);
 
           closest_point_on_line_2d = Point<2>(x_spline(solution),y_spline(solution),natural_coordinate_system);
-          i_section_min_distance = (size_t) floor(solution);
+          i_section_min_distance = static_cast<size_t>(floor(solution));
           fraction_CPL_P1P2 = solution-floor(solution);
         }
 

@@ -20,10 +20,8 @@
 #ifndef _world_feature_features_subducting_plate_h
 #define _world_feature_features_subducting_plate_h
 
-#include "world_builder/features/interface.h"
-#include "world_builder/world.h"
-#include "world_builder/types/segment.h"
 
+#include "world_builder/types/segment.h"
 #include "world_builder/features/subducting_plate_models/temperature/interface.h"
 #include "world_builder/features/subducting_plate_models/composition/interface.h"
 #include "world_builder/features/subducting_plate_models/grains/interface.h"
@@ -31,8 +29,27 @@
 
 namespace WorldBuilder
 {
+  class Parameters;
+  class World;
+
   namespace Features
   {
+    namespace SubductingPlateModels
+    {
+      namespace Composition
+      {
+        class Interface;
+      }  // namespace Composition
+      namespace Grains
+      {
+        class Interface;
+      }  // namespace Grains
+      namespace Temperature
+      {
+        class Interface;
+      }  // namespace Temperature
+    }  // namespace SubductingPlateModels
+
     /**
      * This class represents a subducting plate and can implement submodules
      * for temperature and composition. These submodules determine what

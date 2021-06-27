@@ -20,18 +20,33 @@
 #ifndef _world_feature_features_mantle_layer_h
 #define _world_feature_features_mantle_layer_h
 
-#include "world_builder/features/interface.h"
-#include "world_builder/world.h"
 
-#include "world_builder/features/mantle_layer_models/temperature/interface.h"
-#include "world_builder/features/mantle_layer_models/composition/interface.h"
-#include "world_builder/features/mantle_layer_models/grains/interface.h"
+#include "world_builder/features/interface.h"
 
 
 namespace WorldBuilder
 {
+  class Parameters;
+  class World;
+
   namespace Features
   {
+    namespace MantleLayerModels
+    {
+      namespace Composition
+      {
+        class Interface;
+      }  // namespace Composition
+      namespace Grains
+      {
+        class Interface;
+      }  // namespace Grains
+      namespace Temperature
+      {
+        class Interface;
+      }  // namespace Temperature
+    }  // namespace MantleLayerModels
+
     /**
      * This class represents a mantle layer and can implement submodules
      * for temperature and composition. These submodules determine what

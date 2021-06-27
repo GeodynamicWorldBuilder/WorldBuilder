@@ -19,17 +19,18 @@
 
 #include "world_builder/features/oceanic_plate_models/temperature/uniform.h"
 
-#include "world_builder/assert.h"
+
 #include "world_builder/nan.h"
-#include "world_builder/parameters.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
-#include "world_builder/types/string.h"
 #include "world_builder/utilities.h"
 
 
 namespace WorldBuilder
 {
+  class World;
+  template <int dim> class Point;
+
   using namespace Utilities;
 
   namespace Features

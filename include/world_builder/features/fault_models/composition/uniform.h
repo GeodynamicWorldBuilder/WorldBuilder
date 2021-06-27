@@ -20,12 +20,16 @@
 #ifndef _world_builder_features_fault_composition_uniform_h
 #define _world_builder_features_fault_composition_uniform_h
 
+
 #include "world_builder/features/fault_models/composition/interface.h"
-#include "world_builder/world.h"
 
 
 namespace WorldBuilder
 {
+  class Parameters;
+  class World;
+  template <int dim> class Point;
+
   namespace Features
   {
     namespace FaultModels

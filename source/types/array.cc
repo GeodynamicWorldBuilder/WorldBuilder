@@ -18,7 +18,6 @@
 */
 #include "world_builder/types/array.h"
 
-#include "world_builder/assert.h"
 #include "world_builder/parameters.h"
 
 namespace WorldBuilder

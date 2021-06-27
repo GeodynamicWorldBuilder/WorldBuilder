@@ -20,11 +20,15 @@
 #ifndef _world_builder_features_mantle_layer_grains_uniform_h
 #define _world_builder_features_mantle_layer_grains_uniform_h
 
+
 #include "world_builder/features/mantle_layer_models/grains/interface.h"
-#include "world_builder/world.h"
 
 namespace WorldBuilder
 {
+  class Parameters;
+  class World;
+  template <int dim> class Point;
+
   namespace Features
   {
     namespace MantleLayerModels

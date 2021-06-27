@@ -19,22 +19,13 @@
 
 #include "world_builder/features/fault.h"
 
-#include "world_builder/assert.h"
-#include "world_builder/nan.h"
-#include "world_builder/parameters.h"
+
 #include "world_builder/types/array.h"
 #include "world_builder/types/double.h"
-#include "world_builder/types/plugin_system.h"
 #include "world_builder/types/point.h"
-#include "world_builder/types/segment.h"
-#include "world_builder/types/string.h"
 #include "world_builder/types/unsigned_int.h"
-#include "world_builder/utilities.h"
-
-#include "rapidjson/prettywriter.h"
-#include "rapidjson/stringbuffer.h"
-
 #include "glm/glm.h"
+#include "world_builder/world.h"
 
 using namespace std;
 

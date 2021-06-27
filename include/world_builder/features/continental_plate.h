@@ -20,18 +20,33 @@
 #ifndef _world_feature_features_continental_plate_h
 #define _world_feature_features_continental_plate_h
 
-#include "world_builder/features/interface.h"
-#include "world_builder/world.h"
 
-#include "world_builder/features/continental_plate_models/temperature/interface.h"
-#include "world_builder/features/continental_plate_models/composition/interface.h"
-#include "world_builder/features/continental_plate_models/grains/interface.h"
+#include "world_builder/features/interface.h"
 
 
 namespace WorldBuilder
 {
+  class Parameters;
+  class World;
+
   namespace Features
   {
+    namespace ContinentalPlateModels
+    {
+      namespace Composition
+      {
+        class Interface;
+      }  // namespace Composition
+      namespace Grains
+      {
+        class Interface;
+      }  // namespace Grains
+      namespace Temperature
+      {
+        class Interface;
+      }  // namespace Temperature
+    }  // namespace ContinentalPlateModels
+
     /**
      * This class represents a continental plate and can implement submodules
      * for temperature and composition. These submodules determine what

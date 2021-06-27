@@ -20,16 +20,11 @@
 #ifndef _world_builder_parameters_h
 #define _world_builder_parameters_h
 
-#include <string>
 #include <vector>
-#include <unordered_map>
 #include <map>
 #include <memory>
 
-
-#include <rapidjson/document.h>
 #include "rapidjson/schema.h"
-
 #include "world_builder/point.h"
 
 namespace WorldBuilder

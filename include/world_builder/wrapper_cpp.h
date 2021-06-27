@@ -20,7 +20,6 @@
 #ifndef _world_builder_wrapper_cpp_h
 #define _world_builder_wrapper_cpp_h
 
-#include <string>
 
 namespace wrapper_cpp
 {

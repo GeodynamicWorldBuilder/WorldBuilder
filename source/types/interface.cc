@@ -19,10 +19,6 @@
 
 #include "world_builder/types/interface.h"
 
-#include "world_builder/assert.h"
-
-#include <algorithm>
-
 
 
 namespace WorldBuilder

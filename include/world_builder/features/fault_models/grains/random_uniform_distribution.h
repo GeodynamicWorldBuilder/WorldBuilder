@@ -20,11 +20,15 @@
 #ifndef _world_builder_features_fault_grains_random_uniform_distribution_h
 #define _world_builder_features_fault_grains_random_uniform_distribution_h
 
+
 #include "world_builder/features/fault_models/grains/interface.h"
-#include "world_builder/world.h"
 
 namespace WorldBuilder
 {
+  class Parameters;
+  class World;
+  template <int dim> class Point;
+
   namespace Features
   {
     namespace FaultModels

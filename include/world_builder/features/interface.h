@@ -20,17 +20,14 @@
 #ifndef _world_builder_features_interface_h
 #define _world_builder_features_interface_h
 
-#include <map>
-#include <vector>
 
-#include "world_builder/world.h"
-#include "world_builder/parameters.h"
-#include "world_builder/point.h"
 #include "world_builder/utilities.h"
+#include "world_builder/grains.h"
 
 namespace WorldBuilder
 {
   class World;
+  class Parameters;
 
 
   namespace Features

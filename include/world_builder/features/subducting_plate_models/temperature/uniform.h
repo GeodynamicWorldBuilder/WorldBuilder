@@ -20,13 +20,17 @@
 #ifndef _world_builder_features_subducting_plate_temperature_uniform_h
 #define _world_builder_features_subducting_plate_temperature_uniform_h
 
+
 #include "world_builder/features/subducting_plate_models/temperature/interface.h"
 #include "world_builder/features/utilities.h"
-#include "world_builder/world.h"
 
 
 namespace WorldBuilder
 {
+  class Parameters;
+  class World;
+  template <int dim> class Point;
+
   namespace Features
   {
     namespace SubductingPlateModels

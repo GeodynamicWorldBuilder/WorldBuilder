@@ -20,10 +20,8 @@
 #ifndef _world_feature_features_fault_h
 #define _world_feature_features_fault_h
 
-#include "world_builder/features/interface.h"
-#include "world_builder/world.h"
-#include "world_builder/types/segment.h"
 
+#include "world_builder/types/segment.h"
 #include "world_builder/features/fault_models/temperature/interface.h"
 #include "world_builder/features/fault_models/composition/interface.h"
 #include "world_builder/features/fault_models/grains/interface.h"
@@ -31,8 +29,27 @@
 
 namespace WorldBuilder
 {
+  class Parameters;
+  class World;
+
   namespace Features
   {
+    namespace FaultModels
+    {
+      namespace Composition
+      {
+        class Interface;
+      }  // namespace Composition
+      namespace Grains
+      {
+        class Interface;
+      }  // namespace Grains
+      namespace Temperature
+      {
+        class Interface;
+      }  // namespace Temperature
+    }  // namespace FaultModels
+
     /**
      * This class represents a fault and can implement submodules
      * for temperature and composition. These submodules determine what

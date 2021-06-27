@@ -19,16 +19,14 @@
 
 #include "world_builder/features/oceanic_plate.h"
 
-#include "world_builder/assert.h"
+
 #include "world_builder/nan.h"
-#include "world_builder/parameters.h"
-#include "world_builder/types/array.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/plugin_system.h"
-#include "world_builder/types/point.h"
-#include "world_builder/types/string.h"
-#include "world_builder/types/unsigned_int.h"
-#include "world_builder/utilities.h"
+#include "world_builder/features/oceanic_plate_models/composition/interface.h"
+#include "world_builder/features/oceanic_plate_models/grains/interface.h"
+#include "world_builder/features/oceanic_plate_models/temperature/interface.h"
+#include "world_builder/world.h"
 
 
 namespace WorldBuilder

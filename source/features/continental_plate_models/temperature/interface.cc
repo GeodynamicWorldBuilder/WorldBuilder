@@ -19,14 +19,17 @@
 
 #include "world_builder/features/continental_plate_models/temperature/interface.h"
 
-#include "world_builder/assert.h"
-#include "world_builder/types/object.h"
-#include "world_builder/types/string.h"
-
 #include <algorithm>
+
+#include "world_builder/types/string.h"
 
 namespace WorldBuilder
 {
+  namespace Types
+  {
+    class Interface;
+  }  // namespace Types
+
   namespace Features
   {
     namespace ContinentalPlateModels

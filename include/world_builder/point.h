@@ -22,7 +22,6 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <array>
-#include <iostream>
 
 #include "world_builder/coordinate_system.h"
 #include "world_builder/assert.h"
@@ -197,13 +196,13 @@ namespace WorldBuilder
        * Outputs the values of the point to std cout separated by spaces. This does not
        * output the coordinate system.
        */
-      friend std::ostream &operator<<( std::ostream &output, const Point<dim> &point )
+      friend std::ostream &operator<<( std::ostream &output, const Point<dim> &stream_point )
       {
         for (size_t i = 0; i < dim-1; i++)
           {
-            output <<  point[i] << " ";
+            output <<  stream_point[i] << " ";
           }
-        output << point[dim-1];
+        output << stream_point[dim-1];
 
         return output;
       }
@@ -229,7 +228,7 @@ namespace WorldBuilder
     inline double fmod(const double x, const double y)
     {
       const double x_div_y = x/y;
-      return (x_div_y-(int)x_div_y)*y;
+      return (x_div_y-static_cast<int>(x_div_y))*y;
     }
 
     /**

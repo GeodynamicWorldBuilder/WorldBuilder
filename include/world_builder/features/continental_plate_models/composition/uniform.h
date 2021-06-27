@@ -20,12 +20,16 @@
 #ifndef _world_builder_features_continental_plate_composition_uniform_h
 #define _world_builder_features_continental_plate_composition_uniform_h
 
+
 #include "world_builder/features/continental_plate_models/composition/interface.h"
-#include "world_builder/world.h"
 
 
 namespace WorldBuilder
 {
+  class Parameters;
+  class World;
+  template <int dim> class Point;
+
   namespace Features
   {
     namespace ContinentalPlateModels

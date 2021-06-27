@@ -19,10 +19,12 @@
 
 #include "world_builder/coordinate_systems/cartesian.h"
 
-#include "world_builder/assert.h"
 
 namespace WorldBuilder
 {
+  class Parameters;
+  class World;
+
   namespace CoordinateSystems
   {
     Cartesian::Cartesian(WorldBuilder::World *world_)

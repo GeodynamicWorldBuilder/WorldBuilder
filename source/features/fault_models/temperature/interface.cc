@@ -20,13 +20,17 @@
 
 #include "world_builder/features/fault_models/temperature/interface.h"
 
-#include "world_builder/assert.h"
-#include "world_builder/types/object.h"
+#include <algorithm>
+
 #include "world_builder/types/string.h"
 
-#include <algorithm>
 namespace WorldBuilder
 {
+  namespace Types
+  {
+    class Interface;
+  }  // namespace Types
+
   namespace Features
   {
     namespace FaultModels

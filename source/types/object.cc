@@ -19,10 +19,8 @@
 
 #include "world_builder/types/object.h"
 
-#include "world_builder/assert.h"
-#include "world_builder/parameters.h"
 
-#include <utility>
+#include "world_builder/parameters.h"
 
 namespace WorldBuilder
 {
