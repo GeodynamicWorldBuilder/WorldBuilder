@@ -17,14 +17,13 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-
-#include <algorithm>
-
-#include <world_builder/assert.h>
-#include <world_builder/types/string.h>
-#include <world_builder/types/object.h>
 #include <world_builder/features/fault_models/grains/interface.h>
 
+#include <world_builder/assert.h>
+#include <world_builder/types/object.h>
+#include <world_builder/types/string.h>
+
+#include <algorithm>
 
 namespace WorldBuilder
 {
@@ -106,8 +105,8 @@ namespace WorldBuilder
           // thrown when the name is not present.
           return get_factory_map().at(lower_case_name)->create(world);
         }
-      }
-    }
-  }
-}
+      } // namespace Grains
+    } // namespace FaultModels
+  } // namespace Features
+} // namespace WorldBuilder
 

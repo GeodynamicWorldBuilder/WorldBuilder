@@ -17,11 +17,12 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <algorithm>
+#include <world_builder/types/interface.h>
 
 #include <world_builder/assert.h>
 
-#include <world_builder/types/interface.h>
+#include <algorithm>
+
 
 
 namespace WorldBuilder
@@ -42,6 +43,6 @@ namespace WorldBuilder
     {
       return type_name;
     }
-  }
-}
+  } // namespace Types
+} // namespace WorldBuilder
 

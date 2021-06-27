@@ -17,23 +17,16 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <algorithm>
-
 #include <world_builder/features/interface.h>
-#include <world_builder/features/continental_plate.h>
-#include <world_builder/features/fault.h>
-#include <world_builder/features/oceanic_plate.h>
-#include <world_builder/features/subducting_plate.h>
-#include <world_builder/features/mantle_layer.h>
+
 #include <world_builder/assert.h>
-#include <world_builder/utilities.h>
-
-
 #include <world_builder/types/array.h>
+#include <world_builder/types/object.h>
 #include <world_builder/types/point.h>
 #include <world_builder/types/string.h>
-#include <world_builder/types/object.h>
+#include <world_builder/utilities.h>
 
+#include <algorithm>
 
 namespace WorldBuilder
 {
@@ -74,7 +67,7 @@ namespace WorldBuilder
 
         return InterpolationType::Invalid;
       }
-    }
+    } // namespace Internal
     Interface::Interface()
       = default;
 
@@ -244,6 +237,6 @@ namespace WorldBuilder
       return get_factory_map().at(lower_case_name)->create(world);
     }
 
-  }
-}
+  } // namespace Features
+} // namespace WorldBuilder
 

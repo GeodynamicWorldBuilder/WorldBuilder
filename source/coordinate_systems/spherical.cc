@@ -17,10 +17,11 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <world_builder/assert.h>
 #include <world_builder/coordinate_systems/spherical.h>
-#include <world_builder/types/string.h>
+
+#include <world_builder/assert.h>
 #include <world_builder/types/object.h>
+#include <world_builder/types/string.h>
 
 namespace WorldBuilder
 {
@@ -132,6 +133,6 @@ namespace WorldBuilder
      * Register plugin
      */
     WB_REGISTER_COORDINATE_SYSTEM(Spherical, spherical)
-  }
-}
+  } // namespace CoordinateSystems
+} // namespace WorldBuilder
 

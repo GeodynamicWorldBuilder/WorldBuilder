@@ -17,9 +17,10 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <world_builder/world.h>
 #include <world_builder/wrapper_c.h>
+
 #include <world_builder/assert.h>
+#include <world_builder/world.h>
 
 extern "C" {
   /**

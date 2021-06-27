@@ -23,8 +23,8 @@
 
 #include <algorithm>
 #include <exception>
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <memory>
 
 #include <world_builder/assert.h>

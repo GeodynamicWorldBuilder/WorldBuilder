@@ -17,9 +17,9 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 #include <world_builder/types/bool.h>
+
 #include <world_builder/assert.h>
 #include <world_builder/utilities.h>
-#include <world_builder/parameters.h>
 
 namespace WorldBuilder
 {
@@ -58,6 +58,6 @@ namespace WorldBuilder
       Pointer((base + "/type").c_str()).Set(declarations,"boolean");
       Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
     }
-  }
-}
+  } // namespace Types
+} // namespace WorldBuilder
 

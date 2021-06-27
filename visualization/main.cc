@@ -22,33 +22,33 @@
  * and was contribute to the World Builder with the permission and help of
  * the author of GHOST.
  */
-#include <cmath>
+
+#include <visualization/main.h>
+
+#include <world_builder/assert.h>
+#include <world_builder/coordinate_system.h>
+#include <world_builder/nan.h>
+#include <world_builder/utilities.h>
+#include <world_builder/world.h>
+
+
+#include <vtu11/vtu11.hpp>
+#undef max
+#undef min
 
 #ifdef WB_WITH_MPI
 #include <mpi.h>
 #endif
 
-
 #include <algorithm>
-#include <exception>
-#include <iostream>
 #include <array>
+#include <cmath>
+#include <exception>
 #include <fstream>
+#include <iostream>
 #include <memory>
 #include <thread>
 
-#include <world_builder/assert.h>
-#include <world_builder/nan.h>
-#include <world_builder/utilities.h>
-#include <world_builder/world.h>
-#include <world_builder/coordinate_system.h>
-
-#include <visualization/main.h>
-
-#include <vtu11/vtu11.hpp>
-
-#undef max
-#undef min
 
 using namespace WorldBuilder;
 using namespace WorldBuilder::Utilities;

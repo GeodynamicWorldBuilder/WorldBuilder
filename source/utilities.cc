@@ -17,14 +17,14 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
-#include <iomanip>
-#include <algorithm>
-
 #include <world_builder/assert.h>
 #include <world_builder/coordinate_systems/interface.h>
 #include <world_builder/nan.h>
 #include <world_builder/utilities.h>
+
+#include <algorithm>
+#include <iomanip>
+#include <iostream>
 
 
 namespace WorldBuilder
@@ -1350,8 +1350,8 @@ namespace WorldBuilder
 
     template std::array<double,2> convert_point_to_array<2>(const Point<2> &point_);
     template std::array<double,3> convert_point_to_array<3>(const Point<3> &point_);
-  }
-}
+  } // namespace Utilities
+} // namespace WorldBuilder
 
 
 

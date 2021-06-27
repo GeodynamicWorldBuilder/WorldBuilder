@@ -17,6 +17,28 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include <world_builder/world.h>
+
+#include <world_builder/assert.h>
+#include <world_builder/config.h>
+#include <world_builder/coordinate_systems/interface.h>
+#include <world_builder/nan.h>
+#include <world_builder/parameters.h>
+#include <world_builder/point.h>
+#include <world_builder/types/interface.h>
+#include <world_builder/utilities.h>
+
+#include <world_builder/types/array.h>
+#include <world_builder/types/bool.h>
+#include <world_builder/types/double.h>
+#include <world_builder/types/object.h>
+#include <world_builder/types/plugin_system.h>
+#include <world_builder/types/point.h>
+#include <world_builder/types/string.h>
+#include <world_builder/types/unsigned_int.h>
+
+#include "rapidjson/pointer.h"
+
 #ifdef WB_WITH_MPI
 #define OMPI_SKIP_MPICXX 1
 #include <mpi.h>
@@ -24,28 +46,6 @@
 
 #include <sstream>
 #include <utility>
-
-#include "rapidjson/pointer.h"
-
-#include <world_builder/config.h>
-#include <world_builder/world.h>
-#include <world_builder/utilities.h>
-#include <world_builder/assert.h>
-#include <world_builder/point.h>
-#include <world_builder/nan.h>
-#include <world_builder/parameters.h>
-#include <world_builder/coordinate_systems/interface.h>
-#include <world_builder/types/interface.h>
-
-#include <world_builder/types/array.h>
-#include <world_builder/types/bool.h>
-#include <world_builder/types/double.h>
-#include <world_builder/types/string.h>
-#include <world_builder/types/object.h>
-#include <world_builder/types/point.h>
-#include <world_builder/types/unsigned_int.h>
-#include <world_builder/types/plugin_system.h>
-
 
 namespace WorldBuilder
 {
@@ -438,5 +438,5 @@ namespace WorldBuilder
     return random_number_engine;
   }
 
-}
+} // namespace WorldBuilder
 

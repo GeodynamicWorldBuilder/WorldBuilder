@@ -17,16 +17,13 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-
-#include <algorithm>
+#include <world_builder/features/continental_plate_models/temperature/interface.h>
 
 #include <world_builder/assert.h>
-#include <world_builder/types/string.h>
 #include <world_builder/types/object.h>
-#include <world_builder/features/continental_plate_models/temperature/interface.h>
-#include <world_builder/features/continental_plate_models/temperature/adiabatic.h>
-#include <world_builder/features/continental_plate_models/temperature/linear.h>
-#include <world_builder/features/continental_plate_models/temperature/uniform.h>
+#include <world_builder/types/string.h>
+
+#include <algorithm>
 
 namespace WorldBuilder
 {
@@ -92,8 +89,8 @@ namespace WorldBuilder
           // thrown when the name is not present.
           return get_factory_map().at(lower_case_name)->create(world);
         }
-      }
-    }
-  }
-}
+      } // namespace Temperature
+    } // namespace ContinentalPlateModels
+  } // namespace Features
+} // namespace WorldBuilder
 

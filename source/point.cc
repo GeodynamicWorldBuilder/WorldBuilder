@@ -17,11 +17,13 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <limits>
-#include <iostream>
-
 #include <world_builder/point.h>
+
 #include <world_builder/assert.h>
+
+#include <iostream>
+#include <limits>
+
 
 namespace WorldBuilder
 {
@@ -332,4 +334,4 @@ namespace WorldBuilder
    * Multiplies a 3d point with a scalar.
    */
   template Point<3> operator*(const double scalar, const Point<3> &point);
-}
+} // namespace WorldBuilder

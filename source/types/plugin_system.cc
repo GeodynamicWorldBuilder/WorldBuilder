@@ -19,7 +19,6 @@
 #include <world_builder/types/plugin_system.h>
 
 #include <world_builder/assert.h>
-#include <world_builder/parameters.h>
 
 #include <utility>
 
@@ -94,6 +93,6 @@ namespace WorldBuilder
       }
       prm.leave_subsection();
     }
-  }
-}
+  } // namespace Types
+} // namespace WorldBuilder
 

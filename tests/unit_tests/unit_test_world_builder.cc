@@ -27,20 +27,20 @@
 #include <world_builder/config.h>
 #include <world_builder/coordinate_systems/interface.h>
 
-#include <world_builder/features/interface.h>
 #include <world_builder/features/continental_plate.h>
+#include <world_builder/features/fault_models/composition/uniform.h>
 #include <world_builder/features/fault_models/grains/interface.h>
 #include <world_builder/features/fault_models/temperature/uniform.h>
-#include <world_builder/features/fault_models/composition/uniform.h>
+#include <world_builder/features/interface.h>
 
 #include <world_builder/point.h>
 
 #include <world_builder/types/array.h>
 #include <world_builder/types/bool.h>
 #include <world_builder/types/double.h>
+#include <world_builder/types/object.h>
 #include <world_builder/types/plugin_system.h>
 #include <world_builder/types/point.h>
-#include <world_builder/types/object.h>
 #include <world_builder/types/segment.h>
 #include <world_builder/types/string.h>
 #include <world_builder/types/unsigned_int.h>

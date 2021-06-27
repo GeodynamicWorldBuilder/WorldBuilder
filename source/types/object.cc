@@ -16,7 +16,9 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+
 #include <world_builder/types/object.h>
+
 #include <world_builder/assert.h>
 #include <world_builder/parameters.h>
 
@@ -86,6 +88,6 @@ namespace WorldBuilder
       }
       prm.enter_subsection("properties");
     }
-  }
-}
+  } // namespace Types
+} // namespace WorldBuilder
 

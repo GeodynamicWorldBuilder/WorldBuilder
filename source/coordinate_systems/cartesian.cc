@@ -17,8 +17,9 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <world_builder/assert.h>
 #include <world_builder/coordinate_systems/cartesian.h>
+
+#include <world_builder/assert.h>
 
 namespace WorldBuilder
 {
@@ -87,6 +88,6 @@ namespace WorldBuilder
      * Register plugin
      */
     WB_REGISTER_COORDINATE_SYSTEM(Cartesian, cartesian)
-  }
-}
+  } // namespace CoordinateSystems
+} // namespace WorldBuilder
 

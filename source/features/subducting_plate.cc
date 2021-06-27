@@ -18,24 +18,18 @@
  */
 
 #include <world_builder/features/subducting_plate.h>
-#include <world_builder/utilities.h>
+
 #include <world_builder/assert.h>
 #include <world_builder/nan.h>
 #include <world_builder/parameters.h>
-
 #include <world_builder/types/array.h>
 #include <world_builder/types/double.h>
-#include <world_builder/types/point.h>
-#include <world_builder/types/string.h>
 #include <world_builder/types/object.h>
 #include <world_builder/types/plugin_system.h>
+#include <world_builder/types/point.h>
+#include <world_builder/types/string.h>
 #include <world_builder/types/unsigned_int.h>
-
-#include <rapidjson/istreamwrapper.h>
-#include "rapidjson/pointer.h"
-#include "rapidjson/prettywriter.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/error/en.h"
+#include <world_builder/utilities.h>
 
 #include "glm/glm.h"
 
@@ -774,6 +768,6 @@ namespace WorldBuilder
      * Register plugin
      */
     WB_REGISTER_FEATURE(SubductingPlate, subducting plate)
-  }
-}
+  } // namespace Features
+} // namespace WorldBuilder
 

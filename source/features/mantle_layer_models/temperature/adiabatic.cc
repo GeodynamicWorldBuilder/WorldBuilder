@@ -17,15 +17,15 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <world_builder/utilities.h>
+#include <world_builder/features/mantle_layer_models/temperature/adiabatic.h>
+
 #include <world_builder/assert.h>
 #include <world_builder/nan.h>
 #include <world_builder/parameters.h>
-
 #include <world_builder/types/double.h>
-#include <world_builder/types/string.h>
 #include <world_builder/types/object.h>
-#include <world_builder/features/mantle_layer_models/temperature/adiabatic.h>
+#include <world_builder/types/string.h>
+#include <world_builder/utilities.h>
 
 
 namespace WorldBuilder
@@ -151,8 +151,8 @@ namespace WorldBuilder
         }
 
         WB_REGISTER_FEATURE_MANTLE_LAYER_TEMPERATURE_MODEL(Adiabatic, adiabatic)
-      }
-    }
-  }
-}
+      } // namespace Temperature
+    } // namespace MantleLayerModels
+  } // namespace Features
+} // namespace WorldBuilder
 

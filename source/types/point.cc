@@ -17,9 +17,9 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 #include <world_builder/types/point.h>
+
 #include <world_builder/assert.h>
 #include <world_builder/utilities.h>
-#include <world_builder/parameters.h>
 
 #include <utility>
 
@@ -172,6 +172,6 @@ namespace WorldBuilder
      * WorldBuilder::Point<3>.
      */
     template WorldBuilder::Point<3> operator*(const double scalar, const Point<3> &point);
-  }
-}
+  } // namespace Types
+} // namespace WorldBuilder
 

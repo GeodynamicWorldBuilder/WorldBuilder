@@ -17,17 +17,16 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 #include <world_builder/types/segment.h>
+
 #include <world_builder/assert.h>
-#include <world_builder/utilities.h>
-#include <world_builder/parameters.h>
-
-
-#include <world_builder/features/subducting_plate_models/temperature/interface.h>
-#include <world_builder/features/subducting_plate_models/composition/interface.h>
-#include <world_builder/features/subducting_plate_models/grains/interface.h>
-#include <world_builder/features/fault_models/temperature/interface.h>
 #include <world_builder/features/fault_models/composition/interface.h>
 #include <world_builder/features/fault_models/grains/interface.h>
+#include <world_builder/features/fault_models/temperature/interface.h>
+#include <world_builder/features/subducting_plate_models/composition/interface.h>
+#include <world_builder/features/subducting_plate_models/grains/interface.h>
+#include <world_builder/features/subducting_plate_models/temperature/interface.h>
+#include <world_builder/parameters.h>
+#include <world_builder/utilities.h>
 
 namespace WorldBuilder
 {
@@ -140,7 +139,7 @@ namespace WorldBuilder
       prm.leave_subsection();
 
     }
-  }
+  } // namespace Types
 
   namespace Objects
   {
@@ -217,6 +216,6 @@ namespace WorldBuilder
     //template class
     //Segment<char,char>;
 
-  }
-}
+  } // namespace Objects
+} // namespace WorldBuilder
 

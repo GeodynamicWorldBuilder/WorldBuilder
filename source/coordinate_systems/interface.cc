@@ -18,11 +18,10 @@
 */
 
 #include <world_builder/coordinate_systems/interface.h>
-#include <world_builder/coordinate_systems/cartesian.h>
-#include <world_builder/coordinate_systems/spherical.h>
-#include <world_builder/assert.h>
 
+#include <world_builder/assert.h>
 #include <world_builder/types/object.h>
+
 #include <algorithm>
 
 
@@ -97,6 +96,6 @@ namespace WorldBuilder
       // thrown when the name is not present.
       return get_factory_map().at(lower_case_name)->create(world);
     }
-  }
-}
+  } // namespace CoordinateSystems
+} // namespace WorldBuilder
 

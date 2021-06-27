@@ -17,6 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 #include <world_builder/types/string.h>
+
 #include <world_builder/assert.h>
 #include <world_builder/parameters.h>
 
@@ -116,6 +117,6 @@ namespace WorldBuilder
         }
     }
 
-  }
-}
+  } // namespace Types
+} // namespace WorldBuilder
 
