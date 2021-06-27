@@ -612,13 +612,41 @@ namespace WorldBuilder
                                               section_fraction *
                                               (total_fault_length[next_section] - total_fault_length[current_section]);
 
+              const double rounded_corner = sqrt(0.25*thickness_local*thickness_local - distance_from_plane*distance_from_plane);
 
-              // Because both sides return positve values, we have to
-              // devide the thickness_local by two
+              // We need 3d points in order to conert them from natural to cartesian coordinates
+              const bool bool_cartesian = (this->world->parameters.coordinate_system->natural_coordinate_system() == cartesian);
+
+              const Point<3> P1 (bool_cartesian ? coordinates[current_section][0] : starting_radius,
+                                 bool_cartesian ? coordinates[current_section][1] : coordinates[current_section][0],
+                                 bool_cartesian ? starting_radius : coordinates[current_section][1],
+                                 this->world->parameters.coordinate_system->natural_coordinate_system());
+
+              const Point<3> P2 (bool_cartesian ? coordinates[next_section][0] : starting_radius,
+                                 bool_cartesian ? coordinates[next_section][1] : coordinates[current_section][0],
+                                 bool_cartesian ? starting_radius : coordinates[next_section][1],
+                                 this->world->parameters.coordinate_system->natural_coordinate_system());
+
+              Point<3> P1_cartesian(this->world->parameters.coordinate_system->natural_to_cartesian_coordinates(P1.get_array()),cartesian);
+              Point<3> P2_cartesian(this->world->parameters.coordinate_system->natural_to_cartesian_coordinates(P2.get_array()),cartesian);
+
+              const double fault_length_at_surface = (P2_cartesian - P1_cartesian).norm();
+              
+              if (section_fraction < 0.0 || section_fraction > 1.0)
+              {
+                std::cout << "Section fraction: " << section_fraction << std::endl;
+                std::cout << "Fault length: " << fault_length_at_surface << std::endl;
+                std::cout << "Rounded corner: " << rounded_corner << std::endl;
+
+              }
+              // Because both sides return positive values, we have to
+              // divide the thickness_local by two
               if (std::fabs(distance_from_plane) > 0 &&
                   std::fabs(distance_from_plane) <= thickness_local * 0.5 &&
                   distance_along_plane > 0 &&
-                  distance_along_plane <= max_fault_length)
+                  distance_along_plane <= max_fault_length &&
+                  section_fraction * fault_length_at_surface > - rounded_corner &&
+                  (section_fraction - 1) * fault_length_at_surface < rounded_corner)
                 {
                   // Inside the fault!
                   const Features::Utilities::AdditionalParameters additional_parameters = {max_fault_length,thickness_local};
