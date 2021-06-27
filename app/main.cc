@@ -27,11 +27,11 @@
 #include <iostream>
 #include <memory>
 
-#include <world_builder/assert.h>
-#include <world_builder/utilities.h>
-#include <world_builder/world.h>
+#include "world_builder/assert.h"
+#include "world_builder/utilities.h"
+#include "world_builder/world.h"
 
-#include <app/main.h>
+#include "app/main.h"
 
 using namespace WorldBuilder::Utilities;
 

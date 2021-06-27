@@ -20,13 +20,13 @@
 #ifndef _world_feature_features_subducting_plate_h
 #define _world_feature_features_subducting_plate_h
 
-#include <world_builder/features/interface.h>
-#include <world_builder/world.h>
-#include <world_builder/types/segment.h>
+#include "world_builder/features/interface.h"
+#include "world_builder/world.h"
+#include "world_builder/types/segment.h"
 
-#include <world_builder/features/subducting_plate_models/temperature/interface.h>
-#include <world_builder/features/subducting_plate_models/composition/interface.h>
-#include <world_builder/features/subducting_plate_models/grains/interface.h>
+#include "world_builder/features/subducting_plate_models/temperature/interface.h"
+#include "world_builder/features/subducting_plate_models/composition/interface.h"
+#include "world_builder/features/subducting_plate_models/grains/interface.h"
 
 
 namespace WorldBuilder

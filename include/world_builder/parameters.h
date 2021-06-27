@@ -30,7 +30,7 @@
 #include <rapidjson/document.h>
 #include "rapidjson/schema.h"
 
-#include <world_builder/point.h>
+#include "world_builder/point.h"
 
 namespace WorldBuilder
 {

@@ -20,14 +20,13 @@
 #ifndef _world_builder_features_fault_composition_interface_h
 #define _world_builder_features_fault_composition_interface_h
 
+#include "world_builder/world.h"
+#include "world_builder/parameters.h"
+#include "world_builder/point.h"
+#include "world_builder/utilities.h"
+
 #include <vector>
 #include <map>
-
-#include <world_builder/world.h>
-#include <world_builder/parameters.h>
-#include <world_builder/point.h>
-#include <world_builder/utilities.h>
-
 
 namespace WorldBuilder
 {

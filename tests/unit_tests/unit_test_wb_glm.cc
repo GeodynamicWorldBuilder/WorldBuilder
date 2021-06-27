@@ -22,7 +22,7 @@
 
 #include <catch2.h>
 
-#include <world_builder/utilities.h>
+#include "world_builder/utilities.h"
 
 #include "glm/glm.h"
 

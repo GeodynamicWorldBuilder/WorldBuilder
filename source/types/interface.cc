@@ -17,9 +17,9 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <world_builder/types/interface.h>
+#include "world_builder/types/interface.h"
 
-#include <world_builder/assert.h>
+#include "world_builder/assert.h"
 
 #include <algorithm>
 

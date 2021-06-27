@@ -20,7 +20,7 @@
 #ifndef _world_feature_types_bool_h
 #define _world_feature_types_bool_h
 
-#include <world_builder/types/interface.h>
+#include "world_builder/types/interface.h"
 
 
 namespace WorldBuilder

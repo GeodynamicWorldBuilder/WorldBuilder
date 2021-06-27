@@ -17,7 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <world_builder/features/utilities.h>
+#include "world_builder/features/utilities.h"
 
 namespace WorldBuilder
 {

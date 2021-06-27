@@ -16,9 +16,9 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#include <world_builder/types/plugin_system.h>
+#include "world_builder/types/plugin_system.h"
 
-#include <world_builder/assert.h>
+#include "world_builder/assert.h"
 
 #include <utility>
 
