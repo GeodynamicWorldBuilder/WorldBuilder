@@ -28,9 +28,9 @@
 #include "world_builder/assert.h"
 #include "world_builder/coordinate_system.h"
 #include "world_builder/nan.h"
+#include "world_builder/point.h"
 #include "world_builder/utilities.h"
 #include "world_builder/world.h"
-
 
 #include "vtu11/vtu11.hpp"
 #undef max
@@ -43,11 +43,12 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
-#include <exception>
-#include <fstream>
 #include <iostream>
+#include <iterator>
 #include <memory>
+#include <string>
 #include <thread>
+#include <vector>
 
 
 using namespace WorldBuilder;
@@ -1386,38 +1387,38 @@ int main(int argc, char **argv)
         }
       std::cout << "[5/6] Preparing to write the paraview file: stage 2 of 6, converting the connectivity                              \r";
       std::cout.flush();
-      const double pow_2_dim = pow(2,dim);
+      const size_t pow_2_dim = dim == 2 ? 4 : 8;
       std::vector<vtu11::VtkIndexType> connectivity(n_cell*pow_2_dim);
       if (dim == 2)
         for (size_t i = 0; i < n_cell; ++i)
           {
-            connectivity[i*pow_2_dim] = grid_connectivity[i][0];
-            connectivity[i*pow_2_dim+1] = grid_connectivity[i][1];
-            connectivity[i*pow_2_dim+2] = grid_connectivity[i][2];
-            connectivity[i*pow_2_dim+3] = grid_connectivity[i][3];
+            connectivity[i*pow_2_dim] = static_cast<int>(grid_connectivity[i][0]);
+            connectivity[i*pow_2_dim+1] = static_cast<int>(grid_connectivity[i][1]);
+            connectivity[i*pow_2_dim+2] = static_cast<int>(grid_connectivity[i][2]);
+            connectivity[i*pow_2_dim+3] = static_cast<int>(grid_connectivity[i][3]);
           }
       else
         for (size_t i = 0; i < n_cell; ++i)
           {
 
-            connectivity[i*pow_2_dim] = grid_connectivity[i][0];
-            connectivity[i*pow_2_dim+1] = grid_connectivity[i][1];
-            connectivity[i*pow_2_dim+2] = grid_connectivity[i][2];
-            connectivity[i*pow_2_dim+3] = grid_connectivity[i][3];
-            connectivity[i*pow_2_dim+4] = grid_connectivity[i][4];
-            connectivity[i*pow_2_dim+5] = grid_connectivity[i][5];
-            connectivity[i*pow_2_dim+6] = grid_connectivity[i][6];
-            connectivity[i*pow_2_dim+7] = grid_connectivity[i][7];
+            connectivity[i*pow_2_dim] = static_cast<int>(grid_connectivity[i][0]);
+            connectivity[i*pow_2_dim+1] = static_cast<int>(grid_connectivity[i][1]);
+            connectivity[i*pow_2_dim+2] = static_cast<int>(grid_connectivity[i][2]);
+            connectivity[i*pow_2_dim+3] = static_cast<int>(grid_connectivity[i][3]);
+            connectivity[i*pow_2_dim+4] = static_cast<int>(grid_connectivity[i][4]);
+            connectivity[i*pow_2_dim+5] = static_cast<int>(grid_connectivity[i][5]);
+            connectivity[i*pow_2_dim+6] = static_cast<int>(grid_connectivity[i][6]);
+            connectivity[i*pow_2_dim+7] = static_cast<int>(grid_connectivity[i][7]);
           }
       std::cout << "[5/6] Preparing to write the paraview file: stage 3 of 6, creating the offsets                              \r";
       std::cout.flush();
       std::vector<vtu11::VtkIndexType> offsets(n_cell);
       if (dim == 2)
         for (size_t i = 0; i < n_cell; ++i)
-          offsets[i] = (i+1) * 4;
+          offsets[i] = static_cast<int>((i+1) * 4);
       else
         for (size_t i = 0; i < n_cell; ++i)
-          offsets[i] = (i+1) * 8;
+          offsets[i] = static_cast<int>((i+1) * 8);
 
       std::cout << "[5/6] Preparing to write the paraview file: stage 4 of 6, creating the Data set info                              \r";
       std::cout.flush();

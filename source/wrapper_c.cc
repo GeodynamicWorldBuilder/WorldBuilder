@@ -19,7 +19,6 @@
 
 #include "world_builder/wrapper_c.h"
 
-#include "world_builder/assert.h"
 #include "world_builder/world.h"
 
 extern "C" {

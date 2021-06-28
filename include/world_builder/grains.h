@@ -19,8 +19,9 @@
 
 #ifndef _world_builder_grains_h
 #define _world_builder_grains_h
-#include <vector>
+
 #include <array>
+#include <vector>
 
 namespace WorldBuilder
 {

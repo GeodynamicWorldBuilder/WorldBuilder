@@ -20,19 +20,13 @@
 #ifndef _world_builder_features_oceanic_plate_grains_interface_h
 #define _world_builder_features_oceanic_plate_grains_interface_h
 
-#include <vector>
-#include <map>
 
-
-#include "world_builder/world.h"
+#include "world_builder/grains.h"
 #include "world_builder/parameters.h"
-#include "world_builder/point.h"
 
 
 namespace WorldBuilder
 {
-  class World;
-
   /**
    * This class is an interface for the specific plate tectonic feature classes,
    * such as oceanic plate, oceanic plate and subduction zone.

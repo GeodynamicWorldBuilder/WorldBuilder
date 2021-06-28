@@ -18,8 +18,7 @@
 */
 #include "world_builder/types/bool.h"
 
-#include "world_builder/assert.h"
-#include "world_builder/utilities.h"
+#include "world_builder/parameters.h"
 
 namespace WorldBuilder
 {

@@ -19,10 +19,9 @@
 
 #include "world_builder/coordinate_systems/interface.h"
 
-#include "world_builder/assert.h"
-#include "world_builder/types/object.h"
-
 #include <algorithm>
+
+#include "world_builder/types/object.h"
 
 
 namespace WorldBuilder

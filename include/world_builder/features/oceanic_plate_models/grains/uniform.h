@@ -20,11 +20,12 @@
 #ifndef _world_builder_features_oceanic_plate_grains_uniform_h
 #define _world_builder_features_oceanic_plate_grains_uniform_h
 
+
 #include "world_builder/features/oceanic_plate_models/grains/interface.h"
-#include "world_builder/world.h"
 
 namespace WorldBuilder
 {
+
   namespace Features
   {
     namespace OceanicPlateModels

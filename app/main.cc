@@ -17,21 +17,21 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifdef WB_WITH_MPI
-#include <mpi.h>
-#endif
 
-#include <algorithm>
-#include <exception>
-#include <fstream>
-#include <iostream>
-#include <memory>
+#include "app/main.h"
 
 #include "world_builder/assert.h"
 #include "world_builder/utilities.h"
 #include "world_builder/world.h"
 
-#include "app/main.h"
+#ifdef WB_WITH_MPI
+#include <mpi.h>
+#endif
+
+#include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <memory>
 
 using namespace WorldBuilder::Utilities;
 

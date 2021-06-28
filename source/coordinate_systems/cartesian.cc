@@ -19,7 +19,6 @@
 
 #include "world_builder/coordinate_systems/cartesian.h"
 
-#include "world_builder/assert.h"
 
 namespace WorldBuilder
 {

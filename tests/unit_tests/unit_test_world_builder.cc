@@ -19,39 +19,68 @@
 
 #define CATCH_CONFIG_MAIN
 
-#include <iostream>
-#include <memory>
-
-#include <catch2.h>
+#include "catch2.h"
 
 #include "world_builder/config.h"
+#include "world_builder/coordinate_system.h"
 #include "world_builder/coordinate_systems/interface.h"
-
 #include "world_builder/features/continental_plate.h"
-#include "world_builder/features/fault_models/composition/uniform.h"
-#include "world_builder/features/fault_models/grains/interface.h"
-#include "world_builder/features/fault_models/temperature/uniform.h"
 #include "world_builder/features/interface.h"
-
+#include "world_builder/grains.h"
+#include "world_builder/parameters.h"
 #include "world_builder/point.h"
-
 #include "world_builder/types/array.h"
 #include "world_builder/types/bool.h"
 #include "world_builder/types/double.h"
+#include "world_builder/types/interface.h"
 #include "world_builder/types/object.h"
 #include "world_builder/types/plugin_system.h"
 #include "world_builder/types/point.h"
 #include "world_builder/types/segment.h"
 #include "world_builder/types/string.h"
 #include "world_builder/types/unsigned_int.h"
-
 #include "world_builder/utilities.h"
+#include "world_builder/world.h"
+
 extern "C" {
 #include "world_builder/wrapper_c.h"
 }
 #include "world_builder/wrapper_cpp.h"
 
-#include "glm/glm.h"
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <iterator>
+#include <map>
+#include <memory>
+#include <random>
+#include <stddef.h>
+#include <string>
+#include <vector>
+
+namespace WorldBuilder
+{
+  namespace Features
+  {
+    namespace FaultModels
+    {
+      namespace Composition
+      {
+        class Interface;
+      }  // namespace Composition
+      namespace Grains
+      {
+        class Interface;
+      }  // namespace Grains
+      namespace Temperature
+      {
+        class Interface;
+      }  // namespace Temperature
+    }  // namespace FaultModels
+  }  // namespace Features
+}  // namespace WorldBuilder
 
 using namespace WorldBuilder;
 
@@ -7094,13 +7123,13 @@ TEST_CASE("Fast sin functions")
 {
   for (int i = -400; i < 400; i++)
     {
-      const double angle = (WorldBuilder::Utilities::const_pi/100.)*(double)i;
+      const double angle = (WorldBuilder::Utilities::const_pi/100.)*static_cast<double>(i);
       CHECK(fabs(FT::sin(angle)-std::sin(angle)) < 1.2e-5);
     }
 
   for (int i = -400; i < 400; i++)
     {
-      const double angle = (WorldBuilder::Utilities::const_pi/100.)*(double)i;
+      const double angle = (WorldBuilder::Utilities::const_pi/100.)*static_cast<double>(i);
       CHECK(fabs(FT::cos(angle)-std::cos(angle)) < 1.2e-5);
     }
 }

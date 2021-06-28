@@ -16,7 +16,10 @@
 #define RAPIDJSON_LATEXWRITER_H_
 
 #include "writer.h"
+
 #include <iostream>
+#include <string>
+#include <vector>
 
 #ifdef __GNUC__
 RAPIDJSON_DIAG_PUSH

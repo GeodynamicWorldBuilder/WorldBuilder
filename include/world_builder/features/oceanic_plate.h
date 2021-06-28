@@ -20,17 +20,33 @@
 #ifndef _world_feature_features_oceanic_plate_h
 #define _world_feature_features_oceanic_plate_h
 
+
 #include "world_builder/features/interface.h"
-#include "world_builder/world.h"
-#include "world_builder/features/oceanic_plate_models/temperature/interface.h"
-#include "world_builder/features/oceanic_plate_models/composition/interface.h"
-#include "world_builder/features/oceanic_plate_models/grains/interface.h"
 
 
 namespace WorldBuilder
 {
+  class Parameters;
+  class World;
+
   namespace Features
   {
+    namespace OceanicPlateModels
+    {
+      namespace Composition
+      {
+        class Interface;
+      }  // namespace Composition
+      namespace Grains
+      {
+        class Interface;
+      }  // namespace Grains
+      namespace Temperature
+      {
+        class Interface;
+      }  // namespace Temperature
+    }  // namespace OceanicPlateModels
+
     /**
      * This class represents a oceanic plate and can implement submodules
      * for temperature and composition. These submodules determine what

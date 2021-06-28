@@ -20,11 +20,14 @@
 #ifndef _world_feature_types_array_h
 #define _world_feature_types_array_h
 
+
 #include "world_builder/types/interface.h"
 
 
 namespace WorldBuilder
 {
+  class Parameters;
+
   namespace Types
   {
     /**

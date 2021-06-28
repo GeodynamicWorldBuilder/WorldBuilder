@@ -18,9 +18,7 @@
 */
 #include "world_builder/types/plugin_system.h"
 
-#include "world_builder/assert.h"
 
-#include <utility>
 
 namespace WorldBuilder
 {

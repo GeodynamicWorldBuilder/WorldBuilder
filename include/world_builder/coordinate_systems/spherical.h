@@ -20,12 +20,13 @@
 #ifndef _world_builder_coordinate_systems_spherical_h
 #define _world_builder_coordinate_systems_spherical_h
 
-#include "world_builder/utilities.h"
 #include "world_builder/coordinate_systems/interface.h"
 
+#include <string>
 
 namespace WorldBuilder
 {
+
   namespace CoordinateSystems
   {
     /**

@@ -21,7 +21,6 @@
 #ifndef _world_builder_features_utilities_h
 #define _world_builder_features_utilities_h
 
-#include <string>
 #include <limits>
 
 #include "world_builder/assert.h"

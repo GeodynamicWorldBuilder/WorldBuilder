@@ -20,12 +20,13 @@
 #ifndef _world_builder_features_mantle_layer_composition_uniform_h
 #define _world_builder_features_mantle_layer_composition_uniform_h
 
+
 #include "world_builder/features/mantle_layer_models/composition/interface.h"
-#include "world_builder/world.h"
 
 
 namespace WorldBuilder
 {
+
   namespace Features
   {
     namespace MantleLayerModels

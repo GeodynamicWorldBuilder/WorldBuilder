@@ -19,16 +19,13 @@
 
 #include "world_builder/features/subducting_plate_models/temperature/plate_model.h"
 
-#include "world_builder/assert.h"
+
 #include "world_builder/nan.h"
-#include "world_builder/parameters.h"
-#include "world_builder/types/array.h"
 #include "world_builder/types/bool.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
-#include "world_builder/types/point.h"
-#include "world_builder/types/string.h"
 #include "world_builder/utilities.h"
+#include "world_builder/world.h"
 
 
 namespace WorldBuilder

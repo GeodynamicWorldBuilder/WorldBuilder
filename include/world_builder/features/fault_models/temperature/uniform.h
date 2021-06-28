@@ -20,13 +20,14 @@
 #ifndef _world_builder_features_fault_temperature_uniform_h
 #define _world_builder_features_fault_temperature_uniform_h
 
+
 #include "world_builder/features/fault_models/temperature/interface.h"
 #include "world_builder/features/utilities.h"
-#include "world_builder/world.h"
 
 
 namespace WorldBuilder
 {
+
   namespace Features
   {
     namespace FaultModels

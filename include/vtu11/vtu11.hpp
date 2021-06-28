@@ -6061,7 +6061,7 @@ namespace detail
 {
 
 template<typename T> inline
-void writeNumber( char (&buffer)[64], T value )
+void writeNumber( char (&/*buffer*/)[64], T /*value*/ )
 {
     VTU11_THROW( "Invalid data type." );
 }
