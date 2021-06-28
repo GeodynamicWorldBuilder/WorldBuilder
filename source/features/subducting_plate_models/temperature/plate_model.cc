@@ -19,14 +19,12 @@
 
 #include "world_builder/features/subducting_plate_models/temperature/plate_model.h"
 
-
 #include "world_builder/nan.h"
 #include "world_builder/types/bool.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
 #include "world_builder/utilities.h"
 #include "world_builder/world.h"
-
 
 namespace WorldBuilder
 {
@@ -103,18 +101,10 @@ namespace WorldBuilder
           min_depth = prm.get<double>("min distance slab top");
           max_depth = prm.get<double>("max distance slab top");
           operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
-          //top_temperature = prm.get<double>("top temperature");
-          //bottom_temperature = prm.get<double>("bottom temperature");
-          //spreading_velocity = prm.get<double>("spreading velocity")/31557600;
-          //ridge_coordinates = prm.get_vector<Point<2> >("ridge coordinates");
-
 
           density = prm.get<double>("density");
-
           plate_velocity = prm.get<double>("plate velocity");
-
           thermal_conductivity = prm.get<double>("thermal conductivity");
-
           thermal_expansion_coefficient = prm.get<double>("thermal expansion coefficient");
 
           if (thermal_expansion_coefficient < 0 )
