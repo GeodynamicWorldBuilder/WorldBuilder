@@ -17,8 +17,8 @@ ENDIF()
 
 # Unit test testing
 #find all the unit test files
-SET(WB_INCLUDE_UNIT_TEST TRUE
-CACHE STRING "Whether to include unit tests or not in the build.")
+SET(WB_INCLUDE_UNIT_TEST ON
+CACHE BOOL "Whether to include unit tests or not in the build.")
 
 if(WB_INCLUDE_UNIT_TEST)
   file(GLOB_RECURSE UNIT_TEST_SOURCES_CXX "unit_tests/*.cc")

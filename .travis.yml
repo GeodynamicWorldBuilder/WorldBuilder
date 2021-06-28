@@ -253,7 +253,7 @@ matrix:
          - MATRIX_EVAL="which gcc && which mingw32-make.exe && which gfortran && ln -s /c/ProgramData/chocolatey/bin/mingw32-make.exe /c/ProgramData/chocolatey/bin/make.exe && which make"
          - MAKE_FILE_GENERATOR="MinGW Makefiles"
          - FC=gfortran
-         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DWB_RUN_APP_TESTS=FALSE -DCMAKE_Fortran_COMPILER=/c/ProgramData/chocolatey/bin/gfortran.exe  -DCMAKE_SH=CMAKE_SH-NOTFOUND -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_VERBOSE_MAKEFILE=ON"
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DWB_ENABLE_PYTHON=OFF -DCMAKE_Fortran_COMPILER=/c/ProgramData/chocolatey/bin/gfortran.exe  -DCMAKE_SH=CMAKE_SH-NOTFOUND -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_VERBOSE_MAKEFILE=ON"
 
     - name: "windows release mingw fortran"
       os: windows
@@ -262,7 +262,7 @@ matrix:
          - MATRIX_EVAL="which gcc && which mingw32-make.exe && ln -s /c/ProgramData/chocolatey/bin/mingw32-make.exe /c/ProgramData/chocolatey/bin/make.exe && which make"
          - MAKE_FILE_GENERATOR="MinGW Makefiles"
          - FC=gfortran
-         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DWB_RUN_APP_TESTS=FALSE -DCMAKE_Fortran_COMPILER=/c/ProgramData/chocolatey/bin/gfortran.exe  -DCMAKE_SH=CMAKE_SH-NOTFOUND -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_VERBOSE_MAKEFILE=ON"
+         - CMAKE_EXTRA_ARGS="${CMAKE_EXTRA_ARGS} -DWB_ENABLE_PYTHON=OFF -DCMAKE_Fortran_COMPILER=/c/ProgramData/chocolatey/bin/gfortran.exe  -DCMAKE_SH=CMAKE_SH-NOTFOUND -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_VERBOSE_MAKEFILE=ON"
 
     - name: "linux xenial gcc release fortran python"
       os: linux

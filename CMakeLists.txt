@@ -47,11 +47,11 @@ endif()
 
 # finding support for different languages
 # finding a fortran compiler
-set(WB_MAKE_FORTRAN_WRAPPER TRUE CACHE STRING "Whether or not to create a Fortran wrapper for the world builder.")
+set(WB_MAKE_FORTRAN_WRAPPER ON CACHE BOOL "Whether or not to create a Fortran wrapper for the world builder.")
 if(${CMAKE_VERSION} VERSION_LESS "2.8.8") 
   message(STATUS "Fortran not supported with cmake version lower than  2.8.8. Please upgrade your cmake version if you need it. Disabling Fortran wrapper and tests.")
   SET(CMAKE_Fortran_COMPILER FALSE)
-  set(WB_MAKE_FORTRAN_WRAPPER FALSE CACHE STRING "Whether or not to create a Fortran wrapper for the world builder." FORCE)
+  set(WB_MAKE_FORTRAN_WRAPPER OFF CACHE BOOL "Whether or not to create a Fortran wrapper for the world builder." FORCE)
 elseif(WB_MAKE_FORTRAN_WRAPPER)
   include(CheckLanguage)
   message(STATUS "Looking for Fortran support.")
@@ -59,7 +59,7 @@ elseif(WB_MAKE_FORTRAN_WRAPPER)
   if(CMAKE_Fortran_COMPILER)
     enable_language(Fortran)
   else()
-    set(WB_MAKE_FORTRAN_WRAPPER FALSE CACHE STRING "Whether or not to create a Fortran wrapper for the world builder." FORCE)
+    set(WB_MAKE_FORTRAN_WRAPPER OFF CACHE BOOL "Whether or not to create a Fortran wrapper for the world builder." FORCE)
   endif()
 endif()
 
@@ -86,10 +86,10 @@ find_package(MPI)
 
 if(MPI_FOUND AND ${CMAKE_VERSION} VERSION_GREATER "3.9.0" )
   message(STATUS "MPI found.")
-  set(USE_MPI TRUE CACHE STRING "Whether or not to enable MPI when compiling the world builder.")
+  set(USE_MPI ON CACHE BOOL "Whether or not to enable MPI when compiling the world builder.")
 else()
   message(STATUS "MPI not found or cmake version lower than 3.9.0.")
-  set(USE_MPI FALSE CACHE STRING "Whether or not to enable MPI when compiling the world builder." FORCE)
+  set(USE_MPI OFF CACHE BOOL "Whether or not to enable MPI when compiling the world builder." FORCE)
 endif()
 
 if(USE_MPI)
@@ -101,7 +101,7 @@ endif()
 
 
 #find python libs
-SET(WB_ENABLE_PYTHON TRUE CACHE STRING "Whether or not to enable Python when compiling the world builder.") 
+SET(WB_ENABLE_PYTHON ON CACHE BOOL "Whether or not to enable Python when compiling the world builder.") 
 if(${WB_ENABLE_PYTHON})
   if(${CMAKE_VERSION} VERSION_LESS "3.12.0") 
     FIND_PACKAGE(PythonLibs 3.0)
@@ -139,13 +139,13 @@ endif()
 
 find_package(ZLIB)
 
-SET(WB_USE_ZLIB TRUE CACHE STRING "Whether or not to use zlib for compiling the world buidler visualizer.")
+SET(WB_USE_ZLIB ON CACHE BOOL "Whether or not to use zlib for compiling the world buidler visualizer.")
 if(ZLIB_FOUND AND WB_USE_ZLIB)
   message(STATUS "Enabling the use of ZLIB.")
   include_directories(${ZLIB_INCLUDE_DIRS})
 else()
   message(STATUS "Disabling the use of ZLIB.")
-  SET(WB_USE_ZLIB FALSE CACHE STRING "Whether or not to use zlib for compiling the world buidler visualizer." FORCE)
+  SET(WB_USE_ZLIB OFF CACHE BOOL "Whether or not to use zlib for compiling the world buidler visualizer." FORCE)
 endif()
 
 
@@ -159,8 +159,8 @@ IF(NOT CMAKE_BUILD_TYPE)
 ENDIF(NOT CMAKE_BUILD_TYPE)
 
 IF(NOT WB_RUN_APP_TESTS)
-   SET(WB_RUN_APP_TESTS TRUE
-       CACHE STRING "Whether to run or not to run the app tests."
+   SET(WB_RUN_APP_TESTS ON
+       CACHE BOOL "Whether to run or not to run the app tests."
        )
 ENDIF()
 
