@@ -20,7 +20,7 @@
 #ifndef _world_nan_h
 #define _world_nan_h
 
-#include <cmath>
+#include <limits>
 
 namespace WorldBuilder
 {

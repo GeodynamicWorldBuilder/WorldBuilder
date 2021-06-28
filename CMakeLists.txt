@@ -28,6 +28,23 @@ set (WORLD_BUILDER_SOURCE_DIR ${PROJECT_SOURCE_DIR})
 # generate version.cc
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/source/config.cc.in" "${CMAKE_BINARY_DIR}/source/config.cc" @ONLY)
 
+# determine whether to use clang-tidy
+set(WB_CHECK_CLANG_TIDY OFF CACHE BOOL "Whether or not to check the code with clang-tidy while compiling the world builder.")
+
+if(WB_CHECK_CLANG_TIDY)
+  set(WB_CHECK_CLANG_TIDY_CHECKS "clang-analyzer-*,performance-*,modernize-a*,modernize-c*,modernize-c*,modernize-l*,modernize-m*,modernize-p*,modernize-r*\
+,modernize-s*,modernize-un*,modernize-use-b*,modernize-use-d*,modernize-use-e*,modernize-use-n*,modernize-use-o*,modernize-use-tran*,modernize-use-u*\
+,misc-*,mpi-*,readability-a*,readability-c*,readability-d*,readability-e*,readability-i*,readability-mak*,readability-mi*,readability-n*,llvm-*\
+,readability-q*,readability-r*,readability-s*,readability-u*"
+  CACHE STRING "A list of items to check with clang-tidy")
+  set(WB_CHECK_CLANG_TIDY_FIX OFF CACHE BOOL "Whether or not to try to automatically fix the clang-tidy issues when found.")
+  if(WB_CHECK_CLANG_TIDY_FIX)
+    set(CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=${WB_CHECK_CLANG_TIDY_CHECKS};--fix")
+  else()
+    set(CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=${WB_CHECK_CLANG_TIDY_CHECKS}")
+  endif()
+endif()
+
 # finding support for different languages
 # finding a fortran compiler
 set(WB_MAKE_FORTRAN_WRAPPER TRUE CACHE STRING "Whether or not to create a Fortran wrapper for the world builder.")

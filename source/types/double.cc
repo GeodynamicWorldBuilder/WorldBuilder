@@ -16,10 +16,10 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#include <world_builder/types/double.h>
-#include <world_builder/assert.h>
-#include <world_builder/utilities.h>
-#include <world_builder/parameters.h>
+#include "world_builder/types/double.h"
+
+#include "world_builder/assert.h"
+#include "world_builder/utilities.h"
 
 namespace WorldBuilder
 {
@@ -59,6 +59,6 @@ namespace WorldBuilder
       Pointer((base + "/type").c_str()).Set(declarations,"number");
       Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
     }
-  }
-}
+  } // namespace Types
+} // namespace WorldBuilder
 

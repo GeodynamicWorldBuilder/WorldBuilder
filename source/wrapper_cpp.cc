@@ -17,12 +17,12 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <utility>
+#include "world_builder/world.h"
 
 #include "world_builder/wrapper_cpp.h"
-#include "world_builder/world.h"
-#include "iostream"
 
+#include <iostream>
+#include <utility>
 using namespace WorldBuilder;
 namespace wrapper_cpp
 {
@@ -65,4 +65,4 @@ namespace wrapper_cpp
     std::array<double,3> position = {{x,y,z}};
     return reinterpret_cast<WorldBuilder::World *>(ptr_ptr_world)->composition(position,depth,composition_number);
   }
-}
+} // namespace wrapper_cpp

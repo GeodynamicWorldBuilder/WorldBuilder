@@ -20,8 +20,8 @@
 #ifndef _world_builder_features_continental_plate_grains_random_uniform_distribution_h
 #define _world_builder_features_continental_plate_grains_random_uniform_distribution_h
 
-#include <world_builder/features/continental_plate_models/grains/interface.h>
-#include <world_builder/world.h>
+#include "world_builder/features/continental_plate_models/grains/interface.h"
+#include "world_builder/world.h"
 
 namespace WorldBuilder
 {

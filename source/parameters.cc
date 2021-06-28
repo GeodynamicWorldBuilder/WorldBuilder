@@ -16,53 +16,57 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#include <fstream>
-#include <sstream>
-#include <vector>
-#include <tuple>
 
-#include <rapidjson/istreamwrapper.h>
+#include "world_builder/parameters.h"
+
+#include "world_builder/assert.h"
+#include "world_builder/config.h"
+#include "world_builder/utilities.h"
+
+#include "world_builder/types/array.h"
+#include "world_builder/types/double.h"
+#include "world_builder/types/object.h"
+#include "world_builder/types/plugin_system.h"
+#include "world_builder/types/point.h"
+#include "world_builder/types/segment.h"
+#include "world_builder/types/string.h"
+#include "world_builder/types/unsigned_int.h"
+
+#include "world_builder/features/continental_plate_models/composition/interface.h"
+#include "world_builder/features/continental_plate_models/grains/interface.h"
+#include "world_builder/features/continental_plate_models/temperature/interface.h"
+#include "world_builder/features/mantle_layer_models/composition/interface.h"
+#include "world_builder/features/mantle_layer_models/grains/interface.h"
+#include "world_builder/features/mantle_layer_models/temperature/interface.h"
+#include "world_builder/features/oceanic_plate_models/composition/interface.h"
+#include "world_builder/features/oceanic_plate_models/grains/interface.h"
+#include "world_builder/features/oceanic_plate_models/temperature/interface.h"
+#include "world_builder/features/subducting_plate_models/composition/interface.h"
+#include "world_builder/features/subducting_plate_models/grains/interface.h"
+#include "world_builder/features/subducting_plate_models/temperature/interface.h"
+
+#include "world_builder/features/fault.h"
+#include "world_builder/features/fault_models/composition/interface.h"
+#include "world_builder/features/fault_models/grains/interface.h"
+#include "world_builder/features/fault_models/temperature/interface.h"
+#include "world_builder/features/subducting_plate.h"
+#include "world_builder/features/subducting_plate_models/composition/interface.h"
+#include "world_builder/features/subducting_plate_models/grains/interface.h"
+#include "world_builder/features/subducting_plate_models/temperature/interface.h"
+
+
+#include "rapidjson/error/en.h"
+#include "rapidjson/istreamwrapper.h"
+#include "rapidjson/latexwriter.h"
 #include "rapidjson/pointer.h"
 #include "rapidjson/prettywriter.h"
-#include "rapidjson/latexwriter.h"
 #include "rapidjson/stringbuffer.h"
-#include "rapidjson/error/en.h"
 
-#include <world_builder/assert.h>
-#include <world_builder/config.h>
-#include <world_builder/parameters.h>
-#include <world_builder/utilities.h>
-
-#include <world_builder/types/object.h>
-#include <world_builder/types/point.h>
-#include <world_builder/types/double.h>
-#include <world_builder/types/string.h>
-#include <world_builder/types/segment.h>
-#include <world_builder/types/array.h>
-#include <world_builder/types/unsigned_int.h>
-#include <world_builder/types/plugin_system.h>
-
-#include <world_builder/features/continental_plate_models/temperature/interface.h>
-#include <world_builder/features/continental_plate_models/composition/interface.h>
-#include <world_builder/features/continental_plate_models/grains/interface.h>
-#include <world_builder/features/oceanic_plate_models/temperature/interface.h>
-#include <world_builder/features/oceanic_plate_models/composition/interface.h>
-#include <world_builder/features/oceanic_plate_models/grains/interface.h>
-#include <world_builder/features/mantle_layer_models/temperature/interface.h>
-#include <world_builder/features/mantle_layer_models/composition/interface.h>
-#include <world_builder/features/mantle_layer_models/grains/interface.h>
-#include <world_builder/features/subducting_plate_models/temperature/interface.h>
-#include <world_builder/features/subducting_plate_models/composition/interface.h>
-#include <world_builder/features/subducting_plate_models/grains/interface.h>
-
-#include <world_builder/features/subducting_plate.h>
-#include <world_builder/features/subducting_plate_models/temperature/interface.h>
-#include <world_builder/features/subducting_plate_models/composition/interface.h>
-#include <world_builder/features/subducting_plate_models/grains/interface.h>
-#include <world_builder/features/fault.h>
-#include <world_builder/features/fault_models/temperature/interface.h>
-#include <world_builder/features/fault_models/composition/interface.h>
-#include <world_builder/features/fault_models/grains/interface.h>
+#include <fstream>
+#include <memory>
+#include <sstream>
+#include <tuple>
+#include <vector>
 
 using namespace rapidjson;
 
@@ -1157,7 +1161,7 @@ namespace WorldBuilder
 
         for (size_t i = 0; i < array->Size(); ++i )
           {
-            vector.push_back(std::unique_ptr<Features::SubductingPlate>(new Features::SubductingPlate(&world)));
+            vector.push_back(std::make_unique<Features::SubductingPlate>(&world));
           }
       }
     else
@@ -1180,7 +1184,7 @@ namespace WorldBuilder
 
         for (size_t i = 0; i < array->Size(); ++i )
           {
-            vector.push_back(std::unique_ptr<Features::Fault>(new Features::Fault(&world)));
+            vector.push_back(std::make_unique<Features::Fault>(&world));
           }
       }
     else
@@ -1238,12 +1242,12 @@ namespace WorldBuilder
   void
   Parameters::declare_model_entries(const std::string &model_group_name,
                                     const std::string &parent_name,
-                                    std::map<std::string, void ( *)(Parameters &,const std::string &)> declare_map,
+                                    const std::map<std::string, void ( *)(Parameters &,const std::string &)> &declare_map,
                                     const std::vector<std::string> &required_entries,
                                     const std::vector<std::tuple<std::string,const WorldBuilder::Types::Interface &, std::string> > &extra_declarations)
   {
     unsigned int counter = 0;
-    for (auto &it : declare_map)
+    for (const auto &it : declare_map)
       {
         typedef std::tuple<std::string,const WorldBuilder::Types::Interface &, std::string> DeclareEntry;
         // prevent infinite recursion
@@ -1331,7 +1335,7 @@ namespace WorldBuilder
 
                     // we need to get the json path relevant for the current declaration string
                     // we are interested in, which requires an offset of 2.
-                    WBAssert(Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters) != NULL, "Could not find model in: " << get_full_json_path(i+2) + "/model");
+                    WBAssert(Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters) != nullptr, "Could not find model in: " << get_full_json_path(i+2) + "/model");
                     std::string parameters_string = Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters)->GetString();
 
                     // currently in our case these are always objects, so go directly to find the option we need.
@@ -1571,5 +1575,5 @@ namespace WorldBuilder
 
 
 
-}
+} // namespace WorldBuilder
 

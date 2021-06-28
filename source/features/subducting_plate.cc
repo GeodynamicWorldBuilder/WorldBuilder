@@ -17,25 +17,19 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <world_builder/features/subducting_plate.h>
-#include <world_builder/utilities.h>
-#include <world_builder/assert.h>
-#include <world_builder/nan.h>
-#include <world_builder/parameters.h>
+#include "world_builder/features/subducting_plate.h"
 
-#include <world_builder/types/array.h>
-#include <world_builder/types/double.h>
-#include <world_builder/types/point.h>
-#include <world_builder/types/string.h>
-#include <world_builder/types/object.h>
-#include <world_builder/types/plugin_system.h>
-#include <world_builder/types/unsigned_int.h>
-
-#include <rapidjson/istreamwrapper.h>
-#include "rapidjson/pointer.h"
-#include "rapidjson/prettywriter.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/error/en.h"
+#include "world_builder/assert.h"
+#include "world_builder/nan.h"
+#include "world_builder/parameters.h"
+#include "world_builder/types/array.h"
+#include "world_builder/types/double.h"
+#include "world_builder/types/object.h"
+#include "world_builder/types/plugin_system.h"
+#include "world_builder/types/point.h"
+#include "world_builder/types/string.h"
+#include "world_builder/types/unsigned_int.h"
+#include "world_builder/utilities.h"
 
 #include "glm/glm.h"
 
@@ -450,7 +444,7 @@ namespace WorldBuilder
                   double temperature_current_section = temperature;
                   double temperature_next_section = temperature;
 
-                  for (auto &temperature_model: segment_vector[current_section][current_segment].temperature_systems)
+                  for (const auto &temperature_model: segment_vector[current_section][current_segment].temperature_systems)
                     {
                       temperature_current_section = temperature_model->get_temperature(position,
                                                                                        depth,
@@ -467,7 +461,7 @@ namespace WorldBuilder
 
                     }
 
-                  for (auto &temperature_model: segment_vector[next_section][current_segment].temperature_systems)
+                  for (const auto &temperature_model: segment_vector[next_section][current_segment].temperature_systems)
                     {
                       temperature_next_section = temperature_model->get_temperature(position,
                                                                                     depth,
@@ -579,7 +573,7 @@ namespace WorldBuilder
                   double composition_current_section = composition;
                   double composition_next_section = composition;
 
-                  for (auto &composition_model: segment_vector[current_section][current_segment].composition_systems)
+                  for (const auto &composition_model: segment_vector[current_section][current_segment].composition_systems)
                     {
                       composition_current_section = composition_model->get_composition(position,
                                                                                        depth,
@@ -596,7 +590,7 @@ namespace WorldBuilder
 
                     }
 
-                  for (auto &composition_model: segment_vector[next_section][current_segment].composition_systems)
+                  for (const auto &composition_model: segment_vector[next_section][current_segment].composition_systems)
                     {
                       composition_next_section = composition_model->get_composition(position,
                                                                                     depth,
@@ -711,7 +705,7 @@ namespace WorldBuilder
                   WorldBuilder::grains  grains_current_section = grains;
                   WorldBuilder::grains  grains_next_section = grains;
 
-                  for (auto &grains_model: segment_vector[current_section][current_segment].grains_systems)
+                  for (const auto &grains_model: segment_vector[current_section][current_segment].grains_systems)
                     {
                       grains_current_section = grains_model->get_grains(position,
                                                                         depth,
@@ -728,7 +722,7 @@ namespace WorldBuilder
 
                     }
 
-                  for (auto &grains_model: segment_vector[next_section][current_segment].grains_systems)
+                  for (const auto &grains_model: segment_vector[next_section][current_segment].grains_systems)
                     {
                       grains_next_section = grains_model->get_grains(position,
                                                                      depth,
@@ -774,6 +768,6 @@ namespace WorldBuilder
      * Register plugin
      */
     WB_REGISTER_FEATURE(SubductingPlate, subducting plate)
-  }
-}
+  } // namespace Features
+} // namespace WorldBuilder
 

@@ -24,7 +24,7 @@
 #include <string>
 #include <limits>
 
-#include <world_builder/assert.h>
+#include "world_builder/assert.h"
 
 namespace WorldBuilder
 {

@@ -16,10 +16,9 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#include <world_builder/types/plugin_system.h>
+#include "world_builder/types/plugin_system.h"
 
-#include <world_builder/assert.h>
-#include <world_builder/parameters.h>
+#include "world_builder/assert.h"
 
 #include <utility>
 
@@ -39,7 +38,7 @@ namespace WorldBuilder
     {
       this->type_name = Types::type::PluginSystem;
 
-      WBAssert(declare_entries_ != NULL, "declare entries may not be a null pointer.");
+      WBAssert(declare_entries_ != nullptr, "declare entries may not be a null pointer.");
     }
 
 
@@ -75,7 +74,7 @@ namespace WorldBuilder
 
             prm.enter_subsection("items");
             {
-              WBAssert(this->declare_entries != NULL, "No declare entries given.");
+              WBAssert(this->declare_entries != nullptr, "No declare entries given.");
 
               this->declare_entries(prm, name, required_entries);
             }
@@ -86,7 +85,7 @@ namespace WorldBuilder
             Pointer((path + "/type").c_str()).Set(prm.declarations,"object");
 
             //std::cout << "-------use pluginsystem with name " << name << ", and pointer = " << declare_entries<< " and reqruied entires.size() = " << required_entries.size() << std::endl;
-            WBAssert(this->declare_entries != NULL, "No declare entries given.");
+            WBAssert(this->declare_entries != nullptr, "No declare entries given.");
             this->declare_entries(prm, name, required_entries);
 
 
@@ -94,6 +93,6 @@ namespace WorldBuilder
       }
       prm.leave_subsection();
     }
-  }
-}
+  } // namespace Types
+} // namespace WorldBuilder
 

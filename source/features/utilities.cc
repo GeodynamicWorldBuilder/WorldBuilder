@@ -17,7 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <world_builder/features/utilities.h>
+#include "world_builder/features/utilities.h"
 
 namespace WorldBuilder
 {
@@ -34,6 +34,6 @@ namespace WorldBuilder
         WBAssert(operation == "replace", "Could not find operation: " << operation << ".");
         return Operations::REPLACE;
       }
-    }
-  }
-}
+    } // namespace Utilities
+  } // namespace Features
+} // namespace WorldBuilder

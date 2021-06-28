@@ -17,21 +17,18 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <world_builder/features/continental_plate.h>
-#include <world_builder/features/continental_plate_models/temperature/interface.h>
-#include <world_builder/features/continental_plate_models/composition/interface.h>
+#include "world_builder/features/continental_plate.h"
 
-#include <world_builder/utilities.h>
-#include <world_builder/assert.h>
-#include <world_builder/nan.h>
-#include <world_builder/parameters.h>
-
-#include <world_builder/types/array.h>
-#include <world_builder/types/double.h>
-#include <world_builder/types/string.h>
-#include <world_builder/types/object.h>
-#include <world_builder/types/unsigned_int.h>
-#include <world_builder/types/plugin_system.h>
+#include "world_builder/assert.h"
+#include "world_builder/nan.h"
+#include "world_builder/parameters.h"
+#include "world_builder/types/array.h"
+#include "world_builder/types/double.h"
+#include "world_builder/types/object.h"
+#include "world_builder/types/plugin_system.h"
+#include "world_builder/types/string.h"
+#include "world_builder/types/unsigned_int.h"
+#include "world_builder/utilities.h"
 
 
 namespace WorldBuilder
@@ -149,7 +146,7 @@ namespace WorldBuilder
           Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
                                                                   world->parameters.coordinate_system->natural_coordinate_system())))
         {
-          for (auto &temperature_model: temperature_models)
+          for (const auto &temperature_model: temperature_models)
             {
               temperature = temperature_model->get_temperature(position,
                                                                depth,
@@ -182,7 +179,7 @@ namespace WorldBuilder
           Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
                                                                   world->parameters.coordinate_system->natural_coordinate_system())))
         {
-          for (auto &composition_model: composition_models)
+          for (const auto &composition_model: composition_models)
             {
               composition = composition_model->get_composition(position,
                                                                depth,
@@ -215,7 +212,7 @@ namespace WorldBuilder
           Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
                                                                   world->parameters.coordinate_system->natural_coordinate_system())))
         {
-          for (auto &grains_model: grains_models)
+          for (const auto &grains_model: grains_models)
             {
               grains = grains_model->get_grains(position,
                                                 depth,
@@ -237,5 +234,5 @@ namespace WorldBuilder
 
     WB_REGISTER_FEATURE(ContinentalPlate, continental plate)
 
-  }
-}
+  } // namespace Features
+} // namespace WorldBuilder

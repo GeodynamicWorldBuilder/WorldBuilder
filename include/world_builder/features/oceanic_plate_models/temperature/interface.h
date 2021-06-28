@@ -23,9 +23,9 @@
 #include <vector>
 #include <map>
 
-#include <world_builder/world.h>
-#include <world_builder/parameters.h>
-#include <world_builder/point.h>
+#include "world_builder/world.h"
+#include "world_builder/parameters.h"
+#include "world_builder/point.h"
 
 
 namespace WorldBuilder

@@ -30,7 +30,7 @@
 #include <rapidjson/document.h>
 #include "rapidjson/schema.h"
 
-#include <world_builder/point.h>
+#include "world_builder/point.h"
 
 namespace WorldBuilder
 {
@@ -203,7 +203,7 @@ namespace WorldBuilder
       void
       declare_model_entries(const std::string &model_group_name,
                             const std::string &parent_name,
-                            std::map<std::string, void ( *)(Parameters &,const std::string &)> declare_map,
+                            const std::map<std::string, void ( *)(Parameters &,const std::string &)> &declare_map,
                             const std::vector<std::string> &required_entries = {},
                             const std::vector<std::tuple<std::string,const WorldBuilder::Types::Interface &, std::string> > &extra_declarations = {});
 

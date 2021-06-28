@@ -24,8 +24,8 @@
 #include <array>
 #include <iostream>
 
-#include <world_builder/coordinate_system.h>
-#include <world_builder/assert.h>
+#include "world_builder/coordinate_system.h"
+#include "world_builder/assert.h"
 
 namespace WorldBuilder
 {

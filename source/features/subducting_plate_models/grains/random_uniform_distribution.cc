@@ -17,22 +17,21 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "world_builder/features/subducting_plate_models/grains/random_uniform_distribution.h"
+
+#include "world_builder/assert.h"
+#include "world_builder/nan.h"
+#include "world_builder/parameters.h"
+#include "world_builder/types/array.h"
+#include "world_builder/types/bool.h"
+#include "world_builder/types/double.h"
+#include "world_builder/types/object.h"
+#include "world_builder/types/plugin_system.h"
+#include "world_builder/types/string.h"
+#include "world_builder/types/unsigned_int.h"
+#include "world_builder/utilities.h"
+
 #include <algorithm>
-
-#include <world_builder/utilities.h>
-#include <world_builder/assert.h>
-#include <world_builder/nan.h>
-#include <world_builder/parameters.h>
-
-#include <world_builder/types/array.h>
-#include <world_builder/types/bool.h>
-#include <world_builder/types/double.h>
-#include <world_builder/types/string.h>
-#include <world_builder/types/object.h>
-#include <world_builder/types/unsigned_int.h>
-#include <world_builder/types/plugin_system.h>
-#include <world_builder/features/subducting_plate_models/grains/random_uniform_distribution.h>
-
 
 namespace WorldBuilder
 {
@@ -160,7 +159,7 @@ namespace WorldBuilder
                           double r  = std::sqrt( z );
                           double Vx = std::sin( phi ) * r;
                           double Vy = std::cos( phi ) * r;
-                          double Vz = std::sqrt( 2.f - z );
+                          double Vz = std::sqrt( 2.F - z );
 
                           // Compute the row vector S = Transpose(V) * R, where R is a simple
                           // rotation by theta about the z-axis.  No need to compute Sz since
@@ -208,9 +207,9 @@ namespace WorldBuilder
           return grains_local;
         }
         WB_REGISTER_FEATURE_SUBDUCTING_PLATE_GRAINS_MODEL(RandomUniformDistribution, random uniform distribution)
-      }
-    }
-  }
-}
+      } // namespace Grains
+    } // namespace SubductingPlateModels
+  } // namespace Features
+} // namespace WorldBuilder
 
 

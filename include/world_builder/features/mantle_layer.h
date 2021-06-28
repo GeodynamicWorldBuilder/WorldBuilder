@@ -20,12 +20,12 @@
 #ifndef _world_feature_features_mantle_layer_h
 #define _world_feature_features_mantle_layer_h
 
-#include <world_builder/features/interface.h>
-#include <world_builder/world.h>
+#include "world_builder/features/interface.h"
+#include "world_builder/world.h"
 
-#include <world_builder/features/mantle_layer_models/temperature/interface.h>
-#include <world_builder/features/mantle_layer_models/composition/interface.h>
-#include <world_builder/features/mantle_layer_models/grains/interface.h>
+#include "world_builder/features/mantle_layer_models/temperature/interface.h"
+#include "world_builder/features/mantle_layer_models/composition/interface.h"
+#include "world_builder/features/mantle_layer_models/grains/interface.h"
 
 
 namespace WorldBuilder

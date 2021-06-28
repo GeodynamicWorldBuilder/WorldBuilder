@@ -17,14 +17,14 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
-#include <iomanip>
-#include <algorithm>
+#include "world_builder/assert.h"
+#include "world_builder/coordinate_systems/interface.h"
+#include "world_builder/nan.h"
+#include "world_builder/utilities.h"
 
-#include <world_builder/assert.h>
-#include <world_builder/coordinate_systems/interface.h>
-#include <world_builder/nan.h>
-#include <world_builder/utilities.h>
+#include <algorithm>
+#include <iomanip>
+#include <iostream>
 
 
 namespace WorldBuilder
@@ -1183,7 +1183,7 @@ namespace WorldBuilder
                                    const std::vector<double> &y,
                                    bool monotone_spline)
     {
-      WBAssert(x.size() != 0, "Internal error: The x in the set points function is zero.");
+      WBAssert(!x.empty(), "Internal error: The x in the set points function is zero.");
       assert(x.size() == y.size());
       m_x = x;
       m_y = y;
@@ -1350,8 +1350,8 @@ namespace WorldBuilder
 
     template std::array<double,2> convert_point_to_array<2>(const Point<2> &point_);
     template std::array<double,3> convert_point_to_array<3>(const Point<3> &point_);
-  }
-}
+  } // namespace Utilities
+} // namespace WorldBuilder
 
 
 
