@@ -122,7 +122,7 @@ jobs:
       run: |
             pwd;
             ls;
-            cmake  -G"Ninja" $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Werror -DWB_INCLUDE_UNIT_TEST=FALSE ${{github.workspace}}/master/source/;
+            cmake  -G"Ninja" $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Werror -DWB_INCLUDE_UNIT_TEST=OFF ${{github.workspace}}/master/source/;
 
     - name: Build gwb
       working-directory: ${{github.workspace}}/master/build
@@ -142,7 +142,7 @@ jobs:
       run: |
             pwd;
             ls;
-            cmake -G"Ninja" $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Werror -DWB_INCLUDE_UNIT_TEST=FALSE ${{github.workspace}}/feature/source/;
+            cmake -G"Ninja" $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Werror -DWB_INCLUDE_UNIT_TEST=OFF ${{github.workspace}}/feature/source/;
 
     - name: Build gwb
       working-directory: ${{github.workspace}}/feature/build
