@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_builder_features_oceanic_plate_grains_uniform_h
-#define _world_builder_features_oceanic_plate_grains_uniform_h
+#ifndef WORLD_BUILDER_FEATURES_OCEANIC_PLATE_MODELS_GRAINS_UNIFORM_H
+#define WORLD_BUILDER_FEATURES_OCEANIC_PLATE_MODELS_GRAINS_UNIFORM_H
 
 
 #include "world_builder/features/oceanic_plate_models/grains/interface.h"
@@ -38,7 +38,7 @@ namespace WorldBuilder
          * what the returned temperature or grains of the temperature and grains
          * functions of this class will be.
          */
-        class Uniform : public Interface
+        class Uniform final: public Interface
         {
           public:
             /**
@@ -49,7 +49,7 @@ namespace WorldBuilder
             /**
              * Destructor
              */
-            ~Uniform();
+            ~Uniform() override final;
 
             /**
              * declare and read in the world builder file into the parameters
@@ -84,7 +84,7 @@ namespace WorldBuilder
              * Returns a grains based on the given position, composition (e.g.
              * olivine and/or enstatite)depth in the model, gravity and current grains.
              */
-            virtual WorldBuilder::grains
+            WorldBuilder::grains
             get_grains(const Point<3> &position, const double depth,
                        const unsigned int composition_number,
                        WorldBuilder::grains grains,

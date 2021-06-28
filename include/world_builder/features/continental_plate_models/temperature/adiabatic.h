@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_builder_features_continental_plate_temperature_adiabatic_h
-#define _world_builder_features_continental_plate_temperature_adiabatic_h
+#ifndef WORLD_BUILDER_FEATURES_CONTINENTAL_PLATE_MODELS_TEMPERATURE_ADIABATIC_H
+#define WORLD_BUILDER_FEATURES_CONTINENTAL_PLATE_MODELS_TEMPERATURE_ADIABATIC_H
 
 
 #include "world_builder/features/continental_plate_models/temperature/interface.h"
@@ -40,7 +40,7 @@ namespace WorldBuilder
          * the returned temperature or composition of the temperature and composition
          * functions of this class will be.
          */
-        class Adiabatic : public Interface
+        class Adiabatic final: public Interface
         {
           public:
             /**
@@ -51,7 +51,7 @@ namespace WorldBuilder
             /**
              * Destructor
              */
-            ~Adiabatic();
+            ~Adiabatic() override final;
 
             /**
              * declare and read in the world builder file into the parameters class
@@ -100,9 +100,9 @@ namespace WorldBuilder
             Utilities::Operations operation;
 
         };
-      }
-    }
-  }
-}
+      } // namespace Temperature
+    } // namespace ContinentalPlateModels
+  } // namespace Features
+} // namespace WorldBuilder
 
 #endif

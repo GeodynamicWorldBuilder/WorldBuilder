@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_feature_features_subducting_plate_h
-#define _world_feature_features_subducting_plate_h
+#ifndef WORLD_BUILDER_FEATURES_SUBDUCTING_PLATE_H
+#define WORLD_BUILDER_FEATURES_SUBDUCTING_PLATE_H
 
 
 #include "world_builder/features/subducting_plate_models/composition/interface.h"
@@ -56,7 +56,7 @@ namespace WorldBuilder
      * the returned temperature or composition of the temperature and composition
      * functions of this class will be.
      */
-    class SubductingPlate : public Interface
+    class SubductingPlate final: public Interface
     {
       public:
         /**
@@ -67,7 +67,7 @@ namespace WorldBuilder
         /**
          * Destructor
          */
-        ~SubductingPlate();
+        ~SubductingPlate() override final;
 
         /**
          * declare and read in the world builder file into the parameters class
@@ -111,7 +111,7 @@ namespace WorldBuilder
          * olvine and/or enstatite) which is being requested and the current value
          * of that composition at this location and depth.
          */
-        virtual
+
         WorldBuilder::grains
         grains(const Point<3> &position,
                const double depth,
@@ -180,7 +180,7 @@ namespace WorldBuilder
         double maximum_slab_thickness;
 
     };
-  }
-}
+  } // namespace Features
+} // namespace WorldBuilder
 
 #endif

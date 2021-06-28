@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_builder_features_interface_h
-#define _world_builder_features_interface_h
+#ifndef WORLD_BUILDER_FEATURES_INTERFACE_H
+#define WORLD_BUILDER_FEATURES_INTERFACE_H
 
 
 #include "world_builder/grains.h"
@@ -116,10 +116,10 @@ namespace WorldBuilder
          * registration of the object factory.
          */
         static void registerType(const std::string &name,
-                                 void ( *)(Parameters &, const std::string &, const std::vector<std::string> &required_entries),
+                                 void ( * /*declare_entries*/)(Parameters &, const std::string &, const std::vector<std::string> &required_entries),
                                  ObjectFactory *factory);
 
-        const std::string get_name() const
+        std::string get_name() const
         {
           return name;
         };
@@ -232,7 +232,7 @@ namespace WorldBuilder
   }; \
   static klass##Factory global_##klass##Factory;
 
-  }
-}
+  } // namespace Features
+} // namespace WorldBuilder
 
 #endif

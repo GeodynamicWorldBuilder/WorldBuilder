@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_builder_wrapper_c_h
-#define _world_builder_wrapper_c_h
+#ifndef WORLD_BUILDER_WRAPPER_C_H
+#define WORLD_BUILDER_WRAPPER_C_H
 
 #include <stdbool.h>
 

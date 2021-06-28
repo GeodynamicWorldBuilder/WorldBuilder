@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_builder_features_oceanic_plate_temperature_uniform_h
-#define _world_builder_features_oceanic_plate_temperature_uniform_h
+#ifndef WORLD_BUILDER_FEATURES_OCEANIC_PLATE_MODELS_TEMPERATURE_UNIFORM_H
+#define WORLD_BUILDER_FEATURES_OCEANIC_PLATE_MODELS_TEMPERATURE_UNIFORM_H
 
 
 #include "world_builder/features/oceanic_plate_models/temperature/interface.h"
@@ -40,7 +40,7 @@ namespace WorldBuilder
          * the returned temperature or composition of the temperature and composition
          * functions of this class will be.
          */
-        class Uniform : public Interface
+        class Uniform final: public Interface
         {
           public:
             /**
@@ -51,7 +51,7 @@ namespace WorldBuilder
             /**
              * Destructor
              */
-            ~Uniform();
+            ~Uniform() override final;
 
             /**
              * declare and read in the world builder file into the parameters class
@@ -85,9 +85,9 @@ namespace WorldBuilder
             Utilities::Operations operation;
 
         };
-      }
-    }
-  }
-}
+      } // namespace Temperature
+    } // namespace OceanicPlateModels
+  } // namespace Features
+} // namespace WorldBuilder
 
 #endif

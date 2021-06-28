@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_builder_coordinate_systems_cartesian_h
-#define _world_builder_coordinate_systems_cartesian_h
+#ifndef WORLD_BUILDER_COORDINATE_SYSTEMS_CARTESIAN_H
+#define WORLD_BUILDER_COORDINATE_SYSTEMS_CARTESIAN_H
 
 #include "world_builder/coordinate_systems/interface.h"
 
@@ -41,7 +41,7 @@ namespace WorldBuilder
      * doesn't do anything with the coordinates, but is needed to have a common
      * interface for all the geometry models.
      */
-    class Cartesian : public Interface
+    class Cartesian final : public Interface
     {
       public:
         /**
@@ -52,7 +52,7 @@ namespace WorldBuilder
         /**
          * Destructor
          */
-        ~Cartesian();
+        ~Cartesian() override final;
 
         /**
          * declare and read in the world builder file into the parameters class
@@ -105,7 +105,7 @@ namespace WorldBuilder
       private:
 
     };
-  }
-}
+  } // namespace CoordinateSystems
+} // namespace WorldBuilder
 
 #endif

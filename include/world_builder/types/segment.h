@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_feature_types_segment_h
-#define _world_feature_types_segment_h
+#ifndef WORLD_BUILDER_TYPES_SEGMENT_H
+#define WORLD_BUILDER_TYPES_SEGMENT_H
 
 
 #include "world_builder/types/plugin_system.h"
@@ -65,7 +65,7 @@ namespace WorldBuilder
         /**
          * Destructor
          */
-        ~Segment();
+        ~Segment() override;
 
         /**
          * Todo
@@ -94,7 +94,7 @@ namespace WorldBuilder
       private:
 
     };
-  }
+  } // namespace Types
 
   namespace Objects
   {
@@ -103,7 +103,7 @@ namespace WorldBuilder
       * This class represents an actual segment
       */
     template <class A, class B, class C>
-    class Segment : public Types::Interface
+    class Segment final: public Types::Interface
     {
       public:
 
@@ -114,9 +114,9 @@ namespace WorldBuilder
                 const WorldBuilder::Point<2> &default_thickness,
                 const WorldBuilder::Point<2> &default_top_truncation,
                 const WorldBuilder::Point<2> &default_angle,
-                const std::vector<std::shared_ptr<A> > &temperature_systems,
-                const std::vector<std::shared_ptr<B> > &composition_systems,
-                const std::vector<std::shared_ptr<C> > &grains_systems);
+                std::vector<std::shared_ptr<A> > temperature_systems,
+                std::vector<std::shared_ptr<B> > composition_systems,
+                std::vector<std::shared_ptr<C> > grains_systems);
 
         /**
          * Copy constructor
@@ -126,7 +126,7 @@ namespace WorldBuilder
         /**
          * Destructor
          */
-        ~Segment();
+        ~Segment() override final;
 
         /**
          * Todo
@@ -153,7 +153,7 @@ namespace WorldBuilder
       private:
 
     };
-  }
-}
+  } // namespace Objects
+} // namespace WorldBuilder
 
 #endif

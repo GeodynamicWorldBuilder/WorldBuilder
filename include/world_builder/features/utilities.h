@@ -18,8 +18,8 @@
 */
 
 
-#ifndef _world_builder_features_utilities_h
-#define _world_builder_features_utilities_h
+#ifndef WORLD_BUILDER_FEATURES_UTILITIES_H
+#define WORLD_BUILDER_FEATURES_UTILITIES_H
 
 #include <limits>
 
@@ -70,8 +70,8 @@ namespace WorldBuilder
 
         return std::numeric_limits<double>::signaling_NaN();
       }
-    }
-  }
-}
+    } // namespace Utilities
+  } // namespace Features
+} // namespace WorldBuilder
 
 #endif

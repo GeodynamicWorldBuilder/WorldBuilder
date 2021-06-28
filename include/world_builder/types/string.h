@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_feature_types_string_h
-#define _world_feature_types_string_h
+#ifndef WORLD_BUILDER_TYPES_STRING_H
+#define WORLD_BUILDER_TYPES_STRING_H
 
 #include <vector>
 
@@ -38,7 +38,7 @@ namespace WorldBuilder
      * the returned temperature or composition of the temperature and composition
      * functions of this class will be.
      */
-    class String : public Interface
+    class String final: public Interface
     {
       public:
         /**
@@ -75,7 +75,7 @@ namespace WorldBuilder
         /**
          * Destructor
          */
-        ~String();
+        ~String() final;
 
         /**
          * Todo
@@ -97,7 +97,7 @@ namespace WorldBuilder
           return new String(*this);
         };
     };
-  }
-}
+  } // namespace Types
+} // namespace WorldBuilder
 
 #endif

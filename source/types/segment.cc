@@ -16,6 +16,8 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+#include <utility>
+
 #include "world_builder/types/segment.h"
 
 
@@ -174,18 +176,18 @@ namespace WorldBuilder
                             const WorldBuilder::Point<2> &default_thickness_,
                             const WorldBuilder::Point<2> &default_top_truncation_,
                             const WorldBuilder::Point<2> &default_angle_,
-                            const std::vector<std::shared_ptr<A> > &temperature_systems_,
-                            const std::vector<std::shared_ptr<B> > &composition_systems_,
-                            const std::vector<std::shared_ptr<C> > &grains_systems_)
+                            const std::vector<std::shared_ptr<A> > temperature_systems_,
+                            const std::vector<std::shared_ptr<B> > composition_systems_,
+                            const std::vector<std::shared_ptr<C> > grains_systems_)
       :
       value_length(default_length_),
       default_length(default_length_),
       value_thickness(default_thickness_),
       value_top_truncation(default_top_truncation_),
       value_angle(default_angle_),
-      temperature_systems(temperature_systems_),
-      composition_systems(composition_systems_),
-      grains_systems(grains_systems_)
+      temperature_systems(std::move(temperature_systems_)),
+      composition_systems(std::move(composition_systems_)),
+      grains_systems(std::move(grains_systems_))
     {
       this->type_name = Types::type::Segment;
 

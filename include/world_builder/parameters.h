@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_builder_parameters_h
-#define _world_builder_parameters_h
+#ifndef WORLD_BUILDER_PARAMETERS_H
+#define WORLD_BUILDER_PARAMETERS_H
 
 #include <map>
 #include <memory>
@@ -40,17 +40,17 @@ namespace WorldBuilder
     class Array;
     class Bool;
     class UnsignedInt;
-  }
+  } // namespace Types
 
   namespace Features
   {
     class Interface;
-  }
+  } // namespace Features
 
   namespace CoordinateSystems
   {
     class Interface;
-  }
+  } // namespace CoordinateSystems
 
   class World;
 
@@ -143,7 +143,7 @@ namespace WorldBuilder
        */
       template<class T>
       bool
-      get_shared_pointers(const std::string &name, std::vector<std::shared_ptr<T> > &);
+      get_shared_pointers(const std::string &name, std::vector<std::shared_ptr<T> > & /*vector*/);
 
       /**
        * Checks for the existance of an entry in the parameter file.
@@ -296,5 +296,5 @@ namespace WorldBuilder
        */
       std::string get_relative_path_without_arrays() const;
   };
-}
+} // namespace WorldBuilder
 #endif

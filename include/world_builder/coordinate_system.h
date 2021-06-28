@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _aspect_world_builder_coordinate_sytems_h
-#define _aspect_world_builder_coordinate_sytems_h
+#ifndef WORLD_BUILDER_COORDINATE_SYSTEM_H
+#define WORLD_BUILDER_COORDINATE_SYSTEM_H
 
 namespace WorldBuilder
 {
@@ -61,7 +61,7 @@ namespace WorldBuilder
     continuous_angle_with_surface,
     none
   };
-}
+} // namespace WorldBuilder
 
 #endif
 

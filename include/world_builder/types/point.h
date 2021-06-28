@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_feature_types_point_h
-#define _world_feature_types_point_h
+#ifndef WORLD_BUILDER_TYPES_POINT_H
+#define WORLD_BUILDER_TYPES_POINT_H
 
 
 #include "world_builder/point.h"
@@ -39,7 +39,7 @@ namespace WorldBuilder
      * functions of this class will be.
      */
     template <int dim>
-    class Point : public Interface
+    class Point final: public Interface
     {
       public:
 
@@ -66,7 +66,7 @@ namespace WorldBuilder
         /**
          * Destructor
          */
-        ~Point();
+        ~Point() override final;
 
         /**
          * Todo
@@ -126,7 +126,7 @@ namespace WorldBuilder
 
     template<int dim>
     WorldBuilder::Point<dim> operator*(const double scalar, const Point<dim> &point);
-  }
-}
+  } // namespace Types
+} // namespace WorldBuilder
 
 #endif

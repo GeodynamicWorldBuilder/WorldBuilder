@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_builder_features_mantle_layer_composition_uniform_h
-#define _world_builder_features_mantle_layer_composition_uniform_h
+#ifndef WORLD_BUILDER_FEATURES_MANTLE_LAYER_MODELS_COMPOSITION_UNIFORM_H
+#define WORLD_BUILDER_FEATURES_MANTLE_LAYER_MODELS_COMPOSITION_UNIFORM_H
 
 
 #include "world_builder/features/mantle_layer_models/composition/interface.h"
@@ -39,7 +39,7 @@ namespace WorldBuilder
          * the returned temperature or composition of the temperature and composition
          * functions of this class will be.
          */
-        class Uniform : public Interface
+        class Uniform final: public Interface
         {
           public:
             /**
@@ -50,7 +50,7 @@ namespace WorldBuilder
             /**
              * Destructor
              */
-            ~Uniform();
+            ~Uniform() override final;
 
             /**
              * declare and read in the world builder file into the parameters class
@@ -85,9 +85,9 @@ namespace WorldBuilder
             std::string operation;
 
         };
-      }
-    }
-  }
-}
+      } // namespace Composition
+    } // namespace MantleLayerModels
+  } // namespace Features
+} // namespace WorldBuilder
 
 #endif

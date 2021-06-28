@@ -42,7 +42,7 @@ namespace WorldBuilder
   {
     static const std::string WORLD_BUILDER_SOURCE_DIR;
   };
-}
+} // namespace WorldBuilder
 
 
 #endif /* WORLD_BUILDER_CONFIG_H_ */
