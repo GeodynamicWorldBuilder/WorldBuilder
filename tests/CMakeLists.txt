@@ -79,7 +79,7 @@ if(WB_INCLUDE_UNIT_TEST)
   endforeach(test_source)
 endif()
 # App testing
-IF(CMAKE_RUN_APP_TESTS)
+IF(WB_RUN_APP_TESTS)
   # Create directory for the test results
   file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/app)
 
