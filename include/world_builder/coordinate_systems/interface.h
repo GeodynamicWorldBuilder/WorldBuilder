@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_builder_coordinate_systems_interface_h
-#define _world_builder_coordinate_systems_interface_h
+#ifndef WORLD_BUILDER_COORDINATE_SYSTEMS_INTERFACE_H
+#define WORLD_BUILDER_COORDINATE_SYSTEMS_INTERFACE_H
 
 #include "world_builder/coordinate_systems/interface.h"
 
@@ -111,7 +111,7 @@ namespace WorldBuilder
          * registration of the object factory.
          */
         static void registerType(const std::string &name,
-                                 void ( *)(Parameters &, const std::string &),
+                                 void ( * /*declare_entries*/)(Parameters &, const std::string &),
                                  ObjectFactory *factory);
 
         /**
@@ -171,7 +171,7 @@ namespace WorldBuilder
   }; \
   static klass##Factory global_##klass##Factory;
 
-  }
-}
+  } // namespace CoordinateSystems
+} // namespace WorldBuilder
 
 #endif

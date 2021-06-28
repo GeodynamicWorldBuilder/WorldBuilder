@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_feature_types_object_h
-#define _world_feature_types_object_h
+#ifndef WORLD_BUILDER_TYPES_OBJECT_H
+#define WORLD_BUILDER_TYPES_OBJECT_H
 
 #include <vector>
 
@@ -41,7 +41,7 @@ namespace WorldBuilder
     * by index, and a list holds the values strictly ordered, only accessible
     * an iterator. An other difference it that lists have a name.
      */
-    class Object : public Interface
+    class Object final: public Interface
     {
       public:
         /**
@@ -58,7 +58,7 @@ namespace WorldBuilder
         /**
          * Destructor
          */
-        ~Object();
+        ~Object() final;
 
         /**
          * Todo
@@ -81,7 +81,7 @@ namespace WorldBuilder
         };
 
     };
-  }
-}
+  } // namespace Types
+} // namespace WorldBuilder
 
 #endif

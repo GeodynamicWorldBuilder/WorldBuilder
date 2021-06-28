@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_builder_point_h
-#define _world_builder_point_h
+#ifndef WORLD_BUILDER_POINT_H
+#define WORLD_BUILDER_POINT_H
 #define _USE_MATH_DEFINES
 #include <array>
 #include <cmath>
@@ -267,8 +267,7 @@ namespace WorldBuilder
 
       if (angle >= 0)
         return fast_sin_d(angle);
-      else
-        return -fast_sin_d(-angle);
+      return -fast_sin_d(-angle);
     }
 
     /**
@@ -278,7 +277,7 @@ namespace WorldBuilder
     {
       return FT::sin((const_pi*0.5)-angle);
     }
-  }
+  } // namespace FT
 
 
   template<int dim>
@@ -286,5 +285,5 @@ namespace WorldBuilder
 
   template<int dim>
   Point<dim> operator/(const double scalar, const Point<dim> &point);
-}
+} // namespace WorldBuilder
 #endif

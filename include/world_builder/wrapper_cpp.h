@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_builder_wrapper_cpp_h
-#define _world_builder_wrapper_cpp_h
+#ifndef WORLD_BUILDER_WRAPPER_CPP_H
+#define WORLD_BUILDER_WRAPPER_CPP_H
 
 #include <string>
 
@@ -73,5 +73,5 @@ namespace wrapper_cpp
 
 
   };
-}
+} // namespace wrapper_cpp
 #endif

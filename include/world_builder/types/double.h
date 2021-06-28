@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_feature_types_double_h
-#define _world_feature_types_double_h
+#ifndef WORLD_BUILDER_TYPES_DOUBLE_H
+#define WORLD_BUILDER_TYPES_DOUBLE_H
 
 
 #include "world_builder/types/interface.h"
@@ -34,7 +34,7 @@ namespace WorldBuilder
     /**
      * This class represents a double value with documentation
      */
-    class Double : public Interface
+    class Double final: public Interface
     {
       public:
         /**
@@ -50,7 +50,7 @@ namespace WorldBuilder
         /**
          * Destructor
          */
-        ~Double();
+        ~Double() override final;
 
         /**
          * Todo
@@ -70,7 +70,7 @@ namespace WorldBuilder
       private:
 
     };
-  }
-}
+  } // namespace Types
+} // namespace WorldBuilder
 
 #endif

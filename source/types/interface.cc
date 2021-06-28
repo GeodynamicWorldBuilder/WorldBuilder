@@ -26,9 +26,9 @@ namespace WorldBuilder
   namespace Types
   {
     Interface::Interface()
-      :
-      type_name(type::None)
-    {}
+
+
+      = default;
 
     Interface::~Interface ()
       = default;

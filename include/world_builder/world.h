@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_builder_world_h
-#define _world_builder_world_h
+#ifndef WORLD_BUILDER_WORLD_H
+#define WORLD_BUILDER_WORLD_H
 
 #include "world_builder/grains.h"
 #include "world_builder/parameters.h"
@@ -32,7 +32,7 @@ namespace WorldBuilder
   namespace Features
   {
     class Interface;
-  }
+  } // namespace Features
 
   class World
   {
@@ -207,6 +207,6 @@ namespace WorldBuilder
 
 
   };
-}
+} // namespace WorldBuilder
 
 #endif

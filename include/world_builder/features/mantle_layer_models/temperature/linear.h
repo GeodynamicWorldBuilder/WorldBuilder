@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_builder_features_mantle_layer_temperature_linear_h
-#define _world_builder_features_mantle_layer_temperature_linear_h
+#ifndef WORLD_BUILDER_FEATURES_MANTLE_LAYER_MODELS_TEMPERATURE_LINEAR_H
+#define WORLD_BUILDER_FEATURES_MANTLE_LAYER_MODELS_TEMPERATURE_LINEAR_H
 
 
 #include "world_builder/features/mantle_layer_models/temperature/interface.h"
@@ -40,7 +40,7 @@ namespace WorldBuilder
          * the returned temperature or composition of the temperature and composition
          * functions of this class will be.
          */
-        class Linear : public Interface
+        class Linear final: public Interface
         {
           public:
             /**
@@ -51,7 +51,7 @@ namespace WorldBuilder
             /**
              * Destructor
              */
-            ~Linear();
+            ~Linear() override final;
 
             /**
              * declare and read in the world builder file into the parameters class
@@ -86,9 +86,9 @@ namespace WorldBuilder
             Utilities::Operations operation;
 
         };
-      }
-    }
-  }
-}
+      } // namespace Temperature
+    } // namespace MantleLayerModels
+  } // namespace Features
+} // namespace WorldBuilder
 
 #endif

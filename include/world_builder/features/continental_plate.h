@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_feature_features_continental_plate_h
-#define _world_feature_features_continental_plate_h
+#ifndef WORLD_BUILDER_FEATURES_CONTINENTAL_PLATE_H
+#define WORLD_BUILDER_FEATURES_CONTINENTAL_PLATE_H
 
 
 #include "world_builder/features/interface.h"
@@ -53,7 +53,7 @@ namespace WorldBuilder
      * the returned temperature or composition of the temperature and composition
      * functions of this class will be.
      */
-    class ContinentalPlate : public Interface
+    class ContinentalPlate final: public Interface
     {
       public:
         /**
@@ -64,7 +64,7 @@ namespace WorldBuilder
         /**
          * Destructor
          */
-        ~ContinentalPlate();
+        ~ContinentalPlate() override final;
 
         /**
          * declare and read in the world builder file into the parameters class
@@ -106,7 +106,7 @@ namespace WorldBuilder
          * olvine and/or enstatite) which is being requested and the current value
          * of that composition at this location and depth.
          */
-        virtual
+
         WorldBuilder::grains
         grains(const Point<3> &position,
                const double depth,
@@ -147,7 +147,7 @@ namespace WorldBuilder
     };
 
 
-  }
-}
+  } // namespace Features
+} // namespace WorldBuilder
 
 #endif

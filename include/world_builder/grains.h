@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_builder_grains_h
-#define _world_builder_grains_h
+#ifndef WORLD_BUILDER_GRAINS_H
+#define WORLD_BUILDER_GRAINS_H
 
 #include <array>
 #include <vector>
@@ -40,6 +40,6 @@ namespace WorldBuilder
     // todo: convention.
     std::vector<std::array<std::array<double,3>,3> > rotation_matrices;
   };
-}
+} // namespace WorldBuilder
 
 #endif

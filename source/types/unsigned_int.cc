@@ -26,7 +26,7 @@ namespace WorldBuilder
   {
     UnsignedInt::UnsignedInt(unsigned int default_value_)
       :
-      value(0),
+
       default_value(default_value_)
     {
       this->type_name = Types::type::UnsignedInt;

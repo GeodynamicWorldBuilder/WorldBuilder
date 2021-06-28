@@ -58,6 +58,6 @@ namespace WorldBuilder
           throw std::runtime_error(smessage.str()); \
         } \
     } while (false)
-}
+} // namespace WorldBuilder
 
 #endif

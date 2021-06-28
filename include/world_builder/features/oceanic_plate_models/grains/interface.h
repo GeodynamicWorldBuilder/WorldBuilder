@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_builder_features_oceanic_plate_grains_interface_h
-#define _world_builder_features_oceanic_plate_grains_interface_h
+#ifndef WORLD_BUILDER_FEATURES_OCEANIC_PLATE_MODELS_GRAINS_INTERFACE_H
+#define WORLD_BUILDER_FEATURES_OCEANIC_PLATE_MODELS_GRAINS_INTERFACE_H
 
 
 #include "world_builder/grains.h"
@@ -85,7 +85,7 @@ namespace WorldBuilder
              * registration of the object factory.
              */
             static void registerType(const std::string &name,
-                                     void ( *)(Parameters &, const std::string &),
+                                     void ( * /*declare_entries*/)(Parameters &, const std::string &),
                                      ObjectFactory *factory);
 
 
@@ -156,9 +156,9 @@ namespace WorldBuilder
   }; \
   static klass##Factory global_##klass##Factory;
 
-      }
-    }
-  }
-}
+      } // namespace Grains
+    } // namespace OceanicPlateModels
+  } // namespace Features
+} // namespace WorldBuilder
 
 #endif

@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _world_builder_utilities_h
-#define _world_builder_utilities_h
+#ifndef WORLD_BUILDER_UTILITIES_H
+#define WORLD_BUILDER_UTILITIES_H
 
 
 #include "world_builder/coordinate_systems/interface.h"
@@ -30,7 +30,7 @@ namespace WorldBuilder
   namespace CoordinateSystems
   {
     class Interface;
-  }
+  } // namespace CoordinateSystems
   namespace Utilities
   {
 
@@ -163,7 +163,7 @@ namespace WorldBuilder
      * and returns the corresponding value.
      */
     CoordinateSystem
-    string_to_coordinate_system (const std::string &);
+    string_to_coordinate_system (const std::string & /*coordinate_system*/);
 
 
     /**
@@ -374,8 +374,8 @@ namespace WorldBuilder
      */
     std::array<std::array<double,3>,3>
     euler_angles_to_rotation_matrix(double phi1, double theta, double phi2);
-  }
-}
+  } // namespace Utilities
+} // namespace WorldBuilder
 
 
 #endif
