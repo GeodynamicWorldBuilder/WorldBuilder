@@ -551,7 +551,7 @@ namespace WorldBuilder
               // If fraction_CPL_P1P2_strict_temp is between 0 and 1 it means that the point can be projected perpendicual to the line segment. For the non-contiuous case we only conder points which are
               // perpendicular to a line segment.
               // There can be mutliple lines segment to which a point is perpundicual. Choose the point which is closed in 2D (x-y).
-              if (fraction_CPL_P1P2_strict_temp >= -1. && fraction_CPL_P1P2_strict_temp <= 2. && fabs(min_distance_check_point_surface_2d_line_temp) < fabs(min_distance_check_point_surface_2d_line))
+              if (fraction_CPL_P1P2_strict_temp >= 0. && fraction_CPL_P1P2_strict_temp <= 1. && fabs(min_distance_check_point_surface_2d_line_temp) < fabs(min_distance_check_point_surface_2d_line))
                 {
                   min_distance_check_point_surface_2d_line = min_distance_check_point_surface_2d_line_temp;
                   i_section_min_distance = i_section;
