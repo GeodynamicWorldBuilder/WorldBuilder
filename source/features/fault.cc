@@ -623,14 +623,7 @@ namespace WorldBuilder
               Point<3> P2_cartesian(this->world->parameters.coordinate_system->natural_to_cartesian_coordinates(P2.get_array()),cartesian);
 
               const double fault_length_at_surface = (P2_cartesian - P1_cartesian).norm();
-              
-              if (section_fraction < 0.0 || section_fraction > 1.0)
-              {
-                std::cout << "Section fraction: " << section_fraction << std::endl;
-                std::cout << "Fault length: " << fault_length_at_surface << std::endl;
-                std::cout << "Rounded corner: " << rounded_corner << std::endl;
 
-              }
               // Because both sides return positive values, we have to
               // divide the thickness_local by two
               if (std::fabs(distance_from_plane) > 0 &&
