@@ -505,11 +505,16 @@ namespace WorldBuilder
                     "angle_at_begin_segment_with_surface are implemented");
 
       double min_distance_check_point_surface_2d_line = INFINITY;
+      double min_distance_outside_section = INFINITY;
       size_t i_section_min_distance = 0;
       Point<2> closest_point_on_line_2d(NaN::DSNAN,NaN::DSNAN,natural_coordinate_system);
+      size_t i_section_min_distance_outside_section = 0;
       Point<2> closest_point_on_line_2d_temp(0,0,natural_coordinate_system);
+      Point<2> closest_point_outside_section(0,0,natural_coordinate_system);
       double fraction_CPL_P1P2_strict =  INFINITY; // or NAN?
+      double fraction_CPL_P1P2_outside_section =  INFINITY;
       double fraction_CPL_P1P2 = INFINITY;
+      bool is_within_a_section = false;
 
       bool continue_computation = false;
       if (interpolation_type != InterpolationType::ContinuousMonotoneSpline)
@@ -546,17 +551,35 @@ namespace WorldBuilder
               // If fraction_CPL_P1P2_strict_temp is between 0 and 1 it means that the point can be projected perpendicual to the line segment. For the non-contiuous case we only conder points which are
               // perpendicular to a line segment.
               // There can be mutliple lines segment to which a point is perpundicual. Choose the point which is closed in 2D (x-y).
-              if (fraction_CPL_P1P2_strict_temp >= -1. && fraction_CPL_P1P2_strict_temp <= 2. && fabs(min_distance_check_point_surface_2d_line_temp) < fabs(min_distance_check_point_surface_2d_line))
+              if (fraction_CPL_P1P2_strict_temp >= 0. && fraction_CPL_P1P2_strict_temp <= 1. && fabs(min_distance_check_point_surface_2d_line_temp) < fabs(min_distance_check_point_surface_2d_line))
                 {
                   min_distance_check_point_surface_2d_line = min_distance_check_point_surface_2d_line_temp;
                   i_section_min_distance = i_section;
                   closest_point_on_line_2d = closest_point_on_line_2d_temp;
                   fraction_CPL_P1P2_strict = fraction_CPL_P1P2_strict_temp;
+                  is_within_a_section = true;
                 }
+              else if (((fraction_CPL_P1P2_strict_temp >= -100. && fraction_CPL_P1P2_strict_temp <= 0.)
+            		     || (fraction_CPL_P1P2_strict_temp >= 1. && fraction_CPL_P1P2_strict_temp <= 101.))
+            		  && fabs(min_distance_check_point_surface_2d_line_temp) < fabs(min_distance_outside_section))
+			    {
+            	  min_distance_outside_section = min_distance_check_point_surface_2d_line_temp;
+            	  i_section_min_distance_outside_section = i_section;
+                  closest_point_outside_section = closest_point_on_line_2d_temp;
+                  fraction_CPL_P1P2_outside_section = fraction_CPL_P1P2_strict_temp;
+			    }
+            }
+
+          if (!is_within_a_section)
+            {
+        	  min_distance_check_point_surface_2d_line = min_distance_outside_section;
+        	  i_section_min_distance = i_section_min_distance_outside_section;
+        	  closest_point_on_line_2d = closest_point_outside_section;
+        	  fraction_CPL_P1P2_strict = fraction_CPL_P1P2_outside_section;
             }
           // If the point on the line does not lay between point P1 and P2
           // then ignore it. Otherwise continue.
-          continue_computation = (fabs(fraction_CPL_P1P2_strict) < INFINITY && fraction_CPL_P1P2_strict >= -1. && fraction_CPL_P1P2_strict <= 2.);
+          continue_computation = (fabs(fraction_CPL_P1P2_strict) < INFINITY && fraction_CPL_P1P2_strict >= -100. && fraction_CPL_P1P2_strict <= 101.);
 
           fraction_CPL_P1P2 = global_x_list[i_section_min_distance] - static_cast<int>(global_x_list[i_section_min_distance])
                               + (global_x_list[i_section_min_distance+1]-global_x_list[i_section_min_distance]) * fraction_CPL_P1P2_strict;
