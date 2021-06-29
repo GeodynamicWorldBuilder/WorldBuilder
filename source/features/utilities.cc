@@ -31,6 +31,7 @@ namespace WorldBuilder
       {
         if (operation == "add") return Operations::ADD;
         if (operation == "subtract") return Operations::SUBTRACT;
+        if (operation == "max") return Operations::MAX;
 
         WBAssert(operation == "replace", "Could not find operation: " << operation << ".");
         return Operations::REPLACE;
