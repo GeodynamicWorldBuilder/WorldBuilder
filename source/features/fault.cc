@@ -604,7 +604,7 @@ namespace WorldBuilder
                                               section_fraction *
                                               (total_fault_length[next_section] - total_fault_length[current_section]);
 
-              const double rounded_corner = sqrt(0.25*thickness_local*thickness_local - distance_from_plane*distance_from_plane);
+              const double rounded_corner = sqrt(abs(0.25*thickness_local*thickness_local - distance_from_plane*distance_from_plane));
 
               // We need 3d points in order to conert them from natural to cartesian coordinates
               const bool bool_cartesian = (this->world->parameters.coordinate_system->natural_coordinate_system() == cartesian);
