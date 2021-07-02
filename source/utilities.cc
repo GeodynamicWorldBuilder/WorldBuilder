@@ -560,22 +560,22 @@ namespace WorldBuilder
                   is_within_a_section = true;
                 }
               else if (((fraction_CPL_P1P2_strict_temp >= -100. && fraction_CPL_P1P2_strict_temp <= 0.)
-            		     || (fraction_CPL_P1P2_strict_temp >= 1. && fraction_CPL_P1P2_strict_temp <= 101.))
-            		  && fabs(min_distance_check_point_surface_2d_line_temp) < fabs(min_distance_outside_section))
-			    {
-            	  min_distance_outside_section = min_distance_check_point_surface_2d_line_temp;
-            	  i_section_min_distance_outside_section = i_section;
+                        || (fraction_CPL_P1P2_strict_temp >= 1. && fraction_CPL_P1P2_strict_temp <= 101.))
+                       && fabs(min_distance_check_point_surface_2d_line_temp) < fabs(min_distance_outside_section))
+                {
+                  min_distance_outside_section = min_distance_check_point_surface_2d_line_temp;
+                  i_section_min_distance_outside_section = i_section;
                   closest_point_outside_section = closest_point_on_line_2d_temp;
                   fraction_CPL_P1P2_outside_section = fraction_CPL_P1P2_strict_temp;
-			    }
+                }
             }
 
           if (!is_within_a_section)
             {
-        	  min_distance_check_point_surface_2d_line = min_distance_outside_section;
-        	  i_section_min_distance = i_section_min_distance_outside_section;
-        	  closest_point_on_line_2d = closest_point_outside_section;
-        	  fraction_CPL_P1P2_strict = fraction_CPL_P1P2_outside_section;
+              min_distance_check_point_surface_2d_line = min_distance_outside_section;
+              i_section_min_distance = i_section_min_distance_outside_section;
+              closest_point_on_line_2d = closest_point_outside_section;
+              fraction_CPL_P1P2_strict = fraction_CPL_P1P2_outside_section;
             }
           // If the point on the line does not lay between point P1 and P2
           // then ignore it. Otherwise continue.
