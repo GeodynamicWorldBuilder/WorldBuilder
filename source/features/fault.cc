@@ -354,6 +354,7 @@ namespace WorldBuilder
           // the fault to be centered around the line provided by the user.
           WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
+                                                                       natural_coordinate,
                                                                        reference_point,
                                                                        coordinates,
                                                                        fault_segment_lengths,
@@ -484,6 +485,7 @@ namespace WorldBuilder
           // the fault to be centered around the line provided by the user.
           WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
+                                                                       natural_coordinate,
                                                                        reference_point,
                                                                        coordinates,
                                                                        fault_segment_lengths,
@@ -617,6 +619,7 @@ namespace WorldBuilder
           // the fault to be centered around the line provided by the user.
           WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
+                                                                       natural_coordinate,
                                                                        reference_point,
                                                                        coordinates,
                                                                        fault_segment_lengths,
