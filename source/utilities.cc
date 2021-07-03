@@ -559,8 +559,7 @@ namespace WorldBuilder
                   fraction_CPL_P1P2_strict = fraction_CPL_P1P2_strict_temp;
                   is_within_a_section = true;
                 }
-              else if (((fraction_CPL_P1P2_strict_temp >= -100. && fraction_CPL_P1P2_strict_temp <= 0.)
-                        || (fraction_CPL_P1P2_strict_temp >= 1. && fraction_CPL_P1P2_strict_temp <= 101.))
+              else if (((fraction_CPL_P1P2_strict_temp >= 1. && fraction_CPL_P1P2_strict_temp <= 101.))
                        && fabs(min_distance_check_point_surface_2d_line_temp) < fabs(min_distance_outside_section))
                 {
                   min_distance_outside_section = min_distance_check_point_surface_2d_line_temp;
@@ -579,7 +578,7 @@ namespace WorldBuilder
             }
           // If the point on the line does not lay between point P1 and P2
           // then ignore it. Otherwise continue.
-          continue_computation = (fabs(fraction_CPL_P1P2_strict) < INFINITY && fraction_CPL_P1P2_strict >= -100. && fraction_CPL_P1P2_strict <= 101.);
+          continue_computation = (fabs(fraction_CPL_P1P2_strict) < INFINITY && fraction_CPL_P1P2_strict >= 0. && fraction_CPL_P1P2_strict <= 101.);
 
           fraction_CPL_P1P2 = global_x_list[i_section_min_distance] - static_cast<int>(global_x_list[i_section_min_distance])
                               + (global_x_list[i_section_min_distance+1]-global_x_list[i_section_min_distance]) * fraction_CPL_P1P2_strict;
