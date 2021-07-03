@@ -85,6 +85,7 @@ namespace WorldBuilder
          * gravity and current temperature.
          */
         double temperature(const Point<3> &position,
+                           const  WorldBuilder::Utilities::NaturalCoordinate &natural_coordinate,
                            const double depth,
                            const double gravity,
                            double temperature) const override final;
@@ -96,6 +97,7 @@ namespace WorldBuilder
          * of that composition at this location and depth.
          */
         double composition(const Point<3> &position,
+                           const  WorldBuilder::Utilities::NaturalCoordinate &natural_coordinate,
                            const double depth,
                            const unsigned int composition_number,
                            double composition) const override final;
@@ -109,6 +111,7 @@ namespace WorldBuilder
 
         WorldBuilder::grains
         grains(const Point<3> &position,
+               const  WorldBuilder::Utilities::NaturalCoordinate &natural_coordinate,
                const double depth,
                const unsigned int composition_number,
                WorldBuilder::grains grains) const override final;

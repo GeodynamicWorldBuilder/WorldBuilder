@@ -272,9 +272,11 @@ namespace WorldBuilder
                                    specific_heat) * depth);
 
 
+    WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(point,
+                                                                    *(this->parameters.coordinate_system));
     for (auto &&it : parameters.features)
       {
-        temperature = it->temperature(point,depth,gravity_norm,temperature);
+        temperature = it->temperature(point,natural_coordinate,depth,gravity_norm,temperature);
 
         WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature
                  << ", based on a feature with the name " << it->get_name());
@@ -333,10 +335,13 @@ namespace WorldBuilder
   {
     // We receive the cartesian points from the user.
     Point<3> point(point_,cartesian);
+
+    WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(point,
+                                                                    *(this->parameters.coordinate_system));
     double composition = 0;
     for (auto &&it : parameters.features)
       {
-        composition = it->composition(point,depth,composition_number, composition);
+        composition = it->composition(point,natural_coordinate,depth,composition_number, composition);
 
         WBAssert(!std::isnan(composition), "Composition is not a number: " << composition
                  << ", based on a feature with the name " << it->get_name());
@@ -400,12 +405,14 @@ namespace WorldBuilder
   {
     // We receive the cartesian points from the user.
     Point<3> point(point_,cartesian);
+    WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(point,
+                                                                    *(this->parameters.coordinate_system));
     WorldBuilder::grains grains;
     grains.sizes.resize(number_of_grains,0);
     grains.rotation_matrices.resize(number_of_grains);
     for (const auto &feature : parameters.features)
       {
-        grains = feature->grains(point,depth,composition_number, grains);
+        grains = feature->grains(point,natural_coordinate,depth,composition_number, grains);
 
         /*WBAssert(!std::isnan(composition), "Composition is not a number: " << composition
                  << ", based on a feature with the name " << (*it)->get_name());
