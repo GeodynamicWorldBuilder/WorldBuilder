@@ -100,19 +100,7 @@ namespace WorldBuilder
 
 
 
-  template<>
-  double
-  Point<2>::norm_square() const
-  {
-    return (point[0] * point[0]) + (point[1] * point[1]);
-  }
 
-  template<>
-  double
-  Point<3>::norm_square() const
-  {
-    return (point[0] * point[0]) + (point[1] * point[1]) + (point[2] * point[2]);
-  }
 
 
   template<int dim>
@@ -136,8 +124,6 @@ namespace WorldBuilder
 
   }
 
-
-
   template<int dim>
   double
   Point<dim>::cheap_relative_distance(const Point<dim> &two) const
@@ -157,30 +143,6 @@ namespace WorldBuilder
     const double y_distance_to_reference_point = point[1]-two[1];
     return (x_distance_to_reference_point*x_distance_to_reference_point) + (y_distance_to_reference_point*y_distance_to_reference_point);
 
-  }
-
-  /**
-   * Multiplies a point with a scalar.
-   */
-  template<int dim>
-  Point<dim>
-  operator*(const double scalar, const Point<dim> &point)
-  {
-    return point*scalar;
-  }
-
-  /**
-   * Divides a scalar by a point: output_vector[i] = scalar / point[i].
-   */
-  template<int dim>
-  Point<dim>
-  operator/(const double scalar, const Point<dim> &point)
-  {
-    // initialize the array to zero.
-    std::array<double,dim> array;
-    for (unsigned int i = 0; i < dim; ++i)
-      array[i] = scalar / point[i];
-    return Point<dim>(array,point.coordinate_system);
   }
 
   /**

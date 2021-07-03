@@ -275,7 +275,12 @@ namespace WorldBuilder
       * Computes the square of the norm, which is the sum of the absolute squares
       * x_i * x_i + y_i * y_i + z_i * z_i in 3d.
       */
-      double norm_square() const;
+      inline
+      double norm_square() const
+      {
+        WBAssertThrow(false,"This function is only available in 2d or 3d.");
+        return 0;
+      }
 
       /**
        * Outputs the values of the point to std cout separated by spaces. This does not
@@ -298,6 +303,20 @@ namespace WorldBuilder
       CoordinateSystem coordinate_system;
 
   };
+
+  template <>
+  inline
+  double Point<2>::norm_square() const
+  {
+    return (point[0] * point[0]) + (point[1] * point[1]);
+  }
+
+  template <>
+  inline
+  double Point<3>::norm_square() const
+  {
+    return (point[0] * point[0]) + (point[1] * point[1]) + (point[2] * point[2]);
+  }
 
   /**
    * This namespace contains some faster but less accurate version of the
@@ -366,9 +385,22 @@ namespace WorldBuilder
 
 
   template<int dim>
-  Point<dim> operator*(const double scalar, const Point<dim> &point);
+  inline
+  Point<dim> operator*(const double scalar, const Point<dim> &point)
+  {
+    return point*scalar;
+  }
 
   template<int dim>
-  Point<dim> operator/(const double scalar, const Point<dim> &point);
+  inline
+  Point<dim> operator/(const double scalar, const Point<dim> &point)
+  {
+    // initialize the array to zero.
+    std::array<double,dim> array = Point<dim>(point.coordinate_system).get_array();
+    for (unsigned int i = 0; i < dim; ++i)
+      array[i] = scalar / point[i];
+    return Point<dim>(array,point.coordinate_system);
+  }
+
 } // namespace WorldBuilder
 #endif
