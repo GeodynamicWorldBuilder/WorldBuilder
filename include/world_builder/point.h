@@ -136,7 +136,8 @@ namespace WorldBuilder
         WBAssert(coordinate_system == point_right.get_coordinate_system(),
                  "Cannot add two points which represent different coordinate systems.");
         Point<dim> point_tmp(point,coordinate_system);
-        point_tmp += point_right;
+        for (unsigned int i = 0; i < dim; ++i)
+          point_tmp[i] += point_right[i];
 
         return point_tmp;
       }
@@ -152,7 +153,8 @@ namespace WorldBuilder
                  "Cannot substract two points which represent different coordinate systems. Internal has type " << static_cast<int>(coordinate_system)
                  << ", other point has type " << static_cast<int>(point_right.get_coordinate_system()));
         Point<dim> point_tmp(point,coordinate_system);
-        point_tmp -= point_right;
+        for (unsigned int i = 0; i < dim; ++i)
+          point_tmp[i] -= point_right[i];
 
         return point_tmp;
       }
