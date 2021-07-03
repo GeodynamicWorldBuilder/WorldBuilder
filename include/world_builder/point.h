@@ -78,34 +78,84 @@ namespace WorldBuilder
        */
       ~Point();
 
-      Point<dim> &operator=(const Point<dim> &point);
+      inline
+      Point<dim> &operator=(const Point<dim> &point_right)
+      {
+        point = point_right.point;
+        coordinate_system = point_right.coordinate_system;
+        return *this;
+      }
 
       /**
        * dot product
        */
-      double operator*(const Point<dim> &point) const;
+      inline
+      double operator*(const Point<dim> &point_right) const
+      {
+        const std::array<double,dim> array = point_right.get_array();
+        double dot_product = 0;
+        for (unsigned int i = 0; i < dim; ++i)
+          dot_product += point[i] * array[i];
+        return dot_product;
+      }
 
 
       /**
        * Multiply the vector with a scalar
        */
-      Point<dim> operator*(const double scalar) const;
+      inline
+      Point<dim> operator*(const double scalar) const
+      {
+        // initialize the array to zero.
+        std::array<double,dim> array = Point<dim>(coordinate_system).get_array();
+        for (unsigned int i = 0; i < dim; ++i)
+          array[i] += point[i] * scalar;
+        return Point<dim>(array,coordinate_system);
+      }
 
       /**
        * Divide the vector through a scalar
        */
-      Point<dim> operator/(const double scalar) const;
+      inline
+      Point<dim> operator/(const double scalar) const
+      {
+        // initialize the array to zero.
+        std::array<double,dim> array = Point<dim>(coordinate_system).get_array();
+        const double one_over_scalar = 1/scalar;
+        for (unsigned int i = 0; i < dim; ++i)
+          array[i] += point[i] * one_over_scalar;
+        return Point<dim>(array,coordinate_system);
+      }
 
       /**
        * add two points
        */
-      Point<dim> operator+(const Point<dim> &point) const;
+      inline
+      Point<dim> operator+(const Point<dim> &point_right) const
+      {
+        WBAssert(coordinate_system == point_right.get_coordinate_system(),
+                 "Cannot add two points which represent different coordinate systems.");
+        Point<dim> point_tmp(point,coordinate_system);
+        point_tmp += point_right;
+
+        return point_tmp;
+      }
 
 
       /**
        * Substract two points
        */
-      Point<dim> operator-(const Point<dim> &point) const;
+      inline
+      Point<dim> operator-(const Point<dim> &point_right) const
+      {
+        WBAssert(coordinate_system == point_right.get_coordinate_system(),
+                 "Cannot substract two points which represent different coordinate systems. Internal has type " << static_cast<int>(coordinate_system)
+                 << ", other point has type " << static_cast<int>(point_right.get_coordinate_system()));
+        Point<dim> point_tmp(point,coordinate_system);
+        point_tmp -= point_right;
+
+        return point_tmp;
+      }
 
 
       /**
@@ -192,19 +242,31 @@ namespace WorldBuilder
       /**
        * return the internal array which stores the point data.
        */
-      const std::array<double,dim> &get_array() const;
+      inline
+      const std::array<double,dim> &get_array() const
+      {
+        return point;
+      }
 
 
       /**
        * returns the coordinate system associated with the data.
        */
-      CoordinateSystem get_coordinate_system() const;
+      inline
+      CoordinateSystem get_coordinate_system() const
+      {
+        return coordinate_system;
+      }
 
 
       /**
       * Computes the L2 norm: sqrt(x_i * x_i + y_i * y_i + z_i * z_i) in 3d.
       */
-      double norm() const;
+      inline
+      double norm() const
+      {
+        return std::sqrt(this->norm_square());
+      }
 
 
       /**
