@@ -164,46 +164,6 @@ namespace WorldBuilder
 
 
   template<int dim>
-  Point<dim> &
-  Point<dim>::operator*=(const double scalar)
-  {
-    for (unsigned int i = 0; i < dim; ++i)
-      point[i] *= scalar;
-    return *this;
-  }
-
-
-  template<int dim>
-  Point<dim> &
-  Point<dim>::operator/=(const double scalar)
-  {
-    for (unsigned int i = 0; i < dim; ++i)
-      point[i] /= scalar;
-    return *this;
-  }
-
-
-  template<int dim>
-  Point<dim> &
-  Point<dim>::operator+=(const Point<dim> &point_)
-  {
-    for (unsigned int i = 0; i < dim; ++i)
-      point[i] += point_[i];
-    return *this;
-  }
-
-
-  template<int dim>
-  Point<dim> &
-  Point<dim>::operator-=(const Point<dim> &point_)
-  {
-    for (unsigned int i = 0; i < dim; ++i)
-      point[i] -= point_[i];
-    return *this;
-  }
-
-
-  template<int dim>
   const std::array<double,dim> &
   Point<dim>::get_array() const
   {

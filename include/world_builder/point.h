@@ -108,27 +108,48 @@ namespace WorldBuilder
       Point<dim> operator-(const Point<dim> &point) const;
 
 
-
       /**
        * Multiply the vector with a scalar
        */
-      Point<dim> &operator*=(const double scalar);
-
+      inline
+      Point<dim> &operator*=(const double scalar)
+      {
+        for (unsigned int i = 0; i < dim; ++i)
+          point[i] *= scalar;
+        return *this;
+      }
       /**
        * Divide the vector through a scalar
        */
-      Point<dim> &operator/=(const double scalar);
+      inline
+      Point<dim> &operator/=(const double scalar)
+      {
+        for (unsigned int i = 0; i < dim; ++i)
+          point[i] /= scalar;
+        return *this;
+      }
 
       /**
        * add two points
        */
-      Point<dim> &operator+=(const Point<dim> &point);
-
+      inline
+      Point<dim> &operator+=(const Point<dim> &point_right)
+      {
+        for (unsigned int i = 0; i < dim; ++i)
+          point[i] += point_right[i];
+        return *this;
+      }
 
       /**
        * substract two points
        */
-      Point<dim> &operator-=(const Point<dim> &point);
+      inline
+      Point<dim> &operator-=(const Point<dim> &point_left)
+      {
+        for (unsigned int i = 0; i < dim; ++i)
+          point[i] -= point_left[i];
+        return *this;
+      }
 
       /**
        * access index (const)
