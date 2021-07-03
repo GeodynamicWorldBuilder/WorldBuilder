@@ -177,7 +177,7 @@ namespace WorldBuilder
   operator/(const double scalar, const Point<dim> &point)
   {
     // initialize the array to zero.
-    std::array<double,dim> array = Point<dim>(point.coordinate_system).get_array();
+    std::array<double,dim> array;
     for (unsigned int i = 0; i < dim; ++i)
       array[i] = scalar / point[i];
     return Point<dim>(array,point.coordinate_system);

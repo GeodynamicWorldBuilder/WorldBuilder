@@ -92,7 +92,7 @@ namespace WorldBuilder
       inline
       double operator*(const Point<dim> &point_right) const
       {
-        const std::array<double,dim> array = point_right.get_array();
+        const std::array<double,dim> &array = point_right.get_array();
         double dot_product = 0;
         for (unsigned int i = 0; i < dim; ++i)
           dot_product += point[i] * array[i];
@@ -107,9 +107,9 @@ namespace WorldBuilder
       Point<dim> operator*(const double scalar) const
       {
         // initialize the array to zero.
-        std::array<double,dim> array = Point<dim>(coordinate_system).get_array();
+        std::array<double,dim> array;
         for (unsigned int i = 0; i < dim; ++i)
-          array[i] += point[i] * scalar;
+          array[i] = point[i] * scalar;
         return Point<dim>(array,coordinate_system);
       }
 
@@ -120,10 +120,10 @@ namespace WorldBuilder
       Point<dim> operator/(const double scalar) const
       {
         // initialize the array to zero.
-        std::array<double,dim> array = Point<dim>(coordinate_system).get_array();
+        std::array<double,dim> array;
         const double one_over_scalar = 1/scalar;
         for (unsigned int i = 0; i < dim; ++i)
-          array[i] += point[i] * one_over_scalar;
+          array[i] = point[i] * one_over_scalar;
         return Point<dim>(array,coordinate_system);
       }
 
