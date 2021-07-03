@@ -23,41 +23,6 @@
 
 namespace WorldBuilder
 {
-  template<>
-  Point<3>::Point(const CoordinateSystem coordinate_system_)
-    :
-    point({{0,0,0}}),
-  coordinate_system(coordinate_system_)
-  {}
-
-  template<>
-  Point<2>::Point(const CoordinateSystem coordinate_system_)
-    :
-    point({{0,0}}),
-  coordinate_system(coordinate_system_)
-  {}
-
-  template<int dim>
-  Point<dim>::Point(const std::array<double,dim> &location, const CoordinateSystem coordinate_system_)
-    :
-    point(location),
-    coordinate_system(coordinate_system_)
-  {}
-
-  template<int dim>
-  Point<dim>::Point(const Point<dim> &point_, const CoordinateSystem coordinate_system_)
-    :
-    point(point_.get_array()),
-    coordinate_system(coordinate_system_)
-  {}
-
-  template<int dim>
-  Point<dim>::Point(const Point<dim> &point_)
-    :
-    point(point_.get_array()),
-    coordinate_system(point_.get_coordinate_system())
-  {}
-
 
   template<>
   Point<2>::Point(const double x, const double y, const CoordinateSystem coordinate_system_)
@@ -93,10 +58,6 @@ namespace WorldBuilder
   coordinate_system(coordinate_system_)
   {}
 
-
-  template<int dim>
-  Point<dim>::~Point()
-    = default;
 
 
 

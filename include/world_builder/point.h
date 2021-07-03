@@ -42,24 +42,44 @@ namespace WorldBuilder
        * Constructor. Constructs a Point at (0,0) in 2d or (0,0,0) in 3d
        * with a Cartesian coordinate system.
        */
-      Point(CoordinateSystem coordinate_system);
+      inline
+      Point(CoordinateSystem coordinate_system_)
+        :
+        point(std::array<double,dim>()),
+        coordinate_system(coordinate_system_)
+      {}
 
       /**
        * Constructor. Constructs a Point from a std::array<double,dim> and
        * a coordinate system.
        */
-      Point(const std::array<double,dim> &location, CoordinateSystem coordinate_system);
+      inline
+      Point(const std::array<double,dim> &location, CoordinateSystem coordinate_system_)
+        :
+        point(location),
+        coordinate_system(coordinate_system_)
+      {}
 
       /**
        * Constructor. Constructs a Point from an other Point and
        * a coordinate system.
        */
-      Point(const Point<dim> &point, CoordinateSystem coordinate_system);
+      inline
+      Point(const Point<dim> &location, CoordinateSystem coordinate_system_)
+        :
+        point(location.get_array()),
+        coordinate_system(coordinate_system_)
+      {}
 
       /**
        * Constructor. Constructs a Point from an other Point.
        */
-      Point(const Point<dim> &point);
+      inline
+      Point(const Point<dim> &location)
+        :
+        point(location.get_array()),
+        coordinate_system(location.get_coordinate_system())
+      {}
 
       /**
        * Constructor. Constructs a 2d Point from two doubles and
@@ -76,7 +96,8 @@ namespace WorldBuilder
       /**
        * Destructor
        */
-      ~Point();
+      inline
+      ~Point() = default;
 
       inline
       Point<dim> &operator=(const Point<dim> &point_right)
