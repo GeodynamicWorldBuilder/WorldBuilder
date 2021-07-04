@@ -132,14 +132,11 @@ namespace WorldBuilder
 
     double
     OceanicPlate::temperature(const Point<3> &position,
+                              const  NaturalCoordinate &natural_coordinate,
                               const double depth,
                               const double gravity_norm,
                               double temperature) const
     {
-      WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                      *(world->parameters.coordinate_system));
-
-
       if (depth <= max_depth && depth >= min_depth &&
           WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
                                                                                 world->parameters.coordinate_system->natural_coordinate_system())))
@@ -166,13 +163,11 @@ namespace WorldBuilder
 
     double
     OceanicPlate::composition(const Point<3> &position,
+                              const  NaturalCoordinate &natural_coordinate,
                               const double depth,
                               const unsigned int composition_number,
                               double composition) const
     {
-      WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                      *(world->parameters.coordinate_system));
-
       if (depth <= max_depth && depth >= min_depth &&
           WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
                                                                                 world->parameters.coordinate_system->natural_coordinate_system())))
@@ -199,13 +194,11 @@ namespace WorldBuilder
 
     WorldBuilder::grains
     OceanicPlate::grains(const Point<3> &position,
+                         const NaturalCoordinate &natural_coordinate,
                          const double depth,
                          const unsigned int composition_number,
                          WorldBuilder::grains grains) const
     {
-      WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                      *(world->parameters.coordinate_system));
-
       if (depth <= max_depth && depth >= min_depth &&
           WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
                                                                                 world->parameters.coordinate_system->natural_coordinate_system())))

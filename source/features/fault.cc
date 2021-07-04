@@ -329,13 +329,11 @@ namespace WorldBuilder
 
     double
     Fault::temperature(const Point<3> &position,
+                       const  NaturalCoordinate &natural_coordinate,
                        const double depth,
                        const double gravity_norm,
                        double temperature) const
     {
-      WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                      *(world->parameters.coordinate_system));
-
       // The depth variable is the distance from the surface to the position, the depth
       // coordinate is the distance from the bottom of the model to the position and
       // the starting radius is the distance from the bottom of the model to the surface.
@@ -356,6 +354,7 @@ namespace WorldBuilder
           // the fault to be centered around the line provided by the user.
           WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
+                                                                       natural_coordinate,
                                                                        reference_point,
                                                                        coordinates,
                                                                        fault_segment_lengths,
@@ -470,12 +469,11 @@ namespace WorldBuilder
 
     double
     Fault::composition(const Point<3> &position,
+                       const  NaturalCoordinate &natural_coordinate,
                        const double depth,
                        const unsigned int composition_number,
                        double composition) const
     {
-      WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                      *(world->parameters.coordinate_system));
       // todo: explain
       const double starting_radius = natural_coordinate.get_depth_coordinate() + depth - starting_depth;
 
@@ -487,6 +485,7 @@ namespace WorldBuilder
           // the fault to be centered around the line provided by the user.
           WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
+                                                                       natural_coordinate,
                                                                        reference_point,
                                                                        coordinates,
                                                                        fault_segment_lengths,
@@ -604,12 +603,11 @@ namespace WorldBuilder
 
     WorldBuilder::grains
     Fault::grains(const Point<3> &position,
+                  const  NaturalCoordinate &natural_coordinate,
                   const double depth,
                   const unsigned int composition_number,
                   WorldBuilder::grains grains) const
     {
-      WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                      *(world->parameters.coordinate_system));
       // todo: explain
       const double starting_radius = natural_coordinate.get_depth_coordinate() + depth - starting_depth;
 
@@ -621,6 +619,7 @@ namespace WorldBuilder
           // the fault to be centered around the line provided by the user.
           WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
+                                                                       natural_coordinate,
                                                                        reference_point,
                                                                        coordinates,
                                                                        fault_segment_lengths,

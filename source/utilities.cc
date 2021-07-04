@@ -222,7 +222,7 @@ namespace WorldBuilder
       coordinates = coordinate_system_.cartesian_to_natural_coordinates(position.get_array());
     }
 
-    const std::array<double,3> &NaturalCoordinate::get_coordinates()
+    const std::array<double,3> &NaturalCoordinate::get_coordinates() const
     {
       return coordinates;
     }
@@ -428,7 +428,8 @@ namespace WorldBuilder
     }
 
     PointDistanceFromCurvedPlanes
-    distance_point_from_curved_planes(const Point<3> &check_point, // cartesian point in spherical system
+    distance_point_from_curved_planes(const Point<3> &check_point, // cartesian point in cartesian and spherical system
+                                      const NaturalCoordinate &natural_coordinate, // cartesian point cartesian system, spherical point in spherical system
                                       const Point<2> &reference_point, // in (rad) spherical coordinates in spherical system
                                       const std::vector<Point<2> > &point_list, // in  (rad) spherical coordinates in spherical system
                                       const std::vector<std::vector<double> > &plane_segment_lengths,
@@ -470,13 +471,12 @@ namespace WorldBuilder
       const CoordinateSystem natural_coordinate_system = coordinate_system->natural_coordinate_system();
       const bool bool_cartesian = natural_coordinate_system == cartesian;
 
-      const Point<3> check_point_natural(coordinate_system->cartesian_to_natural_coordinates(check_point.get_array()),natural_coordinate_system);
-      const Point<3> check_point_surface(bool_cartesian ? check_point_natural[0] : start_radius,
-                                         check_point_natural[1],
-                                         bool_cartesian ? start_radius           : check_point_natural[2],
+      const std::array<double,3> &check_point_surface_2d_array = natural_coordinate.get_coordinates();
+      const Point<3> check_point_surface(bool_cartesian ? check_point_surface_2d_array[0] : start_radius,
+                                         check_point_surface_2d_array[1],
+                                         bool_cartesian ? start_radius : check_point_surface_2d_array[2],
                                          natural_coordinate_system);
-      const Point<2> check_point_surface_2d(bool_cartesian ? check_point_natural[0] : check_point_natural[1],
-                                            bool_cartesian ? check_point_natural[1] : check_point_natural[2],
+      const Point<2> check_point_surface_2d(natural_coordinate.get_surface_coordinates(),
                                             natural_coordinate_system);
 
       // The section which is checked.

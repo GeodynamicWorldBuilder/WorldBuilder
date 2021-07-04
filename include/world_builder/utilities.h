@@ -89,7 +89,7 @@ namespace WorldBuilder
          * Returns the coordinates in the given coordinate system, which may
          * not be Cartesian.
          */
-        const std::array<double,3> &get_coordinates();
+        const std::array<double,3> &get_coordinates() const;
 
         /**
          * The coordinate that represents the 'surface' directions in the
@@ -299,8 +299,10 @@ namespace WorldBuilder
     /**
      * Computes the distance of a point to a curved plane.
      * TODO: add more info on how this works/is implemented.
-     * \param point This is the cartesian point of which we want to know the
+     * \param check_point This is the cartesian point of which we want to know the
      * distance to the curved planes
+     * \param check_point_natural the check_point in the natural coordinates of the
+     * current coordinate system.
      * \param reference_point This is a 2d point in natural coordinates at the
      * surface which the curved planes dip towards. Natural coordinates are in
      * cartesian (x,y,z) in meters and in spherical radius in meters and longitude
@@ -342,7 +344,8 @@ namespace WorldBuilder
      * of the point from the plane and the distance of the point along the plane,
      * and the average angle of the closest segment/section.
      */
-    PointDistanceFromCurvedPlanes distance_point_from_curved_planes(const Point<3> &point,
+    PointDistanceFromCurvedPlanes distance_point_from_curved_planes(const Point<3> &check_point,
+                                                                    const NaturalCoordinate &check_point_natural,
                                                                     const Point<2> &reference_point,
                                                                     const std::vector<Point<2> > &point_list,
                                                                     const std::vector<std::vector<double> > &plane_segment_lengths,
