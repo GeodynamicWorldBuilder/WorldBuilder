@@ -248,7 +248,19 @@ namespace WorldBuilder
     /**
      * A struct that is used to hold the return values of the function
      * distance_point_from_curved_planes(). See there for a documentation
-     * of the meaning of the member variables.
+     * of the meaning of the member variables. The variables are describing
+     * a where a point is with respect to a plane/surface. The surface is
+     * meshed by a grid. The axis parallel to the surface are formed by
+     * sections, and the axis perpendicuar to the surface are formed segments.
+     * Both sections and elements represent a whole cell in the grid, which is
+     * an inteter. This structure also provides the fraction in each direction
+     * the closest point on the plane is along these two axes (sections and
+     * segments). These variables are called fractions.
+     *
+     * This structure furthermore provides the distance the provided point is
+     * from the closest point on the surface and the avarage angle. The variable
+     * local_thickness will not be automatically filled by the distance_point_from_curved_planes
+     * function.
      */
     struct PointDistanceFromCurvedPlanes
     {
