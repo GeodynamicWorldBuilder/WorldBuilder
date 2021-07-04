@@ -234,7 +234,8 @@ namespace WorldBuilder
         /**
          * x coordinates of points
          */
-        std::vector<double> m_x;
+        //std::vector<double> m_x;
+        size_t mx_size_min;
 
         /**
          * interpolation parameters
