@@ -439,8 +439,7 @@ namespace WorldBuilder
                                       const bool only_positive,
                                       const InterpolationType interpolation_type,
                                       const interpolation &x_spline,
-                                      const interpolation &y_spline,
-                                      std::vector<double> global_x_list)
+                                      const interpolation &y_spline)
     {
       // TODO: Assert that point_list, plane_segment_angles and plane_segment_lenghts have the same size.
       /*WBAssert(point_list.size() == plane_segment_lengths.size(),
@@ -449,19 +448,7 @@ namespace WorldBuilder
       WBAssert(point_list.size() == plane_segment_angles.size(),
                "Internal error: The size of point_list (" << point_list.size()
                << ") and plane_segment_angles (" << plane_segment_angles.size() << ") are different.");
-      WBAssert(point_list.size() == plane_segment_angles.size(),
-               "Internal error: The size of point_list (" << point_list.size()
-               << ") and global_x_list (" << global_x_list.size() << ") are different.");*/
-
-      if (global_x_list.empty())
-        {
-          // fill it
-          global_x_list.resize(point_list.size());
-          for (size_t i = 0; i < point_list.size(); ++i)
-            global_x_list[i] = static_cast<double>(i);
-        }
-      WBAssertThrow(global_x_list.size() == point_list.size(), "The given global_x_list doesn't have "
-                    "the same size as the point list. This is required.");
+      */
 
       double distance = INFINITY;
       double new_distance = INFINITY;
@@ -516,7 +503,7 @@ namespace WorldBuilder
       double minimum_distance_to_reference_point = splines.cheap_relative_distance(check_point_surface_2d);
 
       // Compute the clostest point on the spline as a double.
-      for (size_t i_estimate = 0; i_estimate <= static_cast<size_t>(parts*(global_x_list[point_list.size()-1])+1); i_estimate++)
+      for (size_t i_estimate = 0; i_estimate <= static_cast<size_t>(parts*(point_list.size()-1)+1); i_estimate++)
         {
           splines[0] = x_spline(min_estimate_solution_temp);
           splines[1] = y_spline(min_estimate_solution_temp);
@@ -564,10 +551,8 @@ namespace WorldBuilder
 
 
 
-      if (solution > 0 && floor(solution) <= global_x_list[point_list.size()-2] && floor(solution)  >= 0)
+      if (solution > 0 && floor(solution) <= point_list.size()-2 && floor(solution)  >= 0)
         {
-
-
           closest_point_on_line_2d = Point<2>(x_spline(solution),y_spline(solution),natural_coordinate_system);
           i_section_min_distance = static_cast<size_t>(floor(solution));
           fraction_CPL_P1P2 = solution-floor(solution);
@@ -606,7 +591,7 @@ namespace WorldBuilder
 
 
           // translate to orignal coordinates current and next section
-          size_t original_current_section = static_cast<size_t>(std::floor(global_x_list[i_section_min_distance]));
+          size_t original_current_section = static_cast<size_t>(std::floor(i_section_min_distance));
           size_t original_next_section = original_current_section + 1;
 
 
