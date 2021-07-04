@@ -519,7 +519,7 @@ namespace WorldBuilder
       Point<2> splines(0.,
                        0.,
                        natural_coordinate_system);
-      double minimum_distance_to_reference_point = splines.cheap_relative_distance(check_point_surface_2d);
+      double minimum_distance_to_reference_point = INFINITY;
 
       // Compute the clostest point on the spline as a double.
       for (size_t i_estimate = 0; i_estimate <= static_cast<size_t>(parts*(point_list.size()-1)+1); i_estimate++)
