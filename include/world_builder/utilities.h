@@ -237,10 +237,9 @@ namespace WorldBuilder
         }
 
         inline
-        double operator() (const double x,const size_t idx) const
+        double operator() (const double x,const size_t idx,const double h) const
         {
-          const double h = x-idx;
-          return (((x >= 0 && x <= mx_size_min ? m_a[idx]*h : 0) + m_b[idx])*h + m_c[idx])*h + m_y[idx];
+          return ((m_a[idx]*h + m_b[idx])*h + m_c[idx])*h + m_y[idx];
         }
 
       private:
