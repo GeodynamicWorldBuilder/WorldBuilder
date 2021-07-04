@@ -230,11 +230,11 @@ namespace WorldBuilder
          */
         inline
         double operator() (const double x) const
-    {
-      const size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
-      const double h = x-idx;
-      return (((x >= 0 && x <= mx_size_min ? m_a[idx]*h : 0) + m_b[idx])*h + m_c[idx])*h + m_y[idx];
-    }
+        {
+          const size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
+          const double h = x-idx;
+          return (((x >= 0 && x <= mx_size_min ? m_a[idx]*h : 0) + m_b[idx])*h + m_c[idx])*h + m_y[idx];
+        }
 
       private:
         /**

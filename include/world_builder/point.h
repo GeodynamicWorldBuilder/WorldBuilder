@@ -369,10 +369,10 @@ namespace WorldBuilder
      */
     inline double fast_sin_d(const double angle)
     {
-        WBAssert(angle >= 0 && angle <= const_pi, 
-        "You are tring to use the fast sin function in an invalid range. "
-        "The fast sin function can only be used for values between 0 and pi. "
-        "The provided angle is " << angle);
+      WBAssert(angle >= 0 && angle <= const_pi,
+               "You are tring to use the fast sin function in an invalid range. "
+               "The fast sin function can only be used for values between 0 and pi. "
+               "The provided angle is " << angle);
       constexpr double A = 4.0/(const_pi *const_pi);
       constexpr double oneminPmin = 1.-0.1952403377008734-0.01915214119105392;
 
@@ -385,36 +385,36 @@ namespace WorldBuilder
      * Implemented by calling fast_sin_d with a mirrored x if needed to
      * forfill the constrained of fast_sin_d to only have values between
      * zero and pi.
-     * 
+     *
      * new: only valid between -180 and 180 degrees
      */
     inline double sin(const double angle)
     {
-      WBAssert(angle >= -const_pi && angle <= const_pi, 
-        "You are tring to use the fast sin function in an invalid range. "
-        "The fast sin function can only be used for values between -pi and pi. "
-        "The provided angle is " << angle);
+      WBAssert(angle >= -const_pi && angle <= const_pi,
+               "You are tring to use the fast sin function in an invalid range. "
+               "The fast sin function can only be used for values between -pi and pi. "
+               "The provided angle is " << angle);
       //const double angle = (raw_angle > -const_pi && raw_angle < const_pi)
       //                     ?
       //                     raw_angle
       //                     :
       //                     FT::fmod(raw_angle + std::copysign(const_pi,raw_angle), const_pi * 2.0) - std::copysign(const_pi,raw_angle);
-      if(angle >= 0.)
+      if (angle >= 0.)
         return fast_sin_d(angle);
       return -fast_sin_d(-angle);
     }
 
     /**
      * Fast but less accurate cos function for any angle.
-     * 
+     *
      * new: only valid between -90 and 270 degrees
      */
     inline double cos(const double angle)
-    {      
-      WBAssert(angle >= -0.5*const_pi && angle <= 1.5*const_pi, 
-        "You are tring to use the fast cos function in an invalid range. "
-        "The fast sin function can only be used for values between -pi and pi. "
-        "The provided angle is " << angle);
+    {
+      WBAssert(angle >= -0.5*const_pi && angle <= 1.5*const_pi,
+               "You are tring to use the fast cos function in an invalid range. "
+               "The fast sin function can only be used for values between -pi and pi. "
+               "The provided angle is " << angle);
 
       return FT::sin((const_pi*0.5)-angle);
     }

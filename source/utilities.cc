@@ -460,18 +460,19 @@ namespace WorldBuilder
 
       std::array<double,3> check_point_surface_2d_array = natural_coordinate.get_coordinates();
       // make sure the values are between -pi and pi
-      if(!bool_cartesian){
-        check_point_surface_2d_array[1] = (check_point_surface_2d_array[1]  > -const_pi && check_point_surface_2d_array[1]  < const_pi)
-                           ?
-                           check_point_surface_2d_array[1] 
-                           :
-                           FT::fmod(check_point_surface_2d_array[1]  + std::copysign(const_pi,check_point_surface_2d_array[1] ), const_pi * 2.0) - std::copysign(const_pi,check_point_surface_2d_array[1] );
-        check_point_surface_2d_array[2] = (check_point_surface_2d_array[2]  > -const_pi && check_point_surface_2d_array[2]  < const_pi)
-                           ?
-                           check_point_surface_2d_array[2] 
-                           :
-                           FT::fmod(check_point_surface_2d_array[2]  + std::copysign(const_pi,check_point_surface_2d_array[2] ), const_pi * 2.0) - std::copysign(const_pi,check_point_surface_2d_array[2] );
-      }
+      if (!bool_cartesian)
+        {
+          check_point_surface_2d_array[1] = (check_point_surface_2d_array[1]  > -const_pi && check_point_surface_2d_array[1]  < const_pi)
+                                            ?
+                                            check_point_surface_2d_array[1]
+                                            :
+                                            FT::fmod(check_point_surface_2d_array[1]  + std::copysign(const_pi,check_point_surface_2d_array[1] ), const_pi * 2.0) - std::copysign(const_pi,check_point_surface_2d_array[1] );
+          check_point_surface_2d_array[2] = (check_point_surface_2d_array[2]  > -const_pi && check_point_surface_2d_array[2]  < const_pi)
+                                            ?
+                                            check_point_surface_2d_array[2]
+                                            :
+                                            FT::fmod(check_point_surface_2d_array[2]  + std::copysign(const_pi,check_point_surface_2d_array[2] ), const_pi * 2.0) - std::copysign(const_pi,check_point_surface_2d_array[2] );
+        }
       const Point<3> check_point_surface(bool_cartesian ? check_point_surface_2d_array[0] : start_radius,
                                          check_point_surface_2d_array[1],
                                          bool_cartesian ? start_radius : check_point_surface_2d_array[2],
@@ -509,7 +510,7 @@ namespace WorldBuilder
 
 
       // get an estimate for the closest point between P1 and P2.
-      const double parts = 3;
+      const double parts = interpolation_type == InterpolationType::None || interpolation_type == InterpolationType::Linear ? 1 : 3;
       double min_estimate_solution = 0;
       double min_estimate_solution_temp = min_estimate_solution;
       Point<2> splines(x_spline(min_estimate_solution),y_spline(min_estimate_solution), natural_coordinate_system);
