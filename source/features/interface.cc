@@ -144,13 +144,13 @@ namespace WorldBuilder
           one_dimensional_coordinates_local[j] = static_cast<double>(j);
         }
 
-      if (interpolation_type != WorldBuilder::Utilities::InterpolationType::None)
+      //if (interpolation_type != WorldBuilder::Utilities::InterpolationType::None)
         {
-          WBAssert(interpolation_type == WorldBuilder::Utilities::InterpolationType::Linear ||
-                   interpolation_type == WorldBuilder::Utilities::InterpolationType::MonotoneSpline ||
-                   interpolation_type == WorldBuilder::Utilities::InterpolationType::ContinuousMonotoneSpline,
-                   "For interpolation, linear and monotone spline are the only allowed values. "
-                   << "You provided " << interpolation_type_string << ".");
+          //WBAssert(interpolation_type == WorldBuilder::Utilities::InterpolationType::Linear ||
+          //         interpolation_type == WorldBuilder::Utilities::InterpolationType::MonotoneSpline ||
+          //         interpolation_type == WorldBuilder::Utilities::InterpolationType::ContinuousMonotoneSpline,
+          //         "For interpolation, linear and monotone spline are the only allowed values. "
+          //         << "You provided " << interpolation_type_string << ".");
 
           double maximum_distance_between_coordinates = this->world->maximum_distance_between_coordinates *
                                                         (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
@@ -169,10 +169,12 @@ namespace WorldBuilder
 
           x_spline.set_points(one_dimensional_coordinates_local,
                               x_list,
-                              interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear);
+                              interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear &&
+                              interpolation_type != WorldBuilder::Utilities::InterpolationType::None);
           y_spline.set_points(one_dimensional_coordinates_local,
                               y_list,
-                              interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear);
+                              interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear &&
+                              interpolation_type != WorldBuilder::Utilities::InterpolationType::None);
 
           if (maximum_distance_between_coordinates > 0)
             {

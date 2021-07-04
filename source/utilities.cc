@@ -507,58 +507,7 @@ namespace WorldBuilder
       double fraction_CPL_P1P2_strict =  INFINITY; // or NAN?
       double fraction_CPL_P1P2 = INFINITY;
 
-      bool continue_computation = false;
-      if (interpolation_type != InterpolationType::ContinuousMonotoneSpline)
-        {
-          // loop over all the planes to find out which one is closest to the point.
-          for (size_t i_section=0; i_section < point_list.size()-1; ++i_section)
-            {
-              const Point<2> P1(point_list[i_section]);
-              const Point<2> P2(point_list[i_section+1]);
-
-              const Point<2> P1P2 = P2 - P1;
-              const double P1P2_norm = P1P2.norm();
-              if (P1P2_norm < 1e-14)
-                {
-                  // P1 and P2 are at exactly the same location. Just continue.
-                  continue;
-                }
-              const Point<2> P1PC = check_point_surface_2d - P1;
-
-              // Compute the closest point on the line P1 to P2 from the check
-              // point at the surface. We do this in natural coordinates on
-              // purpose, because in spherical coordinates it is more accurate.
-              closest_point_on_line_2d_temp = P1 + ((P1PC * P1P2) / (P1P2 * P1P2)) * P1P2;
-
-              // compute what fraction of the distance between P1 and P2 the
-              // closest point lies.
-              Point<2> P1CPL = closest_point_on_line_2d_temp - P1;
-
-              // This determines where the check point is between the coordinates
-              // in the coordinate list.
-              double fraction_CPL_P1P2_strict_temp = (P1CPL * P1P2 <= 0 ? -1.0 : 1.0) * (1 - (P1P2.norm() - P1CPL.norm()) / P1P2.norm());
-
-              double min_distance_check_point_surface_2d_line_temp = closest_point_on_line_2d_temp.cheap_relative_distance(check_point_surface_2d);//(closest_point_on_line_2d_temp - check_point_surface_2d).norm();//closest_point_on_line_2d_temp.distance(check_point_surface_2d);
-              // If fraction_CPL_P1P2_strict_temp is between 0 and 1 it means that the point can be projected perpendicual to the line segment. For the non-contiuous case we only conder points which are
-              // perpendicular to a line segment.
-              // There can be mutliple lines segment to which a point is perpundicual. Choose the point which is closed in 2D (x-y).
-              if (fraction_CPL_P1P2_strict_temp >= 0. && fraction_CPL_P1P2_strict_temp <= 1. && fabs(min_distance_check_point_surface_2d_line_temp) < fabs(min_distance_check_point_surface_2d_line))
-                {
-                  min_distance_check_point_surface_2d_line = min_distance_check_point_surface_2d_line_temp;
-                  i_section_min_distance = i_section;
-                  closest_point_on_line_2d = closest_point_on_line_2d_temp;
-                  fraction_CPL_P1P2_strict = fraction_CPL_P1P2_strict_temp;
-                }
-            }
-          // If the point on the line does not lay between point P1 and P2
-          // then ignore it. Otherwise continue.
-          continue_computation = (fabs(fraction_CPL_P1P2_strict) < INFINITY && fraction_CPL_P1P2_strict >= 0. && fraction_CPL_P1P2_strict <= 1.);
-
-          fraction_CPL_P1P2 = global_x_list[i_section_min_distance] - static_cast<int>(global_x_list[i_section_min_distance])
-                              + (global_x_list[i_section_min_distance+1]-global_x_list[i_section_min_distance]) * fraction_CPL_P1P2_strict;
-        }
-      else
-        {
+        
           // get an estimate for the closest point between P1 and P2.
           const double parts = 3;
           double min_estimate_solution = 0;
@@ -612,16 +561,17 @@ namespace WorldBuilder
             }
           double solution = min_estimate_solution;
 
-          continue_computation = (solution > 0 && floor(solution) <= global_x_list[point_list.size()-2] && floor(solution)  >= 0);
+        
 
+
+      if (solution > 0 && floor(solution) <= global_x_list[point_list.size()-2] && floor(solution)  >= 0)
+        {
+
+          
           closest_point_on_line_2d = Point<2>(x_spline(solution),y_spline(solution),natural_coordinate_system);
           i_section_min_distance = static_cast<size_t>(floor(solution));
           fraction_CPL_P1P2 = solution-floor(solution);
-        }
 
-
-      if (continue_computation)
-        {
           // We now need 3d points from this point on, so make them.
           // The order of a Cartesian coordinate is x,y,z and the order of
           // a spherical coordinate it radius, long, lat (in rad).
