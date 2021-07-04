@@ -458,7 +458,20 @@ namespace WorldBuilder
       const CoordinateSystem natural_coordinate_system = coordinate_system->natural_coordinate_system();
       const bool bool_cartesian = natural_coordinate_system == cartesian;
 
-      const std::array<double,3> &check_point_surface_2d_array = natural_coordinate.get_coordinates();
+      std::array<double,3> check_point_surface_2d_array = natural_coordinate.get_coordinates();
+      // make sure the values are between -pi and pi
+      if(!bool_cartesian){
+        check_point_surface_2d_array[1] = (check_point_surface_2d_array[1]  > -const_pi && check_point_surface_2d_array[1]  < const_pi)
+                           ?
+                           check_point_surface_2d_array[1] 
+                           :
+                           FT::fmod(check_point_surface_2d_array[1]  + std::copysign(const_pi,check_point_surface_2d_array[1] ), const_pi * 2.0) - std::copysign(const_pi,check_point_surface_2d_array[1] );
+        check_point_surface_2d_array[2] = (check_point_surface_2d_array[2]  > -const_pi && check_point_surface_2d_array[2]  < const_pi)
+                           ?
+                           check_point_surface_2d_array[2] 
+                           :
+                           FT::fmod(check_point_surface_2d_array[2]  + std::copysign(const_pi,check_point_surface_2d_array[2] ), const_pi * 2.0) - std::copysign(const_pi,check_point_surface_2d_array[2] );
+      }
       const Point<3> check_point_surface(bool_cartesian ? check_point_surface_2d_array[0] : start_radius,
                                          check_point_surface_2d_array[1],
                                          bool_cartesian ? start_radius : check_point_surface_2d_array[2],
@@ -1204,23 +1217,6 @@ namespace WorldBuilder
         }
     }
 
-    double interpolation::operator() (const double x) const
-    {
-      //const size_t mx_size_min = m_x.size()-1;
-      // Todo: The following two lines would work if m_x can be assumed to be [0,1,2,3,...]
-      // Which would allow to optimize m_x away completely. I can only do that once I get
-      // rid of the non-contiuous interpolation schemes, because the contiuous one doesn't
-      // need any extra items in m_x.
-      const size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
-      const double h = x-idx;
-      // find the closest point m_x[idx] < x, idx=0 even if x<m_x[0]
-      //std::vector<double>::const_iterator it;
-      //it = std::lower_bound(m_x.begin(),m_x.end(),x);
-      //size_t idx = static_cast<size_t>(std::max( static_cast<int>(it-m_x.begin())-1, 0));
-      //double h = x-m_x[idx];
-
-      return (((x >= 0 && x <= mx_size_min ? m_a[idx]*h : 0) + m_b[idx])*h + m_c[idx])*h + m_y[idx];
-    }
 
     double wrap_angle(const double angle)
     {
