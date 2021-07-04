@@ -236,6 +236,13 @@ namespace WorldBuilder
           return (((x >= 0 && x <= mx_size_min ? m_a[idx]*h : 0) + m_b[idx])*h + m_c[idx])*h + m_y[idx];
         }
 
+        inline
+        double operator() (const double x,const size_t idx) const
+        {
+          const double h = x-idx;
+          return (((x >= 0 && x <= mx_size_min ? m_a[idx]*h : 0) + m_b[idx])*h + m_c[idx])*h + m_y[idx];
+        }
+
       private:
         /**
          * x coordinates of points

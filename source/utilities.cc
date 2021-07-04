@@ -513,14 +513,16 @@ namespace WorldBuilder
       const double parts = interpolation_type == InterpolationType::None || interpolation_type == InterpolationType::Linear ? 1 : 3;
       double min_estimate_solution = 0;
       double min_estimate_solution_temp = min_estimate_solution;
-      Point<2> splines(x_spline(min_estimate_solution),y_spline(min_estimate_solution), natural_coordinate_system);
+
+      size_t min_estimate_solution_temp_size_t = (size_t)min_estimate_solution_temp;
+      Point<2> splines(x_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t),y_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t), natural_coordinate_system);
       double minimum_distance_to_reference_point = splines.cheap_relative_distance(check_point_surface_2d);
 
       // Compute the clostest point on the spline as a double.
       for (size_t i_estimate = 0; i_estimate <= static_cast<size_t>(parts*(point_list.size()-1)+1); i_estimate++)
         {
-          splines[0] = x_spline(min_estimate_solution_temp);
-          splines[1] = y_spline(min_estimate_solution_temp);
+          splines[0] = x_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t);
+          splines[1] = y_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t);
           const double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance(check_point_surface_2d);
 
           if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
@@ -529,19 +531,24 @@ namespace WorldBuilder
               min_estimate_solution = min_estimate_solution_temp;
             }
           min_estimate_solution_temp = min_estimate_solution_temp + 1.0/parts;
+          min_estimate_solution_temp_size_t = (size_t)min_estimate_solution_temp;
         }
 
       // search above and below the solution and replace if the distance is smaller.
       double search_step = 1./parts;
       for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
         {
-          splines[0] = x_spline(min_estimate_solution-search_step);
-          splines[1] = y_spline(min_estimate_solution-search_step);
+          min_estimate_solution_temp = min_estimate_solution-search_step;
+          min_estimate_solution_temp_size_t = (size_t)min_estimate_solution_temp;
+          splines[0] = x_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t);
+          splines[1] = y_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t);
           const double minimum_distance_to_reference_point_min = splines.cheap_relative_distance(check_point_surface_2d);
 
 
-          splines[0] = x_spline(min_estimate_solution+search_step);
-          splines[1] = y_spline(min_estimate_solution+search_step);
+          min_estimate_solution_temp = min_estimate_solution+search_step;
+          min_estimate_solution_temp_size_t = (size_t)min_estimate_solution_temp;
+          splines[0] = x_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t);
+          splines[1] = y_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t);
           const double minimum_distance_to_reference_point_plus = splines.cheap_relative_distance(check_point_surface_2d);
 
 
