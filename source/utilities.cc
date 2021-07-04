@@ -524,10 +524,10 @@ namespace WorldBuilder
       // Compute the clostest point on the spline as a double.
       for (size_t i_estimate = 0; i_estimate <= static_cast<size_t>(parts*(point_list.size()-1)+1); i_estimate++)
         {
-          min_estimate_solution_temp_size_t = (size_t)min_estimate_solution_temp;
-          interpolation_h = min_estimate_solution_temp-(double)min_estimate_solution_temp_size_t;
-          splines[0] = x_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t,interpolation_h);
-          splines[1] = y_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t,interpolation_h);
+          const size_t min_estimate_solution_temp_size_t_temp = (size_t)min_estimate_solution_temp;
+          const double interpolation_h_temp = min_estimate_solution_temp-(double)min_estimate_solution_temp_size_t_temp;
+          splines[0] = x_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t_temp,interpolation_h_temp);
+          splines[1] = y_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t_temp,interpolation_h_temp);
           const double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance(check_point_surface_2d);
 
           if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
@@ -542,19 +542,19 @@ namespace WorldBuilder
       double search_step = 1./parts;
       for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
         {
-          min_estimate_solution_temp = min_estimate_solution-search_step;
-          min_estimate_solution_temp_size_t = (size_t)min_estimate_solution_temp;
-          interpolation_h = min_estimate_solution_temp-(double)min_estimate_solution_temp_size_t;
-          splines[0] = x_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t,interpolation_h);
-          splines[1] = y_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t,interpolation_h);
+          const double min_estimate_solution_temp_min = min_estimate_solution-search_step;
+          const size_t min_estimate_solution_temp_min_st = (size_t)min_estimate_solution_temp_min;
+          const double interpolation_h_min = min_estimate_solution_temp_min-(double)min_estimate_solution_temp_min_st;
+          splines[0] = x_spline(min_estimate_solution_temp_min,min_estimate_solution_temp_min_st,interpolation_h_min);
+          splines[1] = y_spline(min_estimate_solution_temp_min,min_estimate_solution_temp_min_st,interpolation_h_min);
           const double minimum_distance_to_reference_point_min = splines.cheap_relative_distance(check_point_surface_2d);
 
 
-          min_estimate_solution_temp = min_estimate_solution+search_step;
-          min_estimate_solution_temp_size_t = (size_t)min_estimate_solution_temp;
-          interpolation_h = min_estimate_solution_temp-(double)min_estimate_solution_temp_size_t;
-          splines[0] = x_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t,interpolation_h);
-          splines[1] = y_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t,interpolation_h);
+          const double min_estimate_solution_temp_plus = min_estimate_solution+search_step;
+          const size_t min_estimate_solution_temp_plus_st = (size_t)min_estimate_solution_temp_plus;
+          const double interpolation_h_plus = min_estimate_solution_temp_plus-(double)min_estimate_solution_temp_plus_st;
+          splines[0] = x_spline(min_estimate_solution_temp_plus,min_estimate_solution_temp_plus_st,interpolation_h_plus);
+          splines[1] = y_spline(min_estimate_solution_temp_plus,min_estimate_solution_temp_plus_st,interpolation_h_plus);
           const double minimum_distance_to_reference_point_plus = splines.cheap_relative_distance(check_point_surface_2d);
 
 
