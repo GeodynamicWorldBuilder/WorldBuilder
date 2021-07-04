@@ -144,66 +144,29 @@ namespace WorldBuilder
           one_dimensional_coordinates_local[j] = static_cast<double>(j);
         }
 
-      //if (interpolation_type != WorldBuilder::Utilities::InterpolationType::None)
+      double maximum_distance_between_coordinates = this->world->maximum_distance_between_coordinates *
+                                                    (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
+
+
+      // I don't think this is usefull for continuous monotone spline, although it might
+      // help in a spherical case like for the linear case.
+      std::vector<double> x_list(original_number_of_coordinates,0.0);
+      std::vector<double> y_list(original_number_of_coordinates,0.0);
+      std::vector<Point<2> > coordinate_list_local = coordinates;
+      for (size_t j=0; j<original_number_of_coordinates; ++j)
         {
-          //WBAssert(interpolation_type == WorldBuilder::Utilities::InterpolationType::Linear ||
-          //         interpolation_type == WorldBuilder::Utilities::InterpolationType::MonotoneSpline ||
-          //         interpolation_type == WorldBuilder::Utilities::InterpolationType::ContinuousMonotoneSpline,
-          //         "For interpolation, linear and monotone spline are the only allowed values. "
-          //         << "You provided " << interpolation_type_string << ".");
-
-          double maximum_distance_between_coordinates = this->world->maximum_distance_between_coordinates *
-                                                        (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
-
-
-          // I don't think this is usefull for continuous monotone spline, although it might
-          // help in a spherical case like for the linear case.
-          std::vector<double> x_list(original_number_of_coordinates,0.0);
-          std::vector<double> y_list(original_number_of_coordinates,0.0);
-          std::vector<Point<2> > coordinate_list_local = coordinates;
-          for (size_t j=0; j<original_number_of_coordinates; ++j)
-            {
-              x_list[j] = coordinates[j][0];
-              y_list[j] = coordinates[j][1];
-            }
-
-          x_spline.set_points(one_dimensional_coordinates_local,
-                              x_list,
-                              interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear &&
-                              interpolation_type != WorldBuilder::Utilities::InterpolationType::None);
-          y_spline.set_points(one_dimensional_coordinates_local,
-                              y_list,
-                              interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear &&
-                              interpolation_type != WorldBuilder::Utilities::InterpolationType::None);
-
-          if (maximum_distance_between_coordinates > 0)
-            {
-              size_t additional_parts = 0;
-              for (size_t i_plane=0; i_plane<original_number_of_coordinates-1; ++i_plane)
-                {
-                  const Point<2> P1 (x_spline(one_dimensional_coordinates_local[i_plane + additional_parts]),
-                                     y_spline(one_dimensional_coordinates_local[i_plane + additional_parts]),
-                                     coordinate_system);
-
-                  const Point<2> P2 (x_spline(one_dimensional_coordinates_local[i_plane + additional_parts + 1]),
-                                     y_spline(one_dimensional_coordinates_local[i_plane  + additional_parts+ 1]),
-                                     coordinate_system);
-
-                  const double length = (P1 - P2).norm();
-                  const size_t parts = static_cast<size_t>(std::ceil(length / maximum_distance_between_coordinates));
-                  for (size_t j = 1; j < parts; j++)
-                    {
-                      const double x_position3 = static_cast<double>(i_plane) + static_cast<double>(j)/static_cast<double>(parts);
-                      const Point<2> P3(x_spline(x_position3), y_spline(x_position3), coordinate_system);
-                      one_dimensional_coordinates_local.insert(one_dimensional_coordinates_local.begin() + static_cast<std::vector<double>::difference_type>(additional_parts + i_plane + 1), x_position3);
-                      coordinate_list_local.insert(coordinate_list_local.begin() + static_cast<std::vector<double>::difference_type>(additional_parts + i_plane + 1), P3);
-                      additional_parts++;
-                    }
-                }
-              coordinates = coordinate_list_local;
-            }
+          x_list[j] = coordinates[j][0];
+          y_list[j] = coordinates[j][1];
         }
-      one_dimensional_coordinates = one_dimensional_coordinates_local;
+
+      x_spline.set_points(one_dimensional_coordinates_local,
+                          x_list,
+                          interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear &&
+                          interpolation_type != WorldBuilder::Utilities::InterpolationType::None);
+      y_spline.set_points(one_dimensional_coordinates_local,
+                          y_list,
+                          interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear &&
+                          interpolation_type != WorldBuilder::Utilities::InterpolationType::None);
     }
 
 

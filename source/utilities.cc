@@ -507,67 +507,67 @@ namespace WorldBuilder
       double fraction_CPL_P1P2_strict =  INFINITY; // or NAN?
       double fraction_CPL_P1P2 = INFINITY;
 
-        
-          // get an estimate for the closest point between P1 and P2.
-          const double parts = 3;
-          double min_estimate_solution = 0;
-          double min_estimate_solution_temp = min_estimate_solution;
-          Point<2> splines(x_spline(min_estimate_solution),y_spline(min_estimate_solution), natural_coordinate_system);
-          double minimum_distance_to_reference_point = splines.cheap_relative_distance(check_point_surface_2d);
 
-          // Compute the clostest point on the spline as a double.
-          for (size_t i_estimate = 0; i_estimate <= static_cast<size_t>(parts*(global_x_list[point_list.size()-1])+1); i_estimate++)
+      // get an estimate for the closest point between P1 and P2.
+      const double parts = 3;
+      double min_estimate_solution = 0;
+      double min_estimate_solution_temp = min_estimate_solution;
+      Point<2> splines(x_spline(min_estimate_solution),y_spline(min_estimate_solution), natural_coordinate_system);
+      double minimum_distance_to_reference_point = splines.cheap_relative_distance(check_point_surface_2d);
+
+      // Compute the clostest point on the spline as a double.
+      for (size_t i_estimate = 0; i_estimate <= static_cast<size_t>(parts*(global_x_list[point_list.size()-1])+1); i_estimate++)
+        {
+          splines[0] = x_spline(min_estimate_solution_temp);
+          splines[1] = y_spline(min_estimate_solution_temp);
+          const double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance(check_point_surface_2d);
+
+          if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
             {
-              splines[0] = x_spline(min_estimate_solution_temp);
-              splines[1] = y_spline(min_estimate_solution_temp);
-              const double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance(check_point_surface_2d);
-
-              if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
-                {
-                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
-                  min_estimate_solution = min_estimate_solution_temp;
-                }
-              min_estimate_solution_temp = min_estimate_solution_temp + 1.0/parts;
+              minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
+              min_estimate_solution = min_estimate_solution_temp;
             }
+          min_estimate_solution_temp = min_estimate_solution_temp + 1.0/parts;
+        }
 
-          // search above and below the solution and replace if the distance is smaller.
-          double search_step = 1./parts;
-          for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
+      // search above and below the solution and replace if the distance is smaller.
+      double search_step = 1./parts;
+      for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
+        {
+          splines[0] = x_spline(min_estimate_solution-search_step);
+          splines[1] = y_spline(min_estimate_solution-search_step);
+          const double minimum_distance_to_reference_point_min = splines.cheap_relative_distance(check_point_surface_2d);
+
+
+          splines[0] = x_spline(min_estimate_solution+search_step);
+          splines[1] = y_spline(min_estimate_solution+search_step);
+          const double minimum_distance_to_reference_point_plus = splines.cheap_relative_distance(check_point_surface_2d);
+
+
+          if (minimum_distance_to_reference_point_plus < minimum_distance_to_reference_point)
             {
-              splines[0] = x_spline(min_estimate_solution-search_step);
-              splines[1] = y_spline(min_estimate_solution-search_step);
-              const double minimum_distance_to_reference_point_min = splines.cheap_relative_distance(check_point_surface_2d);
-
-
-              splines[0] = x_spline(min_estimate_solution+search_step);
-              splines[1] = y_spline(min_estimate_solution+search_step);
-              const double minimum_distance_to_reference_point_plus = splines.cheap_relative_distance(check_point_surface_2d);
-
-
-              if (minimum_distance_to_reference_point_plus < minimum_distance_to_reference_point)
-                {
-                  min_estimate_solution = min_estimate_solution+search_step;
-                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_plus;
-                }
-              else if (minimum_distance_to_reference_point_min < minimum_distance_to_reference_point)
-                {
-                  min_estimate_solution = min_estimate_solution-search_step;
-                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_min;
-                }
-              else
-                {
-                  search_step *=0.5;
-                }
+              min_estimate_solution = min_estimate_solution+search_step;
+              minimum_distance_to_reference_point = minimum_distance_to_reference_point_plus;
             }
-          double solution = min_estimate_solution;
+          else if (minimum_distance_to_reference_point_min < minimum_distance_to_reference_point)
+            {
+              min_estimate_solution = min_estimate_solution-search_step;
+              minimum_distance_to_reference_point = minimum_distance_to_reference_point_min;
+            }
+          else
+            {
+              search_step *=0.5;
+            }
+        }
+      double solution = min_estimate_solution;
 
-        
+
 
 
       if (solution > 0 && floor(solution) <= global_x_list[point_list.size()-2] && floor(solution)  >= 0)
         {
 
-          
+
           closest_point_on_line_2d = Point<2>(x_spline(solution),y_spline(solution),natural_coordinate_system);
           i_section_min_distance = static_cast<size_t>(floor(solution));
           fraction_CPL_P1P2 = solution-floor(solution);
