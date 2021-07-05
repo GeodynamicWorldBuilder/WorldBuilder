@@ -995,8 +995,8 @@ namespace WorldBuilder
                   // this segment and the distance.
                   if (std::fabs(interpolated_segment_length) > std::numeric_limits<double>::epsilon())
                     {
-                      end_segment[0] += interpolated_segment_length * std::sin(degree_90_to_rad - interpolated_angle_top);
-                      end_segment[1] -= interpolated_segment_length * std::cos(degree_90_to_rad - interpolated_angle_top);
+                      end_segment[0] += interpolated_segment_length * std::cos(interpolated_angle_top);
+                      end_segment[1] -= interpolated_segment_length * std::sin(interpolated_angle_top);
 
                       Point<2> begin_end_segment = end_segment - begin_segment;
                       Point<2> normal_2d_plane(-begin_end_segment[0],begin_end_segment[1], cartesian);
