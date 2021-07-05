@@ -320,11 +320,12 @@ namespace WorldBuilder
               local_total_slab_length += segment_vector[i][j].value_length;
 
               slab_segment_thickness[i][j] = segment_vector[i][j].value_thickness;
+              maximum_slab_thickness = std::max(maximum_slab_thickness, slab_segment_thickness[i][j][0]);
+              maximum_slab_thickness = std::max(maximum_slab_thickness, slab_segment_thickness[i][j][1]);
               slab_segment_top_truncation[i][j] = segment_vector[i][j].value_top_truncation;
 
               slab_segment_angles[i][j] = segment_vector[i][j].value_angle * (const_pi/180);
             }
-          maximum_slab_thickness = std::max(maximum_slab_thickness, local_total_slab_length);
           total_slab_length[i] = local_total_slab_length;
           maximum_total_slab_length = std::max(maximum_total_slab_length, local_total_slab_length);
         }
@@ -376,12 +377,12 @@ namespace WorldBuilder
                                                                        interpolation_type,
                                                                        this->x_spline,
                                                                        this->y_spline,
-                                                                       one_dimensional_coordinates);
+                                                                       2.0*(maximum_total_slab_length + maximum_slab_thickness));
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
           const double distance_along_plane = distance_from_planes.distance_along_plane;
           const double section_fraction = distance_from_planes.fraction_of_section;
-          const size_t current_section = static_cast<size_t>(std::floor(one_dimensional_coordinates[distance_from_planes.section]));
+          const size_t current_section = distance_from_planes.section;
           const size_t next_section = current_section + 1;
           const size_t current_segment = distance_from_planes.segment; // the original value was a unsigned in, converting it back.
           //const size_t next_segment = current_segment + 1;
@@ -504,12 +505,12 @@ namespace WorldBuilder
                                                                        interpolation_type,
                                                                        this->x_spline,
                                                                        this->y_spline,
-                                                                       one_dimensional_coordinates);
+                                                                       2.0*(maximum_total_slab_length + maximum_slab_thickness));
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
           const double distance_along_plane = distance_from_planes.distance_along_plane;
           const double section_fraction = distance_from_planes.fraction_of_section;
-          const size_t current_section = static_cast<size_t>(std::floor(one_dimensional_coordinates[distance_from_planes.section]));
+          const size_t current_section = distance_from_planes.section;
           const size_t next_section = current_section + 1;
           const size_t current_segment = distance_from_planes.segment; // the original value was a unsigned in, converting it back.
           //const size_t next_segment = current_segment + 1;
@@ -635,12 +636,12 @@ namespace WorldBuilder
                                                                        interpolation_type,
                                                                        this->x_spline,
                                                                        this->y_spline,
-                                                                       one_dimensional_coordinates);
+                                                                       2.0*(maximum_total_slab_length + maximum_slab_thickness));
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
           const double distance_along_plane = distance_from_planes.distance_along_plane;
           const double section_fraction = distance_from_planes.fraction_of_section;
-          const size_t current_section = static_cast<size_t>(std::floor(one_dimensional_coordinates[distance_from_planes.section]));
+          const size_t current_section = distance_from_planes.section;
           const size_t next_section = current_section + 1;
           const size_t current_segment = distance_from_planes.segment; // the original value was a unsigned in, converting it back.
           //const size_t next_segment = current_segment + 1;

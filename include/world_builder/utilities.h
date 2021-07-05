@@ -228,13 +228,26 @@ namespace WorldBuilder
         /**
          * Evaluate at point @p x.
          */
-        double operator() (const double x) const;
+        inline
+        double operator() (const double x) const
+        {
+          const size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
+          const double h = x-idx;
+          return (((x >= 0 && x <= mx_size_min ? m_a[idx]*h : 0) + m_b[idx])*h + m_c[idx])*h + m_y[idx];
+        }
+
+        inline
+        double operator() (const double x,const size_t idx,const double h) const
+        {
+          return ((m_a[idx]*h + m_b[idx])*h + m_c[idx])*h + m_y[idx];
+        }
 
       private:
         /**
          * x coordinates of points
          */
-        std::vector<double> m_x;
+        //std::vector<double> m_x;
+        size_t mx_size_min;
 
         /**
          * interpolation parameters
@@ -356,7 +369,7 @@ namespace WorldBuilder
                                                                     const InterpolationType interpolation_type,
                                                                     const interpolation &x_spline,
                                                                     const interpolation &y_spline,
-                                                                    std::vector<double> global_x_list = {});
+                                                                    const double max_surface_distance = INFINITY);
 
 
 
