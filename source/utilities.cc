@@ -513,19 +513,22 @@ namespace WorldBuilder
 
       // get an estimate for the closest point between P1 and P2.
       const double parts = interpolation_type == InterpolationType::None || interpolation_type == InterpolationType::Linear ? 1 : 3;
+      const double search_steps = interpolation_type == InterpolationType::None || interpolation_type == InterpolationType::Linear ? 5 : 10;
       double min_estimate_solution = 0;
       double min_estimate_solution_temp = min_estimate_solution;
 
       size_t min_estimate_solution_temp_size_t;
       double interpolation_h;
+      double minimum_distance_to_reference_point = INFINITY;
+
       Point<2> splines(0.,
                        0.,
                        natural_coordinate_system);
-      double minimum_distance_to_reference_point = INFINITY;
 
           const size_t mx_size_min = point_list.size()-1;
       if (natural_coordinate_system == cartesian)
         {
+
           // Compute the clostest point on the spline as a double.
           for (size_t i_estimate = 0; i_estimate <= static_cast<size_t>(parts*(point_list.size()-1)+1); i_estimate++)
             {
@@ -545,7 +548,7 @@ namespace WorldBuilder
 
           // search above and below the solution and replace if the distance is smaller.
           double search_step = 1./parts;
-          for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
+          for (size_t i_search_step = 0; i_search_step < search_steps; i_search_step++)
             {
               const double min_estimate_solution_temp_min = min_estimate_solution-search_step;
               //const size_t min_estimate_solution_temp_min_st = std::min((size_t)std::max( (int)min_estimate_solution_temp_min, (int)0),mx_size_min);
@@ -582,13 +585,21 @@ namespace WorldBuilder
       else
         {
           // Compute the clostest point on the spline as a double.
+          const size_t number_of_points = static_cast<size_t>(parts*(point_list.size()-1)+1);
+          std::vector<Point<2> > splines_vector(number_of_points,Point<2>(cartesian));
+          for (size_t i_estimate = 0; i_estimate <= number_of_points; i_estimate++)
+          {
+            const size_t min_estimate_solution_temp_size_t_temp = static_cast<size_t>(min_estimate_solution_temp);
+            const double interpolation_h_temp = min_estimate_solution_temp - min_estimate_solution_temp_size_t_temp;
+            splines_vector[i_estimate][0] = x_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t_temp,interpolation_h_temp);
+            splines_vector[i_estimate][1] = y_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t_temp,interpolation_h_temp);
+            min_estimate_solution_temp = min_estimate_solution_temp + 1.0/parts;
+          }
+          min_estimate_solution_temp = 0;
+          min_estimate_solution_temp = 0;
           for (size_t i_estimate = 0; i_estimate <= static_cast<size_t>(parts*(point_list.size()-1)+1); i_estimate++)
             {
-              const size_t min_estimate_solution_temp_size_t_temp =std::min((size_t)std::max( (int)min_estimate_solution_temp, (int)0),mx_size_min);
-              const double interpolation_h_temp = min_estimate_solution_temp-static_cast<double>(min_estimate_solution_temp_size_t_temp);
-              splines[0] = x_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t_temp,interpolation_h_temp);
-              splines[1] = y_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t_temp,interpolation_h_temp);
-              const double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_spherical(check_point_surface_2d);
+              const double minimum_distance_to_reference_point_temp = splines_vector[i_estimate].cheap_relative_distance_spherical(check_point_surface_2d);
 
               if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
                 {
@@ -600,10 +611,10 @@ namespace WorldBuilder
 
           // search above and below the solution and replace if the distance is smaller.
           double search_step = 1./parts;
-          for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
+          for (size_t i_search_step = 0; i_search_step < search_steps; i_search_step++)
             {
               const double min_estimate_solution_temp_min = min_estimate_solution-search_step;
-              const size_t min_estimate_solution_temp_min_st = std::min((size_t)std::max( (int)min_estimate_solution_temp_min, (int)0),mx_size_min);
+              const size_t min_estimate_solution_temp_min_st = static_cast<size_t>(min_estimate_solution_temp_min);
               const double interpolation_h_min = min_estimate_solution_temp_min-(double)min_estimate_solution_temp_min_st;
               splines[0] = x_spline(min_estimate_solution_temp_min,min_estimate_solution_temp_min_st,interpolation_h_min);
               splines[1] = y_spline(min_estimate_solution_temp_min,min_estimate_solution_temp_min_st,interpolation_h_min);
@@ -611,7 +622,7 @@ namespace WorldBuilder
 
 
               const double min_estimate_solution_temp_plus = min_estimate_solution+search_step;
-              const size_t min_estimate_solution_temp_plus_st = std::min((size_t)std::max( (int)min_estimate_solution_temp_plus, (int)0),mx_size_min);
+              const size_t min_estimate_solution_temp_plus_st = static_cast<size_t>(min_estimate_solution_temp_plus);
               const double interpolation_h_plus = min_estimate_solution_temp_plus-(double)min_estimate_solution_temp_plus_st;
               splines[0] = x_spline(min_estimate_solution_temp_plus,min_estimate_solution_temp_plus_st,interpolation_h_plus);
               splines[1] = y_spline(min_estimate_solution_temp_plus,min_estimate_solution_temp_plus_st,interpolation_h_plus);
