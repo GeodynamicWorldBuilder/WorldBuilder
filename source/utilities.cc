@@ -324,13 +324,11 @@ namespace WorldBuilder
     spherical_to_cartesian_coordinates(const std::array<double,3> &scoord)
     {
       Point<3> ccoord(cartesian);
-      constexpr double half_pi = 0.5*const_pi;
-      const double longitude = half_pi - scoord[2];
-      const double sin_long = std::sin(longitude);
+      const double cos_long = FT::cos(scoord[2]);
 
-      ccoord[0] = scoord[0] * sin_long * std::cos(scoord[1]); // X
-      ccoord[1] = scoord[0] * sin_long * std::sin(scoord[1]); // Y
-      ccoord[2] = scoord[0] * std::cos(longitude); // Z
+      ccoord[0] = scoord[0] * cos_long * FT::cos(scoord[1]); // X
+      ccoord[1] = scoord[0] * cos_long * FT::sin(scoord[1]); // Y
+      ccoord[2] = scoord[0] * FT::sin(scoord[2]); // Z
 
 
       return ccoord;
@@ -994,8 +992,8 @@ namespace WorldBuilder
                   // this segment and the distance.
                   if (std::fabs(interpolated_segment_length) > std::numeric_limits<double>::epsilon())
                     {
-                      end_segment[0] += interpolated_segment_length * std::cos(interpolated_angle_top);
-                      end_segment[1] -= interpolated_segment_length * std::sin(interpolated_angle_top);
+                      end_segment[0] += interpolated_segment_length * FT::cos(interpolated_angle_top);
+                      end_segment[1] -= interpolated_segment_length * FT::sin(interpolated_angle_top);
 
                       Point<2> begin_end_segment = end_segment - begin_segment;
                       Point<2> normal_2d_plane(-begin_end_segment[0],begin_end_segment[1], cartesian);
@@ -1043,7 +1041,7 @@ namespace WorldBuilder
                            << ". interpolated_segment_length = " << interpolated_segment_length
                            << ", difference_in_angle_along_segment = " << difference_in_angle_along_segment);
 
-                  const double cos_angle_top = std::cos(interpolated_angle_top);
+                  const double cos_angle_top = FT::cos(interpolated_angle_top);
 
                   WBAssert(!std::isnan(cos_angle_top),
                            "Internal error: The radius_angle_circle variable is not a number: " << cos_angle_top
