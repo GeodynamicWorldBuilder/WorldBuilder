@@ -373,7 +373,7 @@ namespace WorldBuilder
     inline double fast_sin_d(const double angle)
     {
       WBAssert(angle >= 0 && angle <= const_pi,
-               "You are tring to use the fast sin function in an invalid range. "
+               "You are trying to use the fast sin function in an invalid range. "
                "The fast sin function can only be used for values between 0 and pi. "
                "The provided angle is " << angle);
       constexpr double A = 4.0/(const_pi *const_pi);
@@ -394,7 +394,7 @@ namespace WorldBuilder
     inline double sin(const double angle)
     {
       WBAssert(angle >= -const_pi && angle <= const_pi,
-               "You are tring to use the fast sin function in an invalid range. "
+               "You are trying to use the fast sin function in an invalid range. "
                "The fast sin function can only be used for values between -pi and pi. "
                "The provided angle is " << angle);
       //const double angle = (raw_angle > -const_pi && raw_angle < const_pi)
@@ -415,7 +415,7 @@ namespace WorldBuilder
     inline double cos(const double angle)
     {
       WBAssert(angle >= -0.5*const_pi && angle <= 1.5*const_pi,
-               "You are tring to use the fast cos function in an invalid range. "
+               "You are trying to use the fast cos function in an invalid range. "
                "The fast sin function can only be used for values between -pi and pi. "
                "The provided angle is " << angle);
 
