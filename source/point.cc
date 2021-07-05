@@ -87,19 +87,20 @@ namespace WorldBuilder
 
   template<int dim>
   double
-  Point<dim>::cheap_relative_distance(const Point<dim> &two) const
+  Point<dim>::cheap_relative_distance_spherical(const Point<dim> &two) const
   {
-    if (this->coordinate_system == spherical)
-      {
-        // spherical
-        const double d_longitude = two[0] - this->point[0];
-        const double d_lattitude = two[1] - this->point[1];
-        const double sin_d_lat = FT::sin(d_lattitude * 0.5);
-        const double sin_d_long = FT::sin(d_longitude * 0.5);
-        return (sin_d_lat * sin_d_lat) + (sin_d_long*sin_d_long) * FT::cos(this->point[1]) * FT::cos(two[1]);
-      }
+    const double d_longitude = two[0] - this->point[0];
+    const double d_lattitude = two[1] - this->point[1];
+    const double sin_d_lat = FT::sin(d_lattitude * 0.5);
+    const double sin_d_long = FT::sin(d_longitude * 0.5);
+    return (sin_d_lat * sin_d_lat) + (sin_d_long*sin_d_long) * FT::cos(this->point[1]) * FT::cos(two[1]);
+  }
 
-    // cartesian
+
+  template<int dim>
+  double
+  Point<dim>::cheap_relative_distance_cartesian(const Point<dim> &two) const
+  {
     const double x_distance_to_reference_point = point[0]-two[0];
     const double y_distance_to_reference_point = point[1]-two[1];
     return (x_distance_to_reference_point*x_distance_to_reference_point) + (y_distance_to_reference_point*y_distance_to_reference_point);

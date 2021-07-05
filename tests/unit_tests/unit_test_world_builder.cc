@@ -7301,12 +7301,12 @@ TEST_CASE("Fast vs slow distance function")
   const Point<3> cartesian_1(1,2,3, cartesian);
   const Point<3> cartesian_2(2,3,4, cartesian);
   // Should be exactly the same.
-  CHECK(sqrt(cartesian_1.cheap_relative_distance(cartesian_2)) == Approx(cartesian_1.distance(cartesian_2)));
+  CHECK(sqrt(cartesian_1.cheap_relative_distance_cartesian(cartesian_2)) == Approx(cartesian_1.distance(cartesian_2)));
 
   const Point<3> spherical_1(1,2,3, spherical);
   const Point<3> spherical_2(2,3,4, spherical);
   // will have an error associated with the faster sin functions.
-  CHECK(fabs(2.0 * asin(sqrt((spherical_1.cheap_relative_distance(spherical_2))))- spherical_1.distance(spherical_2)) < 3e-5);
+  CHECK(fabs(2.0 * asin(sqrt((spherical_1.cheap_relative_distance_spherical(spherical_2))))- spherical_1.distance(spherical_2)) < 3e-5);
 }
 
 TEST_CASE("Fast version of fmod")

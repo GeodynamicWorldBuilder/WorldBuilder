@@ -260,7 +260,10 @@ namespace WorldBuilder
        * function without asin and sqrt is returned.
        */
       double
-      cheap_relative_distance(const Point<dim> &two) const;
+      cheap_relative_distance_spherical(const Point<dim> &two) const;
+
+      double
+      cheap_relative_distance_cartesian(const Point<dim> &two) const;
 
       /**
        * return the internal array which stores the point data.
