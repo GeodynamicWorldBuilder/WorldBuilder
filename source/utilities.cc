@@ -583,10 +583,10 @@ namespace WorldBuilder
           // Compute the clostest point on the spline as a double.
           for (size_t i_estimate = 0; i_estimate <= static_cast<size_t>(parts*(point_list.size()-1)+1); i_estimate++)
             {
-              //const size_t min_estimate_solution_temp_size_t_temp =std::min((size_t)std::max( (int)min_estimate_solution_temp, (int)0),mx_size_min);
-              //const double interpolation_h_temp = min_estimate_solution_temp-static_cast<double>(min_estimate_solution_temp_size_t_temp);
-              splines[0] = x_spline(min_estimate_solution_temp);//,min_estimate_solution_temp_size_t_temp,interpolation_h_temp);
-              splines[1] = y_spline(min_estimate_solution_temp);//,min_estimate_solution_temp_size_t_temp,interpolation_h_temp);
+              const size_t min_estimate_solution_temp_size_t_temp =std::min((size_t)std::max( (int)min_estimate_solution_temp, (int)0),mx_size_min);
+              const double interpolation_h_temp = min_estimate_solution_temp-static_cast<double>(min_estimate_solution_temp_size_t_temp);
+              splines[0] = x_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t_temp,interpolation_h_temp);
+              splines[1] = y_spline(min_estimate_solution_temp,min_estimate_solution_temp_size_t_temp,interpolation_h_temp);
               const double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_spherical(check_point_surface_2d);
 
               if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
@@ -602,18 +602,18 @@ namespace WorldBuilder
           for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
             {
               const double min_estimate_solution_temp_min = min_estimate_solution-search_step;
-              //const size_t min_estimate_solution_temp_min_st = std::min((size_t)std::max( (int)min_estimate_solution_temp_min, (int)0),mx_size_min);
-              //const double interpolation_h_min = min_estimate_solution_temp_min-(double)min_estimate_solution_temp_min_st;
-              splines[0] = x_spline(min_estimate_solution_temp_min);//,min_estimate_solution_temp_min_st,interpolation_h_min);
-              splines[1] = y_spline(min_estimate_solution_temp_min);//,min_estimate_solution_temp_min_st,interpolation_h_min);
+              const size_t min_estimate_solution_temp_min_st = std::min((size_t)std::max( (int)min_estimate_solution_temp_min, (int)0),mx_size_min);
+              const double interpolation_h_min = min_estimate_solution_temp_min-(double)min_estimate_solution_temp_min_st;
+              splines[0] = x_spline(min_estimate_solution_temp_min,min_estimate_solution_temp_min_st,interpolation_h_min);
+              splines[1] = y_spline(min_estimate_solution_temp_min,min_estimate_solution_temp_min_st,interpolation_h_min);
               const double minimum_distance_to_reference_point_min = splines.cheap_relative_distance_spherical(check_point_surface_2d);
 
 
               const double min_estimate_solution_temp_plus = min_estimate_solution+search_step;
-              //const size_t min_estimate_solution_temp_plus_st = std::min((size_t)std::max( (int)min_estimate_solution_temp_plus, (int)0),mx_size_min);
-              //const double interpolation_h_plus = min_estimate_solution_temp_plus-(double)min_estimate_solution_temp_plus_st;
-              splines[0] = x_spline(min_estimate_solution_temp_plus);//,min_estimate_solution_temp_plus_st,interpolation_h_plus);
-              splines[1] = y_spline(min_estimate_solution_temp_plus);//,min_estimate_solution_temp_plus_st,interpolation_h_plus);
+              const size_t min_estimate_solution_temp_plus_st = std::min((size_t)std::max( (int)min_estimate_solution_temp_plus, (int)0),mx_size_min);
+              const double interpolation_h_plus = min_estimate_solution_temp_plus-(double)min_estimate_solution_temp_plus_st;
+              splines[0] = x_spline(min_estimate_solution_temp_plus,min_estimate_solution_temp_plus_st,interpolation_h_plus);
+              splines[1] = y_spline(min_estimate_solution_temp_plus,min_estimate_solution_temp_plus_st,interpolation_h_plus);
               const double minimum_distance_to_reference_point_plus = splines.cheap_relative_distance_spherical(check_point_surface_2d);
 
 
@@ -653,6 +653,8 @@ namespace WorldBuilder
                                                        bool_cartesian ? start_radius : closest_point_on_line_2d[1],
                                                        natural_coordinate_system);
 
+
+
           Point<3> closest_point_on_line_bottom = closest_point_on_line_surface;
           closest_point_on_line_bottom[bool_cartesian ? 2 : 0] = 0;
 
@@ -667,15 +669,15 @@ namespace WorldBuilder
           // closest_point_on_line, we need to push them to cartesian.
           Point<3>closest_point_on_line_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_surface.get_array()),cartesian);
           Point<3> closest_point_on_line_bottom_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_bottom.get_array()),cartesian);
-          Point<3> check_point_surface_cartesian(coordinate_system->natural_to_cartesian_coordinates(check_point_surface.get_array()),cartesian);
+          //Point<3> check_point_surface_cartesian(coordinate_system->natural_to_cartesian_coordinates(check_point_surface.get_array()),cartesian);
 
 
-          WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[0]),
-                   "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[0]);
-          WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[1]),
-                   "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[1]);
-          WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[2]),
-                   "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[2]);
+          //WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[0]),
+          //         "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[0]);
+          //WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[1]),
+          //         "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[1]);
+          //WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[2]),
+          //         "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[2]);
 
 
           // translate to orignal coordinates current and next section
@@ -685,8 +687,8 @@ namespace WorldBuilder
 
           // These are the mostly likely cases for the x and y axis, so initialize them to these values. They will be checked
           // in the else statement or replaced in the if statement.
-          Point<3> y_axis = closest_point_on_line_cartesian - closest_point_on_line_bottom_cartesian;
-          Point<3> x_axis = closest_point_on_line_cartesian - check_point_surface_cartesian;
+          Point<3> y_axis(0.,0.,0.,cartesian);//closest_point_on_line_cartesian - closest_point_on_line_bottom_cartesian;
+          Point<3> x_axis(0.,0.,0.,cartesian);//closest_point_on_line_cartesian - check_point_surface_cartesian;
 
           // This are accouting for corner cases.
           // If the point to check is exactly on or below the line, we can not compute the x-axis with this method.
@@ -715,6 +717,7 @@ namespace WorldBuilder
                   const Point<3> closest_point_on_line_plus_normal_to_plane_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_plus_normal_to_plane_surface_spherical.get_array()),cartesian);
                   Point<3> normal_to_plane = closest_point_on_line_plus_normal_to_plane_cartesian - closest_point_on_line_cartesian;
                   normal_to_plane = normal_to_plane / normal_to_plane.norm();
+
 
                   // The y-axis is from the bottom/center to the closest_point_on_line,
                   // the x-axis is 90 degrees rotated from that, so we rotate around
@@ -800,6 +803,14 @@ namespace WorldBuilder
             }
           else
             {
+
+          Point<3> check_point_surface_cartesian(coordinate_system->natural_to_cartesian_coordinates(check_point_surface.get_array()),cartesian);
+
+
+          // These are the mostly likely cases for the x and y axis, so initialize them to these values. They will be checked
+          // in the else statement or replaced in the if statement.
+          y_axis = closest_point_on_line_cartesian - closest_point_on_line_bottom_cartesian;
+          x_axis = closest_point_on_line_cartesian - check_point_surface_cartesian;
 
 
               WBAssert(std::abs(y_axis.norm()) > std::numeric_limits<double>::epsilon(),
