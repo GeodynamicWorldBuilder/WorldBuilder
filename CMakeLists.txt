@@ -345,6 +345,10 @@ if (NOT MSVC AND NOT APPLE)
           SET(WB_COMPILER_OPTIONS_PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE} $<$<COMPILE_LANGUAGE:CXX>:-Wno-placement-new>)
         endif()
 
+        IF ( CMAKE_BUILD_TYPE STREQUAL Release )
+          SET(WB_COMPILER_OPTIONS_PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE} $<$<COMPILE_LANGUAGE:CXX>:-march=native -ffast-math>)
+        endif()
+
         # untill 4.9.0 Wshadow is too strict: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=57709,
         # but still some issues in 4.9.0, so only add it after 5.0.0.
         if(CMAKE_COMPILER_IS_GNUCC AND NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.0.0)

@@ -955,7 +955,6 @@ namespace WorldBuilder
 
               // This interpolates different properties between P1 and P2 (the
               // points of the plane at the surface)
-              const double degree_90_to_rad = 0.5 * const_pi;
 
               WBAssert(plane_segment_angles.size() > original_next_section,
                        "Error: original_next_section = " << original_next_section
