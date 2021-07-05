@@ -20,6 +20,7 @@
 #include "world_builder/point.h"
 
 #include <limits>
+#include <iostream>
 
 namespace WorldBuilder
 {
