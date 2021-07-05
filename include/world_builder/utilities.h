@@ -369,7 +369,7 @@ namespace WorldBuilder
                                                                     const InterpolationType interpolation_type,
                                                                     const interpolation &x_spline,
                                                                     const interpolation &y_spline,
-                                                                    const double max_surface_distance);
+                                                                    const double max_surface_distance = INFINITY);
 
 
 

@@ -320,11 +320,12 @@ namespace WorldBuilder
               local_total_slab_length += segment_vector[i][j].value_length;
 
               slab_segment_thickness[i][j] = segment_vector[i][j].value_thickness;
+              maximum_slab_thickness = std::max(maximum_slab_thickness, slab_segment_thickness[i][j][0]);
+              maximum_slab_thickness = std::max(maximum_slab_thickness, slab_segment_thickness[i][j][1]);
               slab_segment_top_truncation[i][j] = segment_vector[i][j].value_top_truncation;
 
               slab_segment_angles[i][j] = segment_vector[i][j].value_angle * (const_pi/180);
             }
-          maximum_slab_thickness = std::max(maximum_slab_thickness, local_total_slab_length);
           total_slab_length[i] = local_total_slab_length;
           maximum_total_slab_length = std::max(maximum_total_slab_length, local_total_slab_length);
         }
