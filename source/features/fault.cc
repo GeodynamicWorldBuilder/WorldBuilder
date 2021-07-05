@@ -19,6 +19,7 @@
 
 #include "world_builder/features/fault.h"
 
+#include <iostream>
 
 #include "glm/glm.h"
 #include "world_builder/types/array.h"
@@ -316,14 +317,17 @@ namespace WorldBuilder
               local_total_fault_length += segment_vector[i][j].value_length;
 
               fault_segment_thickness[i][j] = segment_vector[i][j].value_thickness;
+              maximum_fault_thickness = std::max(maximum_fault_thickness, fault_segment_thickness[i][j][0]);
+              maximum_fault_thickness = std::max(maximum_fault_thickness, fault_segment_thickness[i][j][1]);
               fault_segment_top_truncation[i][j] = segment_vector[i][j].value_top_truncation;
 
               fault_segment_angles[i][j] = segment_vector[i][j].value_angle * (const_pi/180);
             }
-          maximum_fault_thickness = std::max(maximum_fault_thickness, local_total_fault_length);
+
           total_fault_length[i] = local_total_fault_length;
           maximum_total_fault_length = std::max(maximum_total_fault_length, local_total_fault_length);
         }
+      //std::cout << "maximum_total_fault_length = " << maximum_total_fault_length << ", maximum_fault_thickness = " << maximum_fault_thickness <<std::endl;
     }
 
 
@@ -349,6 +353,9 @@ namespace WorldBuilder
       // todo: explain and check -starting_depth
       if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_fault_length + maximum_fault_thickness)
         {
+          //std::cout << "maximum_total_fault_length = " << maximum_total_fault_length << ", maximum_fault_thickness = " << maximum_fault_thickness
+          //<< ", maximum_total_fault_length + maximum_fault_thickness = " << maximum_total_fault_length + maximum_fault_thickness
+          //<< ", 2.0*(maximum_total_fault_length + maximum_fault_thickness) = " << 2.0*(maximum_total_fault_length + maximum_fault_thickness) << std::endl;
           // todo: explain
           // This function only returns positive values, because we want
           // the fault to be centered around the line provided by the user.
@@ -364,7 +371,8 @@ namespace WorldBuilder
                                                                        true,
                                                                        interpolation_type,
                                                                        this->x_spline,
-                                                                       this->y_spline);
+                                                                       this->y_spline,
+                                                                       2.0*(maximum_total_fault_length + maximum_fault_thickness));
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
           const double distance_along_plane = distance_from_planes.distance_along_plane;
@@ -494,7 +502,8 @@ namespace WorldBuilder
                                                                        true,
                                                                        interpolation_type,
                                                                        this->x_spline,
-                                                                       this->y_spline);
+                                                                       this->y_spline,
+                                                                       2.0*(maximum_total_fault_length + maximum_fault_thickness));
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
           const double distance_along_plane = distance_from_planes.distance_along_plane;
@@ -627,7 +636,8 @@ namespace WorldBuilder
                                                                        true,
                                                                        interpolation_type,
                                                                        this->x_spline,
-                                                                       this->y_spline);
+                                                                       this->y_spline,
+                                                                       2.0*(maximum_total_fault_length + maximum_fault_thickness));
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
           const double distance_along_plane = distance_from_planes.distance_along_plane;

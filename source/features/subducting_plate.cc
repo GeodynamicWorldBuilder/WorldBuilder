@@ -375,7 +375,8 @@ namespace WorldBuilder
                                                                        false,
                                                                        interpolation_type,
                                                                        this->x_spline,
-                                                                       this->y_spline);
+                                                                       this->y_spline,
+                                                                       2.0*(maximum_total_slab_length + maximum_slab_thickness));
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
           const double distance_along_plane = distance_from_planes.distance_along_plane;
@@ -502,7 +503,8 @@ namespace WorldBuilder
                                                                        false,
                                                                        interpolation_type,
                                                                        this->x_spline,
-                                                                       this->y_spline);
+                                                                       this->y_spline,
+                                                                       2.0*(maximum_total_slab_length + maximum_slab_thickness));
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
           const double distance_along_plane = distance_from_planes.distance_along_plane;
@@ -632,7 +634,8 @@ namespace WorldBuilder
                                                                        false,
                                                                        interpolation_type,
                                                                        this->x_spline,
-                                                                       this->y_spline);
+                                                                       this->y_spline,
+                                                                       2.0*(maximum_total_slab_length + maximum_slab_thickness));
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
           const double distance_along_plane = distance_from_planes.distance_along_plane;
