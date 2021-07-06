@@ -316,11 +316,12 @@ namespace WorldBuilder
               local_total_fault_length += segment_vector[i][j].value_length;
 
               fault_segment_thickness[i][j] = segment_vector[i][j].value_thickness;
+              maximum_fault_thickness = std::max(maximum_fault_thickness, fault_segment_thickness[i][j][0]);
+              maximum_fault_thickness = std::max(maximum_fault_thickness, fault_segment_thickness[i][j][1]);
               fault_segment_top_truncation[i][j] = segment_vector[i][j].value_top_truncation;
 
               fault_segment_angles[i][j] = segment_vector[i][j].value_angle * (const_pi/180);
             }
-          maximum_fault_thickness = std::max(maximum_fault_thickness, local_total_fault_length);
           total_fault_length[i] = local_total_fault_length;
           maximum_total_fault_length = std::max(maximum_total_fault_length, local_total_fault_length);
         }
