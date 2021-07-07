@@ -343,6 +343,11 @@ namespace WorldBuilder
   BoundingBox<spacedim>::point_inside(const Point<spacedim> &p,
                                       const double tolerance) const
   {
+    WBAssert(boundary_points.first.get_coordinate_system() == p.get_coordinate_system(),
+             "Cannot compare two points which represent different coordinate systems.");
+    WBAssert(boundary_points.second.get_coordinate_system() == p.get_coordinate_system(),
+             "Cannot compare two points which represent different coordinate systems.");
+
     for (unsigned int i = 0; i < spacedim; ++i)
       {
         // Bottom left-top right convention: the point is outside if it's smaller
