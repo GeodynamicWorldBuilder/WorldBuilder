@@ -174,7 +174,7 @@ namespace WorldBuilder
        * an assertion.
        */
       void
-      extend(const double &amount);
+      extend(const double amount);
 
       /**
        * Compute the volume (i.e. the dim-dimensional measure) of the BoundingBox.
@@ -324,7 +324,7 @@ namespace WorldBuilder
 
   template <int spacedim>
   inline void
-  BoundingBox<spacedim>::extend(const double &amount)
+  BoundingBox<spacedim>::extend(const double amount)
   {
     for (unsigned int d = 0; d < spacedim; ++d)
       {
