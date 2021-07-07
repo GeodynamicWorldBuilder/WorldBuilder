@@ -87,7 +87,7 @@ namespace WorldBuilder
          */
         virtual
         double temperature(const Point<3> &position,
-                           const  WorldBuilder::Utilities::NaturalCoordinate &natural_coordinate,
+                           const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
                            const double depth,
                            const double gravity,
                            double temperature) const = 0;
@@ -97,7 +97,7 @@ namespace WorldBuilder
          */
         virtual
         double composition(const Point<3> &position,
-                           const  WorldBuilder::Utilities::NaturalCoordinate &natural_coordinate,
+                           const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
                            const double depth,
                            const unsigned int composition_number,
                            double value) const = 0;
@@ -108,7 +108,7 @@ namespace WorldBuilder
          */
         virtual
         WorldBuilder::grains grains(const Point<3> &position,
-                                    const  WorldBuilder::Utilities::NaturalCoordinate &natural_coordinate,
+                                    const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
                                     const double depth,
                                     const unsigned int composition_number,
                                     WorldBuilder::grains value) const = 0;

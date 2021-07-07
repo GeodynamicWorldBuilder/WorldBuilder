@@ -113,8 +113,8 @@ namespace WorldBuilder
         {
           if (depth <= max_depth && depth >= min_depth)
             {
-              WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                              *(world->parameters.coordinate_system));
+              WorldBuilder::Utilities::NaturalCoordinate position_in_natural_coordinates = WorldBuilder::Utilities::NaturalCoordinate(position,
+                                                                                           *(world->parameters.coordinate_system));
 
 
               double bottom_temperature_local = bottom_temperature;
@@ -136,7 +136,7 @@ namespace WorldBuilder
                   const Point<2> segment_point0 = ridge_coordinates[i_ridge];
                   const Point<2> segment_point1 = ridge_coordinates[i_ridge+1];
 
-                  const Point<2> check_point(natural_coordinate.get_surface_coordinates(),natural_coordinate.get_coordinate_system());
+                  const Point<2> check_point(position_in_natural_coordinates.get_surface_coordinates(),position_in_natural_coordinates.get_coordinate_system());
                   // based on http://geomalgorithms.com/a02-_lines.html
                   const Point<2> v = segment_point1 - segment_point0;
                   const Point<2> w = check_point - segment_point0;
@@ -157,11 +157,11 @@ namespace WorldBuilder
 
                   Point<3> compare_point(coordinate_system);
 
-                  compare_point[0] = coordinate_system == cartesian ? Pb[0] :  natural_coordinate.get_depth_coordinate();
+                  compare_point[0] = coordinate_system == cartesian ? Pb[0] :  position_in_natural_coordinates.get_depth_coordinate();
                   compare_point[1] = coordinate_system == cartesian ? Pb[1] : Pb[0];
-                  compare_point[2] = coordinate_system == cartesian ? natural_coordinate.get_depth_coordinate() : Pb[1];
+                  compare_point[2] = coordinate_system == cartesian ? position_in_natural_coordinates.get_depth_coordinate() : Pb[1];
 
-                  distance_ridge = std::min(distance_ridge,this->world->parameters.coordinate_system->distance_between_points_at_same_depth(Point<3>(natural_coordinate.get_coordinates(),natural_coordinate.get_coordinate_system()),compare_point));
+                  distance_ridge = std::min(distance_ridge,this->world->parameters.coordinate_system->distance_between_points_at_same_depth(Point<3>(position_in_natural_coordinates.get_coordinates(),position_in_natural_coordinates.get_coordinate_system()),compare_point));
 
                 }
 

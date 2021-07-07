@@ -334,7 +334,7 @@ namespace WorldBuilder
 
     double
     SubductingPlate::temperature(const Point<3> &position,
-                                 const  NaturalCoordinate &natural_coordinate,
+                                 const NaturalCoordinate &position_in_natural_coordinates,
                                  const double depth,
                                  const double gravity_norm,
                                  double temperature) const
@@ -342,11 +342,11 @@ namespace WorldBuilder
       // The depth variable is the distance from the surface to the position, the depth
       // coordinate is the distance from the bottom of the model to the position and
       // the starting radius is the distance from the bottom of the model to the surface.
-      const double starting_radius = natural_coordinate.get_depth_coordinate() + depth - starting_depth;
+      const double starting_radius = position_in_natural_coordinates.get_depth_coordinate() + depth - starting_depth;
 
       WBAssert(std::abs(starting_radius) > std::numeric_limits<double>::epsilon(), "World Builder error: starting_radius can not be zero. "
                << "Position = " << position[0] << ":" << position[1] << ":" << position[2]
-               << ", natural_coordinate.get_depth_coordinate() = " << natural_coordinate.get_depth_coordinate()
+               << ", position_in_natural_coordinates.get_depth_coordinate() = " << position_in_natural_coordinates.get_depth_coordinate()
                << ", depth = " << depth
                << ", starting_depth " << starting_depth
               );
@@ -366,7 +366,7 @@ namespace WorldBuilder
           // todo: explain
           WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
-                                                                       natural_coordinate,
+                                                                       position_in_natural_coordinates,
                                                                        reference_point,
                                                                        coordinates,
                                                                        slab_segment_lengths,
@@ -480,13 +480,13 @@ namespace WorldBuilder
 
     double
     SubductingPlate::composition(const Point<3> &position,
-                                 const  NaturalCoordinate &natural_coordinate,
+                                 const NaturalCoordinate &position_in_natural_coordinates,
                                  const double depth,
                                  const unsigned int composition_number,
                                  double composition) const
     {
       // todo: explain
-      const double starting_radius = natural_coordinate.get_depth_coordinate() + depth - starting_depth;
+      const double starting_radius = position_in_natural_coordinates.get_depth_coordinate() + depth - starting_depth;
 
       // todo: explain and check -starting_depth
       if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness)
@@ -494,7 +494,7 @@ namespace WorldBuilder
           // todo: explain
           WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
-                                                                       natural_coordinate,
+                                                                       position_in_natural_coordinates,
                                                                        reference_point,
                                                                        coordinates,
                                                                        slab_segment_lengths,
@@ -611,13 +611,13 @@ namespace WorldBuilder
 
     WorldBuilder::grains
     SubductingPlate::grains(const Point<3> &position,
-                            const  NaturalCoordinate &natural_coordinate,
+                            const NaturalCoordinate &position_in_natural_coordinates,
                             const double depth,
                             const unsigned int composition_number,
                             WorldBuilder::grains grains) const
     {
       // todo: explain
-      const double starting_radius = natural_coordinate.get_depth_coordinate() + depth - starting_depth;
+      const double starting_radius = position_in_natural_coordinates.get_depth_coordinate() + depth - starting_depth;
 
       // todo: explain and check -starting_depth
       if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness)
@@ -625,7 +625,7 @@ namespace WorldBuilder
           // todo: explain
           WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position,
-                                                                       natural_coordinate,
+                                                                       position_in_natural_coordinates,
                                                                        reference_point,
                                                                        coordinates,
                                                                        slab_segment_lengths,
