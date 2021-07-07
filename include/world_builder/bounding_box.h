@@ -98,10 +98,11 @@ namespace WorldBuilder
   {
     public:
       /**
-       * Standard constructor. Creates an object that corresponds to an empty box,
-       * i.e. a degenerate box with both points being the origin.
+       * Standard constructor. Creates an object that corresponds to a
+       * box that corresponds to the entire space, i.e. a degenerate
+       * box with end points at minus and plus infinity.
        */
-      BoundingBox() = default;
+      BoundingBox();
 
       /**
        * Standard constructor for non-empty boxes: it uses a pair of points
@@ -219,6 +220,26 @@ namespace WorldBuilder
   /*------------------------ Inline functions: BoundingBox --------------------*/
 
 #ifndef DOXYGEN
+
+
+  template <int spacedim>
+  inline BoundingBox<spacedim>::BoundingBox()
+    :
+    boundary_points ({{
+      -std::numeric_limits<double>::max(),
+      -std::numeric_limits<double>::max(),
+      -std::numeric_limits<double>::max(),
+      cartesian
+    },
+    {
+      +std::numeric_limits<double>::max(),
+      +std::numeric_limits<double>::max(),
+      +std::numeric_limits<double>::max(),
+      cartesian
+    }
+  })
+  {}
+
 
 
   template <int spacedim>
