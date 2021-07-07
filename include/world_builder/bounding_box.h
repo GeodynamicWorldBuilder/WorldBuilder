@@ -206,12 +206,6 @@ namespace WorldBuilder
       double
       upper_bound(const unsigned int direction) const;
 
-      /**
-       * Return the bounds of the box in @p direction, as a one-dimensional box.
-       */
-      BoundingBox<1>
-      bounds(const unsigned int direction) const;
-
     private:
       std::pair<Point<spacedim>, Point<spacedim>> boundary_points;
   };
@@ -430,22 +424,6 @@ namespace WorldBuilder
       point[i] = .5 * (boundary_points.first[i] + boundary_points.second[i]);
 
     return point;
-  }
-
-
-
-  template <int spacedim>
-  inline
-  BoundingBox<1>
-  BoundingBox<spacedim>::bounds(const unsigned int direction) const
-  {
-    WBAssert(direction < spacedim, "Invalid index");
-
-    std::pair<Point<1>, Point<1>> lower_upper_bounds;
-    lower_upper_bounds.first[0]  = lower_bound(direction);
-    lower_upper_bounds.second[0] = upper_bound(direction);
-
-    return BoundingBox<1>(lower_upper_bounds);
   }
 
 
