@@ -132,13 +132,13 @@ namespace WorldBuilder
 
     double
     OceanicPlate::temperature(const Point<3> &position,
-                              const NaturalCoordinate &natural_coordinate,
+                              const NaturalCoordinate &position_in_natural_coordinates,
                               const double depth,
                               const double gravity_norm,
                               double temperature) const
     {
       if (depth <= max_depth && depth >= min_depth &&
-          WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
+          WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
                                                                                 world->parameters.coordinate_system->natural_coordinate_system())))
         {
           for (const auto &temperature_model: temperature_models)
@@ -163,13 +163,13 @@ namespace WorldBuilder
 
     double
     OceanicPlate::composition(const Point<3> &position,
-                              const NaturalCoordinate &natural_coordinate,
+                              const NaturalCoordinate &position_in_natural_coordinates,
                               const double depth,
                               const unsigned int composition_number,
                               double composition) const
     {
       if (depth <= max_depth && depth >= min_depth &&
-          WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
+          WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
                                                                                 world->parameters.coordinate_system->natural_coordinate_system())))
         {
           for (const auto &composition_model: composition_models)
@@ -194,13 +194,13 @@ namespace WorldBuilder
 
     WorldBuilder::grains
     OceanicPlate::grains(const Point<3> &position,
-                         const NaturalCoordinate &natural_coordinate,
+                         const NaturalCoordinate &position_in_natural_coordinates,
                          const double depth,
                          const unsigned int composition_number,
                          WorldBuilder::grains grains) const
     {
       if (depth <= max_depth && depth >= min_depth &&
-          WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(natural_coordinate.get_surface_coordinates(),
+          WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
                                                                                 world->parameters.coordinate_system->natural_coordinate_system())))
         {
           for (const auto &grains_model: grains_models)
