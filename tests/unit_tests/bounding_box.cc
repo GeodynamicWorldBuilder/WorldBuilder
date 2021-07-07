@@ -27,19 +27,51 @@
 using namespace WorldBuilder;
 
 
-TEST_CASE("bounding box")
+TEST_CASE("bounding box 2D")
 {
-  Point<3> p1 ({1,1,1}, CoordinateSystem::cartesian);
-  Point<3> p2 ({2,3,4}, CoordinateSystem::cartesian);
+  // Check default constructor
+  BoundingBox<2> bb1;
+  CHECK(bb1.center().distance(Point<2>(0,0,CoordinateSystem::cartesian)) < 1e-12);
+  CHECK(BoundingBox<2>().center().distance(Point<2>(0,0,CoordinateSystem::cartesian)) < 1e-12);
 
-  BoundingBox<3> bb ({p1, p2});
+  CHECK(bb1.point_inside(Point<2>(2,2.5,CoordinateSystem::cartesian)) == true);
+  Point<2> p1 ({1,1}, CoordinateSystem::cartesian);
+  Point<2> p2 ({2,3}, CoordinateSystem::cartesian);
 
-  // Check the center function
-  CHECK(bb.center().distance(Point<3>(1.5,2,2.5,CoordinateSystem::cartesian)) < 1e-12);
+
+  CHECK(BoundingBox<2>().center().distance(Point<2>(0,0,CoordinateSystem::cartesian)) < 1e-12);
+  BoundingBox<2> bb2({p1, p2});
+  CHECK(bb2.center().distance(Point<2>(1.5,2.,CoordinateSystem::cartesian)) < 1e-12);
 
   // Check that the function point_inside works as expected
-  CHECK(bb.point_inside(Point<3>(1.5,2,2.5,CoordinateSystem::cartesian)) == true);
-  CHECK(bb.point_inside(Point<3>(-1.5,2,2.5,CoordinateSystem::cartesian)) == false);
-  CHECK(bb.point_inside(Point<3>(1.5,-2,2.5,CoordinateSystem::cartesian)) == false);
-  CHECK(bb.point_inside(Point<3>(1.5,2,-2.5,CoordinateSystem::cartesian)) == false);
+  CHECK(bb2.point_inside(Point<2>(1.5,2,CoordinateSystem::cartesian)) == true);
+  CHECK(bb2.point_inside(Point<2>(-1.5,2,CoordinateSystem::cartesian)) == false);
+  CHECK(bb2.point_inside(Point<2>(1.5,-2,CoordinateSystem::cartesian)) == false);
+  CHECK(bb2.point_inside(Point<2>(-1.5,-2,CoordinateSystem::cartesian)) == false);
+}
+
+
+TEST_CASE("bounding box 3D")
+{
+  // Check default constructor
+  BoundingBox<3> bb1;
+  CHECK(bb1.center().distance(Point<3>(0,0,0,CoordinateSystem::cartesian)) < 1e-12);
+  CHECK(BoundingBox<3>().center().distance(Point<3>(0,0,0,CoordinateSystem::cartesian)) < 1e-12);
+
+  CHECK(bb1.point_inside(Point<3>(2,2.5,2.5,CoordinateSystem::cartesian)) == true);
+
+  // Check constructor with provided points
+  Point<3> p1 ({1,1,1}, CoordinateSystem::cartesian);
+  Point<3> p2 ({2,3,4}, CoordinateSystem::cartesian);
+  BoundingBox<3> bb2({p1, p2});
+
+  // Check the center function
+  CHECK(bb2.center().distance(Point<3>(1.5,2,2.5,CoordinateSystem::cartesian)) < 1e-12);
+
+  // Check that the function point_inside works as expected
+  CHECK(bb2.point_inside(Point<3>(1.5,2,2.5,CoordinateSystem::cartesian)) == true);
+  CHECK(bb2.point_inside(Point<3>(-1.5,2,2.5,CoordinateSystem::cartesian)) == false);
+  CHECK(bb2.point_inside(Point<3>(1.5,-2,2.5,CoordinateSystem::cartesian)) == false);
+  CHECK(bb2.point_inside(Point<3>(1.5,2,-2.5,CoordinateSystem::cartesian)) == false);
+
 }

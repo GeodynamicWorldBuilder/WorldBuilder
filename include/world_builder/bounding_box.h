@@ -216,8 +216,24 @@ namespace WorldBuilder
 #ifndef DOXYGEN
 
 
-  template <int spacedim>
-  inline BoundingBox<spacedim>::BoundingBox()
+  template <>
+  inline BoundingBox<2>::BoundingBox()
+    :
+    boundary_points ({{
+      -std::numeric_limits<double>::max(),
+      -std::numeric_limits<double>::max(),
+      cartesian
+    },
+    {
+      +std::numeric_limits<double>::max(),
+      +std::numeric_limits<double>::max(),
+      cartesian
+    }
+  })
+  {}
+
+  template <>
+  inline BoundingBox<3>::BoundingBox()
     :
     boundary_points ({{
       -std::numeric_limits<double>::max(),
