@@ -25,6 +25,7 @@
 #include "world_builder/features/fault_models/grains/interface.h"
 #include "world_builder/features/fault_models/temperature/interface.h"
 #include "world_builder/types/segment.h"
+#include "world_builder/bounding_box.h"
 
 
 namespace WorldBuilder
@@ -179,7 +180,17 @@ namespace WorldBuilder
         double maximum_total_fault_length;
         double maximum_fault_thickness;
 
-
+        /**
+         * A bounding box, in Cartesian coordinates, of the fault. This
+         * is used to quickly determine whether a point passed to the
+         * composition(), temperature(), or grains() functions is
+         * definitely outside the current fault. If a point is inside
+         * the bounding box, we need to look more carefully (using more
+         * expensive tests) whether we need to treat such a point. But,
+         * this bounding box check is able to already rule out the vast
+         * majority of faults in complex models.
+         */
+        BoundingBox<3> cartesian_bounding_box;
     };
   } // namespace Features
 } // namespace WorldBuilder
