@@ -113,6 +113,8 @@ namespace WorldBuilder
       inline
       double operator*(const Point<dim> &point_right) const
       {
+        WBAssert(coordinate_system == point_right.get_coordinate_system(),
+                 "Cannot take the dot product of two points which represent different coordinate systems.");
         const std::array<double,dim> &array = point_right.get_array();
         double dot_product = 0;
         for (unsigned int i = 0; i < dim; ++i)
@@ -208,6 +210,8 @@ namespace WorldBuilder
       inline
       Point<dim> &operator+=(const Point<dim> &point_right)
       {
+        WBAssert(coordinate_system == point_right.get_coordinate_system(),
+                 "Cannot add two points which represent different coordinate systems.");
         for (unsigned int i = 0; i < dim; ++i)
           point[i] += point_right[i];
         return *this;
@@ -217,10 +221,12 @@ namespace WorldBuilder
        * substract two points
        */
       inline
-      Point<dim> &operator-=(const Point<dim> &point_left)
+      Point<dim> &operator-=(const Point<dim> &point_right)
       {
+        WBAssert(coordinate_system == point_right.get_coordinate_system(),
+                 "Cannot subtract two points which represent different coordinate systems.");
         for (unsigned int i = 0; i < dim; ++i)
-          point[i] -= point_left[i];
+          point[i] -= point_right[i];
         return *this;
       }
 
