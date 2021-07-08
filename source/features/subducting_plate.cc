@@ -333,7 +333,7 @@ namespace WorldBuilder
 
 
     double
-    SubductingPlate::temperature(const Point<3> &position,
+    SubductingPlate::temperature(const Point<3> &position_in_cartesian_coordinates,
                                  const NaturalCoordinate &position_in_natural_coordinates,
                                  const double depth,
                                  const double gravity_norm,
@@ -345,7 +345,7 @@ namespace WorldBuilder
       const double starting_radius = position_in_natural_coordinates.get_depth_coordinate() + depth - starting_depth;
 
       WBAssert(std::abs(starting_radius) > std::numeric_limits<double>::epsilon(), "World Builder error: starting_radius can not be zero. "
-               << "Position = " << position[0] << ":" << position[1] << ":" << position[2]
+               << "Position = " << position_in_cartesian_coordinates[0] << ":" << position_in_cartesian_coordinates[1] << ":" << position_in_cartesian_coordinates[2]
                << ", position_in_natural_coordinates.get_depth_coordinate() = " << position_in_natural_coordinates.get_depth_coordinate()
                << ", depth = " << depth
                << ", starting_depth " << starting_depth
@@ -365,7 +365,7 @@ namespace WorldBuilder
                    << ") and one_dimensional_coordinates (" << one_dimensional_coordinates.size() << ") are different.");*/
           // todo: explain
           WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
-            WorldBuilder::Utilities::distance_point_from_curved_planes(position,
+            WorldBuilder::Utilities::distance_point_from_curved_planes(position_in_cartesian_coordinates,
                                                                        position_in_natural_coordinates,
                                                                        reference_point,
                                                                        coordinates,
@@ -437,7 +437,7 @@ namespace WorldBuilder
 
                   for (const auto &temperature_model: segment_vector[current_section][current_segment].temperature_systems)
                     {
-                      temperature_current_section = temperature_model->get_temperature(position,
+                      temperature_current_section = temperature_model->get_temperature(position_in_cartesian_coordinates,
                                                                                        depth,
                                                                                        gravity_norm,
                                                                                        temperature_current_section,
@@ -454,7 +454,7 @@ namespace WorldBuilder
 
                   for (const auto &temperature_model: segment_vector[next_section][current_segment].temperature_systems)
                     {
-                      temperature_next_section = temperature_model->get_temperature(position,
+                      temperature_next_section = temperature_model->get_temperature(position_in_cartesian_coordinates,
                                                                                     depth,
                                                                                     gravity_norm,
                                                                                     temperature_next_section,
@@ -479,7 +479,7 @@ namespace WorldBuilder
     }
 
     double
-    SubductingPlate::composition(const Point<3> &position,
+    SubductingPlate::composition(const Point<3> &position_in_cartesian_coordinates,
                                  const NaturalCoordinate &position_in_natural_coordinates,
                                  const double depth,
                                  const unsigned int composition_number,
@@ -493,7 +493,7 @@ namespace WorldBuilder
         {
           // todo: explain
           WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
-            WorldBuilder::Utilities::distance_point_from_curved_planes(position,
+            WorldBuilder::Utilities::distance_point_from_curved_planes(position_in_cartesian_coordinates,
                                                                        position_in_natural_coordinates,
                                                                        reference_point,
                                                                        coordinates,
@@ -565,7 +565,7 @@ namespace WorldBuilder
 
                   for (const auto &composition_model: segment_vector[current_section][current_segment].composition_systems)
                     {
-                      composition_current_section = composition_model->get_composition(position,
+                      composition_current_section = composition_model->get_composition(position_in_cartesian_coordinates,
                                                                                        depth,
                                                                                        composition_number,
                                                                                        composition_current_section,
@@ -582,7 +582,7 @@ namespace WorldBuilder
 
                   for (const auto &composition_model: segment_vector[next_section][current_segment].composition_systems)
                     {
-                      composition_next_section = composition_model->get_composition(position,
+                      composition_next_section = composition_model->get_composition(position_in_cartesian_coordinates,
                                                                                     depth,
                                                                                     composition_number,
                                                                                     composition_next_section,
@@ -610,7 +610,7 @@ namespace WorldBuilder
 
 
     WorldBuilder::grains
-    SubductingPlate::grains(const Point<3> &position,
+    SubductingPlate::grains(const Point<3> &position_in_cartesian_coordinates,
                             const NaturalCoordinate &position_in_natural_coordinates,
                             const double depth,
                             const unsigned int composition_number,
@@ -624,7 +624,7 @@ namespace WorldBuilder
         {
           // todo: explain
           WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
-            WorldBuilder::Utilities::distance_point_from_curved_planes(position,
+            WorldBuilder::Utilities::distance_point_from_curved_planes(position_in_cartesian_coordinates,
                                                                        position_in_natural_coordinates,
                                                                        reference_point,
                                                                        coordinates,
@@ -696,7 +696,7 @@ namespace WorldBuilder
 
                   for (const auto &grains_model: segment_vector[current_section][current_segment].grains_systems)
                     {
-                      grains_current_section = grains_model->get_grains(position,
+                      grains_current_section = grains_model->get_grains(position_in_cartesian_coordinates,
                                                                         depth,
                                                                         composition_number,
                                                                         grains_current_section,
@@ -713,7 +713,7 @@ namespace WorldBuilder
 
                   for (const auto &grains_model: segment_vector[next_section][current_segment].grains_systems)
                     {
-                      grains_next_section = grains_model->get_grains(position,
+                      grains_next_section = grains_model->get_grains(position_in_cartesian_coordinates,
                                                                      depth,
                                                                      composition_number,
                                                                      grains_next_section,

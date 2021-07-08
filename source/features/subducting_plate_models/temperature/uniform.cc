@@ -82,7 +82,7 @@ namespace WorldBuilder
 
 
         double
-        Uniform::get_temperature(const Point<3> & /*position*/,
+        Uniform::get_temperature(const Point<3> & /*position_in_cartesian_coordinates*/,
                                  const double  /*depth*/,
                                  const double  /*gravity*/,
                                  double temperature_,

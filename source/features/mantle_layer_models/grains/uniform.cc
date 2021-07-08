@@ -129,7 +129,7 @@ namespace WorldBuilder
 
 
         WorldBuilder::grains
-        Uniform::get_grains(const Point<3> & /*position*/,
+        Uniform::get_grains(const Point<3> & /*position_in_cartesian_coordinates*/,
                             const double depth,
                             const unsigned int composition_number,
                             WorldBuilder::grains grains_,
