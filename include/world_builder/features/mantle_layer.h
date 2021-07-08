@@ -85,7 +85,7 @@ namespace WorldBuilder
          * Returns a temperature based on the given position, depth in the model,
          * gravity and current temperature.
          */
-        double temperature(const Point<3> &position,
+        double temperature(const Point<3> &position_in_cartesian_coordinates,
                            const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
                            const double depth,
                            const double gravity,
@@ -98,7 +98,7 @@ namespace WorldBuilder
          * the composition which is being requested and the current value
          * of that composition at this location and depth.
          */
-        double composition(const Point<3> &position,
+        double composition(const Point<3> &position_in_cartesian_coordinates,
                            const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
                            const double depth,
                            const unsigned int composition_number,
@@ -113,7 +113,7 @@ namespace WorldBuilder
          */
 
         WorldBuilder::grains
-        grains(const Point<3> &position,
+        grains(const Point<3> &position_in_cartesian_coordinates,
                const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
                const double depth,
                const unsigned int composition_number,

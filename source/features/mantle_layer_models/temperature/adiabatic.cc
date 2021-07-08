@@ -116,7 +116,7 @@ namespace WorldBuilder
 
 
         double
-        Adiabatic::get_temperature(const Point<3> & /*position*/,
+        Adiabatic::get_temperature(const Point<3> & /*position_in_cartesian_coordinates*/,
                                    const double depth,
                                    const double gravity_norm,
                                    double temperature_,

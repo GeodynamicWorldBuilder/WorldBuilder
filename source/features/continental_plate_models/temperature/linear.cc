@@ -87,7 +87,7 @@ namespace WorldBuilder
 
 
         double
-        Linear::get_temperature(const Point<3> & /*position*/,
+        Linear::get_temperature(const Point<3> & /*position_in_cartesian_coordinates*/,
                                 const double depth,
                                 const double gravity_norm,
                                 double temperature_,

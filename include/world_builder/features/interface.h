@@ -86,7 +86,7 @@ namespace WorldBuilder
          * takes temperature and position and returns a temperature.
          */
         virtual
-        double temperature(const Point<3> &position,
+        double temperature(const Point<3> &position_in_cartesian_coordinates,
                            const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
                            const double depth,
                            const double gravity,
@@ -96,7 +96,7 @@ namespace WorldBuilder
          * 1 is present) based on the given position and
          */
         virtual
-        double composition(const Point<3> &position,
+        double composition(const Point<3> &position_in_cartesian_coordinates,
                            const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
                            const double depth,
                            const unsigned int composition_number,
@@ -107,7 +107,7 @@ namespace WorldBuilder
          * given position and composition number
          */
         virtual
-        WorldBuilder::grains grains(const Point<3> &position,
+        WorldBuilder::grains grains(const Point<3> &position_in_cartesian_coordinates,
                                     const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
                                     const double depth,
                                     const unsigned int composition_number,

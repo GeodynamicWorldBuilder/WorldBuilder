@@ -88,7 +88,7 @@ namespace WorldBuilder
 
 
         double
-        Uniform::get_composition(const Point<3> & /*position*/,
+        Uniform::get_composition(const Point<3> & /*position_in_cartesian_coordinates*/,
                                  const double depth,
                                  const unsigned int composition_number,
                                  double composition_,

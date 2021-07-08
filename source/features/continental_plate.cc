@@ -134,7 +134,7 @@ namespace WorldBuilder
 
 
     double
-    ContinentalPlate::temperature(const Point<3> &position,
+    ContinentalPlate::temperature(const Point<3> &position_in_cartesian_coordinates,
                                   const NaturalCoordinate &position_in_natural_coordinates,
                                   const double depth,
                                   const double gravity_norm,
@@ -146,7 +146,7 @@ namespace WorldBuilder
         {
           for (const auto &temperature_model: temperature_models)
             {
-              temperature = temperature_model->get_temperature(position,
+              temperature = temperature_model->get_temperature(position_in_cartesian_coordinates,
                                                                depth,
                                                                gravity_norm,
                                                                temperature,
@@ -165,7 +165,7 @@ namespace WorldBuilder
     }
 
     double
-    ContinentalPlate::composition(const Point<3> &position,
+    ContinentalPlate::composition(const Point<3> &position_in_cartesian_coordinates,
                                   const NaturalCoordinate &position_in_natural_coordinates,
                                   const double depth,
                                   const unsigned int composition_number,
@@ -178,7 +178,7 @@ namespace WorldBuilder
         {
           for (const auto &composition_model: composition_models)
             {
-              composition = composition_model->get_composition(position,
+              composition = composition_model->get_composition(position_in_cartesian_coordinates,
                                                                depth,
                                                                composition_number,
                                                                composition,
@@ -197,7 +197,7 @@ namespace WorldBuilder
     }
 
     WorldBuilder::grains
-    ContinentalPlate::grains(const Point<3> &position,
+    ContinentalPlate::grains(const Point<3> &position_in_cartesian_coordinates,
                              const NaturalCoordinate &position_in_natural_coordinates,
                              const double depth,
                              const unsigned int composition_number,
@@ -210,7 +210,7 @@ namespace WorldBuilder
         {
           for (const auto &grains_model: grains_models)
             {
-              grains = grains_model->get_grains(position,
+              grains = grains_model->get_grains(position_in_cartesian_coordinates,
                                                 depth,
                                                 composition_number,
                                                 grains,
