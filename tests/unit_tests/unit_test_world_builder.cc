@@ -4861,7 +4861,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -4914,7 +4913,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -4941,7 +4939,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -4967,7 +4964,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -4995,7 +4991,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5022,7 +5017,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5050,7 +5044,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5077,7 +5070,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5131,7 +5123,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5189,7 +5180,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5218,7 +5208,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  true,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5246,7 +5235,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5274,7 +5262,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  true,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5311,7 +5298,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5347,7 +5333,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5374,7 +5359,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5401,7 +5385,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5449,7 +5432,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5476,7 +5458,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5503,7 +5484,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5532,7 +5512,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5562,7 +5541,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5589,7 +5567,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5616,7 +5593,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5645,7 +5621,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5673,7 +5648,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5700,7 +5674,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5727,7 +5700,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5756,7 +5728,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5846,7 +5817,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5874,7 +5844,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5902,7 +5871,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5931,7 +5899,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5959,7 +5926,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -5987,7 +5953,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6020,7 +5985,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6053,7 +6017,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6081,7 +6044,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6123,7 +6085,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6150,7 +6111,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6177,7 +6137,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6206,7 +6165,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6247,7 +6205,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6274,7 +6231,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6301,7 +6257,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6328,7 +6283,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6355,7 +6309,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6383,7 +6336,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6410,7 +6362,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6452,7 +6403,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6479,7 +6429,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6506,7 +6455,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6533,7 +6481,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6577,7 +6524,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6607,7 +6553,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6635,7 +6580,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6680,7 +6624,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6724,7 +6667,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6751,7 +6693,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6778,7 +6719,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6807,7 +6747,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6835,7 +6774,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6876,7 +6814,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6904,7 +6841,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6932,7 +6868,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6961,7 +6896,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -6991,7 +6925,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -7019,7 +6952,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -7047,7 +6979,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -7076,10 +7007,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
-                                                 y_spline,
-  {0,1,2});
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
@@ -7104,10 +7033,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
-                                                 y_spline,
-  {0,0.5,1});
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
@@ -7132,10 +7059,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
-                                                 y_spline,
-  {0,0.5,1});
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
@@ -7160,10 +7085,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
-                                                 y_spline,
-  {0,0.5,1});
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
@@ -7188,10 +7111,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
-                                                 y_spline,
-  {0,0.5,1});
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(std::fabs(distance_from_planes.distance_along_plane) < 1e-12);
@@ -7218,10 +7139,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
-                                                 y_spline,
-  {0,0.5,1});
+                                                 y_spline);
 
   CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
   CHECK(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
@@ -7283,7 +7202,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -7311,7 +7229,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -7343,7 +7260,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -7370,7 +7286,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -7406,7 +7321,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -7432,7 +7346,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
@@ -7470,7 +7383,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
