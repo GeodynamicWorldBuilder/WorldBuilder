@@ -194,7 +194,7 @@ namespace WorldBuilder
         /**
          * x coordinates of points
          */
-        std::vector<double> m_x;
+        size_t mx_size_min;
 
         /**
          * interpolation parameters
@@ -347,10 +347,9 @@ namespace WorldBuilder
                                                                     const double start_radius,
                                                                     const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                                                     const bool only_positive,
-                                                                    const InterpolationType interpolation_type,
                                                                     const interpolation &x_spline,
                                                                     const interpolation &y_spline,
-                                                                    std::vector<double> global_x_list = {});
+                                                                    const double max_surface_distance = INFINITY);
 
 
 
