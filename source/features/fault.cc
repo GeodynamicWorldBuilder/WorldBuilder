@@ -325,6 +325,20 @@ namespace WorldBuilder
           total_fault_length[i] = local_total_fault_length;
           maximum_total_fault_length = std::max(maximum_total_fault_length, local_total_fault_length);
         }
+
+
+      // Now that we know where the fault is, how thick it is, etc,
+      // determine a bounding box (in Cartesian coordinates) for this
+      // fault
+
+      // Start by finding the bounding box of all points we know are
+      // on the actual fault
+      /* TODO */
+
+
+      // Then enlarge the bounding box by the largest distance we know
+      // we will care away from the fault plane(s)
+      /* cartesian_bounding_box.expand (TODO); */
     }
 
 
@@ -348,7 +362,14 @@ namespace WorldBuilder
               );
 
       // todo: explain and check -starting_depth
-      if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_fault_length + maximum_fault_thickness)
+
+      // Check whether the point is within the fault. We do this
+      // through a sequence of increasingly more expensive tests
+      // starting with just a simple bounding box check to narrow down
+      // whether the current fault even needs to treat this point:
+      if (cartesian_bounding_box.point_inside(position)
+          &&
+          depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_fault_length + maximum_fault_thickness)
         {
           // todo: explain
           // This function only returns positive values, because we want
@@ -478,8 +499,13 @@ namespace WorldBuilder
       // todo: explain
       const double starting_radius = position_in_natural_coordinates.get_depth_coordinate() + depth - starting_depth;
 
-      // todo: explain and check -starting_depth
-      if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_fault_length + maximum_fault_thickness)
+      // Check whether the point is within the fault. We do this
+      // through a sequence of increasingly more expensive tests
+      // starting with just a simple bounding box check to narrow down
+      // whether the current fault even needs to treat this point:
+      if (cartesian_bounding_box.point_inside(position)
+          &&
+          depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_fault_length + maximum_fault_thickness)
         {
           // todo: explain
           // This function only returns positive values, because we want
@@ -613,7 +639,13 @@ namespace WorldBuilder
       const double starting_radius = position_in_natural_coordinates.get_depth_coordinate() + depth - starting_depth;
 
       // todo: explain and check -starting_depth
-      if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_fault_length + maximum_fault_thickness)
+      // Check whether the point is within the fault. We do this
+      // through a sequence of increasingly more expensive tests
+      // starting with just a simple bounding box check to narrow down
+      // whether the current fault even needs to treat this point:
+      if (cartesian_bounding_box.point_inside(position)
+          &&
+          depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_fault_length + maximum_fault_thickness)
         {
           // todo: explain
           // This function only returns positive values, because we want
