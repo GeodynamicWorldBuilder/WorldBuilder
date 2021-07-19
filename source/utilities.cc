@@ -19,6 +19,7 @@
 
 #include <algorithm>
 #include <iomanip>
+#include <iostream>
 
 #include "world_builder/nan.h"
 #include "world_builder/utilities.h"
@@ -637,12 +638,23 @@ namespace WorldBuilder
                 }
             }
           double solution = min_estimate_solution;
+          bool is_outside_section = (floor(solution) > global_x_list[point_list.size()-2]);
 
-          continue_computation = (solution > 0 && floor(solution) <= global_x_list[point_list.size()-2] && floor(solution)  >= 0);
+          continue_computation = ((solution > 0 && floor(solution) <= global_x_list[point_list.size()-2] && floor(solution)  >= 0) || is_outside_section);
+          
+          if (!is_outside_section)
+          {
+            closest_point_on_line_2d = Point<2>(x_spline(solution),y_spline(solution),natural_coordinate_system);
+            i_section_min_distance = static_cast<size_t>(floor(solution));
+            fraction_CPL_P1P2 = solution-floor(solution);
+          }
 
-          closest_point_on_line_2d = Point<2>(x_spline(solution),y_spline(solution),natural_coordinate_system);
-          i_section_min_distance = static_cast<size_t>(floor(solution));
-          fraction_CPL_P1P2 = solution-floor(solution);
+          else if (is_outside_section)
+          {
+            closest_point_on_line_2d = Point<2>(x_spline(solution),y_spline(solution),natural_coordinate_system);
+            i_section_min_distance = closest_point_on_line_2d.cheap_relative_distance(check_point_surface_2d);
+            fraction_CPL_P1P2 = solution-1;
+          }
         }
       // We now need 3d points from this point on, so make them.
       // The order of a Cartesian coordinate is x,y,z and the order of
