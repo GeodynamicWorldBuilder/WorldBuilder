@@ -467,6 +467,7 @@ namespace WorldBuilder
       double new_distance = INFINITY;
       double along_plane_distance = INFINITY;
       double new_along_plane_distance  = INFINITY;
+      double new_depth_reference_surface = INFINITY;
 
       const CoordinateSystem natural_coordinate_system = coordinate_system->natural_coordinate_system();
       const bool bool_cartesian = natural_coordinate_system == cartesian;
@@ -492,6 +493,7 @@ namespace WorldBuilder
       // point on the line is.
       double segment_fraction = 0.0;
       double total_average_angle = 0.0;
+      double depth_reference_surface = 0.0;
 
       const DepthMethod depth_method = coordinate_system->depth_method();
       WBAssertThrow(depth_method == DepthMethod::none
@@ -983,6 +985,7 @@ namespace WorldBuilder
                         {
                           new_distance = INFINITY;
                           new_along_plane_distance = INFINITY;
+                          new_depth_reference_surface = INFINITY;
                         }
                       else
                         {
@@ -993,6 +996,7 @@ namespace WorldBuilder
 
                           new_distance = side_of_line * (check_point_2d - Pb).norm();
                           new_along_plane_distance = (begin_segment - Pb).norm();
+                          new_depth_reference_surface = start_radius - Pb[1];
                         }
                     }
                 }
@@ -1125,6 +1129,8 @@ namespace WorldBuilder
                     {
                       new_distance = (radius_angle_circle - CPCR_norm) * (difference_in_angle_along_segment < 0 ? 1 : -1);
                       new_along_plane_distance = (radius_angle_circle * check_point_angle - radius_angle_circle * interpolated_angle_top) * (difference_in_angle_along_segment < 0 ? 1 : -1);
+                      // compute the new depth by rotating the begin point to the check point location.
+                      new_depth_reference_surface = start_radius-(sin(check_point_angle + interpolated_angle_top) * BSPC[0] + cos(check_point_angle + interpolated_angle_top) * BSPC[1] + center_circle[1]);
                     }
 
                 }
@@ -1152,6 +1158,7 @@ namespace WorldBuilder
                                          + 0.5 * (interpolated_angle_top + interpolated_angle_bottom  - 2 * add_angle) * new_along_plane_distance);
                   total_average_angle = (std::fabs(total_average_angle) < std::numeric_limits<double>::epsilon() ? 0 : total_average_angle /
                                          (total_length + new_along_plane_distance));
+                  depth_reference_surface = new_depth_reference_surface;
                 }
 
               // increase average angle
@@ -1172,6 +1179,7 @@ namespace WorldBuilder
       return_values.section = section;
       return_values.segment = segment;
       return_values.average_angle = total_average_angle;
+      return_values.depth_reference_surface = depth_reference_surface;
       return return_values;
     }
 
