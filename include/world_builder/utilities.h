@@ -303,6 +303,11 @@ namespace WorldBuilder
        */
       double average_angle;
 
+      /**
+       * The depth of the closest point on reference surface.
+       */
+      double depth_reference_surface;
+
       // This is unrelated and should not be stored in here, but some
       // plugins rely on this structure as temporary storage space.
       double local_thickness;
