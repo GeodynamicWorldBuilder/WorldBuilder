@@ -106,7 +106,11 @@ namespace WorldBuilder
 
               // Hyperbolic tangent goes from 0 to 1 over approximately x=(0, 2) without any arguements. The function is written
               // so that the composition returned 1 to 0 over the side_distance on either sides.
-              composition = (center_composition - std::tanh(10*(distance_from_plane.distance_from_plane - side_distance/2)/side_distance ) )/2 ;
+              if (distance_from_plane.average_angle > 0.)
+                composition = (center_composition - std::tanh(10 * (distance_from_plane.distance_from_plane / std::sin(distance_from_plane.average_angle)
+                          - side_distance/2)/side_distance ) )/2 ;
+              else 
+                composition = (center_composition - std::tanh(10 * (distance_from_plane.distance_from_plane - side_distance/2)/side_distance ) )/2 ;
 
               return Utilities::apply_operation(operation,composition_,composition);
             }
