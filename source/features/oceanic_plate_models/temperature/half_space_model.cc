@@ -130,7 +130,6 @@ namespace WorldBuilder
                                                         this->world->specific_heat) * depth);
                 }
 
-              const int sommation_number = 100;
               double distance_ridge = std::numeric_limits<double>::max();
 
               const CoordinateSystem coordinate_system = world->parameters.coordinate_system->natural_coordinate_system();
