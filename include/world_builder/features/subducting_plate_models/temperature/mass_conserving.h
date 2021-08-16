@@ -28,79 +28,79 @@
 namespace WorldBuilder
 {
 
-namespace Features
-{
-namespace SubductingPlateModels
-{
-namespace Temperature
-{
-/**
- * This class represents a subducting plate and can implement submodules
- * for temperature and composition. These submodules determine what
- * the returned temperature or composition of the temperature and composition
- * functions of this class will be.
- */
-class MassConserving final: public Interface
-{
-public:
-    /**
-     * constructor
-     */
-    MassConserving(WorldBuilder::World *world);
+  namespace Features
+  {
+    namespace SubductingPlateModels
+    {
+      namespace Temperature
+      {
+        /**
+         * This class represents a subducting plate and can implement submodules
+         * for temperature and composition. These submodules determine what
+         * the returned temperature or composition of the temperature and composition
+         * functions of this class will be.
+         */
+        class MassConserving final: public Interface
+        {
+          public:
+            /**
+             * constructor
+             */
+            MassConserving(WorldBuilder::World *world);
 
-    /**
-     * Destructor
-     */
-    ~MassConserving() override final;
+            /**
+             * Destructor
+             */
+            ~MassConserving() override final;
 
-    /**
-     * declare and read in the world builder file into the parameters class
-     */
-    static
-    void declare_entries(Parameters &prm, const std::string &parent_name = "");
+            /**
+             * declare and read in the world builder file into the parameters class
+             */
+            static
+            void declare_entries(Parameters &prm, const std::string &parent_name = "");
 
-    /**
-     * declare and read in the world builder file into the parameters class
-     */
-    void parse_entries(Parameters &prm) override final;
-
-
-    /**
-     * Returns a temperature based on the given position, depth in the model,
-     * gravity and current temperature.
-     */
-    double get_temperature(const Point<3> &position,
-                           const double depth,
-                           const double gravity,
-                           double temperature,
-                           const double feature_min_depth,
-                           const double feature_max_depth,
-                           const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes) const override final;
+            /**
+             * declare and read in the world builder file into the parameters class
+             */
+            void parse_entries(Parameters &prm) override final;
 
 
-private:
-    //  temperature submodule parameters
-    double min_depth;
-    double max_depth;
-    double density;
-    double plate_velocity;
-    double age_at_trench;
-    double overriding_plate_age_above_slab;
-    double mantle_coupling_depth;
-    double shallow_average_dip;
-    double thermal_conductivity;
-    double thermal_expansion_coefficient;
-    double specific_heat;
-    double thermal_diffusivity;
-    double potential_mantle_temperature;
-    double surface_temperature;
-    bool adiabatic_heating;
-    Utilities::Operations operation;
+            /**
+             * Returns a temperature based on the given position, depth in the model,
+             * gravity and current temperature.
+             */
+            double get_temperature(const Point<3> &position,
+                                   const double depth,
+                                   const double gravity,
+                                   double temperature,
+                                   const double feature_min_depth,
+                                   const double feature_max_depth,
+                                   const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes) const override final;
 
-};
-} // namespace Temperature
-} // namespace SubductingPlateModels
-} // namespace Features
+
+          private:
+            //  temperature submodule parameters
+            double min_depth;
+            double max_depth;
+            double density;
+            double plate_velocity;
+            double age_at_trench;
+            double overriding_plate_age_above_slab;
+            double mantle_coupling_depth;
+            double shallow_average_dip;
+            double thermal_conductivity;
+            double thermal_expansion_coefficient;
+            double specific_heat;
+            double thermal_diffusivity;
+            double potential_mantle_temperature;
+            double surface_temperature;
+            bool adiabatic_heating;
+            Utilities::Operations operation;
+
+        };
+      } // namespace Temperature
+    } // namespace SubductingPlateModels
+  } // namespace Features
 } // namespace WorldBuilder
 
 #endif
