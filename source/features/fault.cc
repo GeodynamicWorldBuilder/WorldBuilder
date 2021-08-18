@@ -331,27 +331,22 @@ namespace WorldBuilder
       // Find minimal and maximal coordinates. Do this by finding the
       // leftmost/rightmost point with regard to either the [0] or [1]
       // coordinate, and then takes its [0] or [1] element.
-      min_along_x = (*std::min_element(coordinates.begin(), coordinates.end(),
-                                       [](auto p1, auto p2)
+      auto compare_x_coordinate = [](auto p1, auto p2)
       {
         return p1[0]<p2[0];
-      })) [0];
-      max_along_x = (*std::max_element(coordinates.begin(), coordinates.end(),
-                                       [](auto p1, auto p2)
-      {
-        return p1[0]<p2[0];
-      })) [0];
+      };
 
-      min_along_y = (*std::min_element(coordinates.begin(), coordinates.end(),
-                                       [](auto p1, auto p2)
+      min_along_x = (*std::min_element(coordinates.begin(), coordinates.end(), compare_x_coordinate)) [0];
+      max_along_x = (*std::max_element(coordinates.begin(), coordinates.end(), compare_x_coordinate)) [0];
+
+
+      auto compare_y_coordinate = [](auto p1, auto p2)
       {
         return p1[1]<p2[1];
-      })) [1];
-      max_along_y = (*std::max_element(coordinates.begin(), coordinates.end(),
-                                       [](auto p1, auto p2)
-      {
-        return p1[1]<p2[1];
-      })) [1];
+      };
+
+      min_along_y = (*std::min_element(coordinates.begin(), coordinates.end(), compare_y_coordinate)) [1];
+      max_along_y = (*std::max_element(coordinates.begin(), coordinates.end(), compare_y_coordinate)) [1];
 
       min_lat_cos_inv = 1. / std::cos(min_along_y);
       max_lat_cos_inv = 1. / std::cos(max_along_y);
