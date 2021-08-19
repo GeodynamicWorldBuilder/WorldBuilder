@@ -331,15 +331,6 @@ namespace WorldBuilder
           maximum_total_slab_length = std::max(maximum_total_slab_length, local_total_slab_length);
         }
 
-      std::vector<double> x_list(original_number_of_coordinates,0.0);
-      std::vector<double> y_list(original_number_of_coordinates,0.0);
-
-      for (size_t j=0; j<original_number_of_coordinates; ++j)
-        {
-          x_list[j] = coordinates[j][0];
-          y_list[j] = coordinates[j][1];
-        }
-
       // Here, we compute the spherical bounding box using the two extreme points of the box containing all the surface
       // coordinates and an additional buffer zone that accounts for the fault thickness and length. The first and second
       // points correspond to the lower left and the upper right corners of the bounding box, respectively (see the
@@ -347,16 +338,33 @@ namespace WorldBuilder
       // For the spherical system, the buffer zone along the longitudal direction is calculated using the
       // correponding latitude points.
 
-      min_along_x = *std::min_element(x_list.begin(), x_list.end());
-      max_along_x = *std::max_element(x_list.begin(), x_list.end());
-      min_along_y = *std::min_element(y_list.begin(), y_list.end());
-      max_along_y = *std::max_element(y_list.begin(), y_list.end());
+      // Find minimal and maximal coordinates. Do this by finding the
+      // leftmost/rightmost point with regard to either the [0] or [1]
+      // coordinate, and then takes its [0] or [1] element.
+      auto compare_x_coordinate = [](auto p1, auto p2)
+      {
+        return p1[0]<p2[0];
+      };
 
-      min_lat_cos_inv = 1 / std::cos(min_along_y);
-      max_lat_cos_inv = 1 / std::cos(max_along_y);
+      min_along_x = (*std::min_element(coordinates.begin(), coordinates.end(), compare_x_coordinate)) [0];
+      max_along_x = (*std::max_element(coordinates.begin(), coordinates.end(), compare_x_coordinate)) [0];
 
-      buffer_around_slab_cartesian =  (maximum_slab_thickness + maximum_total_slab_length);
+
+      auto compare_y_coordinate = [](auto p1, auto p2)
+      {
+        return p1[1]<p2[1];
+      };
+
+      min_along_y = (*std::min_element(coordinates.begin(), coordinates.end(), compare_y_coordinate)) [1];
+      max_along_y = (*std::max_element(coordinates.begin(), coordinates.end(),compare_y_coordinate)) [1];
+
+      min_lat_cos_inv = 1. / std::cos(min_along_y);
+      max_lat_cos_inv = 1. / std::cos(max_along_y);
+
+      buffer_around_slab_cartesian = (maximum_slab_thickness + maximum_total_slab_length);
     }
+
+
 
     BoundingBox<2>
     SubductingPlate::get_bounding_box (const NaturalCoordinate &position_in_natural_coordinates,

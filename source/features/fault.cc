@@ -328,26 +328,30 @@ namespace WorldBuilder
         }
 
 
-      std::vector<double> x_list(original_number_of_coordinates,0.0);
-      std::vector<double> y_list(original_number_of_coordinates,0.0);
+      // Find minimal and maximal coordinates. Do this by finding the
+      // leftmost/rightmost point with regard to either the [0] or [1]
+      // coordinate, and then takes its [0] or [1] element.
+      auto compare_x_coordinate = [](auto p1, auto p2)
+      {
+        return p1[0]<p2[0];
+      };
 
-      for (size_t j=0; j<original_number_of_coordinates; ++j)
-        {
-          x_list[j] = coordinates[j][0];
-          y_list[j] = coordinates[j][1];
-        }
+      min_along_x = (*std::min_element(coordinates.begin(), coordinates.end(), compare_x_coordinate)) [0];
+      max_along_x = (*std::max_element(coordinates.begin(), coordinates.end(), compare_x_coordinate)) [0];
 
 
-      min_along_x = *std::min_element(x_list.begin(), x_list.end());
-      max_along_x = *std::max_element(x_list.begin(), x_list.end());
-      min_along_y = *std::min_element(y_list.begin(), y_list.end());
-      max_along_y = *std::max_element(y_list.begin(), y_list.end());
+      auto compare_y_coordinate = [](auto p1, auto p2)
+      {
+        return p1[1]<p2[1];
+      };
 
-      min_lat_cos_inv = 1 / std::cos(min_along_y);
-      max_lat_cos_inv = 1 / std::cos(max_along_y);
+      min_along_y = (*std::min_element(coordinates.begin(), coordinates.end(), compare_y_coordinate)) [1];
+      max_along_y = (*std::max_element(coordinates.begin(), coordinates.end(), compare_y_coordinate)) [1];
 
-      buffer_around_fault_cartesian =  (maximum_fault_thickness + maximum_total_fault_length);
+      min_lat_cos_inv = 1. / std::cos(min_along_y);
+      max_lat_cos_inv = 1. / std::cos(max_along_y);
 
+      buffer_around_fault_cartesian = (maximum_fault_thickness + maximum_total_fault_length);
     }
 
 
