@@ -356,7 +356,7 @@ namespace WorldBuilder
       };
 
       min_along_y = (*std::min_element(coordinates.begin(), coordinates.end(), compare_y_coordinate)) [1];
-      max_along_y = (*std::max_element(coordinates.begin(), coordinates.end(),compare_y_coordinate)) [1];
+      max_along_y = (*std::max_element(coordinates.begin(), coordinates.end(), compare_y_coordinate)) [1];
 
       min_lat_cos_inv = 1. / std::cos(min_along_y);
       max_lat_cos_inv = 1. / std::cos(max_along_y);
