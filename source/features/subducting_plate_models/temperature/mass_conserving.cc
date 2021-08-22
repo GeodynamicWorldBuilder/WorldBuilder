@@ -184,90 +184,84 @@ namespace WorldBuilder
           const double distance_along_plane = distance_from_planes.distance_along_plane;
           const double depth_slab_surface = distance_from_planes.depth_reference_surface;
 
-          const double sec2yrs = 60.0*60.0*24.0*365.25;
-          const double plate_age_sec = age_at_trench*1e6*sec2yrs;  // my --> seconds
-          const double over_plate_age_sec = overriding_plate_age_above_slab*1e6*sec2yrs;  // my --> seconds
-
-          const double surface_temperature = this->world->surface_temperature;
-
+          const double seconds_in_year = 60.0*60.0*24.0*365.25;
+          const double plate_age_sec = age_at_trench*1e6*seconds_in_year;  // my --> seconds
+          const double over_plate_age_sec = overriding_plate_age_above_slab*1e6*seconds_in_year;  // my --> seconds
 
           if (distance_from_plane <= max_depth && distance_from_plane >= min_depth)
             {
 
               // 1. Determine initial heat content of the slab based on age of plate at trench
               //    This uses the integral of the half-space temperature profile
-              const double Q0 = 2*thermal_conductivity*(surface_temperature - potential_mantle_temperature) *
-                                std::sqrt(plate_age_sec/(thermal_diffusivity*const_pi));
+              const double initial_heat_content = 2*thermal_conductivity*(surface_temperature - potential_mantle_temperature) *
+                                                  std::sqrt(plate_age_sec/(thermal_diffusivity*const_pi));
 
-              //  2. Get Tmin and dist_offset given distance along slab and depth of point on the slab.
+              //  2. Get Tmin and distance_offset given distance along slab and depth of point on the slab.
               //  These equations are empirical based on fitting the temperature profiles from dynamic subduction models.
               double min_temperature = 0.0;
-              double dist_offset = 0.0;
+              double distance_offset = 0.0;
 
-              const double dip_coup = std::sin(shallow_average_dip*const_pi/180.0);  // km
-              const double mantle_coupling_length = mantle_coupling_depth/dip_coup;
+              const double mantle_coupling_length = mantle_coupling_depth/std::sin(shallow_average_dip*const_pi/180.0); //m
 
               /* Empirical model parameters */
               double upper_mantle_depth = 660e3; // m
               double upper_mantle_length = 1000e3; // m
               /* Distance offset parameters */
-              double offset_min = 25*1e3; // m
-              double offset_max = 35*1e3; // m
-              double m_min = 25e3/(1.5*660e3);
-              double m_max = 20e3/(2.5*100e3);
-              double v_min = 0.025; // m/yr
-              double v_max = 0.10; // m/yr
+              double offset_distance_min = 25*1e3; // m
+              double offset_distance_max = 35*1e3; // m
+              double slope_distance_min = 25e3/(1.5*660e3);
+              double slope_distance_max = 20e3/(2.5*100e3);
+              double sink_velocity_min = 0.025; // m/yr
+              double sink_velocity_max = 0.10; // m/yr
               /* minimum temperature parameters */
-              double mt_min = 250/(2.5*100*1e3); // deg/m (2.5 because dip in ref. model is 20-25 deg)
-              double mt_max = 500/(2.5*100*1e3); // deg/m
-              double T_min = 750;
-              double T_max = 950;
-              double vsubfact = (1 - (plate_velocity - v_min)/v_max);  // vsubfact = 0 when vel=v_max
+              double slope_temperature_min = 250/(2.5*100*1e3); // deg/m (2.5 because dip in ref. model is 20-25 deg)
+              double slope_temperature_max = 500/(2.5*100*1e3); // deg/m
+              double temperature_min = 750;
+              double temperature_max = 950;
+              double vsubfact = (1 - (plate_velocity - sink_velocity_min)/sink_velocity_max);  // vsubfact = 0 when vel=sink_velocity_max
 
-              double mzsh = m_min;
-              double mtsh = mt_min;
+              double slope_distance_shallow = slope_distance_min;
+              double slope_temperature_shallow = slope_temperature_min;
 
-              if (plate_velocity < v_min)
+              if (plate_velocity < sink_velocity_min)
                 {
-                  mzsh = m_max;
-                  mtsh = mt_max;
+                  slope_distance_shallow = slope_distance_max;
+                  slope_temperature_shallow = slope_temperature_max;
                 }
-              else if ( plate_velocity > v_max)
+              else if ( plate_velocity > sink_velocity_max)
                 {
-                  mzsh = m_min;
-                  mtsh = mt_min;
+                  slope_distance_shallow = slope_distance_min;
+                  slope_temperature_shallow = slope_temperature_min;
                 }
               else
                 {
-                  mzsh = m_min + vsubfact*(m_max - m_min);
-                  mtsh = mt_min + vsubfact*(mt_max - mt_min);
+                  slope_distance_shallow = slope_distance_min + vsubfact*(slope_distance_max - slope_distance_min);
+                  slope_temperature_shallow = slope_temperature_min + vsubfact*(slope_temperature_max - slope_temperature_min);
                 }
-              double offset_zc = mzsh*mantle_coupling_depth; // m  mantle_coupling_length
-              double offset_660 = offset_min + vsubfact*(offset_max - offset_min); // m
+              double offset_coupling_depth = slope_distance_shallow*mantle_coupling_depth; // m  mantle_coupling_length
+              double offset_660 = offset_distance_min + vsubfact*(offset_distance_max - offset_distance_min); // m
 
-              double mzdp = (offset_660 - offset_zc)/(upper_mantle_length - mantle_coupling_length);
-              double bzdp = (mzsh - mzdp)*mantle_coupling_length;
+              double slope_distance_deep = (offset_660 - offset_coupling_depth)/(upper_mantle_length - mantle_coupling_length);
+              double intercept_dist_deep = (slope_distance_shallow - slope_distance_deep)*mantle_coupling_length;
 
-              double Tmin_zc = mtsh*mantle_coupling_length;
-              double Tmin_660 = T_min + vsubfact*(T_max - T_min);
+              double temperature_min_coupling_depth = slope_temperature_shallow*mantle_coupling_length;
+              double temperature_min_660 = temperature_min + vsubfact*(temperature_max - temperature_min);
 
-              double mtdp = (Tmin_660 - Tmin_zc)/(upper_mantle_length - mantle_coupling_length);
-              double btdp = (mtsh - mtdp)*(mantle_coupling_length);
+              double slope_temperature_deep = (temperature_min_660 - temperature_min_coupling_depth)/(upper_mantle_length - mantle_coupling_length);
+              double intercept_temperature_deep = (slope_temperature_shallow - slope_temperature_deep)*(mantle_coupling_length);
 
               if (distance_along_plane <= mantle_coupling_length)
                 {
-                  dist_offset = mzsh*distance_along_plane;
-                  min_temperature = surface_temperature + mtsh*distance_along_plane;
+                  distance_offset = slope_distance_shallow*distance_along_plane;
+                  min_temperature = surface_temperature + slope_temperature_shallow*distance_along_plane;
                 }
               else
                 {
-                  dist_offset = mzdp*distance_along_plane + bzdp;
-                  min_temperature = surface_temperature + mtdp*distance_along_plane + btdp;
+                  distance_offset = slope_distance_deep*distance_along_plane + intercept_dist_deep;
+                  min_temperature = surface_temperature + slope_temperature_deep*distance_along_plane + intercept_temperature_deep;
                 }
 
-              //printf("dist %g minT %g offset %g\n", distance_along_plane, min_temperature, dist_offset);
-
-              double Tslab = 0.0;
+              double temperature = 0.0;
 
               // Need adiabatic temperature at position of grid point
               double background_temperature = adiabatic_heating ?
@@ -285,54 +279,47 @@ namespace WorldBuilder
                   // Need temperature in plate/mantle immediately above the slab to create smooth
                   // transition to the overriding plate temperature at shallower depth.
 
-                  double over_temperature = background_temperature + (surface_temperature - background_temperature) *
-                                            std::erfc(depth/(2*std::sqrt(thermal_diffusivity*over_plate_age_sec)));
+                  double overriding_plate_temperature = background_temperature + (surface_temperature - background_temperature) *
+                                                        std::erfc(depth/(2*std::sqrt(thermal_diffusivity*over_plate_age_sec)));
 
                   // Adjust distance for the offset of the minimum temperature from the top of the slab
-                  double adj_distance = distance_from_plane - dist_offset;
+                  double adjusted_distance = distance_from_plane - distance_offset;
 
 
                   // 3. Determine the heat content for side 1 (bottom) of the slab
 
-                  double time_sub = (distance_along_plane/plate_velocity)*sec2yrs;  // m/(m/y) = y(sec2yrs)
-                  double Qbot = 2*thermal_conductivity*(min_temperature - potential_mantle_temperature) *
-                                std::sqrt((plate_age_sec+time_sub)/(thermal_diffusivity*const_pi));
+                  double time_since_subducting = (distance_along_plane/plate_velocity)*seconds_in_year;  // m/(m/y) = y(seconds_in_year)
+                  double bottom_heat_content = 2*thermal_conductivity*(min_temperature - potential_mantle_temperature) *
+                                               std::sqrt((plate_age_sec+time_since_subducting)/(thermal_diffusivity*const_pi));
 
                   // 4. The difference in heat content goes into the temperature above where Tmin occurs.
 
-                  double Qtop = Q0 - Qbot;
-                  //printf("%g %g %g\n", Q0, Qtop, Qbot);
+                  double top_heat_content = initial_heat_content - bottom_heat_content;
 
                   // Assign the temperature depending on whether distance is negative (above) or positive (below) the slab
 
-                  if (adj_distance < 0)
+                  if (adjusted_distance < 0)
                     {
                       // use 1D infinite space solution for top (side 2) of slab the slab
-                      // 2 times the "Qtop" because all this heat needs to be on one side of the Gaussian
-                      double te = (1/(const_pi*thermal_diffusivity))*pow(((2*Qtop)/
-                                                                          (2*density*specific_heat*(min_temperature - over_temperature + 1e-16))),2) + 1e-16;
+                      // 2 times the "top_heat_content" because all this heat needs to be on one side of the Gaussian
+                      double time_top_slab = (1/(const_pi*thermal_diffusivity))*pow(((2*top_heat_content)/
+                                                                                     (2*density*specific_heat*(min_temperature - overriding_plate_temperature + 1e-16))),2) + 1e-16;
 
-                      Tslab  = over_temperature + (2*Qtop/(2*density*specific_heat*std::sqrt(const_pi*thermal_diffusivity*te)))*
-                               std::exp(-(adj_distance*adj_distance)/(4*thermal_diffusivity*te));
+                      temperature  = overriding_plate_temperature + (2*top_heat_content/(2*density*specific_heat*std::sqrt(const_pi*thermal_diffusivity*time_top_slab)))*
+                                     std::exp(-(adjusted_distance*adjusted_distance)/(4*thermal_diffusivity*time_top_slab));
                     }
                   else
                     {
                       // use half-space cooling model for the bottom (side 1) of the slab
-                      Tslab = background_temperature + (min_temperature - background_temperature)*
-                              std::erfc(adj_distance/(2*std::sqrt(thermal_diffusivity*(plate_age_sec+time_sub))));
-
-                      //if (Tslab < 0.0){
-                      // printf("below: depth_surface %g, te %g, Tslab %g\n", depth_slab_surface/1000, te/1e6/sec2yrs, Tslab);
-                      //}
+                      temperature = background_temperature + (min_temperature - background_temperature)*
+                                    std::erfc(adjusted_distance/(2*std::sqrt(thermal_diffusivity*(plate_age_sec+time_since_subducting))));
                     }
                 }
               else
                 {
                   // slab temperature anomaly is gone.
-                  Tslab = background_temperature;
+                  temperature = background_temperature;
                 }
-
-              double temperature = Tslab;
 
               WBAssert(!std::isnan(temperature), "Internal error: temperature is not a number: " << temperature << ".");
               WBAssert(std::isfinite(temperature), "Internal error: temperature is not finite: " << temperature << ".");

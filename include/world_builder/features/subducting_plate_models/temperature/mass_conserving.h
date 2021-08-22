@@ -35,10 +35,20 @@ namespace WorldBuilder
       namespace Temperature
       {
         /**
-         * This class represents a subducting plate and can implement submodules
-         * for temperature and composition. These submodules determine what
-         * the returned temperature or composition of the temperature and composition
-         * functions of this class will be.
+         * This class represents a subducting plate temperature model. The temperature
+         * model uses the heat content (proportional to to thermal mass anomaly) to
+         * define a smooth temperature profile that conserves mass along the slab length.
+         * An empirical (linear) model is used to define how the minimum temperature
+         * increases with depth and how the location of the minimum temperature shifts
+         * into the slab interior. The slab is divided in to top and bottom parts,
+         * which meet at the location where the minimum temperature occurs in the slab.
+         * For the bottom slab the temperature is defined by a half-space cooling model.
+         * For the top of the slab the temperature is defined by one side of a 1D infinite
+         * space cooling model. The age of the overriding plate is used so the slab temperature
+         * at shallow depth smoothly transitions to the temperature of the overriding plate:
+         * this is not perfect, and is affected by the value of "top truncation" parameter
+         * subducting plate. Also note that the parameter "thickness" for the subducting plate_velocity
+         * needs to be defined but is not used.
          */
         class MassConserving final: public Interface
         {
