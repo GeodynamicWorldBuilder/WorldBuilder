@@ -621,6 +621,7 @@ namespace WorldBuilder
           fraction_CPL_P1P2 = solution-floor(solution);
         }
 
+      Point<3> closest_point_on_line_cartesian(cartesian);
 
       if (continue_computation)
         {
@@ -644,7 +645,7 @@ namespace WorldBuilder
 
           // Now that we have both the check point and the
           // closest_point_on_line, we need to push them to cartesian.
-          Point<3>closest_point_on_line_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_surface.get_array()),cartesian);
+          closest_point_on_line_cartesian = Point<3>(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_surface.get_array()),cartesian);
           Point<3> closest_point_on_line_bottom_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_bottom.get_array()),cartesian);
           Point<3> check_point_surface_cartesian(coordinate_system->natural_to_cartesian_coordinates(check_point_surface.get_array()),cartesian);
 
@@ -766,7 +767,7 @@ namespace WorldBuilder
                                         + fraction_CPL_P1P2 * (plane_segment_angles[original_next_section][0][0]
                                                                - plane_segment_angles[original_current_section][0][0]);
 
-                  PointDistanceFromCurvedPlanes return_values;
+                  PointDistanceFromCurvedPlanes return_values(natural_coordinate.get_coordinate_system());
                   return_values.distance_from_plane = 0.0;
                   return_values.distance_along_plane = 0.0;
                   return_values.fraction_of_section = fraction_CPL_P1P2;
@@ -774,6 +775,7 @@ namespace WorldBuilder
                   return_values.section = i_section_min_distance;
                   return_values.segment = 0;
                   return_values.average_angle = total_average_angle;
+                  return_values.closest_trench_point = closest_point_on_line_cartesian;
                   return return_values;
                 }
             }
@@ -1171,7 +1173,7 @@ namespace WorldBuilder
             }
         }
 
-      PointDistanceFromCurvedPlanes return_values;
+      PointDistanceFromCurvedPlanes return_values(natural_coordinate.get_coordinate_system());
       return_values.distance_from_plane = distance;
       return_values.distance_along_plane = along_plane_distance;
       return_values.fraction_of_section = section_fraction;
@@ -1180,6 +1182,7 @@ namespace WorldBuilder
       return_values.segment = segment;
       return_values.average_angle = total_average_angle;
       return_values.depth_reference_surface = depth_reference_surface;
+      return_values.closest_trench_point = closest_point_on_line_cartesian;
       return return_values;
     }
 

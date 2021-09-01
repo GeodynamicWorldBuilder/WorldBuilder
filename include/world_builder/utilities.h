@@ -21,6 +21,7 @@
 #define WORLD_BUILDER_UTILITIES_H
 
 
+#include "world_builder/nan.h"
 #include "world_builder/coordinate_systems/interface.h"
 
 
@@ -265,6 +266,23 @@ namespace WorldBuilder
     struct PointDistanceFromCurvedPlanes
     {
       /**
+       * Constructor
+       */
+      PointDistanceFromCurvedPlanes(CoordinateSystem coordinate_system)
+        :
+        distance_from_plane(NaN::DSNAN),
+        distance_along_plane(NaN::DSNAN),
+        fraction_of_section(NaN::DSNAN),
+        fraction_of_segment(NaN::DSNAN),
+        section(NaN::ISNAN),
+        segment(NaN::ISNAN),
+        average_angle(NaN::DSNAN),
+        depth_reference_surface(NaN::DSNAN),
+        closest_trench_point(Point<3>(coordinate_system)),
+        local_thickness(NaN::DSNAN)
+      {}
+
+      /**
        * The shortest distance between point and plane.
        */
       double distance_from_plane;
@@ -307,6 +325,11 @@ namespace WorldBuilder
        * The depth of the closest point on reference surface.
        */
       double depth_reference_surface;
+
+      /**
+       * The closest point on the trench line in cartesian coordinates.
+       */
+      Point<3> closest_trench_point;
 
       // This is unrelated and should not be stored in here, but some
       // plugins rely on this structure as temporary storage space.
