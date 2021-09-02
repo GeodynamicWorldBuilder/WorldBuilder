@@ -94,7 +94,7 @@ namespace WorldBuilder
             double max_depth;
             double density;
             double plate_velocity;
-            double age_at_trench;
+            double overriding_plate_age_above_slab;
             double mantle_coupling_depth;
             double shallow_average_dip;
             double thermal_conductivity;
@@ -104,7 +104,7 @@ namespace WorldBuilder
             double potential_mantle_temperature;
             double surface_temperature;
             bool adiabatic_heating;
-           // std::vector<Point<2> > ridge_coordinates;
+            std::vector<Point<2>> ridge_coordinates;
             Utilities::Operations operation;
 
         };
