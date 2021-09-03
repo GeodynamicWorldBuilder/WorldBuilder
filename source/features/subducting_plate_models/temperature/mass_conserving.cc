@@ -43,7 +43,6 @@ namespace WorldBuilder
           density(NaN::DSNAN),
           plate_velocity(NaN::DSNAN),
           age_at_trench(NaN::DSNAN),
-          overriding_plate_age_above_slab(NaN::DSNAN),
           mantle_coupling_depth(NaN::DSNAN),
           shallow_average_dip(NaN::DSNAN),
           thermal_conductivity(NaN::DSNAN),
@@ -73,7 +72,7 @@ namespace WorldBuilder
           prm.declare_entry("min distance slab top", Types::Double(0),
                             "The distance in meters from the top surface of the slab over which the temperature is "
                             "determined by this feature. This parameter should be negative and should be 1.5-2 times "
-                            "larger thatn the nominal slab thickness to allow the diffusion of cold "
+                            "larger than the nominal slab thickness to allow the diffusion of cold "
                             "temperatures from in the slab into the mantle above the slab surface."
                             " Also note that the top truncation value for the slab segment needs to have a value "
                             " of -1, otherwise the temperature above the slab will be cut off at a distance less than"
@@ -95,9 +94,6 @@ namespace WorldBuilder
 
           prm.declare_entry("age at trench", Types::Double(NaN::DQNAN),
                             "The age of the slab at the trench in millions of years.");
-
-          prm.declare_entry("overriding plate age", Types::Double(NaN::DQNAN),
-                            "The age of the overriding plate immediately above the slab  in millions of years");
 
           prm.declare_entry("coupling depth", Types::Double(NaN::DQNAN),
                             "The depth at which the slab surface first comes in contact with the hot mantle wedge "
@@ -141,7 +137,7 @@ namespace WorldBuilder
           plate_velocity = prm.get<double>("plate velocity");
 
           age_at_trench = prm.get<double>("age at trench");
-          overriding_plate_age_above_slab = prm.get<double>("overriding plate age");
+
           mantle_coupling_depth = prm.get<double>("coupling depth");
           shallow_average_dip = prm.get<double>("shallow dip");
 
@@ -186,7 +182,6 @@ namespace WorldBuilder
 
           const double seconds_in_year = 60.0*60.0*24.0*365.25;
           const double plate_age_sec = age_at_trench*1e6*seconds_in_year;  // my --> seconds
-          const double over_plate_age_sec = overriding_plate_age_above_slab*1e6*seconds_in_year;  // my --> seconds
 
           if (distance_from_plane <= max_depth && distance_from_plane >= min_depth)
             {
@@ -204,20 +199,20 @@ namespace WorldBuilder
               const double mantle_coupling_length = mantle_coupling_depth/std::sin(shallow_average_dip*const_pi/180.0); //m
 
               /* Empirical model parameters */
-              double upper_mantle_depth = 660e3; // m
-              double upper_mantle_length = 1000e3; // m
+              constexpr double upper_mantle_length = 1000e3; // m
               /* Distance offset parameters */
-              double offset_distance_min = 25*1e3; // m
-              double offset_distance_max = 35*1e3; // m
-              double slope_distance_min = 25e3/(1.5*660e3);
-              double slope_distance_max = 20e3/(2.5*100e3);
-              double sink_velocity_min = 0.025; // m/yr
-              double sink_velocity_max = 0.10; // m/yr
+              constexpr double offset_distance_min = 25*1e3; // m
+              constexpr double offset_distance_max = 35*1e3; // m
+              constexpr double slope_distance_min = 25e3/(1.5*660e3);
+              constexpr double slope_distance_max = 20e3/(2.5*100e3);
+              constexpr double sink_velocity_min = 0.025; // m/yr
+              constexpr double sink_velocity_max = 0.10; // m/yr
               /* minimum temperature parameters */
-              double slope_temperature_min = 250/(2.5*100*1e3); // deg/m (2.5 because dip in ref. model is 20-25 deg)
-              double slope_temperature_max = 500/(2.5*100*1e3); // deg/m
-              double temperature_min = 750;
-              double temperature_max = 950;
+              constexpr double slope_temperature_min = 250/(2.5*100*1e3); // deg/m (2.5 because dip in ref. model is 20-25 deg)
+              constexpr double slope_temperature_max = 500/(2.5*100*1e3); // deg/m
+              constexpr double temperature_min = 750;
+              constexpr double temperature_max = 950;
+              
               double vsubfact = (1 - (plate_velocity - sink_velocity_min)/sink_velocity_max);  // vsubfact = 0 when vel=sink_velocity_max
 
               double slope_distance_shallow = slope_distance_min;
@@ -238,17 +233,17 @@ namespace WorldBuilder
                   slope_distance_shallow = slope_distance_min + vsubfact*(slope_distance_max - slope_distance_min);
                   slope_temperature_shallow = slope_temperature_min + vsubfact*(slope_temperature_max - slope_temperature_min);
                 }
-              double offset_coupling_depth = slope_distance_shallow*mantle_coupling_depth; // m  mantle_coupling_length
-              double offset_660 = offset_distance_min + vsubfact*(offset_distance_max - offset_distance_min); // m
+              const double offset_coupling_depth = slope_distance_shallow*mantle_coupling_depth; // m  mantle_coupling_length
+              const double offset_660 = offset_distance_min + vsubfact*(offset_distance_max - offset_distance_min); // m
 
-              double slope_distance_deep = (offset_660 - offset_coupling_depth)/(upper_mantle_length - mantle_coupling_length);
-              double intercept_dist_deep = (slope_distance_shallow - slope_distance_deep)*mantle_coupling_length;
+              const double slope_distance_deep = (offset_660 - offset_coupling_depth)/(upper_mantle_length - mantle_coupling_length);
+              const double intercept_dist_deep = (slope_distance_shallow - slope_distance_deep)*mantle_coupling_length;
 
-              double temperature_min_coupling_depth = slope_temperature_shallow*mantle_coupling_length;
-              double temperature_min_660 = temperature_min + vsubfact*(temperature_max - temperature_min);
+              const double temperature_min_coupling_depth = slope_temperature_shallow*mantle_coupling_length;
+              const double temperature_min_660 = temperature_min + vsubfact*(temperature_max - temperature_min);
 
-              double slope_temperature_deep = (temperature_min_660 - temperature_min_coupling_depth)/(upper_mantle_length - mantle_coupling_length);
-              double intercept_temperature_deep = (slope_temperature_shallow - slope_temperature_deep)*(mantle_coupling_length);
+              const double slope_temperature_deep = (temperature_min_660 - temperature_min_coupling_depth)/(upper_mantle_length - mantle_coupling_length);
+              const double intercept_temperature_deep = (slope_temperature_shallow - slope_temperature_deep)*(mantle_coupling_length);
 
               if (distance_along_plane <= mantle_coupling_length)
                 {
@@ -263,8 +258,8 @@ namespace WorldBuilder
 
               double temperature = 0.0;
 
-              // Need adiabatic temperature at position of grid point
-              double background_temperature = adiabatic_heating ?
+              // Need adiabatic temperature at position of grid point for temperature profile of bottom of slab.
+              const double background_temperature = adiabatic_heating ?
                                               potential_mantle_temperature*std::exp(((thermal_expansion_coefficient * gravity_norm * depth) / specific_heat))
                                               : potential_mantle_temperature;
 
@@ -276,25 +271,19 @@ namespace WorldBuilder
               if (min_temperature < background_temperature)
                 {
 
-                  // Need temperature in plate/mantle immediately above the slab to create smooth
-                  // transition to the overriding plate temperature at shallower depth.
-
-                  double overriding_plate_temperature = background_temperature + (surface_temperature - background_temperature) *
-                                                        std::erfc(depth/(2*std::sqrt(thermal_diffusivity*over_plate_age_sec)));
-
                   // Adjust distance for the offset of the minimum temperature from the top of the slab
-                  double adjusted_distance = distance_from_plane - distance_offset;
+                  const double adjusted_distance = distance_from_plane - distance_offset;
 
 
                   // 3. Determine the heat content for side 1 (bottom) of the slab
 
-                  double time_since_subducting = (distance_along_plane/plate_velocity)*seconds_in_year;  // m/(m/y) = y(seconds_in_year)
-                  double bottom_heat_content = 2*thermal_conductivity*(min_temperature - potential_mantle_temperature) *
+                  const double time_since_subducting = (distance_along_plane/plate_velocity)*seconds_in_year;  // m/(m/y) = y(seconds_in_year)
+                  const double bottom_heat_content = 2*thermal_conductivity*(min_temperature - potential_mantle_temperature) *
                                                std::sqrt((plate_age_sec+time_since_subducting)/(thermal_diffusivity*const_pi));
 
                   // 4. The difference in heat content goes into the temperature above where Tmin occurs.
 
-                  double top_heat_content = initial_heat_content - bottom_heat_content;
+                  const double top_heat_content = initial_heat_content - bottom_heat_content;
 
                   // Assign the temperature depending on whether distance is negative (above) or positive (below) the slab
 
@@ -302,10 +291,13 @@ namespace WorldBuilder
                     {
                       // use 1D infinite space solution for top (side 2) of slab the slab
                       // 2 times the "top_heat_content" because all this heat needs to be on one side of the Gaussian
-                      double time_top_slab = (1/(const_pi*thermal_diffusivity))*pow(((2*top_heat_content)/
-                                                                                     (2*density*specific_heat*(min_temperature - overriding_plate_temperature + 1e-16))),2) + 1e-16;
+                      // Uses the existing temperature at the calculation point as the background so that at shallow depth
+                      // the slab temperature blends into the existing overriding plate temperature.
+                                  
+                    const double time_top_slab = (1/(const_pi*thermal_diffusivity))*pow(((2*top_heat_content)/
+                                                                                     (2*density*specific_heat*(min_temperature - temperature_ + 1e-16))),2) + 1e-16;
 
-                      temperature  = overriding_plate_temperature + (2*top_heat_content/(2*density*specific_heat*std::sqrt(const_pi*thermal_diffusivity*time_top_slab)))*
+                      temperature  = temperature_ + (2*top_heat_content/(2*density*specific_heat*std::sqrt(const_pi*thermal_diffusivity*time_top_slab)))*
                                      std::exp(-(adjusted_distance*adjusted_distance)/(4*thermal_diffusivity*time_top_slab));
                     }
                   else
@@ -313,12 +305,14 @@ namespace WorldBuilder
                       // use half-space cooling model for the bottom (side 1) of the slab
                       temperature = background_temperature + (min_temperature - background_temperature)*
                                     std::erfc(adjusted_distance/(2*std::sqrt(thermal_diffusivity*(plate_age_sec+time_since_subducting))));
+                      
                     }
                 }
               else
                 {
-                  // slab temperature anomaly is gone.
-                  temperature = background_temperature;
+                  // slab temperature anomaly is gone, so just return the existing temperature.
+                                  
+                  temperature = temperature_;
                 }
 
               WBAssert(!std::isnan(temperature), "Internal error: temperature is not a number: " << temperature << ".");
