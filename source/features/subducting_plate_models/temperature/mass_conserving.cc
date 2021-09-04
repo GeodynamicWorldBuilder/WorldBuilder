@@ -44,7 +44,6 @@ namespace WorldBuilder
           max_depth(NaN::DSNAN),
           density(NaN::DSNAN),
           plate_velocity(NaN::DSNAN),
-          overriding_plate_age_above_slab(NaN::DSNAN),
           mantle_coupling_depth(NaN::DSNAN),
           shallow_average_dip(NaN::DSNAN),
           thermal_conductivity(NaN::DSNAN),
@@ -92,9 +91,6 @@ namespace WorldBuilder
           prm.declare_entry("plate velocity", Types::Double(NaN::DQNAN),
                             "The velocity with which the plate subducts in meters per year.");
 
-          prm.declare_entry("overriding plate age", Types::Double(NaN::DQNAN),
-                            "The age of the overriding plate immediately above the slab  in millions of years");
-
           prm.declare_entry("coupling depth", Types::Double(NaN::DQNAN),
                             "The depth at which the slab surface first comes in contact with the hot mantle wedge "
                             "in meters.");
@@ -139,7 +135,6 @@ namespace WorldBuilder
           thermal_conductivity = prm.get<double>("thermal conductivity");
           plate_velocity = prm.get<double>("plate velocity");
 
-          overriding_plate_age_above_slab = prm.get<double>("overriding plate age");
           mantle_coupling_depth = prm.get<double>("coupling depth");
           shallow_average_dip = prm.get<double>("shallow dip");
 
@@ -222,13 +217,12 @@ namespace WorldBuilder
 
                   distance_ridge = std::min(distance_ridge, this->world->parameters.coordinate_system->distance_between_points_at_same_depth(trench_point, compare_point));
                 }
-
-              const double age_at_trench = distance_ridge / plate_velocity;
-
+		  
+              const double age_at_trench = distance_ridge / plate_velocity; // yr
+			  //printf("%g, %g, %g \n",age_at_trench, distance_ridge, plate_velocity); 
 
               const double seconds_in_year = 60.0 * 60.0 * 24.0 * 365.25;
-              const double plate_age_sec = age_at_trench * 1e6 * seconds_in_year;                        // my --> seconds
-              const double over_plate_age_sec = overriding_plate_age_above_slab * 1e6 * seconds_in_year; // my --> seconds
+              const double plate_age_sec = age_at_trench * seconds_in_year; // y --> seconds             
 
               // 1. Determine initial heat content of the slab based on age of plate at trench
               //    This uses the integral of the half-space temperature profile
@@ -314,12 +308,6 @@ namespace WorldBuilder
               if (min_temperature < background_temperature)
                 {
 
-                  // Need temperature in plate/mantle immediately above the slab to create smooth
-                  // transition to the overriding plate temperature at shallower depth.
-
-                  double overriding_plate_temperature = background_temperature + (surface_temperature - background_temperature) *
-                                                        std::erfc(depth / (2 * std::sqrt(thermal_diffusivity * over_plate_age_sec)));
-
                   // Adjust distance for the offset of the minimum temperature from the top of the slab
                   double adjusted_distance = distance_from_plane - distance_offset;
 
@@ -339,12 +327,11 @@ namespace WorldBuilder
                     {
                       // use 1D infinite space solution for top (side 2) of slab the slab
                       // 2 times the "top_heat_content" because all this heat needs to be on one side of the Gaussian
-                      double time_top_slab = (1 / (const_pi * thermal_diffusivity)) * pow(((2 * top_heat_content) /
-                                                                                           (2 * density * specific_heat * (min_temperature - overriding_plate_temperature + 1e-16))),
-                                                                                          2) +
-                                             1e-16;
+                      double time_top_slab = (1 / (const_pi * thermal_diffusivity)) * 
+                      	pow(((2 * top_heat_content) / (2 * density * specific_heat * 
+                      	(min_temperature - temperature_ + 1e-16))),2) + 1e-16;
 
-                      temperature = overriding_plate_temperature + (2 * top_heat_content / (2 * density * specific_heat * std::sqrt(const_pi * thermal_diffusivity * time_top_slab))) *
+                      temperature = temperature_ + (2 * top_heat_content / (2 * density * specific_heat * std::sqrt(const_pi * thermal_diffusivity * time_top_slab))) *
                                     std::exp(-(adjusted_distance * adjusted_distance) / (4 * thermal_diffusivity * time_top_slab));
                     }
                   else
@@ -357,7 +344,7 @@ namespace WorldBuilder
               else
                 {
                   // slab temperature anomaly is gone.
-                  temperature = background_temperature;
+                  temperature = temperature_;
                 }
 
               WBAssert(!std::isnan(temperature), "Internal error: temperature is not a number: " << temperature << ".");
