@@ -217,12 +217,12 @@ namespace WorldBuilder
 
                   distance_ridge = std::min(distance_ridge, this->world->parameters.coordinate_system->distance_between_points_at_same_depth(trench_point, compare_point));
                 }
-		  
+
               const double age_at_trench = distance_ridge / plate_velocity; // yr
-			  //printf("%g, %g, %g \n",age_at_trench, distance_ridge, plate_velocity); 
+              //printf("%g, %g, %g \n",age_at_trench, distance_ridge, plate_velocity);
 
               const double seconds_in_year = 60.0 * 60.0 * 24.0 * 365.25;
-              const double plate_age_sec = age_at_trench * seconds_in_year; // y --> seconds             
+              const double plate_age_sec = age_at_trench * seconds_in_year; // y --> seconds
 
               // 1. Determine initial heat content of the slab based on age of plate at trench
               //    This uses the integral of the half-space temperature profile
@@ -327,9 +327,9 @@ namespace WorldBuilder
                     {
                       // use 1D infinite space solution for top (side 2) of slab the slab
                       // 2 times the "top_heat_content" because all this heat needs to be on one side of the Gaussian
-                      double time_top_slab = (1 / (const_pi * thermal_diffusivity)) * 
-                      	pow(((2 * top_heat_content) / (2 * density * specific_heat * 
-                      	(min_temperature - temperature_ + 1e-16))),2) + 1e-16;
+                      double time_top_slab = (1 / (const_pi * thermal_diffusivity)) *
+                                             pow(((2 * top_heat_content) / (2 * density * specific_heat *
+                                                                            (min_temperature - temperature_ + 1e-16))),2) + 1e-16;
 
                       temperature = temperature_ + (2 * top_heat_content / (2 * density * specific_heat * std::sqrt(const_pi * thermal_diffusivity * time_top_slab))) *
                                     std::exp(-(adjusted_distance * adjusted_distance) / (4 * thermal_diffusivity * time_top_slab));
