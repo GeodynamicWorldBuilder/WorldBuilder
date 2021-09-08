@@ -88,7 +88,8 @@ namespace WorldBuilder
                                  double temperature_,
                                  const double  /*feature_min_depth*/,
                                  const double  /*feature_max_depth*/,
-                                 const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_plane) const
+                                 const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_plane,
+                                 const Utilities::AdditionalParameters & /*additional_paramters*/) const
         {
 
           if (distance_from_plane.distance_from_plane <= max_depth && distance_from_plane.distance_from_plane >= min_depth)

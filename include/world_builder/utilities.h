@@ -278,8 +278,7 @@ namespace WorldBuilder
         segment(NaN::ISNAN),
         average_angle(NaN::DSNAN),
         depth_reference_surface(NaN::DSNAN),
-        closest_trench_point(Point<3>(coordinate_system)),
-        local_thickness(NaN::DSNAN)
+        closest_trench_point(Point<3>(coordinate_system))
       {}
 
       /**
@@ -330,10 +329,6 @@ namespace WorldBuilder
        * The closest point on the trench line in cartesian coordinates.
        */
       Point<3> closest_trench_point;
-
-      // This is unrelated and should not be stored in here, but some
-      // plugins rely on this structure as temporary storage space.
-      double local_thickness;
     };
 
     /**

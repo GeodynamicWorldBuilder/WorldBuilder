@@ -23,6 +23,7 @@
 #include "world_builder/grains.h"
 #include "world_builder/parameters.h"
 #include "world_builder/utilities.h"
+#include "world_builder/features/utilities.h"
 
 #include <map>
 #include <vector>
@@ -85,7 +86,8 @@ namespace WorldBuilder
                                    double composition,
                                    const double feature_min_depth,
                                    const double feature_max_depth,
-                                   const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes) const = 0;
+                                   const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
+                                   const Utilities::AdditionalParameters &additional_paramters) const = 0;
             /**
              * A function to register a new type. This is part of the automatic
              * registration of the object factory.
