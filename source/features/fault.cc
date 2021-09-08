@@ -25,6 +25,7 @@
 #include "world_builder/types/double.h"
 #include "world_builder/types/point.h"
 #include "world_builder/types/unsigned_int.h"
+#include "world_builder/features/utilities.h"
 #include "world_builder/world.h"
 #include <algorithm>
 
@@ -482,6 +483,7 @@ namespace WorldBuilder
                   distance_along_plane <= max_fault_length)
                 {
                   // Inside the fault!
+                  const Features::Utilities::AdditionalParameters additional_parameters = {max_fault_length,thickness_local};
                   double temperature_current_section = temperature;
                   double temperature_next_section = temperature;
 
@@ -493,7 +495,8 @@ namespace WorldBuilder
                                                                                        temperature_current_section,
                                                                                        starting_depth,
                                                                                        maximum_depth,
-                                                                                       distance_from_planes);
+                                                                                       distance_from_planes,
+                                                                                       additional_parameters);
 
                       WBAssert(!std::isnan(temperature_current_section), "Temparture is not a number: " << temperature_current_section
                                << ", based on a temperature model with the name " << temperature_model->get_name());
@@ -509,7 +512,8 @@ namespace WorldBuilder
                                                                                     temperature_next_section,
                                                                                     starting_depth,
                                                                                     maximum_depth,
-                                                                                    distance_from_planes);
+                                                                                    distance_from_planes,
+                                                                                    additional_parameters);
 
                       WBAssert(!std::isnan(temperature_next_section), "Temparture is not a number: " << temperature_next_section
                                << ", based on a temperature model with the name " << temperature_model->get_name());
@@ -617,6 +621,7 @@ namespace WorldBuilder
                   distance_along_plane <= max_fault_length)
                 {
                   // Inside the fault!
+                  const Features::Utilities::AdditionalParameters additional_parameters = {max_fault_length,thickness_local};
                   double composition_current_section = composition;
                   double composition_next_section = composition;
 
@@ -628,7 +633,8 @@ namespace WorldBuilder
                                                                                        composition_current_section,
                                                                                        starting_depth,
                                                                                        maximum_depth,
-                                                                                       distance_from_planes);
+                                                                                       distance_from_planes,
+                                                                                       additional_parameters);
 
                       WBAssert(!std::isnan(composition_current_section), "Composition_current_section is not a number: " << composition_current_section
                                << ", based on a temperature model with the name " << composition_model->get_name());
@@ -645,7 +651,8 @@ namespace WorldBuilder
                                                                                     composition_next_section,
                                                                                     starting_depth,
                                                                                     maximum_depth,
-                                                                                    distance_from_planes);
+                                                                                    distance_from_planes,
+                                                                                    additional_parameters);
 
                       WBAssert(!std::isnan(composition_next_section), "Composition_next_section is not a number: " << composition_next_section
                                << ", based on a temperature model with the name " << composition_model->get_name());
@@ -753,6 +760,7 @@ namespace WorldBuilder
                   distance_along_plane <= max_fault_length)
                 {
                   // Inside the fault!
+                  const Features::Utilities::AdditionalParameters additional_parameters = {max_fault_length,thickness_local};
                   WorldBuilder::grains  grains_current_section = grains;
                   WorldBuilder::grains  grains_next_section = grains;
 
@@ -764,7 +772,8 @@ namespace WorldBuilder
                                                                         grains_current_section,
                                                                         starting_depth,
                                                                         maximum_depth,
-                                                                        distance_from_planes);
+                                                                        distance_from_planes,
+                                                                        additional_parameters);
 
                       /*WBAssert(!std::isnan(composition_current_section), "Composition_current_section is not a number: " << composition_current_section
                                << ", based on a temperature model with the name " << composition_model->get_name());
@@ -781,7 +790,8 @@ namespace WorldBuilder
                                                                      grains_next_section,
                                                                      starting_depth,
                                                                      maximum_depth,
-                                                                     distance_from_planes);
+                                                                     distance_from_planes,
+                                                                     additional_parameters);
 
                       /*WBAssert(!std::isnan(composition_next_section), "Composition_next_section is not a number: " << composition_next_section
                                << ", based on a temperature model with the name " << composition_model->get_name());

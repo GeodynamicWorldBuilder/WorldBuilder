@@ -70,6 +70,19 @@ namespace WorldBuilder
 
         return std::numeric_limits<double>::signaling_NaN();
       }
+
+      /**
+       * A struct that is used to hold additional values based on the output of
+       *  the function distance_point_from_curved_planes().
+       */
+      struct AdditionalParameters
+      {
+        // The total length of all the segments at the location of the plane.
+        double total_local_segment_length;
+
+        // The local thickness of the segment at the location of the plane.
+        double local_thickness;
+      };
     } // namespace Utilities
   } // namespace Features
 } // namespace WorldBuilder

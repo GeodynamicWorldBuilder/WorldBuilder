@@ -468,7 +468,6 @@ namespace WorldBuilder
                                             * (slab_segment_thickness[next_section][current_segment][1]
                                                - slab_segment_thickness[current_section][current_segment][1]);
               const double thickness_local = thickness_up + segment_fraction * (thickness_down - thickness_up);
-              distance_from_planes.local_thickness = thickness_local;
 
               // secondly for top truncation
               const double top_truncation_up = slab_segment_top_truncation[current_section][current_segment][0]
@@ -499,6 +498,7 @@ namespace WorldBuilder
                   distance_along_plane <= max_slab_length)
                 {
                   // Inside the slab!
+                  const Features::Utilities::AdditionalParameters additional_parameters = {max_slab_length,thickness_local};
                   double temperature_current_section = temperature;
                   double temperature_next_section = temperature;
 
@@ -510,7 +510,8 @@ namespace WorldBuilder
                                                                                        temperature_current_section,
                                                                                        starting_depth,
                                                                                        maximum_depth,
-                                                                                       distance_from_planes);
+                                                                                       distance_from_planes,
+                                                                                       additional_parameters);
 
                       WBAssert(!std::isnan(temperature_current_section), "Temparture is not a number: " << temperature_current_section
                                << ", based on a temperature model with the name " << temperature_model->get_name());
@@ -527,7 +528,8 @@ namespace WorldBuilder
                                                                                     temperature_next_section,
                                                                                     starting_depth,
                                                                                     maximum_depth,
-                                                                                    distance_from_planes);
+                                                                                    distance_from_planes,
+                                                                                    additional_parameters);
 
                       WBAssert(!std::isnan(temperature_next_section), "Temparture is not a number: " << temperature_next_section
                                << ", based on a temperature model with the name " << temperature_model->get_name());
@@ -598,7 +600,6 @@ namespace WorldBuilder
                                             * (slab_segment_thickness[next_section][current_segment][1]
                                                - slab_segment_thickness[current_section][current_segment][1]);
               const double thickness_local = thickness_up + segment_fraction * (thickness_down - thickness_up);
-              distance_from_planes.local_thickness = thickness_local;
 
               // secondly for top truncation
               const double top_truncation_up = slab_segment_top_truncation[current_section][current_segment][0]
@@ -629,6 +630,7 @@ namespace WorldBuilder
                   distance_along_plane <= max_slab_length)
                 {
                   // Inside the slab!
+                  const Features::Utilities::AdditionalParameters additional_parameters = {max_slab_length,thickness_local};
                   double composition_current_section = composition;
                   double composition_next_section = composition;
 
@@ -640,7 +642,8 @@ namespace WorldBuilder
                                                                                        composition_current_section,
                                                                                        starting_depth,
                                                                                        maximum_depth,
-                                                                                       distance_from_planes);
+                                                                                       distance_from_planes,
+                                                                                       additional_parameters);
 
                       WBAssert(!std::isnan(composition_current_section), "Composition_current_section is not a number: " << composition_current_section
                                << ", based on a temperature model with the name " << composition_model->get_name());
@@ -657,7 +660,8 @@ namespace WorldBuilder
                                                                                     composition_next_section,
                                                                                     starting_depth,
                                                                                     maximum_depth,
-                                                                                    distance_from_planes);
+                                                                                    distance_from_planes,
+                                                                                    additional_parameters);
 
                       WBAssert(!std::isnan(composition_next_section), "Composition_next_section is not a number: " << composition_next_section
                                << ", based on a temperature model with the name " << composition_model->get_name());
@@ -731,7 +735,6 @@ namespace WorldBuilder
                                             * (slab_segment_thickness[next_section][current_segment][1]
                                                - slab_segment_thickness[current_section][current_segment][1]);
               const double thickness_local = thickness_up + segment_fraction * (thickness_down - thickness_up);
-              distance_from_planes.local_thickness = thickness_local;
 
               // secondly for top truncation
               const double top_truncation_up = slab_segment_top_truncation[current_section][current_segment][0]
@@ -762,6 +765,7 @@ namespace WorldBuilder
                   distance_along_plane <= max_slab_length)
                 {
                   // Inside the slab!
+                  const Features::Utilities::AdditionalParameters additional_parameters = {max_slab_length,thickness_local};
                   WorldBuilder::grains  grains_current_section = grains;
                   WorldBuilder::grains  grains_next_section = grains;
 
@@ -773,7 +777,8 @@ namespace WorldBuilder
                                                                         grains_current_section,
                                                                         starting_depth,
                                                                         maximum_depth,
-                                                                        distance_from_planes);
+                                                                        distance_from_planes,
+                                                                        additional_parameters);
 
                       /*WBAssert(!std::isnan(composition_current_section), "Composition_current_section is not a number: " << composition_current_section
                                << ", based on a temperature model with the name " << composition_model->get_name());
@@ -790,7 +795,8 @@ namespace WorldBuilder
                                                                      grains_next_section,
                                                                      starting_depth,
                                                                      maximum_depth,
-                                                                     distance_from_planes);
+                                                                     distance_from_planes,
+                                                                     additional_parameters);
 
                       /*WBAssert(!std::isnan(composition_next_section), "Composition_next_section is not a number: " << composition_next_section
                                << ", based on a temperature model with the name " << composition_model->get_name());
