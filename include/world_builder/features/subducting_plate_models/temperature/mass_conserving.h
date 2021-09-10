@@ -85,7 +85,8 @@ namespace WorldBuilder
                                    double temperature,
                                    const double feature_min_depth,
                                    const double feature_max_depth,
-                                   const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes) const override final;
+                                   const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
+                                   const Utilities::AdditionalParameters &additional_paramters) const override final;
 
 
           private:
@@ -102,6 +103,8 @@ namespace WorldBuilder
             double thermal_diffusivity;
             double potential_mantle_temperature;
             double surface_temperature;
+            double taper_distance_heat;
+            double taper_distance_temperature;
             bool adiabatic_heating;
             std::vector<Point<2>> ridge_coordinates;
             Utilities::Operations operation;

@@ -52,6 +52,8 @@ namespace WorldBuilder
           thermal_diffusivity(NaN::DSNAN),
           potential_mantle_temperature(NaN::DSNAN),
           surface_temperature(NaN::DSNAN),
+          taper_distance_heat(NaN::DSNAN),
+          taper_distance_temperature(NaN::DSNAN),
           adiabatic_heating(true),
           operation(Utilities::Operations::REPLACE)
         {
@@ -116,6 +118,14 @@ namespace WorldBuilder
           prm.declare_entry("adiabatic heating", Types::Bool(true),
                             "Whether adiabatic heating should be used for the slab.");
 
+          prm.declare_entry("taper distance heat", Types::Double(500e3),
+                            "Distance over which to taper the heat content to zero at the slab tip."
+                            "Need taper distance temperature to be less than taper distance heat");
+
+          prm.declare_entry("taper distance temperature", Types::Double(150e3),
+                            "Distance over which to taper the minimum temperature to the background temperature at the slab tip."
+                            "Need taper distance temperature to be less than taper distance heat");
+
           prm.declare_entry("potential mantle temperature", Types::Double(-1),
                             "The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.");
 
@@ -137,6 +147,13 @@ namespace WorldBuilder
 
           mantle_coupling_depth = prm.get<double>("coupling depth");
           shallow_average_dip = prm.get<double>("shallow dip");
+
+          taper_distance_heat = prm.get<double>("taper distance heat");
+          taper_distance_temperature = prm.get<double>("taper distance temperature");
+
+          WBAssert(taper_distance_heat > taper_distance_temperature, "Internal error: taper_distance_heat: " <<  taper_distance_heat
+                   << " must be greater than taper_distance_temperature " << taper_distance_temperature);
+
 
           thermal_expansion_coefficient = prm.get<double>("thermal expansion coefficient");
           if (thermal_expansion_coefficient < 0)
@@ -170,11 +187,13 @@ namespace WorldBuilder
                                         double temperature_,
                                         const double /*feature_min_depth*/,
                                         const double /*feature_max_depth*/,
-                                        const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes) const
+                                        const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
+                                        const Utilities::AdditionalParameters &additional_parameters) const
         {
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
           const double distance_along_plane = distance_from_planes.distance_along_plane;
+          const double total_segment_length = additional_parameters.total_local_segment_length;
 
           if (distance_from_plane <= max_depth && distance_from_plane >= min_depth)
             {
@@ -219,15 +238,17 @@ namespace WorldBuilder
                 }
 
               const double age_at_trench = distance_ridge / plate_velocity; // yr
-              //printf("%g, %g, %g \n",age_at_trench, distance_ridge, plate_velocity);
 
               const double seconds_in_year = 60.0 * 60.0 * 24.0 * 365.25;
               const double plate_age_sec = age_at_trench * seconds_in_year; // y --> seconds
 
               // 1. Determine initial heat content of the slab based on age of plate at trench
               //    This uses the integral of the half-space temperature profile
-              const double initial_heat_content = 2 * thermal_conductivity * (surface_temperature - potential_mantle_temperature) *
-                                                  std::sqrt(plate_age_sec / (thermal_diffusivity * const_pi));
+              double initial_heat_content = 2 * thermal_conductivity * (surface_temperature - potential_mantle_temperature) *
+                                            std::sqrt(plate_age_sec / (thermal_diffusivity * const_pi));
+
+
+
 
               //  2. Get Tmin and distance_offset given distance along slab and depth of point on the slab.
               //  These equations are empirical based on fitting the temperature profiles from dynamic subduction models.
@@ -251,26 +272,15 @@ namespace WorldBuilder
               double slope_temperature_max = 500 / (2.5 * 100 * 1e3); // deg/m
               double temperature_min = 750;
               double temperature_max = 950;
+
+              double zero = 0.0;
+              double one = 1.0;
               double vsubfact = (1 - (plate_velocity - sink_velocity_min) / sink_velocity_max); // vsubfact = 0 when vel=sink_velocity_max
+              vsubfact = std::max(zero, std::min(vsubfact,one));
 
-              double slope_distance_shallow = slope_distance_min;
-              double slope_temperature_shallow = slope_temperature_min;
+              double slope_distance_shallow = slope_distance_min + vsubfact * (slope_distance_max - slope_distance_min);
+              double slope_temperature_shallow = slope_temperature_min + vsubfact * (slope_temperature_max - slope_temperature_min);
 
-              if (plate_velocity < sink_velocity_min)
-                {
-                  slope_distance_shallow = slope_distance_max;
-                  slope_temperature_shallow = slope_temperature_max;
-                }
-              else if (plate_velocity > sink_velocity_max)
-                {
-                  slope_distance_shallow = slope_distance_min;
-                  slope_temperature_shallow = slope_temperature_min;
-                }
-              else
-                {
-                  slope_distance_shallow = slope_distance_min + vsubfact * (slope_distance_max - slope_distance_min);
-                  slope_temperature_shallow = slope_temperature_min + vsubfact * (slope_temperature_max - slope_temperature_min);
-                }
               double offset_coupling_depth = slope_distance_shallow * mantle_coupling_depth;                    // m  mantle_coupling_length
               double offset_660 = offset_distance_min + vsubfact * (offset_distance_max - offset_distance_min); // m
 
@@ -305,9 +315,31 @@ namespace WorldBuilder
                        << ", thermal_expansion_coefficient = " << thermal_expansion_coefficient << ", gravity_norm = " << gravity_norm
                        << ", specific_heat = " << specific_heat << ", depth = " << depth);
 
+              // Taper the heat_content and min temperature to create a smooth slab tip
+              const double start_taper_distance_heat =  total_segment_length -  taper_distance_heat;
+              const double start_taper_distance_temp =  total_segment_length -  taper_distance_temperature;
+
+              // Hold the heat content constant near the slab tip before the slab starts to diffuse too much
+              if ((distance_along_plane >= start_taper_distance_heat) &&  (distance_along_plane <= start_taper_distance_temp))
+                {
+                  initial_heat_content = initial_heat_content * (total_segment_length - start_taper_distance_heat)/taper_distance_heat;
+                }
+              // Then taper the heat content linearly to zero closer to the slab tip
+              else if (distance_along_plane > start_taper_distance_temp)
+                {
+                  initial_heat_content = initial_heat_content * (total_segment_length - distance_along_plane)/taper_distance_temperature;
+                }
+
+              // Taper the temperature linearly to zero close to the slab tip
+              if (distance_along_plane >= start_taper_distance_temp)
+                {
+                  min_temperature = surface_temperature + slope_temperature_deep * start_taper_distance_temp + intercept_temperature_deep;
+                  min_temperature =  min_temperature + (( background_temperature - min_temperature)/(total_segment_length - start_taper_distance_temp)) *
+                                     (distance_along_plane - start_taper_distance_temp);
+
+                }
               if (min_temperature < background_temperature)
                 {
-
                   // Adjust distance for the offset of the minimum temperature from the top of the slab
                   double adjusted_distance = distance_from_plane - distance_offset;
 
@@ -318,11 +350,13 @@ namespace WorldBuilder
                                                std::sqrt((plate_age_sec + time_since_subducting) / (thermal_diffusivity * const_pi));
 
                   // 4. The difference in heat content goes into the temperature above where Tmin occurs.
-
                   double top_heat_content = initial_heat_content - bottom_heat_content;
 
+                  if (distance_along_plane >= start_taper_distance_heat)
+                    {
+                      top_heat_content = top_heat_content * (total_segment_length - distance_along_plane)/taper_distance_heat;
+                    }
                   // Assign the temperature depending on whether distance is negative (above) or positive (below) the slab
-
                   if (adjusted_distance < 0)
                     {
                       // use 1D infinite space solution for top (side 2) of slab the slab
