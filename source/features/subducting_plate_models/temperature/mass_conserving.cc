@@ -15,6 +15,11 @@
 
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   
+   
+   Note that the empirical model used to define how Tmin increases with depth
+   and how the position of Tmin shift with depth is expected to change somewhat
+   after better calibrating with further tests. 
 */
 
 #include "world_builder/features/subducting_plate_models/temperature/mass_conserving.h"
@@ -52,8 +57,7 @@ namespace WorldBuilder
           thermal_diffusivity(NaN::DSNAN),
           potential_mantle_temperature(NaN::DSNAN),
           surface_temperature(NaN::DSNAN),
-          taper_distance_heat(NaN::DSNAN),
-          taper_distance_temperature(NaN::DSNAN),
+          taper_distance(NaN::DSNAN),
           adiabatic_heating(true),
           operation(Utilities::Operations::REPLACE)
         {
@@ -118,13 +122,9 @@ namespace WorldBuilder
           prm.declare_entry("adiabatic heating", Types::Bool(true),
                             "Whether adiabatic heating should be used for the slab.");
 
-          prm.declare_entry("taper distance heat", Types::Double(500e3),
-                            "Distance over which to taper the heat content to zero at the slab tip."
-                            "Need taper distance temperature to be less than taper distance heat");
-
-          prm.declare_entry("taper distance temperature", Types::Double(150e3),
-                            "Distance over which to taper the minimum temperature to the background temperature at the slab tip."
-                            "Need taper distance temperature to be less than taper distance heat");
+          prm.declare_entry("taper distance", Types::Double(100e3),
+                            "Distance over which to taper the slab tip."
+                            "tapers the initial heat content to zero and the minimum temperature to the background temperature.");
 
           prm.declare_entry("potential mantle temperature", Types::Double(-1),
                             "The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.");
@@ -148,12 +148,7 @@ namespace WorldBuilder
           mantle_coupling_depth = prm.get<double>("coupling depth");
           shallow_average_dip = prm.get<double>("shallow dip");
 
-          taper_distance_heat = prm.get<double>("taper distance heat");
-          taper_distance_temperature = prm.get<double>("taper distance temperature");
-
-          WBAssert(taper_distance_heat > taper_distance_temperature, "Internal error: taper_distance_heat: " <<  taper_distance_heat
-                   << " must be greater than taper_distance_temperature " << taper_distance_temperature);
-
+          taper_distance = prm.get<double>("taper distance");
 
           thermal_expansion_coefficient = prm.get<double>("thermal expansion coefficient");
           if (thermal_expansion_coefficient < 0)
@@ -247,9 +242,6 @@ namespace WorldBuilder
               double initial_heat_content = 2 * thermal_conductivity * (surface_temperature - potential_mantle_temperature) *
                                             std::sqrt(plate_age_sec / (thermal_diffusivity * const_pi));
 
-
-
-
               //  2. Get Tmin and distance_offset given distance along slab and depth of point on the slab.
               //  These equations are empirical based on fitting the temperature profiles from dynamic subduction models.
               double min_temperature = 0.0;
@@ -275,7 +267,7 @@ namespace WorldBuilder
 
               double zero = 0.0;
               double one = 1.0;
-              double vsubfact = (1 - (plate_velocity - sink_velocity_min) / sink_velocity_max); // vsubfact = 0 when vel=sink_velocity_max
+              double vsubfact = (1 - (plate_velocity - sink_velocity_min) / sink_velocity_max); 
               vsubfact = std::max(zero, std::min(vsubfact,one));
 
               double slope_distance_shallow = slope_distance_min + vsubfact * (slope_distance_max - slope_distance_min);
@@ -316,57 +308,50 @@ namespace WorldBuilder
                        << ", specific_heat = " << specific_heat << ", depth = " << depth);
 
               // Taper the heat_content and min temperature to create a smooth slab tip
-              const double start_taper_distance_heat =  total_segment_length -  taper_distance_heat;
-              const double start_taper_distance_temp =  total_segment_length -  taper_distance_temperature;
+              const double start_taper_distance =  total_segment_length -  taper_distance;
 
-              // Hold the heat content constant near the slab tip before the slab starts to diffuse too much
-              if ((distance_along_plane >= start_taper_distance_heat) &&  (distance_along_plane <= start_taper_distance_temp))
+              if ((distance_along_plane >= start_taper_distance) )
                 {
-                  initial_heat_content = initial_heat_content * (total_segment_length - start_taper_distance_heat)/taper_distance_heat;
-                }
-              // Then taper the heat content linearly to zero closer to the slab tip
-              else if (distance_along_plane > start_taper_distance_temp)
-                {
-                  initial_heat_content = initial_heat_content * (total_segment_length - distance_along_plane)/taper_distance_temperature;
-                }
-
-              // Taper the temperature linearly to zero close to the slab tip
-              if (distance_along_plane >= start_taper_distance_temp)
-                {
-                  min_temperature = surface_temperature + slope_temperature_deep * start_taper_distance_temp + intercept_temperature_deep;
-                  min_temperature =  min_temperature + (( background_temperature - min_temperature)/(total_segment_length - start_taper_distance_temp)) *
-                                     (distance_along_plane - start_taper_distance_temp);
+                  initial_heat_content = initial_heat_content * (total_segment_length - distance_along_plane)/taper_distance;
+                  
+                  min_temperature = surface_temperature + slope_temperature_deep * start_taper_distance + intercept_temperature_deep;
+                  min_temperature =  min_temperature + (( background_temperature - min_temperature)/(total_segment_length - start_taper_distance)) *
+                                     (distance_along_plane - start_taper_distance);
 
                 }
               if (min_temperature < background_temperature)
                 {
                   // Adjust distance for the offset of the minimum temperature from the top of the slab
-                  double adjusted_distance = distance_from_plane - distance_offset;
+                  const double adjusted_distance = distance_from_plane - distance_offset;
 
                   // 3. Determine the heat content for side 1 (bottom) of the slab
+                  // Comes from integrating the half-space cooling model temperature
 
-                  double time_since_subducting = (distance_along_plane / plate_velocity) * seconds_in_year; // m/(m/y) = y(seconds_in_year)
-                  double bottom_heat_content = 2 * thermal_conductivity * (min_temperature - potential_mantle_temperature) *
+                  const double time_since_subducting = (distance_along_plane / plate_velocity) * seconds_in_year; // m/(m/y) = y(seconds_in_year)
+                  const double bottom_heat_content = 2 * thermal_conductivity * (min_temperature - potential_mantle_temperature) *
                                                std::sqrt((plate_age_sec + time_since_subducting) / (thermal_diffusivity * const_pi));
 
                   // 4. The difference in heat content goes into the temperature above where Tmin occurs.
                   double top_heat_content = initial_heat_content - bottom_heat_content;
 
-                  if (distance_along_plane >= start_taper_distance_heat)
+				  // Also need to taper the top_heat_content otherwise slab top will continue to thicken to the tip.
+                  if (distance_along_plane >= start_taper_distance)
                     {
-                      top_heat_content = top_heat_content * (total_segment_length - distance_along_plane)/taper_distance_heat;
+                      top_heat_content = top_heat_content * (total_segment_length - distance_along_plane)/ (taper_distance);
                     }
                   // Assign the temperature depending on whether distance is negative (above) or positive (below) the slab
                   if (adjusted_distance < 0)
                     {
                       // use 1D infinite space solution for top (side 2) of slab the slab
                       // 2 times the "top_heat_content" because all this heat needs to be on one side of the Gaussian
-                      double time_top_slab = (1 / (const_pi * thermal_diffusivity)) *
-                                             pow(((2 * top_heat_content) / (2 * density * specific_heat *
-                                                                            (min_temperature - temperature_ + 1e-16))),2) + 1e-16;
+                      double time_top_slab = (1/(const_pi*thermal_diffusivity))*pow(((2*top_heat_content)/
+                                                                                     (2*density*specific_heat*(min_temperature - temperature_ + 1e-16))),2) + 1e-16;
 
-                      temperature = temperature_ + (2 * top_heat_content / (2 * density * specific_heat * std::sqrt(const_pi * thermal_diffusivity * time_top_slab))) *
-                                    std::exp(-(adjusted_distance * adjusted_distance) / (4 * thermal_diffusivity * time_top_slab));
+                     // temperature = temperature_;
+                     temperature  = temperature_ + (2*top_heat_content/(2*density*specific_heat*std::sqrt(const_pi*thermal_diffusivity*time_top_slab)))*
+                                     std::exp(-(adjusted_distance*adjusted_distance)/(4*thermal_diffusivity*time_top_slab));
+                     // temperature = temperature_ + (2 * top_heat_content / (2 * density * specific_heat * std::sqrt(const_pi * thermal_diffusivity * time_top_slab))) *
+                      //              std::exp(-(adjusted_distance * adjusted_distance) / (4 * thermal_diffusivity * time_top_slab));
                     }
                   else
                     {

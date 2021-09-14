@@ -103,8 +103,7 @@ namespace WorldBuilder
             double thermal_diffusivity;
             double potential_mantle_temperature;
             double surface_temperature;
-            double taper_distance_heat;
-            double taper_distance_temperature;
+            double taper_distance;
             bool adiabatic_heating;
             std::vector<Point<2>> ridge_coordinates;
             Utilities::Operations operation;
