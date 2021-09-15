@@ -15,11 +15,11 @@
 
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-   
-   
+
+
    Note that the empirical model used to define how Tmin increases with depth
    and how the position of Tmin shift with depth is expected to change somewhat
-   after better calibrating with further tests. 
+   after better calibrating with further tests.
 */
 
 #include "world_builder/features/subducting_plate_models/temperature/mass_conserving.h"
@@ -267,7 +267,7 @@ namespace WorldBuilder
 
               double zero = 0.0;
               double one = 1.0;
-              double vsubfact = (1 - (plate_velocity - sink_velocity_min) / sink_velocity_max); 
+              double vsubfact = (1 - (plate_velocity - sink_velocity_min) / sink_velocity_max);
               vsubfact = std::max(zero, std::min(vsubfact,one));
 
               double slope_distance_shallow = slope_distance_min + vsubfact * (slope_distance_max - slope_distance_min);
@@ -313,7 +313,7 @@ namespace WorldBuilder
               if ((distance_along_plane >= start_taper_distance) )
                 {
                   initial_heat_content = initial_heat_content * (total_segment_length - distance_along_plane)/taper_distance;
-                  
+
                   min_temperature = surface_temperature + slope_temperature_deep * start_taper_distance + intercept_temperature_deep;
                   min_temperature =  min_temperature + (( background_temperature - min_temperature)/(total_segment_length - start_taper_distance)) *
                                      (distance_along_plane - start_taper_distance);
@@ -329,12 +329,12 @@ namespace WorldBuilder
 
                   const double time_since_subducting = (distance_along_plane / plate_velocity) * seconds_in_year; // m/(m/y) = y(seconds_in_year)
                   const double bottom_heat_content = 2 * thermal_conductivity * (min_temperature - potential_mantle_temperature) *
-                                               std::sqrt((plate_age_sec + time_since_subducting) / (thermal_diffusivity * const_pi));
+                                                     std::sqrt((plate_age_sec + time_since_subducting) / (thermal_diffusivity * const_pi));
 
                   // 4. The difference in heat content goes into the temperature above where Tmin occurs.
                   double top_heat_content = initial_heat_content - bottom_heat_content;
 
-				  // Also need to taper the top_heat_content otherwise slab top will continue to thicken to the tip.
+                  // Also need to taper the top_heat_content otherwise slab top will continue to thicken to the tip.
                   if (distance_along_plane >= start_taper_distance)
                     {
                       top_heat_content = top_heat_content * (total_segment_length - distance_along_plane)/ (taper_distance);
@@ -347,10 +347,10 @@ namespace WorldBuilder
                       double time_top_slab = (1/(const_pi*thermal_diffusivity))*pow(((2*top_heat_content)/
                                                                                      (2*density*specific_heat*(min_temperature - temperature_ + 1e-16))),2) + 1e-16;
 
-                     // temperature = temperature_;
-                     temperature  = temperature_ + (2*top_heat_content/(2*density*specific_heat*std::sqrt(const_pi*thermal_diffusivity*time_top_slab)))*
+                      // temperature = temperature_;
+                      temperature  = temperature_ + (2*top_heat_content/(2*density*specific_heat*std::sqrt(const_pi*thermal_diffusivity*time_top_slab)))*
                                      std::exp(-(adjusted_distance*adjusted_distance)/(4*thermal_diffusivity*time_top_slab));
-                     // temperature = temperature_ + (2 * top_heat_content / (2 * density * specific_heat * std::sqrt(const_pi * thermal_diffusivity * time_top_slab))) *
+                      // temperature = temperature_ + (2 * top_heat_content / (2 * density * specific_heat * std::sqrt(const_pi * thermal_diffusivity * time_top_slab))) *
                       //              std::exp(-(adjusted_distance * adjusted_distance) / (4 * thermal_diffusivity * time_top_slab));
                     }
                   else

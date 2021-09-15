@@ -47,8 +47,11 @@ namespace WorldBuilder
          * space cooling model. The age of the overriding plate is used so the slab temperature
          * at shallow depth smoothly transitions to the temperature of the overriding plate:
          * this is not perfect, and is affected by the value of "top truncation" parameter
-         * subducting plate. Also note that the parameter "thickness" for the subducting plate_velocity
-         * needs to be defined but is not used.
+         * subducting plate. Also note that the parameter "thickness" for the subducting plate
+         * segments needs to be defined but is not used.
+         * Note that the empirical model used to define how Tmin increases with depth
+        * and how the position of Tmin shift with depth is expected to change somewhat
+         * after better calibrating with further tests.
          */
         class MassConserving final: public Interface
         {
