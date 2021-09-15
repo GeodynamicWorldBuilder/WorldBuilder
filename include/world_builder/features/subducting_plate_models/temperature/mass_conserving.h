@@ -50,7 +50,7 @@ namespace WorldBuilder
          * subducting plate. Also note that the parameter "thickness" for the subducting plate
          * segments needs to be defined but is not used.
          * Note that the empirical model used to define how Tmin increases with depth
-        * and how the position of Tmin shift with depth is expected to change somewhat
+         * and how the position of Tmin shift with depth is expected to change somewhat
          * after better calibrating with further tests.
          */
         class MassConserving final: public Interface
