@@ -169,7 +169,7 @@ endforeach(test_source)
 	     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
   elseif(APPLE)
     add_test(NAME compile_simple_C_test
-	    COMMAND ${CMAKE_C_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/C/test.c -L${CMAKE_BINARY_DIR}/lib/ -Wl,-force_load,${CMAKE_BINARY_DIR}/lib/libWorldBuilder.a -I../../inlcude/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lc++ -lm -I/usr/include/ -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/ ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
+	    COMMAND ${CMAKE_C_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/C/test.c -L${CMAKE_BINARY_DIR}/lib/ -Wl,-force_load,${CMAKE_BINARY_DIR}/lib/libWorldBuilder.a -I../../inlcude/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lm -I/usr/include/ -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/ ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
       WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)  
   else()
     #MSVS
@@ -202,7 +202,7 @@ endforeach(test_source)
 	     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
   elseif(APPLE)
     add_test(NAME compile_simple_C_example 
-	     COMMAND ${CMAKE_C_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/C/example.c -L${CMAKE_BINARY_DIR}/lib/ -Wl,-force_load,${CMAKE_BINARY_DIR}/lib/libWorldBuilder.a -I${CMAKE_SOURCE_DIR}/include/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lc++ -lm -I/usr/include/ -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/ ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
+	     COMMAND ${CMAKE_C_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/C/example.c -L${CMAKE_BINARY_DIR}/lib/ -Wl,-force_load,${CMAKE_BINARY_DIR}/lib/libWorldBuilder.a -I${CMAKE_SOURCE_DIR}/include/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lm -I/usr/include/ -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/ ${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES}
        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/)
   else()
     #MSVS
