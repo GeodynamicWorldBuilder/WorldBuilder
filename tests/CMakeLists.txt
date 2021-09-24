@@ -235,11 +235,11 @@ file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/CPP_MPI)
 list(GET 1 ${MPI_INCLUDE_PATH}, MPI_single_include_path)
 if(NOT MSVC AND NOT APPLE)
   add_test(NAME compile_simple_CPP_MPI_test
-  COMMAND ${MPI_CXX_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/CPP_MPI/test.cpp -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I../../inlcude/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lstdc++ -lm   -L${MPI_C_LIBRARIES} -L${MPI_CXX_LIBRARIES} -I${MPI_single_include_path}
+  COMMAND ${MPI_CXX_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/CPP_MPI/test.cpp -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I../../inlcude/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lstdc++ -std=c++14 -lm -L${MPI_C_LIBRARIES} -L${MPI_CXX_LIBRARIES} -I${MPI_single_include_path}
      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/CPP_MPI/)
 elseif(APPLE)
   add_test(NAME compile_simple_CPP_MPI_test
-    COMMAND ${MPI_CXX_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/CPP_MPI/test.cpp -L${CMAKE_BINARY_DIR}/lib/ -Wl,-force_load,${CMAKE_BINARY_DIR}/lib/libWorldBuilder.a -I../../inlcude/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lc++ -lm -I/usr/include/ -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/   -L${MPI_C_LIBRARIES} -L${MPI_CXX_LIBRARIES} -I${MPI_single_include_path}
+    COMMAND ${MPI_CXX_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/CPP_MPI/test.cpp -L${CMAKE_BINARY_DIR}/lib/ -Wl,-force_load,${CMAKE_BINARY_DIR}/lib/libWorldBuilder.a -I../../inlcude/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o test${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lc++ -std=c++14 -lm -I/usr/include/ -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/   -L${MPI_C_LIBRARIES} -L${MPI_CXX_LIBRARIES} -I${MPI_single_include_path}
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/CPP_MPI/)  
 else()
   #MSVS
@@ -269,11 +269,11 @@ set_tests_properties(run_simple_CPP_MPI_test PROPERTIES TIMEOUT 60)
 
 if(NOT MSVC AND NOT APPLE)
   add_test(NAME compile_simple_CPP_MPI_example 
-     COMMAND ${MPI_CXX_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/CPP_MPI/example.cpp -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I${CMAKE_SOURCE_DIR}/include/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lstdc++ -lm  -L${MPI_CXX_LIBRARIES} -I${MPI_single_include_path}
+     COMMAND ${MPI_CXX_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/CPP_MPI/example.cpp -L../../lib/ -Wl,--whole-archive -lWorldBuilder -Wl,--no-whole-archive -I${CMAKE_SOURCE_DIR}/include/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lstdc++ -std=c++14 -lm  -L${MPI_CXX_LIBRARIES} -I${MPI_single_include_path}
      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/CPP_MPI/)
 elseif(APPLE)
   add_test(NAME compile_simple_CPP_MPI_example 
-     COMMAND ${MPI_CXX_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/CPP_MPI/example.cpp -L${CMAKE_BINARY_DIR}/lib/ -Wl,-force_load,${CMAKE_BINARY_DIR}/lib/libWorldBuilder.a -I${CMAKE_SOURCE_DIR}/include/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lc++ -lm -I/usr/include/ -I/Library/Developer/CPP_MPIommandLineTools/SDKs/MacOSX.sdk/usr/include/  -L${MPI_CXX_LIBRARIES} -I${MPI_single_include_path}
+     COMMAND ${MPI_CXX_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/CPP_MPI/example.cpp -L${CMAKE_BINARY_DIR}/lib/ -Wl,-force_load,${CMAKE_BINARY_DIR}/lib/libWorldBuilder.a -I${CMAKE_SOURCE_DIR}/include/ ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -o example${CMAKE_EXECUTABLE_SUFFIX} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW} -lc++ -std=c++14 -lm -I/usr/include/ -I/Library/Developer/CPP_MPIommandLineTools/SDKs/MacOSX.sdk/usr/include/  -L${MPI_CXX_LIBRARIES} -I${MPI_single_include_path}
      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/CPP_MPI/)
 else()
   #MSVS
