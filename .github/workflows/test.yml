@@ -70,6 +70,20 @@ jobs:
             sudo apt install gfortran swig python3-setuptools
          fi
       shell: bash
+
+
+    - name:  MacOS_xcode_select 
+      run:   |
+         if [ "$RUNNER_OS" != "Linux" ]; then
+            xcode-select -p
+            echo "1"
+            ls /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/
+            echo "2"
+            ls /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/
+            echo "3"
+            ls /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/libexec
+         fi
+      shell: bash
       
     - name: Create Build Environment
       run: cmake -E make_directory ${{github.workspace}}/build
