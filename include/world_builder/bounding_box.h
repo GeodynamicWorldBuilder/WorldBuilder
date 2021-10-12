@@ -157,6 +157,10 @@ namespace WorldBuilder
        * parameter @p tolerance is a factor by which the bounding box is enlarged
        * relative to the dimensions of the bounding box in order to determine in a
        * numerically robust way whether the point is inside.
+       *
+       * This function is a wrapper for the function point_inside_implementation
+       * to also test point+2pi is the longtiude is smaller then zero and point-2pi
+       * if the longitude is larger than zero.
        */
       bool
       point_inside(
@@ -207,7 +211,21 @@ namespace WorldBuilder
       upper_bound(const unsigned int direction) const;
 
     private:
+      /**
+       * Return true if the point is inside the Bounding Box, false otherwise. The
+       * parameter @p tolerance is a factor by which the bounding box is enlarged
+       * relative to the dimensions of the bounding box in order to determine in a
+       * numerically robust way whether the point is inside.
+       *
+       * This function is supposed to be only used by the point_inside function.
+       */
+      bool
+      point_inside_implementation(
+        const Point<spacedim> &p,
+        const double tolerance = std::numeric_limits<double>::epsilon()) const;
+
       std::pair<Point<spacedim>, Point<spacedim>> boundary_points;
+
   };
 
 
@@ -350,8 +368,40 @@ namespace WorldBuilder
   template <int spacedim>
   inline
   bool
-  BoundingBox<spacedim>::point_inside(const Point<spacedim> &p,
+  BoundingBox<spacedim>::point_inside(const Point<spacedim> &point,
                                       const double tolerance) const
+  {
+    WBAssert(boundary_points.first.get_coordinate_system() == point.get_coordinate_system(),
+             "Cannot compare two points which represent different coordinate systems.");
+    WBAssert(boundary_points.second.get_coordinate_system() == point.get_coordinate_system(),
+             "Cannot compare two points which represent different coordinate systems.");
+
+    if (point.get_coordinate_system() == CoordinateSystem::spherical)
+      {
+        Point<spacedim> other_point = point;
+        if (spacedim == 2)
+          {
+            other_point[0] += point[0] < 0 ? 2.0 * WorldBuilder::FT::const_pi : -2.0 * WorldBuilder::FT::const_pi;
+          }
+        else
+          {
+            // spacedim == 3 (rad,long,lat)
+            other_point[1] += point[1] < 0 ? 2.0 * WorldBuilder::FT::const_pi : -2.0 * WorldBuilder::FT::const_pi;
+          }
+
+        return (point_inside_implementation(point, tolerance) ||
+                point_inside_implementation(other_point, tolerance));
+      }
+
+    return point_inside_implementation(point, tolerance);
+
+  }
+
+  template <int spacedim>
+  inline
+  bool
+  BoundingBox<spacedim>::point_inside_implementation(const Point<spacedim> &p,
+                                                     const double tolerance) const
   {
     WBAssert(boundary_points.first.get_coordinate_system() == p.get_coordinate_system(),
              "Cannot compare two points which represent different coordinate systems.");
