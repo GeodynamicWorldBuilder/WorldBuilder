@@ -229,7 +229,7 @@ namespace WorldBuilder
                   compare_point[1] = coordinate_system == cartesian ? Pb[1] : Pb[0];
                   compare_point[2] = coordinate_system == cartesian ? trench_point_natural.get_depth_coordinate() : Pb[1];
 
-                  distance_ridge = std::min(distance_ridge, this->world->parameters.coordinate_system->distance_between_points_at_same_depth(trench_point, compare_point));
+                  distance_ridge = std::min(distance_ridge, this->world->parameters.coordinate_system->distance_between_points_at_same_depth(Point<3>(trench_point_natural.get_coordinates(),trench_point_natural.get_coordinate_system()), compare_point));
                 }
 
               const double age_at_trench = distance_ridge / plate_velocity; // yr
