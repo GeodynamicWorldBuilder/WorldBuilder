@@ -308,10 +308,11 @@ namespace WorldBuilder
       std::array<double,3> scoord;
 
       scoord[0] = position.norm(); // R
-      scoord[1] = std::atan2(position[1],position[0]); // Phi
+      scoord[1] = std::atan2(position[1],position[0]); // Phi/long -> The result is always between -180 and 180 degrees: [-pi,pi]
       //if (scoord[1] < 0.0)
       //scoord[1] += 2.0*const_pi; // correct phi to [0,2*pi]
 
+      //lat
       if (scoord[0] > std::numeric_limits<double>::min())
         scoord[2] = 0.5 * const_pi - std::acos(position[2]/scoord[0]);
       else
@@ -563,7 +564,7 @@ namespace WorldBuilder
       else
         {
           // get an estimate for the closest point between P1 and P2.
-          const double parts = 3;
+          const double parts = 6;
           double min_estimate_solution = 0;
           double min_estimate_solution_temp = min_estimate_solution;
           Point<2> splines(x_spline(min_estimate_solution),y_spline(min_estimate_solution), natural_coordinate_system);
@@ -807,6 +808,25 @@ namespace WorldBuilder
                        "Internal error: The y_axis variable is not a number: " << y_axis[2]);
 
 
+              Point<2> check_point_surface_2d_temp = check_point_surface_2d;
+
+              if (!bool_cartesian)
+                {
+                  double normal = std::fabs(point_list[i_section_min_distance+(int)(std::round(fraction_CPL_P1P2))][0]-check_point_surface_2d[0]);
+                  double plus   = std::fabs(point_list[i_section_min_distance+(int)(std::round(fraction_CPL_P1P2))][0]-(check_point_surface_2d[0]+2*const_pi));
+                  double min    = std::fabs(point_list[i_section_min_distance+(int)(std::round(fraction_CPL_P1P2))][0]-(check_point_surface_2d[0]-2*const_pi));
+
+                  // find out whether the check point, checkpoint + 2pi or check point -2 pi is closest to the point list.
+                  if (plus < normal)
+                    {
+                      check_point_surface_2d_temp[0]+= 2*const_pi;
+                    }
+                  else if (min < normal)
+                    {
+                      check_point_surface_2d_temp[0]-= 2*const_pi;
+                    }
+                }
+
               // check whether the check point and the reference point are on the same side, if not, change the side.
               const bool reference_on_side_of_line_bool = (point_list[i_section_min_distance+1][0] - point_list[i_section_min_distance][0])
                                                           * (reference_point[1] - point_list[i_section_min_distance][1])
@@ -814,9 +834,9 @@ namespace WorldBuilder
                                                           * (reference_point[0] - point_list[i_section_min_distance][0])
                                                           < 0;
               const bool checkpoint_on_side_of_line_bool = (point_list[i_section_min_distance+1][0] - point_list[i_section_min_distance][0])
-                                                           * (check_point_surface_2d[1] - point_list[i_section_min_distance][1])
+                                                           * (check_point_surface_2d_temp[1] - point_list[i_section_min_distance][1])
                                                            - (point_list[i_section_min_distance+1][1] - point_list[i_section_min_distance][1])
-                                                           * (check_point_surface_2d[0] - point_list[i_section_min_distance][0])
+                                                           * (check_point_surface_2d_temp[0] - point_list[i_section_min_distance][0])
                                                            < 0;
               const double reference_on_side_of_line = reference_on_side_of_line_bool == checkpoint_on_side_of_line_bool ? -1 : 1;
 

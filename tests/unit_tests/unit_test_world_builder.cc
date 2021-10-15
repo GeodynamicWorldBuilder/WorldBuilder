@@ -4997,7 +4997,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   CHECK(distance_from_planes.segment == Approx(0.0));
   CHECK(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
   CHECK(distance_from_planes.depth_reference_surface == Approx(0.0));
-  CHECK(distance_from_planes.closest_trench_point.get_array() == std::array<double,3> {{25.,10.,10.}});
+  CHECK(distance_from_planes.closest_trench_point.get_array()[0] == Approx(25.));
+  CHECK(distance_from_planes.closest_trench_point.get_array()[1] == Approx(10.));
+  CHECK(distance_from_planes.closest_trench_point.get_array()[2] == Approx(10.));
 
 
   // beyond end section square test 10
