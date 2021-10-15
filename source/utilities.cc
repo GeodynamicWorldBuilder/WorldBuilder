@@ -308,10 +308,11 @@ namespace WorldBuilder
       std::array<double,3> scoord;
 
       scoord[0] = position.norm(); // R
-      scoord[1] = std::atan2(position[1],position[0]); // Phi
+      scoord[1] = std::atan2(position[1],position[0]); // Phi/long -> The result is always between -180 and 180 degrees: [-pi,pi]
       //if (scoord[1] < 0.0)
       //scoord[1] += 2.0*const_pi; // correct phi to [0,2*pi]
 
+      //lat
       if (scoord[0] > std::numeric_limits<double>::min())
         scoord[2] = 0.5 * const_pi - std::acos(position[2]/scoord[0]);
       else
