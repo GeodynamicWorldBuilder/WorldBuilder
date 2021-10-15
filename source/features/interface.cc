@@ -174,7 +174,7 @@ namespace WorldBuilder
                               y_list,
                               interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear);
 
-          if (maximum_distance_between_coordinates > 0)
+          if (maximum_distance_between_coordinates > 0 && interpolation_type != WorldBuilder::Utilities::InterpolationType::ContinuousMonotoneSpline)
             {
               size_t additional_parts = 0;
               for (size_t i_plane=0; i_plane<original_number_of_coordinates-1; ++i_plane)

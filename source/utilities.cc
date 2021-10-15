@@ -808,6 +808,25 @@ namespace WorldBuilder
                        "Internal error: The y_axis variable is not a number: " << y_axis[2]);
 
 
+              Point<2> check_point_surface_2d_temp = check_point_surface_2d;
+
+              if (!bool_cartesian)
+                {
+                  double normal = std::fabs(point_list[i_section_min_distance+(int)(std::round(fraction_CPL_P1P2))][0]-check_point_surface_2d[0]);
+                  double plus   = std::fabs(point_list[i_section_min_distance+(int)(std::round(fraction_CPL_P1P2))][0]-(check_point_surface_2d[0]+2*const_pi));
+                  double min    = std::fabs(point_list[i_section_min_distance+(int)(std::round(fraction_CPL_P1P2))][0]-(check_point_surface_2d[0]-2*const_pi));
+
+                  // find out whether the check point, checkpoint + 2pi or check point -2 pi is closest to the point list.
+                  if (plus < normal)
+                    {
+                      check_point_surface_2d_temp[0]+= 2*const_pi;
+                    }
+                  else if (min < normal)
+                    {
+                      check_point_surface_2d_temp[0]-= 2*const_pi;
+                    }
+                }
+
               // check whether the check point and the reference point are on the same side, if not, change the side.
               const bool reference_on_side_of_line_bool = (point_list[i_section_min_distance+1][0] - point_list[i_section_min_distance][0])
                                                           * (reference_point[1] - point_list[i_section_min_distance][1])
@@ -815,9 +834,9 @@ namespace WorldBuilder
                                                           * (reference_point[0] - point_list[i_section_min_distance][0])
                                                           < 0;
               const bool checkpoint_on_side_of_line_bool = (point_list[i_section_min_distance+1][0] - point_list[i_section_min_distance][0])
-                                                           * (check_point_surface_2d[1] - point_list[i_section_min_distance][1])
+                                                           * (check_point_surface_2d_temp[1] - point_list[i_section_min_distance][1])
                                                            - (point_list[i_section_min_distance+1][1] - point_list[i_section_min_distance][1])
-                                                           * (check_point_surface_2d[0] - point_list[i_section_min_distance][0])
+                                                           * (check_point_surface_2d_temp[0] - point_list[i_section_min_distance][0])
                                                            < 0;
               const double reference_on_side_of_line = reference_on_side_of_line_bool == checkpoint_on_side_of_line_bool ? -1 : 1;
 
