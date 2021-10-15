@@ -564,7 +564,7 @@ namespace WorldBuilder
       else
         {
           // get an estimate for the closest point between P1 and P2.
-          const double parts = 3;
+          const double parts = 6;
           double min_estimate_solution = 0;
           double min_estimate_solution_temp = min_estimate_solution;
           Point<2> splines(x_spline(min_estimate_solution),y_spline(min_estimate_solution), natural_coordinate_system);
