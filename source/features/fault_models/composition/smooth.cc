@@ -97,8 +97,9 @@ namespace WorldBuilder
                                  double composition_,
                                  const double ,
                                  const double ,
-                                 const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_plane) const
-        {
+                                 const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
+                                 const Utilities::AdditionalParameters &additional_paramters) const 
+	{
           double composition = 0;
 
           if (compositions == composition_number)
@@ -106,16 +107,10 @@ namespace WorldBuilder
 
               // Hyperbolic tangent goes from 0 to 1 over approximately x=(0, 2) without any arguements. The function is written
               // so that the composition returned 1 to 0 over the side_distance on either sides.
-              if (distance_from_plane.average_angle > 0.)
-                composition = (center_composition - std::tanh(10 * (distance_from_plane.distance_from_plane / std::sin(distance_from_plane.average_angle)
-                          - side_distance/2)/side_distance ) )/2 ;
-              else 
-                composition = (center_composition - std::tanh(10 * (distance_from_plane.distance_from_plane - side_distance/2)/side_distance ) )/2 ;
+              composition = (center_composition - std::tanh(10 * (distance_from_planes.distance_from_plane - side_distance/2)/side_distance ) )/2 ;
 
               return Utilities::apply_operation(operation,composition_,composition);
             }
-
-          return Utilities::apply_operation(operation,composition_,composition);
 
           return composition;
 
