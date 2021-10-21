@@ -17,11 +17,11 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef WORLD_BUILDER_FEATURES_FAULT_MODELS_TEMPERATURE_UNIFORM_H
-#define WORLD_BUILDER_FEATURES_FAULT_MODELS_TEMPERATURE_UNIFORM_H
+#ifndef WORLD_BUILDER_FEATURES_SUBDUCTING_PLATE_MODELS_TEMPERATURE_MASS_CONSERVING_H
+#define WORLD_BUILDER_FEATURES_SUBDUCTING_PLATE_MODELS_TEMPERATURE_MASS_CONSERVING_H
 
 
-#include "world_builder/features/fault_models/temperature/interface.h"
+#include "world_builder/features/subducting_plate_models/temperature/interface.h"
 #include "world_builder/features/utilities.h"
 
 
@@ -30,28 +30,41 @@ namespace WorldBuilder
 
   namespace Features
   {
-    namespace FaultModels
+    namespace SubductingPlateModels
     {
       namespace Temperature
       {
         /**
-         * This class represents a subducting plate and can implement submodules
-         * for temperature and composition. These submodules determine what
-         * the returned temperature or composition of the temperature and composition
-         * functions of this class will be.
+         * This class represents a subducting plate temperature model. The temperature
+         * model uses the heat content (proportional to to thermal mass anomaly) to
+         * define a smooth temperature profile that conserves mass along the slab length.
+         * An empirical (linear) model is used to define how the minimum temperature
+         * increases with depth and how the location of the minimum temperature shifts
+         * into the slab interior. The slab is divided in to top and bottom parts,
+         * which meet at the location where the minimum temperature occurs in the slab.
+         * For the bottom slab the temperature is defined by a half-space cooling model.
+         * For the top of the slab the temperature is defined by one side of a 1D infinite
+         * space cooling model. The age of the overriding plate is used so the slab temperature
+         * at shallow depth smoothly transitions to the temperature of the overriding plate:
+         * this is not perfect, and is affected by the value of "top truncation" parameter
+         * subducting plate. Also note that the parameter "thickness" for the subducting plate
+         * segments needs to be defined but is not used.
+         * Note that the empirical model used to define how Tmin increases with depth
+         * and how the position of Tmin shift with depth is expected to change somewhat
+         * after better calibrating with further tests.
          */
-        class Uniform final: public Interface
+        class MassConserving final: public Interface
         {
           public:
             /**
              * constructor
              */
-            Uniform(WorldBuilder::World *world);
+            MassConserving(WorldBuilder::World *world);
 
             /**
              * Destructor
              */
-            ~Uniform() override final;
+            ~MassConserving() override final;
 
             /**
              * declare and read in the world builder file into the parameters class
@@ -80,15 +93,27 @@ namespace WorldBuilder
 
 
           private:
-            // uniform temperature submodule parameters
+            //  temperature submodule parameters
             double min_depth;
             double max_depth;
-            double temperature;
+            double density;
+            double plate_velocity;
+            double mantle_coupling_depth;
+            double shallow_average_dip;
+            double thermal_conductivity;
+            double thermal_expansion_coefficient;
+            double specific_heat;
+            double thermal_diffusivity;
+            double potential_mantle_temperature;
+            double surface_temperature;
+            double taper_distance;
+            bool adiabatic_heating;
+            std::vector<Point<2>> ridge_coordinates;
             Utilities::Operations operation;
 
         };
       } // namespace Temperature
-    } // namespace FaultModels
+    } // namespace SubductingPlateModels
   } // namespace Features
 } // namespace WorldBuilder
 

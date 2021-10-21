@@ -90,7 +90,7 @@ namespace WorldBuilder
          * points correspond to the lower left and the upper right corners of the bounding box, respectively (see the
          * documentation in include/bounding_box.h).
          * For the spherical system, the buffer zone along the longitudal direction is calculated using the
-         * correponding latitude points.
+         * corresponding latitude points.
          */
         BoundingBox<2>  get_bounding_box (const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
                                           const double depth) const;

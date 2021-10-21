@@ -13,12 +13,14 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Added
 - The World Builder Visualizer can now compress vtu files with zlib and output in binary throught the vtu11 library. ASCII output is still avaiable.  \[Menno Fraters; 2021-06-26; [#282](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/282)\]
 - The option to use a half space cooling model for the temperature of an oceanic plate has been added to the oceanic plate feature. \[Magali Billen; 2021-07-15; [#317](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/317)\] 
-
+- Information about the depth of the reference surface in the PointDistanceFromCurvedPlanes structure. \[Menno Fraters; 2021-07-20; [#320](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/320)\]
+-The option for a smooth slab temperature structure that conserves mass with distance along the slab surface. \[Magali Billen; 2021-07-28; [#323] (github.com/GeodynamicWorldBuilder/WorldBuilder/pull/323)\]
 ### Changed
 - The World Builder Visualizer will now use zlib compression for vtu files by default. If zlib is not available binary output will be used. \[Menno Fraters; 2021-06-26; [#282](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/282)\]
 - The return argument type of the distance_point_from_curved_planes function has been converted from a map to a struct, requiring a change in the plugin interfaces for 'fault_models' and 'subducting_plate_models', but significantly increasing the speed of the function and all functions that access its returned values. \[Rene Gassmoeller; 2021-06-27; [#289](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/289)\]
 - The plugin systems (temperature, composition and grains) and the distance_point_from_curved_planes function now all pass a precomputed NaturalCoordinate, besides just the cartesian position. It turns out that this can make a significant performance differce. \[Issue found and solution suggested by Wolfgang Bangerth, implemented and tested by Menno Fraters; 2021-07-03; [#300](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/300) and [#219](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/219)\]
 - Introduces a bounding box for searching the fault and the subducting plate model properties (temperature, composition, grains) in the lateral direction. This reduces the computation time by constraining the number of points for which the expensive distance_point_from_curved_planes function is called. \[Arushi Saxena; 2021-07-15; [#219](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/219)\]
+- Chaning the internal interface of the get function to add a new structure (AdditionalParameters) to hold additional parameters (total_local_segment_length and local_thickness). The local_thickness has been moved away from the PointDistanceFromCurvedPlanes structure.  \[Menno Fraters; 2021-09-08; [#330](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/282)\]
 
 ## [0.4.0]
 ### Added
