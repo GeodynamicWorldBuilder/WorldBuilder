@@ -1,6 +1,7 @@
 
 #include "world_builder/world.h"
 
+#include <cmath>
 #include <stdio.h>
 #include <mpi.h>
 
@@ -36,7 +37,7 @@ int main(int argc, char *argv[]) {
   MPI_Comm_rank(MPI_COMM_WORLD, &MPI_RANK);
   MPI_Comm_size(MPI_COMM_WORLD, &MPI_SIZE);
   
-  std::unique_ptr<WorldBuilder::World> world = std::unique_ptr<WorldBuilder::World>(new WorldBuilder::World(argv[1], has_output_dir, output_dir, random_number_seed)); 
+  std::unique_ptr<WorldBuilder::World> world = std::unique_ptr<WorldBuilder::World>(new WorldBuilder::World(argv[1], INFINITY, has_output_dir, output_dir, random_number_seed)); 
 
 
   if(MPI_RANK == 1)

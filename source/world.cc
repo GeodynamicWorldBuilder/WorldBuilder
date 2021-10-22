@@ -39,7 +39,7 @@ namespace WorldBuilder
 {
   using namespace Utilities;
 
-  World::World(std::string filename, bool has_output_dir, const std::string &output_dir, unsigned long random_number_seed)
+  World::World(std::string filename, double max_model_depth, bool has_output_dir, const std::string &output_dir, unsigned long random_number_seed)
     :
     parameters(*this),
     surface_coord_conversions(invalid),

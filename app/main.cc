@@ -103,7 +103,7 @@ int main(int argc, char **argv)
       //try
       {
         std::string output_dir = wb_file.substr(0,wb_file.find_last_of("/\\") + 1);
-        world = std::make_unique<WorldBuilder::World>(wb_file, true, output_dir);
+        world = std::make_unique<WorldBuilder::World>(wb_file, INFINITY, true, output_dir);
       }
       /*catch (std::exception &e)
         {

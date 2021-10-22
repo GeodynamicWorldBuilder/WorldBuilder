@@ -704,7 +704,7 @@ TEST_CASE("WorldBuilder C wrapper")
   const char *world_builder_file = file.c_str();
   bool has_output_dir = false;
 
-  create_world(ptr_ptr_world, world_builder_file, &has_output_dir, "", 1);
+  create_world(ptr_ptr_world, INFINITY, world_builder_file, &has_output_dir, "", 1);
 
   double temperature = 0.;
 
@@ -738,7 +738,7 @@ TEST_CASE("WorldBuilder C wrapper")
   const char *world_builder_file2 = file.c_str();
   has_output_dir = false;
 
-  create_world(ptr_ptr_world, world_builder_file2, &has_output_dir, "", 1.0);
+  create_world(ptr_ptr_world, INFINITY, world_builder_file2, &has_output_dir, "", 1.0);
 
 
   CHECK_THROWS_WITH(temperature_2d(*ptr_ptr_world, 1, 2, 0, 10, &temperature),
@@ -829,7 +829,7 @@ TEST_CASE("WorldBuilder World random")
   // deterministic (known and documented algorithm), we can test the results and they
   // should be the same even for different compilers and machines.
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate_spherical.wb";
-  WorldBuilder::World world1(file_name, false, "", 1);
+  WorldBuilder::World world1(file_name, INFINITY, false, "", 1);
   // same result as https://en.cppreference.com/w/cpp/numeric/random/mersenne_twister_engine/seed
   CHECK(world1.get_random_number_engine()() == 1791095845);
   CHECK(world1.get_random_number_engine()() == 4282876139);
@@ -838,14 +838,14 @@ TEST_CASE("WorldBuilder World random")
   CHECK(dist(world1.get_random_number_engine()) == Approx(1.1281244478));
 
   // test wheter the seed indeed changes the resuls
-  WorldBuilder::World world2(file_name, false, "", 2);
+  WorldBuilder::World world2(file_name, INFINITY, false, "", 2);
   CHECK(world2.get_random_number_engine()() == 1872583848);
   CHECK(world2.get_random_number_engine()() == 794921487);
   CHECK(dist(world2.get_random_number_engine()) == Approx(1.9315408636));
   CHECK(dist(world2.get_random_number_engine()) == Approx(1.947730611));
 
   // Test reproducability with the same seed.
-  WorldBuilder::World world3(file_name, false, "", 1);
+  WorldBuilder::World world3(file_name, INFINITY, false, "", 1);
   CHECK(world3.get_random_number_engine()() == 1791095845);
   CHECK(world3.get_random_number_engine()() == 4282876139);
   CHECK(dist(world3.get_random_number_engine()) == Approx(1.9325573614));

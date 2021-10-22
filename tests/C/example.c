@@ -1,5 +1,6 @@
 
 #include "world_builder/wrapper_c.h"
+#include <math.h>
 #include <stdio.h>
 
 int main(int argc, char *argv[]) {
@@ -29,7 +30,7 @@ int main(int argc, char *argv[]) {
   // Show how to call the functions.
   printf("create world \n");
   
-  create_world(&ptr_world, argv[1], &has_output_dir, output_dir, random_number_seed);
+  create_world(&ptr_world, INFINITY, argv[1], &has_output_dir, output_dir, random_number_seed);
 
   printf("2d temperature: \n");
   temperature_2d(ptr_world,x,z,depth,gravity,&temperature);

@@ -29,12 +29,14 @@ USE, INTRINSIC :: ISO_C_BINDING!, ONLY: C_PTR
   !! Please not that the basic type for the random number seed is a unsigned long,
   !! so it is advisable to not use negative numbers if you want to reproduce the 
   !! same result as other codes.
-   SUBROUTINE create_world(cworld, file_name, has_output_dir, output_dir, random_number_seed) BIND(C, NAME='create_world') 
-      USE, INTRINSIC :: ISO_C_BINDING, ONLY: C_PTR, C_BOOL, C_CHAR, C_LONG
+   SUBROUTINE create_world(cworld, max_model_depth, file_name, has_output_dir, output_dir, random_number_seed) &
+    BIND(C, NAME='create_world') 
+      USE, INTRINSIC :: ISO_C_BINDING, ONLY: C_PTR, C_BOOL, C_CHAR, C_DOUBLE, C_LONG
       IMPLICIT NONE
       ! This argument is a pointer passed by reference.
       TYPE(C_PTR), INTENT(OUT) :: cworld
       character(KIND=C_CHAR,len=1),  intent(in)  :: file_name
+      REAL(KIND=C_DOUBLE), intent(in), value ::max_model_depth
       logical(KIND=C_BOOL), intent(in) :: has_output_dir
       character(KIND=C_CHAR,len=1),  intent(in)  :: output_dir
       INTEGER(C_LONG), intent(in), value ::random_number_seed

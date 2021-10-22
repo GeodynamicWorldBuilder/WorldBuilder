@@ -13,7 +13,7 @@ def main(argv):
      if opt in ("-i", "--ifile"):
         filename = arg
 
-  world_builder = WorldBuilderWrapper(filename, False, "", 1);
+  world_builder = WorldBuilderWrapper(filename, float('inf'), False, "", 1);
 
   print ("2d temperature:")
   print ("temperature in Python = ", world_builder.temperature_2d(120.0e3,500.0e3,0,10));

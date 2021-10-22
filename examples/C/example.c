@@ -21,7 +21,7 @@ int main() {
 
   // Show how to call the functions.
   printf("create world \n");
-  create_world(&ptr_world, file_name, &has_output_dir, output_dir, random_number_seed);
+  create_world(&ptr_world, INFINITY, file_name, &has_output_dir, output_dir, random_number_seed);
 
   printf("2d temperature: \n");
   temperature_2d(ptr_world,x,z,depth,gravity,&temperature);

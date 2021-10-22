@@ -42,6 +42,13 @@ namespace WorldBuilder
        * are optional.
        * \param filename  a string with the location of
        * the world builder file to initialize the world.
+       * \param max_model_depth This is the maximum model depth. For Cartesian models this
+       * should normally be infinity. For spherical models this should be the radius. For
+       * now infinity in spherical models with mean that the value is ignored, but this
+       * will become more strict in later in this version or in future versions. The current
+       * main purpose of this value is to make sure that the radius of the model is consistant
+       * between what is provided in the world builder (addition of this is planned) and what
+       * the calling program thinks the radius is.
        * \param has_output_dir a bool indicating whether the world builder is allowed to
        * write out information to a directly.
        * \param output_dir a string with the location of the directory where the world builder
@@ -56,7 +63,7 @@ namespace WorldBuilder
        * documented algorithm), we can test the results and they should be the same even for different
        * compilers and machines.
        */
-      World(std::string filename, bool has_output_dir = false, const std::string &output_dir = "", unsigned long random_number_seed = 1);
+      World(std::string filename, double max_model_depth=INFINITY, bool has_output_dir = false, const std::string &output_dir = "", unsigned long random_number_seed = 1);
 
       /**
        * Destructor
