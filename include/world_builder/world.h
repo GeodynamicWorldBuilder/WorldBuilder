@@ -78,8 +78,17 @@ namespace WorldBuilder
 
       /**
        * read in the world builder file
+       * \param prm The Parameters structure to be parsed.
+       * \param max_model_depth This is the maximum model depth. For Cartesian models this
+       * should normally be infinity. For spherical models this should be the radius. For
+       * now infinity in spherical models with mean that the value is ignored, but this
+       * will become more strict in later in this version or in future versions. The current
+       * main purpose of this value is to make sure that the radius of the model is consistant
+       * between what is provided in the world builder (addition of this is planned) and what
+       * the calling program thinks the radius is.
        */
-      void parse_entries(Parameters &prm);
+      void parse_entries(Parameters &prm,
+                         const double max_model_depth);
 
       /**
        * Returns the temperature based on a 2d Cartesian point, the depth in the

@@ -68,7 +68,7 @@ namespace WorldBuilder
 
     parameters.initialize(filename, has_output_dir, output_dir);
 
-    this->parse_entries(parameters);
+    this->parse_entries(parameters, max_model_depth);
   }
 
   World::~World()
@@ -119,7 +119,8 @@ namespace WorldBuilder
   }
 
 
-  void World::parse_entries(Parameters &prm)
+  void World::parse_entries(Parameters &prm,
+                            const double max_model_depth)
   {
     using namespace rapidjson;
 

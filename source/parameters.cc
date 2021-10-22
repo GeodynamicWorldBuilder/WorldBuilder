@@ -52,7 +52,9 @@ namespace WorldBuilder
   Parameters::~Parameters()
     = default;
 
-  void Parameters::initialize(std::string &filename, bool has_output_dir, const std::string &output_dir)
+  void Parameters::initialize(std::string &filename,
+                              bool has_output_dir,
+                              const std::string &output_dir)
   {
 
     if (has_output_dir)

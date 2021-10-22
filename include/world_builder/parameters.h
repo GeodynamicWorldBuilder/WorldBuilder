@@ -88,7 +88,9 @@ namespace WorldBuilder
        * \param has_output_dir A bool indicating whether the world builder may write out information.
        * \param output_dir A string with the path to the directory where it can output information if allowed by has_output_dir
        */
-      void initialize(std::string &filename, bool has_output_dir = false, const std::string &output_dir = "");
+      void initialize(std::string &filename,
+                      bool has_output_dir = false,
+                      const std::string &output_dir = "");
 
       /**
        * A generic get function to retrieve setting from the parameter file.
