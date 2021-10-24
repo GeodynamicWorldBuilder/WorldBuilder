@@ -106,12 +106,23 @@ namespace WorldBuilder
         double distance_between_points_at_same_depth(const Point<3> &point_1, const Point<3> &point_2) const override final;
 
         /**
+         * Returns the max model depth. This returns the radius in spherical
+         * models.
+         */
+        virtual
+        double max_model_depth() const override final;
+
+        /**
          * What depth method the spherical coordinates use.
          */
         DepthMethod used_depth_method;
 
       private:
-
+        /**
+         * The maximum depth of the model. In the spherical case that is equal to the
+         * radius of the sphere.
+         */
+        double radius_sphere;
     };
   } // namespace CoordinateSystems
 } // namespace WorldBuilder
