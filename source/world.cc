@@ -120,7 +120,7 @@ namespace WorldBuilder
 
 
   void World::parse_entries(Parameters &prm,
-                            const double max_model_depth)
+                            const double max_model_depth_external)
   {
     using namespace rapidjson;
 
@@ -151,6 +151,21 @@ namespace WorldBuilder
      */
     prm.coordinate_system = prm.get_unique_pointer<CoordinateSystems::Interface>("coordinate system");
     prm.coordinate_system->parse_entries(prm);
+
+
+    // For now allow a value of ININITY to escape the check. This escape will
+    // be removed in future versions.
+    double max_model_depth = prm.coordinate_system->max_model_depth();
+    WBAssertThrow(max_model_depth_external == INFINITY
+                  ||
+                  std::fabs(max_model_depth_external-max_model_depth)
+                  < std::fabs(std::min(max_model_depth_external,max_model_depth))*std::numeric_limits<double>::epsilon(),
+                  "The maximum model depth provided during the initialization is not "
+                  "the same as the one parsed from the world builder file. This is most "
+                  "likely due to using the sperhical coordinate system with a different "
+                  "radius than provided by the external program you are using. \n\n"
+                  "max_model_depth_external = " << max_model_depth_external << " and "
+                  "max_model_depth = " << max_model_depth << ".");
 
     prm.get_unique_pointers<Features::Interface>("features",prm.features);
 
