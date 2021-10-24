@@ -107,6 +107,13 @@ namespace WorldBuilder
         double distance_between_points_at_same_depth(const Point<3> &point_1, const Point<3> &point_2) const = 0;
 
         /**
+         * Returns the max model depth. This should be the infinity for Cartesian
+         * models and the radius in spherical models.
+         */
+        virtual
+        double max_model_depth() const = 0;
+
+        /**
          * A function to register a new type. This is part of the automatic
          * registration of the object factory.
          */

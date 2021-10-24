@@ -101,6 +101,12 @@ namespace WorldBuilder
          */
         double distance_between_points_at_same_depth(const Point<3> &point_1, const Point<3> &point_2) const override final;
 
+        /**
+         * Returns the max model depth. This always returns infinity for Cartesian
+         * models.
+         */
+        virtual
+        double max_model_depth() const override final;
 
       private:
 

@@ -83,6 +83,13 @@ namespace WorldBuilder
       return point_at_depth.norm();
     }
 
+
+    double
+    Cartesian::max_model_depth() const
+    {
+      return INFINITY;
+    }
+
     /**
      * Register plugin
      */

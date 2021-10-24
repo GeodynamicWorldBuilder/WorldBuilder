@@ -21,6 +21,7 @@
 
 
 #include "world_builder/types/object.h"
+#include "world_builder/types/double.h"
 #include "world_builder/utilities.h"
 
 namespace WorldBuilder
@@ -46,6 +47,10 @@ namespace WorldBuilder
       prm.declare_entry("depth method",
                         Types::String("",std::vector<std::string>({"starting point", "begin segment", "continuous"})),
                         R"(Which depth method to use in the spherical case. The available options are 'starting point' and 'begin segment'.)");
+
+      prm.declare_entry("radius",
+                        Types::Double(6371000.),
+                        R"(The radius of the sphere.)");
 
 
     }
@@ -127,6 +132,13 @@ namespace WorldBuilder
       const double bottom = sin_lat_1 * sin_lat_2 + cos_lat_1 * cos_lat_2 * cos_long_diff;
 
       return radius * std::atan2(top, bottom);
+    }
+
+
+    double
+    Spherical::max_model_depth() const
+    {
+      return INFINITY;
     }
 
     /**
