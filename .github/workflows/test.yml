@@ -72,7 +72,7 @@ jobs:
       shell: bash
 
 
-    - name:  MacOS_xcode_select 
+    - name:  MacOS_xcode_select
       run:   |
          if [ "$RUNNER_OS" != "Linux" ]; then
             xcode-select -p
@@ -82,6 +82,8 @@ jobs:
             ls /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/
             echo "3"
             ls /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/libexec
+            echo "4"
+            sudo xcode-select --switch /Applications/Xcode_12.5.1.app
          fi
       shell: bash
       
@@ -218,6 +220,8 @@ jobs:
             sudo apt install gfortran swig python3-setuptools openmpi-bin
          elif [ "$RUNNER_OS" == "macOS" ]; then
             sudo brew install open-mpi || true    
+            echo "4"
+            sudo xcode-select --switch /Applications/Xcode_12.5.1.app
          else          
             echo "$RUNNER_OS not supported"
             exit 1
