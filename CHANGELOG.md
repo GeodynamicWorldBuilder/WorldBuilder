@@ -22,6 +22,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Introduces a bounding box for searching the fault and the subducting plate model properties (temperature, composition, grains) in the lateral direction. This reduces the computation time by constraining the number of points for which the expensive distance_point_from_curved_planes function is called. \[Arushi Saxena; 2021-07-15; [#219](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/219)\]
 - Chaning the internal interface of the get function to add a new structure (AdditionalParameters) to hold additional parameters (total_local_segment_length and local_thickness). The local_thickness has been moved away from the PointDistanceFromCurvedPlanes structure.  \[Menno Fraters; 2021-09-08; [#330](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/282)\]
 
+### Fixed
+- Using slabs and faults beyond the -180 to 180 range gave issues. These are now fixed and it now works and is tested for the -380 to 380 range. \[Menno Fraters; 2021-10-22;[#338](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/338), [#340](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/340) and [#342](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/342)]
+
 ## [0.4.0]
 ### Added
 - Added basic unity build. \[Menno Fraters; 2020-08-15; [#206](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/206)\]
