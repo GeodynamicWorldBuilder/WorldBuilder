@@ -41,6 +41,9 @@ namespace WorldBuilder
          * for temperature and composition. These submodules determine what
          * the returned temperature or composition of the temperature and composition
          * functions of this class will be.
+         * In this plugin, the temperature of the plate is derived from the plate model,
+         * featuring continuous cooling of a plate from a spreading ridge by both vertical
+         * and horizontal heat conduction.
          */
         class PlateModel final: public Interface
         {

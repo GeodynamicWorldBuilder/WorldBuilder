@@ -172,6 +172,8 @@ namespace WorldBuilder
               const double age = distance_ridge / spreading_velocity;
               double temperature = top_temperature + (bottom_temperature_local - top_temperature) * (depth / max_depth);
 
+              // This formula addresses the horizontal heat transfer by having the spreading velocity and distance to the ridge in it.
+              // (Chapter 7 Heat, Fowler M. The solid earth: an introduction to global geophysics[M]. Cambridge University Press, 1990)
               for (int i = 1; i<sommation_number+1; ++i)
                 {
                   temperature = temperature + (bottom_temperature_local - top_temperature) *
