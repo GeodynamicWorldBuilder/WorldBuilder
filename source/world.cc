@@ -159,10 +159,10 @@ namespace WorldBuilder
     WBAssertThrow(max_model_depth_external == INFINITY
                   ||
                   std::fabs(max_model_depth_external-max_model_depth)
-                  < std::fabs(std::min(max_model_depth_external,max_model_depth))*std::numeric_limits<double>::epsilon(),
+                  < std::fabs(std::min(max_model_depth_external,max_model_depth))*1e6*std::numeric_limits<double>::epsilon(),
                   "The maximum model depth provided during the initialization is not "
                   "the same as the one parsed from the world builder file. This is most "
-                  "likely due to using the sperhical coordinate system with a different "
+                  "likely due to using the spherical coordinate system with a different "
                   "radius than provided by the external program you are using. \n\n"
                   "max_model_depth_external = " << max_model_depth_external << " and "
                   "max_model_depth = " << max_model_depth << ".");
