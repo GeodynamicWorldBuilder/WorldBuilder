@@ -1,9 +1,9 @@
 [![Contributors](https://img.shields.io/github/contributors/GeodynamicWorldBuilder/WorldBuilder?logo=git&logoColor=eeeeee&color=success)](https://github.com/GeodynamicWorldBuilder/WorldBuilder/graphs/contributors)
 [![Documentation](https://img.shields.io/badge/code-documented-success)](https://codedocs.xyz/GeodynamicWorldBuilder/WorldBuilder/index.html)
-[![actions](https://img.shields.io/github/workflow/status/GeodynamicWorldBuilder/WorldBuilder/tests/master?label=tests&logo=github&logoColor=eeeeee)](https://github.com/GeodynamicWorldBuilder/WorldBuilder/actions?query=branch%3Amaster)
-[![AppVeyor Build status](https://img.shields.io/appveyor/build/MFraters/WorldBuilder/master?label=tests&logo=appveyor&logoColor=eeeeee)](https://ci.appveyor.com/project/MFraters/worldbuilder)
-[![Coverage Status](https://img.shields.io/coveralls/github/GeodynamicWorldBuilder/WorldBuilder?logo=coveralls&logoColor=eeeeee)](https://coveralls.io/github/GeodynamicWorldBuilder/WorldBuilder?branch=master)
-[![codecov](https://img.shields.io/codecov/c/github/GeodynamicWorldBuilder/WorldBuilder/master?logo=codecov&logoColor=eeeeee)](https://codecov.io/gh/GeodynamicWorldBuilder/WorldBuilder)  
+[![actions](https://img.shields.io/github/workflow/status/GeodynamicWorldBuilder/WorldBuilder/tests/main?label=tests&logo=github&logoColor=eeeeee)](https://github.com/GeodynamicWorldBuilder/WorldBuilder/actions?query=branch%3Amain)
+[![AppVeyor Build status](https://img.shields.io/appveyor/build/MFraters/WorldBuilder/main?label=tests&logo=appveyor&logoColor=eeeeee)](https://ci.appveyor.com/project/MFraters/worldbuilder)
+[![Coverage Status](https://img.shields.io/coveralls/github/GeodynamicWorldBuilder/WorldBuilder?logo=coveralls&logoColor=eeeeee)](https://coveralls.io/github/GeodynamicWorldBuilder/WorldBuilder?branch=main)
+[![codecov](https://img.shields.io/codecov/c/github/GeodynamicWorldBuilder/WorldBuilder/main?logo=codecov&logoColor=eeeeee)](https://codecov.io/gh/GeodynamicWorldBuilder/WorldBuilder)  
 [![Matrix space](https://img.shields.io/badge/Chat-matrix.org-brightgreen?logo=matrix&logoColor=eeeeee)](https://app.element.io/#/room/#gwb:matrix.org)
 [![Mastodon Follow](https://img.shields.io/mastodon/follow/106136314313793382?domain=https%3A%2F%2Fsocial.mfraters.net&style=social)](https://social.mfraters.net/@world_builder)
 

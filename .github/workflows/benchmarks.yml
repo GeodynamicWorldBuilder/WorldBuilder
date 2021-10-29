@@ -67,12 +67,12 @@ jobs:
           ${{github.workspace}}/cbdr/target/
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
-    - name: retrieve cache master
+    - name: retrieve cache main
       uses: actions/cache@v2
       with:
         path: |
-          ${{github.workspace}}/master/
-        key: ${{ runner.os }}-gwb-master-v3}}
+          ${{github.workspace}}/main/
+        key: ${{ runner.os }}-gwb-main-v3}}
 
 
     - name: retrieve cache feature
@@ -97,11 +97,11 @@ jobs:
         path: feature/source
         clean: false
 
-    - name: Checkout master
+    - name: Checkout main
       uses: actions/checkout@v2
       with:
-        ref: master
-        path: master/source
+        ref: main
+        path: main/source
         clean: false
 
     - name: cd Build Environment
@@ -114,18 +114,18 @@ jobs:
     - name: Create Build Environment
       run: |
             sudo apt install ninja-build;
-            cmake -E make_directory ${{github.workspace}}/master/build;
+            cmake -E make_directory ${{github.workspace}}/main/build;
 
     - name: Configure CMake
       shell: bash
-      working-directory: ${{github.workspace}}/master/build
+      working-directory: ${{github.workspace}}/main/build
       run: |
             pwd;
             ls;
-            cmake  -G"Ninja" $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Werror -DWB_INCLUDE_UNIT_TEST=OFF ${{github.workspace}}/master/source/;
+            cmake  -G"Ninja" $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Werror -DWB_INCLUDE_UNIT_TEST=OFF ${{github.workspace}}/main/source/;
 
     - name: Build gwb
-      working-directory: ${{github.workspace}}/master/build
+      working-directory: ${{github.workspace}}/main/build
       shell: bash
       run: ninja
 
@@ -166,7 +166,7 @@ jobs:
       shell: bash
       run: |
             cd ${{github.workspace}}/cbdr/;
-            time cargo run --release sample --timeout=900s "master:${{github.workspace}}/master/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/${{matrix.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{matrix.benchmark_gridfile}}.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/${{matrix.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{matrix.benchmark_gridfile}}.grid" > ${{github.workspace}}/result_${{matrix.benchmark_number}}.csv;
+            time cargo run --release sample --timeout=900s "main:${{github.workspace}}/main/build/bin/./WorldBuilderVisualization  ${{github.workspace}}/feature/source/tests/app/${{matrix.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{matrix.benchmark_gridfile}}.grid" "feature:${{github.workspace}}/feature/build/bin/./WorldBuilderVisualization ${{github.workspace}}/feature/source/tests/app/${{matrix.benchmark_name}}.wb ${{github.workspace}}/feature/source/tests/visualization/${{matrix.benchmark_gridfile}}.grid" > ${{github.workspace}}/result_${{matrix.benchmark_number}}.csv;
             cat ${{github.workspace}}/result_${{matrix.benchmark_number}}.csv;
             cat ${{github.workspace}}/result_${{matrix.benchmark_number}}.csv | cargo run --release analyze --disable-dynamic-printing > ${{github.workspace}}/benchmark_${{matrix.benchmark_number}}_results/analyze_${{matrix.benchmark_number}}.log ||:;
             cat ${{github.workspace}}/benchmark_${{matrix.benchmark_number}}_results/analyze_${{matrix.benchmark_number}}.log
