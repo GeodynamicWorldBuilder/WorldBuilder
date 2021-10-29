@@ -83,7 +83,7 @@ jobs:
             echo "3"
             ls /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/libexec
             echo "4"
-            sudo xcode-select --switch /Applications/Xcode_12.5.1.app
+            sudo xcode-select --switch /Applications/Xcode_12.4.app
          fi
       shell: bash
       
