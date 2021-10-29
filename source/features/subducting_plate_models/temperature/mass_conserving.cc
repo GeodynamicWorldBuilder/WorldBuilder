@@ -173,6 +173,11 @@ namespace WorldBuilder
           surface_temperature = this->world->surface_temperature;
 
           ridge_coordinates = prm.get_vector<Point<2>>("ridge coordinates");
+          const double dtr = prm.coordinate_system->natural_coordinate_system() == spherical ? const_pi / 180.0 : 1.0;
+          for (auto &ridge_coordinate : ridge_coordinates)
+            {
+              ridge_coordinate *= dtr;
+            }
         }
 
         double

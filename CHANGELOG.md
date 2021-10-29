@@ -25,6 +25,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Fixed
 - Using slabs and faults beyond the -180 to 180 range gave issues. These are now fixed and it now works and is tested for the -380 to 380 range. \[Menno Fraters; 2021-10-22;[#338](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/338), [#340](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/340) and [#342](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/342)]
+- The ridge coordinates for the mass conservative slab temperature model where not convered to radians interally. \[Menno Fraters; 2021-10-27;[#352](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/352)\]
 
 ## [0.4.0] - 2021-06-22
 ### Added
