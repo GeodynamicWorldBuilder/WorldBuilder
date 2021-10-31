@@ -280,12 +280,37 @@ if(MAKE_PYTHON_WRAPPER)
 
 endif()
 
+# Find if we are using make or ninja. 
+IF(CMAKE_GENERATOR MATCHES "Ninja")
+  SET(_make_command "ninja")
+ELSE()
+  SET(_make_command "make")
+ENDIF()
 
 # Provide "indent" target for indenting all headers and source files
 ADD_CUSTOM_TARGET(indent
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   COMMAND ./doc/indent
   COMMENT "Indenting all the World Builder header and source files..."
+  )
+
+# Provide "release" target for switching to release mode
+ADD_CUSTOM_TARGET(release
+  COMMAND ${CMAKE_COMMAND} -D CMAKE_BUILD_TYPE=Release .
+  COMMAND ${CMAKE_COMMAND} -E echo "Switched to Release mode. Now recompile with: ${_make_command}"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  VERBATIM
+  COMMENT "switching to RELEASE mode..."
+  )
+
+
+# Provide "debug" target for switching to release mode
+ADD_CUSTOM_TARGET(debug
+  COMMAND ${CMAKE_COMMAND} -D CMAKE_BUILD_TYPE=Debug .
+  COMMAND ${CMAKE_COMMAND} -E echo "Switched to Debug mode. Now recompile with: ${_make_command}"
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  VERBATIM
+  COMMENT "switching to DEBUG mode..."
   )
 
 
