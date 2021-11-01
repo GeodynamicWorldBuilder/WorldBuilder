@@ -108,7 +108,7 @@ namespace WorldBuilder
             double surface_temperature;
             double taper_distance;
             bool adiabatic_heating;
-            std::vector<Point<2>> ridge_coordinates;
+            std::vector<std::vector<Point<2>>> mid_oceanic_ridges;
             Utilities::Operations operation;
 
         };
