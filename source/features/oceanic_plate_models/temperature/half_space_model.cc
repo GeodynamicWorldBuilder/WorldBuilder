@@ -82,9 +82,11 @@ namespace WorldBuilder
                             "The spreading velocity of the plate in meter per year. "
                             "This is the velocity with which one side moves away from the ridge.");
 
-          prm.declare_entry("ridge coordinates", Types::Array(Types::Point<2>(),2),
-                            "A list of 2d points that defines the location of the ridge.");
-
+          prm.declare_entry("ridge coordinates", Types::Array(Types::Array(Types::Point<2>(), 2),1),
+                            "An list of ridges. Each ridge is a lists of at least 2 2d points which "
+                            "define the location of the ridge. You need to define at least one ridge."
+                            "So the an exmple with two ridges is "
+                            "[[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].");
         }
 
         void
@@ -97,13 +99,14 @@ namespace WorldBuilder
           top_temperature = prm.get<double>("top temperature");
           bottom_temperature = prm.get<double>("bottom temperature");
           spreading_velocity = prm.get<double>("spreading velocity")/31557600;  // m/seconds
-          ridge_coordinates = prm.get_vector<Point<2> >("ridge coordinates");
 
+          mid_oceanic_ridges = prm.get_vector<std::vector<Point<2>>>("ridge coordinates");
           const double dtr = prm.coordinate_system->natural_coordinate_system() == spherical ? const_pi / 180.0 : 1.0;
-          for (auto &ridge_coordinate : ridge_coordinates)
-            {
-              ridge_coordinate *= dtr;
-            }
+          for (auto &ridge_coordinates : mid_oceanic_ridges)
+            for (auto &ridge_coordinate : ridge_coordinates)
+              {
+                ridge_coordinate *= dtr;
+              }
         }
 
 
@@ -134,12 +137,47 @@ namespace WorldBuilder
 
               const CoordinateSystem coordinate_system = world->parameters.coordinate_system->natural_coordinate_system();
 
-              for (unsigned int i_ridge = 0; i_ridge < ridge_coordinates.size()-1; i_ridge++)
-                {
-                  const Point<2> segment_point0 = ridge_coordinates[i_ridge];
-                  const Point<2> segment_point1 = ridge_coordinates[i_ridge+1];
 
-                  const Point<2> check_point(position_in_natural_coordinates.get_surface_coordinates(),position_in_natural_coordinates.get_coordinate_system());
+              // first find if the coordinate is on this side of a ridge
+              unsigned int relevant_ridge = 0;
+              const Point<2> check_point(position_in_natural_coordinates.get_surface_coordinates(),position_in_natural_coordinates.get_coordinate_system());
+
+              // if there is only one ridge, there is no transform
+              if (mid_oceanic_ridges.size() > 1)
+                {
+                  // There are more than one ridge, so there are transform faults
+                  // Find the first which is on the same side
+                  for (relevant_ridge = 0; relevant_ridge < mid_oceanic_ridges.size()-1; relevant_ridge++)
+                    {
+                      const Point<2> transform_point_0 = mid_oceanic_ridges[relevant_ridge+1][0];
+                      const Point<2> transform_point_1 = mid_oceanic_ridges[relevant_ridge][mid_oceanic_ridges[relevant_ridge].size()-1];
+                      const Point<2> reference_point   = mid_oceanic_ridges[relevant_ridge][0];
+
+                      const bool reference_on_side_of_line = (transform_point_1[0] - transform_point_0[0])
+                                                             * (reference_point[1] - transform_point_0[1])
+                                                             - (transform_point_1[1] - transform_point_0[1])
+                                                             * (reference_point[0] - transform_point_0[0])
+                                                             < 0;
+                      const bool checkpoint_on_side_of_line = (transform_point_1[0] - transform_point_0[0])
+                                                              * (check_point[1] - transform_point_0[1])
+                                                              - (transform_point_1[1] - transform_point_0[1])
+                                                              * (check_point[0] - transform_point_0[0])
+                                                              < 0;
+
+
+                      if (reference_on_side_of_line == checkpoint_on_side_of_line)
+                        {
+                          break;
+                        }
+
+                    }
+                }
+
+              for (unsigned int i_coordinate = 0; i_coordinate < mid_oceanic_ridges[relevant_ridge].size() - 1; i_coordinate++)
+                {
+                  const Point<2> segment_point0 = mid_oceanic_ridges[relevant_ridge][i_coordinate];
+                  const Point<2> segment_point1 = mid_oceanic_ridges[relevant_ridge][i_coordinate + 1];
+
                   // based on http://geomalgorithms.com/a02-_lines.html
                   const Point<2> v = segment_point1 - segment_point0;
                   const Point<2> w = check_point - segment_point0;
