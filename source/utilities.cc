@@ -465,11 +465,11 @@ namespace WorldBuilder
       WBAssertThrow(global_x_list.size() == point_list.size(), "The given global_x_list doesn't have "
                     "the same size as the point list. This is required.");
 
-      double distance = INFINITY;
-      double new_distance = INFINITY;
-      double along_plane_distance = INFINITY;
-      double new_along_plane_distance  = INFINITY;
-      double new_depth_reference_surface = INFINITY;
+      double distance = std::numeric_limits<double>::infinity();
+      double new_distance = std::numeric_limits<double>::infinity();
+      double along_plane_distance = std::numeric_limits<double>::infinity();
+      double new_along_plane_distance  = std::numeric_limits<double>::infinity();
+      double new_depth_reference_surface = std::numeric_limits<double>::infinity();
 
       const CoordinateSystem natural_coordinate_system = coordinate_system->natural_coordinate_system();
       const bool bool_cartesian = natural_coordinate_system == cartesian;
@@ -504,12 +504,12 @@ namespace WorldBuilder
                     "Only the depth methods none, angle_at_starting_point_with_surface and "
                     "angle_at_begin_segment_with_surface are implemented");
 
-      double min_distance_check_point_surface_2d_line = INFINITY;
+      double min_distance_check_point_surface_2d_line = std::numeric_limits<double>::infinity();
       size_t i_section_min_distance = 0;
       Point<2> closest_point_on_line_2d(NaN::DSNAN,NaN::DSNAN,natural_coordinate_system);
       Point<2> closest_point_on_line_2d_temp(0,0,natural_coordinate_system);
-      double fraction_CPL_P1P2_strict =  INFINITY; // or NAN?
-      double fraction_CPL_P1P2 = INFINITY;
+      double fraction_CPL_P1P2_strict =  std::numeric_limits<double>::infinity(); // or NAN?
+      double fraction_CPL_P1P2 = std::numeric_limits<double>::infinity();
 
       bool continue_computation = false;
       if (interpolation_type != InterpolationType::ContinuousMonotoneSpline)
@@ -556,7 +556,7 @@ namespace WorldBuilder
             }
           // If the point on the line does not lay between point P1 and P2
           // then ignore it. Otherwise continue.
-          continue_computation = (fabs(fraction_CPL_P1P2_strict) < INFINITY && fraction_CPL_P1P2_strict >= 0. && fraction_CPL_P1P2_strict <= 1.);
+          continue_computation = (fabs(fraction_CPL_P1P2_strict) < std::numeric_limits<double>::infinity() && fraction_CPL_P1P2_strict >= 0. && fraction_CPL_P1P2_strict <= 1.);
 
           fraction_CPL_P1P2 = global_x_list[i_section_min_distance] - static_cast<int>(global_x_list[i_section_min_distance])
                               + (global_x_list[i_section_min_distance+1]-global_x_list[i_section_min_distance]) * fraction_CPL_P1P2_strict;
@@ -1006,9 +1006,9 @@ namespace WorldBuilder
 
                       if (c1 < 0 || c2 < c1)
                         {
-                          new_distance = INFINITY;
-                          new_along_plane_distance = INFINITY;
-                          new_depth_reference_surface = INFINITY;
+                          new_distance = std::numeric_limits<double>::infinity();
+                          new_along_plane_distance = std::numeric_limits<double>::infinity();
+                          new_depth_reference_surface = std::numeric_limits<double>::infinity();
                         }
                       else
                         {

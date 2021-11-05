@@ -4910,8 +4910,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == INFINITY);
-  CHECK(distance_from_planes.distance_along_plane == INFINITY);
+  CHECK(std::isinf(distance_from_planes.distance_from_plane));
+  CHECK(std::isinf(distance_from_planes.distance_along_plane));
   CHECK(distance_from_planes.fraction_of_section == Approx(0.0));
   CHECK(distance_from_planes.section == Approx(0.0));
   CHECK(distance_from_planes.segment == Approx(0.0));
@@ -4936,8 +4936,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == INFINITY);
-  CHECK(distance_from_planes.distance_along_plane == INFINITY);
+  CHECK(std::isinf(distance_from_planes.distance_from_plane));
+  CHECK(std::isinf(distance_from_planes.distance_along_plane));
   CHECK(distance_from_planes.fraction_of_section == Approx(0.0));
   CHECK(distance_from_planes.section == Approx(0.0));
   CHECK(distance_from_planes.segment == Approx(0.0));
@@ -4964,8 +4964,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == INFINITY);
-  CHECK(distance_from_planes.distance_along_plane == INFINITY);
+  CHECK(std::isinf(distance_from_planes.distance_from_plane));
+  CHECK(std::isinf(distance_from_planes.distance_along_plane));
   CHECK(distance_from_planes.fraction_of_section == Approx(0.0));
   CHECK(distance_from_planes.section == Approx(0.0));
   CHECK(distance_from_planes.segment == Approx(0.0));
@@ -4990,8 +4990,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == INFINITY);
-  CHECK(distance_from_planes.distance_along_plane == INFINITY);
+  CHECK(std::isinf(distance_from_planes.distance_from_plane));
+  CHECK(std::isinf(distance_from_planes.distance_along_plane));
   CHECK(distance_from_planes.fraction_of_section == Approx(0.0));
   CHECK(distance_from_planes.section == Approx(0.0));
   CHECK(distance_from_planes.segment == Approx(0.0));
@@ -5365,8 +5365,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == INFINITY);
-  CHECK(distance_from_planes.distance_along_plane == INFINITY);
+  CHECK(std::isinf(distance_from_planes.distance_from_plane));
+  CHECK(std::isinf(distance_from_planes.distance_along_plane));
   CHECK(distance_from_planes.fraction_of_section == Approx(0.0));
   CHECK(distance_from_planes.section == Approx(0.0));
   CHECK(distance_from_planes.segment == Approx(0.0));
@@ -5478,8 +5478,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == INFINITY);
-  CHECK(distance_from_planes.distance_along_plane == INFINITY);
+  CHECK(std::isinf(distance_from_planes.distance_from_plane));
+  CHECK(std::isinf(distance_from_planes.distance_along_plane));
   CHECK(distance_from_planes.fraction_of_section == Approx(0.0));
   CHECK(distance_from_planes.section == Approx(0.0));
   CHECK(distance_from_planes.segment == Approx(0.0));
@@ -5589,8 +5589,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == INFINITY);
-  CHECK(distance_from_planes.distance_along_plane == INFINITY);
+  CHECK(std::isinf(distance_from_planes.distance_from_plane));
+  CHECK(std::isinf(distance_from_planes.distance_along_plane));
   CHECK(distance_from_planes.fraction_of_section == Approx(0.0));
   CHECK(distance_from_planes.section == Approx(0.0));
   CHECK(distance_from_planes.segment == Approx(0.0));
@@ -5853,8 +5853,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == INFINITY);
-  CHECK(distance_from_planes.distance_along_plane == INFINITY);
+  CHECK(std::isinf(distance_from_planes.distance_from_plane));
+  CHECK(std::isinf(distance_from_planes.distance_along_plane));
   CHECK(distance_from_planes.fraction_of_section == Approx(0.0));
   CHECK(distance_from_planes.section == Approx(0.0));
   CHECK(distance_from_planes.segment == Approx(0.0));
@@ -6441,8 +6441,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  y_spline);
 
   // checked that distanceFromPlane should be infinity (it is on the other side of the circle this with a drawing
-  CHECK(distance_from_planes.distance_from_plane == INFINITY);
-  CHECK(distance_from_planes.distance_along_plane == INFINITY);
+  CHECK(std::isinf(distance_from_planes.distance_from_plane));
+  CHECK(std::isinf(distance_from_planes.distance_along_plane));
   CHECK(distance_from_planes.fraction_of_section == Approx(0.0));
   CHECK(distance_from_planes.section == Approx(0.0));
   CHECK(distance_from_planes.segment == Approx(0.0));

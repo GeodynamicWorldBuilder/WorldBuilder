@@ -455,7 +455,7 @@ namespace WorldBuilder
           //const size_t next_segment = current_segment + 1;
           const double segment_fraction = distance_from_planes.fraction_of_segment;
 
-          if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)
+          if (abs(distance_from_plane) < std::numeric_limits<double>::infinity() || (distance_along_plane) < std::numeric_limits<double>::infinity())
             {
               // We want to do both section (horizontal) and segment (vertical) interpolation.
               // first for thickness
@@ -587,7 +587,7 @@ namespace WorldBuilder
           //const size_t next_segment = current_segment + 1;
           const double segment_fraction = distance_from_planes.fraction_of_segment;
 
-          if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)
+          if (abs(distance_from_plane) < std::numeric_limits<double>::infinity() || (distance_along_plane) < std::numeric_limits<double>::infinity())
             {
               // We want to do both section (horizontal) and segment (vertical) interpolation.
               // first for thickness
@@ -722,7 +722,7 @@ namespace WorldBuilder
           //const size_t next_segment = current_segment + 1;
           const double segment_fraction = distance_from_planes.fraction_of_segment;
 
-          if (abs(distance_from_plane) < INFINITY || (distance_along_plane) < INFINITY)
+          if (abs(distance_from_plane) < std::numeric_limits<double>::infinity() || (distance_along_plane) < std::numeric_limits<double>::infinity())
             {
               // We want to do both section (horizontal) and segment (vertical) interpolation.
               // first for thickness
