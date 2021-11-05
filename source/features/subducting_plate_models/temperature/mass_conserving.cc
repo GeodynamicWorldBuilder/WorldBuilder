@@ -315,7 +315,7 @@ namespace WorldBuilder
               // Taper the heat_content and min temperature to create a smooth slab tip
               const double start_taper_distance =  total_segment_length -  taper_distance;
 
-              if ((distance_along_plane >= start_taper_distance) )
+              if ((distance_along_plane > start_taper_distance) )
                 {
                   initial_heat_content = initial_heat_content * (total_segment_length - distance_along_plane)/taper_distance;
 
@@ -332,15 +332,20 @@ namespace WorldBuilder
                   // 3. Determine the heat content for side 1 (bottom) of the slab
                   // Comes from integrating the half-space cooling model temperature
 
-                  const double time_since_subducting = (distance_along_plane / plate_velocity) * seconds_in_year; // m/(m/y) = y(seconds_in_year)
+                  double effective_plate_age = plate_age_sec + (distance_along_plane / plate_velocity) * seconds_in_year; // m/(m/y) = y(seconds_in_year)
+                  if (distance_along_plane > start_taper_distance)
+                    {
+                      effective_plate_age = effective_plate_age * (total_segment_length - distance_along_plane)/ (taper_distance);
+                    }
+
                   const double bottom_heat_content = 2 * thermal_conductivity * (min_temperature - potential_mantle_temperature) *
-                                                     std::sqrt((plate_age_sec + time_since_subducting) / (thermal_diffusivity * const_pi));
+                                                     std::sqrt(effective_plate_age /(thermal_diffusivity * const_pi));
 
                   // 4. The difference in heat content goes into the temperature above where Tmin occurs.
                   double top_heat_content = initial_heat_content - bottom_heat_content;
 
                   // Also need to taper the top_heat_content otherwise slab top will continue to thicken to the tip.
-                  if (distance_along_plane >= start_taper_distance)
+                  if (distance_along_plane > start_taper_distance)
                     {
                       top_heat_content = top_heat_content * (total_segment_length - distance_along_plane)/ (taper_distance);
                     }
@@ -352,9 +357,17 @@ namespace WorldBuilder
                       double time_top_slab = (1/(const_pi*thermal_diffusivity))*pow(((2*top_heat_content)/
                                                                                      (2*density*specific_heat*(min_temperature - temperature_ + 1e-16))),2) + 1e-16;
 
-                      // temperature = temperature_;
-                      temperature  = temperature_ + (2*top_heat_content/(2*density*specific_heat*std::sqrt(const_pi*thermal_diffusivity*time_top_slab)))*
-                                     std::exp(-(adjusted_distance*adjusted_distance)/(4*thermal_diffusivity*time_top_slab));
+                      // for overriding plate region where plate temperature is less the minimum slab temperature
+                      // need to set temperature = temperature_ otherwise end up with temperature less than surface temperature ;
+                      if (temperature_ < min_temperature)
+                        {
+                          temperature = temperature_;
+                        }
+                      else
+                        {
+                          temperature  = temperature_ + (2*top_heat_content/(2*density*specific_heat*std::sqrt(const_pi*thermal_diffusivity*time_top_slab)))*
+                                         std::exp(-(adjusted_distance*adjusted_distance)/(4*thermal_diffusivity*time_top_slab));
+                        }
                       // temperature = temperature_ + (2 * top_heat_content / (2 * density * specific_heat * std::sqrt(const_pi * thermal_diffusivity * time_top_slab))) *
                       //              std::exp(-(adjusted_distance * adjusted_distance) / (4 * thermal_diffusivity * time_top_slab));
                     }
@@ -362,7 +375,7 @@ namespace WorldBuilder
                     {
                       // use half-space cooling model for the bottom (side 1) of the slab
                       temperature = background_temperature + (min_temperature - background_temperature) *
-                                    std::erfc(adjusted_distance / (2 * std::sqrt(thermal_diffusivity * (plate_age_sec + time_since_subducting))));
+                                    std::erfc(adjusted_distance / (2 * std::sqrt(thermal_diffusivity * effective_plate_age)));
                     }
                 }
               else
