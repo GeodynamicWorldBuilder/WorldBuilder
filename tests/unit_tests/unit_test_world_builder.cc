@@ -23,6 +23,7 @@
 
 #include "world_builder/config.h"
 #include "world_builder/coordinate_system.h"
+#include "world_builder/coordinate_systems/cartesian.h"
 #include "world_builder/coordinate_systems/interface.h"
 #include "world_builder/features/continental_plate.h"
 #include "world_builder/features/interface.h"
@@ -3828,6 +3829,8 @@ TEST_CASE("WorldBuilder Parameters")
   Parameters prm(world);
   prm.initialize(file);
 
+  world.parameters.coordinate_system.swap(prm.coordinate_system);
+
   CHECK_THROWS_WITH(prm.get<unsigned int>("non existent unsigned int"),
                     Contains("internal error: could not retrieve the default value at"));
 
@@ -3992,6 +3995,27 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK(v_3x3_array[1][2][0] == Approx(15.0));
   CHECK(v_3x3_array[1][2][1] == Approx(16.0));
   CHECK(v_3x3_array[1][2][2] == Approx(17.0));
+
+  std::vector<std::vector<Point<2> > > v_v_p2 = prm.get_vector<std::vector<Point<2>>>("vector of vectors of points<2>");
+  CHECK(v_v_p2.size() == 2);
+  CHECK(v_v_p2[0].size() == 2);
+  CHECK(v_v_p2[0][0][0] == Approx(0.0));
+  CHECK(v_v_p2[0][0][1] == Approx(1.0));
+  CHECK(v_v_p2[0][1][0] == Approx(2.0));
+  CHECK(v_v_p2[0][1][1] == Approx(3.0));
+
+  CHECK(v_v_p2[1].size() == 3);
+  CHECK(v_v_p2[1][0][0] == Approx(4.0));
+  CHECK(v_v_p2[1][0][1] == Approx(5.0));
+  CHECK(v_v_p2[1][1][0] == Approx(6.0));
+  CHECK(v_v_p2[1][1][1] == Approx(7.0));
+  CHECK(v_v_p2[1][2][0] == Approx(8.0));
+  CHECK(v_v_p2[1][2][1] == Approx(9.0));
+
+
+  CHECK_THROWS_WITH(prm.get_vector<std::vector<Point<2>>>("vector of vectors of points<2> nan"),
+                    Contains("Could not convert values of /vector of vectors of points<2> nan/1 into doubles"));
+
 
 
   /*CHECK_THROWS_WITH(prm.get_vector<std::string>("non existent string vector"),

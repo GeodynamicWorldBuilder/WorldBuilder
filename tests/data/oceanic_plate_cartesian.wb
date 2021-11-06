@@ -24,10 +24,10 @@
      "composition models":[{"model":"uniform", "compositions":[5,6], "fractions":[0.25,0.75]}]},
      
   {"model":"oceanic plate", "name":"Sixth oceanic plate", "max depth":250e3, "coordinates":[[1100e3,-1e3],[1100e3,750e3],[2500e3,750e3],[2500e3,-1e3]],
-     "temperature models":[{"model":"plate model", "max depth":250e3, "spreading velocity":0.01, "ridge coordinates":[[1500e3,-1e3],[1500e3,750e3]]}]},
+     "temperature models":[{"model":"plate model", "max depth":250e3, "spreading velocity":0.01, "ridge coordinates":[[[1500e3,-1e3],[1500e3,750e3]]]}]},
      
   {"model":"oceanic plate", "name":"Seventh oceanic plate", "max depth":250e3, "coordinates":[[50e3,-1e3],[400e3,-1e3],[400e3,400e3],[50e3,400e3]],
-     "temperature models":[{"model":"plate model", "max depth":250e3, "spreading velocity":0.01, "ridge coordinates":[[1500e3,-1e3],[1500e3,750e3]]}],
+     "temperature models":[{"model":"plate model", "max depth":250e3, "spreading velocity":0.01, "ridge coordinates":[[[1500e3,-1e3],[1500e3,750e3]]]}],
      "composition models":[{"model":"uniform", "compositions":[6], "max depth":75e3},
                           {"model":"uniform", "compositions":[7], "min depth":75e3, "max depth":150e3},
                            {"model":"uniform", "compositions":[8,9], "fractions":[0.25,0.75], "min depth":150e3, "max depth":225e3}]}

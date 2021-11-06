@@ -11,6 +11,6 @@
       "temperature models":[
         {"model":"half space model", "min depth":0,  "max depth":250e3, "spreading velocity":0.03,
         "top temperature":273,
-         "ridge coordinates": [[4500e3,-100e3],[4500e3,100e3]]}]}      
+         "ridge coordinates": [[[4500e3,-100e3],[4500e3,100e3]]]}]}      
   ]
 }
