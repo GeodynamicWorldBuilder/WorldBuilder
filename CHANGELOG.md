@@ -18,6 +18,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - The option for a temperature model for an oceanic plate with a constant age using the plate model. \[Haoyuan Li; 2021-10-29; [#344](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/344)\]
 - The cmake targets to easily switch between debug and release mode \[Menno Fraters; 2021-10-31; [#361](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/361)\]
 - A new depth method for the spherical coordinate system called begin at end segment. This adds the spherical correction to the end of the segment instead of the beginning, resulting in a smoother transition between segments. \[Menno Fraters; 2021-11-06; [#364](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/364), [#365](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/365)\]
+- A new input parameter and accociated functions which define the maximum depth of a model. This allows the world builder to create a complete picture of the world. \[Menno Fraters; 2021-11-08; [#367](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/367) and [#331](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/331)\]
  
 ### Changed
 - The World Builder Visualizer will now use zlib compression for vtu files by default. If zlib is not available binary output will be used. \[Menno Fraters; 2021-06-26; [#282](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/282)\]
