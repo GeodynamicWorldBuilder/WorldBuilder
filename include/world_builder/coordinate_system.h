@@ -58,6 +58,7 @@ namespace WorldBuilder
   {
     angle_at_starting_point_with_surface,
     angle_at_begin_segment_with_surface,
+    angle_at_begin_segment_applied_to_end_segment_with_surface,
     continuous_angle_with_surface,
     none
   };

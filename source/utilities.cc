@@ -500,9 +500,10 @@ namespace WorldBuilder
       const DepthMethod depth_method = coordinate_system->depth_method();
       WBAssertThrow(depth_method == DepthMethod::none
                     || depth_method == DepthMethod::angle_at_starting_point_with_surface
-                    || depth_method == DepthMethod::angle_at_begin_segment_with_surface,
-                    "Only the depth methods none, angle_at_starting_point_with_surface and "
-                    "angle_at_begin_segment_with_surface are implemented");
+                    || depth_method == DepthMethod::angle_at_begin_segment_with_surface
+                    || depth_method == DepthMethod::angle_at_begin_segment_applied_to_end_segment_with_surface,
+                    "Only the depth methods 'none', 'angle_at_starting_point_with_surface', 'angle_at_begin_segment_with_surface'" <<
+                    "and 'angle_at_begin_segment_applied_to_end_segment_with_surface' are implemented.");
 
       double min_distance_check_point_surface_2d_line = std::numeric_limits<double>::infinity();
       size_t i_section_min_distance = 0;
@@ -892,6 +893,7 @@ namespace WorldBuilder
 
           double total_length = 0.0;
           double add_angle = 0.0;
+          double add_angle_correction = 0.0;
           double average_angle = 0.0;
           for (size_t i_segment = 0; i_segment < plane_segment_lengths[original_current_section].size(); i_segment++)
             {
@@ -899,7 +901,11 @@ namespace WorldBuilder
 
               // compute the angle between the the previous begin and end if
               // the depth method is angle_at_begin_segment_with_surface.
-              if (i_segment != 0 && depth_method == DepthMethod::angle_at_begin_segment_with_surface)
+              if (i_segment != 0
+                  &&
+                  (depth_method == DepthMethod::angle_at_begin_segment_with_surface
+                   ||
+                   depth_method == DepthMethod::angle_at_begin_segment_applied_to_end_segment_with_surface))
                 {
                   const double add_angle_inner = (begin_segment * end_segment) / (begin_segment.norm() * end_segment.norm());
 
@@ -918,7 +924,8 @@ namespace WorldBuilder
                            "this is probably caused by that begin and end segment are the same and round off error. "
                            "The value of add_angle_inner = " << add_angle_inner);
 
-                  add_angle += std::acos(add_angle_inner);
+                  add_angle_correction = std::acos(add_angle_inner);
+                  add_angle += add_angle_correction;
 
                   WBAssert(!std::isnan(add_angle),
                            "Internal error: The add_angle variable is not a number: " << add_angle
@@ -957,7 +964,9 @@ namespace WorldBuilder
               const double interpolated_angle_top    = plane_segment_angles[original_current_section][current_segment][0]
                                                        + fraction_CPL_P1P2 * (plane_segment_angles[original_next_section][current_segment][0]
                                                                               - plane_segment_angles[original_current_section][current_segment][0])
-                                                       + add_angle;
+                                                       + add_angle
+                                                       + (depth_method == DepthMethod::angle_at_begin_segment_applied_to_end_segment_with_surface
+                                                          && i_segment != 0 ? -add_angle_correction: 0);
 
               const double interpolated_angle_bottom = plane_segment_angles[original_current_section][current_segment][1]
                                                        + fraction_CPL_P1P2 * (plane_segment_angles[original_next_section][current_segment][1]
