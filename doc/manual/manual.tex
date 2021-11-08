@@ -457,7 +457,17 @@ The spherical coordinate system is a bit more complex. It works with radius (in 
 Note that currently only the constant angle relative to the surface where it started (the left side of figure \ref{fig:coordinate_systems_line_spiral}).
 \end{remark}
 
-The first option (line) is simpler, more intuitive and makes no assumptions about what a slab should do within the earth. The second option (spiral) is less intuitive, but implicitly includes gravity in the slab. There is a third option, which is a compromise between the first two. It uses the slab segments and recomputes the angle at the beginning of every segment. With small enough segments, this approximates the second option. We have implemented this option, because the implementation of the second option has proven to be difficult. So currently only the first and third option can be set through the \hl{depth method} parameter in the \hl{spherical} parameter, by setting the \hl{depth method} parameter to \hl{starting point} and \hl{begin point} respectively. Adding to the \WB{} file from the previous section by setting it to a spherical geometry, we get the following \WB{} file:
+The first option (line) is simpler, more intuitive and makes no assumptions about what a slab should do within the earth. The second option (spiral) is less intuitive, 
+but implicitly includes gravity in the slab. There are two more options, option three and four, which are a compromise between the first two. 
+Both option three and four use the slab segments and recomputes the angle at the beginning of every segment. 
+The third option of these two actually applies it directly at the beginning of the segment. This is most logical, but it can lead to discontiuities between two curved slab segments, 
+even though they have the same ending and starting angle respectively.
+The forth option applies the extra angle computed at the beginning of the segment to the end of the segment. This allows for a smmooth tranition and is generally recommended. 
+With small enough segments, both these approximates the second (spiral) option. We have implemented the other options because the implementation of the spiral option has proven to 
+be difficult and time consuming. 
+So currently only the first, third and fourth option can be set through the \hl{depth method} parameter in the \hl{spherical} parameter, by setting the \hl{depth method} parameter 
+to \hl{starting point}, \hl{begin point} and \hl{begin at end segment} respectively. 
+Adding to the \WB{} file from the previous section by setting it to a spherical geometry, we get the following \WB{} file:
 
 \begin{javascriptcode}{}{}
 {
