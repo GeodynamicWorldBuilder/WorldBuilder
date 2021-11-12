@@ -1383,7 +1383,51 @@ namespace WorldBuilder
           }
         else if (type == "object")
           {
-            collapse += "/properties";
+            // normal objects just have properties, but some have oneOf
+            if (Pointer((base_path + "/oneOf").c_str()).Get(declarations) != nullptr)
+              {
+                // it has a structure with oneOf. Find out which of the entries is needed.
+                // This means we have to take a sneak peak to figure out how to get to the
+                // next value.
+                size_t size = Pointer((base_path + "/oneOf").c_str()).Get(declarations)->Size();
+#ifdef debug
+                bool found = false;
+#endif
+                size_t index = 0;
+                for (; index < size; ++index)
+                  {
+                    std::string declarations_string = Pointer((base_path + "/oneOf/" + std::to_string(index)
+                                                               + "/properties/model/enum/0").c_str()).Get(declarations)->GetString();
+
+                    // we need to get the json path relevant for the current declaration string
+                    // we are interested in, which requires an offset of 2.
+                    WBAssert(Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters) != nullptr, "Could not find model in: " << get_full_json_path(i+2) + "/model");
+                    std::string parameters_string = Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters)->GetString();
+
+                    // currently in our case these are always objects, so go directly to find the option we need.
+                    if (declarations_string == parameters_string)
+                      {
+                        // found it for index i;
+#ifdef debug
+                        found = true;
+#endif
+                        break;
+                      }
+                  }
+#ifdef debug
+                WBAssert(found == true,
+                         "Internal error: This is an array with several possible values, "
+                         "but could not find the correct value " << collapse + "/" + path[i] + "/items/oneOf");
+#endif
+                collapse += "/" + path[i] + "/oneOf/" + std::to_string(index) + "/properties";
+                // add one to i, to skip the array
+                ++i;
+
+              }
+            else
+              {
+                collapse += "/properties";
+              }
           }
         else
           {

@@ -21,6 +21,7 @@
 
 
 #include "world_builder/types/object.h"
+#include "world_builder/types/double.h"
 #include "world_builder/utilities.h"
 
 namespace WorldBuilder
@@ -40,7 +41,7 @@ namespace WorldBuilder
     {
 
       // Add depth method to the requried parameters.
-      prm.declare_entry("", Types::Object({"depth method"}), "Coordinate sysetm object");
+      prm.declare_entry("", Types::Object({"depth method"}), "Coordinate system object");
 
 
       prm.declare_entry("depth method",
@@ -48,6 +49,10 @@ namespace WorldBuilder
                         R"(Which depth method to use in the spherical case. The available options are 'starting point', )"
                         R"('begin segment' and 'begin at end segment'. See the manual section on coordinate systems for )"
                         R"(more info.)");
+
+      prm.declare_entry("radius",
+                        Types::Double(6371000.),
+                        R"(The radius of the sphere.)");
 
 
     }
@@ -71,7 +76,7 @@ namespace WorldBuilder
                         "coordinates. The available options are 'starting point', 'begin segment' and 'begin at end segment'. "
                         "The option 'continuous' is not yet available.");
 
-        //std::cout << "string_depth_method = " << string_depth_method << std::endl;
+        radius_sphere = prm.get<double>("radius");
       }
       prm.leave_subsection();
     }
@@ -131,6 +136,13 @@ namespace WorldBuilder
       const double bottom = sin_lat_1 * sin_lat_2 + cos_lat_1 * cos_lat_2 * cos_long_diff;
 
       return radius * std::atan2(top, bottom);
+    }
+
+
+    double
+    Spherical::max_model_depth() const
+    {
+      return radius_sphere;
     }
 
     /**

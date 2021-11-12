@@ -3823,8 +3823,11 @@ TEST_CASE("WorldBuilder Parameters")
 {
   // First test a world builder file with a cross section defined
   std::string file = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/type_data.json";
-  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_spherical.wb";
+  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_cartesian.wb";
   WorldBuilder::World world(file_name);
+
+  world.parse_entries(world.parameters);
+  CHECK(std::isinf(world.parameters.coordinate_system->max_model_depth()));
 
   Parameters prm(world);
   prm.initialize(file);
@@ -7344,6 +7347,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     WorldBuilder::World world(file_name);
 
     const double dtr = Utilities::const_pi/180.0;
+    world.parse_entries(world.parameters);
+    CHECK(world.parameters.coordinate_system->max_model_depth() == Approx(6371000.));
     // slab goes down and up again
     // origin
     std::array<double,3> position = {{6371000 - 0, 0 * dtr, 0 * dtr}};
