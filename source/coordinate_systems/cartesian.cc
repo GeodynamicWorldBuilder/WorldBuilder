@@ -18,6 +18,7 @@
 */
 
 #include "world_builder/coordinate_systems/cartesian.h"
+#include "world_builder/types/object.h"
 
 
 namespace WorldBuilder
@@ -33,8 +34,11 @@ namespace WorldBuilder
       = default;
 
     void
-    Cartesian::declare_entries(Parameters & /*unused*/, const std::string & /*unused*/)
-    {}
+    Cartesian::declare_entries(Parameters &prm, const std::string & /*unused*/)
+    {
+      prm.declare_entry("", Types::Object(),
+                        "A Cartesian coordinate sytem. Coordinates are (x,y,z) and extend infintly in all directions.");
+    }
 
     void
     Cartesian::parse_entries(Parameters & /*prm*/)

@@ -41,7 +41,11 @@ namespace WorldBuilder
     {
 
       // Add depth method to the requried parameters.
-      prm.declare_entry("", Types::Object({"depth method"}), "Coordinate system object");
+      prm.declare_entry("", Types::Object({"depth method"}),
+                        "A spherical coordinate system. The coordinates are (radius, longitude, latitude). "
+                        "The radius is set in this plugin, the longitude extends at least from -360 to 360 degrees, "
+                        "and the latitude extends from -90 to 90. It is required to choose a depth method. Please "
+                        "see the manual for more information.");
 
 
       prm.declare_entry("depth method",
