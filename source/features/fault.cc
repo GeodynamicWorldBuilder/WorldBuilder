@@ -360,30 +360,29 @@ namespace WorldBuilder
     Fault::get_bounding_box (const NaturalCoordinate &position_in_natural_coordinates,
                              const double depth) const
     {
-      BoundingBox<2> surface_bounding_box;
       const double starting_radius_inv = 1 / (position_in_natural_coordinates.get_depth_coordinate() + depth - starting_depth);
       if (world->parameters.coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical)
         {
-          std::pair<Point<2>, Point<2> > &spherical_bounding_box = surface_bounding_box.get_boundary_points();
-
           const double buffer_around_fault_spherical = 2 * const_pi * buffer_around_fault_cartesian * starting_radius_inv;
 
-          spherical_bounding_box.first = {(min_along_x - buffer_around_fault_spherical * min_lat_cos_inv) ,
-                                          (min_along_y - buffer_around_fault_spherical), spherical
-                                         } ;
-
-          spherical_bounding_box.second = {(max_along_x + buffer_around_fault_spherical * max_lat_cos_inv) ,
+          return BoundingBox<2>({Point<2> {(min_along_x - buffer_around_fault_spherical * min_lat_cos_inv) ,
+                                           (min_along_y - buffer_around_fault_spherical), spherical
+                                          },
+                                 Point<2> {(max_along_x + buffer_around_fault_spherical * max_lat_cos_inv) ,
                                            (max_along_y + buffer_around_fault_spherical), spherical
-                                          };
+                                          }
+                                });
         }
       else if (world->parameters.coordinate_system->natural_coordinate_system() == CoordinateSystem::cartesian)
         {
-          std::pair<Point<2>, Point<2> > &bounding_box = surface_bounding_box.get_boundary_points();
-          bounding_box.first = {min_along_x, min_along_y, cartesian};
-          bounding_box.second = {max_along_x, max_along_x, cartesian};
-          surface_bounding_box.extend(buffer_around_fault_cartesian);
+          BoundingBox<2> bb({Point<2> {min_along_x, min_along_y, cartesian},
+                             Point<2> {max_along_x, max_along_x, cartesian}
+                            });
+          bb.extend(buffer_around_fault_cartesian);
+          return bb;
         }
-      return surface_bounding_box;
+      else
+        return BoundingBox<2>(); // infinite bounding box
     }
 
 
