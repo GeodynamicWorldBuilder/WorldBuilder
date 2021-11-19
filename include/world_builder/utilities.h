@@ -105,6 +105,12 @@ namespace WorldBuilder
         double get_depth_coordinate() const;
 
         /**
+         * Return a reference to the coordinate that represents the 'depth' direction
+         * in the chosen coordinate system.
+         */
+        double &get_depth_coordinate();
+
+        /**
          * get the coordinate system type of this coordinate.
          */
         CoordinateSystem get_coordinate_system() const;

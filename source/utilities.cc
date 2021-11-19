@@ -301,6 +301,23 @@ namespace WorldBuilder
       return 0;
     }
 
+    double &NaturalCoordinate::get_depth_coordinate()
+    {
+      switch (coordinate_system)
+        {
+          case CoordinateSystem::cartesian:
+            return coordinates[2];
+
+          case CoordinateSystem::spherical:
+            return coordinates[0];
+
+          default:
+            WBAssert (false, "Coordinate system not implemented.");
+        }
+
+      return coordinates[2];
+    }
+
 
     std::array<double,3>
     cartesian_to_spherical_coordinates(const Point<3> &position)
