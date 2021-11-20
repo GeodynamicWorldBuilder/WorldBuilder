@@ -270,7 +270,7 @@ namespace WorldBuilder
             break;
 
           default:
-            WBAssert (false, "Coordinate system not implemented.");
+            WBAssertThrow (false, "Coordinate system not implemented.");
         }
 
       return coordinate;
@@ -295,7 +295,7 @@ namespace WorldBuilder
             return coordinates[0];
 
           default:
-            WBAssert (false, "Coordinate system not implemented.");
+            WBAssertThrow (false, "Coordinate system not implemented.");
         }
 
       return 0;
@@ -312,7 +312,7 @@ namespace WorldBuilder
             return coordinates[0];
 
           default:
-            WBAssert (false, "Coordinate system not implemented.");
+            WBAssertThrow (false, "Coordinate system not implemented.");
         }
 
       return coordinates[2];
