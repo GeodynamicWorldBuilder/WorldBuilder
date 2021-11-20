@@ -24,6 +24,7 @@
 #include "world_builder/config.h"
 #include "world_builder/coordinate_system.h"
 #include "world_builder/coordinate_systems/cartesian.h"
+#include "world_builder/coordinate_systems/invalid.h"
 #include "world_builder/coordinate_systems/interface.h"
 #include "world_builder/features/continental_plate.h"
 #include "world_builder/features/interface.h"
@@ -612,6 +613,32 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   CHECK(nsp1_surface_array[0] == Approx(1.1071487178));
   CHECK(nsp1_surface_array[1] == Approx(0.9302740141));
   CHECK(nsp1.get_depth_coordinate() == Approx(std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0)));
+
+  // Invalid tests
+  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_cartesian.wb";
+  WorldBuilder::World world(file_name);
+  Parameters prm(world);
+  std::unique_ptr<CoordinateSystems::Interface> invalid(new CoordinateSystems::Invalid(nullptr));
+  invalid->parse_entries(prm);
+  Utilities::NaturalCoordinate ivp1(Point<3>(1,2,3,CoordinateSystem::invalid),*invalid);
+  std::array<double,3> ivp1_array = ivp1.get_coordinates();
+  CHECK(std::isnan(ivp1_array[0]));
+  CHECK(std::isnan(ivp1_array[1]));
+  CHECK(std::isnan(ivp1_array[2]));
+  CHECK_THROWS(ivp1.get_surface_coordinates());
+  CHECK_THROWS((double)ivp1.get_depth_coordinate());
+  CHECK_THROWS(ivp1.get_depth_coordinate());
+  CHECK(std::isnan(invalid->distance_between_points_at_same_depth(Point<3>(1,2,3,CoordinateSystem::invalid),
+                                                                  Point<3>(1,2,3,CoordinateSystem::invalid))));
+  CHECK(invalid->depth_method() == DepthMethod::none);
+
+  std::array<double,3> iv_array = invalid->natural_to_cartesian_coordinates({1,2,3});
+  CHECK(std::isnan(iv_array[0]));
+  CHECK(std::isnan(iv_array[1]));
+  CHECK(std::isnan(iv_array[2]));
+
+  CHECK(std::isnan(invalid->max_model_depth()));
+
 
 }
 
