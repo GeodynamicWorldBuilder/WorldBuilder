@@ -108,7 +108,7 @@ namespace WorldBuilder
          * Return a reference to the coordinate that represents the 'depth' direction
          * in the chosen coordinate system.
          */
-        double &get_depth_coordinate();
+        double &get_ref_depth_coordinate();
 
         /**
          * get the coordinate system type of this coordinate.

@@ -301,7 +301,7 @@ namespace WorldBuilder
       return 0;
     }
 
-    double &NaturalCoordinate::get_depth_coordinate()
+    double &NaturalCoordinate::get_ref_depth_coordinate()
     {
       switch (coordinate_system)
         {

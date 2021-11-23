@@ -119,7 +119,7 @@ namespace WorldBuilder
             {
               WorldBuilder::Utilities::NaturalCoordinate position_in_natural_coordinates_at_min_depth = WorldBuilder::Utilities::NaturalCoordinate(position,
                   *(world->parameters.coordinate_system));
-              position_in_natural_coordinates_at_min_depth.get_depth_coordinate() += depth-min_depth;
+              position_in_natural_coordinates_at_min_depth.get_ref_depth_coordinate() += depth-min_depth;
 
               double bottom_temperature_local = bottom_temperature;
 
