@@ -270,7 +270,7 @@ namespace WorldBuilder
             break;
 
           default:
-            WBAssert (false, "Coordinate system not implemented.");
+            WBAssertThrow (false, "Coordinate system not implemented.");
         }
 
       return coordinate;
@@ -295,10 +295,27 @@ namespace WorldBuilder
             return coordinates[0];
 
           default:
-            WBAssert (false, "Coordinate system not implemented.");
+            WBAssertThrow (false, "Coordinate system not implemented.");
         }
 
       return 0;
+    }
+
+    double &NaturalCoordinate::get_ref_depth_coordinate()
+    {
+      switch (coordinate_system)
+        {
+          case CoordinateSystem::cartesian:
+            return coordinates[2];
+
+          case CoordinateSystem::spherical:
+            return coordinates[0];
+
+          default:
+            WBAssertThrow (false, "Coordinate system not implemented.");
+        }
+
+      return coordinates[2];
     }
 
 
