@@ -628,6 +628,7 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   CHECK_THROWS(ivp1.get_surface_coordinates());
   CHECK_THROWS((double)ivp1.get_depth_coordinate());
   CHECK_THROWS(ivp1.get_depth_coordinate());
+  CHECK_THROWS(ivp1.get_ref_depth_coordinate());
   CHECK(std::isnan(invalid->distance_between_points_at_same_depth(Point<3>(1,2,3,CoordinateSystem::invalid),
                                                                   Point<3>(1,2,3,CoordinateSystem::invalid))));
   CHECK(invalid->depth_method() == DepthMethod::none);
