@@ -380,7 +380,7 @@ namespace WorldBuilder
         {
           std::pair<Point<2>, Point<2> > &bounding_box = surface_bounding_box.get_boundary_points();
           bounding_box.first = {min_along_x, min_along_y, cartesian};
-          bounding_box.second = {max_along_x, max_along_x, cartesian};
+          bounding_box.second = {max_along_x, max_along_y, cartesian};
           surface_bounding_box.extend(buffer_around_fault_cartesian);
         }
       return surface_bounding_box;
