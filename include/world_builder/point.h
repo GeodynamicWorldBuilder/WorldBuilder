@@ -236,7 +236,7 @@ namespace WorldBuilder
       inline
       const double &operator[](const size_t index) const
       {
-        WBAssert(index <= dim, "Can't ask for element " << index << " in an point with dimension " << dim << ".");
+        WBAssert(index <= dim, "Can't ask for element " << index << " in an point with dimension " << dim << '.');
         return point[index];
       }
 
@@ -246,7 +246,7 @@ namespace WorldBuilder
        */
       inline double &operator[](const size_t index)
       {
-        WBAssert(index <= dim, "Can't ask for element " << index << " in an point with dimension " << dim << ".");
+        WBAssert(index <= dim, "Can't ask for element " << index << " in an point with dimension " << dim << '.');
         return point[index];
       }
 
@@ -317,7 +317,7 @@ namespace WorldBuilder
       {
         for (size_t i = 0; i < dim-1; i++)
           {
-            output <<  stream_point[i] << " ";
+            output <<  stream_point[i] << ' ';
           }
         output << stream_point[dim-1];
 

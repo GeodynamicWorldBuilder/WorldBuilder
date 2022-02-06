@@ -224,12 +224,12 @@ namespace WorldBuilder
                        << ", max_depth = " << max_depth
                        << ", spreading_velocity = " << spreading_velocity
                        << ", thermal_diffusivity = " << thermal_diffusivity
-                       << ", age = " << age << ".");
+                       << ", age = " << age << '.');
               WBAssert(std::isfinite(temperature), "Temperature inside half-space cooling model is not a finite: " << temperature                           << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
                        << ", top_temperature = " << top_temperature
                        << ", spreading_velocity = " << spreading_velocity
                        << ", thermal_diffusivity = " << thermal_diffusivity
-                       << ", age = " << age << ".");
+                       << ", age = " << age << '.');
 
 
               return Utilities::apply_operation(operation,temperature_,temperature);

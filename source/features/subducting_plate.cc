@@ -410,7 +410,7 @@ namespace WorldBuilder
       const double starting_radius = position_in_natural_coordinates.get_depth_coordinate() + depth - starting_depth;
 
       WBAssert(std::abs(starting_radius) > std::numeric_limits<double>::epsilon(), "World Builder error: starting_radius can not be zero. "
-               << "Position = " << position_in_cartesian_coordinates[0] << ":" << position_in_cartesian_coordinates[1] << ":" << position_in_cartesian_coordinates[2]
+               << "Position = " << position_in_cartesian_coordinates[0] << ':' << position_in_cartesian_coordinates[1] << ':' << position_in_cartesian_coordinates[2]
                << ", position_in_natural_coordinates.get_depth_coordinate() = " << position_in_natural_coordinates.get_depth_coordinate()
                << ", depth = " << depth
                << ", starting_depth " << starting_depth

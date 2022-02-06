@@ -67,7 +67,7 @@ namespace WorldBuilder
           // of a debug compilation.
           WBAssertThrow(get_factory_map().find(lower_case_name) != get_factory_map().end(),
                         "Internal error: Plugin with name '" << lower_case_name << "' is not found. "
-                        "The size of factories is " << get_factory_map().size() << ".");
+                        "The size of factories is " << get_factory_map().size() << '.');
 
           // Using at() because the [] will just insert values
           // which is undesirable in this case. An exception is

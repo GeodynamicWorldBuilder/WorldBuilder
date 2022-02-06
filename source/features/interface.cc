@@ -150,7 +150,7 @@ namespace WorldBuilder
                    interpolation_type == WorldBuilder::Utilities::InterpolationType::MonotoneSpline ||
                    interpolation_type == WorldBuilder::Utilities::InterpolationType::ContinuousMonotoneSpline,
                    "For interpolation, linear and monotone spline are the only allowed values. "
-                   << "You provided " << interpolation_type_string << ".");
+                   << "You provided " << interpolation_type_string << '.');
 
           double maximum_distance_between_coordinates = this->world->maximum_distance_between_coordinates *
                                                         (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
@@ -227,7 +227,7 @@ namespace WorldBuilder
       // of a debug compilation.
       WBAssertThrow(get_factory_map().find(lower_case_name) != get_factory_map().end(),
                     "Internal error: Plugin with name '" << lower_case_name << "' is not found. "
-                    "The size of factories is " << get_factory_map().size() << ".");
+                    "The size of factories is " << get_factory_map().size() << '.');
 
       // Using at() because the [] will just insert values
       // which is undesirable in this case. An exception is

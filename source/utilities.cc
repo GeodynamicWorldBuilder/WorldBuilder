@@ -724,9 +724,9 @@ namespace WorldBuilder
 
                   WBAssert(std::abs(y_axis.norm()) > std::numeric_limits<double>::epsilon(),
                            "World Builder error: Cannot detemine the up direction in the model. This is most likely due to the provided start radius being zero."
-                           << " Techical details: The y_axis.norm() is zero. Y_axis is " << y_axis[0] << ":" << y_axis[1] << ":" << y_axis[2]
-                           << ". closest_point_on_line_cartesian = " << closest_point_on_line_cartesian[0] << ":" << closest_point_on_line_cartesian[1] << ":" << closest_point_on_line_cartesian[2]
-                           << ", closest_point_on_line_bottom_cartesian = " << closest_point_on_line_bottom_cartesian[0] << ":" << closest_point_on_line_bottom_cartesian[1] << ":" << closest_point_on_line_bottom_cartesian[2]);
+                           << " Techical details: The y_axis.norm() is zero. Y_axis is " << y_axis[0] << ':' << y_axis[1] << ':' << y_axis[2]
+                           << ". closest_point_on_line_cartesian = " << closest_point_on_line_cartesian[0] << ':' << closest_point_on_line_cartesian[1] << ':' << closest_point_on_line_cartesian[2]
+                           << ", closest_point_on_line_bottom_cartesian = " << closest_point_on_line_bottom_cartesian[0] << ':' << closest_point_on_line_bottom_cartesian[1] << ':' << closest_point_on_line_bottom_cartesian[2]);
 
                   WBAssert(!std::isnan(y_axis[0]),
                            "Internal error: The y_axis variable is not a number: " << y_axis[0]);
@@ -879,7 +879,7 @@ namespace WorldBuilder
             }
 
           WBAssert(!std::isnan(x_axis[0]),
-                   "Internal error: The x_axis[0] variable is not a number: " << x_axis[0] << ". Relevant values:  check_point = " << check_point << ".");
+                   "Internal error: The x_axis[0] variable is not a number: " << x_axis[0] << ". Relevant values:  check_point = " << check_point << '.');
           WBAssert(!std::isnan(x_axis[1]),
                    "Internal error: The x_axis[1] variable is not a number: " << x_axis[1]);
           WBAssert(!std::isnan(x_axis[2]),
@@ -932,7 +932,7 @@ namespace WorldBuilder
                            << ", end_segment = " << end_segment
                            << ", begin_segment * end_segment / (begin_segment.norm() * end_segment.norm()) = "
                            << std::setprecision(32) << begin_segment * end_segment / (begin_segment.norm() * end_segment.norm())
-                           << ".");
+                           << '.');
 
                   // there could be round of error problems here is the inner part is close to one
                   WBAssert(add_angle_inner >= 0 && add_angle_inner <= 1,
@@ -1017,8 +1017,8 @@ namespace WorldBuilder
                       WBAssert(std::fabs(normal_2d_plane.norm()) > std::numeric_limits<double>::epsilon(), "Internal Error: normal_2d_plane.norm() is zero, which should not happen. "
                                << "Extra info: begin_end_segment[0] = " << begin_end_segment[0]
                                << ", begin_end_segment[1] = " << begin_end_segment[1]
-                               << ", end_segment: [" << end_segment[0] << "," << end_segment[1] << "]"
-                               << ", begin_segment: [" << begin_segment[0] << "," << begin_segment[1] << "]"
+                               << ", end_segment: [" << end_segment[0] << ',' << end_segment[1] << ']'
+                               << ", begin_segment: [" << begin_segment[0] << ',' << begin_segment[1] << ']'
                               );
                       normal_2d_plane /= normal_2d_plane.norm();
 
@@ -1116,14 +1116,14 @@ namespace WorldBuilder
                     }
 
                   WBAssert(!std::isnan(center_circle[0]) || !std::isnan(center_circle[1]),
-                           "Internal error: The center variable contains not a number: " << center_circle[0] << ":" << center_circle[0]);
+                           "Internal error: The center variable contains not a number: " << center_circle[0] << ':' << center_circle[0]);
                   WBAssert(std::fabs((begin_segment-center_circle).norm() - std::fabs(radius_angle_circle))
                            < 1e-8 * std::fabs((begin_segment-center_circle).norm() + std::fabs(radius_angle_circle)),
                            "Internal error: The center of the circle is not a radius away from the begin point. " << std::endl
-                           << "The center is located at " << center_circle[0] << ":" << center_circle[1] << std::endl
-                           << "The begin point is located at " << begin_segment[0] << ":" << begin_segment[1] << std::endl
+                           << "The center is located at " << center_circle[0] << ':' << center_circle[1] << std::endl
+                           << "The begin point is located at " << begin_segment[0] << ':' << begin_segment[1] << std::endl
                            << "The computed radius is " << std::fabs((begin_segment-center_circle).norm())
-                           << ", and it should be " << radius_angle_circle << ".");
+                           << ", and it should be " << radius_angle_circle << '.');
 
 
                   // Now compute the location of the end of the segment by
@@ -1139,10 +1139,10 @@ namespace WorldBuilder
                   WBAssert(std::fabs((end_segment-center_circle).norm() - std::fabs(radius_angle_circle))
                            < 1e-8 * std::fabs((end_segment-center_circle).norm() + std::fabs(radius_angle_circle)) ,
                            "Internal error: The center of the circle is not a radius away from the end point. " << std::endl
-                           << "The center is located at " << center_circle[0] << ":" << center_circle[1] << std::endl
-                           << "The end point is located at " << end_segment[0] << ":" << end_segment[1] << std::endl
+                           << "The center is located at " << center_circle[0] << ':' << center_circle[1] << std::endl
+                           << "The end point is located at " << end_segment[0] << ':' << end_segment[1] << std::endl
                            << "The computed radius is " << std::fabs((end_segment-center_circle).norm())
-                           << ", and it should be " << radius_angle_circle << ".");
+                           << ", and it should be " << radius_angle_circle << '.');
 
                   // Now check if the angle of the check point in this circle
                   // is larger then the angle of P1 and smaller then P1 + angle
