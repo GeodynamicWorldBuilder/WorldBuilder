@@ -130,11 +130,11 @@ namespace WorldBuilder
                        << ", top_temperature = " << top_temperature
                        << ", max_depth = " << max_depth
                        << ", thermal_diffusivity = " << thermal_diffusivity
-                       << ", age = " << plate_age << ".");
+                       << ", age = " << plate_age << '.');
               WBAssert(std::isfinite(temperature), "Temparture inside plate model constant age is not a finite: " << temperature                           << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
                        << ", top_temperature = " << top_temperature
                        << ", thermal_diffusivity = " << thermal_diffusivity
-                       << ", age = " << plate_age << ".");
+                       << ", age = " << plate_age << '.');
 
 
               return Utilities::apply_operation(operation,temperature_,temperature);

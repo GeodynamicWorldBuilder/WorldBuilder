@@ -180,7 +180,7 @@ namespace WorldBuilder
       }
 
     WBAssert(value != NULL || required == false,
-             "Internal error: Value \"" << base << "/" << name << "/type\" not found in the input file, while it was set as required.");
+             "Internal error: Value \"" << base << '/' << name << "/type\" not found in the input file, while it was set as required.");
 #endif
     if (value == nullptr)
       {
@@ -213,7 +213,7 @@ namespace WorldBuilder
       }
 
     WBAssert(value != NULL || required == false,
-             "Internal error: Value \"" << base << "/" << name << "/type\" not found in the input file, while it was set as required.");
+             "Internal error: Value \"" << base << '/' << name << "/type\" not found in the input file, while it was set as required.");
 #endif
     if (value == nullptr)
       {
@@ -256,7 +256,7 @@ namespace WorldBuilder
       }
 
     WBAssert(value != NULL || required == false,
-             "Internal error: Value \"" << base << "/" << name << "/type\" not found in the input file, while it was set as required.");
+             "Internal error: Value \"" << base << '/' << name << "/type\" not found in the input file, while it was set as required.");
 #endif
     if (value == nullptr)
       {
@@ -290,7 +290,7 @@ namespace WorldBuilder
       }
 
     WBAssert(value != NULL || required == false,
-             "Internal error: Value \"" << base << "/" << name << "/type\" not found in the input file, while it was set as required.");
+             "Internal error: Value \"" << base << '/' << name << "/type\" not found in the input file, while it was set as required.");
 #endif
     if (value == nullptr)
       {
@@ -324,7 +324,7 @@ namespace WorldBuilder
       }
 
     WBAssert(value != NULL || required == false,
-             "Internal error: Value \"" << base << "/" << name << "/type\" not found in the input file, while it was set as required.");
+             "Internal error: Value \"" << base << '/' << name << "/type\" not found in the input file, while it was set as required.");
 #endif
     if (value == nullptr)
       {
@@ -360,7 +360,7 @@ namespace WorldBuilder
       }
 
     WBAssert(array != NULL || required == false,
-             "Internal error: Value \"" << strict_base << "/" << name << "/type\" not found in the input file, while it was set as required.");
+             "Internal error: Value \"" << strict_base << '/' << name << "/type\" not found in the input file, while it was set as required.");
 #endif
     if (array != nullptr)
       {
@@ -508,14 +508,14 @@ namespace WorldBuilder
             // cppcheck-suppress constStatement
             std::array<std::array<double,3>,3> array;
             WBAssertThrow(array2->Size() == 3, "Array " << i << " is supposed to be a 3x3 array, but the outer array dimensions is "
-                          << array2->Size() << ".");
+                          << array2->Size() << '.');
             for (size_t j = 0; j < array2->Size(); ++j )
               {
                 const std::string base_extended = base + "/" + std::to_string(j);
 
                 WBAssertThrow(Pointer((base_extended).c_str()).Get(parameters)->Size() == 3,
                               "Array " << i << " is supposed to be a 3x3 array, but the inner array dimensions of "
-                              << j << " is " << Pointer((base_extended).c_str()).Get(parameters)->Size() << ".");
+                              << j << " is " << Pointer((base_extended).c_str()).Get(parameters)->Size() << '.');
                 double value1;
                 double value2;
                 double value3;
@@ -566,7 +566,7 @@ namespace WorldBuilder
 
                 WBAssertThrow(Pointer((base_extended).c_str()).Get(parameters)->Size() == 2,
                               "Array " << i << " is supposed to be a 2d point, but the inner array dimensions of "
-                              << j << " is " << Pointer((base_extended).c_str()).Get(parameters)->Size() << ".");
+                              << j << " is " << Pointer((base_extended).c_str()).Get(parameters)->Size() << '.');
                 double value1;
                 double value2;
 
@@ -1128,7 +1128,7 @@ namespace WorldBuilder
         }
 
     WBAssert(value != NULL || required == false,
-             "Internal error: Value \"" << base << "/" << name << "/model\" not found in the input file, while it was set as required.");
+             "Internal error: Value \"" << base << '/' << name << "/model\" not found in the input file, while it was set as required.");
 #endif
     if (value == nullptr)
       {

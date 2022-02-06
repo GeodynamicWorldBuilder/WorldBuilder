@@ -103,19 +103,19 @@ namespace WorldBuilder
 
           // Some assertions in debug mode can't hurt and have helped before.
           WBAssert(!std::isnan(potential_mantle_temperature),
-                   "potential_mantle_temperature is not a number: " << potential_mantle_temperature << ".");
+                   "potential_mantle_temperature is not a number: " << potential_mantle_temperature << '.');
           WBAssert(std::isfinite(potential_mantle_temperature),
-                   "potential_mantle_temperature is not a finite: " << potential_mantle_temperature << ".");
+                   "potential_mantle_temperature is not a finite: " << potential_mantle_temperature << '.');
 
           WBAssert(!std::isnan(thermal_expansion_coefficient),
-                   "thermal_expansion_coefficient is not a number: " << thermal_expansion_coefficient << ".");
+                   "thermal_expansion_coefficient is not a number: " << thermal_expansion_coefficient << '.');
           WBAssert(std::isfinite(thermal_expansion_coefficient),
-                   "thermal_expansion_coefficient is not a finite: " << thermal_expansion_coefficient << ".");
+                   "thermal_expansion_coefficient is not a finite: " << thermal_expansion_coefficient << '.');
 
           WBAssert(!std::isnan(specific_heat),
-                   "specific_heat is not a number: " << specific_heat << ".");
+                   "specific_heat is not a number: " << specific_heat << '.');
           WBAssert(std::isfinite(thermal_expansion_coefficient),
-                   "specific_heat is not a finite: " << specific_heat << ".");
+                   "specific_heat is not a finite: " << specific_heat << '.');
 
         }
 
@@ -148,7 +148,7 @@ namespace WorldBuilder
                        << ", depth = " << depth);
 
               WBAssert(std::isfinite(adabatic_temperature),
-                       "adabatic_temperature is not a finite: " << adabatic_temperature << ".");
+                       "adabatic_temperature is not a finite: " << adabatic_temperature << '.');
 
               return Utilities::apply_operation(operation,temperature_,adabatic_temperature);
             }

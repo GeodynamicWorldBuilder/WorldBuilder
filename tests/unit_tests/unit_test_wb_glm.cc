@@ -56,12 +56,12 @@ inline void compare_rotation_matrices_approx(
 {
   // sign of eigenvector is not important
   INFO("rotation matrices are not the same: \n" <<
-       "expected = " << expected[0][0] << " " << expected[0][1] << " " << expected[0][2] << "\n" <<
-       "           " << expected[1][0] << " " << expected[1][1] << " " << expected[1][2] << "\n" <<
-       "           " << expected[2][0] << " " << expected[2][1] << " " << expected[2][2] << "\n" <<
-       "computed = " << computed[0][0] << " " << computed[0][1] << " " << computed[0][2] << "\n" <<
-       "           " << computed[1][0] << " " << computed[1][1] << " " << computed[1][2] << "\n" <<
-       "           " << computed[2][0] << " " << computed[2][1] << " " << computed[2][2] << "\n" );
+       "expected = " << expected[0][0] << ' ' << expected[0][1] << ' ' << expected[0][2] << "\n" <<
+       "           " << expected[1][0] << ' ' << expected[1][1] << ' ' << expected[1][2] << "\n" <<
+       "           " << expected[2][0] << ' ' << expected[2][1] << ' ' << expected[2][2] << "\n" <<
+       "computed = " << computed[0][0] << ' ' << computed[0][1] << ' ' << computed[0][2] << "\n" <<
+       "           " << computed[1][0] << ' ' << computed[1][1] << ' ' << computed[1][2] << "\n" <<
+       "           " << computed[2][0] << ' ' << computed[2][1] << ' ' << computed[2][2] << "\n" );
   CHECK((
           (computed[0][0] == Approx(expected[0][0]) && computed[0][1] == Approx(expected[0][1]) && computed[0][2] == Approx(expected[0][2]) &&
            computed[1][0] == Approx(expected[1][0]) && computed[1][1] == Approx(expected[1][1]) && computed[1][2] == Approx(expected[1][2]) &&

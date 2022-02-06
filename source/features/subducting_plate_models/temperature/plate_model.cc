@@ -153,7 +153,7 @@ namespace WorldBuilder
                                 * (plate_velocity /(365.25 * 24.0 * 60.0 * 60.0))
                                 * thickness_local) / (2.0 * thermal_conductivity);
 
-              WBAssert(!std::isnan(R), "Internal error: R is not a number: " << R << ".");
+              WBAssert(!std::isnan(R), "Internal error: R is not a number: " << R << '.');
 
               const int n_sum = 500;
               // distance_from_plane can be zero, so protect division.
@@ -195,8 +195,8 @@ namespace WorldBuilder
               double temperature = temp * (potential_mantle_temperature
                                            + 2.0 * (potential_mantle_temperature - 273.15) * sum);
 
-              WBAssert(!std::isnan(temperature), "Internal error: temperature is not a number: " << temperature << ".");
-              WBAssert(std::isfinite(temperature), "Internal error: temperature is not finite: " << temperature << ".");
+              WBAssert(!std::isnan(temperature), "Internal error: temperature is not a number: " << temperature << '.');
+              WBAssert(std::isfinite(temperature), "Internal error: temperature is not finite: " << temperature << '.');
 
 
               return Utilities::apply_operation(operation,temperature_,temperature);

@@ -144,7 +144,7 @@ inline void compare_vectors_array3_array3_approx(
           CHECK(computed[i][j].size() == expected[i][j].size());
           for (unsigned int k=0; k< computed[i][j].size(); ++k)
             {
-              INFO("vector index i:j:k = " << i << ":" << j << ":" << k << std::setprecision(10)
+              INFO("vector index i:j:k = " << i << ':' << j << ':' << k << std::setprecision(10)
                    << " = computed: " << computed[i][j][k] << ", expected: " <<  expected[i][j][k]
                    << ", diff = " << computed[i][j][k] - expected[i][j][k] << ", eps = " << 1e-10);
               CHECK(std::fabs(computed[i][j][k] - expected[i][j][k]) <= 1e-10);
@@ -162,12 +162,12 @@ inline void compare_rotation_matrices_approx(
 {
   // sign of eigenvector is not important
   INFO("rotation matrices are not the same: \n" <<
-       "expected = " << expected[0][0] << " " << expected[0][1] << " " << expected[0][2] << "\n" <<
-       "           " << expected[1][0] << " " << expected[1][1] << " " << expected[1][2] << "\n" <<
-       "           " << expected[2][0] << " " << expected[2][1] << " " << expected[2][2] << "\n" <<
-       "computed = " << computed[0][0] << " " << computed[0][1] << " " << computed[0][2] << "\n" <<
-       "           " << computed[1][0] << " " << computed[1][1] << " " << computed[1][2] << "\n" <<
-       "           " << computed[2][0] << " " << computed[2][1] << " " << computed[2][2] << "\n" );
+       "expected = " << expected[0][0] << ' ' << expected[0][1] << ' ' << expected[0][2] << "\n" <<
+       "           " << expected[1][0] << ' ' << expected[1][1] << ' ' << expected[1][2] << "\n" <<
+       "           " << expected[2][0] << ' ' << expected[2][1] << ' ' << expected[2][2] << "\n" <<
+       "computed = " << computed[0][0] << ' ' << computed[0][1] << ' ' << computed[0][2] << "\n" <<
+       "           " << computed[1][0] << ' ' << computed[1][1] << ' ' << computed[1][2] << "\n" <<
+       "           " << computed[2][0] << ' ' << computed[2][1] << ' ' << computed[2][2] << "\n" );
   CHECK((
           (computed[0][0] == Approx(expected[0][0]) && computed[0][1] == Approx(expected[0][1]) && computed[0][2] == Approx(expected[0][2]) &&
            computed[1][0] == Approx(expected[1][0]) && computed[1][1] == Approx(expected[1][1]) && computed[1][2] == Approx(expected[1][2]) &&
@@ -552,7 +552,7 @@ TEST_CASE("WorldBuilder Utilities: Point in polygon")
 
   for (unsigned int i = 0; i < check_points.size(); ++i)
     {
-      INFO("checking point " << i << " = (" << check_points[i][0] << ":" << check_points[i][1] << ")");
+      INFO("checking point " << i << " = (" << check_points[i][0] << ':' << check_points[i][1] << ')');
       CHECK(Utilities::polygon_contains_point(point_list_4_elements,check_points[i]) == awnsers[i][0]);
       CHECK(Utilities::polygon_contains_point(point_list_3_elements,check_points[i]) == awnsers[i][1]);
       CHECK(Utilities::signed_distance_to_polygon(point_list_4_elements,check_points[i]) == Approx(awnsers_signed_distance[i][0]));

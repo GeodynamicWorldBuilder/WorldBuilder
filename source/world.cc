@@ -225,7 +225,7 @@ namespace WorldBuilder
     // turn it into a 3d coordinate and call the 3d temperature function
     WBAssertThrow(dim == 2, "This function can only be called when the cross section "
                   "variable in the world builder file has been set. Dim is "
-                  << dim << ".");
+                  << dim << '.');
 
     const CoordinateSystem coordinate_system = this->parameters.coordinate_system->natural_coordinate_system();
 
@@ -298,7 +298,7 @@ namespace WorldBuilder
     // turn it into a 3d coordinate and call the 3d temperature function
     WBAssertThrow(dim == 2, "This function can only be called when the cross section "
                   "variable in the world builder file has been set. Dim is "
-                  << dim << ".");
+                  << dim << '.');
 
     const CoordinateSystem coordinate_system = this->parameters.coordinate_system->natural_coordinate_system();
 
@@ -367,7 +367,7 @@ namespace WorldBuilder
     // turn it into a 3d coordinate and call the 3d temperature function
     WBAssertThrow(dim == 2, "This function can only be called when the cross section "
                   "variable in the world builder file has been set. Dim is "
-                  << dim << ".");
+                  << dim << '.');
 
     const CoordinateSystem coordinate_system = this->parameters.coordinate_system->natural_coordinate_system();
 

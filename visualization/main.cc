@@ -429,20 +429,20 @@ int main(int argc, char **argv)
       WBAssertThrow(!std::isnan(z_max), "z_max is not a number:" << z_max << ". This value has probably not been provided in the grid file.");
 
 
-      WBAssertThrow(n_cell_x != 0, "n_cell_z may not be equal to zero: " << n_cell_x << ".");
+      WBAssertThrow(n_cell_x != 0, "n_cell_z may not be equal to zero: " << n_cell_x << '.');
       // int's cannot generally be nan's (see https://stackoverflow.com/questions/3949457/can-an-integer-be-nan-in-c),
       // but visual studio is giving problems over this, so it is taken out for now.
-      //WBAssertThrow(!std::isnan(n_cell_x), "n_cell_z is not a number:" << n_cell_x << ".");
+      //WBAssertThrow(!std::isnan(n_cell_x), "n_cell_z is not a number:" << n_cell_x << '.');
 
-      WBAssertThrow(dim == 3 || n_cell_z != 0, "In 3d n_cell_z may not be equal to zero: " << n_cell_y << ".");
+      WBAssertThrow(dim == 3 || n_cell_z != 0, "In 3d n_cell_z may not be equal to zero: " << n_cell_y << '.');
       // int's cannot generally be nan's (see https://stackoverflow.com/questions/3949457/can-an-integer-be-nan-in-c),
       // but visual studio is giving problems over this, so it is taken out for now.
-      //WBAssertThrow(!std::isnan(n_cell_z), "n_cell_z is not a number:" << n_cell_y << ".");
+      //WBAssertThrow(!std::isnan(n_cell_z), "n_cell_z is not a number:" << n_cell_y << '.');
 
-      WBAssertThrow(n_cell_z != 0, "n_cell_z may not be equal to zero: " << n_cell_z << ".");
+      WBAssertThrow(n_cell_z != 0, "n_cell_z may not be equal to zero: " << n_cell_z << '.');
       // int's cannot generally be nan's (see https://stackoverflow.com/questions/3949457/can-an-integer-be-nan-in-c),
       // but visual studio is giving problems over this, so it is taken out for now.
-      //WBAssertThrow(!std::isnan(n_cell_z), "n_cell_z is not a number:" << n_cell_z << ".");
+      //WBAssertThrow(!std::isnan(n_cell_z), "n_cell_z is not a number:" << n_cell_z << '.');
 
 
 
@@ -506,9 +506,9 @@ int main(int argc, char **argv)
           double dz = (z_max - z_min) / static_cast<double>(n_cell_z);
 
 
-          WBAssertThrow(!std::isnan(dx), "dz is not a number:" << dz << ".");
-          WBAssertThrow(dim == 2 || !std::isnan(dy), "dz is not a number:" << dz << ".");
-          WBAssertThrow(!std::isnan(dz), "dz is not a number:" << dz << ".");
+          WBAssertThrow(!std::isnan(dx), "dz is not a number:" << dz << '.');
+          WBAssertThrow(dim == 2 || !std::isnan(dy), "dz is not a number:" << dz << '.');
+          WBAssertThrow(!std::isnan(dz), "dz is not a number:" << dz << '.');
 
           // todo: determine wheter a input variable is desirable for this.
           double surface = z_max;
