@@ -25,10 +25,11 @@
 
 #include <random>
 
+/**
+* The global namespace for the Geodynamic World Builder
+*/
 namespace WorldBuilder
 {
-
-
   namespace Features
   {
     class Interface;
