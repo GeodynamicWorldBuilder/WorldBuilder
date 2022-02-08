@@ -161,6 +161,25 @@ foreach(test_source ${VISU_TEST_SOURCES})
 endforeach(test_source)
 
 
+# Documentation tests
+ # Create directory for the test results
+ file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/documentation)
+ #find all the integration visu files
+ file(GLOB_RECURSE DOCU_TEST_SOURCES "${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/*.wb")
+ # Run through each sourceUforeach(test_source ${DOCU_TEST_SOURCES})
+ foreach(test_source ${DOCU_TEST_SOURCES})
+         get_filename_component(test_name ${test_source} NAME_WE)
+   set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/${test_name}.wb\;${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/${test_name}.grid")
+         add_test(${test_name}
+                  ${CMAKE_COMMAND} 
+            -D TEST_NAME=${test_name}
+            -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/WorldBuilderVisualization${CMAKE_EXECUTABLE_SUFFIX} 
+            -D TEST_ARGS=${TEST_ARGUMENTS}
+            -P ${CMAKE_SOURCE_DIR}/tests/documentation/run_documentation_tests.cmake
+                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/documentation/)
+ endforeach(test_source)
+
+
 #test C compilation and wrapper if compiler found
   file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C)
   if(NOT MSVC AND NOT APPLE)
