@@ -67,6 +67,7 @@ html_theme_options = {
     "navigation_with_keys":"true",
     "repository_url": "https://github.com/GeodynamicWorldBuilder/WorldBuilder/",
     "repository_branch": "main",
+    "path_to_docs":"doc/sphinx/",
     "use_repository_button": True,
     "use_edit_page_button": True,
     "use_issues_button": True,
