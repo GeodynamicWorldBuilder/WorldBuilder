@@ -14,4 +14,5 @@ painting_in_the_world
 area_features
 line_features
 point_features
+constant_angle_in_spherical_domain_issue
 ```
