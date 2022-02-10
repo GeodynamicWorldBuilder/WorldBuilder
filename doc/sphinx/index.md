@@ -1,4 +1,4 @@
-# The Geodynamic World Builder Manual
+# The Geodynamic World Builder (GWB)
 
 Welcome to the manual of the Geodynamic World Builder (GWB). The GWB is a stand-alone library which allows for the **easy** creation of **complex** initial conditions for geodynamic models, such as [ASPECT](https://aspect.geodynamics.org), ELEPANT or SEPRAN.
 
@@ -8,13 +8,17 @@ This manual will guide you **step-by-step** to everything you need to know to **
 
 
 ```{toctree}
+:caption: Introduction
+:maxdepth: 4
 :hidden:
-how_to_use_this_manual
+introduction/what_is_the_gwb
+introduction/gwb_philosophy
+introduction/how_to_use_this_manual
 ```
 
 
 ```{toctree}
-:caption: User manual
+:caption: Input file manual
 :maxdepth: 4
 :hidden:
 
@@ -24,6 +28,17 @@ user_manual/installation/index
 user_manual/how_to_use_the_applications/index
 user_manual/basic_starter_tutorial/index
 user_manual/cookbooks/index
+```
+
+
+```{toctree}
+:caption: API manual
+:maxdepth: 4
+:hidden:
+
+api_manual/api_design
+api_manual/available_apis
+api_manual/API_FFI/index
 ```
 
 
