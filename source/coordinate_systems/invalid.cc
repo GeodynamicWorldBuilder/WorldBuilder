@@ -55,14 +55,14 @@ namespace WorldBuilder
     std::array<double,3>
     Invalid::cartesian_to_natural_coordinates(const std::array<double,3> &) const
     {
-      return {NaN::DSNAN,NaN::DSNAN,NaN::DSNAN};
+      return {{NaN::DSNAN,NaN::DSNAN,NaN::DSNAN}};
     }
 
 
     std::array<double,3>
     Invalid::natural_to_cartesian_coordinates(const std::array<double,3> &) const
     {
-      return {NaN::DSNAN,NaN::DSNAN,NaN::DSNAN};
+      return {{NaN::DSNAN,NaN::DSNAN,NaN::DSNAN}};
     }
 
 
