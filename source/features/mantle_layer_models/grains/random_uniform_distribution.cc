@@ -56,9 +56,13 @@ namespace WorldBuilder
         void
         RandomUniformDistribution::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
-          // Add compositions, rotation matrices and grain size models to the required parameters.
-          prm.declare_entry("", Types::Object({"compositions"}), "random uniform distribution grains model object");
+          // Document plugin and require entries if needed.
+          // Add compositions the required parameters.
+          prm.declare_entry("", Types::Object({"compositions"}),
+                            "Random uniform distribution grains model. The size of the grains can be independently set "
+                            "to a single value or to a random distribution.");
 
+          // Declare entries of this plugin
           prm.declare_entry("min depth", Types::Double(0),
                             "The depth in meters from which the composition of this feature is present.");
           prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),

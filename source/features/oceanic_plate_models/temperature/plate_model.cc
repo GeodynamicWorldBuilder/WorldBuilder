@@ -58,10 +58,12 @@ namespace WorldBuilder
         void
         PlateModel::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
-
+          // Document plugin and require entries if needed.
           // Add temperature to the required parameters.
-          prm.declare_entry("", Types::Object({"ridge coordinates", "spreading velocity", "max depth"}), "Temperature model object");
+          prm.declare_entry("", Types::Object({"max depth"}),
+                            "Plate model.");
 
+          // Declare entries of this plugin
           prm.declare_entry("min depth", Types::Double(0),
                             "The depth in meters from which the temperature of this feature is present.");
 

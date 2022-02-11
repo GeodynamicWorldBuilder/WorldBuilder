@@ -55,9 +55,12 @@ namespace WorldBuilder
         void
         Uniform::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
+          // Document plugin and require entries if needed.
           // Add compositions to the required parameters.
-          prm.declare_entry("", Types::Object({"compositions"}), "Uniform compositional model object");
+          prm.declare_entry("", Types::Object({"compositions"}),
+                            "Uniform compositional model. Sets constant compositional field.");
 
+          // Declare entries of this plugin
           prm.declare_entry("min distance slab top", Types::Double(0),
                             "todo The depth in meters from which the composition of this feature is present.");
           prm.declare_entry("max distance slab top", Types::Double(std::numeric_limits<double>::max()),

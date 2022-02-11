@@ -24,6 +24,7 @@
 #include "world_builder/features/mantle_layer_models/grains/interface.h"
 #include "world_builder/features/mantle_layer_models/temperature/interface.h"
 #include "world_builder/types/double.h"
+#include "world_builder/types/object.h"
 #include "world_builder/types/plugin_system.h"
 #include "world_builder/world.h"
 
@@ -47,9 +48,11 @@ namespace WorldBuilder
 
     void
     MantleLayer::declare_entries(Parameters &prm,
-                                 const std::string & /*unused*/,
-                                 const std::vector<std::string> & /*unused*/)
+                                 const std::string &parent_name,
+                                 const std::vector<std::string> &required_entries)
     {
+      prm.declare_entry("", Types::Object(required_entries), "Mantle layer object");
+
       prm.declare_entry("min depth", Types::Double(0),
                         "The depth to which this feature is present");
       prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),

@@ -70,10 +70,28 @@ namespace WorldBuilder
         void
         MassConserving::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
+          // Document plugin and require entries if needed.
+          // Add `plate velocity` to the required parameters.
+          prm.declare_entry("", Types::Object({"plate velocity"}),
+                            "Mass conserving temperature model. The temperature "
+                            "model uses the heat content (proportional to to thermal mass anomaly) to "
+                            "define a smooth temperature profile that conserves mass along the slab length. "
+                            "An empirical (linear) model is used to define how the minimum temperature "
+                            "increases with depth and how the location of the minimum temperature shifts "
+                            "into the slab interior. The slab is divided in to top and bottom parts, "
+                            "which meet at the location where the minimum temperature occurs in the slab. "
+                            "For the bottom slab the temperature is defined by a half-space cooling model. "
+                            "For the top of the slab the temperature is defined by one side of a 1D infinite "
+                            "space cooling model. The age of the overriding plate is used so the slab temperature "
+                            "at shallow depth smoothly transitions to the temperature of the overriding plate: "
+                            "this is not perfect, and is affected by the value of \"top truncation\" parameter "
+                            "subducting plate. Also note that the parameter \"thickness\" for the subducting plate "
+                            "segments needs to be defined but is not used. "
+                            "Note that the empirical model used to define how Tmin increases with depth "
+                            "and how the position of Tmin shift with depth is expected to change somewhat "
+                            "after better calibrating with further tests.");
 
-          // Add temperature to the required parameters.
-          prm.declare_entry("", Types::Object({"plate velocity"}), "Temperature model object");
-
+          // Declare entries of this plugin
           prm.declare_entry("min distance slab top", Types::Double(0),
                             "The distance in meters from the top surface of the slab over which the temperature is "
                             "determined by this feature. This parameter should be negative and should be 1.5-2 times "

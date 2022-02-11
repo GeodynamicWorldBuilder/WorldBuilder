@@ -55,9 +55,12 @@ namespace WorldBuilder
         void
         Linear::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
-          // Add max depth to the required parameters.
-          prm.declare_entry("", Types::Object({"max depth"}), "Temperature model object");
+          // Document plugin and require entries if needed.
+          // Add `max depth` to the required parameters.
+          prm.declare_entry("", Types::Object({"max depth"}),
+                            "Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.");
 
+          // Declare entries of this plugin
           prm.declare_entry("min depth", Types::Double(0),
                             "The depth in meters from which the temperature of this feature is present.");
 
