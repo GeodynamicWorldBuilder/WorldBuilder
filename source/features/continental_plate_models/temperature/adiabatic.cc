@@ -22,6 +22,7 @@
 
 #include "world_builder/nan.h"
 #include "world_builder/types/double.h"
+#include "world_builder/types/object.h"
 #include "world_builder/utilities.h"
 #include "world_builder/world.h"
 
@@ -55,11 +56,11 @@ namespace WorldBuilder
         void
         Adiabatic::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
+          // Document plugin and require entries if needed.
+          prm.declare_entry("", Types::Object(),
+                            "Adiabatic temperature model. Uses global values by default.");
 
-          // Add temperature to the required parameters.
-          //prm.declare_entry("", Types::Object({"temperature"}), "Temperature model object");
-
-
+          // Declare entries of this plugin
           prm.declare_entry("min depth", Types::Double(0),
                             "The depth in meters from which the temperature of this feature is present.");
 

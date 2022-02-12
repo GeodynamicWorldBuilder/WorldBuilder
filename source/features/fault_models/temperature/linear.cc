@@ -55,9 +55,12 @@ namespace WorldBuilder
         void
         Linear::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
-          // Add max depth to the required parameters.
-          prm.declare_entry("", Types::Object({"max distance fault center"}), "Temperature model object");
+          // Document plugin and require entries if needed.
+          // Add `max distance fault` center to the required parameters.
+          prm.declare_entry("", Types::Object({"max distance fault center"}),
+                            "Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.");
 
+          // Declare entries of this plugin
           prm.declare_entry("min distance fault center", Types::Double(0),
                             "The minimum distance to the center of the fault. This determines where the linear temperature starts.");
 

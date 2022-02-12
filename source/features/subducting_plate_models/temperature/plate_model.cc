@@ -60,11 +60,12 @@ namespace WorldBuilder
         void
         PlateModel::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
+          // Document plugin and require entries if needed.
+          // Add `plate velocity` to the required parameters.
+          prm.declare_entry("", Types::Object({"plate velocity"}),
+                            "Plate model (based on McKenzie, 1970).");
 
-          // Add temperature to the required parameters.
-          prm.declare_entry("", Types::Object({"plate velocity"}), "Temperature model object");
-
-
+          // Declare entries of this plugin
           prm.declare_entry("min distance slab top", Types::Double(0),
                             "todo The depth in meters from which the composition of this feature is present.");
 

@@ -34,6 +34,7 @@
 #include "rapidjson/error/en.h"
 #include "rapidjson/istreamwrapper.h"
 #include "rapidjson/latexwriter.h"
+#include "rapidjson/mystwriter.h"
 #include "rapidjson/prettywriter.h"
 
 #include <fstream>
@@ -68,9 +69,33 @@ namespace WorldBuilder
         declarations.Accept(tex_writer);
         file << buffer.GetString();
         file.close();
+        buffer.Clear();
+
+
+        std::ofstream myst_file;
+        // write out declarations (open)
+        myst_file.open (output_dir + "world_buider_declarations_open.md");
+
+        WBAssertThrow(myst_file.is_open(), "Error: Could not open file '" + output_dir + "world_buider_declarations_open.md' for string the tex declarations.");
+
+        MySTWriter<StringBuffer, UTF8<>, UTF8<>, CrtAllocator, kWriteNanAndInfFlag> myst_writer_open(buffer, true);
+        declarations.Accept(myst_writer_open);
+        myst_file << buffer.GetString();
+        myst_file.close();
+        buffer.Clear();
+
+        // write out declarations (closed)
+        myst_file.open (output_dir + "world_buider_declarations_closed.md");
+
+        WBAssertThrow(myst_file.is_open(), "Error: Could not open file '" + output_dir + "world_buider_declarations_closed.md' for string the tex declarations.");
+
+        MySTWriter<StringBuffer, UTF8<>, UTF8<>, CrtAllocator, kWriteNanAndInfFlag> myst_writer_closed(buffer, false);
+        declarations.Accept(myst_writer_closed);
+        myst_file << buffer.GetString();
+        myst_file.close();
+        buffer.Clear();
 
         // write out json schema
-        buffer.Clear();
         file.open (output_dir + "world_buider_declarations.schema.json");
         WBAssertThrow(file.is_open(), "Error: Could not open file '" + output_dir + "world_buider_declarations.schema.json' for string the json declarations.");
         PrettyWriter<StringBuffer, UTF8<>, UTF8<>, CrtAllocator, kWriteNanAndInfFlag> json_writer(buffer);

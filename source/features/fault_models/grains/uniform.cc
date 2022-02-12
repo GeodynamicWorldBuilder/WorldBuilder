@@ -55,10 +55,12 @@ namespace WorldBuilder
         void
         Uniform::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
-          // Add compositions, rotation matrices and grain size models to the required parameters.
-          prm.declare_entry("", Types::Object({"compositions"}), "Uniform grains model object");
+          // Document plugin and require entries if needed.
+          // Add compositions the required parameters.
+          prm.declare_entry("", Types::Object({"compositions"}),
+                            "Uniform grains model. All grains start exactly the same.");
 
-
+          // Declare entries of this plugin
           prm.declare_entry("min distance fault center", Types::Double(0),
                             "The distance from the fault center in meters from which the composition of this feature is present.");
           prm.declare_entry("max distance fault center", Types::Double(std::numeric_limits<double>::max()),

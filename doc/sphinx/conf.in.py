@@ -39,7 +39,7 @@ extensions = [
 'sphinx_copybutton',
 ]
 
-myst_enable_extensions = ["colon_fence"]
+myst_enable_extensions = ["colon_fence","dollarmath"]
 
 # Breathe Configuration
 breathe_default_project = "GWB"

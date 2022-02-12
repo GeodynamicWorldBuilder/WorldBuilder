@@ -23,6 +23,7 @@
 #include "glm/glm.h"
 #include "world_builder/types/array.h"
 #include "world_builder/types/double.h"
+#include "world_builder/types/object.h"
 #include "world_builder/types/point.h"
 #include "world_builder/types/unsigned_int.h"
 #include "world_builder/world.h"
@@ -52,12 +53,19 @@ namespace WorldBuilder
     void
     SubductingPlate::declare_entries(Parameters &prm,
                                      const std::string &parent_name,
-                                     const std::vector<std::string> & /*required_entries*/)
+                                     const std::vector<std::string> &required_entries)
     {
       // This statment is needed because of the recursion associated with
       // the sections entry.
       if (parent_name == "items")
-        prm.enter_subsection("properties");
+        {
+          prm.enter_subsection("properties");
+        }
+      else
+        {
+          prm.declare_entry("", Types::Object(required_entries), "Subducting slab object");
+        }
+
 
       prm.declare_entry("min depth", Types::Double(0),
                         "The depth to which this feature is present");
