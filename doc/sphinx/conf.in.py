@@ -37,7 +37,12 @@ extensions = [
 'sphinx.ext.imgconverter',
 'sphinx_design',
 'sphinx_copybutton',
+'sphinxcontrib.bibtex',
 ]
+
+bibtex_default_style = 'plain'
+
+bibtex_bibfiles = ['bibliography.bib']
 
 myst_enable_extensions = ["colon_fence","dollarmath"]
 
