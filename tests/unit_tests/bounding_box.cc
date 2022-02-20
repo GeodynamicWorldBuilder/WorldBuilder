@@ -17,14 +17,14 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#define CATCH_CONFIG_MAIN
+#define DOCTEST_CONFIG_SUPER_FAST_ASSERTS
 
-
-#include "catch2.h"
+#include "doctest.h"
 
 #include "world_builder/bounding_box.h"
 
 using namespace WorldBuilder;
+using doctest::Approx;
 
 
 TEST_CASE("bounding box 2D")

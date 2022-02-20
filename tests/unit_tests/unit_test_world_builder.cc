@@ -17,9 +17,9 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#define CATCH_CONFIG_MAIN
+#define DOCTEST_CONFIG_SUPER_FAST_ASSERTS
 
-#include "catch2.h"
+#include "doctest.h"
 
 #include "world_builder/config.h"
 #include "world_builder/coordinate_system.h"
@@ -85,8 +85,8 @@ namespace WorldBuilder
 }  // namespace WorldBuilder
 
 using namespace WorldBuilder;
-
-using Catch::Matchers::Contains;
+using doctest::Approx;
+using doctest::Contains;
 
 /**
  * normalize 3d array
@@ -626,7 +626,7 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   CHECK(std::isnan(ivp1_array[1]));
   CHECK(std::isnan(ivp1_array[2]));
   CHECK_THROWS(ivp1.get_surface_coordinates());
-  CHECK_THROWS((double)ivp1.get_depth_coordinate());
+  CHECK_THROWS(ivp1.get_depth_coordinate());
   CHECK_THROWS(ivp1.get_depth_coordinate());
   CHECK_THROWS(ivp1.get_ref_depth_coordinate());
   CHECK(std::isnan(invalid->distance_between_points_at_same_depth(Point<3>(1,2,3,CoordinateSystem::invalid),
@@ -7465,8 +7465,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
 TEST_CASE("WorldBuilder parameters: invalid 1")
 {
 
-  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/invalid_1.wb";
-  CHECK_THROWS_WITH(WorldBuilder::World(file_name), Contains("Invalid keyword: additionalPropertiesInvalid schema: #/test"));
+  CHECK_THROWS_WITH(WorldBuilder::World(WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/invalid_1.wb"),
+                    Contains("Invalid keyword: additionalPropertiesInvalid schema: #/test"));
 
 }
 
