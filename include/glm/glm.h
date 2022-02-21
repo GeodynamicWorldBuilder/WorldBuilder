@@ -2,6 +2,7 @@
 #define _glm_h
 #include <array>
 #include <math.h>
+#include <limits>
 
 namespace WorldBuilder
 {
