@@ -767,7 +767,7 @@ TEST_CASE("WorldBuilder C wrapper")
   const char *world_builder_file2 = file.c_str();
   has_output_dir = false;
 
-  create_world(ptr_ptr_world, world_builder_file2, &has_output_dir, "", 1.0);
+  create_world(ptr_ptr_world, world_builder_file2, &has_output_dir, "", 1);
 
 
   CHECK_THROWS_WITH(temperature_2d(*ptr_ptr_world, 1, 2, 0, 10, &temperature),
@@ -3865,12 +3865,12 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK_THROWS_WITH(prm.get<unsigned int>("non existent unsigned int"),
                     Contains("internal error: could not retrieve the default value at"));
 
-  CHECK(prm.get<unsigned int>("unsigned int") == Approx(4.0));
+  CHECK(prm.get<unsigned int>("unsigned int") == 4);
 
   CHECK_THROWS_WITH(prm.get<size_t>("non existent unsigned int"),
                     Contains("internal error: could not retrieve the default value at"));
 
-  CHECK(prm.get<size_t>("unsigned int") == Approx(4.0));
+  CHECK(prm.get<size_t>("unsigned int") == 4);
 
 
   CHECK_THROWS_WITH(prm.get<double>("non existent double"),
@@ -3938,14 +3938,14 @@ TEST_CASE("WorldBuilder Parameters")
 
   std::vector<size_t> v_size_t = prm.get_vector<size_t>("now existent unsigned int vector");
   CHECK(v_size_t.size() == 2);
-  CHECK(v_size_t[0] == Approx(1.0));
-  CHECK(v_size_t[1] == Approx(1.0));
+  CHECK(v_size_t[0] == 1);
+  CHECK(v_size_t[1] == 1);
 
   v_size_t = prm.get_vector<size_t>("unsigned int array");
   CHECK(v_size_t.size() == 3);
-  CHECK(v_size_t[0] == Approx(25.0));
-  CHECK(v_size_t[1] == Approx(26.0));
-  CHECK(v_size_t[2] == Approx(27.0));
+  CHECK(v_size_t[0] == 25);
+  CHECK(v_size_t[1] == 26);
+  CHECK(v_size_t[2] == 27);
 
 
   CHECK_THROWS_WITH(prm.get_vector<size_t>("non existent unsigned int vector"),
