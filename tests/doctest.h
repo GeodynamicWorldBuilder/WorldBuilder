@@ -497,6 +497,8 @@ DOCTEST_MSVC_SUPPRESS_WARNING_POP
 
 namespace doctest {
 
+class Contains;
+
 DOCTEST_INTERFACE extern bool is_running_in_test;
 
 // A 24 byte string class (can be as small as 17 for x64 and 13 for x86) that can hold strings with length
@@ -579,34 +581,27 @@ public:
 
     int compare(const char* other, bool no_case = false) const;
     int compare(const String& other, bool no_case = false) const;
+    const char *compare(const Contains& other) const;
+};
+
+class DOCTEST_INTERFACE Contains {
+public:
+    Contains(const char* string);
+
+    String string;
 };
 
 DOCTEST_INTERFACE String operator+(const String& lhs, const String& rhs);
 
 DOCTEST_INTERFACE bool operator==(const String& lhs, const String& rhs);
 DOCTEST_INTERFACE bool operator!=(const String& lhs, const String& rhs);
+DOCTEST_INTERFACE bool operator!=(const String& lhs, const Contains& rhs);
 DOCTEST_INTERFACE bool operator<(const String& lhs, const String& rhs);
 DOCTEST_INTERFACE bool operator>(const String& lhs, const String& rhs);
 DOCTEST_INTERFACE bool operator<=(const String& lhs, const String& rhs);
 DOCTEST_INTERFACE bool operator>=(const String& lhs, const String& rhs);
 
 DOCTEST_INTERFACE std::ostream& operator<<(std::ostream& s, const String& in);
-
-class DOCTEST_INTERFACE Contains {
-public:
-    explicit Contains(const String& string);
-
-    bool checkWith(const String& other) const;
-
-    String string;
-};
-
-DOCTEST_INTERFACE String toString(const Contains& in);
-
-DOCTEST_INTERFACE bool operator==(const String& lhs, const Contains& rhs);
-DOCTEST_INTERFACE bool operator==(const Contains& lhs, const String& rhs);
-DOCTEST_INTERFACE bool operator!=(const String& lhs, const Contains& rhs);
-DOCTEST_INTERFACE bool operator!=(const Contains& lhs, const String& rhs);
 
 namespace Color {
     enum Enum
@@ -760,27 +755,10 @@ struct DOCTEST_INTERFACE AssertData
     String m_decomp;
 
     // for specific exception-related asserts
-    bool           m_threw_as;
-    const char*    m_exception_type;
-    class DOCTEST_INTERFACE StringContains {
-        private:
-            Contains content;
-            bool isContains;
-
-        public:
-            StringContains() : content(String()), isContains(false) { }
-            StringContains(const String& str) : content(str), isContains(false) { }
-            StringContains(const Contains& cntn) : content(cntn), isContains(true) { }
-
-            bool check(const String& str) { return isContains ? (content == str) : (content.string == str); }
-
-            operator const String&() const { return content.string; }
-
-            const char* c_str() const { return content.string.c_str(); }
-    } m_exception_string;
-
-    AssertData(assertType::Enum at, const char* file, int line, const char* expr,
-        const char* exception_type, const StringContains& exception_string);
+    bool        m_threw_as;
+    const char* m_exception_type;
+    String      m_exception_string;
+    bool        m_contains;
 };
 
 struct DOCTEST_INTERFACE MessageData
@@ -1553,10 +1531,10 @@ DOCTEST_CLANG_SUPPRESS_WARNING_POP
     struct DOCTEST_INTERFACE ResultBuilder : public AssertData
     {
         ResultBuilder(assertType::Enum at, const char* file, int line, const char* expr,
-                      const char* exception_type = "", const String& exception_string = "");
+                      const char* exception_type = "", const char* exception_string = "");
 
         ResultBuilder(assertType::Enum at, const char* file, int line, const char* expr,
-                      const char* exception_type, const Contains& exception_string);
+                      const char* exception_type, Contains exception_string);
 
         void setResult(const Result& res);
 
@@ -3677,32 +3655,28 @@ int String::compare(const String& other, bool no_case) const {
     return compare(other.c_str(), no_case);
 }
 
+const char *String::compare(const Contains& other) const {
+    return strstr(c_str(), other.string.c_str());
+}
+
+Contains::Contains(const char* in){
+    string = String(in);
+    }
+
 // NOLINTNEXTLINE(clang-analyzer-cplusplus.NewDeleteLeaks)
 String operator+(const String& lhs, const String& rhs) { return  String(lhs) += rhs; }
 
+// clang-format off
 bool operator==(const String& lhs, const String& rhs) { return lhs.compare(rhs) == 0; }
 bool operator!=(const String& lhs, const String& rhs) { return lhs.compare(rhs) != 0; }
+bool operator!=(const String& lhs, const Contains& rhs) { return lhs.compare(rhs) == nullptr; }
 bool operator< (const String& lhs, const String& rhs) { return lhs.compare(rhs) < 0; }
 bool operator> (const String& lhs, const String& rhs) { return lhs.compare(rhs) > 0; }
 bool operator<=(const String& lhs, const String& rhs) { return (lhs != rhs) ? lhs.compare(rhs) < 0 : true; }
 bool operator>=(const String& lhs, const String& rhs) { return (lhs != rhs) ? lhs.compare(rhs) > 0 : true; }
+// clang-format on
 
 std::ostream& operator<<(std::ostream& s, const String& in) { return s << in.c_str(); }
-
-Contains::Contains(const String& str) : string(str) { }
-
-bool Contains::checkWith(const String& full_string) const {
-    return strstr(full_string.c_str(), string.c_str()) != nullptr;
-}
-
-String toString(const Contains& in) {
-    return "Contains( " + in.string + " )";
-}
-
-bool operator==(const String& lhs, const Contains& rhs) { return rhs.checkWith(lhs); }
-bool operator==(const Contains& lhs, const String& rhs) { return lhs.checkWith(rhs); }
-bool operator!=(const String& lhs, const Contains& rhs) { return !rhs.checkWith(lhs); }
-bool operator!=(const Contains& lhs, const String& rhs) { return !lhs.checkWith(rhs); }
 
 namespace {
     void color_to_stream(std::ostream&, Color::Enum) DOCTEST_BRANCH_ON_DISABLED({}, ;)
@@ -4756,26 +4730,44 @@ namespace {
     }
 #endif // DOCTEST_CONFIG_POSIX_SIGNALS || DOCTEST_CONFIG_WINDOWS_SEH
 } // namespace
-
-AssertData::AssertData(assertType::Enum at, const char* file, int line, const char* expr,
-    const char* exception_type, const StringContains& exception_string)
-    : m_test_case(g_cs->currentTest), m_at(at), m_file(file), m_line(line), m_expr(expr),
-    m_failed(true), m_threw(false), m_threw_as(false), m_exception_type(exception_type),
-    m_exception_string(exception_string) {
-#if DOCTEST_MSVC
-    if (m_expr[0] == ' ') // this happens when variadic macros are disabled under MSVC
-        ++m_expr;
-#endif // MSVC
-}
-
 namespace detail {
     ResultBuilder::ResultBuilder(assertType::Enum at, const char* file, int line, const char* expr,
-                                 const char* exception_type, const String& exception_string)
-        : AssertData(at, file, line, expr, exception_type, exception_string) { }
+                                 const char* exception_type, const char* exception_string) {
+        m_test_case        = g_cs->currentTest;
+        m_at               = at;
+        m_file             = file;
+        m_line             = line;
+        m_expr             = expr;
+        m_failed           = true;
+        m_threw            = false;
+        m_threw_as         = false;
+        m_exception_type   = exception_type;
+        m_exception_string = String(exception_string);
+        m_contains         = false;
+#if DOCTEST_MSVC
+        if(m_expr[0] == ' ') // this happens when variadic macros are disabled under MSVC
+            ++m_expr;
+#endif // MSVC
+    }
 
     ResultBuilder::ResultBuilder(assertType::Enum at, const char* file, int line, const char* expr,
-        const char* exception_type, const Contains& exception_string)
-        : AssertData(at, file, line, expr, exception_type, exception_string) { }
+                                 const char* exception_type, Contains exception_string) {
+        m_test_case        = g_cs->currentTest;
+        m_at               = at;
+        m_file             = file;
+        m_line             = line;
+        m_expr             = expr;
+        m_failed           = true;
+        m_threw            = false;
+        m_threw_as         = false;
+        m_exception_type   = exception_type;
+        m_exception_string = exception_string.string;
+        m_contains         = true;
+#if DOCTEST_MSVC
+        if(m_expr[0] == ' ') // this happens when variadic macros are disabled under MSVC
+            ++m_expr;
+#endif // MSVC
+    }
 
     void ResultBuilder::setResult(const Result& res) {
         m_decomp = res.m_decomp;
@@ -4791,11 +4783,11 @@ namespace detail {
         if(m_at & assertType::is_throws) { //!OCLINT bitwise operator in conditional
             m_failed = !m_threw;
         } else if((m_at & assertType::is_throws_as) && (m_at & assertType::is_throws_with)) { //!OCLINT
-            m_failed = !m_threw_as || !m_exception_string.check(m_exception);
+            m_failed = !m_threw_as || ( m_contains ? m_exception != Contains(m_exception_string.c_str()) : m_exception != String(m_exception_string));
         } else if(m_at & assertType::is_throws_as) { //!OCLINT bitwise operator in conditional
             m_failed = !m_threw_as;
         } else if(m_at & assertType::is_throws_with) { //!OCLINT bitwise operator in conditional
-            m_failed = !m_exception_string.check(m_exception);
+            m_failed = ( m_contains ? m_exception != Contains(m_exception_string.c_str()) : m_exception != String(m_exception_string));
         } else if(m_at & assertType::is_nothrow) { //!OCLINT bitwise operator in conditional
             m_failed = m_threw;
         }
@@ -5514,8 +5506,7 @@ namespace {
         } else if((rb.m_at & assertType::is_throws_as) &&
                     (rb.m_at & assertType::is_throws_with)) { //!OCLINT
             s << Color::Cyan << assertString(rb.m_at) << "( " << rb.m_expr << ", \""
-                << rb.m_exception_string.c_str()
-                << "\", " << rb.m_exception_type << " ) " << Color::None;
+                << rb.m_exception_string << "\", " << rb.m_exception_type << " ) " << Color::None;
             if(rb.m_threw) {
                 if(!rb.m_failed) {
                     s << "threw as expected!\n";
@@ -5536,8 +5527,7 @@ namespace {
         } else if(rb.m_at &
                     assertType::is_throws_with) { //!OCLINT bitwise operator in conditional
             s << Color::Cyan << assertString(rb.m_at) << "( " << rb.m_expr << ", \""
-                << rb.m_exception_string.c_str()
-                << "\" ) " << Color::None
+                << rb.m_exception_string << "\" ) " << Color::None
                 << (rb.m_threw ? (!rb.m_failed ? "threw as expected!" :
                                                 "threw a DIFFERENT exception: ") :
                                 "did NOT throw at all!")
@@ -6356,8 +6346,8 @@ namespace {
                 char character = *current++;
                 if(seenBackslash) {
                     seenBackslash = false;
-                    if(character == ',' || character == '\\') {
-                        s.put(character);
+                    if(character == ',') {
+                        s.put(',');
                         continue;
                     }
                     s.put('\\');
