@@ -1,0 +1,90 @@
+
+
+/*
+Copyright (C) 2018 - 2021 by the authors of the World Builder code.
+
+This file is part of the World Builder.
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Lesser General Public License as published
+ by the Free Software Foundation, either version 2 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Lesser General Public License for more details.
+
+ You should have received a copy of the GNU Lesser General Public License
+ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+#ifndef WORLD_BUILDER_OBJECTSS_SURFACE_H
+#define WORLD_BUILDER_OBJECTSS_SURFACE_H
+
+#include "world_builder/utilities.h"
+
+#include "world_builder/kd_tree.h"
+
+namespace WorldBuilder
+{
+  namespace Objects
+  {
+    class Surface
+    {
+      public:
+        /**
+         * Constructor to create an empty surface.
+         */
+        Surface();
+
+        /**
+         * Constructor to create a surface from value at points object output.
+         */
+        Surface(std::pair<std::vector<double>,std::vector<double>> values_at_points);
+
+        /**
+         * Returns the value of the surface at the check point.
+         */
+        double local_value(const Point<2> check_point) const;
+
+        /**
+         * Wether the surface is a constant value or not. This is used for optimalization.
+         */
+        bool constant_value;
+
+        /**
+         * The minimum value of all provided points.
+         */
+        double minimum;
+
+        /**
+         * The maximum value of all provided points.
+         */
+        double maximum;
+
+        /**
+         * The KD tree which stores the centroids of all triangles and an index to the triangle points
+         * and values stored in the triangles member variable.
+         */
+        KDTree::KDTree tree;
+
+        /**
+         * Stores the triangles as a list of three points.
+         */
+        std::vector<std::array<std::array<double,3>,3> > triangles;
+
+      private:
+        /**
+         * Test whether a point is in a triangle. If that is the case is stores the interpolated
+         * value of the tirangle into `interpolated_value` and returns true.
+         */
+        bool in_triangle(const std::array<std::array<double,3>,3> &points,
+                         const Point<2> check_point,
+                         double &interpolate_value) const;
+    };
+  }
+
+}
+
+#endif
