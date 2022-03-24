@@ -22,6 +22,7 @@
 
 
 #include "world_builder/parameters.h"
+#include "world_builder/utilities.h"
 
 
 namespace WorldBuilder
@@ -66,7 +67,7 @@ namespace WorldBuilder
              * declare and read in the world builder file into the parameters class
              */
             virtual
-            void parse_entries(Parameters &prm) = 0;
+            void parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates) = 0;
 
 
             /**
@@ -74,6 +75,7 @@ namespace WorldBuilder
              */
             virtual
             double get_composition(const Point<3> &position,
+                                   const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
                                    const double depth,
                                    const unsigned int composition_number,
                                    double composition,

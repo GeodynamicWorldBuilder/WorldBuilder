@@ -22,6 +22,7 @@
 
 
 #include "world_builder/features/interface.h"
+#include "world_builder/objects/surface.h"
 
 
 namespace WorldBuilder
@@ -145,7 +146,9 @@ namespace WorldBuilder
 
 
         double min_depth;
+        Objects::Surface min_depth_surface;
         double max_depth;
+        Objects::Surface max_depth_surface;
 
     };
 
