@@ -87,6 +87,10 @@ namespace WorldBuilder
     {
       public:
         /**
+         * Constructor.
+         */
+        KDTree() {};
+        /**
          * Constructor. Requires a list of Nodes.
          */
         KDTree(const std::vector<Node> point_list);
@@ -102,7 +106,7 @@ namespace WorldBuilder
         /**
          * Retun a reference to the vector containing the nodes.
          */
-        std::vector<Node> &get_nodes();
+        const std::vector<Node> &get_nodes() const;
 
         /**
          * Returns the index of the closest point and the distance
