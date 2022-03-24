@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        benchmark_number: [1,2,3,4,5,6]
+        benchmark_number: [1,2,3,4,5,6,7,8]
         include:
           - benchmark_number: 1
             benchmark_name: 'slab_interpolation_simple_none'
@@ -27,6 +27,12 @@ jobs:
           - benchmark_number: 6
             benchmark_name: 'spherical_fault_interpolation_simple_none'
             benchmark_gridfile: 'spherical_subducting_plate_gridfile'
+          - benchmark_number: 7
+            benchmark_name: 'continental_min_max_surface'
+            benchmark_gridfile: 'cartesian_surface'
+          - benchmark_number: 8
+            benchmark_name: 'continental_min_max_surface_spherical'
+            benchmark_gridfile: 'spherical_surface_p180'
 
     runs-on: ubuntu-latest
 

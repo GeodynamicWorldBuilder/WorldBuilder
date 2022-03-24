@@ -92,6 +92,28 @@ jobs:
             });
             var fs = require('fs');
             fs.writeFileSync('${{github.workspace}}/benchmark_6_results.zip', Buffer.from(download.data));
+            var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == "benchmark_7_results"
+            })[0];
+            var download = await github.actions.downloadArtifact({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               artifact_id: matchArtifact.id,
+               archive_format: 'zip',
+            });
+            var fs = require('fs');
+            fs.writeFileSync('${{github.workspace}}/benchmark_7_results.zip', Buffer.from(download.data));
+            var matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+              return artifact.name == "benchmark_8_results"
+            })[0];
+            var download = await github.actions.downloadArtifact({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               artifact_id: matchArtifact.id,
+               archive_format: 'zip',
+            });
+            var fs = require('fs');
+            fs.writeFileSync('${{github.workspace}}/benchmark_8_results.zip', Buffer.from(download.data));
       - run: |
               unzip benchmark_1_results.zip;
               unzip benchmark_2_results.zip;
@@ -99,6 +121,8 @@ jobs:
               unzip benchmark_4_results.zip;
               unzip benchmark_5_results.zip;
               unzip benchmark_6_results.zip;
+              unzip benchmark_7_results.zip;
+              unzip benchmark_8_results.zip;
 
       - name: retrieve pull request number
         id: retrieve_pull_request_number
@@ -196,6 +220,36 @@ jobs:
               echo "::set-output name=wall_time_${{env.benchmark_number}}_CI_low::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | sed 's/\[/ /g' | sed 's/\]/ /g' | awk '{print $8}')";
               echo "::set-output name=wall_time_${{env.benchmark_number}}_CI_high::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | sed 's/\[/ /g' | sed 's/\]/ /g' | awk '{print $10}')";
 
+      - name: retrieve benchmark 7
+        env:
+          benchmark_number: 7
+        id: retrieve_benchmark_7
+        run: |
+              cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log;
+              echo "::set-output name=wall_time_${{env.benchmark_number}}_main_mean::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $2}')";
+              echo "::set-output name=wall_time_${{env.benchmark_number}}_main_std_dev::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $4}')";
+              echo "::set-output name=wall_time_${{env.benchmark_number}}_main_samples::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep samples | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $2}')";
+              echo "::set-output name=wall_time_${{env.benchmark_number}}_feature_mean::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $5}')";
+              echo "::set-output name=wall_time_${{env.benchmark_number}}_feature_std_dev::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $7}')";
+              echo "::set-output name=wall_time_${{env.benchmark_number}}_feature_samples::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep samples | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $3}')";
+              echo "::set-output name=wall_time_${{env.benchmark_number}}_CI_low::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | sed 's/\[/ /g' | sed 's/\]/ /g' | awk '{print $8}')";
+              echo "::set-output name=wall_time_${{env.benchmark_number}}_CI_high::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | sed 's/\[/ /g' | sed 's/\]/ /g' | awk '{print $10}')";
+
+      - name: retrieve benchmark 8
+        env:
+          benchmark_number: 8
+        id: retrieve_benchmark_8
+        run: |
+              cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log;
+              echo "::set-output name=wall_time_${{env.benchmark_number}}_main_mean::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $2}')";
+              echo "::set-output name=wall_time_${{env.benchmark_number}}_main_std_dev::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $4}')";
+              echo "::set-output name=wall_time_${{env.benchmark_number}}_main_samples::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep samples | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $2}')";
+              echo "::set-output name=wall_time_${{env.benchmark_number}}_feature_mean::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $5}')";
+              echo "::set-output name=wall_time_${{env.benchmark_number}}_feature_std_dev::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $7}')";
+              echo "::set-output name=wall_time_${{env.benchmark_number}}_feature_samples::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep samples | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | awk '{print $3}')";
+              echo "::set-output name=wall_time_${{env.benchmark_number}}_CI_low::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | sed 's/\[/ /g' | sed 's/\]/ /g' | awk '{print $8}')";
+              echo "::set-output name=wall_time_${{env.benchmark_number}}_CI_high::$(cat ${{github.workspace}}/analyze_${{env.benchmark_number}}.log | grep wall_time | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | sed 's/\[/ /g' | sed 's/\]/ /g' | awk '{print $10}')";
+
       - name: Find Comment
         continue-on-error: true
         uses: peter-evans/find-comment@v1
@@ -220,4 +274,6 @@ jobs:
                  | Slab interpolation simple curved CMS | ${{ steps.retrieve_benchmark_4.outputs.wall_time_4_main_mean }} ± ${{ steps.retrieve_benchmark_4.outputs.wall_time_4_main_std_dev }} (s=${{ steps.retrieve_benchmark_4.outputs.wall_time_4_main_samples }})| ${{ steps.retrieve_benchmark_4.outputs.wall_time_4_feature_mean }} ± ${{ steps.retrieve_benchmark_4.outputs.wall_time_4_feature_std_dev }} (s=${{ steps.retrieve_benchmark_4.outputs.wall_time_4_feature_samples }})| ${{ steps.retrieve_benchmark_4.outputs.wall_time_4_CI_low }} .. ${{ steps.retrieve_benchmark_4.outputs.wall_time_4_CI_high }} |
                  | Spherical slab interpolation simple CMS | ${{ steps.retrieve_benchmark_5.outputs.wall_time_5_main_mean }} ± ${{ steps.retrieve_benchmark_5.outputs.wall_time_5_main_std_dev }} (s=${{ steps.retrieve_benchmark_5.outputs.wall_time_5_main_samples }})| ${{ steps.retrieve_benchmark_5.outputs.wall_time_5_feature_mean }} ± ${{ steps.retrieve_benchmark_5.outputs.wall_time_5_feature_std_dev }} (s=${{ steps.retrieve_benchmark_5.outputs.wall_time_5_feature_samples }})| ${{ steps.retrieve_benchmark_5.outputs.wall_time_5_CI_low }} .. ${{ steps.retrieve_benchmark_5.outputs.wall_time_5_CI_high }} |
                  | Spherical fault interpolation simple none | ${{ steps.retrieve_benchmark_6.outputs.wall_time_6_main_mean }} ± ${{ steps.retrieve_benchmark_6.outputs.wall_time_6_main_std_dev }} (s=${{ steps.retrieve_benchmark_6.outputs.wall_time_6_main_samples }})| ${{ steps.retrieve_benchmark_6.outputs.wall_time_6_feature_mean }} ± ${{ steps.retrieve_benchmark_6.outputs.wall_time_6_feature_std_dev }} (s=${{ steps.retrieve_benchmark_6.outputs.wall_time_6_feature_samples }})| ${{ steps.retrieve_benchmark_6.outputs.wall_time_6_CI_low }} .. ${{ steps.retrieve_benchmark_6.outputs.wall_time_6_CI_high }} |
+                 | Cartesian min max surface | ${{ steps.retrieve_benchmark_7.outputs.wall_time_7_main_mean }} ± ${{ steps.retrieve_benchmark_7.outputs.wall_time_7_main_std_dev }} (s=${{ steps.retrieve_benchmark_7.outputs.wall_time_7_main_samples }})| ${{ steps.retrieve_benchmark_7.outputs.wall_time_7_feature_mean }} ± ${{ steps.retrieve_benchmark_7.outputs.wall_time_7_feature_std_dev }} (s=${{ steps.retrieve_benchmark_7.outputs.wall_time_7_feature_samples }})| ${{ steps.retrieve_benchmark_7.outputs.wall_time_7_CI_low }} .. ${{ steps.retrieve_benchmark_7.outputs.wall_time_7_CI_high }} |
+                 | Spherical min max surface | ${{ steps.retrieve_benchmark_8.outputs.wall_time_8_main_mean }} ± ${{ steps.retrieve_benchmark_8.outputs.wall_time_8_main_std_dev }} (s=${{ steps.retrieve_benchmark_8.outputs.wall_time_8_main_samples }})| ${{ steps.retrieve_benchmark_8.outputs.wall_time_8_feature_mean }} ± ${{ steps.retrieve_benchmark_8.outputs.wall_time_8_feature_std_dev }} (s=${{ steps.retrieve_benchmark_8.outputs.wall_time_8_feature_samples }})| ${{ steps.retrieve_benchmark_8.outputs.wall_time_8_CI_low }} .. ${{ steps.retrieve_benchmark_8.outputs.wall_time_8_CI_high }} |
           edit-mode: replace
