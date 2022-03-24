@@ -23,6 +23,7 @@
 #include "world_builder/assert.h"
 #include "world_builder/utilities.h"
 #include "world_builder/world.h"
+#include "world_builder/point.h"
 
 #ifdef WB_WITH_MPI
 #include <mpi.h>
@@ -52,6 +53,7 @@ int main(int argc, char **argv)
   unsigned int compositions = 0;
   unsigned int grain_compositions = 0;
   size_t number_of_grains = 0;
+  bool convert_spherical = false;
 
   if (find_command_line_option(argv, argv+argc, "-h") || find_command_line_option(argv, argv+argc, "--help"))
     {
@@ -157,11 +159,14 @@ int main(int argc, char **argv)
           if (!line_i.empty() && line_i[0] == "#" && line_i[1] == "number" && line_i[2] == "of" && line_i[3] == "grains" && line_i[4] == "=")
             number_of_grains = string_to_unsigned_int(line_i[5]);
 
+          if (!line_i.empty() && line_i[0] == "#" && line_i[1] == "convert" && line_i[2] == "spherical" && line_i[3] == "=" && line_i[4] == "true")
+            convert_spherical = true;
         }
 
       switch (dim)
         {
           case 2:
+            WBAssertThrow(!convert_spherical, "Converting to spherical values is only available in 3D.");
             // set the header
             std::cout << "# x z d g T ";
 
@@ -184,7 +189,6 @@ int main(int argc, char **argv)
 
                   WBAssertThrow(data[i].size() == dim + 2, "The file needs to contain dim + 2 entries, but contains " << data[i].size() << " entries "
                                 " on line " << i+1 << " of the data file.  Dim is " << dim << '.');
-
                   std::array<double,2> coords = {{
                       string_to_double(data[i][0]),
                       string_to_double(data[i][1])
@@ -236,12 +240,16 @@ int main(int argc, char **argv)
                   WBAssertThrow(data[i].size() == dim + 2, "The file needs to contain dim + 2 entries, but contains " << data[i].size() << " entries "
                                 " on line " << i+1 << " of the data file. Dim is " << dim << '.');
                   std::array<double,3> coords = {{
-                      string_to_double(data[i][0]),
-                      string_to_double(data[i][1]),
-                      string_to_double(data[i][2])
+                      string_to_double(data[i][0]), // x or R
+                      string_to_double(data[i][1]) *(convert_spherical ? (const_pi/180.): 1.), // y or long
+                      string_to_double(data[i][2]) *(convert_spherical ? (const_pi/180.): 1.) // z or lat
                     }
                   };
 
+                  if (convert_spherical)
+                    {
+                      coords = spherical_to_cartesian_coordinates(coords).get_array();
+                    }
 
                   std::cout << data[i][0] << ' ' << data[i][1] << ' ' << data[i][2] << ' ' << data[i][3] << ' ' << data[i][4] << ' ';
                   std::cout << world->temperature(coords, string_to_double(data[i][3]), string_to_double(data[i][4]))  << ' ';
