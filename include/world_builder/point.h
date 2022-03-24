@@ -22,6 +22,7 @@
 #define _USE_MATH_DEFINES
 #include <array>
 #include <cmath>
+#include <limits>
 
 #include "world_builder/assert.h"
 #include "world_builder/coordinate_system.h"
@@ -215,6 +216,28 @@ namespace WorldBuilder
         for (unsigned int i = 0; i < dim; ++i)
           point[i] += point_right[i];
         return *this;
+      }
+
+      /**
+       * Check if all values are the same.
+       *
+       * Note: compares floating points with an epsilon
+       */
+      inline
+      bool operator==(const Point<dim> &point_) const
+      {
+        if (coordinate_system != point_.coordinate_system)
+          return false;
+        WorldBuilder::Point<dim> point_tmp(point,coordinate_system);
+        point_tmp -= point_;
+        if (std::fabs(point_tmp[0]) > std::numeric_limits<double>::epsilon())
+          return false;
+        if (std::fabs(point_tmp[1]) > std::numeric_limits<double>::epsilon())
+          return false;
+        if (dim == 3 && std::fabs(point_tmp[2]) > std::numeric_limits<double>::epsilon())
+          return false;
+
+        return true;
       }
 
       /**
