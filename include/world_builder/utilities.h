@@ -40,6 +40,18 @@ namespace WorldBuilder
     constexpr double const_pi = 3.141592653589793238462643383279502884;
 
     /**
+     * provide a short way to test if two doubles are equal.
+     * Based on https://stackoverflow.com/a/4010279.
+     * Removed a==b test since it triggers warnings. If used in
+     * performance critical parts where this could matter, a fast
+     * version could be added.
+     */
+    inline bool approx(double a, double b, double error_factor=1.0)
+    {
+      return std::abs(a-b)<std::abs(std::min(a,b))*std::numeric_limits<double>::epsilon()*
+             error_factor;
+    }
+    /**
      * Given a 2d point and a list of points which form a polygon, computes if
      * the point falls within the polygon. For spherical coordinates it will
      * return true if the point or the point where the longitude is shifted
@@ -97,6 +109,12 @@ namespace WorldBuilder
          * chosen coordinate system.
          */
         std::array<double,2> get_surface_coordinates() const;
+
+        /**
+         * The coordinate that represents the 'surface' directions in the
+         * chosen coordinate system.
+         */
+        Point<2> get_surface_point() const;
 
         /**
          * The coordinate that represents the 'depth' direction in the chosen
