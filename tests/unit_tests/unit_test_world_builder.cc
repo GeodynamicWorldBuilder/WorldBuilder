@@ -36,13 +36,17 @@
 #include "world_builder/types/double.h"
 #include "world_builder/types/interface.h"
 #include "world_builder/types/object.h"
+#include "world_builder/types/one_of.h"
 #include "world_builder/types/plugin_system.h"
 #include "world_builder/types/point.h"
 #include "world_builder/types/segment.h"
 #include "world_builder/types/string.h"
 #include "world_builder/types/unsigned_int.h"
+#include "world_builder/types/value_at_points.h"
+#include "world_builder/objects/surface.h"
 #include "world_builder/utilities.h"
 #include "world_builder/world.h"
+
 
 extern "C" {
 #include "world_builder/wrapper_c.h"
@@ -625,10 +629,11 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   CHECK(std::isnan(ivp1_array[0]));
   CHECK(std::isnan(ivp1_array[1]));
   CHECK(std::isnan(ivp1_array[2]));
-  CHECK_THROWS(ivp1.get_surface_coordinates());
-  CHECK_THROWS(ivp1.get_depth_coordinate());
-  CHECK_THROWS(ivp1.get_depth_coordinate());
-  CHECK_THROWS(ivp1.get_ref_depth_coordinate());
+  CHECK_THROWS_WITH(ivp1.get_surface_coordinates(),Contains("Coordinate system not implemented."));
+  CHECK_THROWS_WITH(ivp1.get_surface_point(),Contains("Coordinate system not implemented."));
+  CHECK_THROWS_WITH(ivp1.get_depth_coordinate(),Contains("Coordinate system not implemented."));
+  CHECK_THROWS_WITH(ivp1.get_depth_coordinate(),Contains("Coordinate system not implemented."));
+  CHECK_THROWS_WITH(ivp1.get_ref_depth_coordinate(),Contains("Coordinate system not implemented."));
   CHECK(std::isnan(invalid->distance_between_points_at_same_depth(Point<3>(1,2,3,CoordinateSystem::invalid),
                                                                   Point<3>(1,2,3,CoordinateSystem::invalid))));
   CHECK(invalid->depth_method() == DepthMethod::none);
@@ -3886,6 +3891,116 @@ TEST_CASE("WorldBuilder Parameters")
                     Contains("internal error: could not retrieve the default value at"));
 
   CHECK(prm.get<std::string>("string") == "mystring 0");
+  prm.enter_subsection("properties");
+
+  {
+    WorldBuilder::World world_temp(file_name);
+    Parameters prm_temp(world_temp);
+    prm_temp.declare_entry("test",Types::OneOf(Types::OneOf(Types::Double(101),Types::Double(102)),Types::Double(103)),"doc");
+
+    CHECK(rapidjson::Pointer("/test/oneOf/0/oneOf/0/default value").Get(prm_temp.declarations)->GetDouble() == Approx(101.));
+    CHECK(rapidjson::Pointer("/test/oneOf/0/oneOf/1/default value").Get(prm_temp.declarations)->GetDouble() == Approx(102.));
+    CHECK(rapidjson::Pointer("/test/oneOf/1/default value").Get(prm_temp.declarations)->GetDouble() == Approx(103.));
+  }
+  prm.declare_entry("one value at points one value string",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101.))),
+                    "Documentation");
+  prm.declare_entry("array value at points one value string",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101.))),
+                    "Documentation");
+  prm.declare_entry("value at points set ap val string",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101.))),
+                    "Documentation");
+  prm.declare_entry("value at points set ap p1 string",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101.))),
+                    "Documentation");
+  prm.declare_entry("value at points set ap p2 string",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101.))),
+                    "Documentation");
+  prm.declare_entry("one value at points one value",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101.))),
+                    "Documentation");
+  prm.declare_entry("array value at points one value",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101.))),
+                    "Documentation");
+  prm.declare_entry("value at points",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101.))),
+                    "Documentation");
+  prm.declare_entry("value at points default ap",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101.))),
+                    "Documentation");
+  prm.leave_subsection();
+  std::vector<Point<2> > additional_points = {Point<2>(-10,-10,cartesian),Point<2>(-10,10,cartesian),
+                                              Point<2>(10,10,cartesian),Point<2>(10,-10,cartesian)
+                                             };
+  CHECK_THROWS_WITH(prm.get("value at points non existant",additional_points), Contains("internal error: could not retrieve"));
+  std::pair<std::vector<double>,std::vector<double>> v_at_p_one_value = prm.get("one value at points one value",additional_points);
+
+  CHECK(v_at_p_one_value.first.size() == 1);
+  CHECK(v_at_p_one_value.first[0] == Approx(200));
+  CHECK(v_at_p_one_value.second.size() == 0);
+
+  {
+    Objects::Surface surface(v_at_p_one_value);
+    CHECK(surface.local_value(Point<2>(0,0,CoordinateSystem::cartesian)) == Approx(200.));
+  }
+  std::pair<std::vector<double>,std::vector<double>> v_at_p_one_array_value = prm.get("array value at points one value",additional_points);
+
+  CHECK(v_at_p_one_array_value.first.size() == 1);
+  CHECK(v_at_p_one_array_value.first[0] == Approx(250));
+  CHECK(v_at_p_one_array_value.second.size() == 0);
+
+  std::pair<std::vector<double>,std::vector<double>> v_at_p_full_default = prm.get("value at points",additional_points);
+
+  CHECK(v_at_p_full_default.first.size() == 1);
+  CHECK(v_at_p_full_default.first[0] == Approx(101));
+  CHECK(v_at_p_full_default.second.size() == 0);
+
+  std::pair<std::vector<double>,std::vector<double>> v_at_p_dap = prm.get("value at points default ap",additional_points);
+
+  CHECK(v_at_p_dap.first.size() == 7);
+  CHECK(v_at_p_dap.first[0] == Approx(101));
+  CHECK(v_at_p_dap.first[1] == Approx(300));
+  CHECK(v_at_p_dap.first[2] == Approx(101));
+  CHECK(v_at_p_dap.first[3] == Approx(101));
+  CHECK(v_at_p_dap.first[4] == Approx(100));
+  CHECK(v_at_p_dap.first[5] == Approx(100));
+  CHECK(v_at_p_dap.first[6] == Approx(200));
+  CHECK(v_at_p_dap.second.size() == 14);
+  CHECK(v_at_p_dap.second[0] == Approx(-10));
+  CHECK(v_at_p_dap.second[1] == Approx(-10));
+  CHECK(v_at_p_dap.second[2] == Approx(-10));
+  CHECK(v_at_p_dap.second[3] == Approx(10));
+  CHECK(v_at_p_dap.second[4] == Approx(10));
+  CHECK(v_at_p_dap.second[5] == Approx(10));
+  CHECK(v_at_p_dap.second[6] == Approx(10));
+  CHECK(v_at_p_dap.second[7] == Approx(-10));
+  CHECK(v_at_p_dap.second[8] == Approx(1));
+  CHECK(v_at_p_dap.second[9] == Approx(2));
+  CHECK(v_at_p_dap.second[10] == Approx(3));
+  CHECK(v_at_p_dap.second[11] == Approx(4));
+  CHECK(v_at_p_dap.second[12] == Approx(5));
+  CHECK(v_at_p_dap.second[13] == Approx(6));
+
+  {
+    Objects::Surface surface(v_at_p_dap);
+
+    CHECK(surface.local_value(Point<2>(0,0,CoordinateSystem::cartesian)) == Approx(100.1666666667));
+    CHECK(surface.local_value(Point<2>(0.99,1.99,CoordinateSystem::cartesian)) == Approx(100.0099545455));
+    CHECK(surface.local_value(Point<2>(1.01,2.01,CoordinateSystem::cartesian)) == Approx(100.));
+    CHECK(surface.local_value(Point<2>(0.99,0.99,CoordinateSystem::cartesian)) == Approx(100.0841666667));
+    CHECK(surface.local_value(Point<2>(1.01,1.01,CoordinateSystem::cartesian)) == Approx(100.0825));
+    CHECK(surface.local_value(Point<2>(2.99,3.99,CoordinateSystem::cartesian)) == Approx(100.));
+    CHECK(surface.local_value(Point<2>(2.01,4.01,CoordinateSystem::cartesian)) == Approx(110.5263157895));
+    CHECK(surface.local_value(Point<2>(-0.5,7.48,CoordinateSystem::cartesian)) == Approx(236.5025));
+    CHECK(surface.local_value(Point<2>(-1,7.6,CoordinateSystem::cartesian)) == Approx(240.0));
+    CHECK(surface.local_value(Point<2>(-2.4,8.2,CoordinateSystem::cartesian)) == Approx(246.5425));
+    CHECK_THROWS_WITH(surface.local_value(Point<2>(11,11,CoordinateSystem::cartesian)), Contains("The requested point was not in any triangle."));
+  }
+
+
+  CHECK_THROWS_WITH(prm.get("one value at points one value string",additional_points),
+                    Contains("Could not convert values of /one value at points one value string into a double. The provided value was \"test1\"."));
+  CHECK_THROWS_WITH(prm.get("array value at points one value string",additional_points),
+                    Contains("Could not convert values of /array value at points one value string/0/0 into a double. The provided value was \"test2\"."));
+  CHECK_THROWS_WITH(prm.get("value at points set ap val string",additional_points),
+                    Contains("Could not convert values of /value at points set ap val string/2/0 into doubles. The provided value was \"test3\"."));
+  CHECK_THROWS_WITH(prm.get("value at points set ap p1 string",additional_points),
+                    Contains("Could not convert values of /value at points set ap p1 string/3/1/0/0 into a Point<2> array, because it could not convert the 1st sub-elements into doubles. The provided value was \"test4\"."));
+  CHECK_THROWS_WITH(prm.get("value at points set ap p2 string",additional_points),
+                    Contains("Could not convert values of /value at points set ap p2 string/3/1/0/1 into a Point<2> array, because it could not convert the 2nd sub-elements into doubles. The provided value was \"test5\"."));
+
 
   CHECK_THROWS_WITH(prm.get_vector<unsigned int>("non existent unsigned int vector"),
                     Contains("internal error: could not retrieve the minItems value at"));
