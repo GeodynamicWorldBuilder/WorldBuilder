@@ -24,7 +24,10 @@
 #include "world_builder/types/array.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
+#include "world_builder/types/one_of.h"
+#include "world_builder/types/value_at_points.h"
 #include "world_builder/types/point.h"
+#include "world_builder/kd_tree.h"
 #include "world_builder/utilities.h"
 #include "world_builder/world.h"
 
@@ -63,10 +66,10 @@ namespace WorldBuilder
                             "Plate model, but with a fixed age.");
 
           // Declare entries of this plugin
-          prm.declare_entry("min depth", Types::Double(0),
+          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0.))),
                             "The depth in meters from which the temperature of this feature is present.");
 
-          prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),
+          prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max()))),
                             "The depth in meters to which the temperature of this feature is present.");
 
           prm.declare_entry("top temperature", Types::Double(293.15),
@@ -81,11 +84,13 @@ namespace WorldBuilder
         }
 
         void
-        PlateModelConstantAge::parse_entries(Parameters &prm)
+        PlateModelConstantAge::parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates)
         {
 
-          min_depth = prm.get<double>("min depth");
-          max_depth = prm.get<double>("max depth");
+          min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
+          min_depth = min_depth_surface.minimum;
+          max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
+          max_depth = max_depth_surface.maximum;
           operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
           top_temperature = prm.get<double>("top temperature");
           bottom_temperature = prm.get<double>("bottom temperature");
@@ -95,6 +100,7 @@ namespace WorldBuilder
 
         double
         PlateModelConstantAge::get_temperature(const Point<3> & /*position*/,
+                                               const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
                                                const double depth,
                                                const double gravity_norm,
                                                double temperature_,
@@ -103,44 +109,49 @@ namespace WorldBuilder
         {
           if (depth <= max_depth && depth >= min_depth)
             {
-              double bottom_temperature_local = bottom_temperature;
-
-              if (bottom_temperature_local < 0)
+              const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
+              const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
+              if (depth <= max_depth_local &&  depth >= min_depth_local)
                 {
-                  bottom_temperature_local =  this->world->potential_mantle_temperature *
-                                              std::exp(((this->world->thermal_expansion_coefficient* gravity_norm) /
-                                                        this->world->specific_heat) * depth);
+                  double bottom_temperature_local = bottom_temperature;
+
+                  if (bottom_temperature_local < 0)
+                    {
+                      bottom_temperature_local =  this->world->potential_mantle_temperature *
+                                                  std::exp(((this->world->thermal_expansion_coefficient* gravity_norm) /
+                                                            this->world->specific_heat) * depth);
+                    }
+                  const int sommation_number = 100;
+
+                  // some aliases
+                  //const double top_temperature = top_temperature;
+                  const double thermal_diffusivity = this->world->thermal_diffusivity;
+                  double temperature = top_temperature + (bottom_temperature_local - top_temperature) * (depth / max_depth);
+
+                  // This formula ignores the horizontal heat transfer by just having the age of the plate in it.
+                  // (Chapter 7 Heat, Fowler M. The solid earth: an introduction to global geophysics[M]. Cambridge University Press, 1990)
+                  for (int i = 1; i<sommation_number+1; ++i)
+                    {
+                      temperature = temperature + (bottom_temperature_local - top_temperature) *
+                                    ((2 / (double(i) * const_pi)) * std::sin((double(i) * const_pi * depth) / max_depth) *
+                                     std::exp(-1.0 * i * i * const_pi * const_pi * thermal_diffusivity * plate_age / (max_depth * max_depth)));
+                    }
+
+                  WBAssert(!std::isnan(temperature), "Temparture inside plate model constant age is not a number: " << temperature
+                           << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
+                           << ", top_temperature = " << top_temperature
+                           << ", max_depth = " << max_depth
+                           << ", thermal_diffusivity = " << thermal_diffusivity
+                           << ", age = " << plate_age << '.');
+                  WBAssert(std::isfinite(temperature), "Temparture inside plate model constant age is not a finite: " << temperature                           << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
+                           << ", top_temperature = " << top_temperature
+                           << ", thermal_diffusivity = " << thermal_diffusivity
+                           << ", age = " << plate_age << '.');
+
+
+                  return Utilities::apply_operation(operation,temperature_,temperature);
+
                 }
-              const int sommation_number = 100;
-
-              // some aliases
-              //const double top_temperature = top_temperature;
-              const double thermal_diffusivity = this->world->thermal_diffusivity;
-              double temperature = top_temperature + (bottom_temperature_local - top_temperature) * (depth / max_depth);
-
-              // This formula ignores the horizontal heat transfer by just having the age of the plate in it.
-              // (Chapter 7 Heat, Fowler M. The solid earth: an introduction to global geophysics[M]. Cambridge University Press, 1990)
-              for (int i = 1; i<sommation_number+1; ++i)
-                {
-                  temperature = temperature + (bottom_temperature_local - top_temperature) *
-                                ((2 / (double(i) * const_pi)) * std::sin((double(i) * const_pi * depth) / max_depth) *
-                                 std::exp(-1.0 * i * i * const_pi * const_pi * thermal_diffusivity * plate_age / (max_depth * max_depth)));
-                }
-
-              WBAssert(!std::isnan(temperature), "Temparture inside plate model constant age is not a number: " << temperature
-                       << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
-                       << ", top_temperature = " << top_temperature
-                       << ", max_depth = " << max_depth
-                       << ", thermal_diffusivity = " << thermal_diffusivity
-                       << ", age = " << plate_age << '.');
-              WBAssert(std::isfinite(temperature), "Temparture inside plate model constant age is not a finite: " << temperature                           << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
-                       << ", top_temperature = " << top_temperature
-                       << ", thermal_diffusivity = " << thermal_diffusivity
-                       << ", age = " << plate_age << '.');
-
-
-              return Utilities::apply_operation(operation,temperature_,temperature);
-
             }
           return temperature_;
         }

@@ -23,6 +23,7 @@
 
 #include "world_builder/features/oceanic_plate_models/temperature/interface.h"
 #include "world_builder/features/utilities.h"
+#include "world_builder/objects/surface.h"
 
 
 namespace WorldBuilder
@@ -64,7 +65,7 @@ namespace WorldBuilder
             /**
              * declare and read in the world builder file into the parameters class
              */
-            void parse_entries(Parameters &prm) override final;
+            void parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates) override final;
 
 
             /**
@@ -72,6 +73,7 @@ namespace WorldBuilder
              * gravity and current temperature.
              */
             double get_temperature(const Point<3> &position,
+                                   const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
                                    const double depth,
                                    const double gravity,
                                    double temperature,
@@ -82,7 +84,9 @@ namespace WorldBuilder
           private:
             // plate model temperature submodule parameters
             double min_depth;
+            Objects::Surface min_depth_surface;
             double max_depth;
+            Objects::Surface max_depth_surface;
             double top_temperature;
             double bottom_temperature;
             double spreading_velocity;
