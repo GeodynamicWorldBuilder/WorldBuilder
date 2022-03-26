@@ -4952,18 +4952,174 @@
 :open:
 :name: open_features_items_oneOf_3_min-depth
 
+- **documentation**:The depth from which this feature is present
+:::::::::::::::::::{dropdown} /features/items/oneOf/3/min depth/oneOf
+:open:
+:name: open_features_items_oneOf_3_min-depth_oneOf
+
+::::::::::::::::::{dropdown} /features/items/oneOf/3/min depth/oneOf/1
+:open:
+:name: open_features_items_oneOf_3_min-depth_oneOf_1
+
 - **default value**:0.0
 - **type**:number
-- **documentation**:The depth to which this feature is present
+- **documentation**:
+::::::::::::::::::
+
+::::::::::::::::::{dropdown} /features/items/oneOf/3/min depth/oneOf/2
+:open:
+:name: open_features_items_oneOf_3_min-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:
+:::::::::::::::::{dropdown} /features/items/oneOf/3/min depth/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_3_min-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **documentation**:
+::::::::::::::::{dropdown} /features/items/oneOf/3/min depth/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_min-depth_oneOf_2_items_items
+
+:::::::::::::::{dropdown} /features/items/oneOf/3/min depth/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf
+
+::::::::::::::{dropdown} /features/items/oneOf/3/min depth/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:0.0
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/3/min depth/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::::::{dropdown} /features/items/oneOf/3/min depth/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::::::{dropdown} /features/items/oneOf/3/min depth/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
+::::::::::::::::
+
+:::::::::::::::::
+
+::::::::::::::::::
+
+
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/3/max depth
 :open:
 :name: open_features_items_oneOf_3_max-depth
 
+- **documentation**:The depth to which this feature is present
+:::::::::::::::::::{dropdown} /features/items/oneOf/3/max depth/oneOf
+:open:
+:name: open_features_items_oneOf_3_max-depth_oneOf
+
+::::::::::::::::::{dropdown} /features/items/oneOf/3/max depth/oneOf/1
+:open:
+:name: open_features_items_oneOf_3_max-depth_oneOf_1
+
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The depth to which this feature is present
+- **documentation**:
+::::::::::::::::::
+
+::::::::::::::::::{dropdown} /features/items/oneOf/3/max depth/oneOf/2
+:open:
+:name: open_features_items_oneOf_3_max-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:
+:::::::::::::::::{dropdown} /features/items/oneOf/3/max depth/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_3_max-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **documentation**:
+::::::::::::::::{dropdown} /features/items/oneOf/3/max depth/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_max-depth_oneOf_2_items_items
+
+:::::::::::::::{dropdown} /features/items/oneOf/3/max depth/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_3_max-depth_oneOf_2_items_items_anyOf
+
+::::::::::::::{dropdown} /features/items/oneOf/3/max depth/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_3_max-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:1.7976931348623157e308
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/3/max depth/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_3_max-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::::::{dropdown} /features/items/oneOf/3/max depth/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_3_max-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::::::{dropdown} /features/items/oneOf/3/max depth/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_max-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
+::::::::::::::::
+
+:::::::::::::::::
+
+::::::::::::::::::
+
+
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/3/temperature models
@@ -5014,18 +5170,174 @@
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_min-depth
 
+- **documentation**:The depth in meters from which the temperature of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/min depth/oneOf
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_min-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/min depth/oneOf/1
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_min-depth_oneOf_1
+
 - **default value**:0.0
 - **type**:number
-- **documentation**:The depth in meters from which the temperature of this feature is present.
+- **documentation**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/min depth/oneOf/2
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_min-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:
+:::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/min depth/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_min-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **documentation**:
+::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/min depth/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_min-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:0.0
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/max depth
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_max-depth
 
+- **documentation**:The depth in meters to which the temperature of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/max depth/oneOf
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_max-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/max depth/oneOf/1
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_max-depth_oneOf_1
+
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The depth in meters to which the temperature of this feature is present.
+- **documentation**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/max depth/oneOf/2
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_max-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:
+:::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/max depth/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_max-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **documentation**:
+::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/max depth/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_max-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:1.7976931348623157e308
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/potential mantle temperature
@@ -5092,18 +5404,174 @@
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_min-depth
 
+- **documentation**:The depth in meters from which the temperature of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/min depth/oneOf
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_min-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/min depth/oneOf/1
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_min-depth_oneOf_1
+
 - **default value**:0.0
 - **type**:number
-- **documentation**:The depth in meters from which the temperature of this feature is present.
+- **documentation**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/min depth/oneOf/2
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_min-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:
+:::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/min depth/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_min-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **documentation**:
+::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/min depth/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_min-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:0.0
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/max depth
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_max-depth
 
+- **documentation**:The depth in meters to which the temperature of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/max depth/oneOf
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_max-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/max depth/oneOf/1
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_max-depth_oneOf_1
+
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The depth in meters to which the temperature of this feature is present.
+- **documentation**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/max depth/oneOf/2
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_max-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:
+:::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/max depth/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_max-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **documentation**:
+::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/max depth/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_max-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:1.7976931348623157e308
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/top temperature
@@ -5161,18 +5629,174 @@
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_min-depth
 
+- **documentation**:The depth in meters from which the temperature of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/min depth/oneOf
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_min-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/min depth/oneOf/1
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_min-depth_oneOf_1
+
 - **default value**:0.0
 - **type**:number
-- **documentation**:The depth in meters from which the temperature of this feature is present.
+- **documentation**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/min depth/oneOf/2
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_min-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:
+:::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/min depth/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_min-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **documentation**:
+::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/min depth/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_min-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/min depth/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/min depth/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:0.0
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/min depth/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/min depth/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/min depth/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/max depth
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_max-depth
 
+- **documentation**:The depth in meters to which the temperature of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/max depth/oneOf
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_max-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/max depth/oneOf/1
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_max-depth_oneOf_1
+
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The depth in meters to which the temperature of this feature is present.
+- **documentation**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/max depth/oneOf/2
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_max-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:
+:::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/max depth/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_max-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **documentation**:
+::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/max depth/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_max-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/max depth/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_max-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/max depth/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_max-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:1.7976931348623157e308
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/max depth/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_max-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/max depth/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_max-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/max depth/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_max-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/temperature
@@ -5231,18 +5855,174 @@
 :open:
 :name: open_features_items_oneOf_3_composition-models_items_oneOf_1_min-depth
 
+- **documentation**:The depth in meters from which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/min depth/oneOf
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_min-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/min depth/oneOf/1
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_min-depth_oneOf_1
+
 - **default value**:0.0
 - **type**:number
-- **documentation**:The depth in meters from which the composition of this feature is present.
+- **documentation**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/min depth/oneOf/2
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_min-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:
+:::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/min depth/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_min-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **documentation**:
+::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/min depth/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_min-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:0.0
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/max depth
 :open:
 :name: open_features_items_oneOf_3_composition-models_items_oneOf_1_max-depth
 
+- **documentation**:The depth in meters to which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/max depth/oneOf
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_max-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/max depth/oneOf/1
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_max-depth_oneOf_1
+
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The depth in meters to which the composition of this feature is present.
+- **documentation**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/max depth/oneOf/2
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_max-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:
+:::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/max depth/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_max-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **documentation**:
+::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/max depth/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_max-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:1.7976931348623157e308
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_composition-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/compositions
@@ -5342,18 +6122,174 @@
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_1_min-depth
 
+- **documentation**:The depth in meters from which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/min depth/oneOf
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_1_min-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/min depth/oneOf/1
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_1_min-depth_oneOf_1
+
 - **default value**:0.0
 - **type**:number
-- **documentation**:The depth in meters from which the composition of this feature is present.
+- **documentation**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/min depth/oneOf/2
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_1_min-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:
+:::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/min depth/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_1_min-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **documentation**:
+::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/min depth/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:0.0
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/max depth
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_1_max-depth
 
+- **documentation**:The depth in meters to which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/max depth/oneOf
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_1_max-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/max depth/oneOf/1
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_1_max-depth_oneOf_1
+
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The depth in meters to which the composition of this feature is present.
+- **documentation**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/max depth/oneOf/2
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_1_max-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:
+:::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/max depth/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_1_max-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **documentation**:
+::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/max depth/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:1.7976931348623157e308
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/compositions
@@ -5453,18 +6389,174 @@
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_2_min-depth
 
+- **documentation**:The depth in meters from which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/min depth/oneOf
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_2_min-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/min depth/oneOf/1
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_2_min-depth_oneOf_1
+
 - **default value**:0.0
 - **type**:number
-- **documentation**:The depth in meters from which the composition of this feature is present.
+- **documentation**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/min depth/oneOf/2
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_2_min-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:
+:::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/min depth/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_2_min-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **documentation**:
+::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/min depth/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_2_min-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:0.0
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/max depth
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_2_max-depth
 
+- **documentation**:The depth in meters to which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/max depth/oneOf
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_2_max-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/max depth/oneOf/1
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_2_max-depth_oneOf_1
+
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The depth in meters to which the composition of this feature is present.
+- **documentation**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/max depth/oneOf/2
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_2_max-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:
+:::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/max depth/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_2_max-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **documentation**:
+::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/max depth/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_2_max-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:1.7976931348623157e308
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_3_grains-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/compositions
