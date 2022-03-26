@@ -24,6 +24,8 @@
 #include "world_builder/types/array.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
+#include "world_builder/types/one_of.h"
+#include "world_builder/types/value_at_points.h"
 #include "world_builder/types/unsigned_int.h"
 #include "world_builder/utilities.h"
 
@@ -61,9 +63,9 @@ namespace WorldBuilder
                             "Uniform compositional model. Sets constant compositional field.");
 
           // Declare entries of this plugin
-          prm.declare_entry("min depth", Types::Double(0),
+          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0.))),
                             "The depth in meters from which the composition of this feature is present.");
-          prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),
+          prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max()))),
                             "The depth in meters to which the composition of this feature is present.");
           prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
                             "A list with the labels of the composition which are present there.");
@@ -77,10 +79,12 @@ namespace WorldBuilder
         }
 
         void
-        Uniform::parse_entries(Parameters &prm)
+        Uniform::parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates)
         {
-          min_depth = prm.get<double>("min depth");
-          max_depth = prm.get<double>("max depth");
+          min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
+          min_depth = min_depth_surface.minimum;
+          max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
+          max_depth = max_depth_surface.maximum;
           compositions = prm.get_vector<unsigned int>("compositions");
           fractions = prm.get_vector<double>("fractions");
           operation = prm.get<std::string>("operation");
@@ -92,6 +96,7 @@ namespace WorldBuilder
 
         double
         Uniform::get_composition(const Point<3> & /*position_in_cartesian_coordinates*/,
+                                 const NaturalCoordinate &position_in_natural_coordinates,
                                  const double depth,
                                  const unsigned int composition_number,
                                  double composition_,
@@ -101,16 +106,21 @@ namespace WorldBuilder
           double composition = composition_;
           if (depth <= max_depth && depth >= min_depth)
             {
-              for (unsigned int i =0; i < compositions.size(); ++i)
+              const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
+              const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
+              if (depth <= max_depth_local &&  depth >= min_depth_local)
                 {
-                  if (compositions[i] == composition_number)
+                  for (unsigned int i =0; i < compositions.size(); ++i)
                     {
-                      return fractions[i];
+                      if (compositions[i] == composition_number)
+                        {
+                          return fractions[i];
+                        }
                     }
-                }
 
-              if (operation == "replace")
-                return 0.0;
+                  if (operation == "replace")
+                    return 0.0;
+                }
             }
           return composition;
         }
