@@ -364,7 +364,7 @@ namespace WorldBuilder
 
 
     BoundingBox<2>
-    Fault::get_bounding_box (const NaturalCoordinate &position_in_natural_coordinates,
+    Fault::get_bounding_box (const Objects::NaturalCoordinate &position_in_natural_coordinates,
                              const double depth) const
     {
       BoundingBox<2> surface_bounding_box;
@@ -396,7 +396,7 @@ namespace WorldBuilder
 
     double
     Fault::temperature(const Point<3> &position_in_cartesian_coordinates,
-                       const NaturalCoordinate &position_in_natural_coordinates,
+                       const Objects::NaturalCoordinate &position_in_natural_coordinates,
                        const double depth,
                        const double gravity_norm,
                        double temperature) const
@@ -542,7 +542,7 @@ namespace WorldBuilder
 
     double
     Fault::composition(const Point<3> &position_in_cartesian_coordinates,
-                       const NaturalCoordinate &position_in_natural_coordinates,
+                       const Objects::NaturalCoordinate &position_in_natural_coordinates,
                        const double depth,
                        const unsigned int composition_number,
                        double composition) const
@@ -681,7 +681,7 @@ namespace WorldBuilder
 
     WorldBuilder::grains
     Fault::grains(const Point<3> &position_in_cartesian_coordinates,
-                  const NaturalCoordinate &position_in_natural_coordinates,
+                  const Objects::NaturalCoordinate &position_in_natural_coordinates,
                   const double depth,
                   const unsigned int composition_number,
                   WorldBuilder::grains grains) const

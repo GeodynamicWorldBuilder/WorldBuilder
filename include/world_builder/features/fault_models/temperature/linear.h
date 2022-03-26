@@ -22,7 +22,6 @@
 
 
 #include "world_builder/features/fault_models/temperature/interface.h"
-#include "world_builder/features/utilities.h"
 
 
 namespace WorldBuilder

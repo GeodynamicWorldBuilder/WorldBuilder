@@ -88,7 +88,7 @@ namespace WorldBuilder
              */
             WorldBuilder::grains
             get_grains(const Point<3> &position,
-                       const Utilities::NaturalCoordinate &position_in_natural_coordinates,
+                       const Objects::NaturalCoordinate &position_in_natural_coordinates,
                        const double depth,
                        const unsigned int composition_number,
                        WorldBuilder::grains grains,

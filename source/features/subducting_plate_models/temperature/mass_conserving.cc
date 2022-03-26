@@ -223,8 +223,8 @@ namespace WorldBuilder
               const CoordinateSystem coordinate_system = world->parameters.coordinate_system->natural_coordinate_system();
               double distance_ridge = std::numeric_limits<double>::max();
               const Point<3> trench_point = distance_from_planes.closest_trench_point;
-              const WorldBuilder::Utilities::NaturalCoordinate trench_point_natural = WorldBuilder::Utilities::NaturalCoordinate(trench_point,
-                                                                                      *(world->parameters.coordinate_system));
+              const Objects::NaturalCoordinate trench_point_natural = Objects::NaturalCoordinate(trench_point,
+                                                                      *(world->parameters.coordinate_system));
               const Point<2> trench_point_2d(trench_point_natural.get_surface_coordinates(),trench_point_natural.get_coordinate_system());
               // find the distance between the trench and ridge
 

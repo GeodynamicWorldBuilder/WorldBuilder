@@ -23,7 +23,7 @@
 
 #include "world_builder/grains.h"
 #include "world_builder/parameters.h"
-#include "world_builder/utilities.h"
+#include "world_builder/objects/natural_coordinate.h"
 
 
 namespace WorldBuilder
@@ -76,7 +76,7 @@ namespace WorldBuilder
             virtual
             WorldBuilder::grains
             get_grains(const Point<3> &position,
-                       const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
+                       const Objects::NaturalCoordinate &position_in_natural_coordinates,
                        const double depth,
                        const unsigned int composition_number,
                        WorldBuilder::grains grains,
