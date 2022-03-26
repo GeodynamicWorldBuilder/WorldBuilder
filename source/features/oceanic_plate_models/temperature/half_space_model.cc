@@ -24,7 +24,10 @@
 #include "world_builder/types/array.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
+#include "world_builder/types/one_of.h"
+#include "world_builder/types/value_at_points.h"
 #include "world_builder/types/point.h"
+#include "world_builder/kd_tree.h"
 #include "world_builder/utilities.h"
 #include "world_builder/world.h"
 
@@ -64,10 +67,10 @@ namespace WorldBuilder
                             "Half space cooling mode");
 
           // Declare entries of this plugin
-          prm.declare_entry("min depth", Types::Double(0),
+          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0.))),
                             "The depth in meters from which the temperature of this feature is present.");
 
-          prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),
+          prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max()))),
                             "The depth in meters to which the temperature of this feature is present."
                             "Because half-space reaches background temperature asymptotically, "
                             "this value should be ~2 times the nominal plate thickness of 100 km" );
@@ -92,11 +95,13 @@ namespace WorldBuilder
         }
 
         void
-        HalfSpaceModel::parse_entries(Parameters &prm)
+        HalfSpaceModel::parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates)
         {
 
-          min_depth = prm.get<double>("min depth");
-          max_depth = prm.get<double>("max depth");
+          min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
+          min_depth = min_depth_surface.minimum;
+          max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
+          max_depth = max_depth_surface.maximum;
           operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
           top_temperature = prm.get<double>("top temperature");
           bottom_temperature = prm.get<double>("bottom temperature");
@@ -114,6 +119,7 @@ namespace WorldBuilder
 
         double
         HalfSpaceModel::get_temperature(const Point<3> &position,
+                                        const NaturalCoordinate &position_in_natural_coordinates,
                                         const double depth,
                                         const double gravity_norm,
                                         double temperature_,
@@ -122,120 +128,125 @@ namespace WorldBuilder
         {
           if (depth <= max_depth && depth >= min_depth)
             {
-              WorldBuilder::Utilities::NaturalCoordinate position_in_natural_coordinates_at_min_depth = WorldBuilder::Utilities::NaturalCoordinate(position,
-                  *(world->parameters.coordinate_system));
-              position_in_natural_coordinates_at_min_depth.get_ref_depth_coordinate() += depth-min_depth;
-
-
-              double bottom_temperature_local = bottom_temperature;
-
-              if (bottom_temperature_local < 0)
+              const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
+              const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
+              if (depth <= max_depth_local &&  depth >= min_depth_local)
                 {
-                  bottom_temperature_local =  this->world->potential_mantle_temperature *
-                                              std::exp(((this->world->thermal_expansion_coefficient* gravity_norm) /
-                                                        this->world->specific_heat) * depth);
-                }
-
-              double distance_ridge = std::numeric_limits<double>::max();
-
-              const CoordinateSystem coordinate_system = world->parameters.coordinate_system->natural_coordinate_system();
+                  WorldBuilder::Utilities::NaturalCoordinate position_in_natural_coordinates_at_min_depth = WorldBuilder::Utilities::NaturalCoordinate(position,
+                      *(world->parameters.coordinate_system));
+                  position_in_natural_coordinates_at_min_depth.get_ref_depth_coordinate() += depth-min_depth;
 
 
-              // first find if the coordinate is on this side of a ridge
-              unsigned int relevant_ridge = 0;
-              const Point<2> check_point(position_in_natural_coordinates_at_min_depth.get_surface_coordinates(),
-                                         position_in_natural_coordinates_at_min_depth.get_coordinate_system());
+                  double bottom_temperature_local = bottom_temperature;
 
-              // if there is only one ridge, there is no transform
-              if (mid_oceanic_ridges.size() > 1)
-                {
-                  // There are more than one ridge, so there are transform faults
-                  // Find the first which is on the same side
-                  for (relevant_ridge = 0; relevant_ridge < mid_oceanic_ridges.size()-1; relevant_ridge++)
+                  if (bottom_temperature_local < 0)
                     {
-                      const Point<2> transform_point_0 = mid_oceanic_ridges[relevant_ridge+1][0];
-                      const Point<2> transform_point_1 = mid_oceanic_ridges[relevant_ridge][mid_oceanic_ridges[relevant_ridge].size()-1];
-                      const Point<2> reference_point   = mid_oceanic_ridges[relevant_ridge][0];
+                      bottom_temperature_local =  this->world->potential_mantle_temperature *
+                                                  std::exp(((this->world->thermal_expansion_coefficient* gravity_norm) /
+                                                            this->world->specific_heat) * depth);
+                    }
 
-                      const bool reference_on_side_of_line = (transform_point_1[0] - transform_point_0[0])
-                                                             * (reference_point[1] - transform_point_0[1])
-                                                             - (transform_point_1[1] - transform_point_0[1])
-                                                             * (reference_point[0] - transform_point_0[0])
-                                                             < 0;
-                      const bool checkpoint_on_side_of_line = (transform_point_1[0] - transform_point_0[0])
-                                                              * (check_point[1] - transform_point_0[1])
-                                                              - (transform_point_1[1] - transform_point_0[1])
-                                                              * (check_point[0] - transform_point_0[0])
-                                                              < 0;
+                  double distance_ridge = std::numeric_limits<double>::max();
+
+                  const CoordinateSystem coordinate_system = world->parameters.coordinate_system->natural_coordinate_system();
 
 
-                      if (reference_on_side_of_line == checkpoint_on_side_of_line)
+                  // first find if the coordinate is on this side of a ridge
+                  unsigned int relevant_ridge = 0;
+                  const Point<2> check_point(position_in_natural_coordinates_at_min_depth.get_surface_coordinates(),
+                                             position_in_natural_coordinates_at_min_depth.get_coordinate_system());
+
+                  // if there is only one ridge, there is no transform
+                  if (mid_oceanic_ridges.size() > 1)
+                    {
+                      // There are more than one ridge, so there are transform faults
+                      // Find the first which is on the same side
+                      for (relevant_ridge = 0; relevant_ridge < mid_oceanic_ridges.size()-1; relevant_ridge++)
                         {
-                          break;
+                          const Point<2> transform_point_0 = mid_oceanic_ridges[relevant_ridge+1][0];
+                          const Point<2> transform_point_1 = mid_oceanic_ridges[relevant_ridge][mid_oceanic_ridges[relevant_ridge].size()-1];
+                          const Point<2> reference_point   = mid_oceanic_ridges[relevant_ridge][0];
+
+                          const bool reference_on_side_of_line = (transform_point_1[0] - transform_point_0[0])
+                                                                 * (reference_point[1] - transform_point_0[1])
+                                                                 - (transform_point_1[1] - transform_point_0[1])
+                                                                 * (reference_point[0] - transform_point_0[0])
+                                                                 < 0;
+                          const bool checkpoint_on_side_of_line = (transform_point_1[0] - transform_point_0[0])
+                                                                  * (check_point[1] - transform_point_0[1])
+                                                                  - (transform_point_1[1] - transform_point_0[1])
+                                                                  * (check_point[0] - transform_point_0[0])
+                                                                  < 0;
+
+
+                          if (reference_on_side_of_line == checkpoint_on_side_of_line)
+                            {
+                              break;
+                            }
+
                         }
+                    }
+
+                  for (unsigned int i_coordinate = 0; i_coordinate < mid_oceanic_ridges[relevant_ridge].size() - 1; i_coordinate++)
+                    {
+                      const Point<2> segment_point0 = mid_oceanic_ridges[relevant_ridge][i_coordinate];
+                      const Point<2> segment_point1 = mid_oceanic_ridges[relevant_ridge][i_coordinate + 1];
+
+                      // based on http://geomalgorithms.com/a02-_lines.html
+                      const Point<2> v = segment_point1 - segment_point0;
+                      const Point<2> w = check_point - segment_point0;
+
+                      const double c1 = (w[0] * v[0] + w[1] * v[1]);
+                      const double c2 = (v[0] * v[0] + v[1] * v[1]);
+
+                      Point<2> Pb(coordinate_system);
+                      // This part is needed when we want to consider segments instead of lines
+                      // If you want to have infinite lines, use only the else statement.
+
+                      if (c1 <= 0)
+                        Pb=segment_point0;
+                      else if (c2 <= c1)
+                        Pb=segment_point1;
+                      else
+                        Pb = segment_point0 + (c1 / c2) * v;
+
+                      Point<3> compare_point(coordinate_system);
+
+                      compare_point[0] = coordinate_system == cartesian ? Pb[0] :  position_in_natural_coordinates_at_min_depth.get_depth_coordinate();
+                      compare_point[1] = coordinate_system == cartesian ? Pb[1] : Pb[0];
+                      compare_point[2] = coordinate_system == cartesian ? position_in_natural_coordinates_at_min_depth.get_depth_coordinate() : Pb[1];
+
+                      distance_ridge = std::min(distance_ridge,
+                                                this->world->parameters.coordinate_system->distance_between_points_at_same_depth(Point<3>(position_in_natural_coordinates_at_min_depth.get_coordinates(),
+                                                    position_in_natural_coordinates_at_min_depth.get_coordinate_system()),
+                                                    compare_point));
 
                     }
-                }
 
-              for (unsigned int i_coordinate = 0; i_coordinate < mid_oceanic_ridges[relevant_ridge].size() - 1; i_coordinate++)
-                {
-                  const Point<2> segment_point0 = mid_oceanic_ridges[relevant_ridge][i_coordinate];
-                  const Point<2> segment_point1 = mid_oceanic_ridges[relevant_ridge][i_coordinate + 1];
+                  const double thermal_diffusivity = this->world->thermal_diffusivity;
+                  const double age = distance_ridge / spreading_velocity;
 
-                  // based on http://geomalgorithms.com/a02-_lines.html
-                  const Point<2> v = segment_point1 - segment_point0;
-                  const Point<2> w = check_point - segment_point0;
+                  double  temperature = bottom_temperature_local;
 
-                  const double c1 = (w[0] * v[0] + w[1] * v[1]);
-                  const double c2 = (v[0] * v[0] + v[1] * v[1]);
+                  temperature = temperature + (top_temperature - bottom_temperature_local)*std::erfc(depth/(2*std::sqrt(thermal_diffusivity*age)));
 
-                  Point<2> Pb(coordinate_system);
-                  // This part is needed when we want to consider segments instead of lines
-                  // If you want to have infinite lines, use only the else statement.
+                  WBAssert(!std::isnan(temperature), "Temperature inside half-space cooling model is not a number: " << temperature
+                           << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
+                           << ", top_temperature = " << top_temperature
+                           << ", max_depth = " << max_depth
+                           << ", spreading_velocity = " << spreading_velocity
+                           << ", thermal_diffusivity = " << thermal_diffusivity
+                           << ", age = " << age << '.');
+                  WBAssert(std::isfinite(temperature), "Temperature inside half-space cooling model is not a finite: " << temperature                           << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
+                           << ", top_temperature = " << top_temperature
+                           << ", spreading_velocity = " << spreading_velocity
+                           << ", thermal_diffusivity = " << thermal_diffusivity
+                           << ", age = " << age << '.');
 
-                  if (c1 <= 0)
-                    Pb=segment_point0;
-                  else if (c2 <= c1)
-                    Pb=segment_point1;
-                  else
-                    Pb = segment_point0 + (c1 / c2) * v;
 
-                  Point<3> compare_point(coordinate_system);
-
-                  compare_point[0] = coordinate_system == cartesian ? Pb[0] :  position_in_natural_coordinates_at_min_depth.get_depth_coordinate();
-                  compare_point[1] = coordinate_system == cartesian ? Pb[1] : Pb[0];
-                  compare_point[2] = coordinate_system == cartesian ? position_in_natural_coordinates_at_min_depth.get_depth_coordinate() : Pb[1];
-
-                  distance_ridge = std::min(distance_ridge,
-                                            this->world->parameters.coordinate_system->distance_between_points_at_same_depth(Point<3>(position_in_natural_coordinates_at_min_depth.get_coordinates(),
-                                                position_in_natural_coordinates_at_min_depth.get_coordinate_system()),
-                                                compare_point));
+                  return Utilities::apply_operation(operation,temperature_,temperature);
 
                 }
-
-              const double thermal_diffusivity = this->world->thermal_diffusivity;
-              const double age = distance_ridge / spreading_velocity;
-
-              double  temperature = bottom_temperature_local;
-
-              temperature = temperature + (top_temperature - bottom_temperature_local)*std::erfc(depth/(2*std::sqrt(thermal_diffusivity*age)));
-
-              WBAssert(!std::isnan(temperature), "Temperature inside half-space cooling model is not a number: " << temperature
-                       << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
-                       << ", top_temperature = " << top_temperature
-                       << ", max_depth = " << max_depth
-                       << ", spreading_velocity = " << spreading_velocity
-                       << ", thermal_diffusivity = " << thermal_diffusivity
-                       << ", age = " << age << '.');
-              WBAssert(std::isfinite(temperature), "Temperature inside half-space cooling model is not a finite: " << temperature                           << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
-                       << ", top_temperature = " << top_temperature
-                       << ", spreading_velocity = " << spreading_velocity
-                       << ", thermal_diffusivity = " << thermal_diffusivity
-                       << ", age = " << age << '.');
-
-
-              return Utilities::apply_operation(operation,temperature_,temperature);
-
             }
           return temperature_;
         }

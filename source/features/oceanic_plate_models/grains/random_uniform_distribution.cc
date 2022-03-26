@@ -26,7 +26,10 @@
 #include "world_builder/types/bool.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
+#include "world_builder/types/one_of.h"
+#include "world_builder/types/value_at_points.h"
 #include "world_builder/types/unsigned_int.h"
+#include "world_builder/kd_tree.h"
 #include "world_builder/utilities.h"
 #include "world_builder/world.h"
 
@@ -63,9 +66,9 @@ namespace WorldBuilder
                             "to a single value or to a random distribution.");
 
           // Declare entries of this plugin
-          prm.declare_entry("min depth", Types::Double(0),
+          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0.))),
                             "The depth in meters from which the composition of this feature is present.");
-          prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),
+          prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max()))),
                             "The depth in meters to which the composition of this feature is present.");
 
           prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
@@ -89,10 +92,12 @@ namespace WorldBuilder
         }
 
         void
-        RandomUniformDistribution::parse_entries(Parameters &prm)
+        RandomUniformDistribution::parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates)
         {
-          min_depth = prm.get<double>("min depth");
-          max_depth = prm.get<double>("max depth");
+          min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
+          min_depth = min_depth_surface.minimum;
+          max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
+          max_depth = max_depth_surface.maximum;
           compositions = prm.get_vector<unsigned int>("compositions");
 
           operation = prm.get<std::string>("orientation operation");
@@ -111,6 +116,7 @@ namespace WorldBuilder
 
         WorldBuilder::grains
         RandomUniformDistribution::get_grains(const Point<3> & /*position_in_cartesian_coordinates*/,
+                                              const NaturalCoordinate &position_in_natural_coordinates,
                                               const double depth,
                                               const unsigned int composition_number,
                                               WorldBuilder::grains grains_,
@@ -120,87 +126,92 @@ namespace WorldBuilder
           WorldBuilder::grains  grains_local = grains_;
           if (depth <= max_depth && depth >= min_depth)
             {
-              for (unsigned int i =0; i < compositions.size(); ++i)
+              const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
+              const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
+              if (depth <= max_depth_local &&  depth >= min_depth_local)
                 {
-                  if (compositions[i] == composition_number)
+                  for (unsigned int i =0; i < compositions.size(); ++i)
                     {
-                      std::uniform_real_distribution<> dist(0.0,1.0);
-                      for (auto &&it_rotation_matrices : grains_local.rotation_matrices)
+                      if (compositions[i] == composition_number)
                         {
-                          // set a uniform random a_cosine_matrix per grain
-                          // This function is based on an article in Graphic Gems III, written by James Arvo, Cornell University (p 116-120).
-                          // The original code can be found on  http://www.realtimerendering.com/resources/GraphicsGems/gemsiii/rand_rotation.c
-                          // and is licenend accourding to this website with the following licence:
-                          //
-                          // "The Graphics Gems code is copyright-protected. In other words, you cannot claim the text of the code as your own and
-                          // resell it. Using the code is permitted in any program, product, or library, non-commercial or commercial. Giving credit
-                          // is not required, though is a nice gesture. The code comes as-is, and if there are any flaws or problems with any Gems
-                          // code, nobody involved with Gems - authors, editors, publishers, or webmasters - are to be held responsible. Basically,
-                          // don't be a jerk, and remember that anything free comes with no guarantee.""
-                          //
-                          // The book saids in the preface the following: "As in the first two volumes, all of the C and C++ code in this book is in
-                          // the public domain, and is yours to study, modify, and use."
+                          std::uniform_real_distribution<> dist(0.0,1.0);
+                          for (auto &&it_rotation_matrices : grains_local.rotation_matrices)
+                            {
+                              // set a uniform random a_cosine_matrix per grain
+                              // This function is based on an article in Graphic Gems III, written by James Arvo, Cornell University (p 116-120).
+                              // The original code can be found on  http://www.realtimerendering.com/resources/GraphicsGems/gemsiii/rand_rotation.c
+                              // and is licenend accourding to this website with the following licence:
+                              //
+                              // "The Graphics Gems code is copyright-protected. In other words, you cannot claim the text of the code as your own and
+                              // resell it. Using the code is permitted in any program, product, or library, non-commercial or commercial. Giving credit
+                              // is not required, though is a nice gesture. The code comes as-is, and if there are any flaws or problems with any Gems
+                              // code, nobody involved with Gems - authors, editors, publishers, or webmasters - are to be held responsible. Basically,
+                              // don't be a jerk, and remember that anything free comes with no guarantee.""
+                              //
+                              // The book saids in the preface the following: "As in the first two volumes, all of the C and C++ code in this book is in
+                              // the public domain, and is yours to study, modify, and use."
 
-                          // first generate three random numbers between 0 and 1 and multiply them with 2 PI or 2 for z. Note that these are not the same as phi_1, theta and phi_2.
-                          double one = dist(world->get_random_number_engine());
-                          double two = dist(world->get_random_number_engine());
-                          double three = dist(world->get_random_number_engine());
+                              // first generate three random numbers between 0 and 1 and multiply them with 2 PI or 2 for z. Note that these are not the same as phi_1, theta and phi_2.
+                              double one = dist(world->get_random_number_engine());
+                              double two = dist(world->get_random_number_engine());
+                              double three = dist(world->get_random_number_engine());
 
-                          double theta = 2.0 * const_pi * one; // Rotation about the pole (Z)
-                          double phi = 2.0 * const_pi * two; // For direction of pole deflection.
-                          double z = 2.0* three; //For magnitude of pole deflection.
+                              double theta = 2.0 * const_pi * one; // Rotation about the pole (Z)
+                              double phi = 2.0 * const_pi * two; // For direction of pole deflection.
+                              double z = 2.0* three; //For magnitude of pole deflection.
 
-                          // Compute a vector V used for distributing points over the sphere
-                          // via the reflection I - V Transpose(V).  This formulation of V
-                          // will guarantee that if x[1] and x[2] are uniformly distributed,
-                          // the reflected points will be uniform on the sphere.  Note that V
-                          // has length sqrt(2) to eliminate the 2 in the Householder matrix.
+                              // Compute a vector V used for distributing points over the sphere
+                              // via the reflection I - V Transpose(V).  This formulation of V
+                              // will guarantee that if x[1] and x[2] are uniformly distributed,
+                              // the reflected points will be uniform on the sphere.  Note that V
+                              // has length sqrt(2) to eliminate the 2 in the Householder matrix.
 
-                          double r  = std::sqrt( z );
-                          double Vx = std::sin( phi ) * r;
-                          double Vy = std::cos( phi ) * r;
-                          double Vz = std::sqrt( 2.F - z );
+                              double r  = std::sqrt( z );
+                              double Vx = std::sin( phi ) * r;
+                              double Vy = std::cos( phi ) * r;
+                              double Vz = std::sqrt( 2.F - z );
 
-                          // Compute the row vector S = Transpose(V) * R, where R is a simple
-                          // rotation by theta about the z-axis.  No need to compute Sz since
-                          // it's just Vz.
+                              // Compute the row vector S = Transpose(V) * R, where R is a simple
+                              // rotation by theta about the z-axis.  No need to compute Sz since
+                              // it's just Vz.
 
-                          double st = std::sin( theta );
-                          double ct = std::cos( theta );
-                          double Sx = Vx * ct - Vy * st;
-                          double Sy = Vx * st + Vy * ct;
+                              double st = std::sin( theta );
+                              double ct = std::cos( theta );
+                              double Sx = Vx * ct - Vy * st;
+                              double Sy = Vx * st + Vy * ct;
 
-                          // Construct the rotation matrix  ( V Transpose(V) - I ) R, which
-                          // is equivalent to V S - R.
+                              // Construct the rotation matrix  ( V Transpose(V) - I ) R, which
+                              // is equivalent to V S - R.
 
-                          it_rotation_matrices[0][0] = Vx * Sx - ct;
-                          it_rotation_matrices[0][1] = Vx * Sy - st;
-                          it_rotation_matrices[0][2] = Vx * Vz;
+                              it_rotation_matrices[0][0] = Vx * Sx - ct;
+                              it_rotation_matrices[0][1] = Vx * Sy - st;
+                              it_rotation_matrices[0][2] = Vx * Vz;
 
-                          it_rotation_matrices[1][0] = Vy * Sx + st;
-                          it_rotation_matrices[1][1] = Vy * Sy - ct;
-                          it_rotation_matrices[1][2] = Vy * Vz;
+                              it_rotation_matrices[1][0] = Vy * Sx + st;
+                              it_rotation_matrices[1][1] = Vy * Sy - ct;
+                              it_rotation_matrices[1][2] = Vy * Vz;
 
-                          it_rotation_matrices[2][0] = Vz * Sx;
-                          it_rotation_matrices[2][1] = Vz * Sy;
-                          it_rotation_matrices[2][2] = 1.0 - z;   // This equals Vz * Vz - 1.0
+                              it_rotation_matrices[2][0] = Vz * Sx;
+                              it_rotation_matrices[2][1] = Vz * Sy;
+                              it_rotation_matrices[2][2] = 1.0 - z;   // This equals Vz * Vz - 1.0
+                            }
+
+                          double total_size = 0;
+                          for (auto &&it_sizes : grains_local.sizes)
+                            {
+                              it_sizes = grain_sizes[i] < 0 ? dist(world->get_random_number_engine()) : grain_sizes[i];
+                              total_size += it_sizes;
+                            }
+
+                          if (normalize_grain_sizes[i])
+                            {
+                              double one_over_total_size = 1/total_size;
+                              std::transform(grains_local.sizes.begin(), grains_local.sizes.end(), grains_local.sizes.begin(),
+                                             [one_over_total_size](double sizes) -> double { return sizes *one_over_total_size; });
+                            }
+
+                          return grains_local;
                         }
-
-                      double total_size = 0;
-                      for (auto &&it_sizes : grains_local.sizes)
-                        {
-                          it_sizes = grain_sizes[i] < 0 ? dist(world->get_random_number_engine()) : grain_sizes[i];
-                          total_size += it_sizes;
-                        }
-
-                      if (normalize_grain_sizes[i])
-                        {
-                          double one_over_total_size = 1/total_size;
-                          std::transform(grains_local.sizes.begin(), grains_local.sizes.end(), grains_local.sizes.begin(),
-                                         [one_over_total_size](double sizes) -> double { return sizes *one_over_total_size; });
-                        }
-
-                      return grains_local;
                     }
                 }
             }

@@ -21,10 +21,14 @@
 
 
 #include "world_builder/nan.h"
+#include "world_builder/types/array.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
+#include "world_builder/types/one_of.h"
+#include "world_builder/types/value_at_points.h"
 #include "world_builder/utilities.h"
 
+#include "world_builder/kd_tree.h"
 
 namespace WorldBuilder
 {
@@ -60,11 +64,11 @@ namespace WorldBuilder
                             "Uniform temperature model. Set the temperature to a constan value.");
 
           // Declare entries of this plugin
-          prm.declare_entry("min depth", Types::Double(0),
-                            "The depth in meters from which the temperature of this feature is present.");
+          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0.))),
+                            "The depth in meters from which the composition of this feature is present.");
 
-          prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),
-                            "The depth in meters to which the temperature of this feature is present.");
+          prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max()))),
+                            "The depth in meters to which the composition of this feature is present.");
 
           prm.declare_entry("temperature", Types::Double(293.15),
                             "The temperature in degree Kelvin which this feature should have");
@@ -72,11 +76,13 @@ namespace WorldBuilder
         }
 
         void
-        Uniform::parse_entries(Parameters &prm)
+        Uniform::parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates)
         {
 
-          min_depth = prm.get<double>("min depth");
-          max_depth = prm.get<double>("max depth");
+          min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
+          min_depth = min_depth_surface.minimum;
+          max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
+          max_depth = max_depth_surface.maximum;
           operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
           temperature = prm.get<double>("temperature");
         }
@@ -84,18 +90,22 @@ namespace WorldBuilder
 
         double
         Uniform::get_temperature(const Point<3> & /*position_in_cartesian_coordinates*/,
+                                 const NaturalCoordinate &position_in_natural_coordinates,
                                  const double depth,
                                  const double  /*gravity*/,
                                  double temperature_,
                                  const double /*feature_min_depth*/,
                                  const double /*feature_max_depth*/) const
         {
-
-          if (depth <= max_depth && depth >= min_depth)
+          const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
+          const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
+          if (depth <= max_depth_local &&  depth >= min_depth_local)
             {
-              return Utilities::apply_operation(operation,temperature_,temperature);
+              if (depth <= max_depth && depth >= min_depth)
+                {
+                  return Utilities::apply_operation(operation,temperature_,temperature);
+                }
             }
-
           return temperature_;
         }
 

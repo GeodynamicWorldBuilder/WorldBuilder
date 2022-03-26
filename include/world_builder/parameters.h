@@ -109,6 +109,15 @@ namespace WorldBuilder
       std::vector<T> get_vector(const std::string &name);
 
       /**
+       * A specialized verions of get which can retun a value at points type.
+       * \param name The name of the entry to retrieved
+       * \param name additional points to be added to the list at either the default value or at the value of a single value array in the list
+       */
+      std::pair<std::vector<double>,std::vector<double>>
+                                                      get(const std::string &name,
+                                                          const std::vector<Point<2> > &addition_points = {});
+
+      /**
        * A specialized verions of get which can retun vecors/arrays.
        * This version is designed for the plugin system.
        * \param name The name of the entry to retrieved

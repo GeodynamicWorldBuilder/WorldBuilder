@@ -48,8 +48,8 @@ namespace WorldBuilder
     }
 
 
-    std::vector<Node> &
-    KDTree::get_nodes()
+    const std::vector<Node> &
+    KDTree::get_nodes() const
     {
       return nodes;
     }

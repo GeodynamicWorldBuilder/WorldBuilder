@@ -21,8 +21,11 @@
 
 
 #include "world_builder/nan.h"
+#include "world_builder/types/array.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
+#include "world_builder/types/one_of.h"
+#include "world_builder/types/value_at_points.h"
 #include "world_builder/utilities.h"
 #include "world_builder/world.h"
 
@@ -61,10 +64,10 @@ namespace WorldBuilder
                             "Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.");
 
           // Declare entries of this plugin
-          prm.declare_entry("min depth", Types::Double(0),
+          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0.))),
                             "The depth in meters from which the temperature of this feature is present.");
 
-          prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),
+          prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max()))),
                             "The depth in meters to which the temperature of this feature is present.");
 
           prm.declare_entry("top temperature", Types::Double(293.15),
@@ -77,10 +80,12 @@ namespace WorldBuilder
         }
 
         void
-        Linear::parse_entries(Parameters &prm)
+        Linear::parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates)
         {
-          min_depth = prm.get<double>("min depth");
-          max_depth = prm.get<double>("max depth");
+          min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
+          min_depth = min_depth_surface.minimum;
+          max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
+          max_depth = max_depth_surface.maximum;
           WBAssert(max_depth >= min_depth, "max depth needs to be larger or equal to min depth.");
           operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
           top_temperature = prm.get<double>("top temperature");
@@ -90,6 +95,7 @@ namespace WorldBuilder
 
         double
         Linear::get_temperature(const Point<3> & /*position_in_cartesian_coordinates*/,
+                                const NaturalCoordinate &position_in_natural_coordinates,
                                 const double depth,
                                 const double gravity_norm,
                                 double temperature_,
@@ -98,31 +104,36 @@ namespace WorldBuilder
         {
           if (depth <= max_depth && depth >= min_depth)
             {
-              const double min_depth_local = std::max(feature_min_depth, min_depth);
-              const double max_depth_local = std::min(feature_max_depth, max_depth);
-
-              double top_temperature_local = top_temperature;
-              if (top_temperature_local < 0)
+              const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
+              const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
+              if (depth <= max_depth_local &&  depth >= min_depth_local)
                 {
-                  top_temperature_local =  this->world->potential_mantle_temperature *
-                                           std::exp(((this->world->thermal_expansion_coefficient * gravity_norm) /
-                                                     this->world->specific_heat) * min_depth_local);
+                  const double min_depth_local_local = std::max(feature_min_depth, min_depth_local);
+                  const double max_depth_local_local = std::min(feature_max_depth, max_depth_local);
+
+                  double top_temperature_local = top_temperature;
+                  if (top_temperature_local < 0)
+                    {
+                      top_temperature_local =  this->world->potential_mantle_temperature *
+                                               std::exp(((this->world->thermal_expansion_coefficient * gravity_norm) /
+                                                         this->world->specific_heat) * min_depth_local_local);
+                    }
+
+                  double bottom_temperature_local = bottom_temperature;
+                  if (bottom_temperature_local < 0)
+                    {
+                      bottom_temperature_local =  this->world->potential_mantle_temperature *
+                                                  std::exp(((this->world->thermal_expansion_coefficient * gravity_norm) /
+                                                            this->world->specific_heat) * max_depth_local_local);
+
+                    }
+
+                  const double new_temperature =  top_temperature_local +
+                                                  (depth - min_depth_local_local) *
+                                                  ((bottom_temperature_local - top_temperature_local) / (max_depth_local_local - min_depth_local_local));
+
+                  return Utilities::apply_operation(operation,temperature_,new_temperature);
                 }
-
-              double bottom_temperature_local = bottom_temperature;
-              if (bottom_temperature_local < 0)
-                {
-                  bottom_temperature_local =  this->world->potential_mantle_temperature *
-                                              std::exp(((this->world->thermal_expansion_coefficient * gravity_norm) /
-                                                        this->world->specific_heat) * max_depth_local);
-
-                }
-
-              const double new_temperature =  top_temperature_local +
-                                              (depth - min_depth_local) *
-                                              ((bottom_temperature_local - top_temperature_local) / (max_depth_local - min_depth_local));
-
-              return Utilities::apply_operation(operation,temperature_,new_temperature);
             }
 
 

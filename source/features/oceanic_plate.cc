@@ -19,14 +19,17 @@
 
 #include "world_builder/features/oceanic_plate.h"
 
-
 #include "world_builder/features/oceanic_plate_models/composition/interface.h"
 #include "world_builder/features/oceanic_plate_models/grains/interface.h"
 #include "world_builder/features/oceanic_plate_models/temperature/interface.h"
 #include "world_builder/nan.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
+#include "world_builder/types/array.h"
+#include "world_builder/types/one_of.h"
+#include "world_builder/types/value_at_points.h"
 #include "world_builder/types/plugin_system.h"
+#include "world_builder/kd_tree.h"
 #include "world_builder/world.h"
 
 
@@ -56,9 +59,9 @@ namespace WorldBuilder
     {
       prm.declare_entry("", Types::Object(required_entries), "Oceanic plate object");
 
-      prm.declare_entry("min depth", Types::Double(0),
-                        "The depth to which this feature is present");
-      prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),
+      prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0.))),
+                        "The depth from which this feature is present");
+      prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max()))),
                         "The depth to which this feature is present");
       prm.declare_entry("temperature models",
                         Types::PluginSystem("", Features::OceanicPlateModels::Temperature::Interface::declare_entries, {"model"}),
@@ -80,8 +83,11 @@ namespace WorldBuilder
       this->name = prm.get<std::string>("name");
       this->get_coordinates("coordinates", prm, coordinate_system);
 
-      min_depth = prm.get<double>("min depth");
-      max_depth = prm.get<double>("max depth");
+      min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
+      min_depth = min_depth_surface.minimum;
+
+      max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
+      max_depth = max_depth_surface.maximum;
 
 
       prm.get_unique_pointers<Features::OceanicPlateModels::Temperature::Interface>("temperature models", temperature_models);
@@ -92,7 +98,7 @@ namespace WorldBuilder
           {
             prm.enter_subsection(std::to_string(i));
             {
-              temperature_models[i]->parse_entries(prm);
+              temperature_models[i]->parse_entries(prm,coordinates);
             }
             prm.leave_subsection();
           }
@@ -108,7 +114,7 @@ namespace WorldBuilder
           {
             prm.enter_subsection(std::to_string(i));
             {
-              composition_models[i]->parse_entries(prm);
+              composition_models[i]->parse_entries(prm,coordinates);
             }
             prm.leave_subsection();
           }
@@ -124,7 +130,7 @@ namespace WorldBuilder
           {
             prm.enter_subsection(std::to_string(i));
             {
-              grains_models[i]->parse_entries(prm);
+              grains_models[i]->parse_entries(prm,coordinates);
             }
             prm.leave_subsection();
           }
@@ -144,20 +150,26 @@ namespace WorldBuilder
           WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
                                                                                 world->parameters.coordinate_system->natural_coordinate_system())))
         {
-          for (const auto &temperature_model: temperature_models)
+          const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
+          const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
+          if (depth <= max_depth_local &&  depth >= min_depth_local)
             {
-              temperature = temperature_model->get_temperature(position_in_cartesian_coordinates,
-                                                               depth,
-                                                               gravity_norm,
-                                                               temperature,
-                                                               min_depth,
-                                                               max_depth);
+              for (const auto &temperature_model: temperature_models)
+                {
+                  temperature = temperature_model->get_temperature(position_in_cartesian_coordinates,
+                                                                   position_in_natural_coordinates,
+                                                                   depth,
+                                                                   gravity_norm,
+                                                                   temperature,
+                                                                   min_depth_local,
+                                                                   max_depth_local);
 
-              WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature
-                       << ", based on a temperature model with the name " << temperature_model->get_name());
-              WBAssert(std::isfinite(temperature), "Temparture is not a finite: " << temperature
-                       << ", based on a temperature model with the name " << temperature_model->get_name());
+                  WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature
+                           << ", based on a temperature model with the name " << temperature_model->get_name());
+                  WBAssert(std::isfinite(temperature), "Temparture is not a finite: " << temperature
+                           << ", based on a temperature model with the name " << temperature_model->get_name());
 
+                }
             }
         }
 
@@ -175,19 +187,25 @@ namespace WorldBuilder
           WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
                                                                                 world->parameters.coordinate_system->natural_coordinate_system())))
         {
-          for (const auto &composition_model: composition_models)
+          const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
+          const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
+          if (depth <= max_depth_local &&  depth >= min_depth_local)
             {
-              composition = composition_model->get_composition(position_in_cartesian_coordinates,
-                                                               depth,
-                                                               composition_number,
-                                                               composition,
-                                                               min_depth,
-                                                               max_depth);
+              for (const auto &composition_model: composition_models)
+                {
+                  composition = composition_model->get_composition(position_in_cartesian_coordinates,
+                                                                   position_in_natural_coordinates,
+                                                                   depth,
+                                                                   composition_number,
+                                                                   composition,
+                                                                   min_depth_local,
+                                                                   max_depth_local);
 
-              WBAssert(!std::isnan(composition), "Composition is not a number: " << composition
-                       << ", based on a temperature model with the name " << composition_model->get_name());
-              WBAssert(std::isfinite(composition), "Composition is not a finite: " << composition
-                       << ", based on a temperature model with the name " << composition_model->get_name());
+                  WBAssert(!std::isnan(composition), "Composition is not a number: " << composition
+                           << ", based on a temperature model with the name " << composition_model->get_name());
+                  WBAssert(std::isfinite(composition), "Composition is not a finite: " << composition
+                           << ", based on a temperature model with the name " << composition_model->get_name());
+                }
             }
         }
 
@@ -206,20 +224,26 @@ namespace WorldBuilder
           WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
                                                                                 world->parameters.coordinate_system->natural_coordinate_system())))
         {
-          for (const auto &grains_model: grains_models)
+          const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
+          const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
+          if (depth <= max_depth_local &&  depth >= min_depth_local)
             {
-              grains = grains_model->get_grains(position_in_cartesian_coordinates,
-                                                depth,
-                                                composition_number,
-                                                grains,
-                                                min_depth,
-                                                max_depth);
+              for (const auto &grains_model: grains_models)
+                {
+                  grains = grains_model->get_grains(position_in_cartesian_coordinates,
+                                                    position_in_natural_coordinates,
+                                                    depth,
+                                                    composition_number,
+                                                    grains,
+                                                    min_depth_local,
+                                                    max_depth_local);
 
-              /*WBAssert(!std::isnan(composition), "Composition is not a number: " << composition
-                       << ", based on a temperature model with the name " << composition_model->get_name());
-              WBAssert(std::isfinite(composition), "Composition is not a finite: " << composition
-                       << ", based on a temperature model with the name " << composition_model->get_name());*/
+                  /*WBAssert(!std::isnan(composition), "Composition is not a number: " << composition
+                           << ", based on a temperature model with the name " << composition_model->get_name());
+                  WBAssert(std::isfinite(composition), "Composition is not a finite: " << composition
+                           << ", based on a temperature model with the name " << composition_model->get_name());*/
 
+                }
             }
         }
 

@@ -17,6 +17,9 @@
 
 #include "writer.h"
 
+#include "assert.h"
+
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -33,6 +36,7 @@ RAPIDJSON_DIAG_OFF(c++98-compat)
 
 RAPIDJSON_NAMESPACE_BEGIN
 
+#define MAX_PATH_LEVEL 25
 
 //! Writer with indentation and spacing.
 /*!
@@ -173,7 +177,7 @@ class MySTWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, S
 
           if (skip_next_push_back == false)
             {
-              for (unsigned int level = 20-path.size(); level != 0; level--)
+              for (unsigned int level = MAX_PATH_LEVEL-path.size(); level != 0; level--)
                 {
                   begin += ":";
                 }
@@ -194,21 +198,39 @@ class MySTWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, S
           path.push_back(std::to_string(array_number.back()));
           level_type.push_back(0);
 
-          for (unsigned int level = 20-path.size(); level != 0; level--)
+          for (unsigned int level = MAX_PATH_LEVEL-path.size(); level != 0; level--)
             {
               begin += ":";
             }
           begin += "{dropdown} " + get_path();
 
+
           wrote_dropdown =  true;
         }
-      else
+      else if (level_type.size() != 0 && level_type.back() == 5)
         {
-          for (unsigned int level = 20-path.size(); level != 0; level--)
+          unsigned int number = array_number.back() + 1;
+          array_number.back() = number;
+          path.push_back(std::to_string(array_number.back()));
+          level_type.push_back(0);
+
+          for (unsigned int level = MAX_PATH_LEVEL-path.size(); level != 0; level--)
             {
               begin += ":";
             }
           begin += "{dropdown} " + get_path();
+
+
+          wrote_dropdown =  true;
+        }
+      else
+        {
+          for (unsigned int level = MAX_PATH_LEVEL-path.size(); level != 0; level--)
+            {
+              begin += ":";
+            }
+          begin += "{dropdown} " + get_path();
+
 
           wrote_dropdown =  true;
           if (level_type.size() > 0 && (level_type.back() != 3 || level_type.size() == 0))
@@ -216,6 +238,7 @@ class MySTWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, S
         }
 
       Base::WriteString(begin.c_str(), static_cast<rapidjson::SizeType>(begin.size()), false);
+
       Base::os_->Put('\n');
       if (level_type.size() == 0 && !make_open)
         {
@@ -238,7 +261,7 @@ class MySTWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, S
             }
           else
             {
-              std::string name = ":name: closed_" + get_path_underscore() + "";
+              std::string name = ":name: closed" + get_path_underscore() + "";
               Base::WriteString(name.c_str(), static_cast<rapidjson::SizeType>(name.size()), false);
               Base::os_->Put('\n');
               Base::os_->Put('\n');
@@ -269,7 +292,17 @@ class MySTWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, S
           level_type.push_back(3);
           path.push_back(key);
         }
-      else if (level_type.size() > 0 && (level_type.back() == 1))
+      else if (key == "enum" || key == "required" )
+        {
+          level_type.push_back(4);
+          item += "- **" + std::string(str) + "**:";
+        }
+      else if (key == "anyOf")
+        {
+          level_type.push_back(5);
+          path.push_back(key);
+        }
+      else if (level_type.size() > 0 && (level_type.back() == 1 || level_type.back() == 2 || level_type.back() == 5))
         {
           // the level just below properties, these are the sections
           // add to the path
@@ -277,7 +310,7 @@ class MySTWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, S
         }
       else
         {
-          item += "- **" + std::string(str) + "**: ";
+          item += "- **" + std::string(str) + "**:";
         }
 
       Base::WriteString(item.c_str(), static_cast<rapidjson::SizeType>(item.length()), false);
@@ -304,15 +337,19 @@ class MySTWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, S
           ( level_type.back() == 3 || level_type.back() == 0))
         {
 
-          for (unsigned int level = 20-path.size(); level != 0; level--)
+          for (unsigned int level = MAX_PATH_LEVEL-path.size(); level != 0; level--)
             {
+              WBAssert(path.size() < MAX_PATH_LEVEL, "EA: path size is larger than 90: " << path.size() << ", level = " << level);
               end += ':';
             }
+
           path.pop_back();
         }
 
       if (level_type.size() > 0)
-        level_type.pop_back();
+        {
+          level_type.pop_back();
+        }
 
       Base::WriteString(end.c_str(), static_cast<rapidjson::SizeType>(end.length()), false);
 
@@ -325,13 +362,15 @@ class MySTWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, S
     {
       bool wrote_dropdown = false;
       std::string begin = "";
-      if (level_type.size() != 0 && level_type.back() == 2)
+      if (level_type.size() != 0 && (level_type.back() == 2|| level_type.back() == 3|| level_type.back() == 5 ))
         {
+          //begin += "level type" + std::to_string(level_type.back());
           // this is a properties starting, so first clear all the itemize
           // the lvel_type.push_back(1) has already been done by the key: properties
 
-          for (unsigned int level = 20-path.size(); level != 0; level--)
+          for (unsigned int level = MAX_PATH_LEVEL-path.size(); level != 0; level--)
             {
+              WBAssert(path.size() < MAX_PATH_LEVEL, "SA: path size is larger than 90: " << path.size() << ", level = " << level);
               begin += ":";
             }
           begin += "{dropdown} " + get_path();
@@ -341,7 +380,7 @@ class MySTWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, S
         }
       else
         {
-          begin = "[";
+          begin += "[";
           small_array = true;
           first_small_array = true;
         }
@@ -366,20 +405,19 @@ class MySTWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, S
             }
           else
             {
-              std::string name = ":name: closed_" + get_path_underscore() + "";
+              std::string name = ":name: closed" + get_path_underscore() + "";
               Base::WriteString(name.c_str(), static_cast<rapidjson::SizeType>(name.size()), false);
               Base::os_->Put('\n');
               Base::os_->Put('\n');
             }
         }
-
       return true;
     }
 
     bool EndArray(SizeType /*memberCount = 0*/)
     {
       std::string end = "";
-      if (level_type.size() != 0 && level_type.back() == 2)
+      if (level_type.size() != 0 && (level_type.back() == 1 || level_type.back() == 2 || level_type.back() == 3 || level_type.back() == 5))
         {
           array_number.pop_back();
           level_type.pop_back();
@@ -389,8 +427,15 @@ class MySTWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, S
         }
       else
         {
+
           end = "]";
+
           small_array = false;
+
+          if (level_type.size() > 0 && (level_type.back() == 4))// || level_type.back() == 0))
+            {
+              level_type.pop_back();
+            }
         }
 
       Base::WriteString(end.c_str(), static_cast<rapidjson::SizeType>(end.size()), false);
@@ -450,6 +495,9 @@ class MySTWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, S
         {
           return_path += "_" + string;
         }
+      const char space  = ' ';
+      const char dash = '-';
+      std::replace(return_path.begin(), return_path.end(), space, dash);
       return return_path == "" ? "_" : return_path;
     }
 

@@ -22,6 +22,7 @@
 
 
 #include "world_builder/features/oceanic_plate_models/composition/interface.h"
+#include "world_builder/objects/surface.h"
 
 
 namespace WorldBuilder
@@ -61,7 +62,7 @@ namespace WorldBuilder
             /**
              * declare and read in the world builder file into the parameters class
              */
-            void parse_entries(Parameters &prm) override final;
+            void parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates) override final;
 
 
             /**
@@ -69,6 +70,7 @@ namespace WorldBuilder
              * gravity and current composition.
              */
             double get_composition(const Point<3> &position,
+                                   const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
                                    const double depth,
                                    const unsigned int composition_number,
                                    double composition,
@@ -79,7 +81,9 @@ namespace WorldBuilder
           private:
             // uniform composition submodule parameters
             double min_depth;
+            Objects::Surface min_depth_surface;
             double max_depth;
+            Objects::Surface max_depth_surface;
             std::vector<unsigned int> compositions;
             std::vector<double> fractions;
             std::string operation;

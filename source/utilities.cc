@@ -19,6 +19,7 @@
 
 #include <algorithm>
 #include <iomanip>
+#include <iostream>
 
 #include "world_builder/nan.h"
 #include "world_builder/utilities.h"
@@ -77,6 +78,9 @@ namespace WorldBuilder
           // edge from V[i] to  V[i+1]
           if (point_list[j][1] <= point[1])
             {
+              // first check if a point is directly on a line (within epsilon)
+              if (approx(point_list[i][0],point[0]) && approx(point_list[i][1],point[1]))
+                return true;
               // start y <= P.y
               if (point_list[i][1] >= point[1])      // an upward crossing
                 {
@@ -256,6 +260,30 @@ namespace WorldBuilder
     std::array<double,2> NaturalCoordinate::get_surface_coordinates() const
     {
       std::array<double,2> coordinate;
+
+      switch (coordinate_system)
+        {
+          case CoordinateSystem::cartesian:
+            coordinate[0] = coordinates[0];
+            coordinate[1] = coordinates[1];
+            break;
+
+          case CoordinateSystem::spherical:
+            coordinate[0] = coordinates[1];
+            coordinate[1] = coordinates[2];
+            break;
+
+          default:
+            WBAssertThrow (false, "Coordinate system not implemented.");
+        }
+
+      return coordinate;
+    }
+
+
+    Point<2> NaturalCoordinate::get_surface_point() const
+    {
+      Point<2> coordinate(0,0,coordinate_system);
 
       switch (coordinate_system)
         {

@@ -30,6 +30,7 @@
 #include "world_builder/features/oceanic_plate_models/temperature/interface.h"
 #include "world_builder/features/subducting_plate.h"
 #include "world_builder/types/object.h"
+#include "world_builder/utilities.h"
 
 #include "rapidjson/error/en.h"
 #include "rapidjson/istreamwrapper.h"
@@ -446,6 +447,210 @@ namespace WorldBuilder
           }
       }
     return vector;
+  }
+
+
+  std::pair<std::vector<double>,std::vector<double>>
+                                                  Parameters::get(const std::string &name,
+                                                                  const std::vector<Point<2> > &addition_points)
+  {
+    // There are four cases:
+    // 1. No value provided: use the default value everywhere. Return first with one value and second with size 0.
+    // 2. One double provided: use the default value everywhere. Return first with one value and second with size 0.
+    // 3. One value in a double array and no points provided: use that value everywhere. Return first with one value and second with size 0.
+    // 4. Other: fill the vectors with the default value and addition points and then add new point.
+    //    If a value without points is encountered, the additional points are used.
+    std::pair<std::vector<double>,std::vector<double>> result;
+
+    const std::string strict_base = this->get_full_json_path();
+
+    // start with adding the additional points with the default value
+    // to do this we need the default value
+    double default_value = 0;
+    bool is_array = true;
+    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr && Pointer((strict_base + "/" + name).c_str()).Get(parameters)->IsArray())
+      {
+        std::string value_def_path = get_full_json_schema_path() + "/" + name + "/oneOf/1/items/items/anyOf/0/default value";
+        Value *value_def = Pointer(value_def_path.c_str()).Get(declarations);
+        WBAssertThrow(value_def != nullptr,
+                      "internal error: could not retrieve the default value at: "
+                      << value_def_path);
+
+        // Since the default value is set in the code, if it fails it is an internal error, not a user error.
+        // So no try/catch needed.
+        default_value = value_def->GetDouble();
+      }
+    else
+      {
+        is_array = false;
+        Value *value_def = Pointer((get_full_json_schema_path() + "/" + name + "/oneOf/0/default value").c_str()).Get(declarations);
+        WBAssertThrow(value_def != nullptr,
+                      "internal error: could not retrieve the default value at: "
+                      <<get_full_json_schema_path() + "/" + name + "/oneOf/0/default value");
+
+
+        // Since the default value is set in the code, if it fails it is an internal error, not a user error.
+        // So no try/catch needed.
+        default_value = value_def->GetDouble();
+      }
+
+
+    // check if there is a user defined value
+    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr)
+      {
+        // there is a user defined value, so either case 2, 3 or 4.
+        if (is_array)
+          {
+            Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+            if (array->Size() == 1
+                && Pointer((strict_base + "/" + name + "/0/1").c_str()).Get(parameters) == nullptr)
+              {
+                // case 2: Return first with one value and second with size 0.
+                double value = 0;
+                try
+                  {
+                    value = Pointer((strict_base + "/" + name + "/0/0").c_str()).Get(parameters)->GetDouble();
+                  }
+                catch (...)
+                  {
+                    WBAssertThrow(false, "Could not convert values of " << strict_base << "/" << name << "/0/0 into a double. "
+                                  << "The provided value was \"" <<  Pointer((strict_base + "/" + name + "/0/0").c_str()).Get(parameters)->GetString() << "\".");
+                  }
+                result.first.emplace_back(value);
+              }
+            else
+              {
+                // case 3: fill the vectors with the default value and addition points and then add new point.
+                //         If a value without points is encountered, the additional points are used.
+
+                // first fill with additional points at default value
+                for (unsigned int addition_point_i = 0; addition_point_i < addition_points.size(); ++addition_point_i)
+                  {
+                    result.first.emplace_back(default_value);
+                    result.second.emplace_back(addition_points[addition_point_i][0]);
+                    result.second.emplace_back(addition_points[addition_point_i][1]);
+                  }
+
+                // second, go through all the points in order
+                for (size_t i = 0; i < array->Size(); ++i )
+                  {
+                    // now parse a single value_at_point.
+                    const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
+                    // Let's assume that the file is correct, because it has been checked with the json schema.
+                    // So there are exactly two values, the first value is a double, the second an array of 2d arrays (points).
+
+                    // Get the double
+                    double value;
+                    Value *value_pointer = Pointer((base + "/0").c_str()).Get(parameters);
+
+                    WBAssertThrow(value_pointer != nullptr, "internal error: this should not happen.");
+
+                    try
+                      {
+                        value = value_pointer->GetDouble();
+                      }
+                    catch (...)
+                      {
+                        WBAssertThrow(false, "Could not convert values of " << base << "/0 into doubles. "
+                                      << "The provided value was \"" <<  Pointer((base + "/0").c_str()).Get(parameters)->GetString() << "\".");
+                      }
+
+                    // now get the array of points.
+                    Value *coordinates_array = Pointer((base + "/1").c_str()).Get(parameters);
+                    if (coordinates_array != nullptr)
+                      {
+                        for (size_t coordinate_i = 0; coordinate_i < coordinates_array->Size(); ++coordinate_i )
+                          {
+                            // Let's assume that the file is correct, because it has been checked with the json schema.
+                            // That means that there are exactly two values per item
+                            double coordinate_0;
+                            double coordinate_1;
+                            try
+                              {
+                                coordinate_0 = Pointer((base + "/1/" + std::to_string(coordinate_i) + "/0").c_str()).Get(parameters)->GetDouble();
+                              }
+                            catch (...)
+                              {
+                                WBAssertThrow(false, "Could not convert values of " << base + "/1/" + std::to_string(coordinate_i) + "/0"
+                                              << " into a Point<2> array, because it could not convert the 1st sub-elements into doubles. "
+                                              << "The provided value was \""
+                                              <<  Pointer((base + "/1/" + std::to_string(coordinate_i) + "/0").c_str()).Get(parameters)->GetString()
+                                              << "\".");
+                              }
+                            try
+                              {
+                                coordinate_1 = Pointer((base + "/1/" + std::to_string(coordinate_i) + "/1").c_str()).Get(parameters)->GetDouble();
+                              }
+                            catch (...)
+                              {
+                                WBAssertThrow(false, "Could not convert values of " << base + "/1/" + std::to_string(coordinate_i) + "/1"
+                                              << " into a Point<2> array, because it could not convert the 2nd sub-elements into doubles. "
+                                              << "The provided value was \""
+                                              <<  Pointer((base + "/1/" + std::to_string(coordinate_i) + "/1").c_str()).Get(parameters)->GetString()
+                                              << "\".");
+                              }
+                            bool found_same_point = false;
+                            unsigned int coordinate_pair_i = 0;
+                            for (; coordinate_pair_i < result.second.size(); coordinate_pair_i+=2)
+                              {
+                                if (Utilities::approx(result.second[coordinate_pair_i],coordinate_0) && Utilities::approx(result.second[coordinate_pair_i+1],coordinate_1))
+                                  {
+                                    found_same_point = true;
+                                    break;
+                                  }
+                              }
+                            if (found_same_point)
+                              {
+                                // set the value to the new value
+                                result.first[coordinate_pair_i/2] = value;
+                              }
+                            else
+                              {
+                                // add a new point
+                                result.first.emplace_back(value);
+                                result.second.emplace_back(coordinate_0 * (coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical ? Utilities::const_pi / 180.0 : 1.));
+                                result.second.emplace_back(coordinate_1 * (coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical ? Utilities::const_pi / 180.0 : 1.));
+                              }
+                          }
+
+                      }
+                    else
+                      {
+                        // no points are provided, so use the value to fill put in the additional points
+                        // at that value. Since we know that all the additional points are at the start
+                        // we can easily overwrite the values.
+                        for (unsigned int addition_point_i = 0; addition_point_i < addition_points.size(); ++addition_point_i)
+                          {
+                            result.first[addition_point_i] = value;
+                          }
+                      }
+                  }
+              }
+          }
+        else
+          {
+            // case 2: there one value, not an array
+            double value = 0;
+            try
+              {
+                value = Pointer((strict_base + "/" + name).c_str()).Get(parameters)->GetDouble();
+              }
+            catch (...)
+              {
+                WBAssertThrow(false, "Could not convert values of " << strict_base << "/" << name << " into a double. "
+                              << "The provided value was \"" <<  Pointer((strict_base + "/" + name).c_str()).Get(parameters)->GetString() << "\".");
+              }
+            result.first.emplace_back(value);
+          }
+      }
+    else
+      {
+        // there is no user defined value. Case one: return the default value and no points
+        result.first.emplace_back(default_value);
+      }
+
+    return result;
   }
 
   template<>
