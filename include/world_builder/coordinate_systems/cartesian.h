@@ -22,9 +22,6 @@
 
 #include "world_builder/coordinate_systems/interface.h"
 
-#include "world_builder/utilities.h"
-
-
 namespace WorldBuilder
 {
 

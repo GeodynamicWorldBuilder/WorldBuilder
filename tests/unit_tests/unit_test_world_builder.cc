@@ -44,6 +44,7 @@
 #include "world_builder/types/unsigned_int.h"
 #include "world_builder/types/value_at_points.h"
 #include "world_builder/objects/surface.h"
+#include "world_builder/objects/natural_coordinate.h"
 #include "world_builder/utilities.h"
 #include "world_builder/world.h"
 
@@ -583,12 +584,12 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   std::unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",nullptr));
 
   // Test the natural coordinate system
-  Utilities::NaturalCoordinate nca1(std::array<double,3> {{1,2,3}},*cartesian);
+  Objects::NaturalCoordinate nca1(std::array<double,3> {{1,2,3}},*cartesian);
   CHECK(nca1.get_coordinates() == std::array<double,3> {{1,2,3}});
   CHECK(nca1.get_surface_coordinates() == std::array<double,2> {{1,2}});
   CHECK(nca1.get_depth_coordinate() == Approx(3.0));
 
-  Utilities::NaturalCoordinate ncp1(Point<3>(1,2,3,CoordinateSystem::cartesian),*cartesian);
+  Objects::NaturalCoordinate ncp1(Point<3>(1,2,3,CoordinateSystem::cartesian),*cartesian);
   CHECK(ncp1.get_coordinates() == std::array<double,3> {{1,2,3}});
   CHECK(ncp1.get_surface_coordinates() == std::array<double,2> {{1,2}});
   CHECK(ncp1.get_depth_coordinate() == Approx(3.0));
@@ -597,7 +598,7 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   std::unique_ptr<CoordinateSystems::Interface> spherical(CoordinateSystems::Interface::create("spherical",nullptr));
 
   // Test the natural coordinate system
-  Utilities::NaturalCoordinate nsa1(std::array<double,3> {{1,2,3}},*spherical);
+  Objects::NaturalCoordinate nsa1(std::array<double,3> {{1,2,3}},*spherical);
   std::array<double,3> nsa1_array = nsa1.get_coordinates();
   CHECK(nsa1_array[0] == Approx(std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0)));
   CHECK(nsa1_array[1] == Approx(1.1071487178));
@@ -608,7 +609,7 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   CHECK(nsa1.get_depth_coordinate() == Approx(std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0)));
 
 
-  Utilities::NaturalCoordinate nsp1(Point<3>(1,2,3,CoordinateSystem::spherical),*spherical);
+  Objects::NaturalCoordinate nsp1(Point<3>(1,2,3,CoordinateSystem::spherical),*spherical);
   std::array<double,3> nsp1_array = nsp1.get_coordinates();
   CHECK(nsp1_array[0] == Approx(std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0)));
   CHECK(nsp1_array[1] == Approx(1.1071487178));
@@ -624,7 +625,7 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   Parameters prm(world);
   std::unique_ptr<CoordinateSystems::Interface> invalid(new CoordinateSystems::Invalid(nullptr));
   invalid->parse_entries(prm);
-  Utilities::NaturalCoordinate ivp1(Point<3>(1,2,3,CoordinateSystem::invalid),*invalid);
+  Objects::NaturalCoordinate ivp1(Point<3>(1,2,3,CoordinateSystem::invalid),*invalid);
   std::array<double,3> ivp1_array = ivp1.get_coordinates();
   CHECK(std::isnan(ivp1_array[0]));
   CHECK(std::isnan(ivp1_array[1]));
@@ -4809,8 +4810,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   Point<3> position(10,0,0,cartesian);
 
-  WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  Objects::NaturalCoordinate natural_coordinate = Objects::NaturalCoordinate(position,
+                                                                             *cartesian_system);
   Point<2> reference_point(0,0,cartesian);
 
   std::vector<Point<2> > coordinates;
@@ -4928,8 +4929,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   // center square test 3
   position[1] = 20;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -4982,8 +4983,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   // center square test 5
   position[1] = -10;
   position[2] = -10;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5009,8 +5010,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   // begin section square test 6
   position[0] = 0;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5037,8 +5038,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   // end section square test 7
   position[0] = 20;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5064,8 +5065,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   // before begin section square test 8
   position[0] = -10;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5118,8 +5119,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   // beyond end section square test 9
   position[0] = 25;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5176,8 +5177,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 0;
   position[2] = 5;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5205,8 +5206,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 0;
   position[2] = 5;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5233,8 +5234,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 0;
   position[2] = -5;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5261,8 +5262,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 0;
   position[2] = -5;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5288,8 +5289,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 25;
   position[1] = 0;
   position[2] = 0;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   coordinates.emplace_back(30,10,cartesian);
 
   slab_segment_lengths.resize(3);
@@ -5334,8 +5335,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 0;
   position[2] = 10-10*tan(22.5*dtr);
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5361,8 +5362,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 25;
   position[1] = 0;
   position[2] = 10-10*tan((22.5*1.5)*dtr);
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5388,8 +5389,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 30;
   position[1] = 0;
   position[2] = 10-10*tan(45*dtr);
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5436,8 +5437,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10;
   position[2] = 10-100;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5463,8 +5464,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10;
   position[2] = 10-101;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5490,8 +5491,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10;
   position[2] = 10-200;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5519,8 +5520,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10;
   position[2] = 10-201;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5549,8 +5550,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 25;
   position[1] = 10;
   position[2] = 10-75;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5576,8 +5577,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 25;
   position[1] = 10;
   position[2] = 10-76;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5603,8 +5604,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 25;
   position[1] = 10;
   position[2] = 10-150;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5632,8 +5633,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 25;
   position[1] = 10;
   position[2] = 10-151;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5660,8 +5661,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 30;
   position[1] = 10;
   position[2] = 10-50;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5687,8 +5688,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 30;
   position[1] = 10;
   position[2] = 10-51;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5714,8 +5715,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 30;
   position[1] = 10;
   position[2] = 10-100;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5743,8 +5744,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 30;
   position[1] = 10;
   position[2] = 10-101;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5775,8 +5776,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   //cartesian_system->declare_entries();
 
   Point<3> position(10,0,0,cartesian);
-  WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  Objects::NaturalCoordinate natural_coordinate = Objects::NaturalCoordinate(position,
+                                                                             *cartesian_system);
   Point<2> reference_point(0,0,cartesian);
 
   std::vector<Point<2> > coordinates;
@@ -5829,8 +5830,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 0;
   position[2] = 0;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   Utilities::interpolation x_spline;
   Utilities::interpolation y_spline;
   Utilities::InterpolationType interpolation_type = Utilities::InterpolationType::None;
@@ -5861,8 +5862,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 5;
   position[2] = 0;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5889,8 +5890,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = -5;
   position[2] = 0;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5918,8 +5919,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10 - 10 * sqrt(2)/2;
   position[2] = 10 * sqrt(2)/2;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5946,8 +5947,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10 - 10 * sqrt(2);
   position[2] = 10 * sqrt(2);
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -5974,8 +5975,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10;
   position[2] = 0;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6007,8 +6008,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = -5;
   position[2] = -1;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6040,8 +6041,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 5;
   position[2] = 5;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6068,8 +6069,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10 - 5 * sqrt(2)/2;
   position[2] = 5 + 5 * sqrt(2)/2;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6110,8 +6111,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 0;
   position[2] = 0;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6137,8 +6138,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10 - 10 * sqrt(2)/2;
   position[2] = 10 * sqrt(2)/2;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6164,8 +6165,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10 - 10 * sqrt(2)/2;
   position[2] = -10 * sqrt(2)/2;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6193,8 +6194,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10;
   position[2] = -10;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6234,8 +6235,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 0;
   position[2] = 0;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6261,8 +6262,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10;
   position[2] = -10;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6288,8 +6289,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10;
   position[2] = -11;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6315,8 +6316,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10;
   position[2] = -9;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6342,8 +6343,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 20;
   position[2] = 0;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6370,8 +6371,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 21;
   position[2] = 0;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6397,8 +6398,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 19;
   position[2] = 0;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6439,8 +6440,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 0;
   position[2] = 0;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6466,8 +6467,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10;
   position[2] = -10;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6493,8 +6494,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 20;
   position[2] = 0;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6520,8 +6521,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10 + 1e-14 + 10 * sqrt(2)/2; // somehow it doesn't get the exact value here, so adding an epsiolon of 1e-14.
   position[2] = 10 * sqrt(2)/2;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6564,8 +6565,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 0;
   position[2] = 0;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6594,8 +6595,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 0;
   position[2] = 0;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6622,8 +6623,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10;
   position[2] = 0;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6667,8 +6668,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 0;
   position[2] = 0;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6711,8 +6712,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 0;
   position[2] = 0;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6738,8 +6739,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = -10;
   position[2] = -10;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6765,8 +6766,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10 - (20 - 10 * sqrt(2)/2);
   position[2] = -10 * sqrt(2)/2;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6794,8 +6795,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   double angle = 180+0.1;
   position[1] = 10 - (20 * std::cos(0 * Utilities::const_pi/180) + 10 * std::cos((angle) * Utilities::const_pi/180));
   position[2] = 0 * std::cos(0 * Utilities::const_pi/180) + 10 * std::sin((angle) * Utilities::const_pi/180);
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6822,8 +6823,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10 - (20 - 10 * std::cos(0.001 * Utilities::const_pi/180));
   position[2] = - 10 * std::sin(0.001 * Utilities::const_pi/180);
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6863,8 +6864,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10 - 10 * std::cos(45.000 * Utilities::const_pi/180);
   position[2] = 10 * std::sin(45.000 * Utilities::const_pi/180);
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6891,8 +6892,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   angle = 45;
   position[1] = 10 - (10 * std::cos((angle) * Utilities::const_pi/180));
   position[2] = 10 * std::sin((angle) * Utilities::const_pi/180);
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6919,8 +6920,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   angle = 180+45;
   position[1] = 10 - (20 * std::cos(45 * Utilities::const_pi/180) + 10 * std::cos((angle) * Utilities::const_pi/180));
   position[2] = 20 * std::cos(45 * Utilities::const_pi/180) + 10 * std::sin((angle) * Utilities::const_pi/180);
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6948,8 +6949,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   angle = 180+46;
   position[1] = 10 - (20 * std::cos(45 * Utilities::const_pi/180) + 10 * std::cos((angle) * Utilities::const_pi/180));
   position[2] = 20 * std::cos(45 * Utilities::const_pi/180) + 10 * std::sin((angle) * Utilities::const_pi/180);
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -6978,8 +6979,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   angle = 180+46;
   position[1] = 10 - (20 * std::cos(45 * Utilities::const_pi/180) + 10 * std::cos((angle) * Utilities::const_pi/180))+0.1;
   position[2] = 20 * std::cos(45 * Utilities::const_pi/180) + 10 * std::sin((angle) * Utilities::const_pi/180);
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -7006,8 +7007,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   angle = 180+46;
   position[1] = 10 - (20 * std::cos(45 * Utilities::const_pi/180) + 10 * std::cos((angle) * Utilities::const_pi/180))-0.1;
   position[2] = 20 * std::cos(45 * Utilities::const_pi/180) + 10 * std::sin((angle) * Utilities::const_pi/180);
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -7034,8 +7035,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   angle = 180+90;
   position[1] = 10 - (20 * std::cos(45 * Utilities::const_pi/180) + 10 * std::cos((angle) * Utilities::const_pi/180));
   position[2] = 20 * std::cos(45 * Utilities::const_pi/180) + 10 * std::sin((angle) * Utilities::const_pi/180);
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -7063,8 +7064,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10;
   position[2] = 10;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -7091,8 +7092,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 10;
   position[1] = 10;
   position[2] = 10;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -7119,8 +7120,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 15;
   position[1] = 10;
   position[2] = 10;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -7147,8 +7148,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 20;
   position[1] = 10;
   position[2] = 10;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -7175,8 +7176,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 25;
   position[1] = 10;
   position[2] = 10;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -7205,8 +7206,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[0] = 30;
   position[1] = 10;
   position[2] = 10;
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *cartesian_system);
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *cartesian_system);
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -7246,8 +7247,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   Point<3> position(10,0 * dtr,10 * dtr,spherical);
   position = Point<3>(world.parameters.coordinate_system->natural_to_cartesian_coordinates(position.get_array()),cartesian);
 
-  WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *(world.parameters.coordinate_system));
+  Objects::NaturalCoordinate natural_coordinate = Objects::NaturalCoordinate(position,
+                                                                             *(world.parameters.coordinate_system));
   Point<2> reference_point(0,0,spherical);
 
   std::vector<Point<2> > coordinates;
@@ -7298,8 +7299,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   position = Point<3>(10,10 * dtr,10 * dtr,spherical);
   position = Point<3>(world.parameters.coordinate_system->natural_to_cartesian_coordinates(position.get_array()),cartesian);
 
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *(world.parameters.coordinate_system));
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *(world.parameters.coordinate_system));
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -7330,8 +7331,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   position = Point<3>(10,0 * dtr,45 * dtr,spherical);
   position = Point<3>(world.parameters.coordinate_system->natural_to_cartesian_coordinates(position.get_array()),cartesian);
 
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *(world.parameters.coordinate_system));
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *(world.parameters.coordinate_system));
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
@@ -7357,8 +7358,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
 // spherical test 3
   position = Point<3>(5,0 * dtr,45 * dtr,spherical);
   position = Point<3>(world.parameters.coordinate_system->natural_to_cartesian_coordinates(position.get_array()),cartesian);
-  natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(position,
-                                                                  *(world.parameters.coordinate_system));
+  natural_coordinate = Objects::NaturalCoordinate(position,
+                                                  *(world.parameters.coordinate_system));
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,

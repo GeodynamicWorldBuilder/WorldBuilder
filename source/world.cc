@@ -272,8 +272,8 @@ namespace WorldBuilder
                                    specific_heat) * depth);
 
 
-    WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(point,
-                                                                    *(this->parameters.coordinate_system));
+    Objects::NaturalCoordinate natural_coordinate = Objects::NaturalCoordinate(point,
+                                                                               *(this->parameters.coordinate_system));
     for (auto &&it : parameters.features)
       {
         temperature = it->temperature(point,natural_coordinate,depth,gravity_norm,temperature);
@@ -336,8 +336,8 @@ namespace WorldBuilder
     // We receive the cartesian points from the user.
     Point<3> point(point_,cartesian);
 
-    WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(point,
-                                                                    *(this->parameters.coordinate_system));
+    Objects::NaturalCoordinate natural_coordinate = Objects::NaturalCoordinate(point,
+                                                                               *(this->parameters.coordinate_system));
     double composition = 0;
     for (auto &&it : parameters.features)
       {
@@ -405,8 +405,8 @@ namespace WorldBuilder
   {
     // We receive the cartesian points from the user.
     Point<3> point(point_,cartesian);
-    WorldBuilder::Utilities::NaturalCoordinate natural_coordinate = WorldBuilder::Utilities::NaturalCoordinate(point,
-                                                                    *(this->parameters.coordinate_system));
+    Objects::NaturalCoordinate natural_coordinate = Objects::NaturalCoordinate(point,
+                                                                               *(this->parameters.coordinate_system));
     WorldBuilder::grains grains;
     grains.sizes.resize(number_of_grains,0);
     grains.rotation_matrices.resize(number_of_grains);

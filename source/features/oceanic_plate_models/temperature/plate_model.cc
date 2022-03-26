@@ -116,7 +116,7 @@ namespace WorldBuilder
 
         double
         PlateModel::get_temperature(const Point<3> &position,
-                                    const NaturalCoordinate &position_in_natural_coordinates,
+                                    const Objects::NaturalCoordinate &position_in_natural_coordinates,
                                     const double depth,
                                     const double gravity_norm,
                                     double temperature_,
@@ -129,8 +129,8 @@ namespace WorldBuilder
               const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
               if (depth <= max_depth_local &&  depth >= min_depth_local)
                 {
-                  WorldBuilder::Utilities::NaturalCoordinate position_in_natural_coordinates_at_min_depth = WorldBuilder::Utilities::NaturalCoordinate(position,
-                      *(world->parameters.coordinate_system));
+                  Objects::NaturalCoordinate position_in_natural_coordinates_at_min_depth = Objects::NaturalCoordinate(position,
+                                                                                            *(world->parameters.coordinate_system));
                   position_in_natural_coordinates_at_min_depth.get_ref_depth_coordinate() += depth-min_depth;
 
                   double bottom_temperature_local = bottom_temperature;

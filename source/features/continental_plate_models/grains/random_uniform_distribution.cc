@@ -117,7 +117,7 @@ namespace WorldBuilder
 
         WorldBuilder::grains
         RandomUniformDistribution::get_grains(const Point<3> & /*position_in_cartesian_coordinates*/,
-                                              const NaturalCoordinate &position_in_natural_coordinates,
+                                              const Objects::NaturalCoordinate &position_in_natural_coordinates,
                                               const double depth,
                                               const unsigned int composition_number,
                                               WorldBuilder::grains grains_,

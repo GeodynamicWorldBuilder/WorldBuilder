@@ -69,7 +69,7 @@ namespace WorldBuilder
              * gravity and current composition.
              */
             double get_composition(const Point<3> &position,
-                                   const Utilities::NaturalCoordinate &position_in_natural_coordinates,
+                                   const Objects::NaturalCoordinate &position_in_natural_coordinates,
                                    const double depth,
                                    const unsigned int composition_number,
                                    double composition,

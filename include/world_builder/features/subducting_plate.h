@@ -92,7 +92,7 @@ namespace WorldBuilder
          * For the spherical system, the buffer zone along the longitudal direction is calculated using the
          * corresponding latitude points.
          */
-        BoundingBox<2>  get_bounding_box (const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
+        BoundingBox<2>  get_bounding_box (const Objects::NaturalCoordinate &position_in_natural_coordinates,
                                           const double depth) const;
 
 
@@ -101,7 +101,7 @@ namespace WorldBuilder
          * gravity and current temperature.
          */
         double temperature(const Point<3> &position_in_cartesian_coordinates,
-                           const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
+                           const Objects::NaturalCoordinate &position_in_natural_coordinates,
                            const double depth,
                            const double gravity,
                            double temperature) const override final;
@@ -114,7 +114,7 @@ namespace WorldBuilder
          * of that composition at this location and depth.
          */
         double composition(const Point<3> &position_in_cartesian_coordinates,
-                           const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
+                           const Objects::NaturalCoordinate &position_in_natural_coordinates,
                            const double depth,
                            const unsigned int composition_number,
                            double composition_value) const override final;
@@ -128,7 +128,7 @@ namespace WorldBuilder
 
         WorldBuilder::grains
         grains(const Point<3> &position_in_cartesian_coordinates,
-               const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
+               const Objects::NaturalCoordinate &position_in_natural_coordinates,
                const double depth,
                const unsigned int composition_number,
                WorldBuilder::grains grains) const override final;

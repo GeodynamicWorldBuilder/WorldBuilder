@@ -76,7 +76,7 @@ namespace WorldBuilder
              * gravity and current temperature.
              */
             double get_temperature(const Point<3> &position,
-                                   const WorldBuilder::Utilities::NaturalCoordinate &position_in_natural_coordinates,
+                                   const Objects::NaturalCoordinate &position_in_natural_coordinates,
                                    const double depth,
                                    const double gravity,
                                    double temperature,
