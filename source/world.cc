@@ -28,6 +28,9 @@
 #include "world_builder/types/object.h"
 #include "world_builder/types/plugin_system.h"
 #include "world_builder/types/point.h"
+#include "world_builder/gravity_model/interface.h"
+
+#include <iostream>
 
 #ifdef WB_WITH_MPI
 #define OMPI_SKIP_MPICXX 1
@@ -111,6 +114,8 @@ namespace WorldBuilder
 
       prm.declare_entry("coordinate system", Types::PluginSystem("cartesian", CoordinateSystems::Interface::declare_entries, {"model"}, false),"A coordinate system. Cartesian or spherical.");
 
+      prm.declare_entry("gravity model", Types::PluginSystem("uniform", GravityModel::Interface::declare_entries, {"model"}, false),"A gravity model for the world.");
+
       prm.declare_entry("features", Types::PluginSystem("",Features::Interface::declare_entries, {"model", "coordinates"}),"A list of features.");
 
     }
@@ -150,6 +155,17 @@ namespace WorldBuilder
      */
     prm.coordinate_system = prm.get_unique_pointer<CoordinateSystems::Interface>("coordinate system");
     prm.coordinate_system->parse_entries(prm);
+
+    /**
+     * Thirdly load the gravity model parameters.
+     */
+    prm.gravity_model = prm.get_unique_pointer<GravityModel::Interface>("gravity model");
+
+    prm.enter_subsection("gravity model");
+    {
+      prm.gravity_model->parse_entries(prm);
+    }
+    prm.leave_subsection();
 
     prm.get_unique_pointers<Features::Interface>("features",prm.features);
 

@@ -29,6 +29,7 @@
 #include "world_builder/features/oceanic_plate_models/grains/interface.h"
 #include "world_builder/features/oceanic_plate_models/temperature/interface.h"
 #include "world_builder/features/subducting_plate.h"
+#include "world_builder/gravity_model/interface.h"
 #include "world_builder/types/object.h"
 #include "world_builder/utilities.h"
 
@@ -225,6 +226,7 @@ namespace WorldBuilder
   {
     const std::string base = this->get_full_json_path();
     const Value *value = Pointer((base + "/" + name).c_str()).Get(parameters);
+
 #ifdef debug
     bool required = false;
     if (Pointer((base + "/required").c_str()).Get(declarations) != NULL)
@@ -1560,6 +1562,7 @@ namespace WorldBuilder
                                 collapse + "/" + path[i]
                                 :
                                 collapse;
+
         std::string type = Pointer((base_path + "/type").c_str()).Get(declarations)->GetString();
 
         if (type == "array")
@@ -1631,8 +1634,18 @@ namespace WorldBuilder
 
                     // we need to get the json path relevant for the current declaration string
                     // we are interested in, which requires an offset of 2.
-                    WBAssert(Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters) != nullptr, "Could not find model in: " << get_full_json_path(i+2) + "/model");
-                    std::string parameters_string = Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters)->GetString();
+                    const Value *value = Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters);
+
+
+                    if (value == nullptr)
+                      {
+                        value = Pointer((collapse + "/" + path[i]  + "/default value").c_str()).Get(declarations);
+                        WBAssertThrow(value != nullptr,
+                                      "internal error: could not retrieve the default value at: "
+                                      << collapse + "/" + path[i]  + "/default value, for value: ");
+                      }
+
+                    std::string parameters_string = value->GetString();
 
                     // currently in our case these are always objects, so go directly to find the option we need.
                     if (declarations_string == parameters_string)
@@ -1676,6 +1689,14 @@ namespace WorldBuilder
    * Note that the variable with this name has to be loaded before this function is called.
    */
   template std::unique_ptr<CoordinateSystems::Interface> Parameters::get_unique_pointer<CoordinateSystems::Interface>(const std::string &name);
+
+
+  /**
+   * Returns a vector of pointers to the Gravity Model based on the provided name.
+   * Note that the variable with this name has to be loaded before this function is called.
+   */
+  template std::unique_ptr<GravityModel::Interface> Parameters::get_unique_pointer<GravityModel::Interface>(const std::string &name);
+
 
 
   /**
