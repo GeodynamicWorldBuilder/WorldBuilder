@@ -38,13 +38,13 @@ TEST_CASE("Gravity uniform")
   std::string file_name = Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_cartesian.wb";
   World world(file_name);
 
-  CHECK(world.parameters.gravity_model->gravity_norm(Point<3>(10,10,10,CoordinateSystem::cartesian)) == Approx(9.81));
+  CHECK(world.parameters.gravity_model->gravity_norm(Point<3>(10,10,10,CoordinateSystem::cartesian)) == Approx(10.));
 
   auto vector_cartesian = world.parameters.gravity_model->gravity_vector(Point<3>(10,10,10,CoordinateSystem::cartesian));
 
   CHECK(vector_cartesian[0] == Approx(0));
   CHECK(vector_cartesian[1] == Approx(0));
-  CHECK(vector_cartesian[2] == Approx(-9.81));
+  CHECK(vector_cartesian[2] == Approx(-10.));
 
 
   std::string file_name_spherical = Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_spherical.wb";
@@ -52,12 +52,12 @@ TEST_CASE("Gravity uniform")
 
   auto vector_spherical = world_spherical.parameters.gravity_model->gravity_vector(Point<3>(1,2,4,CoordinateSystem::spherical));
 
-  CHECK(vector_spherical[0] == Approx(-2.1407175032));
-  CHECK(vector_spherical[1] == Approx(-4.2814350064));
-  CHECK(vector_spherical[2] == Approx(-8.5628700129));
+  CHECK(vector_spherical[0] == Approx(-2.1821789024));
+  CHECK(vector_spherical[1] == Approx(-4.3643578047));
+  CHECK(vector_spherical[2] == Approx(-8.7287156094));
   CHECK(std::sqrt(vector_spherical[0]*vector_spherical[0]+
                   vector_spherical[1]*vector_spherical[1]+
-                  vector_spherical[2]*vector_spherical[2]) == Approx(9.81));
+                  vector_spherical[2]*vector_spherical[2]) == Approx(10.));
 
   world_spherical.parameters.coordinate_system =
     std::unique_ptr<CoordinateSystems::Interface>(new CoordinateSystems::Invalid(nullptr));

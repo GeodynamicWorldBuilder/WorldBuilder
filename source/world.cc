@@ -236,7 +236,7 @@ namespace WorldBuilder
   double
   World::temperature(const std::array<double,2> &point,
                      const double depth,
-                     const double gravity_norm) const
+                     const double /*gravity_norm*/) const
   {
     // turn it into a 3d coordinate and call the 3d temperature function
     WBAssertThrow(dim == 2, "This function can only be called when the cross section "
@@ -269,16 +269,18 @@ namespace WorldBuilder
 
     std::array<double, 3> point_3d_cartesian = this->parameters.coordinate_system->natural_to_cartesian_coordinates(coord_3d.get_array());
 
-    return temperature(point_3d_cartesian, depth, gravity_norm);
+    return temperature(point_3d_cartesian, depth, NaN::DSNAN);
   }
 
   double
   World::temperature(const std::array<double,3> &point_,
                      const double depth,
-                     const double gravity_norm) const
+                     const double /*gravity_norm*/) const
   {
     // We receive the cartesian points from the user.
     Point<3> point(point_,cartesian);
+
+    const double gravity_norm = this->parameters.gravity_model->gravity_norm(point);
 
     if (std::fabs(depth) < 2.0 * std::numeric_limits<double>::epsilon() && force_surface_temperature)
       return this->surface_temperature;
