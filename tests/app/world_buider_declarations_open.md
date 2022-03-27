@@ -195,6 +195,52 @@
 
 ::::::::::::::::::::::::
 
+::::::::::::::::::::::::{dropdown} /gravity model
+:open:
+:name: open_gravity-model
+
+- **documentation**:A gravity model for the world.
+- **default value**:uniform
+- **type**:object
+:::::::::::::::::::::::{dropdown} /gravity model/oneOf
+:open:
+:name: open_gravity-model_oneOf
+
+::::::::::::::::::::::{dropdown} /gravity model/oneOf/1
+:open:
+:name: open_gravity-model_oneOf_1
+
+- **type**:object
+- **documentation**:Uniform gravity model. It returns the gravity vector in a Cartesian coordinate system at a given position, which has a constant magitude for the whole domain. The vector points down in cartesian coordinates and to the center of the sphere in spherical coordinates.
+- **additionalProperties**:false
+- **required**:[model]
+
+:::::::::::::::::::::{dropdown} /gravity model/oneOf/1/model
+:open:
+:name: open_gravity-model_oneOf_1_model
+
+- **default value**:
+- **type**:string
+- **documentation**:The name which the user has given to the feature.
+- **enum**:[uniform]
+:::::::::::::::::::::
+
+:::::::::::::::::::::{dropdown} /gravity model/oneOf/1/magnitude
+:open:
+:name: open_gravity-model_oneOf_1_magnitude
+
+- **default value**:9.81
+- **type**:number
+- **documentation**:The magnitude of the gravity.
+:::::::::::::::::::::
+
+
+
+::::::::::::::::::::::
+
+
+::::::::::::::::::::::::
+
 ::::::::::::::::::::::::{dropdown} /features
 :open:
 :name: open_features

@@ -1,6 +1,7 @@
 {
 "version":"0.5",
 "coordinate system":{"model":"spherical", "depth method":"begin at end segment"},
+"gravity model":{"model":"uniform", "magnitude":10},
 "features":[
   {
     "model":"mantle layer", "name":"Var thickness continent", "coordinates":[[0,10],[10,10],[10,0],[0,0]],

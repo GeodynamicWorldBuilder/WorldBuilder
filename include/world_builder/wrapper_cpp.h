@@ -46,12 +46,14 @@ namespace wrapper_cpp
       /**
        * This function return the temperature at a specific location given x, z, depth and
        * gravity.
+       * Note: gravity value is no longer used, instead use the gravity model from the input file.
        */
       double temperature_2d(double x, double z, double depth, double gravity);
 
       /**
        * This function return the temperature at a specific location given x, y, z, depth and
        * gravity.
+       * Note: gravity value is no longer used, instead use the gravity model from the input file.
        */
       double temperature_3d(double x, double y, double z, double depth, double gravity);
 
