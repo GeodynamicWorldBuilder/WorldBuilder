@@ -78,12 +78,14 @@ namespace WorldBuilder
       /**
        * Returns the temperature based on a 2d Cartesian point, the depth in the
        * model at that point and the gravity norm at that point.
+       * Note: gravity norm is no longer used, instead use the gravity model from the input file.
        */
       double temperature(const std::array<double, 2> &point, const double depth, const double gravity_norm) const;
 
       /**
        * Returns the temperature based on a 3d Cartesian point, the depth in the
        * model at that point and the gravity norm at that point.
+       * Note: gravity norm is no longer used, instead use the gravity model from the input file.
        */
       double temperature(const std::array<double, 3> &point, const double depth, const double gravity_norm) const;
 
