@@ -138,12 +138,6 @@ namespace WorldBuilder
       // the one_dimensional_coordinates is always needed, so fill it.
       original_number_of_coordinates = coordinates.size();
 
-      std::vector<double> one_dimensional_coordinates_local(original_number_of_coordinates,0.0);
-      for (size_t j=0; j<original_number_of_coordinates; ++j)
-        {
-          one_dimensional_coordinates_local[j] = static_cast<double>(j);
-        }
-
       double maximum_distance_between_coordinates = this->world->maximum_distance_between_coordinates *
                                                     (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
 
@@ -159,11 +153,9 @@ namespace WorldBuilder
           y_list[j] = coordinates[j][1];
         }
 
-      x_spline.set_points(one_dimensional_coordinates_local,
-                          x_list,
+      x_spline.set_points(x_list,
                           interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear);
-      y_spline.set_points(one_dimensional_coordinates_local,
-                          y_list,
+      y_spline.set_points(y_list,
                           interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear);
     }
 

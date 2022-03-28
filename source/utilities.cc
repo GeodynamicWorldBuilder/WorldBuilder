@@ -1065,15 +1065,12 @@ namespace WorldBuilder
       return return_values;
     }
 
-    void interpolation::set_points(const std::vector<double> &x,
-                                   const std::vector<double> &y,
+    void interpolation::set_points(const std::vector<double> &y,
                                    bool monotone_spline)
     {
-      WBAssert(!x.empty(), "Internal error: The x in the set points function is zero.");
-      assert(x.size() == y.size());
-      mx_size_min = x.size()-1;
+      const size_t n = y.size();
+      mx_size_min = n-1;
       m_y = y;
-      const size_t n = x.size();
 
       if (monotone_spline)
         {
@@ -1084,13 +1081,11 @@ namespace WorldBuilder
            * interpolation spline.
            */
           std::vector<double> dys(n-1);
-          std::vector<double> dxs(n-1);
           std::vector<double> ms(n-1);
           for (size_t i=0; i < n-1; i++)
             {
-              dxs[i] = x[i+1]-x[i];
               dys[i] = y[i+1]-y[i];
-              ms[i] = dys[i]/dxs[i];
+              //std::cout << ", dys[" << i << "]=" << dys[i];
             }
 
           // get m_a parameter
@@ -1099,8 +1094,9 @@ namespace WorldBuilder
 
           for (size_t i = 0; i < n-2; i++)
             {
-              const double m0 = ms[i];
-              const double m1 = ms[i+1];
+              const double m0 = dys[i];
+              const double m1 = dys[i+1];
+              //std::cout << i << ": m0[" << i << "]=" << m0 << ", m1[" << i << "]=" << m1;
 
               if (m0 * m1 <= 0)
                 {
@@ -1108,13 +1104,16 @@ namespace WorldBuilder
                 }
               else
                 {
-                  const double dx0 = dxs[i];
-                  const double dx1 = dxs[i+1];
-                  const double common = dx0 + dx1;
-                  m_c[i+1] = 3*common/((common + dx0)/m0 + (common + dx1)/m1);
+                  //const double dx0 = dxs[i];
+                  //const double dx1 = dxs[i+1];
+                  //const double common = dx0 + dx1;
+                  m_c[i+1] = 2*m0*m1/(m0+m1);//6/(3/m0 + 3/m1);
                 }
             }
-          m_c[n-1] = ms[n-2];
+          m_c[n-1] = dys[n-2];
+          //std::cout << ", n = " << n << ", m_c[n-1] = " <<  m_c[n-1] << ", dys[n-2] = " << dys[n-2] << std::endl;
+          //for(size_t i = 0; i < m_c.size(); i++)
+          //std::cout << "m_c[" << i << "]=" << m_c[i] << std::endl;
 
           // Get b and c coefficients
           m_a.resize(n);
@@ -1122,12 +1121,12 @@ namespace WorldBuilder
           for (size_t i = 0; i < m_c.size()-1; i++)
             {
               const double c1 = m_c[i];
-              const double m0 = ms[i];
+              const double m0 = dys[i];
 
-              const double invDx = 1/dxs[i];
               const double common0 = c1 + m_c[i+1] - m0 - m0;
-              m_b[i] = (m0 - c1 - common0) * invDx;
-              m_a[i] = common0 * invDx * invDx;
+              m_b[i] = (m0 - c1 - common0);
+              m_a[i] = common0;
+              //std::cout << i << ": m_a[i] = " << m_a[i] << ", common0 = " << common0 << ", c1 = " << c1 << ", m_c[i+1]=" << m_c[i+1] << std::endl;
             }
         }
       else     // linear interpolation
@@ -1145,12 +1144,11 @@ namespace WorldBuilder
 
       // for the right boundary we define
       // f_{n-1}(x) = b*(x-x_{n-1})^2 + c*(x-x_{n-1}) + y_{n-1}
-      double h = x[n-1]-x[n-2];
       // m_b[n-1] is determined by the boundary condition
       if (!monotone_spline)
         {
           m_a[n-1] = 0.0;
-          m_c[n-1] = 3.0*m_a[n-2]*h*h+2.0*m_b[n-2]*h+m_c[n-2];   // = f'_{n-2}(x_{n-1})
+          m_c[n-1] = 3.0*m_a[n-2]+2.0*m_b[n-2]+m_c[n-2];   // = f'_{n-2}(x_{n-1})
         }
     }
 
@@ -1158,6 +1156,8 @@ namespace WorldBuilder
     {
       const size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
       const double h = x-idx;
+      //std::cout << "x = " << x << ", idx = " << idx << ", h = " << h << ", mx_size_min = " << mx_size_min 
+      //          << ", m_a[idx] = " << m_a[idx] << ", m_b[idx] = " << m_b[idx] << ", m_c[idx] = " << m_c[idx] << ", m_y[idx] = " << m_y[idx];
       return (((x >= 0 && x <= mx_size_min ? m_a[idx]*h : 0) + m_b[idx])*h + m_c[idx])*h + m_y[idx];
     }
 

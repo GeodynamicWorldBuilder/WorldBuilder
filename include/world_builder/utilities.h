@@ -182,8 +182,7 @@ namespace WorldBuilder
          * @param y Values in the interpolation points.
          * @param monotone_spline Whether to construct a monotone cubic spline or just do linear interpolation.
          */
-        void set_points(const std::vector<double> &x,
-                        const std::vector<double> &y,
+        void set_points(const std::vector<double> &y,
                         const bool monotone_spline = false);
         /**
          * Evaluate at point @p x.
