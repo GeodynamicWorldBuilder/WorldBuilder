@@ -1,6 +1,6 @@
 {
   "version":"0.5",
-  "coordinate system":{"model":"spherical","depth method":"begin at end segment"},
+  "coordinate system":{"model":"spherical","depth method":"begin at end segment", "radius":665e3},
   "cross section":[[0,0],[45,0]],"surface temperature":273, "force surface temperature":true,
   "potential mantle temperature":1673, "thermal expansion coefficient":3.1e-5,
   "specific heat":1250, "thermal diffusivity":1.0e-6,

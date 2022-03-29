@@ -2,7 +2,7 @@
   "version":"0.5",
   "coordinate system":{"model":"spherical","depth method":"starting point"},
   "gravity model":{"model":"uniform", "magnitude":10},
-  "interpolation":"monotone spline",
+  "interpolation":"continuous monotone spline",
   "maximum distance between coordinates":0.1,
   "features":
   [
