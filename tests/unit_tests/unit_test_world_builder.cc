@@ -1958,72 +1958,73 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
 
   position = {{250e3,500e3,800e3}};
   // results strongly dependent on the summation number of the McKenzie temperature.
-  CHECK(world1.temperature(position, 0, 10) == Approx(1599.9999999994));
-  CHECK(world1.temperature(position, 1, 10) == Approx(1590.6681048292)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 5, 10) == Approx(1554.3294579725)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 10, 10) == Approx(1511.0782994151)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 100, 10) == Approx(1050.2588653774)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 500, 10) == Approx(876.8996655758)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 1000, 10) == Approx(829.7878359145)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 5000, 10) == Approx(620.9373458573)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 10e3, 10) == Approx(526.1591705397));
-  CHECK(world1.temperature(position, 25e3, 10) == Approx(539.5656824584));
-  CHECK(world1.temperature(position, 50e3, 10) == Approx(754.7202618956));
-  CHECK(world1.temperature(position, 75e3, 10) == Approx(997.7030956234));
+  CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+  CHECK(world1.temperature(position, 1, 10) == Approx(1600));
+  CHECK(world1.temperature(position, 5, 10) == Approx(1600));
+  CHECK(world1.temperature(position, 10, 10) == Approx(1600));
+  CHECK(world1.temperature(position, 100, 10) == Approx(1600.0448006272));
+  CHECK(world1.temperature(position, 500, 10) == Approx(1.0221927843)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 1000, 10) == Approx(1.0646191912)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 5000, 10) == Approx(466.079802795)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 10e3, 10) == Approx(471.0974212693));
+  CHECK(world1.temperature(position, 25e3, 10) == Approx(542.4880381006));
+  CHECK(world1.temperature(position, 50e3, 10) == Approx(766.609978067));
+  CHECK(world1.temperature(position, 75e3, 10) == Approx(1010.2351229109));
   CHECK(world1.temperature(position, 150e3, 10) == Approx(1668.6311660012));
   //CHECK(world1.temperature(position, std::sqrt(2) * 100e3 - 1, 10) == Approx(150.0));
   //CHECK(world1.temperature(position, std::sqrt(2) * 100e3 + 1, 10) == Approx(1664.6283561404));
-  CHECK(world1.composition(position, 0, 0) == Approx(1.0));
+  CHECK(world1.composition(position, 0, 0) == Approx(0.0));
   CHECK(world1.composition(position, 0, 1) == Approx(0.0));
   CHECK(world1.composition(position, 0, 2) == Approx(0.0));
   CHECK(world1.composition(position, 0, 3) == Approx(0.0));
   CHECK(world1.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 0) == Approx(1.0));
+  CHECK(world1.composition(position, 10, 0) == Approx(0.0));
   CHECK(world1.composition(position, 10, 1) == Approx(0.0));
   CHECK(world1.composition(position, 10, 2) == Approx(0.0));
   CHECK(world1.composition(position, 10, 3) == Approx(0.0));
   CHECK(world1.composition(position, 10, 4) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 33e3 - 1, 0) == Approx(1.0));
+  CHECK(world1.composition(position, std::sqrt(2) * 33e3 - 1, 0) == Approx(0.0));
   CHECK(world1.composition(position, std::sqrt(2) * 33e3 + 1, 0) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 33e3 - 1, 1) == Approx(0.0));
+  CHECK(world1.composition(position, std::sqrt(2) * 33e3 - 1, 1) == Approx(1.0));
   CHECK(world1.composition(position, std::sqrt(2) * 33e3 + 1, 1) == Approx(1.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 66e3 - 1, 1) == Approx(1.0));
+  CHECK(world1.composition(position, std::sqrt(2) * 66e3 - 1, 1) == Approx(0.0));
   CHECK(world1.composition(position, std::sqrt(2) * 66e3 + 1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 66e3 - 1, 2) == Approx(0.0));
+  CHECK(world1.composition(position, std::sqrt(2) * 66e3 - 1, 2) == Approx(0.35));
   CHECK(world1.composition(position, std::sqrt(2) * 66e3 + 1, 2) == Approx(0.35));
   CHECK(world1.composition(position, std::sqrt(2) * 66e3 + 1, 3) == Approx(0.65));
-  CHECK(world1.composition(position, std::sqrt(2) * 99e3 - 1, 2) == Approx(0.35));
-  CHECK(world1.composition(position, std::sqrt(2) * 99e3 - 1, 3) == Approx(0.65));
+  CHECK(world1.composition(position, std::sqrt(2) * 99e3 - 1, 2) == Approx(0.0));
+  CHECK(world1.composition(position, std::sqrt(2) * 99e3 - 1, 3) == Approx(1.0));
   CHECK(world1.composition(position, std::sqrt(2) * 99e3 + 1, 2) == Approx(0.0));
   // this comes form the first subducting plate
   CHECK(world1.composition(position, std::sqrt(2) * 99e3 + 1, 3) == Approx(1.0));
   CHECK(world1.composition(position, std::sqrt(2) * 100e3 - 1, 3) == Approx(1.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 100e3 + 1, 3) == Approx(0.0));
+  CHECK(world1.composition(position, std::sqrt(2) * 100e3 + 1, 3) == Approx(1.0));
   CHECK(world1.composition(position, 0, 4) == Approx(0.0));
   CHECK(world1.composition(position, 0, 5) == Approx(0.0));
   CHECK(world1.composition(position, 0, 6) == Approx(0.0));
 
   // check grains layer 1
   {
-    WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 33e3 - 1, 0, 2);
+    WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 33e3 - 5e3, 0, 2);
     compare_vectors_approx(grains.sizes, {0.5,0.5}); // was 0.2, but is normalized
 
     // these are random numbers, but they should stay the same.
     // note that the values are different from for example the continental plate since
     // this performs a interpolation between segments of the slab.
 
-    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.8841073844,-0.1312960784,-0.4484589977}},{{-0.4639013434,0.3618800113,0.8086027461}},{{0.05612197756,0.9229323904,-0.3808492174}}}};
-    std::array<std::array<double, 3>, 3> array_2 = {{{{-0.2568202195,-0.0592025578,0.9646441997}},{{-0.5750059457,-0.7928848317,-0.2017468859}},{{0.7767956856,-0.6064888299,0.1695870338}}}};
+    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.8696094025,-0.1666927739,-0.4647504773}},{{-0.4679299806,0.5785966623,0.6680325109}},{{0.1575468827,0.7983980345,-0.5811536443}}}};
+    std::array<std::array<double, 3>, 3> array_2 = {{{{-0.2752387733,-0.07893811748,0.9581296318}},{{-0.673728945,-0.6951145548,-0.2508088204}},{{0.6858082286,-0.714551978,0.1381395827}}}};
     std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
+
     compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
 
-    grains = world1.grains(position, std::sqrt(2) * 33e3 - 1, 1, 2);
+    grains = world1.grains(position, std::sqrt(2) * 33e3 - 5e3, 1, 2);
 
-    std::array<std::array<double, 3>, 3> array_3 = {{{{0.6521279994,0.6032912374,0.459095584}},{{-0.5017626042,0.7974338311,-0.3351620115}},{{-0.5682986551,-0.01178846375,0.8227379113}}}};
-    std::array<std::array<double, 3>, 3> array_4 = {{{{-0.7358966282,0.4557371955,-0.5007591849}},{{0.6726233448,0.4071992867,-0.6178726219}},{{-0.07767875296,-0.791512697,-0.6061960589}}}};
+    std::array<std::array<double, 3>, 3> array_3 = {{{{0.6523622105,0.7188014428,0.2403082022}},{{-0.6524709776,0.6939554735,-0.3044789388}},{{-0.3856230928,0.04183642599,0.9217074068}}}};
+    std::array<std::array<double, 3>, 3> array_4 = {{{{-0.6121729141,0.5270442646,-0.5894647287}},{{0.7894675687,0.4493924112,-0.4180758529}},{{0.04455649534,-0.7212979993,-0.6911902161}}}};
     std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_3,array_4};
 
-    compare_vectors_approx(grains.sizes, {0.8843655798,0.5257196065});
+    compare_vectors_approx(grains.sizes, {0.8735272248,0.4757120757});
     compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
   }
 
@@ -2031,11 +2032,11 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   {
     WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 66e3 - 1, 0, 2);
 
-    compare_vectors_approx(grains.sizes, {0.6692173347,0.3307826653});
-    CHECK(grains.sizes[0] + grains.sizes[1] == Approx(1.0));
+    compare_vectors_approx(grains.sizes, {0.3,0.3});
+    CHECK(grains.sizes[0] + grains.sizes[1] == Approx(0.6));
     // these are random numbers, but they should stay the same.
-    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.5791315939,0.7367092885,-0.3490931411}},{{-0.1853986251,-0.5360105647,-0.8236018603}},{{-0.7938727522,-0.4122524697,0.4470055419}}}};
-    std::array<std::array<double, 3>, 3> array_2 = {{{{0.6418405971,0.7328740545,-0.2256906471}},{{-0.6739597786,0.3987178861,-0.6219342924}},{{-0.3658126088,0.5512890961,0.7498409616}}}};
+    std::array<std::array<double, 3>, 3> array_1 = {{{{0.7712805764,-0.6130920224,-0.1710100717}},{{0.6337183609,0.7146101771,0.2961981327}},{{-0.05939117461,-0.3368240888,0.9396926208}}}};
+    std::array<std::array<double, 3>, 3> array_2 = {{{{0.7712805764,-0.6130920224,-0.1710100717}},{{0.6337183609,0.7146101771,0.2961981327}},{{-0.05939117461,-0.3368240888,0.9396926208}}}};
     std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
     compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
 
@@ -2046,8 +2047,8 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.temperature(position, 10, 10) == Approx(1600.0044800063));
   CHECK(world1.temperature(position, 45e3, 10) == Approx(1620.2875431182));
   CHECK(world1.temperature(position, 50e3-1, 10) == Approx(1622.5570799855));
-  CHECK(world1.temperature(position, 50e3+1, 10) == Approx(1229.3704734991));
-  CHECK(world1.temperature(position, 55e3, 10) == Approx(1277.8134429863));
+  CHECK(world1.temperature(position, 50e3+1, 10) == Approx(1.0000366049));
+  CHECK(world1.temperature(position, 55e3, 10) == Approx(1277.9775741172));
   CHECK(world1.temperature(position, 100e3-1, 10) == Approx(5.2425558343));
   CHECK(world1.temperature(position, 100e3+1, 10) == Approx(5.2427255399));
   CHECK(world1.temperature(position, 101e3, 10) == Approx(5.3274935009));
@@ -2067,7 +2068,7 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.temperature(position, 50e3+1, 10) == Approx(1622.5579886178));
   CHECK(world1.temperature(position, 55e3, 10) == Approx(1624.8307056983));
   CHECK(world1.temperature(position, 100e3-1, 10) == Approx(1645.4326343531));
-  CHECK(world1.temperature(position, 100e3+1, 10) == Approx(1.0000848528));
+  CHECK(world1.temperature(position, 100e3+1, 10) == Approx(1.0000607288));
   CHECK(world1.temperature(position, 101e3, 10) == Approx(1.0848528137));
   CHECK(world1.temperature(position, 110e3, 10) == Approx(1.8485281374 ));
   CHECK(world1.temperature(position, 150e3, 10) == Approx(5.2426406871));
@@ -2121,11 +2122,11 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   position = {{650e3,650e3,800e3}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
   CHECK(world1.temperature(position, 10, 10) == Approx(1600.0044800063));
-  CHECK(world1.temperature(position, 100e3, 10) == Approx(4.3590710784));
-  CHECK(world1.temperature(position, 100e3+1, 10) == Approx(4.3590710784));
-  CHECK(world1.temperature(position, 101e3, 10) == Approx(4.3590710784));
-  CHECK(world1.temperature(position, 110e3, 10) == Approx(4.3590710784));
-  CHECK(world1.temperature(position, 150e3, 10) == Approx(4.3590710784));
+  CHECK(world1.temperature(position, 100e3, 10) == Approx(4.4869791667));
+  CHECK(world1.temperature(position, 100e3+1, 10) == Approx(4.4869791667));
+  CHECK(world1.temperature(position, 101e3, 10) == Approx(4.4869791667));
+  CHECK(world1.temperature(position, 110e3, 10) == Approx(4.4869791667));
+  CHECK(world1.temperature(position, 150e3, 10) == Approx(4.4869791667));
   CHECK(world1.temperature(position, 200e3, 10) == Approx(1692.1562939786));
   CHECK(world1.composition(position, 0, 0) == Approx(0.0));
   CHECK(world1.composition(position, 0, 1) == Approx(0.0));
@@ -2138,23 +2139,23 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.composition(position, 100e3, 0) == Approx(0.0));
   CHECK(world1.composition(position, 100e3, 1) == Approx(0.0));
   CHECK(world1.composition(position, 100e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3, 3) == Approx(0.0897677696));
-  CHECK(world1.composition(position, 100e3, 4) == Approx(0.2693033088));
+  CHECK(world1.composition(position, 100e3, 3) == Approx(0.1217447917));
+  CHECK(world1.composition(position, 100e3, 4) == Approx(0.365234375));
   CHECK(world1.composition(position, 100e3+1, 0) == Approx(0.0));
   CHECK(world1.composition(position, 100e3+1, 1) == Approx(0.0));
   CHECK(world1.composition(position, 100e3+1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3+1, 3) == Approx(0.0897677696));
-  CHECK(world1.composition(position, 100e3+1, 4) == Approx(0.2693033088));
+  CHECK(world1.composition(position, 100e3+1, 3) == Approx(0.1217447917));
+  CHECK(world1.composition(position, 100e3+1, 4) == Approx(0.365234375));
   CHECK(world1.composition(position, 101e3, 0) == Approx(0.0));
   CHECK(world1.composition(position, 101e3+1, 1) == Approx(0.0));
   CHECK(world1.composition(position, 101e3+1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 101e3+1, 3) == Approx(0.0897677696));
-  CHECK(world1.composition(position, 101e3+1, 4) == Approx(0.2693033088));
+  CHECK(world1.composition(position, 101e3+1, 3) == Approx(0.1217447917));
+  CHECK(world1.composition(position, 101e3+1, 4) == Approx(0.365234375));
   CHECK(world1.composition(position, 150e3, 0) == Approx(0.0));
   CHECK(world1.composition(position, 150e3, 1) == Approx(0.0));
   CHECK(world1.composition(position, 150e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3, 3) == Approx(0.0897677696));
-  CHECK(world1.composition(position, 150e3, 4) == Approx(0.2693033088));
+  CHECK(world1.composition(position, 150e3, 3) == Approx(0.1217447917));
+  CHECK(world1.composition(position, 150e3, 4) == Approx(0.365234375));
   CHECK(world1.composition(position, 200e3, 0) == Approx(0.0));
   CHECK(world1.composition(position, 200e3, 1) == Approx(0.0));
   CHECK(world1.composition(position, 200e3, 2) == Approx(0.0));
@@ -2167,11 +2168,11 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   position = {{700e3,675e3,800e3}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
   CHECK(world1.temperature(position, 10, 10) == Approx(1600.0044800063));
-  CHECK(world1.temperature(position, 100e3, 10) == Approx(4.4592312705));
-  CHECK(world1.temperature(position, 100e3+1, 10) == Approx(4.4592312705));
-  CHECK(world1.temperature(position, 101e3, 10) == Approx(4.4592312705));
-  CHECK(world1.temperature(position, 110e3, 10) == Approx(4.4592312705));
-  CHECK(world1.temperature(position, 150e3, 10) == Approx(4.4592312705));
+  CHECK(world1.temperature(position, 100e3, 10) == Approx(4.5651041667 ));
+  CHECK(world1.temperature(position, 100e3+1, 10) == Approx(4.5651041667 ));
+  CHECK(world1.temperature(position, 101e3, 10) == Approx(4.5651041667 ));
+  CHECK(world1.temperature(position, 110e3, 10) == Approx(4.5651041667 ));
+  CHECK(world1.temperature(position, 150e3, 10) == Approx(4.5651041667 ));
   CHECK(world1.temperature(position, 200e3, 10) == Approx(1692.1562939786));
   CHECK(world1.composition(position, 0, 0) == Approx(0.0));
   CHECK(world1.composition(position, 0, 1) == Approx(0.0));
@@ -2184,23 +2185,23 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.composition(position, 100e3, 0) == Approx(0.0));
   CHECK(world1.composition(position, 100e3, 1) == Approx(0.0));
   CHECK(world1.composition(position, 100e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3, 3) == Approx(0.1148078176));
-  CHECK(world1.composition(position, 100e3, 4) == Approx(0.3444234529));
+  CHECK(world1.composition(position, 100e3, 3) == Approx(0.1412760417));
+  CHECK(world1.composition(position, 100e3, 4) == Approx(0.423828125));
   CHECK(world1.composition(position, 100e3+1, 0) == Approx(0.0));
   CHECK(world1.composition(position, 100e3+1, 1) == Approx(0.0));
   CHECK(world1.composition(position, 100e3+1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3+1, 3) == Approx(0.1148078176));
-  CHECK(world1.composition(position, 100e3+1, 4) == Approx(0.3444234529));
+  CHECK(world1.composition(position, 100e3+1, 3) == Approx(0.1412760417));
+  CHECK(world1.composition(position, 100e3+1, 4) == Approx(0.423828125));
   CHECK(world1.composition(position, 101e3, 0) == Approx(0.0));
   CHECK(world1.composition(position, 101e3+1, 1) == Approx(0.0));
   CHECK(world1.composition(position, 101e3+1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 101e3+1, 3) == Approx(0.1148078176));
-  CHECK(world1.composition(position, 101e3+1, 4) == Approx(0.3444234529));
+  CHECK(world1.composition(position, 101e3+1, 3) == Approx(0.1412760417));
+  CHECK(world1.composition(position, 101e3+1, 4) == Approx(0.423828125));
   CHECK(world1.composition(position, 150e3, 0) == Approx(0.0));
   CHECK(world1.composition(position, 150e3, 1) == Approx(0.0));
   CHECK(world1.composition(position, 150e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3, 3) == Approx(0.1148078176));
-  CHECK(world1.composition(position, 150e3, 4) == Approx(0.3444234529));
+  CHECK(world1.composition(position, 150e3, 3) == Approx(0.1412760417));
+  CHECK(world1.composition(position, 150e3, 4) == Approx(0.423828125));
   CHECK(world1.composition(position, 200e3, 0) == Approx(0.0));
   CHECK(world1.composition(position, 200e3, 1) == Approx(0.0));
   CHECK(world1.composition(position, 200e3, 2) == Approx(0.0));
@@ -2279,22 +2280,22 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
 
   position = {{250e3,500e3,800e3}};
   CHECK(world2.temperature(position, 0, 10) == Approx(1599.9999999994));
-  CHECK(world2.composition(position, 0, 0) == Approx(1.0));
-  CHECK(world2.temperature(position, 1, 10) == Approx(1586.7321267113));
-  CHECK(world2.composition(position, 1, 0) == Approx(1.0));
-  CHECK(world2.temperature(position, 1e3, 10) == Approx(233.1298084984));
+  CHECK(world2.composition(position, 0, 0) == Approx(0.0));
+  CHECK(world2.temperature(position, 1, 10) == Approx(1600.0004480001));
+  CHECK(world2.composition(position, 1, 0) == Approx(0.0));
+  CHECK(world2.temperature(position, 1e3, 10) == Approx(903.9678709705));
   CHECK(world2.composition(position, 1e3, 0) == Approx(1.0));
-  CHECK(world2.temperature(position, 10e3, 10) == Approx(412.3206666645));
+  CHECK(world2.temperature(position, 10e3, 10) == Approx(410.613972774));
   CHECK(world2.composition(position, 10e3, 0) == Approx(1.0));
-  CHECK(world2.temperature(position, 20e3, 10) == Approx(544.1584323159));
+  CHECK(world2.temperature(position, 20e3, 10) == Approx(541.5381370656));
   CHECK(world2.composition(position, 20e3, 0) == Approx(1.0));
-  CHECK(world2.temperature(position, 40e3, 10) == Approx(814.1198929245));
+  CHECK(world2.temperature(position, 40e3, 10) == Approx(812.8676610888));
   CHECK(world2.composition(position, 40e3, 0) == Approx(1.0));
-  CHECK(world2.temperature(position, 60e3, 10) == Approx(1087.9994157551));
+  CHECK(world2.temperature(position, 60e3, 10) == Approx(1087.286569803));
   CHECK(world2.composition(position, 60e3, 0) == Approx(1.0));
-  CHECK(world2.temperature(position, 80e3, 10) == Approx(1365.1437340828));
+  CHECK(world2.temperature(position, 80e3, 10) == Approx(1364.757738877));
   CHECK(world2.composition(position, 80e3, 0) == Approx(1.0));
-  CHECK(world2.temperature(position, 100e3, 10) == Approx(1645.4330950743));
+  CHECK(world2.temperature(position, 100e3, 10) == Approx(1645.3039059245));
   CHECK(world2.composition(position, 100e3, 0) == Approx(1.0));
 
 
@@ -2302,13 +2303,13 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   WorldBuilder::World world4(file_name);
 
   position = {{250e3,500e3,800e3}};
-  CHECK(world4.temperature(position, 0, 10) == Approx(-1));
-  CHECK(world4.composition(position, 0, 0) == Approx(1.0));
+  CHECK(world4.temperature(position, 0, 10) == Approx(1600));
+  CHECK(world4.composition(position, 0, 0) == Approx(0.0));
   CHECK(world4.composition(position, 0, 1) == Approx(0.0));
   CHECK(world4.composition(position, 0, 2) == Approx(0.0));
   CHECK(world4.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world4.temperature(position, 1, 10) == Approx(-1));
-  CHECK(world4.composition(position, 1, 0) == Approx(1.0));
+  CHECK(world4.temperature(position, 1, 10) == Approx(1600.0004480001));
+  CHECK(world4.composition(position, 1, 0) == Approx(0.0));
   CHECK(world4.composition(position, 1, 1) == Approx(0.0));
   CHECK(world4.composition(position, 1, 2) == Approx(0.0));
   CHECK(world4.composition(position, 1, 3) == Approx(0.0));
@@ -2322,12 +2323,12 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world4.composition(position, 10e3, 1) == Approx(0.0));
   CHECK(world4.composition(position, 10e3, 2) == Approx(0.0));
   CHECK(world4.composition(position, 10e3, 3) == Approx(0.0));
-  CHECK(world4.temperature(position, 20e3, 10) == Approx(573.5111391079));
+  CHECK(world4.temperature(position, 20e3, 10) == Approx(573.1075645298));
   CHECK(world4.composition(position, 20e3, 0) == Approx(0.0));
   CHECK(world4.composition(position, 20e3, 1) == Approx(1.0));
   CHECK(world4.composition(position, 20e3, 2) == Approx(0.0));
   CHECK(world4.composition(position, 20e3, 3) == Approx(0.0));
-  CHECK(world4.temperature(position, 30e3, 10) == Approx(1374.5429651305));
+  CHECK(world4.temperature(position, 30e3, 10) == Approx(1374.1143224267));
   CHECK(world4.composition(position, 30e3, 0) == Approx(0.0));
   CHECK(world4.composition(position, 30e3, 1) == Approx(1.0));
   CHECK(world4.composition(position, 30e3, 2) == Approx(0.0));
@@ -2383,7 +2384,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   std::array<double,3> position = {{0,0,800e3}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600));
   CHECK(world1.temperature(position, 220e3, 10) == Approx(1701.6589518333));
-  CHECK(world1.temperature(position, 230e3, 10) == Approx(1798.05608126));
+  CHECK(world1.temperature(position, 230e3, 10) == Approx(1706.4302736316));
   CHECK(world1.composition(position, 0, 0) == Approx(0.0));
   CHECK(world1.composition(position, 0, 1) == Approx(0.0));
   CHECK(world1.composition(position, 0, 2) == Approx(0.0));
@@ -2393,14 +2394,14 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world1.composition(position, 0, 6) == Approx(0.0));
 
   position = {{250e3,500e3,800e3}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(1600.0));
+  CHECK(world1.temperature(position, 0, 10) == Approx(150.0));
   CHECK(world1.temperature(position, 10, 10) == Approx(150));
   CHECK(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(150.0));
-  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(1631.9945206949));
+  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(150));
   CHECK(world1.composition(position, 0, 0) == Approx(0.0));
   CHECK(world1.composition(position, 0, 1) == Approx(0.0));
   CHECK(world1.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(0.0));
+  CHECK(world1.composition(position, 0, 3) == Approx(0.25));
   CHECK(world1.composition(position, 10, 0) == Approx(0.0));
   CHECK(world1.composition(position, 10, 1) == Approx(0.0));
   CHECK(world1.composition(position, 10, 2) == Approx(0.0));
@@ -2408,9 +2409,9 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world1.composition(position, 10, 4) == Approx(0.75));
   CHECK(world1.composition(position, std::sqrt(2) * 50e3 - 1, 3) == Approx(0.25));
   CHECK(world1.composition(position, std::sqrt(2) * 50e3 - 1, 4) == Approx(0.75));
-  CHECK(world1.composition(position, std::sqrt(2) * 50e3 + 1, 3) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 50e3 + 1, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(0.0));
+  CHECK(world1.composition(position, std::sqrt(2) * 50e3 + 1, 3) == Approx(0.25));
+  CHECK(world1.composition(position, std::sqrt(2) * 50e3 + 1, 4) == Approx(0.75));
+  CHECK(world1.composition(position, 0, 4) == Approx(0.75));
   CHECK(world1.composition(position, 0, 5) == Approx(0.0));
   CHECK(world1.composition(position, 0, 6) == Approx(0.0));
 
@@ -2431,59 +2432,59 @@ TEST_CASE("WorldBuilder Features: Fault")
   }
 
   position = {{50e3,230e3,800e3}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(1038.773901055));
-  CHECK(world1.temperature(position, 1, 10) == Approx(1038.73661986));
-  CHECK(world1.temperature(position, 5, 10) == Approx(1038.5874950798));
-  CHECK(world1.temperature(position, 10, 10) == Approx(1038.4010891045));
-  CHECK(world1.temperature(position, 100, 10) == Approx(1035.0457815498));
-  CHECK(world1.temperature(position, 500, 10) == Approx(1020.1333035287));
-  CHECK(world1.temperature(position, 1000, 10) == Approx(1001.4927060023));
-  CHECK(world1.temperature(position, 5000, 10) == Approx(852.3679257913));
-  CHECK(world1.temperature(position, std::sqrt(2) * 50e3/2, 10) == Approx(865.6153905719));
-  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(1693.2261574294));
-  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(1693.2261574294));
-  CHECK(world1.temperature(position, 25e3, 10) == Approx(479.5559752638));
-  CHECK(world1.temperature(position, 50e3, 10) == Approx(1411.5858515826));
-  CHECK(world1.temperature(position, 75e3, 10) == Approx(1716.1213324607));
-  CHECK(world1.temperature(position, 80e3, 10) == Approx(1742.8161278431));
-  CHECK(world1.temperature(position, 90e3, 10) == Approx(1796.2057186079));
+  CHECK(world1.temperature(position, 0, 10) == Approx(1039.0023713513));
+  CHECK(world1.temperature(position, 1, 10) == Approx(1038.9650901562));
+  CHECK(world1.temperature(position, 5, 10) == Approx(1038.815965376));
+  CHECK(world1.temperature(position, 10, 10) == Approx(1038.6295594008));
+  CHECK(world1.temperature(position, 100, 10) == Approx(1035.27425184));
+  CHECK(world1.temperature(position, 500, 10) == Approx(1020.3617738249));
+  CHECK(world1.temperature(position, 1000, 10) == Approx(1001.7211762985));
+  CHECK(world1.temperature(position, 5000, 10) == Approx(852.5963960875));
+  CHECK(world1.temperature(position, std::sqrt(2) * 50e3/2, 10) == Approx(865.3869202757));
+  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(1693.1827607756));
+  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(1693.1827607756));
+  CHECK(world1.temperature(position, 25e3, 10) == Approx(479.3275049675));
+  CHECK(world1.temperature(position, 50e3, 10) == Approx(1411.3573812863));
+  CHECK(world1.temperature(position, 75e3, 10) == Approx(1716.0886137251));
+  CHECK(world1.temperature(position, 80e3, 10) == Approx(1742.7834091075));
+  CHECK(world1.temperature(position, 90e3, 10) == Approx(1796.1729998724));
   CHECK(world1.temperature(position, 100e3, 10) == Approx(1645.4330950743));
   CHECK(world1.temperature(position, 150e3, 10) == Approx(1668.6311660012));
   CHECK(world1.temperature(position, 200e3, 10) == Approx(1692.1562939786));
 
   position = {{250e3,250e3,800e3}};
   CHECK(world1.temperature(position, 0, 10) == Approx(1600.0));
-  CHECK(world1.temperature(position, 1, 10) == Approx(293.1872811951));
-  CHECK(world1.temperature(position, 5, 10) == Approx(293.3364059753));
-  CHECK(world1.temperature(position, 10, 10) == Approx(293.5228119505));
-  CHECK(world1.temperature(position, 100, 10) == Approx(296.8781195053));
-  CHECK(world1.temperature(position, 500, 10) == Approx(311.7905975264));
-  CHECK(world1.temperature(position, 1000, 10) == Approx(330.4311950528));
-  CHECK(world1.temperature(position, 5000, 10) == Approx(479.5559752638));
-  CHECK(world1.temperature(position, std::sqrt(2) * 50e3/2, 10) == Approx(1611.239291627));
-  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(1799.9946610409));
+  CHECK(world1.temperature(position, 1, 10) == Approx(1600.0004480001));
+  CHECK(world1.temperature(position, 5, 10) == Approx(1600.0022400016));
+  CHECK(world1.temperature(position, 10, 10) == Approx(1600.0004480001));
+  CHECK(world1.temperature(position, 100, 10) == Approx(1600.0448006272));
+  CHECK(world1.temperature(position, 500, 10) == Approx(1600.2240156807));
+  CHECK(world1.temperature(position, 1000, 10) == Approx(1600.4480627259));
+  CHECK(world1.temperature(position, 5000, 10) == Approx(528.4916101082));
+  CHECK(world1.temperature(position, std::sqrt(2) * 50e3/2, 10) == Approx(1618.2472577462));
+  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(1631.9936067783));
   CHECK(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(1631.9945206949));
   CHECK(world1.temperature(position, std::sqrt(2) * 51e3, 10) == Approx(1632.6404283806));
   CHECK(world1.composition(position, 0, 0) == Approx(0.0));
   CHECK(world1.composition(position, 0, 1) == Approx(0.0));
   CHECK(world1.composition(position, 0, 2) == Approx(0.0));
   CHECK(world1.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 0) == Approx(1.0));
+  CHECK(world1.composition(position, 10, 0) == Approx(0.0));
   CHECK(world1.composition(position, 10, 1) == Approx(0.0));
   CHECK(world1.composition(position, 10, 2) == Approx(0.0));
   CHECK(world1.composition(position, 10, 3) == Approx(0.0));
 
-  CHECK(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0) == Approx(1.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 1) == Approx(0.0));
+  CHECK(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0) == Approx(0.0));
+  CHECK(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 1) == Approx(1.0));
   CHECK(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 2) == Approx(0.0));
   CHECK(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 0) == Approx(0.0));
   CHECK(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 1) == Approx(1.0));
   CHECK(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 66e3 * 0.5 - 1, 1) == Approx(1.0));
+  CHECK(world1.composition(position, std::sqrt(2) * 66e3 * 0.5 - 1, 1) == Approx(0.0));
   CHECK(world1.composition(position, std::sqrt(2) * 66e3 * 0.5 + 1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 2) == Approx(0.25));
+  CHECK(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 2) == Approx(0.0));
   CHECK(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 3) == Approx(0.75));
+  CHECK(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 3) == Approx(0.0));
   CHECK(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 3) == Approx(0.0));
   CHECK(world1.composition(position, std::sqrt(2) * 100e3 * 0.5 - 1, 3) == Approx(0.0));
   CHECK(world1.composition(position, std::sqrt(2) * 100e3 * 0.5 + 1, 3) == Approx(0.0));
@@ -2496,14 +2497,14 @@ TEST_CASE("WorldBuilder Features: Fault")
   {
     {
       // layer 1
-      WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0, 3);
+      WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 33e3 * 0.5 - 5e3, 0, 3);
       std::array<std::array<double, 3>, 3> array_1  = Utilities::euler_angles_to_rotation_matrix(10,20,30);
       std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
 
       compare_vectors_approx(grains.sizes, {0.4,0.4,0.4});
       compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
 
-      grains = world1.grains(position, std::sqrt(2) * 33e3 * 0.5 - 1, 1, 3);
+      grains = world1.grains(position, std::sqrt(2) * 33e3 * 0.5 - 5e3, 1, 3);
       std::array<std::array<double, 3>, 3> array_2 = Utilities::euler_angles_to_rotation_matrix(40,50,60);
       std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
 
@@ -2530,14 +2531,14 @@ TEST_CASE("WorldBuilder Features: Fault")
 
     {
       // layer 3
-      WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 99e3 * 0.5 - 1, 0, 3);
+      WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 99e3 * 0.5 - 5e3, 0, 3);
       std::array<std::array<double, 3>, 3> array_1 = Utilities::euler_angles_to_rotation_matrix(220,320,240);
       std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
 
       compare_vectors_approx(grains.sizes, {0.6,0.6,0.6});
       compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
 
-      grains = world1.grains(position, std::sqrt(2) * 99e3 * 0.5 - 1, 1, 3);
+      grains = world1.grains(position, std::sqrt(2) * 99e3 * 0.5 - 5e3, 1, 3);
       std::array<std::array<double, 3>, 3> array_2 = Utilities::euler_angles_to_rotation_matrix(520,620,270);
       std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
 
@@ -2548,22 +2549,22 @@ TEST_CASE("WorldBuilder Features: Fault")
 
 
   position = {{250e3,250e3,800e3}};
-  CHECK(world1.composition(position, 1, 0) == Approx(1.0));
+  CHECK(world1.composition(position, 1, 0) == Approx(0.0));
   CHECK(world1.composition(position, 1, 1) == Approx(0.0));
   CHECK(world1.composition(position, 1, 2) == Approx(0.0));
   position = {{250e3,250e3-std::sqrt(2) * 33e3 * 0.5 + 1, 800e3}};
-  CHECK(world1.composition(position, 1, 0) == Approx(1.0));
-  CHECK(world1.composition(position, 1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 1, 2) == Approx(0.0));
-  position = {{250e3,250e3-std::sqrt(2) * 66e3 * 0.5 + 1, 800e3}};
   CHECK(world1.composition(position, 1, 0) == Approx(0.0));
   CHECK(world1.composition(position, 1, 1) == Approx(1.0));
   CHECK(world1.composition(position, 1, 2) == Approx(0.0));
-  position = {{250e3,250e3-std::sqrt(2) * 99e3 * 0.5 + 1, 800e3}};
+  position = {{250e3,250e3-std::sqrt(2) * 66e3 * 0.5 + 1, 800e3}};
   CHECK(world1.composition(position, 1, 0) == Approx(0.0));
   CHECK(world1.composition(position, 1, 1) == Approx(0.0));
   CHECK(world1.composition(position, 1, 2) == Approx(0.25));
-  CHECK(world1.composition(position, 1, 3) == Approx(0.75));
+  position = {{250e3,250e3-std::sqrt(2) * 99e3 * 0.5 + 1, 800e3}};
+  CHECK(world1.composition(position, 1, 0) == Approx(0.0));
+  CHECK(world1.composition(position, 1, 1) == Approx(0.0));
+  CHECK(world1.composition(position, 1, 2) == Approx(0.0));
+  CHECK(world1.composition(position, 1, 3) == Approx(0.0));
 
   std::string file_name2 = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/fault_constant_angles_cartesian_force_temp.wb";
   WorldBuilder::World world2(file_name2);
@@ -2572,7 +2573,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   position = {{0,0,800e3}};
   CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
   CHECK(world2.temperature(position, 220e3, 10) == Approx(1701.6589518333));
-  CHECK(world2.temperature(position, 230e3, 10) == Approx(100.0));
+  CHECK(world2.temperature(position, 230e3, 10) == Approx(1706.4302736316));
   CHECK(world2.composition(position, 0, 0) == Approx(0.0));
   CHECK(world2.composition(position, 0, 1) == Approx(0.0));
   CHECK(world2.composition(position, 0, 2) == Approx(0.0));
@@ -2585,6 +2586,36 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
   CHECK(world2.temperature(position, 10, 10) == Approx(150));
   CHECK(world2.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(150.0));
+  CHECK(world2.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(150));
+  CHECK(world2.composition(position, 0, 0) == Approx(0.0));
+  CHECK(world2.composition(position, 0, 1) == Approx(0.0));
+  CHECK(world2.composition(position, 0, 2) == Approx(0.0));
+  CHECK(world2.composition(position, 0, 3) == Approx(0.25));
+  CHECK(world2.composition(position, 10, 0) == Approx(0.0));
+  CHECK(world2.composition(position, 10, 1) == Approx(0.0));
+  CHECK(world2.composition(position, 10, 2) == Approx(0.0));
+  CHECK(world1.composition(position, 10, 3) == Approx(0.25));
+  CHECK(world1.composition(position, 10, 4) == Approx(0.75));
+  CHECK(world2.composition(position, std::sqrt(2) * 50e3 - 1, 3) == Approx(0.25));
+  CHECK(world2.composition(position, std::sqrt(2) * 50e3 - 1, 4) == Approx(0.75));
+  CHECK(world2.composition(position, std::sqrt(2) * 50e3 + 1, 3) == Approx(0.25));
+  CHECK(world2.composition(position, std::sqrt(2) * 50e3 + 1, 4) == Approx(0.75));
+  CHECK(world2.composition(position, 0, 4) == Approx(0.75));
+  CHECK(world2.composition(position, 0, 5) == Approx(0.0));
+  CHECK(world2.composition(position, 0, 6) == Approx(0.0));
+
+
+  position = {{250e3,250e3,800e3}};
+  CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
+  CHECK(world2.temperature(position, 1, 10) == Approx(1600.0004480001));
+  CHECK(world2.temperature(position, 5, 10) == Approx(1600.0022400016));
+  CHECK(world2.temperature(position, 10, 10) == Approx(1600.0044800063));
+  CHECK(world2.temperature(position, 100, 10) == Approx(1600.0448006272));
+  CHECK(world2.temperature(position, 500, 10) == Approx(1600.2240156807));
+  CHECK(world2.temperature(position, 1000, 10) == Approx(1600.4480627259));
+  CHECK(world2.temperature(position, 5000, 10) == Approx(100));
+  CHECK(world2.temperature(position, std::sqrt(2) * 50e3/2, 10) == Approx(100));
+  CHECK(world2.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(1631.9936067783));
   CHECK(world2.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(1631.9945206949));
   CHECK(world2.composition(position, 0, 0) == Approx(0.0));
   CHECK(world2.composition(position, 0, 1) == Approx(0.0));
@@ -2593,49 +2624,19 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world2.composition(position, 10, 0) == Approx(0.0));
   CHECK(world2.composition(position, 10, 1) == Approx(0.0));
   CHECK(world2.composition(position, 10, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 3) == Approx(0.25));
-  CHECK(world1.composition(position, 10, 4) == Approx(0.75));
-  CHECK(world2.composition(position, std::sqrt(2) * 50e3 - 1, 3) == Approx(0.25));
-  CHECK(world2.composition(position, std::sqrt(2) * 50e3 - 1, 4) == Approx(0.75));
-  CHECK(world2.composition(position, std::sqrt(2) * 50e3 + 1, 3) == Approx(0.0));
-  CHECK(world2.composition(position, std::sqrt(2) * 50e3 + 1, 4) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 6) == Approx(0.0));
-
-
-  position = {{250e3,250e3,800e3}};
-  CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
-  CHECK(world2.temperature(position, 1, 10) == Approx(100.0));
-  CHECK(world2.temperature(position, 5, 10) == Approx(100.0));
-  CHECK(world2.temperature(position, 10, 10) == Approx(100.0));
-  CHECK(world2.temperature(position, 100, 10) == Approx(100.0));
-  CHECK(world2.temperature(position, 500, 10) == Approx(100.0));
-  CHECK(world2.temperature(position, 1000, 10) == Approx(100.0));
-  CHECK(world2.temperature(position, 5000, 10) == Approx(100.0));
-  CHECK(world2.temperature(position, std::sqrt(2) * 50e3/2, 10) == Approx(100.0));
-  CHECK(world2.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(100.0));
-  CHECK(world2.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(1631.9945206949));
-  CHECK(world2.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world2.composition(position, 10, 0) == Approx(1.0));
-  CHECK(world2.composition(position, 10, 1) == Approx(0.0));
-  CHECK(world2.composition(position, 10, 2) == Approx(0.0));
   CHECK(world2.composition(position, 10, 3) == Approx(0.0));
 
-  CHECK(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0) == Approx(1.0));
-  CHECK(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 1) == Approx(0.0));
+  CHECK(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0) == Approx(0.0));
+  CHECK(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 1) == Approx(1.0));
   CHECK(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 2) == Approx(0.0));
   CHECK(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 0) == Approx(0.0));
   CHECK(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 1) == Approx(1.0));
   CHECK(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 2) == Approx(0.0));
-  CHECK(world2.composition(position, std::sqrt(2) * 66e3 * 0.5 - 1, 1) == Approx(1.0));
+  CHECK(world2.composition(position, std::sqrt(2) * 66e3 * 0.5 - 1, 1) == Approx(0.0));
   CHECK(world2.composition(position, std::sqrt(2) * 66e3 * 0.5 + 1, 1) == Approx(0.0));
-  CHECK(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 2) == Approx(0.25));
+  CHECK(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 2) == Approx(0.0));
   CHECK(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 2) == Approx(0.0));
-  CHECK(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 3) == Approx(0.75));
+  CHECK(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 3) == Approx(0.0));
   CHECK(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 3) == Approx(0.0));
   CHECK(world2.composition(position, std::sqrt(2) * 100e3 * 0.5 - 1, 3) == Approx(0.0));
   CHECK(world2.composition(position, std::sqrt(2) * 100e3 * 0.5 + 1, 3) == Approx(0.0));
@@ -2644,22 +2645,22 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world2.composition(position, 0, 6) == Approx(0.0));
 
   position = {{250e3,250e3,800e3}};
-  CHECK(world2.composition(position, 1, 0) == Approx(1.0));
+  CHECK(world2.composition(position, 1, 0) == Approx(0.0));
   CHECK(world2.composition(position, 1, 1) == Approx(0.0));
   CHECK(world2.composition(position, 1, 2) == Approx(0.0));
   position = {{250e3,250e3-std::sqrt(2) * 33e3 * 0.5 + 1, 800e3}};
-  CHECK(world2.composition(position, 1, 0) == Approx(1.0));
-  CHECK(world2.composition(position, 1, 1) == Approx(0.0));
-  CHECK(world2.composition(position, 1, 2) == Approx(0.0));
-  position = {{250e3,250e3-std::sqrt(2) * 66e3 * 0.5 + 1, 800e3}};
   CHECK(world2.composition(position, 1, 0) == Approx(0.0));
   CHECK(world2.composition(position, 1, 1) == Approx(1.0));
   CHECK(world2.composition(position, 1, 2) == Approx(0.0));
-  position = {{250e3,250e3-std::sqrt(2) * 99e3 * 0.5 + 1, 800e3}};
+  position = {{250e3,250e3-std::sqrt(2) * 66e3 * 0.5 + 1, 800e3}};
   CHECK(world2.composition(position, 1, 0) == Approx(0.0));
   CHECK(world2.composition(position, 1, 1) == Approx(0.0));
   CHECK(world2.composition(position, 1, 2) == Approx(0.25));
-  CHECK(world2.composition(position, 1, 3) == Approx(0.75));
+  position = {{250e3,250e3-std::sqrt(2) * 99e3 * 0.5 + 1, 800e3}};
+  CHECK(world2.composition(position, 1, 0) == Approx(0.0));
+  CHECK(world2.composition(position, 1, 1) == Approx(0.0));
+  CHECK(world2.composition(position, 1, 2) == Approx(0.0));
+  CHECK(world2.composition(position, 1, 3) == Approx(0.0));
 
 
   // Cartesian
@@ -2684,8 +2685,8 @@ TEST_CASE("WorldBuilder Features: Fault")
 
   position = {{250e3,500e3,800e3}};
   //adibatic temperature
-  CHECK(world3.temperature(position, 0, 10) == Approx(1600));
-  CHECK(world3.temperature(position, 1, 10) == Approx(1600.0004480001));
+  CHECK(world3.temperature(position, 0, 10) == Approx(1.0101168113));
+  CHECK(world3.temperature(position, 1, 10) == Approx(1.0100743849));
   CHECK(world3.temperature(position, 5000, 10) == Approx(1602.241568732));
   CHECK(world3.temperature(position, 10e3, 10) == Approx(1604.486277858));
   CHECK(world3.temperature(position, 25e3, 10) == Approx(1611.239291627));
@@ -2697,30 +2698,30 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world3.composition(position, 0, 0) == Approx(0.0));
   CHECK(world3.composition(position, 0, 1) == Approx(0.0));
   CHECK(world3.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 3) == Approx(0.0));
+  CHECK(world3.composition(position, 0, 3) == Approx(1.0));
   CHECK(world3.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world3.composition(position, 10, 0) == Approx(1.0));
+  CHECK(world3.composition(position, 10, 0) == Approx(0.0));
   CHECK(world3.composition(position, 10, 1) == Approx(0.0));
   CHECK(world3.composition(position, 10, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 10, 3) == Approx(0.0));
+  CHECK(world3.composition(position, 10, 3) == Approx(1.0));
   CHECK(world3.composition(position, 10, 4) == Approx(0.0));
   //todo: recheck these results
   CHECK(world3.composition(position, std::sqrt(2) * 16.5e3 - 1, 0) == Approx(1.0));
   CHECK(world3.composition(position, std::sqrt(2) * 16.5e3 + 1, 0) == Approx(1.0));
   CHECK(world3.composition(position, std::sqrt(2) * 16.5e3 - 1, 1) == Approx(0.0));
   CHECK(world3.composition(position, std::sqrt(2) * 16.5e3 + 1, 1) == Approx(0.0));
-  CHECK(world3.composition(position, std::sqrt(2) * 33e3 - 1, 1) == Approx(0.0));
+  CHECK(world3.composition(position, std::sqrt(2) * 33e3 - 1, 1) == Approx(1.0));
   CHECK(world3.composition(position, std::sqrt(2) * 33e3 + 1, 1) == Approx(1.0));
   CHECK(world3.composition(position, std::sqrt(2) * 33e3 - 1, 2) == Approx(0.0));
   CHECK(world3.composition(position, std::sqrt(2) * 33e3 + 1, 2) == Approx(0.0));
   CHECK(world3.composition(position, std::sqrt(2) * 33e3 + 1, 3) == Approx(0.0));
   CHECK(world3.composition(position, std::sqrt(2) * 49.5e3 - 1, 2) == Approx(0.0));
-  CHECK(world3.composition(position, std::sqrt(2) * 49.5e3 - 1, 3) == Approx(0.0));
+  CHECK(world3.composition(position, std::sqrt(2) * 49.5e3 - 1, 3) == Approx(1.0));
   CHECK(world3.composition(position, std::sqrt(2) * 49.5e3 + 1, 2) == Approx(0.0));
   // this comes form the first subducting plate
-  CHECK(world3.composition(position, std::sqrt(2) * 49.5e3 + 1, 3) == Approx(0.0));
-  CHECK(world3.composition(position, std::sqrt(2) * 50e3 - 1, 3) == Approx(0.0));
-  CHECK(world3.composition(position, std::sqrt(2) * 50e3 + 1, 3) == Approx(0.0));
+  CHECK(world3.composition(position, std::sqrt(2) * 49.5e3 + 1, 3) == Approx(1.0));
+  CHECK(world3.composition(position, std::sqrt(2) * 50e3 - 1, 3) == Approx(1.0));
+  CHECK(world3.composition(position, std::sqrt(2) * 50e3 + 1, 3) == Approx(1.0));
   CHECK(world3.composition(position, 0, 4) == Approx(0.0));
   CHECK(world3.composition(position, 0, 5) == Approx(0.0));
   CHECK(world3.composition(position, 0, 6) == Approx(0.0));
@@ -2804,37 +2805,37 @@ TEST_CASE("WorldBuilder Features: Fault")
   }
 
   position = {{650e3,650e3,800e3}};
-  CHECK(world3.temperature(position, 0, 10) == Approx(4.3590710784));
-  CHECK(world3.temperature(position, 10, 10) == Approx(4.3590710784));
-  CHECK(world3.temperature(position, 100e3, 10) == Approx(4.3590710784));
-  CHECK(world3.temperature(position, 100e3+1, 10) == Approx(4.3590710784));
-  CHECK(world3.temperature(position, 101e3, 10) == Approx(4.3590710784));
-  CHECK(world3.temperature(position, 110e3, 10) == Approx(4.3590710784));
+  CHECK(world3.temperature(position, 0, 10) == Approx(4.4869791667));
+  CHECK(world3.temperature(position, 10, 10) == Approx(4.4869791667));
+  CHECK(world3.temperature(position, 100e3, 10) == Approx(4.4869791667));
+  CHECK(world3.temperature(position, 100e3+1, 10) == Approx(4.4869791667));
+  CHECK(world3.temperature(position, 101e3, 10) == Approx(4.4869791667));
+  CHECK(world3.temperature(position, 110e3, 10) == Approx(4.4869791667));
   CHECK(world3.temperature(position, 150e3, 10) == Approx(1668.6311660012));
   CHECK(world3.temperature(position, 200e3, 10) == Approx(1692.1562939786));
   CHECK(world3.composition(position, 0, 0) == Approx(0.0));
   CHECK(world3.composition(position, 0, 1) == Approx(0.0));
   CHECK(world3.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 3) == Approx(0.0897677696));
+  CHECK(world3.composition(position, 0, 3) == Approx(0.1217447917));
   CHECK(world3.composition(position, 10, 0) == Approx(0.0));
   CHECK(world3.composition(position, 10, 1) == Approx(0.0));
   CHECK(world3.composition(position, 10, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 10, 3) == Approx(0.0897677696));
+  CHECK(world3.composition(position, 10, 3) == Approx(0.1217447917));
   CHECK(world3.composition(position, 100e3, 0) == Approx(0.0));
   CHECK(world3.composition(position, 100e3, 1) == Approx(0.0));
   CHECK(world3.composition(position, 100e3, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3, 3) == Approx(0.0897677696));
-  CHECK(world3.composition(position, 100e3, 4) == Approx(0.2693033088));
+  CHECK(world3.composition(position, 100e3, 3) == Approx(0.1217447917));
+  CHECK(world3.composition(position, 100e3, 4) == Approx(0.365234375));
   CHECK(world3.composition(position, 100e3+1, 0) == Approx(0.0));
   CHECK(world3.composition(position, 100e3+1, 1) == Approx(0.0));
   CHECK(world3.composition(position, 100e3+1, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3+1, 3) == Approx(0.0897677696));
-  CHECK(world3.composition(position, 100e3+1, 4) == Approx(0.2693033088));
+  CHECK(world3.composition(position, 100e3+1, 3) == Approx(0.1217447917));
+  CHECK(world3.composition(position, 100e3+1, 4) == Approx(0.365234375));
   CHECK(world3.composition(position, 101e3, 0) == Approx(0.0));
   CHECK(world3.composition(position, 101e3+1, 1) == Approx(0.0));
   CHECK(world3.composition(position, 101e3+1, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 101e3+1, 3) == Approx(0.0897677696));
-  CHECK(world3.composition(position, 101e3+1, 4) == Approx(0.2693033088));
+  CHECK(world3.composition(position, 101e3+1, 3) == Approx(0.1217447917));
+  CHECK(world3.composition(position, 101e3+1, 4) == Approx(0.365234375));
   CHECK(world3.composition(position, 150e3, 0) == Approx(0.0));
   CHECK(world3.composition(position, 150e3, 1) == Approx(0.0));
   CHECK(world3.composition(position, 150e3, 2) == Approx(0.0));
@@ -2845,8 +2846,8 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world3.composition(position, 200e3, 2) == Approx(0.0));
   CHECK(world3.composition(position, 200e3, 3) == Approx(0.0));
   CHECK(world3.composition(position, 200e3, 4) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 4) == Approx(0.2693033088));
-  CHECK(world3.composition(position, 0, 5) == Approx(0.6409289216));
+  CHECK(world3.composition(position, 0, 4) == Approx(0.365234375));
+  CHECK(world3.composition(position, 0, 5) == Approx(0.5130208333));
   CHECK(world3.composition(position, 0, 6) == Approx(0.0));
 
   {
@@ -2854,11 +2855,11 @@ TEST_CASE("WorldBuilder Features: Fault")
     std::array<std::array<double, 3>, 3> array_1 = Utilities::euler_angles_to_rotation_matrix(180,135.4473098406,0);
     std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
 
-    compare_vectors_approx(grains.sizes, {0.2718142157,0.2718142157,0.2718142157});
+    compare_vectors_approx(grains.sizes, {0.2973958333,0.2973958333,0.2973958333});
     //compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[0]), {{180,135.4473098406,0}});
-    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[1]), {{180,135.4473098406,0}});
-    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[2]), {{180,135.4473098406,0}});
+    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[0]), {{180,144.3385444729,0}});
+    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[1]), {{180,144.3385444729,0}});
+    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[2]), {{180,144.3385444729,0}});
 
     grains = world3.grains(position, 100e3+1, 1, 3);
     std::array<std::array<double, 3>, 3> array_2 = Utilities::euler_angles_to_rotation_matrix(220,320,240);
@@ -2866,43 +2867,43 @@ TEST_CASE("WorldBuilder Features: Fault")
 
     compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
     //compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
-    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[0]), {{180,153.4593755586,0}});
-    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[1]), {{180,153.4593755586,0}});
-    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[2]), {{180,153.4593755586,0}});
+    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[0]), {{180,158.7560011575,0}});
+    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[1]), {{180,158.7560011575,0}});
+    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[2]), {{180,158.7560011575,0}});
   }
 
   position = {{700e3,675e3,800e3}};
-  CHECK(world3.temperature(position, 0, 10) == Approx(4.4592312705));
-  CHECK(world3.temperature(position, 10, 10) == Approx(4.4592312705));
-  CHECK(world3.temperature(position, 100e3, 10) == Approx(4.4592312705));
-  CHECK(world3.temperature(position, 100e3+1, 10) == Approx(4.4592312705));
-  CHECK(world3.temperature(position, 101e3, 10) == Approx(4.4592312705));
-  CHECK(world3.temperature(position, 110e3, 10) == Approx(4.4592312705));
+  CHECK(world3.temperature(position, 0, 10) == Approx(4.5651041667 ));
+  CHECK(world3.temperature(position, 10, 10) == Approx(4.5651041667 ));
+  CHECK(world3.temperature(position, 100e3, 10) == Approx(4.5651041667 ));
+  CHECK(world3.temperature(position, 100e3+1, 10) == Approx(4.5651041667 ));
+  CHECK(world3.temperature(position, 101e3, 10) == Approx(4.5651041667 ));
+  CHECK(world3.temperature(position, 110e3, 10) == Approx(4.5651041667 ));
   CHECK(world3.temperature(position, 150e3, 10) == Approx(1668.6311660012));
   CHECK(world3.temperature(position, 200e3, 10) == Approx(1692.1562939786));
   CHECK(world3.composition(position, 0, 0) == Approx(0.0));
   CHECK(world3.composition(position, 0, 1) == Approx(0.0));
   CHECK(world3.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 3) == Approx(0.1148078176));
+  CHECK(world3.composition(position, 0, 3) == Approx(0.1412760417));
   CHECK(world3.composition(position, 10, 0) == Approx(0.0));
   CHECK(world3.composition(position, 10, 1) == Approx(0.0));
   CHECK(world3.composition(position, 10, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 10, 3) == Approx(0.1148078176));
+  CHECK(world3.composition(position, 10, 3) == Approx(0.1412760417));
   CHECK(world3.composition(position, 100e3, 0) == Approx(0.0));
   CHECK(world3.composition(position, 100e3, 1) == Approx(0.0));
   CHECK(world3.composition(position, 100e3, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3, 3) == Approx(0.1148078176));
-  CHECK(world3.composition(position, 100e3, 4) == Approx(0.3444234529));
+  CHECK(world3.composition(position, 100e3, 3) == Approx(0.1412760417));
+  CHECK(world3.composition(position, 100e3, 4) == Approx(0.423828125));
   CHECK(world3.composition(position, 100e3+1, 0) == Approx(0.0));
   CHECK(world3.composition(position, 100e3+1, 1) == Approx(0.0));
   CHECK(world3.composition(position, 100e3+1, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3+1, 3) == Approx(0.1148078176));
-  CHECK(world3.composition(position, 100e3+1, 4) == Approx(0.3444234529));
+  CHECK(world3.composition(position, 100e3+1, 3) == Approx(0.1412760417));
+  CHECK(world3.composition(position, 100e3+1, 4) == Approx(0.423828125));
   CHECK(world3.composition(position, 101e3, 0) == Approx(0.0));
   CHECK(world3.composition(position, 101e3+1, 1) == Approx(0.0));
   CHECK(world3.composition(position, 101e3+1, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 101e3+1, 3) == Approx(0.1148078176));
-  CHECK(world3.composition(position, 101e3+1, 4) == Approx(0.3444234529));
+  CHECK(world3.composition(position, 101e3+1, 3) == Approx(0.1412760417));
+  CHECK(world3.composition(position, 101e3+1, 4) == Approx(0.423828125));
   CHECK(world3.composition(position, 150e3, 0) == Approx(0.0));
   CHECK(world3.composition(position, 150e3, 1) == Approx(0.0));
   CHECK(world3.composition(position, 150e3, 2) == Approx(0.0));
@@ -2913,14 +2914,14 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world3.composition(position, 200e3, 2) == Approx(0.0));
   CHECK(world3.composition(position, 200e3, 3) == Approx(0.0));
   CHECK(world3.composition(position, 200e3, 4) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 4) == Approx(0.3444234529));
-  CHECK(world3.composition(position, 0, 5) == Approx(0.5407687295));
+  CHECK(world3.composition(position, 0, 4) == Approx(0.423828125));
+  CHECK(world3.composition(position, 0, 5) == Approx(0.4348958333));
   CHECK(world3.composition(position, 0, 6) == Approx(0.0));
 
   position = {{750e3,35e3,800e3}};
   CHECK(world3.temperature(position, 0, 10) == Approx(12));
   CHECK(world3.temperature(position, 10, 10) == Approx(12));
-  CHECK(world3.temperature(position, 5e3, 10) == Approx(12));
+  CHECK(world3.temperature(position, 5e3, 10) == Approx(11));
   CHECK(world3.temperature(position, 10e3, 10) == Approx(11));
   CHECK(world3.temperature(position, 15e3, 10) == Approx(11));
   CHECK(world3.temperature(position, 20e3, 10) == Approx(11));
@@ -2928,31 +2929,31 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world3.temperature(position, 30e3, 10) == Approx(11));
   CHECK(world3.temperature(position, 35e3, 10) == Approx(11));
   CHECK(world3.temperature(position, 40e3, 10) == Approx(11));
-  CHECK(world3.temperature(position, 45e3, 10) == Approx(11));
-  CHECK(world3.temperature(position, 50e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 55e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 60e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 65e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 70e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 72.5e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 75e3, 10) == Approx(10.5));
+  CHECK(world3.temperature(position, 45e3, 10) == Approx(10.4010416667));
+  CHECK(world3.temperature(position, 50e3, 10) == Approx(10.4010416667));
+  CHECK(world3.temperature(position, 55e3, 10) == Approx(10.4010416667));
+  CHECK(world3.temperature(position, 60e3, 10) == Approx(10.4010416667));
+  CHECK(world3.temperature(position, 65e3, 10) == Approx(10.4010416667));
+  CHECK(world3.temperature(position, 70e3, 10) == Approx(10.4010416667));
+  CHECK(world3.temperature(position, 72.5e3, 10) == Approx(10.0));
+  CHECK(world3.temperature(position, 75e3, 10) == Approx(10));
   CHECK(world3.temperature(position, 80e3, 10) == Approx(10));
   CHECK(world3.temperature(position, 85e3, 10) == Approx(10));
   CHECK(world3.temperature(position, 90e3, 10) == Approx(10));
   CHECK(world3.temperature(position, 95e3, 10) == Approx(10));
-  CHECK(world3.temperature(position, 100e3, 10) == Approx(10));
-  CHECK(world3.temperature(position, 105e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 110e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 115e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 120e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 125e3, 10) == Approx(10.5));
+  CHECK(world3.temperature(position, 100e3, 10) == Approx(10.4010416667));
+  CHECK(world3.temperature(position, 105e3, 10) == Approx(10.4010416667));
+  CHECK(world3.temperature(position, 110e3, 10) == Approx(10.4010416667));
+  CHECK(world3.temperature(position, 115e3, 10) == Approx(10.4010416667));
+  CHECK(world3.temperature(position, 120e3, 10) == Approx(10.4010416667));
+  CHECK(world3.temperature(position, 125e3, 10) == Approx(11));
   CHECK(world3.temperature(position, 130e3, 10) == Approx(11));
   CHECK(world3.temperature(position, 135e3, 10) == Approx(11));
   CHECK(world3.temperature(position, 150e3, 10) == Approx(11));
   CHECK(world3.temperature(position, 160e3, 10) == Approx(11));
-  CHECK(world3.temperature(position, 170e3, 10) == Approx(11));
+  CHECK(world3.temperature(position, 170e3, 10) == Approx(12));
   CHECK(world3.temperature(position, 175e3, 10) == Approx(12));
-  CHECK(world3.temperature(position, 180e3, 10) == Approx(1682.706702284));
+  CHECK(world3.temperature(position, 180e3, 10) == Approx(12));
   CHECK(world3.temperature(position, 190e3, 10) == Approx(1687.4248834214));
   CHECK(world3.temperature(position, 200e3, 10) == Approx(1692.1562939786));
   CHECK(world3.temperature(position, 250e3, 10) == Approx(1716.0130900067));
@@ -2967,18 +2968,18 @@ TEST_CASE("WorldBuilder Features: Fault")
     // note that the values are different from for example the continental plate since
     // this performs a interpolation between segments of the slab.
 
-    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.8841073844,-0.1312960784,-0.4484589977}},{{-0.4639013434,0.3618800113,0.8086027461}},{{0.05612197756,0.9229323904,-0.3808492174}}}};
-    std::array<std::array<double, 3>, 3> array_2 = {{{{-0.2568202195,-0.0592025578,0.9646441997}},{{-0.5750059457,-0.7928848317,-0.2017468859}},{{0.7767956856,-0.6064888299,0.1695870338}}}};
+    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.8696094025,-0.1666927739,-0.4647504773}},{{-0.4679299806,0.5785966623,0.6680325109}},{{0.1575468827,0.7983980345,-0.5811536443}}}};
+    std::array<std::array<double, 3>, 3> array_2 = {{{{-0.2752387733,-0.07893811748,0.9581296318}},{{-0.673728945,-0.6951145548,-0.2508088204}},{{0.6858082286,-0.714551978,0.1381395827}}}};
     std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
     compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
 
     grains = world3.grains(position, 95e3, 1, 2);
 
-    std::array<std::array<double, 3>, 3> array_3 = {{{{0.6521279994,0.6032912374,0.459095584}},{{-0.5017626042,0.7974338311,-0.3351620115}},{{-0.5682986551,-0.01178846375,0.8227379113}}}};
-    std::array<std::array<double, 3>, 3> array_4 = {{{{-0.7358966282,0.4557371955,-0.5007591849}},{{0.6726233448,0.4071992867,-0.6178726219}},{{-0.07767875296,-0.791512697,-0.6061960589}}}};
+    std::array<std::array<double, 3>, 3> array_3 = {{{{0.6523622105,0.7188014428,0.2403082022}},{{-0.6524709776,0.6939554735,-0.3044789388}},{{-0.3856230928,0.04183642599,0.9217074068}}}};
+    std::array<std::array<double, 3>, 3> array_4 = {{{{-0.6121729141,0.5270442646,-0.5894647287}},{{0.7894675687,0.4493924112,-0.4180758529}},{{0.04455649534,-0.7212979993,-0.6911902161}}}};
     std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_3,array_4};
 
-    compare_vectors_approx(grains.sizes, {0.8843655798,0.5257196065});
+    compare_vectors_approx(grains.sizes, {0.8735272248,0.4757120757});
     compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
   }
 
@@ -2986,11 +2987,11 @@ TEST_CASE("WorldBuilder Features: Fault")
   {
     WorldBuilder::grains grains = world3.grains(position, 150e3, 0, 2);
 
-    compare_vectors_approx(grains.sizes, {0.6692173347,0.3307826653});
+    compare_vectors_approx(grains.sizes, {0.6688986468,0.3311013532});
     CHECK(grains.sizes[0] + grains.sizes[1] == Approx(1.0));
     // these are random numbers, but they should stay the same.
-    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.5791315939,0.7367092885,-0.3490931411}},{{-0.1853986251,-0.5360105647,-0.8236018603}},{{-0.7938727522,-0.4122524697,0.4470055419}}}};
-    std::array<std::array<double, 3>, 3> array_2 = {{{{0.6418405971,0.7328740545,-0.2256906471}},{{-0.6739597786,0.3987178861,-0.6219342924}},{{-0.3658126088,0.5512890961,0.7498409616}}}};
+    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.5616963437,0.7964355514,-0.2240259584}},{{-0.3789324455,-0.4883589563,-0.7860761614}},{{-0.7354640843,-0.3566454014,0.5761047113}}}};
+    std::array<std::array<double, 3>, 3> array_2 = {{{{0.6693915547,0.6529343999,-0.3543890742}},{{-0.6985082023,0.3907144122,-0.5995235937}},{{-0.252984659,0.6488597056,0.7176209617}}}};
     std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
     compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
 
@@ -3000,12 +3001,12 @@ TEST_CASE("WorldBuilder Features: Fault")
   {
     WorldBuilder::grains grains = world3.grains(position, 35e3, 0, 2);
 
-    compare_vectors_approx(grains.sizes, {0.3070168208,0.6929831792});
+    compare_vectors_approx(grains.sizes, {0.3512381923,0.6487618077});
     CHECK(grains.sizes[0] + grains.sizes[1] == Approx(1.0));
     // these are random numbers, but they should stay the same.
 
-    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.6634752307,-0.3450403529,0.663888374}},{{-0.2770374165,-0.7109563284,-0.646367828}},{{0.6950186243,-0.6127709638,0.376112826}}}};
-    std::array<std::array<double, 3>, 3> array_2 = {{{{0.6976381754,-0.134849869,0.7036451443}},{{-0.1367834457,-0.9891309921,-0.05394598614}},{{0.7032718288,-0.05861222805,-0.7085007703}}}};
+    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.5760272563,-0.3302260164,0.7477589038}},{{-0.3927671635,-0.6904395086,-0.6074761232}},{{0.7168867103,-0.6436179481,0.26801004}}}};
+    std::array<std::array<double, 3>, 3> array_2 = {{{{0.7622618339,-0.3280663618,0.5579689586}},{{-0.2767873192,-0.9444558064,-0.1771779043}},{{0.5851031332,-0.01938277797,-0.8107272238}}}};
     std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
     compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
 
@@ -3024,9 +3025,9 @@ TEST_CASE("WorldBuilder Features: Fault")
   CHECK(world4.composition(position, 1e3, 0) == Approx(1.0));
   CHECK(world4.temperature(position, 10e3, 10) == Approx(-1));
   CHECK(world4.composition(position, 10e3, 0) == Approx(1.0));
-  CHECK(world4.temperature(position, 20e3, 10) == Approx(573.2769020077));
+  CHECK(world4.temperature(position, 20e3, 10) == Approx(572.8733343312));
   CHECK(world4.composition(position, 20e3, 0) == Approx(0.0));
-  CHECK(world4.temperature(position, 30e3, 10) == Approx(1374.2941781431));
+  CHECK(world4.temperature(position, 30e3, 10) == Approx(1373.8655437086));
   CHECK(world4.composition(position, 30e3, 0) == Approx(0.0));
   CHECK(world4.temperature(position, 35e3, 10) == Approx(-3));
   CHECK(world4.composition(position, 35e3, 0) == Approx(0.0));
@@ -7497,7 +7498,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     // origin
     std::array<double,3> position = {{6371000 - 0, 0 * dtr, 0 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    CHECK(world.temperature(position, 0, 10) == Approx(0));
+    CHECK(world.temperature(position, 0, 10) == Approx(1600));
     CHECK(world.temperature(position, 1, 10) == Approx(0.0));
     CHECK(world.temperature(position, 200e3, 10) == Approx(0.0));
     CHECK(world.temperature(position, 210e3, 10) == Approx(1696.9009710498));
@@ -7541,7 +7542,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     // origin
     std::array<double,3> position = {{6371000 - 0, 0 * dtr, 0 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    CHECK(world.temperature(position, 0, 10) == Approx(0.0));
+    CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
     CHECK(world.temperature(position, 1, 10) == Approx(0.0));
     CHECK(world.temperature(position, 200e3, 10) == Approx(0.0));
     CHECK(world.temperature(position, 210e3, 10) == Approx(1696.9009710498));
