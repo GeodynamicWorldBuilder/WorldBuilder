@@ -405,7 +405,7 @@ namespace WorldBuilder
 
       double min_distance_check_point_surface_2d_line = std::numeric_limits<double>::infinity();
       size_t i_section_min_distance = 0;
-      Point<2> closest_point_on_line_2d(NaN::DSNAN,NaN::DSNAN,natural_coordinate_system);
+      Point<2> closest_point_on_line_2d(0,0,natural_coordinate_system);
       Point<2> closest_point_on_line_2d_temp(0,0,natural_coordinate_system);
       double fraction_CPL_P1P2_strict =  std::numeric_limits<double>::infinity(); // or NAN?
       double fraction_CPL_P1P2 = std::numeric_limits<double>::infinity();
@@ -476,6 +476,14 @@ namespace WorldBuilder
                                                        bool_cartesian ? start_radius : closest_point_on_line_2d[1],
                                                        natural_coordinate_system);
 
+          WBAssert(!std::isnan(closest_point_on_line_surface[0])
+                   &&
+                   !std::isnan(closest_point_on_line_surface[1])
+                   &&
+                   !std::isnan(closest_point_on_line_surface[2]),
+                   "Internal error: The closest_point_on_line_bottom variables contains not a number: " << closest_point_on_line_surface 
+                   << ", closest_point_on_line_2d = " << closest_point_on_line_2d);
+
       Point<3> closest_point_on_line_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_surface.get_array()),cartesian);
 
 
@@ -490,11 +498,11 @@ namespace WorldBuilder
           closest_point_on_line_bottom[bool_cartesian ? 2 : 0] = 0;
 
           WBAssert(!std::isnan(closest_point_on_line_bottom[0])
-                   ||
+                   &&
                    !std::isnan(closest_point_on_line_bottom[1])
-                   ||
+                   &&
                    !std::isnan(closest_point_on_line_bottom[2]),
-                   "Internal error: The y_axis variable contains not a number: " << closest_point_on_line_bottom);
+                   "Internal error: The closest_point_on_line_bottom variables contains not a number: " << closest_point_on_line_bottom);
 
           // Now that we have both the check point and the
           // closest_point_on_line, we need to push them to cartesian.
@@ -503,11 +511,11 @@ namespace WorldBuilder
 
 
           WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[0]),
-                   "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[0]);
+                   "Internal error: The closest_point_on_line_bottom_cartesian[0] variable is not a number: " << closest_point_on_line_bottom_cartesian[0]);
           WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[1]),
-                   "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[1]);
+                   "Internal error: The closest_point_on_line_bottom_cartesian[1] variable is not a number: " << closest_point_on_line_bottom_cartesian[1]);
           WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[2]),
-                   "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[2]);
+                   "Internal error: The closest_point_on_line_bottom_cartesian[2] variable is not a number: " << closest_point_on_line_bottom_cartesian[2]);
 
 
           // translate to orignal coordinates current and next section

@@ -485,9 +485,9 @@ TEST_CASE("WorldBuilder Utilities: interpolation")
   CHECK(monotone_cubic_spline_x(1.75) == Approx(6.484375));
   CHECK(monotone_cubic_spline_x(2) == Approx(5.0));
   CHECK(monotone_cubic_spline_x(2.25) == Approx(3.75));
-  CHECK(monotone_cubic_spline_x(2.125) == Approx(2.5));
+  CHECK(monotone_cubic_spline_x(2.5) == Approx(2.5));
   CHECK(monotone_cubic_spline_x(2.75) == Approx(1.25));
-  CHECK(monotone_cubic_spline_x(2.25) == Approx(0));
+  CHECK(monotone_cubic_spline_x(3) == Approx(0));
 
   CHECK(monotone_cubic_spline_y(0) == Approx(0));
   CHECK(monotone_cubic_spline_y(0.25) == Approx(0.546875));
