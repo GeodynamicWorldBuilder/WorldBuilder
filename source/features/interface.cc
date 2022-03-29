@@ -174,32 +174,6 @@ namespace WorldBuilder
                               y_list,
                               interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear);
 
-          if (maximum_distance_between_coordinates > 0 && interpolation_type != WorldBuilder::Utilities::InterpolationType::ContinuousMonotoneSpline)
-            {
-              size_t additional_parts = 0;
-              for (size_t i_plane=0; i_plane<original_number_of_coordinates-1; ++i_plane)
-                {
-                  const Point<2> P1 (x_spline(one_dimensional_coordinates_local[i_plane + additional_parts]),
-                                     y_spline(one_dimensional_coordinates_local[i_plane + additional_parts]),
-                                     coordinate_system);
-
-                  const Point<2> P2 (x_spline(one_dimensional_coordinates_local[i_plane + additional_parts + 1]),
-                                     y_spline(one_dimensional_coordinates_local[i_plane  + additional_parts+ 1]),
-                                     coordinate_system);
-
-                  const double length = (P1 - P2).norm();
-                  const size_t parts = static_cast<size_t>(std::ceil(length / maximum_distance_between_coordinates));
-                  for (size_t j = 1; j < parts; j++)
-                    {
-                      const double x_position3 = static_cast<double>(i_plane) + static_cast<double>(j)/static_cast<double>(parts);
-                      const Point<2> P3(x_spline(x_position3), y_spline(x_position3), coordinate_system);
-                      one_dimensional_coordinates_local.insert(one_dimensional_coordinates_local.begin() + static_cast<std::vector<double>::difference_type>(additional_parts + i_plane + 1), x_position3);
-                      coordinate_list_local.insert(coordinate_list_local.begin() + static_cast<std::vector<double>::difference_type>(additional_parts + i_plane + 1), P3);
-                      additional_parts++;
-                    }
-                }
-              coordinates = coordinate_list_local;
-            }
         }
       one_dimensional_coordinates = one_dimensional_coordinates_local;
     }
