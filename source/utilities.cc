@@ -1076,19 +1076,11 @@ namespace WorldBuilder
       return return_values;
     }
 
-    void interpolation::set_points(const std::vector<double> &x,
-                                   const std::vector<double> &y,
-                                   bool monotone_spline)
+    void interpolation::set_points(const std::vector<double> &y)
     {
-      WBAssert(!x.empty(), "Internal error: The x in the set points function is zero.");
-      assert(x.size() == y.size());
-      m_x = x;
+      const size_t n = y.size();
+      mx_size_min = n-1;
       m_y = y;
-      const size_t n = x.size();
-      for (size_t i = 0; i < n-1; i++)
-        {
-          assert(m_x[i] < m_x[i+1]);
-        }
 
       /**
        * This monotone spline algorithm is based on the javascript version
@@ -1096,15 +1088,6 @@ namespace WorldBuilder
        * parameters from this algorithm prevent overshooting in the
        * interpolation spline.
        */
-      std::vector<double> dys(n-1);
-      std::vector<double> dxs(n-1);
-      std::vector<double> ms(n-1);
-      for (size_t i=0; i < n-1; i++)
-        {
-          dxs[i] = x[i+1]-x[i];
-          dys[i] = y[i+1]-y[i];
-          ms[i] = dys[i]/dxs[i];
-        }
 
       // get m_a parameter
       m_c.resize(n);
@@ -1112,8 +1095,8 @@ namespace WorldBuilder
 
       for (size_t i = 0; i < n-2; i++)
         {
-          const double m0 = ms[i];
-          const double m1 = ms[i+1];
+          const double m0 = y[i+1]-y[i];
+          const double m1 =  y[i+2]-y[i+1];
 
           if (m0 * m1 <= 0)
             {
@@ -1121,13 +1104,10 @@ namespace WorldBuilder
             }
           else
             {
-              const double dx0 = dxs[i];
-              const double dx1 = dxs[i+1];
-              const double common = dx0 + dx1;
-              m_c[i+1] = 3*common/((common + dx0)/m0 + (common + dx1)/m1);
+              m_c[i+1] = 2*m0*m1/(m0+m1);
             }
         }
-      m_c[n-1] = ms[n-2];
+      m_c[n-1] =  y[n-1]-y[n-2];
 
       // Get b and c coefficients
       m_a.resize(n);
@@ -1135,31 +1115,12 @@ namespace WorldBuilder
       for (size_t i = 0; i < m_c.size()-1; i++)
         {
           const double c1 = m_c[i];
-          const double m0 = ms[i];
+          const double m0 = y[i+1]-y[i];
 
-          const double invDx = 1/dxs[i];
           const double common0 = c1 + m_c[i+1] - m0 - m0;
-          m_b[i] = (m0 - c1 - common0) * invDx;
-          m_a[i] = common0 * invDx * invDx;
+          m_b[i] = (m0 - c1 - common0);
+          m_a[i] = common0;
         }
-    }
-
-    double interpolation::operator() (const double x) const
-    {
-      const size_t mx_size_min = m_x.size()-1;
-      // Todo: The following two lines would work if m_x can be assumed to be [0,1,2,3,...]
-      // Which would allow to optimize m_x away completely. I can only do that once I get
-      // rid of the non-contiuous interpolation schemes, because the contiuous one doesn't
-      // need any extra items in m_x.
-      //const size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
-      //const double h = x-m_x[idx];
-      // find the closest point m_x[idx] < x, idx=0 even if x<m_x[0]
-      std::vector<double>::const_iterator it;
-      it = std::lower_bound(m_x.begin(),m_x.end(),x);
-      size_t idx = static_cast<size_t>(std::max( static_cast<int>(it-m_x.begin())-1, 0));
-
-      double h = x-m_x[idx];
-      return (((x >= m_x[0] && x <= m_x[mx_size_min] ? m_a[idx]*h : 0) + m_b[idx])*h + m_c[idx])*h + m_y[idx];
     }
 
     double wrap_angle(const double angle)

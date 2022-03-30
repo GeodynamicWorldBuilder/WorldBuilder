@@ -135,47 +135,28 @@ namespace WorldBuilder
       const std::string interpolation_type_string = prm.get<std::string>("interpolation") == "global" ? this->world->interpolation : prm.get<std::string>("interpolation");
       interpolation_type = WorldBuilder::Features::Internal::string_to_interpolation_type(interpolation_type_string);
 
-      // the one_dimensional_coordinates is always needed, so fill it.
       original_number_of_coordinates = coordinates.size();
 
-      std::vector<double> one_dimensional_coordinates_local(original_number_of_coordinates,0.0);
+      WBAssert(interpolation_type == WorldBuilder::Utilities::InterpolationType::Linear ||
+               interpolation_type == WorldBuilder::Utilities::InterpolationType::MonotoneSpline ||
+               interpolation_type == WorldBuilder::Utilities::InterpolationType::ContinuousMonotoneSpline,
+               "For interpolation, linear and monotone spline are the only allowed values. "
+               << "You provided " << interpolation_type_string << '.');
+
+      // I don't think this is usefull for continuous monotone spline, although it might
+      // help in a spherical case like for the linear case.
+      std::vector<double> x_list(original_number_of_coordinates,0.0);
+      std::vector<double> y_list(original_number_of_coordinates,0.0);
+      std::vector<Point<2> > coordinate_list_local = coordinates;
       for (size_t j=0; j<original_number_of_coordinates; ++j)
         {
-          one_dimensional_coordinates_local[j] = static_cast<double>(j);
+          x_list[j] = coordinates[j][0];
+          y_list[j] = coordinates[j][1];
         }
 
-      if (interpolation_type != WorldBuilder::Utilities::InterpolationType::None)
-        {
-          WBAssert(interpolation_type == WorldBuilder::Utilities::InterpolationType::Linear ||
-                   interpolation_type == WorldBuilder::Utilities::InterpolationType::MonotoneSpline ||
-                   interpolation_type == WorldBuilder::Utilities::InterpolationType::ContinuousMonotoneSpline,
-                   "For interpolation, linear and monotone spline are the only allowed values. "
-                   << "You provided " << interpolation_type_string << '.');
+      x_spline.set_points(x_list);
+      y_spline.set_points(y_list);
 
-          double maximum_distance_between_coordinates = this->world->maximum_distance_between_coordinates *
-                                                        (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
-
-
-          // I don't think this is usefull for continuous monotone spline, although it might
-          // help in a spherical case like for the linear case.
-          std::vector<double> x_list(original_number_of_coordinates,0.0);
-          std::vector<double> y_list(original_number_of_coordinates,0.0);
-          std::vector<Point<2> > coordinate_list_local = coordinates;
-          for (size_t j=0; j<original_number_of_coordinates; ++j)
-            {
-              x_list[j] = coordinates[j][0];
-              y_list[j] = coordinates[j][1];
-            }
-
-          x_spline.set_points(one_dimensional_coordinates_local,
-                              x_list,
-                              interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear);
-          y_spline.set_points(one_dimensional_coordinates_local,
-                              y_list,
-                              interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear);
-
-        }
-      one_dimensional_coordinates = one_dimensional_coordinates_local;
     }
 
 

@@ -349,7 +349,7 @@ TEST_CASE("WorldBuilder Utilities: interpolation")
   std::vector<double> y = {{10,5,5,35}};
 
   Utilities::interpolation monotone_cubic_spline;
-  monotone_cubic_spline.set_points(x,y,true);
+  monotone_cubic_spline.set_points(y);
 
   CHECK(monotone_cubic_spline(-1) == Approx(-5));
   CHECK(monotone_cubic_spline(-0.9) == Approx(-2.15));
@@ -392,7 +392,7 @@ TEST_CASE("WorldBuilder Utilities: interpolation")
   Utilities::interpolation monotone_cubic_spline2;
   y[1] = -5;
   y[3] = -35;
-  monotone_cubic_spline2.set_points(x,y,true);
+  monotone_cubic_spline2.set_points(y);
   CHECK(monotone_cubic_spline2(-1) == Approx(-35));
   CHECK(monotone_cubic_spline2(-0.5) == Approx(-1.25));
   CHECK(monotone_cubic_spline2(0) == Approx(10));
@@ -416,7 +416,7 @@ TEST_CASE("WorldBuilder Utilities: interpolation")
   y[1] = -5;
   y[2] = -10;
   y[3] = -35;
-  monotone_cubic_spline3.set_points(x,y,true);
+  monotone_cubic_spline3.set_points(y);
   CHECK(monotone_cubic_spline3(-1) == Approx(-27.5));
   CHECK(monotone_cubic_spline3(-0.5) == Approx(0.625));
   CHECK(monotone_cubic_spline3(0) == Approx(10.0));
@@ -446,12 +446,12 @@ TEST_CASE("WorldBuilder Utilities: interpolation")
   y[1] = 10;
   y[2] = 5;
   y[3] = 0;
-  monotone_cubic_spline_x.set_points(x,y,true);
+  monotone_cubic_spline_x.set_points(y);
   y[0] = 0;
   y[1] = 5;
   y[2] = 10;
   y[3] = 10;
-  monotone_cubic_spline_y.set_points(x,y,true);
+  monotone_cubic_spline_y.set_points(y);
 
   CHECK(monotone_cubic_spline_x(0) == Approx(10));
   CHECK(monotone_cubic_spline_x(0.25) == Approx(10));
@@ -4703,12 +4703,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   std::vector<double> y_list = {10.,10.};
   std::vector<Point<2> > coordinate_list_local = coordinates;
 
-  x_spline.set_points({0,1},
-                      x_list,
-                      interpolation_type_CMS != WorldBuilder::Utilities::InterpolationType::Linear);
-  y_spline.set_points({0,1},
-                      y_list,
-                      interpolation_type_CMS != WorldBuilder::Utilities::InterpolationType::Linear);
+  x_spline.set_points(x_list);
+  y_spline.set_points(y_list);
 
 
   WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
@@ -5716,12 +5712,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   std::vector<double> y_list = {10.,10., 10.};
   std::vector<Point<2> > coordinate_list_local = coordinates;
 
-  x_spline.set_points({0,1,2},
-                      x_list,
-                      interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear);
-  y_spline.set_points({0,1,2},
-                      y_list,
-                      interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear);
+  x_spline.set_points(x_list);
+  y_spline.set_points(y_list);
 
   WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
@@ -7165,12 +7157,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   std::vector<double> y_list = {10 * dtr,10 * dtr};
   std::vector<Point<2> > coordinate_list_local = coordinates;
 
-  x_spline.set_points({0,1},
-                      x_list,
-                      interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear);
-  y_spline.set_points({0,1},
-                      y_list,
-                      interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear);
+  x_spline.set_points(x_list);
+  y_spline.set_points(y_list);
 
   WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,

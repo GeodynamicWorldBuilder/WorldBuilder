@@ -176,25 +176,33 @@ namespace WorldBuilder
     {
       public:
         /**
-         * Initialize the spline.
+         * Initialize the spline. This function assumes that all y points are spaced 1 in the x direction.
          *
-         * @param x X coordinates of interpolation points.
          * @param y Values in the interpolation points.
-         * @param monotone_spline Whether to construct a monotone cubic spline or just do linear interpolation.
          */
-        void set_points(const std::vector<double> &x,
-                        const std::vector<double> &y,
-                        const bool monotone_spline = false);
+        void set_points(const std::vector<double> &y);
         /**
          * Evaluate at point @p x.
          */
-        double operator() (const double x) const;
+        inline
+        double operator() (const double x) const
+        {
+          if (x >= 0 && x <= mx_size_min)
+            {
+              const size_t idx = (size_t)x;
+              const double h = x-idx;
+              return ((m_a[idx]*h + m_b[idx])*h + m_c[idx])*h + m_y[idx];
+            }
+          const size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
+          const double h = x-idx;
+          return (m_b[idx]*h + m_c[idx])*h + m_y[idx];
+        }
 
       private:
         /**
-         * x coordinates of points
+         * number of x coordinates of points
          */
-        std::vector<double> m_x;
+        size_t mx_size_min;
 
         /**
          * interpolation parameters
