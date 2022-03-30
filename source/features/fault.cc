@@ -431,10 +431,8 @@ namespace WorldBuilder
                                                                        starting_radius,
                                                                        this->world->parameters.coordinate_system,
                                                                        true,
-                                                                       interpolation_type,
                                                                        this->x_spline,
-                                                                       this->y_spline,
-                                                                       one_dimensional_coordinates);
+                                                                       this->y_spline);
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
           const double distance_along_plane = distance_from_planes.distance_along_plane;
@@ -568,10 +566,8 @@ namespace WorldBuilder
                                                                        starting_radius,
                                                                        this->world->parameters.coordinate_system,
                                                                        true,
-                                                                       interpolation_type,
                                                                        this->x_spline,
-                                                                       this->y_spline,
-                                                                       one_dimensional_coordinates);
+                                                                       this->y_spline);
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
           const double distance_along_plane = distance_from_planes.distance_along_plane;
@@ -707,10 +703,8 @@ namespace WorldBuilder
                                                                        starting_radius,
                                                                        this->world->parameters.coordinate_system,
                                                                        true,
-                                                                       interpolation_type,
                                                                        this->x_spline,
-                                                                       this->y_spline,
-                                                                       one_dimensional_coordinates);
+                                                                       this->y_spline);
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
           const double distance_along_plane = distance_from_planes.distance_along_plane;

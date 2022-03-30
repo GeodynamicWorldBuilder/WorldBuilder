@@ -349,10 +349,8 @@ namespace WorldBuilder
                                       const double start_radius,
                                       const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                       const bool only_positive,
-                                      const InterpolationType interpolation_type,
                                       const interpolation &x_spline,
-                                      const interpolation &y_spline,
-                                      std::vector<double> global_x_list)
+                                      const interpolation &y_spline)
     {
       // TODO: Assert that point_list, plane_segment_angles and plane_segment_lenghts have the same size.
       /*WBAssert(point_list.size() == plane_segment_lengths.size(),
@@ -364,16 +362,6 @@ namespace WorldBuilder
       WBAssert(point_list.size() == plane_segment_angles.size(),
                "Internal error: The size of point_list (" << point_list.size()
                << ") and global_x_list (" << global_x_list.size() << ") are different.");*/
-
-      if (global_x_list.empty())
-        {
-          // fill it
-          global_x_list.resize(point_list.size());
-          for (size_t i = 0; i < point_list.size(); ++i)
-            global_x_list[i] = static_cast<double>(i);
-        }
-      WBAssertThrow(global_x_list.size() == point_list.size(), "The given global_x_list doesn't have "
-                    "the same size as the point list. This is required.");
 
       double distance = std::numeric_limits<double>::infinity();
       double new_distance = std::numeric_limits<double>::infinity();
@@ -425,14 +413,15 @@ namespace WorldBuilder
       bool continue_computation = false;
 
       // get an estimate for the closest point between P1 and P2.
-      const double parts = 6;
+      constexpr double parts = 6;
+      constexpr double one_div_parts = 1./parts;
       double min_estimate_solution = 0;
       double min_estimate_solution_temp = min_estimate_solution;
       Point<2> splines(x_spline(min_estimate_solution),y_spline(min_estimate_solution), natural_coordinate_system);
       double minimum_distance_to_reference_point = splines.cheap_relative_distance(check_point_surface_2d);
 
       // Compute the clostest point on the spline as a double.
-      for (size_t i_estimate = 0; i_estimate <= static_cast<size_t>(parts*(global_x_list[point_list.size()-1])+1); i_estimate++)
+      for (size_t i_estimate = 0; i_estimate <= static_cast<size_t>(parts*(point_list.size()-1)+1); i_estimate++)
         {
           splines[0] = x_spline(min_estimate_solution_temp);
           splines[1] = y_spline(min_estimate_solution_temp);
@@ -443,11 +432,11 @@ namespace WorldBuilder
               minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
               min_estimate_solution = min_estimate_solution_temp;
             }
-          min_estimate_solution_temp = min_estimate_solution_temp + 1.0/parts;
+          min_estimate_solution_temp = min_estimate_solution_temp + one_div_parts;
         }
 
       // search above and below the solution and replace if the distance is smaller.
-      double search_step = 1./parts;
+      double search_step = one_div_parts;
       for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
         {
           splines[0] = x_spline(min_estimate_solution-search_step);
@@ -477,11 +466,9 @@ namespace WorldBuilder
         }
       double solution = min_estimate_solution;
 
-      continue_computation = (solution > 0 && floor(solution) <= global_x_list[point_list.size()-2] && floor(solution)  >= 0);
 
       closest_point_on_line_2d = Point<2>(x_spline(solution),y_spline(solution),natural_coordinate_system);
-      i_section_min_distance = static_cast<size_t>(floor(solution));
-      fraction_CPL_P1P2 = solution-floor(solution);
+
 
       // We now need 3d points from this point on, so make them.
       // The order of a Cartesian coordinate is x,y,z and the order of
@@ -493,19 +480,20 @@ namespace WorldBuilder
 
       Point<3> closest_point_on_line_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_surface.get_array()),cartesian);
 
-      if (continue_computation)
+      if (solution > 0 && floor(solution) <=point_list.size()-2 && floor(solution)  >= 0)
         {
-
+          i_section_min_distance = static_cast<size_t>(floor(solution));
+          fraction_CPL_P1P2 = solution-floor(solution);
 
           Point<3> closest_point_on_line_bottom = closest_point_on_line_surface;
           closest_point_on_line_bottom[bool_cartesian ? 2 : 0] = 0;
 
           WBAssert(!std::isnan(closest_point_on_line_bottom[0])
-                   ||
+                   &&
                    !std::isnan(closest_point_on_line_bottom[1])
-                   ||
+                   &&
                    !std::isnan(closest_point_on_line_bottom[2]),
-                   "Internal error: The y_axis variable contains not a number: " << closest_point_on_line_bottom);
+                   "Internal error: The closest_point_on_line_bottom variables variable contains not a number: " << closest_point_on_line_bottom);
 
           // Now that we have both the check point and the
           // closest_point_on_line, we need to push them to cartesian.
@@ -514,15 +502,15 @@ namespace WorldBuilder
 
 
           WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[0]),
-                   "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[0]);
+                   "Internal error: The closest_point_on_line_bottom_cartesian[0] variable is not a number: " << closest_point_on_line_bottom_cartesian[0]);
           WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[1]),
-                   "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[1]);
+                   "Internal error: The closest_point_on_line_bottom_cartesian[1] variable is not a number: " << closest_point_on_line_bottom_cartesian[1]);
           WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[2]),
-                   "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[2]);
+                   "Internal error: The closest_point_on_line_bottom_cartesian[2] variable is not a number: " << closest_point_on_line_bottom_cartesian[2]);
 
 
           // translate to orignal coordinates current and next section
-          size_t original_current_section = static_cast<size_t>(std::floor(global_x_list[i_section_min_distance]));
+          size_t original_current_section = i_section_min_distance;
           size_t original_next_section = original_current_section + 1;
 
 

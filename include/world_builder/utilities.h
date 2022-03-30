@@ -355,10 +355,8 @@ namespace WorldBuilder
                                                                     const double start_radius,
                                                                     const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                                                     const bool only_positive,
-                                                                    const InterpolationType interpolation_type,
                                                                     const interpolation &x_spline,
-                                                                    const interpolation &y_spline,
-                                                                    std::vector<double> global_x_list = {});
+                                                                    const interpolation &y_spline);
 
 
 
