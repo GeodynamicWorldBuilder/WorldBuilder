@@ -418,50 +418,104 @@ namespace WorldBuilder
       double min_estimate_solution = 0;
       double min_estimate_solution_temp = min_estimate_solution;
       Point<2> splines(x_spline(min_estimate_solution),y_spline(min_estimate_solution), natural_coordinate_system);
-      double minimum_distance_to_reference_point = splines.cheap_relative_distance(check_point_surface_2d);
 
-      // Compute the clostest point on the spline as a double.
-      for (size_t i_estimate = 0; i_estimate <= static_cast<size_t>(parts*(point_list.size()-1)+1); i_estimate++)
+      if (natural_coordinate_system == cartesian)
         {
-          splines[0] = x_spline(min_estimate_solution_temp);
-          splines[1] = y_spline(min_estimate_solution_temp);
-          const double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance(check_point_surface_2d);
+          double minimum_distance_to_reference_point = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
 
-          if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
+          // Compute the clostest point on the spline as a double.
+          for (size_t i_estimate = 0; i_estimate <= static_cast<size_t>(parts*(point_list.size()-1)+1); i_estimate++)
             {
-              minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
-              min_estimate_solution = min_estimate_solution_temp;
+              splines[0] = x_spline(min_estimate_solution_temp);
+              splines[1] = y_spline(min_estimate_solution_temp);
+              const double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
+
+              if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
+                {
+                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
+                  min_estimate_solution = min_estimate_solution_temp;
+                }
+              min_estimate_solution_temp = min_estimate_solution_temp + one_div_parts;
             }
-          min_estimate_solution_temp = min_estimate_solution_temp + one_div_parts;
+
+          // search above and below the solution and replace if the distance is smaller.
+          double search_step = one_div_parts;
+          for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
+            {
+              splines[0] = x_spline(min_estimate_solution-search_step);
+              splines[1] = y_spline(min_estimate_solution-search_step);
+              const double minimum_distance_to_reference_point_min = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
+
+
+              splines[0] = x_spline(min_estimate_solution+search_step);
+              splines[1] = y_spline(min_estimate_solution+search_step);
+              const double minimum_distance_to_reference_point_plus = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
+
+
+              if (minimum_distance_to_reference_point_plus < minimum_distance_to_reference_point)
+                {
+                  min_estimate_solution = min_estimate_solution+search_step;
+                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_plus;
+                }
+              else if (minimum_distance_to_reference_point_min < minimum_distance_to_reference_point)
+                {
+                  min_estimate_solution = min_estimate_solution-search_step;
+                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_min;
+                }
+              else
+                {
+                  search_step *=0.5;
+                }
+            }
         }
-
-      // search above and below the solution and replace if the distance is smaller.
-      double search_step = one_div_parts;
-      for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
+      else
         {
-          splines[0] = x_spline(min_estimate_solution-search_step);
-          splines[1] = y_spline(min_estimate_solution-search_step);
-          const double minimum_distance_to_reference_point_min = splines.cheap_relative_distance(check_point_surface_2d);
 
+          double minimum_distance_to_reference_point = splines.cheap_relative_distance_spherical(check_point_surface_2d);
 
-          splines[0] = x_spline(min_estimate_solution+search_step);
-          splines[1] = y_spline(min_estimate_solution+search_step);
-          const double minimum_distance_to_reference_point_plus = splines.cheap_relative_distance(check_point_surface_2d);
-
-
-          if (minimum_distance_to_reference_point_plus < minimum_distance_to_reference_point)
+          // Compute the clostest point on the spline as a double.
+          for (size_t i_estimate = 0; i_estimate <= static_cast<size_t>(parts*(point_list.size()-1)+1); i_estimate++)
             {
-              min_estimate_solution = min_estimate_solution+search_step;
-              minimum_distance_to_reference_point = minimum_distance_to_reference_point_plus;
+              splines[0] = x_spline(min_estimate_solution_temp);
+              splines[1] = y_spline(min_estimate_solution_temp);
+              const double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_spherical(check_point_surface_2d);
+
+              if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
+                {
+                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
+                  min_estimate_solution = min_estimate_solution_temp;
+                }
+              min_estimate_solution_temp = min_estimate_solution_temp + one_div_parts;
             }
-          else if (minimum_distance_to_reference_point_min < minimum_distance_to_reference_point)
+
+          // search above and below the solution and replace if the distance is smaller.
+          double search_step = one_div_parts;
+          for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
             {
-              min_estimate_solution = min_estimate_solution-search_step;
-              minimum_distance_to_reference_point = minimum_distance_to_reference_point_min;
-            }
-          else
-            {
-              search_step *=0.5;
+              splines[0] = x_spline(min_estimate_solution-search_step);
+              splines[1] = y_spline(min_estimate_solution-search_step);
+              const double minimum_distance_to_reference_point_min = splines.cheap_relative_distance_spherical(check_point_surface_2d);
+
+
+              splines[0] = x_spline(min_estimate_solution+search_step);
+              splines[1] = y_spline(min_estimate_solution+search_step);
+              const double minimum_distance_to_reference_point_plus = splines.cheap_relative_distance_spherical(check_point_surface_2d);
+
+
+              if (minimum_distance_to_reference_point_plus < minimum_distance_to_reference_point)
+                {
+                  min_estimate_solution = min_estimate_solution+search_step;
+                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_plus;
+                }
+              else if (minimum_distance_to_reference_point_min < minimum_distance_to_reference_point)
+                {
+                  min_estimate_solution = min_estimate_solution-search_step;
+                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_min;
+                }
+              else
+                {
+                  search_step *=0.5;
+                }
             }
         }
       double solution = min_estimate_solution;
