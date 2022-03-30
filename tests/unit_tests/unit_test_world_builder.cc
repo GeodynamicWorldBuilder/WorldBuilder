@@ -1936,8 +1936,8 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.temperature(position, 5, 10) == Approx(1600));
   CHECK(world1.temperature(position, 10, 10) == Approx(1600));
   CHECK(world1.temperature(position, 100, 10) == Approx(1600.0448006272));
-  CHECK(world1.temperature(position, 500, 10) == Approx(1.0221927843)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 1000, 10) == Approx(1.0646191912)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 500, 10) == Approx(1.0212555452)); // we are in the plate for sure (colder than anywhere in the mantle)
+  CHECK(world1.temperature(position, 1000, 10) == Approx(1.063681952)); // we are in the plate for sure (colder than anywhere in the mantle)
   CHECK(world1.temperature(position, 5000, 10) == Approx(466.079802795)); // we are in the plate for sure (colder than anywhere in the mantle)
   CHECK(world1.temperature(position, 10e3, 10) == Approx(471.0974212693));
   CHECK(world1.temperature(position, 25e3, 10) == Approx(542.4880381006));
@@ -2042,7 +2042,7 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   CHECK(world1.temperature(position, 55e3, 10) == Approx(1624.8307056983));
   CHECK(world1.temperature(position, 100e3-1, 10) == Approx(1645.4326343531));
   CHECK(world1.temperature(position, 100e3+1, 10) == Approx(1.0000607288));
-  CHECK(world1.temperature(position, 101e3, 10) == Approx(1.0848528137));
+  CHECK(world1.temperature(position, 101e3, 10) == Approx(1.084826403));
   CHECK(world1.temperature(position, 110e3, 10) == Approx(1.8485281374 ));
   CHECK(world1.temperature(position, 150e3, 10) == Approx(5.2426406871));
   CHECK(world1.temperature(position, 155e3, 10) == Approx(5.6669047558));
@@ -2658,8 +2658,8 @@ TEST_CASE("WorldBuilder Features: Fault")
 
   position = {{250e3,500e3,800e3}};
   //adibatic temperature
-  CHECK(world3.temperature(position, 0, 10) == Approx(1.0101168113));
-  CHECK(world3.temperature(position, 1, 10) == Approx(1.0100743849));
+  CHECK(world3.temperature(position, 0, 10) == Approx(1.0105854309));
+  CHECK(world3.temperature(position, 1, 10) == Approx(1.0105430044));
   CHECK(world3.temperature(position, 5000, 10) == Approx(1602.241568732));
   CHECK(world3.temperature(position, 10e3, 10) == Approx(1604.486277858));
   CHECK(world3.temperature(position, 25e3, 10) == Approx(1611.239291627));

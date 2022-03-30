@@ -395,17 +395,9 @@ namespace WorldBuilder
       double depth_reference_surface = 0.0;
 
       const DepthMethod depth_method = coordinate_system->depth_method();
-      WBAssertThrow(depth_method == DepthMethod::none
-                    || depth_method == DepthMethod::angle_at_starting_point_with_surface
-                    || depth_method == DepthMethod::angle_at_begin_segment_with_surface
-                    || depth_method == DepthMethod::angle_at_begin_segment_applied_to_end_segment_with_surface,
-                    "Only the depth methods 'none', 'angle_at_starting_point_with_surface', 'angle_at_begin_segment_with_surface'" <<
-                    "and 'angle_at_begin_segment_applied_to_end_segment_with_surface' are implemented.");
 
       double min_distance_check_point_surface_2d_line = std::numeric_limits<double>::infinity();
       size_t i_section_min_distance = 0;
-      Point<2> closest_point_on_line_2d(NaN::DSNAN,NaN::DSNAN,natural_coordinate_system);
-      Point<2> closest_point_on_line_2d_temp(0,0,natural_coordinate_system);
       double fraction_CPL_P1P2_strict =  std::numeric_limits<double>::infinity(); // or NAN?
       double fraction_CPL_P1P2 = std::numeric_limits<double>::infinity();
 
@@ -464,6 +456,9 @@ namespace WorldBuilder
               else
                 {
                   search_step *=0.5;
+
+                  if (search_step < 0.0025)
+                    break;
                 }
             }
         }
@@ -500,7 +495,7 @@ namespace WorldBuilder
               splines[1] = y_spline(min_estimate_solution+search_step);
               const double minimum_distance_to_reference_point_plus = splines.cheap_relative_distance_spherical(check_point_surface_2d);
 
-
+              //std::cout << i_search_step << ", search_step = " << search_step<< std::endl;
               if (minimum_distance_to_reference_point_plus < minimum_distance_to_reference_point)
                 {
                   min_estimate_solution = min_estimate_solution+search_step;
@@ -514,13 +509,16 @@ namespace WorldBuilder
               else
                 {
                   search_step *=0.5;
+
+                  if (search_step < 0.005)
+                    break;
                 }
             }
         }
       double solution = min_estimate_solution;
 
 
-      closest_point_on_line_2d = Point<2>(x_spline(solution),y_spline(solution),natural_coordinate_system);
+      Point<2> closest_point_on_line_2d = Point<2>(x_spline(solution),y_spline(solution),natural_coordinate_system);
 
 
       // We now need 3d points from this point on, so make them.
