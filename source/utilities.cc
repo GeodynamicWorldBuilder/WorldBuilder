@@ -404,79 +404,44 @@ namespace WorldBuilder
       bool continue_computation = false;
 
       // get an estimate for the closest point between P1 and P2.
-      constexpr double parts = 2;
-      constexpr double one_div_parts = 1./parts;
+      //constexpr double parts = 1;
+      //constexpr double one_div_parts = 1./parts;
       double min_estimate_solution = 0;
       double min_estimate_solution_temp = min_estimate_solution;
-      Point<2> splines(x_spline(0),y_spline(0), natural_coordinate_system);
 
-      //std::cout << "splines(0,0)=" << splines << std::endl;
-
-      //std::string output = "";
       if (natural_coordinate_system == cartesian)
         {
-          //{
-          // method 1: semi-brute force
+          // first check the boundaries -0.5, 0, point_list.size()-1 and point_list.size()-0.5
+          Point<2> splines(x_spline.value_outside(-0.5),y_spline.value_outside(-0.5), natural_coordinate_system);
           double minimum_distance_to_reference_point = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
 
-          // Compute the clostest point on the spline as a double.
-          for (size_t i_estimate = 0; i_estimate <= static_cast<size_t>(parts*(point_list.size()-1)+1); i_estimate++)
+
+          splines[0] = x_spline.value_outside(point_list.size()-0.5);
+          splines[1] = y_spline.value_outside(point_list.size()-0.5);
+          double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
+
+          if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
             {
-              splines[0] = x_spline(min_estimate_solution_temp);
-              splines[1] = y_spline(min_estimate_solution_temp);
-              const double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
-              //output += std::to_string(min_estimate_solution_temp) + ", " + std::to_string(std::sqrt(minimum_distance_to_reference_point_temp)) + "\n";
+              minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
+              min_estimate_solution = min_estimate_solution_temp;
+            }
+
+          // Compute the clostest point on the spline as a double.
+          for (size_t i_estimate = 0; i_estimate < point_list.size()-1; i_estimate++)
+            {
+              splines[0] = x_spline.value_inside(min_estimate_solution_temp);
+              splines[1] = y_spline.value_inside(min_estimate_solution_temp);
+              minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
 
               if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
                 {
                   minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
                   min_estimate_solution = min_estimate_solution_temp;
                 }
-              min_estimate_solution_temp = min_estimate_solution_temp + one_div_parts;
+              min_estimate_solution_temp += 1;
             }
 
-          min_estimate_solution_temp = min_estimate_solution;
-
-          // search above and below the solution and replace if the distance is smaller.
-          /*double search_step = one_div_parts;
-          for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
-            {
-              splines[0] = x_spline(min_estimate_solution-search_step);
-              splines[1] = y_spline(min_estimate_solution-search_step);
-              const double minimum_distance_to_reference_point_min = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
-
-
-              splines[0] = x_spline(min_estimate_solution+search_step);
-              splines[1] = y_spline(min_estimate_solution+search_step);
-              const double minimum_distance_to_reference_point_plus = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
-
-
-              if (minimum_distance_to_reference_point_plus < minimum_distance_to_reference_point)
-                {
-                  min_estimate_solution = min_estimate_solution+search_step;
-                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_plus;
-                }
-              else if (minimum_distance_to_reference_point_min < minimum_distance_to_reference_point)
-                {
-                  min_estimate_solution = min_estimate_solution-search_step;
-                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_min;
-                }
-              else
-                {
-                  search_step *=0.5;
-
-                  if (search_step < 0.0001)
-                    break;
-                }
-            }*/
-          //}
-          //std::cout << std::endl;
-          //{
-          // method 2: find: 2 (c + x (2 b + 3 a x)) (d - p + x (c + x (b + a x))) + 2 (g + x (2 f + 3 E x)) (h - k + x (g + x (f + E x))) = 0
-          // Piccard iteration: 2 c d + 2 g h - 2 g k - 2 c p + 2 c^2 x + 4 b d x + 2 g^2 x + 4 f h x - 4 f k x - 4 b p x + 6 b c x^2 + 6 a d x^2 + 6 f g x^2 + 6 e h x^2 - 6 e k x^2 - 6 a p x^2 + 4 b^2 x^3 + 8 a c x^3 + 4 f^2 x^3 + 8 e g x^3 + 10 a b x^4 + 10 e f x^4 + 6 a^2 x^5 + 6 e^2 x^5
-
-          //double min_estimate_solution = 0;
-          double x = min_estimate_solution_temp;
+          double x = min_estimate_solution;
 
           for (unsigned int i = 0; i < 20; ++i)
             {
@@ -516,26 +481,37 @@ namespace WorldBuilder
         }
       else
         {
+// first check the boundaries -0.5, 0, point_list.size()-1 and point_list.size()-0.5
+          Point<2> splines(x_spline.value_outside(-0.5),y_spline.value_outside(-0.5), natural_coordinate_system);
+          double minimum_distance_to_reference_point = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
 
-          double minimum_distance_to_reference_point = splines.cheap_relative_distance_spherical(check_point_surface_2d);
+
+          splines[0] = x_spline.value_outside(point_list.size()-0.5);
+          splines[1] = y_spline.value_outside(point_list.size()-0.5);
+          double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
+
+          if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
+            {
+              minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
+              min_estimate_solution = min_estimate_solution_temp;
+            }
 
           // Compute the clostest point on the spline as a double.
-          for (size_t i_estimate = 0; i_estimate <= static_cast<size_t>(parts*(point_list.size()-1)+1); i_estimate++)
+          for (size_t i_estimate = 0; i_estimate < point_list.size()-1; i_estimate++)
             {
-              splines[0] = x_spline(min_estimate_solution_temp);
-              splines[1] = y_spline(min_estimate_solution_temp);
-              const double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_spherical(check_point_surface_2d);
-              //output += std::to_string(min_estimate_solution_temp) + ", " + std::to_string(minimum_distance_to_reference_point_temp) + "\n";
+              splines[0] = x_spline.value_inside(min_estimate_solution_temp);
+              splines[1] = y_spline.value_inside(min_estimate_solution_temp);
+              minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
 
               if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
                 {
                   minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
                   min_estimate_solution = min_estimate_solution_temp;
                 }
-              min_estimate_solution_temp = min_estimate_solution_temp + one_div_parts;
+              min_estimate_solution_temp += 1;
             }
 
-          double x = min_estimate_solution_temp;
+          double x = min_estimate_solution;
 
           for (unsigned int i = 0; i < 20; ++i)
             {

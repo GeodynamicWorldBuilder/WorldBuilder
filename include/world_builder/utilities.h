@@ -181,6 +181,8 @@ namespace WorldBuilder
          * @param y Values in the interpolation points.
          */
         void set_points(const std::vector<double> &y);
+
+
         /**
          * Evaluate at point @p x.
          */
@@ -193,6 +195,33 @@ namespace WorldBuilder
               const double h = x-idx;
               return ((m_a[idx]*h + m_b[idx])*h + m_c[idx])*h + m_y[idx];
             }
+          const size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
+          const double h = x-idx;
+          return (m_b[idx]*h + m_c[idx])*h + m_y[idx];
+        }
+
+
+        /**
+         * Evaluate at point @p x. assumes x is between 0 and mx_size_min;
+         */
+        inline
+        double value_inside (const double x) const
+        {
+          WBAssert(x >= 0 && x <= mx_size_min, "using value_limited outside of the boundary contitions of 0 and " << mx_size_min);
+          const size_t idx = (size_t)x;
+          const double h = x-idx;
+          return ((m_a[idx]*h + m_b[idx])*h + m_c[idx])*h + m_y[idx];
+        }
+
+
+        /**
+         * Evaluate at point @p x. assumes x is between 0 and mx_size_min;
+         */
+        inline
+        double value_outside (const double x) const
+        {
+          WBAssert(!(x >= 0 && x <= mx_size_min), "using value_limited outside of the boundary contitions of 0 and " << mx_size_min);
+
           const size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
           const double h = x-idx;
           return (m_b[idx]*h + m_c[idx])*h + m_y[idx];
