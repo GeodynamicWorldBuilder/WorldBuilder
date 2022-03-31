@@ -8,7 +8,7 @@
   [
     {
        "model":"subducting plate", "name":"Antilles slab", "dip point":[-10,10],
-       "coordinates":[[0,0],[10,10],[25,15],[35,35]], 
+       "coordinates":[[0,0],[10,10],[25,15],[35,35], [25,12],[10,25]], 
        "segments":
        [
          {"length":450e3, "thickness":[100e3], "angle":[20]},

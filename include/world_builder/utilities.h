@@ -198,6 +198,15 @@ namespace WorldBuilder
           return (m_b[idx]*h + m_c[idx])*h + m_y[idx];
         }
 
+
+        inline
+        std::array<double,5> operatorands (const double x) const
+        {
+          size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
+          const double h = x-idx;
+          return {m_a[idx],m_b[idx],m_c[idx],m_y[idx],h};
+        }
+
       private:
         /**
          * number of x coordinates of points
