@@ -1488,8 +1488,8 @@ int main(int argc, char **argv)
       std::cout << "[6/6] Writing the paraview file                                                                                \r";
       std::cout.flush();
 
-      //vtu11::Vtu11UnstructuredMesh mesh { points, connectivity, offsets, types };
-      //vtu11::writeVtu( file_without_extension + ".vtu", mesh, dataSetInfo, data_set, vtu_output_format );
+      vtu11::Vtu11UnstructuredMesh mesh { points, connectivity, offsets, types };
+      vtu11::writeVtu( file_without_extension + ".vtu", mesh, dataSetInfo, data_set, vtu_output_format );
 
       std::cout << "                                                                                                               \r";
       std::cout.flush();
