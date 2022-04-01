@@ -319,11 +319,11 @@ ADD_CUSTOM_TARGET(debug
 
 IF ( CMAKE_BUILD_TYPE STREQUAL Coverage )
   SET(CMAKE_VERBOSE_MAKEFILE on )
-  SET(WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW --coverage -fprofile-arcs -ftest-coverage -g)
-  SET(WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_OLD "--coverage -fprofile-arcs -ftest-coverage -g")
+  SET(WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_NEW --coverage -fprofile-arcs -ftest-coverage -g -DNDEBUG)
+  SET(WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_OLD "--coverage -fprofile-arcs -ftest-coverage -g -DNDEBUG")
 
   ## for old versions of cmake
-  SET(WB_FORTRAN_COMPILER_FLAGS_COVERAGE "--coverage")
+  SET(WB_FORTRAN_COMPILER_FLAGS_COVERAGE "--coverage -DNDEBUG")
 endif()
 
   SET(WB_LINKER_OPTIONS "")
