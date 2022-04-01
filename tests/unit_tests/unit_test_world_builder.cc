@@ -5144,6 +5144,13 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                   *cartesian_system);
   coordinates.emplace_back(30,10,cartesian);
 
+
+  x_list = {0.,20.,30.};
+  y_list = {10.,10.,10.};
+
+  x_spline.set_points(x_list);
+  y_spline.set_points(y_list);
+
   slab_segment_lengths.resize(3);
   slab_segment_lengths[2].push_back(std::sqrt(10*10+10*10));
   slab_segment_lengths[2].push_back(200);
@@ -5684,7 +5691,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
                                                  reference_point,
-                                                 coordinates,
+                                                 coordinate_list_local,
                                                  slab_segment_lengths,
                                                  slab_segment_angles,
                                                  starting_radius,

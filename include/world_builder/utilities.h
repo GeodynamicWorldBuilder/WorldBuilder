@@ -207,7 +207,7 @@ namespace WorldBuilder
         inline
         double value_inside (const double x) const
         {
-          WBAssert(x >= 0 && x <= mx_size_min, "using value_limited outside of the boundary contitions of 0 and " << mx_size_min);
+          WBAssert(x >= 0 && x <= mx_size_min, "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << x << ".");
           const size_t idx = (size_t)x;
           const double h = x-idx;
           return ((m_a[idx]*h + m_b[idx])*h + m_c[idx])*h + m_y[idx];
@@ -220,7 +220,7 @@ namespace WorldBuilder
         inline
         double value_outside (const double x) const
         {
-          WBAssert(!(x >= 0 && x <= mx_size_min), "using value_limited outside of the boundary contitions of 0 and " << mx_size_min);
+          WBAssert(!(x > 0 && x < mx_size_min), "Internal error: using value_ouside inside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << x << ".");
 
           const size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
           const double h = x-idx;
@@ -236,11 +236,11 @@ namespace WorldBuilder
           return {m_a[idx],m_b[idx],m_c[idx],m_y[idx],h};
         }
 
-      private:
         /**
          * number of x coordinates of points
          */
         size_t mx_size_min;
+      private:
 
         /**
          * interpolation parameters
