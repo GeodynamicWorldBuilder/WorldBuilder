@@ -193,11 +193,22 @@ namespace WorldBuilder
             {
               const size_t idx = (size_t)x;
               const double h = x-idx;
-              return ((m_a[idx]*h + m_b[idx])*h + m_c[idx])*h + m_y[idx];
+              return ((m[idx][0]*h + m[idx][1])*h + m[idx][2])*h + m[idx][3];
             }
           const size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
           const double h = x-idx;
-          return (m_b[idx]*h + m_c[idx])*h + m_y[idx];
+          return (m[idx][1]*h + m[idx][2])*h + m[idx][3];
+        }
+
+
+        inline
+        double operator() (const double x, const size_t idx, const double h) const
+        {
+          return (x >= 0 && x <= mx_size_min) 
+          ? 
+          ((m[idx][0]*h + m[idx][1])*h + m[idx][2])*h + m[idx][3]
+            :
+             (m[idx][1]*h + m[idx][2])*h + m[idx][3];
         }
 
 
@@ -210,9 +221,32 @@ namespace WorldBuilder
           WBAssert(x >= 0 && x <= mx_size_min, "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << x << ".");
           const size_t idx = (size_t)x;
           const double h = x-idx;
-          return ((m_a[idx]*h + m_b[idx])*h + m_c[idx])*h + m_y[idx];
+          return ((m[idx][0]*h + m[idx][1])*h + m[idx][2])*h + m[idx][3];
         }
 
+
+        /**
+         * Evaluate at point @p x. assumes x is between 0 and mx_size_min;
+         */
+        inline
+        double value_inside (const size_t idx, const double h) const
+        {
+          WBAssert(idx >= 0 && idx <= mx_size_min, "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << x << ".");
+          WBAssert(h >= 0 && h <= 1., "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << x << ".");
+          return ((m[idx][0]*h + m[idx][1])*h + m[idx][2])*h + m[idx][3];
+        }
+
+
+        /**
+         * Evaluate at point @p x. assumes x is between 0 and mx_size_min;
+         */
+        inline
+        double value_outside (const size_t idx, const double h) const
+        {
+          WBAssert(idx >= 0 && idx <= mx_size_min, "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << x << ".");
+          WBAssert(h >= 0 && h <= 1., "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << x << ".");
+          return (m[idx][1]*h + m[idx][2])*h + m[idx][3];
+        }
 
         /**
          * Evaluate at point @p x. assumes x is between 0 and mx_size_min;
@@ -224,7 +258,7 @@ namespace WorldBuilder
 
           const size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
           const double h = x-idx;
-          return (m_b[idx]*h + m_c[idx])*h + m_y[idx];
+          return (m[idx][1]*h + m[idx][2])*h + m[idx][3];
         }
 
 
@@ -233,7 +267,16 @@ namespace WorldBuilder
         {
           size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
           const double h = x-idx;
-          return {m_a[idx],m_b[idx],m_c[idx],m_y[idx],h};
+          return {m[idx][0],m[idx][1],m[idx][2],m[idx][3],h};
+        }
+
+
+        inline
+        const std::array<double,4>& operatorands (const size_t idx) const
+        {
+          WBAssert(idx >= 0 && idx <= mx_size_min, "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << x << ".");
+          WBAssert(h >= 0 && h <= 1., "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << x << ".");
+          return m[idx];
         }
 
         /**
@@ -247,7 +290,7 @@ namespace WorldBuilder
          * f(x) = a*(x-x_i)^3 + b*(x-x_i)^2 + c*(x-x_i) + y_i
          * \]
          */
-        std::vector<double> m_a, m_b, m_c, m_y;
+        std::vector<std::array<double,4>> m; //m_a, m_b, m_c, m_y;
       private:
     };
 

@@ -418,7 +418,7 @@ namespace WorldBuilder
         {
           // first check the boundaries -0.5, 0, point_list.size()-1 and number_of_points+0.1
           min_estimate_solution = -1e-6;
-          Point<2> splines(x_spline.value_outside(min_estimate_solution),y_spline.value_outside(min_estimate_solution), natural_coordinate_system);
+          Point<2> splines(x_spline.value_outside(0,min_estimate_solution),y_spline.value_outside(0,min_estimate_solution), natural_coordinate_system);
           double minimum_distance_to_reference_point = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
           //std::cout <<std::endl << "-0.1, " << minimum_distance_to_reference_point << std::endl;
 
@@ -471,15 +471,15 @@ namespace WorldBuilder
                   const double sx_2 = sx*sx;
                   const double sx_3 = sx_2*sx;
 
-                  const double &a = x_spline.m_a[idx];
-                  const double &b = x_spline.m_b[idx];
-                  const double &c = x_spline.m_c[idx];
-                  const double &d = x_spline.m_y[idx];
+                  const double &a = x_spline.m[idx][0];
+                  const double &b = x_spline.m[idx][1];
+                  const double &c = x_spline.m[idx][2];
+                  const double &d = x_spline.m[idx][3];
                   const double &p = check_point_surface_2d[0];
-                  const double &e = y_spline.m_a[idx];
-                  const double &f = y_spline.m_b[idx];
-                  const double &g = y_spline.m_c[idx];
-                  const double &h = y_spline.m_y[idx];
+                  const double &e = y_spline.m[idx][0];
+                  const double &f = y_spline.m[idx][1];
+                  const double &g = y_spline.m[idx][2];
+                  const double &h = y_spline.m[idx][3];
                   const double &k = check_point_surface_2d[1];
                   //const double &sx = x_op[4];
                   const double part_1 = (a*sx_3+b*sx_2+c*sx+d-p);
@@ -497,8 +497,8 @@ namespace WorldBuilder
             }
 
 
-          splines[0] = x_spline.value_outside(number_of_points+0.1e-6);
-          splines[1] = y_spline.value_outside(number_of_points+0.1e-6);
+          splines[0] = x_spline.value_outside(number_of_points,1e-6);
+          splines[1] = y_spline.value_outside(number_of_points,1e-6);
           const double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
           //std::cout <<number_of_points+0.1 << ", " << minimum_distance_to_reference_point_temp << std::endl;
 
@@ -557,8 +557,10 @@ namespace WorldBuilder
               while(search_step>1e-5)
               {
                 //i_search_step++;
-                 auto x_op = x_spline.operatorands(min_estimate_solution);
-                  auto y_op = y_spline.operatorands(min_estimate_solution);
+                size_t idx = std::min((size_t)std::max( (int)min_estimate_solution, (int)0),x_spline.mx_size_min);
+                const double sx = min_estimate_solution-idx;
+                 auto x_op = x_spline.m[idx];
+                  auto y_op = y_spline.m[idx];
 
                   const double &a = x_op[0];
                   const double &b = x_op[1];
@@ -570,7 +572,7 @@ namespace WorldBuilder
                   const double &g = y_op[2];
                   const double &h = y_op[3];
                   const double &k =check_point_surface_2d[1];
-                  double sx = x_op[4];
+                  //double sx = x_op[4];
 
                   const double derivative = 2*(c+sx*(2*b+3*a*sx))*(d-p+sx*(c+sx*(b+a*sx)))+2*(g+sx*(2*f+3*e*sx))*(h-k+sx*(g+sx*(f+e*sx)));
                   
@@ -580,9 +582,12 @@ namespace WorldBuilder
                   while(search_step>1e-5)
                   {
                   //j_search_step++;
-                  const double minmax = std::max(std::min(min_estimate_solution-std::copysign(search_step,derivative),(double)number_of_points),0.);
-                  splines[0] = x_spline.value_inside(minmax);
-                  splines[1] = y_spline.value_inside(minmax);
+                  const double test_value = min_estimate_solution-std::copysign(search_step,derivative);
+                  const double minmax = std::max(std::min(test_value,(double)number_of_points),0.);
+                  const double minmax_idx = (size_t)minmax;
+                  const double minmax_h = minmax-minmax_idx;
+                  splines[0] = x_spline.value_inside(minmax_idx,minmax_h);
+                  splines[1] = y_spline.value_inside(minmax_idx,minmax_h);
                   const double minimum_distance_to_reference_point_minmax = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
 
                   //std::cout <<"j_search_step = " << j_search_step << ", search_step = " << search_step << ", minmax = " << minmax << ", derivative = " << derivative <<  ", min_estimate_solution = " << min_estimate_solution << ", minimum_distance_to_reference_point_minmax =  " << minimum_distance_to_reference_point_minmax  << std::endl;
@@ -719,15 +724,15 @@ namespace WorldBuilder
                   const double sx_2 = sx*sx;
                   const double sx_3 = sx_2*sx;
 
-                  const double &a = x_spline.m_a[idx];
-                  const double &b = x_spline.m_b[idx];
-                  const double &c = x_spline.m_c[idx];
-                  const double &d = x_spline.m_y[idx];
+                  const double &a = x_spline.m[idx][0];
+                  const double &b = x_spline.m[idx][1];
+                  const double &c = x_spline.m[idx][2];
+                  const double &d = x_spline.m[idx][3];
                   const double &p = check_point_surface_2d[0];
-                  const double &e = y_spline.m_a[idx];
-                  const double &f = y_spline.m_b[idx];
-                  const double &g = y_spline.m_c[idx];
-                  const double &h = y_spline.m_y[idx];
+                  const double &e = y_spline.m[idx][0];
+                  const double &f = y_spline.m[idx][1];
+                  const double &g = y_spline.m[idx][2];
+                  const double &h = y_spline.m[idx][3];
                   const double &k = check_point_surface_2d[1];
                   //const double &sx = x_op[4];
 
@@ -957,7 +962,13 @@ namespace WorldBuilder
       //}
 
 
-      Point<2> closest_point_on_line_2d = Point<2>(x_spline(solution),y_spline(solution),natural_coordinate_system);
+          const size_t idx = std::min((size_t)std::max( (int)solution, (int)0),x_spline.mx_size_min);
+          const double h = solution-idx;
+      Point<2> closest_point_on_line_2d = (solution >= 0 && solution <= x_spline.mx_size_min) 
+      ?
+       Point<2>(x_spline.value_inside(idx,h),y_spline.value_inside(idx,h),natural_coordinate_system) 
+       :
+       Point<2>(x_spline.value_outside(idx,h),y_spline.value_outside(idx,h),natural_coordinate_system);
 
 
       // We now need 3d points from this point on, so make them.
@@ -1558,7 +1569,10 @@ namespace WorldBuilder
     {
       const size_t n = y.size();
       mx_size_min = n;
-      m_y = y;
+      m.resize(n);
+      for(unsigned int i = 0; i < n; ++i){
+        m.emplace_back(std::array<double,4>{{0.,0.,0.,y[i]}});
+      }
 
       /**
        * This monotone spline algorithm is based on the javascript version
@@ -1568,8 +1582,8 @@ namespace WorldBuilder
        */
 
       // get m_a parameter
-      m_c.resize(n);
-      m_c[0] = 0;
+      //m_c.resize(n);
+      m[0][2] = 0;
 
       for (size_t i = 0; i < n-2; i++)
         {
@@ -1578,27 +1592,27 @@ namespace WorldBuilder
 
           if (m0 * m1 <= 0)
             {
-              m_c[i+1] = 0;
+              m[i+1][2] = 0;
             }
           else
             {
-              m_c[i+1] = 2*m0*m1/(m0+m1);
+              m[i+1][2] = 2*m0*m1/(m0+m1);
             }
           //std::cout << "m_c[i+1]=" << m_c[i+1] << ", m0=" << m0 << ", m1=" << m1 << std::endl;
         }
-      m_c[n-1] =  y[n-1]-y[n-2];
+      m[n-1][2] =  y[n-1]-y[n-2];
 
       // Get b and c coefficients
-      m_a.resize(n);
-      m_b.resize(n);
-      for (size_t i = 0; i < m_c.size()-1; i++)
+      //m_a.resize(n);
+      //m_b.resize(n);
+      for (size_t i = 0; i < n-1; i++)
         {
-          const double c1 = m_c[i];
+          const double c1 = m[i][2];
           const double m0 = y[i+1]-y[i];
 
-          const double common0 = c1 + m_c[i+1] - m0 - m0;
-          m_b[i] = (m0 - c1 - common0);
-          m_a[i] = common0;
+          const double common0 = c1 + m[i+1][2] - m0 - m0;
+          m[i][1] = (m0 - c1 - common0);
+          m[i][0] = common0;
         }
     }
 
