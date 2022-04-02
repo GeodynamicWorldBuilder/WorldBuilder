@@ -665,12 +665,12 @@ namespace WorldBuilder
       else
         {
           // first check the boundaries -0.5, 0, point_list.size()-1 and number_of_points+0.1
-          Point<2> splines(x_spline.value_outside(-1e-6),y_spline.value_outside(-0.1), natural_coordinate_system);
-          double minimum_distance_to_reference_point = splines.cheap_relative_distance_spherical(check_point_surface_2d);
           min_estimate_solution = -1e-6;
+          Point<2> splines(x_spline.value_outside(min_estimate_solution),y_spline.value_outside(min_estimate_solution), natural_coordinate_system);
+          double minimum_distance_to_reference_point = splines.cheap_relative_distance_spherical(check_point_surface_2d);
           //std::cout <<std::endl << "-0.1, " << minimum_distance_to_reference_point << std::endl;
 
-          splines[0] = x_spline.value_inside(0.);
+          /*splines[0] = x_spline.value_inside(0.);
           splines[1] = y_spline.value_inside(0.);
           double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_spherical(check_point_surface_2d);
           //std::cout <<0 << ", " << minimum_distance_to_reference_point_temp << std::endl;
@@ -679,10 +679,10 @@ namespace WorldBuilder
             {
               minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
               min_estimate_solution = 0.;
-            }
+            }*/
 
 
-          splines[0] = x_spline.value_inside(number_of_points+1);
+          /*splines[0] = x_spline.value_inside(number_of_points+1);
           splines[1] = y_spline.value_inside(number_of_points+1);
           minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_spherical(check_point_surface_2d);
           //std::cout <<number_of_points << ", " << minimum_distance_to_reference_point_temp << std::endl;
@@ -691,30 +691,67 @@ namespace WorldBuilder
             {
               minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
               min_estimate_solution = number_of_points;
-            }
+            }*/
 
 
-          splines[0] = x_spline.value_outside(number_of_points+1.1e-6);
-          splines[1] = y_spline.value_outside(number_of_points+1.1e-6);
-          minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_spherical(check_point_surface_2d);
-          //std::cout <<number_of_points+0.1 << ", " << minimum_distance_to_reference_point_temp << std::endl;
-
-          if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
-            {
-              minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
-              min_estimate_solution = number_of_points+1.+1e-6;
-            }
 
           // Compute the clostest point on the spline as a double.
           // Todo: don't do this if min_estimate_solution is <0 or >number_of_points    
-          if (min_estimate_solution >= 0 && min_estimate_solution <= number_of_points)
-            {
-          for (double i_estimate = 0.5; i_estimate < number_of_points+0.5; i_estimate+=0.5)
+              double search_step = 0.25;
+          //for (double i_estimate = search_step; i_estimate < number_of_points+1-+search_step; i_estimate+=search_step)
+          for (size_t i_estimate = 0; i_estimate < (number_of_points)*4+1; i_estimate++)
             {
               //std::cout <<i_estimate << ": " << number_of_points << std::endl;
-              splines[0] = x_spline.value_inside(i_estimate);
-              splines[1] = y_spline.value_inside(i_estimate);
-              minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_spherical(check_point_surface_2d);
+              //splines[0] = x_spline.value_inside(i_estimate);
+              //splines[1] = y_spline.value_inside(i_estimate);
+              //minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_spherical(check_point_surface_2d);
+                const double estimate = i_estimate*0.25;
+                //splines[0] = x_spline.value_inside(estimate);
+                //splines[1] = y_spline.value_inside(estimate);
+                //const double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_spherical(check_point_surface_2d);
+                //std::cout << estimate << std::endl;
+                
+                 //auto x_op = x_spline.operatorands(estimate);
+                 // auto y_op = y_spline.operatorands(estimate);
+
+                 const size_t idx = (size_t)estimate;
+                  const double sx = estimate-idx;
+                  const double sx_2 = sx*sx;
+                  const double sx_3 = sx_2*sx;
+
+                  const double &a = x_spline.m_a[idx];
+                  const double &b = x_spline.m_b[idx];
+                  const double &c = x_spline.m_c[idx];
+                  const double &d = x_spline.m_y[idx];
+                  const double &p = check_point_surface_2d[0];
+                  const double &e = y_spline.m_a[idx];
+                  const double &f = y_spline.m_b[idx];
+                  const double &g = y_spline.m_c[idx];
+                  const double &h = y_spline.m_y[idx];
+                  const double &k = check_point_surface_2d[1];
+                  //const double &sx = x_op[4];
+
+                  // These value are computed with sagemath.
+                  const double cos_k = FT::cos(k);
+                  //const double cos_1 = //FT::cos(0.5*a*sx_3+0.5*b*sx*sx+0.5*c*sx+0.5*d-0.5*p);
+                  //const double cos_2 = //FT::cos(e*sx_3+f*sx*sx+g*sx+h);
+                  //const double cos_3 = //FT::cos(0.5*e*sx_3+0.5*f*sx*sx+0.5*g*sx+0.5*h-0.5*k);
+                  const double sin_1 = FT::sin(((e*sx_3+f*sx_2+g*sx+h) - k) * 0.5);
+                  const double sin_2 = FT::sin(((a*sx_3+b*sx_2+c*sx+d) - p) * 0.5);
+                  //const double sin_3 = //FT::sin(0.5*e*sx_3+0.5*f*sx*sx+0.5*g*sx+0.5*h-0.5*k);
+                  //const double other_1 = (1.5*a*sx*sx+1.*b*sx+0.5*c);
+                  //const double other_2 = (3*e*sx*sx+2*f*sx+g);
+                  //const double other_3 = (1.5*e*sx*sx+1.*f*sx+0.5*g);
+
+                  const double minimum_distance_to_reference_point_temp = sin_1 * sin_1 + sin_2*sin_2 * cos_k * FT::cos((e*sx_3+f*sx_2+g*sx+h));
+
+                  //const double derivative = 2*other_1*cos_1*cos_2*cos_k*sin_1-other_2*cos_k*sin_1*sin_1*sin_2+2*other_3*cos_3*sin_3;
+
+                  //const double part_1 = (a*sx_3+b*sx_2+c*sx+d-p);
+                  //const double part_2 = (e*sx_3+f*sx_2+g*sx+h-k);
+
+                  //const double minimum_distance_to_reference_point_temp = part_1*part_1+part_2*part_2;
+
               //std::cout <<i_estimate << ", " << minimum_distance_to_reference_point_temp << ", minimum_distance_to_reference_point = " << minimum_distance_to_reference_point  << ", min_estimate_solution = " << min_estimate_solution<< std::endl;
 
               if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
@@ -724,9 +761,23 @@ namespace WorldBuilder
                 }
             }
 
+
+          splines[0] = x_spline.value_outside(number_of_points+0.1e-6);
+          splines[1] = y_spline.value_outside(number_of_points+0.1e-6);
+          const double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_spherical(check_point_surface_2d);
+          //std::cout <<number_of_points+0.1 << ", " << minimum_distance_to_reference_point_temp << std::endl;
+
+          if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
+            {
+              minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
+              min_estimate_solution = number_of_points+1.+1e-6;
+            }
+
       
           //std::cout <<"min_estimate_solution = " << min_estimate_solution << ", minimum_distance_to_reference_point = " << minimum_distance_to_reference_point << std::endl;
 
+          if (min_estimate_solution >= 0 && min_estimate_solution <= number_of_points)
+            {
               //std::cout <<"======> search further" << std::endl;
 
 
@@ -764,13 +815,13 @@ namespace WorldBuilder
                 }*/
 
               //double x = min_estimate_solution;
-              double search_step = 0.25;
+              search_step *= 0.5;
               //std::cout << "=============> start" << std::endl;
               //for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
-              size_t i_search_step = 0;
+              //size_t i_search_step = 0;
               while(search_step>1e-5)
               {
-                i_search_step++;
+                //i_search_step++;
                  auto x_op = x_spline.operatorands(min_estimate_solution);
                   auto y_op = y_spline.operatorands(min_estimate_solution);
 
@@ -784,9 +835,26 @@ namespace WorldBuilder
                   const double &g = y_op[2];
                   const double &h = y_op[3];
                   const double &k =check_point_surface_2d[1];
-                  double sx = x_op[4];
+                  const double sx = x_op[4];
+                  const double sx_2 = sx*sx;
+                  const double sx_3 = sx_2*sx;
 
-                  const double derivative = 2*(c+sx*(2*b+3*a*sx))*(d-p+sx*(c+sx*(b+a*sx)))+2*(g+sx*(2*f+3*e*sx))*(h-k+sx*(g+sx*(f+e*sx)));
+
+
+                  const double cos_k = FT::cos(k);
+                  const double cos_1 = FT::cos(0.5*a*sx_3+0.5*b*sx_2+0.5*c*sx+0.5*d-0.5*p);
+                  const double cos_2 = FT::cos(e*sx_3+f*sx_2+g*sx+h);
+                  const double cos_3 = FT::cos(0.5*e*sx_3+0.5*f*sx_2+0.5*g*sx+0.5*h-0.5*k);
+                  const double sin_1 = FT::sin(0.5*a*sx_3+0.5*b*sx_2+0.5*c*sx+0.5*d-0.5*p);
+                  const double sin_2 = FT::sin(e*sx_3+f*sx_2+g*sx+h);
+                  const double sin_3 = FT::sin(0.5*e*sx_3+0.5*f*sx_2+0.5*g*sx+0.5*h-0.5*k);
+                  const double other_1 = (1.5*a*sx_2+1.*b*sx+0.5*c);
+                  const double other_2 = (3*e*sx_2+2*f*sx+g);
+                  const double other_3 = (1.5*e*sx_2+1.*f*sx+0.5*g);
+
+                  
+
+                  const double derivative = 2*other_1*cos_1*cos_2*cos_k*sin_1-other_2*cos_k*sin_1*sin_1*sin_2+2*other_3*cos_3*sin_3;
                   
                   if(std::fabs(derivative)>0.){
                   //std::cout <<"a: i_search_step = " << i_search_step << ", search_step = " << search_step << ", derivative = " << derivative << ", min_estimate_solution = " << min_estimate_solution << ", minimum_distance_to_reference_point = " << minimum_distance_to_reference_point<< std::endl;
