@@ -408,7 +408,7 @@ namespace WorldBuilder
       //constexpr double one_div_parts = 1./parts;
       double min_estimate_solution = 0;
       double min_estimate_solution_temp = min_estimate_solution;
-      size_t number_of_points = point_list.size();
+      const size_t number_of_points = point_list.size();
 
       //WBAssert(false,"falsekl; dfklsj kldjf;");
       WBAssert(number_of_points == x_spline.mx_size_min, "number_of_points: " << number_of_points << ", mx_size_min: " << x_spline.mx_size_min);
@@ -489,7 +489,7 @@ namespace WorldBuilder
 
               //std::cout <<i_estimate << ", " << minimum_distance_to_reference_point_temp << ", minimum_distance_to_reference_point = " << minimum_distance_to_reference_point  << ", min_estimate_solution = " << min_estimate_solution<< std::endl;
 
-              if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
+              if (minimum_distance_to_reference_point_temp < minimum_distance_to_reference_point)
                 {
                   minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
                   min_estimate_solution = i_estimate;
@@ -502,7 +502,7 @@ namespace WorldBuilder
           const double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
           //std::cout <<number_of_points+0.1 << ", " << minimum_distance_to_reference_point_temp << std::endl;
 
-          if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
+          if (minimum_distance_to_reference_point_temp < minimum_distance_to_reference_point)
             {
               minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
               min_estimate_solution = number_of_points+1.+1e-6;
@@ -576,10 +576,10 @@ namespace WorldBuilder
                   
                   if(std::fabs(derivative)>0.){
                   //std::cout <<"a: i_search_step = " << i_search_step << ", search_step = " << search_step << ", derivative = " << derivative << ", min_estimate_solution = " << min_estimate_solution << ", minimum_distance_to_reference_point = " << minimum_distance_to_reference_point<< std::endl;
-                  size_t j_search_step = 0;
+                  //size_t j_search_step = 0;
                   while(search_step>1e-5)
                   {
-                  j_search_step++;
+                  //j_search_step++;
                   const double minmax = std::max(std::min(min_estimate_solution-std::copysign(search_step,derivative),(double)number_of_points),0.);
                   splines[0] = x_spline.value_inside(minmax);
                   splines[1] = y_spline.value_inside(minmax);
