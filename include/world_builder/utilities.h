@@ -24,6 +24,7 @@
 #include "world_builder/nan.h"
 #include "world_builder/coordinate_systems/interface.h"
 #include "world_builder/objects/natural_coordinate.h"
+#include <iostream>
 
 
 namespace WorldBuilder
@@ -193,6 +194,7 @@ namespace WorldBuilder
             {
               const size_t idx = (size_t)x;
               const double h = x-idx;
+              //std::cout << "x = " << x << ", a=" << m[idx][0] << ", b = " <<  m[idx][1] << ", c = " << m[idx][2] << ", d = " << m[idx][3] << std::endl;
               return ((m[idx][0]*h + m[idx][1])*h + m[idx][2])*h + m[idx][3];
             }
           const size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
@@ -204,11 +206,11 @@ namespace WorldBuilder
         inline
         double operator() (const double x, const size_t idx, const double h) const
         {
-          return (x >= 0 && x <= mx_size_min) 
-          ? 
-          ((m[idx][0]*h + m[idx][1])*h + m[idx][2])*h + m[idx][3]
-            :
-             (m[idx][1]*h + m[idx][2])*h + m[idx][3];
+          return (x >= 0 && x <= mx_size_min)
+                 ?
+                 ((m[idx][0]*h + m[idx][1])*h + m[idx][2])*h + m[idx][3]
+                 :
+                 (m[idx][1]*h + m[idx][2])*h + m[idx][3];
         }
 
 
@@ -243,8 +245,8 @@ namespace WorldBuilder
         inline
         double value_outside (const size_t idx, const double h) const
         {
-          WBAssert(idx >= 0 && idx <= mx_size_min, "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << x << ".");
-          WBAssert(h >= 0 && h <= 1., "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << x << ".");
+          WBAssert(idx <= mx_size_min, "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << idx << ".");
+          WBAssert(h >= 0 && h <= 1., "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << h << ".");
           return (m[idx][1]*h + m[idx][2])*h + m[idx][3];
         }
 
@@ -272,10 +274,10 @@ namespace WorldBuilder
 
 
         inline
-        const std::array<double,4>& operatorands (const size_t idx) const
+        const std::array<double,4> &operatorands (const size_t idx) const
         {
-          WBAssert(idx >= 0 && idx <= mx_size_min, "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << x << ".");
-          WBAssert(h >= 0 && h <= 1., "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << x << ".");
+          WBAssert(idx <= mx_size_min, "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << idx << ".");
+          // WBAssert(h >= 0 && h <= 1., "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << h << ".");
           return m[idx];
         }
 
