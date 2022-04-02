@@ -449,15 +449,16 @@ namespace WorldBuilder
 
           // Compute the clostest point on the spline as a double.
           // Todo: don't do this if min_estimate_solution is <0 or >number_of_points    
-              double search_step = 0.25;
+              double search_step = 0.20;
+              const size_t number_of_precompute_points = (number_of_points*5)+1;
           //for (double i_estimate = search_step; i_estimate < number_of_points+1-+search_step; i_estimate+=search_step)
-          for (size_t i_estimate = 0; i_estimate < (number_of_points)*4+1; i_estimate++)
+          for (size_t i_estimate = 0; i_estimate < number_of_precompute_points; i_estimate++)
             {
-              //std::cout <<i_estimate << ": " << number_of_points << std::endl;
+              //std::cout <<i_estimate << ": " <<  << i_estimate*.10 << number_of_precompute_points << ", " << number_of_points << std::endl;
               //splines[0] = x_spline.value_inside(i_estimate);
               //splines[1] = y_spline.value_inside(i_estimate);
               //minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
-                const double estimate = i_estimate*0.25;
+                /*const double estimate = i_estimate*0.25;
                 //splines[0] = x_spline.value_inside(estimate);
                 //splines[1] = y_spline.value_inside(estimate);
                 //const double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
@@ -480,21 +481,25 @@ namespace WorldBuilder
                   const double &f = y_spline.m[idx][1];
                   const double &g = y_spline.m[idx][2];
                   const double &h = y_spline.m[idx][3];
-                  const double &k = check_point_surface_2d[1];
+                  const double &k = check_point_surface_2d[1];*/
                   //const double &sx = x_op[4];
-                  const double part_1 = (a*sx_3+b*sx_2+c*sx+d-p);
-                  const double part_2 = (e*sx_3+f*sx_2+g*sx+h-k);
+                  const double part_1 = (x_spline.precompute[i_estimate]-check_point_surface_2d[0]);
+                  const double part_2 = (y_spline.precompute[i_estimate]-check_point_surface_2d[1]);
 
                   const double minimum_distance_to_reference_point_temp = part_1*part_1+part_2*part_2;
 
+              //std::cout <<i_estimate << ": " <<  i_estimate*.10 << ", np: " <<  number_of_precompute_points << ", " << number_of_points << ", dist: " << minimum_distance_to_reference_point_temp << std::endl;
               //std::cout <<i_estimate << ", " << minimum_distance_to_reference_point_temp << ", minimum_distance_to_reference_point = " << minimum_distance_to_reference_point  << ", min_estimate_solution = " << min_estimate_solution<< std::endl;
 
               if (minimum_distance_to_reference_point_temp < minimum_distance_to_reference_point)
                 {
                   minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
-                  min_estimate_solution = i_estimate;
+                  min_estimate_solution = i_estimate*0.20;
                 }
             }
+
+            //if(min_estimate_solution > 1. && min_estimate_solution < 2.)
+            //std::cout << "solution = " << min_estimate_solution <<  ", " << minimum_distance_to_reference_point << std::endl;
 
 
           splines[0] = x_spline.value_outside(number_of_points,1e-6);
@@ -554,11 +559,15 @@ namespace WorldBuilder
               //std::cout << "=============> start" << std::endl;
               //for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
               //size_t i_search_step = 0;
-              while(search_step>1e-5)
+              /*while(search_step>1e-4)
               {
                 //i_search_step++;
                 size_t idx = std::min((size_t)std::max( (int)min_estimate_solution, (int)0),x_spline.mx_size_min);
                 const double sx = min_estimate_solution-idx;
+                //const double sx_2 = sx*sx;
+                //const double sx_3 = sx_2*sx;
+                //const double sx_4 = sx_3*sx;
+                //const double sx_5 = sx_4*sx;
                  auto x_op = x_spline.m[idx];
                   auto y_op = y_spline.m[idx];
 
@@ -573,17 +582,20 @@ namespace WorldBuilder
                   const double &h = y_op[3];
                   const double &k =check_point_surface_2d[1];
                   //double sx = x_op[4];
-
+                  //const double derivative = 6*a*a*sx_5+10*a*b*sx_4+8*a*c*sx_3+6*a*d*sx_2-6*a*p*sx_2+4*b*b*sx_3+6*b*c*sx_2+4*b*d*sx-4*b*p*sx+2*c*c*sx+2*c*d-2*c*p+6*e*e*sx_5+10*e*f*sx_4+8*e*g*sx_3+6*e*h*sx_2-6*e*k*sx_2+4*f*f*sx_3+6*f*g*sx_2+4*f*h*sx-4*f*k*sx+2*g*g*sx+2*g*h-2*g*k;
+                  //const double derivative = (((((6*a*a*sx_5-2*c*p+6*e*e*sx_5)+10*a*b*sx_4+10*e*f*sx_4)+8*a*c*sx_3+4*b*b*sx_3+8*e*g*sx_3+4*f*f*sx_3)+6*a*d*sx_2-6*a*p*sx_2+6*b*c*sx_2+6*e*h*sx_2-6*e*k*sx_2+6*f*g*sx_2)+4*b*d*sx-4*b*p*sx+2*c*c*sx+4*f*h*sx-4*f*k*sx+2*g*g*sx)+2*g*h-2*g*k+2*c*d;
+                  //const double derivative = (((((a*a+e*e)*6.*sx+10*a*b+10*e*f)*sx+8*a*c+4*b*b+8*e*g+4*f*f)*sx+6*a*d-6*a*p+6*b*c+6*e*h-6*e*k+6*f*g)*sx+4*b*d-4*b*p+2*c*c+4*f*h-4*f*k+2*g*g)*sx+2*g*h-2*g*k+2*c*d-2*c*p;
                   const double derivative = 2*(c+sx*(2*b+3*a*sx))*(d-p+sx*(c+sx*(b+a*sx)))+2*(g+sx*(2*f+3*e*sx))*(h-k+sx*(g+sx*(f+e*sx)));
                   
-                  if(std::fabs(derivative)>0.){
+                  const double start_minmax = min_estimate_solution-std::copysign(search_step,derivative);
+                  if(std::fabs(derivative)>0. && start_minmax > 0 && start_minmax < (double)number_of_points){
                   //std::cout <<"a: i_search_step = " << i_search_step << ", search_step = " << search_step << ", derivative = " << derivative << ", min_estimate_solution = " << min_estimate_solution << ", minimum_distance_to_reference_point = " << minimum_distance_to_reference_point<< std::endl;
                   //size_t j_search_step = 0;
-                  while(search_step>1e-5)
+                  while(search_step>1e-4)
                   {
                   //j_search_step++;
-                  const double test_value = min_estimate_solution-std::copysign(search_step,derivative);
-                  const double minmax = std::max(std::min(test_value,(double)number_of_points),0.);
+                  //const double test_value = min_estimate_solution-std::copysign(search_step,derivative);
+                  const double minmax = min_estimate_solution-std::copysign(search_step,derivative);//std::max(std::min(test_value,(double)number_of_points),0.);
                   const double minmax_idx = (size_t)minmax;
                   const double minmax_h = minmax-minmax_idx;
                   splines[0] = x_spline.value_inside(minmax_idx,minmax_h);
@@ -593,7 +605,7 @@ namespace WorldBuilder
                   //std::cout <<"j_search_step = " << j_search_step << ", search_step = " << search_step << ", minmax = " << minmax << ", derivative = " << derivative <<  ", min_estimate_solution = " << min_estimate_solution << ", minimum_distance_to_reference_point_minmax =  " << minimum_distance_to_reference_point_minmax  << std::endl;
 
                   //WBAssertThrow(j_search_step < 15 && search_step > 1e-5, "message: j_search_step = " << j_search_step << ", i_search_step = " << i_search_step);
-                                    if (minimum_distance_to_reference_point_minmax <= minimum_distance_to_reference_point)
+                    if (minimum_distance_to_reference_point_minmax <= minimum_distance_to_reference_point)
                     {
                       min_estimate_solution = minmax;
                       minimum_distance_to_reference_point = minimum_distance_to_reference_point_minmax;
@@ -609,7 +621,40 @@ namespace WorldBuilder
                     break;
                   }
 
+                }*/
+
+            for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
+            {
+              min_estimate_solution_temp = min_estimate_solution-search_step;
+              size_t idx = (size_t)std::max( (int)min_estimate_solution_temp, (int)0);
+              double h = min_estimate_solution_temp-idx;
+              splines[0] = ((x_spline.m[idx][0]*h + x_spline.m[idx][1])*h + x_spline.m[idx][2])*h + x_spline.m[idx][3];//x_spline.value_inside(idx,h);
+              splines[1] = ((y_spline.m[idx][0]*h + y_spline.m[idx][1])*h + y_spline.m[idx][2])*h + y_spline.m[idx][3];//y_spline.value_inside(idx,h);
+              const double minimum_distance_to_reference_point_min = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
+
+              min_estimate_solution_temp = min_estimate_solution+search_step;
+              idx = std::min((size_t) (int)min_estimate_solution_temp,x_spline.mx_size_min);
+              h = min_estimate_solution_temp-idx;
+              splines[0] = ((x_spline.m[idx][0]*h + x_spline.m[idx][1])*h + x_spline.m[idx][2])*h + x_spline.m[idx][3];//x_spline.value_inside(idx,h);
+              splines[1] = ((y_spline.m[idx][0]*h + y_spline.m[idx][1])*h + y_spline.m[idx][2])*h + y_spline.m[idx][3];//y_spline.value_inside(idx,h);
+              const double minimum_distance_to_reference_point_plus = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
+
+
+              if (minimum_distance_to_reference_point_plus < minimum_distance_to_reference_point)
+                {
+                  min_estimate_solution = min_estimate_solution+search_step;
+                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_plus;
                 }
+              else if (minimum_distance_to_reference_point_min < minimum_distance_to_reference_point)
+                {
+                  min_estimate_solution = min_estimate_solution-search_step;
+                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_min;
+                }
+              else
+                {
+                  search_step *=0.5;
+                }
+            }
               double x = min_estimate_solution;
 /*
               for (unsigned int i = 0; i < 20; ++i)
@@ -950,7 +995,7 @@ namespace WorldBuilder
             }
         }
       double solution = min_estimate_solution;
-
+      //std::cout << "final solution = " << solution << std::endl;
       //if(solution > 1.5)
       //{
       //  Point<2> splinest(cartesian);
@@ -1613,6 +1658,22 @@ namespace WorldBuilder
           const double common0 = c1 + m[i+1][2] - m0 - m0;
           m[i][1] = (m0 - c1 - common0);
           m[i][0] = common0;
+        }
+
+        // precompute some values on a regual grid of 0.20
+        precompute.resize((n*5)+1);
+        for (size_t i_estimate = 0; i_estimate < (n*5)+1; i_estimate++)
+        {
+                  const double estimate = i_estimate*0.20;
+
+                 const size_t idx = (size_t)estimate;
+                  const double sx = estimate-idx;
+                  const double sx_2 = sx*sx;
+                  const double sx_3 = sx_2*sx;
+
+                  //precompute[i_estimate][0] = estimate;
+                  //precompute[i_estimate][1] = sx;
+                  precompute[i_estimate] = m[idx][0]*sx_3+ m[idx][1]*sx_2+m[idx][2]*sx+m[idx][3];
         }
     }
 
