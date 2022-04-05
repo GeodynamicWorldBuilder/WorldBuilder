@@ -18,8 +18,10 @@
 */
 
 #include <algorithm>
+#include <cmath>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <world_builder/coordinate_system.h>
 
 #include "world_builder/nan.h"
@@ -406,8 +408,9 @@ namespace WorldBuilder
       // get an estimate for the closest point between P1 and P2.
       //constexpr double parts = 1;
       //constexpr double one_div_parts = 1./parts;
-      double min_estimate_solution = 0;
+      double min_estimate_solution = WorldBuilder::NaN::DSNAN;
       double min_estimate_solution_temp = min_estimate_solution;
+      double minimum_distance_to_reference_point = std::numeric_limits<double>::infinity();
       const size_t number_of_points = point_list.size();
 
       //WBAssert(false,"falsekl; dfklsj kldjf;");
@@ -416,289 +419,410 @@ namespace WorldBuilder
 
       if (natural_coordinate_system == cartesian)
         {
-          // first check the boundaries -0.5, 0, point_list.size()-1 and number_of_points+0.1
-          min_estimate_solution = -0.1;
-          Point<2> splines(x_spline.value_outside(0,min_estimate_solution),y_spline.value_outside(0,min_estimate_solution), natural_coordinate_system);
-          double minimum_distance_to_reference_point = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
-          //std::cout <<std::endl << "-0.1, " << minimum_distance_to_reference_point << std::endl;
-
-          // Compute the clostest point on the spline as a double.
-          // Todo: don't do this if min_estimate_solution is <0 or >number_of_points
-          double search_step = 0.20;
-          const size_t number_of_precompute_points = (number_of_points*5);
-          //for (double i_estimate = search_step; i_estimate < number_of_points+1-+search_step; i_estimate+=search_step)
-          for (size_t i_estimate = 0; i_estimate < number_of_precompute_points; i_estimate++)
+          // Start the distanstance from the start point and a linear approximation of the spline. Since it is a monotome spline,
+          // it should be a very good approximation of the actual closest point.
+          Point<2> P1 = (x_spline.new_coord_list[0],y_spline.new_coord_list[0],cartesian);
+          Point<2> P2 = P1;
+          Point<2> splines(cartesian);
+          double search_step = 0.25;
+          for (double i_estimate = 0; i_estimate < x_spline.new_coord_list.size()-1; i_estimate++)
             {
-              const double part_1 = (x_spline.precompute[i_estimate]-check_point_surface_2d[0]);
-              const double part_2 = (y_spline.precompute[i_estimate]-check_point_surface_2d[1]);
 
-              const double minimum_distance_to_reference_point_temp = part_1*part_1+part_2*part_2;
+              P1 = P2;
+              P2[0] = (x_spline.new_coord_list[i_estimate+1]);
+              P2[1] = (y_spline.new_coord_list[i_estimate+1]);
+              double minimum_distance_to_reference_point_temp = P1.cheap_relative_distance_cartesian(check_point_surface_2d);
+              //std::cout << i_estimate*search_step << ", " << minimum_distance_to_reference_point_temp;
+              if (minimum_distance_to_reference_point_temp < minimum_distance_to_reference_point)
+                {
+                  //std::cout << " and is smaller than " << minimum_distance_to_reference_point;
+                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
+                  min_estimate_solution = i_estimate*search_step;
+                }
+              //std::cout<< ", new minimum_distance_to_reference_point = " << minimum_distance_to_reference_point << " and min_estimate_solution = " << min_estimate_solution << ", P1 = "<< P1  << ", P2 = "<< P2 << ", cp = " << check_point_surface_2d << std::endl;
 
+              //std::cout << "P1 = " << P1 << ", *P1 = " << *P1 << std::endl;
+              //std::cout << "P2 = " << P2 << ", *P2 = " << *P2 << std::endl;
+              Point<2> P1P2 = (P2)-(P1);
+              Point<2> P1Pc = check_point_surface_2d-(P1);
+
+              double c1 = P1Pc*P1P2;
+              if ( c1 <= 0 )
+                {
+                  // closest point to segment beore P1. Continue
+                  continue;
+                }
+
+              double c2 = P1P2*P1P2;
+              if ( c2 <= c1 )
+                {
+                  // closest point to segment after P2. Continue
+                  continue;
+                }
+
+              double fraction = c1 / c2;
+
+              WBAssert(fraction >= 0. && fraction <= 1., "Internal error: fraction = " << fraction);
+
+              //std::cout << "c1 = " << c1 << ", c2 = " << c2 << ", fraction = " << fraction << std::endl;
+              splines[0] = x_spline.value_inside((i_estimate*search_step)+fraction);
+              splines[1] = y_spline.value_inside((i_estimate*search_step)+fraction);
+              minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
+
+              //std::cout << (i_estimate*search_step) + fraction << ", " << minimum_distance_to_reference_point_temp << ", " << splines << std::endl;
+
+              // min_estimate_solution is nan when no previous value was within the range 0 to 1.
               if (minimum_distance_to_reference_point_temp < minimum_distance_to_reference_point)
                 {
                   minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
-                  min_estimate_solution = i_estimate*0.20;
+                  min_estimate_solution = (i_estimate*search_step)+fraction;
                 }
-              //std::cout << "min = " << minimum_distance_to_reference_point << ", at " << min_estimate_solution << std::endl;
+
+
             }
+
+          double minimum_distance_to_reference_point_temp = P2.cheap_relative_distance_cartesian(check_point_surface_2d);
+          //std::cout << number_of_points-1 << ", " << minimum_distance_to_reference_point_temp << ", P2 = " << P2 << std::endl;
+          if (minimum_distance_to_reference_point_temp < minimum_distance_to_reference_point)
+            {
+              minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
+              min_estimate_solution = number_of_points-1;
+            }
+
+
+          //std::cout << " ====>>> solution = " << min_estimate_solution << ", " << minimum_distance_to_reference_point << std::endl;
+
+          // first check the boundaries -0.5, 0, point_list.size()-1 and number_of_points+0.1
+          //min_estimate_solution = -0.1;
+          splines[0] = x_spline.value_outside(0,-0.1);
+          splines[1] = y_spline.value_outside(0,-0.1);
+          double minimum_distance_to_reference_point_tmp = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
+          //std::cout <<std::endl << "-0.1, " << minimum_distance_to_reference_point_tmp << std::endl;
+
+          // Compute the clostest point on the spline as a double.
+          // Todo: don't do this if min_estimate_solution is <0 or >number_of_points
+          //double search_step = 0.020;
+          /*const size_t number_of_precompute_points = (number_of_points-1)*50+4;
+          //for (double i_estimate = search_step; i_estimate < number_of_points+1-+search_step; i_estimate+=search_step)
+          for (size_t i_estimate = 0; i_estimate < number_of_precompute_points; i_estimate++)
+          {
+          //const double part_1 = (x_spline.precompute[i_estimate]-check_point_surface_2d[0]);
+          //  const double part_2 = (y_spline.precompute[i_estimate]-check_point_surface_2d[1]);
+          //
+          //  const double minimum_distance_to_reference_point_temp = part_1*part_1+part_2*part_2;
+
+
+          double d_estimate = i_estimate*0.020;
+
+          splines[0] = x_spline.value_inside(d_estimate);
+          splines[1] = y_spline.value_inside(d_estimate);
+           minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
+
+
+
+                  const size_t idx = (size_t)d_estimate;
+                  const double sx = d_estimate-idx;
+                  const double sx_2 = sx*sx;
+                  const double sx_3 = sx_2*sx;
+
+                  const double &a = x_spline.m[idx][0];
+                  const double &b = x_spline.m[idx][1];
+                  const double &c = x_spline.m[idx][2];
+                  const double &d = x_spline.m[idx][3];
+                  const double &p = check_point_surface_2d[0];
+                  const double &e = y_spline.m[idx][0];
+                  const double &f = y_spline.m[idx][1];
+                  const double &g = y_spline.m[idx][2];
+                  const double &h = y_spline.m[idx][3];
+                  const double &k = check_point_surface_2d[1];
+                  //double x_new = (a*a*sx*sx*sx*sx*sx*sx+2*a*b*sx*sx*sx*sx*sx+2*a*c*sx*sx*sx*sx+2*a*d*sx*sx*sx+2*a*p*sx*sx*sx+b*b*sx*sx*sx*sx+2*b*c*sx*sx*sx+d*d+2*d*p+f*f*sx*sx*sx*sx+2*f*g*sx*sx*sx+2*e*f*sx*sx*sx*sx*sx+2*e*g*sx*sx*sx*sx+h*h+2*h*k+2*e*h*sx*sx*sx+k*k+2*e*k*sx*sx*sx+p*p+e*e*sx*sx*sx*sx*sx*sx+2*c*d*sx+2*c*p*sx+2*g*h*sx+2*g*k*sx)/(-c*c*sx-2*b*d*sx-g*g*sx-2*f*h*sx-2*f*k*sx-2*b*p*sx);
+                  //double x_new = (2*c*d+2*g*h+2*g*k+2*c*p+6*b*c*sx*sx+6*a*d*sx*sx+6*f*g*sy*sy+6*e*h*sx*sx+6*e*k*sy*sy+6*a*p*sx*sx+4*b*b*sx*sx*sx+8*a*c*sx*sx*sx+4*f*f*sy*sy*sy+8*e*g*sy*sy*sy+10*a*b*sx*sx*sx*sx+10*e*f*sy*sy*sy*sy+6*a*a*sx*sx*sx*sx*sx+6*e*e*sy*sy*sy*sy*sy)/(-2*c*c-4*b*d-2*g*g-4*f*h-4*f*k-4*b*p);
+                  const double function = (a*sx*sx*sx+b*sx*sx+c*sx+d-p)*(a*sx*sx*sx+b*sx*sx+c*sx+d-p)+(e*sx*sx*sx+f*sx*sx+g*sx+h-k)*(e*sx*sx*sx+f*sx*sx+g*sx+h-k);
+                  const double derivative = //2*(c+sx*(2*b+3*a*sx))*(d-p+sx*(c+sx*(b+a*sx)))+2*(g+sx*(2*f+3*e*sx))*(h-k+sx*(g+sx*(f+e*sx)));
+                                              2*(c+2*b*sx+3*a*sx_2)*(d-p+c*sx+b*sx_2+a*sx_3)+2*(g+2*f*sx+3*e*sx_2)*(h-k+g*sx+f*sx_2+e*sx_3);
+                  const double second_derivative = 2*(c+2*b*sx+3*a*sx_3)*(c+2*b*sx+3*a*sx_3)+2*(g+2*f*sx+3*e*sx_3)*(g+2*f*sx+3*e*sx_3)+2*(2*b+6*a*sx)*(d-p+c*sx+b*sx_3+a*sx_3)+2*(2*f+6*e*sx)*(h-k+g*sx+f*sx_2+e*sx_3);
+                  //const double sd_sign = std::copysign(1.0,second_derivative);
+                  //std::cout << "sd_sign = " << sd_sign << std::endl;
+                   double update = derivative/second_derivative;
+
+          //std::cout <<d_estimate << ", " << minimum_distance_to_reference_point_temp << ", " << number_of_points << ", " << function << ", " << derivative << ", " << second_derivative << ", update = " << update << std::endl;
+
+            //std::cout <<  i_estimate*0.020 << ", " << minimum_distance_to_reference_point_temp << std::endl;
+            //if (minimum_distance_to_reference_point_temp < minimum_distance_to_reference_point)
+            //  {
+            //    minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
+            //    min_estimate_solution = i_estimate*0.20;
+            //  }
+            //std::cout << "min = " << minimum_distance_to_reference_point << ", at " << min_estimate_solution << std::endl;
+          }*/
 
           //if(min_estimate_solution > 1. && min_estimate_solution < 2.)
           //std::cout << "solution = " << min_estimate_solution <<  ", " << minimum_distance_to_reference_point << std::endl;
 
 
-          splines[0] = x_spline.value_outside(number_of_points-1,1.);
-          splines[1] = y_spline.value_outside(number_of_points-1,1.);
-          double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
-          //std::cout <<number_of_points << ", " << minimum_distance_to_reference_point_temp << std::endl;
-
+          //splines[0] = x_spline.value_inside(number_of_points-1,0.);
+          //splines[1] = y_spline.value_inside(number_of_points-1,0.);
+          // minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
+          //std::cout <<number_of_points-1 << ", " << minimum_distance_to_reference_point_temp << ", " << number_of_points << std::endl;
+          /*
           if (minimum_distance_to_reference_point_temp < minimum_distance_to_reference_point)
-            {
-              minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
-              min_estimate_solution = number_of_points;
-            }
-
-          splines[0] = x_spline.value_outside(number_of_points-1,1.1);
-          splines[1] = y_spline.value_outside(number_of_points-1,1.1);
+          {
+            minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
+            min_estimate_solution = number_of_points;
+          }
+          */
+          splines[0] = x_spline.value_outside(number_of_points-1,0.1);
+          splines[1] = y_spline.value_outside(number_of_points-1,0.1);
           minimum_distance_to_reference_point_temp = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
-          //std::cout <<number_of_points+0.1 << ", " << minimum_distance_to_reference_point_temp << std::endl;
+          //std::cout <<number_of_points-1.+0.1 << ", " << minimum_distance_to_reference_point_temp << std::endl;
+          /*
+                    if (minimum_distance_to_reference_point_temp < minimum_distance_to_reference_point)
+                    {
+                      minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
+                      min_estimate_solution = number_of_points+0.1;
+                    }
 
-          if (minimum_distance_to_reference_point_temp < minimum_distance_to_reference_point)
+                    *
+                    //std::cout <<"min_estimate_solution = " << min_estimate_solution << ", minimum_distance_to_reference_point = " << minimum_distance_to_reference_point << std::endl;
+
+                    if (min_estimate_solution >= 0 && min_estimate_solution <= number_of_points)
+                    {
+                      //std::cout <<"======> search further" << std::endl;
+
+
+                      /*double search_step = 0.25;
+                      for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
+                        {
+                          const double min = min_estimate_solution-search_step < 0 ? 0 : min_estimate_solution-search_step;
+                          splines[0] = x_spline.value_inside(min);
+                          splines[1] = y_spline.value_inside(min);
+                          const double minimum_distance_to_reference_point_min = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
+
+
+                          const double max = min_estimate_solution+search_step > number_of_points? number_of_points : min_estimate_solution+search_step;
+                          splines[0] = x_spline.value_inside(max);
+                          splines[1] = y_spline.value_inside(max);
+                          const double minimum_distance_to_reference_point_plus = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
+
+                          //std::cout <<"i_search_step = " << i_search_step << ", search_step = " << search_step << ", min_estimate_solution = " << min_estimate_solution << ", minimum_distance_to_reference_point_min =  " << minimum_distance_to_reference_point_min << ", minimum_distance_to_reference_point_plus = " << minimum_distance_to_reference_point_plus << std::endl;
+
+
+                          if (minimum_distance_to_reference_point_plus < minimum_distance_to_reference_point)
+                            {
+                              min_estimate_solution = min_estimate_solution+search_step;
+                              minimum_distance_to_reference_point = minimum_distance_to_reference_point_plus;
+                            }
+                          else if (minimum_distance_to_reference_point_min < minimum_distance_to_reference_point)
+                            {
+                              min_estimate_solution = min_estimate_solution-search_step;
+                              minimum_distance_to_reference_point = minimum_distance_to_reference_point_min;
+                            }
+                          else
+                            {
+                              search_step *=0.5;
+                            }
+                        }*/
+
+          //double x = min_estimate_solution;
+          search_step *= 0.5;
+          //std::cout << "=============> start" << std::endl;
+          //for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
+          //size_t i_search_step = 0;
+          /*while(search_step>1e-4)
+          {
+            //i_search_step++;
+            size_t idx = std::min((size_t)std::max( (int)min_estimate_solution, (int)0),x_spline.mx_size_min);
+            const double sx = min_estimate_solution-idx;
+            //const double sx_2 = sx*sx;
+            //const double sx_3 = sx_2*sx;
+            //const double sx_4 = sx_3*sx;
+            //const double sx_5 = sx_4*sx;
+             auto x_op = x_spline.m[idx];
+              auto y_op = y_spline.m[idx];
+
+              const double &a = x_op[0];
+              const double &b = x_op[1];
+              const double &c = x_op[2];
+              const double &d = x_op[3];
+              const double &p = check_point_surface_2d[0];
+              const double &e = y_op[0];
+              const double &f = y_op[1];
+              const double &g = y_op[2];
+              const double &h = y_op[3];
+              const double &k =check_point_surface_2d[1];
+              //double sx = x_op[4];
+              //const double derivative = 6*a*a*sx_5+10*a*b*sx_4+8*a*c*sx_3+6*a*d*sx_2-6*a*p*sx_2+4*b*b*sx_3+6*b*c*sx_2+4*b*d*sx-4*b*p*sx+2*c*c*sx+2*c*d-2*c*p+6*e*e*sx_5+10*e*f*sx_4+8*e*g*sx_3+6*e*h*sx_2-6*e*k*sx_2+4*f*f*sx_3+6*f*g*sx_2+4*f*h*sx-4*f*k*sx+2*g*g*sx+2*g*h-2*g*k;
+              //const double derivative = (((((6*a*a*sx_5-2*c*p+6*e*e*sx_5)+10*a*b*sx_4+10*e*f*sx_4)+8*a*c*sx_3+4*b*b*sx_3+8*e*g*sx_3+4*f*f*sx_3)+6*a*d*sx_2-6*a*p*sx_2+6*b*c*sx_2+6*e*h*sx_2-6*e*k*sx_2+6*f*g*sx_2)+4*b*d*sx-4*b*p*sx+2*c*c*sx+4*f*h*sx-4*f*k*sx+2*g*g*sx)+2*g*h-2*g*k+2*c*d;
+              //const double derivative = (((((a*a+e*e)*6.*sx+10*a*b+10*e*f)*sx+8*a*c+4*b*b+8*e*g+4*f*f)*sx+6*a*d-6*a*p+6*b*c+6*e*h-6*e*k+6*f*g)*sx+4*b*d-4*b*p+2*c*c+4*f*h-4*f*k+2*g*g)*sx+2*g*h-2*g*k+2*c*d-2*c*p;
+              const double derivative = 2*(c+sx*(2*b+3*a*sx))*(d-p+sx*(c+sx*(b+a*sx)))+2*(g+sx*(2*f+3*e*sx))*(h-k+sx*(g+sx*(f+e*sx)));
+
+              const double start_minmax = min_estimate_solution-std::copysign(search_step,derivative);
+              if(std::fabs(derivative)>0. && start_minmax > 0 && start_minmax < (double)number_of_points){
+              //std::cout <<"a: i_search_step = " << i_search_step << ", search_step = " << search_step << ", derivative = " << derivative << ", min_estimate_solution = " << min_estimate_solution << ", minimum_distance_to_reference_point = " << minimum_distance_to_reference_point<< std::endl;
+              //size_t j_search_step = 0;
+              while(search_step>1e-4)
+              {
+              //j_search_step++;
+              //const double test_value = min_estimate_solution-std::copysign(search_step,derivative);
+              const double minmax = min_estimate_solution-std::copysign(search_step,derivative);//std::max(std::min(test_value,(double)number_of_points),0.);
+              const double minmax_idx = (size_t)minmax;
+              const double minmax_h = minmax-minmax_idx;
+              splines[0] = x_spline.value_inside(minmax_idx,minmax_h);
+              splines[1] = y_spline.value_inside(minmax_idx,minmax_h);
+              const double minimum_distance_to_reference_point_minmax = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
+
+              //std::cout <<"j_search_step = " << j_search_step << ", search_step = " << search_step << ", minmax = " << minmax << ", derivative = " << derivative <<  ", min_estimate_solution = " << min_estimate_solution << ", minimum_distance_to_reference_point_minmax =  " << minimum_distance_to_reference_point_minmax  << std::endl;
+
+              //WBAssertThrow(j_search_step < 15 && search_step > 1e-5, "message: j_search_step = " << j_search_step << ", i_search_step = " << i_search_step);
+                if (minimum_distance_to_reference_point_minmax <= minimum_distance_to_reference_point)
+                {
+                  min_estimate_solution = minmax;
+                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_minmax;
+                  search_step *=0.5;
+                  break;
+                }
+              else
+                {
+                  search_step *=0.5;
+                }
+              }
+              } else {
+                break;
+              }
+
+            }*/
+
+          for (size_t i_search_step = 0; i_search_step < 3; i_search_step++)
             {
-              minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
-              min_estimate_solution = number_of_points+0.1;
+              min_estimate_solution_temp = min_estimate_solution-search_step;
+              size_t idx = (size_t)std::max( (int)min_estimate_solution_temp, (int)0);
+              double h = min_estimate_solution_temp-idx;
+              if (min_estimate_solution_temp > 0.)
+                {
+                  splines[0] = ((x_spline.m[idx][0]*h + x_spline.m[idx][1])*h + x_spline.m[idx][2])*h + x_spline.m[idx][3];//x_spline.value_inside(idx,h);
+                  splines[1] = ((y_spline.m[idx][0]*h + y_spline.m[idx][1])*h + y_spline.m[idx][2])*h + y_spline.m[idx][3];//y_spline.value_inside(idx,h);
+                }
+              else
+                {
+                  splines[0] = (x_spline.m[idx][1]*h + x_spline.m[idx][2])*h + x_spline.m[idx][3];//x_spline.value_inside(idx,h);
+                  splines[1] = (y_spline.m[idx][1]*h + y_spline.m[idx][2])*h + y_spline.m[idx][3];//y_spline.value_inside(idx,h);
+                }
+              const double minimum_distance_to_reference_point_min = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
+
+              min_estimate_solution_temp = min_estimate_solution+search_step;
+              idx = std::min((size_t) (int)min_estimate_solution_temp,x_spline.mx_size_min);
+              h = min_estimate_solution_temp-idx;
+
+              if (min_estimate_solution_temp < x_spline.mx_size_min)
+                {
+                  splines[0] = ((x_spline.m[idx][0]*h + x_spline.m[idx][1])*h + x_spline.m[idx][2])*h + x_spline.m[idx][3];//x_spline.value_inside(idx,h);
+                  splines[1] = ((y_spline.m[idx][0]*h + y_spline.m[idx][1])*h + y_spline.m[idx][2])*h + y_spline.m[idx][3];//y_spline.value_inside(idx,h);
+                }
+              else
+                {
+
+                  splines[0] = (x_spline.m[idx][1]*h + x_spline.m[idx][2])*h + x_spline.m[idx][3];//x_spline.value_inside(idx,h);
+                  splines[1] = (y_spline.m[idx][1]*h + y_spline.m[idx][2])*h + y_spline.m[idx][3];//y_spline.value_inside(idx,h);
+                }
+              const double minimum_distance_to_reference_point_plus = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
+
+
+              if (minimum_distance_to_reference_point_plus < minimum_distance_to_reference_point)
+                {
+                  min_estimate_solution = min_estimate_solution+search_step;
+                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_plus;
+                }
+              else if (minimum_distance_to_reference_point_min < minimum_distance_to_reference_point)
+                {
+                  min_estimate_solution = min_estimate_solution-search_step;
+                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_min;
+                }
+              search_step *=0.5;
+
+
+              //std::cout << "b: " << i_search_step << ", min_estimate_solution= " << min_estimate_solution << ", minimum_distance_to_reference_point = " << minimum_distance_to_reference_point << std::endl;
             }
+          //if (min_estimate_solution >= 0 && min_estimate_solution <= number_of_points)
 
-
-          //std::cout <<"min_estimate_solution = " << min_estimate_solution << ", minimum_distance_to_reference_point = " << minimum_distance_to_reference_point << std::endl;
-
+          // if no value could be found for any segment, min_estimate_solution is still nan.
+          //if (!std::isnan(min_estimate_solution))
           if (min_estimate_solution >= 0 && min_estimate_solution <= number_of_points)
             {
-              //std::cout <<"======> search further" << std::endl;
+              double x = min_estimate_solution;
 
-
-              /*double search_step = 0.25;
-              for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
+              double new_distance_tmp = -1;
+              size_t i = 0;
+              while (true)
                 {
-                  const double min = min_estimate_solution-search_step < 0 ? 0 : min_estimate_solution-search_step;
-                  splines[0] = x_spline.value_inside(min);
-                  splines[1] = y_spline.value_inside(min);
-                  const double minimum_distance_to_reference_point_min = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
 
+                  const size_t idx = (size_t)x;
+                  const double sx = x-idx;
+                  const double sx_2 = sx*sx;
+                  const double sx_3 = sx_2*sx;
 
-                  const double max = min_estimate_solution+search_step > number_of_points? number_of_points : min_estimate_solution+search_step;
-                  splines[0] = x_spline.value_inside(max);
-                  splines[1] = y_spline.value_inside(max);
-                  const double minimum_distance_to_reference_point_plus = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
-
-                  //std::cout <<"i_search_step = " << i_search_step << ", search_step = " << search_step << ", min_estimate_solution = " << min_estimate_solution << ", minimum_distance_to_reference_point_min =  " << minimum_distance_to_reference_point_min << ", minimum_distance_to_reference_point_plus = " << minimum_distance_to_reference_point_plus << std::endl;
-
-
-                  if (minimum_distance_to_reference_point_plus < minimum_distance_to_reference_point)
-                    {
-                      min_estimate_solution = min_estimate_solution+search_step;
-                      minimum_distance_to_reference_point = minimum_distance_to_reference_point_plus;
-                    }
-                  else if (minimum_distance_to_reference_point_min < minimum_distance_to_reference_point)
-                    {
-                      min_estimate_solution = min_estimate_solution-search_step;
-                      minimum_distance_to_reference_point = minimum_distance_to_reference_point_min;
-                    }
-                  else
-                    {
-                      search_step *=0.5;
-                    }
-                }*/
-
-              //double x = min_estimate_solution;
-              search_step *= 0.5;
-              //std::cout << "=============> start" << std::endl;
-              //for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
-              //size_t i_search_step = 0;
-              /*while(search_step>1e-4)
-              {
-                //i_search_step++;
-                size_t idx = std::min((size_t)std::max( (int)min_estimate_solution, (int)0),x_spline.mx_size_min);
-                const double sx = min_estimate_solution-idx;
-                //const double sx_2 = sx*sx;
-                //const double sx_3 = sx_2*sx;
-                //const double sx_4 = sx_3*sx;
-                //const double sx_5 = sx_4*sx;
-                 auto x_op = x_spline.m[idx];
-                  auto y_op = y_spline.m[idx];
-
-                  const double &a = x_op[0];
-                  const double &b = x_op[1];
-                  const double &c = x_op[2];
-                  const double &d = x_op[3];
+                  const double &a = x_spline.m[idx][0];
+                  const double &b = x_spline.m[idx][1];
+                  const double &c = x_spline.m[idx][2];
+                  const double &d = x_spline.m[idx][3];
                   const double &p = check_point_surface_2d[0];
-                  const double &e = y_op[0];
-                  const double &f = y_op[1];
-                  const double &g = y_op[2];
-                  const double &h = y_op[3];
-                  const double &k =check_point_surface_2d[1];
-                  //double sx = x_op[4];
-                  //const double derivative = 6*a*a*sx_5+10*a*b*sx_4+8*a*c*sx_3+6*a*d*sx_2-6*a*p*sx_2+4*b*b*sx_3+6*b*c*sx_2+4*b*d*sx-4*b*p*sx+2*c*c*sx+2*c*d-2*c*p+6*e*e*sx_5+10*e*f*sx_4+8*e*g*sx_3+6*e*h*sx_2-6*e*k*sx_2+4*f*f*sx_3+6*f*g*sx_2+4*f*h*sx-4*f*k*sx+2*g*g*sx+2*g*h-2*g*k;
-                  //const double derivative = (((((6*a*a*sx_5-2*c*p+6*e*e*sx_5)+10*a*b*sx_4+10*e*f*sx_4)+8*a*c*sx_3+4*b*b*sx_3+8*e*g*sx_3+4*f*f*sx_3)+6*a*d*sx_2-6*a*p*sx_2+6*b*c*sx_2+6*e*h*sx_2-6*e*k*sx_2+6*f*g*sx_2)+4*b*d*sx-4*b*p*sx+2*c*c*sx+4*f*h*sx-4*f*k*sx+2*g*g*sx)+2*g*h-2*g*k+2*c*d;
-                  //const double derivative = (((((a*a+e*e)*6.*sx+10*a*b+10*e*f)*sx+8*a*c+4*b*b+8*e*g+4*f*f)*sx+6*a*d-6*a*p+6*b*c+6*e*h-6*e*k+6*f*g)*sx+4*b*d-4*b*p+2*c*c+4*f*h-4*f*k+2*g*g)*sx+2*g*h-2*g*k+2*c*d-2*c*p;
+                  const double &e = y_spline.m[idx][0];
+                  const double &f = y_spline.m[idx][1];
+                  const double &g = y_spline.m[idx][2];
+                  const double &h = y_spline.m[idx][3];
+                  const double &k = check_point_surface_2d[1];
+                  //double x_new = (a*a*sx*sx*sx*sx*sx*sx+2*a*b*sx*sx*sx*sx*sx+2*a*c*sx*sx*sx*sx+2*a*d*sx*sx*sx+2*a*p*sx*sx*sx+b*b*sx*sx*sx*sx+2*b*c*sx*sx*sx+d*d+2*d*p+f*f*sx*sx*sx*sx+2*f*g*sx*sx*sx+2*e*f*sx*sx*sx*sx*sx+2*e*g*sx*sx*sx*sx+h*h+2*h*k+2*e*h*sx*sx*sx+k*k+2*e*k*sx*sx*sx+p*p+e*e*sx*sx*sx*sx*sx*sx+2*c*d*sx+2*c*p*sx+2*g*h*sx+2*g*k*sx)/(-c*c*sx-2*b*d*sx-g*g*sx-2*f*h*sx-2*f*k*sx-2*b*p*sx);
+                  //double x_new = (2*c*d+2*g*h+2*g*k+2*c*p+6*b*c*sx*sx+6*a*d*sx*sx+6*f*g*sy*sy+6*e*h*sx*sx+6*e*k*sy*sy+6*a*p*sx*sx+4*b*b*sx*sx*sx+8*a*c*sx*sx*sx+4*f*f*sy*sy*sy+8*e*g*sy*sy*sy+10*a*b*sx*sx*sx*sx+10*e*f*sy*sy*sy*sy+6*a*a*sx*sx*sx*sx*sx+6*e*e*sy*sy*sy*sy*sy)/(-2*c*c-4*b*d-2*g*g-4*f*h-4*f*k-4*b*p);
+                  //const double function = (a*sx*sx*sx+b*sx*sx+c*sx+d-p)*(a*sx*sx*sx+b*sx*sx+c*sx+d-p)+(e*sx*sx*sx+f*sx*sx+g*sx+h-k)*(e*sx*sx*sx+f*sx*sx+g*sx+h-k);
                   const double derivative = 2*(c+sx*(2*b+3*a*sx))*(d-p+sx*(c+sx*(b+a*sx)))+2*(g+sx*(2*f+3*e*sx))*(h-k+sx*(g+sx*(f+e*sx)));
 
-                  const double start_minmax = min_estimate_solution-std::copysign(search_step,derivative);
-                  if(std::fabs(derivative)>0. && start_minmax > 0 && start_minmax < (double)number_of_points){
-                  //std::cout <<"a: i_search_step = " << i_search_step << ", search_step = " << search_step << ", derivative = " << derivative << ", min_estimate_solution = " << min_estimate_solution << ", minimum_distance_to_reference_point = " << minimum_distance_to_reference_point<< std::endl;
-                  //size_t j_search_step = 0;
-                  while(search_step>1e-4)
-                  {
-                  //j_search_step++;
-                  //const double test_value = min_estimate_solution-std::copysign(search_step,derivative);
-                  const double minmax = min_estimate_solution-std::copysign(search_step,derivative);//std::max(std::min(test_value,(double)number_of_points),0.);
-                  const double minmax_idx = (size_t)minmax;
-                  const double minmax_h = minmax-minmax_idx;
-                  splines[0] = x_spline.value_inside(minmax_idx,minmax_h);
-                  splines[1] = y_spline.value_inside(minmax_idx,minmax_h);
-                  const double minimum_distance_to_reference_point_minmax = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
-
-                  //std::cout <<"j_search_step = " << j_search_step << ", search_step = " << search_step << ", minmax = " << minmax << ", derivative = " << derivative <<  ", min_estimate_solution = " << min_estimate_solution << ", minimum_distance_to_reference_point_minmax =  " << minimum_distance_to_reference_point_minmax  << std::endl;
-
-                  //WBAssertThrow(j_search_step < 15 && search_step > 1e-5, "message: j_search_step = " << j_search_step << ", i_search_step = " << i_search_step);
-                    if (minimum_distance_to_reference_point_minmax <= minimum_distance_to_reference_point)
+                  if (std::fabs(derivative) < 1e-14)
                     {
-                      min_estimate_solution = minmax;
-                      minimum_distance_to_reference_point = minimum_distance_to_reference_point_minmax;
-                      search_step *=0.5;
                       break;
                     }
-                  else
+                  const double second_derivative = 2*(c+2*b*sx+3*a*sx_3)*(c+2*b*sx+3*a*sx_3)+2*(g+2*f*sx+3*e*sx_3)*(g+2*f*sx+3*e*sx_3)+2*(2*b+6*a*sx)*(d-p+c*sx+b*sx_3+a*sx_3)+2*(2*f+6*e*sx)*(h-k+g*sx+f*sx_2+e*sx_3);
+                  //double x_new = 0;
+                  const double sd_sign = std::copysign(1.0,second_derivative);
+                  //std::cout << "sd_sign = " << sd_sign << std::endl;
+                  const double update = sd_sign*(derivative/second_derivative);
+                  //std::cout << i << ", x = " << x << ", idx =" << idx << ", update = " << update << ",sd_sign = " << sd_sign<< ", function = " << function << ", derivative= = " << derivative<< ", sd = " << second_derivative << ", a = " << a << ", b = " << b << ", e = " << e << std::endl;
+                  //std::cout << i << ", x = " << x << ", idx =" << idx << ", update = " << update << ", function = " << function << ", derivative= = " << derivative<< ", sd = " << second_derivative << ", a = " << a << ", b = " << b << ", e = " << e << std::endl;
+
+                  if (std::fabs(update) < 1e-4)
                     {
-                      search_step *=0.5;
-                    }
-                  }
-                  } else {
-                    break;
-                  }
-
-                }*/
-
-              /*for (size_t i_search_step = 0; i_search_step < 2; i_search_step++)
-                {
-                  min_estimate_solution_temp = min_estimate_solution-search_step;
-                  size_t idx = (size_t)std::max( (int)min_estimate_solution_temp, (int)0);
-                  double h = min_estimate_solution_temp-idx;
-                  if (min_estimate_solution_temp > 0.)
-                    {
-                      splines[0] = ((x_spline.m[idx][0]*h + x_spline.m[idx][1])*h + x_spline.m[idx][2])*h + x_spline.m[idx][3];//x_spline.value_inside(idx,h);
-                      splines[1] = ((y_spline.m[idx][0]*h + y_spline.m[idx][1])*h + y_spline.m[idx][2])*h + y_spline.m[idx][3];//y_spline.value_inside(idx,h);
-                    }
-                  else
-                    {
-                      splines[0] = (x_spline.m[idx][1]*h + x_spline.m[idx][2])*h + x_spline.m[idx][3];//x_spline.value_inside(idx,h);
-                      splines[1] = (y_spline.m[idx][1]*h + y_spline.m[idx][2])*h + y_spline.m[idx][3];//y_spline.value_inside(idx,h);
-                    }
-                  const double minimum_distance_to_reference_point_min = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
-
-                  min_estimate_solution_temp = min_estimate_solution+search_step;
-                  idx = std::min((size_t) (int)min_estimate_solution_temp,x_spline.mx_size_min);
-                  h = min_estimate_solution_temp-idx;
-
-                  if (min_estimate_solution_temp < x_spline.mx_size_min)
-                    {
-                      splines[0] = ((x_spline.m[idx][0]*h + x_spline.m[idx][1])*h + x_spline.m[idx][2])*h + x_spline.m[idx][3];//x_spline.value_inside(idx,h);
-                      splines[1] = ((y_spline.m[idx][0]*h + y_spline.m[idx][1])*h + y_spline.m[idx][2])*h + y_spline.m[idx][3];//y_spline.value_inside(idx,h);
-                    }
-                  else
-                    {
-
-                      splines[0] = (x_spline.m[idx][1]*h + x_spline.m[idx][2])*h + x_spline.m[idx][3];//x_spline.value_inside(idx,h);
-                      splines[1] = (y_spline.m[idx][1]*h + y_spline.m[idx][2])*h + y_spline.m[idx][3];//y_spline.value_inside(idx,h);
-                    }
-                  const double minimum_distance_to_reference_point_plus = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
-
-
-                  if (minimum_distance_to_reference_point_plus < minimum_distance_to_reference_point)
-                    {
-                      min_estimate_solution = min_estimate_solution+search_step;
-                      minimum_distance_to_reference_point = minimum_distance_to_reference_point_plus;
-                    }
-                  else if (minimum_distance_to_reference_point_min < minimum_distance_to_reference_point)
-                    {
-                      min_estimate_solution = min_estimate_solution-search_step;
-                      minimum_distance_to_reference_point = minimum_distance_to_reference_point_min;
-                    }
-                  search_step *=0.5;
-
-
-                  //std::cout << "b: " << i_search_step << ", min_estimate_solution= " << min_estimate_solution << ", minimum_distance_to_reference_point = " << minimum_distance_to_reference_point << std::endl;
-                }
-              if (min_estimate_solution >= 0 && min_estimate_solution <= number_of_points)*/
-              {
-                double x = min_estimate_solution;
-
-                double new_distance_tmp = -1;
-                while (true)
-                  {
-
-                    const size_t idx = (size_t)x;
-                    const double sx = x-idx;
-                    const double sx_2 = sx*sx;
-                    const double sx_3 = sx_2*sx;
-
-                    const double &a = x_spline.m[idx][0];
-                    const double &b = x_spline.m[idx][1];
-                    const double &c = x_spline.m[idx][2];
-                    const double &d = x_spline.m[idx][3];
-                    const double &p = check_point_surface_2d[0];
-                    const double &e = y_spline.m[idx][0];
-                    const double &f = y_spline.m[idx][1];
-                    const double &g = y_spline.m[idx][2];
-                    const double &h = y_spline.m[idx][3];
-                    const double &k = check_point_surface_2d[1];
-                    //double x_new = (a*a*sx*sx*sx*sx*sx*sx+2*a*b*sx*sx*sx*sx*sx+2*a*c*sx*sx*sx*sx+2*a*d*sx*sx*sx+2*a*p*sx*sx*sx+b*b*sx*sx*sx*sx+2*b*c*sx*sx*sx+d*d+2*d*p+f*f*sx*sx*sx*sx+2*f*g*sx*sx*sx+2*e*f*sx*sx*sx*sx*sx+2*e*g*sx*sx*sx*sx+h*h+2*h*k+2*e*h*sx*sx*sx+k*k+2*e*k*sx*sx*sx+p*p+e*e*sx*sx*sx*sx*sx*sx+2*c*d*sx+2*c*p*sx+2*g*h*sx+2*g*k*sx)/(-c*c*sx-2*b*d*sx-g*g*sx-2*f*h*sx-2*f*k*sx-2*b*p*sx);
-                    //double x_new = (2*c*d+2*g*h+2*g*k+2*c*p+6*b*c*sx*sx+6*a*d*sx*sx+6*f*g*sy*sy+6*e*h*sx*sx+6*e*k*sy*sy+6*a*p*sx*sx+4*b*b*sx*sx*sx+8*a*c*sx*sx*sx+4*f*f*sy*sy*sy+8*e*g*sy*sy*sy+10*a*b*sx*sx*sx*sx+10*e*f*sy*sy*sy*sy+6*a*a*sx*sx*sx*sx*sx+6*e*e*sy*sy*sy*sy*sy)/(-2*c*c-4*b*d-2*g*g-4*f*h-4*f*k-4*b*p);
-                    //const double function = (a*sx*sx*sx+b*sx*sx+c*sx+d-p)*(a*sx*sx*sx+b*sx*sx+c*sx+d-p)+(e*sx*sx*sx+f*sx*sx+g*sx+h-k)*(e*sx*sx*sx+f*sx*sx+g*sx+h-k);
-                    const double derivative = 2*(c+sx*(2*b+3*a*sx))*(d-p+sx*(c+sx*(b+a*sx)))+2*(g+sx*(2*f+3*e*sx))*(h-k+sx*(g+sx*(f+e*sx)));
-                    if (std::fabs(derivative) < 1e-14)
-                      {
-                        break;
-                      }
-                    const double second_derivative = 2*(c+2*b*sx+3*a*sx_3)*(c+2*b*sx+3*a*sx_3)+2*(g+2*f*sx+3*e*sx_3)*(g+2*f*sx+3*e*sx_3)+2*(2*b+6*a*sx)*(d-p+c*sx+b*sx_3+a*sx_3)+2*(2*f+6*e*sx)*(h-k+g*sx+f*sx_2+e*sx_3);
-                    //double x_new = 0;
-                    const double update = derivative/second_derivative;
-                    //std::cout << i << "x = " << x << ", idx =" << idx << ", update = " << update << ", derivative= = " << derivative<< ", derivative = " << derivative << ", a = " << a << ", b = " << b << ", e = " << e << std::endl;
-
-                    if (std::fabs(update) < 1e-4)
-                      {
+                      min_estimate_solution = x;
 #ifndef NDEBUG
-                        const size_t idx = (size_t)min_estimate_solution_temp;
-                        const double h = min_estimate_solution_temp-idx;
+                      const size_t idx = (size_t)min_estimate_solution;
+                      const double h = min_estimate_solution-idx;
 
-                        //if (min_estimate_solution_temp < x_spline.mx_size_min)
-                        //  {
-                        splines[0] = ((x_spline.m[idx][0]*h + x_spline.m[idx][1])*h + x_spline.m[idx][2])*h + x_spline.m[idx][3];//x_spline.value_inside(idx,h);
-                        splines[1] = ((y_spline.m[idx][0]*h + y_spline.m[idx][1])*h + y_spline.m[idx][2])*h + y_spline.m[idx][3];//y_spline.value_inside(idx,h);
-                        //}
-                        //else
-                        //{
-                        WBAssert(min_estimate_solution_temp < x_spline.mx_size_min, "message");
-
-                        //splines[0] = (x_spline.m[idx][1]*h + x_spline.m[idx][2])*h + x_spline.m[idx][3];//x_spline.value_inside(idx,h);
-                        //splines[1] = (y_spline.m[idx][1]*h + y_spline.m[idx][2])*h + y_spline.m[idx][3];//y_spline.value_inside(idx,h);
-                        //}
-                        new_distance_tmp = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
-                        WBAssert(new_distance_tmp <= minimum_distance_to_reference_point,
-                                 "Failed to converge on spline. Initial guess " << std::setprecision(16) << minimum_distance_to_reference_point << ") smaller than final result(" << new_distance_tmp << ", diff = " << minimum_distance_to_reference_point-new_distance_tmp << ") for point " << check_point_surface_2d << ", cp = " << check_point << ".");
+                      if (min_estimate_solution_temp <= number_of_points)
+                        {
+                          splines[0] = ((x_spline.m[idx][0]*h + x_spline.m[idx][1])*h + x_spline.m[idx][2])*h + x_spline.m[idx][3];//x_spline.value_inside(idx,h);
+                          splines[1] = ((y_spline.m[idx][0]*h + y_spline.m[idx][1])*h + y_spline.m[idx][2])*h + y_spline.m[idx][3];//y_spline.value_inside(idx,h);
+                        }
+                      else
+                        {
+                          //WBAssert(min_estimate_solution < number_of_points-1, "Internal error: min_estimate_solution = " << min_estimate_solution << ", number_of_points-1 = " << number_of_points-1);
+                          splines[0] = (x_spline.m[idx][1]*h + x_spline.m[idx][2])*h + x_spline.m[idx][3];//x_spline.value_inside(idx,h);
+                          splines[1] = (y_spline.m[idx][1]*h + y_spline.m[idx][2])*h + y_spline.m[idx][3];//y_spline.value_inside(idx,h);
+                        }
+                      new_distance_tmp = splines.cheap_relative_distance_cartesian(check_point_surface_2d);
+                      WBAssertThrow(new_distance_tmp <= minimum_distance_to_reference_point,
+                                    "Failed to converge on spline. Initial guess " << std::setprecision(16) << minimum_distance_to_reference_point << ") smaller than final result(" << new_distance_tmp << ", diff = " << minimum_distance_to_reference_point-new_distance_tmp << ") for point " << check_point_surface_2d << ", cp = " << check_point << ".");
 #endif
-                        min_estimate_solution = x;
-                        //minimum_distance_to_reference_point = new_distance_tmp;
-                        //new_distance_tmp = minimum_distance_to_reference_point;
-                        break;
-                      }
-                    double update_scaling = 1;
-                    //std::cout <<"c-1:  x = " << x << ", i: " <<  i << ": upate = " << update << ", search_step = "  << search_step <<   ", derivative = " << derivative<< ", sd =" << second_derivative << std::endl;
-                    if (std::fabs(update) > 1e-2)
-                      {
-                        //std::cout << "c-2: " << i << ": x = " << x << ", do line search! upate = " << update << ", search_step = "  << search_step << ", new_dist = "<<  new_distance_tmp<< std::endl;
-                        for (unsigned int i_line_search = 0; i_line_search < 20; ++i_line_search)
+                      //minimum_distance_to_reference_point = new_distance_tmp;
+                      //new_distance_tmp = minimum_distance_to_reference_point;
+                      break;
+                    }
+                  double update_scaling = 1;
+                  //std::cout <<"c-1:  x = " << x << ", i: " <<  i << ": upate = " << update  <<   ", derivative = " << derivative<< ", sd =" << second_derivative << std::endl;
+                  if (std::fabs(update) > 1e-2)
+                    {
+                      //std::cout << "c-2: " << i << ": x = " << x << ", do line search! upate = " << update << ", new_dist = "<<  new_distance_tmp<< std::endl;
+                      for (unsigned int i_line_search = 0; i_line_search < 50; ++i_line_search)
+                        {
+                          const double test_x = x - update_scaling*update;
+                          //if(test_x >= 0 && test_x <= number_of_points-1)
                           {
-                            const double test_x = x - update_scaling*update;
                             const double idx = (size_t)test_x;
                             const double sx = test_x - (size_t)test_x;
                             const double sx_2 = sx*sx;
@@ -718,37 +842,50 @@ namespace WorldBuilder
                             const double part_1 = (a*sx_3+b*sx_2+c*sx+d-p);
                             const double part_2 = (e*sx_3+f*sx_2+g*sx+h-k);
                             new_distance_tmp = part_1*part_1+part_2*part_2;
-                            //std::cout <<"c-3: update_scaling = " << update_scaling << ", update_scaling*updatee =" << update_scaling *update << ",x = " << x << ", sx = " << sx << ", line search " << i_line_search << ": " << new_distance_tmp << ", ndt-dist=" << new_distance_tmp-minimum_distance_to_reference_point <<std::endl;
+                            //std::cout <<"c-3a: update_scaling = " << update_scaling << ", update_scaling*updatee =" << update_scaling *update << ",x = " << x << ", test_x = " << test_x << ", sx = " << sx << ", line search " << i_line_search << ": " << new_distance_tmp << ", ndt-dist=" << new_distance_tmp-minimum_distance_to_reference_point <<std::endl;
                             if (new_distance_tmp<=minimum_distance_to_reference_point)
                               {
                                 break;
                               }
-                            update_scaling*=0.5;
 
-                            WBAssert(i_line_search < 10, "The spline solver doesn't seem to have finished on a reasonable ammout of iterations and line search. Please check whether your coordinates are resonable, or contact the maintainers.");
                           }
-                      }
-                    //std::cout <<"c-4: x = " << x << ", update = " << update << ", update_scaling*update = " << update_scaling*update  << " new distance = " << Point<2>(x_spline(x),y_spline(x),cartesian).cheap_relative_distance_cartesian(check_point_surface_2d) << std::endl;
+                          //else {
+                          //   //std::cout <<"c-3b: update_scaling = " << update_scaling << ", update_scaling*updatee =" << update_scaling *update << ",x = " << x << ", test_x = " << test_x << ", sx = " << sx << ", line search " << i_line_search << ": " << new_distance_tmp << ", ndt-dist=" << new_distance_tmp-minimum_distance_to_reference_point <<std::endl;
+                          //
+                          //}
+                          update_scaling*=2./3.;
 
-                    x = x - update_scaling*update;
-                    //std::cout <<"c-5: x = " << x << ", update = " << update << ", update_scaling*update = " << update_scaling*update  << " new distance = " << Point<2>(x_spline(x),y_spline(x),cartesian).cheap_relative_distance_cartesian(check_point_surface_2d) << std::endl;
+                          WBAssert(i_line_search < 49, "The spline solver doesn't seem to have finished on a reasonable ammout of iterations and line search. Please check whether your coordinates are resonable, or contact the maintainers.");
+                        }
+                    }
+                  //std::cout <<"c-4: x = " << x << ", update = " << update << ", update_scaling*update = " << update_scaling *update  << " new distance = " << Point<2>(x_spline(x),y_spline(x),cartesian).cheap_relative_distance_cartesian(check_point_surface_2d) << std::endl;
 
+                  x = x - update_scaling*update;
 
-                    // /               if (std::fabs(update) < 1e-5)
-                    // /{
-                    // /  WBAssertThrow(Point<2>(x_spline(x),y_spline(x),cartesian).cheap_relative_distance_cartesian(check_point_surface_2d) <= minimum_distance_to_reference_point,
-                    // /                "Failed to converge on spline. Initial guess " << std::setprecision(16) << minimum_distance_to_reference_point << ") smaller than final result(" << Point<2>(x_spline(x),y_spline(x),cartesian).cheap_relative_distance_cartesian(check_point_surface_2d) << ", diff = " << minimum_distance_to_reference_point-Point<2>(x_spline(x),y_spline(x),cartesian).cheap_relative_distance_cartesian(check_point_surface_2d) << ") for point " << check_point_surface_2d << ", cp = " << check_point << ".");
-                    // /  min_estimate_solution = x;
-                    // /  minimum_distance_to_reference_point = Point<2>(x_spline(x),y_spline(x),cartesian).cheap_relative_distance_cartesian(check_point_surface_2d);
-                    // /  new_distance_tmp = minimum_distance_to_reference_point;
-                    // /  break;
-                    // /}
-                    //x = x - update;
-                    //std::cout <<i << ", 2: x = " << x << ", update = " << update  << " new distance = " << Point<2>(x_spline(x),y_spline(x),cartesian).cheap_relative_distance_cartesian(check_point_surface_2d) << std::endl;
+                  //std::cout <<"c-5: x = " << x << ", update = " << update << ", update_scaling*update = " << update_scaling *update  << " new distance = " << Point<2>(x_spline(x),y_spline(x),cartesian).cheap_relative_distance_cartesian(check_point_surface_2d) << std::endl;
 
-                  }
-              }
+                  if (x < 0 || x > number_of_points-1)
+                    {
+                      //std::cout << "break";
+                      break;
+                    }
+
+                  // /               if (std::fabs(update) < 1e-5)
+                  // /{
+                  // /  WBAssertThrow(Point<2>(x_spline(x),y_spline(x),cartesian).cheap_relative_distance_cartesian(check_point_surface_2d) <= minimum_distance_to_reference_point,
+                  // /                "Failed to converge on spline. Initial guess " << std::setprecision(16) << minimum_distance_to_reference_point << ") smaller than final result(" << Point<2>(x_spline(x),y_spline(x),cartesian).cheap_relative_distance_cartesian(check_point_surface_2d) << ", diff = " << minimum_distance_to_reference_point-Point<2>(x_spline(x),y_spline(x),cartesian).cheap_relative_distance_cartesian(check_point_surface_2d) << ") for point " << check_point_surface_2d << ", cp = " << check_point << ".");
+                  // /  min_estimate_solution = x;
+                  // /  minimum_distance_to_reference_point = Point<2>(x_spline(x),y_spline(x),cartesian).cheap_relative_distance_cartesian(check_point_surface_2d);
+                  // /  new_distance_tmp = minimum_distance_to_reference_point;
+                  // /  break;
+                  // /}
+                  //x = x - update;
+                  //std::cout <<i << ", 2: x = " << x << ", update = " << update  << " new distance = " << Point<2>(x_spline(x),y_spline(x),cartesian).cheap_relative_distance_cartesian(check_point_surface_2d) << std::endl;
+
+                  i++;
+                }
             }
+          //}
         }
       else
         {
@@ -1703,10 +1840,10 @@ namespace WorldBuilder
         }
 
       // precompute some values on a regual grid of 0.20
-      precompute.resize((n*5)+1);
-      for (size_t i_estimate = 0; i_estimate < (n*5)+1; i_estimate++)
+      /*precompute.resize((n*50)+1);
+      for (size_t i_estimate = 0; i_estimate < ((n-1)*50)+1; i_estimate++)
         {
-          const double estimate = i_estimate*0.20;
+          const double estimate = i_estimate*0.020;
 
           const size_t idx = (size_t)estimate;
           const double sx = estimate-idx;
@@ -1716,6 +1853,12 @@ namespace WorldBuilder
           //precompute[i_estimate][0] = estimate;
           //precompute[i_estimate][1] = sx;
           precompute[i_estimate] = m[idx][0]*sx_3+ m[idx][1]*sx_2+m[idx][2]*sx+m[idx][3];
+        }*/
+
+      for (size_t i_estimate = 0; i_estimate < ((n-1)*4)+1; i_estimate++)
+        {
+          const double estimate = i_estimate*0.25;
+          new_coord_list.emplace_back(this->value_inside(estimate));
         }
     }
 
