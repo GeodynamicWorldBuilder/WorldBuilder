@@ -423,7 +423,7 @@ namespace WorldBuilder
           Point<2> P1 = point_list[0];
           Point<2> P2 = P1;
           Point<2> splines(cartesian);
-          for (double i_estimate = 0; i_estimate < point_list.size()-1; i_estimate++)
+          for (size_t i_estimate = 0; i_estimate < point_list.size()-1; i_estimate++)
             {
 
               P1 = P2;
@@ -438,8 +438,8 @@ namespace WorldBuilder
               Point<2> P1P2 = (P2)-(P1);
               Point<2> P1Pc = check_point_surface_2d-(P1);
 
-              double c1 = P1Pc*P1P2;
-              if ( c1 < 0 )
+              double c_1 = P1Pc*P1P2;
+              if ( c_1 < 0 )
                 {
                   // closest point to segment beore P1. Continue
                   // preventing a rounded corner
@@ -447,67 +447,67 @@ namespace WorldBuilder
                   continue;
                 }
 
-              double c2 = P1P2*P1P2;
-              if ( c2 < c1 )
+              double c_2 = P1P2*P1P2;
+              if ( c_2 < c_1 )
                 {
                   // closest point to segment after P2. Continue
                   continue;
                 }
 
-              double fraction = c1 / c2;
+              double fraction = c_1 / c_2;
 
               double min_estimate_solution_tmp = (i_estimate+fraction);
               WBAssert(min_estimate_solution_tmp>=0 && min_estimate_solution_tmp <=number_of_points, "message");
 
-              const double idx = (size_t)min_estimate_solution_tmp;
-              const double sx = min_estimate_solution_tmp - (size_t)min_estimate_solution_tmp;
-              const double sx_2 = sx*sx;
-              const double sx_3 = sx*sx*sx;
-              const double &a = x_spline.m[idx][0];
-              const double &b = x_spline.m[idx][1];
-              const double &c = x_spline.m[idx][2];
-              const double &d = x_spline.m[idx][3];
-              const double &p = check_point_surface_2d[0];
-              const double &e = y_spline.m[idx][0];
-              const double &f = y_spline.m[idx][1];
-              const double &g = y_spline.m[idx][2];
-              const double &h = y_spline.m[idx][3];
-              const double &k = check_point_surface_2d[1];
-              const double x = (a*sx_3+b*sx_2+c*sx+d-p);
-              const double y = (e*sx_3+f*sx_2+g*sx+h-k);
-              const double minimum_distance_to_reference_point_start = x*x+y*y;
+              const double idx1 = (size_t)min_estimate_solution_tmp;
+              const double sx1 = min_estimate_solution_tmp - idx1;
+              const double sx1_2 = sx1*sx1;
+              const double sx1_3 = sx1*sx1*sx1;
+              const double &a1 = x_spline.m[idx1][0];
+              const double &b1 = x_spline.m[idx1][1];
+              const double &c1 = x_spline.m[idx1][2];
+              const double &d1 = x_spline.m[idx1][3];
+              const double &p1 = check_point_surface_2d[0];
+              const double &e1 = y_spline.m[idx1][0];
+              const double &f1 = y_spline.m[idx1][1];
+              const double &g1 = y_spline.m[idx1][2];
+              const double &h1 = y_spline.m[idx1][3];
+              const double &k1 = check_point_surface_2d[1];
+              const double x1 = (a1*sx1_3+b1*sx1_2+c1*sx1+d1-p1);
+              const double y1 = (e1*sx1_3+f1*sx1_2+g1*sx1+h1-k1);
+              const double minimum_distance_to_reference_point_start = x1*x1+y1*y1;
 
               double new_distance_tmp = -1;
               while (true)
                 {
-                  const size_t idx = (size_t)min_estimate_solution_tmp;
-                  const double sx = min_estimate_solution_tmp-idx;
-                  const double sx_2 = sx*sx;
-                  const double sx_3 = sx_2*sx;
+                  const size_t idx2 = (size_t)min_estimate_solution_tmp;
+                  const double sx2 = min_estimate_solution_tmp-idx2;
+                  const double sx2_2 = sx2*sx2;
+                  const double sx2_3 = sx2_2*sx2;
 
-                  const double &a = x_spline.m[idx][0];
-                  const double &b = x_spline.m[idx][1];
-                  const double &c = x_spline.m[idx][2];
-                  const double &d = x_spline.m[idx][3];
-                  const double &p = check_point_surface_2d[0];
-                  const double &e = y_spline.m[idx][0];
-                  const double &f = y_spline.m[idx][1];
-                  const double &g = y_spline.m[idx][2];
-                  const double &h = y_spline.m[idx][3];
-                  const double &k = check_point_surface_2d[1];
-                  const double x = a*sx_3+b*sx_2+c*sx+d-p;
-                  const double y = e*sx_3+f*sx_2+g*sx+h-k;
-                  const double dx = 3.*a*sx_2+2.*b*sx+c;
-                  const double dy = 3.*e*sx_2+2.*f*sx+g;
-                  const double derivative = 2.*(x*dx+y*dy);
+                  const double &a2 = x_spline.m[idx2][0];
+                  const double &b2 = x_spline.m[idx2][1];
+                  const double &c2 = x_spline.m[idx2][2];
+                  const double &d2 = x_spline.m[idx2][3];
+                  const double &p2 = check_point_surface_2d[0];
+                  const double &e2 = y_spline.m[idx2][0];
+                  const double &f2 = y_spline.m[idx2][1];
+                  const double &g2 = y_spline.m[idx2][2];
+                  const double &h2 = y_spline.m[idx2][3];
+                  const double &k2 = check_point_surface_2d[1];
+                  const double x2 = a2*sx2_3+b2*sx2_2+c2*sx2+d2-p2;
+                  const double y2 = e2*sx2_3+f2*sx2_2+g2*sx2+h2-k2;
+                  const double dx2 = 3.*a2*sx2_2+2.*b2*sx2+c2;
+                  const double dy2 = 3.*e2*sx2_2+2.*f2*sx2+g2;
+                  const double derivative = 2.*(x2*dx2+y2*dy2);
                   if (std::fabs(derivative) < 1e-14)
                     {
-                      minimum_distance_to_reference_point_tmp = x*x+y*y;
+                      minimum_distance_to_reference_point_tmp = x2*x2+y2*y2;
                       break;
                     }
-                  const double ddx = 6.*a*sx + 2.*b;
-                  const double ddy = 6.*e*sx + 2.*f;
-                  const double second_derivative = 2.*(x*ddx+dx*dx+y*ddy+dy*dy);
+                  const double ddx2 = 6.*a2*sx2 + 2.*b2;
+                  const double ddy2 = 6.*e2*sx2 + 2.*f2;
+                  const double second_derivative = 2.*(x2*ddx2+dx2*dx2+y2*ddy2+dy2*dy2);
 
                   // We take the Newton derivative between some limits and only the sign of the
                   // derivative, not the second derivative. This ensures that we converge to the
@@ -516,7 +516,7 @@ namespace WorldBuilder
 
                   if (std::fabs(update) < 1e-4)
                     {
-                      minimum_distance_to_reference_point_tmp = x*x+y*y;
+                      minimum_distance_to_reference_point_tmp = x2*x2+y2*y2;
                       WBAssertThrow(new_distance_tmp <= minimum_distance_to_reference_point_start,
                                     "Failed to converge on spline. Initial guess " << std::setprecision(16) << minimum_distance_to_reference_point_start
                                     << ") smaller than final result(" << new_distance_tmp << ", diff = " << minimum_distance_to_reference_point_start-new_distance_tmp
@@ -593,7 +593,7 @@ namespace WorldBuilder
           // first check the boundaries -0.5, 0, point_list.size()-1 and number_of_points+0.1
           min_estimate_solution = -1e-6;
           Point<2> splines(x_spline.value_outside(min_estimate_solution),y_spline.value_outside(min_estimate_solution), natural_coordinate_system);
-          double minimum_distance_to_reference_point = splines.cheap_relative_distance_spherical(check_point_surface_2d);
+          minimum_distance_to_reference_point = splines.cheap_relative_distance_spherical(check_point_surface_2d);
           //std::cout <<std::endl << "-0.1, " << minimum_distance_to_reference_point << std::endl;
 
           /*splines[0] = x_spline.value_inside(0.);
