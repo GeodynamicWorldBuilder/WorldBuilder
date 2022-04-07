@@ -423,6 +423,7 @@ namespace WorldBuilder
           Point<2> P1 = point_list[0];
           Point<2> P2 = P1;
           Point<2> splines(cartesian);
+          //std::cout << string << std::endl;
           for (size_t i_estimate = 0; i_estimate < point_list.size()-1; i_estimate++)
             {
 
@@ -478,6 +479,7 @@ namespace WorldBuilder
               const double minimum_distance_to_reference_point_start = x1*x1+y1*y1;
 
               double new_distance_tmp = -1;
+              size_t i_newton_iteration = 0;
               while (true)
                 {
                   const size_t idx2 = (size_t)min_estimate_solution_tmp;
@@ -512,7 +514,7 @@ namespace WorldBuilder
                   // We take the Newton derivative between some limits and only the sign of the
                   // derivative, not the second derivative. This ensures that we converge to the
                   // min value and not the max value.
-                  const double update = std::min(0.5,std::max(-0.5,(derivative/std::fabs(second_derivative))));
+                  const double update = std::min(0.25,std::max(-0.25,(derivative/std::fabs(second_derivative))));
 
                   if (std::fabs(update) < 1e-4)
                     {
@@ -528,7 +530,8 @@ namespace WorldBuilder
                   // only the first few iterations need some guidence from line search
                   if (std::fabs(update) > 1e-2)
                     {
-                      for (unsigned int i_line_search = 0; i_line_search < 50; ++i_line_search)
+                      unsigned int i_line_search = 0;
+                      for (; i_line_search < 50; ++i_line_search)
                         {
                           const double test_x = min_estimate_solution_tmp - update_scaling*update;
                           {
@@ -551,15 +554,18 @@ namespace WorldBuilder
                             minimum_distance_to_reference_point_tmp = x*x+y*y;
                             if (minimum_distance_to_reference_point_tmp<=minimum_distance_to_reference_point_start)
                               {
-                                //min_estimate_solution_tmp = test_x;
                                 break;
                               }
 
                           }
                           update_scaling*=2./3.;
 
-                          WBAssertThrow(i_line_search < 49, "The spline solver doesn't seem to have finished on a reasonable ammout of iterations and line search. Please check whether your coordinates are resonable, or contact the maintainers.");
                         }
+                      WBAssertThrow(i_line_search < 49,
+                                    "The spline solver doesn't seem to have finished on a reasonable ammount of line search "
+                                    << "iterations. Please check whether your coordinates are resonable, "
+                                    << "or contact the maintainers. Line search iterations = " << i_line_search
+                                    << ", Newton interations = " << i_newton_iteration << ".");
                     }
                   min_estimate_solution_tmp = min_estimate_solution_tmp - update_scaling*update;
 
@@ -567,6 +573,11 @@ namespace WorldBuilder
                     {
                       break;
                     }
+                  ++i_newton_iteration;
+                  WBAssertThrow(i_newton_iteration<49,
+                                "The spline solver doesn't seem to have finished on a reasonable ammount of Newton "
+                                << "iterations. Please check whether your coordinates are resonable, "
+                                << "or contact the maintainers. Newton interations = " << i_newton_iteration << ".");
                 }
 
               if (minimum_distance_to_reference_point_tmp < minimum_distance_to_reference_point)
