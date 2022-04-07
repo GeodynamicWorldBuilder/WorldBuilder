@@ -67,16 +67,69 @@ This will clean up the memory used by the world builder.
 
 To be more clear, we show here an example Fortran program using the Geodynamic World Builder.
 
-```{todo}
-add figure and caption pg 20
+```{code-block} console
+---
+caption: Example of how to interface the World Builder with Fortran code
+---
+program test
+use WorldBuilder
+
+IMPLICIT NONE
+
+  ! Declare the types which will be needed.
+  REAL*8 :: temperature,x=120e3,y=500e3,z=0,depth=0,gravity = 10
+  INTEGER :: composition_number = 3
+  REAL*8 :: composition
+  character(len=256) :: file_name = "path/to/world_builder_file"//C_NULL_CHAR
+
+  ! Show how to call the functions.
+  CALL create_world(cworld, file_name)
+
+  write(*, *) '2d temperature:'
+  CALL temperature_2d(cworld,x,z,depth,gravity,temperature)
+  write(*, *) 'temperature in Fortran = ', temperature
+
+  write(*, *) '3d temperature:'
+  CALL temperature_3d(cworld,x,y,z,depth,gravity,temperature)
+  write(*, *) 'temperature in Fortran = ', temperature
+
+    write(*, *) '2d composition:'
+  CALL composition_2d(cworld,x,z,depth,composition_number,composition)
+  write(*, *) 'composition in Fortran = ', composition
+
+  write(*, *) '3d composition:'
+  CALL composition_3d(cworld,x,y,z,depth,composition_number,composition)
+  write(*, *) 'composition in Fortran = ', composition
+
+  CALL release_world(cworld)
+END program
 ```
+
+A more extensive example for how to link Fortran code with the World Builder can be found in the example directory.
+This includes instructions on how to compile the example.
+
 :::::
 
 :::::{tab-item} Python program
 You only need to include the module called gwb.
 To be more clear, we show here a python example using the Geodynamic World Builder.
-```{todo}
-add figure and caption pg 21
+```{code-block} python
+---
+caption: Example how to interface the World Builder with Python
+---
+from gwb import WorldBuilderWrapper
+
+filename = "../../tests/data/continental_plate.wb"
+world_builder = WorldBuilderWrapper(filename);
+
+print("2d temperature:")
+print("Temp. = ", world_builder.temperature_2d(120.0e3,500.0e3,0,10));
+print("3d temperature:")
+print("Temp.  = ", world_builder.temperature_3d(120.0e3,500.0e3,0,0,10));
+print("2d composition:")
+print("Comp. = ", world_builder.composition_2d(120.0e3,500.0e3,0,3));
+print("3d composition:")
+print("Comp. = ", world_builder.composition_3d(120.0e3,500.0e3,.0e3,0e3,3));
 ```
 
 :::::
