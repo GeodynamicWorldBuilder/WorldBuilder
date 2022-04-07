@@ -93,7 +93,7 @@ The problem with Fortran with Visual Studio is that you need to install a Fortra
 1. If not already installed, install chocolatey (<https://chocolatey.org>). In a PowerShell, you can install it with the following command (in one line): `Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(’https://chocolatey.org/install.ps1’))`
 2. Run in a terminal `choco install cmake`
 3. For a Python wrapper, run in a terminal `choco install python`
-4. For a Python wrapper, run in a terminal `choco install swig`
+4. For a Python wrapper, run in a terminal `choco install swig` 
 :::
 
 ::::

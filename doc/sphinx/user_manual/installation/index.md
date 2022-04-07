@@ -15,7 +15,8 @@ If you want to skip this explanation, go directly to {ref}`sec:installing_prereq
 
 included
 installing_prerequisites
-%stand_alone_install
+stand_alone_install
+installation_methods
 %install_as_part_of_ASPECT
 %running_the_tester
 ```
