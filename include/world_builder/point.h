@@ -23,6 +23,7 @@
 #include <array>
 #include <cmath>
 #include <limits>
+#include <iostream>
 
 #include "world_builder/assert.h"
 #include "world_builder/coordinate_system.h"
@@ -362,7 +363,9 @@ namespace WorldBuilder
         const double d_lattitude = two[1] - this->point[1];
         const double sin_d_lat = FT::sin(d_lattitude * 0.5);
         const double sin_d_long = FT::sin(d_longitude * 0.5);
+        //std::cout << "point = " << this->point[0] << ":" << this->point[1] << ", two = " << two << ",1: " << (sin_d_lat * sin_d_lat) << ", 2: " << (sin_d_long*sin_d_long) << ":" << FT::cos(this->point[1]) << ":" << FT::cos(two[1]) << std::endl;
         return (sin_d_lat * sin_d_lat) + (sin_d_long*sin_d_long) * FT::cos(this->point[1]) * FT::cos(two[1]);
+        
 
         //const double two[0] = (a*sx*sx*sx+b*sx*sx+c*sx+d)
         //const double two[1] = (e*sx*sx*sx+f*sx*sx+g*sx+h)

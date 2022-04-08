@@ -194,7 +194,6 @@ namespace WorldBuilder
             {
               const size_t idx = (size_t)x;
               const double h = x-idx;
-              //std::cout << "x = " << x << ", a=" << m[idx][0] << ", b = " <<  m[idx][1] << ", c = " << m[idx][2] << ", d = " << m[idx][3] << std::endl;
               return ((m[idx][0]*h + m[idx][1])*h + m[idx][2])*h + m[idx][3];
             }
           const size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
