@@ -617,7 +617,7 @@ namespace WorldBuilder
                   min_estimate_solution = i_estimate;
                 }
 
-                //std::cout << i_estimate << ", " << minimum_distance_to_reference_point_tmp << ", " << P1 << std::endl;
+              //std::cout << i_estimate << ", " << minimum_distance_to_reference_point_tmp << ", " << P1 << std::endl;
 
               Point<2> P1P2 = (P2)-(P1);
               Point<2> P1Pc = check_point_surface_2d-(P1);
@@ -644,7 +644,7 @@ namespace WorldBuilder
 
               Point<2> estimate_point = P1 + fraction*P1P2;
 
-               // std::cout << i_estimate+fraction << ", " << estimate_point.cheap_relative_distance_spherical(check_point_surface_2d) << ", " << estimate_point << std::endl;
+              // std::cout << i_estimate+fraction << ", " << estimate_point.cheap_relative_distance_spherical(check_point_surface_2d) << ", " << estimate_point << std::endl;
 
               double min_estimate_solution_tmp = (i_estimate+fraction);
               WBAssert(min_estimate_solution_tmp>=0 && min_estimate_solution_tmp <=number_of_points, "message");
@@ -691,19 +691,25 @@ namespace WorldBuilder
                   const double dx2 = 3.*a2*sx2_2+2.*b2*sx2+c2;
                   const double dy2 = 3.*e2*sx2_2+2.*f2*sx2+g2;
 
+                  const double cos_k2 = FT::cos(k2);
+                  const double cos_y2 = FT::cos(y2);
+                  const double sin_y2 = FT::sin(y2);
+                  const double sin_p_x2 = FT::sin(p2-x2);
+                  const double sin_k_y2 = FT::sin(k2-y2);
+                  const double sin_hp_hx2 = FT::sin(0.5*p2-0.5*x2);
+
                   // specific spherical part
-                              const double derivative = -0.5*cos(k2)*dx2*cos(y2)*sin(p2-x2)-cos(k2)*dy2*sin(y2)*sin(0.5*p2-0.5*x2)*sin(0.5*p2-0.5*x2)-0.5*dy2*sin(k2-y2);
+                  const double derivative = -0.5*cos_k2*dx2*cos_y2*sin_p_x2-cos_k2*dy2*sin_y2*sin_hp_hx2*sin_hp_hx2-0.5*dy2*sin_k_y2;
                   if (std::fabs(derivative) < 1e-14)
                     {
-                      const double sin_hx_p2 = sin(0.5*(x2-p2));
-                      minimum_distance_to_reference_point_tmp = FT::sin((k2-y2)*0.5)*FT::sin((k2-y2)*0.5)+FT::sin((p2-x2)*0.5)*FT::sin((p2-x2)*0.5)*FT::cos(y2)*FT::cos(k2);
+                      minimum_distance_to_reference_point_tmp = FT::sin((k2-y2)*0.5)*FT::sin((k2-y2)*0.5)+FT::sin((p2-x2)*0.5)*FT::sin((p2-x2)*0.5)*cos_y2*cos_k2;
                       break;
                     }
                   const double ddx2 = 6.*a2*sx2 + 2.*b2;
                   const double ddy2 = 6.*e2*sx2 + 2.*f2;
-                  const double second_derivative = -0.5*cos(k2)*ddx2*cos(y2)*sin(p2-x2)+cos(k2)*dx2*dy2*sin(y2)*(0.5*sin(p2-x2)+sin(0.5*p2-0.5*x2)*cos(0.5*p2-0.5*x2))
-                                                               +0.5*cos(k2)*dx2*dx2*cos(y2)*cos(p2-x2)-cos(k2)*ddy2*sin(y2)*sin(0.5*p2-0.5*x2)*sin(0.5*p2-0.5*x2)
-                                                               +dy2*dy2*(0.5*cos(k2-y2)-cos(k2)*cos(y2)*sin(0.5*p2-0.5*x2)*sin(0.5*p2-0.5*x2))-0.5*ddy2*sin(k2-y2);
+                  const double second_derivative = -0.5*cos_k2*ddx2*cos_y2*sin_p_x2+cos_k2*dx2*dy2*sin_y2*(0.5*sin_p_x2+sin_hp_hx2*FT::cos(0.5*p2-0.5*x2))
+                                                   +0.5*cos_k2*dx2*dx2*cos_y2*FT::cos(p2-x2)-cos_k2*ddy2*sin_y2*sin_hp_hx2*sin_hp_hx2
+                                                   +dy2*dy2*(0.5*FT::cos(k2-y2)-cos_k2*cos_y2*sin_hp_hx2*sin_hp_hx2)-0.5*ddy2*sin_k_y2;
 
                   // We take the Newton derivative between some limits and only the sign of the
                   // derivative, not the second derivative. This ensures that we converge to the
@@ -712,7 +718,6 @@ namespace WorldBuilder
 
                   if (std::fabs(update) < 1e-5)
                     {
-                      const double sin_hx_p2 = sin(0.5*(x2-p2));
                       minimum_distance_to_reference_point_tmp = FT::sin((k2-y2)*0.5)*FT::sin((k2-y2)*0.5)+FT::sin((p2-x2)*0.5)*FT::sin((p2-x2)*0.5)*FT::cos(y2)*FT::cos(k2);
                       WBAssertThrow(new_distance_tmp <= minimum_distance_to_reference_point_start,
                                     "Failed to converge on spline. Initial guess " << std::setprecision(16) << minimum_distance_to_reference_point_start
@@ -746,8 +751,6 @@ namespace WorldBuilder
                             const double &k = check_point_surface_2d[1];
                             const double x = (a*sx_3+b*sx_2+c*sx+d);
                             const double y = (e*sx_3+f*sx_2+g*sx+h);
-                            const double sin_hy_k = sin(0.5*(y-k));
-                            const double sin_hx_p = sin(0.5*(x-p));
 
                             minimum_distance_to_reference_point_tmp = FT::sin((k-y)*0.5)*FT::sin((k-y)*0.5)+FT::sin((p-x)*0.5)*FT::sin((p-x)*0.5)*FT::cos(y)*FT::cos(k);
 
@@ -760,55 +763,55 @@ namespace WorldBuilder
                           update_scaling*=2./3.;
 
                         }
-/*                      if (i_line_search>48)
-                        {
+                      /*                      if (i_line_search>48)
+                                              {
 
-                          for (unsigned int i_estimate_tmp = 0; i_estimate_tmp < point_list.size()*100; ++i_estimate_tmp)
-                            {
+                                                for (unsigned int i_estimate_tmp = 0; i_estimate_tmp < point_list.size()*100; ++i_estimate_tmp)
+                                                  {
 
-                              const size_t idx2 = (size_t)((double)i_estimate_tmp/100.);
-                              const double sx2 = ((double)i_estimate_tmp/100.)-idx2;
-                              const double sx2_2 = sx2*sx2;
-                              const double sx2_3 = sx2_2*sx2;
+                                                    const size_t idx2 = (size_t)((double)i_estimate_tmp/100.);
+                                                    const double sx2 = ((double)i_estimate_tmp/100.)-idx2;
+                                                    const double sx2_2 = sx2*sx2;
+                                                    const double sx2_3 = sx2_2*sx2;
 
-                              const double &a2 = x_spline.m[idx2][0];
-                              const double &b2 = x_spline.m[idx2][1];
-                              const double &c2 = x_spline.m[idx2][2];
-                              const double &d2 = x_spline.m[idx2][3];
-                              const double &p2 = check_point_surface_2d[0];
-                              const double &e2 = y_spline.m[idx2][0];
-                              const double &f2 = y_spline.m[idx2][1];
-                              const double &g2 = y_spline.m[idx2][2];
-                              const double &h2 = y_spline.m[idx2][3];
-                              const double &k2 = check_point_surface_2d[1];
-                              const double x2 = a2*sx2_3+b2*sx2_2+c2*sx2+d2;
-                              const double y2 = e2*sx2_3+f2*sx2_2+g2*sx2+h2;
-                              const double dx2 = 3.*a2*sx2_2+2.*b2*sx2+c2;
-                              const double dy2 = 3.*e2*sx2_2+2.*f2*sx2+g2;
+                                                    const double &a2 = x_spline.m[idx2][0];
+                                                    const double &b2 = x_spline.m[idx2][1];
+                                                    const double &c2 = x_spline.m[idx2][2];
+                                                    const double &d2 = x_spline.m[idx2][3];
+                                                    const double &p2 = check_point_surface_2d[0];
+                                                    const double &e2 = y_spline.m[idx2][0];
+                                                    const double &f2 = y_spline.m[idx2][1];
+                                                    const double &g2 = y_spline.m[idx2][2];
+                                                    const double &h2 = y_spline.m[idx2][3];
+                                                    const double &k2 = check_point_surface_2d[1];
+                                                    const double x2 = a2*sx2_3+b2*sx2_2+c2*sx2+d2;
+                                                    const double y2 = e2*sx2_3+f2*sx2_2+g2*sx2+h2;
+                                                    const double dx2 = 3.*a2*sx2_2+2.*b2*sx2+c2;
+                                                    const double dy2 = 3.*e2*sx2_2+2.*f2*sx2+g2;
 
-                              // specific spherical part
-                              const double cos_k2 = cos(k2);
-                              const double cos_y2 = cos(y2);
+                                                    // specific spherical part
+                                                    const double cos_k2 = cos(k2);
+                                                    const double cos_y2 = cos(y2);
 
-                              const double sin_hy_k2 = sin(0.5*(y2-k2));
-                              const double hk_y2 = 0.5*(k2-y2);
-                              const double sin_hk_y2 = sin(hk_y2);
-                              const double hp_x2 = 0.5*(p2-x2);
-                              const double hk_ohy2 = 0.5*k2-1.5*y2;
-                              const double cos_hk_ohy2 = cos(hk_ohy2);
+                                                    const double sin_hy_k2 = sin(0.5*(y2-k2));
+                                                    const double hk_y2 = 0.5*(k2-y2);
+                                                    const double sin_hk_y2 = sin(hk_y2);
+                                                    const double hp_x2 = 0.5*(p2-x2);
+                                                    const double hk_ohy2 = 0.5*k2-1.5*y2;
+                                                    const double cos_hk_ohy2 = cos(hk_ohy2);
 
-                              const double sin_hx_p2 = sin(0.5*(x2-p2));
-                              const double distance = sin_hx_p2*sin_hx_p2+sin_hy_k2*sin_hy_k2*cos_y2*cos_k2;
+                                                    const double sin_hx_p2 = sin(0.5*(x2-p2));
+                                                    const double distance = sin_hx_p2*sin_hx_p2+sin_hy_k2*sin_hy_k2*cos_y2*cos_k2;
 
 
-                              const double derivative = dy2*cos_k2*sin_hy_k2*cos_hk_ohy2-0.5*dx2*sin(p2-x2);
-                              const double ddx2 = 6.*a2*sx2 + 2.*b2;
-                              const double ddy2 = 6.*e2*sx2 + 2.*f2;
-                              const double second_derivative = ddy2*cos_k2*sin_hy_k2*cos_hk_ohy2+cos_k2*dy2*dy2*(0.5*cos_hk_ohy2*cos(hk_y2)-1.5*sin(hk_ohy2)*sin_hk_y2)-0.5*ddx2*sin(p2-x2)+0.5*dx2*dx2*cos(p2-x2);
-                              std::cout << ((double)i_estimate_tmp/100.) << ", " << distance
-                                        << ", " << derivative << ", " << second_derivative << std::endl;
-                            }
-                        }*/
+                                                    const double derivative = dy2*cos_k2*sin_hy_k2*cos_hk_ohy2-0.5*dx2*sin(p2-x2);
+                                                    const double ddx2 = 6.*a2*sx2 + 2.*b2;
+                                                    const double ddy2 = 6.*e2*sx2 + 2.*f2;
+                                                    const double second_derivative = ddy2*cos_k2*sin_hy_k2*cos_hk_ohy2+cos_k2*dy2*dy2*(0.5*cos_hk_ohy2*cos(hk_y2)-1.5*sin(hk_ohy2)*sin_hk_y2)-0.5*ddx2*sin(p2-x2)+0.5*dx2*dx2*cos(p2-x2);
+                                                    std::cout << ((double)i_estimate_tmp/100.) << ", " << distance
+                                                              << ", " << derivative << ", " << second_derivative << std::endl;
+                                                  }
+                                              }*/
                       WBAssertThrow(i_line_search < 49,
                                     "The spline solver doesn't seem to have finished on a reasonable ammount of line search "
                                     << "iterations. Please check whether your coordinates are resonable, "
@@ -834,7 +837,7 @@ namespace WorldBuilder
                                 << ".");
                 }
 
-                //std::cout << "local final = " << min_estimate_solution_tmp << ", " << minimum_distance_to_reference_point_tmp  << std::endl;
+              //std::cout << "local final = " << min_estimate_solution_tmp << ", " << minimum_distance_to_reference_point_tmp  << std::endl;
 
               if (minimum_distance_to_reference_point_tmp < minimum_distance_to_reference_point)
                 {
@@ -844,50 +847,50 @@ namespace WorldBuilder
             }
 
 
-                /*std::cout << "final = " << min_estimate_solution << ", " << minimum_distance_to_reference_point  << std::endl;
+          /*std::cout << "final = " << min_estimate_solution << ", " << minimum_distance_to_reference_point  << std::endl;
 
-                if(check_point_surface_2d[1]>0.3)
-                {
-                          for (unsigned int i_estimate_tmp = 0; i_estimate_tmp < point_list.size()*100; ++i_estimate_tmp)
-                            {
+          if(check_point_surface_2d[1]>0.3)
+          {
+                    for (unsigned int i_estimate_tmp = 0; i_estimate_tmp < point_list.size()*100; ++i_estimate_tmp)
+                      {
 
-                              const size_t idx2 = (size_t)((double)i_estimate_tmp/100.);
-                              const double sx2 = ((double)i_estimate_tmp/100.)-idx2;
-                              const double sx2_2 = sx2*sx2;
-                              const double sx2_3 = sx2_2*sx2;
+                        const size_t idx2 = (size_t)((double)i_estimate_tmp/100.);
+                        const double sx2 = ((double)i_estimate_tmp/100.)-idx2;
+                        const double sx2_2 = sx2*sx2;
+                        const double sx2_3 = sx2_2*sx2;
 
-                              const double &a2 = x_spline.m[idx2][0];
-                              const double &b2 = x_spline.m[idx2][1];
-                              const double &c2 = x_spline.m[idx2][2];
-                              const double &d2 = x_spline.m[idx2][3];
-                              const double &p2 = check_point_surface_2d[0];
-                              const double &e2 = y_spline.m[idx2][0];
-                              const double &f2 = y_spline.m[idx2][1];
-                              const double &g2 = y_spline.m[idx2][2];
-                              const double &h2 = y_spline.m[idx2][3];
-                              const double &k2 = check_point_surface_2d[1];
-                              const double x2 = a2*sx2_3+b2*sx2_2+c2*sx2+d2;
-                              const double y2 = e2*sx2_3+f2*sx2_2+g2*sx2+h2;
-                              const double dx2 = 3.*a2*sx2_2+2.*b2*sx2+c2;
-                              const double dy2 = 3.*e2*sx2_2+2.*f2*sx2+g2;
-                              const double ddx2 = 6.*a2*sx2 + 2.*b2;
-                              const double ddy2 = 6.*e2*sx2 + 2.*f2;
+                        const double &a2 = x_spline.m[idx2][0];
+                        const double &b2 = x_spline.m[idx2][1];
+                        const double &c2 = x_spline.m[idx2][2];
+                        const double &d2 = x_spline.m[idx2][3];
+                        const double &p2 = check_point_surface_2d[0];
+                        const double &e2 = y_spline.m[idx2][0];
+                        const double &f2 = y_spline.m[idx2][1];
+                        const double &g2 = y_spline.m[idx2][2];
+                        const double &h2 = y_spline.m[idx2][3];
+                        const double &k2 = check_point_surface_2d[1];
+                        const double x2 = a2*sx2_3+b2*sx2_2+c2*sx2+d2;
+                        const double y2 = e2*sx2_3+f2*sx2_2+g2*sx2+h2;
+                        const double dx2 = 3.*a2*sx2_2+2.*b2*sx2+c2;
+                        const double dy2 = 3.*e2*sx2_2+2.*f2*sx2+g2;
+                        const double ddx2 = 6.*a2*sx2 + 2.*b2;
+                        const double ddy2 = 6.*e2*sx2 + 2.*f2;
 
-                              // specific spherical part
-                              const double distance = FT::sin((k2-y2)*0.5)*FT::sin((k2-y2)*0.5)+FT::sin((p2-x2)*0.5)*FT::sin((p2-x2)*0.5)*FT::cos(y2)*FT::cos(k2);
-                              const double derivative = -0.5*cos(k2)*dx2*cos(y2)*sin(p2-x2)-cos(k2)*dy2*sin(y2)*sin(0.5*p2-0.5*x2)*sin(0.5*p2-0.5*x2)-0.5*dy2*sin(k2-y2);
-                              const double second_derivative = -0.5*cos(k2)*ddx2*cos(y2)*sin(p2-x2)+cos(k2)*dx2*dy2*sin(y2)*(0.5*sin(p2-x2)+sin(0.5*p2-0.5*x2)*cos(0.5*p2-0.5*x2))
-                                                               +0.5*cos(k2)*dx2*dx2*cos(y2)*cos(p2-x2)-cos(k2)*ddy2*sin(y2)*sin(0.5*p2-0.5*x2)*sin(0.5*p2-0.5*x2)
-                                                               +dy2*dy2*(0.5*cos(k2-y2)-cos(k2)*cos(y2)*sin(0.5*p2-0.5*x2)*sin(0.5*p2-0.5*x2))-0.5*ddy2*sin(k2-y2);
-                              std::cout <<((double)i_estimate_tmp/100.) << ", " << distance
-                                        << ", " << derivative << ", " << second_derivative 
-                                        << ", 1:" << FT::sin((k2-y2)*0.5)*FT::sin((k2-y2)*0.5)
-                                        << ", 2:" << FT::sin((p2-x2)*0.5)*FT::sin((p2-x2)*0.5) << ":" 
-                                        << FT::cos(y2) << ":" << FT::cos(k2) << "points = " <<  x2 << ":" << y2 << "; " << p2 << ":" << k2 
-                                        << ", idx2 = "<< idx2 <<  ", sx2 = "<< sx2 << ", d2 = " << d2 << ", h2 = " << h2 << std::endl;
-                            }
-        }*/
-                
+                        // specific spherical part
+                        const double distance = FT::sin((k2-y2)*0.5)*FT::sin((k2-y2)*0.5)+FT::sin((p2-x2)*0.5)*FT::sin((p2-x2)*0.5)*FT::cos(y2)*FT::cos(k2);
+                        const double derivative = -0.5*cos(k2)*dx2*cos(y2)*sin(p2-x2)-cos(k2)*dy2*sin(y2)*sin(0.5*p2-0.5*x2)*sin(0.5*p2-0.5*x2)-0.5*dy2*sin(k2-y2);
+                        const double second_derivative = -0.5*cos(k2)*ddx2*cos(y2)*sin(p2-x2)+cos(k2)*dx2*dy2*sin(y2)*(0.5*sin(p2-x2)+sin(0.5*p2-0.5*x2)*cos(0.5*p2-0.5*x2))
+                                                         +0.5*cos(k2)*dx2*dx2*cos(y2)*cos(p2-x2)-cos(k2)*ddy2*sin(y2)*sin(0.5*p2-0.5*x2)*sin(0.5*p2-0.5*x2)
+                                                         +dy2*dy2*(0.5*cos(k2-y2)-cos(k2)*cos(y2)*sin(0.5*p2-0.5*x2)*sin(0.5*p2-0.5*x2))-0.5*ddy2*sin(k2-y2);
+                        std::cout <<((double)i_estimate_tmp/100.) << ", " << distance
+                                  << ", " << derivative << ", " << second_derivative
+                                  << ", 1:" << FT::sin((k2-y2)*0.5)*FT::sin((k2-y2)*0.5)
+                                  << ", 2:" << FT::sin((p2-x2)*0.5)*FT::sin((p2-x2)*0.5) << ":"
+                                  << FT::cos(y2) << ":" << FT::cos(k2) << "points = " <<  x2 << ":" << y2 << "; " << p2 << ":" << k2
+                                  << ", idx2 = "<< idx2 <<  ", sx2 = "<< sx2 << ", d2 = " << d2 << ", h2 = " << h2 << std::endl;
+                      }
+          }*/
+
           double minimum_distance_to_reference_point_tmp = P2.cheap_relative_distance_spherical(check_point_surface_2d);
           if (minimum_distance_to_reference_point_tmp < minimum_distance_to_reference_point)
             {
@@ -1814,7 +1817,7 @@ namespace WorldBuilder
       for (unsigned int i = 0; i < n; ++i)
         {
           m[i][3] = y[i];
-         // std::cout << "i = " << i << ", y = " << y[i] << std::endl;
+          // std::cout << "i = " << i << ", y = " << y[i] << std::endl;
         }
 
       /**
