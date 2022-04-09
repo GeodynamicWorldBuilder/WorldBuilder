@@ -24,67 +24,6 @@
 namespace WorldBuilder
 {
 
-  std::ostream &Types::operator<< (std::ostream &os, const Types::type &type)
-  {
-    switch (type)
-      {
-        case Types::type::None:
-          os << "None";
-          break;
-        case Types::type::Array:
-          os << "Array";
-          break;
-        case Types::type::Bool:
-          os << "Bool";
-          break;
-        case Types::type::String:
-          os << "String";
-          break;
-        case Types::type::Double:
-          os << "Double";
-          break;
-        case Types::type::Int:
-          os << "Int";
-          break;
-        case Types::type::UnsignedInt:
-          os << "UnsignedInt";
-          break;
-        case Types::type::Object:
-          os << "Object";
-          break;
-        case Types::type::List:
-          os << "List";
-          break;
-        case Types::type::Point2D:
-          os << "Point2D";
-          break;
-        case Types::type::Point3D:
-          os << "Point3D";
-          break;
-        case Types::type::CoordinateSystem:
-          os << "CoordinateSystem";
-          break;
-        case Types::type::PluginSystem:
-          os << "PluginSystem";
-          break;
-        case Types::type::Segment:
-          os << "Segment";
-          break;
-        case Types::type::ConstantLayer:
-          os << "ConstantLayer";
-          break;
-        case Types::type::ValueAtPoints:
-          os << "ValueAtPoints";
-          break;
-        case Types::type::OneOf:
-          os << "OneOf";
-          break;
-        default:
-          ;
-      }
-    return os;
-  }
-
   namespace Types
   {
     Interface::Interface()

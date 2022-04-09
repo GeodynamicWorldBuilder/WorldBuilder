@@ -152,8 +152,6 @@ namespace WorldBuilder
         {
           x_list[j] = coordinates[j][0];
           y_list[j] = coordinates[j][1];
-
-          //std::cout << coordinates[j][0] << ":" << coordinates[j][1] << ", " << std::endl;
         }
 
       x_spline.set_points(x_list);

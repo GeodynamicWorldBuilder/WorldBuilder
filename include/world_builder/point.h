@@ -363,23 +363,7 @@ namespace WorldBuilder
         const double d_lattitude = two[1] - this->point[1];
         const double sin_d_lat = FT::sin(d_lattitude * 0.5);
         const double sin_d_long = FT::sin(d_longitude * 0.5);
-        //std::cout << "point = " << this->point[0] << ":" << this->point[1] << ", two = " << two << ",1: " << (sin_d_lat * sin_d_lat) << ", 2: " << (sin_d_long*sin_d_long) << ":" << FT::cos(this->point[1]) << ":" << FT::cos(two[1]) << std::endl;
         return (sin_d_lat * sin_d_lat) + (sin_d_long*sin_d_long) * FT::cos(this->point[1]) * FT::cos(two[1]);
-
-
-        //const double two[0] = (a*sx*sx*sx+b*sx*sx+c*sx+d)
-        //const double two[1] = (e*sx*sx*sx+f*sx*sx+g*sx+h)
-        //const double d_longitude = ((a*sx*sx*sx+b*sx*sx+c*sx+d) - p);
-        //const double d_lattitude = ((e*sx*sx*sx+f*sx*sx+g*sx+h) - k);
-        //const double sin_d_lat = sin(((e*sx*sx*sx+f*sx*sx+g*sx+h) - k) * 0.5);
-        //const double sin_d_long = sin(((a*sx*sx*sx+b*sx*sx+c*sx+d) - p) * 0.5);
-        //return (sin(((e*sx*sx*sx+f*sx*sx+g*sx+h) - k) * 0.5) * sin(((e*sx*sx*sx+f*sx*sx+g*sx+h) - k) * 0.5)) + (sin(((a*sx*sx*sx+b*sx*sx+c*sx+d) - p) * 0.5)*sin(((a*sx*sx*sx+b*sx*sx+c*sx+d) - p) * 0.5)) * cos(k) * cos((e*sx*sx*sx+f*sx*sx+g*sx+h));
-
-        //const double d_longitude = (as^3+bs^2+cs+d-p);
-        //const double d_lattitude = (es^3+fs^2+gs+h-k);
-        //const double sin_d_lat = sin((es^3+fs^2+gs+h-k) * 0.5);
-        //const double sin_d_long = sin((as^3+bs^2+cs+d-p) * 0.5);
-        //return sin((ex^3+fx^2+gx+h-k)*0.5)^2+sin((ax^3+bx^2+cx+d-p)*0.5)^2*cos(p)*cos(ex^3+fx^2+gx+h);
       }
 
       double

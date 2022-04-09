@@ -42,8 +42,6 @@ namespace WorldBuilder
       None,Bool,String,Double,Int,UnsignedInt,Array,Object,List,Point2D,Point3D,CoordinateSystem,PluginSystem,Segment,ConstantLayer,ValueAtPoints,OneOf
     };
 
-    std::ostream &operator<< (std::ostream &os, const Types::type &type);
-
     class Interface
     {
       public:
