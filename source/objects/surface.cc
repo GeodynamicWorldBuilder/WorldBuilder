@@ -20,6 +20,8 @@
 #include "world_builder/assert.h"
 #include "world_builder/utilities.h"
 
+#include <iostream>
+
 #include "delaunator-cpp/delaunator.hpp"
 
 
