@@ -4505,6 +4505,7 @@ namespace ApprovalTests
 
 namespace ApprovalTests
 {
+    std::string separateDirectoryPath();
     std::string separateDirectoryPath()
     {
         // clang-format off
@@ -5632,7 +5633,7 @@ namespace ApprovalTests
 
 namespace ApprovalTests
 {
-
+    std::string getOsPrefix();
     std::string getOsPrefix()
     {
         if (SystemUtils::isMacOs())
