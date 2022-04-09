@@ -50,7 +50,7 @@ namespace WorldBuilder
      */
     inline bool approx(double a, double b, double error_factor=1.0)
     {
-      return std::abs(a-b)<=std::abs(std::min(a,b))*std::numeric_limits<double>::epsilon()*
+      return std::abs(a-b)<std::abs(std::min(a,b))*std::numeric_limits<double>::epsilon()*
              error_factor;
     }
     /**
@@ -293,8 +293,6 @@ namespace WorldBuilder
          */
         std::vector<std::array<double,4>> m; //m_a, m_b, m_c, m_y;
 
-        std::vector<double> precompute;
-        //std::vector<double> new_coord_list;
       private:
     };
 
