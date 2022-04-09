@@ -566,7 +566,7 @@ namespace WorldBuilder
 
                         }
 
-                      if (i_line_search>48)
+                      /*if (i_line_search>48)
                         {
 
                           for (unsigned int i_estimate_tmp = 0; i_estimate_tmp < point_list.size()*100; ++i_estimate_tmp)
@@ -603,7 +603,7 @@ namespace WorldBuilder
                               std::cout << ((double)i_estimate_tmp/100.) << ", " << distance
                                         << ", " << derivative << ", " << second_derivative << std::endl;
                             }
-                        }
+                        }*/
 
                       WBAssertThrow(i_line_search < 49,
                                     "The spline solver doesn't seem to have finished on a reasonable ammount of line search "
