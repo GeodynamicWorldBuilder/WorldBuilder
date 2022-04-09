@@ -237,12 +237,13 @@ namespace WorldBuilder
     Point<3>
     spherical_to_cartesian_coordinates(const std::array<double,3> &scoord)
     {
-      const double cos_long = scoord[0] * std::cos(scoord[2]);
+      Point<3> ccoord(cartesian);
+      const double cos_long = scoord[0] * std::cos(0.5 * const_pi - scoord[2]);
 
       return Point<3>(cos_long * std::cos(scoord[1]), // X
                       cos_long * std::sin(scoord[1]), // Y
-                      scoord[0] * std::sin(scoord[2]), // Z
-                      cartesian);
+                      scoord[0] * std::sin(0.5 * const_pi - scoord[2]), // Z
+                      cartesian);;
     }
 
 

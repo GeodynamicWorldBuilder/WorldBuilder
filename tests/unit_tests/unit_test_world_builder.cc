@@ -659,8 +659,7 @@ TEST_CASE("WorldBuilder Utilities: Coordinate systems transformations")
 
     Point<3> cartesian_back(Utilities::spherical_to_cartesian_coordinates(spherical.get_array()), CoordinateSystem::cartesian);
 
-    compare_vectors_approx(std::vector<double>(std::begin(cartesian_back.get_array()), std::end(cartesian_back.get_array())),
-    std::vector<double> {{-2,-1,6}});
+    approval_tests.insert(approval_tests.end(), std::begin(cartesian_back.get_array()), std::end(cartesian_back.get_array()));
   }
 
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
