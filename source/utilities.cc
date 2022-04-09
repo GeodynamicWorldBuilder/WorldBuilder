@@ -415,9 +415,11 @@ namespace WorldBuilder
           Point<2> splines(cartesian);
           for (size_t i_estimate = 0; i_estimate < point_list.size()-1; i_estimate++)
             {
-
+              // Go one point pair up.
               P1 = P2;
               P2 = point_list[i_estimate+1];
+
+              // Compute distance to first point on the line.
               if (P1 == P2)
                 {
                   continue;
@@ -429,6 +431,7 @@ namespace WorldBuilder
                   min_estimate_solution = i_estimate;
                 }
 
+              // Compute fraction of a straight line between the two points where the check point is closest.
               Point<2> P1P2 = (P2)-(P1);
               Point<2> P1Pc = check_point_surface_2d-(P1);
 
@@ -450,6 +453,7 @@ namespace WorldBuilder
 
               double fraction = c_1 / c_2;
 
+              // Compute distance of check point to the spline using the computed fraction from the straight line.
               double min_estimate_solution_tmp = (i_estimate+fraction);
               WBAssert(min_estimate_solution_tmp>=0 && min_estimate_solution_tmp <=number_of_points, "message");
 
@@ -473,6 +477,9 @@ namespace WorldBuilder
 
               double new_distance_tmp = -1;
               size_t i_newton_iteration = 0;
+              // Newton iteration (modified to use the sign of the derivative instead of sign of derivative/second dervative)
+              // to compute the point on the spine which is closest to the check point. The modification allows for a larger
+              // area of convergence since it will only converge to minima, and not to maxima.
               while (true)
                 {
                   const size_t idx2 = (size_t)min_estimate_solution_tmp;
@@ -523,6 +530,7 @@ namespace WorldBuilder
                   // only the first few iterations need some guidence from line search
                   if (std::fabs(update) > 1e-2)
                     {
+                      // Do a line search
                       unsigned int i_line_search = 0;
                       for (; i_line_search < 50; ++i_line_search)
                         {
@@ -598,9 +606,11 @@ namespace WorldBuilder
 
           for (size_t i_estimate = 0; i_estimate < point_list.size()-1; i_estimate++)
             {
-
+              // Go one point pair up.
               P1 = P2;
               P2 = point_list[i_estimate+1];
+
+              // Compute distance to first point on the line.
               double minimum_distance_to_reference_point_tmp = P1.cheap_relative_distance_spherical(check_point_surface_2d);
               if (minimum_distance_to_reference_point_tmp < minimum_distance_to_reference_point)
                 {
@@ -608,6 +618,7 @@ namespace WorldBuilder
                   min_estimate_solution = i_estimate;
                 }
 
+              // Compute fraction of a straight line between the two points where the check point is closest.
               Point<2> P1P2 = (P2)-(P1);
               Point<2> P1Pc = check_point_surface_2d-(P1);
 
@@ -629,8 +640,7 @@ namespace WorldBuilder
 
               double fraction = c_1 / c_2;
 
-              Point<2> estimate_point = P1 + fraction*P1P2;
-
+              // Compute distance of check point to the spline using the computed fraction from the straight line.
               double min_estimate_solution_tmp = (i_estimate+fraction);
               WBAssert(min_estimate_solution_tmp>=0 && min_estimate_solution_tmp <=number_of_points, "message");
 
@@ -654,6 +664,9 @@ namespace WorldBuilder
 
               double new_distance_tmp = -1;
               size_t i_newton_iteration = 0;
+              // Newton iteration (modified to use the sign of the derivative instead of sign of derivative/second dervative)
+              // to compute the point on the spine which is closest to the check point. The modification allows for a larger
+              // area of convergence since it will only converge to minima, and not to maxima.
               while (true)
                 {
                   const size_t idx2 = (size_t)min_estimate_solution_tmp;
@@ -716,6 +729,7 @@ namespace WorldBuilder
                   if (std::fabs(update) > 1e-3)
                     {
                       unsigned int i_line_search = 0;
+                      // Do a line search.
                       for (; i_line_search < 50; ++i_line_search)
                         {
                           const double test_x = min_estimate_solution_tmp - update_scaling*update;

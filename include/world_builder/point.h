@@ -349,7 +349,7 @@ namespace WorldBuilder
       distance(const Point<2> &two) const;
 
       /**
-       * Computes the cheapest relative distance between this and a given point.
+       * Computes the cheapest relative distance between this and a given point in spherical coordinates.
        * The return value itself is only guartenteed to have the property that a
        * larger value is further away.
        * In the current implementation that means for the cartasian case the squared
@@ -366,6 +366,14 @@ namespace WorldBuilder
         return (sin_d_lat * sin_d_lat) + (sin_d_long*sin_d_long) * FT::cos(this->point[1]) * FT::cos(two[1]);
       }
 
+      /**
+       * Computes the cheapest relative distance between this and a given point in cartesian coordinates.
+       * The return value itself is only guartenteed to have the property that a
+       * larger value is further away.
+       * In the current implementation that means for the cartasian case the squared
+       * value is returned and for the spherical value the result of the havearsine
+       * function without asin and sqrt is returned.
+       */
       double
       cheap_relative_distance_cartesian(const Point<2> &two) const
       {

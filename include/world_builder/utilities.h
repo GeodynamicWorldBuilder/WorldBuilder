@@ -214,20 +214,8 @@ namespace WorldBuilder
 
 
         /**
-         * Evaluate at point @p x. assumes x is between 0 and mx_size_min;
-         */
-        inline
-        double value_inside (const double x) const
-        {
-          WBAssert(x >= 0 && x <= mx_size_min, "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << x << ".");
-          const size_t idx = (size_t)x;
-          const double h = x-idx;
-          return ((m[idx][0]*h + m[idx][1])*h + m[idx][2])*h + m[idx][3];
-        }
-
-
-        /**
-         * Evaluate at point @p x. assumes x is between 0 and mx_size_min;
+         * Evaluate at point @p x. assumes x is between 0 and mx_size_min.
+         * assume size_t idx = (size_t)x and h = x-idx.
          */
         inline
         double value_inside (const size_t idx, const double h) const
@@ -239,7 +227,8 @@ namespace WorldBuilder
 
 
         /**
-         * Evaluate at point @p x. assumes x is between 0 and mx_size_min;
+         * Evaluate at point @p x. assumes x is between 0 and mx_size_min.
+         * assume size_t idx = (size_t)x and h = x-idx.
          */
         inline
         double value_outside (const size_t idx, const double h) const
@@ -249,36 +238,6 @@ namespace WorldBuilder
           return (m[idx][1]*h + m[idx][2])*h + m[idx][3];
         }
 
-        /**
-         * Evaluate at point @p x. assumes x is between 0 and mx_size_min;
-         */
-        inline
-        double value_outside (const double x) const
-        {
-          WBAssert(!(x > 0 && x < mx_size_min), "Internal error: using value_ouside inside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << x << ".");
-
-          const size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
-          const double h = x-idx;
-          return (m[idx][1]*h + m[idx][2])*h + m[idx][3];
-        }
-
-
-        inline
-        std::array<double,5> operatorands (const double x) const
-        {
-          size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
-          const double h = x-idx;
-          return {m[idx][0],m[idx][1],m[idx][2],m[idx][3],h};
-        }
-
-
-        inline
-        const std::array<double,4> &operatorands (const size_t idx) const
-        {
-          WBAssert(idx <= mx_size_min, "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << idx << ".");
-          // WBAssert(h >= 0 && h <= 1., "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << h << ".");
-          return m[idx];
-        }
 
         /**
          * number of x coordinates of points
