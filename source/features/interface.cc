@@ -42,26 +42,17 @@ namespace WorldBuilder
        */
       static InterpolationType string_to_interpolation_type (const std::string &string)
       {
-        if (string == "none")
-          {
-            return InterpolationType::None;
-          }
-        if (string == "linear")
-          {
-            return InterpolationType::Linear;
-          }
-        if  (string == "monotone spline")
-          {
-            return InterpolationType::MonotoneSpline;
-          }
         if (string == "continuous monotone spline")
           {
             return InterpolationType::ContinuousMonotoneSpline;
           }
 
         WBAssertThrow(false,
-                      "You provided an interpolation type which is not supported: " << string <<
-                      ". The options are none, linear, monotone spline and continuous monotone spline.");
+                      "You provided an interpolation type which is not supported: " << string
+                      << "The options are none, linear, monotone spline and continuous monotone spline. "
+                      << "This may be due to all options besides continuous monotone spline have been "
+                      << "removed since version 0.6. It is best to remove the interpolation variable "
+                      << "from you input file as it may be removed in future versions.");
 
         return InterpolationType::Invalid;
       }
@@ -113,12 +104,7 @@ namespace WorldBuilder
 
         }
     }
-    void
-    Interface::declare_interface_entries(Parameters &prm,
-                                         const CoordinateSystem  /*unused*/)
-    {
-      this->coordinates = prm.get_vector<Point<2> >("coordinates");
-    }
+
 
     void
     Interface::get_coordinates(const std::string & /*unused*/,

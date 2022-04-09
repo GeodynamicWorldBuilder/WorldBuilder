@@ -631,8 +631,6 @@ namespace WorldBuilder
 
               Point<2> estimate_point = P1 + fraction*P1P2;
 
-              // std::cout << i_estimate+fraction << ", " << estimate_point.cheap_relative_distance_spherical(check_point_surface_2d) << ", " << estimate_point << std::endl;
-
               double min_estimate_solution_tmp = (i_estimate+fraction);
               WBAssert(min_estimate_solution_tmp>=0 && min_estimate_solution_tmp <=number_of_points, "message");
 

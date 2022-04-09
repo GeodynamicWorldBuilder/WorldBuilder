@@ -52,13 +52,6 @@ namespace WorldBuilder
         virtual
         ~Interface();
 
-
-        /**
-         * depricated
-         */
-        void
-        declare_interface_entries(Parameters &prm,
-                                  const CoordinateSystem coordinate_system);
         /**
          * helper function to parse coordinates.
          */
