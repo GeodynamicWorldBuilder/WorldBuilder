@@ -21,7 +21,7 @@
 
 #include "world_builder/kd_tree.h"
 #include "world_builder/coordinate_system.h"
-#include "doctest.h"
+#include "doctest/doctest.h"
 
 #include <iostream>
 

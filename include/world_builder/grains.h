@@ -21,6 +21,7 @@
 #define WORLD_BUILDER_GRAINS_H
 
 #include <array>
+#include <ostream>
 #include <vector>
 
 namespace WorldBuilder
@@ -39,7 +40,20 @@ namespace WorldBuilder
     // the rotation matrices of the latices of the grains.
     // todo: convention.
     std::vector<std::array<std::array<double,3>,3> > rotation_matrices;
+
+    friend std::ostream &operator<<(std::ostream &os, const grains &grains)
+    {
+      for (unsigned int i = 0; i < grains.sizes.size(); ++i)
+        {
+          os << i << ": s=" << grains.sizes[i] << ", R="
+             << grains.rotation_matrices[i][0][0] << " " << grains.rotation_matrices[i][0][1] << " " << grains.rotation_matrices[i][0][2] << " "
+             << grains.rotation_matrices[i][1][0] << " " << grains.rotation_matrices[i][1][1] << " " << grains.rotation_matrices[i][1][2] << " "
+             << grains.rotation_matrices[i][2][0] << " " << grains.rotation_matrices[i][2][1] << " " << grains.rotation_matrices[i][2][2] << " ";
+        }
+      return os;
+    }
   };
+
 } // namespace WorldBuilder
 
 #endif

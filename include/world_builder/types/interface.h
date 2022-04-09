@@ -21,8 +21,10 @@
 #define WORLD_BUILDER_TYPES_INTERFACE_H
 
 #include "rapidjson/pointer.h"
+#include "assert.h"
 
 #include <memory>
+#include <iostream>
 
 namespace WorldBuilder
 {
@@ -39,6 +41,8 @@ namespace WorldBuilder
     {
       None,Bool,String,Double,Int,UnsignedInt,Array,Object,List,Point2D,Point3D,CoordinateSystem,PluginSystem,Segment,ConstantLayer,ValueAtPoints,OneOf
     };
+
+    std::ostream &operator<< (std::ostream &os, const Types::type &type);
 
     class Interface
     {

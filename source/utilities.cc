@@ -429,6 +429,10 @@ namespace WorldBuilder
 
               P1 = P2;
               P2 = point_list[i_estimate+1];
+              if (P1 == P2)
+                {
+                  continue;
+                }
               double minimum_distance_to_reference_point_tmp = P1.cheap_relative_distance_cartesian(check_point_surface_2d);
               if (minimum_distance_to_reference_point_tmp < minimum_distance_to_reference_point)
                 {
@@ -561,6 +565,46 @@ namespace WorldBuilder
                           update_scaling*=2./3.;
 
                         }
+
+                      if (i_line_search>48)
+                        {
+
+                          for (unsigned int i_estimate_tmp = 0; i_estimate_tmp < point_list.size()*100; ++i_estimate_tmp)
+                            {
+
+                              const size_t idx2 = (size_t)((double)i_estimate_tmp/100.);
+                              const double sx2 = ((double)i_estimate_tmp/100.)-idx2;
+                              const double sx2_2 = sx2*sx2;
+                              const double sx2_3 = sx2_2*sx2;
+
+                              const double &a2 = x_spline.m[idx2][0];
+                              const double &b2 = x_spline.m[idx2][1];
+                              const double &c2 = x_spline.m[idx2][2];
+                              const double &d2 = x_spline.m[idx2][3];
+                              const double &p2 = check_point_surface_2d[0];
+                              const double &e2 = y_spline.m[idx2][0];
+                              const double &f2 = y_spline.m[idx2][1];
+                              const double &g2 = y_spline.m[idx2][2];
+                              const double &h2 = y_spline.m[idx2][3];
+                              const double &k2 = check_point_surface_2d[1];
+                              const double x2 = a2*sx2_3+b2*sx2_2+c2*sx2+d2-p2;
+                              const double y2 = e2*sx2_3+f2*sx2_2+g2*sx2+h2-k2;
+                              const double dx2 = 3.*a2*sx2_2+2.*b2*sx2+c2;
+                              const double dy2 = 3.*e2*sx2_2+2.*f2*sx2+g2;
+                              const double derivative = 2.*(x2*dx2+y2*dy2);
+
+                              const double distance = x2*x2+y2*y2;
+
+
+                              const double ddx2 = 6.*a2*sx2 + 2.*b2;
+                              const double ddy2 = 6.*e2*sx2 + 2.*f2;
+
+                              const double second_derivative = 2.*(x2*ddx2+dx2*dx2+y2*ddy2+dy2*dy2);
+                              std::cout << ((double)i_estimate_tmp/100.) << ", " << distance
+                                        << ", " << derivative << ", " << second_derivative << std::endl;
+                            }
+                        }
+
                       WBAssertThrow(i_line_search < 49,
                                     "The spline solver doesn't seem to have finished on a reasonable ammount of line search "
                                     << "iterations. Please check whether your coordinates are resonable, "
