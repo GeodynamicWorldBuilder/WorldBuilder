@@ -18,6 +18,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#define APPROVALS_DOCTEST // This tells Approval Tests to provide a main() - only do this in one cpp file
+#include "ApprovalTests/ApprovalTests.hpp"
 
-#include "doctest.h"
+auto directoryDisposer = ApprovalTests::Approvals::useApprovalsSubdirectory("approval_tests");
+auto default_namer_disposer = ApprovalTests::SeparateApprovedAndReceivedDirectoriesNamer::useAsDefaultNamer();

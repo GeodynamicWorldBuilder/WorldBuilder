@@ -42,26 +42,17 @@ namespace WorldBuilder
        */
       static InterpolationType string_to_interpolation_type (const std::string &string)
       {
-        if (string == "none")
-          {
-            return InterpolationType::None;
-          }
-        if (string == "linear")
-          {
-            return InterpolationType::Linear;
-          }
-        if  (string == "monotone spline")
-          {
-            return InterpolationType::MonotoneSpline;
-          }
         if (string == "continuous monotone spline")
           {
             return InterpolationType::ContinuousMonotoneSpline;
           }
 
         WBAssertThrow(false,
-                      "You provided an interpolation type which is not supported: " << string <<
-                      ". The options are none, linear, monotone spline and continuous monotone spline.");
+                      "You provided an interpolation type which is not supported: " << string
+                      << "The options are none, linear, monotone spline and continuous monotone spline. "
+                      << "This may be due to all options besides continuous monotone spline have been "
+                      << "removed since version 0.6. It is best to remove the interpolation variable "
+                      << "from you input file as it may be removed in future versions.");
 
         return InterpolationType::Invalid;
       }
@@ -113,12 +104,7 @@ namespace WorldBuilder
 
         }
     }
-    void
-    Interface::declare_interface_entries(Parameters &prm,
-                                         const CoordinateSystem  /*unused*/)
-    {
-      this->coordinates = prm.get_vector<Point<2> >("coordinates");
-    }
+
 
     void
     Interface::get_coordinates(const std::string & /*unused*/,
@@ -135,73 +121,28 @@ namespace WorldBuilder
       const std::string interpolation_type_string = prm.get<std::string>("interpolation") == "global" ? this->world->interpolation : prm.get<std::string>("interpolation");
       interpolation_type = WorldBuilder::Features::Internal::string_to_interpolation_type(interpolation_type_string);
 
-      // the one_dimensional_coordinates is always needed, so fill it.
       original_number_of_coordinates = coordinates.size();
 
-      std::vector<double> one_dimensional_coordinates_local(original_number_of_coordinates,0.0);
+      WBAssert(interpolation_type == WorldBuilder::Utilities::InterpolationType::Linear ||
+               interpolation_type == WorldBuilder::Utilities::InterpolationType::MonotoneSpline ||
+               interpolation_type == WorldBuilder::Utilities::InterpolationType::ContinuousMonotoneSpline,
+               "For interpolation, linear and monotone spline are the only allowed values. "
+               << "You provided " << interpolation_type_string << '.');
+
+      // I don't think this is usefull for continuous monotone spline, although it might
+      // help in a spherical case like for the linear case.
+      std::vector<double> x_list(original_number_of_coordinates,0.0);
+      std::vector<double> y_list(original_number_of_coordinates,0.0);
+      std::vector<Point<2> > coordinate_list_local = coordinates;
       for (size_t j=0; j<original_number_of_coordinates; ++j)
         {
-          one_dimensional_coordinates_local[j] = static_cast<double>(j);
+          x_list[j] = coordinates[j][0];
+          y_list[j] = coordinates[j][1];
         }
 
-      if (interpolation_type != WorldBuilder::Utilities::InterpolationType::None)
-        {
-          WBAssert(interpolation_type == WorldBuilder::Utilities::InterpolationType::Linear ||
-                   interpolation_type == WorldBuilder::Utilities::InterpolationType::MonotoneSpline ||
-                   interpolation_type == WorldBuilder::Utilities::InterpolationType::ContinuousMonotoneSpline,
-                   "For interpolation, linear and monotone spline are the only allowed values. "
-                   << "You provided " << interpolation_type_string << '.');
+      x_spline.set_points(x_list);
+      y_spline.set_points(y_list);
 
-          double maximum_distance_between_coordinates = this->world->maximum_distance_between_coordinates *
-                                                        (coordinate_system == CoordinateSystem::spherical ? const_pi / 180.0 : 1.0);
-
-
-          // I don't think this is usefull for continuous monotone spline, although it might
-          // help in a spherical case like for the linear case.
-          std::vector<double> x_list(original_number_of_coordinates,0.0);
-          std::vector<double> y_list(original_number_of_coordinates,0.0);
-          std::vector<Point<2> > coordinate_list_local = coordinates;
-          for (size_t j=0; j<original_number_of_coordinates; ++j)
-            {
-              x_list[j] = coordinates[j][0];
-              y_list[j] = coordinates[j][1];
-            }
-
-          x_spline.set_points(one_dimensional_coordinates_local,
-                              x_list,
-                              interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear);
-          y_spline.set_points(one_dimensional_coordinates_local,
-                              y_list,
-                              interpolation_type != WorldBuilder::Utilities::InterpolationType::Linear);
-
-          if (maximum_distance_between_coordinates > 0 && interpolation_type != WorldBuilder::Utilities::InterpolationType::ContinuousMonotoneSpline)
-            {
-              size_t additional_parts = 0;
-              for (size_t i_plane=0; i_plane<original_number_of_coordinates-1; ++i_plane)
-                {
-                  const Point<2> P1 (x_spline(one_dimensional_coordinates_local[i_plane + additional_parts]),
-                                     y_spline(one_dimensional_coordinates_local[i_plane + additional_parts]),
-                                     coordinate_system);
-
-                  const Point<2> P2 (x_spline(one_dimensional_coordinates_local[i_plane + additional_parts + 1]),
-                                     y_spline(one_dimensional_coordinates_local[i_plane  + additional_parts+ 1]),
-                                     coordinate_system);
-
-                  const double length = (P1 - P2).norm();
-                  const size_t parts = static_cast<size_t>(std::ceil(length / maximum_distance_between_coordinates));
-                  for (size_t j = 1; j < parts; j++)
-                    {
-                      const double x_position3 = static_cast<double>(i_plane) + static_cast<double>(j)/static_cast<double>(parts);
-                      const Point<2> P3(x_spline(x_position3), y_spline(x_position3), coordinate_system);
-                      one_dimensional_coordinates_local.insert(one_dimensional_coordinates_local.begin() + static_cast<std::vector<double>::difference_type>(additional_parts + i_plane + 1), x_position3);
-                      coordinate_list_local.insert(coordinate_list_local.begin() + static_cast<std::vector<double>::difference_type>(additional_parts + i_plane + 1), P3);
-                      additional_parts++;
-                    }
-                }
-              coordinates = coordinate_list_local;
-            }
-        }
-      one_dimensional_coordinates = one_dimensional_coordinates_local;
     }
 
 

@@ -19,7 +19,7 @@
 
 #define DOCTEST_CONFIG_SUPER_FAST_ASSERTS
 
-#include "doctest.h"
+#include "doctest/doctest.h"
 
 #include "world_builder/bounding_box.h"
 
@@ -55,8 +55,8 @@ TEST_CASE("bounding box 3D")
 {
   // Check default constructor
   BoundingBox<3> bb1;
-  CHECK(bb1.center().distance(Point<3>(0,0,0,CoordinateSystem::cartesian)) < 1e-12);
-  CHECK(BoundingBox<3>().center().distance(Point<3>(0,0,0,CoordinateSystem::cartesian)) < 1e-12);
+  CHECK(bb1.center().distance(Point<2>(0,0,CoordinateSystem::cartesian)) < 1e-12);
+  CHECK(BoundingBox<3>().center().distance(Point<2>(0,0,CoordinateSystem::cartesian)) < 1e-12);
 
   CHECK(bb1.point_inside(Point<3>(2,2.5,2.5,CoordinateSystem::cartesian)) == true);
 
@@ -66,7 +66,7 @@ TEST_CASE("bounding box 3D")
   BoundingBox<3> bb2({p1, p2});
 
   // Check the center function
-  CHECK(bb2.center().distance(Point<3>(1.5,2,2.5,CoordinateSystem::cartesian)) < 1e-12);
+  CHECK(bb2.center().distance(Point<2>(1.5,2,CoordinateSystem::cartesian)) < 1e-12);
 
   // Check that the function point_inside works as expected
   CHECK(bb2.point_inside(Point<3>(1.5,2,2.5,CoordinateSystem::cartesian)) == true);

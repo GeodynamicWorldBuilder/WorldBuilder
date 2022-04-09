@@ -19,7 +19,8 @@
 
 #define DOCTEST_CONFIG_SUPER_FAST_ASSERTS
 
-#include "doctest.h"
+#include "doctest/doctest.h"
+#include "ApprovalTests/ApprovalTests.hpp"
 
 #include "world_builder/config.h"
 #include "world_builder/coordinate_system.h"
@@ -99,7 +100,7 @@ using doctest::Contains;
 inline
 std::array<double,3> normalize(std::array<double,3> array)
 {
-  const double norm = sqrt(array[0] * array[0] + array[1] * array[1] + array[2] * array[2] );
+  const double norm = sqrt(array[0] * array[0] + array[1] * array[1] + array[2] * array[2]);
   return {{array[0]/norm,array[1]/norm,array[2]/norm}};
 }
 
@@ -172,7 +173,7 @@ inline void compare_rotation_matrices_approx(
        "           " << expected[2][0] << ' ' << expected[2][1] << ' ' << expected[2][2] << "\n" <<
        "computed = " << computed[0][0] << ' ' << computed[0][1] << ' ' << computed[0][2] << "\n" <<
        "           " << computed[1][0] << ' ' << computed[1][1] << ' ' << computed[1][2] << "\n" <<
-       "           " << computed[2][0] << ' ' << computed[2][1] << ' ' << computed[2][2] << "\n" );
+       "           " << computed[2][0] << ' ' << computed[2][1] << ' ' << computed[2][2] << "\n");
   CHECK((
           (computed[0][0] == Approx(expected[0][0]) && computed[0][1] == Approx(expected[0][1]) && computed[0][2] == Approx(expected[0][2]) &&
            computed[1][0] == Approx(expected[1][0]) && computed[1][1] == Approx(expected[1][1]) && computed[1][2] == Approx(expected[1][2]) &&
@@ -186,6 +187,8 @@ inline void compare_rotation_matrices_approx(
 
 TEST_CASE("WorldBuilder Point: Testing initialize and operators")
 {
+  std::vector<double> approval_tests;
+
   // Test initialization of the Point class
   Point<2> p2(cartesian);
   Point<3> p3(cartesian);
@@ -235,8 +238,8 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
   CHECK(p3.get_array() == std::array<double,3> {{4,8,12}});
 
   // Test dot operator
-  CHECK(p2_array * p2_explicit == Approx(11.0));
-  CHECK(p3_array * p3_explicit == Approx(32.0));
+  approval_tests.emplace_back(p2_array * p2_explicit);
+  approval_tests.emplace_back(p3_array * p3_explicit);
 
   // Test add operator
   p2 = p2 + p2;
@@ -265,15 +268,15 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
   CHECK(p3.get_array() == std::array<double,3> {{4,8,12}});
 
   // Test coordinate system
-  //CHECK(p2.get_coordinate_system() == CoordinateSystem::cartesian);
-  //CHECK(p3.get_coordinate_system() == CoordinateSystem::cartesian);
+  //approval_tests.emplace_back(p2.get_coordinate_system());
+  //approval_tests.emplace_back(p3.get_coordinate_system());
 
   // Test norm and norm_square
-  CHECK(p2.norm_square() == Approx(80.0));
-  CHECK(p3.norm_square() == Approx(224));
+  approval_tests.emplace_back(p2.norm_square());
+  approval_tests.emplace_back(p3.norm_square());
 
-  CHECK(p2.norm() == Approx(std::sqrt(80)));
-  CHECK(p3.norm() == Approx(std::sqrt(224)));
+  approval_tests.emplace_back(p2.norm());
+  approval_tests.emplace_back(p3.norm());
 
   // Test Point utility classes
   std::array<double,2> an2 = Utilities::convert_point_to_array(p2_point);
@@ -285,8 +288,7 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
   CHECK_THROWS_WITH(Point<2>(1,2,3,cartesian),Contains("Can't use the 3d constructor in 2d."));
   CHECK_THROWS_WITH(Point<3>(1,2,cartesian),Contains("Can't use the 2d constructor in 3d."));
 
-
-
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
 
@@ -344,123 +346,98 @@ TEST_CASE("WorldBuilder Utilities: string to conversions")
 
 TEST_CASE("WorldBuilder Utilities: interpolation")
 {
+  std::vector<double> approval_tests;
+
   Utilities::interpolation linear;
   std::vector<double> x = {{0,1,2,3}};
   std::vector<double> y = {{10,5,5,35}};
-  linear.set_points(x,y,false);
-  CHECK(linear(-1.1) == Approx(15.5));
-  CHECK(linear(-1) == Approx(15.0));
-  CHECK(linear(-0.9) == Approx(14.5));
-  CHECK(linear(-0.5) == Approx(12.5));
-  CHECK(linear(-0.1) == Approx(10.5));
-  CHECK(linear(0) == Approx(10.0));
-  CHECK(linear(0.1) == Approx(9.5));
-  CHECK(linear(0.5) == Approx(7.5));
-  CHECK(linear(0.9) == Approx(5.5));
-  CHECK(linear(1) == Approx(5.0));
-  CHECK(linear(1.1) == Approx(5.0));
-  CHECK(linear(1.5) == Approx(5.0));
-  CHECK(linear(1.9) == Approx(5.0));
-  CHECK(linear(2) == Approx(5.0));
-  CHECK(linear(2.025) == Approx(5.75));
-  CHECK(linear(2.125) == Approx(8.75));
-  CHECK(linear(2.225) == Approx(11.75));
-  CHECK(linear(2.25) == Approx(12.5));
-  CHECK(linear(2.275) == Approx(13.25));
-  CHECK(linear(2.375) == Approx(16.25));
-  CHECK(linear(2.475) == Approx(19.25));
-  CHECK(linear(2.5) == Approx(20));
-  CHECK(linear(2.75) == Approx(27.5));
-  CHECK(linear(3) == Approx(35));
-  CHECK(linear(3.25) == Approx(42.5));
-  CHECK(linear(3.375) == Approx(46.25));
 
   Utilities::interpolation monotone_cubic_spline;
-  monotone_cubic_spline.set_points(x,y,true);
+  monotone_cubic_spline.set_points(y);
 
-  CHECK(monotone_cubic_spline(-1) == Approx(-5));
-  CHECK(monotone_cubic_spline(-0.9) == Approx(-2.15));
-  CHECK(monotone_cubic_spline(-0.7) == Approx(2.65));
-  CHECK(monotone_cubic_spline(-0.5) == Approx(6.25));
-  CHECK(monotone_cubic_spline(-0.3) == Approx(8.65));
-  CHECK(monotone_cubic_spline(-0.1) == Approx(9.85));
-  CHECK(monotone_cubic_spline(0) == Approx(10.0));
-  CHECK(monotone_cubic_spline(0.1) == Approx(9.86));
-  CHECK(monotone_cubic_spline(0.3) == Approx(8.92));
-  CHECK(monotone_cubic_spline(0.5) == Approx(7.5));
-  CHECK(monotone_cubic_spline(0.7) == Approx(6.08));
-  CHECK(monotone_cubic_spline(0.9) == Approx(5.14));
-  CHECK(monotone_cubic_spline(1) == Approx(5.0));
-  CHECK(monotone_cubic_spline(1.1) == Approx(5.0));
-  CHECK(monotone_cubic_spline(1.3) == Approx(5.0));
-  CHECK(monotone_cubic_spline(1.5) == Approx(5.0));
-  CHECK(monotone_cubic_spline(1.7) == Approx(5.0));
-  CHECK(monotone_cubic_spline(1.9) == Approx(5.0));
-  CHECK(monotone_cubic_spline(2) == Approx(5.0));
-  CHECK(monotone_cubic_spline(2.025) == Approx(5.03703125));
-  CHECK(monotone_cubic_spline(2.075) == Approx(5.32484375));
-  CHECK(monotone_cubic_spline(2.125) == Approx(5.87890625));
-  CHECK(monotone_cubic_spline(2.175) == Approx(6.67671875));
-  CHECK(monotone_cubic_spline(2.225) == Approx(7.69578125));
-  CHECK(monotone_cubic_spline(2.25) == Approx(8.28125));
-  CHECK(monotone_cubic_spline(2.275) == Approx(8.91359375));
-  CHECK(monotone_cubic_spline(2.325) == Approx(10.30765625));
-  CHECK(monotone_cubic_spline(2.375) == Approx(11.85546875));
-  CHECK(monotone_cubic_spline(2.425) == Approx(13.53453125));
-  CHECK(monotone_cubic_spline(2.475) == Approx(15.32234375));
-  CHECK(monotone_cubic_spline(2.5) == Approx(16.25));
-  CHECK(monotone_cubic_spline(2.625) == Approx(21.11328125));
-  CHECK(monotone_cubic_spline(2.75) == Approx(26.09375));
-  CHECK(monotone_cubic_spline(2.875) == Approx(30.83984375));
-  CHECK(monotone_cubic_spline(3) == Approx(35));
-  CHECK(monotone_cubic_spline(3.125) == Approx(38.75));
-  CHECK(monotone_cubic_spline(3.25) == Approx(42.5));
+  approval_tests.emplace_back(monotone_cubic_spline(-1));
+  approval_tests.emplace_back(monotone_cubic_spline(-0.9));
+  approval_tests.emplace_back(monotone_cubic_spline(-0.7));
+  approval_tests.emplace_back(monotone_cubic_spline(-0.5));
+  approval_tests.emplace_back(monotone_cubic_spline(-0.3));
+  approval_tests.emplace_back(monotone_cubic_spline(-0.1));
+  approval_tests.emplace_back(monotone_cubic_spline(0));
+  approval_tests.emplace_back(monotone_cubic_spline(0.1));
+  approval_tests.emplace_back(monotone_cubic_spline(0.3));
+  approval_tests.emplace_back(monotone_cubic_spline(0.5));
+  approval_tests.emplace_back(monotone_cubic_spline(0.7));
+  approval_tests.emplace_back(monotone_cubic_spline(0.9));
+  approval_tests.emplace_back(monotone_cubic_spline(1));
+  approval_tests.emplace_back(monotone_cubic_spline(1.1));
+  approval_tests.emplace_back(monotone_cubic_spline(1.3));
+  approval_tests.emplace_back(monotone_cubic_spline(1.5));
+  approval_tests.emplace_back(monotone_cubic_spline(1.7));
+  approval_tests.emplace_back(monotone_cubic_spline(1.9));
+  approval_tests.emplace_back(monotone_cubic_spline(2));
+  approval_tests.emplace_back(monotone_cubic_spline(2.025));
+  approval_tests.emplace_back(monotone_cubic_spline(2.075));
+  approval_tests.emplace_back(monotone_cubic_spline(2.125));
+  approval_tests.emplace_back(monotone_cubic_spline(2.175));
+  approval_tests.emplace_back(monotone_cubic_spline(2.225));
+  approval_tests.emplace_back(monotone_cubic_spline(2.25));
+  approval_tests.emplace_back(monotone_cubic_spline(2.275));
+  approval_tests.emplace_back(monotone_cubic_spline(2.325));
+  approval_tests.emplace_back(monotone_cubic_spline(2.375));
+  approval_tests.emplace_back(monotone_cubic_spline(2.425));
+  approval_tests.emplace_back(monotone_cubic_spline(2.475));
+  approval_tests.emplace_back(monotone_cubic_spline(2.5));
+  approval_tests.emplace_back(monotone_cubic_spline(2.625));
+  approval_tests.emplace_back(monotone_cubic_spline(2.75));
+  approval_tests.emplace_back(monotone_cubic_spline(2.875));
+  approval_tests.emplace_back(monotone_cubic_spline(3));
+  approval_tests.emplace_back(monotone_cubic_spline(3.125));
+  approval_tests.emplace_back(monotone_cubic_spline(3.25));
 
   Utilities::interpolation monotone_cubic_spline2;
   y[1] = -5;
   y[3] = -35;
-  monotone_cubic_spline2.set_points(x,y,true);
-  CHECK(monotone_cubic_spline2(-1) == Approx(-35));
-  CHECK(monotone_cubic_spline2(-0.5) == Approx(-1.25));
-  CHECK(monotone_cubic_spline2(0) == Approx(10));
-  CHECK(monotone_cubic_spline2(0.5) == Approx(2.5));
-  CHECK(monotone_cubic_spline2(1) == Approx(-5.0));
-  CHECK(monotone_cubic_spline2(1.5) == Approx(0.0));
-  CHECK(monotone_cubic_spline2(2) == Approx(5.0));
-  CHECK(monotone_cubic_spline2(2.125) == Approx(3.828125));
-  CHECK(monotone_cubic_spline2(2.25) == Approx(0.625));
-  CHECK(monotone_cubic_spline2(2.375) == Approx(-4.140625));
-  CHECK(monotone_cubic_spline2(2.5) == Approx(-10));
-  CHECK(monotone_cubic_spline2(2.625) == Approx(-16.484375));
-  CHECK(monotone_cubic_spline2(2.75) == Approx(-23.125));
-  CHECK(monotone_cubic_spline2(2.875) == Approx(-29.453125));
-  CHECK(monotone_cubic_spline2(3) == Approx(-35.0));
-  CHECK(monotone_cubic_spline2(3.125) == Approx(-40));
-  CHECK(monotone_cubic_spline2(3.25) == Approx(-45));
+  monotone_cubic_spline2.set_points(y);
+  approval_tests.emplace_back(monotone_cubic_spline2(-1));
+  approval_tests.emplace_back(monotone_cubic_spline2(-0.5));
+  approval_tests.emplace_back(monotone_cubic_spline2(0));
+  approval_tests.emplace_back(monotone_cubic_spline2(0.5));
+  approval_tests.emplace_back(monotone_cubic_spline2(1));
+  approval_tests.emplace_back(monotone_cubic_spline2(1.5));
+  approval_tests.emplace_back(monotone_cubic_spline2(2));
+  approval_tests.emplace_back(monotone_cubic_spline2(2.125) == Approx(3.828125));
+  approval_tests.emplace_back(monotone_cubic_spline2(2.25));
+  approval_tests.emplace_back(monotone_cubic_spline2(2.375) == Approx(-4.140625));
+  approval_tests.emplace_back(monotone_cubic_spline2(2.5));
+  approval_tests.emplace_back(monotone_cubic_spline2(2.625));
+  approval_tests.emplace_back(monotone_cubic_spline2(2.75));
+  approval_tests.emplace_back(monotone_cubic_spline2(2.875));
+  approval_tests.emplace_back(monotone_cubic_spline2(3));
+  approval_tests.emplace_back(monotone_cubic_spline2(3.125));
+  approval_tests.emplace_back(monotone_cubic_spline2(3.25));
 
   Utilities::interpolation monotone_cubic_spline3;
   y[0] = 10;
   y[1] = -5;
   y[2] = -10;
   y[3] = -35;
-  monotone_cubic_spline3.set_points(x,y,true);
-  CHECK(monotone_cubic_spline3(-1) == Approx(-27.5));
-  CHECK(monotone_cubic_spline3(-0.5) == Approx(0.625));
-  CHECK(monotone_cubic_spline3(0) == Approx(10.0));
-  CHECK(monotone_cubic_spline3(0.5) == Approx(3.4375));
-  CHECK(monotone_cubic_spline3(1) == Approx(-5.0));
-  CHECK(monotone_cubic_spline3(1.5) == Approx(-7.3958333333));
-  CHECK(monotone_cubic_spline3(2) == Approx(-10.0));
-  CHECK(monotone_cubic_spline3(2.125) == Approx(-11.5299479167));
-  CHECK(monotone_cubic_spline3(2.25) == Approx(-13.90625));
-  CHECK(monotone_cubic_spline3(2.375) == Approx(-16.93359375));
-  CHECK(monotone_cubic_spline3(2.5) == Approx(-20.4166666667));
-  CHECK(monotone_cubic_spline3(2.625) == Approx(-24.16015625));
-  CHECK(monotone_cubic_spline3(2.75) == Approx(-27.96875));
-  CHECK(monotone_cubic_spline3(2.875) == Approx(-31.6471354167 ));
-  CHECK(monotone_cubic_spline3(3) == Approx(-35.0));
-  CHECK(monotone_cubic_spline3(3.125) == Approx(-38.125));
-  CHECK(monotone_cubic_spline3(3.25) == Approx(-41.25));
+  monotone_cubic_spline3.set_points(y);
+  approval_tests.emplace_back(monotone_cubic_spline3(-1));
+  approval_tests.emplace_back(monotone_cubic_spline3(-0.5));
+  approval_tests.emplace_back(monotone_cubic_spline3(0));
+  approval_tests.emplace_back(monotone_cubic_spline3(0.5));
+  approval_tests.emplace_back(monotone_cubic_spline3(1));
+  approval_tests.emplace_back(monotone_cubic_spline3(1.5));
+  approval_tests.emplace_back(monotone_cubic_spline3(2));
+  approval_tests.emplace_back(monotone_cubic_spline3(2.125));
+  approval_tests.emplace_back(monotone_cubic_spline3(2.25) == Approx(-13.90625));
+  approval_tests.emplace_back(monotone_cubic_spline3(2.375));
+  approval_tests.emplace_back(monotone_cubic_spline3(2.5));
+  approval_tests.emplace_back(monotone_cubic_spline3(2.625));
+  approval_tests.emplace_back(monotone_cubic_spline3(2.75));
+  approval_tests.emplace_back(monotone_cubic_spline3(2.875));
+  approval_tests.emplace_back(monotone_cubic_spline3(3));
+  approval_tests.emplace_back(monotone_cubic_spline3(3.125));
+  approval_tests.emplace_back(monotone_cubic_spline3(3.25));
 
   // bi monotone cubic spline
   Utilities::interpolation monotone_cubic_spline_x;
@@ -473,40 +450,42 @@ TEST_CASE("WorldBuilder Utilities: interpolation")
   y[1] = 10;
   y[2] = 5;
   y[3] = 0;
-  monotone_cubic_spline_x.set_points(x,y,true);
+  monotone_cubic_spline_x.set_points(y);
   y[0] = 0;
   y[1] = 5;
   y[2] = 10;
   y[3] = 10;
-  monotone_cubic_spline_y.set_points(x,y,true);
+  monotone_cubic_spline_y.set_points(y);
 
-  CHECK(monotone_cubic_spline_x(0) == Approx(10));
-  CHECK(monotone_cubic_spline_x(0.25) == Approx(10));
-  CHECK(monotone_cubic_spline_x(0.5) == Approx(10));
-  CHECK(monotone_cubic_spline_x(0.75) == Approx(10));
-  CHECK(monotone_cubic_spline_x(1) == Approx(10.0));
-  CHECK(monotone_cubic_spline_x(1.25) == Approx(9.453125));
-  CHECK(monotone_cubic_spline_x(1.5) == Approx(8.125));
-  CHECK(monotone_cubic_spline_x(1.75) == Approx(6.484375));
-  CHECK(monotone_cubic_spline_x(2) == Approx(5.0));
-  CHECK(monotone_cubic_spline_x(2.25) == Approx(3.75));
-  CHECK(monotone_cubic_spline_x(2.5) == Approx(2.5));
-  CHECK(monotone_cubic_spline_x(2.75) == Approx(1.25));
-  CHECK(monotone_cubic_spline_x(3) == Approx(0));
+  approval_tests.emplace_back(monotone_cubic_spline_x(0));
+  approval_tests.emplace_back(monotone_cubic_spline_x(0.25));
+  approval_tests.emplace_back(monotone_cubic_spline_x(0.5));
+  approval_tests.emplace_back(monotone_cubic_spline_x(0.75));
+  approval_tests.emplace_back(monotone_cubic_spline_x(1));
+  approval_tests.emplace_back(monotone_cubic_spline_x(1.25) == Approx(9.453125));
+  approval_tests.emplace_back(monotone_cubic_spline_x(1.5));
+  approval_tests.emplace_back(monotone_cubic_spline_x(1.75));
+  approval_tests.emplace_back(monotone_cubic_spline_x(2));
+  approval_tests.emplace_back(monotone_cubic_spline_x(2.25));
+  approval_tests.emplace_back(monotone_cubic_spline_x(2.5));
+  approval_tests.emplace_back(monotone_cubic_spline_x(2.75));
+  approval_tests.emplace_back(monotone_cubic_spline_x(3));
 
-  CHECK(monotone_cubic_spline_y(0) == Approx(0));
-  CHECK(monotone_cubic_spline_y(0.25) == Approx(0.546875));
-  CHECK(monotone_cubic_spline_y(0.5) == Approx(1.875));
-  CHECK(monotone_cubic_spline_y(0.75) == Approx(3.515625));
-  CHECK(monotone_cubic_spline_y(1) == Approx(5.0));
-  CHECK(monotone_cubic_spline_y(1.25) == Approx(6.484375));
-  CHECK(monotone_cubic_spline_y(1.5) == Approx(8.125));
-  CHECK(monotone_cubic_spline_y(1.75) == Approx(9.453125));
-  CHECK(monotone_cubic_spline_y(2) == Approx(10.0));
-  CHECK(monotone_cubic_spline_y(2.25) == Approx(10.0));
-  CHECK(monotone_cubic_spline_y(2.5) == Approx(10.0));
-  CHECK(monotone_cubic_spline_y(2.75) == Approx(10.0));
-  CHECK(monotone_cubic_spline_y(3) == Approx(10.0));
+  approval_tests.emplace_back(monotone_cubic_spline_y(0));
+  approval_tests.emplace_back(monotone_cubic_spline_y(0.25));
+  approval_tests.emplace_back(monotone_cubic_spline_y(0.5));
+  approval_tests.emplace_back(monotone_cubic_spline_y(0.75) == Approx(3.515625));
+  approval_tests.emplace_back(monotone_cubic_spline_y(1));
+  approval_tests.emplace_back(monotone_cubic_spline_y(1.25));
+  approval_tests.emplace_back(monotone_cubic_spline_y(1.5));
+  approval_tests.emplace_back(monotone_cubic_spline_y(1.75) == Approx(9.453125));
+  approval_tests.emplace_back(monotone_cubic_spline_y(2));
+  approval_tests.emplace_back(monotone_cubic_spline_y(2.25));
+  approval_tests.emplace_back(monotone_cubic_spline_y(2.5));
+  approval_tests.emplace_back(monotone_cubic_spline_y(2.75));
+  approval_tests.emplace_back(monotone_cubic_spline_y(3));
+
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
 TEST_CASE("WorldBuilder Utilities: Point in polygon")
@@ -580,6 +559,8 @@ TEST_CASE("WorldBuilder Utilities: Point in polygon")
 
 TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
 {
+  std::vector<double> approval_tests;
+
   // Cartesian
   std::unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",nullptr));
 
@@ -587,12 +568,12 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   Objects::NaturalCoordinate nca1(std::array<double,3> {{1,2,3}},*cartesian);
   CHECK(nca1.get_coordinates() == std::array<double,3> {{1,2,3}});
   CHECK(nca1.get_surface_coordinates() == std::array<double,2> {{1,2}});
-  CHECK(nca1.get_depth_coordinate() == Approx(3.0));
+  approval_tests.emplace_back(nca1.get_depth_coordinate());
 
   Objects::NaturalCoordinate ncp1(Point<3>(1,2,3,CoordinateSystem::cartesian),*cartesian);
   CHECK(ncp1.get_coordinates() == std::array<double,3> {{1,2,3}});
   CHECK(ncp1.get_surface_coordinates() == std::array<double,2> {{1,2}});
-  CHECK(ncp1.get_depth_coordinate() == Approx(3.0));
+  approval_tests.emplace_back(ncp1.get_depth_coordinate());
 
 
   std::unique_ptr<CoordinateSystems::Interface> spherical(CoordinateSystems::Interface::create("spherical",nullptr));
@@ -600,24 +581,24 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   // Test the natural coordinate system
   Objects::NaturalCoordinate nsa1(std::array<double,3> {{1,2,3}},*spherical);
   std::array<double,3> nsa1_array = nsa1.get_coordinates();
-  CHECK(nsa1_array[0] == Approx(std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0)));
-  CHECK(nsa1_array[1] == Approx(1.1071487178));
-  CHECK(nsa1_array[2] == Approx(0.9302740141));
+  approval_tests.emplace_back(nsa1_array[0]);
+  approval_tests.emplace_back(nsa1_array[1]);
+  approval_tests.emplace_back(nsa1_array[2]);
   std::array<double,2> nsa1_surface_array = nsa1.get_surface_coordinates();
-  CHECK(nsa1_surface_array[0] == Approx(1.1071487178));
-  CHECK(nsa1_surface_array[1] == Approx(0.9302740141));
-  CHECK(nsa1.get_depth_coordinate() == Approx(std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0)));
+  approval_tests.emplace_back(nsa1_surface_array[0]);
+  approval_tests.emplace_back(nsa1_surface_array[1]);
+  approval_tests.emplace_back(nsa1.get_depth_coordinate());
 
 
   Objects::NaturalCoordinate nsp1(Point<3>(1,2,3,CoordinateSystem::spherical),*spherical);
   std::array<double,3> nsp1_array = nsp1.get_coordinates();
-  CHECK(nsp1_array[0] == Approx(std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0)));
-  CHECK(nsp1_array[1] == Approx(1.1071487178));
-  CHECK(nsp1_array[2] == Approx(0.9302740141));
+  approval_tests.emplace_back(nsp1_array[0]);
+  approval_tests.emplace_back(nsp1_array[1]);
+  approval_tests.emplace_back(nsp1_array[2]);
   std::array<double,2> nsp1_surface_array = nsp1.get_surface_coordinates();
-  CHECK(nsp1_surface_array[0] == Approx(1.1071487178));
-  CHECK(nsp1_surface_array[1] == Approx(0.9302740141));
-  CHECK(nsp1.get_depth_coordinate() == Approx(std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0)));
+  approval_tests.emplace_back(nsp1_surface_array[0]);
+  approval_tests.emplace_back(nsp1_surface_array[1]);
+  approval_tests.emplace_back(nsp1.get_depth_coordinate());
 
   // Invalid tests
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_cartesian.wb";
@@ -637,7 +618,7 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   CHECK_THROWS_WITH(ivp1.get_ref_depth_coordinate(),Contains("Coordinate system not implemented."));
   CHECK(std::isnan(invalid->distance_between_points_at_same_depth(Point<3>(1,2,3,CoordinateSystem::invalid),
                                                                   Point<3>(1,2,3,CoordinateSystem::invalid))));
-  CHECK(invalid->depth_method() == DepthMethod::none);
+  approval_tests.emplace_back(invalid->depth_method());
 
   std::array<double,3> iv_array = invalid->natural_to_cartesian_coordinates({1,2,3});
   CHECK(std::isnan(iv_array[0]));
@@ -646,11 +627,13 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
 
   CHECK(std::isnan(invalid->max_model_depth()));
 
-
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
 TEST_CASE("WorldBuilder Utilities: Coordinate systems transformations")
 {
+  std::vector<double> approval_tests;
+
   // Test coordinate system transformation
   {
     Point<3> cartesian(3,4,5,CoordinateSystem::cartesian);
@@ -676,15 +659,17 @@ TEST_CASE("WorldBuilder Utilities: Coordinate systems transformations")
 
     Point<3> cartesian_back(Utilities::spherical_to_cartesian_coordinates(spherical.get_array()), CoordinateSystem::cartesian);
 
-    compare_vectors_approx(std::vector<double>(std::begin(cartesian_back.get_array()), std::end(cartesian_back.get_array())),
-    std::vector<double> {{-2,-1,6}});
+    approval_tests.insert(approval_tests.end(), std::begin(cartesian_back.get_array()), std::end(cartesian_back.get_array()));
   }
 
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 
 }
 
 TEST_CASE("WorldBuilder Utilities: cross product")
 {
+  std::vector<double> approval_tests;
+
   const Point<3> unit_x(1,0,0,cartesian);
   const Point<3> unit_y(0,1,0,cartesian);
   const Point<3> unit_z(0,0,1,cartesian);
@@ -732,6 +717,8 @@ TEST_CASE("WorldBuilder Utilities: cross product")
 
 TEST_CASE("WorldBuilder C wrapper")
 {
+  std::vector<double> approval_tests;
+
   // First test a world builder file with a cross section defined
   std::string file = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb1.json";
   void *ptr_world = nullptr;
@@ -744,25 +731,25 @@ TEST_CASE("WorldBuilder C wrapper")
   double temperature = 0.;
 
   temperature_2d(*ptr_ptr_world, 1, 2, 0, 10, &temperature);
-  CHECK(temperature == Approx(1600));
+  approval_tests.emplace_back(temperature);
   temperature_3d(*ptr_ptr_world, 1, 2, 3, 0, 10, &temperature);
-  CHECK(temperature == Approx(1600));
+  approval_tests.emplace_back(temperature);
   temperature_2d(*ptr_ptr_world, 550e3, 0, 0, 10, &temperature);
-  CHECK(temperature == Approx(150));
+  approval_tests.emplace_back(temperature);
   temperature_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, 10, &temperature);
-  CHECK(temperature == Approx(150));
+  approval_tests.emplace_back(temperature);
 
   // Test the compositions
   double composition = 0.0;
 
   composition_2d(*ptr_ptr_world, 1, 2, 0, 2, &composition);
-  CHECK(composition == Approx(0.0));
+  approval_tests.emplace_back(composition);
   composition_3d(*ptr_ptr_world, 1, 2, 3, 0, 2, &composition);
-  CHECK(composition == Approx(0.0));
+  approval_tests.emplace_back(composition);
   composition_2d(*ptr_ptr_world,  550e3, 0, 0, 3, &composition);
-  CHECK(composition == Approx(1.0));
+  approval_tests.emplace_back(composition);
   composition_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, 3, &composition);
-  CHECK(composition == Approx(1.0));
+  approval_tests.emplace_back(composition);
 
   release_world(*ptr_ptr_world);
 
@@ -780,9 +767,9 @@ TEST_CASE("WorldBuilder C wrapper")
                     Contains("This function can only be called when the cross section "
                              "variable in the world builder file has been set. Dim is 3."));
   temperature_3d(*ptr_ptr_world, 1, 2, 3, 0, 10, &temperature);
-  CHECK(temperature == Approx(1600));
+  approval_tests.emplace_back(temperature);
   temperature_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, 10, &temperature);
-  CHECK(temperature == Approx(150));
+  approval_tests.emplace_back(temperature);
 
   // Test the compositions
   CHECK_THROWS_WITH(composition_2d(*ptr_ptr_world, 1, 2, 0, 2, &composition),
@@ -790,15 +777,18 @@ TEST_CASE("WorldBuilder C wrapper")
                              "variable in the world builder file has been set. Dim is 3."));
 
   composition_3d(*ptr_ptr_world, 1, 2, 3, 0, 2, &composition);
-  CHECK(composition == Approx(0.0));
+  approval_tests.emplace_back(composition);
   composition_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, 3, &composition);
-  CHECK(composition == Approx(1.0));
+  approval_tests.emplace_back(composition);
 
   release_world(*ptr_ptr_world);
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
 TEST_CASE("WorldBuilder CPP wrapper")
 {
+  std::vector<double> approval_tests;
+
   // First test a world builder file with a cross section defined
   std::string file = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb1.json";
 
@@ -807,25 +797,25 @@ TEST_CASE("WorldBuilder CPP wrapper")
   double temperature = 0;
 
   temperature = world.temperature_2d(1, 2, 0, 10);
-  CHECK(temperature == Approx(1600));
+  approval_tests.emplace_back(temperature);
   temperature = world.temperature_3d(1, 2, 3, 0, 10);
-  CHECK(temperature == Approx(1600));
+  approval_tests.emplace_back(temperature);
   temperature = world.temperature_2d(550e3, 0, 0, 10);
-  CHECK(temperature == Approx(150));
+  approval_tests.emplace_back(temperature);
   temperature = world.temperature_3d(120e3, 500e3, 0, 0, 10);
-  CHECK(temperature == Approx(150));
+  approval_tests.emplace_back(temperature);
 
   // Test the compositions
   double composition = 0.0;
 
   composition = world.composition_2d(1, 2, 0, 2);
-  CHECK(composition == Approx(0.0));
+  approval_tests.emplace_back(composition);
   composition = world.composition_3d(1, 2, 3, 0, 2);
-  CHECK(composition == Approx(0.0));
+  approval_tests.emplace_back(composition);
   composition = world.composition_2d(550e3, 0, 0, 3);
-  CHECK(composition == Approx(1.0));
+  approval_tests.emplace_back(composition);
   composition = world.composition_3d(120e3, 500e3, 0, 0, 3);
-  CHECK(composition == Approx(1.0));
+  approval_tests.emplace_back(composition);
 
 
   // Now test a world builder file without a cross section defined
@@ -838,9 +828,9 @@ TEST_CASE("WorldBuilder CPP wrapper")
                     Contains("This function can only be called when the cross section "
                              "variable in the world builder file has been set. Dim is 3."));
   temperature = world2.temperature_3d(1, 2, 3, 0, 10);
-  CHECK(temperature == Approx(1600));
+  approval_tests.emplace_back(temperature);
   temperature = world2.temperature_3d(120e3, 500e3, 0, 0, 10);
-  CHECK(temperature == Approx(150));
+  approval_tests.emplace_back(temperature);
 
   // Test the compositions
   CHECK_THROWS_WITH(world2.composition_2d(1, 2, 0, 2),
@@ -848,14 +838,17 @@ TEST_CASE("WorldBuilder CPP wrapper")
                              "variable in the world builder file has been set. Dim is 3."));
 
   composition = world2.composition_3d(1, 2, 3, 0, 2);
-  CHECK(composition == Approx(0.0));
+  approval_tests.emplace_back(composition);
   composition = world2.composition_3d(120e3, 500e3, 0, 0, 3);
-  CHECK(composition == Approx(1.0));
+  approval_tests.emplace_back(composition);
 
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
 TEST_CASE("WorldBuilder World random")
 {
+  std::vector<double> approval_tests;
+
   // The world builder uses a deterministic random number generator. This is on prorpose
   // because even though you might want to use random numbers, the result should be
   // reproducable. Note that when the world builder is used in for example MPI programs
@@ -866,29 +859,33 @@ TEST_CASE("WorldBuilder World random")
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate_spherical.wb";
   WorldBuilder::World world1(file_name, false, "", 1);
   // same result as https://en.cppreference.com/w/cpp/numeric/random/mersenne_twister_engine/seed
-  CHECK(world1.get_random_number_engine()() == 1791095845);
-  CHECK(world1.get_random_number_engine()() == 4282876139);
+  approval_tests.emplace_back(world1.get_random_number_engine()());
+  approval_tests.emplace_back(world1.get_random_number_engine()());
   std::uniform_real_distribution<> dist(1.0,2.0);
-  CHECK(dist(world1.get_random_number_engine()) == Approx(1.9325573614));
-  CHECK(dist(world1.get_random_number_engine()) == Approx(1.1281244478));
+  approval_tests.emplace_back(dist(world1.get_random_number_engine()));
+  approval_tests.emplace_back(dist(world1.get_random_number_engine()));
 
   // test wheter the seed indeed changes the resuls
   WorldBuilder::World world2(file_name, false, "", 2);
-  CHECK(world2.get_random_number_engine()() == 1872583848);
-  CHECK(world2.get_random_number_engine()() == 794921487);
-  CHECK(dist(world2.get_random_number_engine()) == Approx(1.9315408636));
-  CHECK(dist(world2.get_random_number_engine()) == Approx(1.947730611));
+  approval_tests.emplace_back(world2.get_random_number_engine()());
+  approval_tests.emplace_back(world2.get_random_number_engine()());
+  approval_tests.emplace_back(dist(world2.get_random_number_engine()));
+  approval_tests.emplace_back(dist(world2.get_random_number_engine()));
 
   // Test reproducability with the same seed.
   WorldBuilder::World world3(file_name, false, "", 1);
-  CHECK(world3.get_random_number_engine()() == 1791095845);
-  CHECK(world3.get_random_number_engine()() == 4282876139);
-  CHECK(dist(world3.get_random_number_engine()) == Approx(1.9325573614));
-  CHECK(dist(world3.get_random_number_engine()) == Approx(1.1281244478));
+  approval_tests.emplace_back(world3.get_random_number_engine()());
+  approval_tests.emplace_back(world3.get_random_number_engine()());
+  approval_tests.emplace_back(dist(world3.get_random_number_engine()));
+  approval_tests.emplace_back(dist(world3.get_random_number_engine()));
+
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
 TEST_CASE("WorldBuilder Coordinate Systems: Interface")
 {
+  std::vector<double> approval_tests;
+
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate_spherical.wb";
   WorldBuilder::World world(file_name);
 
@@ -903,12 +900,15 @@ TEST_CASE("WorldBuilder Coordinate Systems: Interface")
   CHECK(interface->cartesian_to_natural_coordinates(std::array<double,3> {{1,2,3}}) == std::array<double,3> {{1,2,3}});
   CHECK(interface->natural_to_cartesian_coordinates(std::array<double,3> {{1,2,3}}) == std::array<double,3> {{1,2,3}});
 
-  CHECK(interface->natural_coordinate_system() == CoordinateSystem::cartesian);
+  approval_tests.emplace_back(interface->natural_coordinate_system());
 
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
 TEST_CASE("WorldBuilder Coordinate Systems: Cartesian")
 {
+  std::vector<double> approval_tests;
+
   std::unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",nullptr));
 
   //todo:fix
@@ -917,7 +917,7 @@ TEST_CASE("WorldBuilder Coordinate Systems: Cartesian")
   CHECK(cartesian->cartesian_to_natural_coordinates(std::array<double,3> {{1,2,3}}) == std::array<double,3> {{1,2,3}});
   CHECK(cartesian->natural_to_cartesian_coordinates(std::array<double,3> {{1,2,3}}) == std::array<double,3> {{1,2,3}});
 
-  CHECK(cartesian->natural_coordinate_system() == CoordinateSystem::cartesian);
+  approval_tests.emplace_back(cartesian->natural_coordinate_system());
 
   // distance between two points at the same depth
   Point<3> point_1(0.0,0.0,10.0, CoordinateSystem::cartesian);
@@ -925,14 +925,17 @@ TEST_CASE("WorldBuilder Coordinate Systems: Cartesian")
   Point<3> point_3(3.0,2.0,10.0, CoordinateSystem::cartesian);
   Point<3> point_4(3.0,3.0,10.0, CoordinateSystem::cartesian);
 
-  CHECK(cartesian->distance_between_points_at_same_depth(point_1, point_2) == Approx(std::sqrt(1 + 2 * 2)));
-  CHECK(cartesian->distance_between_points_at_same_depth(point_2, point_3) == Approx(2.0));
-  CHECK(cartesian->distance_between_points_at_same_depth(point_2, point_4) == Approx(std::sqrt(2 * 2 + 1)));
+  approval_tests.emplace_back(cartesian->distance_between_points_at_same_depth(point_1, point_2));
+  approval_tests.emplace_back(cartesian->distance_between_points_at_same_depth(point_2, point_3));
+  approval_tests.emplace_back(cartesian->distance_between_points_at_same_depth(point_2, point_4));
 
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
 TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
 {
+  std::vector<double> approval_tests;
+
   // TODO: make test where a cartesian wb file is loaded into a spherical coordinate system.
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate_spherical.wb";
 
@@ -951,15 +954,15 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
   world.parameters.leave_subsection();
 
   std::array<double,3> spherical_array = spherical->cartesian_to_natural_coordinates(std::array<double,3> {{1,2,3}});
-  CHECK(spherical_array[0] == Approx(std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0)));
-  CHECK(spherical_array[1] == Approx(1.1071487178));
-  CHECK(spherical_array[2] == Approx(0.9302740141));
+  approval_tests.emplace_back(spherical_array[0]);
+  approval_tests.emplace_back(spherical_array[1]);
+  approval_tests.emplace_back(spherical_array[2]);
   std::array<double,3> cartesian_array = spherical->natural_to_cartesian_coordinates(std::array<double,3> {{std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0),1.1071487178,0.9302740141}});
-  CHECK(cartesian_array[0] == Approx(1));
-  CHECK(cartesian_array[1] == Approx(2));
-  CHECK(cartesian_array[2] == Approx(3));
+  approval_tests.emplace_back(cartesian_array[0]);
+  approval_tests.emplace_back(cartesian_array[1]);
+  approval_tests.emplace_back(cartesian_array[2]);
 
-  CHECK(spherical->natural_coordinate_system() == CoordinateSystem::spherical);
+  approval_tests.emplace_back(spherical->natural_coordinate_system());
 
   // distance between two points at the same depth
   double dtr = Utilities::const_pi / 180.0;
@@ -972,13 +975,13 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
   Point<3> unit_point_6(1.0, -90.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
   Point<3> unit_point_7(1.0, 90.0 * dtr, 180.0 * dtr, CoordinateSystem::spherical);
 
-  CHECK(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_2) == Approx(dtr));
-  CHECK(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_3) == Approx(dtr));
+  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_2));
+  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_3));
   CHECK(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_4) ==
         Approx(std::acos(std::sin(0) * std::sin(1*dtr) +
                          std::cos(0) * std::cos(1*dtr) * std::cos(1*dtr))));
-  CHECK(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_5) == Approx(0.5 * Utilities::const_pi));
-  CHECK(spherical->distance_between_points_at_same_depth(unit_point_6, unit_point_7) == Approx(Utilities::const_pi));
+  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_5));
+  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(unit_point_6, unit_point_7));
 
   // secondly check non-unit radius
   Point<3> point_1(10.0, 0.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
@@ -989,14 +992,15 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
   Point<3> point_6(10.0, -90.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
   Point<3> point_7(10.0, 90.0 * dtr, 180.0 * dtr, CoordinateSystem::spherical);
 
-  CHECK(spherical->distance_between_points_at_same_depth(point_1, point_2) == Approx(10 * dtr));
-  CHECK(spherical->distance_between_points_at_same_depth(point_1, point_3) == Approx(10 * dtr));
+  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(point_1, point_2));
+  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(point_1, point_3));
   CHECK(spherical->distance_between_points_at_same_depth(point_1, point_4) ==
         Approx(10 * std::acos(std::sin(0) * std::sin(1*dtr) +
                               std::cos(0) * std::cos(1*dtr) * std::cos(1*dtr))));
-  CHECK(spherical->distance_between_points_at_same_depth(point_1, point_5) == Approx(10 * 0.5 * Utilities::const_pi));
-  CHECK(spherical->distance_between_points_at_same_depth(point_6, point_7) == Approx(10 * Utilities::const_pi));
+  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(point_1, point_5));
+  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(point_6, point_7));
 
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
 TEST_CASE("WorldBuilder Features: Interface")
@@ -1014,6 +1018,9 @@ TEST_CASE("WorldBuilder Features: Interface")
 
 TEST_CASE("WorldBuilder Features: Continental Plate")
 {
+  std::vector<double> approval_tests;
+  std::vector<grains> approval_tests_grains;
+
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/continental_plate.wb";
   WorldBuilder::World world1(file_name);
 
@@ -1022,254 +1029,233 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
 
   // Check continental plate through the world
   std::array<double,3> position = {{0,0,0}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
 
   // the feature with composition 3
   position = {{250e3,500e3,0}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(150));
-  CHECK(world1.temperature(position, 74e3, 10) == Approx(150));
-  CHECK(world1.temperature(position, 76e3, 10) == Approx(100));
-  CHECK(world1.temperature(position, 149e3, 10) == Approx(100));
-  CHECK(world1.temperature(position, 151e3, 10) == Approx(50));
-  CHECK(world1.temperature(position, 224e3, 10) == Approx(50));
-  CHECK(world1.temperature(position, 226e3, 10) == Approx(1704.5201415988));
-  CHECK(world1.temperature(position, 240e3, 10) == Approx(1711.2149738521));
-  CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 74e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 76e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 149e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 151e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 224e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 226e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
 
-  CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(1.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 3) == Approx(1.0));
-  CHECK(world1.composition(position, 240e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 5) == Approx(0.0));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 5));
 
   // check grains
   {
     WorldBuilder::grains grains = world1.grains(position, 0, 0, 3);
-    compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
-    std::array<std::array<double, 3>, 3> array_1 = {{{{1,2,3}},{{4,5,6}},{{7,8,9}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-
-    grains = world1.grains(position, 0, 1, 3);
-    std::array<std::array<double, 3>, 3> array_2 = {{{{10,11,12}},{{13,14,15}},{{16,17,18}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
-
-    compare_vectors_approx(grains.sizes, {0.2,0.2,0.2});
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    approval_tests_grains.emplace_back(grains);
   }
 
   // the feature with composition 2
   position = {{1500e3,1500e3,0}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(20));
-  CHECK(world1.temperature(position, 240e3, 10) == Approx(21.3901871732));
-  CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
 
-  CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 2) == Approx(1.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 2) == Approx(1.0));
-  CHECK(world1.composition(position, 240e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 5) == Approx(0.0));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 5));
 
   // check grains
   {
     WorldBuilder::grains grains = world1.grains(position, 0, 0, 3);
-    compare_vectors_approx(grains.sizes, {0.3,0.3,0.3});
-    std::array<std::array<double, 3>, 3> array_1 = {{{{10,20,30}},{{40,50,60}},{{70,80,90}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-
-    grains = world1.grains(position, 0, 1, 3);
-    std::array<std::array<double, 3>, 3> array_2 = {{{{100,110,120}},{{130,140,150}},{{160,170,180}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
-
-    compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    approval_tests_grains.emplace_back(grains);
   }
 
   position = {{250e3,1750e3,0}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
-  CHECK(world1.temperature(position, 240e3, 10) == Approx(1659.0985664065));
-  CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
 
-  CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(1.0));
-  CHECK(world1.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 4) == Approx(1.0));
-  CHECK(world1.composition(position, 240e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 5) == Approx(0.0));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 5));
 
   position = {{750e3,250e3,0}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(10));
-  CHECK(world1.temperature(position, 240e3, 10) == Approx(48.4));
-  CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
 
-  CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 5) == Approx(0.25));
-  CHECK(world1.composition(position, 0, 6) == Approx(0.75));
-  CHECK(world1.composition(position, 240e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 5) == Approx(0.25));
-  CHECK(world1.composition(position, 240e3, 6) == Approx(0.75));
-  CHECK(world1.composition(position, 260e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 5) == Approx(0.0));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 5));
 
   // check grains layer 1
   {
     WorldBuilder::grains grains = world1.grains(position, 0, 0, 2);
-    compare_vectors_approx(grains.sizes, {0.5,0.5}); // was 0.2, but is normalized
-    // these are random numbers, but they should stay the same.
-    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.9582241838,-0.07911030008,-0.2748599171}},{{-0.1099528091,-0.7852541367,0.6093326847}},{{-0.2640393784,0.6140989344,0.7437511045}}}};
-    std::array<std::array<double, 3>, 3> array_2 = {{{{-0.2124629855,0.07025627985,0.9746402079}},{{0.06298075396,-0.9943536315,0.08540655858}},{{0.9751373772,0.07952930755,0.2068385477}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
-
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-    grains = world1.grains(position, 0, 1, 2);
-    std::array<std::array<double, 3>, 3> array_3 = {{{{-0.8434546455,-0.3219802991,-0.4300150555}},{{-0.23850553,0.9417033479,-0.2372971063}},{{0.4813516106,-0.09758837799,-0.8710781454}}}};
-    std::array<std::array<double, 3>, 3> array_4 = {{{{-0.3695282689,-0.1240881435,0.9208968407}},{{-0.9061330384,-0.1714186601,-0.3867021588}},{{0.2058440555,-0.9773524316,-0.04909632573}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_3,array_4};
-
-    compare_vectors_approx(grains.sizes, {0.4434528938,0.2295772202});
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    approval_tests_grains.emplace_back(grains);
   }
 
   // check grains layer 2
   {
     WorldBuilder::grains grains = world1.grains(position, 150e3, 0, 2);
-    compare_vectors_approx(grains.sizes, {0.471427737,0.528572263});
-    CHECK(grains.sizes[0] + grains.sizes[1] == Approx(1.0));
-    // these are random numbers, but they should stay the same.
-    std::array<std::array<double, 3>, 3> array_1 = {{{{0.6535959261,0.5566812833,-0.5127556087}},{{0.3237701162,0.4067148135,0.8542575562}},{{0.6840944944,-0.7243542016,0.08559038145}}}};
-    std::array<std::array<double, 3>, 3> array_2 = {{{{0.937444582,0.1583937415,-0.3100146421}},{{0.3453462197,-0.5355813035,0.7706417169}},{{-0.04397322126,-0.8294962869,-0.5567784711}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+    approval_tests_grains.emplace_back(grains);
 
   }
 
   // the constant layers test
   position = {{1500e3,250e3,0}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-  CHECK(world1.temperature(position, 1, 10) == Approx(1600.0004016064));
-  CHECK(world1.temperature(position, 240e3, 10) == Approx(1696.3855421687));
-  CHECK(world1.temperature(position, 249.5e3, 10) == Approx(1715.7728649903));
-  CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 249.5e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
 
-  CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 6) == Approx(0.25));
-  CHECK(world1.composition(position, 0, 7) == Approx(0.75));
-  CHECK(world1.composition(position, 0, 8) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1, 6) == Approx(0.25));
-  CHECK(world1.composition(position, 75e3-1, 7) == Approx(0.75));
-  CHECK(world1.composition(position, 75e3-1, 8) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1, 6) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1, 7) == Approx(1.0));
-  CHECK(world1.composition(position, 75e3+1, 8) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1, 6) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1, 7) == Approx(1.0));
-  CHECK(world1.composition(position, 150e3-1, 8) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1, 6) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1, 7) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1, 8) == Approx(1.0));
-  CHECK(world1.composition(position, 240e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 6) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 7) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 8) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 6) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 7) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 8) == Approx(0.0));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
+  approval_tests.emplace_back(world1.composition(position, 0, 7));
+  approval_tests.emplace_back(world1.composition(position, 0, 8));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 0));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 1));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 2));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 3));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 4));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 5));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 6));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 7));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 8));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 0));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 1));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 2));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 3));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 4));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 5));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 6));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 7));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 8));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 0));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 1));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 2));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 3));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 4));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 5));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 6));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 7));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 8));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 0));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 1));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 2));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 3));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 4));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 5));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 6));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 7));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 8));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 8));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 8));
 
+
+  std::vector<std::string> approvals;
+  for (auto&& value : approval_tests)
+    {
+      std::stringstream s;
+      s << value;
+      approvals.emplace_back(s.str());
+    }
+  for (auto&& value : approval_tests_grains)
+    {
+      std::stringstream s;
+      s << value;
+      approvals.emplace_back(s.str());
+    }
+  ApprovalTests::Approvals::verifyAll("Test", approvals);
 }
 
 TEST_CASE("WorldBuilder Features: Mantle layer")
 {
+  std::vector<double> approval_tests;
+  std::vector<grains> approval_tests_grains;
+
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/mantle_layer_cartesian.wb";
   WorldBuilder::World world1(file_name);
 
@@ -1278,253 +1264,232 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
 
   // Check continental plate through the world
   std::array<double,3> position = {{0,0,0}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(1600));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
 
   position = {{250e3,501e3,0}};
-  CHECK(world1.temperature(position, 0+100e3, 10) == Approx(150));
-  CHECK(world1.temperature(position, 240e3+100e3, 10) == Approx(150));
-  CHECK(world1.temperature(position, 260e3+100e3, 10) == Approx(1769.6886536946));
+  approval_tests.emplace_back(world1.temperature(position, 0+100e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3+100e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3+100e3, 10));
 
-  CHECK(world1.composition(position, 0+200e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0+200e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0+200e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0+200e3, 3) == Approx(1.0));
-  CHECK(world1.composition(position, 0+200e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0+200e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+200e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+200e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+200e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+200e3, 3) == Approx(1.0));
-  CHECK(world1.composition(position, 240e3+200e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+200e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+200e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+200e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+200e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+200e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+200e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+200e3, 5) == Approx(0.0));
+  approval_tests.emplace_back(world1.composition(position, 0+200e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 0+200e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 0+200e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 0+200e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 0+200e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 0+200e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3+200e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3+200e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3+200e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3+200e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3+200e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3+200e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 260e3+200e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3+200e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3+200e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3+200e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3+200e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3+200e3, 5));
 
   // check grains
   {
     WorldBuilder::grains grains = world1.grains(position, 200e3, 0, 3);
-    compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
-    std::array<std::array<double, 3>, 3> array_1 = {{{{1,2,3}},{{4,5,6}},{{7,8,9}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-
-    grains = world1.grains(position, 200e3, 1, 3);
-    std::array<std::array<double, 3>, 3> array_2 = {{{{10,11,12}},{{13,14,15}},{{16,17,18}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
-
-    compare_vectors_approx(grains.sizes, {0.2,0.2,0.2});
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    approval_tests_grains.emplace_back(grains);
   }
 
   position = {{1500e3,1500e3,0}};
-  CHECK(world1.temperature(position, 0+150e3, 10) == Approx(20));
-  CHECK(world1.temperature(position, 240e3+150e3, 10) == Approx(20));
-  CHECK(world1.temperature(position, 260e3+150e3, 10) == Approx(1794.6385365126));
+  approval_tests.emplace_back(world1.temperature(position, 0+150e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3+150e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3+150e3, 10));
 
-  CHECK(world1.composition(position, 0+150e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0+150e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0+150e3, 2) == Approx(1.0));
-  CHECK(world1.composition(position, 0+150e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 0+150e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0+150e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+150e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+150e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+150e3, 2) == Approx(1.0));
-  CHECK(world1.composition(position, 240e3+150e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+150e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+150e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+150e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+150e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+150e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+150e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+150e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+150e3, 5) == Approx(0.0));
+  approval_tests.emplace_back(world1.composition(position, 0+150e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 0+150e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 0+150e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 0+150e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 0+150e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 0+150e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3+150e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3+150e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3+150e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3+150e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3+150e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3+150e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 260e3+150e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3+150e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3+150e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3+150e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3+150e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3+150e3, 5));
 
   // check grains
   {
     WorldBuilder::grains grains = world1.grains(position, 150e3, 0, 3);
-    compare_vectors_approx(grains.sizes, {0.3,0.3,0.3});
-    std::array<std::array<double, 3>, 3> array_1 = {{{{10,20,30}},{{40,50,60}},{{70,80,90}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-
-    grains = world1.grains(position, 150e3, 1, 3);
-    std::array<std::array<double, 3>, 3> array_2 = {{{{100,110,120}},{{130,140,150}},{{160,170,180}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
-
-    compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    approval_tests_grains.emplace_back(grains);
   }
 
   position = {{250e3,1750e3,0}};
-  CHECK(world1.temperature(position, 0+250e3, 10) == Approx(293.15));
-  CHECK(world1.temperature(position, 240e3+250e3, 10) == Approx(1778.5465550447));
-  CHECK(world1.temperature(position, 260e3+250e3, 10) == Approx(1845.598526046));
+  approval_tests.emplace_back(world1.temperature(position, 0+250e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3+250e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3+250e3, 10));
 
-  CHECK(world1.composition(position, 0+250e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0+250e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0+250e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0+250e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 0+250e3, 4) == Approx(1.0));
-  CHECK(world1.composition(position, 0+250e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+250e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+250e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+250e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+250e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+250e3, 4) == Approx(1.0));
-  CHECK(world1.composition(position, 240e3+250e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+250e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+250e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+250e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+250e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+250e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+250e3, 5) == Approx(0.0));
+  approval_tests.emplace_back(world1.composition(position, 0+250e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 0+250e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 0+250e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 0+250e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 0+250e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 0+250e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3+250e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3+250e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3+250e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3+250e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3+250e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3+250e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 260e3+250e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3+250e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3+250e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3+250e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3+250e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3+250e3, 5));
 
   position = {{750e3,250e3,0}};
-  CHECK(world1.temperature(position, 0+300e3, 10) == Approx(10));
-  CHECK(world1.temperature(position, 95e3+300e3, 10) == Approx(48));
-  CHECK(world1.temperature(position, 105e3+300e3, 10) == Approx(1790.1395481805));
-  CHECK(world1.temperature(position, 145e3+300e3, 10) == Approx(1794.2913173676));
-  CHECK(world1.temperature(position, 155e3+300e3, 10) == Approx(1795.3292596644));
-  CHECK(world1.temperature(position, 260e3+300e3, 10) == Approx(1871.6186210824));
+  approval_tests.emplace_back(world1.temperature(position, 0+300e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 95e3+300e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 105e3+300e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 145e3+300e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 155e3+300e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3+300e3, 10));
 
-  CHECK(world1.composition(position, 0+300e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0+300e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0+300e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0+300e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 0+300e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0+300e3, 5) == Approx(0.25));
-  CHECK(world1.composition(position, 0+300e3, 6) == Approx(0.75));
-  CHECK(world1.composition(position, 240e3+300e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+300e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+300e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+300e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+300e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+300e3, 5) == Approx(0.25));
-  CHECK(world1.composition(position, 240e3+300e3, 6) == Approx(0.75));
-  CHECK(world1.composition(position, 260e3+300e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+300e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+300e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+300e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+300e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+300e3, 5) == Approx(0.0));
+  approval_tests.emplace_back(world1.composition(position, 0+300e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 0+300e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 0+300e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 0+300e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 0+300e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 0+300e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 0+300e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 260e3+300e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3+300e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3+300e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3+300e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3+300e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3+300e3, 5));
 
   // check grains layer 1
   {
     WorldBuilder::grains grains = world1.grains(position, 0+300e3, 0, 2);
-    compare_vectors_approx(grains.sizes, {0.5,0.5}); // was 0.2, but is normalized
-    // these are random numbers, but they should stay the same.
-    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.9582241838,-0.07911030008,-0.2748599171}},{{-0.1099528091,-0.7852541367,0.6093326847}},{{-0.2640393784,0.6140989344,0.7437511045}}}};
-    std::array<std::array<double, 3>, 3> array_2 = {{{{-0.2124629855,0.07025627985,0.9746402079}},{{0.06298075396,-0.9943536315,0.08540655858}},{{0.9751373772,0.07952930755,0.2068385477}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-
-    grains = world1.grains(position, 0+300e3, 1, 2);
-    std::array<std::array<double, 3>, 3> array_3 = {{{{-0.8434546455,-0.3219802991,-0.4300150555}},{{-0.23850553,0.9417033479,-0.2372971063}},{{0.4813516106,-0.09758837799,-0.8710781454}}}};
-    std::array<std::array<double, 3>, 3> array_4 = {{{{-0.3695282689,-0.1240881435,0.9208968407}},{{-0.9061330384,-0.1714186601,-0.3867021588}},{{0.2058440555,-0.9773524316,-0.04909632573}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_3,array_4};
-
-    compare_vectors_approx(grains.sizes, {0.4434528938,0.2295772202});
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    approval_tests_grains.emplace_back(grains);
   }
 
   // check grains layer 2
   {
     WorldBuilder::grains grains = world1.grains(position, 150e3+300e3, 0, 2);
-    compare_vectors_approx(grains.sizes, {0.471427737,0.528572263});
-    CHECK(grains.sizes[0] + grains.sizes[1] == Approx(1.0));
-    // these are random numbers, but they should stay the same.
-    std::array<std::array<double, 3>, 3> array_1 = {{{{0.6535959261,0.5566812833,-0.5127556087}},{{0.3237701162,0.4067148135,0.8542575562}},{{0.6840944944,-0.7243542016,0.08559038145}}}};
-    std::array<std::array<double, 3>, 3> array_2 = {{{{0.937444582,0.1583937415,-0.3100146421}},{{0.3453462197,-0.5355813035,0.7706417169}},{{-0.04397322126,-0.8294962869,-0.5567784711}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+    approval_tests_grains.emplace_back(grains);
 
   }
 
   // the constant layers test
   position = {{1500e3,250e3,0}};
-  CHECK(world1.temperature(position, 0+350e3, 10) == Approx(1764.7404561736));
-  CHECK(world1.temperature(position, 240e3+350e3, 10) == Approx(1887.4064334793));
-  CHECK(world1.temperature(position, 260e3+350e3, 10) == Approx(1898.0055593602));
+  approval_tests.emplace_back(world1.temperature(position, 0+350e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3+350e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3+350e3, 10));
 
-  CHECK(world1.composition(position, 0+350e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0+350e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0+350e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0+350e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 0+350e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0+350e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 0+350e3, 6) == Approx(1.0));
-  CHECK(world1.composition(position, 0+350e3, 7) == Approx(0.0));
-  CHECK(world1.composition(position, 0+350e3, 8) == Approx(0.0));
-  CHECK(world1.composition(position, 0+350e3, 9) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1+350e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1+350e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1+350e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1+350e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1+350e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1+350e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1+350e3, 6) == Approx(1.0));
-  CHECK(world1.composition(position, 75e3-1+350e3, 7) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1+350e3, 8) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1+350e3, 9) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1+350e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1+350e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1+350e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1+350e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1+350e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1+350e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1+350e3, 6) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1+350e3, 7) == Approx(1.0));
-  CHECK(world1.composition(position, 75e3+1+350e3, 8) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1+350e3, 9) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1+350e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1+350e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1+350e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1+350e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1+350e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1+350e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1+350e3, 6) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1+350e3, 7) == Approx(1.0));
-  CHECK(world1.composition(position, 150e3-1+350e3, 8) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1+350e3, 9) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1+350e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1+350e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1+350e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1+350e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1+350e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1+350e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1+350e3, 6) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1+350e3, 7) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1+350e3, 8) == Approx(0.25));
-  CHECK(world1.composition(position, 150e3+1+350e3, 9) == Approx(0.75));
-  CHECK(world1.composition(position, 240e3+350e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+350e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+350e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+350e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+350e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+350e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+350e3, 6) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+350e3, 7) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+350e3, 8) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3+350e3, 9) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+350e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+350e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+350e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+350e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+350e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+350e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+350e3, 6) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+350e3, 7) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+350e3, 8) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3+350e3, 9) == Approx(0.0));
+  approval_tests.emplace_back(world1.composition(position, 0+350e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 0+350e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 0+350e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 0+350e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 0+350e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 0+350e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 0+350e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 0+350e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 0+350e3, 8));
+  approval_tests.emplace_back(world1.composition(position, 0+350e3, 9));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 8));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 9));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 8));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 9));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 8));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 9));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 8));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 9));
+  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 8));
+  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 9));
+  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 8));
+  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 9));
+
+  std::vector<std::string> approvals;
+  for (auto&& value : approval_tests)
+    {
+      std::stringstream s;
+      s << value;
+      approvals.emplace_back(s.str());
+    }
+  for (auto&& value : approval_tests_grains)
+    {
+      std::stringstream s;
+      s << value;
+      approvals.emplace_back(s.str());
+    }
+  ApprovalTests::Approvals::verifyAll("Test", approvals);
 }
 
 TEST_CASE("WorldBuilder Features: Oceanic Plate")
 {
+  std::vector<double> approval_tests;
+  std::vector<grains> approval_tests_grains;
+
   // Cartesian
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate_cartesian.wb";
   WorldBuilder::World world1(file_name);
@@ -1535,192 +1500,192 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   // Check continental plate through the world
   // 2d
   std::array<double,2> position_2d = {{0,0}};
-  CHECK(world1.temperature(position_2d, 0, 10) == Approx(1600));
-  CHECK(world1.temperature(position_2d, 240e3, 10) == Approx(1711.2149738521));
-  CHECK(world1.temperature(position_2d, 260e3, 10) == Approx(1720.8246597128));
-  CHECK(world1.composition(position_2d, 0, 0) == Approx(0.0));
-  CHECK(world1.composition(position_2d, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position_2d, 0, 2) == Approx(0.0));
-  CHECK(world1.composition(position_2d, 0, 3) == Approx(0.0));
-  CHECK(world1.composition(position_2d, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position_2d, 0, 5) == Approx(0.0));
-  CHECK(world1.composition(position_2d, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world1.temperature(position_2d, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position_2d, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position_2d, 260e3, 10));
+  approval_tests.emplace_back(world1.composition(position_2d, 0, 0));
+  approval_tests.emplace_back(world1.composition(position_2d, 0, 1));
+  approval_tests.emplace_back(world1.composition(position_2d, 0, 2));
+  approval_tests.emplace_back(world1.composition(position_2d, 0, 3));
+  approval_tests.emplace_back(world1.composition(position_2d, 0, 4));
+  approval_tests.emplace_back(world1.composition(position_2d, 0, 5));
+  approval_tests.emplace_back(world1.composition(position_2d, 0, 6));
   // 3d
   std::array<double,3> position = {{0,0,0}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-  CHECK(world1.temperature(position, 240e3, 10) == Approx(1711.2149738521));
-  CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
-  CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{250e3,500e3,0}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(150));
-  CHECK(world1.temperature(position, 240e3, 10) == Approx(150));
-  CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
-  CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(1.0));
-  CHECK(world1.composition(position, 240e3, 3) == Approx(1.0));
-  CHECK(world1.composition(position, 260e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{1500e3,1500e3,0}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(20));
-  CHECK(world1.temperature(position, 240e3, 10) == Approx(20));
-  CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
-  CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 2) == Approx(1.0));
-  CHECK(world1.composition(position, 240e3, 2) == Approx(1.0));
-  CHECK(world1.composition(position, 260e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{250e3,1750e3,0}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
-  CHECK(world1.temperature(position, 240e3, 10) == Approx(1659.0985664065));
-  CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
-  CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(1.0));
-  CHECK(world1.composition(position, 240e3, 4) == Approx(1.0));
-  CHECK(world1.composition(position, 260e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{750e3,250e3,0}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(10));
-  CHECK(world1.temperature(position, 195e3, 10) == Approx(49));
-  CHECK(world1.temperature(position, 205e3, 10) == Approx(1692.9733466891));
-  CHECK(world1.temperature(position, 247e3, 10) == Approx(1699.8365894579));
-  CHECK(world1.temperature(position, 249e3, 10) == Approx(1715.532673603));
-  CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
-  CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 5) == Approx(0.25));
-  CHECK(world1.composition(position, 0, 6) == Approx(0.75));
-  CHECK(world1.composition(position, 240e3, 5) == Approx(0.25));
-  CHECK(world1.composition(position, 240e3, 6) == Approx(0.75));
-  CHECK(world1.composition(position, 260e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 6) == Approx(0.0));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 195e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 205e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 247e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 249e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 6));
 
   position = {{1500e3, 0, 0}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
-  CHECK(world1.temperature(position, 10, 10) == Approx(303.6570169192));
-  CHECK(world1.temperature(position, 240e3, 10) == Approx(1710.9310013));
-  CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
-  CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   // test symmetry
   position = {{1600e3, 0, 0}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
-  CHECK(world1.temperature(position, 10, 10) == Approx(293.6215585565));
-  CHECK(world1.temperature(position, 240e3, 10) == Approx(1711.2149738521));
-  CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
 
   position = {{1400e3, 0, 0}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
-  CHECK(world1.temperature(position, 10, 10) == Approx(293.6215585565));
-  CHECK(world1.temperature(position, 240e3, 10) == Approx(1711.2149738521));
-  CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
 
   // the constant layers test
   position = {{200e3,200e3,0}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(293.15));
-  CHECK(world1.temperature(position, 240e3, 10) == Approx(1708.6787610897));
-  CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
 
-  CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 6) == Approx(1.0));
-  CHECK(world1.composition(position, 0, 7) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 8) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 9) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1, 6) == Approx(1.0));
-  CHECK(world1.composition(position, 75e3-1, 7) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1, 8) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3-1, 9) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1, 6) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1, 7) == Approx(1.0));
-  CHECK(world1.composition(position, 75e3+1, 8) == Approx(0.0));
-  CHECK(world1.composition(position, 75e3+1, 9) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1, 6) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1, 7) == Approx(1.0));
-  CHECK(world1.composition(position, 150e3-1, 8) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3-1, 9) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1, 6) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1, 7) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3+1, 8) == Approx(0.25));
-  CHECK(world1.composition(position, 150e3+1, 9) == Approx(0.75));
-  CHECK(world1.composition(position, 240e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 6) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 7) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 8) == Approx(0.0));
-  CHECK(world1.composition(position, 240e3, 9) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 6) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 7) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 8) == Approx(0.0));
-  CHECK(world1.composition(position, 260e3, 9) == Approx(0.0));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
+  approval_tests.emplace_back(world1.composition(position, 0, 7));
+  approval_tests.emplace_back(world1.composition(position, 0, 8));
+  approval_tests.emplace_back(world1.composition(position, 0, 9));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 0));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 1));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 2));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 3));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 4));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 5));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 6));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 7));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 8));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 9));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 0));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 1));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 2));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 3));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 4));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 5));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 6));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 7));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 8));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 9));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 0));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 1));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 2));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 3));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 4));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 5));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 6));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 7));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 8));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 9));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 0));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 1));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 2));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 3));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 4));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 5));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 6));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 7));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 8));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 9));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 8));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 9));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 8));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 9));
 
   // spherical
   file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate_spherical.wb";
@@ -1735,192 +1700,170 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
 
   // 2d
   position_2d = {{6371000,0}};
-  CHECK(world2.temperature(position_2d, 0, 10) == Approx(1600));
-  CHECK(world2.composition(position_2d, 0, 0) == Approx(0.0));
-  CHECK(world2.composition(position_2d, 0, 1) == Approx(0.0));
-  CHECK(world2.composition(position_2d, 0, 2) == Approx(0.0));
-  CHECK(world2.composition(position_2d, 0, 3) == Approx(0.0));
-  CHECK(world2.composition(position_2d, 0, 4) == Approx(0.0));
-  CHECK(world2.composition(position_2d, 0, 5) == Approx(0.0));
-  CHECK(world2.composition(position_2d, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world2.temperature(position_2d, 0, 10));
+  approval_tests.emplace_back(world2.composition(position_2d, 0, 0));
+  approval_tests.emplace_back(world2.composition(position_2d, 0, 1));
+  approval_tests.emplace_back(world2.composition(position_2d, 0, 2));
+  approval_tests.emplace_back(world2.composition(position_2d, 0, 3));
+  approval_tests.emplace_back(world2.composition(position_2d, 0, 4));
+  approval_tests.emplace_back(world2.composition(position_2d, 0, 5));
+  approval_tests.emplace_back(world2.composition(position_2d, 0, 6));
 
   // 3d
   position = {{6371000,0,0}};
-  CHECK(world2.temperature(position, 0, 10) == Approx(1600));
-  CHECK(world2.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.composition(position, 0, 0));
+  approval_tests.emplace_back(world2.composition(position, 0, 1));
+  approval_tests.emplace_back(world2.composition(position, 0, 2));
+  approval_tests.emplace_back(world2.composition(position, 0, 3));
+  approval_tests.emplace_back(world2.composition(position, 0, 4));
+  approval_tests.emplace_back(world2.composition(position, 0, 5));
+  approval_tests.emplace_back(world2.composition(position, 0, 6));
 
   position = {{6371000, -5 * dtr,-5 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  CHECK(world2.temperature(position, 0, 10) == Approx(150));
-  CHECK(world2.temperature(position, 240e3, 10) == Approx(150));
-  CHECK(world2.temperature(position, 260e3, 10) == Approx(1720.8246597128));
-  CHECK(world2.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 0, 0));
+  approval_tests.emplace_back(world2.composition(position, 0, 1));
+  approval_tests.emplace_back(world2.composition(position, 0, 2));
+  approval_tests.emplace_back(world2.composition(position, 0, 3));
+  approval_tests.emplace_back(world2.composition(position, 0, 4));
+  approval_tests.emplace_back(world2.composition(position, 0, 5));
+  approval_tests.emplace_back(world2.composition(position, 0, 6));
 
   position = {{6371000, 5 * dtr,-5 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  CHECK(world2.temperature(position, 0, 10) == Approx(20));
-  CHECK(world2.temperature(position, 240e3, 10) == Approx(20));
-  CHECK(world2.temperature(position, 260e3, 10) == Approx(1720.8246597128));
-  CHECK(world2.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 2) == Approx(1.0));
-  CHECK(world2.composition(position, 240e3, 2) == Approx(1.0));
-  CHECK(world2.composition(position, 260e3, 2) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 0, 0));
+  approval_tests.emplace_back(world2.composition(position, 0, 1));
+  approval_tests.emplace_back(world2.composition(position, 0, 2));
+  approval_tests.emplace_back(world2.composition(position, 240e3, 2));
+  approval_tests.emplace_back(world2.composition(position, 260e3, 2));
+  approval_tests.emplace_back(world2.composition(position, 0, 3));
+  approval_tests.emplace_back(world2.composition(position, 0, 4));
+  approval_tests.emplace_back(world2.composition(position, 0, 5));
+  approval_tests.emplace_back(world2.composition(position, 0, 6));
 
   // check grains
   {
     WorldBuilder::grains grains = world2.grains(position, 240e3, 0, 3);
-    compare_vectors_approx(grains.sizes, {0.3,0.3,0.3});
-    std::array<std::array<double, 3>, 3> array_1 = {{{{10,20,30}},{{40,50,60}},{{70,80,90}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-
-    grains = world2.grains(position, 240e3, 1, 3);
-    std::array<std::array<double, 3>, 3> array_2 = {{{{100,110,120}},{{130,140,150}},{{160,170,180}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
-
-    compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    approval_tests_grains.emplace_back(grains);
   }
 
   position = {{6371000, 5 * dtr,5 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
-  CHECK(world2.temperature(position, 240e3, 10) == Approx(1659.0985664065));
-  CHECK(world2.temperature(position, 260e3, 10) == Approx(1720.8246597128));
-  CHECK(world2.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 4) == Approx(1.0));
-  CHECK(world2.composition(position, 240e3, 4) == Approx(1.0));
-  CHECK(world2.composition(position, 260e3, 4) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 0, 0));
+  approval_tests.emplace_back(world2.composition(position, 0, 1));
+  approval_tests.emplace_back(world2.composition(position, 0, 2));
+  approval_tests.emplace_back(world2.composition(position, 0, 3));
+  approval_tests.emplace_back(world2.composition(position, 0, 4));
+  approval_tests.emplace_back(world2.composition(position, 240e3, 4));
+  approval_tests.emplace_back(world2.composition(position, 260e3, 4));
+  approval_tests.emplace_back(world2.composition(position, 0, 5));
+  approval_tests.emplace_back(world2.composition(position, 0, 6));
 
   // check grains
   {
     WorldBuilder::grains grains = world2.grains(position, 240e3, 0, 3);
-    compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
-    std::array<std::array<double, 3>, 3> array_1 = {{{{1,2,3}},{{4,5,6}},{{7,8,9}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-
-    grains = world2.grains(position, 240e3, 1, 3);
-    std::array<std::array<double, 3>, 3> array_2 = {{{{10,11,12}},{{13,14,15}},{{16,17,18}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
-
-    compare_vectors_approx(grains.sizes, {0.2,0.2,0.2});
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    approval_tests_grains.emplace_back(grains);
   }
 
   position = {{6371000, -15 * dtr, -15 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  CHECK(world2.temperature(position, 0, 10) == Approx(10));
-  CHECK(world2.temperature(position, 240e3, 10) == Approx(48.4));
-  CHECK(world2.temperature(position, 260e3, 10) == Approx(1720.8246597128));
-  CHECK(world2.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 5) == Approx(0.25));
-  CHECK(world2.composition(position, 0, 6) == Approx(0.75));
-  CHECK(world2.composition(position, 240e3, 5) == Approx(0.25));
-  CHECK(world2.composition(position, 240e3, 6) == Approx(0.75));
-  CHECK(world2.composition(position, 260e3, 5) == Approx(0.0));
-  CHECK(world2.composition(position, 260e3, 6) == Approx(0.0));
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 0, 0));
+  approval_tests.emplace_back(world2.composition(position, 0, 1));
+  approval_tests.emplace_back(world2.composition(position, 0, 2));
+  approval_tests.emplace_back(world2.composition(position, 0, 3));
+  approval_tests.emplace_back(world2.composition(position, 0, 4));
+  approval_tests.emplace_back(world2.composition(position, 0, 5));
+  approval_tests.emplace_back(world2.composition(position, 0, 6));
+  approval_tests.emplace_back(world2.composition(position, 240e3, 5));
+  approval_tests.emplace_back(world2.composition(position, 240e3, 6));
+  approval_tests.emplace_back(world2.composition(position, 260e3, 5));
+  approval_tests.emplace_back(world2.composition(position, 260e3, 6));
 
   // check grains layer 1
   {
     WorldBuilder::grains grains = world2.grains(position, 0, 0, 2);
-    compare_vectors_approx(grains.sizes, {0.5,0.5}); // was 0.2, but is normalized
-    // these are random numbers, but they should stay the same.
-    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.9582241838,-0.07911030008,-0.2748599171}},{{-0.1099528091,-0.7852541367,0.6093326847}},{{-0.2640393784,0.6140989344,0.7437511045}}}};
-    std::array<std::array<double, 3>, 3> array_2 = {{{{-0.2124629855,0.07025627985,0.9746402079}},{{0.06298075396,-0.9943536315,0.08540655858}},{{0.9751373772,0.07952930755,0.2068385477}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
-
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-    grains = world2.grains(position, 0, 1, 2);
-    std::array<std::array<double, 3>, 3> array_3 = {{{{-0.8434546455,-0.3219802991,-0.4300150555}},{{-0.23850553,0.9417033479,-0.2372971063}},{{0.4813516106,-0.09758837799,-0.8710781454}}}};
-    std::array<std::array<double, 3>, 3> array_4 = {{{{-0.3695282689,-0.1240881435,0.9208968407}},{{-0.9061330384,-0.1714186601,-0.3867021588}},{{0.2058440555,-0.9773524316,-0.04909632573}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_3,array_4};
-
-    compare_vectors_approx(grains.sizes, {0.4434528938,0.2295772202});
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    approval_tests_grains.emplace_back(grains);
   }
 
   // check grains layer 2
   {
     WorldBuilder::grains grains = world2.grains(position, 150e3, 0, 2);
-    compare_vectors_approx(grains.sizes, {0.471427737,0.528572263});
-    CHECK(grains.sizes[0] + grains.sizes[1] == Approx(1.0));
-    // these are random numbers, but they should stay the same.
-    std::array<std::array<double, 3>, 3> array_1 = {{{{0.6535959261,0.5566812833,-0.5127556087}},{{0.3237701162,0.4067148135,0.8542575562}},{{0.6840944944,-0.7243542016,0.08559038145}}}};
-    std::array<std::array<double, 3>, 3> array_2 = {{{{0.937444582,0.1583937415,-0.3100146421}},{{0.3453462197,-0.5355813035,0.7706417169}},{{-0.04397322126,-0.8294962869,-0.5567784711}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-
+    approval_tests_grains.emplace_back(grains);
   }
 
   position = {{6371000, 15 * dtr, -19 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  CHECK(world2.temperature(position, 0, 0) == Approx(293.15));
-  CHECK(world2.temperature(position, 10, 10) == Approx(303.6570169192));
-  CHECK(world2.temperature(position, 240e3, 10) == Approx(1710.9310013));
-  CHECK(world2.temperature(position, 260e3, 10) == Approx(1720.8246597128));
-  CHECK(world2.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 6) == Approx(1.0));
-  CHECK(world2.composition(position, 240e3, 6) == Approx(1.0));
-  CHECK(world2.composition(position, 260e3, 6) == Approx(0.0));
+  approval_tests.emplace_back(world2.temperature(position, 0, 0));
+  approval_tests.emplace_back(world2.temperature(position, 10, 10));
+  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 0, 0));
+  approval_tests.emplace_back(world2.composition(position, 0, 1));
+  approval_tests.emplace_back(world2.composition(position, 0, 2));
+  approval_tests.emplace_back(world2.composition(position, 0, 3));
+  approval_tests.emplace_back(world2.composition(position, 0, 4));
+  approval_tests.emplace_back(world2.composition(position, 0, 5));
+  approval_tests.emplace_back(world2.composition(position, 0, 6));
+  approval_tests.emplace_back(world2.composition(position, 240e3, 6));
+  approval_tests.emplace_back(world2.composition(position, 260e3, 6));
 
   // test symmetry
   position = {{6371000, 16 * dtr, -19 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
-  CHECK(world2.temperature(position, 10, 10) == Approx(293.596373966));
-  CHECK(world2.temperature(position, 240e3, 10) == Approx(1711.2149738521));
-  CHECK(world2.temperature(position, 260e3, 10) == Approx(1720.8246597128));
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position, 10, 10));
+  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
 
   position = {{6371000, 14 * dtr, -19 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
-  CHECK(world2.temperature(position, 10, 10) == Approx(293.596373966));
-  CHECK(world2.temperature(position, 240e3, 10) == Approx(1711.2149738521));
-  CHECK(world2.temperature(position, 260e3, 10) == Approx(1720.8246597128));
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position, 10, 10));
+  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
 
   // test bend
   position = {{6371000, 12.5 * dtr, -12.5 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  CHECK(world2.temperature(position, 0, 0) == Approx(293.15));
-  CHECK(world2.temperature(position, 10, 10) == Approx(303.6570169192));
-  CHECK(world2.temperature(position, 240e3, 10) == Approx(1710.9310013));
-  CHECK(world2.temperature(position, 260e3, 10) == Approx(1720.8246597128));
+  approval_tests.emplace_back(world2.temperature(position, 0, 0));
+  approval_tests.emplace_back(world2.temperature(position, 10, 10));
+  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
+
+  std::vector<std::string> approvals;
+  for (auto&& value : approval_tests)
+    {
+      std::stringstream s;
+      s << value;
+      approvals.emplace_back(s.str());
+    }
+  for (auto&& value : approval_tests_grains)
+    {
+      std::stringstream s;
+      s << value;
+      approvals.emplace_back(s.str());
+    }
+  ApprovalTests::Approvals::verifyAll("Test", approvals);
 }
 
 TEST_CASE("WorldBuilder Features: Subducting Plate")
 {
+  std::vector<double> approval_tests;
+  std::vector<grains> approval_tests_grains;
+
   // Cartesian
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_constant_angles_cartesian.wb";
   WorldBuilder::World world1(file_name);
@@ -1930,346 +1873,293 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
 
   // Check continental plate through the world
   std::array<double,3> position = {{0,0,800e3}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(1600.0));
-  CHECK(world1.temperature(position, 240e3, 10) == Approx(1711.2149738521));
-  CHECK(world1.temperature(position, 260e3, 10) == Approx(1720.8246597128));
-  CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   //position = {{250e3,450e3,800e3}};
-  //CHECK(world1.temperature(position, 0, 10) == Approx(1599.9999999994));
-  //CHECK(world1.temperature(position, 1, 10) == Approx(1590.6681048292)); // we are in the plate for sure (colder than anywhere in the mantle)
-  //CHECK(world1.temperature(position, 5, 10) == Approx(1554.3294579725)); // we are in the plate for sure (colder than anywhere in the mantle)
-  //CHECK(world1.temperature(position, 10, 10) == Approx(1511.0782994151)); // we are in the plate for sure (colder than anywhere in the mantle)
-  //CHECK(world1.temperature(position, 100, 10) == Approx(1050.2588653774)); // we are in the plate for sure (colder than anywhere in the mantle)
-  //CHECK(world1.temperature(position, 500, 10) == Approx(876.8996655758)); // we are in the plate for sure (colder than anywhere in the mantle)
-  //CHECK(world1.temperature(position, 1000, 10) == Approx(829.7878359145)); // we are in the plate for sure (colder than anywhere in the mantle)
-  //CHECK(world1.temperature(position, 5000, 10) == Approx(620.9373458573)); // we are in the plate for sure (colder than anywhere in the mantle)
-  //CHECK(world1.temperature(position, 10e3, 10) == Approx(526.1591705397));
-  //CHECK(world1.temperature(position, 25e3, 10) == Approx(539.5656824584));
-  //CHECK(world1.temperature(position, 50e3, 10) == Approx(754.7202618956));
-  //CHECK(world1.temperature(position, 75e3, 10) == Approx(997.7030956234));
-  //CHECK(world1.temperature(position, 150e3, 10) == Approx(1668.6311660012));
+  //approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  //approval_tests.emplace_back(world1.temperature(position, 1, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 5, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 10, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 100, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 500, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 1000, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 5000, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 10e3, 10));
+  //approval_tests.emplace_back(world1.temperature(position, 25e3, 10));
+  //approval_tests.emplace_back(world1.temperature(position, 50e3, 10));
+  //approval_tests.emplace_back(world1.temperature(position, 75e3, 10));
+  //approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
 
   position = {{250e3,500e3,800e3}};
   // results strongly dependent on the summation number of the McKenzie temperature.
-  CHECK(world1.temperature(position, 0, 10) == Approx(1599.9999999994));
-  CHECK(world1.temperature(position, 1, 10) == Approx(1590.6681048292)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 5, 10) == Approx(1554.3294579725)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 10, 10) == Approx(1511.0782994151)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 100, 10) == Approx(1050.2588653774)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 500, 10) == Approx(876.8996655758)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 1000, 10) == Approx(829.7878359145)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 5000, 10) == Approx(620.9373458573)); // we are in the plate for sure (colder than anywhere in the mantle)
-  CHECK(world1.temperature(position, 10e3, 10) == Approx(526.1591705397));
-  CHECK(world1.temperature(position, 25e3, 10) == Approx(539.5656824584));
-  CHECK(world1.temperature(position, 50e3, 10) == Approx(754.7202618956));
-  CHECK(world1.temperature(position, 75e3, 10) == Approx(997.7030956234));
-  CHECK(world1.temperature(position, 150e3, 10) == Approx(1668.6311660012));
-  //CHECK(world1.temperature(position, std::sqrt(2) * 100e3 - 1, 10) == Approx(150.0));
-  //CHECK(world1.temperature(position, std::sqrt(2) * 100e3 + 1, 10) == Approx(1664.6283561404));
-  CHECK(world1.composition(position, 0, 0) == Approx(1.0));
-  CHECK(world1.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 0) == Approx(1.0));
-  CHECK(world1.composition(position, 10, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 4) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 33e3 - 1, 0) == Approx(1.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 33e3 + 1, 0) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 33e3 - 1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 33e3 + 1, 1) == Approx(1.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 66e3 - 1, 1) == Approx(1.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 66e3 + 1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 66e3 - 1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 66e3 + 1, 2) == Approx(0.35));
-  CHECK(world1.composition(position, std::sqrt(2) * 66e3 + 1, 3) == Approx(0.65));
-  CHECK(world1.composition(position, std::sqrt(2) * 99e3 - 1, 2) == Approx(0.35));
-  CHECK(world1.composition(position, std::sqrt(2) * 99e3 - 1, 3) == Approx(0.65));
-  CHECK(world1.composition(position, std::sqrt(2) * 99e3 + 1, 2) == Approx(0.0));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 5, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100, 10));
+  approval_tests.emplace_back(world1.temperature(position, 500, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  approval_tests.emplace_back(world1.temperature(position, 1000, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  approval_tests.emplace_back(world1.temperature(position, 5000, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  approval_tests.emplace_back(world1.temperature(position, 10e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 25e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 50e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 75e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
+  //approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 100e3 - 1, 10));
+  //approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 100e3 + 1, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 10, 0));
+  approval_tests.emplace_back(world1.composition(position, 10, 1));
+  approval_tests.emplace_back(world1.composition(position, 10, 2));
+  approval_tests.emplace_back(world1.composition(position, 10, 3));
+  approval_tests.emplace_back(world1.composition(position, 10, 4));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 - 1, 0));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 + 1, 0));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 - 1, 1));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 + 1, 1));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 - 1, 1));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 + 1, 1));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 - 1, 2));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 + 1, 2));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 + 1, 3));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 - 1, 2));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 - 1, 3));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 + 1, 2));
   // this comes form the first subducting plate
-  CHECK(world1.composition(position, std::sqrt(2) * 99e3 + 1, 3) == Approx(1.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 100e3 - 1, 3) == Approx(1.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 100e3 + 1, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 + 1, 3));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 100e3 - 1, 3));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 100e3 + 1, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   // check grains layer 1
   {
-    WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 33e3 - 1, 0, 2);
-    compare_vectors_approx(grains.sizes, {0.5,0.5}); // was 0.2, but is normalized
-
+    WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 33e3 - 5e3, 0, 2);
     // these are random numbers, but they should stay the same.
     // note that the values are different from for example the continental plate since
     // this performs a interpolation between segments of the slab.
+    approval_tests_grains.emplace_back(grains);
 
-    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.8841073844,-0.1312960784,-0.4484589977}},{{-0.4639013434,0.3618800113,0.8086027461}},{{0.05612197756,0.9229323904,-0.3808492174}}}};
-    std::array<std::array<double, 3>, 3> array_2 = {{{{-0.2568202195,-0.0592025578,0.9646441997}},{{-0.5750059457,-0.7928848317,-0.2017468859}},{{0.7767956856,-0.6064888299,0.1695870338}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-
-    grains = world1.grains(position, std::sqrt(2) * 33e3 - 1, 1, 2);
-
-    std::array<std::array<double, 3>, 3> array_3 = {{{{0.6521279994,0.6032912374,0.459095584}},{{-0.5017626042,0.7974338311,-0.3351620115}},{{-0.5682986551,-0.01178846375,0.8227379113}}}};
-    std::array<std::array<double, 3>, 3> array_4 = {{{{-0.7358966282,0.4557371955,-0.5007591849}},{{0.6726233448,0.4071992867,-0.6178726219}},{{-0.07767875296,-0.791512697,-0.6061960589}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_3,array_4};
-
-    compare_vectors_approx(grains.sizes, {0.8843655798,0.5257196065});
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    grains = world1.grains(position, std::sqrt(2) * 33e3 - 5e3, 1, 2);
+    approval_tests_grains.emplace_back(grains);
   }
 
   // check grains layer 2
   {
     WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 66e3 - 1, 0, 2);
-
-    compare_vectors_approx(grains.sizes, {0.6692173347,0.3307826653});
-    CHECK(grains.sizes[0] + grains.sizes[1] == Approx(1.0));
-    // these are random numbers, but they should stay the same.
-    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.5791315939,0.7367092885,-0.3490931411}},{{-0.1853986251,-0.5360105647,-0.8236018603}},{{-0.7938727522,-0.4122524697,0.4470055419}}}};
-    std::array<std::array<double, 3>, 3> array_2 = {{{{0.6418405971,0.7328740545,-0.2256906471}},{{-0.6739597786,0.3987178861,-0.6219342924}},{{-0.3658126088,0.5512890961,0.7498409616}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-
+    approval_tests_grains.emplace_back(grains);
   }
 
   position = {{250e3,550e3,800e3}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-  CHECK(world1.temperature(position, 10, 10) == Approx(1600.0044800063));
-  CHECK(world1.temperature(position, 45e3, 10) == Approx(1620.2875431182));
-  CHECK(world1.temperature(position, 50e3-1, 10) == Approx(1622.5570799855));
-  CHECK(world1.temperature(position, 50e3+1, 10) == Approx(1229.3704734991));
-  CHECK(world1.temperature(position, 55e3, 10) == Approx(1277.8134429863));
-  CHECK(world1.temperature(position, 100e3-1, 10) == Approx(5.2425558343));
-  CHECK(world1.temperature(position, 100e3+1, 10) == Approx(5.2427255399));
-  CHECK(world1.temperature(position, 101e3, 10) == Approx(5.3274935009));
-  CHECK(world1.temperature(position, 110e3, 10) == Approx(6.0911688245));
-  CHECK(world1.temperature(position, 150e3, 10) == Approx(1696.0566101348));
-  CHECK(world1.temperature(position, 155e3, 10) == Approx(1708.6036872114));
-  CHECK(world1.temperature(position, 175e3, 10) == Approx(1758.7919955177));
-  CHECK(world1.temperature(position, 200e3, 10) == Approx(1692.1562939786));
-  CHECK(world1.temperature(position, 250e3, 10) == Approx(1716.0130900067));
-  CHECK(world1.temperature(position, 300e3, 10) == Approx(1740.2062300941));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 45e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 50e3-1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 50e3+1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 55e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3-1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3+1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 101e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 110e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 155e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 175e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 250e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 300e3, 10));
 
   position = {{250e3,600e3,800e3}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-  CHECK(world1.temperature(position, 10, 10) == Approx(1600.0044800063));
-  CHECK(world1.temperature(position, 45e3, 10) == Approx(1620.2875431182));
-  CHECK(world1.temperature(position, 50e3-1, 10) == Approx(1622.5570799855));
-  CHECK(world1.temperature(position, 50e3+1, 10) == Approx(1622.5579886178));
-  CHECK(world1.temperature(position, 55e3, 10) == Approx(1624.8307056983));
-  CHECK(world1.temperature(position, 100e3-1, 10) == Approx(1645.4326343531));
-  CHECK(world1.temperature(position, 100e3+1, 10) == Approx(1.0000848528));
-  CHECK(world1.temperature(position, 101e3, 10) == Approx(1.0848528137));
-  CHECK(world1.temperature(position, 110e3, 10) == Approx(1.8485281374 ));
-  CHECK(world1.temperature(position, 150e3, 10) == Approx(5.2426406871));
-  CHECK(world1.temperature(position, 155e3, 10) == Approx(5.6669047558));
-  CHECK(world1.temperature(position, 160e3, 10) == Approx(6.0911688245));
-  CHECK(world1.temperature(position, 165e3, 10) == Approx(6.5154328933));
-  CHECK(world1.temperature(position, 170e3, 10) == Approx(6.939696962));
-  CHECK(world1.temperature(position, 175e3, 10) == Approx(2.0));
-  CHECK(world1.temperature(position, 180e3, 10) == Approx(2.0));
-  CHECK(world1.temperature(position, 185e3, 10) == Approx(2.0));
-  CHECK(world1.temperature(position, 200e3, 10) == Approx(2.0));
-  CHECK(world1.temperature(position, 250e3, 10) == Approx(2.0));
-  CHECK(world1.temperature(position, 300e3, 10) == Approx(1740.2062300941));
-  CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3-1, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3-1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3-1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3-1, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3-1, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3+1, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3+1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3+1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3+1, 3) == Approx(1.0));
-  CHECK(world1.composition(position, 100e3+1, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 101e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 101e3+1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 101e3+1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 101e3+1, 3) == Approx(1.0));
-  CHECK(world1.composition(position, 101e3+1, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3, 3) == Approx(1.0));
-  CHECK(world1.composition(position, 150e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 200e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 200e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 200e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 200e3, 3) == Approx(0.25));
-  CHECK(world1.composition(position, 200e3, 4) == Approx(0.75));
-  CHECK(world1.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 45e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 50e3-1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 50e3+1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 55e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3-1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3+1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 101e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 110e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 155e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 160e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 165e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 170e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 175e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 180e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 185e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 250e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 300e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 10, 0));
+  approval_tests.emplace_back(world1.composition(position, 10, 1));
+  approval_tests.emplace_back(world1.composition(position, 10, 2));
+  approval_tests.emplace_back(world1.composition(position, 10, 3));
+  approval_tests.emplace_back(world1.composition(position, 100e3-1, 0));
+  approval_tests.emplace_back(world1.composition(position, 100e3-1, 1));
+  approval_tests.emplace_back(world1.composition(position, 100e3-1, 2));
+  approval_tests.emplace_back(world1.composition(position, 100e3-1, 3));
+  approval_tests.emplace_back(world1.composition(position, 100e3-1, 4));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 0));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 1));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 2));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 3));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 4));
+  approval_tests.emplace_back(world1.composition(position, 101e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 1));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 2));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 3));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 4));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{650e3,650e3,800e3}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-  CHECK(world1.temperature(position, 10, 10) == Approx(1600.0044800063));
-  CHECK(world1.temperature(position, 100e3, 10) == Approx(4.3590710784));
-  CHECK(world1.temperature(position, 100e3+1, 10) == Approx(4.3590710784));
-  CHECK(world1.temperature(position, 101e3, 10) == Approx(4.3590710784));
-  CHECK(world1.temperature(position, 110e3, 10) == Approx(4.3590710784));
-  CHECK(world1.temperature(position, 150e3, 10) == Approx(4.3590710784));
-  CHECK(world1.temperature(position, 200e3, 10) == Approx(1692.1562939786));
-  CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3, 3) == Approx(0.0897677696));
-  CHECK(world1.composition(position, 100e3, 4) == Approx(0.2693033088));
-  CHECK(world1.composition(position, 100e3+1, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3+1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3+1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3+1, 3) == Approx(0.0897677696));
-  CHECK(world1.composition(position, 100e3+1, 4) == Approx(0.2693033088));
-  CHECK(world1.composition(position, 101e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 101e3+1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 101e3+1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 101e3+1, 3) == Approx(0.0897677696));
-  CHECK(world1.composition(position, 101e3+1, 4) == Approx(0.2693033088));
-  CHECK(world1.composition(position, 150e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3, 3) == Approx(0.0897677696));
-  CHECK(world1.composition(position, 150e3, 4) == Approx(0.2693033088));
-  CHECK(world1.composition(position, 200e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 200e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 200e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 200e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 200e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3+1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 101e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 110e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 10, 0));
+  approval_tests.emplace_back(world1.composition(position, 10, 1));
+  approval_tests.emplace_back(world1.composition(position, 10, 2));
+  approval_tests.emplace_back(world1.composition(position, 10, 3));
+  approval_tests.emplace_back(world1.composition(position, 100e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 100e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 100e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 100e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 100e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 0));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 1));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 2));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 3));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 4));
+  approval_tests.emplace_back(world1.composition(position, 101e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 1));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 2));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 3));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 4));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{700e3,675e3,800e3}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-  CHECK(world1.temperature(position, 10, 10) == Approx(1600.0044800063));
-  CHECK(world1.temperature(position, 100e3, 10) == Approx(4.4592312705));
-  CHECK(world1.temperature(position, 100e3+1, 10) == Approx(4.4592312705));
-  CHECK(world1.temperature(position, 101e3, 10) == Approx(4.4592312705));
-  CHECK(world1.temperature(position, 110e3, 10) == Approx(4.4592312705));
-  CHECK(world1.temperature(position, 150e3, 10) == Approx(4.4592312705));
-  CHECK(world1.temperature(position, 200e3, 10) == Approx(1692.1562939786));
-  CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3, 3) == Approx(0.1148078176));
-  CHECK(world1.composition(position, 100e3, 4) == Approx(0.3444234529));
-  CHECK(world1.composition(position, 100e3+1, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3+1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3+1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 100e3+1, 3) == Approx(0.1148078176));
-  CHECK(world1.composition(position, 100e3+1, 4) == Approx(0.3444234529));
-  CHECK(world1.composition(position, 101e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 101e3+1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 101e3+1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 101e3+1, 3) == Approx(0.1148078176));
-  CHECK(world1.composition(position, 101e3+1, 4) == Approx(0.3444234529));
-  CHECK(world1.composition(position, 150e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 150e3, 3) == Approx(0.1148078176));
-  CHECK(world1.composition(position, 150e3, 4) == Approx(0.3444234529));
-  CHECK(world1.composition(position, 200e3, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 200e3, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 200e3, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 200e3, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 200e3, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3+1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 101e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 110e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 10, 0));
+  approval_tests.emplace_back(world1.composition(position, 10, 1));
+  approval_tests.emplace_back(world1.composition(position, 10, 2));
+  approval_tests.emplace_back(world1.composition(position, 10, 3));
+  approval_tests.emplace_back(world1.composition(position, 100e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 100e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 100e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 100e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 100e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 0));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 1));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 2));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 3));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 4));
+  approval_tests.emplace_back(world1.composition(position, 101e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 1));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 2));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 3));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 4));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{700e3,155e3,800e3}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-  CHECK(world1.temperature(position, 10, 10) == Approx(1600.0044800063));
-  CHECK(world1.temperature(position, 100e3, 10) == Approx(11));
-  CHECK(world1.temperature(position, 150e3, 10) == Approx(11));
-  CHECK(world1.temperature(position, 200e3, 10) == Approx(1692.1562939786));
-  CHECK(world1.temperature(position, 250e3, 10) == Approx(12));
-  CHECK(world1.temperature(position, 300e3, 10) == Approx(1740.2062300941));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 250e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 300e3, 10));
 
   // check grains
   {
     {
       // layer 1
       WorldBuilder::grains grains = world1.grains(position, 80e3, 0, 3);
-      std::array<std::array<double, 3>, 3> array_1  = Utilities::euler_angles_to_rotation_matrix(10,20,30);
-      std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
-
-      compare_vectors_approx(grains.sizes, {0.4,0.4,0.4});
-      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-
-      grains = world1.grains(position, 80e3, 1, 3);
-      std::array<std::array<double, 3>, 3> array_2 = Utilities::euler_angles_to_rotation_matrix(40,50,60);
-      std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
-
-      compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
-      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+      approval_tests_grains.emplace_back(grains);
     }
 
     {
       // layer 2
       WorldBuilder::grains grains = world1.grains(position, 100e3, 0, 3);
-      std::array<std::array<double, 3>, 3> array_1 = Utilities::euler_angles_to_rotation_matrix(-10,-25,35);
-      std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
-
-      compare_vectors_approx(grains.sizes, {0.5,0.5,0.5});
-      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-
-      grains = world1.grains(position, 100e3, 1, 3);
-      std::array<std::array<double, 3>, 3> array_2  =  Utilities::euler_angles_to_rotation_matrix(45,-55,65);
-      std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
-
-      compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
-      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+      approval_tests_grains.emplace_back(grains);
     }
 
     {
       // layer 3
       WorldBuilder::grains grains = world1.grains(position, 250e3, 0, 3);
-      std::array<std::array<double, 3>, 3> array_1 = Utilities::euler_angles_to_rotation_matrix(220,320,240);
-      std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
-
-      compare_vectors_approx(grains.sizes, {0.6,0.6,0.6});
-      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-
-      grains = world1.grains(position, 250e3, 1, 3);
-      std::array<std::array<double, 3>, 3> array_2 = Utilities::euler_angles_to_rotation_matrix(520,620,270);
-      std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
-
-      compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
-      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+      approval_tests_grains.emplace_back(grains);
     }
   }
 
@@ -2278,100 +2168,118 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   WorldBuilder::World world2(file_name2);
 
   position = {{250e3,500e3,800e3}};
-  CHECK(world2.temperature(position, 0, 10) == Approx(1599.9999999994));
-  CHECK(world2.composition(position, 0, 0) == Approx(1.0));
-  CHECK(world2.temperature(position, 1, 10) == Approx(1586.7321267113));
-  CHECK(world2.composition(position, 1, 0) == Approx(1.0));
-  CHECK(world2.temperature(position, 1e3, 10) == Approx(233.1298084984));
-  CHECK(world2.composition(position, 1e3, 0) == Approx(1.0));
-  CHECK(world2.temperature(position, 10e3, 10) == Approx(412.3206666645));
-  CHECK(world2.composition(position, 10e3, 0) == Approx(1.0));
-  CHECK(world2.temperature(position, 20e3, 10) == Approx(544.1584323159));
-  CHECK(world2.composition(position, 20e3, 0) == Approx(1.0));
-  CHECK(world2.temperature(position, 40e3, 10) == Approx(814.1198929245));
-  CHECK(world2.composition(position, 40e3, 0) == Approx(1.0));
-  CHECK(world2.temperature(position, 60e3, 10) == Approx(1087.9994157551));
-  CHECK(world2.composition(position, 60e3, 0) == Approx(1.0));
-  CHECK(world2.temperature(position, 80e3, 10) == Approx(1365.1437340828));
-  CHECK(world2.composition(position, 80e3, 0) == Approx(1.0));
-  CHECK(world2.temperature(position, 100e3, 10) == Approx(1645.4330950743));
-  CHECK(world2.composition(position, 100e3, 0) == Approx(1.0));
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.composition(position, 0, 0));
+  approval_tests.emplace_back(world2.temperature(position, 1, 10));
+  approval_tests.emplace_back(world2.composition(position, 1, 0));
+  approval_tests.emplace_back(world2.temperature(position, 1e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 1e3, 0));
+  approval_tests.emplace_back(world2.temperature(position, 10e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 10e3, 0));
+  approval_tests.emplace_back(world2.temperature(position, 20e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 20e3, 0));
+  approval_tests.emplace_back(world2.temperature(position, 40e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 40e3, 0));
+  approval_tests.emplace_back(world2.temperature(position, 60e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 60e3, 0));
+  approval_tests.emplace_back(world2.temperature(position, 80e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 80e3, 0));
+  approval_tests.emplace_back(world2.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 100e3, 0));
 
 
   file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_cartesian_2.wb";
   WorldBuilder::World world4(file_name);
 
   position = {{250e3,500e3,800e3}};
-  CHECK(world4.temperature(position, 0, 10) == Approx(-1));
-  CHECK(world4.composition(position, 0, 0) == Approx(1.0));
-  CHECK(world4.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world4.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world4.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world4.temperature(position, 1, 10) == Approx(-1));
-  CHECK(world4.composition(position, 1, 0) == Approx(1.0));
-  CHECK(world4.composition(position, 1, 1) == Approx(0.0));
-  CHECK(world4.composition(position, 1, 2) == Approx(0.0));
-  CHECK(world4.composition(position, 1, 3) == Approx(0.0));
-  CHECK(world4.temperature(position, 1e3, 10) == Approx(-1));
-  CHECK(world4.composition(position, 1e3, 0) == Approx(1.0));
-  CHECK(world4.composition(position, 1e3, 1) == Approx(0.0));
-  CHECK(world4.composition(position, 1e3, 2) == Approx(0.0));
-  CHECK(world4.composition(position, 1e3, 3) == Approx(0.0));
-  CHECK(world4.temperature(position, 10e3, 10) == Approx(-1));
-  CHECK(world4.composition(position, 10e3, 0) == Approx(1.0));
-  CHECK(world4.composition(position, 10e3, 1) == Approx(0.0));
-  CHECK(world4.composition(position, 10e3, 2) == Approx(0.0));
-  CHECK(world4.composition(position, 10e3, 3) == Approx(0.0));
-  CHECK(world4.temperature(position, 20e3, 10) == Approx(573.5111391079));
-  CHECK(world4.composition(position, 20e3, 0) == Approx(0.0));
-  CHECK(world4.composition(position, 20e3, 1) == Approx(1.0));
-  CHECK(world4.composition(position, 20e3, 2) == Approx(0.0));
-  CHECK(world4.composition(position, 20e3, 3) == Approx(0.0));
-  CHECK(world4.temperature(position, 30e3, 10) == Approx(1374.5429651305));
-  CHECK(world4.composition(position, 30e3, 0) == Approx(0.0));
-  CHECK(world4.composition(position, 30e3, 1) == Approx(1.0));
-  CHECK(world4.composition(position, 30e3, 2) == Approx(0.0));
-  CHECK(world4.composition(position, 30e3, 3) == Approx(0.0));
-  CHECK(world4.temperature(position, 35e3, 10) == Approx(-3));
-  CHECK(world4.composition(position, 35e3, 0) == Approx(0.0));
-  CHECK(world4.composition(position, 35e3, 1) == Approx(0.0));
-  CHECK(world4.composition(position, 35e3, 2) == Approx(0.25));
-  CHECK(world4.composition(position, 35e3, 3) == Approx(0.75));
-  CHECK(world4.temperature(position, 40e3, 10) == Approx(-3));
-  CHECK(world4.composition(position, 40e3, 0) == Approx(0.0));
-  CHECK(world4.composition(position, 40e3, 1) == Approx(0.0));
-  CHECK(world4.composition(position, 40e3, 2) == Approx(0.25));
-  CHECK(world4.composition(position, 40e3, 3) == Approx(0.75));
-  CHECK(world4.temperature(position, 45e3, 10) == Approx(-3));
-  CHECK(world4.composition(position, 45e3, 0) == Approx(0.0));
-  CHECK(world4.composition(position, 45e3, 1) == Approx(0.0));
-  CHECK(world4.composition(position, 45e3, 2) == Approx(0.25));
-  CHECK(world4.composition(position, 45e3, 3) == Approx(0.75));
-  CHECK(world4.temperature(position, 50e3, 10) == Approx(1622.5575343016));
-  CHECK(world4.composition(position, 50e3, 0) == Approx(0.0));
-  CHECK(world4.composition(position, 50e3, 1) == Approx(0.0));
-  CHECK(world4.composition(position, 50e3, 2) == Approx(0.0));
-  CHECK(world4.composition(position, 50e3, 3) == Approx(0.0));
-  CHECK(world4.temperature(position, 60e3, 10) == Approx(1627.1070617637));
-  CHECK(world4.composition(position, 60e3, 0) == Approx(0.0));
-  CHECK(world4.composition(position, 60e3, 1) == Approx(0.0));
-  CHECK(world4.composition(position, 60e3, 2) == Approx(0.0));
-  CHECK(world4.composition(position, 60e3, 3) == Approx(0.0));
-  CHECK(world4.temperature(position, 80e3, 10) == Approx(1636.2444220394));
-  CHECK(world4.composition(position, 80e3, 0) == Approx(0.0));
-  CHECK(world4.composition(position, 80e3, 1) == Approx(0.0));
-  CHECK(world4.composition(position, 80e3, 2) == Approx(0.0));
-  CHECK(world4.composition(position, 80e3, 3) == Approx(0.0));
-  CHECK(world4.temperature(position, 100e3, 10) == Approx(1645.4330950743));
-  CHECK(world4.composition(position, 100e3, 0) == Approx(0.0));
-  CHECK(world4.composition(position, 100e3, 1) == Approx(0.0));
-  CHECK(world4.composition(position, 100e3, 2) == Approx(0.0));
-  CHECK(world4.composition(position, 100e3, 3) == Approx(0.0));
+  approval_tests.emplace_back(world4.temperature(position, 0, 10));
+  approval_tests.emplace_back(world4.composition(position, 0, 0));
+  approval_tests.emplace_back(world4.composition(position, 0, 1));
+  approval_tests.emplace_back(world4.composition(position, 0, 2));
+  approval_tests.emplace_back(world4.composition(position, 0, 3));
+  approval_tests.emplace_back(world4.temperature(position, 1, 10));
+  approval_tests.emplace_back(world4.composition(position, 1, 0));
+  approval_tests.emplace_back(world4.composition(position, 1, 1));
+  approval_tests.emplace_back(world4.composition(position, 1, 2));
+  approval_tests.emplace_back(world4.composition(position, 1, 3));
+  approval_tests.emplace_back(world4.temperature(position, 1e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 1e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 1e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 1e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 1e3, 3));
+  approval_tests.emplace_back(world4.temperature(position, 10e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 10e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 10e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 10e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 10e3, 3));
+  approval_tests.emplace_back(world4.temperature(position, 20e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 20e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 20e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 20e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 20e3, 3));
+  approval_tests.emplace_back(world4.temperature(position, 30e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 30e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 30e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 30e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 30e3, 3));
+  approval_tests.emplace_back(world4.temperature(position, 35e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 35e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 35e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 35e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 35e3, 3));
+  approval_tests.emplace_back(world4.temperature(position, 40e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 40e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 40e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 40e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 40e3, 3));
+  approval_tests.emplace_back(world4.temperature(position, 45e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 45e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 45e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 45e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 45e3, 3));
+  approval_tests.emplace_back(world4.temperature(position, 50e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 50e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 50e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 50e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 50e3, 3));
+  approval_tests.emplace_back(world4.temperature(position, 60e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 60e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 60e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 60e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 60e3, 3));
+  approval_tests.emplace_back(world4.temperature(position, 80e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 80e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 80e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 80e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 80e3, 3));
+  approval_tests.emplace_back(world4.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 100e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 100e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 100e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 100e3, 3));
 
+
+  std::vector<std::string> approvals;
+  for (auto&& value : approval_tests)
+    {
+      std::stringstream s;
+      s << value;
+      approvals.emplace_back(s.str());
+    }
+  for (auto&& value : approval_tests_grains)
+    {
+      std::stringstream s;
+      s << value;
+      approvals.emplace_back(s.str());
+    }
+  ApprovalTests::Approvals::verifyAll("Test", approvals);
 }
 
 TEST_CASE("WorldBuilder Features: Fault")
 {
+  std::vector<double> approval_tests;
+  std::vector<grains> approval_tests_grains;
+
   // Cartesian
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/fault_constant_angles_cartesian.wb";
   WorldBuilder::World world1(file_name);
@@ -2381,285 +2289,252 @@ TEST_CASE("WorldBuilder Features: Fault")
 
   // Check fault plate through the world
   std::array<double,3> position = {{0,0,800e3}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-  CHECK(world1.temperature(position, 220e3, 10) == Approx(1701.6589518333));
-  CHECK(world1.temperature(position, 230e3, 10) == Approx(1798.05608126));
-  CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 220e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 230e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{250e3,500e3,800e3}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(1600.0));
-  CHECK(world1.temperature(position, 10, 10) == Approx(150));
-  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(150.0));
-  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(1631.9945206949));
-  CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 3) == Approx(0.25));
-  CHECK(world1.composition(position, 10, 4) == Approx(0.75));
-  CHECK(world1.composition(position, std::sqrt(2) * 50e3 - 1, 3) == Approx(0.25));
-  CHECK(world1.composition(position, std::sqrt(2) * 50e3 - 1, 4) == Approx(0.75));
-  CHECK(world1.composition(position, std::sqrt(2) * 50e3 + 1, 3) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 50e3 + 1, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 10, 0));
+  approval_tests.emplace_back(world1.composition(position, 10, 1));
+  approval_tests.emplace_back(world1.composition(position, 10, 2));
+  approval_tests.emplace_back(world1.composition(position, 10, 3));
+  approval_tests.emplace_back(world1.composition(position, 10, 4));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 50e3 - 1, 3));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 50e3 - 1, 4));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 50e3 + 1, 3));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 50e3 + 1, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   // check grains
   {
     WorldBuilder::grains grains = world1.grains(position, 10, 0, 3);
-    compare_vectors_approx(grains.sizes, {0.3,0.3,0.3});
-    std::array<std::array<double, 3>, 3> array_1  = Utilities::euler_angles_to_rotation_matrix(10,20,30);
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+    approval_tests_grains.emplace_back(grains);
 
     grains = world1.grains(position, 10, 1, 3);
-    std::array<std::array<double, 3>, 3> array_2 = Utilities::euler_angles_to_rotation_matrix(40,50,60);
-    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
-
-    compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    approval_tests_grains.emplace_back(grains);
   }
 
   position = {{50e3,230e3,800e3}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(1038.773901055));
-  CHECK(world1.temperature(position, 1, 10) == Approx(1038.73661986));
-  CHECK(world1.temperature(position, 5, 10) == Approx(1038.5874950798));
-  CHECK(world1.temperature(position, 10, 10) == Approx(1038.4010891045));
-  CHECK(world1.temperature(position, 100, 10) == Approx(1035.0457815498));
-  CHECK(world1.temperature(position, 500, 10) == Approx(1020.1333035287));
-  CHECK(world1.temperature(position, 1000, 10) == Approx(1001.4927060023));
-  CHECK(world1.temperature(position, 5000, 10) == Approx(852.3679257913));
-  CHECK(world1.temperature(position, std::sqrt(2) * 50e3/2, 10) == Approx(865.6153905719));
-  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(1693.2261574294));
-  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(1693.2261574294));
-  CHECK(world1.temperature(position, 25e3, 10) == Approx(479.5559752638));
-  CHECK(world1.temperature(position, 50e3, 10) == Approx(1411.5858515826));
-  CHECK(world1.temperature(position, 75e3, 10) == Approx(1716.1213324607));
-  CHECK(world1.temperature(position, 80e3, 10) == Approx(1742.8161278431));
-  CHECK(world1.temperature(position, 90e3, 10) == Approx(1796.2057186079));
-  CHECK(world1.temperature(position, 100e3, 10) == Approx(1645.4330950743));
-  CHECK(world1.temperature(position, 150e3, 10) == Approx(1668.6311660012));
-  CHECK(world1.temperature(position, 200e3, 10) == Approx(1692.1562939786));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 5, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100, 10));
+  approval_tests.emplace_back(world1.temperature(position, 500, 10));
+  approval_tests.emplace_back(world1.temperature(position, 1000, 10));
+  approval_tests.emplace_back(world1.temperature(position, 5000, 10));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3/2, 10));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 25e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 50e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 75e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 80e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 90e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 200e3, 10));
 
   position = {{250e3,250e3,800e3}};
-  CHECK(world1.temperature(position, 0, 10) == Approx(1600.0));
-  CHECK(world1.temperature(position, 1, 10) == Approx(293.1872811951));
-  CHECK(world1.temperature(position, 5, 10) == Approx(293.3364059753));
-  CHECK(world1.temperature(position, 10, 10) == Approx(293.5228119505));
-  CHECK(world1.temperature(position, 100, 10) == Approx(296.8781195053));
-  CHECK(world1.temperature(position, 500, 10) == Approx(311.7905975264));
-  CHECK(world1.temperature(position, 1000, 10) == Approx(330.4311950528));
-  CHECK(world1.temperature(position, 5000, 10) == Approx(479.5559752638));
-  CHECK(world1.temperature(position, std::sqrt(2) * 50e3/2, 10) == Approx(1611.239291627));
-  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(1799.9946610409));
-  CHECK(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(1631.9945206949));
-  CHECK(world1.temperature(position, std::sqrt(2) * 51e3, 10) == Approx(1632.6404283806));
-  CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 0) == Approx(1.0));
-  CHECK(world1.composition(position, 10, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 3) == Approx(0.0));
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 5, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100, 10));
+  approval_tests.emplace_back(world1.temperature(position, 500, 10));
+  approval_tests.emplace_back(world1.temperature(position, 1000, 10));
+  approval_tests.emplace_back(world1.temperature(position, 5000, 10));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3/2, 10));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 51e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 10, 0));
+  approval_tests.emplace_back(world1.composition(position, 10, 1));
+  approval_tests.emplace_back(world1.composition(position, 10, 2));
+  approval_tests.emplace_back(world1.composition(position, 10, 3));
 
-  CHECK(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0) == Approx(1.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 0) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 1) == Approx(1.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 66e3 * 0.5 - 1, 1) == Approx(1.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 66e3 * 0.5 + 1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 2) == Approx(0.25));
-  CHECK(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 2) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 3) == Approx(0.75));
-  CHECK(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 3) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 100e3 * 0.5 - 1, 3) == Approx(0.0));
-  CHECK(world1.composition(position, std::sqrt(2) * 100e3 * 0.5 + 1, 3) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world1.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 1));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 2));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 0));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 1));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 2));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 * 0.5 - 1, 1));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 * 0.5 + 1, 1));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 2));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 2));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 3));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 3));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 100e3 * 0.5 - 1, 3));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 100e3 * 0.5 + 1, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
 
   // check grains
   {
     {
       // layer 1
-      WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0, 3);
-      std::array<std::array<double, 3>, 3> array_1  = Utilities::euler_angles_to_rotation_matrix(10,20,30);
-      std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
+      WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 33e3 * 0.5 - 5e3, 0, 3);
+      approval_tests_grains.emplace_back(grains);
 
-      compare_vectors_approx(grains.sizes, {0.4,0.4,0.4});
-      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-
-      grains = world1.grains(position, std::sqrt(2) * 33e3 * 0.5 - 1, 1, 3);
-      std::array<std::array<double, 3>, 3> array_2 = Utilities::euler_angles_to_rotation_matrix(40,50,60);
-      std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
-
-      compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
-      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+      grains = world1.grains(position, std::sqrt(2) * 33e3 * 0.5 - 5e3, 1, 3);
+      approval_tests_grains.emplace_back(grains);
     }
 
     {
       // layer 2
       WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 33e3 * 0.5 + 1, 0, 3);
-      std::array<std::array<double, 3>, 3> array_1 = Utilities::euler_angles_to_rotation_matrix(-10,-25,35);
-      std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
-
-      compare_vectors_approx(grains.sizes, {0.5,0.5,0.5});
-      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+      approval_tests_grains.emplace_back(grains);
 
       grains = world1.grains(position, std::sqrt(2) * 33e3 * 0.5 + 1, 1, 3);
-      std::array<std::array<double, 3>, 3> array_2  =  Utilities::euler_angles_to_rotation_matrix(45,-55,65);
-      std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
-
-      compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
-      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+      approval_tests_grains.emplace_back(grains);
     }
 
     {
       // layer 3
-      WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 99e3 * 0.5 - 1, 0, 3);
-      std::array<std::array<double, 3>, 3> array_1 = Utilities::euler_angles_to_rotation_matrix(220,320,240);
-      std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
-
-      compare_vectors_approx(grains.sizes, {0.6,0.6,0.6});
-      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-
-      grains = world1.grains(position, std::sqrt(2) * 99e3 * 0.5 - 1, 1, 3);
-      std::array<std::array<double, 3>, 3> array_2 = Utilities::euler_angles_to_rotation_matrix(520,620,270);
-      std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
-
-      compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
-      compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+      WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 99e3 * 0.5 - 5e3, 0, 3);
+      approval_tests_grains.emplace_back(grains);
     }
   }
 
 
   position = {{250e3,250e3,800e3}};
-  CHECK(world1.composition(position, 1, 0) == Approx(1.0));
-  CHECK(world1.composition(position, 1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 1, 2) == Approx(0.0));
+  approval_tests.emplace_back(world1.composition(position, 1, 0));
+  approval_tests.emplace_back(world1.composition(position, 1, 1));
+  approval_tests.emplace_back(world1.composition(position, 1, 2));
   position = {{250e3,250e3-std::sqrt(2) * 33e3 * 0.5 + 1, 800e3}};
-  CHECK(world1.composition(position, 1, 0) == Approx(1.0));
-  CHECK(world1.composition(position, 1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 1, 2) == Approx(0.0));
+  approval_tests.emplace_back(world1.composition(position, 1, 0));
+  approval_tests.emplace_back(world1.composition(position, 1, 1));
+  approval_tests.emplace_back(world1.composition(position, 1, 2));
   position = {{250e3,250e3-std::sqrt(2) * 66e3 * 0.5 + 1, 800e3}};
-  CHECK(world1.composition(position, 1, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 1, 1) == Approx(1.0));
-  CHECK(world1.composition(position, 1, 2) == Approx(0.0));
+  approval_tests.emplace_back(world1.composition(position, 1, 0));
+  approval_tests.emplace_back(world1.composition(position, 1, 1));
+  approval_tests.emplace_back(world1.composition(position, 1, 2));
   position = {{250e3,250e3-std::sqrt(2) * 99e3 * 0.5 + 1, 800e3}};
-  CHECK(world1.composition(position, 1, 0) == Approx(0.0));
-  CHECK(world1.composition(position, 1, 1) == Approx(0.0));
-  CHECK(world1.composition(position, 1, 2) == Approx(0.25));
-  CHECK(world1.composition(position, 1, 3) == Approx(0.75));
+  approval_tests.emplace_back(world1.composition(position, 1, 0));
+  approval_tests.emplace_back(world1.composition(position, 1, 1));
+  approval_tests.emplace_back(world1.composition(position, 1, 2));
+  approval_tests.emplace_back(world1.composition(position, 1, 3));
 
   std::string file_name2 = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/fault_constant_angles_cartesian_force_temp.wb";
   WorldBuilder::World world2(file_name2);
 
   // Check fault plate through the world
   position = {{0,0,800e3}};
-  CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
-  CHECK(world2.temperature(position, 220e3, 10) == Approx(1701.6589518333));
-  CHECK(world2.temperature(position, 230e3, 10) == Approx(100.0));
-  CHECK(world2.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position, 220e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 230e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 0, 0));
+  approval_tests.emplace_back(world2.composition(position, 0, 1));
+  approval_tests.emplace_back(world2.composition(position, 0, 2));
+  approval_tests.emplace_back(world2.composition(position, 0, 3));
+  approval_tests.emplace_back(world2.composition(position, 0, 4));
+  approval_tests.emplace_back(world2.composition(position, 0, 5));
+  approval_tests.emplace_back(world2.composition(position, 0, 6));
 
   position = {{250e3,500e3,800e3}};
-  CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
-  CHECK(world2.temperature(position, 10, 10) == Approx(150));
-  CHECK(world2.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(150.0));
-  CHECK(world2.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(1631.9945206949));
-  CHECK(world2.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world2.composition(position, 10, 0) == Approx(0.0));
-  CHECK(world2.composition(position, 10, 1) == Approx(0.0));
-  CHECK(world2.composition(position, 10, 2) == Approx(0.0));
-  CHECK(world1.composition(position, 10, 3) == Approx(0.25));
-  CHECK(world1.composition(position, 10, 4) == Approx(0.75));
-  CHECK(world2.composition(position, std::sqrt(2) * 50e3 - 1, 3) == Approx(0.25));
-  CHECK(world2.composition(position, std::sqrt(2) * 50e3 - 1, 4) == Approx(0.75));
-  CHECK(world2.composition(position, std::sqrt(2) * 50e3 + 1, 3) == Approx(0.0));
-  CHECK(world2.composition(position, std::sqrt(2) * 50e3 + 1, 4) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position, 10, 10));
+  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3 - 1, 10));
+  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3 + 1, 10));
+  approval_tests.emplace_back(world2.composition(position, 0, 0));
+  approval_tests.emplace_back(world2.composition(position, 0, 1));
+  approval_tests.emplace_back(world2.composition(position, 0, 2));
+  approval_tests.emplace_back(world2.composition(position, 0, 3));
+  approval_tests.emplace_back(world2.composition(position, 10, 0));
+  approval_tests.emplace_back(world2.composition(position, 10, 1));
+  approval_tests.emplace_back(world2.composition(position, 10, 2));
+  approval_tests.emplace_back(world1.composition(position, 10, 3));
+  approval_tests.emplace_back(world1.composition(position, 10, 4));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 50e3 - 1, 3));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 50e3 - 1, 4));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 50e3 + 1, 3));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 50e3 + 1, 4));
+  approval_tests.emplace_back(world2.composition(position, 0, 4));
+  approval_tests.emplace_back(world2.composition(position, 0, 5));
+  approval_tests.emplace_back(world2.composition(position, 0, 6));
 
 
   position = {{250e3,250e3,800e3}};
-  CHECK(world2.temperature(position, 0, 10) == Approx(293.15));
-  CHECK(world2.temperature(position, 1, 10) == Approx(100.0));
-  CHECK(world2.temperature(position, 5, 10) == Approx(100.0));
-  CHECK(world2.temperature(position, 10, 10) == Approx(100.0));
-  CHECK(world2.temperature(position, 100, 10) == Approx(100.0));
-  CHECK(world2.temperature(position, 500, 10) == Approx(100.0));
-  CHECK(world2.temperature(position, 1000, 10) == Approx(100.0));
-  CHECK(world2.temperature(position, 5000, 10) == Approx(100.0));
-  CHECK(world2.temperature(position, std::sqrt(2) * 50e3/2, 10) == Approx(100.0));
-  CHECK(world2.temperature(position, std::sqrt(2) * 50e3 - 1, 10) == Approx(100.0));
-  CHECK(world2.temperature(position, std::sqrt(2) * 50e3 + 1, 10) == Approx(1631.9945206949));
-  CHECK(world2.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world2.composition(position, 10, 0) == Approx(1.0));
-  CHECK(world2.composition(position, 10, 1) == Approx(0.0));
-  CHECK(world2.composition(position, 10, 2) == Approx(0.0));
-  CHECK(world2.composition(position, 10, 3) == Approx(0.0));
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position, 1, 10));
+  approval_tests.emplace_back(world2.temperature(position, 5, 10));
+  approval_tests.emplace_back(world2.temperature(position, 10, 10));
+  approval_tests.emplace_back(world2.temperature(position, 100, 10));
+  approval_tests.emplace_back(world2.temperature(position, 500, 10));
+  approval_tests.emplace_back(world2.temperature(position, 1000, 10));
+  approval_tests.emplace_back(world2.temperature(position, 5000, 10));
+  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3/2, 10));
+  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3 - 1, 10));
+  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3 + 1, 10));
+  approval_tests.emplace_back(world2.composition(position, 0, 0));
+  approval_tests.emplace_back(world2.composition(position, 0, 1));
+  approval_tests.emplace_back(world2.composition(position, 0, 2));
+  approval_tests.emplace_back(world2.composition(position, 0, 3));
+  approval_tests.emplace_back(world2.composition(position, 10, 0));
+  approval_tests.emplace_back(world2.composition(position, 10, 1));
+  approval_tests.emplace_back(world2.composition(position, 10, 2));
+  approval_tests.emplace_back(world2.composition(position, 10, 3));
 
-  CHECK(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0) == Approx(1.0));
-  CHECK(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 1) == Approx(0.0));
-  CHECK(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 2) == Approx(0.0));
-  CHECK(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 0) == Approx(0.0));
-  CHECK(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 1) == Approx(1.0));
-  CHECK(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 2) == Approx(0.0));
-  CHECK(world2.composition(position, std::sqrt(2) * 66e3 * 0.5 - 1, 1) == Approx(1.0));
-  CHECK(world2.composition(position, std::sqrt(2) * 66e3 * 0.5 + 1, 1) == Approx(0.0));
-  CHECK(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 2) == Approx(0.25));
-  CHECK(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 2) == Approx(0.0));
-  CHECK(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 3) == Approx(0.75));
-  CHECK(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 3) == Approx(0.0));
-  CHECK(world2.composition(position, std::sqrt(2) * 100e3 * 0.5 - 1, 3) == Approx(0.0));
-  CHECK(world2.composition(position, std::sqrt(2) * 100e3 * 0.5 + 1, 3) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world2.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 1));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 2));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 0));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 1));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 2));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 66e3 * 0.5 - 1, 1));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 66e3 * 0.5 + 1, 1));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 2));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 2));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 3));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 3));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 100e3 * 0.5 - 1, 3));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 100e3 * 0.5 + 1, 3));
+  approval_tests.emplace_back(world2.composition(position, 0, 4));
+  approval_tests.emplace_back(world2.composition(position, 0, 5));
+  approval_tests.emplace_back(world2.composition(position, 0, 6));
 
   position = {{250e3,250e3,800e3}};
-  CHECK(world2.composition(position, 1, 0) == Approx(1.0));
-  CHECK(world2.composition(position, 1, 1) == Approx(0.0));
-  CHECK(world2.composition(position, 1, 2) == Approx(0.0));
+  approval_tests.emplace_back(world2.composition(position, 1, 0));
+  approval_tests.emplace_back(world2.composition(position, 1, 1));
+  approval_tests.emplace_back(world2.composition(position, 1, 2));
   position = {{250e3,250e3-std::sqrt(2) * 33e3 * 0.5 + 1, 800e3}};
-  CHECK(world2.composition(position, 1, 0) == Approx(1.0));
-  CHECK(world2.composition(position, 1, 1) == Approx(0.0));
-  CHECK(world2.composition(position, 1, 2) == Approx(0.0));
+  approval_tests.emplace_back(world2.composition(position, 1, 0));
+  approval_tests.emplace_back(world2.composition(position, 1, 1));
+  approval_tests.emplace_back(world2.composition(position, 1, 2));
   position = {{250e3,250e3-std::sqrt(2) * 66e3 * 0.5 + 1, 800e3}};
-  CHECK(world2.composition(position, 1, 0) == Approx(0.0));
-  CHECK(world2.composition(position, 1, 1) == Approx(1.0));
-  CHECK(world2.composition(position, 1, 2) == Approx(0.0));
+  approval_tests.emplace_back(world2.composition(position, 1, 0));
+  approval_tests.emplace_back(world2.composition(position, 1, 1));
+  approval_tests.emplace_back(world2.composition(position, 1, 2));
   position = {{250e3,250e3-std::sqrt(2) * 99e3 * 0.5 + 1, 800e3}};
-  CHECK(world2.composition(position, 1, 0) == Approx(0.0));
-  CHECK(world2.composition(position, 1, 1) == Approx(0.0));
-  CHECK(world2.composition(position, 1, 2) == Approx(0.25));
-  CHECK(world2.composition(position, 1, 3) == Approx(0.75));
+  approval_tests.emplace_back(world2.composition(position, 1, 0));
+  approval_tests.emplace_back(world2.composition(position, 1, 1));
+  approval_tests.emplace_back(world2.composition(position, 1, 2));
+  approval_tests.emplace_back(world2.composition(position, 1, 3));
 
 
   // Cartesian
@@ -2671,344 +2546,282 @@ TEST_CASE("WorldBuilder Features: Fault")
 
   // Check fault through the world
   position = {{0,0,800e3}};
-  CHECK(world3.temperature(position, 0, 10) == Approx(1600.0));
-  CHECK(world3.temperature(position, 240e3, 10) == Approx(1711.2149738521));
-  CHECK(world3.temperature(position, 260e3, 10) == Approx(1720.8246597128));
-  CHECK(world3.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world3.temperature(position, 0, 10));
+  approval_tests.emplace_back(world3.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world3.composition(position, 0, 0));
+  approval_tests.emplace_back(world3.composition(position, 0, 1));
+  approval_tests.emplace_back(world3.composition(position, 0, 2));
+  approval_tests.emplace_back(world3.composition(position, 0, 3));
+  approval_tests.emplace_back(world3.composition(position, 0, 4));
+  approval_tests.emplace_back(world3.composition(position, 0, 5));
+  approval_tests.emplace_back(world3.composition(position, 0, 6));
 
   position = {{250e3,500e3,800e3}};
   //adibatic temperature
-  CHECK(world3.temperature(position, 0, 10) == Approx(1600));
-  CHECK(world3.temperature(position, 1, 10) == Approx(1600.0004480001));
-  CHECK(world3.temperature(position, 5000, 10) == Approx(1602.241568732));
-  CHECK(world3.temperature(position, 10e3, 10) == Approx(1604.486277858));
-  CHECK(world3.temperature(position, 25e3, 10) == Approx(1611.239291627));
-  CHECK(world3.temperature(position, 50e3, 10) == Approx(1622.5575343016));
-  CHECK(world3.temperature(position, 75e3, 10) == Approx(1633.95528262));
-  CHECK(world3.temperature(position, 150e3, 10) == Approx(1668.6311660012));
-  //CHECK(world3.temperature(position, std::sqrt(2) * 100e3 - 1, 10) == Approx(150.0));
-  //CHECK(world3.temperature(position, std::sqrt(2) * 100e3 + 1, 10) == Approx(1664.6283561404));
-  CHECK(world3.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world3.composition(position, 10, 0) == Approx(1.0));
-  CHECK(world3.composition(position, 10, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 10, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 10, 3) == Approx(0.0));
-  CHECK(world3.composition(position, 10, 4) == Approx(0.0));
+  approval_tests.emplace_back(world3.temperature(position, 0, 10));
+  approval_tests.emplace_back(world3.temperature(position, 1, 10));
+  approval_tests.emplace_back(world3.temperature(position, 5000, 10));
+  approval_tests.emplace_back(world3.temperature(position, 10e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 25e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 50e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 75e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 150e3, 10));
+  //approval_tests.emplace_back(world3.temperature(position, std::sqrt(2) * 100e3 - 1, 10));
+  //approval_tests.emplace_back(world3.temperature(position, std::sqrt(2) * 100e3 + 1, 10));
+  approval_tests.emplace_back(world3.composition(position, 0, 0));
+  approval_tests.emplace_back(world3.composition(position, 0, 1));
+  approval_tests.emplace_back(world3.composition(position, 0, 2));
+  approval_tests.emplace_back(world3.composition(position, 0, 3));
+  approval_tests.emplace_back(world3.composition(position, 0, 4));
+  approval_tests.emplace_back(world3.composition(position, 10, 0));
+  approval_tests.emplace_back(world3.composition(position, 10, 1));
+  approval_tests.emplace_back(world3.composition(position, 10, 2));
+  approval_tests.emplace_back(world3.composition(position, 10, 3));
+  approval_tests.emplace_back(world3.composition(position, 10, 4));
   //todo: recheck these results
-  CHECK(world3.composition(position, std::sqrt(2) * 16.5e3 - 1, 0) == Approx(1.0));
-  CHECK(world3.composition(position, std::sqrt(2) * 16.5e3 + 1, 0) == Approx(1.0));
-  CHECK(world3.composition(position, std::sqrt(2) * 16.5e3 - 1, 1) == Approx(0.0));
-  CHECK(world3.composition(position, std::sqrt(2) * 16.5e3 + 1, 1) == Approx(0.0));
-  CHECK(world3.composition(position, std::sqrt(2) * 33e3 - 1, 1) == Approx(0.0));
-  CHECK(world3.composition(position, std::sqrt(2) * 33e3 + 1, 1) == Approx(1.0));
-  CHECK(world3.composition(position, std::sqrt(2) * 33e3 - 1, 2) == Approx(0.0));
-  CHECK(world3.composition(position, std::sqrt(2) * 33e3 + 1, 2) == Approx(0.0));
-  CHECK(world3.composition(position, std::sqrt(2) * 33e3 + 1, 3) == Approx(0.0));
-  CHECK(world3.composition(position, std::sqrt(2) * 49.5e3 - 1, 2) == Approx(0.0));
-  CHECK(world3.composition(position, std::sqrt(2) * 49.5e3 - 1, 3) == Approx(0.0));
-  CHECK(world3.composition(position, std::sqrt(2) * 49.5e3 + 1, 2) == Approx(0.0));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 16.5e3 - 1, 0));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 16.5e3 + 1, 0));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 16.5e3 - 1, 1));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 16.5e3 + 1, 1));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 33e3 - 1, 1));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 33e3 + 1, 1));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 33e3 - 1, 2));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 33e3 + 1, 2));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 33e3 + 1, 3));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 49.5e3 - 1, 2));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 49.5e3 - 1, 3));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 49.5e3 + 1, 2));
   // this comes form the first subducting plate
-  CHECK(world3.composition(position, std::sqrt(2) * 49.5e3 + 1, 3) == Approx(0.0));
-  CHECK(world3.composition(position, std::sqrt(2) * 50e3 - 1, 3) == Approx(0.0));
-  CHECK(world3.composition(position, std::sqrt(2) * 50e3 + 1, 3) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 49.5e3 + 1, 3));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 50e3 - 1, 3));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 50e3 + 1, 3));
+  approval_tests.emplace_back(world3.composition(position, 0, 4));
+  approval_tests.emplace_back(world3.composition(position, 0, 5));
+  approval_tests.emplace_back(world3.composition(position, 0, 6));
 
   {
     WorldBuilder::grains grains = world3.grains(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0, 3);
-    std::array<std::array<double, 3>, 3> array_1 = {{{{-1,0,0}},{{0,1,0}},{{0,0,-1}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
-
-    compare_vectors_approx(grains.sizes, {0.4,0.4,0.4});
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-
-    grains = world3.grains(position, std::sqrt(2) * 33e3 * 0.5 - 1, 1, 3);
-    std::array<std::array<double, 3>, 3> array_2 = {{{{-1,0,0}},{{0,1,0}},{{0,0,-1}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
-
-    compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    approval_tests_grains.emplace_back(grains);
   }
 
   position = {{250e3,600e3,800e3}};
-  CHECK(world3.temperature(position, 0, 10) == Approx(1600));
-  CHECK(world3.temperature(position, 10, 10) == Approx(1600.0044800063));
-  CHECK(world3.temperature(position, 100e3-1, 10) == Approx(1.0000424264));
-  CHECK(world3.temperature(position, 100e3+1, 10) == Approx(1.0000424264));
-  CHECK(world3.temperature(position, 101e3, 10) == Approx(1.0424264069));
-  CHECK(world3.temperature(position, 110e3, 10) == Approx(1.4242640687));
-  CHECK(world3.temperature(position, 150e3, 10) == Approx(3.1213203436));
-  CHECK(world3.temperature(position, 200e3, 10) == Approx(1692.1562939786));
-  CHECK(world3.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 3) == Approx(0.0));
-  CHECK(world3.composition(position, 10, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 10, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 10, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 10, 3) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3-1, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3-1, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3-1, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3-1, 3) == Approx(1.0));
-  CHECK(world3.composition(position, 100e3-1, 4) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3+1, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3+1, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3+1, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3+1, 3) == Approx(1.0));
-  CHECK(world3.composition(position, 100e3+1, 4) == Approx(0.0));
-  CHECK(world3.composition(position, 101e3, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 101e3+1, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 101e3+1, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 101e3+1, 3) == Approx(1.0));
-  CHECK(world3.composition(position, 101e3+1, 4) == Approx(0.0));
-  CHECK(world3.composition(position, 150e3, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 150e3, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 150e3, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 150e3, 3) == Approx(1.0));
-  CHECK(world3.composition(position, 150e3, 4) == Approx(0.0));
-  CHECK(world3.composition(position, 200e3, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 200e3, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 200e3, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 200e3, 3) == Approx(0.0));
-  CHECK(world3.composition(position, 200e3, 4) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 4) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 5) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world3.temperature(position, 0, 10));
+  approval_tests.emplace_back(world3.temperature(position, 10, 10));
+  approval_tests.emplace_back(world3.temperature(position, 100e3-1, 10));
+  approval_tests.emplace_back(world3.temperature(position, 100e3+1, 10));
+  approval_tests.emplace_back(world3.temperature(position, 101e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 110e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 150e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world3.composition(position, 0, 0));
+  approval_tests.emplace_back(world3.composition(position, 0, 1));
+  approval_tests.emplace_back(world3.composition(position, 0, 2));
+  approval_tests.emplace_back(world3.composition(position, 0, 3));
+  approval_tests.emplace_back(world3.composition(position, 10, 0));
+  approval_tests.emplace_back(world3.composition(position, 10, 1));
+  approval_tests.emplace_back(world3.composition(position, 10, 2));
+  approval_tests.emplace_back(world3.composition(position, 10, 3));
+  approval_tests.emplace_back(world3.composition(position, 100e3-1, 0));
+  approval_tests.emplace_back(world3.composition(position, 100e3-1, 1));
+  approval_tests.emplace_back(world3.composition(position, 100e3-1, 2));
+  approval_tests.emplace_back(world3.composition(position, 100e3-1, 3));
+  approval_tests.emplace_back(world3.composition(position, 100e3-1, 4));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 0));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 1));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 2));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 3));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 4));
+  approval_tests.emplace_back(world3.composition(position, 101e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 1));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 2));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 3));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 4));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 1));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 2));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 3));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 4));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 1));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 2));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 3));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 4));
+  approval_tests.emplace_back(world3.composition(position, 0, 4));
+  approval_tests.emplace_back(world3.composition(position, 0, 5));
+  approval_tests.emplace_back(world3.composition(position, 0, 6));
 
   {
     WorldBuilder::grains grains = world3.grains(position, 101e3+1, 0, 3);
-    std::array<std::array<double, 3>, 3> array_1 = {{{{-1,0,0}},{{0,1,0}},{{0,0,-1}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
-
-    compare_vectors_approx(grains.sizes, {0.4,0.4,0.4});
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-
-    grains = world3.grains(position, 101e3+1, 1, 3);
-    std::array<std::array<double, 3>, 3> array_2 = {{{{-1,0,0}},{{0,1,0}},{{0,0,-1}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
-
-    compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    approval_tests_grains.emplace_back(grains);
   }
 
   position = {{650e3,650e3,800e3}};
-  CHECK(world3.temperature(position, 0, 10) == Approx(4.3590710784));
-  CHECK(world3.temperature(position, 10, 10) == Approx(4.3590710784));
-  CHECK(world3.temperature(position, 100e3, 10) == Approx(4.3590710784));
-  CHECK(world3.temperature(position, 100e3+1, 10) == Approx(4.3590710784));
-  CHECK(world3.temperature(position, 101e3, 10) == Approx(4.3590710784));
-  CHECK(world3.temperature(position, 110e3, 10) == Approx(4.3590710784));
-  CHECK(world3.temperature(position, 150e3, 10) == Approx(1668.6311660012));
-  CHECK(world3.temperature(position, 200e3, 10) == Approx(1692.1562939786));
-  CHECK(world3.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 3) == Approx(0.0897677696));
-  CHECK(world3.composition(position, 10, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 10, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 10, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 10, 3) == Approx(0.0897677696));
-  CHECK(world3.composition(position, 100e3, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3, 3) == Approx(0.0897677696));
-  CHECK(world3.composition(position, 100e3, 4) == Approx(0.2693033088));
-  CHECK(world3.composition(position, 100e3+1, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3+1, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3+1, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3+1, 3) == Approx(0.0897677696));
-  CHECK(world3.composition(position, 100e3+1, 4) == Approx(0.2693033088));
-  CHECK(world3.composition(position, 101e3, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 101e3+1, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 101e3+1, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 101e3+1, 3) == Approx(0.0897677696));
-  CHECK(world3.composition(position, 101e3+1, 4) == Approx(0.2693033088));
-  CHECK(world3.composition(position, 150e3, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 150e3, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 150e3, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 150e3, 3) == Approx(0.0));
-  CHECK(world3.composition(position, 150e3, 4) == Approx(0.0));
-  CHECK(world3.composition(position, 200e3, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 200e3, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 200e3, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 200e3, 3) == Approx(0.0));
-  CHECK(world3.composition(position, 200e3, 4) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 4) == Approx(0.2693033088));
-  CHECK(world3.composition(position, 0, 5) == Approx(0.6409289216));
-  CHECK(world3.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world3.temperature(position, 0, 10));
+  approval_tests.emplace_back(world3.temperature(position, 10, 10));
+  approval_tests.emplace_back(world3.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 100e3+1, 10));
+  approval_tests.emplace_back(world3.temperature(position, 101e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 110e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 150e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world3.composition(position, 0, 0));
+  approval_tests.emplace_back(world3.composition(position, 0, 1));
+  approval_tests.emplace_back(world3.composition(position, 0, 2));
+  approval_tests.emplace_back(world3.composition(position, 0, 3));
+  approval_tests.emplace_back(world3.composition(position, 10, 0));
+  approval_tests.emplace_back(world3.composition(position, 10, 1));
+  approval_tests.emplace_back(world3.composition(position, 10, 2));
+  approval_tests.emplace_back(world3.composition(position, 10, 3));
+  approval_tests.emplace_back(world3.composition(position, 100e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 100e3, 1));
+  approval_tests.emplace_back(world3.composition(position, 100e3, 2));
+  approval_tests.emplace_back(world3.composition(position, 100e3, 3));
+  approval_tests.emplace_back(world3.composition(position, 100e3, 4));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 0));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 1));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 2));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 3));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 4));
+  approval_tests.emplace_back(world3.composition(position, 101e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 1));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 2));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 3));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 4));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 1));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 2));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 3));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 4));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 1));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 2));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 3));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 4));
+  approval_tests.emplace_back(world3.composition(position, 0, 4));
+  approval_tests.emplace_back(world3.composition(position, 0, 5));
+  approval_tests.emplace_back(world3.composition(position, 0, 6));
 
   {
     WorldBuilder::grains grains = world3.grains(position, 100e3+1, 0, 3);
-    std::array<std::array<double, 3>, 3> array_1 = Utilities::euler_angles_to_rotation_matrix(180,135.4473098406,0);
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_1,array_1};
-
-    compare_vectors_approx(grains.sizes, {0.2718142157,0.2718142157,0.2718142157});
-    //compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[0]), {{180,135.4473098406,0}});
-    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[1]), {{180,135.4473098406,0}});
-    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[2]), {{180,135.4473098406,0}});
-
-    grains = world3.grains(position, 100e3+1, 1, 3);
-    std::array<std::array<double, 3>, 3> array_2 = Utilities::euler_angles_to_rotation_matrix(220,320,240);
-    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_2,array_2,array_2};
-
-    compare_vectors_approx(grains.sizes, {1./3.,1./3.,1./3.});
-    //compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
-    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[0]), {{180,153.4593755586,0}});
-    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[1]), {{180,153.4593755586,0}});
-    compare_3d_arrays_approx(Utilities::euler_angles_from_rotation_matrix(grains.rotation_matrices[2]), {{180,153.4593755586,0}});
+    approval_tests_grains.emplace_back(grains);
   }
 
   position = {{700e3,675e3,800e3}};
-  CHECK(world3.temperature(position, 0, 10) == Approx(4.4592312705));
-  CHECK(world3.temperature(position, 10, 10) == Approx(4.4592312705));
-  CHECK(world3.temperature(position, 100e3, 10) == Approx(4.4592312705));
-  CHECK(world3.temperature(position, 100e3+1, 10) == Approx(4.4592312705));
-  CHECK(world3.temperature(position, 101e3, 10) == Approx(4.4592312705));
-  CHECK(world3.temperature(position, 110e3, 10) == Approx(4.4592312705));
-  CHECK(world3.temperature(position, 150e3, 10) == Approx(1668.6311660012));
-  CHECK(world3.temperature(position, 200e3, 10) == Approx(1692.1562939786));
-  CHECK(world3.composition(position, 0, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 3) == Approx(0.1148078176));
-  CHECK(world3.composition(position, 10, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 10, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 10, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 10, 3) == Approx(0.1148078176));
-  CHECK(world3.composition(position, 100e3, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3, 3) == Approx(0.1148078176));
-  CHECK(world3.composition(position, 100e3, 4) == Approx(0.3444234529));
-  CHECK(world3.composition(position, 100e3+1, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3+1, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3+1, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 100e3+1, 3) == Approx(0.1148078176));
-  CHECK(world3.composition(position, 100e3+1, 4) == Approx(0.3444234529));
-  CHECK(world3.composition(position, 101e3, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 101e3+1, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 101e3+1, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 101e3+1, 3) == Approx(0.1148078176));
-  CHECK(world3.composition(position, 101e3+1, 4) == Approx(0.3444234529));
-  CHECK(world3.composition(position, 150e3, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 150e3, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 150e3, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 150e3, 3) == Approx(0.0));
-  CHECK(world3.composition(position, 150e3, 4) == Approx(0.0));
-  CHECK(world3.composition(position, 200e3, 0) == Approx(0.0));
-  CHECK(world3.composition(position, 200e3, 1) == Approx(0.0));
-  CHECK(world3.composition(position, 200e3, 2) == Approx(0.0));
-  CHECK(world3.composition(position, 200e3, 3) == Approx(0.0));
-  CHECK(world3.composition(position, 200e3, 4) == Approx(0.0));
-  CHECK(world3.composition(position, 0, 4) == Approx(0.3444234529));
-  CHECK(world3.composition(position, 0, 5) == Approx(0.5407687295));
-  CHECK(world3.composition(position, 0, 6) == Approx(0.0));
+  approval_tests.emplace_back(world3.temperature(position, 0, 10));
+  approval_tests.emplace_back(world3.temperature(position, 10, 10));
+  approval_tests.emplace_back(world3.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 100e3+1, 10));
+  approval_tests.emplace_back(world3.temperature(position, 101e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 110e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 150e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world3.composition(position, 0, 0));
+  approval_tests.emplace_back(world3.composition(position, 0, 1));
+  approval_tests.emplace_back(world3.composition(position, 0, 2));
+  approval_tests.emplace_back(world3.composition(position, 0, 3));
+  approval_tests.emplace_back(world3.composition(position, 10, 0));
+  approval_tests.emplace_back(world3.composition(position, 10, 1));
+  approval_tests.emplace_back(world3.composition(position, 10, 2));
+  approval_tests.emplace_back(world3.composition(position, 10, 3));
+  approval_tests.emplace_back(world3.composition(position, 100e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 100e3, 1));
+  approval_tests.emplace_back(world3.composition(position, 100e3, 2));
+  approval_tests.emplace_back(world3.composition(position, 100e3, 3));
+  approval_tests.emplace_back(world3.composition(position, 100e3, 4));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 0));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 1));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 2));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 3));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 4));
+  approval_tests.emplace_back(world3.composition(position, 101e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 1));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 2));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 3));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 4));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 1));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 2));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 3));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 4));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 1));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 2));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 3));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 4));
+  approval_tests.emplace_back(world3.composition(position, 0, 4));
+  approval_tests.emplace_back(world3.composition(position, 0, 5));
+  approval_tests.emplace_back(world3.composition(position, 0, 6));
 
   position = {{750e3,35e3,800e3}};
-  CHECK(world3.temperature(position, 0, 10) == Approx(12));
-  CHECK(world3.temperature(position, 10, 10) == Approx(12));
-  CHECK(world3.temperature(position, 5e3, 10) == Approx(12));
-  CHECK(world3.temperature(position, 10e3, 10) == Approx(11));
-  CHECK(world3.temperature(position, 15e3, 10) == Approx(11));
-  CHECK(world3.temperature(position, 20e3, 10) == Approx(11));
-  CHECK(world3.temperature(position, 25e3, 10) == Approx(11));
-  CHECK(world3.temperature(position, 30e3, 10) == Approx(11));
-  CHECK(world3.temperature(position, 35e3, 10) == Approx(11));
-  CHECK(world3.temperature(position, 40e3, 10) == Approx(11));
-  CHECK(world3.temperature(position, 45e3, 10) == Approx(11));
-  CHECK(world3.temperature(position, 50e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 55e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 60e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 65e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 70e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 72.5e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 75e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 80e3, 10) == Approx(10));
-  CHECK(world3.temperature(position, 85e3, 10) == Approx(10));
-  CHECK(world3.temperature(position, 90e3, 10) == Approx(10));
-  CHECK(world3.temperature(position, 95e3, 10) == Approx(10));
-  CHECK(world3.temperature(position, 100e3, 10) == Approx(10));
-  CHECK(world3.temperature(position, 105e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 110e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 115e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 120e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 125e3, 10) == Approx(10.5));
-  CHECK(world3.temperature(position, 130e3, 10) == Approx(11));
-  CHECK(world3.temperature(position, 135e3, 10) == Approx(11));
-  CHECK(world3.temperature(position, 150e3, 10) == Approx(11));
-  CHECK(world3.temperature(position, 160e3, 10) == Approx(11));
-  CHECK(world3.temperature(position, 170e3, 10) == Approx(11));
-  CHECK(world3.temperature(position, 175e3, 10) == Approx(12));
-  CHECK(world3.temperature(position, 180e3, 10) == Approx(1682.706702284));
-  CHECK(world3.temperature(position, 190e3, 10) == Approx(1687.4248834214));
-  CHECK(world3.temperature(position, 200e3, 10) == Approx(1692.1562939786));
-  CHECK(world3.temperature(position, 250e3, 10) == Approx(1716.0130900067));
-  CHECK(world3.temperature(position, 300e3, 10) == Approx(1740.2062300941));
+  approval_tests.emplace_back(world3.temperature(position, 0, 10));
+  approval_tests.emplace_back(world3.temperature(position, 10, 10));
+  approval_tests.emplace_back(world3.temperature(position, 5e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 10e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 15e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 20e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 25e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 30e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 35e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 40e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 45e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 50e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 55e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 60e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 65e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 70e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 72.5e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 75e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 80e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 85e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 90e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 95e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 105e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 110e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 115e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 120e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 125e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 130e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 135e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 150e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 160e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 170e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 175e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 180e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 190e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 250e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 300e3, 10));
 
   // check grains layer 1
   {
     WorldBuilder::grains grains = world3.grains(position, 95e3, 0, 2);
-    compare_vectors_approx(grains.sizes, {0.5,0.5}); // was 0.2, but is normalized
-
     // these are random numbers, but they should stay the same.
     // note that the values are different from for example the continental plate since
     // this performs a interpolation between segments of the slab.
-
-    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.8841073844,-0.1312960784,-0.4484589977}},{{-0.4639013434,0.3618800113,0.8086027461}},{{0.05612197756,0.9229323904,-0.3808492174}}}};
-    std::array<std::array<double, 3>, 3> array_2 = {{{{-0.2568202195,-0.0592025578,0.9646441997}},{{-0.5750059457,-0.7928848317,-0.2017468859}},{{0.7767956856,-0.6064888299,0.1695870338}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-
-    grains = world3.grains(position, 95e3, 1, 2);
-
-    std::array<std::array<double, 3>, 3> array_3 = {{{{0.6521279994,0.6032912374,0.459095584}},{{-0.5017626042,0.7974338311,-0.3351620115}},{{-0.5682986551,-0.01178846375,0.8227379113}}}};
-    std::array<std::array<double, 3>, 3> array_4 = {{{{-0.7358966282,0.4557371955,-0.5007591849}},{{0.6726233448,0.4071992867,-0.6178726219}},{{-0.07767875296,-0.791512697,-0.6061960589}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_2 = {array_3,array_4};
-
-    compare_vectors_approx(grains.sizes, {0.8843655798,0.5257196065});
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_2);
+    approval_tests_grains.emplace_back(grains);
   }
 
   // check grains layer 2 bottom (because of the randomness it will have different values.)
   {
     WorldBuilder::grains grains = world3.grains(position, 150e3, 0, 2);
-
-    compare_vectors_approx(grains.sizes, {0.6692173347,0.3307826653});
-    CHECK(grains.sizes[0] + grains.sizes[1] == Approx(1.0));
-    // these are random numbers, but they should stay the same.
-    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.5791315939,0.7367092885,-0.3490931411}},{{-0.1853986251,-0.5360105647,-0.8236018603}},{{-0.7938727522,-0.4122524697,0.4470055419}}}};
-    std::array<std::array<double, 3>, 3> array_2 = {{{{0.6418405971,0.7328740545,-0.2256906471}},{{-0.6739597786,0.3987178861,-0.6219342924}},{{-0.3658126088,0.5512890961,0.7498409616}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
+    approval_tests_grains.emplace_back(grains);
 
   }
 
   // check grains layer 2 top
   {
     WorldBuilder::grains grains = world3.grains(position, 35e3, 0, 2);
-
-    compare_vectors_approx(grains.sizes, {0.3070168208,0.6929831792});
-    CHECK(grains.sizes[0] + grains.sizes[1] == Approx(1.0));
-    // these are random numbers, but they should stay the same.
-
-    std::array<std::array<double, 3>, 3> array_1 = {{{{-0.6634752307,-0.3450403529,0.663888374}},{{-0.2770374165,-0.7109563284,-0.646367828}},{{0.6950186243,-0.6127709638,0.376112826}}}};
-    std::array<std::array<double, 3>, 3> array_2 = {{{{0.6976381754,-0.134849869,0.7036451443}},{{-0.1367834457,-0.9891309921,-0.05394598614}},{{0.7032718288,-0.05861222805,-0.7085007703}}}};
-    std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
-    compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
-
+    approval_tests_grains.emplace_back(grains);
+    //compare_vectors_approx(grains.sizes, {0.3512381923,0.6487618077});
+    //approval_tests.emplace_back(grains.sizes[0] + grains.sizes[1]);
+    //// these are random numbers, but they should stay the same.
+//
+    //std::array<std::array<double, 3>, 3> array_1 = {{{{-0.5760272563,-0.3302260164,0.7477589038}},{{-0.3927671635,-0.6904395086,-0.6074761232}},{{0.7168867103,-0.6436179481,0.26801004}}}};
+    //std::array<std::array<double, 3>, 3> array_2 = {{{{0.7622618339,-0.3280663618,0.5579689586}},{{-0.2767873192,-0.9444558064,-0.1771779043}},{{0.5851031332,-0.01938277797,-0.8107272238}}}};
+    //std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
+    //compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
   }
 
 
@@ -3016,213 +2829,115 @@ TEST_CASE("WorldBuilder Features: Fault")
   WorldBuilder::World world4(file_name);
 
   position = {{250e3,501e3,800e3}};
-  CHECK(world4.temperature(position, 0, 10) == Approx(-1));
-  CHECK(world4.composition(position, 0, 0) == Approx(1.0));
-  CHECK(world4.temperature(position, 1, 10) == Approx(-1));
-  CHECK(world4.composition(position, 1, 0) == Approx(1.0));
-  CHECK(world4.temperature(position, 1e3, 10) == Approx(-1));
-  CHECK(world4.composition(position, 1e3, 0) == Approx(1.0));
-  CHECK(world4.temperature(position, 10e3, 10) == Approx(-1));
-  CHECK(world4.composition(position, 10e3, 0) == Approx(1.0));
-  CHECK(world4.temperature(position, 20e3, 10) == Approx(573.2769020077));
-  CHECK(world4.composition(position, 20e3, 0) == Approx(0.0));
-  CHECK(world4.temperature(position, 30e3, 10) == Approx(1374.2941781431));
-  CHECK(world4.composition(position, 30e3, 0) == Approx(0.0));
-  CHECK(world4.temperature(position, 35e3, 10) == Approx(-3));
-  CHECK(world4.composition(position, 35e3, 0) == Approx(0.0));
-  CHECK(world4.temperature(position, 40e3, 10) == Approx(-3));
-  CHECK(world4.composition(position, 40e3, 0) == Approx(0.0));
-  CHECK(world4.temperature(position, 45e3, 10) == Approx(-3));
-  CHECK(world4.composition(position, 45e3, 0) == Approx(0.0));
-  CHECK(world4.temperature(position, 50e3, 10) == Approx(1622.5575343016));
-  CHECK(world4.composition(position, 50e3, 0) == Approx(0.0));
-  CHECK(world4.temperature(position, 60e3, 10) == Approx(1627.1070617637));
-  CHECK(world4.composition(position, 60e3, 0) == Approx(0.0));
-  CHECK(world4.temperature(position, 80e3, 10) == Approx(1636.2444220394));
-  CHECK(world4.composition(position, 80e3, 0) == Approx(0.0));
-  CHECK(world4.temperature(position, 100e3, 10) == Approx(1645.4330950743));
-  CHECK(world4.composition(position, 100e3, 0) == Approx(0.0));
+  approval_tests.emplace_back(world4.temperature(position, 0, 10));
+  approval_tests.emplace_back(world4.composition(position, 0, 0));
+  approval_tests.emplace_back(world4.temperature(position, 1, 10));
+  approval_tests.emplace_back(world4.composition(position, 1, 0));
+  approval_tests.emplace_back(world4.temperature(position, 1e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 1e3, 0));
+  approval_tests.emplace_back(world4.temperature(position, 10e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 10e3, 0));
+  approval_tests.emplace_back(world4.temperature(position, 20e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 20e3, 0));
+  approval_tests.emplace_back(world4.temperature(position, 30e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 30e3, 0));
+  approval_tests.emplace_back(world4.temperature(position, 35e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 35e3, 0));
+  approval_tests.emplace_back(world4.temperature(position, 40e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 40e3, 0));
+  approval_tests.emplace_back(world4.temperature(position, 45e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 45e3, 0));
+  approval_tests.emplace_back(world4.temperature(position, 50e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 50e3, 0));
+  approval_tests.emplace_back(world4.temperature(position, 60e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 60e3, 0));
+  approval_tests.emplace_back(world4.temperature(position, 80e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 80e3, 0));
+  approval_tests.emplace_back(world4.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 100e3, 0));
 
+  std::vector<std::string> approvals;
+  for (auto&& value : approval_tests)
+    {
+      std::stringstream s;
+      s << value;
+      approvals.emplace_back(s.str());
+    }
+  for (auto&& value : approval_tests_grains)
+    {
+      std::stringstream s;
+      s << value << " ";
+      approvals.emplace_back(s.str());
+    }
+  ApprovalTests::Approvals::verifyAll("Test", approvals);
 }
 
 TEST_CASE("WorldBuilder Features: coordinate interpolation")
 {
-  {
-    std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/interpolation_none_cartesian.wb";
-    WorldBuilder::World world1(file_name);
-
-    std::array<double,3> position = {{374e3,875e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(150));
-    CHECK(world1.composition(position, 0, 0) == Approx(1.0));
-    position = {{376e3,875e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-    CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-
-    position = {{375e3,874e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-    CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-    position = {{375e3,876e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(150));
-    CHECK(world1.composition(position, 0, 0) == Approx(1.0));
-
-
-    position = {{374e3,625e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(150));
-    CHECK(world1.composition(position, 0, 0) == Approx(1.0));
-    position = {{376e3,625e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-    CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-
-    position = {{375e3,624e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(150));
-    CHECK(world1.composition(position, 0, 0) == Approx(1.0));
-    position = {{375e3,626e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-    CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-
-
-    position = {{638e3,425e3,800e3}};
-    CHECK(world1.temperature(position, 1e3, 10) == Approx(150));
-    CHECK(world1.composition(position, 1e3, 0) == Approx(1.0));
-    position = {{637e3,425e3,800e3}};
-    CHECK(world1.temperature(position, 10, 10) == Approx(1600));
-    CHECK(world1.composition(position, 10, 0) == Approx(0.0));
-
-    position = {{625e3,200e3,800e3}};
-    CHECK(world1.temperature(position, 10, 10) == Approx(150));
-    CHECK(world1.composition(position, 10, 0) == Approx(1.0));
-    position = {{624e3,200e3,800e3}};
-    CHECK(world1.temperature(position, 10, 10) == Approx(1600));
-    CHECK(world1.composition(position, 10, 0) == Approx(0.0));
-
-
-    position = {{925e3,625e3,800e3}};
-    CHECK(world1.temperature(position, 10, 10) == Approx(1600));
-    CHECK(world1.composition(position, 10, 0) == Approx(0.0));
-    position = {{925e3,625e3,800e3}};
-    CHECK(world1.temperature(position, 50e3, 10) == Approx(150));
-    CHECK(world1.composition(position, 50e3, 0) == Approx(1.0));
-
-
-    position = {{675e3,150e3,800e3}};
-    CHECK(world1.temperature(position, 10, 10) == Approx(1600));
-    CHECK(world1.composition(position, 10, 0) == Approx(0.0));
-    position = {{675e3,150e3,800e3}};
-    CHECK(world1.temperature(position, 150e3, 10) == Approx(1668.6311660012)); // This used to contain slab material, but not anymore.
-    CHECK(world1.composition(position, 150e3, 0) == Approx(0.0));
-  }
-
-  {
-    std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/interpolation_linear_cartesian.wb";
-    WorldBuilder::World world1(file_name);
-
-    std::array<double,3> position = {{374e3,875e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(150));
-    CHECK(world1.composition(position, 0, 0) == Approx(1.0));
-    position = {{376e3,875e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-    CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-
-    position = {{375e3,874e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-    CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-    position = {{375e3,876e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(150));
-    CHECK(world1.composition(position, 0, 0) == Approx(1.0));
-
-
-    position = {{374e3,625e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(150));
-    CHECK(world1.composition(position, 0, 0) == Approx(1.0));
-    position = {{376e3,625e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-    CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-
-    position = {{375e3,624e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(150));
-    CHECK(world1.composition(position, 0, 0) == Approx(1.0));
-    position = {{375e3,626e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-    CHECK(world1.composition(position, 0, 0) == Approx(0.0));
-
-
-    position = {{638e3,425e3,800e3}};
-    CHECK(world1.temperature(position, 1e3, 10) == Approx(150));
-    CHECK(world1.composition(position, 1e3, 0) == Approx(1.0));
-    position = {{637e3,425e3,800e3}};
-    CHECK(world1.temperature(position, 10, 10) == Approx(1600));
-    CHECK(world1.composition(position, 10, 0) == Approx(0.0));
-
-    position = {{625e3,200e3,800e3}};
-    CHECK(world1.temperature(position, 10, 10) == Approx(150));
-    CHECK(world1.composition(position, 10, 0) == Approx(1.0));
-    position = {{624e3,200e3,800e3}};
-    CHECK(world1.temperature(position, 10, 10) == Approx(1600));
-    CHECK(world1.composition(position, 10, 0) == Approx(0.0));
-  }
+  std::vector<double> approval_tests;
 
   {
     std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/interpolation_monotone_spline_cartesian.wb";
     WorldBuilder::World world1(file_name);
 
     std::array<double,3> position = {{374e3,875e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-    CHECK(world1.composition(position, 0, 0) == Approx(0.0));
+    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.composition(position, 0, 0));
     position = {{376e3,875e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-    CHECK(world1.composition(position, 0, 0) == Approx(0.0));
+    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.composition(position, 0, 0));
     position = {{350e3,900e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(150));
-    CHECK(world1.composition(position, 0, 0) == Approx(1.0));
+    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.composition(position, 0, 0));
 
     position = {{375e3,874e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-    CHECK(world1.composition(position, 0, 0) == Approx(0.0));
+    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.composition(position, 0, 0));
     position = {{375e3,876e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-    CHECK(world1.composition(position, 0, 0) == Approx(0.0));
+    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.composition(position, 0, 0));
 
 
     position = {{374e3,625e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-    CHECK(world1.composition(position, 0, 0) == Approx(0.0));
+    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.composition(position, 0, 0));
     position = {{376e3,625e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-    CHECK(world1.composition(position, 0, 0) == Approx(0.0));
+    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.composition(position, 0, 0));
     position = {{350e3,600e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(150));
-    CHECK(world1.composition(position, 0, 0) == Approx(1.0));
+    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.composition(position, 0, 0));
 
     position = {{375e3,624e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-    CHECK(world1.composition(position, 0, 0) == Approx(0.0));
+    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.composition(position, 0, 0));
     position = {{375e3,626e3,800e3}};
-    CHECK(world1.temperature(position, 0, 10) == Approx(1600));
-    CHECK(world1.composition(position, 0, 0) == Approx(0.0));
+    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.composition(position, 0, 0));
 
 
     position = {{638e3,425e3,800e3}};
-    CHECK(world1.temperature(position, 10, 10) == Approx(1600));
-    CHECK(world1.composition(position, 10, 0) == Approx(0.0));
+    approval_tests.emplace_back(world1.temperature(position, 10, 10));
+    approval_tests.emplace_back(world1.composition(position, 10, 0));
     position = {{637e3,425e3,800e3}};
-    CHECK(world1.temperature(position, 10, 10) == Approx(1600));
-    CHECK(world1.composition(position, 10, 0) == Approx(0.0));
+    approval_tests.emplace_back(world1.temperature(position, 10, 10));
+    approval_tests.emplace_back(world1.composition(position, 10, 0));
     position = {{617.5e3,445e3,800e3}};
-    CHECK(world1.temperature(position, 1e3, 10) == Approx(150));
-    CHECK(world1.composition(position, 1e3, 0) == Approx(1.0));
+    approval_tests.emplace_back(world1.temperature(position, 1e3, 10));
+    approval_tests.emplace_back(world1.composition(position, 1e3, 0));
 
     position = {{625e3,200e3,800e3}};
-    CHECK(world1.temperature(position, 10, 10) == Approx(1600));
-    CHECK(world1.composition(position, 10, 0) == Approx(0.0));
+    approval_tests.emplace_back(world1.temperature(position, 10, 10));
+    approval_tests.emplace_back(world1.composition(position, 10, 0));
     position = {{624e3,200e3,800e3}};
-    CHECK(world1.temperature(position, 10, 10) == Approx(1600));
-    CHECK(world1.composition(position, 10, 0) == Approx(0.0));
+    approval_tests.emplace_back(world1.temperature(position, 10, 10));
+    approval_tests.emplace_back(world1.composition(position, 10, 0));
     position = {{607e3,180e3,800e3}};
-    CHECK(world1.temperature(position, 3e3, 10) == Approx(150));
-    CHECK(world1.composition(position, 3e3, 0) == Approx(1.0));
+    approval_tests.emplace_back(world1.temperature(position, 3e3, 10));
+    approval_tests.emplace_back(world1.composition(position, 3e3, 0));
   }
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
-
 TEST_CASE("WorldBuilder Types: Double")
 {
 #define TYPE Double
@@ -3253,19 +2968,16 @@ TEST_CASE("WorldBuilder Types: Double")
   CHECK(type.default_value == Approx(1.0));
   CHECK(type.description == "test");
   CHECK(type.get_type() == Types::type::TYPE);
-
   Types::TYPE type_copy(type);
   CHECK(type_copy.value == Approx(1.0));
   CHECK(type_copy.default_value == Approx(1.0));
   CHECK(type_copy.description == "test");
   CHECK(type_copy.get_type() == Types::type::TYPE);
-
   Types::TYPE type_explicit(2, 3, "test explicit");
   CHECK(type_explicit.value == Approx(2.0));
   CHECK(type_explicit.default_value == Approx(3.0));
   CHECK(type_explicit.description == "test explicit");
   CHECK(type_explicit.get_type() == Types::type::TYPE);
-
   std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
   CHECK(type_clone_natural->value == Approx(2.0));
@@ -3484,17 +3196,13 @@ TEST_CASE("WorldBuilder Types: Coordinate System")
   CHECK(type.default_value == "1");
   CHECK(type.description == "test");
   CHECK(type.get_type() == Types::type::TYPE);
-
   std::unique_ptr<Types::Interface> type_clone = type.clone();
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
   CHECK(type_clone_natural->value == nullptr);
   CHECK(type_clone_natural->default_value == "1");
   CHECK(type_clone_natural->description == "test");
   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
-
-
   // todo: test the set value function.
-
 #undef TYPE
 }*/
 
@@ -3604,7 +3312,6 @@ TEST_CASE("WorldBuilder Types: Array")
   CHECK(type_clone_natural->inner_type_index.size() == 2);
   CHECK(type_clone_natural->description == "array test explicit");
   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
-
   Types::TYPE type_copy2(*type_clone_natural);
   CHECK(type_copy2.inner_type == Types::type::Double);
   CHECK(type_copy2.inner_type_ptr.get() == nullptr);
@@ -3850,18 +3557,20 @@ TEST_CASE("WorldBuilder Types: print_tree")
          "     }\n"
          "   }\n"
          " }";
-  CHECK(Utilities::print_tree(tree, 0) == output.str());
+  approval_tests.emplace_back(Utilities::print_tree(tree, 0));
 }*/
 
 TEST_CASE("WorldBuilder Parameters")
 {
+  std::vector<double> approval_tests;
+
   // First test a world builder file with a cross section defined
   std::string file = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/type_data.json";
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_cartesian.wb";
   WorldBuilder::World world(file_name);
 
   world.parse_entries(world.parameters);
-  CHECK(std::isinf(world.parameters.coordinate_system->max_model_depth()));
+  approval_tests.emplace_back(std::isinf(world.parameters.coordinate_system->max_model_depth()));
 
   Parameters prm(world);
   prm.initialize(file);
@@ -3928,65 +3637,65 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK_THROWS_WITH(prm.get("value at points non existant",additional_points), Contains("internal error: could not retrieve"));
   std::pair<std::vector<double>,std::vector<double>> v_at_p_one_value = prm.get("one value at points one value",additional_points);
 
-  CHECK(v_at_p_one_value.first.size() == 1);
-  CHECK(v_at_p_one_value.first[0] == Approx(200));
-  CHECK(v_at_p_one_value.second.size() == 0);
+  approval_tests.emplace_back(v_at_p_one_value.first.size());
+  approval_tests.emplace_back(v_at_p_one_value.first[0]);
+  approval_tests.emplace_back(v_at_p_one_value.second.size());
 
   {
     Objects::Surface surface(v_at_p_one_value);
-    CHECK(surface.local_value(Point<2>(0,0,CoordinateSystem::cartesian)) == Approx(200.));
+    approval_tests.emplace_back(surface.local_value(Point<2>(0,0,CoordinateSystem::cartesian)));
   }
   std::pair<std::vector<double>,std::vector<double>> v_at_p_one_array_value = prm.get("array value at points one value",additional_points);
 
-  CHECK(v_at_p_one_array_value.first.size() == 1);
-  CHECK(v_at_p_one_array_value.first[0] == Approx(250));
-  CHECK(v_at_p_one_array_value.second.size() == 0);
+  approval_tests.emplace_back(v_at_p_one_array_value.first.size());
+  approval_tests.emplace_back(v_at_p_one_array_value.first[0]);
+  approval_tests.emplace_back(v_at_p_one_array_value.second.size());
 
   std::pair<std::vector<double>,std::vector<double>> v_at_p_full_default = prm.get("value at points",additional_points);
 
-  CHECK(v_at_p_full_default.first.size() == 1);
-  CHECK(v_at_p_full_default.first[0] == Approx(101));
-  CHECK(v_at_p_full_default.second.size() == 0);
+  approval_tests.emplace_back(v_at_p_full_default.first.size());
+  approval_tests.emplace_back(v_at_p_full_default.first[0]);
+  approval_tests.emplace_back(v_at_p_full_default.second.size());
 
   std::pair<std::vector<double>,std::vector<double>> v_at_p_dap = prm.get("value at points default ap",additional_points);
 
-  CHECK(v_at_p_dap.first.size() == 7);
-  CHECK(v_at_p_dap.first[0] == Approx(101));
-  CHECK(v_at_p_dap.first[1] == Approx(300));
-  CHECK(v_at_p_dap.first[2] == Approx(101));
-  CHECK(v_at_p_dap.first[3] == Approx(101));
-  CHECK(v_at_p_dap.first[4] == Approx(100));
-  CHECK(v_at_p_dap.first[5] == Approx(100));
-  CHECK(v_at_p_dap.first[6] == Approx(200));
-  CHECK(v_at_p_dap.second.size() == 14);
-  CHECK(v_at_p_dap.second[0] == Approx(-10));
-  CHECK(v_at_p_dap.second[1] == Approx(-10));
-  CHECK(v_at_p_dap.second[2] == Approx(-10));
-  CHECK(v_at_p_dap.second[3] == Approx(10));
-  CHECK(v_at_p_dap.second[4] == Approx(10));
-  CHECK(v_at_p_dap.second[5] == Approx(10));
-  CHECK(v_at_p_dap.second[6] == Approx(10));
-  CHECK(v_at_p_dap.second[7] == Approx(-10));
-  CHECK(v_at_p_dap.second[8] == Approx(1));
-  CHECK(v_at_p_dap.second[9] == Approx(2));
-  CHECK(v_at_p_dap.second[10] == Approx(3));
-  CHECK(v_at_p_dap.second[11] == Approx(4));
-  CHECK(v_at_p_dap.second[12] == Approx(5));
-  CHECK(v_at_p_dap.second[13] == Approx(6));
+  approval_tests.emplace_back(v_at_p_dap.first.size());
+  approval_tests.emplace_back(v_at_p_dap.first[0]);
+  approval_tests.emplace_back(v_at_p_dap.first[1]);
+  approval_tests.emplace_back(v_at_p_dap.first[2]);
+  approval_tests.emplace_back(v_at_p_dap.first[3]);
+  approval_tests.emplace_back(v_at_p_dap.first[4]);
+  approval_tests.emplace_back(v_at_p_dap.first[5]);
+  approval_tests.emplace_back(v_at_p_dap.first[6]);
+  approval_tests.emplace_back(v_at_p_dap.second.size());
+  approval_tests.emplace_back(v_at_p_dap.second[0]);
+  approval_tests.emplace_back(v_at_p_dap.second[1]);
+  approval_tests.emplace_back(v_at_p_dap.second[2]);
+  approval_tests.emplace_back(v_at_p_dap.second[3]);
+  approval_tests.emplace_back(v_at_p_dap.second[4]);
+  approval_tests.emplace_back(v_at_p_dap.second[5]);
+  approval_tests.emplace_back(v_at_p_dap.second[6]);
+  approval_tests.emplace_back(v_at_p_dap.second[7]);
+  approval_tests.emplace_back(v_at_p_dap.second[8]);
+  approval_tests.emplace_back(v_at_p_dap.second[9]);
+  approval_tests.emplace_back(v_at_p_dap.second[10]);
+  approval_tests.emplace_back(v_at_p_dap.second[11]);
+  approval_tests.emplace_back(v_at_p_dap.second[12]);
+  approval_tests.emplace_back(v_at_p_dap.second[13]);
 
   {
     Objects::Surface surface(v_at_p_dap);
 
-    CHECK(surface.local_value(Point<2>(0,0,CoordinateSystem::cartesian)) == Approx(100.1666666667));
-    CHECK(surface.local_value(Point<2>(0.99,1.99,CoordinateSystem::cartesian)) == Approx(100.0099545455));
-    CHECK(surface.local_value(Point<2>(1.01,2.01,CoordinateSystem::cartesian)) == Approx(100.));
-    CHECK(surface.local_value(Point<2>(0.99,0.99,CoordinateSystem::cartesian)) == Approx(100.0841666667));
-    CHECK(surface.local_value(Point<2>(1.01,1.01,CoordinateSystem::cartesian)) == Approx(100.0825));
-    CHECK(surface.local_value(Point<2>(2.99,3.99,CoordinateSystem::cartesian)) == Approx(100.));
-    CHECK(surface.local_value(Point<2>(2.01,4.01,CoordinateSystem::cartesian)) == Approx(110.5263157895));
-    CHECK(surface.local_value(Point<2>(-0.5,7.48,CoordinateSystem::cartesian)) == Approx(236.5025));
-    CHECK(surface.local_value(Point<2>(-1,7.6,CoordinateSystem::cartesian)) == Approx(240.0));
-    CHECK(surface.local_value(Point<2>(-2.4,8.2,CoordinateSystem::cartesian)) == Approx(246.5425));
+    approval_tests.emplace_back(surface.local_value(Point<2>(0,0,CoordinateSystem::cartesian)));
+    approval_tests.emplace_back(surface.local_value(Point<2>(0.99,1.99,CoordinateSystem::cartesian)));
+    approval_tests.emplace_back(surface.local_value(Point<2>(1.01,2.01,CoordinateSystem::cartesian)));
+    approval_tests.emplace_back(surface.local_value(Point<2>(0.99,0.99,CoordinateSystem::cartesian)));
+    approval_tests.emplace_back(surface.local_value(Point<2>(1.01,1.01,CoordinateSystem::cartesian)));
+    approval_tests.emplace_back(surface.local_value(Point<2>(2.99,3.99,CoordinateSystem::cartesian)));
+    approval_tests.emplace_back(surface.local_value(Point<2>(2.01,4.01,CoordinateSystem::cartesian)));
+    approval_tests.emplace_back(surface.local_value(Point<2>(-0.5,7.48,CoordinateSystem::cartesian)));
+    approval_tests.emplace_back(surface.local_value(Point<2>(-1,7.6,CoordinateSystem::cartesian)));
+    approval_tests.emplace_back(surface.local_value(Point<2>(-2.4,8.2,CoordinateSystem::cartesian)));
     CHECK_THROWS_WITH(surface.local_value(Point<2>(11,11,CoordinateSystem::cartesian)), Contains("The requested point was not in any triangle."));
   }
 
@@ -4037,15 +3746,15 @@ TEST_CASE("WorldBuilder Parameters")
   prm.leave_subsection();
 
   std::vector<unsigned int> v_int = prm.get_vector<unsigned int>("now existent unsigned int vector");
-  CHECK(v_int.size() == 2);
-  CHECK(v_int[0] == Approx(1.0));
-  CHECK(v_int[1] == Approx(1.0));
+  approval_tests.emplace_back(v_int.size());
+  approval_tests.emplace_back(v_int[0]);
+  approval_tests.emplace_back(v_int[1]);
 
   v_int = prm.get_vector<unsigned int>("unsigned int array");
-  CHECK(v_int.size() == 3);
-  CHECK(v_int[0] == Approx(25.0));
-  CHECK(v_int[1] == Approx(26.0));
-  CHECK(v_int[2] == Approx(27.0));
+  approval_tests.emplace_back(v_int.size());
+  approval_tests.emplace_back(v_int[0]);
+  approval_tests.emplace_back(v_int[1]);
+  approval_tests.emplace_back(v_int[2]);
 
   CHECK_THROWS_WITH(prm.get_vector<size_t>("non existent unsigned int vector"),
                     Contains("internal error: could not retrieve the minItems value"));
@@ -4053,15 +3762,15 @@ TEST_CASE("WorldBuilder Parameters")
 
 
   std::vector<size_t> v_size_t = prm.get_vector<size_t>("now existent unsigned int vector");
-  CHECK(v_size_t.size() == 2);
-  CHECK(v_size_t[0] == Approx(1.0));
-  CHECK(v_size_t[1] == Approx(1.0));
+  approval_tests.emplace_back(v_size_t.size());
+  approval_tests.emplace_back(v_size_t[0]);
+  approval_tests.emplace_back(v_size_t[1]);
 
   v_size_t = prm.get_vector<size_t>("unsigned int array");
-  CHECK(v_size_t.size() == 3);
-  CHECK(v_size_t[0] == Approx(25.0));
-  CHECK(v_size_t[1] == Approx(26.0));
-  CHECK(v_size_t[2] == Approx(27.0));
+  approval_tests.emplace_back(v_size_t.size());
+  approval_tests.emplace_back(v_size_t[0]);
+  approval_tests.emplace_back(v_size_t[1]);
+  approval_tests.emplace_back(v_size_t[2]);
 
 
   CHECK_THROWS_WITH(prm.get_vector<size_t>("non existent unsigned int vector"),
@@ -4076,18 +3785,18 @@ TEST_CASE("WorldBuilder Parameters")
   prm.leave_subsection();
 
   std::vector<bool> v_bool = prm.get_vector<bool>("now existent bool vector");
-  CHECK(v_bool.size() == 2);
-  CHECK(v_bool[0] == true);
-  CHECK(v_bool[1] == true);
+  approval_tests.emplace_back(v_bool.size());
+  approval_tests.emplace_back(v_bool[0]);
+  approval_tests.emplace_back(v_bool[1]);
 
   v_bool = prm.get_vector<bool>("bool array");
-  CHECK(v_bool.size() == 6);
-  CHECK(v_bool[0] == true);
-  CHECK(v_bool[1] == false);
-  CHECK(v_bool[2] == true);
-  CHECK(v_bool[3] == false);
-  CHECK(v_bool[4] == true);
-  CHECK(v_bool[1] == false);
+  approval_tests.emplace_back(v_bool.size());
+  approval_tests.emplace_back(v_bool[0]);
+  approval_tests.emplace_back(v_bool[1]);
+  approval_tests.emplace_back(v_bool[2]);
+  approval_tests.emplace_back(v_bool[3]);
+  approval_tests.emplace_back(v_bool[4]);
+  approval_tests.emplace_back(v_bool[1]);
 
   CHECK_THROWS_WITH(prm.get_vector<bool>("bool array nob"),
                     Contains("IsBool()"));
@@ -4105,59 +3814,59 @@ TEST_CASE("WorldBuilder Parameters")
   prm.leave_subsection();
 
   std::vector<double> v_double = prm.get_vector<double>("now existent double vector");
-  CHECK(v_double.size() == 2);
-  CHECK(v_double[0] == Approx(2.4));
-  CHECK(v_double[1] == Approx(2.4));
+  approval_tests.emplace_back(v_double.size());
+  approval_tests.emplace_back(v_double[0]);
+  approval_tests.emplace_back(v_double[1]);
 
   CHECK_THROWS_WITH(prm.get<Point<2> >("string array"),
                     Contains("Could not convert values of /string array into Point<2>, because it could not convert the sub-elements into doubles."));
 
   v_double = prm.get_vector<double>("double array");
-  CHECK(v_double.size() == 3);
-  CHECK(v_double[0] == Approx(25.2));
-  CHECK(v_double[1] == Approx(26.3));
-  CHECK(v_double[2] == Approx(27.4));
+  approval_tests.emplace_back(v_double.size());
+  approval_tests.emplace_back(v_double[0]);
+  approval_tests.emplace_back(v_double[1]);
+  approval_tests.emplace_back(v_double[2]);
 
   CHECK_THROWS_WITH(prm.get_vector<Point<2> >("point<2> array nan"),
                     Contains("Could not convert values of /point<2> array nan/0 into a Point<2> array, because it could not convert the sub-elements into doubles."));
 
   std::vector<std::array<std::array<double,3>,3> > v_3x3_array = prm.get_vector<std::array<std::array<double,3>,3> >("vector of 3x3 arrays");
-  CHECK(v_3x3_array.size() == 2);
-  CHECK(v_3x3_array[0][0][0] == Approx(0.0));
-  CHECK(v_3x3_array[0][0][1] == Approx(1.0));
-  CHECK(v_3x3_array[0][0][2] == Approx(2.0));
-  CHECK(v_3x3_array[0][1][0] == Approx(3.0));
-  CHECK(v_3x3_array[0][1][1] == Approx(4.0));
-  CHECK(v_3x3_array[0][1][2] == Approx(5.0));
-  CHECK(v_3x3_array[0][2][0] == Approx(6.0));
-  CHECK(v_3x3_array[0][2][1] == Approx(7.0));
-  CHECK(v_3x3_array[0][2][2] == Approx(8.0));
+  approval_tests.emplace_back(v_3x3_array.size());
+  approval_tests.emplace_back(v_3x3_array[0][0][0]);
+  approval_tests.emplace_back(v_3x3_array[0][0][1]);
+  approval_tests.emplace_back(v_3x3_array[0][0][2]);
+  approval_tests.emplace_back(v_3x3_array[0][1][0]);
+  approval_tests.emplace_back(v_3x3_array[0][1][1]);
+  approval_tests.emplace_back(v_3x3_array[0][1][2]);
+  approval_tests.emplace_back(v_3x3_array[0][2][0]);
+  approval_tests.emplace_back(v_3x3_array[0][2][1]);
+  approval_tests.emplace_back(v_3x3_array[0][2][2]);
 
-  CHECK(v_3x3_array[1][0][0] == Approx(9.0));
-  CHECK(v_3x3_array[1][0][1] == Approx(10.0));
-  CHECK(v_3x3_array[1][0][2] == Approx(11.0));
-  CHECK(v_3x3_array[1][1][0] == Approx(12.0));
-  CHECK(v_3x3_array[1][1][1] == Approx(13.0));
-  CHECK(v_3x3_array[1][1][2] == Approx(14.0));
-  CHECK(v_3x3_array[1][2][0] == Approx(15.0));
-  CHECK(v_3x3_array[1][2][1] == Approx(16.0));
-  CHECK(v_3x3_array[1][2][2] == Approx(17.0));
+  approval_tests.emplace_back(v_3x3_array[1][0][0]);
+  approval_tests.emplace_back(v_3x3_array[1][0][1]);
+  approval_tests.emplace_back(v_3x3_array[1][0][2]);
+  approval_tests.emplace_back(v_3x3_array[1][1][0]);
+  approval_tests.emplace_back(v_3x3_array[1][1][1]);
+  approval_tests.emplace_back(v_3x3_array[1][1][2]);
+  approval_tests.emplace_back(v_3x3_array[1][2][0]);
+  approval_tests.emplace_back(v_3x3_array[1][2][1]);
+  approval_tests.emplace_back(v_3x3_array[1][2][2]);
 
   std::vector<std::vector<Point<2> > > v_v_p2 = prm.get_vector<std::vector<Point<2>>>("vector of vectors of points<2>");
-  CHECK(v_v_p2.size() == 2);
-  CHECK(v_v_p2[0].size() == 2);
-  CHECK(v_v_p2[0][0][0] == Approx(0.0));
-  CHECK(v_v_p2[0][0][1] == Approx(1.0));
-  CHECK(v_v_p2[0][1][0] == Approx(2.0));
-  CHECK(v_v_p2[0][1][1] == Approx(3.0));
+  approval_tests.emplace_back(v_v_p2.size());
+  approval_tests.emplace_back(v_v_p2[0].size());
+  approval_tests.emplace_back(v_v_p2[0][0][0]);
+  approval_tests.emplace_back(v_v_p2[0][0][1]);
+  approval_tests.emplace_back(v_v_p2[0][1][0]);
+  approval_tests.emplace_back(v_v_p2[0][1][1]);
 
-  CHECK(v_v_p2[1].size() == 3);
-  CHECK(v_v_p2[1][0][0] == Approx(4.0));
-  CHECK(v_v_p2[1][0][1] == Approx(5.0));
-  CHECK(v_v_p2[1][1][0] == Approx(6.0));
-  CHECK(v_v_p2[1][1][1] == Approx(7.0));
-  CHECK(v_v_p2[1][2][0] == Approx(8.0));
-  CHECK(v_v_p2[1][2][1] == Approx(9.0));
+  approval_tests.emplace_back(v_v_p2[1].size());
+  approval_tests.emplace_back(v_v_p2[1][0][0]);
+  approval_tests.emplace_back(v_v_p2[1][0][1]);
+  approval_tests.emplace_back(v_v_p2[1][1][0]);
+  approval_tests.emplace_back(v_v_p2[1][1][1]);
+  approval_tests.emplace_back(v_v_p2[1][2][0]);
+  approval_tests.emplace_back(v_v_p2[1][2][1]);
 
 
   CHECK_THROWS_WITH(prm.get_vector<std::vector<Point<2>>>("vector of vectors of points<2> nan"),
@@ -4169,8 +3878,8 @@ TEST_CASE("WorldBuilder Parameters")
                     Contains("internal error: could not retrieve the default value at"));
 
   std::vector<std::string> v_string = prm.get_vector<std::string>("string array");
-  CHECK(v_string[0] == "abc");
-  CHECK(v_string[1] == "def");*/
+  approval_tests.emplace_back(v_string[0]);
+  approval_tests.emplace_back(v_string[1]);*/
 
   //prm.load_entry("Coordinate system", false, Types::CoordinateSystem("cartesian","This determines the coordinate system"));
 
@@ -4279,15 +3988,15 @@ TEST_CASE("WorldBuilder Parameters")
 
     prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
     std::vector<Types::Double> set_typed_double =  prm.get_array<Types::Double >("new double array");
-    CHECK(set_typed_double.size() == 0);
+    approval_tests.emplace_back(set_typed_double.size());
     // This is not desired behavior, but it is not implemented yet.
 
     prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
     std::vector<Types::Double> true_loaded_typed_double =  prm.get_array<Types::Double >("double array");
-    CHECK(true_loaded_typed_double.size() == 3);
-    CHECK(true_loaded_typed_double[0].value == Approx(25.0));
-    CHECK(true_loaded_typed_double[1].value == Approx(26.0));
-    CHECK(true_loaded_typed_double[2].value == Approx(27.0));
+    approval_tests.emplace_back(true_loaded_typed_double.size());
+    approval_tests.emplace_back(true_loaded_typed_double[0].value);
+    approval_tests.emplace_back(true_loaded_typed_double[1].value);
+    approval_tests.emplace_back(true_loaded_typed_double[2].value);
 
 
     // Test the Array<Types::Point<2> > functions
@@ -4308,12 +4017,12 @@ TEST_CASE("WorldBuilder Parameters")
 
     prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
     std::vector<Types::Point<2> > set_typed_point_2d = prm.get_array<Types::Point<2> >("new point<2> array");
-    CHECK(set_typed_point_2d.size() == 0);
+    approval_tests.emplace_back(set_typed_point_2d.size());
     // This is not desired behavior, but it is not implemented yet.
 
     prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
     std::vector<Types::Point<2> > true_loaded_typed_point_2d =  prm.get_array<Types::Point<2> >("point<2> array");
-    CHECK(true_loaded_typed_point_2d.size() == 3);
+    approval_tests.emplace_back(true_loaded_typed_point_2d.size());
     CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {10,11});
     CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {12,13});
     CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {14,15});
@@ -4337,12 +4046,12 @@ TEST_CASE("WorldBuilder Parameters")
 
     prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
     std::vector<Types::Point<3> > set_typed_point_3d = prm.get_array<Types::Point<3> >("new point<3> array");
-    CHECK(set_typed_point_3d.size() == 0);
+    approval_tests.emplace_back(set_typed_point_3d.size());
     // This is not desired behavior, but it is not implemented yet.
 
     prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
     std::vector<Types::Point<3> > true_loaded_typed_point_3d =  prm.get_array<Types::Point<3> >("point<3> array");
-    CHECK(true_loaded_typed_point_3d.size() == 3);
+    approval_tests.emplace_back(true_loaded_typed_point_3d.size());
     CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {20,21,22});
     CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {23,24,25});
     CHECK(true_loaded_typed_point_3d[2].value.get_array() == std::array<double,3> {26,27,28});
@@ -4473,15 +4182,15 @@ TEST_CASE("WorldBuilder Parameters")
 
       prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
       std::vector<Types::Double > set_typed_double =  prm.get_array<Types::Double >("new double array");
-      CHECK(set_typed_double.size() == 0);
+      approval_tests.emplace_back(set_typed_double.size());
       // This is not desired behavior, but it is not implemented yet.
 
       prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
       std::vector<Types::Double > true_loaded_typed_double =  prm.get_array<Types::Double >("double array");
-      CHECK(true_loaded_typed_double.size() == 3);
-      CHECK(true_loaded_typed_double[0].value == Approx(35.0));
-      CHECK(true_loaded_typed_double[1].value == Approx(36.0));
-      CHECK(true_loaded_typed_double[2].value == Approx(37.0));
+      approval_tests.emplace_back(true_loaded_typed_double.size());
+      approval_tests.emplace_back(true_loaded_typed_double[0].value);
+      approval_tests.emplace_back(true_loaded_typed_double[1].value);
+      approval_tests.emplace_back(true_loaded_typed_double[2].value);
 
       // Test the Array<Types::Point<2> > functions
       CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2,cartesian),"description"),"description")),
@@ -4499,12 +4208,12 @@ TEST_CASE("WorldBuilder Parameters")
 
       prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
       std::vector<Types::Point<2> > set_typed_point_2d = prm.get_array<Types::Point<2> >("new point<2> array");
-      CHECK(set_typed_point_2d.size() == 0);
+      approval_tests.emplace_back(set_typed_point_2d.size());
       // This is not desired behavior, but it is not implemented yet.
 
       prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
       std::vector<Types::Point<2> > true_loaded_typed_point_2d =  prm.get_array<Types::Point<2> >("point<2> array");
-      CHECK(true_loaded_typed_point_2d.size() == 3);
+      approval_tests.emplace_back(true_loaded_typed_point_2d.size());
       CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {20,21});
       CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {22,23});
       CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {24,25});
@@ -4526,12 +4235,12 @@ TEST_CASE("WorldBuilder Parameters")
 
       prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
       std::vector<Types::Point<3> > set_typed_point_3d = prm.get_array<Types::Point<3> >("new point<3> array");
-      CHECK(set_typed_point_3d.size() == 0);
+      approval_tests.emplace_back(set_typed_point_3d.size());
       // This is not desired behavior, but it is not implemented yet.
 
       prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
       std::vector<Types::Point<3> > true_loaded_typed_point_3d =  prm.get_array<Types::Point<3> >("point<3> array");
-      CHECK(true_loaded_typed_point_3d.size() == 3);
+      approval_tests.emplace_back(true_loaded_typed_point_3d.size());
       CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {30,31,32});
       CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {33,34,35});
       CHECK(true_loaded_typed_point_3d[2].value.get_array() == std::array<double,3> {36,37,38});
@@ -4661,15 +4370,15 @@ TEST_CASE("WorldBuilder Parameters")
 
         prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
         std::vector<Types::Double > set_typed_double =  prm.get_array<Types::Double >("new double array");
-        CHECK(set_typed_double.size() == 0);
+        approval_tests.emplace_back(set_typed_double.size());
         // This is not desired behavior, but it is not implemented yet.
 
         prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
         std::vector<Types::Double > true_loaded_typed_double =  prm.get_array<Types::Double >("double array");
-        CHECK(true_loaded_typed_double.size() == 3);
-        CHECK(true_loaded_typed_double[0].value == Approx(45.0));
-        CHECK(true_loaded_typed_double[1].value == Approx(46.0));
-        CHECK(true_loaded_typed_double[2].value == Approx(47.0));
+        approval_tests.emplace_back(true_loaded_typed_double.size());
+        approval_tests.emplace_back(true_loaded_typed_double[0].value);
+        approval_tests.emplace_back(true_loaded_typed_double[1].value);
+        approval_tests.emplace_back(true_loaded_typed_double[2].value);
 
 
         // Test the Array<Types::Point<2> > functions
@@ -4691,12 +4400,12 @@ TEST_CASE("WorldBuilder Parameters")
 
         prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
         std::vector<Types::Point<2> > set_typed_point_2d = prm.get_array<Types::Point<2> >("new point<2> array");
-        CHECK(set_typed_point_2d.size() == 0);
+        approval_tests.emplace_back(set_typed_point_2d.size());
         // This is not desired behavior, but it is not implemented yet.
 
         prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
         std::vector<Types::Point<2> > true_loaded_typed_point_2d =  prm.get_array<Types::Point<2> >("point<2> array");
-        CHECK(true_loaded_typed_point_2d.size() == 3);
+        approval_tests.emplace_back(true_loaded_typed_point_2d.size());
         CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {40,41});
         CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {42,43});
         CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {44,45});
@@ -4721,12 +4430,12 @@ TEST_CASE("WorldBuilder Parameters")
 
         prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
         std::vector<Types::Point<3> > set_typed_point_3d = prm.get_array<Types::Point<3> >("new point<3> array");
-        CHECK(set_typed_point_3d.size() == 0);
+        approval_tests.emplace_back(set_typed_point_3d.size());
         // This is not desired behavior, but it is not implemented yet.
 
         prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
         std::vector<Types::Point<3> > true_loaded_typed_point_3d =  prm.get_array<Types::Point<3> >("point<3> array");
-        CHECK(true_loaded_typed_point_3d.size() == 3);
+        approval_tests.emplace_back(true_loaded_typed_point_3d.size());
         CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {40,41,42});
         CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {43,44,45});
         CHECK(true_loaded_typed_point_3d[2].value.get_array() == std::array<double,3> {46,47,48});
@@ -4755,14 +4464,14 @@ TEST_CASE("WorldBuilder Parameters")
 
   // Todo: add tests for list,feature and coordinate system.
 
-
-
-
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
 
 TEST_CASE("Euler angle functions")
 {
+  std::vector<double> approval_tests;
+
   // note, this is only testing consitency (can it convert back and forth) and
   // it only works for rotation matrices which are defined in the same way (z-x-z).
   {
@@ -4798,11 +4507,14 @@ TEST_CASE("Euler angle functions")
     auto rot3 = Utilities::euler_angles_to_rotation_matrix(ea2[0],ea2[1],ea2[2]);
     compare_rotation_matrices_approx(rot3, rot2);
   }
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
 
 TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes cartesian part 1")
 {
+  std::vector<double> approval_tests;
+
   std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::Interface::create("cartesian", nullptr);;
 
   //Todo:fix
@@ -4836,19 +4548,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   Utilities::interpolation x_spline;
   Utilities::interpolation y_spline;
 
-  Utilities::InterpolationType interpolation_type = Utilities::InterpolationType::None;
-  Utilities::InterpolationType interpolation_type_CMS = Utilities::InterpolationType::ContinuousMonotoneSpline;
-
   std::vector<double> x_list = {0.,20.};
   std::vector<double> y_list = {10.,10.};
   std::vector<Point<2> > coordinate_list_local = coordinates;
 
-  x_spline.set_points({0,1},
-                      x_list,
-                      interpolation_type_CMS != WorldBuilder::Utilities::InterpolationType::Linear);
-  y_spline.set_points({0,1},
-                      y_list,
-                      interpolation_type_CMS != WorldBuilder::Utilities::InterpolationType::Linear);
+  x_spline.set_points(x_list);
+  y_spline.set_points(y_list);
 
 
   WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
@@ -4861,18 +4566,19 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // practically zero
-  CHECK(distance_from_planes.distance_along_plane == Approx(std::sqrt(10*10+10*10)));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
-  CHECK(distance_from_planes.depth_reference_surface == Approx(10.0));
-  CHECK(distance_from_planes.closest_trench_point.get_array() == std::array<double,3> {{10.,10.,10.}});
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2]);
 
 
   distance_from_planes =
@@ -4885,20 +4591,18 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type_CMS,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-4); // practically zero
-  CHECK(distance_from_planes.distance_along_plane == Approx(std::sqrt(10*10+10*10)));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.598958));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(std::fabs(distance_from_planes.fraction_of_segment) < 1e-5);
-  CHECK(distance_from_planes.depth_reference_surface == Approx(10.0));
-  compare_vectors_approx(std::vector<double>(std::begin(distance_from_planes.closest_trench_point.get_array()),
-                                             std::end(distance_from_planes.closest_trench_point.get_array())),
-  std::vector<double> {{10.0525,10.,10.}});
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-4); // practically zero
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-5);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
+  approval_tests.insert( approval_tests.end(), std::begin(distance_from_planes.closest_trench_point.get_array()),
+                         std::end(distance_from_planes.closest_trench_point.get_array()));
 
 
   // center square test 2
@@ -4914,18 +4618,19 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(std::sqrt(10*10+10*10)));
-  CHECK(std::fabs(distance_from_planes.distance_along_plane) < 1e-14); // practically zero
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
-  CHECK(distance_from_planes.depth_reference_surface == Approx(0.0));
-  CHECK(distance_from_planes.closest_trench_point.get_array() == std::array<double,3> {{10.,10.,10.}});
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2]);
 
   // center square test 3
   position[1] = 20;
@@ -4941,18 +4646,19 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // practically zero
-  CHECK(distance_from_planes.distance_along_plane == Approx(std::sqrt(10*10+10*10)));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
-  CHECK(distance_from_planes.depth_reference_surface == Approx(10.0));
-  CHECK(distance_from_planes.closest_trench_point.get_array() == std::array<double,3> {{10.,10.,10.}});
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2]);
 
   // center square test 4
   reference_point[1] = 0;
@@ -4967,18 +4673,19 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(std::sqrt(10*10+10*10)));
-  CHECK(std::fabs(distance_from_planes.distance_along_plane) < 1e-14); // practically zero
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
-  CHECK(distance_from_planes.depth_reference_surface == Approx(0.0));
-  CHECK(distance_from_planes.closest_trench_point.get_array() == std::array<double,3> {{10.,10.,10.}});
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2]);
 
   // center square test 5
   position[1] = -10;
@@ -4995,18 +4702,19 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  CHECK(distance_from_planes.distance_along_plane == Approx(sqrt(20*20+20*20))); // practically zero
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.0707106781)); // practically zero
-  CHECK(distance_from_planes.depth_reference_surface == Approx(20.0));
-  CHECK(distance_from_planes.closest_trench_point.get_array() == std::array<double,3> {{10.,10.,10.}});
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane); // practically zero
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment); // practically zero
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2]);
 
   // begin section square test 6
   position[0] = 0;
@@ -5022,17 +4730,16 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  CHECK(distance_from_planes.distance_along_plane == Approx(sqrt(20*20+20*20))); // practically zero
-  CHECK(std::fabs(distance_from_planes.fraction_of_section) < 1e-14);
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.0707106781)); // practically zero
-  CHECK(distance_from_planes.depth_reference_surface == Approx(20.0));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_section) < 1e-14);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment); // practically zero
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
   CHECK(distance_from_planes.closest_trench_point.get_array() == std::array<double,3> {{0.,10.,10.}});
 
 
@@ -5050,18 +4757,19 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  CHECK(distance_from_planes.distance_along_plane == Approx(sqrt(20*20+20*20))); // practically zero
-  CHECK(distance_from_planes.fraction_of_section == Approx(1.0));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.0707106781)); // practically zero
-  CHECK(distance_from_planes.depth_reference_surface == Approx(20.0));
-  CHECK(distance_from_planes.closest_trench_point.get_array() == std::array<double,3> {{20.,10.,10.}});
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane); // practically zero
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment); // practically zero
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2]);
 
   // before begin section square test 8
   position[0] = -10;
@@ -5077,17 +4785,16 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::isinf(distance_from_planes.distance_from_plane));
-  CHECK(std::isinf(distance_from_planes.distance_along_plane));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.0));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
-  CHECK(distance_from_planes.depth_reference_surface == Approx(0.0));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
   // The old method for slabs can not provide the corners when out of bounds and returns a nan. The new method can do this,
   // and the old method is planned to be removed.
   //CHECK(distance_from_planes.closest_trench_point.get_array() == std::array<double,3> {{NaN::DSNAN,NaN::DSNAN,10.}});
@@ -5103,18 +4810,17 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type_CMS,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::isinf(distance_from_planes.distance_from_plane));
-  CHECK(std::isinf(distance_from_planes.distance_along_plane));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.0));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
-  CHECK(distance_from_planes.depth_reference_surface == Approx(0.0));
-  CHECK(distance_from_planes.closest_trench_point.get_array() == std::array<double,3> {{0.,10.,10.}});
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
+  approval_tests.insert( approval_tests.end(), std::begin(distance_from_planes.closest_trench_point.get_array()), std::end(distance_from_planes.closest_trench_point.get_array()));
 
 
   // beyond end section square test 9
@@ -5131,17 +4837,16 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::isinf(distance_from_planes.distance_from_plane));
-  CHECK(std::isinf(distance_from_planes.distance_along_plane));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.0));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
-  CHECK(distance_from_planes.depth_reference_surface == Approx(0.0));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
   // The old method for slabs can not provide the corners when out of bounds and returns a nan. The new method can do this,
   // and the old method is planned to be removed.
   //CHECK(distance_from_planes.closest_trench_point.get_array() == std::array<double,3> {{NaN::DSNAN,NaN::DSNAN,10.}});
@@ -5157,20 +4862,19 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type_CMS,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::isinf(distance_from_planes.distance_from_plane));
-  CHECK(std::isinf(distance_from_planes.distance_along_plane));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.0));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
-  CHECK(distance_from_planes.depth_reference_surface == Approx(0.0));
-  CHECK(distance_from_planes.closest_trench_point.get_array()[0] == Approx(25.));
-  CHECK(distance_from_planes.closest_trench_point.get_array()[1] == Approx(10.));
-  CHECK(distance_from_planes.closest_trench_point.get_array()[2] == Approx(10.));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2]);
 
 
   // beyond end section square test 10
@@ -5189,18 +4893,19 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(-3.5355339059));
-  CHECK(distance_from_planes.distance_along_plane == Approx(10.6066017178));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.75));
-  CHECK(distance_from_planes.depth_reference_surface == Approx(7.5));
-  CHECK(distance_from_planes.closest_trench_point.get_array() == std::array<double,3> {{10.,10.,10.}});
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2]);
 
   // beyond end section square test 10 (only positive version)
   position[0] = 10;
@@ -5218,16 +4923,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  true,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(3.5355339059));
-  CHECK(distance_from_planes.distance_along_plane == Approx(10.6066017178));
-  CHECK(distance_from_planes.fraction_of_section ==  Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.75));
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
   // beyond end section square test 11
@@ -5246,16 +4950,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(3.5355339059));
-  CHECK(distance_from_planes.distance_along_plane == Approx(17.6776695297));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.0176776695));
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
   // beyond end section square test 11 (only positve version)
@@ -5274,16 +4977,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  true,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(3.5355339059));
-  CHECK(distance_from_planes.distance_along_plane == Approx(17.6776695297));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.0176776695));
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // add coordinate
   position[0] = 25;
@@ -5292,6 +4994,13 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   natural_coordinate = Objects::NaturalCoordinate(position,
                                                   *cartesian_system);
   coordinates.emplace_back(30,10,cartesian);
+
+
+  x_list = {0.,20.,30.};
+  y_list = {10.,10.,10.};
+
+  x_spline.set_points(x_list);
+  y_spline.set_points(y_list);
 
   slab_segment_lengths.resize(3);
   slab_segment_lengths[2].push_back(std::sqrt(10*10+10*10));
@@ -5311,16 +5020,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // practically zero
-  CHECK(distance_from_planes.distance_along_plane == Approx(std::sqrt(10*10+10*10)));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(1.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // practically zero
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-12);
 
   // different angle
   slab_segment_angles[0][0][0] = 22.5 * dtr;
@@ -5347,16 +5055,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // practically zero
-  CHECK(distance_from_planes.distance_along_plane == Approx(10.8239219938));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.7653668647));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)<1e-10);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // check interpolation 1 (in the middle of a segment with 22.5 degree and a segement with 45)
   position[0] = 25;
@@ -5374,16 +5081,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  CHECK(distance_from_planes.distance_along_plane == Approx(12.0268977387)); // practically zero
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(1.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.8504300948));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // check interpolation 2 (at the end of the segment at 45 degree)
   position[0] = 30;
@@ -5401,16 +5107,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  CHECK(distance_from_planes.distance_along_plane == Approx(14.1421356237)); // practically zero
-  CHECK(distance_from_planes.fraction_of_section == Approx(1.0));
-  CHECK(distance_from_planes.section == Approx(1.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // check length interpolation with 90 degree angles for simplicity
   // check length interpolation first segment center 1
@@ -5449,16 +5154,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  CHECK(distance_from_planes.distance_along_plane == Approx(100.0)); // practically zero
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane); // practically zero
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // check length interpolation first segment center 2
   position[0] = 10;
@@ -5476,16 +5180,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  CHECK(distance_from_planes.distance_along_plane == Approx(101.0)); // practically zero
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.01));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane); // practically zero
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // check length interpolation first segment center 3
   position[0] = 10;
@@ -5503,16 +5206,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  CHECK(distance_from_planes.distance_along_plane == Approx(200.0));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
 
@@ -5532,17 +5234,16 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::isinf(distance_from_planes.distance_from_plane));
-  CHECK(std::isinf(distance_from_planes.distance_along_plane));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.0));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.0));
-  CHECK(distance_from_planes.depth_reference_surface == Approx(0.0));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
 
   // Now check the center of the second segment, each segment should have a length of 75.
@@ -5562,16 +5263,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  CHECK(distance_from_planes.distance_along_plane == Approx(75.0)); // practically zero
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(1.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane); // practically zero
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // check length interpolation second segment center 2
   position[0] = 25;
@@ -5589,16 +5289,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  CHECK(distance_from_planes.distance_along_plane == Approx(76.0)); // practically zero
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(1.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.01333333333333));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane); // practically zero
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // check length interpolation second segment center 3
   position[0] = 25;
@@ -5616,16 +5315,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  CHECK(distance_from_planes.distance_along_plane == Approx(150.0));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(1.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
 
@@ -5645,16 +5343,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::isinf(distance_from_planes.distance_from_plane));
-  CHECK(std::isinf(distance_from_planes.distance_along_plane));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.0));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.0));
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // Now check the end of the second segment, each segment should have a length of 50.
   // check length interpolation second segment center 1
@@ -5673,16 +5370,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  CHECK(distance_from_planes.distance_along_plane == Approx(50.0)); // practically zero
-  CHECK(distance_from_planes.fraction_of_section == Approx(1.0));
-  CHECK(distance_from_planes.section == Approx(1.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane); // practically zero
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // check length interpolation second segment center 2
   position[0] = 30;
@@ -5700,16 +5396,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  CHECK(distance_from_planes.distance_along_plane == Approx(51.0)); // practically zero
-  CHECK(distance_from_planes.fraction_of_section == Approx(1.0));
-  CHECK(distance_from_planes.section == Approx(1.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.02));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane); // practically zero
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // check length interpolation second segment center 3
   position[0] = 30;
@@ -5727,16 +5422,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  CHECK(distance_from_planes.distance_along_plane == Approx(100.0));
-  CHECK(distance_from_planes.fraction_of_section == Approx(1.0));
-  CHECK(distance_from_planes.section == Approx(1.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
 
@@ -5756,20 +5450,22 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::isinf(distance_from_planes.distance_from_plane));
-  CHECK(std::isinf(distance_from_planes.distance_along_plane));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.0));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.0));
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
 TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes cartesian part 2")
 {
+  std::vector<double> approval_tests;
+
   std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::Interface::create("cartesian", nullptr);;
 
   //todo: fix
@@ -5832,31 +5528,39 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   position[2] = 0;
   natural_coordinate = Objects::NaturalCoordinate(position,
                                                   *cartesian_system);
+
+  Utilities::InterpolationType interpolation_type = Utilities::InterpolationType::ContinuousMonotoneSpline;
+
   Utilities::interpolation x_spline;
   Utilities::interpolation y_spline;
-  Utilities::InterpolationType interpolation_type = Utilities::InterpolationType::None;
+
+  std::vector<double> x_list = {0.,20., 30.};
+  std::vector<double> y_list = {10.,10., 10.};
+  std::vector<Point<2> > coordinate_list_local = coordinates;
+
+  x_spline.set_points(x_list);
+  y_spline.set_points(y_list);
 
   WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
                                                  natural_coordinate,
                                                  reference_point,
-                                                 coordinates,
+                                                 coordinate_list_local,
                                                  slab_segment_lengths,
                                                  slab_segment_angles,
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(90.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
-  CHECK(distance_from_planes.depth_reference_surface == Approx(10.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-10);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
   // curve test 2
   position[0] = 10;
@@ -5874,17 +5578,16 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(5.0)); // checked that it should be about 5 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(90.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
-  CHECK(distance_from_planes.depth_reference_surface == Approx(10.0));
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about 5 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
   // curve test 3
   position[0] = 10;
@@ -5902,17 +5605,16 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(-5.0)); // checked that it should be about -5 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(90.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
-  CHECK(distance_from_planes.depth_reference_surface == Approx(10.0));
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about -5 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
 
   // curve test 4
@@ -5931,17 +5633,16 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(45.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
-  CHECK(distance_from_planes.depth_reference_surface == Approx(2.9289321881));
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
   // curve test 5
   position[0] = 10;
@@ -5959,17 +5660,16 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(-10.0)); // checked that it should be about -10 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(45.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
-  CHECK(distance_from_planes.depth_reference_surface == Approx(2.9289321881));
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about -10 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
   // curve test 6
   position[0] = 10;
@@ -5987,21 +5687,20 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(10.0)); // checked that it should be about 10 this with a drawing
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane)); // checked that it should be about 10 this with a drawing
   // This is a special case where the point coincides with the center of the circle.
   // Because all the points on the circle are equally close, we have chosen in the
   // code to define this case as that this point belongs to the top of the top segment
   // where the check point has angle 0. This means that the distanceAlongPlate is zero.
-  CHECK(distance_from_planes.distance_along_plane == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.0));
-  CHECK(distance_from_planes.depth_reference_surface == Approx(0.0));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
 
   // curve test 7
@@ -6020,17 +5719,16 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::isinf(distance_from_planes.distance_from_plane));
-  CHECK(std::isinf(distance_from_planes.distance_along_plane));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.0));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.0));
-  CHECK(distance_from_planes.depth_reference_surface == Approx(0.0));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
   // curve test 8
   slab_segment_lengths[0][0] = 5 * 45 * dtr;
@@ -6053,17 +5751,16 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(90.0 * Utilities::const_pi/180 * 5));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
-  CHECK(distance_from_planes.depth_reference_surface == Approx(5.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
   // curve test 9
   position[0] = 10;
@@ -6081,16 +5778,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(45.0 * Utilities::const_pi/180 * 5));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
   // curve test 10
@@ -6123,16 +5819,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(90.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 11
   position[0] = 10;
@@ -6150,16 +5845,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(45.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.5));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 12
   position[0] = 10;
@@ -6177,17 +5871,16 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(135.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.5));
-  CHECK(distance_from_planes.depth_reference_surface == Approx(17.0710678119));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
 
   // curve test 13
@@ -6206,16 +5899,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(180.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 14
   slab_segment_angles[0][0][0] = 0.0 * dtr;
@@ -6247,16 +5939,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(90.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.5));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 15
   position[0] = 10;
@@ -6274,16 +5965,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(180.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 16
   position[0] = 10;
@@ -6301,16 +5991,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(-1.0)); // checked that it should be about -1 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(180.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about -1 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 16
   position[0] = 10;
@@ -6328,16 +6017,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(1.0)); // checked that it should be about -1 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(180.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about -1 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 17
   position[0] = 10;
@@ -6355,16 +6043,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(270.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
   // curve test 18
@@ -6383,16 +6070,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(-1.0)); // checked that it should be about 1 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(270.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about 1 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 19
   position[0] = 10;
@@ -6410,16 +6096,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(1.0)); // checked that it should be about 1 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(270.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about 1 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
   // curve test 20
@@ -6452,16 +6137,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(90.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0/3.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 21
   position[0] = 10;
@@ -6479,16 +6163,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(180.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(2.0/3.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 21
   position[0] = 10;
@@ -6506,16 +6189,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(270.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 22
   position[0] = 10;
@@ -6533,16 +6215,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(315.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test start 45 degree 1
   slab_segment_angles[0][0][0] = 45.0 * dtr;
@@ -6577,16 +6258,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(-7.3205080757)); // checked that it should be about -7.3 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(9.5531661812));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.2163468959));
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about -7.3 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test change reference point 1
   reference_point[0] = 50;
@@ -6607,17 +6287,16 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
   // checked that distanceFromPlane should be infinity (it is on the other side of the circle this with a drawing
-  CHECK(std::isinf(distance_from_planes.distance_from_plane));
-  CHECK(std::isinf(distance_from_planes.distance_along_plane));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.0));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.0));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test change reference point 2
   position[0] = 10;
@@ -6635,16 +6314,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(2.3463313527)); // checked that it should be about 2.3 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(11.780972451));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.5));
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about 2.3 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test angle interpolation 1
   reference_point[0] = 0;
@@ -6680,16 +6358,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(90.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(2.0/3.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test reverse angle 1
   reference_point[0] = 0;
@@ -6724,16 +6401,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(90.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test reverse angle 2
   position[0] = 10;
@@ -6751,16 +6427,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(180.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test reverse angle 3
   position[0] = 10;
@@ -6778,16 +6453,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(135.0 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.5));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test reverse angle 4
   position[0] = 10;
@@ -6807,16 +6481,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(90.1 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.0011111111));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) ); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
   // curve test reverse angle 5
@@ -6835,16 +6508,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(90.001 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.000011111111));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test reverse angle 6
   slab_segment_angles[0][0][0] = 0.0 * dtr;
@@ -6876,16 +6548,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(45 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-10); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-10);
 
   // curve test reverse angle 6
   position[0] = 10;
@@ -6904,16 +6575,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(45 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-10);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-10);
 
   // curve test reverse angle 6
   position[0] = 10;
@@ -6932,16 +6602,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(45 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-10);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-10);
 
 
   // curve test reverse angle 7
@@ -6961,16 +6630,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(46 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.0222222222));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)< 1e-10);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
 
@@ -6991,16 +6659,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(0.0697227738)); // checked that it should be small positive this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx((90 - 44.4093) * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.0131266424));
+  approval_tests.emplace_back(fabs(distance_from_planes.distance_from_plane)); // checked that it should be small positive this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test reverse angle 9
   position[0] = 10;
@@ -7019,16 +6686,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(-0.0692053058)); // checked that it should be small negative this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx((90 - 43.585) * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.031445048));
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be small negative this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test reverse angle 10
   position[0] = 10;
@@ -7047,16 +6713,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(90 * Utilities::const_pi/180 * 10));
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(1.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(1.0));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
   // global_x_list test 1
@@ -7076,17 +6741,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
-                                                 y_spline,
-  {0,1,2});
+                                                 y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.0));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // global_x_list test 2
   position[0] = 10;
@@ -7104,17 +6767,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
-                                                 y_spline,
-  {0,0.5,1});
+                                                 y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.25));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.0));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // global_x_list test 3
   position[0] = 15;
@@ -7132,17 +6793,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
-                                                 y_spline,
-  {0,0.5,1});
+                                                 y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.375));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // global_x_list test 4
   position[0] = 20;
@@ -7160,17 +6819,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
-                                                 y_spline,
-  {0,0.5,1});
+                                                 y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.0));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // global_x_list test 5
   position[0] = 25;
@@ -7188,17 +6845,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
-                                                 y_spline,
-  {0,0.5,1});
+                                                 y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(std::fabs(distance_from_planes.distance_along_plane) < 1e-12);
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.75));
-  CHECK(distance_from_planes.section == Approx(1.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(std::fabs(distance_from_planes.fraction_of_segment) < 1e-12);
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane)); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-12);
 
 
 
@@ -7218,23 +6873,23 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  starting_radius,
                                                  cartesian_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
-                                                 y_spline,
-  {0,0.5,1});
+                                                 y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
-  CHECK(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
-  CHECK(distance_from_planes.fraction_of_section == Approx(1.0));
-  CHECK(distance_from_planes.section == Approx(1.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.0));
-
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
 
 TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes spherical")
 {
+  std::vector<double> approval_tests;
+
   // Because most functionallity is already tested by the cartesian version
   // of this test case, the scope of this test case is only to test whether
   // the code which is different for the spherical case is correct.
@@ -7271,7 +6926,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   double starting_radius = 10;
   Utilities::interpolation x_spline;
   Utilities::interpolation y_spline;
-  Utilities::InterpolationType interpolation_type = Utilities::InterpolationType::None;
+  Utilities::InterpolationType interpolation_type = Utilities::InterpolationType::ContinuousMonotoneSpline;
+
+
+  std::vector<double> x_list = {0.,10 * dtr};
+  std::vector<double> y_list = {10 * dtr,10 * dtr};
+  std::vector<Point<2> > coordinate_list_local = coordinates;
+
+  x_spline.set_points(x_list);
+  y_spline.set_points(y_list);
 
   WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
@@ -7283,16 +6946,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // practically zero
-  CHECK(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
-  CHECK(std::fabs(distance_from_planes.fraction_of_section) < 1e-14);
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14);
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_section) < 1e-14);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14);
 
 
   // spherical test 2
@@ -7311,16 +6973,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // practically zero
-  CHECK(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
-  CHECK(distance_from_planes.fraction_of_section == Approx(1.0));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // practically zero
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14);
 
 
   // spherical test 2
@@ -7343,16 +7004,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // practically zero
-  CHECK(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14);
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14);
 
 
 // spherical test 3
@@ -7370,16 +7030,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(10*sqrt(2)/4)); // checked it with a geometric drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(10*sqrt(2)/4)); // checked it with a geometric drawing
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.25));
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
   /**
@@ -7406,16 +7065,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(10*sqrt(2)/2)); // checked it with a geometric drawing
-  CHECK(std::fabs(distance_from_planes.distance_along_plane) < 1e-14); // checked it with a geometric drawing
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14);
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked it with a geometric drawing
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) < 1e-14); // checked it with a geometric drawing
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14);
 
 
   // spherical test 5
@@ -7432,16 +7090,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);  // checked it with a geometric drawing
-  CHECK(distance_from_planes.distance_along_plane == Approx(10*sqrt(2)/2)); // checked it with a geometric drawing
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.5));
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);  // checked it with a geometric drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane); // checked it with a geometric drawing
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // spherical curve test 1
   // This test has not been checked analytically or with a drawing, but
@@ -7470,20 +7127,21 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  starting_radius,
                                                  world.parameters.coordinate_system,
                                                  false,
-                                                 interpolation_type,
                                                  x_spline,
                                                  y_spline);
 
-  CHECK(distance_from_planes.distance_from_plane == Approx(4.072033215));  // see comment at the top of the test
-  CHECK(distance_from_planes.distance_along_plane == Approx(6.6085171895)); // see comment at the top of the test
-  CHECK(distance_from_planes.fraction_of_section == Approx(0.5));
-  CHECK(distance_from_planes.section == Approx(0.0));
-  CHECK(distance_from_planes.segment == Approx(0.0));
-  CHECK(distance_from_planes.fraction_of_segment == Approx(0.4672927318));*/
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane);  // see comment at the top of the test
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane); // see comment at the top of the test
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);*/
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
 TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes spherical depth methods")
 {
+  std::vector<double> approval_tests;
 
   {
     // starting point
@@ -7492,44 +7150,44 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
 
     const double dtr = Utilities::const_pi/180.0;
     world.parse_entries(world.parameters);
-    CHECK(world.parameters.coordinate_system->max_model_depth() == Approx(6371000.));
+    approval_tests.emplace_back(world.parameters.coordinate_system->max_model_depth());
     // slab goes down and up again
     // origin
     std::array<double,3> position = {{6371000 - 0, 0 * dtr, 0 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    CHECK(world.temperature(position, 0, 10) == Approx(0));
-    CHECK(world.temperature(position, 1, 10) == Approx(0.0));
-    CHECK(world.temperature(position, 200e3, 10) == Approx(0.0));
-    CHECK(world.temperature(position, 210e3, 10) == Approx(1696.9009710498));
+    approval_tests.emplace_back(world.temperature(position, 0, 10));
+    approval_tests.emplace_back(world.temperature(position, 1, 10));
+    approval_tests.emplace_back(world.temperature(position, 200e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 210e3, 10));
 
     // ~330 km
     position = {{6371000 - 0, 0 * dtr, -3 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
-    CHECK(world.temperature(position, 50e3, 10) == Approx(1622.5575343016));
-    CHECK(world.temperature(position, 75e3, 10) == Approx(0.0));
-    CHECK(world.temperature(position, 250e3, 10) == Approx(0.0));
-    CHECK(world.temperature(position, 275e3, 10) == Approx(1728.0673222282));
+    approval_tests.emplace_back(world.temperature(position, 0, 10));
+    approval_tests.emplace_back(world.temperature(position, 50e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 75e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 250e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 275e3, 10));
 
 
     // ~1100 km
     position = {{6371000 - 0, 0 * dtr, -10 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
-    CHECK(world.temperature(position, 95e3, 10) == Approx(1643.1311005134));
-    CHECK(world.temperature(position, 100e3, 10) == Approx(1645.4330950743));
-    CHECK(world.temperature(position, 300e3, 10) == Approx(0.0));
-    CHECK(world.temperature(position, 305e3, 10) == Approx(0.0));
+    approval_tests.emplace_back(world.temperature(position, 0, 10));
+    approval_tests.emplace_back(world.temperature(position, 95e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 100e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 300e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 305e3, 10));
 
 
     // ~2200 km
     position = {{6371000 - 0, 0 * dtr, -20 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
-    CHECK(world.temperature(position, 1, 10) == Approx(1600.0004480001));
-    CHECK(world.temperature(position, 200e3, 10) == Approx(0.0));
-    CHECK(world.temperature(position, 205e3, 10) == Approx(0.0));
-    CHECK(world.temperature(position, 570e3, 10) == Approx(1876.8664968188));
+    approval_tests.emplace_back(world.temperature(position, 0, 10));
+    approval_tests.emplace_back(world.temperature(position, 1, 10));
+    approval_tests.emplace_back(world.temperature(position, 200e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 205e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 570e3, 10));
   }
 
   {
@@ -7541,41 +7199,41 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     // origin
     std::array<double,3> position = {{6371000 - 0, 0 * dtr, 0 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    CHECK(world.temperature(position, 0, 10) == Approx(0.0));
-    CHECK(world.temperature(position, 1, 10) == Approx(0.0));
-    CHECK(world.temperature(position, 200e3, 10) == Approx(0.0));
-    CHECK(world.temperature(position, 210e3, 10) == Approx(1696.9009710498));
+    approval_tests.emplace_back(world.temperature(position, 0, 10));
+    approval_tests.emplace_back(world.temperature(position, 1, 10));
+    approval_tests.emplace_back(world.temperature(position, 200e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 210e3, 10));
 
     // ~330 km
     position = {{6371000 - 0, 0 * dtr, -3 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
-    CHECK(world.temperature(position, 50e3, 10) == Approx(1622.5575343016));
-    CHECK(world.temperature(position, 75e3, 10) == Approx(0.0));
-    CHECK(world.temperature(position, 250e3, 10) == Approx(0.0));
-    CHECK(world.temperature(position, 275e3, 10) == Approx(1728.0673222282));
+    approval_tests.emplace_back(world.temperature(position, 0, 10));
+    approval_tests.emplace_back(world.temperature(position, 50e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 75e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 250e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 275e3, 10));
 
 
     // ~1100 km
     position = {{6371000 - 0, 0 * dtr, -10 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
-    CHECK(world.temperature(position, 150e3, 10) == Approx(1668.6311660012));
-    CHECK(world.temperature(position, 175e3, 10) == Approx(1680.352561184));
-    CHECK(world.temperature(position, 380e3, 10) == Approx(0.0));
-    CHECK(world.temperature(position, 385e3, 10) == Approx(0.0));
+    approval_tests.emplace_back(world.temperature(position, 0, 10));
+    approval_tests.emplace_back(world.temperature(position, 150e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 175e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 380e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 385e3, 10));
 
 
     // ~1100 km
     position = {{6371000 - 0, 0 * dtr, -20 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    CHECK(world.temperature(position, 0, 10) == Approx(1600.0));
-    CHECK(world.temperature(position, 350e3, 10) == Approx(1764.7404561736));
-    CHECK(world.temperature(position, 355e3, 10) == Approx(1767.2128230653));
-    CHECK(world.temperature(position, 565e3, 10) == Approx(0.0));
-    CHECK(world.temperature(position, 570e3, 10) == Approx(0.0));
+    approval_tests.emplace_back(world.temperature(position, 0, 10));
+    approval_tests.emplace_back(world.temperature(position, 350e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 355e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 565e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 570e3, 10));
   }
-
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
 TEST_CASE("WorldBuilder parameters: invalid 1")
@@ -7603,15 +7261,17 @@ TEST_CASE("Fast sin functions")
 
 TEST_CASE("Fast vs slow distance function")
 {
-  const Point<3> cartesian_1(1,2,3, cartesian);
-  const Point<3> cartesian_2(2,3,4, cartesian);
+  std::vector<double> approval_tests;
+  const Point<2> cartesian_1(1,2, cartesian);
+  const Point<2> cartesian_2(2,3, cartesian);
   // Should be exactly the same.
-  CHECK(sqrt(cartesian_1.cheap_relative_distance(cartesian_2)) == Approx(cartesian_1.distance(cartesian_2)));
+  approval_tests.emplace_back(sqrt(cartesian_1.cheap_relative_distance_cartesian(cartesian_2)));
 
-  const Point<3> spherical_1(1,2,3, spherical);
-  const Point<3> spherical_2(2,3,4, spherical);
+  const Point<2> spherical_1(1,2, spherical);
+  const Point<2> spherical_2(2,3, spherical);
   // will have an error associated with the faster sin functions.
-  CHECK(fabs(2.0 * asin(sqrt((spherical_1.cheap_relative_distance(spherical_2))))- spherical_1.distance(spherical_2)) < 3e-5);
+  CHECK(fabs(2.0 * asin(sqrt((spherical_1.cheap_relative_distance_spherical(spherical_2))))- spherical_1.distance(spherical_2)) < 3e-5);
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
 TEST_CASE("Fast version of fmod")

@@ -21,8 +21,10 @@
 #define WORLD_BUILDER_TYPES_INTERFACE_H
 
 #include "rapidjson/pointer.h"
+#include "assert.h"
 
 #include <memory>
+#include <iostream>
 
 namespace WorldBuilder
 {

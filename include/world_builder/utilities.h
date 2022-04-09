@@ -24,6 +24,7 @@
 #include "world_builder/nan.h"
 #include "world_builder/coordinate_systems/interface.h"
 #include "world_builder/objects/natural_coordinate.h"
+#include <iostream>
 
 
 namespace WorldBuilder
@@ -176,25 +177,72 @@ namespace WorldBuilder
     {
       public:
         /**
-         * Initialize the spline.
+         * Initialize the spline. This function assumes that all y points are spaced 1 in the x direction.
          *
-         * @param x X coordinates of interpolation points.
          * @param y Values in the interpolation points.
-         * @param monotone_spline Whether to construct a monotone cubic spline or just do linear interpolation.
          */
-        void set_points(const std::vector<double> &x,
-                        const std::vector<double> &y,
-                        const bool monotone_spline = false);
+        void set_points(const std::vector<double> &y);
+
+
         /**
          * Evaluate at point @p x.
          */
-        double operator() (const double x) const;
+        inline
+        double operator() (const double x) const
+        {
+          if (x >= 0 && x <= mx_size_min)
+            {
+              const size_t idx = (size_t)x;
+              const double h = x-idx;
+              return ((m[idx][0]*h + m[idx][1])*h + m[idx][2])*h + m[idx][3];
+            }
+          const size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
+          const double h = x-idx;
+          return (m[idx][1]*h + m[idx][2])*h + m[idx][3];
+        }
 
-      private:
+
+        inline
+        double operator() (const double x, const size_t idx, const double h) const
+        {
+          return (x >= 0 && x <= mx_size_min)
+                 ?
+                 ((m[idx][0]*h + m[idx][1])*h + m[idx][2])*h + m[idx][3]
+                 :
+                 (m[idx][1]*h + m[idx][2])*h + m[idx][3];
+        }
+
+
         /**
-         * x coordinates of points
+         * Evaluate at point @p x. assumes x is between 0 and mx_size_min.
+         * assume size_t idx = (size_t)x and h = x-idx.
          */
-        std::vector<double> m_x;
+        inline
+        double value_inside (const size_t idx, const double h) const
+        {
+          WBAssert(idx <= mx_size_min, "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << idx << ".");
+          WBAssert(h >= 0 && h <= 1., "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << h << ".");
+          return ((m[idx][0]*h + m[idx][1])*h + m[idx][2])*h + m[idx][3];
+        }
+
+
+        /**
+         * Evaluate at point @p x. assumes x is between 0 and mx_size_min.
+         * assume size_t idx = (size_t)x and h = x-idx.
+         */
+        inline
+        double value_outside (const size_t idx, const double h) const
+        {
+          WBAssert(idx <= mx_size_min, "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << idx << ".");
+          WBAssert(!(idx + h >= 0 && idx + h <= 1.), "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << idx + h << " (h=" << h << ", idx = " << idx << ").");
+          return (m[idx][1]*h + m[idx][2])*h + m[idx][3];
+        }
+
+
+        /**
+         * number of x coordinates of points
+         */
+        size_t mx_size_min;
 
         /**
          * interpolation parameters
@@ -202,7 +250,9 @@ namespace WorldBuilder
          * f(x) = a*(x-x_i)^3 + b*(x-x_i)^2 + c*(x-x_i) + y_i
          * \]
          */
-        std::vector<double> m_a, m_b, m_c, m_y;
+        std::vector<std::array<double,4>> m; //m_a, m_b, m_c, m_y;
+
+      private:
     };
 
     /**
@@ -347,10 +397,8 @@ namespace WorldBuilder
                                                                     const double start_radius,
                                                                     const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                                                     const bool only_positive,
-                                                                    const InterpolationType interpolation_type,
                                                                     const interpolation &x_spline,
-                                                                    const interpolation &y_spline,
-                                                                    std::vector<double> global_x_list = {});
+                                                                    const interpolation &y_spline);
 
 
 

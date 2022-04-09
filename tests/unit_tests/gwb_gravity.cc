@@ -19,7 +19,7 @@
 
 #define DOCTEST_CONFIG_SUPER_FAST_ASSERTS
 
-#include "doctest.h"
+#include "doctest/doctest.h"
 
 #include "world_builder/config.h"
 #include "world_builder/coordinate_systems/invalid.h"

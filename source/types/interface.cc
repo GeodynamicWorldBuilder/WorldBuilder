@@ -23,6 +23,7 @@
 
 namespace WorldBuilder
 {
+
   namespace Types
   {
     Interface::Interface()

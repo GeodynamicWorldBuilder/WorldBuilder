@@ -18,8 +18,11 @@
 */
 
 #include <algorithm>
+#include <cmath>
 #include <iomanip>
 #include <iostream>
+#include <limits>
+#include <world_builder/coordinate_system.h>
 
 #include "world_builder/nan.h"
 #include "world_builder/utilities.h"
@@ -234,14 +237,12 @@ namespace WorldBuilder
     Point<3>
     spherical_to_cartesian_coordinates(const std::array<double,3> &scoord)
     {
-      Point<3> ccoord(cartesian);
+      const double cos_long = scoord[0] * std::sin(0.5 * const_pi - scoord[2]);
 
-      ccoord[0] = scoord[0] * std::sin(0.5 * const_pi - scoord[2]) * std::cos(scoord[1]); // X
-      ccoord[1] = scoord[0] * std::sin(0.5 * const_pi - scoord[2]) * std::sin(scoord[1]); // Y
-      ccoord[2] = scoord[0] * std::cos(0.5 * const_pi - scoord[2]); // Z
-
-
-      return ccoord;
+      return Point<3>(cos_long * std::cos(scoord[1]), // X
+                      cos_long * std::sin(scoord[1]), // Y
+                      scoord[0] * std::cos(0.5 * const_pi - scoord[2]), // Z
+                      cartesian);;
     }
 
 
@@ -349,31 +350,9 @@ namespace WorldBuilder
                                       const double start_radius,
                                       const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                       const bool only_positive,
-                                      const InterpolationType interpolation_type,
                                       const interpolation &x_spline,
-                                      const interpolation &y_spline,
-                                      std::vector<double> global_x_list)
+                                      const interpolation &y_spline)
     {
-      // TODO: Assert that point_list, plane_segment_angles and plane_segment_lenghts have the same size.
-      /*WBAssert(point_list.size() == plane_segment_lengths.size(),
-               "Internal error: The size of point_list (" << point_list.size()
-               << ") and plane_segment_lengths (" << plane_segment_lengths.size() << ") are different.");
-      WBAssert(point_list.size() == plane_segment_angles.size(),
-               "Internal error: The size of point_list (" << point_list.size()
-               << ") and plane_segment_angles (" << plane_segment_angles.size() << ") are different.");
-      WBAssert(point_list.size() == plane_segment_angles.size(),
-               "Internal error: The size of point_list (" << point_list.size()
-               << ") and global_x_list (" << global_x_list.size() << ") are different.");*/
-
-      if (global_x_list.empty())
-        {
-          // fill it
-          global_x_list.resize(point_list.size());
-          for (size_t i = 0; i < point_list.size(); ++i)
-            global_x_list[i] = static_cast<double>(i);
-        }
-      WBAssertThrow(global_x_list.size() == point_list.size(), "The given global_x_list doesn't have "
-                    "the same size as the point list. This is required.");
 
       double distance = std::numeric_limits<double>::infinity();
       double new_distance = std::numeric_limits<double>::infinity();
@@ -408,131 +387,434 @@ namespace WorldBuilder
       double depth_reference_surface = 0.0;
 
       const DepthMethod depth_method = coordinate_system->depth_method();
-      WBAssertThrow(depth_method == DepthMethod::none
-                    || depth_method == DepthMethod::angle_at_starting_point_with_surface
-                    || depth_method == DepthMethod::angle_at_begin_segment_with_surface
-                    || depth_method == DepthMethod::angle_at_begin_segment_applied_to_end_segment_with_surface,
-                    "Only the depth methods 'none', 'angle_at_starting_point_with_surface', 'angle_at_begin_segment_with_surface'" <<
-                    "and 'angle_at_begin_segment_applied_to_end_segment_with_surface' are implemented.");
 
       double min_distance_check_point_surface_2d_line = std::numeric_limits<double>::infinity();
       size_t i_section_min_distance = 0;
-      Point<2> closest_point_on_line_2d(NaN::DSNAN,NaN::DSNAN,natural_coordinate_system);
-      Point<2> closest_point_on_line_2d_temp(0,0,natural_coordinate_system);
       double fraction_CPL_P1P2_strict =  std::numeric_limits<double>::infinity(); // or NAN?
       double fraction_CPL_P1P2 = std::numeric_limits<double>::infinity();
 
       bool continue_computation = false;
-      if (interpolation_type != InterpolationType::ContinuousMonotoneSpline)
-        {
-          // loop over all the planes to find out which one is closest to the point.
-          for (size_t i_section=0; i_section < point_list.size()-1; ++i_section)
-            {
-              const Point<2> P1(point_list[i_section]);
-              const Point<2> P2(point_list[i_section+1]);
 
-              const Point<2> P1P2 = P2 - P1;
-              const double P1P2_norm = P1P2.norm();
-              if (P1P2_norm < 1e-14)
+      // get an estimate for the closest point between P1 and P2.
+      //constexpr double parts = 1;
+      //constexpr double one_div_parts = 1./parts;
+      double min_estimate_solution = -1.;
+      double min_estimate_solution_temp = min_estimate_solution;
+      double minimum_distance_to_reference_point = std::numeric_limits<double>::infinity();
+      const size_t number_of_points = point_list.size();
+
+      WBAssert(number_of_points == x_spline.mx_size_min, "number_of_points: " << number_of_points << ", mx_size_min: " << x_spline.mx_size_min);
+      WBAssert(number_of_points == y_spline.mx_size_min, "number_of_points: " << number_of_points << ", mx_size_min: " << y_spline.mx_size_min);
+
+      if (natural_coordinate_system == cartesian)
+        {
+          // Start the distanstance from the start point and a linear approximation of the spline. Since it is a monotome spline,
+          // it should be a very good approximation of the actual closest point.
+          Point<2> P1 = point_list[0];
+          Point<2> P2 = P1;
+          Point<2> splines(cartesian);
+          for (size_t i_estimate = 0; i_estimate < point_list.size()-1; i_estimate++)
+            {
+              // Go one point pair up.
+              P1 = P2;
+              P2 = point_list[i_estimate+1];
+
+              // Compute distance to first point on the line.
+              if (P1 == P2)
                 {
-                  // P1 and P2 are at exactly the same location. Just continue.
                   continue;
                 }
-              const Point<2> P1PC = check_point_surface_2d - P1;
-
-              // Compute the closest point on the line P1 to P2 from the check
-              // point at the surface. We do this in natural coordinates on
-              // purpose, because in spherical coordinates it is more accurate.
-              closest_point_on_line_2d_temp = P1 + ((P1PC * P1P2) / (P1P2 * P1P2)) * P1P2;
-
-              // compute what fraction of the distance between P1 and P2 the
-              // closest point lies.
-              Point<2> P1CPL = closest_point_on_line_2d_temp - P1;
-
-              // This determines where the check point is between the coordinates
-              // in the coordinate list.
-              double fraction_CPL_P1P2_strict_temp = (P1CPL * P1P2 <= 0 ? -1.0 : 1.0) * (1 - (P1P2.norm() - P1CPL.norm()) / P1P2.norm());
-
-              double min_distance_check_point_surface_2d_line_temp = closest_point_on_line_2d_temp.cheap_relative_distance(check_point_surface_2d);//(closest_point_on_line_2d_temp - check_point_surface_2d).norm();//closest_point_on_line_2d_temp.distance(check_point_surface_2d);
-              // If fraction_CPL_P1P2_strict_temp is between 0 and 1 it means that the point can be projected perpendicual to the line segment. For the non-contiuous case we only conder points which are
-              // perpendicular to a line segment.
-              // There can be mutliple lines segment to which a point is perpundicual. Choose the point which is closed in 2D (x-y).
-              if (fraction_CPL_P1P2_strict_temp >= 0. && fraction_CPL_P1P2_strict_temp <= 1. && fabs(min_distance_check_point_surface_2d_line_temp) < fabs(min_distance_check_point_surface_2d_line))
+              double minimum_distance_to_reference_point_tmp = P1.cheap_relative_distance_cartesian(check_point_surface_2d);
+              if (minimum_distance_to_reference_point_tmp < minimum_distance_to_reference_point)
                 {
-                  min_distance_check_point_surface_2d_line = min_distance_check_point_surface_2d_line_temp;
-                  i_section_min_distance = i_section;
-                  closest_point_on_line_2d = closest_point_on_line_2d_temp;
-                  fraction_CPL_P1P2_strict = fraction_CPL_P1P2_strict_temp;
+                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_tmp;
+                  min_estimate_solution = i_estimate;
+                }
+
+              // Compute fraction of a straight line between the two points where the check point is closest.
+              Point<2> P1P2 = (P2)-(P1);
+              Point<2> P1Pc = check_point_surface_2d-(P1);
+
+              double c_1 = P1Pc*P1P2;
+              if ( c_1 < 0 )
+                {
+                  // closest point to segment beore P1. Continue
+                  // preventing a rounded corner
+                  min_estimate_solution = i_estimate == 0 ? -1 : min_estimate_solution;
+                  continue;
+                }
+
+              double c_2 = P1P2*P1P2;
+              if ( c_2 < c_1 )
+                {
+                  // closest point to segment after P2. Continue
+                  continue;
+                }
+
+              double fraction = c_1 / c_2;
+
+              // Compute distance of check point to the spline using the computed fraction from the straight line.
+              double min_estimate_solution_tmp = (i_estimate+fraction);
+              WBAssert(min_estimate_solution_tmp>=0 && min_estimate_solution_tmp <=number_of_points, "message");
+
+              const double idx1 = (size_t)min_estimate_solution_tmp;
+              const double sx1 = min_estimate_solution_tmp - idx1;
+              const double sx1_2 = sx1*sx1;
+              const double sx1_3 = sx1*sx1*sx1;
+              const double &a1 = x_spline.m[idx1][0];
+              const double &b1 = x_spline.m[idx1][1];
+              const double &c1 = x_spline.m[idx1][2];
+              const double &d1 = x_spline.m[idx1][3];
+              const double &p1 = check_point_surface_2d[0];
+              const double &e1 = y_spline.m[idx1][0];
+              const double &f1 = y_spline.m[idx1][1];
+              const double &g1 = y_spline.m[idx1][2];
+              const double &h1 = y_spline.m[idx1][3];
+              const double &k1 = check_point_surface_2d[1];
+              const double x1 = (a1*sx1_3+b1*sx1_2+c1*sx1+d1-p1);
+              const double y1 = (e1*sx1_3+f1*sx1_2+g1*sx1+h1-k1);
+              const double minimum_distance_to_reference_point_start = x1*x1+y1*y1;
+
+              double new_distance_tmp = -1;
+              size_t i_newton_iteration = 0;
+              // Newton iteration (modified to use the sign of the derivative instead of sign of derivative/second dervative)
+              // to compute the point on the spine which is closest to the check point. The modification allows for a larger
+              // area of convergence since it will only converge to minima, and not to maxima.
+              while (true)
+                {
+                  const size_t idx2 = (size_t)min_estimate_solution_tmp;
+                  const double sx2 = min_estimate_solution_tmp-idx2;
+                  const double sx2_2 = sx2*sx2;
+                  const double sx2_3 = sx2_2*sx2;
+
+                  const double &a2 = x_spline.m[idx2][0];
+                  const double &b2 = x_spline.m[idx2][1];
+                  const double &c2 = x_spline.m[idx2][2];
+                  const double &d2 = x_spline.m[idx2][3];
+                  const double &p2 = check_point_surface_2d[0];
+                  const double &e2 = y_spline.m[idx2][0];
+                  const double &f2 = y_spline.m[idx2][1];
+                  const double &g2 = y_spline.m[idx2][2];
+                  const double &h2 = y_spline.m[idx2][3];
+                  const double &k2 = check_point_surface_2d[1];
+                  const double x2 = a2*sx2_3+b2*sx2_2+c2*sx2+d2-p2;
+                  const double y2 = e2*sx2_3+f2*sx2_2+g2*sx2+h2-k2;
+                  const double dx2 = 3.*a2*sx2_2+2.*b2*sx2+c2;
+                  const double dy2 = 3.*e2*sx2_2+2.*f2*sx2+g2;
+                  const double derivative = 2.*(x2*dx2+y2*dy2);
+                  if (std::fabs(derivative) < 1e-14)
+                    {
+                      minimum_distance_to_reference_point_tmp = x2*x2+y2*y2;
+                      break;
+                    }
+                  const double ddx2 = 6.*a2*sx2 + 2.*b2;
+                  const double ddy2 = 6.*e2*sx2 + 2.*f2;
+                  const double second_derivative = 2.*(x2*ddx2+dx2*dx2+y2*ddy2+dy2*dy2);
+
+                  // We take the Newton derivative between some limits and only the sign of the
+                  // derivative, not the second derivative. This ensures that we converge to the
+                  // min value and not the max value.
+                  const double update = std::min(0.25,std::max(-0.25,(derivative/std::fabs(second_derivative))));
+
+                  if (std::fabs(update) < 1e-4)
+                    {
+                      minimum_distance_to_reference_point_tmp = x2*x2+y2*y2;
+                      WBAssertThrow(new_distance_tmp <= minimum_distance_to_reference_point_start,
+                                    "Failed to converge on spline. Initial guess " << std::setprecision(16) << minimum_distance_to_reference_point_start
+                                    << ") smaller than final result(" << new_distance_tmp << ", diff = " << minimum_distance_to_reference_point_start-new_distance_tmp
+                                    << ") for point " << check_point_surface_2d << ", cp = " << check_point << ", min_estimate_solution_tmp = " << min_estimate_solution_tmp
+                                    << ", new dist expensive = " << Point<2>(x_spline(min_estimate_solution_tmp),y_spline(min_estimate_solution_tmp),cartesian).cheap_relative_distance_cartesian(check_point_surface_2d) <<  ".");
+                      break;
+                    }
+                  double update_scaling = 1;
+                  // only the first few iterations need some guidence from line search
+                  if (std::fabs(update) > 1e-2)
+                    {
+                      // Do a line search
+                      unsigned int i_line_search = 0;
+                      for (; i_line_search < 50; ++i_line_search)
+                        {
+                          const double test_x = min_estimate_solution_tmp - update_scaling*update;
+                          {
+                            const double idx = (size_t)test_x;
+                            const double sx = test_x - (size_t)test_x;
+                            const double sx_2 = sx*sx;
+                            const double sx_3 = sx*sx*sx;
+                            const double &a = x_spline.m[idx][0];
+                            const double &b = x_spline.m[idx][1];
+                            const double &c = x_spline.m[idx][2];
+                            const double &d = x_spline.m[idx][3];
+                            const double &p = check_point_surface_2d[0];
+                            const double &e = y_spline.m[idx][0];
+                            const double &f = y_spline.m[idx][1];
+                            const double &g = y_spline.m[idx][2];
+                            const double &h = y_spline.m[idx][3];
+                            const double &k = check_point_surface_2d[1];
+                            const double x = (a*sx_3+b*sx_2+c*sx+d-p);
+                            const double y = (e*sx_3+f*sx_2+g*sx+h-k);
+                            minimum_distance_to_reference_point_tmp = x*x+y*y;
+                            if (minimum_distance_to_reference_point_tmp<=minimum_distance_to_reference_point_start)
+                              {
+                                break;
+                              }
+
+                          }
+                          update_scaling*=2./3.;
+
+                        }
+
+                      WBAssertThrow(i_line_search < 49,
+                                    "The spline solver doesn't seem to have finished on a reasonable ammount of line search "
+                                    << "iterations. Please check whether your coordinates are resonable, "
+                                    << "or contact the maintainers. Line search iterations = " << i_line_search
+                                    << ", Newton interations = " << i_newton_iteration << ".");
+                    }
+                  min_estimate_solution_tmp = min_estimate_solution_tmp - update_scaling*update;
+
+                  if (min_estimate_solution_tmp < 0 || min_estimate_solution_tmp > number_of_points-1)
+                    {
+                      break;
+                    }
+                  ++i_newton_iteration;
+                  WBAssertThrow(i_newton_iteration<49,
+                                "The spline solver doesn't seem to have finished on a reasonable ammount of Newton "
+                                << "iterations. Please check whether your coordinates are resonable, "
+                                << "or contact the maintainers. Newton interations = " << i_newton_iteration << ".");
+                }
+
+              if (minimum_distance_to_reference_point_tmp < minimum_distance_to_reference_point)
+                {
+                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_tmp;
+                  min_estimate_solution = min_estimate_solution_tmp;
                 }
             }
-          // If the point on the line does not lay between point P1 and P2
-          // then ignore it. Otherwise continue.
-          continue_computation = (fabs(fraction_CPL_P1P2_strict) < std::numeric_limits<double>::infinity() && fraction_CPL_P1P2_strict >= 0. && fraction_CPL_P1P2_strict <= 1.);
 
-          fraction_CPL_P1P2 = global_x_list[i_section_min_distance] - static_cast<int>(global_x_list[i_section_min_distance])
-                              + (global_x_list[i_section_min_distance+1]-global_x_list[i_section_min_distance]) * fraction_CPL_P1P2_strict;
+          double minimum_distance_to_reference_point_tmp = P2.cheap_relative_distance_cartesian(check_point_surface_2d);
+          if (minimum_distance_to_reference_point_tmp < minimum_distance_to_reference_point)
+            {
+              minimum_distance_to_reference_point = minimum_distance_to_reference_point_tmp;
+              min_estimate_solution = number_of_points-1;
+            }
         }
       else
         {
-          // get an estimate for the closest point between P1 and P2.
-          const double parts = 6;
-          double min_estimate_solution = 0;
-          double min_estimate_solution_temp = min_estimate_solution;
-          Point<2> splines(x_spline(min_estimate_solution),y_spline(min_estimate_solution), natural_coordinate_system);
-          double minimum_distance_to_reference_point = splines.cheap_relative_distance(check_point_surface_2d);
+          // Start the distanstance from the start point and a linear approximation of the spline. Since it is a monotome spline,
+          // it should be a very good approximation of the actual closest point.
+          Point<2> P1 = point_list[0];
+          Point<2> P2 = P1;
+          Point<2> splines(spherical);
 
-          // Compute the clostest point on the spline as a double.
-          for (size_t i_estimate = 0; i_estimate <= static_cast<size_t>(parts*(global_x_list[point_list.size()-1])+1); i_estimate++)
+          for (size_t i_estimate = 0; i_estimate < point_list.size()-1; i_estimate++)
             {
-              splines[0] = x_spline(min_estimate_solution_temp);
-              splines[1] = y_spline(min_estimate_solution_temp);
-              const double minimum_distance_to_reference_point_temp = splines.cheap_relative_distance(check_point_surface_2d);
+              // Go one point pair up.
+              P1 = P2;
+              P2 = point_list[i_estimate+1];
 
-              if (fabs(minimum_distance_to_reference_point_temp) < fabs(minimum_distance_to_reference_point))
+              // Compute distance to first point on the line.
+              double minimum_distance_to_reference_point_tmp = P1.cheap_relative_distance_spherical(check_point_surface_2d);
+              if (minimum_distance_to_reference_point_tmp < minimum_distance_to_reference_point)
                 {
-                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_temp;
-                  min_estimate_solution = min_estimate_solution_temp;
+                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_tmp;
+                  min_estimate_solution = i_estimate;
                 }
-              min_estimate_solution_temp = min_estimate_solution_temp + 1.0/parts;
+
+              // Compute fraction of a straight line between the two points where the check point is closest.
+              Point<2> P1P2 = (P2)-(P1);
+              Point<2> P1Pc = check_point_surface_2d-(P1);
+
+              double c_1 = P1Pc*P1P2;
+              if ( c_1 < 0 )
+                {
+                  // closest point to segment beore P1. Continue
+                  // preventing a rounded corner
+                  min_estimate_solution = i_estimate == 0 ? -1 : min_estimate_solution;
+                  continue;
+                }
+
+              double c_2 = P1P2*P1P2;
+              if ( c_2 < c_1 )
+                {
+                  // closest point to segment after P2. Continue
+                  continue;
+                }
+
+              double fraction = c_1 / c_2;
+
+              // Compute distance of check point to the spline using the computed fraction from the straight line.
+              double min_estimate_solution_tmp = (i_estimate+fraction);
+              WBAssert(min_estimate_solution_tmp>=0 && min_estimate_solution_tmp <=number_of_points, "message");
+
+              const double idx1 = (size_t)min_estimate_solution_tmp;
+              const double sx1 = min_estimate_solution_tmp - idx1;
+              const double sx1_2 = sx1*sx1;
+              const double sx1_3 = sx1*sx1*sx1;
+              const double &a1 = x_spline.m[idx1][0];
+              const double &b1 = x_spline.m[idx1][1];
+              const double &c1 = x_spline.m[idx1][2];
+              const double &d1 = x_spline.m[idx1][3];
+              const double &p1 = check_point_surface_2d[0];
+              const double &e1 = y_spline.m[idx1][0];
+              const double &f1 = y_spline.m[idx1][1];
+              const double &g1 = y_spline.m[idx1][2];
+              const double &h1 = y_spline.m[idx1][3];
+              const double &k1 = check_point_surface_2d[1];
+              const double x1 = (a1*sx1_3+b1*sx1_2+c1*sx1+d1);
+              const double y1 = (e1*sx1_3+f1*sx1_2+g1*sx1+h1);
+              const double minimum_distance_to_reference_point_start = FT::sin((k1-y1)*0.5)*FT::sin((k1-y1)*0.5)+FT::sin((p1-x1)*0.5)*FT::sin((p1-x1)*0.5)*FT::cos(y1)*FT::cos(k1);
+
+              double new_distance_tmp = -1;
+              size_t i_newton_iteration = 0;
+              // Newton iteration (modified to use the sign of the derivative instead of sign of derivative/second dervative)
+              // to compute the point on the spine which is closest to the check point. The modification allows for a larger
+              // area of convergence since it will only converge to minima, and not to maxima.
+              while (true)
+                {
+                  const size_t idx2 = (size_t)min_estimate_solution_tmp;
+                  const double sx2 = min_estimate_solution_tmp-idx2;
+                  const double sx2_2 = sx2*sx2;
+                  const double sx2_3 = sx2_2*sx2;
+
+                  const double &a2 = x_spline.m[idx2][0];
+                  const double &b2 = x_spline.m[idx2][1];
+                  const double &c2 = x_spline.m[idx2][2];
+                  const double &d2 = x_spline.m[idx2][3];
+                  const double &p2 = check_point_surface_2d[0];
+                  const double &e2 = y_spline.m[idx2][0];
+                  const double &f2 = y_spline.m[idx2][1];
+                  const double &g2 = y_spline.m[idx2][2];
+                  const double &h2 = y_spline.m[idx2][3];
+                  const double &k2 = check_point_surface_2d[1];
+                  const double x2 = a2*sx2_3+b2*sx2_2+c2*sx2+d2;
+                  const double y2 = e2*sx2_3+f2*sx2_2+g2*sx2+h2;
+                  const double dx2 = 3.*a2*sx2_2+2.*b2*sx2+c2;
+                  const double dy2 = 3.*e2*sx2_2+2.*f2*sx2+g2;
+
+                  const double cos_k2 = FT::cos(k2);
+                  const double cos_y2 = FT::cos(y2);
+                  const double sin_y2 = FT::sin(y2);
+                  const double sin_p_x2 = FT::sin(p2-x2);
+                  const double sin_k_y2 = FT::sin(k2-y2);
+                  const double sin_hp_hx2 = FT::sin(0.5*p2-0.5*x2);
+
+                  // specific spherical part
+                  const double derivative = -0.5*cos_k2*dx2*cos_y2*sin_p_x2-cos_k2*dy2*sin_y2*sin_hp_hx2*sin_hp_hx2-0.5*dy2*sin_k_y2;
+                  if (std::fabs(derivative) < 1e-14)
+                    {
+                      minimum_distance_to_reference_point_tmp = FT::sin((k2-y2)*0.5)*FT::sin((k2-y2)*0.5)+FT::sin((p2-x2)*0.5)*FT::sin((p2-x2)*0.5)*cos_y2*cos_k2;
+                      break;
+                    }
+                  const double ddx2 = 6.*a2*sx2 + 2.*b2;
+                  const double ddy2 = 6.*e2*sx2 + 2.*f2;
+                  const double second_derivative = -0.5*cos_k2*ddx2*cos_y2*sin_p_x2+cos_k2*dx2*dy2*sin_y2*(0.5*sin_p_x2+sin_hp_hx2*FT::cos(0.5*p2-0.5*x2))
+                                                   +0.5*cos_k2*dx2*dx2*cos_y2*FT::cos(p2-x2)-cos_k2*ddy2*sin_y2*sin_hp_hx2*sin_hp_hx2
+                                                   +dy2*dy2*(0.5*FT::cos(k2-y2)-cos_k2*cos_y2*sin_hp_hx2*sin_hp_hx2)-0.5*ddy2*sin_k_y2;
+
+                  // We take the Newton derivative between some limits and only the sign of the
+                  // derivative, not the second derivative. This ensures that we converge to the
+                  // min value and not the max value.
+                  const double update = std::min(0.25,std::max(-0.25,(derivative/std::fabs(second_derivative))));
+
+                  if (std::fabs(update) < 1e-5)
+                    {
+                      minimum_distance_to_reference_point_tmp = FT::sin((k2-y2)*0.5)*FT::sin((k2-y2)*0.5)+FT::sin((p2-x2)*0.5)*FT::sin((p2-x2)*0.5)*FT::cos(y2)*FT::cos(k2);
+                      WBAssertThrow(new_distance_tmp <= minimum_distance_to_reference_point_start,
+                                    "Failed to converge on spline. Initial guess " << std::setprecision(16) << minimum_distance_to_reference_point_start
+                                    << ") smaller than final result(" << new_distance_tmp << ", diff = " << minimum_distance_to_reference_point_start-new_distance_tmp
+                                    << ") for point " << check_point_surface_2d << ", cp = " << check_point << ", min_estimate_solution_tmp = " << min_estimate_solution_tmp
+                                    << ", new dist expensive = " << Point<2>(x_spline(min_estimate_solution_tmp),y_spline(min_estimate_solution_tmp),spherical).cheap_relative_distance_spherical(check_point_surface_2d) <<  ".");
+                      break;
+                    }
+                  double update_scaling = 1;
+                  // only the first few iterations need some guidence from line search
+                  if (std::fabs(update) > 1e-3)
+                    {
+                      unsigned int i_line_search = 0;
+                      // Do a line search.
+                      for (; i_line_search < 50; ++i_line_search)
+                        {
+                          const double test_x = min_estimate_solution_tmp - update_scaling*update;
+                          {
+                            const double idx = (size_t)test_x;
+                            const double sx = test_x - (size_t)test_x;
+                            const double sx_2 = sx*sx;
+                            const double sx_3 = sx*sx*sx;
+                            const double &a = x_spline.m[idx][0];
+                            const double &b = x_spline.m[idx][1];
+                            const double &c = x_spline.m[idx][2];
+                            const double &d = x_spline.m[idx][3];
+                            const double &p = check_point_surface_2d[0];
+                            const double &e = y_spline.m[idx][0];
+                            const double &f = y_spline.m[idx][1];
+                            const double &g = y_spline.m[idx][2];
+                            const double &h = y_spline.m[idx][3];
+                            const double &k = check_point_surface_2d[1];
+                            const double x = (a*sx_3+b*sx_2+c*sx+d);
+                            const double y = (e*sx_3+f*sx_2+g*sx+h);
+
+                            minimum_distance_to_reference_point_tmp = FT::sin((k-y)*0.5)*FT::sin((k-y)*0.5)+FT::sin((p-x)*0.5)*FT::sin((p-x)*0.5)*FT::cos(y)*FT::cos(k);
+
+                            if (minimum_distance_to_reference_point_tmp<=minimum_distance_to_reference_point_start)
+                              {
+                                break;
+                              }
+
+                          }
+                          update_scaling*=2./3.;
+
+                        }
+
+                      WBAssertThrow(i_line_search < 49,
+                                    "The spline solver doesn't seem to have finished on a reasonable ammount of line search "
+                                    << "iterations. Please check whether your coordinates are resonable, "
+                                    << "or contact the maintainers. Line search iterations = " << i_line_search
+                                    << ", Newton interations = " << i_newton_iteration
+                                    << ", min_estimate_solution_tmp = " << min_estimate_solution_tmp << ", update_scaling = " << update_scaling
+                                    << ", update = " << update << ", minimum_distance_to_reference_point_start = " << minimum_distance_to_reference_point_start
+                                    << ", minimum_distance_to_reference_point_tmp = " << minimum_distance_to_reference_point_tmp << ".");
+                    }
+                  min_estimate_solution_tmp = min_estimate_solution_tmp - update_scaling*update;
+
+                  if (min_estimate_solution_tmp < 0 || min_estimate_solution_tmp > number_of_points-1)
+                    {
+                      break;
+                    }
+                  ++i_newton_iteration;
+                  WBAssertThrow(i_newton_iteration<49,
+                                "The spline solver doesn't seem to have finished on a reasonable ammount of Newton "
+                                << "iterations. Please check whether your coordinates are resonable, "
+                                << "or contact the maintainers. Newton interations = " << i_newton_iteration
+                                << ", min_estimate_solution_tmp = " << min_estimate_solution_tmp << ", update_scaling = " << update_scaling
+                                << ", update = " << update << ", minimum_distance_to_reference_point_start = " << minimum_distance_to_reference_point_start
+                                << ".");
+                }
+
+              if (minimum_distance_to_reference_point_tmp < minimum_distance_to_reference_point)
+                {
+                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_tmp;
+                  min_estimate_solution = min_estimate_solution_tmp;
+                }
             }
 
-          // search above and below the solution and replace if the distance is smaller.
-          double search_step = 1./parts;
-          for (size_t i_search_step = 0; i_search_step < 10; i_search_step++)
+          double minimum_distance_to_reference_point_tmp = P2.cheap_relative_distance_spherical(check_point_surface_2d);
+          if (minimum_distance_to_reference_point_tmp < minimum_distance_to_reference_point)
             {
-              splines[0] = x_spline(min_estimate_solution-search_step);
-              splines[1] = y_spline(min_estimate_solution-search_step);
-              const double minimum_distance_to_reference_point_min = splines.cheap_relative_distance(check_point_surface_2d);
-
-
-              splines[0] = x_spline(min_estimate_solution+search_step);
-              splines[1] = y_spline(min_estimate_solution+search_step);
-              const double minimum_distance_to_reference_point_plus = splines.cheap_relative_distance(check_point_surface_2d);
-
-
-              if (minimum_distance_to_reference_point_plus < minimum_distance_to_reference_point)
-                {
-                  min_estimate_solution = min_estimate_solution+search_step;
-                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_plus;
-                }
-              else if (minimum_distance_to_reference_point_min < minimum_distance_to_reference_point)
-                {
-                  min_estimate_solution = min_estimate_solution-search_step;
-                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_min;
-                }
-              else
-                {
-                  search_step *=0.5;
-                }
+              minimum_distance_to_reference_point = minimum_distance_to_reference_point_tmp;
+              min_estimate_solution = number_of_points-1;
             }
-          double solution = min_estimate_solution;
 
-          continue_computation = (solution > 0 && floor(solution) <= global_x_list[point_list.size()-2] && floor(solution)  >= 0);
-
-          closest_point_on_line_2d = Point<2>(x_spline(solution),y_spline(solution),natural_coordinate_system);
-          i_section_min_distance = static_cast<size_t>(floor(solution));
-          fraction_CPL_P1P2 = solution-floor(solution);
         }
+      double solution = min_estimate_solution;
+
+
+      const size_t idx = std::min((size_t)std::max( (int)solution, (int)0),x_spline.mx_size_min);
+      const double h = solution-idx;
+      Point<2> closest_point_on_line_2d = (solution >= 0 && solution <= x_spline.mx_size_min)
+                                          ?
+                                          Point<2>(x_spline.value_inside(idx,h),y_spline.value_inside(idx,h),natural_coordinate_system)
+                                          :
+                                          Point<2>(x_spline.value_outside(idx,h),y_spline.value_outside(idx,h),natural_coordinate_system);
+
+
       // We now need 3d points from this point on, so make them.
       // The order of a Cartesian coordinate is x,y,z and the order of
       // a spherical coordinate it radius, long, lat (in rad).
@@ -543,19 +825,20 @@ namespace WorldBuilder
 
       Point<3> closest_point_on_line_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_surface.get_array()),cartesian);
 
-      if (continue_computation)
+      if (solution >= 0 && floor(solution) <=point_list.size()-2 && floor(solution)  >= 0)
         {
-
+          i_section_min_distance = static_cast<size_t>(floor(solution));
+          fraction_CPL_P1P2 = solution-floor(solution);
 
           Point<3> closest_point_on_line_bottom = closest_point_on_line_surface;
           closest_point_on_line_bottom[bool_cartesian ? 2 : 0] = 0;
 
           WBAssert(!std::isnan(closest_point_on_line_bottom[0])
-                   ||
+                   &&
                    !std::isnan(closest_point_on_line_bottom[1])
-                   ||
+                   &&
                    !std::isnan(closest_point_on_line_bottom[2]),
-                   "Internal error: The y_axis variable contains not a number: " << closest_point_on_line_bottom);
+                   "Internal error: The closest_point_on_line_bottom variables variable contains not a number: " << closest_point_on_line_bottom);
 
           // Now that we have both the check point and the
           // closest_point_on_line, we need to push them to cartesian.
@@ -564,15 +847,15 @@ namespace WorldBuilder
 
 
           WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[0]),
-                   "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[0]);
+                   "Internal error: The closest_point_on_line_bottom_cartesian[0] variable is not a number: " << closest_point_on_line_bottom_cartesian[0]);
           WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[1]),
-                   "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[1]);
+                   "Internal error: The closest_point_on_line_bottom_cartesian[1] variable is not a number: " << closest_point_on_line_bottom_cartesian[1]);
           WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[2]),
-                   "Internal error: The y_axis variable is not a number: " << closest_point_on_line_bottom_cartesian[2]);
+                   "Internal error: The closest_point_on_line_bottom_cartesian[2] variable is not a number: " << closest_point_on_line_bottom_cartesian[2]);
 
 
           // translate to orignal coordinates current and next section
-          size_t original_current_section = static_cast<size_t>(std::floor(global_x_list[i_section_min_distance]));
+          size_t original_current_section = i_section_min_distance;
           size_t original_next_section = original_current_section + 1;
 
 
@@ -652,11 +935,7 @@ namespace WorldBuilder
                                     cartesian);
 
                   // see on what side the line P1P2 reference point is. This is based on the determinant
-                  const double reference_on_side_of_line = (point_list[i_section_min_distance+1][0] - point_list[i_section_min_distance][0])
-                                                           * (reference_point[1] - point_list[i_section_min_distance][1])
-                                                           - (point_list[i_section_min_distance+1][1] - point_list[i_section_min_distance][1])
-                                                           * (reference_point[0] - point_list[i_section_min_distance][0])
-                                                           < 0 ? 1 : -1;
+                  const double reference_on_side_of_line =  (closest_point_on_line_2d-reference_point).norm_square() < (check_point_surface_2d-reference_point).norm_square() ? 1 : -1;
 
                   WBAssert(!std::isnan(x_axis[0]),
                            "Internal error: The x_axis variable is not a number: " << x_axis[0]);
@@ -694,8 +973,6 @@ namespace WorldBuilder
             }
           else
             {
-
-
               WBAssert(std::abs(y_axis.norm()) > std::numeric_limits<double>::epsilon(),
                        "World Builder error: Cannot detemine the up direction in the model. This is most likely due to the provided start radius being zero."
                        << " Techical details: The y_axis.norm() is zero. Y_axis is " << y_axis
@@ -739,18 +1016,7 @@ namespace WorldBuilder
                 }
 
               // check whether the check point and the reference point are on the same side, if not, change the side.
-              const bool reference_on_side_of_line_bool = (point_list[i_section_min_distance+1][0] - point_list[i_section_min_distance][0])
-                                                          * (reference_point[1] - point_list[i_section_min_distance][1])
-                                                          - (point_list[i_section_min_distance+1][1] - point_list[i_section_min_distance][1])
-                                                          * (reference_point[0] - point_list[i_section_min_distance][0])
-                                                          < 0;
-              const bool checkpoint_on_side_of_line_bool = (point_list[i_section_min_distance+1][0] - point_list[i_section_min_distance][0])
-                                                           * (check_point_surface_2d_temp[1] - point_list[i_section_min_distance][1])
-                                                           - (point_list[i_section_min_distance+1][1] - point_list[i_section_min_distance][1])
-                                                           * (check_point_surface_2d_temp[0] - point_list[i_section_min_distance][0])
-                                                           < 0;
-              const double reference_on_side_of_line = reference_on_side_of_line_bool == checkpoint_on_side_of_line_bool ? -1 : 1;
-
+              const double reference_on_side_of_line =  (closest_point_on_line_2d-reference_point).norm_square() < (check_point_surface_2d-reference_point).norm_square() ? 1 : -1;
               WBAssert(!std::isnan(x_axis[0]),
                        "Internal error: The x_axis variable is not a number: " << x_axis[0]);
               WBAssert(!std::isnan(x_axis[1]),
@@ -777,7 +1043,6 @@ namespace WorldBuilder
                    "Internal error: The x_axis[1] variable is not a number: " << x_axis[1]);
           WBAssert(!std::isnan(x_axis[2]),
                    "Internal error: The x_axis[2] variable is not a number: " << x_axis[2]);
-
 
           // now that we have the x and y axes computed, convert the 3d check point into a 2d one.
           Point<2> check_point_2d(x_axis * (check_point - closest_point_on_line_bottom_cartesian),
@@ -1126,115 +1391,54 @@ namespace WorldBuilder
       return return_values;
     }
 
-    void interpolation::set_points(const std::vector<double> &x,
-                                   const std::vector<double> &y,
-                                   bool monotone_spline)
+    void interpolation::set_points(const std::vector<double> &y)
     {
-      WBAssert(!x.empty(), "Internal error: The x in the set points function is zero.");
-      assert(x.size() == y.size());
-      m_x = x;
-      m_y = y;
-      const size_t n = x.size();
+      const size_t n = y.size();
+      mx_size_min = n;
+      m.resize(n);
+      for (unsigned int i = 0; i < n; ++i)
+        {
+          m[i][3] = y[i];
+        }
+
+      /**
+       * This monotone spline algorithm is based on the javascript version
+       * at https://en.wikipedia.org/wiki/Monotone_cubic_interpolation. The
+       * parameters from this algorithm prevent overshooting in the
+       * interpolation spline.
+       */
+
+      // get m_a parameter
+      m[0][2] = 0;
+
+      for (size_t i = 0; i < n-2; i++)
+        {
+          const double m0 = y[i+1]-y[i];
+          const double m1 =  y[i+2]-y[i+1];
+
+          if (m0 * m1 <= 0)
+            {
+              m[i+1][2] = 0;
+            }
+          else
+            {
+              m[i+1][2] = 2*m0*m1/(m0+m1);
+            }
+        }
+      m[n-1][2] =  y[n-1]-y[n-2];
+
+      // Get b and c coefficients
+      //m_a.resize(n);
+      //m_b.resize(n);
       for (size_t i = 0; i < n-1; i++)
         {
-          assert(m_x[i] < m_x[i+1]);
+          const double c1 = m[i][2];
+          const double m0 = y[i+1]-y[i];
+
+          const double common0 = c1 + m[i+1][2] - m0 - m0;
+          m[i][1] = (m0 - c1 - common0);
+          m[i][0] = common0;
         }
-
-      if (monotone_spline)
-        {
-          /**
-           * This monotone spline algorithm is based on the javascript version
-           * at https://en.wikipedia.org/wiki/Monotone_cubic_interpolation. The
-           * parameters from this algorithm prevent overshooting in the
-           * interpolation spline.
-           */
-          std::vector<double> dys(n-1);
-          std::vector<double> dxs(n-1);
-          std::vector<double> ms(n-1);
-          for (size_t i=0; i < n-1; i++)
-            {
-              dxs[i] = x[i+1]-x[i];
-              dys[i] = y[i+1]-y[i];
-              ms[i] = dys[i]/dxs[i];
-            }
-
-          // get m_a parameter
-          m_c.resize(n);
-          m_c[0] = 0;
-
-          for (size_t i = 0; i < n-2; i++)
-            {
-              const double m0 = ms[i];
-              const double m1 = ms[i+1];
-
-              if (m0 * m1 <= 0)
-                {
-                  m_c[i+1] = 0;
-                }
-              else
-                {
-                  const double dx0 = dxs[i];
-                  const double dx1 = dxs[i+1];
-                  const double common = dx0 + dx1;
-                  m_c[i+1] = 3*common/((common + dx0)/m0 + (common + dx1)/m1);
-                }
-            }
-          m_c[n-1] = ms[n-2];
-
-          // Get b and c coefficients
-          m_a.resize(n);
-          m_b.resize(n);
-          for (size_t i = 0; i < m_c.size()-1; i++)
-            {
-              const double c1 = m_c[i];
-              const double m0 = ms[i];
-
-              const double invDx = 1/dxs[i];
-              const double common0 = c1 + m_c[i+1] - m0 - m0;
-              m_b[i] = (m0 - c1 - common0) * invDx;
-              m_a[i] = common0 * invDx * invDx;
-            }
-        }
-      else     // linear interpolation
-        {
-          m_a.resize(n);
-          m_b.resize(n);
-          m_c.resize(n);
-          for (size_t i = 0; i<n-1; i++)
-            {
-              m_a[i] = 0.0;
-              m_b[i] = 0.0;
-              m_c[i] = (m_y[i+1]-m_y[i])/(m_x[i+1]-m_x[i]);
-            }
-        }
-
-      // for the right boundary we define
-      // f_{n-1}(x) = b*(x-x_{n-1})^2 + c*(x-x_{n-1}) + y_{n-1}
-      double h = x[n-1]-x[n-2];
-      // m_b[n-1] is determined by the boundary condition
-      if (!monotone_spline)
-        {
-          m_a[n-1] = 0.0;
-          m_c[n-1] = 3.0*m_a[n-2]*h*h+2.0*m_b[n-2]*h+m_c[n-2];   // = f'_{n-2}(x_{n-1})
-        }
-    }
-
-    double interpolation::operator() (const double x) const
-    {
-      const size_t mx_size_min = m_x.size()-1;
-      // Todo: The following two lines would work if m_x can be assumed to be [0,1,2,3,...]
-      // Which would allow to optimize m_x away completely. I can only do that once I get
-      // rid of the non-contiuous interpolation schemes, because the contiuous one doesn't
-      // need any extra items in m_x.
-      //const size_t idx = std::min((size_t)std::max( (int)x, (int)0),mx_size_min);
-      //const double h = x-m_x[idx];
-      // find the closest point m_x[idx] < x, idx=0 even if x<m_x[0]
-      std::vector<double>::const_iterator it;
-      it = std::lower_bound(m_x.begin(),m_x.end(),x);
-      size_t idx = static_cast<size_t>(std::max( static_cast<int>(it-m_x.begin())-1, 0));
-
-      double h = x-m_x[idx];
-      return (((x >= m_x[0] && x <= m_x[mx_size_min] ? m_a[idx]*h : 0) + m_b[idx])*h + m_c[idx])*h + m_y[idx];
     }
 
     double wrap_angle(const double angle)

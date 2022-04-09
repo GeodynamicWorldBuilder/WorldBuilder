@@ -99,7 +99,7 @@
 ::::::::::::::::::::::::{dropdown} /interpolation
 :name: closed_interpolation
 
-- **default value**:none
+- **default value**:continuous monotone spline
 - **type**:string
 - **documentation**:What type of interpolation should be used to enforce the minimum points per distance parameter. Options are none, linear, monotone spline and continuous monotone spline interpolation.
 ::::::::::::::::::::::::

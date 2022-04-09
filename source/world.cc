@@ -106,7 +106,7 @@ namespace WorldBuilder
                         "If the distance is larger, extra points are added by interpolation. "
                         "Requires interpolation to be not 'none'.");
 
-      prm.declare_entry("interpolation",Types::String("none"),
+      prm.declare_entry("interpolation",Types::String("continuous monotone spline"),
                         "What type of interpolation should be used to enforce the minimum points per "
                         "distance parameter. Options are none, linear, monotone spline and "
                         "continuous monotone spline interpolation.");
