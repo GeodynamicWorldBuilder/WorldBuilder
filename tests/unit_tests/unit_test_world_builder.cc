@@ -100,7 +100,7 @@ using doctest::Contains;
 inline
 std::array<double,3> normalize(std::array<double,3> array)
 {
-  const double norm = sqrt(array[0] * array[0] + array[1] * array[1] + array[2] * array[2] );
+  const double norm = sqrt(array[0] * array[0] + array[1] * array[1] + array[2] * array[2]);
   return {{array[0]/norm,array[1]/norm,array[2]/norm}};
 }
 
@@ -173,7 +173,7 @@ inline void compare_rotation_matrices_approx(
        "           " << expected[2][0] << ' ' << expected[2][1] << ' ' << expected[2][2] << "\n" <<
        "computed = " << computed[0][0] << ' ' << computed[0][1] << ' ' << computed[0][2] << "\n" <<
        "           " << computed[1][0] << ' ' << computed[1][1] << ' ' << computed[1][2] << "\n" <<
-       "           " << computed[2][0] << ' ' << computed[2][1] << ' ' << computed[2][2] << "\n" );
+       "           " << computed[2][0] << ' ' << computed[2][1] << ' ' << computed[2][2] << "\n");
   CHECK((
           (computed[0][0] == Approx(expected[0][0]) && computed[0][1] == Approx(expected[0][1]) && computed[0][2] == Approx(expected[0][2]) &&
            computed[1][0] == Approx(expected[1][0]) && computed[1][1] == Approx(expected[1][1]) && computed[1][2] == Approx(expected[1][2]) &&
@@ -238,8 +238,8 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
   CHECK(p3.get_array() == std::array<double,3> {{4,8,12}});
 
   // Test dot operator
-  approval_tests.emplace_back(p2_array * p2_explicit );
-  approval_tests.emplace_back(p3_array * p3_explicit );
+  approval_tests.emplace_back(p2_array * p2_explicit);
+  approval_tests.emplace_back(p3_array * p3_explicit);
 
   // Test add operator
   p2 = p2 + p2;
@@ -268,15 +268,15 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
   CHECK(p3.get_array() == std::array<double,3> {{4,8,12}});
 
   // Test coordinate system
-  //approval_tests.emplace_back(p2.get_coordinate_system() );
-  //approval_tests.emplace_back(p3.get_coordinate_system() );
+  //approval_tests.emplace_back(p2.get_coordinate_system());
+  //approval_tests.emplace_back(p3.get_coordinate_system());
 
   // Test norm and norm_square
-  approval_tests.emplace_back(p2.norm_square() );
-  approval_tests.emplace_back(p3.norm_square() );
+  approval_tests.emplace_back(p2.norm_square());
+  approval_tests.emplace_back(p3.norm_square());
 
-  approval_tests.emplace_back(p2.norm() );
-  approval_tests.emplace_back(p3.norm() );
+  approval_tests.emplace_back(p2.norm());
+  approval_tests.emplace_back(p3.norm());
 
   // Test Point utility classes
   std::array<double,2> an2 = Utilities::convert_point_to_array(p2_point);
@@ -355,65 +355,65 @@ TEST_CASE("WorldBuilder Utilities: interpolation")
   Utilities::interpolation monotone_cubic_spline;
   monotone_cubic_spline.set_points(y);
 
-  approval_tests.emplace_back(monotone_cubic_spline(-1) );
-  approval_tests.emplace_back(monotone_cubic_spline(-0.9) );
-  approval_tests.emplace_back(monotone_cubic_spline(-0.7) );
-  approval_tests.emplace_back(monotone_cubic_spline(-0.5) );
-  approval_tests.emplace_back(monotone_cubic_spline(-0.3) );
-  approval_tests.emplace_back(monotone_cubic_spline(-0.1) );
-  approval_tests.emplace_back(monotone_cubic_spline(0) );
-  approval_tests.emplace_back(monotone_cubic_spline(0.1) );
-  approval_tests.emplace_back(monotone_cubic_spline(0.3) );
-  approval_tests.emplace_back(monotone_cubic_spline(0.5) );
-  approval_tests.emplace_back(monotone_cubic_spline(0.7) );
-  approval_tests.emplace_back(monotone_cubic_spline(0.9) );
-  approval_tests.emplace_back(monotone_cubic_spline(1) );
-  approval_tests.emplace_back(monotone_cubic_spline(1.1) );
-  approval_tests.emplace_back(monotone_cubic_spline(1.3) );
-  approval_tests.emplace_back(monotone_cubic_spline(1.5) );
-  approval_tests.emplace_back(monotone_cubic_spline(1.7) );
-  approval_tests.emplace_back(monotone_cubic_spline(1.9) );
-  approval_tests.emplace_back(monotone_cubic_spline(2) );
-  approval_tests.emplace_back(monotone_cubic_spline(2.025) );
-  approval_tests.emplace_back(monotone_cubic_spline(2.075) );
-  approval_tests.emplace_back(monotone_cubic_spline(2.125) );
-  approval_tests.emplace_back(monotone_cubic_spline(2.175) );
-  approval_tests.emplace_back(monotone_cubic_spline(2.225) );
-  approval_tests.emplace_back(monotone_cubic_spline(2.25) );
-  approval_tests.emplace_back(monotone_cubic_spline(2.275) );
-  approval_tests.emplace_back(monotone_cubic_spline(2.325) );
-  approval_tests.emplace_back(monotone_cubic_spline(2.375) );
-  approval_tests.emplace_back(monotone_cubic_spline(2.425) );
-  approval_tests.emplace_back(monotone_cubic_spline(2.475) );
-  approval_tests.emplace_back(monotone_cubic_spline(2.5) );
-  approval_tests.emplace_back(monotone_cubic_spline(2.625) );
-  approval_tests.emplace_back(monotone_cubic_spline(2.75) );
-  approval_tests.emplace_back(monotone_cubic_spline(2.875) );
-  approval_tests.emplace_back(monotone_cubic_spline(3) );
-  approval_tests.emplace_back(monotone_cubic_spline(3.125) );
-  approval_tests.emplace_back(monotone_cubic_spline(3.25) );
+  approval_tests.emplace_back(monotone_cubic_spline(-1));
+  approval_tests.emplace_back(monotone_cubic_spline(-0.9));
+  approval_tests.emplace_back(monotone_cubic_spline(-0.7));
+  approval_tests.emplace_back(monotone_cubic_spline(-0.5));
+  approval_tests.emplace_back(monotone_cubic_spline(-0.3));
+  approval_tests.emplace_back(monotone_cubic_spline(-0.1));
+  approval_tests.emplace_back(monotone_cubic_spline(0));
+  approval_tests.emplace_back(monotone_cubic_spline(0.1));
+  approval_tests.emplace_back(monotone_cubic_spline(0.3));
+  approval_tests.emplace_back(monotone_cubic_spline(0.5));
+  approval_tests.emplace_back(monotone_cubic_spline(0.7));
+  approval_tests.emplace_back(monotone_cubic_spline(0.9));
+  approval_tests.emplace_back(monotone_cubic_spline(1));
+  approval_tests.emplace_back(monotone_cubic_spline(1.1));
+  approval_tests.emplace_back(monotone_cubic_spline(1.3));
+  approval_tests.emplace_back(monotone_cubic_spline(1.5));
+  approval_tests.emplace_back(monotone_cubic_spline(1.7));
+  approval_tests.emplace_back(monotone_cubic_spline(1.9));
+  approval_tests.emplace_back(monotone_cubic_spline(2));
+  approval_tests.emplace_back(monotone_cubic_spline(2.025));
+  approval_tests.emplace_back(monotone_cubic_spline(2.075));
+  approval_tests.emplace_back(monotone_cubic_spline(2.125));
+  approval_tests.emplace_back(monotone_cubic_spline(2.175));
+  approval_tests.emplace_back(monotone_cubic_spline(2.225));
+  approval_tests.emplace_back(monotone_cubic_spline(2.25));
+  approval_tests.emplace_back(monotone_cubic_spline(2.275));
+  approval_tests.emplace_back(monotone_cubic_spline(2.325));
+  approval_tests.emplace_back(monotone_cubic_spline(2.375));
+  approval_tests.emplace_back(monotone_cubic_spline(2.425));
+  approval_tests.emplace_back(monotone_cubic_spline(2.475));
+  approval_tests.emplace_back(monotone_cubic_spline(2.5));
+  approval_tests.emplace_back(monotone_cubic_spline(2.625));
+  approval_tests.emplace_back(monotone_cubic_spline(2.75));
+  approval_tests.emplace_back(monotone_cubic_spline(2.875));
+  approval_tests.emplace_back(monotone_cubic_spline(3));
+  approval_tests.emplace_back(monotone_cubic_spline(3.125));
+  approval_tests.emplace_back(monotone_cubic_spline(3.25));
 
   Utilities::interpolation monotone_cubic_spline2;
   y[1] = -5;
   y[3] = -35;
   monotone_cubic_spline2.set_points(y);
-  approval_tests.emplace_back(monotone_cubic_spline2(-1) );
-  approval_tests.emplace_back(monotone_cubic_spline2(-0.5) );
-  approval_tests.emplace_back(monotone_cubic_spline2(0) );
-  approval_tests.emplace_back(monotone_cubic_spline2(0.5) );
-  approval_tests.emplace_back(monotone_cubic_spline2(1) );
-  approval_tests.emplace_back(monotone_cubic_spline2(1.5) );
-  approval_tests.emplace_back(monotone_cubic_spline2(2) );
-  approval_tests.emplace_back(monotone_cubic_spline2(2.125) );
-  approval_tests.emplace_back(monotone_cubic_spline2(2.25) );
-  approval_tests.emplace_back(monotone_cubic_spline2(2.375) );
-  approval_tests.emplace_back(monotone_cubic_spline2(2.5) );
-  approval_tests.emplace_back(monotone_cubic_spline2(2.625) );
-  approval_tests.emplace_back(monotone_cubic_spline2(2.75) );
-  approval_tests.emplace_back(monotone_cubic_spline2(2.875) );
-  approval_tests.emplace_back(monotone_cubic_spline2(3) );
-  approval_tests.emplace_back(monotone_cubic_spline2(3.125) );
-  approval_tests.emplace_back(monotone_cubic_spline2(3.25) );
+  approval_tests.emplace_back(monotone_cubic_spline2(-1));
+  approval_tests.emplace_back(monotone_cubic_spline2(-0.5));
+  approval_tests.emplace_back(monotone_cubic_spline2(0));
+  approval_tests.emplace_back(monotone_cubic_spline2(0.5));
+  approval_tests.emplace_back(monotone_cubic_spline2(1));
+  approval_tests.emplace_back(monotone_cubic_spline2(1.5));
+  approval_tests.emplace_back(monotone_cubic_spline2(2));
+  approval_tests.emplace_back(monotone_cubic_spline2(2.125) == Approx(3.828125));
+  approval_tests.emplace_back(monotone_cubic_spline2(2.25));
+  approval_tests.emplace_back(monotone_cubic_spline2(2.375) == Approx(-4.140625));
+  approval_tests.emplace_back(monotone_cubic_spline2(2.5));
+  approval_tests.emplace_back(monotone_cubic_spline2(2.625));
+  approval_tests.emplace_back(monotone_cubic_spline2(2.75));
+  approval_tests.emplace_back(monotone_cubic_spline2(2.875));
+  approval_tests.emplace_back(monotone_cubic_spline2(3));
+  approval_tests.emplace_back(monotone_cubic_spline2(3.125));
+  approval_tests.emplace_back(monotone_cubic_spline2(3.25));
 
   Utilities::interpolation monotone_cubic_spline3;
   y[0] = 10;
@@ -421,23 +421,23 @@ TEST_CASE("WorldBuilder Utilities: interpolation")
   y[2] = -10;
   y[3] = -35;
   monotone_cubic_spline3.set_points(y);
-  approval_tests.emplace_back(monotone_cubic_spline3(-1) );
-  approval_tests.emplace_back(monotone_cubic_spline3(-0.5) );
-  approval_tests.emplace_back(monotone_cubic_spline3(0) );
-  approval_tests.emplace_back(monotone_cubic_spline3(0.5) );
-  approval_tests.emplace_back(monotone_cubic_spline3(1) );
-  approval_tests.emplace_back(monotone_cubic_spline3(1.5) );
-  approval_tests.emplace_back(monotone_cubic_spline3(2) );
-  approval_tests.emplace_back(monotone_cubic_spline3(2.125) );
-  approval_tests.emplace_back(monotone_cubic_spline3(2.25) );
-  approval_tests.emplace_back(monotone_cubic_spline3(2.375) );
-  approval_tests.emplace_back(monotone_cubic_spline3(2.5) );
-  approval_tests.emplace_back(monotone_cubic_spline3(2.625) );
-  approval_tests.emplace_back(monotone_cubic_spline3(2.75) );
-  approval_tests.emplace_back(monotone_cubic_spline3(2.875) );
-  approval_tests.emplace_back(monotone_cubic_spline3(3) );
-  approval_tests.emplace_back(monotone_cubic_spline3(3.125) );
-  approval_tests.emplace_back(monotone_cubic_spline3(3.25) );
+  approval_tests.emplace_back(monotone_cubic_spline3(-1));
+  approval_tests.emplace_back(monotone_cubic_spline3(-0.5));
+  approval_tests.emplace_back(monotone_cubic_spline3(0));
+  approval_tests.emplace_back(monotone_cubic_spline3(0.5));
+  approval_tests.emplace_back(monotone_cubic_spline3(1));
+  approval_tests.emplace_back(monotone_cubic_spline3(1.5));
+  approval_tests.emplace_back(monotone_cubic_spline3(2));
+  approval_tests.emplace_back(monotone_cubic_spline3(2.125));
+  approval_tests.emplace_back(monotone_cubic_spline3(2.25) == Approx(-13.90625));
+  approval_tests.emplace_back(monotone_cubic_spline3(2.375));
+  approval_tests.emplace_back(monotone_cubic_spline3(2.5));
+  approval_tests.emplace_back(monotone_cubic_spline3(2.625));
+  approval_tests.emplace_back(monotone_cubic_spline3(2.75));
+  approval_tests.emplace_back(monotone_cubic_spline3(2.875));
+  approval_tests.emplace_back(monotone_cubic_spline3(3));
+  approval_tests.emplace_back(monotone_cubic_spline3(3.125));
+  approval_tests.emplace_back(monotone_cubic_spline3(3.25));
 
   // bi monotone cubic spline
   Utilities::interpolation monotone_cubic_spline_x;
@@ -457,33 +457,33 @@ TEST_CASE("WorldBuilder Utilities: interpolation")
   y[3] = 10;
   monotone_cubic_spline_y.set_points(y);
 
-  approval_tests.emplace_back(monotone_cubic_spline_x(0) );
-  approval_tests.emplace_back(monotone_cubic_spline_x(0.25) );
-  approval_tests.emplace_back(monotone_cubic_spline_x(0.5) );
-  approval_tests.emplace_back(monotone_cubic_spline_x(0.75) );
-  approval_tests.emplace_back(monotone_cubic_spline_x(1) );
-  approval_tests.emplace_back(monotone_cubic_spline_x(1.25) );
-  approval_tests.emplace_back(monotone_cubic_spline_x(1.5) );
-  approval_tests.emplace_back(monotone_cubic_spline_x(1.75) );
-  approval_tests.emplace_back(monotone_cubic_spline_x(2) );
-  approval_tests.emplace_back(monotone_cubic_spline_x(2.25) );
-  approval_tests.emplace_back(monotone_cubic_spline_x(2.5) );
-  approval_tests.emplace_back(monotone_cubic_spline_x(2.75) );
-  approval_tests.emplace_back(monotone_cubic_spline_x(3) );
+  approval_tests.emplace_back(monotone_cubic_spline_x(0));
+  approval_tests.emplace_back(monotone_cubic_spline_x(0.25));
+  approval_tests.emplace_back(monotone_cubic_spline_x(0.5));
+  approval_tests.emplace_back(monotone_cubic_spline_x(0.75));
+  approval_tests.emplace_back(monotone_cubic_spline_x(1));
+  approval_tests.emplace_back(monotone_cubic_spline_x(1.25) == Approx(9.453125));
+  approval_tests.emplace_back(monotone_cubic_spline_x(1.5));
+  approval_tests.emplace_back(monotone_cubic_spline_x(1.75));
+  approval_tests.emplace_back(monotone_cubic_spline_x(2));
+  approval_tests.emplace_back(monotone_cubic_spline_x(2.25));
+  approval_tests.emplace_back(monotone_cubic_spline_x(2.5));
+  approval_tests.emplace_back(monotone_cubic_spline_x(2.75));
+  approval_tests.emplace_back(monotone_cubic_spline_x(3));
 
-  approval_tests.emplace_back(monotone_cubic_spline_y(0) );
-  approval_tests.emplace_back(monotone_cubic_spline_y(0.25) );
-  approval_tests.emplace_back(monotone_cubic_spline_y(0.5) );
-  approval_tests.emplace_back(monotone_cubic_spline_y(0.75) );
-  approval_tests.emplace_back(monotone_cubic_spline_y(1) );
-  approval_tests.emplace_back(monotone_cubic_spline_y(1.25) );
-  approval_tests.emplace_back(monotone_cubic_spline_y(1.5) );
-  approval_tests.emplace_back(monotone_cubic_spline_y(1.75) );
-  approval_tests.emplace_back(monotone_cubic_spline_y(2) );
-  approval_tests.emplace_back(monotone_cubic_spline_y(2.25) );
-  approval_tests.emplace_back(monotone_cubic_spline_y(2.5) );
-  approval_tests.emplace_back(monotone_cubic_spline_y(2.75) );
-  approval_tests.emplace_back(monotone_cubic_spline_y(3) );
+  approval_tests.emplace_back(monotone_cubic_spline_y(0));
+  approval_tests.emplace_back(monotone_cubic_spline_y(0.25));
+  approval_tests.emplace_back(monotone_cubic_spline_y(0.5));
+  approval_tests.emplace_back(monotone_cubic_spline_y(0.75) == Approx(3.515625));
+  approval_tests.emplace_back(monotone_cubic_spline_y(1));
+  approval_tests.emplace_back(monotone_cubic_spline_y(1.25));
+  approval_tests.emplace_back(monotone_cubic_spline_y(1.5));
+  approval_tests.emplace_back(monotone_cubic_spline_y(1.75) == Approx(9.453125));
+  approval_tests.emplace_back(monotone_cubic_spline_y(2));
+  approval_tests.emplace_back(monotone_cubic_spline_y(2.25));
+  approval_tests.emplace_back(monotone_cubic_spline_y(2.5));
+  approval_tests.emplace_back(monotone_cubic_spline_y(2.75));
+  approval_tests.emplace_back(monotone_cubic_spline_y(3));
 
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
@@ -568,12 +568,12 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   Objects::NaturalCoordinate nca1(std::array<double,3> {{1,2,3}},*cartesian);
   CHECK(nca1.get_coordinates() == std::array<double,3> {{1,2,3}});
   CHECK(nca1.get_surface_coordinates() == std::array<double,2> {{1,2}});
-  approval_tests.emplace_back(nca1.get_depth_coordinate() );
+  approval_tests.emplace_back(nca1.get_depth_coordinate());
 
   Objects::NaturalCoordinate ncp1(Point<3>(1,2,3,CoordinateSystem::cartesian),*cartesian);
   CHECK(ncp1.get_coordinates() == std::array<double,3> {{1,2,3}});
   CHECK(ncp1.get_surface_coordinates() == std::array<double,2> {{1,2}});
-  approval_tests.emplace_back(ncp1.get_depth_coordinate() );
+  approval_tests.emplace_back(ncp1.get_depth_coordinate());
 
 
   std::unique_ptr<CoordinateSystems::Interface> spherical(CoordinateSystems::Interface::create("spherical",nullptr));
@@ -581,24 +581,24 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   // Test the natural coordinate system
   Objects::NaturalCoordinate nsa1(std::array<double,3> {{1,2,3}},*spherical);
   std::array<double,3> nsa1_array = nsa1.get_coordinates();
-  approval_tests.emplace_back(nsa1_array[0] );
-  approval_tests.emplace_back(nsa1_array[1] );
-  approval_tests.emplace_back(nsa1_array[2] );
+  approval_tests.emplace_back(nsa1_array[0]);
+  approval_tests.emplace_back(nsa1_array[1]);
+  approval_tests.emplace_back(nsa1_array[2]);
   std::array<double,2> nsa1_surface_array = nsa1.get_surface_coordinates();
-  approval_tests.emplace_back(nsa1_surface_array[0] );
-  approval_tests.emplace_back(nsa1_surface_array[1] );
-  approval_tests.emplace_back(nsa1.get_depth_coordinate() );
+  approval_tests.emplace_back(nsa1_surface_array[0]);
+  approval_tests.emplace_back(nsa1_surface_array[1]);
+  approval_tests.emplace_back(nsa1.get_depth_coordinate());
 
 
   Objects::NaturalCoordinate nsp1(Point<3>(1,2,3,CoordinateSystem::spherical),*spherical);
   std::array<double,3> nsp1_array = nsp1.get_coordinates();
-  approval_tests.emplace_back(nsp1_array[0] );
-  approval_tests.emplace_back(nsp1_array[1] );
-  approval_tests.emplace_back(nsp1_array[2] );
+  approval_tests.emplace_back(nsp1_array[0]);
+  approval_tests.emplace_back(nsp1_array[1]);
+  approval_tests.emplace_back(nsp1_array[2]);
   std::array<double,2> nsp1_surface_array = nsp1.get_surface_coordinates();
-  approval_tests.emplace_back(nsp1_surface_array[0] );
-  approval_tests.emplace_back(nsp1_surface_array[1] );
-  approval_tests.emplace_back(nsp1.get_depth_coordinate() );
+  approval_tests.emplace_back(nsp1_surface_array[0]);
+  approval_tests.emplace_back(nsp1_surface_array[1]);
+  approval_tests.emplace_back(nsp1.get_depth_coordinate());
 
   // Invalid tests
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_cartesian.wb";
@@ -618,7 +618,7 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   CHECK_THROWS_WITH(ivp1.get_ref_depth_coordinate(),Contains("Coordinate system not implemented."));
   CHECK(std::isnan(invalid->distance_between_points_at_same_depth(Point<3>(1,2,3,CoordinateSystem::invalid),
                                                                   Point<3>(1,2,3,CoordinateSystem::invalid))));
-  approval_tests.emplace_back(invalid->depth_method() );
+  approval_tests.emplace_back(invalid->depth_method());
 
   std::array<double,3> iv_array = invalid->natural_to_cartesian_coordinates({1,2,3});
   CHECK(std::isnan(iv_array[0]));
@@ -731,25 +731,25 @@ TEST_CASE("WorldBuilder C wrapper")
   double temperature = 0.;
 
   temperature_2d(*ptr_ptr_world, 1, 2, 0, 10, &temperature);
-  approval_tests.emplace_back(temperature );
+  approval_tests.emplace_back(temperature);
   temperature_3d(*ptr_ptr_world, 1, 2, 3, 0, 10, &temperature);
-  approval_tests.emplace_back(temperature );
+  approval_tests.emplace_back(temperature);
   temperature_2d(*ptr_ptr_world, 550e3, 0, 0, 10, &temperature);
-  approval_tests.emplace_back(temperature );
+  approval_tests.emplace_back(temperature);
   temperature_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, 10, &temperature);
-  approval_tests.emplace_back(temperature );
+  approval_tests.emplace_back(temperature);
 
   // Test the compositions
   double composition = 0.0;
 
   composition_2d(*ptr_ptr_world, 1, 2, 0, 2, &composition);
-  approval_tests.emplace_back(composition );
+  approval_tests.emplace_back(composition);
   composition_3d(*ptr_ptr_world, 1, 2, 3, 0, 2, &composition);
-  approval_tests.emplace_back(composition );
+  approval_tests.emplace_back(composition);
   composition_2d(*ptr_ptr_world,  550e3, 0, 0, 3, &composition);
-  approval_tests.emplace_back(composition );
+  approval_tests.emplace_back(composition);
   composition_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, 3, &composition);
-  approval_tests.emplace_back(composition );
+  approval_tests.emplace_back(composition);
 
   release_world(*ptr_ptr_world);
 
@@ -767,9 +767,9 @@ TEST_CASE("WorldBuilder C wrapper")
                     Contains("This function can only be called when the cross section "
                              "variable in the world builder file has been set. Dim is 3."));
   temperature_3d(*ptr_ptr_world, 1, 2, 3, 0, 10, &temperature);
-  approval_tests.emplace_back(temperature );
+  approval_tests.emplace_back(temperature);
   temperature_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, 10, &temperature);
-  approval_tests.emplace_back(temperature );
+  approval_tests.emplace_back(temperature);
 
   // Test the compositions
   CHECK_THROWS_WITH(composition_2d(*ptr_ptr_world, 1, 2, 0, 2, &composition),
@@ -777,9 +777,9 @@ TEST_CASE("WorldBuilder C wrapper")
                              "variable in the world builder file has been set. Dim is 3."));
 
   composition_3d(*ptr_ptr_world, 1, 2, 3, 0, 2, &composition);
-  approval_tests.emplace_back(composition );
+  approval_tests.emplace_back(composition);
   composition_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, 3, &composition);
-  approval_tests.emplace_back(composition );
+  approval_tests.emplace_back(composition);
 
   release_world(*ptr_ptr_world);
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
@@ -797,25 +797,25 @@ TEST_CASE("WorldBuilder CPP wrapper")
   double temperature = 0;
 
   temperature = world.temperature_2d(1, 2, 0, 10);
-  approval_tests.emplace_back(temperature );
+  approval_tests.emplace_back(temperature);
   temperature = world.temperature_3d(1, 2, 3, 0, 10);
-  approval_tests.emplace_back(temperature );
+  approval_tests.emplace_back(temperature);
   temperature = world.temperature_2d(550e3, 0, 0, 10);
-  approval_tests.emplace_back(temperature );
+  approval_tests.emplace_back(temperature);
   temperature = world.temperature_3d(120e3, 500e3, 0, 0, 10);
-  approval_tests.emplace_back(temperature );
+  approval_tests.emplace_back(temperature);
 
   // Test the compositions
   double composition = 0.0;
 
   composition = world.composition_2d(1, 2, 0, 2);
-  approval_tests.emplace_back(composition );
+  approval_tests.emplace_back(composition);
   composition = world.composition_3d(1, 2, 3, 0, 2);
-  approval_tests.emplace_back(composition );
+  approval_tests.emplace_back(composition);
   composition = world.composition_2d(550e3, 0, 0, 3);
-  approval_tests.emplace_back(composition );
+  approval_tests.emplace_back(composition);
   composition = world.composition_3d(120e3, 500e3, 0, 0, 3);
-  approval_tests.emplace_back(composition );
+  approval_tests.emplace_back(composition);
 
 
   // Now test a world builder file without a cross section defined
@@ -828,9 +828,9 @@ TEST_CASE("WorldBuilder CPP wrapper")
                     Contains("This function can only be called when the cross section "
                              "variable in the world builder file has been set. Dim is 3."));
   temperature = world2.temperature_3d(1, 2, 3, 0, 10);
-  approval_tests.emplace_back(temperature );
+  approval_tests.emplace_back(temperature);
   temperature = world2.temperature_3d(120e3, 500e3, 0, 0, 10);
-  approval_tests.emplace_back(temperature );
+  approval_tests.emplace_back(temperature);
 
   // Test the compositions
   CHECK_THROWS_WITH(world2.composition_2d(1, 2, 0, 2),
@@ -838,9 +838,9 @@ TEST_CASE("WorldBuilder CPP wrapper")
                              "variable in the world builder file has been set. Dim is 3."));
 
   composition = world2.composition_3d(1, 2, 3, 0, 2);
-  approval_tests.emplace_back(composition );
+  approval_tests.emplace_back(composition);
   composition = world2.composition_3d(120e3, 500e3, 0, 0, 3);
-  approval_tests.emplace_back(composition );
+  approval_tests.emplace_back(composition);
 
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
@@ -859,25 +859,25 @@ TEST_CASE("WorldBuilder World random")
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate_spherical.wb";
   WorldBuilder::World world1(file_name, false, "", 1);
   // same result as https://en.cppreference.com/w/cpp/numeric/random/mersenne_twister_engine/seed
-  approval_tests.emplace_back(world1.get_random_number_engine()() );
-  approval_tests.emplace_back(world1.get_random_number_engine()() );
+  approval_tests.emplace_back(world1.get_random_number_engine()());
+  approval_tests.emplace_back(world1.get_random_number_engine()());
   std::uniform_real_distribution<> dist(1.0,2.0);
-  approval_tests.emplace_back(dist(world1.get_random_number_engine()) );
-  approval_tests.emplace_back(dist(world1.get_random_number_engine()) );
+  approval_tests.emplace_back(dist(world1.get_random_number_engine()));
+  approval_tests.emplace_back(dist(world1.get_random_number_engine()));
 
   // test wheter the seed indeed changes the resuls
   WorldBuilder::World world2(file_name, false, "", 2);
-  approval_tests.emplace_back(world2.get_random_number_engine()() );
-  approval_tests.emplace_back(world2.get_random_number_engine()() );
-  approval_tests.emplace_back(dist(world2.get_random_number_engine()) );
-  approval_tests.emplace_back(dist(world2.get_random_number_engine()) );
+  approval_tests.emplace_back(world2.get_random_number_engine()());
+  approval_tests.emplace_back(world2.get_random_number_engine()());
+  approval_tests.emplace_back(dist(world2.get_random_number_engine()));
+  approval_tests.emplace_back(dist(world2.get_random_number_engine()));
 
   // Test reproducability with the same seed.
   WorldBuilder::World world3(file_name, false, "", 1);
-  approval_tests.emplace_back(world3.get_random_number_engine()() );
-  approval_tests.emplace_back(world3.get_random_number_engine()() );
-  approval_tests.emplace_back(dist(world3.get_random_number_engine()) );
-  approval_tests.emplace_back(dist(world3.get_random_number_engine()) );
+  approval_tests.emplace_back(world3.get_random_number_engine()());
+  approval_tests.emplace_back(world3.get_random_number_engine()());
+  approval_tests.emplace_back(dist(world3.get_random_number_engine()));
+  approval_tests.emplace_back(dist(world3.get_random_number_engine()));
 
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
@@ -900,7 +900,7 @@ TEST_CASE("WorldBuilder Coordinate Systems: Interface")
   CHECK(interface->cartesian_to_natural_coordinates(std::array<double,3> {{1,2,3}}) == std::array<double,3> {{1,2,3}});
   CHECK(interface->natural_to_cartesian_coordinates(std::array<double,3> {{1,2,3}}) == std::array<double,3> {{1,2,3}});
 
-  approval_tests.emplace_back(interface->natural_coordinate_system() );
+  approval_tests.emplace_back(interface->natural_coordinate_system());
 
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
@@ -917,7 +917,7 @@ TEST_CASE("WorldBuilder Coordinate Systems: Cartesian")
   CHECK(cartesian->cartesian_to_natural_coordinates(std::array<double,3> {{1,2,3}}) == std::array<double,3> {{1,2,3}});
   CHECK(cartesian->natural_to_cartesian_coordinates(std::array<double,3> {{1,2,3}}) == std::array<double,3> {{1,2,3}});
 
-  approval_tests.emplace_back(cartesian->natural_coordinate_system() );
+  approval_tests.emplace_back(cartesian->natural_coordinate_system());
 
   // distance between two points at the same depth
   Point<3> point_1(0.0,0.0,10.0, CoordinateSystem::cartesian);
@@ -925,9 +925,9 @@ TEST_CASE("WorldBuilder Coordinate Systems: Cartesian")
   Point<3> point_3(3.0,2.0,10.0, CoordinateSystem::cartesian);
   Point<3> point_4(3.0,3.0,10.0, CoordinateSystem::cartesian);
 
-  approval_tests.emplace_back(cartesian->distance_between_points_at_same_depth(point_1, point_2) );
-  approval_tests.emplace_back(cartesian->distance_between_points_at_same_depth(point_2, point_3) );
-  approval_tests.emplace_back(cartesian->distance_between_points_at_same_depth(point_2, point_4) );
+  approval_tests.emplace_back(cartesian->distance_between_points_at_same_depth(point_1, point_2));
+  approval_tests.emplace_back(cartesian->distance_between_points_at_same_depth(point_2, point_3));
+  approval_tests.emplace_back(cartesian->distance_between_points_at_same_depth(point_2, point_4));
 
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
@@ -954,15 +954,15 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
   world.parameters.leave_subsection();
 
   std::array<double,3> spherical_array = spherical->cartesian_to_natural_coordinates(std::array<double,3> {{1,2,3}});
-  approval_tests.emplace_back(spherical_array[0] );
-  approval_tests.emplace_back(spherical_array[1] );
-  approval_tests.emplace_back(spherical_array[2] );
+  approval_tests.emplace_back(spherical_array[0]);
+  approval_tests.emplace_back(spherical_array[1]);
+  approval_tests.emplace_back(spherical_array[2]);
   std::array<double,3> cartesian_array = spherical->natural_to_cartesian_coordinates(std::array<double,3> {{std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0),1.1071487178,0.9302740141}});
-  approval_tests.emplace_back(cartesian_array[0] );
-  approval_tests.emplace_back(cartesian_array[1] );
-  approval_tests.emplace_back(cartesian_array[2] );
+  approval_tests.emplace_back(cartesian_array[0]);
+  approval_tests.emplace_back(cartesian_array[1]);
+  approval_tests.emplace_back(cartesian_array[2]);
 
-  approval_tests.emplace_back(spherical->natural_coordinate_system() );
+  approval_tests.emplace_back(spherical->natural_coordinate_system());
 
   // distance between two points at the same depth
   double dtr = Utilities::const_pi / 180.0;
@@ -975,13 +975,13 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
   Point<3> unit_point_6(1.0, -90.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
   Point<3> unit_point_7(1.0, 90.0 * dtr, 180.0 * dtr, CoordinateSystem::spherical);
 
-  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_2) );
-  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_3) );
+  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_2));
+  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_3));
   CHECK(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_4) ==
         Approx(std::acos(std::sin(0) * std::sin(1*dtr) +
                          std::cos(0) * std::cos(1*dtr) * std::cos(1*dtr))));
-  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_5) );
-  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(unit_point_6, unit_point_7) );
+  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_5));
+  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(unit_point_6, unit_point_7));
 
   // secondly check non-unit radius
   Point<3> point_1(10.0, 0.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
@@ -992,13 +992,13 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
   Point<3> point_6(10.0, -90.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
   Point<3> point_7(10.0, 90.0 * dtr, 180.0 * dtr, CoordinateSystem::spherical);
 
-  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(point_1, point_2) );
-  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(point_1, point_3) );
+  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(point_1, point_2));
+  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(point_1, point_3));
   CHECK(spherical->distance_between_points_at_same_depth(point_1, point_4) ==
         Approx(10 * std::acos(std::sin(0) * std::sin(1*dtr) +
                               std::cos(0) * std::cos(1*dtr) * std::cos(1*dtr))));
-  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(point_1, point_5) );
-  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(point_6, point_7) );
+  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(point_1, point_5));
+  approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(point_6, point_7));
 
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
@@ -1029,38 +1029,38 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
 
   // Check continental plate through the world
   std::array<double,3> position = {{0,0,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
 
   // the feature with composition 3
   position = {{250e3,500e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 74e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 76e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 149e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 151e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 224e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 226e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 74e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 76e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 149e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 151e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 224e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 226e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
 
-  approval_tests.emplace_back(world1.composition(position, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 5) );
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 5));
 
   // check grains
   {
@@ -1070,28 +1070,28 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
 
   // the feature with composition 2
   position = {{1500e3,1500e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
 
-  approval_tests.emplace_back(world1.composition(position, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 5) );
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 5));
 
   // check grains
   {
@@ -1100,54 +1100,54 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
   }
 
   position = {{250e3,1750e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
 
-  approval_tests.emplace_back(world1.composition(position, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 5) );
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 5));
 
   position = {{750e3,250e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
 
-  approval_tests.emplace_back(world1.composition(position, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position, 0, 6) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 6) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 5) );
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 5));
 
   // check grains layer 1
   {
@@ -1164,75 +1164,75 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
 
   // the constant layers test
   position = {{1500e3,250e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 1, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 249.5e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 249.5e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
 
-  approval_tests.emplace_back(world1.composition(position, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position, 0, 6) );
-  approval_tests.emplace_back(world1.composition(position, 0, 7) );
-  approval_tests.emplace_back(world1.composition(position, 0, 8) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1, 0) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1, 1) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1, 2) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1, 3) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1, 4) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1, 5) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1, 6) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1, 7) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1, 8) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1, 0) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1, 1) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1, 2) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1, 3) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1, 4) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1, 5) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1, 6) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1, 7) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1, 8) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1, 0) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1, 1) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1, 2) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1, 3) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1, 4) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1, 5) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1, 6) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1, 7) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1, 8) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1, 0) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1, 1) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1, 2) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1, 3) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1, 4) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1, 5) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1, 6) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1, 7) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1, 8) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 6) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 7) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 8) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 6) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 7) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 8) );
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
+  approval_tests.emplace_back(world1.composition(position, 0, 7));
+  approval_tests.emplace_back(world1.composition(position, 0, 8));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 0));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 1));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 2));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 3));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 4));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 5));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 6));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 7));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 8));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 0));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 1));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 2));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 3));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 4));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 5));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 6));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 7));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 8));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 0));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 1));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 2));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 3));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 4));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 5));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 6));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 7));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 8));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 0));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 1));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 2));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 3));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 4));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 5));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 6));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 7));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 8));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 8));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 8));
 
 
   std::vector<std::string> approvals;
@@ -1264,31 +1264,31 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
 
   // Check continental plate through the world
   std::array<double,3> position = {{0,0,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
 
   position = {{250e3,501e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0+100e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 240e3+100e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 260e3+100e3, 10) );
+  approval_tests.emplace_back(world1.temperature(position, 0+100e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3+100e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3+100e3, 10));
 
-  approval_tests.emplace_back(world1.composition(position, 0+200e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0+200e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0+200e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0+200e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0+200e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0+200e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+200e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+200e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+200e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+200e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+200e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+200e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+200e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+200e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+200e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+200e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+200e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+200e3, 5) );
+  approval_tests.emplace_back(world1.composition(position, 0+200e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 0+200e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 0+200e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 0+200e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 0+200e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 0+200e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3+200e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3+200e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3+200e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3+200e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3+200e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3+200e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 260e3+200e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3+200e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3+200e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3+200e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3+200e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3+200e3, 5));
 
   // check grains
   {
@@ -1297,28 +1297,28 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
   }
 
   position = {{1500e3,1500e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0+150e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 240e3+150e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 260e3+150e3, 10) );
+  approval_tests.emplace_back(world1.temperature(position, 0+150e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3+150e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3+150e3, 10));
 
-  approval_tests.emplace_back(world1.composition(position, 0+150e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0+150e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0+150e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0+150e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0+150e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0+150e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+150e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+150e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+150e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+150e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+150e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+150e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+150e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+150e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+150e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+150e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+150e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+150e3, 5) );
+  approval_tests.emplace_back(world1.composition(position, 0+150e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 0+150e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 0+150e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 0+150e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 0+150e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 0+150e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3+150e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3+150e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3+150e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3+150e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3+150e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3+150e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 260e3+150e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3+150e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3+150e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3+150e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3+150e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3+150e3, 5));
 
   // check grains
   {
@@ -1327,57 +1327,57 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
   }
 
   position = {{250e3,1750e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0+250e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 240e3+250e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 260e3+250e3, 10) );
+  approval_tests.emplace_back(world1.temperature(position, 0+250e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3+250e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3+250e3, 10));
 
-  approval_tests.emplace_back(world1.composition(position, 0+250e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0+250e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0+250e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0+250e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0+250e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0+250e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+250e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+250e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+250e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+250e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+250e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+250e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+250e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+250e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+250e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+250e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+250e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+250e3, 5) );
+  approval_tests.emplace_back(world1.composition(position, 0+250e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 0+250e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 0+250e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 0+250e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 0+250e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 0+250e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3+250e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3+250e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3+250e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3+250e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3+250e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3+250e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 260e3+250e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3+250e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3+250e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3+250e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3+250e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3+250e3, 5));
 
   position = {{750e3,250e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0+300e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 95e3+300e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 105e3+300e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 145e3+300e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 155e3+300e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 260e3+300e3, 10) );
+  approval_tests.emplace_back(world1.temperature(position, 0+300e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 95e3+300e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 105e3+300e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 145e3+300e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 155e3+300e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3+300e3, 10));
 
-  approval_tests.emplace_back(world1.composition(position, 0+300e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0+300e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0+300e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0+300e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0+300e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0+300e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 0+300e3, 6) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 6) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+300e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+300e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+300e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+300e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+300e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+300e3, 5) );
+  approval_tests.emplace_back(world1.composition(position, 0+300e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 0+300e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 0+300e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 0+300e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 0+300e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 0+300e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 0+300e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3+300e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 260e3+300e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3+300e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3+300e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3+300e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3+300e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3+300e3, 5));
 
   // check grains layer 1
   {
@@ -1394,80 +1394,80 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
 
   // the constant layers test
   position = {{1500e3,250e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0+350e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 240e3+350e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 260e3+350e3, 10) );
+  approval_tests.emplace_back(world1.temperature(position, 0+350e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3+350e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3+350e3, 10));
 
-  approval_tests.emplace_back(world1.composition(position, 0+350e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0+350e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0+350e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0+350e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0+350e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0+350e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 0+350e3, 6) );
-  approval_tests.emplace_back(world1.composition(position, 0+350e3, 7) );
-  approval_tests.emplace_back(world1.composition(position, 0+350e3, 8) );
-  approval_tests.emplace_back(world1.composition(position, 0+350e3, 9) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 6) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 7) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 8) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 9) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 6) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 7) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 8) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 9) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 6) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 7) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 8) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 9) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 6) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 7) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 8) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 9) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 6) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 7) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 8) );
-  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 9) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 6) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 7) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 8) );
-  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 9) );
+  approval_tests.emplace_back(world1.composition(position, 0+350e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 0+350e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 0+350e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 0+350e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 0+350e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 0+350e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 0+350e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 0+350e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 0+350e3, 8));
+  approval_tests.emplace_back(world1.composition(position, 0+350e3, 9));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 8));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1+350e3, 9));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 8));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1+350e3, 9));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 8));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1+350e3, 9));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 8));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1+350e3, 9));
+  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 8));
+  approval_tests.emplace_back(world1.composition(position, 240e3+350e3, 9));
+  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 8));
+  approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 9));
 
   std::vector<std::string> approvals;
   for (auto&& value : approval_tests)
@@ -1500,192 +1500,192 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   // Check continental plate through the world
   // 2d
   std::array<double,2> position_2d = {{0,0}};
-  approval_tests.emplace_back(world1.temperature(position_2d, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position_2d, 240e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position_2d, 260e3, 10) );
-  approval_tests.emplace_back(world1.composition(position_2d, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position_2d, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position_2d, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position_2d, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position_2d, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position_2d, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position_2d, 0, 6) );
+  approval_tests.emplace_back(world1.temperature(position_2d, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position_2d, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position_2d, 260e3, 10));
+  approval_tests.emplace_back(world1.composition(position_2d, 0, 0));
+  approval_tests.emplace_back(world1.composition(position_2d, 0, 1));
+  approval_tests.emplace_back(world1.composition(position_2d, 0, 2));
+  approval_tests.emplace_back(world1.composition(position_2d, 0, 3));
+  approval_tests.emplace_back(world1.composition(position_2d, 0, 4));
+  approval_tests.emplace_back(world1.composition(position_2d, 0, 5));
+  approval_tests.emplace_back(world1.composition(position_2d, 0, 6));
   // 3d
   std::array<double,3> position = {{0,0,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10) );
-  approval_tests.emplace_back(world1.composition(position, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position, 0, 6) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{250e3,500e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10) );
-  approval_tests.emplace_back(world1.composition(position, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position, 0, 6) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{1500e3,1500e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10) );
-  approval_tests.emplace_back(world1.composition(position, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position, 0, 6) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{250e3,1750e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10) );
-  approval_tests.emplace_back(world1.composition(position, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position, 0, 6) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{750e3,250e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 195e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 205e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 247e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 249e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10) );
-  approval_tests.emplace_back(world1.composition(position, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position, 0, 6) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 6) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 6) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 195e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 205e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 247e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 249e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 6));
 
   position = {{1500e3, 0, 0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10) );
-  approval_tests.emplace_back(world1.composition(position, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position, 0, 6) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   // test symmetry
   position = {{1600e3, 0, 0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
 
   position = {{1400e3, 0, 0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
 
   // the constant layers test
   position = {{200e3,200e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
 
-  approval_tests.emplace_back(world1.composition(position, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position, 0, 6) );
-  approval_tests.emplace_back(world1.composition(position, 0, 7) );
-  approval_tests.emplace_back(world1.composition(position, 0, 8) );
-  approval_tests.emplace_back(world1.composition(position, 0, 9) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1, 0) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1, 1) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1, 2) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1, 3) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1, 4) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1, 5) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1, 6) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1, 7) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1, 8) );
-  approval_tests.emplace_back(world1.composition(position, 75e3-1, 9) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1, 0) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1, 1) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1, 2) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1, 3) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1, 4) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1, 5) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1, 6) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1, 7) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1, 8) );
-  approval_tests.emplace_back(world1.composition(position, 75e3+1, 9) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1, 0) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1, 1) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1, 2) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1, 3) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1, 4) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1, 5) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1, 6) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1, 7) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1, 8) );
-  approval_tests.emplace_back(world1.composition(position, 150e3-1, 9) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1, 0) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1, 1) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1, 2) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1, 3) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1, 4) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1, 5) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1, 6) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1, 7) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1, 8) );
-  approval_tests.emplace_back(world1.composition(position, 150e3+1, 9) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 6) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 7) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 8) );
-  approval_tests.emplace_back(world1.composition(position, 240e3, 9) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 5) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 6) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 7) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 8) );
-  approval_tests.emplace_back(world1.composition(position, 260e3, 9) );
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
+  approval_tests.emplace_back(world1.composition(position, 0, 7));
+  approval_tests.emplace_back(world1.composition(position, 0, 8));
+  approval_tests.emplace_back(world1.composition(position, 0, 9));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 0));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 1));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 2));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 3));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 4));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 5));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 6));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 7));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 8));
+  approval_tests.emplace_back(world1.composition(position, 75e3-1, 9));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 0));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 1));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 2));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 3));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 4));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 5));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 6));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 7));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 8));
+  approval_tests.emplace_back(world1.composition(position, 75e3+1, 9));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 0));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 1));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 2));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 3));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 4));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 5));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 6));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 7));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 8));
+  approval_tests.emplace_back(world1.composition(position, 150e3-1, 9));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 0));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 1));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 2));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 3));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 4));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 5));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 6));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 7));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 8));
+  approval_tests.emplace_back(world1.composition(position, 150e3+1, 9));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 8));
+  approval_tests.emplace_back(world1.composition(position, 240e3, 9));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 5));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 6));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 7));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 8));
+  approval_tests.emplace_back(world1.composition(position, 260e3, 9));
 
   // spherical
   file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate_spherical.wb";
@@ -1700,53 +1700,53 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
 
   // 2d
   position_2d = {{6371000,0}};
-  approval_tests.emplace_back(world2.temperature(position_2d, 0, 10) );
-  approval_tests.emplace_back(world2.composition(position_2d, 0, 0) );
-  approval_tests.emplace_back(world2.composition(position_2d, 0, 1) );
-  approval_tests.emplace_back(world2.composition(position_2d, 0, 2) );
-  approval_tests.emplace_back(world2.composition(position_2d, 0, 3) );
-  approval_tests.emplace_back(world2.composition(position_2d, 0, 4) );
-  approval_tests.emplace_back(world2.composition(position_2d, 0, 5) );
-  approval_tests.emplace_back(world2.composition(position_2d, 0, 6) );
+  approval_tests.emplace_back(world2.temperature(position_2d, 0, 10));
+  approval_tests.emplace_back(world2.composition(position_2d, 0, 0));
+  approval_tests.emplace_back(world2.composition(position_2d, 0, 1));
+  approval_tests.emplace_back(world2.composition(position_2d, 0, 2));
+  approval_tests.emplace_back(world2.composition(position_2d, 0, 3));
+  approval_tests.emplace_back(world2.composition(position_2d, 0, 4));
+  approval_tests.emplace_back(world2.composition(position_2d, 0, 5));
+  approval_tests.emplace_back(world2.composition(position_2d, 0, 6));
 
   // 3d
   position = {{6371000,0,0}};
-  approval_tests.emplace_back(world2.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world2.composition(position, 0, 0) );
-  approval_tests.emplace_back(world2.composition(position, 0, 1) );
-  approval_tests.emplace_back(world2.composition(position, 0, 2) );
-  approval_tests.emplace_back(world2.composition(position, 0, 3) );
-  approval_tests.emplace_back(world2.composition(position, 0, 4) );
-  approval_tests.emplace_back(world2.composition(position, 0, 5) );
-  approval_tests.emplace_back(world2.composition(position, 0, 6) );
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.composition(position, 0, 0));
+  approval_tests.emplace_back(world2.composition(position, 0, 1));
+  approval_tests.emplace_back(world2.composition(position, 0, 2));
+  approval_tests.emplace_back(world2.composition(position, 0, 3));
+  approval_tests.emplace_back(world2.composition(position, 0, 4));
+  approval_tests.emplace_back(world2.composition(position, 0, 5));
+  approval_tests.emplace_back(world2.composition(position, 0, 6));
 
   position = {{6371000, -5 * dtr,-5 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  approval_tests.emplace_back(world2.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 260e3, 10) );
-  approval_tests.emplace_back(world2.composition(position, 0, 0) );
-  approval_tests.emplace_back(world2.composition(position, 0, 1) );
-  approval_tests.emplace_back(world2.composition(position, 0, 2) );
-  approval_tests.emplace_back(world2.composition(position, 0, 3) );
-  approval_tests.emplace_back(world2.composition(position, 0, 4) );
-  approval_tests.emplace_back(world2.composition(position, 0, 5) );
-  approval_tests.emplace_back(world2.composition(position, 0, 6) );
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 0, 0));
+  approval_tests.emplace_back(world2.composition(position, 0, 1));
+  approval_tests.emplace_back(world2.composition(position, 0, 2));
+  approval_tests.emplace_back(world2.composition(position, 0, 3));
+  approval_tests.emplace_back(world2.composition(position, 0, 4));
+  approval_tests.emplace_back(world2.composition(position, 0, 5));
+  approval_tests.emplace_back(world2.composition(position, 0, 6));
 
   position = {{6371000, 5 * dtr,-5 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  approval_tests.emplace_back(world2.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 260e3, 10) );
-  approval_tests.emplace_back(world2.composition(position, 0, 0) );
-  approval_tests.emplace_back(world2.composition(position, 0, 1) );
-  approval_tests.emplace_back(world2.composition(position, 0, 2) );
-  approval_tests.emplace_back(world2.composition(position, 240e3, 2) );
-  approval_tests.emplace_back(world2.composition(position, 260e3, 2) );
-  approval_tests.emplace_back(world2.composition(position, 0, 3) );
-  approval_tests.emplace_back(world2.composition(position, 0, 4) );
-  approval_tests.emplace_back(world2.composition(position, 0, 5) );
-  approval_tests.emplace_back(world2.composition(position, 0, 6) );
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 0, 0));
+  approval_tests.emplace_back(world2.composition(position, 0, 1));
+  approval_tests.emplace_back(world2.composition(position, 0, 2));
+  approval_tests.emplace_back(world2.composition(position, 240e3, 2));
+  approval_tests.emplace_back(world2.composition(position, 260e3, 2));
+  approval_tests.emplace_back(world2.composition(position, 0, 3));
+  approval_tests.emplace_back(world2.composition(position, 0, 4));
+  approval_tests.emplace_back(world2.composition(position, 0, 5));
+  approval_tests.emplace_back(world2.composition(position, 0, 6));
 
   // check grains
   {
@@ -1756,18 +1756,18 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
 
   position = {{6371000, 5 * dtr,5 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  approval_tests.emplace_back(world2.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 260e3, 10) );
-  approval_tests.emplace_back(world2.composition(position, 0, 0) );
-  approval_tests.emplace_back(world2.composition(position, 0, 1) );
-  approval_tests.emplace_back(world2.composition(position, 0, 2) );
-  approval_tests.emplace_back(world2.composition(position, 0, 3) );
-  approval_tests.emplace_back(world2.composition(position, 0, 4) );
-  approval_tests.emplace_back(world2.composition(position, 240e3, 4) );
-  approval_tests.emplace_back(world2.composition(position, 260e3, 4) );
-  approval_tests.emplace_back(world2.composition(position, 0, 5) );
-  approval_tests.emplace_back(world2.composition(position, 0, 6) );
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 0, 0));
+  approval_tests.emplace_back(world2.composition(position, 0, 1));
+  approval_tests.emplace_back(world2.composition(position, 0, 2));
+  approval_tests.emplace_back(world2.composition(position, 0, 3));
+  approval_tests.emplace_back(world2.composition(position, 0, 4));
+  approval_tests.emplace_back(world2.composition(position, 240e3, 4));
+  approval_tests.emplace_back(world2.composition(position, 260e3, 4));
+  approval_tests.emplace_back(world2.composition(position, 0, 5));
+  approval_tests.emplace_back(world2.composition(position, 0, 6));
 
   // check grains
   {
@@ -1777,20 +1777,20 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
 
   position = {{6371000, -15 * dtr, -15 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  approval_tests.emplace_back(world2.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 260e3, 10) );
-  approval_tests.emplace_back(world2.composition(position, 0, 0) );
-  approval_tests.emplace_back(world2.composition(position, 0, 1) );
-  approval_tests.emplace_back(world2.composition(position, 0, 2) );
-  approval_tests.emplace_back(world2.composition(position, 0, 3) );
-  approval_tests.emplace_back(world2.composition(position, 0, 4) );
-  approval_tests.emplace_back(world2.composition(position, 0, 5) );
-  approval_tests.emplace_back(world2.composition(position, 0, 6) );
-  approval_tests.emplace_back(world2.composition(position, 240e3, 5) );
-  approval_tests.emplace_back(world2.composition(position, 240e3, 6) );
-  approval_tests.emplace_back(world2.composition(position, 260e3, 5) );
-  approval_tests.emplace_back(world2.composition(position, 260e3, 6) );
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 0, 0));
+  approval_tests.emplace_back(world2.composition(position, 0, 1));
+  approval_tests.emplace_back(world2.composition(position, 0, 2));
+  approval_tests.emplace_back(world2.composition(position, 0, 3));
+  approval_tests.emplace_back(world2.composition(position, 0, 4));
+  approval_tests.emplace_back(world2.composition(position, 0, 5));
+  approval_tests.emplace_back(world2.composition(position, 0, 6));
+  approval_tests.emplace_back(world2.composition(position, 240e3, 5));
+  approval_tests.emplace_back(world2.composition(position, 240e3, 6));
+  approval_tests.emplace_back(world2.composition(position, 260e3, 5));
+  approval_tests.emplace_back(world2.composition(position, 260e3, 6));
 
   // check grains layer 1
   {
@@ -1806,42 +1806,42 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
 
   position = {{6371000, 15 * dtr, -19 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  approval_tests.emplace_back(world2.temperature(position, 0, 0) );
-  approval_tests.emplace_back(world2.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 260e3, 10) );
-  approval_tests.emplace_back(world2.composition(position, 0, 0) );
-  approval_tests.emplace_back(world2.composition(position, 0, 1) );
-  approval_tests.emplace_back(world2.composition(position, 0, 2) );
-  approval_tests.emplace_back(world2.composition(position, 0, 3) );
-  approval_tests.emplace_back(world2.composition(position, 0, 4) );
-  approval_tests.emplace_back(world2.composition(position, 0, 5) );
-  approval_tests.emplace_back(world2.composition(position, 0, 6) );
-  approval_tests.emplace_back(world2.composition(position, 240e3, 6) );
-  approval_tests.emplace_back(world2.composition(position, 260e3, 6) );
+  approval_tests.emplace_back(world2.temperature(position, 0, 0));
+  approval_tests.emplace_back(world2.temperature(position, 10, 10));
+  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 0, 0));
+  approval_tests.emplace_back(world2.composition(position, 0, 1));
+  approval_tests.emplace_back(world2.composition(position, 0, 2));
+  approval_tests.emplace_back(world2.composition(position, 0, 3));
+  approval_tests.emplace_back(world2.composition(position, 0, 4));
+  approval_tests.emplace_back(world2.composition(position, 0, 5));
+  approval_tests.emplace_back(world2.composition(position, 0, 6));
+  approval_tests.emplace_back(world2.composition(position, 240e3, 6));
+  approval_tests.emplace_back(world2.composition(position, 260e3, 6));
 
   // test symmetry
   position = {{6371000, 16 * dtr, -19 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  approval_tests.emplace_back(world2.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 260e3, 10) );
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position, 10, 10));
+  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
 
   position = {{6371000, 14 * dtr, -19 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  approval_tests.emplace_back(world2.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 260e3, 10) );
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position, 10, 10));
+  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
 
   // test bend
   position = {{6371000, 12.5 * dtr, -12.5 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  approval_tests.emplace_back(world2.temperature(position, 0, 0) );
-  approval_tests.emplace_back(world2.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 260e3, 10) );
+  approval_tests.emplace_back(world2.temperature(position, 0, 0));
+  approval_tests.emplace_back(world2.temperature(position, 10, 10));
+  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
 
   std::vector<std::string> approvals;
   for (auto&& value : approval_tests)
@@ -1873,78 +1873,78 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
 
   // Check continental plate through the world
   std::array<double,3> position = {{0,0,800e3}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10) );
-  approval_tests.emplace_back(world1.composition(position, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position, 0, 6) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   //position = {{250e3,450e3,800e3}};
-  //approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  //approval_tests.emplace_back(world1.temperature(position, 1, 10) ); // we are in the plate for sure (colder than anywhere in the mantle)
-  //approval_tests.emplace_back(world1.temperature(position, 5, 10) ); // we are in the plate for sure (colder than anywhere in the mantle)
-  //approval_tests.emplace_back(world1.temperature(position, 10, 10) ); // we are in the plate for sure (colder than anywhere in the mantle)
-  //approval_tests.emplace_back(world1.temperature(position, 100, 10) ); // we are in the plate for sure (colder than anywhere in the mantle)
-  //approval_tests.emplace_back(world1.temperature(position, 500, 10) ); // we are in the plate for sure (colder than anywhere in the mantle)
-  //approval_tests.emplace_back(world1.temperature(position, 1000, 10) ); // we are in the plate for sure (colder than anywhere in the mantle)
-  //approval_tests.emplace_back(world1.temperature(position, 5000, 10) ); // we are in the plate for sure (colder than anywhere in the mantle)
-  //approval_tests.emplace_back(world1.temperature(position, 10e3, 10) );
-  //approval_tests.emplace_back(world1.temperature(position, 25e3, 10) );
-  //approval_tests.emplace_back(world1.temperature(position, 50e3, 10) );
-  //approval_tests.emplace_back(world1.temperature(position, 75e3, 10) );
-  //approval_tests.emplace_back(world1.temperature(position, 150e3, 10) );
+  //approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  //approval_tests.emplace_back(world1.temperature(position, 1, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 5, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 10, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 100, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 500, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 1000, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 5000, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 10e3, 10));
+  //approval_tests.emplace_back(world1.temperature(position, 25e3, 10));
+  //approval_tests.emplace_back(world1.temperature(position, 50e3, 10));
+  //approval_tests.emplace_back(world1.temperature(position, 75e3, 10));
+  //approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
 
   position = {{250e3,500e3,800e3}};
   // results strongly dependent on the summation number of the McKenzie temperature.
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 1, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 5, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 100, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 500, 10) ); // we are in the plate for sure (colder than anywhere in the mantle)
-  approval_tests.emplace_back(world1.temperature(position, 1000, 10) ); // we are in the plate for sure (colder than anywhere in the mantle)
-  approval_tests.emplace_back(world1.temperature(position, 5000, 10) ); // we are in the plate for sure (colder than anywhere in the mantle)
-  approval_tests.emplace_back(world1.temperature(position, 10e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 25e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 50e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 75e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 150e3, 10) );
-  //approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 100e3 - 1, 10) );
-  //approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 100e3 + 1, 10) );
-  approval_tests.emplace_back(world1.composition(position, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 10, 0) );
-  approval_tests.emplace_back(world1.composition(position, 10, 1) );
-  approval_tests.emplace_back(world1.composition(position, 10, 2) );
-  approval_tests.emplace_back(world1.composition(position, 10, 3) );
-  approval_tests.emplace_back(world1.composition(position, 10, 4) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 - 1, 0) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 + 1, 0) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 - 1, 1) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 + 1, 1) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 - 1, 1) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 + 1, 1) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 - 1, 2) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 + 1, 2) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 + 1, 3) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 - 1, 2) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 - 1, 3) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 + 1, 2) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 5, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100, 10));
+  approval_tests.emplace_back(world1.temperature(position, 500, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  approval_tests.emplace_back(world1.temperature(position, 1000, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  approval_tests.emplace_back(world1.temperature(position, 5000, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  approval_tests.emplace_back(world1.temperature(position, 10e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 25e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 50e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 75e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
+  //approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 100e3 - 1, 10));
+  //approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 100e3 + 1, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 10, 0));
+  approval_tests.emplace_back(world1.composition(position, 10, 1));
+  approval_tests.emplace_back(world1.composition(position, 10, 2));
+  approval_tests.emplace_back(world1.composition(position, 10, 3));
+  approval_tests.emplace_back(world1.composition(position, 10, 4));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 - 1, 0));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 + 1, 0));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 - 1, 1));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 + 1, 1));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 - 1, 1));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 + 1, 1));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 - 1, 2));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 + 1, 2));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 + 1, 3));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 - 1, 2));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 - 1, 3));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 + 1, 2));
   // this comes form the first subducting plate
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 + 1, 3) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 100e3 - 1, 3) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 100e3 + 1, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position, 0, 6) );
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 + 1, 3));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 100e3 - 1, 3));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 100e3 + 1, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   // check grains layer 1
   {
@@ -1965,182 +1965,182 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   }
 
   position = {{250e3,550e3,800e3}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 45e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 50e3-1, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 50e3+1, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 55e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 100e3-1, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 100e3+1, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 101e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 110e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 150e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 155e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 175e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 200e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 250e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 300e3, 10) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 45e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 50e3-1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 50e3+1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 55e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3-1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3+1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 101e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 110e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 155e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 175e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 250e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 300e3, 10));
 
   position = {{250e3,600e3,800e3}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 45e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 50e3-1, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 50e3+1, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 55e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 100e3-1, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 100e3+1, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 101e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 110e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 150e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 155e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 160e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 165e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 170e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 175e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 180e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 185e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 200e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 250e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 300e3, 10) );
-  approval_tests.emplace_back(world1.composition(position, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position, 10, 0) );
-  approval_tests.emplace_back(world1.composition(position, 10, 1) );
-  approval_tests.emplace_back(world1.composition(position, 10, 2) );
-  approval_tests.emplace_back(world1.composition(position, 10, 3) );
-  approval_tests.emplace_back(world1.composition(position, 100e3-1, 0) );
-  approval_tests.emplace_back(world1.composition(position, 100e3-1, 1) );
-  approval_tests.emplace_back(world1.composition(position, 100e3-1, 2) );
-  approval_tests.emplace_back(world1.composition(position, 100e3-1, 3) );
-  approval_tests.emplace_back(world1.composition(position, 100e3-1, 4) );
-  approval_tests.emplace_back(world1.composition(position, 100e3+1, 0) );
-  approval_tests.emplace_back(world1.composition(position, 100e3+1, 1) );
-  approval_tests.emplace_back(world1.composition(position, 100e3+1, 2) );
-  approval_tests.emplace_back(world1.composition(position, 100e3+1, 3) );
-  approval_tests.emplace_back(world1.composition(position, 100e3+1, 4) );
-  approval_tests.emplace_back(world1.composition(position, 101e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 101e3+1, 1) );
-  approval_tests.emplace_back(world1.composition(position, 101e3+1, 2) );
-  approval_tests.emplace_back(world1.composition(position, 101e3+1, 3) );
-  approval_tests.emplace_back(world1.composition(position, 101e3+1, 4) );
-  approval_tests.emplace_back(world1.composition(position, 150e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 150e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 150e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 150e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 150e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 200e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 200e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 200e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 200e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 200e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position, 0, 6) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 45e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 50e3-1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 50e3+1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 55e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3-1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3+1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 101e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 110e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 155e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 160e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 165e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 170e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 175e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 180e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 185e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 250e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 300e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 10, 0));
+  approval_tests.emplace_back(world1.composition(position, 10, 1));
+  approval_tests.emplace_back(world1.composition(position, 10, 2));
+  approval_tests.emplace_back(world1.composition(position, 10, 3));
+  approval_tests.emplace_back(world1.composition(position, 100e3-1, 0));
+  approval_tests.emplace_back(world1.composition(position, 100e3-1, 1));
+  approval_tests.emplace_back(world1.composition(position, 100e3-1, 2));
+  approval_tests.emplace_back(world1.composition(position, 100e3-1, 3));
+  approval_tests.emplace_back(world1.composition(position, 100e3-1, 4));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 0));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 1));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 2));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 3));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 4));
+  approval_tests.emplace_back(world1.composition(position, 101e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 1));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 2));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 3));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 4));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{650e3,650e3,800e3}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 100e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 100e3+1, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 101e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 110e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 150e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 200e3, 10) );
-  approval_tests.emplace_back(world1.composition(position, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position, 10, 0) );
-  approval_tests.emplace_back(world1.composition(position, 10, 1) );
-  approval_tests.emplace_back(world1.composition(position, 10, 2) );
-  approval_tests.emplace_back(world1.composition(position, 10, 3) );
-  approval_tests.emplace_back(world1.composition(position, 100e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 100e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 100e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 100e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 100e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 100e3+1, 0) );
-  approval_tests.emplace_back(world1.composition(position, 100e3+1, 1) );
-  approval_tests.emplace_back(world1.composition(position, 100e3+1, 2) );
-  approval_tests.emplace_back(world1.composition(position, 100e3+1, 3) );
-  approval_tests.emplace_back(world1.composition(position, 100e3+1, 4) );
-  approval_tests.emplace_back(world1.composition(position, 101e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 101e3+1, 1) );
-  approval_tests.emplace_back(world1.composition(position, 101e3+1, 2) );
-  approval_tests.emplace_back(world1.composition(position, 101e3+1, 3) );
-  approval_tests.emplace_back(world1.composition(position, 101e3+1, 4) );
-  approval_tests.emplace_back(world1.composition(position, 150e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 150e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 150e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 150e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 150e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 200e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 200e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 200e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 200e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 200e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position, 0, 6) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3+1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 101e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 110e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 10, 0));
+  approval_tests.emplace_back(world1.composition(position, 10, 1));
+  approval_tests.emplace_back(world1.composition(position, 10, 2));
+  approval_tests.emplace_back(world1.composition(position, 10, 3));
+  approval_tests.emplace_back(world1.composition(position, 100e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 100e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 100e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 100e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 100e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 0));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 1));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 2));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 3));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 4));
+  approval_tests.emplace_back(world1.composition(position, 101e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 1));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 2));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 3));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 4));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{700e3,675e3,800e3}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 100e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 100e3+1, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 101e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 110e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 150e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 200e3, 10) );
-  approval_tests.emplace_back(world1.composition(position, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position, 10, 0) );
-  approval_tests.emplace_back(world1.composition(position, 10, 1) );
-  approval_tests.emplace_back(world1.composition(position, 10, 2) );
-  approval_tests.emplace_back(world1.composition(position, 10, 3) );
-  approval_tests.emplace_back(world1.composition(position, 100e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 100e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 100e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 100e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 100e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 100e3+1, 0) );
-  approval_tests.emplace_back(world1.composition(position, 100e3+1, 1) );
-  approval_tests.emplace_back(world1.composition(position, 100e3+1, 2) );
-  approval_tests.emplace_back(world1.composition(position, 100e3+1, 3) );
-  approval_tests.emplace_back(world1.composition(position, 100e3+1, 4) );
-  approval_tests.emplace_back(world1.composition(position, 101e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 101e3+1, 1) );
-  approval_tests.emplace_back(world1.composition(position, 101e3+1, 2) );
-  approval_tests.emplace_back(world1.composition(position, 101e3+1, 3) );
-  approval_tests.emplace_back(world1.composition(position, 101e3+1, 4) );
-  approval_tests.emplace_back(world1.composition(position, 150e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 150e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 150e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 150e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 150e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 200e3, 0) );
-  approval_tests.emplace_back(world1.composition(position, 200e3, 1) );
-  approval_tests.emplace_back(world1.composition(position, 200e3, 2) );
-  approval_tests.emplace_back(world1.composition(position, 200e3, 3) );
-  approval_tests.emplace_back(world1.composition(position, 200e3, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position, 0, 6) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3+1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 101e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 110e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 10, 0));
+  approval_tests.emplace_back(world1.composition(position, 10, 1));
+  approval_tests.emplace_back(world1.composition(position, 10, 2));
+  approval_tests.emplace_back(world1.composition(position, 10, 3));
+  approval_tests.emplace_back(world1.composition(position, 100e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 100e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 100e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 100e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 100e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 0));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 1));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 2));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 3));
+  approval_tests.emplace_back(world1.composition(position, 100e3+1, 4));
+  approval_tests.emplace_back(world1.composition(position, 101e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 1));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 2));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 3));
+  approval_tests.emplace_back(world1.composition(position, 101e3+1, 4));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 150e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 0));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 1));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 2));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 3));
+  approval_tests.emplace_back(world1.composition(position, 200e3, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{700e3,155e3,800e3}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 100e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 150e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 200e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 250e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 300e3, 10) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 250e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 300e3, 10));
 
   // check grains
   {
@@ -2168,95 +2168,95 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   WorldBuilder::World world2(file_name2);
 
   position = {{250e3,500e3,800e3}};
-  approval_tests.emplace_back(world2.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world2.composition(position, 0, 0) );
-  approval_tests.emplace_back(world2.temperature(position, 1, 10) );
-  approval_tests.emplace_back(world2.composition(position, 1, 0) );
-  approval_tests.emplace_back(world2.temperature(position, 1e3, 10) );
-  approval_tests.emplace_back(world2.composition(position, 1e3, 0) );
-  approval_tests.emplace_back(world2.temperature(position, 10e3, 10) );
-  approval_tests.emplace_back(world2.composition(position, 10e3, 0) );
-  approval_tests.emplace_back(world2.temperature(position, 20e3, 10) );
-  approval_tests.emplace_back(world2.composition(position, 20e3, 0) );
-  approval_tests.emplace_back(world2.temperature(position, 40e3, 10) );
-  approval_tests.emplace_back(world2.composition(position, 40e3, 0) );
-  approval_tests.emplace_back(world2.temperature(position, 60e3, 10) );
-  approval_tests.emplace_back(world2.composition(position, 60e3, 0) );
-  approval_tests.emplace_back(world2.temperature(position, 80e3, 10) );
-  approval_tests.emplace_back(world2.composition(position, 80e3, 0) );
-  approval_tests.emplace_back(world2.temperature(position, 100e3, 10) );
-  approval_tests.emplace_back(world2.composition(position, 100e3, 0) );
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.composition(position, 0, 0));
+  approval_tests.emplace_back(world2.temperature(position, 1, 10));
+  approval_tests.emplace_back(world2.composition(position, 1, 0));
+  approval_tests.emplace_back(world2.temperature(position, 1e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 1e3, 0));
+  approval_tests.emplace_back(world2.temperature(position, 10e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 10e3, 0));
+  approval_tests.emplace_back(world2.temperature(position, 20e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 20e3, 0));
+  approval_tests.emplace_back(world2.temperature(position, 40e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 40e3, 0));
+  approval_tests.emplace_back(world2.temperature(position, 60e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 60e3, 0));
+  approval_tests.emplace_back(world2.temperature(position, 80e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 80e3, 0));
+  approval_tests.emplace_back(world2.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 100e3, 0));
 
 
   file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_cartesian_2.wb";
   WorldBuilder::World world4(file_name);
 
   position = {{250e3,500e3,800e3}};
-  approval_tests.emplace_back(world4.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world4.composition(position, 0, 0) );
-  approval_tests.emplace_back(world4.composition(position, 0, 1) );
-  approval_tests.emplace_back(world4.composition(position, 0, 2) );
-  approval_tests.emplace_back(world4.composition(position, 0, 3) );
-  approval_tests.emplace_back(world4.temperature(position, 1, 10) );
-  approval_tests.emplace_back(world4.composition(position, 1, 0) );
-  approval_tests.emplace_back(world4.composition(position, 1, 1) );
-  approval_tests.emplace_back(world4.composition(position, 1, 2) );
-  approval_tests.emplace_back(world4.composition(position, 1, 3) );
-  approval_tests.emplace_back(world4.temperature(position, 1e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 1e3, 0) );
-  approval_tests.emplace_back(world4.composition(position, 1e3, 1) );
-  approval_tests.emplace_back(world4.composition(position, 1e3, 2) );
-  approval_tests.emplace_back(world4.composition(position, 1e3, 3) );
-  approval_tests.emplace_back(world4.temperature(position, 10e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 10e3, 0) );
-  approval_tests.emplace_back(world4.composition(position, 10e3, 1) );
-  approval_tests.emplace_back(world4.composition(position, 10e3, 2) );
-  approval_tests.emplace_back(world4.composition(position, 10e3, 3) );
-  approval_tests.emplace_back(world4.temperature(position, 20e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 20e3, 0) );
-  approval_tests.emplace_back(world4.composition(position, 20e3, 1) );
-  approval_tests.emplace_back(world4.composition(position, 20e3, 2) );
-  approval_tests.emplace_back(world4.composition(position, 20e3, 3) );
-  approval_tests.emplace_back(world4.temperature(position, 30e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 30e3, 0) );
-  approval_tests.emplace_back(world4.composition(position, 30e3, 1) );
-  approval_tests.emplace_back(world4.composition(position, 30e3, 2) );
-  approval_tests.emplace_back(world4.composition(position, 30e3, 3) );
-  approval_tests.emplace_back(world4.temperature(position, 35e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 35e3, 0) );
-  approval_tests.emplace_back(world4.composition(position, 35e3, 1) );
-  approval_tests.emplace_back(world4.composition(position, 35e3, 2) );
-  approval_tests.emplace_back(world4.composition(position, 35e3, 3) );
-  approval_tests.emplace_back(world4.temperature(position, 40e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 40e3, 0) );
-  approval_tests.emplace_back(world4.composition(position, 40e3, 1) );
-  approval_tests.emplace_back(world4.composition(position, 40e3, 2) );
-  approval_tests.emplace_back(world4.composition(position, 40e3, 3) );
-  approval_tests.emplace_back(world4.temperature(position, 45e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 45e3, 0) );
-  approval_tests.emplace_back(world4.composition(position, 45e3, 1) );
-  approval_tests.emplace_back(world4.composition(position, 45e3, 2) );
-  approval_tests.emplace_back(world4.composition(position, 45e3, 3) );
-  approval_tests.emplace_back(world4.temperature(position, 50e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 50e3, 0) );
-  approval_tests.emplace_back(world4.composition(position, 50e3, 1) );
-  approval_tests.emplace_back(world4.composition(position, 50e3, 2) );
-  approval_tests.emplace_back(world4.composition(position, 50e3, 3) );
-  approval_tests.emplace_back(world4.temperature(position, 60e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 60e3, 0) );
-  approval_tests.emplace_back(world4.composition(position, 60e3, 1) );
-  approval_tests.emplace_back(world4.composition(position, 60e3, 2) );
-  approval_tests.emplace_back(world4.composition(position, 60e3, 3) );
-  approval_tests.emplace_back(world4.temperature(position, 80e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 80e3, 0) );
-  approval_tests.emplace_back(world4.composition(position, 80e3, 1) );
-  approval_tests.emplace_back(world4.composition(position, 80e3, 2) );
-  approval_tests.emplace_back(world4.composition(position, 80e3, 3) );
-  approval_tests.emplace_back(world4.temperature(position, 100e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 100e3, 0) );
-  approval_tests.emplace_back(world4.composition(position, 100e3, 1) );
-  approval_tests.emplace_back(world4.composition(position, 100e3, 2) );
-  approval_tests.emplace_back(world4.composition(position, 100e3, 3) );
+  approval_tests.emplace_back(world4.temperature(position, 0, 10));
+  approval_tests.emplace_back(world4.composition(position, 0, 0));
+  approval_tests.emplace_back(world4.composition(position, 0, 1));
+  approval_tests.emplace_back(world4.composition(position, 0, 2));
+  approval_tests.emplace_back(world4.composition(position, 0, 3));
+  approval_tests.emplace_back(world4.temperature(position, 1, 10));
+  approval_tests.emplace_back(world4.composition(position, 1, 0));
+  approval_tests.emplace_back(world4.composition(position, 1, 1));
+  approval_tests.emplace_back(world4.composition(position, 1, 2));
+  approval_tests.emplace_back(world4.composition(position, 1, 3));
+  approval_tests.emplace_back(world4.temperature(position, 1e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 1e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 1e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 1e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 1e3, 3));
+  approval_tests.emplace_back(world4.temperature(position, 10e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 10e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 10e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 10e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 10e3, 3));
+  approval_tests.emplace_back(world4.temperature(position, 20e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 20e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 20e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 20e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 20e3, 3));
+  approval_tests.emplace_back(world4.temperature(position, 30e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 30e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 30e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 30e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 30e3, 3));
+  approval_tests.emplace_back(world4.temperature(position, 35e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 35e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 35e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 35e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 35e3, 3));
+  approval_tests.emplace_back(world4.temperature(position, 40e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 40e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 40e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 40e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 40e3, 3));
+  approval_tests.emplace_back(world4.temperature(position, 45e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 45e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 45e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 45e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 45e3, 3));
+  approval_tests.emplace_back(world4.temperature(position, 50e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 50e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 50e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 50e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 50e3, 3));
+  approval_tests.emplace_back(world4.temperature(position, 60e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 60e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 60e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 60e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 60e3, 3));
+  approval_tests.emplace_back(world4.temperature(position, 80e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 80e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 80e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 80e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 80e3, 3));
+  approval_tests.emplace_back(world4.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 100e3, 0));
+  approval_tests.emplace_back(world4.composition(position, 100e3, 1));
+  approval_tests.emplace_back(world4.composition(position, 100e3, 2));
+  approval_tests.emplace_back(world4.composition(position, 100e3, 3));
 
 
   std::vector<std::string> approvals;
@@ -2289,38 +2289,38 @@ TEST_CASE("WorldBuilder Features: Fault")
 
   // Check fault plate through the world
   std::array<double,3> position = {{0,0,800e3}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 220e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 230e3, 10) );
-  approval_tests.emplace_back(world1.composition(position, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position, 0, 6) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 220e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 230e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{250e3,500e3,800e3}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10) );
-  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10) );
-  approval_tests.emplace_back(world1.composition(position, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position, 10, 0) );
-  approval_tests.emplace_back(world1.composition(position, 10, 1) );
-  approval_tests.emplace_back(world1.composition(position, 10, 2) );
-  approval_tests.emplace_back(world1.composition(position, 10, 3) );
-  approval_tests.emplace_back(world1.composition(position, 10, 4) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 50e3 - 1, 3) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 50e3 - 1, 4) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 50e3 + 1, 3) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 50e3 + 1, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position, 0, 6) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 10, 0));
+  approval_tests.emplace_back(world1.composition(position, 10, 1));
+  approval_tests.emplace_back(world1.composition(position, 10, 2));
+  approval_tests.emplace_back(world1.composition(position, 10, 3));
+  approval_tests.emplace_back(world1.composition(position, 10, 4));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 50e3 - 1, 3));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 50e3 - 1, 4));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 50e3 + 1, 3));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 50e3 + 1, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   // check grains
   {
@@ -2333,65 +2333,65 @@ TEST_CASE("WorldBuilder Features: Fault")
 
   position = {{50e3,230e3,800e3}};
   approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 1, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 5, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 100, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 500, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 1000, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 5000, 10) );
-  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3/2, 10) );
-  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10) );
-  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 25e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 50e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 75e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 80e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 90e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 100e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 150e3, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 200e3, 10) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 5, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100, 10));
+  approval_tests.emplace_back(world1.temperature(position, 500, 10));
+  approval_tests.emplace_back(world1.temperature(position, 1000, 10));
+  approval_tests.emplace_back(world1.temperature(position, 5000, 10));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3/2, 10));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 25e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 50e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 75e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 80e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 90e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 200e3, 10));
 
   position = {{250e3,250e3,800e3}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 1, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 5, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 100, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 500, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 1000, 10) );
-  approval_tests.emplace_back(world1.temperature(position, 5000, 10) );
-  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3/2, 10) );
-  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10) );
-  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10) );
-  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 51e3, 10) );
-  approval_tests.emplace_back(world1.composition(position, 0, 0) );
-  approval_tests.emplace_back(world1.composition(position, 0, 1) );
-  approval_tests.emplace_back(world1.composition(position, 0, 2) );
-  approval_tests.emplace_back(world1.composition(position, 0, 3) );
-  approval_tests.emplace_back(world1.composition(position, 10, 0) );
-  approval_tests.emplace_back(world1.composition(position, 10, 1) );
-  approval_tests.emplace_back(world1.composition(position, 10, 2) );
-  approval_tests.emplace_back(world1.composition(position, 10, 3) );
+  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 5, 10));
+  approval_tests.emplace_back(world1.temperature(position, 10, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100, 10));
+  approval_tests.emplace_back(world1.temperature(position, 500, 10));
+  approval_tests.emplace_back(world1.temperature(position, 1000, 10));
+  approval_tests.emplace_back(world1.temperature(position, 5000, 10));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3/2, 10));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 51e3, 10));
+  approval_tests.emplace_back(world1.composition(position, 0, 0));
+  approval_tests.emplace_back(world1.composition(position, 0, 1));
+  approval_tests.emplace_back(world1.composition(position, 0, 2));
+  approval_tests.emplace_back(world1.composition(position, 0, 3));
+  approval_tests.emplace_back(world1.composition(position, 10, 0));
+  approval_tests.emplace_back(world1.composition(position, 10, 1));
+  approval_tests.emplace_back(world1.composition(position, 10, 2));
+  approval_tests.emplace_back(world1.composition(position, 10, 3));
 
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 1) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 2) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 0) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 1) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 2) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 * 0.5 - 1, 1) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 * 0.5 + 1, 1) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 2) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 2) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 3) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 3) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 100e3 * 0.5 - 1, 3) );
-  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 100e3 * 0.5 + 1, 3) );
-  approval_tests.emplace_back(world1.composition(position, 0, 4) );
-  approval_tests.emplace_back(world1.composition(position, 0, 5) );
-  approval_tests.emplace_back(world1.composition(position, 0, 6) );
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 1));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 2));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 0));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 1));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 2));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 * 0.5 - 1, 1));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 66e3 * 0.5 + 1, 1));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 2));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 2));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 3));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 3));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 100e3 * 0.5 - 1, 3));
+  approval_tests.emplace_back(world1.composition(position, std::sqrt(2) * 100e3 * 0.5 + 1, 3));
+  approval_tests.emplace_back(world1.composition(position, 0, 4));
+  approval_tests.emplace_back(world1.composition(position, 0, 5));
+  approval_tests.emplace_back(world1.composition(position, 0, 6));
 
 
   // check grains
@@ -2423,118 +2423,118 @@ TEST_CASE("WorldBuilder Features: Fault")
 
 
   position = {{250e3,250e3,800e3}};
-  approval_tests.emplace_back(world1.composition(position, 1, 0) );
-  approval_tests.emplace_back(world1.composition(position, 1, 1) );
-  approval_tests.emplace_back(world1.composition(position, 1, 2) );
+  approval_tests.emplace_back(world1.composition(position, 1, 0));
+  approval_tests.emplace_back(world1.composition(position, 1, 1));
+  approval_tests.emplace_back(world1.composition(position, 1, 2));
   position = {{250e3,250e3-std::sqrt(2) * 33e3 * 0.5 + 1, 800e3}};
-  approval_tests.emplace_back(world1.composition(position, 1, 0) );
-  approval_tests.emplace_back(world1.composition(position, 1, 1) );
-  approval_tests.emplace_back(world1.composition(position, 1, 2) );
+  approval_tests.emplace_back(world1.composition(position, 1, 0));
+  approval_tests.emplace_back(world1.composition(position, 1, 1));
+  approval_tests.emplace_back(world1.composition(position, 1, 2));
   position = {{250e3,250e3-std::sqrt(2) * 66e3 * 0.5 + 1, 800e3}};
-  approval_tests.emplace_back(world1.composition(position, 1, 0) );
-  approval_tests.emplace_back(world1.composition(position, 1, 1) );
-  approval_tests.emplace_back(world1.composition(position, 1, 2) );
+  approval_tests.emplace_back(world1.composition(position, 1, 0));
+  approval_tests.emplace_back(world1.composition(position, 1, 1));
+  approval_tests.emplace_back(world1.composition(position, 1, 2));
   position = {{250e3,250e3-std::sqrt(2) * 99e3 * 0.5 + 1, 800e3}};
-  approval_tests.emplace_back(world1.composition(position, 1, 0) );
-  approval_tests.emplace_back(world1.composition(position, 1, 1) );
-  approval_tests.emplace_back(world1.composition(position, 1, 2) );
-  approval_tests.emplace_back(world1.composition(position, 1, 3) );
+  approval_tests.emplace_back(world1.composition(position, 1, 0));
+  approval_tests.emplace_back(world1.composition(position, 1, 1));
+  approval_tests.emplace_back(world1.composition(position, 1, 2));
+  approval_tests.emplace_back(world1.composition(position, 1, 3));
 
   std::string file_name2 = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/fault_constant_angles_cartesian_force_temp.wb";
   WorldBuilder::World world2(file_name2);
 
   // Check fault plate through the world
   position = {{0,0,800e3}};
-  approval_tests.emplace_back(world2.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 220e3, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 230e3, 10) );
-  approval_tests.emplace_back(world2.composition(position, 0, 0) );
-  approval_tests.emplace_back(world2.composition(position, 0, 1) );
-  approval_tests.emplace_back(world2.composition(position, 0, 2) );
-  approval_tests.emplace_back(world2.composition(position, 0, 3) );
-  approval_tests.emplace_back(world2.composition(position, 0, 4) );
-  approval_tests.emplace_back(world2.composition(position, 0, 5) );
-  approval_tests.emplace_back(world2.composition(position, 0, 6) );
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position, 220e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 230e3, 10));
+  approval_tests.emplace_back(world2.composition(position, 0, 0));
+  approval_tests.emplace_back(world2.composition(position, 0, 1));
+  approval_tests.emplace_back(world2.composition(position, 0, 2));
+  approval_tests.emplace_back(world2.composition(position, 0, 3));
+  approval_tests.emplace_back(world2.composition(position, 0, 4));
+  approval_tests.emplace_back(world2.composition(position, 0, 5));
+  approval_tests.emplace_back(world2.composition(position, 0, 6));
 
   position = {{250e3,500e3,800e3}};
-  approval_tests.emplace_back(world2.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3 - 1, 10) );
-  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3 + 1, 10) );
-  approval_tests.emplace_back(world2.composition(position, 0, 0) );
-  approval_tests.emplace_back(world2.composition(position, 0, 1) );
-  approval_tests.emplace_back(world2.composition(position, 0, 2) );
-  approval_tests.emplace_back(world2.composition(position, 0, 3) );
-  approval_tests.emplace_back(world2.composition(position, 10, 0) );
-  approval_tests.emplace_back(world2.composition(position, 10, 1) );
-  approval_tests.emplace_back(world2.composition(position, 10, 2) );
-  approval_tests.emplace_back(world1.composition(position, 10, 3) );
-  approval_tests.emplace_back(world1.composition(position, 10, 4) );
-  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 50e3 - 1, 3) );
-  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 50e3 - 1, 4) );
-  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 50e3 + 1, 3) );
-  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 50e3 + 1, 4) );
-  approval_tests.emplace_back(world2.composition(position, 0, 4) );
-  approval_tests.emplace_back(world2.composition(position, 0, 5) );
-  approval_tests.emplace_back(world2.composition(position, 0, 6) );
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position, 10, 10));
+  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3 - 1, 10));
+  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3 + 1, 10));
+  approval_tests.emplace_back(world2.composition(position, 0, 0));
+  approval_tests.emplace_back(world2.composition(position, 0, 1));
+  approval_tests.emplace_back(world2.composition(position, 0, 2));
+  approval_tests.emplace_back(world2.composition(position, 0, 3));
+  approval_tests.emplace_back(world2.composition(position, 10, 0));
+  approval_tests.emplace_back(world2.composition(position, 10, 1));
+  approval_tests.emplace_back(world2.composition(position, 10, 2));
+  approval_tests.emplace_back(world1.composition(position, 10, 3));
+  approval_tests.emplace_back(world1.composition(position, 10, 4));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 50e3 - 1, 3));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 50e3 - 1, 4));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 50e3 + 1, 3));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 50e3 + 1, 4));
+  approval_tests.emplace_back(world2.composition(position, 0, 4));
+  approval_tests.emplace_back(world2.composition(position, 0, 5));
+  approval_tests.emplace_back(world2.composition(position, 0, 6));
 
 
   position = {{250e3,250e3,800e3}};
-  approval_tests.emplace_back(world2.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 1, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 5, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 100, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 500, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 1000, 10) );
-  approval_tests.emplace_back(world2.temperature(position, 5000, 10) );
-  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3/2, 10) );
-  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3 - 1, 10) );
-  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3 + 1, 10) );
-  approval_tests.emplace_back(world2.composition(position, 0, 0) );
-  approval_tests.emplace_back(world2.composition(position, 0, 1) );
-  approval_tests.emplace_back(world2.composition(position, 0, 2) );
-  approval_tests.emplace_back(world2.composition(position, 0, 3) );
-  approval_tests.emplace_back(world2.composition(position, 10, 0) );
-  approval_tests.emplace_back(world2.composition(position, 10, 1) );
-  approval_tests.emplace_back(world2.composition(position, 10, 2) );
-  approval_tests.emplace_back(world2.composition(position, 10, 3) );
+  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position, 1, 10));
+  approval_tests.emplace_back(world2.temperature(position, 5, 10));
+  approval_tests.emplace_back(world2.temperature(position, 10, 10));
+  approval_tests.emplace_back(world2.temperature(position, 100, 10));
+  approval_tests.emplace_back(world2.temperature(position, 500, 10));
+  approval_tests.emplace_back(world2.temperature(position, 1000, 10));
+  approval_tests.emplace_back(world2.temperature(position, 5000, 10));
+  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3/2, 10));
+  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3 - 1, 10));
+  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3 + 1, 10));
+  approval_tests.emplace_back(world2.composition(position, 0, 0));
+  approval_tests.emplace_back(world2.composition(position, 0, 1));
+  approval_tests.emplace_back(world2.composition(position, 0, 2));
+  approval_tests.emplace_back(world2.composition(position, 0, 3));
+  approval_tests.emplace_back(world2.composition(position, 10, 0));
+  approval_tests.emplace_back(world2.composition(position, 10, 1));
+  approval_tests.emplace_back(world2.composition(position, 10, 2));
+  approval_tests.emplace_back(world2.composition(position, 10, 3));
 
-  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0) );
-  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 1) );
-  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 2) );
-  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 0) );
-  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 1) );
-  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 2) );
-  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 66e3 * 0.5 - 1, 1) );
-  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 66e3 * 0.5 + 1, 1) );
-  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 2) );
-  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 2) );
-  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 3) );
-  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 3) );
-  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 100e3 * 0.5 - 1, 3) );
-  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 100e3 * 0.5 + 1, 3) );
-  approval_tests.emplace_back(world2.composition(position, 0, 4) );
-  approval_tests.emplace_back(world2.composition(position, 0, 5) );
-  approval_tests.emplace_back(world2.composition(position, 0, 6) );
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 1));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 - 1, 2));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 0));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 1));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 33e3 * 0.5 + 1, 2));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 66e3 * 0.5 - 1, 1));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 66e3 * 0.5 + 1, 1));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 2));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 2));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 - 1, 3));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 99e3 * 0.5 + 1, 3));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 100e3 * 0.5 - 1, 3));
+  approval_tests.emplace_back(world2.composition(position, std::sqrt(2) * 100e3 * 0.5 + 1, 3));
+  approval_tests.emplace_back(world2.composition(position, 0, 4));
+  approval_tests.emplace_back(world2.composition(position, 0, 5));
+  approval_tests.emplace_back(world2.composition(position, 0, 6));
 
   position = {{250e3,250e3,800e3}};
-  approval_tests.emplace_back(world2.composition(position, 1, 0) );
-  approval_tests.emplace_back(world2.composition(position, 1, 1) );
-  approval_tests.emplace_back(world2.composition(position, 1, 2) );
+  approval_tests.emplace_back(world2.composition(position, 1, 0));
+  approval_tests.emplace_back(world2.composition(position, 1, 1));
+  approval_tests.emplace_back(world2.composition(position, 1, 2));
   position = {{250e3,250e3-std::sqrt(2) * 33e3 * 0.5 + 1, 800e3}};
-  approval_tests.emplace_back(world2.composition(position, 1, 0) );
-  approval_tests.emplace_back(world2.composition(position, 1, 1) );
-  approval_tests.emplace_back(world2.composition(position, 1, 2) );
+  approval_tests.emplace_back(world2.composition(position, 1, 0));
+  approval_tests.emplace_back(world2.composition(position, 1, 1));
+  approval_tests.emplace_back(world2.composition(position, 1, 2));
   position = {{250e3,250e3-std::sqrt(2) * 66e3 * 0.5 + 1, 800e3}};
-  approval_tests.emplace_back(world2.composition(position, 1, 0) );
-  approval_tests.emplace_back(world2.composition(position, 1, 1) );
-  approval_tests.emplace_back(world2.composition(position, 1, 2) );
+  approval_tests.emplace_back(world2.composition(position, 1, 0));
+  approval_tests.emplace_back(world2.composition(position, 1, 1));
+  approval_tests.emplace_back(world2.composition(position, 1, 2));
   position = {{250e3,250e3-std::sqrt(2) * 99e3 * 0.5 + 1, 800e3}};
-  approval_tests.emplace_back(world2.composition(position, 1, 0) );
-  approval_tests.emplace_back(world2.composition(position, 1, 1) );
-  approval_tests.emplace_back(world2.composition(position, 1, 2) );
-  approval_tests.emplace_back(world2.composition(position, 1, 3) );
+  approval_tests.emplace_back(world2.composition(position, 1, 0));
+  approval_tests.emplace_back(world2.composition(position, 1, 1));
+  approval_tests.emplace_back(world2.composition(position, 1, 2));
+  approval_tests.emplace_back(world2.composition(position, 1, 3));
 
 
   // Cartesian
@@ -2546,59 +2546,59 @@ TEST_CASE("WorldBuilder Features: Fault")
 
   // Check fault through the world
   position = {{0,0,800e3}};
-  approval_tests.emplace_back(world3.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 240e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 260e3, 10) );
-  approval_tests.emplace_back(world3.composition(position, 0, 0) );
-  approval_tests.emplace_back(world3.composition(position, 0, 1) );
-  approval_tests.emplace_back(world3.composition(position, 0, 2) );
-  approval_tests.emplace_back(world3.composition(position, 0, 3) );
-  approval_tests.emplace_back(world3.composition(position, 0, 4) );
-  approval_tests.emplace_back(world3.composition(position, 0, 5) );
-  approval_tests.emplace_back(world3.composition(position, 0, 6) );
+  approval_tests.emplace_back(world3.temperature(position, 0, 10));
+  approval_tests.emplace_back(world3.temperature(position, 240e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world3.composition(position, 0, 0));
+  approval_tests.emplace_back(world3.composition(position, 0, 1));
+  approval_tests.emplace_back(world3.composition(position, 0, 2));
+  approval_tests.emplace_back(world3.composition(position, 0, 3));
+  approval_tests.emplace_back(world3.composition(position, 0, 4));
+  approval_tests.emplace_back(world3.composition(position, 0, 5));
+  approval_tests.emplace_back(world3.composition(position, 0, 6));
 
   position = {{250e3,500e3,800e3}};
   //adibatic temperature
-  approval_tests.emplace_back(world3.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 1, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 5000, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 10e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 25e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 50e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 75e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 150e3, 10) );
-  //approval_tests.emplace_back(world3.temperature(position, std::sqrt(2) * 100e3 - 1, 10) );
-  //approval_tests.emplace_back(world3.temperature(position, std::sqrt(2) * 100e3 + 1, 10) );
-  approval_tests.emplace_back(world3.composition(position, 0, 0) );
-  approval_tests.emplace_back(world3.composition(position, 0, 1) );
-  approval_tests.emplace_back(world3.composition(position, 0, 2) );
-  approval_tests.emplace_back(world3.composition(position, 0, 3) );
-  approval_tests.emplace_back(world3.composition(position, 0, 4) );
-  approval_tests.emplace_back(world3.composition(position, 10, 0) );
-  approval_tests.emplace_back(world3.composition(position, 10, 1) );
-  approval_tests.emplace_back(world3.composition(position, 10, 2) );
-  approval_tests.emplace_back(world3.composition(position, 10, 3) );
-  approval_tests.emplace_back(world3.composition(position, 10, 4) );
+  approval_tests.emplace_back(world3.temperature(position, 0, 10));
+  approval_tests.emplace_back(world3.temperature(position, 1, 10));
+  approval_tests.emplace_back(world3.temperature(position, 5000, 10));
+  approval_tests.emplace_back(world3.temperature(position, 10e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 25e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 50e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 75e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 150e3, 10));
+  //approval_tests.emplace_back(world3.temperature(position, std::sqrt(2) * 100e3 - 1, 10));
+  //approval_tests.emplace_back(world3.temperature(position, std::sqrt(2) * 100e3 + 1, 10));
+  approval_tests.emplace_back(world3.composition(position, 0, 0));
+  approval_tests.emplace_back(world3.composition(position, 0, 1));
+  approval_tests.emplace_back(world3.composition(position, 0, 2));
+  approval_tests.emplace_back(world3.composition(position, 0, 3));
+  approval_tests.emplace_back(world3.composition(position, 0, 4));
+  approval_tests.emplace_back(world3.composition(position, 10, 0));
+  approval_tests.emplace_back(world3.composition(position, 10, 1));
+  approval_tests.emplace_back(world3.composition(position, 10, 2));
+  approval_tests.emplace_back(world3.composition(position, 10, 3));
+  approval_tests.emplace_back(world3.composition(position, 10, 4));
   //todo: recheck these results
-  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 16.5e3 - 1, 0) );
-  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 16.5e3 + 1, 0) );
-  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 16.5e3 - 1, 1) );
-  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 16.5e3 + 1, 1) );
-  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 33e3 - 1, 1) );
-  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 33e3 + 1, 1) );
-  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 33e3 - 1, 2) );
-  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 33e3 + 1, 2) );
-  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 33e3 + 1, 3) );
-  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 49.5e3 - 1, 2) );
-  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 49.5e3 - 1, 3) );
-  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 49.5e3 + 1, 2) );
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 16.5e3 - 1, 0));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 16.5e3 + 1, 0));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 16.5e3 - 1, 1));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 16.5e3 + 1, 1));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 33e3 - 1, 1));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 33e3 + 1, 1));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 33e3 - 1, 2));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 33e3 + 1, 2));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 33e3 + 1, 3));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 49.5e3 - 1, 2));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 49.5e3 - 1, 3));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 49.5e3 + 1, 2));
   // this comes form the first subducting plate
-  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 49.5e3 + 1, 3) );
-  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 50e3 - 1, 3) );
-  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 50e3 + 1, 3) );
-  approval_tests.emplace_back(world3.composition(position, 0, 4) );
-  approval_tests.emplace_back(world3.composition(position, 0, 5) );
-  approval_tests.emplace_back(world3.composition(position, 0, 6) );
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 49.5e3 + 1, 3));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 50e3 - 1, 3));
+  approval_tests.emplace_back(world3.composition(position, std::sqrt(2) * 50e3 + 1, 3));
+  approval_tests.emplace_back(world3.composition(position, 0, 4));
+  approval_tests.emplace_back(world3.composition(position, 0, 5));
+  approval_tests.emplace_back(world3.composition(position, 0, 6));
 
   {
     WorldBuilder::grains grains = world3.grains(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0, 3);
@@ -2606,50 +2606,50 @@ TEST_CASE("WorldBuilder Features: Fault")
   }
 
   position = {{250e3,600e3,800e3}};
-  approval_tests.emplace_back(world3.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 100e3-1, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 100e3+1, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 101e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 110e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 150e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 200e3, 10) );
-  approval_tests.emplace_back(world3.composition(position, 0, 0) );
-  approval_tests.emplace_back(world3.composition(position, 0, 1) );
-  approval_tests.emplace_back(world3.composition(position, 0, 2) );
-  approval_tests.emplace_back(world3.composition(position, 0, 3) );
-  approval_tests.emplace_back(world3.composition(position, 10, 0) );
-  approval_tests.emplace_back(world3.composition(position, 10, 1) );
-  approval_tests.emplace_back(world3.composition(position, 10, 2) );
-  approval_tests.emplace_back(world3.composition(position, 10, 3) );
-  approval_tests.emplace_back(world3.composition(position, 100e3-1, 0) );
-  approval_tests.emplace_back(world3.composition(position, 100e3-1, 1) );
-  approval_tests.emplace_back(world3.composition(position, 100e3-1, 2) );
-  approval_tests.emplace_back(world3.composition(position, 100e3-1, 3) );
-  approval_tests.emplace_back(world3.composition(position, 100e3-1, 4) );
-  approval_tests.emplace_back(world3.composition(position, 100e3+1, 0) );
-  approval_tests.emplace_back(world3.composition(position, 100e3+1, 1) );
-  approval_tests.emplace_back(world3.composition(position, 100e3+1, 2) );
-  approval_tests.emplace_back(world3.composition(position, 100e3+1, 3) );
-  approval_tests.emplace_back(world3.composition(position, 100e3+1, 4) );
-  approval_tests.emplace_back(world3.composition(position, 101e3, 0) );
-  approval_tests.emplace_back(world3.composition(position, 101e3+1, 1) );
-  approval_tests.emplace_back(world3.composition(position, 101e3+1, 2) );
-  approval_tests.emplace_back(world3.composition(position, 101e3+1, 3) );
-  approval_tests.emplace_back(world3.composition(position, 101e3+1, 4) );
-  approval_tests.emplace_back(world3.composition(position, 150e3, 0) );
-  approval_tests.emplace_back(world3.composition(position, 150e3, 1) );
-  approval_tests.emplace_back(world3.composition(position, 150e3, 2) );
-  approval_tests.emplace_back(world3.composition(position, 150e3, 3) );
-  approval_tests.emplace_back(world3.composition(position, 150e3, 4) );
-  approval_tests.emplace_back(world3.composition(position, 200e3, 0) );
-  approval_tests.emplace_back(world3.composition(position, 200e3, 1) );
-  approval_tests.emplace_back(world3.composition(position, 200e3, 2) );
-  approval_tests.emplace_back(world3.composition(position, 200e3, 3) );
-  approval_tests.emplace_back(world3.composition(position, 200e3, 4) );
-  approval_tests.emplace_back(world3.composition(position, 0, 4) );
-  approval_tests.emplace_back(world3.composition(position, 0, 5) );
-  approval_tests.emplace_back(world3.composition(position, 0, 6) );
+  approval_tests.emplace_back(world3.temperature(position, 0, 10));
+  approval_tests.emplace_back(world3.temperature(position, 10, 10));
+  approval_tests.emplace_back(world3.temperature(position, 100e3-1, 10));
+  approval_tests.emplace_back(world3.temperature(position, 100e3+1, 10));
+  approval_tests.emplace_back(world3.temperature(position, 101e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 110e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 150e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world3.composition(position, 0, 0));
+  approval_tests.emplace_back(world3.composition(position, 0, 1));
+  approval_tests.emplace_back(world3.composition(position, 0, 2));
+  approval_tests.emplace_back(world3.composition(position, 0, 3));
+  approval_tests.emplace_back(world3.composition(position, 10, 0));
+  approval_tests.emplace_back(world3.composition(position, 10, 1));
+  approval_tests.emplace_back(world3.composition(position, 10, 2));
+  approval_tests.emplace_back(world3.composition(position, 10, 3));
+  approval_tests.emplace_back(world3.composition(position, 100e3-1, 0));
+  approval_tests.emplace_back(world3.composition(position, 100e3-1, 1));
+  approval_tests.emplace_back(world3.composition(position, 100e3-1, 2));
+  approval_tests.emplace_back(world3.composition(position, 100e3-1, 3));
+  approval_tests.emplace_back(world3.composition(position, 100e3-1, 4));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 0));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 1));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 2));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 3));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 4));
+  approval_tests.emplace_back(world3.composition(position, 101e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 1));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 2));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 3));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 4));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 1));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 2));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 3));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 4));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 1));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 2));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 3));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 4));
+  approval_tests.emplace_back(world3.composition(position, 0, 4));
+  approval_tests.emplace_back(world3.composition(position, 0, 5));
+  approval_tests.emplace_back(world3.composition(position, 0, 6));
 
   {
     WorldBuilder::grains grains = world3.grains(position, 101e3+1, 0, 3);
@@ -2657,50 +2657,50 @@ TEST_CASE("WorldBuilder Features: Fault")
   }
 
   position = {{650e3,650e3,800e3}};
-  approval_tests.emplace_back(world3.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 100e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 100e3+1, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 101e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 110e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 150e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 200e3, 10) );
-  approval_tests.emplace_back(world3.composition(position, 0, 0) );
-  approval_tests.emplace_back(world3.composition(position, 0, 1) );
-  approval_tests.emplace_back(world3.composition(position, 0, 2) );
-  approval_tests.emplace_back(world3.composition(position, 0, 3) );
-  approval_tests.emplace_back(world3.composition(position, 10, 0) );
-  approval_tests.emplace_back(world3.composition(position, 10, 1) );
-  approval_tests.emplace_back(world3.composition(position, 10, 2) );
-  approval_tests.emplace_back(world3.composition(position, 10, 3) );
-  approval_tests.emplace_back(world3.composition(position, 100e3, 0) );
-  approval_tests.emplace_back(world3.composition(position, 100e3, 1) );
-  approval_tests.emplace_back(world3.composition(position, 100e3, 2) );
-  approval_tests.emplace_back(world3.composition(position, 100e3, 3) );
-  approval_tests.emplace_back(world3.composition(position, 100e3, 4) );
-  approval_tests.emplace_back(world3.composition(position, 100e3+1, 0) );
-  approval_tests.emplace_back(world3.composition(position, 100e3+1, 1) );
-  approval_tests.emplace_back(world3.composition(position, 100e3+1, 2) );
-  approval_tests.emplace_back(world3.composition(position, 100e3+1, 3) );
-  approval_tests.emplace_back(world3.composition(position, 100e3+1, 4) );
-  approval_tests.emplace_back(world3.composition(position, 101e3, 0) );
-  approval_tests.emplace_back(world3.composition(position, 101e3+1, 1) );
-  approval_tests.emplace_back(world3.composition(position, 101e3+1, 2) );
-  approval_tests.emplace_back(world3.composition(position, 101e3+1, 3) );
-  approval_tests.emplace_back(world3.composition(position, 101e3+1, 4) );
-  approval_tests.emplace_back(world3.composition(position, 150e3, 0) );
-  approval_tests.emplace_back(world3.composition(position, 150e3, 1) );
-  approval_tests.emplace_back(world3.composition(position, 150e3, 2) );
-  approval_tests.emplace_back(world3.composition(position, 150e3, 3) );
-  approval_tests.emplace_back(world3.composition(position, 150e3, 4) );
-  approval_tests.emplace_back(world3.composition(position, 200e3, 0) );
-  approval_tests.emplace_back(world3.composition(position, 200e3, 1) );
-  approval_tests.emplace_back(world3.composition(position, 200e3, 2) );
-  approval_tests.emplace_back(world3.composition(position, 200e3, 3) );
-  approval_tests.emplace_back(world3.composition(position, 200e3, 4) );
-  approval_tests.emplace_back(world3.composition(position, 0, 4) );
-  approval_tests.emplace_back(world3.composition(position, 0, 5) );
-  approval_tests.emplace_back(world3.composition(position, 0, 6) );
+  approval_tests.emplace_back(world3.temperature(position, 0, 10));
+  approval_tests.emplace_back(world3.temperature(position, 10, 10));
+  approval_tests.emplace_back(world3.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 100e3+1, 10));
+  approval_tests.emplace_back(world3.temperature(position, 101e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 110e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 150e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world3.composition(position, 0, 0));
+  approval_tests.emplace_back(world3.composition(position, 0, 1));
+  approval_tests.emplace_back(world3.composition(position, 0, 2));
+  approval_tests.emplace_back(world3.composition(position, 0, 3));
+  approval_tests.emplace_back(world3.composition(position, 10, 0));
+  approval_tests.emplace_back(world3.composition(position, 10, 1));
+  approval_tests.emplace_back(world3.composition(position, 10, 2));
+  approval_tests.emplace_back(world3.composition(position, 10, 3));
+  approval_tests.emplace_back(world3.composition(position, 100e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 100e3, 1));
+  approval_tests.emplace_back(world3.composition(position, 100e3, 2));
+  approval_tests.emplace_back(world3.composition(position, 100e3, 3));
+  approval_tests.emplace_back(world3.composition(position, 100e3, 4));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 0));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 1));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 2));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 3));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 4));
+  approval_tests.emplace_back(world3.composition(position, 101e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 1));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 2));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 3));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 4));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 1));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 2));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 3));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 4));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 1));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 2));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 3));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 4));
+  approval_tests.emplace_back(world3.composition(position, 0, 4));
+  approval_tests.emplace_back(world3.composition(position, 0, 5));
+  approval_tests.emplace_back(world3.composition(position, 0, 6));
 
   {
     WorldBuilder::grains grains = world3.grains(position, 100e3+1, 0, 3);
@@ -2708,91 +2708,91 @@ TEST_CASE("WorldBuilder Features: Fault")
   }
 
   position = {{700e3,675e3,800e3}};
-  approval_tests.emplace_back(world3.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 100e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 100e3+1, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 101e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 110e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 150e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 200e3, 10) );
-  approval_tests.emplace_back(world3.composition(position, 0, 0) );
-  approval_tests.emplace_back(world3.composition(position, 0, 1) );
-  approval_tests.emplace_back(world3.composition(position, 0, 2) );
-  approval_tests.emplace_back(world3.composition(position, 0, 3) );
-  approval_tests.emplace_back(world3.composition(position, 10, 0) );
-  approval_tests.emplace_back(world3.composition(position, 10, 1) );
-  approval_tests.emplace_back(world3.composition(position, 10, 2) );
-  approval_tests.emplace_back(world3.composition(position, 10, 3) );
-  approval_tests.emplace_back(world3.composition(position, 100e3, 0) );
-  approval_tests.emplace_back(world3.composition(position, 100e3, 1) );
-  approval_tests.emplace_back(world3.composition(position, 100e3, 2) );
-  approval_tests.emplace_back(world3.composition(position, 100e3, 3) );
-  approval_tests.emplace_back(world3.composition(position, 100e3, 4) );
-  approval_tests.emplace_back(world3.composition(position, 100e3+1, 0) );
-  approval_tests.emplace_back(world3.composition(position, 100e3+1, 1) );
-  approval_tests.emplace_back(world3.composition(position, 100e3+1, 2) );
-  approval_tests.emplace_back(world3.composition(position, 100e3+1, 3) );
-  approval_tests.emplace_back(world3.composition(position, 100e3+1, 4) );
-  approval_tests.emplace_back(world3.composition(position, 101e3, 0) );
-  approval_tests.emplace_back(world3.composition(position, 101e3+1, 1) );
-  approval_tests.emplace_back(world3.composition(position, 101e3+1, 2) );
-  approval_tests.emplace_back(world3.composition(position, 101e3+1, 3) );
-  approval_tests.emplace_back(world3.composition(position, 101e3+1, 4) );
-  approval_tests.emplace_back(world3.composition(position, 150e3, 0) );
-  approval_tests.emplace_back(world3.composition(position, 150e3, 1) );
-  approval_tests.emplace_back(world3.composition(position, 150e3, 2) );
-  approval_tests.emplace_back(world3.composition(position, 150e3, 3) );
-  approval_tests.emplace_back(world3.composition(position, 150e3, 4) );
-  approval_tests.emplace_back(world3.composition(position, 200e3, 0) );
-  approval_tests.emplace_back(world3.composition(position, 200e3, 1) );
-  approval_tests.emplace_back(world3.composition(position, 200e3, 2) );
-  approval_tests.emplace_back(world3.composition(position, 200e3, 3) );
-  approval_tests.emplace_back(world3.composition(position, 200e3, 4) );
-  approval_tests.emplace_back(world3.composition(position, 0, 4) );
-  approval_tests.emplace_back(world3.composition(position, 0, 5) );
-  approval_tests.emplace_back(world3.composition(position, 0, 6) );
+  approval_tests.emplace_back(world3.temperature(position, 0, 10));
+  approval_tests.emplace_back(world3.temperature(position, 10, 10));
+  approval_tests.emplace_back(world3.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 100e3+1, 10));
+  approval_tests.emplace_back(world3.temperature(position, 101e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 110e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 150e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world3.composition(position, 0, 0));
+  approval_tests.emplace_back(world3.composition(position, 0, 1));
+  approval_tests.emplace_back(world3.composition(position, 0, 2));
+  approval_tests.emplace_back(world3.composition(position, 0, 3));
+  approval_tests.emplace_back(world3.composition(position, 10, 0));
+  approval_tests.emplace_back(world3.composition(position, 10, 1));
+  approval_tests.emplace_back(world3.composition(position, 10, 2));
+  approval_tests.emplace_back(world3.composition(position, 10, 3));
+  approval_tests.emplace_back(world3.composition(position, 100e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 100e3, 1));
+  approval_tests.emplace_back(world3.composition(position, 100e3, 2));
+  approval_tests.emplace_back(world3.composition(position, 100e3, 3));
+  approval_tests.emplace_back(world3.composition(position, 100e3, 4));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 0));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 1));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 2));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 3));
+  approval_tests.emplace_back(world3.composition(position, 100e3+1, 4));
+  approval_tests.emplace_back(world3.composition(position, 101e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 1));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 2));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 3));
+  approval_tests.emplace_back(world3.composition(position, 101e3+1, 4));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 1));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 2));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 3));
+  approval_tests.emplace_back(world3.composition(position, 150e3, 4));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 0));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 1));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 2));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 3));
+  approval_tests.emplace_back(world3.composition(position, 200e3, 4));
+  approval_tests.emplace_back(world3.composition(position, 0, 4));
+  approval_tests.emplace_back(world3.composition(position, 0, 5));
+  approval_tests.emplace_back(world3.composition(position, 0, 6));
 
   position = {{750e3,35e3,800e3}};
-  approval_tests.emplace_back(world3.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 10, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 5e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 10e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 15e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 20e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 25e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 30e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 35e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 40e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 45e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 50e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 55e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 60e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 65e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 70e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 72.5e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 75e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 80e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 85e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 90e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 95e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 100e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 105e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 110e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 115e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 120e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 125e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 130e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 135e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 150e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 160e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 170e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 175e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 180e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 190e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 200e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 250e3, 10) );
-  approval_tests.emplace_back(world3.temperature(position, 300e3, 10) );
+  approval_tests.emplace_back(world3.temperature(position, 0, 10));
+  approval_tests.emplace_back(world3.temperature(position, 10, 10));
+  approval_tests.emplace_back(world3.temperature(position, 5e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 10e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 15e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 20e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 25e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 30e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 35e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 40e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 45e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 50e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 55e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 60e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 65e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 70e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 72.5e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 75e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 80e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 85e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 90e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 95e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 105e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 110e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 115e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 120e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 125e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 130e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 135e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 150e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 160e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 170e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 175e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 180e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 190e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 250e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 300e3, 10));
 
   // check grains layer 1
   {
@@ -2815,7 +2815,7 @@ TEST_CASE("WorldBuilder Features: Fault")
     WorldBuilder::grains grains = world3.grains(position, 35e3, 0, 2);
     approval_tests_grains.emplace_back(grains);
     //compare_vectors_approx(grains.sizes, {0.3512381923,0.6487618077});
-    //approval_tests.emplace_back(grains.sizes[0] + grains.sizes[1] );
+    //approval_tests.emplace_back(grains.sizes[0] + grains.sizes[1]);
     //// these are random numbers, but they should stay the same.
 //
     //std::array<std::array<double, 3>, 3> array_1 = {{{{-0.5760272563,-0.3302260164,0.7477589038}},{{-0.3927671635,-0.6904395086,-0.6074761232}},{{0.7168867103,-0.6436179481,0.26801004}}}};
@@ -2829,32 +2829,32 @@ TEST_CASE("WorldBuilder Features: Fault")
   WorldBuilder::World world4(file_name);
 
   position = {{250e3,501e3,800e3}};
-  approval_tests.emplace_back(world4.temperature(position, 0, 10) );
-  approval_tests.emplace_back(world4.composition(position, 0, 0) );
-  approval_tests.emplace_back(world4.temperature(position, 1, 10) );
-  approval_tests.emplace_back(world4.composition(position, 1, 0) );
-  approval_tests.emplace_back(world4.temperature(position, 1e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 1e3, 0) );
-  approval_tests.emplace_back(world4.temperature(position, 10e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 10e3, 0) );
-  approval_tests.emplace_back(world4.temperature(position, 20e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 20e3, 0) );
-  approval_tests.emplace_back(world4.temperature(position, 30e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 30e3, 0) );
-  approval_tests.emplace_back(world4.temperature(position, 35e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 35e3, 0) );
-  approval_tests.emplace_back(world4.temperature(position, 40e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 40e3, 0) );
-  approval_tests.emplace_back(world4.temperature(position, 45e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 45e3, 0) );
-  approval_tests.emplace_back(world4.temperature(position, 50e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 50e3, 0) );
-  approval_tests.emplace_back(world4.temperature(position, 60e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 60e3, 0) );
-  approval_tests.emplace_back(world4.temperature(position, 80e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 80e3, 0) );
-  approval_tests.emplace_back(world4.temperature(position, 100e3, 10) );
-  approval_tests.emplace_back(world4.composition(position, 100e3, 0) );
+  approval_tests.emplace_back(world4.temperature(position, 0, 10));
+  approval_tests.emplace_back(world4.composition(position, 0, 0));
+  approval_tests.emplace_back(world4.temperature(position, 1, 10));
+  approval_tests.emplace_back(world4.composition(position, 1, 0));
+  approval_tests.emplace_back(world4.temperature(position, 1e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 1e3, 0));
+  approval_tests.emplace_back(world4.temperature(position, 10e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 10e3, 0));
+  approval_tests.emplace_back(world4.temperature(position, 20e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 20e3, 0));
+  approval_tests.emplace_back(world4.temperature(position, 30e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 30e3, 0));
+  approval_tests.emplace_back(world4.temperature(position, 35e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 35e3, 0));
+  approval_tests.emplace_back(world4.temperature(position, 40e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 40e3, 0));
+  approval_tests.emplace_back(world4.temperature(position, 45e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 45e3, 0));
+  approval_tests.emplace_back(world4.temperature(position, 50e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 50e3, 0));
+  approval_tests.emplace_back(world4.temperature(position, 60e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 60e3, 0));
+  approval_tests.emplace_back(world4.temperature(position, 80e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 80e3, 0));
+  approval_tests.emplace_back(world4.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world4.composition(position, 100e3, 0));
 
   std::vector<std::string> approvals;
   for (auto&& value : approval_tests)
@@ -2881,60 +2881,60 @@ TEST_CASE("WorldBuilder Features: coordinate interpolation")
     WorldBuilder::World world1(file_name);
 
     std::array<double,3> position = {{374e3,875e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-    approval_tests.emplace_back(world1.composition(position, 0, 0) );
+    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.composition(position, 0, 0));
     position = {{376e3,875e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-    approval_tests.emplace_back(world1.composition(position, 0, 0) );
+    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.composition(position, 0, 0));
     position = {{350e3,900e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-    approval_tests.emplace_back(world1.composition(position, 0, 0) );
+    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.composition(position, 0, 0));
 
     position = {{375e3,874e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-    approval_tests.emplace_back(world1.composition(position, 0, 0) );
+    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.composition(position, 0, 0));
     position = {{375e3,876e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-    approval_tests.emplace_back(world1.composition(position, 0, 0) );
+    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.composition(position, 0, 0));
 
 
     position = {{374e3,625e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-    approval_tests.emplace_back(world1.composition(position, 0, 0) );
+    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.composition(position, 0, 0));
     position = {{376e3,625e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-    approval_tests.emplace_back(world1.composition(position, 0, 0) );
+    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.composition(position, 0, 0));
     position = {{350e3,600e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-    approval_tests.emplace_back(world1.composition(position, 0, 0) );
+    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.composition(position, 0, 0));
 
     position = {{375e3,624e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-    approval_tests.emplace_back(world1.composition(position, 0, 0) );
+    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.composition(position, 0, 0));
     position = {{375e3,626e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 0, 10) );
-    approval_tests.emplace_back(world1.composition(position, 0, 0) );
+    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.composition(position, 0, 0));
 
 
     position = {{638e3,425e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 10, 10) );
-    approval_tests.emplace_back(world1.composition(position, 10, 0) );
+    approval_tests.emplace_back(world1.temperature(position, 10, 10));
+    approval_tests.emplace_back(world1.composition(position, 10, 0));
     position = {{637e3,425e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 10, 10) );
-    approval_tests.emplace_back(world1.composition(position, 10, 0) );
+    approval_tests.emplace_back(world1.temperature(position, 10, 10));
+    approval_tests.emplace_back(world1.composition(position, 10, 0));
     position = {{617.5e3,445e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 1e3, 10) );
-    approval_tests.emplace_back(world1.composition(position, 1e3, 0) );
+    approval_tests.emplace_back(world1.temperature(position, 1e3, 10));
+    approval_tests.emplace_back(world1.composition(position, 1e3, 0));
 
     position = {{625e3,200e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 10, 10) );
-    approval_tests.emplace_back(world1.composition(position, 10, 0) );
+    approval_tests.emplace_back(world1.temperature(position, 10, 10));
+    approval_tests.emplace_back(world1.composition(position, 10, 0));
     position = {{624e3,200e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 10, 10) );
-    approval_tests.emplace_back(world1.composition(position, 10, 0) );
+    approval_tests.emplace_back(world1.temperature(position, 10, 10));
+    approval_tests.emplace_back(world1.composition(position, 10, 0));
     position = {{607e3,180e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 3e3, 10) );
-    approval_tests.emplace_back(world1.composition(position, 3e3, 0) );
+    approval_tests.emplace_back(world1.temperature(position, 3e3, 10));
+    approval_tests.emplace_back(world1.composition(position, 3e3, 0));
   }
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
@@ -3557,7 +3557,7 @@ TEST_CASE("WorldBuilder Types: print_tree")
          "     }\n"
          "   }\n"
          " }";
-  approval_tests.emplace_back(Utilities::print_tree(tree, 0) );
+  approval_tests.emplace_back(Utilities::print_tree(tree, 0));
 }*/
 
 TEST_CASE("WorldBuilder Parameters")
@@ -3637,65 +3637,65 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK_THROWS_WITH(prm.get("value at points non existant",additional_points), Contains("internal error: could not retrieve"));
   std::pair<std::vector<double>,std::vector<double>> v_at_p_one_value = prm.get("one value at points one value",additional_points);
 
-  approval_tests.emplace_back(v_at_p_one_value.first.size() );
-  approval_tests.emplace_back(v_at_p_one_value.first[0] );
-  approval_tests.emplace_back(v_at_p_one_value.second.size() );
+  approval_tests.emplace_back(v_at_p_one_value.first.size());
+  approval_tests.emplace_back(v_at_p_one_value.first[0]);
+  approval_tests.emplace_back(v_at_p_one_value.second.size());
 
   {
     Objects::Surface surface(v_at_p_one_value);
-    approval_tests.emplace_back(surface.local_value(Point<2>(0,0,CoordinateSystem::cartesian)) );
+    approval_tests.emplace_back(surface.local_value(Point<2>(0,0,CoordinateSystem::cartesian)));
   }
   std::pair<std::vector<double>,std::vector<double>> v_at_p_one_array_value = prm.get("array value at points one value",additional_points);
 
-  approval_tests.emplace_back(v_at_p_one_array_value.first.size() );
-  approval_tests.emplace_back(v_at_p_one_array_value.first[0] );
-  approval_tests.emplace_back(v_at_p_one_array_value.second.size() );
+  approval_tests.emplace_back(v_at_p_one_array_value.first.size());
+  approval_tests.emplace_back(v_at_p_one_array_value.first[0]);
+  approval_tests.emplace_back(v_at_p_one_array_value.second.size());
 
   std::pair<std::vector<double>,std::vector<double>> v_at_p_full_default = prm.get("value at points",additional_points);
 
-  approval_tests.emplace_back(v_at_p_full_default.first.size() );
-  approval_tests.emplace_back(v_at_p_full_default.first[0] );
-  approval_tests.emplace_back(v_at_p_full_default.second.size() );
+  approval_tests.emplace_back(v_at_p_full_default.first.size());
+  approval_tests.emplace_back(v_at_p_full_default.first[0]);
+  approval_tests.emplace_back(v_at_p_full_default.second.size());
 
   std::pair<std::vector<double>,std::vector<double>> v_at_p_dap = prm.get("value at points default ap",additional_points);
 
-  approval_tests.emplace_back(v_at_p_dap.first.size() );
-  approval_tests.emplace_back(v_at_p_dap.first[0] );
-  approval_tests.emplace_back(v_at_p_dap.first[1] );
-  approval_tests.emplace_back(v_at_p_dap.first[2] );
-  approval_tests.emplace_back(v_at_p_dap.first[3] );
-  approval_tests.emplace_back(v_at_p_dap.first[4] );
-  approval_tests.emplace_back(v_at_p_dap.first[5] );
-  approval_tests.emplace_back(v_at_p_dap.first[6] );
-  approval_tests.emplace_back(v_at_p_dap.second.size() );
-  approval_tests.emplace_back(v_at_p_dap.second[0] );
-  approval_tests.emplace_back(v_at_p_dap.second[1] );
-  approval_tests.emplace_back(v_at_p_dap.second[2] );
-  approval_tests.emplace_back(v_at_p_dap.second[3] );
-  approval_tests.emplace_back(v_at_p_dap.second[4] );
-  approval_tests.emplace_back(v_at_p_dap.second[5] );
-  approval_tests.emplace_back(v_at_p_dap.second[6] );
-  approval_tests.emplace_back(v_at_p_dap.second[7] );
-  approval_tests.emplace_back(v_at_p_dap.second[8] );
-  approval_tests.emplace_back(v_at_p_dap.second[9] );
-  approval_tests.emplace_back(v_at_p_dap.second[10] );
-  approval_tests.emplace_back(v_at_p_dap.second[11] );
-  approval_tests.emplace_back(v_at_p_dap.second[12] );
-  approval_tests.emplace_back(v_at_p_dap.second[13] );
+  approval_tests.emplace_back(v_at_p_dap.first.size());
+  approval_tests.emplace_back(v_at_p_dap.first[0]);
+  approval_tests.emplace_back(v_at_p_dap.first[1]);
+  approval_tests.emplace_back(v_at_p_dap.first[2]);
+  approval_tests.emplace_back(v_at_p_dap.first[3]);
+  approval_tests.emplace_back(v_at_p_dap.first[4]);
+  approval_tests.emplace_back(v_at_p_dap.first[5]);
+  approval_tests.emplace_back(v_at_p_dap.first[6]);
+  approval_tests.emplace_back(v_at_p_dap.second.size());
+  approval_tests.emplace_back(v_at_p_dap.second[0]);
+  approval_tests.emplace_back(v_at_p_dap.second[1]);
+  approval_tests.emplace_back(v_at_p_dap.second[2]);
+  approval_tests.emplace_back(v_at_p_dap.second[3]);
+  approval_tests.emplace_back(v_at_p_dap.second[4]);
+  approval_tests.emplace_back(v_at_p_dap.second[5]);
+  approval_tests.emplace_back(v_at_p_dap.second[6]);
+  approval_tests.emplace_back(v_at_p_dap.second[7]);
+  approval_tests.emplace_back(v_at_p_dap.second[8]);
+  approval_tests.emplace_back(v_at_p_dap.second[9]);
+  approval_tests.emplace_back(v_at_p_dap.second[10]);
+  approval_tests.emplace_back(v_at_p_dap.second[11]);
+  approval_tests.emplace_back(v_at_p_dap.second[12]);
+  approval_tests.emplace_back(v_at_p_dap.second[13]);
 
   {
     Objects::Surface surface(v_at_p_dap);
 
-    approval_tests.emplace_back(surface.local_value(Point<2>(0,0,CoordinateSystem::cartesian)) );
-    approval_tests.emplace_back(surface.local_value(Point<2>(0.99,1.99,CoordinateSystem::cartesian)) );
-    approval_tests.emplace_back(surface.local_value(Point<2>(1.01,2.01,CoordinateSystem::cartesian)) );
-    approval_tests.emplace_back(surface.local_value(Point<2>(0.99,0.99,CoordinateSystem::cartesian)) );
-    approval_tests.emplace_back(surface.local_value(Point<2>(1.01,1.01,CoordinateSystem::cartesian)) );
-    approval_tests.emplace_back(surface.local_value(Point<2>(2.99,3.99,CoordinateSystem::cartesian)) );
-    approval_tests.emplace_back(surface.local_value(Point<2>(2.01,4.01,CoordinateSystem::cartesian)) );
-    approval_tests.emplace_back(surface.local_value(Point<2>(-0.5,7.48,CoordinateSystem::cartesian)) );
-    approval_tests.emplace_back(surface.local_value(Point<2>(-1,7.6,CoordinateSystem::cartesian)) );
-    approval_tests.emplace_back(surface.local_value(Point<2>(-2.4,8.2,CoordinateSystem::cartesian)) );
+    approval_tests.emplace_back(surface.local_value(Point<2>(0,0,CoordinateSystem::cartesian)));
+    approval_tests.emplace_back(surface.local_value(Point<2>(0.99,1.99,CoordinateSystem::cartesian)));
+    approval_tests.emplace_back(surface.local_value(Point<2>(1.01,2.01,CoordinateSystem::cartesian)));
+    approval_tests.emplace_back(surface.local_value(Point<2>(0.99,0.99,CoordinateSystem::cartesian)));
+    approval_tests.emplace_back(surface.local_value(Point<2>(1.01,1.01,CoordinateSystem::cartesian)));
+    approval_tests.emplace_back(surface.local_value(Point<2>(2.99,3.99,CoordinateSystem::cartesian)));
+    approval_tests.emplace_back(surface.local_value(Point<2>(2.01,4.01,CoordinateSystem::cartesian)));
+    approval_tests.emplace_back(surface.local_value(Point<2>(-0.5,7.48,CoordinateSystem::cartesian)));
+    approval_tests.emplace_back(surface.local_value(Point<2>(-1,7.6,CoordinateSystem::cartesian)));
+    approval_tests.emplace_back(surface.local_value(Point<2>(-2.4,8.2,CoordinateSystem::cartesian)));
     CHECK_THROWS_WITH(surface.local_value(Point<2>(11,11,CoordinateSystem::cartesian)), Contains("The requested point was not in any triangle."));
   }
 
@@ -3746,15 +3746,15 @@ TEST_CASE("WorldBuilder Parameters")
   prm.leave_subsection();
 
   std::vector<unsigned int> v_int = prm.get_vector<unsigned int>("now existent unsigned int vector");
-  approval_tests.emplace_back(v_int.size() );
-  approval_tests.emplace_back(v_int[0] );
-  approval_tests.emplace_back(v_int[1] );
+  approval_tests.emplace_back(v_int.size());
+  approval_tests.emplace_back(v_int[0]);
+  approval_tests.emplace_back(v_int[1]);
 
   v_int = prm.get_vector<unsigned int>("unsigned int array");
-  approval_tests.emplace_back(v_int.size() );
-  approval_tests.emplace_back(v_int[0] );
-  approval_tests.emplace_back(v_int[1] );
-  approval_tests.emplace_back(v_int[2] );
+  approval_tests.emplace_back(v_int.size());
+  approval_tests.emplace_back(v_int[0]);
+  approval_tests.emplace_back(v_int[1]);
+  approval_tests.emplace_back(v_int[2]);
 
   CHECK_THROWS_WITH(prm.get_vector<size_t>("non existent unsigned int vector"),
                     Contains("internal error: could not retrieve the minItems value"));
@@ -3762,15 +3762,15 @@ TEST_CASE("WorldBuilder Parameters")
 
 
   std::vector<size_t> v_size_t = prm.get_vector<size_t>("now existent unsigned int vector");
-  approval_tests.emplace_back(v_size_t.size() );
-  approval_tests.emplace_back(v_size_t[0] );
-  approval_tests.emplace_back(v_size_t[1] );
+  approval_tests.emplace_back(v_size_t.size());
+  approval_tests.emplace_back(v_size_t[0]);
+  approval_tests.emplace_back(v_size_t[1]);
 
   v_size_t = prm.get_vector<size_t>("unsigned int array");
-  approval_tests.emplace_back(v_size_t.size() );
-  approval_tests.emplace_back(v_size_t[0] );
-  approval_tests.emplace_back(v_size_t[1] );
-  approval_tests.emplace_back(v_size_t[2] );
+  approval_tests.emplace_back(v_size_t.size());
+  approval_tests.emplace_back(v_size_t[0]);
+  approval_tests.emplace_back(v_size_t[1]);
+  approval_tests.emplace_back(v_size_t[2]);
 
 
   CHECK_THROWS_WITH(prm.get_vector<size_t>("non existent unsigned int vector"),
@@ -3785,18 +3785,18 @@ TEST_CASE("WorldBuilder Parameters")
   prm.leave_subsection();
 
   std::vector<bool> v_bool = prm.get_vector<bool>("now existent bool vector");
-  approval_tests.emplace_back(v_bool.size() );
-  approval_tests.emplace_back(v_bool[0] );
-  approval_tests.emplace_back(v_bool[1] );
+  approval_tests.emplace_back(v_bool.size());
+  approval_tests.emplace_back(v_bool[0]);
+  approval_tests.emplace_back(v_bool[1]);
 
   v_bool = prm.get_vector<bool>("bool array");
-  approval_tests.emplace_back(v_bool.size() );
-  approval_tests.emplace_back(v_bool[0] );
-  approval_tests.emplace_back(v_bool[1] );
-  approval_tests.emplace_back(v_bool[2] );
-  approval_tests.emplace_back(v_bool[3] );
-  approval_tests.emplace_back(v_bool[4] );
-  approval_tests.emplace_back(v_bool[1] );
+  approval_tests.emplace_back(v_bool.size());
+  approval_tests.emplace_back(v_bool[0]);
+  approval_tests.emplace_back(v_bool[1]);
+  approval_tests.emplace_back(v_bool[2]);
+  approval_tests.emplace_back(v_bool[3]);
+  approval_tests.emplace_back(v_bool[4]);
+  approval_tests.emplace_back(v_bool[1]);
 
   CHECK_THROWS_WITH(prm.get_vector<bool>("bool array nob"),
                     Contains("IsBool()"));
@@ -3814,59 +3814,59 @@ TEST_CASE("WorldBuilder Parameters")
   prm.leave_subsection();
 
   std::vector<double> v_double = prm.get_vector<double>("now existent double vector");
-  approval_tests.emplace_back(v_double.size() );
-  approval_tests.emplace_back(v_double[0] );
-  approval_tests.emplace_back(v_double[1] );
+  approval_tests.emplace_back(v_double.size());
+  approval_tests.emplace_back(v_double[0]);
+  approval_tests.emplace_back(v_double[1]);
 
   CHECK_THROWS_WITH(prm.get<Point<2> >("string array"),
                     Contains("Could not convert values of /string array into Point<2>, because it could not convert the sub-elements into doubles."));
 
   v_double = prm.get_vector<double>("double array");
-  approval_tests.emplace_back(v_double.size() );
-  approval_tests.emplace_back(v_double[0] );
-  approval_tests.emplace_back(v_double[1] );
-  approval_tests.emplace_back(v_double[2] );
+  approval_tests.emplace_back(v_double.size());
+  approval_tests.emplace_back(v_double[0]);
+  approval_tests.emplace_back(v_double[1]);
+  approval_tests.emplace_back(v_double[2]);
 
   CHECK_THROWS_WITH(prm.get_vector<Point<2> >("point<2> array nan"),
                     Contains("Could not convert values of /point<2> array nan/0 into a Point<2> array, because it could not convert the sub-elements into doubles."));
 
   std::vector<std::array<std::array<double,3>,3> > v_3x3_array = prm.get_vector<std::array<std::array<double,3>,3> >("vector of 3x3 arrays");
-  approval_tests.emplace_back(v_3x3_array.size() );
-  approval_tests.emplace_back(v_3x3_array[0][0][0] );
-  approval_tests.emplace_back(v_3x3_array[0][0][1] );
-  approval_tests.emplace_back(v_3x3_array[0][0][2] );
-  approval_tests.emplace_back(v_3x3_array[0][1][0] );
-  approval_tests.emplace_back(v_3x3_array[0][1][1] );
-  approval_tests.emplace_back(v_3x3_array[0][1][2] );
-  approval_tests.emplace_back(v_3x3_array[0][2][0] );
-  approval_tests.emplace_back(v_3x3_array[0][2][1] );
-  approval_tests.emplace_back(v_3x3_array[0][2][2] );
+  approval_tests.emplace_back(v_3x3_array.size());
+  approval_tests.emplace_back(v_3x3_array[0][0][0]);
+  approval_tests.emplace_back(v_3x3_array[0][0][1]);
+  approval_tests.emplace_back(v_3x3_array[0][0][2]);
+  approval_tests.emplace_back(v_3x3_array[0][1][0]);
+  approval_tests.emplace_back(v_3x3_array[0][1][1]);
+  approval_tests.emplace_back(v_3x3_array[0][1][2]);
+  approval_tests.emplace_back(v_3x3_array[0][2][0]);
+  approval_tests.emplace_back(v_3x3_array[0][2][1]);
+  approval_tests.emplace_back(v_3x3_array[0][2][2]);
 
-  approval_tests.emplace_back(v_3x3_array[1][0][0] );
-  approval_tests.emplace_back(v_3x3_array[1][0][1] );
-  approval_tests.emplace_back(v_3x3_array[1][0][2] );
-  approval_tests.emplace_back(v_3x3_array[1][1][0] );
-  approval_tests.emplace_back(v_3x3_array[1][1][1] );
-  approval_tests.emplace_back(v_3x3_array[1][1][2] );
-  approval_tests.emplace_back(v_3x3_array[1][2][0] );
-  approval_tests.emplace_back(v_3x3_array[1][2][1] );
-  approval_tests.emplace_back(v_3x3_array[1][2][2] );
+  approval_tests.emplace_back(v_3x3_array[1][0][0]);
+  approval_tests.emplace_back(v_3x3_array[1][0][1]);
+  approval_tests.emplace_back(v_3x3_array[1][0][2]);
+  approval_tests.emplace_back(v_3x3_array[1][1][0]);
+  approval_tests.emplace_back(v_3x3_array[1][1][1]);
+  approval_tests.emplace_back(v_3x3_array[1][1][2]);
+  approval_tests.emplace_back(v_3x3_array[1][2][0]);
+  approval_tests.emplace_back(v_3x3_array[1][2][1]);
+  approval_tests.emplace_back(v_3x3_array[1][2][2]);
 
   std::vector<std::vector<Point<2> > > v_v_p2 = prm.get_vector<std::vector<Point<2>>>("vector of vectors of points<2>");
-  approval_tests.emplace_back(v_v_p2.size() );
-  approval_tests.emplace_back(v_v_p2[0].size() );
-  approval_tests.emplace_back(v_v_p2[0][0][0] );
-  approval_tests.emplace_back(v_v_p2[0][0][1] );
-  approval_tests.emplace_back(v_v_p2[0][1][0] );
-  approval_tests.emplace_back(v_v_p2[0][1][1] );
+  approval_tests.emplace_back(v_v_p2.size());
+  approval_tests.emplace_back(v_v_p2[0].size());
+  approval_tests.emplace_back(v_v_p2[0][0][0]);
+  approval_tests.emplace_back(v_v_p2[0][0][1]);
+  approval_tests.emplace_back(v_v_p2[0][1][0]);
+  approval_tests.emplace_back(v_v_p2[0][1][1]);
 
-  approval_tests.emplace_back(v_v_p2[1].size() );
-  approval_tests.emplace_back(v_v_p2[1][0][0] );
-  approval_tests.emplace_back(v_v_p2[1][0][1] );
-  approval_tests.emplace_back(v_v_p2[1][1][0] );
-  approval_tests.emplace_back(v_v_p2[1][1][1] );
-  approval_tests.emplace_back(v_v_p2[1][2][0] );
-  approval_tests.emplace_back(v_v_p2[1][2][1] );
+  approval_tests.emplace_back(v_v_p2[1].size());
+  approval_tests.emplace_back(v_v_p2[1][0][0]);
+  approval_tests.emplace_back(v_v_p2[1][0][1]);
+  approval_tests.emplace_back(v_v_p2[1][1][0]);
+  approval_tests.emplace_back(v_v_p2[1][1][1]);
+  approval_tests.emplace_back(v_v_p2[1][2][0]);
+  approval_tests.emplace_back(v_v_p2[1][2][1]);
 
 
   CHECK_THROWS_WITH(prm.get_vector<std::vector<Point<2>>>("vector of vectors of points<2> nan"),
@@ -3878,8 +3878,8 @@ TEST_CASE("WorldBuilder Parameters")
                     Contains("internal error: could not retrieve the default value at"));
 
   std::vector<std::string> v_string = prm.get_vector<std::string>("string array");
-  approval_tests.emplace_back(v_string[0] );
-  approval_tests.emplace_back(v_string[1] );*/
+  approval_tests.emplace_back(v_string[0]);
+  approval_tests.emplace_back(v_string[1]);*/
 
   //prm.load_entry("Coordinate system", false, Types::CoordinateSystem("cartesian","This determines the coordinate system"));
 
@@ -3988,15 +3988,15 @@ TEST_CASE("WorldBuilder Parameters")
 
     prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
     std::vector<Types::Double> set_typed_double =  prm.get_array<Types::Double >("new double array");
-    approval_tests.emplace_back(set_typed_double.size() );
+    approval_tests.emplace_back(set_typed_double.size());
     // This is not desired behavior, but it is not implemented yet.
 
     prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
     std::vector<Types::Double> true_loaded_typed_double =  prm.get_array<Types::Double >("double array");
-    approval_tests.emplace_back(true_loaded_typed_double.size() );
-    approval_tests.emplace_back(true_loaded_typed_double[0].value );
-    approval_tests.emplace_back(true_loaded_typed_double[1].value );
-    approval_tests.emplace_back(true_loaded_typed_double[2].value );
+    approval_tests.emplace_back(true_loaded_typed_double.size());
+    approval_tests.emplace_back(true_loaded_typed_double[0].value);
+    approval_tests.emplace_back(true_loaded_typed_double[1].value);
+    approval_tests.emplace_back(true_loaded_typed_double[2].value);
 
 
     // Test the Array<Types::Point<2> > functions
@@ -4017,12 +4017,12 @@ TEST_CASE("WorldBuilder Parameters")
 
     prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
     std::vector<Types::Point<2> > set_typed_point_2d = prm.get_array<Types::Point<2> >("new point<2> array");
-    approval_tests.emplace_back(set_typed_point_2d.size() );
+    approval_tests.emplace_back(set_typed_point_2d.size());
     // This is not desired behavior, but it is not implemented yet.
 
     prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
     std::vector<Types::Point<2> > true_loaded_typed_point_2d =  prm.get_array<Types::Point<2> >("point<2> array");
-    approval_tests.emplace_back(true_loaded_typed_point_2d.size() );
+    approval_tests.emplace_back(true_loaded_typed_point_2d.size());
     CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {10,11});
     CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {12,13});
     CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {14,15});
@@ -4046,12 +4046,12 @@ TEST_CASE("WorldBuilder Parameters")
 
     prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
     std::vector<Types::Point<3> > set_typed_point_3d = prm.get_array<Types::Point<3> >("new point<3> array");
-    approval_tests.emplace_back(set_typed_point_3d.size() );
+    approval_tests.emplace_back(set_typed_point_3d.size());
     // This is not desired behavior, but it is not implemented yet.
 
     prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
     std::vector<Types::Point<3> > true_loaded_typed_point_3d =  prm.get_array<Types::Point<3> >("point<3> array");
-    approval_tests.emplace_back(true_loaded_typed_point_3d.size() );
+    approval_tests.emplace_back(true_loaded_typed_point_3d.size());
     CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {20,21,22});
     CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {23,24,25});
     CHECK(true_loaded_typed_point_3d[2].value.get_array() == std::array<double,3> {26,27,28});
@@ -4182,15 +4182,15 @@ TEST_CASE("WorldBuilder Parameters")
 
       prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
       std::vector<Types::Double > set_typed_double =  prm.get_array<Types::Double >("new double array");
-      approval_tests.emplace_back(set_typed_double.size() );
+      approval_tests.emplace_back(set_typed_double.size());
       // This is not desired behavior, but it is not implemented yet.
 
       prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
       std::vector<Types::Double > true_loaded_typed_double =  prm.get_array<Types::Double >("double array");
-      approval_tests.emplace_back(true_loaded_typed_double.size() );
-      approval_tests.emplace_back(true_loaded_typed_double[0].value );
-      approval_tests.emplace_back(true_loaded_typed_double[1].value );
-      approval_tests.emplace_back(true_loaded_typed_double[2].value );
+      approval_tests.emplace_back(true_loaded_typed_double.size());
+      approval_tests.emplace_back(true_loaded_typed_double[0].value);
+      approval_tests.emplace_back(true_loaded_typed_double[1].value);
+      approval_tests.emplace_back(true_loaded_typed_double[2].value);
 
       // Test the Array<Types::Point<2> > functions
       CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2,cartesian),"description"),"description")),
@@ -4208,12 +4208,12 @@ TEST_CASE("WorldBuilder Parameters")
 
       prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
       std::vector<Types::Point<2> > set_typed_point_2d = prm.get_array<Types::Point<2> >("new point<2> array");
-      approval_tests.emplace_back(set_typed_point_2d.size() );
+      approval_tests.emplace_back(set_typed_point_2d.size());
       // This is not desired behavior, but it is not implemented yet.
 
       prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
       std::vector<Types::Point<2> > true_loaded_typed_point_2d =  prm.get_array<Types::Point<2> >("point<2> array");
-      approval_tests.emplace_back(true_loaded_typed_point_2d.size() );
+      approval_tests.emplace_back(true_loaded_typed_point_2d.size());
       CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {20,21});
       CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {22,23});
       CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {24,25});
@@ -4235,12 +4235,12 @@ TEST_CASE("WorldBuilder Parameters")
 
       prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
       std::vector<Types::Point<3> > set_typed_point_3d = prm.get_array<Types::Point<3> >("new point<3> array");
-      approval_tests.emplace_back(set_typed_point_3d.size() );
+      approval_tests.emplace_back(set_typed_point_3d.size());
       // This is not desired behavior, but it is not implemented yet.
 
       prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
       std::vector<Types::Point<3> > true_loaded_typed_point_3d =  prm.get_array<Types::Point<3> >("point<3> array");
-      approval_tests.emplace_back(true_loaded_typed_point_3d.size() );
+      approval_tests.emplace_back(true_loaded_typed_point_3d.size());
       CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {30,31,32});
       CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {33,34,35});
       CHECK(true_loaded_typed_point_3d[2].value.get_array() == std::array<double,3> {36,37,38});
@@ -4370,15 +4370,15 @@ TEST_CASE("WorldBuilder Parameters")
 
         prm.set_entry("new double array", Types::Array(Types::Double(3,"description"),"description"));
         std::vector<Types::Double > set_typed_double =  prm.get_array<Types::Double >("new double array");
-        approval_tests.emplace_back(set_typed_double.size() );
+        approval_tests.emplace_back(set_typed_double.size());
         // This is not desired behavior, but it is not implemented yet.
 
         prm.load_entry("double array", true, Types::Array(Types::Double(4,"description"),"description"));
         std::vector<Types::Double > true_loaded_typed_double =  prm.get_array<Types::Double >("double array");
-        approval_tests.emplace_back(true_loaded_typed_double.size() );
-        approval_tests.emplace_back(true_loaded_typed_double[0].value );
-        approval_tests.emplace_back(true_loaded_typed_double[1].value );
-        approval_tests.emplace_back(true_loaded_typed_double[2].value );
+        approval_tests.emplace_back(true_loaded_typed_double.size());
+        approval_tests.emplace_back(true_loaded_typed_double[0].value);
+        approval_tests.emplace_back(true_loaded_typed_double[1].value);
+        approval_tests.emplace_back(true_loaded_typed_double[2].value);
 
 
         // Test the Array<Types::Point<2> > functions
@@ -4400,12 +4400,12 @@ TEST_CASE("WorldBuilder Parameters")
 
         prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
         std::vector<Types::Point<2> > set_typed_point_2d = prm.get_array<Types::Point<2> >("new point<2> array");
-        approval_tests.emplace_back(set_typed_point_2d.size() );
+        approval_tests.emplace_back(set_typed_point_2d.size());
         // This is not desired behavior, but it is not implemented yet.
 
         prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
         std::vector<Types::Point<2> > true_loaded_typed_point_2d =  prm.get_array<Types::Point<2> >("point<2> array");
-        approval_tests.emplace_back(true_loaded_typed_point_2d.size() );
+        approval_tests.emplace_back(true_loaded_typed_point_2d.size());
         CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {40,41});
         CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {42,43});
         CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {44,45});
@@ -4430,12 +4430,12 @@ TEST_CASE("WorldBuilder Parameters")
 
         prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
         std::vector<Types::Point<3> > set_typed_point_3d = prm.get_array<Types::Point<3> >("new point<3> array");
-        approval_tests.emplace_back(set_typed_point_3d.size() );
+        approval_tests.emplace_back(set_typed_point_3d.size());
         // This is not desired behavior, but it is not implemented yet.
 
         prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
         std::vector<Types::Point<3> > true_loaded_typed_point_3d =  prm.get_array<Types::Point<3> >("point<3> array");
-        approval_tests.emplace_back(true_loaded_typed_point_3d.size() );
+        approval_tests.emplace_back(true_loaded_typed_point_3d.size());
         CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {40,41,42});
         CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {43,44,45});
         CHECK(true_loaded_typed_point_3d[2].value.get_array() == std::array<double,3> {46,47,48});
@@ -4569,16 +4569,16 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0] );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1] );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2] );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2]);
 
 
   distance_from_planes =
@@ -4595,12 +4595,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  y_spline);
 
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-4); // practically zero
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-5);
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
   approval_tests.insert( approval_tests.end(), std::begin(distance_from_planes.closest_trench_point.get_array()),
                          std::end(distance_from_planes.closest_trench_point.get_array()));
 
@@ -4623,14 +4623,14 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0] );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1] );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2] );
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2]);
 
   // center square test 3
   position[1] = 20;
@@ -4649,16 +4649,16 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0] );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1] );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2] );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2]);
 
   // center square test 4
   reference_point[1] = 0;
@@ -4678,14 +4678,14 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0] );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1] );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2] );
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2]);
 
   // center square test 5
   position[1] = -10;
@@ -4705,16 +4705,16 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane ); // practically zero
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment ); // practically zero
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0] );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1] );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2] );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane); // practically zero
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment); // practically zero
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2]);
 
   // begin section square test 6
   position[0] = 0;
@@ -4736,10 +4736,10 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_section) < 1e-14);
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment ); // practically zero
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment); // practically zero
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
   CHECK(distance_from_planes.closest_trench_point.get_array() == std::array<double,3> {{0.,10.,10.}});
 
 
@@ -4761,15 +4761,15 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  y_spline);
 
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane ); // practically zero
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment ); // practically zero
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0] );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1] );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2] );
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane); // practically zero
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment); // practically zero
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2]);
 
   // before begin section square test 8
   position[0] = -10;
@@ -4790,11 +4790,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
   // The old method for slabs can not provide the corners when out of bounds and returns a nan. The new method can do this,
   // and the old method is planned to be removed.
   //CHECK(distance_from_planes.closest_trench_point.get_array() == std::array<double,3> {{NaN::DSNAN,NaN::DSNAN,10.}});
@@ -4815,12 +4815,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
-  approval_tests.insert( approval_tests.end(), std::begin(distance_from_planes.closest_trench_point.get_array()), std::end(distance_from_planes.closest_trench_point.get_array()) );
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
+  approval_tests.insert( approval_tests.end(), std::begin(distance_from_planes.closest_trench_point.get_array()), std::end(distance_from_planes.closest_trench_point.get_array()));
 
 
   // beyond end section square test 9
@@ -4842,11 +4842,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
   // The old method for slabs can not provide the corners when out of bounds and returns a nan. The new method can do this,
   // and the old method is planned to be removed.
   //CHECK(distance_from_planes.closest_trench_point.get_array() == std::array<double,3> {{NaN::DSNAN,NaN::DSNAN,10.}});
@@ -4867,14 +4867,14 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0] );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1] );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2] );
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2]);
 
 
   // beyond end section square test 10
@@ -4896,16 +4896,16 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(distance_from_planes.distance_from_plane );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0] );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1] );
-  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2] );
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1]);
+  approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2]);
 
   // beyond end section square test 10 (only positive version)
   position[0] = 10;
@@ -4926,12 +4926,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(distance_from_planes.distance_from_plane );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
   // beyond end section square test 11
@@ -4953,12 +4953,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(distance_from_planes.distance_from_plane );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
   // beyond end section square test 11 (only positve version)
@@ -4980,12 +4980,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(distance_from_planes.distance_from_plane );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // add coordinate
   position[0] = 25;
@@ -5024,11 +5024,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  y_spline);
 
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // practically zero
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-12);
 
   // different angle
   slab_segment_angles[0][0][0] = 22.5 * dtr;
@@ -5058,12 +5058,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)<1e-10);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // check interpolation 1 (in the middle of a segment with 22.5 degree and a segement with 45)
   position[0] = 25;
@@ -5084,12 +5084,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // check interpolation 2 (at the end of the segment at 45 degree)
   position[0] = 30;
@@ -5110,12 +5110,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // check length interpolation with 90 degree angles for simplicity
   // check length interpolation first segment center 1
@@ -5157,12 +5157,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane ); // practically zero
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane); // practically zero
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // check length interpolation first segment center 2
   position[0] = 10;
@@ -5183,12 +5183,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane ); // practically zero
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane); // practically zero
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // check length interpolation first segment center 3
   position[0] = 10;
@@ -5209,12 +5209,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
 
@@ -5239,11 +5239,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
 
   // Now check the center of the second segment, each segment should have a length of 75.
@@ -5267,11 +5267,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  y_spline);
 
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane ); // practically zero
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane); // practically zero
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // check length interpolation second segment center 2
   position[0] = 25;
@@ -5293,11 +5293,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  y_spline);
 
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane ); // practically zero
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane); // practically zero
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // check length interpolation second segment center 3
   position[0] = 25;
@@ -5319,11 +5319,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  y_spline);
 
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
 
@@ -5346,12 +5346,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(distance_from_planes.distance_from_plane );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // Now check the end of the second segment, each segment should have a length of 50.
   // check length interpolation second segment center 1
@@ -5374,11 +5374,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  y_spline);
 
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane ); // practically zero
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane); // practically zero
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // check length interpolation second segment center 2
   position[0] = 30;
@@ -5400,11 +5400,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  y_spline);
 
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane ); // practically zero
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane); // practically zero
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // check length interpolation second segment center 3
   position[0] = 30;
@@ -5426,11 +5426,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  y_spline);
 
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
 
@@ -5453,12 +5453,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(distance_from_planes.distance_from_plane );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
@@ -5554,13 +5554,13 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-10);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
   // curve test 2
   position[0] = 10;
@@ -5581,13 +5581,13 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(distance_from_planes.distance_from_plane ); // checked that it should be about 5 this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about 5 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
   // curve test 3
   position[0] = 10;
@@ -5608,13 +5608,13 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(distance_from_planes.distance_from_plane ); // checked that it should be about -5 this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about -5 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
 
   // curve test 4
@@ -5636,13 +5636,13 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(distance_from_planes.distance_from_plane );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
   // curve test 5
   position[0] = 10;
@@ -5663,13 +5663,13 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(distance_from_planes.distance_from_plane ); // checked that it should be about -10 this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about -10 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
   // curve test 6
   position[0] = 10;
@@ -5696,11 +5696,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   // code to define this case as that this point belongs to the top of the top segment
   // where the check point has angle 0. This means that the distanceAlongPlate is zero.
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
 
   // curve test 7
@@ -5724,11 +5724,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
   // curve test 8
   slab_segment_lengths[0][0] = 5 * 45 * dtr;
@@ -5754,13 +5754,13 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
   // curve test 9
   position[0] = 10;
@@ -5781,12 +5781,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
   // curve test 10
@@ -5822,12 +5822,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 11
   position[0] = 10;
@@ -5848,12 +5848,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 12
   position[0] = 10;
@@ -5874,13 +5874,13 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
+  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
 
   // curve test 13
@@ -5904,10 +5904,10 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 14
   slab_segment_angles[0][0][0] = 0.0 * dtr;
@@ -5942,12 +5942,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 15
   position[0] = 10;
@@ -5968,12 +5968,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 16
   position[0] = 10;
@@ -5994,12 +5994,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(distance_from_planes.distance_from_plane ); // checked that it should be about -1 this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about -1 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 16
   position[0] = 10;
@@ -6020,12 +6020,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(distance_from_planes.distance_from_plane ); // checked that it should be about -1 this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about -1 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 17
   position[0] = 10;
@@ -6046,12 +6046,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) ); // checked that it should be about 0 this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
   // curve test 18
@@ -6073,12 +6073,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(distance_from_planes.distance_from_plane ); // checked that it should be about 1 this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about 1 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 19
   position[0] = 10;
@@ -6099,12 +6099,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(distance_from_planes.distance_from_plane ); // checked that it should be about 1 this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about 1 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
   // curve test 20
@@ -6140,12 +6140,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) ); // checked that it should be about 0 this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 21
   position[0] = 10;
@@ -6166,12 +6166,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) ); // checked that it should be about 0 this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 21
   position[0] = 10;
@@ -6192,12 +6192,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) ); // checked that it should be about 0 this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test 22
   position[0] = 10;
@@ -6218,12 +6218,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) ); // checked that it should be about 0 this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test start 45 degree 1
   slab_segment_angles[0][0][0] = 45.0 * dtr;
@@ -6261,12 +6261,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(distance_from_planes.distance_from_plane ); // checked that it should be about -7.3 this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about -7.3 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test change reference point 1
   reference_point[0] = 50;
@@ -6293,10 +6293,10 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   // checked that distanceFromPlane should be infinity (it is on the other side of the circle this with a drawing
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test change reference point 2
   position[0] = 10;
@@ -6317,12 +6317,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(distance_from_planes.distance_from_plane ); // checked that it should be about 2.3 this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about 2.3 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test angle interpolation 1
   reference_point[0] = 0;
@@ -6361,12 +6361,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane));
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test reverse angle 1
   reference_point[0] = 0;
@@ -6404,12 +6404,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) ); // checked that it should be about 0 this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test reverse angle 2
   position[0] = 10;
@@ -6432,10 +6432,10 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test reverse angle 3
   position[0] = 10;
@@ -6456,12 +6456,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) ); // checked that it should be about 0 this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test reverse angle 4
   position[0] = 10;
@@ -6484,12 +6484,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)  ); // checked that it should be about 0 this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) ); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
   // curve test reverse angle 5
@@ -6511,12 +6511,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) ); // checked that it should be about 0 this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test reverse angle 6
   slab_segment_angles[0][0][0] = 0.0 * dtr;
@@ -6551,12 +6551,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) ); // checked that it should be about 0 this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-10); // checked that it should be about 0 this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-10);
 
   // curve test reverse angle 6
   position[0] = 10;
@@ -6578,12 +6578,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-10);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-10);
 
   // curve test reverse angle 6
   position[0] = 10;
@@ -6605,12 +6605,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-10);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-10);
 
 
   // curve test reverse angle 7
@@ -6633,12 +6633,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) );
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)< 1e-10);
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
 
@@ -6662,12 +6662,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(distance_from_planes.distance_from_plane ); // checked that it should be small positive this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(fabs(distance_from_planes.distance_from_plane)); // checked that it should be small positive this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test reverse angle 9
   position[0] = 10;
@@ -6689,12 +6689,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(distance_from_planes.distance_from_plane ); // checked that it should be small negative this with a drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be small negative this with a drawing
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // curve test reverse angle 10
   position[0] = 10;
@@ -6718,10 +6718,10 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
   // global_x_list test 1
@@ -6746,10 +6746,10 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // global_x_list test 2
   position[0] = 10;
@@ -6772,10 +6772,10 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // global_x_list test 3
   position[0] = 15;
@@ -6798,10 +6798,10 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // global_x_list test 4
   position[0] = 20;
@@ -6824,10 +6824,10 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // global_x_list test 5
   position[0] = 25;
@@ -6850,9 +6850,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane)); // checked that it should be about 0 this with a drawing
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-12);
 
 
@@ -6878,10 +6878,10 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
@@ -6952,8 +6952,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_section) < 1e-14);
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14);
 
 
@@ -6978,9 +6978,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
 
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // practically zero
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14);
 
 
@@ -7009,9 +7009,9 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
 
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14);
 
 
@@ -7035,10 +7035,10 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
 
   approval_tests.emplace_back(distance_from_planes.distance_from_plane);
   approval_tests.emplace_back(distance_from_planes.distance_along_plane);
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
 
   /**
@@ -7068,11 +7068,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(distance_from_planes.distance_from_plane ); // checked it with a geometric drawing
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked it with a geometric drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) < 1e-14); // checked it with a geometric drawing
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14);
 
 
@@ -7094,11 +7094,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  y_spline);
 
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);  // checked it with a geometric drawing
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane ); // checked it with a geometric drawing
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane); // checked it with a geometric drawing
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);
 
   // spherical curve test 1
   // This test has not been checked analytically or with a drawing, but
@@ -7130,12 +7130,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                  x_spline,
                                                  y_spline);
 
-  approval_tests.emplace_back(distance_from_planes.distance_from_plane );  // see comment at the top of the test
-  approval_tests.emplace_back(distance_from_planes.distance_along_plane ); // see comment at the top of the test
-  approval_tests.emplace_back(distance_from_planes.fraction_of_section );
-  approval_tests.emplace_back(distance_from_planes.section );
-  approval_tests.emplace_back(distance_from_planes.segment );
-  approval_tests.emplace_back(distance_from_planes.fraction_of_segment );*/
+  approval_tests.emplace_back(distance_from_planes.distance_from_plane);  // see comment at the top of the test
+  approval_tests.emplace_back(distance_from_planes.distance_along_plane); // see comment at the top of the test
+  approval_tests.emplace_back(distance_from_planes.fraction_of_section);
+  approval_tests.emplace_back(distance_from_planes.section);
+  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back(distance_from_planes.fraction_of_segment);*/
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
@@ -7150,44 +7150,44 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
 
     const double dtr = Utilities::const_pi/180.0;
     world.parse_entries(world.parameters);
-    approval_tests.emplace_back(world.parameters.coordinate_system->max_model_depth() );
+    approval_tests.emplace_back(world.parameters.coordinate_system->max_model_depth());
     // slab goes down and up again
     // origin
     std::array<double,3> position = {{6371000 - 0, 0 * dtr, 0 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    approval_tests.emplace_back(world.temperature(position, 0, 10) );
-    approval_tests.emplace_back(world.temperature(position, 1, 10) );
-    approval_tests.emplace_back(world.temperature(position, 200e3, 10) );
-    approval_tests.emplace_back(world.temperature(position, 210e3, 10) );
+    approval_tests.emplace_back(world.temperature(position, 0, 10));
+    approval_tests.emplace_back(world.temperature(position, 1, 10));
+    approval_tests.emplace_back(world.temperature(position, 200e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 210e3, 10));
 
     // ~330 km
     position = {{6371000 - 0, 0 * dtr, -3 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    approval_tests.emplace_back(world.temperature(position, 0, 10) );
-    approval_tests.emplace_back(world.temperature(position, 50e3, 10) );
-    approval_tests.emplace_back(world.temperature(position, 75e3, 10) );
-    approval_tests.emplace_back(world.temperature(position, 250e3, 10) );
-    approval_tests.emplace_back(world.temperature(position, 275e3, 10) );
+    approval_tests.emplace_back(world.temperature(position, 0, 10));
+    approval_tests.emplace_back(world.temperature(position, 50e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 75e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 250e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 275e3, 10));
 
 
     // ~1100 km
     position = {{6371000 - 0, 0 * dtr, -10 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    approval_tests.emplace_back(world.temperature(position, 0, 10) );
-    approval_tests.emplace_back(world.temperature(position, 95e3, 10) );
-    approval_tests.emplace_back(world.temperature(position, 100e3, 10) );
-    approval_tests.emplace_back(world.temperature(position, 300e3, 10) );
-    approval_tests.emplace_back(world.temperature(position, 305e3, 10) );
+    approval_tests.emplace_back(world.temperature(position, 0, 10));
+    approval_tests.emplace_back(world.temperature(position, 95e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 100e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 300e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 305e3, 10));
 
 
     // ~2200 km
     position = {{6371000 - 0, 0 * dtr, -20 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    approval_tests.emplace_back(world.temperature(position, 0, 10) );
-    approval_tests.emplace_back(world.temperature(position, 1, 10) );
-    approval_tests.emplace_back(world.temperature(position, 200e3, 10) );
-    approval_tests.emplace_back(world.temperature(position, 205e3, 10) );
-    approval_tests.emplace_back(world.temperature(position, 570e3, 10) );
+    approval_tests.emplace_back(world.temperature(position, 0, 10));
+    approval_tests.emplace_back(world.temperature(position, 1, 10));
+    approval_tests.emplace_back(world.temperature(position, 200e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 205e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 570e3, 10));
   }
 
   {
@@ -7199,39 +7199,39 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     // origin
     std::array<double,3> position = {{6371000 - 0, 0 * dtr, 0 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    approval_tests.emplace_back(world.temperature(position, 0, 10) );
-    approval_tests.emplace_back(world.temperature(position, 1, 10) );
-    approval_tests.emplace_back(world.temperature(position, 200e3, 10) );
-    approval_tests.emplace_back(world.temperature(position, 210e3, 10) );
+    approval_tests.emplace_back(world.temperature(position, 0, 10));
+    approval_tests.emplace_back(world.temperature(position, 1, 10));
+    approval_tests.emplace_back(world.temperature(position, 200e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 210e3, 10));
 
     // ~330 km
     position = {{6371000 - 0, 0 * dtr, -3 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    approval_tests.emplace_back(world.temperature(position, 0, 10) );
-    approval_tests.emplace_back(world.temperature(position, 50e3, 10) );
-    approval_tests.emplace_back(world.temperature(position, 75e3, 10) );
-    approval_tests.emplace_back(world.temperature(position, 250e3, 10) );
-    approval_tests.emplace_back(world.temperature(position, 275e3, 10) );
+    approval_tests.emplace_back(world.temperature(position, 0, 10));
+    approval_tests.emplace_back(world.temperature(position, 50e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 75e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 250e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 275e3, 10));
 
 
     // ~1100 km
     position = {{6371000 - 0, 0 * dtr, -10 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    approval_tests.emplace_back(world.temperature(position, 0, 10) );
-    approval_tests.emplace_back(world.temperature(position, 150e3, 10) );
-    approval_tests.emplace_back(world.temperature(position, 175e3, 10) );
-    approval_tests.emplace_back(world.temperature(position, 380e3, 10) );
-    approval_tests.emplace_back(world.temperature(position, 385e3, 10) );
+    approval_tests.emplace_back(world.temperature(position, 0, 10));
+    approval_tests.emplace_back(world.temperature(position, 150e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 175e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 380e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 385e3, 10));
 
 
     // ~1100 km
     position = {{6371000 - 0, 0 * dtr, -20 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    approval_tests.emplace_back(world.temperature(position, 0, 10) );
-    approval_tests.emplace_back(world.temperature(position, 350e3, 10) );
-    approval_tests.emplace_back(world.temperature(position, 355e3, 10) );
-    approval_tests.emplace_back(world.temperature(position, 565e3, 10) );
-    approval_tests.emplace_back(world.temperature(position, 570e3, 10) );
+    approval_tests.emplace_back(world.temperature(position, 0, 10));
+    approval_tests.emplace_back(world.temperature(position, 350e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 355e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 565e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 570e3, 10));
   }
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
@@ -7265,7 +7265,7 @@ TEST_CASE("Fast vs slow distance function")
   const Point<2> cartesian_1(1,2, cartesian);
   const Point<2> cartesian_2(2,3, cartesian);
   // Should be exactly the same.
-  approval_tests.emplace_back(sqrt(cartesian_1.cheap_relative_distance_cartesian(cartesian_2)) );
+  approval_tests.emplace_back(sqrt(cartesian_1.cheap_relative_distance_cartesian(cartesian_2)));
 
   const Point<2> spherical_1(1,2, spherical);
   const Point<2> spherical_2(2,3, spherical);
