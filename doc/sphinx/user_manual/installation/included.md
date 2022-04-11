@@ -39,11 +39,7 @@ This tester allows testing of individual functions of the World Builder library 
 The second type of tester is an integration tester, which works through the World Builder app.
 This tester tests whether the whole library works in the expected way it is supposed to by providing a World Builder file and data points to get temperature and composition from them.
 The tester package is run every time on proposed new code before that code is added to the main World Builder repository, and all tests have to pass before the code can be merged.
-This happens through Travis CI (see <https://travis-ci.org/GeodynamicWorldBuilder/WorldBuilder>) and AppVeyor (see <https://ci.appveyor.com/project/MFraters/worldbuilder>).
-
-```{todo}
-The link <https://travis-ci.org/GeodynamicWorldBuilder/WorldBuilder> does not appear to lead to the right place.
-```
+This happens through Github actions (see <https://github.com/GeodynamicWorldBuilder/WorldBuilder/actions>) and AppVeyor (see <https://ci.appveyor.com/project/MFraters/worldbuilder>).
 
 Having tests alone is not good enough to make sure that the World Builder actually does what it is supposed to do.
 The tester should theoretically cover all the possible cases which a software package can provide.
