@@ -1,3 +1,4 @@
+(sec:using_the_visualizer)=
 The world builder vtu app
 =========================
 
