@@ -2,7 +2,7 @@
 # Now define parameters:
 # dim = 2
 # compositions = 0
-# x z d g T 
-2435e3 0 5e3 10
-2430e3 0 5e3 10
-2425e3 0 5e3 10
+# x z d T 
+2435e3 0 5e3
+2430e3 0 5e3
+2425e3 0 5e3

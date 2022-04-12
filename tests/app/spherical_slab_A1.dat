@@ -6,6 +6,6 @@
 # grain compositions = 2
 # number of grains = 2
 # convert spherical = true
-# R long lat d g T c1 c2 c3 c4 c5
-6371000 10 10 0 10
-6370000 10 10 1e3 10
+# R long lat d T c1 c2 c3 c4 c5
+6371000 10 10 0
+6370000 10 10 1e3
