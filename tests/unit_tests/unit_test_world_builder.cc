@@ -730,13 +730,13 @@ TEST_CASE("WorldBuilder C wrapper")
 
   double temperature = 0.;
 
-  temperature_2d(*ptr_ptr_world, 1, 2, 0, 10, &temperature);
+  temperature_2d(*ptr_ptr_world, 1, 2, 0, &temperature);
   approval_tests.emplace_back(temperature);
-  temperature_3d(*ptr_ptr_world, 1, 2, 3, 0, 10, &temperature);
+  temperature_3d(*ptr_ptr_world, 1, 2, 3, 0, &temperature);
   approval_tests.emplace_back(temperature);
-  temperature_2d(*ptr_ptr_world, 550e3, 0, 0, 10, &temperature);
+  temperature_2d(*ptr_ptr_world, 550e3, 0, 0, &temperature);
   approval_tests.emplace_back(temperature);
-  temperature_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, 10, &temperature);
+  temperature_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, &temperature);
   approval_tests.emplace_back(temperature);
 
   // Test the compositions
@@ -763,12 +763,12 @@ TEST_CASE("WorldBuilder C wrapper")
   create_world(ptr_ptr_world, world_builder_file2, &has_output_dir, "", 1.0);
 
 
-  CHECK_THROWS_WITH(temperature_2d(*ptr_ptr_world, 1, 2, 0, 10, &temperature),
+  CHECK_THROWS_WITH(temperature_2d(*ptr_ptr_world, 1, 2, 0, &temperature),
                     Contains("This function can only be called when the cross section "
                              "variable in the world builder file has been set. Dim is 3."));
-  temperature_3d(*ptr_ptr_world, 1, 2, 3, 0, 10, &temperature);
+  temperature_3d(*ptr_ptr_world, 1, 2, 3, 0, &temperature);
   approval_tests.emplace_back(temperature);
-  temperature_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, 10, &temperature);
+  temperature_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, &temperature);
   approval_tests.emplace_back(temperature);
 
   // Test the compositions
@@ -796,13 +796,13 @@ TEST_CASE("WorldBuilder CPP wrapper")
 
   double temperature = 0;
 
-  temperature = world.temperature_2d(1, 2, 0, 10);
+  temperature = world.temperature_2d(1, 2, 0);
   approval_tests.emplace_back(temperature);
-  temperature = world.temperature_3d(1, 2, 3, 0, 10);
+  temperature = world.temperature_3d(1, 2, 3, 0);
   approval_tests.emplace_back(temperature);
-  temperature = world.temperature_2d(550e3, 0, 0, 10);
+  temperature = world.temperature_2d(550e3, 0, 0);
   approval_tests.emplace_back(temperature);
-  temperature = world.temperature_3d(120e3, 500e3, 0, 0, 10);
+  temperature = world.temperature_3d(120e3, 500e3, 0, 0);
   approval_tests.emplace_back(temperature);
 
   // Test the compositions
@@ -824,12 +824,12 @@ TEST_CASE("WorldBuilder CPP wrapper")
   wrapper_cpp::WorldBuilderWrapper world2(file);
 
 
-  CHECK_THROWS_WITH(world2.temperature_2d(1, 2, 0, 10),
+  CHECK_THROWS_WITH(world2.temperature_2d(1, 2, 0),
                     Contains("This function can only be called when the cross section "
                              "variable in the world builder file has been set. Dim is 3."));
-  temperature = world2.temperature_3d(1, 2, 3, 0, 10);
+  temperature = world2.temperature_3d(1, 2, 3, 0);
   approval_tests.emplace_back(temperature);
-  temperature = world2.temperature_3d(120e3, 500e3, 0, 0, 10);
+  temperature = world2.temperature_3d(120e3, 500e3, 0, 0);
   approval_tests.emplace_back(temperature);
 
   // Test the compositions
@@ -1029,19 +1029,19 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
 
   // Check continental plate through the world
   std::array<double,3> position = {{0,0,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
 
   // the feature with composition 3
   position = {{250e3,500e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 74e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 76e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 149e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 151e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 224e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 226e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 74e3));
+  approval_tests.emplace_back(world1.temperature(position, 76e3));
+  approval_tests.emplace_back(world1.temperature(position, 149e3));
+  approval_tests.emplace_back(world1.temperature(position, 151e3));
+  approval_tests.emplace_back(world1.temperature(position, 224e3));
+  approval_tests.emplace_back(world1.temperature(position, 226e3));
+  approval_tests.emplace_back(world1.temperature(position, 240e3));
+  approval_tests.emplace_back(world1.temperature(position, 260e3));
 
   approval_tests.emplace_back(world1.composition(position, 0, 0));
   approval_tests.emplace_back(world1.composition(position, 0, 1));
@@ -1070,9 +1070,9 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
 
   // the feature with composition 2
   position = {{1500e3,1500e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 240e3));
+  approval_tests.emplace_back(world1.temperature(position, 260e3));
 
   approval_tests.emplace_back(world1.composition(position, 0, 0));
   approval_tests.emplace_back(world1.composition(position, 0, 1));
@@ -1100,9 +1100,9 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
   }
 
   position = {{250e3,1750e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 240e3));
+  approval_tests.emplace_back(world1.temperature(position, 260e3));
 
   approval_tests.emplace_back(world1.composition(position, 0, 0));
   approval_tests.emplace_back(world1.composition(position, 0, 1));
@@ -1124,9 +1124,9 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
   approval_tests.emplace_back(world1.composition(position, 260e3, 5));
 
   position = {{750e3,250e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 240e3));
+  approval_tests.emplace_back(world1.temperature(position, 260e3));
 
   approval_tests.emplace_back(world1.composition(position, 0, 0));
   approval_tests.emplace_back(world1.composition(position, 0, 1));
@@ -1164,11 +1164,11 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
 
   // the constant layers test
   position = {{1500e3,250e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 1, 10));
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 249.5e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 1));
+  approval_tests.emplace_back(world1.temperature(position, 240e3));
+  approval_tests.emplace_back(world1.temperature(position, 249.5e3));
+  approval_tests.emplace_back(world1.temperature(position, 260e3));
 
   approval_tests.emplace_back(world1.composition(position, 0, 0));
   approval_tests.emplace_back(world1.composition(position, 0, 1));
@@ -1264,12 +1264,12 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
 
   // Check continental plate through the world
   std::array<double,3> position = {{0,0,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
 
   position = {{250e3,501e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0+100e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 240e3+100e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 260e3+100e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0+100e3));
+  approval_tests.emplace_back(world1.temperature(position, 240e3+100e3));
+  approval_tests.emplace_back(world1.temperature(position, 260e3+100e3));
 
   approval_tests.emplace_back(world1.composition(position, 0+200e3, 0));
   approval_tests.emplace_back(world1.composition(position, 0+200e3, 1));
@@ -1297,9 +1297,9 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
   }
 
   position = {{1500e3,1500e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0+150e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 240e3+150e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 260e3+150e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0+150e3));
+  approval_tests.emplace_back(world1.temperature(position, 240e3+150e3));
+  approval_tests.emplace_back(world1.temperature(position, 260e3+150e3));
 
   approval_tests.emplace_back(world1.composition(position, 0+150e3, 0));
   approval_tests.emplace_back(world1.composition(position, 0+150e3, 1));
@@ -1327,9 +1327,9 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
   }
 
   position = {{250e3,1750e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0+250e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 240e3+250e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 260e3+250e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0+250e3));
+  approval_tests.emplace_back(world1.temperature(position, 240e3+250e3));
+  approval_tests.emplace_back(world1.temperature(position, 260e3+250e3));
 
   approval_tests.emplace_back(world1.composition(position, 0+250e3, 0));
   approval_tests.emplace_back(world1.composition(position, 0+250e3, 1));
@@ -1351,12 +1351,12 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
   approval_tests.emplace_back(world1.composition(position, 260e3+250e3, 5));
 
   position = {{750e3,250e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0+300e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 95e3+300e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 105e3+300e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 145e3+300e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 155e3+300e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 260e3+300e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0+300e3));
+  approval_tests.emplace_back(world1.temperature(position, 95e3+300e3));
+  approval_tests.emplace_back(world1.temperature(position, 105e3+300e3));
+  approval_tests.emplace_back(world1.temperature(position, 145e3+300e3));
+  approval_tests.emplace_back(world1.temperature(position, 155e3+300e3));
+  approval_tests.emplace_back(world1.temperature(position, 260e3+300e3));
 
   approval_tests.emplace_back(world1.composition(position, 0+300e3, 0));
   approval_tests.emplace_back(world1.composition(position, 0+300e3, 1));
@@ -1394,9 +1394,9 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
 
   // the constant layers test
   position = {{1500e3,250e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0+350e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 240e3+350e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 260e3+350e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0+350e3));
+  approval_tests.emplace_back(world1.temperature(position, 240e3+350e3));
+  approval_tests.emplace_back(world1.temperature(position, 260e3+350e3));
 
   approval_tests.emplace_back(world1.composition(position, 0+350e3, 0));
   approval_tests.emplace_back(world1.composition(position, 0+350e3, 1));
@@ -1500,9 +1500,9 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   // Check continental plate through the world
   // 2d
   std::array<double,2> position_2d = {{0,0}};
-  approval_tests.emplace_back(world1.temperature(position_2d, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position_2d, 240e3, 10));
-  approval_tests.emplace_back(world1.temperature(position_2d, 260e3, 10));
+  approval_tests.emplace_back(world1.temperature(position_2d, 0));
+  approval_tests.emplace_back(world1.temperature(position_2d, 240e3));
+  approval_tests.emplace_back(world1.temperature(position_2d, 260e3));
   approval_tests.emplace_back(world1.composition(position_2d, 0, 0));
   approval_tests.emplace_back(world1.composition(position_2d, 0, 1));
   approval_tests.emplace_back(world1.composition(position_2d, 0, 2));
@@ -1512,9 +1512,9 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   approval_tests.emplace_back(world1.composition(position_2d, 0, 6));
   // 3d
   std::array<double,3> position = {{0,0,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 240e3));
+  approval_tests.emplace_back(world1.temperature(position, 260e3));
   approval_tests.emplace_back(world1.composition(position, 0, 0));
   approval_tests.emplace_back(world1.composition(position, 0, 1));
   approval_tests.emplace_back(world1.composition(position, 0, 2));
@@ -1524,9 +1524,9 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{250e3,500e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 240e3));
+  approval_tests.emplace_back(world1.temperature(position, 260e3));
   approval_tests.emplace_back(world1.composition(position, 0, 0));
   approval_tests.emplace_back(world1.composition(position, 0, 1));
   approval_tests.emplace_back(world1.composition(position, 0, 2));
@@ -1538,9 +1538,9 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{1500e3,1500e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 240e3));
+  approval_tests.emplace_back(world1.temperature(position, 260e3));
   approval_tests.emplace_back(world1.composition(position, 0, 0));
   approval_tests.emplace_back(world1.composition(position, 0, 1));
   approval_tests.emplace_back(world1.composition(position, 0, 2));
@@ -1552,9 +1552,9 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{250e3,1750e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 240e3));
+  approval_tests.emplace_back(world1.temperature(position, 260e3));
   approval_tests.emplace_back(world1.composition(position, 0, 0));
   approval_tests.emplace_back(world1.composition(position, 0, 1));
   approval_tests.emplace_back(world1.composition(position, 0, 2));
@@ -1566,12 +1566,12 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{750e3,250e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 195e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 205e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 247e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 249e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 195e3));
+  approval_tests.emplace_back(world1.temperature(position, 205e3));
+  approval_tests.emplace_back(world1.temperature(position, 247e3));
+  approval_tests.emplace_back(world1.temperature(position, 249e3));
+  approval_tests.emplace_back(world1.temperature(position, 260e3));
   approval_tests.emplace_back(world1.composition(position, 0, 0));
   approval_tests.emplace_back(world1.composition(position, 0, 1));
   approval_tests.emplace_back(world1.composition(position, 0, 2));
@@ -1585,10 +1585,10 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   approval_tests.emplace_back(world1.composition(position, 260e3, 6));
 
   position = {{1500e3, 0, 0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 10, 10));
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3));
+  approval_tests.emplace_back(world1.temperature(position, 260e3));
   approval_tests.emplace_back(world1.composition(position, 0, 0));
   approval_tests.emplace_back(world1.composition(position, 0, 1));
   approval_tests.emplace_back(world1.composition(position, 0, 2));
@@ -1599,22 +1599,22 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
 
   // test symmetry
   position = {{1600e3, 0, 0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 10, 10));
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3));
+  approval_tests.emplace_back(world1.temperature(position, 260e3));
 
   position = {{1400e3, 0, 0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 10, 10));
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 10));
+  approval_tests.emplace_back(world1.temperature(position, 240e3));
+  approval_tests.emplace_back(world1.temperature(position, 260e3));
 
   // the constant layers test
   position = {{200e3,200e3,0}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 240e3));
+  approval_tests.emplace_back(world1.temperature(position, 260e3));
 
   approval_tests.emplace_back(world1.composition(position, 0, 0));
   approval_tests.emplace_back(world1.composition(position, 0, 1));
@@ -1700,7 +1700,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
 
   // 2d
   position_2d = {{6371000,0}};
-  approval_tests.emplace_back(world2.temperature(position_2d, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position_2d, 0));
   approval_tests.emplace_back(world2.composition(position_2d, 0, 0));
   approval_tests.emplace_back(world2.composition(position_2d, 0, 1));
   approval_tests.emplace_back(world2.composition(position_2d, 0, 2));
@@ -1711,7 +1711,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
 
   // 3d
   position = {{6371000,0,0}};
-  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position, 0));
   approval_tests.emplace_back(world2.composition(position, 0, 0));
   approval_tests.emplace_back(world2.composition(position, 0, 1));
   approval_tests.emplace_back(world2.composition(position, 0, 2));
@@ -1722,9 +1722,9 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
 
   position = {{6371000, -5 * dtr,-5 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  approval_tests.emplace_back(world2.temperature(position, 0, 10));
-  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 0));
+  approval_tests.emplace_back(world2.temperature(position, 240e3));
+  approval_tests.emplace_back(world2.temperature(position, 260e3));
   approval_tests.emplace_back(world2.composition(position, 0, 0));
   approval_tests.emplace_back(world2.composition(position, 0, 1));
   approval_tests.emplace_back(world2.composition(position, 0, 2));
@@ -1735,9 +1735,9 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
 
   position = {{6371000, 5 * dtr,-5 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  approval_tests.emplace_back(world2.temperature(position, 0, 10));
-  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 0));
+  approval_tests.emplace_back(world2.temperature(position, 240e3));
+  approval_tests.emplace_back(world2.temperature(position, 260e3));
   approval_tests.emplace_back(world2.composition(position, 0, 0));
   approval_tests.emplace_back(world2.composition(position, 0, 1));
   approval_tests.emplace_back(world2.composition(position, 0, 2));
@@ -1756,9 +1756,9 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
 
   position = {{6371000, 5 * dtr,5 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  approval_tests.emplace_back(world2.temperature(position, 0, 10));
-  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 0));
+  approval_tests.emplace_back(world2.temperature(position, 240e3));
+  approval_tests.emplace_back(world2.temperature(position, 260e3));
   approval_tests.emplace_back(world2.composition(position, 0, 0));
   approval_tests.emplace_back(world2.composition(position, 0, 1));
   approval_tests.emplace_back(world2.composition(position, 0, 2));
@@ -1777,9 +1777,9 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
 
   position = {{6371000, -15 * dtr, -15 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  approval_tests.emplace_back(world2.temperature(position, 0, 10));
-  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 0));
+  approval_tests.emplace_back(world2.temperature(position, 240e3));
+  approval_tests.emplace_back(world2.temperature(position, 260e3));
   approval_tests.emplace_back(world2.composition(position, 0, 0));
   approval_tests.emplace_back(world2.composition(position, 0, 1));
   approval_tests.emplace_back(world2.composition(position, 0, 2));
@@ -1806,10 +1806,10 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
 
   position = {{6371000, 15 * dtr, -19 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  approval_tests.emplace_back(world2.temperature(position, 0, 0));
-  approval_tests.emplace_back(world2.temperature(position, 10, 10));
-  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 0));
+  approval_tests.emplace_back(world2.temperature(position, 10));
+  approval_tests.emplace_back(world2.temperature(position, 240e3));
+  approval_tests.emplace_back(world2.temperature(position, 260e3));
   approval_tests.emplace_back(world2.composition(position, 0, 0));
   approval_tests.emplace_back(world2.composition(position, 0, 1));
   approval_tests.emplace_back(world2.composition(position, 0, 2));
@@ -1823,25 +1823,25 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   // test symmetry
   position = {{6371000, 16 * dtr, -19 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  approval_tests.emplace_back(world2.temperature(position, 0, 10));
-  approval_tests.emplace_back(world2.temperature(position, 10, 10));
-  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 0));
+  approval_tests.emplace_back(world2.temperature(position, 10));
+  approval_tests.emplace_back(world2.temperature(position, 240e3));
+  approval_tests.emplace_back(world2.temperature(position, 260e3));
 
   position = {{6371000, 14 * dtr, -19 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  approval_tests.emplace_back(world2.temperature(position, 0, 10));
-  approval_tests.emplace_back(world2.temperature(position, 10, 10));
-  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 0));
+  approval_tests.emplace_back(world2.temperature(position, 10));
+  approval_tests.emplace_back(world2.temperature(position, 240e3));
+  approval_tests.emplace_back(world2.temperature(position, 260e3));
 
   // test bend
   position = {{6371000, 12.5 * dtr, -12.5 * dtr}};
   position = coordinate_system->natural_to_cartesian_coordinates(position);
-  approval_tests.emplace_back(world2.temperature(position, 0, 0));
-  approval_tests.emplace_back(world2.temperature(position, 10, 10));
-  approval_tests.emplace_back(world2.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world2.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 0));
+  approval_tests.emplace_back(world2.temperature(position, 10));
+  approval_tests.emplace_back(world2.temperature(position, 240e3));
+  approval_tests.emplace_back(world2.temperature(position, 260e3));
 
   std::vector<std::string> approvals;
   for (auto&& value : approval_tests)
@@ -1873,9 +1873,9 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
 
   // Check continental plate through the world
   std::array<double,3> position = {{0,0,800e3}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 240e3));
+  approval_tests.emplace_back(world1.temperature(position, 260e3));
   approval_tests.emplace_back(world1.composition(position, 0, 0));
   approval_tests.emplace_back(world1.composition(position, 0, 1));
   approval_tests.emplace_back(world1.composition(position, 0, 2));
@@ -1885,37 +1885,37 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   //position = {{250e3,450e3,800e3}};
-  //approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  //approval_tests.emplace_back(world1.temperature(position, 1, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
-  //approval_tests.emplace_back(world1.temperature(position, 5, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
-  //approval_tests.emplace_back(world1.temperature(position, 10, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
-  //approval_tests.emplace_back(world1.temperature(position, 100, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
-  //approval_tests.emplace_back(world1.temperature(position, 500, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
-  //approval_tests.emplace_back(world1.temperature(position, 1000, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
-  //approval_tests.emplace_back(world1.temperature(position, 5000, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
-  //approval_tests.emplace_back(world1.temperature(position, 10e3, 10));
-  //approval_tests.emplace_back(world1.temperature(position, 25e3, 10));
-  //approval_tests.emplace_back(world1.temperature(position, 50e3, 10));
-  //approval_tests.emplace_back(world1.temperature(position, 75e3, 10));
-  //approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
+  //approval_tests.emplace_back(world1.temperature(position, 0));
+  //approval_tests.emplace_back(world1.temperature(position, 1)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 5)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 100)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 500)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 1000)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 5000)); // we are in the plate for sure (colder than anywhere in the mantle)
+  //approval_tests.emplace_back(world1.temperature(position, 10e3));
+  //approval_tests.emplace_back(world1.temperature(position, 25e3));
+  //approval_tests.emplace_back(world1.temperature(position, 50e3));
+  //approval_tests.emplace_back(world1.temperature(position, 75e3));
+  //approval_tests.emplace_back(world1.temperature(position, 150e3));
 
   position = {{250e3,500e3,800e3}};
   // results strongly dependent on the summation number of the McKenzie temperature.
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 1, 10));
-  approval_tests.emplace_back(world1.temperature(position, 5, 10));
-  approval_tests.emplace_back(world1.temperature(position, 10, 10));
-  approval_tests.emplace_back(world1.temperature(position, 100, 10));
-  approval_tests.emplace_back(world1.temperature(position, 500, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
-  approval_tests.emplace_back(world1.temperature(position, 1000, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
-  approval_tests.emplace_back(world1.temperature(position, 5000, 10)); // we are in the plate for sure (colder than anywhere in the mantle)
-  approval_tests.emplace_back(world1.temperature(position, 10e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 25e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 50e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 75e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
-  //approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 100e3 - 1, 10));
-  //approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 100e3 + 1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 1));
+  approval_tests.emplace_back(world1.temperature(position, 5));
+  approval_tests.emplace_back(world1.temperature(position, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100));
+  approval_tests.emplace_back(world1.temperature(position, 500)); // we are in the plate for sure (colder than anywhere in the mantle)
+  approval_tests.emplace_back(world1.temperature(position, 1000)); // we are in the plate for sure (colder than anywhere in the mantle)
+  approval_tests.emplace_back(world1.temperature(position, 5000)); // we are in the plate for sure (colder than anywhere in the mantle)
+  approval_tests.emplace_back(world1.temperature(position, 10e3));
+  approval_tests.emplace_back(world1.temperature(position, 25e3));
+  approval_tests.emplace_back(world1.temperature(position, 50e3));
+  approval_tests.emplace_back(world1.temperature(position, 75e3));
+  approval_tests.emplace_back(world1.temperature(position, 150e3));
+  //approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 100e3 - 1));
+  //approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 100e3 + 1));
   approval_tests.emplace_back(world1.composition(position, 0, 0));
   approval_tests.emplace_back(world1.composition(position, 0, 1));
   approval_tests.emplace_back(world1.composition(position, 0, 2));
@@ -1965,45 +1965,45 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   }
 
   position = {{250e3,550e3,800e3}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 10, 10));
-  approval_tests.emplace_back(world1.temperature(position, 45e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 50e3-1, 10));
-  approval_tests.emplace_back(world1.temperature(position, 50e3+1, 10));
-  approval_tests.emplace_back(world1.temperature(position, 55e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 100e3-1, 10));
-  approval_tests.emplace_back(world1.temperature(position, 100e3+1, 10));
-  approval_tests.emplace_back(world1.temperature(position, 101e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 110e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 155e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 175e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 200e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 250e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 300e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 10));
+  approval_tests.emplace_back(world1.temperature(position, 45e3));
+  approval_tests.emplace_back(world1.temperature(position, 50e3-1));
+  approval_tests.emplace_back(world1.temperature(position, 50e3+1));
+  approval_tests.emplace_back(world1.temperature(position, 55e3));
+  approval_tests.emplace_back(world1.temperature(position, 100e3-1));
+  approval_tests.emplace_back(world1.temperature(position, 100e3+1));
+  approval_tests.emplace_back(world1.temperature(position, 101e3));
+  approval_tests.emplace_back(world1.temperature(position, 110e3));
+  approval_tests.emplace_back(world1.temperature(position, 150e3));
+  approval_tests.emplace_back(world1.temperature(position, 155e3));
+  approval_tests.emplace_back(world1.temperature(position, 175e3));
+  approval_tests.emplace_back(world1.temperature(position, 200e3));
+  approval_tests.emplace_back(world1.temperature(position, 250e3));
+  approval_tests.emplace_back(world1.temperature(position, 300e3));
 
   position = {{250e3,600e3,800e3}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 10, 10));
-  approval_tests.emplace_back(world1.temperature(position, 45e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 50e3-1, 10));
-  approval_tests.emplace_back(world1.temperature(position, 50e3+1, 10));
-  approval_tests.emplace_back(world1.temperature(position, 55e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 100e3-1, 10));
-  approval_tests.emplace_back(world1.temperature(position, 100e3+1, 10));
-  approval_tests.emplace_back(world1.temperature(position, 101e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 110e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 155e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 160e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 165e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 170e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 175e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 180e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 185e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 200e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 250e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 300e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 10));
+  approval_tests.emplace_back(world1.temperature(position, 45e3));
+  approval_tests.emplace_back(world1.temperature(position, 50e3-1));
+  approval_tests.emplace_back(world1.temperature(position, 50e3+1));
+  approval_tests.emplace_back(world1.temperature(position, 55e3));
+  approval_tests.emplace_back(world1.temperature(position, 100e3-1));
+  approval_tests.emplace_back(world1.temperature(position, 100e3+1));
+  approval_tests.emplace_back(world1.temperature(position, 101e3));
+  approval_tests.emplace_back(world1.temperature(position, 110e3));
+  approval_tests.emplace_back(world1.temperature(position, 150e3));
+  approval_tests.emplace_back(world1.temperature(position, 155e3));
+  approval_tests.emplace_back(world1.temperature(position, 160e3));
+  approval_tests.emplace_back(world1.temperature(position, 165e3));
+  approval_tests.emplace_back(world1.temperature(position, 170e3));
+  approval_tests.emplace_back(world1.temperature(position, 175e3));
+  approval_tests.emplace_back(world1.temperature(position, 180e3));
+  approval_tests.emplace_back(world1.temperature(position, 185e3));
+  approval_tests.emplace_back(world1.temperature(position, 200e3));
+  approval_tests.emplace_back(world1.temperature(position, 250e3));
+  approval_tests.emplace_back(world1.temperature(position, 300e3));
   approval_tests.emplace_back(world1.composition(position, 0, 0));
   approval_tests.emplace_back(world1.composition(position, 0, 1));
   approval_tests.emplace_back(world1.composition(position, 0, 2));
@@ -2042,14 +2042,14 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{650e3,650e3,800e3}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 10, 10));
-  approval_tests.emplace_back(world1.temperature(position, 100e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 100e3+1, 10));
-  approval_tests.emplace_back(world1.temperature(position, 101e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 110e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3));
+  approval_tests.emplace_back(world1.temperature(position, 100e3+1));
+  approval_tests.emplace_back(world1.temperature(position, 101e3));
+  approval_tests.emplace_back(world1.temperature(position, 110e3));
+  approval_tests.emplace_back(world1.temperature(position, 150e3));
+  approval_tests.emplace_back(world1.temperature(position, 200e3));
   approval_tests.emplace_back(world1.composition(position, 0, 0));
   approval_tests.emplace_back(world1.composition(position, 0, 1));
   approval_tests.emplace_back(world1.composition(position, 0, 2));
@@ -2088,14 +2088,14 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{700e3,675e3,800e3}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 10, 10));
-  approval_tests.emplace_back(world1.temperature(position, 100e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 100e3+1, 10));
-  approval_tests.emplace_back(world1.temperature(position, 101e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 110e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3));
+  approval_tests.emplace_back(world1.temperature(position, 100e3+1));
+  approval_tests.emplace_back(world1.temperature(position, 101e3));
+  approval_tests.emplace_back(world1.temperature(position, 110e3));
+  approval_tests.emplace_back(world1.temperature(position, 150e3));
+  approval_tests.emplace_back(world1.temperature(position, 200e3));
   approval_tests.emplace_back(world1.composition(position, 0, 0));
   approval_tests.emplace_back(world1.composition(position, 0, 1));
   approval_tests.emplace_back(world1.composition(position, 0, 2));
@@ -2134,13 +2134,13 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{700e3,155e3,800e3}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 10, 10));
-  approval_tests.emplace_back(world1.temperature(position, 100e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 200e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 250e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 300e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100e3));
+  approval_tests.emplace_back(world1.temperature(position, 150e3));
+  approval_tests.emplace_back(world1.temperature(position, 200e3));
+  approval_tests.emplace_back(world1.temperature(position, 250e3));
+  approval_tests.emplace_back(world1.temperature(position, 300e3));
 
   // check grains
   {
@@ -2168,23 +2168,23 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   WorldBuilder::World world2(file_name2);
 
   position = {{250e3,500e3,800e3}};
-  approval_tests.emplace_back(world2.temperature(position, 0, 10));
+  approval_tests.emplace_back(world2.temperature(position, 0));
   approval_tests.emplace_back(world2.composition(position, 0, 0));
-  approval_tests.emplace_back(world2.temperature(position, 1, 10));
+  approval_tests.emplace_back(world2.temperature(position, 1));
   approval_tests.emplace_back(world2.composition(position, 1, 0));
-  approval_tests.emplace_back(world2.temperature(position, 1e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 1e3));
   approval_tests.emplace_back(world2.composition(position, 1e3, 0));
-  approval_tests.emplace_back(world2.temperature(position, 10e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 10e3));
   approval_tests.emplace_back(world2.composition(position, 10e3, 0));
-  approval_tests.emplace_back(world2.temperature(position, 20e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 20e3));
   approval_tests.emplace_back(world2.composition(position, 20e3, 0));
-  approval_tests.emplace_back(world2.temperature(position, 40e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 40e3));
   approval_tests.emplace_back(world2.composition(position, 40e3, 0));
-  approval_tests.emplace_back(world2.temperature(position, 60e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 60e3));
   approval_tests.emplace_back(world2.composition(position, 60e3, 0));
-  approval_tests.emplace_back(world2.temperature(position, 80e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 80e3));
   approval_tests.emplace_back(world2.composition(position, 80e3, 0));
-  approval_tests.emplace_back(world2.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 100e3));
   approval_tests.emplace_back(world2.composition(position, 100e3, 0));
 
 
@@ -2192,67 +2192,67 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   WorldBuilder::World world4(file_name);
 
   position = {{250e3,500e3,800e3}};
-  approval_tests.emplace_back(world4.temperature(position, 0, 10));
+  approval_tests.emplace_back(world4.temperature(position, 0));
   approval_tests.emplace_back(world4.composition(position, 0, 0));
   approval_tests.emplace_back(world4.composition(position, 0, 1));
   approval_tests.emplace_back(world4.composition(position, 0, 2));
   approval_tests.emplace_back(world4.composition(position, 0, 3));
-  approval_tests.emplace_back(world4.temperature(position, 1, 10));
+  approval_tests.emplace_back(world4.temperature(position, 1));
   approval_tests.emplace_back(world4.composition(position, 1, 0));
   approval_tests.emplace_back(world4.composition(position, 1, 1));
   approval_tests.emplace_back(world4.composition(position, 1, 2));
   approval_tests.emplace_back(world4.composition(position, 1, 3));
-  approval_tests.emplace_back(world4.temperature(position, 1e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 1e3));
   approval_tests.emplace_back(world4.composition(position, 1e3, 0));
   approval_tests.emplace_back(world4.composition(position, 1e3, 1));
   approval_tests.emplace_back(world4.composition(position, 1e3, 2));
   approval_tests.emplace_back(world4.composition(position, 1e3, 3));
-  approval_tests.emplace_back(world4.temperature(position, 10e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 10e3));
   approval_tests.emplace_back(world4.composition(position, 10e3, 0));
   approval_tests.emplace_back(world4.composition(position, 10e3, 1));
   approval_tests.emplace_back(world4.composition(position, 10e3, 2));
   approval_tests.emplace_back(world4.composition(position, 10e3, 3));
-  approval_tests.emplace_back(world4.temperature(position, 20e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 20e3));
   approval_tests.emplace_back(world4.composition(position, 20e3, 0));
   approval_tests.emplace_back(world4.composition(position, 20e3, 1));
   approval_tests.emplace_back(world4.composition(position, 20e3, 2));
   approval_tests.emplace_back(world4.composition(position, 20e3, 3));
-  approval_tests.emplace_back(world4.temperature(position, 30e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 30e3));
   approval_tests.emplace_back(world4.composition(position, 30e3, 0));
   approval_tests.emplace_back(world4.composition(position, 30e3, 1));
   approval_tests.emplace_back(world4.composition(position, 30e3, 2));
   approval_tests.emplace_back(world4.composition(position, 30e3, 3));
-  approval_tests.emplace_back(world4.temperature(position, 35e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 35e3));
   approval_tests.emplace_back(world4.composition(position, 35e3, 0));
   approval_tests.emplace_back(world4.composition(position, 35e3, 1));
   approval_tests.emplace_back(world4.composition(position, 35e3, 2));
   approval_tests.emplace_back(world4.composition(position, 35e3, 3));
-  approval_tests.emplace_back(world4.temperature(position, 40e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 40e3));
   approval_tests.emplace_back(world4.composition(position, 40e3, 0));
   approval_tests.emplace_back(world4.composition(position, 40e3, 1));
   approval_tests.emplace_back(world4.composition(position, 40e3, 2));
   approval_tests.emplace_back(world4.composition(position, 40e3, 3));
-  approval_tests.emplace_back(world4.temperature(position, 45e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 45e3));
   approval_tests.emplace_back(world4.composition(position, 45e3, 0));
   approval_tests.emplace_back(world4.composition(position, 45e3, 1));
   approval_tests.emplace_back(world4.composition(position, 45e3, 2));
   approval_tests.emplace_back(world4.composition(position, 45e3, 3));
-  approval_tests.emplace_back(world4.temperature(position, 50e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 50e3));
   approval_tests.emplace_back(world4.composition(position, 50e3, 0));
   approval_tests.emplace_back(world4.composition(position, 50e3, 1));
   approval_tests.emplace_back(world4.composition(position, 50e3, 2));
   approval_tests.emplace_back(world4.composition(position, 50e3, 3));
-  approval_tests.emplace_back(world4.temperature(position, 60e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 60e3));
   approval_tests.emplace_back(world4.composition(position, 60e3, 0));
   approval_tests.emplace_back(world4.composition(position, 60e3, 1));
   approval_tests.emplace_back(world4.composition(position, 60e3, 2));
   approval_tests.emplace_back(world4.composition(position, 60e3, 3));
-  approval_tests.emplace_back(world4.temperature(position, 80e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 80e3));
   approval_tests.emplace_back(world4.composition(position, 80e3, 0));
   approval_tests.emplace_back(world4.composition(position, 80e3, 1));
   approval_tests.emplace_back(world4.composition(position, 80e3, 2));
   approval_tests.emplace_back(world4.composition(position, 80e3, 3));
-  approval_tests.emplace_back(world4.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 100e3));
   approval_tests.emplace_back(world4.composition(position, 100e3, 0));
   approval_tests.emplace_back(world4.composition(position, 100e3, 1));
   approval_tests.emplace_back(world4.composition(position, 100e3, 2));
@@ -2289,9 +2289,9 @@ TEST_CASE("WorldBuilder Features: Fault")
 
   // Check fault plate through the world
   std::array<double,3> position = {{0,0,800e3}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 220e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 230e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 220e3));
+  approval_tests.emplace_back(world1.temperature(position, 230e3));
   approval_tests.emplace_back(world1.composition(position, 0, 0));
   approval_tests.emplace_back(world1.composition(position, 0, 1));
   approval_tests.emplace_back(world1.composition(position, 0, 2));
@@ -2301,10 +2301,10 @@ TEST_CASE("WorldBuilder Features: Fault")
   approval_tests.emplace_back(world1.composition(position, 0, 6));
 
   position = {{250e3,500e3,800e3}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 10, 10));
-  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10));
-  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 10));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 - 1));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 + 1));
   approval_tests.emplace_back(world1.composition(position, 0, 0));
   approval_tests.emplace_back(world1.composition(position, 0, 1));
   approval_tests.emplace_back(world1.composition(position, 0, 2));
@@ -2332,40 +2332,40 @@ TEST_CASE("WorldBuilder Features: Fault")
   }
 
   position = {{50e3,230e3,800e3}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 1, 10));
-  approval_tests.emplace_back(world1.temperature(position, 5, 10));
-  approval_tests.emplace_back(world1.temperature(position, 10, 10));
-  approval_tests.emplace_back(world1.temperature(position, 100, 10));
-  approval_tests.emplace_back(world1.temperature(position, 500, 10));
-  approval_tests.emplace_back(world1.temperature(position, 1000, 10));
-  approval_tests.emplace_back(world1.temperature(position, 5000, 10));
-  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3/2, 10));
-  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10));
-  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10));
-  approval_tests.emplace_back(world1.temperature(position, 25e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 50e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 75e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 80e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 90e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 100e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 150e3, 10));
-  approval_tests.emplace_back(world1.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 1));
+  approval_tests.emplace_back(world1.temperature(position, 5));
+  approval_tests.emplace_back(world1.temperature(position, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100));
+  approval_tests.emplace_back(world1.temperature(position, 500));
+  approval_tests.emplace_back(world1.temperature(position, 1000));
+  approval_tests.emplace_back(world1.temperature(position, 5000));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3/2));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 - 1));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 + 1));
+  approval_tests.emplace_back(world1.temperature(position, 25e3));
+  approval_tests.emplace_back(world1.temperature(position, 50e3));
+  approval_tests.emplace_back(world1.temperature(position, 75e3));
+  approval_tests.emplace_back(world1.temperature(position, 80e3));
+  approval_tests.emplace_back(world1.temperature(position, 90e3));
+  approval_tests.emplace_back(world1.temperature(position, 100e3));
+  approval_tests.emplace_back(world1.temperature(position, 150e3));
+  approval_tests.emplace_back(world1.temperature(position, 200e3));
 
   position = {{250e3,250e3,800e3}};
-  approval_tests.emplace_back(world1.temperature(position, 0, 10));
-  approval_tests.emplace_back(world1.temperature(position, 1, 10));
-  approval_tests.emplace_back(world1.temperature(position, 5, 10));
-  approval_tests.emplace_back(world1.temperature(position, 10, 10));
-  approval_tests.emplace_back(world1.temperature(position, 100, 10));
-  approval_tests.emplace_back(world1.temperature(position, 500, 10));
-  approval_tests.emplace_back(world1.temperature(position, 1000, 10));
-  approval_tests.emplace_back(world1.temperature(position, 5000, 10));
-  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3/2, 10));
-  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 - 1, 10));
-  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 + 1, 10));
-  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 51e3, 10));
+  approval_tests.emplace_back(world1.temperature(position, 0));
+  approval_tests.emplace_back(world1.temperature(position, 1));
+  approval_tests.emplace_back(world1.temperature(position, 5));
+  approval_tests.emplace_back(world1.temperature(position, 10));
+  approval_tests.emplace_back(world1.temperature(position, 100));
+  approval_tests.emplace_back(world1.temperature(position, 500));
+  approval_tests.emplace_back(world1.temperature(position, 1000));
+  approval_tests.emplace_back(world1.temperature(position, 5000));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3/2));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 - 1));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 50e3 + 1));
+  approval_tests.emplace_back(world1.temperature(position, std::sqrt(2) * 51e3));
   approval_tests.emplace_back(world1.composition(position, 0, 0));
   approval_tests.emplace_back(world1.composition(position, 0, 1));
   approval_tests.emplace_back(world1.composition(position, 0, 2));
@@ -2445,9 +2445,9 @@ TEST_CASE("WorldBuilder Features: Fault")
 
   // Check fault plate through the world
   position = {{0,0,800e3}};
-  approval_tests.emplace_back(world2.temperature(position, 0, 10));
-  approval_tests.emplace_back(world2.temperature(position, 220e3, 10));
-  approval_tests.emplace_back(world2.temperature(position, 230e3, 10));
+  approval_tests.emplace_back(world2.temperature(position, 0));
+  approval_tests.emplace_back(world2.temperature(position, 220e3));
+  approval_tests.emplace_back(world2.temperature(position, 230e3));
   approval_tests.emplace_back(world2.composition(position, 0, 0));
   approval_tests.emplace_back(world2.composition(position, 0, 1));
   approval_tests.emplace_back(world2.composition(position, 0, 2));
@@ -2457,10 +2457,10 @@ TEST_CASE("WorldBuilder Features: Fault")
   approval_tests.emplace_back(world2.composition(position, 0, 6));
 
   position = {{250e3,500e3,800e3}};
-  approval_tests.emplace_back(world2.temperature(position, 0, 10));
-  approval_tests.emplace_back(world2.temperature(position, 10, 10));
-  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3 - 1, 10));
-  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3 + 1, 10));
+  approval_tests.emplace_back(world2.temperature(position, 0));
+  approval_tests.emplace_back(world2.temperature(position, 10));
+  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3 - 1));
+  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3 + 1));
   approval_tests.emplace_back(world2.composition(position, 0, 0));
   approval_tests.emplace_back(world2.composition(position, 0, 1));
   approval_tests.emplace_back(world2.composition(position, 0, 2));
@@ -2480,17 +2480,17 @@ TEST_CASE("WorldBuilder Features: Fault")
 
 
   position = {{250e3,250e3,800e3}};
-  approval_tests.emplace_back(world2.temperature(position, 0, 10));
-  approval_tests.emplace_back(world2.temperature(position, 1, 10));
-  approval_tests.emplace_back(world2.temperature(position, 5, 10));
-  approval_tests.emplace_back(world2.temperature(position, 10, 10));
-  approval_tests.emplace_back(world2.temperature(position, 100, 10));
-  approval_tests.emplace_back(world2.temperature(position, 500, 10));
-  approval_tests.emplace_back(world2.temperature(position, 1000, 10));
-  approval_tests.emplace_back(world2.temperature(position, 5000, 10));
-  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3/2, 10));
-  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3 - 1, 10));
-  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3 + 1, 10));
+  approval_tests.emplace_back(world2.temperature(position, 0));
+  approval_tests.emplace_back(world2.temperature(position, 1));
+  approval_tests.emplace_back(world2.temperature(position, 5));
+  approval_tests.emplace_back(world2.temperature(position, 10));
+  approval_tests.emplace_back(world2.temperature(position, 100));
+  approval_tests.emplace_back(world2.temperature(position, 500));
+  approval_tests.emplace_back(world2.temperature(position, 1000));
+  approval_tests.emplace_back(world2.temperature(position, 5000));
+  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3/2));
+  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3 - 1));
+  approval_tests.emplace_back(world2.temperature(position, std::sqrt(2) * 50e3 + 1));
   approval_tests.emplace_back(world2.composition(position, 0, 0));
   approval_tests.emplace_back(world2.composition(position, 0, 1));
   approval_tests.emplace_back(world2.composition(position, 0, 2));
@@ -2546,9 +2546,9 @@ TEST_CASE("WorldBuilder Features: Fault")
 
   // Check fault through the world
   position = {{0,0,800e3}};
-  approval_tests.emplace_back(world3.temperature(position, 0, 10));
-  approval_tests.emplace_back(world3.temperature(position, 240e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 260e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 0));
+  approval_tests.emplace_back(world3.temperature(position, 240e3));
+  approval_tests.emplace_back(world3.temperature(position, 260e3));
   approval_tests.emplace_back(world3.composition(position, 0, 0));
   approval_tests.emplace_back(world3.composition(position, 0, 1));
   approval_tests.emplace_back(world3.composition(position, 0, 2));
@@ -2559,16 +2559,16 @@ TEST_CASE("WorldBuilder Features: Fault")
 
   position = {{250e3,500e3,800e3}};
   //adibatic temperature
-  approval_tests.emplace_back(world3.temperature(position, 0, 10));
-  approval_tests.emplace_back(world3.temperature(position, 1, 10));
-  approval_tests.emplace_back(world3.temperature(position, 5000, 10));
-  approval_tests.emplace_back(world3.temperature(position, 10e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 25e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 50e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 75e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 150e3, 10));
-  //approval_tests.emplace_back(world3.temperature(position, std::sqrt(2) * 100e3 - 1, 10));
-  //approval_tests.emplace_back(world3.temperature(position, std::sqrt(2) * 100e3 + 1, 10));
+  approval_tests.emplace_back(world3.temperature(position, 0));
+  approval_tests.emplace_back(world3.temperature(position, 1));
+  approval_tests.emplace_back(world3.temperature(position, 5000));
+  approval_tests.emplace_back(world3.temperature(position, 10e3));
+  approval_tests.emplace_back(world3.temperature(position, 25e3));
+  approval_tests.emplace_back(world3.temperature(position, 50e3));
+  approval_tests.emplace_back(world3.temperature(position, 75e3));
+  approval_tests.emplace_back(world3.temperature(position, 150e3));
+  //approval_tests.emplace_back(world3.temperature(position, std::sqrt(2) * 100e3 - 1));
+  //approval_tests.emplace_back(world3.temperature(position, std::sqrt(2) * 100e3 + 1));
   approval_tests.emplace_back(world3.composition(position, 0, 0));
   approval_tests.emplace_back(world3.composition(position, 0, 1));
   approval_tests.emplace_back(world3.composition(position, 0, 2));
@@ -2606,14 +2606,14 @@ TEST_CASE("WorldBuilder Features: Fault")
   }
 
   position = {{250e3,600e3,800e3}};
-  approval_tests.emplace_back(world3.temperature(position, 0, 10));
-  approval_tests.emplace_back(world3.temperature(position, 10, 10));
-  approval_tests.emplace_back(world3.temperature(position, 100e3-1, 10));
-  approval_tests.emplace_back(world3.temperature(position, 100e3+1, 10));
-  approval_tests.emplace_back(world3.temperature(position, 101e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 110e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 150e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 0));
+  approval_tests.emplace_back(world3.temperature(position, 10));
+  approval_tests.emplace_back(world3.temperature(position, 100e3-1));
+  approval_tests.emplace_back(world3.temperature(position, 100e3+1));
+  approval_tests.emplace_back(world3.temperature(position, 101e3));
+  approval_tests.emplace_back(world3.temperature(position, 110e3));
+  approval_tests.emplace_back(world3.temperature(position, 150e3));
+  approval_tests.emplace_back(world3.temperature(position, 200e3));
   approval_tests.emplace_back(world3.composition(position, 0, 0));
   approval_tests.emplace_back(world3.composition(position, 0, 1));
   approval_tests.emplace_back(world3.composition(position, 0, 2));
@@ -2657,14 +2657,14 @@ TEST_CASE("WorldBuilder Features: Fault")
   }
 
   position = {{650e3,650e3,800e3}};
-  approval_tests.emplace_back(world3.temperature(position, 0, 10));
-  approval_tests.emplace_back(world3.temperature(position, 10, 10));
-  approval_tests.emplace_back(world3.temperature(position, 100e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 100e3+1, 10));
-  approval_tests.emplace_back(world3.temperature(position, 101e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 110e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 150e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 0));
+  approval_tests.emplace_back(world3.temperature(position, 10));
+  approval_tests.emplace_back(world3.temperature(position, 100e3));
+  approval_tests.emplace_back(world3.temperature(position, 100e3+1));
+  approval_tests.emplace_back(world3.temperature(position, 101e3));
+  approval_tests.emplace_back(world3.temperature(position, 110e3));
+  approval_tests.emplace_back(world3.temperature(position, 150e3));
+  approval_tests.emplace_back(world3.temperature(position, 200e3));
   approval_tests.emplace_back(world3.composition(position, 0, 0));
   approval_tests.emplace_back(world3.composition(position, 0, 1));
   approval_tests.emplace_back(world3.composition(position, 0, 2));
@@ -2708,14 +2708,14 @@ TEST_CASE("WorldBuilder Features: Fault")
   }
 
   position = {{700e3,675e3,800e3}};
-  approval_tests.emplace_back(world3.temperature(position, 0, 10));
-  approval_tests.emplace_back(world3.temperature(position, 10, 10));
-  approval_tests.emplace_back(world3.temperature(position, 100e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 100e3+1, 10));
-  approval_tests.emplace_back(world3.temperature(position, 101e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 110e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 150e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 200e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 0));
+  approval_tests.emplace_back(world3.temperature(position, 10));
+  approval_tests.emplace_back(world3.temperature(position, 100e3));
+  approval_tests.emplace_back(world3.temperature(position, 100e3+1));
+  approval_tests.emplace_back(world3.temperature(position, 101e3));
+  approval_tests.emplace_back(world3.temperature(position, 110e3));
+  approval_tests.emplace_back(world3.temperature(position, 150e3));
+  approval_tests.emplace_back(world3.temperature(position, 200e3));
   approval_tests.emplace_back(world3.composition(position, 0, 0));
   approval_tests.emplace_back(world3.composition(position, 0, 1));
   approval_tests.emplace_back(world3.composition(position, 0, 2));
@@ -2754,45 +2754,45 @@ TEST_CASE("WorldBuilder Features: Fault")
   approval_tests.emplace_back(world3.composition(position, 0, 6));
 
   position = {{750e3,35e3,800e3}};
-  approval_tests.emplace_back(world3.temperature(position, 0, 10));
-  approval_tests.emplace_back(world3.temperature(position, 10, 10));
-  approval_tests.emplace_back(world3.temperature(position, 5e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 10e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 15e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 20e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 25e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 30e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 35e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 40e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 45e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 50e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 55e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 60e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 65e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 70e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 72.5e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 75e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 80e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 85e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 90e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 95e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 100e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 105e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 110e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 115e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 120e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 125e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 130e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 135e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 150e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 160e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 170e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 175e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 180e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 190e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 200e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 250e3, 10));
-  approval_tests.emplace_back(world3.temperature(position, 300e3, 10));
+  approval_tests.emplace_back(world3.temperature(position, 0));
+  approval_tests.emplace_back(world3.temperature(position, 10));
+  approval_tests.emplace_back(world3.temperature(position, 5e3));
+  approval_tests.emplace_back(world3.temperature(position, 10e3));
+  approval_tests.emplace_back(world3.temperature(position, 15e3));
+  approval_tests.emplace_back(world3.temperature(position, 20e3));
+  approval_tests.emplace_back(world3.temperature(position, 25e3));
+  approval_tests.emplace_back(world3.temperature(position, 30e3));
+  approval_tests.emplace_back(world3.temperature(position, 35e3));
+  approval_tests.emplace_back(world3.temperature(position, 40e3));
+  approval_tests.emplace_back(world3.temperature(position, 45e3));
+  approval_tests.emplace_back(world3.temperature(position, 50e3));
+  approval_tests.emplace_back(world3.temperature(position, 55e3));
+  approval_tests.emplace_back(world3.temperature(position, 60e3));
+  approval_tests.emplace_back(world3.temperature(position, 65e3));
+  approval_tests.emplace_back(world3.temperature(position, 70e3));
+  approval_tests.emplace_back(world3.temperature(position, 72.5e3));
+  approval_tests.emplace_back(world3.temperature(position, 75e3));
+  approval_tests.emplace_back(world3.temperature(position, 80e3));
+  approval_tests.emplace_back(world3.temperature(position, 85e3));
+  approval_tests.emplace_back(world3.temperature(position, 90e3));
+  approval_tests.emplace_back(world3.temperature(position, 95e3));
+  approval_tests.emplace_back(world3.temperature(position, 100e3));
+  approval_tests.emplace_back(world3.temperature(position, 105e3));
+  approval_tests.emplace_back(world3.temperature(position, 110e3));
+  approval_tests.emplace_back(world3.temperature(position, 115e3));
+  approval_tests.emplace_back(world3.temperature(position, 120e3));
+  approval_tests.emplace_back(world3.temperature(position, 125e3));
+  approval_tests.emplace_back(world3.temperature(position, 130e3));
+  approval_tests.emplace_back(world3.temperature(position, 135e3));
+  approval_tests.emplace_back(world3.temperature(position, 150e3));
+  approval_tests.emplace_back(world3.temperature(position, 160e3));
+  approval_tests.emplace_back(world3.temperature(position, 170e3));
+  approval_tests.emplace_back(world3.temperature(position, 175e3));
+  approval_tests.emplace_back(world3.temperature(position, 180e3));
+  approval_tests.emplace_back(world3.temperature(position, 190e3));
+  approval_tests.emplace_back(world3.temperature(position, 200e3));
+  approval_tests.emplace_back(world3.temperature(position, 250e3));
+  approval_tests.emplace_back(world3.temperature(position, 300e3));
 
   // check grains layer 1
   {
@@ -2829,31 +2829,31 @@ TEST_CASE("WorldBuilder Features: Fault")
   WorldBuilder::World world4(file_name);
 
   position = {{250e3,501e3,800e3}};
-  approval_tests.emplace_back(world4.temperature(position, 0, 10));
+  approval_tests.emplace_back(world4.temperature(position, 0));
   approval_tests.emplace_back(world4.composition(position, 0, 0));
-  approval_tests.emplace_back(world4.temperature(position, 1, 10));
+  approval_tests.emplace_back(world4.temperature(position, 1));
   approval_tests.emplace_back(world4.composition(position, 1, 0));
-  approval_tests.emplace_back(world4.temperature(position, 1e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 1e3));
   approval_tests.emplace_back(world4.composition(position, 1e3, 0));
-  approval_tests.emplace_back(world4.temperature(position, 10e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 10e3));
   approval_tests.emplace_back(world4.composition(position, 10e3, 0));
-  approval_tests.emplace_back(world4.temperature(position, 20e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 20e3));
   approval_tests.emplace_back(world4.composition(position, 20e3, 0));
-  approval_tests.emplace_back(world4.temperature(position, 30e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 30e3));
   approval_tests.emplace_back(world4.composition(position, 30e3, 0));
-  approval_tests.emplace_back(world4.temperature(position, 35e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 35e3));
   approval_tests.emplace_back(world4.composition(position, 35e3, 0));
-  approval_tests.emplace_back(world4.temperature(position, 40e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 40e3));
   approval_tests.emplace_back(world4.composition(position, 40e3, 0));
-  approval_tests.emplace_back(world4.temperature(position, 45e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 45e3));
   approval_tests.emplace_back(world4.composition(position, 45e3, 0));
-  approval_tests.emplace_back(world4.temperature(position, 50e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 50e3));
   approval_tests.emplace_back(world4.composition(position, 50e3, 0));
-  approval_tests.emplace_back(world4.temperature(position, 60e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 60e3));
   approval_tests.emplace_back(world4.composition(position, 60e3, 0));
-  approval_tests.emplace_back(world4.temperature(position, 80e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 80e3));
   approval_tests.emplace_back(world4.composition(position, 80e3, 0));
-  approval_tests.emplace_back(world4.temperature(position, 100e3, 10));
+  approval_tests.emplace_back(world4.temperature(position, 100e3));
   approval_tests.emplace_back(world4.composition(position, 100e3, 0));
 
   std::vector<std::string> approvals;
@@ -2881,59 +2881,59 @@ TEST_CASE("WorldBuilder Features: coordinate interpolation")
     WorldBuilder::World world1(file_name);
 
     std::array<double,3> position = {{374e3,875e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.temperature(position, 0));
     approval_tests.emplace_back(world1.composition(position, 0, 0));
     position = {{376e3,875e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.temperature(position, 0));
     approval_tests.emplace_back(world1.composition(position, 0, 0));
     position = {{350e3,900e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.temperature(position, 0));
     approval_tests.emplace_back(world1.composition(position, 0, 0));
 
     position = {{375e3,874e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.temperature(position, 0));
     approval_tests.emplace_back(world1.composition(position, 0, 0));
     position = {{375e3,876e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.temperature(position, 0));
     approval_tests.emplace_back(world1.composition(position, 0, 0));
 
 
     position = {{374e3,625e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.temperature(position, 0));
     approval_tests.emplace_back(world1.composition(position, 0, 0));
     position = {{376e3,625e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.temperature(position, 0));
     approval_tests.emplace_back(world1.composition(position, 0, 0));
     position = {{350e3,600e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.temperature(position, 0));
     approval_tests.emplace_back(world1.composition(position, 0, 0));
 
     position = {{375e3,624e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.temperature(position, 0));
     approval_tests.emplace_back(world1.composition(position, 0, 0));
     position = {{375e3,626e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 0, 10));
+    approval_tests.emplace_back(world1.temperature(position, 0));
     approval_tests.emplace_back(world1.composition(position, 0, 0));
 
 
     position = {{638e3,425e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 10, 10));
+    approval_tests.emplace_back(world1.temperature(position, 10));
     approval_tests.emplace_back(world1.composition(position, 10, 0));
     position = {{637e3,425e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 10, 10));
+    approval_tests.emplace_back(world1.temperature(position, 10));
     approval_tests.emplace_back(world1.composition(position, 10, 0));
     position = {{617.5e3,445e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 1e3, 10));
+    approval_tests.emplace_back(world1.temperature(position, 1e3));
     approval_tests.emplace_back(world1.composition(position, 1e3, 0));
 
     position = {{625e3,200e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 10, 10));
+    approval_tests.emplace_back(world1.temperature(position, 10));
     approval_tests.emplace_back(world1.composition(position, 10, 0));
     position = {{624e3,200e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 10, 10));
+    approval_tests.emplace_back(world1.temperature(position, 10));
     approval_tests.emplace_back(world1.composition(position, 10, 0));
     position = {{607e3,180e3,800e3}};
-    approval_tests.emplace_back(world1.temperature(position, 3e3, 10));
+    approval_tests.emplace_back(world1.temperature(position, 3e3));
     approval_tests.emplace_back(world1.composition(position, 3e3, 0));
   }
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
@@ -7155,39 +7155,39 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     // origin
     std::array<double,3> position = {{6371000 - 0, 0 * dtr, 0 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    approval_tests.emplace_back(world.temperature(position, 0, 10));
-    approval_tests.emplace_back(world.temperature(position, 1, 10));
-    approval_tests.emplace_back(world.temperature(position, 200e3, 10));
-    approval_tests.emplace_back(world.temperature(position, 210e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 0));
+    approval_tests.emplace_back(world.temperature(position, 1));
+    approval_tests.emplace_back(world.temperature(position, 200e3));
+    approval_tests.emplace_back(world.temperature(position, 210e3));
 
     // ~330 km
     position = {{6371000 - 0, 0 * dtr, -3 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    approval_tests.emplace_back(world.temperature(position, 0, 10));
-    approval_tests.emplace_back(world.temperature(position, 50e3, 10));
-    approval_tests.emplace_back(world.temperature(position, 75e3, 10));
-    approval_tests.emplace_back(world.temperature(position, 250e3, 10));
-    approval_tests.emplace_back(world.temperature(position, 275e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 0));
+    approval_tests.emplace_back(world.temperature(position, 50e3));
+    approval_tests.emplace_back(world.temperature(position, 75e3));
+    approval_tests.emplace_back(world.temperature(position, 250e3));
+    approval_tests.emplace_back(world.temperature(position, 275e3));
 
 
     // ~1100 km
     position = {{6371000 - 0, 0 * dtr, -10 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    approval_tests.emplace_back(world.temperature(position, 0, 10));
-    approval_tests.emplace_back(world.temperature(position, 95e3, 10));
-    approval_tests.emplace_back(world.temperature(position, 100e3, 10));
-    approval_tests.emplace_back(world.temperature(position, 300e3, 10));
-    approval_tests.emplace_back(world.temperature(position, 305e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 0));
+    approval_tests.emplace_back(world.temperature(position, 95e3));
+    approval_tests.emplace_back(world.temperature(position, 100e3));
+    approval_tests.emplace_back(world.temperature(position, 300e3));
+    approval_tests.emplace_back(world.temperature(position, 305e3));
 
 
     // ~2200 km
     position = {{6371000 - 0, 0 * dtr, -20 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    approval_tests.emplace_back(world.temperature(position, 0, 10));
-    approval_tests.emplace_back(world.temperature(position, 1, 10));
-    approval_tests.emplace_back(world.temperature(position, 200e3, 10));
-    approval_tests.emplace_back(world.temperature(position, 205e3, 10));
-    approval_tests.emplace_back(world.temperature(position, 570e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 0));
+    approval_tests.emplace_back(world.temperature(position, 1));
+    approval_tests.emplace_back(world.temperature(position, 200e3));
+    approval_tests.emplace_back(world.temperature(position, 205e3));
+    approval_tests.emplace_back(world.temperature(position, 570e3));
   }
 
   {
@@ -7199,39 +7199,39 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
     // origin
     std::array<double,3> position = {{6371000 - 0, 0 * dtr, 0 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    approval_tests.emplace_back(world.temperature(position, 0, 10));
-    approval_tests.emplace_back(world.temperature(position, 1, 10));
-    approval_tests.emplace_back(world.temperature(position, 200e3, 10));
-    approval_tests.emplace_back(world.temperature(position, 210e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 0));
+    approval_tests.emplace_back(world.temperature(position, 1));
+    approval_tests.emplace_back(world.temperature(position, 200e3));
+    approval_tests.emplace_back(world.temperature(position, 210e3));
 
     // ~330 km
     position = {{6371000 - 0, 0 * dtr, -3 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    approval_tests.emplace_back(world.temperature(position, 0, 10));
-    approval_tests.emplace_back(world.temperature(position, 50e3, 10));
-    approval_tests.emplace_back(world.temperature(position, 75e3, 10));
-    approval_tests.emplace_back(world.temperature(position, 250e3, 10));
-    approval_tests.emplace_back(world.temperature(position, 275e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 0));
+    approval_tests.emplace_back(world.temperature(position, 50e3));
+    approval_tests.emplace_back(world.temperature(position, 75e3));
+    approval_tests.emplace_back(world.temperature(position, 250e3));
+    approval_tests.emplace_back(world.temperature(position, 275e3));
 
 
     // ~1100 km
     position = {{6371000 - 0, 0 * dtr, -10 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    approval_tests.emplace_back(world.temperature(position, 0, 10));
-    approval_tests.emplace_back(world.temperature(position, 150e3, 10));
-    approval_tests.emplace_back(world.temperature(position, 175e3, 10));
-    approval_tests.emplace_back(world.temperature(position, 380e3, 10));
-    approval_tests.emplace_back(world.temperature(position, 385e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 0));
+    approval_tests.emplace_back(world.temperature(position, 150e3));
+    approval_tests.emplace_back(world.temperature(position, 175e3));
+    approval_tests.emplace_back(world.temperature(position, 380e3));
+    approval_tests.emplace_back(world.temperature(position, 385e3));
 
 
     // ~1100 km
     position = {{6371000 - 0, 0 * dtr, -20 * dtr}};
     position = world.parameters.coordinate_system->natural_to_cartesian_coordinates(position);
-    approval_tests.emplace_back(world.temperature(position, 0, 10));
-    approval_tests.emplace_back(world.temperature(position, 350e3, 10));
-    approval_tests.emplace_back(world.temperature(position, 355e3, 10));
-    approval_tests.emplace_back(world.temperature(position, 565e3, 10));
-    approval_tests.emplace_back(world.temperature(position, 570e3, 10));
+    approval_tests.emplace_back(world.temperature(position, 0));
+    approval_tests.emplace_back(world.temperature(position, 350e3));
+    approval_tests.emplace_back(world.temperature(position, 355e3));
+    approval_tests.emplace_back(world.temperature(position, 565e3));
+    approval_tests.emplace_back(world.temperature(position, 570e3));
   }
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
