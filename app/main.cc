@@ -195,7 +195,7 @@ int main(int argc, char **argv)
                     }
                   };
                   std::cout << data[i][0] << ' ' << data[i][1] << ' ' << data[i][2] << ' ' << data[i][3] << ' ';
-                  std::cout << world->temperature(coords, string_to_double(data[i][2]), string_to_double(data[i][3]))  << ' ';
+                  std::cout << world->temperature(coords, string_to_double(data[i][2]))  << ' ';
 
                   for (unsigned int c = 0; c < compositions; ++c)
                     {
@@ -252,7 +252,7 @@ int main(int argc, char **argv)
                     }
 
                   std::cout << data[i][0] << ' ' << data[i][1] << ' ' << data[i][2] << ' ' << data[i][3] << ' ' << data[i][4] << ' ';
-                  std::cout << world->temperature(coords, string_to_double(data[i][3]), string_to_double(data[i][4]))  << ' ';
+                  std::cout << world->temperature(coords, string_to_double(data[i][3]))  << ' ';
 
                   for (unsigned int c = 0; c < compositions; ++c)
                     {
