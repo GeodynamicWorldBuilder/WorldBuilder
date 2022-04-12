@@ -152,6 +152,10 @@ foreach(test_source ${VISU_TEST_SOURCES})
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/visualization/)
 endforeach(test_source)
 
+add_custom_target(update_test_references 
+                  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                  COMMAND cp -r ${CMAKE_BINARY_DIR}/tests/ ${CMAKE_SOURCE_DIR}/
+                  COMMENT "Updating the World Builder test results...")
 
 # Documentation tests
  # Create directory for the test results
