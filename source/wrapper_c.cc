@@ -47,28 +47,29 @@ extern "C" {
     *ptr_ptr_world = reinterpret_cast<void *>(a);
   }
 
+
   /**
    * This function return the temperature at a specific location given x, z, depth and
    * gravity.
    */
-  void temperature_2d(void *ptr_ptr_world, double x, double z, double depth, double gravity, double *temperature)
+  void temperature_2d(void *ptr_ptr_world, double x, double z, double depth, double *temperature)
   {
     WorldBuilder::World *a = reinterpret_cast<WorldBuilder::World *>(ptr_ptr_world);
     std::array<double,2> position = {{x,z}};
-    *temperature = a->temperature(position,depth,gravity);
+    *temperature = a->temperature(position,depth);
   }
+
 
   /**
    * This function return the temperature at a specific location given x, y, z, depth and
    * gravity.
    */
-  void temperature_3d(void *ptr_ptr_world, double x, double y, double z, double depth, double gravity, double *temperature)
+  void temperature_3d(void *ptr_ptr_world, double x, double y, double z, double depth, double *temperature)
   {
     WorldBuilder::World *a = reinterpret_cast<WorldBuilder::World *>(ptr_ptr_world);
     std::array<double,3> position = {{x,y,z}};
-    *temperature = a->temperature(position,depth,gravity);
+    *temperature = a->temperature(position,depth);
   }
-
 
 
   /**
@@ -82,6 +83,7 @@ extern "C" {
     *composition = a->composition(position,depth,composition_number);
   }
 
+
   /**
    * This function return the composition at a specific location given x, y, z, depth and
    * composition number.
@@ -92,6 +94,7 @@ extern "C" {
     std::array<double,3> position = {{x,y,z}};
     *composition = a->composition(position,depth,composition_number);
   }
+
 
   /**
    * The destructor for the world builder class. Call this function when done with the

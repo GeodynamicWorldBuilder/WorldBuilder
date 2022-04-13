@@ -41,9 +41,8 @@ USE, INTRINSIC :: ISO_C_BINDING!, ONLY: C_PTR
     END SUBROUTINE create_world
 
     !> Create an interface with the 2d tempearture C function of the World builder.
-    !! This function return the temperature at a specific location given x, z, depth and
-    !! gravity.
-    SUBROUTINE temperature_2d(cworld, x, z, depth, gravity, temperature) BIND(C, NAME='temperature_2d')
+    !! This function return the temperature at a specific location given x, z and depth.
+    SUBROUTINE temperature_2d(cworld, x, z, depth, temperature) BIND(C, NAME='temperature_2d')
       USE, INTRINSIC :: ISO_C_BINDING
       IMPLICIT NONE
       ! This argument is a pointer passed by value.
@@ -51,14 +50,12 @@ USE, INTRINSIC :: ISO_C_BINDING!, ONLY: C_PTR
       REAL(C_DOUBLE), intent(in), value :: x
       REAL(C_DOUBLE), intent(in), value :: z
       REAL(C_DOUBLE), intent(in), value :: depth
-      REAL(C_DOUBLE), intent(in), value :: gravity
       REAL(C_DOUBLE), intent(out) :: temperature
     END SUBROUTINE temperature_2d
 
     !> Create an interface with the 3d tempearture function of the World builder.
-    !! This function return the temperature at a specific location given x, y, z, depth and
-    !! gravity.
-        SUBROUTINE temperature_3d(cworld, x, y, z, depth, gravity, temperature) BIND(C, NAME='temperature_3d')
+    !! This function return the temperature at a specific location given x, y, z and depth.
+        SUBROUTINE temperature_3d(cworld, x, y, z, depth, temperature) BIND(C, NAME='temperature_3d')
       USE, INTRINSIC :: ISO_C_BINDING
       IMPLICIT NONE
       ! This argument is a pointer passed by value.
@@ -67,7 +64,6 @@ USE, INTRINSIC :: ISO_C_BINDING!, ONLY: C_PTR
       REAL(C_DOUBLE), intent(in), value :: y
       REAL(C_DOUBLE), intent(in), value :: z
       REAL(C_DOUBLE), intent(in), value :: depth
-      REAL(C_DOUBLE), intent(in), value :: gravity
       REAL(C_DOUBLE), intent(out) :: temperature
     END SUBROUTINE temperature_3d
 

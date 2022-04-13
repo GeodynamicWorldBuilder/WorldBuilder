@@ -262,7 +262,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name:  Install optional dependencies
-        run: sudo apt install gfortran swig python3-setuptools
+        run: sudo apt install gfortran swig python3-setuptools openmpi-bin
         shell: bash
 
       - name: extend path

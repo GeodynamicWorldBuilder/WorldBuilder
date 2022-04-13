@@ -27,6 +27,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - An equal operator (operator==) for the point class, which compares two points with an espilon. \[Menno Fraters; 2022-03-26; [#396](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/396)\]
 - New gravity plugin system with a uniform gravity plugin where the gravity magnitude can be set from the input file. This how replaces the gravity input provided thruogh the interface. The interface itself will be updated in a future pull request, where the gravity norm parameter will be removed. \[Menno Fraters; 2022-03-27; [#370](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/370)\]
 - ApprovalTest have been added to the unit tests. \[Menno Fraters; 2022-04-09; [#401](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/401)\]
+- Added a cmake target to update the reference test results called `update_test_references`. \[Menno Fraters; 2022-04-12; [#404](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/404)\]
  
 ### Changed
 - The World Builder Visualizer will now use zlib compression for vtu files by default. If zlib is not available binary output will be used. \[Menno Fraters; 2021-06-26; [#282](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/282)\]
@@ -39,6 +40,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - parse entries for all temperature, composition and grain plugins now require the coordinates of the feature to be passed as a parameter. \[Menno Fraters; 2022-03-26; [#396](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/396)\]
 - NaturalCoordinate has moved out of utilities to the objects namespace and folder. \[Menno Fraters; 2022-03-26; [#399](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/399)\]
 - Breaking Change: Non-continuous interpolation has been removed, a lot of corner cases for the continuous interpolation have been fixed and accuracy has been improved with a new algorithm to compute the closest point on a spline. \[Menno Fraters; 2022-04-09; [#401](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/401)\]
+- Breaking change: The temperature interfaces with gravity as a parameter are now deprecated and the App and Visualization programs no longer use or accept gravity. \[Menno Fraters; 2022-04-12; [#404](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/404)\]
 
 ### Fixed
 - Using slabs and faults beyond the -180 to 180 range gave issues. These are now fixed and it now works and is tested for the -380 to 380 range. \[Menno Fraters; 2021-10-22; [#338](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/338), [#340](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/340) and [#342](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/342)\]

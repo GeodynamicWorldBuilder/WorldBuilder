@@ -168,7 +168,7 @@ int main(int argc, char **argv)
           case 2:
             WBAssertThrow(!convert_spherical, "Converting to spherical values is only available in 3D.");
             // set the header
-            std::cout << "# x z d g T ";
+            std::cout << "# x z d T ";
 
             for (unsigned int c = 0; c < compositions; ++c)
               std::cout << 'c' << c << ' ';
@@ -187,15 +187,15 @@ int main(int argc, char **argv)
               if (data[i][0] != "#")
                 {
 
-                  WBAssertThrow(data[i].size() == dim + 2, "The file needs to contain dim + 2 entries, but contains " << data[i].size() << " entries "
-                                " on line " << i+1 << " of the data file.  Dim is " << dim << '.');
+                  WBAssertThrow(data[i].size() == dim + 1, "The file needs to contain dim + 1 entries, but contains " << data[i].size() << " entries "
+                                " on line " << i+1 << " of the data file (" << data_file << ").  Dim is " << dim << '.');
                   std::array<double,2> coords = {{
                       string_to_double(data[i][0]),
                       string_to_double(data[i][1])
                     }
                   };
-                  std::cout << data[i][0] << ' ' << data[i][1] << ' ' << data[i][2] << ' ' << data[i][3] << ' ';
-                  std::cout << world->temperature(coords, string_to_double(data[i][2]), string_to_double(data[i][3]))  << ' ';
+                  std::cout << data[i][0] << ' ' << data[i][1] << ' ' << data[i][2] << ' ';
+                  std::cout << world->temperature(coords, string_to_double(data[i][2]))  << ' ';
 
                   for (unsigned int c = 0; c < compositions; ++c)
                     {
@@ -237,8 +237,8 @@ int main(int argc, char **argv)
             for (unsigned int i = 0; i < data.size(); ++i)
               if (data[i][0] != "#")
                 {
-                  WBAssertThrow(data[i].size() == dim + 2, "The file needs to contain dim + 2 entries, but contains " << data[i].size() << " entries "
-                                " on line " << i+1 << " of the data file. Dim is " << dim << '.');
+                  WBAssertThrow(data[i].size() == dim + 1, "The file needs to contain dim + 1 entries, but contains " << data[i].size() << " entries "
+                                " on line " << i+1 << " of the data file (" << data_file << "). Dim is " << dim << '.');
                   std::array<double,3> coords = {{
                       string_to_double(data[i][0]), // x or R
                       string_to_double(data[i][1]) *(convert_spherical ? (const_pi/180.): 1.), // y or long
@@ -251,8 +251,8 @@ int main(int argc, char **argv)
                       coords = spherical_to_cartesian_coordinates(coords).get_array();
                     }
 
-                  std::cout << data[i][0] << ' ' << data[i][1] << ' ' << data[i][2] << ' ' << data[i][3] << ' ' << data[i][4] << ' ';
-                  std::cout << world->temperature(coords, string_to_double(data[i][3]), string_to_double(data[i][4]))  << ' ';
+                  std::cout << data[i][0] << ' ' << data[i][1] << ' ' << data[i][2] << ' ' << data[i][3] << ' ';
+                  std::cout << world->temperature(coords, string_to_double(data[i][3]))  << ' ';
 
                   for (unsigned int c = 0; c < compositions; ++c)
                     {

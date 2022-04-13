@@ -1444,7 +1444,7 @@ int main(int argc, char **argv)
           pool.parallel_for(0, n_p, [&] (size_t i)
           {
             std::array<double,2> coords = {{grid_x[i], grid_z[i]}};
-            temperature_vector[i] = world->temperature(coords, grid_depth[i], gravity);
+            temperature_vector[i] = world->temperature(coords, grid_depth[i]);
           });
         }
       else
@@ -1452,7 +1452,7 @@ int main(int argc, char **argv)
           pool.parallel_for(0, n_p, [&] (size_t i)
           {
             std::array<double,3> coords = {{grid_x[i], grid_y[i], grid_z[i]}};
-            temperature_vector[i] = world->temperature(coords, grid_depth[i], gravity);
+            temperature_vector[i] = world->temperature(coords, grid_depth[i]);
           });
         }
 

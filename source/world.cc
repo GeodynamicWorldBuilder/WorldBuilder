@@ -235,8 +235,7 @@ namespace WorldBuilder
 
   double
   World::temperature(const std::array<double,2> &point,
-                     const double depth,
-                     const double /*gravity_norm*/) const
+                     const double depth) const
   {
     // turn it into a 3d coordinate and call the 3d temperature function
     WBAssertThrow(dim == 2, "This function can only be called when the cross section "
@@ -269,13 +268,20 @@ namespace WorldBuilder
 
     std::array<double, 3> point_3d_cartesian = this->parameters.coordinate_system->natural_to_cartesian_coordinates(coord_3d.get_array());
 
-    return temperature(point_3d_cartesian, depth, NaN::DSNAN);
+    return temperature(point_3d_cartesian, depth);
+  }
+
+  double
+  World::temperature(const std::array<double,2> &point,
+                     const double depth,
+                     const double /*gravity_norm*/) const
+  {
+    return temperature(point, depth);
   }
 
   double
   World::temperature(const std::array<double,3> &point_,
-                     const double depth,
-                     const double /*gravity_norm*/) const
+                     const double depth) const
   {
     // We receive the cartesian points from the user.
     Point<3> point(point_,cartesian);
@@ -306,6 +312,14 @@ namespace WorldBuilder
     WBAssert(std::isfinite(temperature), "Temparture is not a finite: " << temperature);
 
     return temperature;
+  }
+
+  double
+  World::temperature(const std::array<double,3> &point,
+                     const double depth,
+                     const double /*gravity_norm*/) const
+  {
+    return temperature(point, depth);
   }
 
   double

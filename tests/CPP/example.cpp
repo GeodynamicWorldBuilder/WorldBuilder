@@ -1,5 +1,5 @@
 
-#include "world_builder/wrapper_c.h"
+#include "world_builder/wrapper_cpp.h"
 #include <stdio.h>
 
 int main(int argc, char *argv[]) {
@@ -10,6 +10,7 @@ int main(int argc, char *argv[]) {
   double y = 500e3;
   double z = 0;
   double depth = 0;
+  double gravity = 10.;
   unsigned int composition_number = 3;
   unsigned int random_number_seed = 1; // use a random number seed larger than zero
   double composition = 0;
@@ -27,26 +28,28 @@ int main(int argc, char *argv[]) {
 
   // Show how to call the functions.
   printf("create world \n");
+
+  using namespace wrapper_cpp;
   
-  create_world(&ptr_world, argv[1], &has_output_dir, output_dir, random_number_seed);
+  WorldBuilderWrapper world(argv[1],has_output_dir, output_dir, random_number_seed);
 
   printf("2d temperature: \n");
-  temperature_2d(ptr_world,x,z,depth,&temperature);
-  printf("temperature in C = %f \n", temperature);
+  printf("temperature in CPP = %f \n", world.temperature_2d(x,z,depth));
+
+  printf("2d temperature (deprecated): \n");
+  printf("temperature in CPP = %f \n", world.temperature_2d(x,z,depth, gravity));
 
   printf("3d temperature: \n");
-  temperature_3d(ptr_world,x,y,z,depth,&temperature);
-  printf("temperature in C = %f \n", temperature);
+  printf("temperature in CPP = %f \n", world.temperature_3d(x,y,z,depth));
+
+  printf("3d temperature (deprecated): \n");
+  printf("temperature in CPP = %f \n", world.temperature_3d(x,y,z,depth, gravity));
 
   printf("2d composition: \n");
-  composition_2d(ptr_world,x,z,depth,composition_number,&composition);
-  printf("composition in C = %f \n", composition);
+  printf("composition in CPP = %f \n", world.composition_2d(x,z,depth,composition_number));
 
   printf("3d composition: \n");
-  composition_3d(ptr_world,x,y,z,depth,composition_number,&composition);
-  printf("composition in C = %f \n", composition);
-
-  release_world(ptr_world);
+  printf("composition in CPP = %f \n", world.composition_3d(x,y,z,depth,composition_number));
 
   return 0;
 }

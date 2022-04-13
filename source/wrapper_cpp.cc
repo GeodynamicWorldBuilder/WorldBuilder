@@ -40,16 +40,27 @@ namespace wrapper_cpp
 
 
   double
-  WorldBuilderWrapper::temperature_2d(double x, double z, double depth, double gravity)
+  WorldBuilderWrapper::temperature_2d(double x, double z, double depth)
   {
     std::array<double,2> position = {{x,z}};
-    return reinterpret_cast<WorldBuilder::World *>(ptr_ptr_world)->temperature(position,depth,gravity);
+    return reinterpret_cast<WorldBuilder::World *>(ptr_ptr_world)->temperature(position,depth);
   }
 
-  double WorldBuilderWrapper::temperature_3d(double x, double y, double z, double depth, double gravity)
+  double
+  WorldBuilderWrapper::temperature_2d(double x, double z, double depth, double /*gravity*/)
+  {
+    return temperature_2d(x,z,depth);
+  }
+
+  double WorldBuilderWrapper::temperature_3d(double x, double y, double z, double depth)
   {
     std::array<double,3> position = {{x,y,z}};
-    return reinterpret_cast<WorldBuilder::World *>(ptr_ptr_world)->temperature(position,depth,gravity);
+    return reinterpret_cast<WorldBuilder::World *>(ptr_ptr_world)->temperature(position,depth);
+  }
+
+  double WorldBuilderWrapper::temperature_3d(double x, double y, double z, double depth, double /*gravity*/)
+  {
+    return temperature_3d(x,y,z,depth);
   }
 
   double WorldBuilderWrapper::composition_2d(double x, double z, double depth, unsigned int composition_number)
