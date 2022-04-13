@@ -118,7 +118,7 @@ IF(WB_RUN_APP_TESTS)
   # Run through each sourceUforeach(test_source ${APP_TEST_SOURCES})
   foreach(test_source ${APP_TEST_SOURCES})
           get_filename_component(test_name ${test_source} NAME_WE)
-  	set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/app/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/app/${test_name}.dat")
+          set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/app/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/app/${test_name}.dat\;--limit-debug-consistency-checks")
           add_test(${test_name}
                    ${CMAKE_COMMAND} 
   	         -D TEST_NAME=${test_name}

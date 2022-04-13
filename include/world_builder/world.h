@@ -57,7 +57,7 @@ namespace WorldBuilder
        * documented algorithm), we can test the results and they should be the same even for different
        * compilers and machines.
        */
-      World(std::string filename, bool has_output_dir = false, const std::string &output_dir = "", unsigned long random_number_seed = 1);
+      World(std::string filename, bool has_output_dir = false, const std::string &output_dir = "", unsigned long random_number_seed = 1, const bool limit_debug_consistency_checks = false);
 
       /**
        * Destructor
@@ -220,6 +220,15 @@ namespace WorldBuilder
        * random number generator engine
        */
       std::mt19937 random_number_engine;
+
+      /**
+       * limits some of the consitency checks in debug mode.
+       * Current only prevents a check whether depth in spherical
+       * coordinates is consistent with the computed depth from
+       * x,y,z and provided radius.
+       * Note: Recommended to keep it at false, unless you know what you are doing.
+       */
+      bool limit_debug_consistency_checks;
 
 
 

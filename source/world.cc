@@ -31,6 +31,7 @@
 #include "world_builder/gravity_model/interface.h"
 
 #include <iostream>
+#include <world_builder/coordinate_system.h>
 
 #ifdef WB_WITH_MPI
 #define OMPI_SKIP_MPICXX 1
@@ -42,12 +43,13 @@ namespace WorldBuilder
 {
   using namespace Utilities;
 
-  World::World(std::string filename, bool has_output_dir, const std::string &output_dir, unsigned long random_number_seed)
+  World::World(std::string filename, bool has_output_dir, const std::string &output_dir, unsigned long random_number_seed, const bool limit_debug_consistency_checks_)
     :
     parameters(*this),
     surface_coord_conversions(invalid),
     dim(NaN::ISNAN),
-    random_number_engine(random_number_seed)
+    random_number_engine(random_number_seed),
+    limit_debug_consistency_checks(limit_debug_consistency_checks_)
   {
 #ifdef WB_WITH_MPI
     int mpi_initialized;
@@ -287,6 +289,15 @@ namespace WorldBuilder
     Point<3> point(point_,cartesian);
 
     const double gravity_norm = this->parameters.gravity_model->gravity_norm(point);
+
+
+    WBAssert(!this->limit_debug_consistency_checks || this->parameters.coordinate_system->natural_coordinate_system() == cartesian
+             || approx(depth, this->parameters.coordinate_system->max_model_depth()-sqrt(point_[0]*point_[0]+point_[1]*point_[1]+point_[2]*point_[2])),
+             "Inconsistent input. Please check whether the radius in the sperhical coordiantes is consistent with the radius of the planet as defined "
+             << "in the program that uses the Geodynamic World Builder. "
+             << "Depth = " << depth << ", radius = " << this->parameters.coordinate_system->max_model_depth()
+             << ", point = " << point_[0] << " " << point_[1] << " " << point_[2]
+             << ", radius-point.norm() = " << this->parameters.coordinate_system->max_model_depth()-sqrt(point_[0]*point_[0]+point_[1]*point_[1]+point_[2]*point_[2]));
 
     if (std::fabs(depth) < 2.0 * std::numeric_limits<double>::epsilon() && force_surface_temperature)
       return this->surface_temperature;
