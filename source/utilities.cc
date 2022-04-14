@@ -530,6 +530,7 @@ namespace WorldBuilder
                   // only the first few iterations need some guidence from line search
                   if (std::fabs(update) > 1e-2)
                     {
+                      minimum_distance_to_reference_point_tmp = x2*x2+y2*y2;
                       // Do a line search
                       unsigned int i_line_search = 0;
                       for (; i_line_search < 50; ++i_line_search)
@@ -552,8 +553,10 @@ namespace WorldBuilder
                             const double &k = check_point_surface_2d[1];
                             const double x = (a*sx_3+b*sx_2+c*sx+d-p);
                             const double y = (e*sx_3+f*sx_2+g*sx+h-k);
-                            minimum_distance_to_reference_point_tmp = x*x+y*y;
-                            if (minimum_distance_to_reference_point_tmp<=minimum_distance_to_reference_point_start)
+                            const double minimum_distance_to_reference_point_line_search = x*x+y*y;
+
+                            if (minimum_distance_to_reference_point_line_search<=minimum_distance_to_reference_point_start
+                                && minimum_distance_to_reference_point_line_search <= minimum_distance_to_reference_point_tmp)
                               {
                                 break;
                               }
@@ -567,8 +570,13 @@ namespace WorldBuilder
                                     "The spline solver doesn't seem to have finished on a reasonable ammount of line search "
                                     << "iterations. Please check whether your coordinates are resonable, "
                                     << "or contact the maintainers. Line search iterations = " << i_line_search
-                                    << ", Newton interations = " << i_newton_iteration << ".");
+                                    << ", Newton interations = " << i_newton_iteration
+                                    << ", min_estimate_solution_tmp = " << min_estimate_solution_tmp
+                                    << ", last update_scaling = " << update_scaling << ", last update = " << update
+                                    << ", P1 = " << P1 << ", P2 = " << P2 << ", i_estimate = " << i_estimate
+                                    << "cp = " << check_point << ".");
                     }
+
                   min_estimate_solution_tmp = min_estimate_solution_tmp - update_scaling*update;
 
                   if (min_estimate_solution_tmp < 0 || min_estimate_solution_tmp > number_of_points-1)
@@ -576,10 +584,15 @@ namespace WorldBuilder
                       break;
                     }
                   ++i_newton_iteration;
+
                   WBAssertThrow(i_newton_iteration<49,
                                 "The spline solver doesn't seem to have finished on a reasonable ammount of Newton "
                                 << "iterations. Please check whether your coordinates are resonable, "
-                                << "or contact the maintainers. Newton interations = " << i_newton_iteration << ".");
+                                << "or contact the maintainers. Newton interations = " << i_newton_iteration
+                                << ", min_estimate_solution_tmp = " << min_estimate_solution_tmp
+                                << ", last update_scaling = " << update_scaling << ", last update = " << update
+                                << ", P1 = " << P1 << ", P2 = " << P2 << ", i_estimate = " << i_estimate
+                                << "cp = " << check_point << ".");
                 }
 
               if (minimum_distance_to_reference_point_tmp < minimum_distance_to_reference_point)
@@ -728,6 +741,7 @@ namespace WorldBuilder
                   // only the first few iterations need some guidence from line search
                   if (std::fabs(update) > 1e-3)
                     {
+                      minimum_distance_to_reference_point_tmp = FT::sin((k2-y2)*0.5)*FT::sin((k2-y2)*0.5)+FT::sin((p2-x2)*0.5)*FT::sin((p2-x2)*0.5)*cos_y2*cos_k2;
                       unsigned int i_line_search = 0;
                       // Do a line search.
                       for (; i_line_search < 50; ++i_line_search)
@@ -751,9 +765,10 @@ namespace WorldBuilder
                             const double x = (a*sx_3+b*sx_2+c*sx+d);
                             const double y = (e*sx_3+f*sx_2+g*sx+h);
 
-                            minimum_distance_to_reference_point_tmp = FT::sin((k-y)*0.5)*FT::sin((k-y)*0.5)+FT::sin((p-x)*0.5)*FT::sin((p-x)*0.5)*FT::cos(y)*FT::cos(k);
+                            const double minimum_distance_to_reference_point_line_search = FT::sin((k-y)*0.5)*FT::sin((k-y)*0.5)+FT::sin((p-x)*0.5)*FT::sin((p-x)*0.5)*FT::cos(y)*FT::cos(k);
 
-                            if (minimum_distance_to_reference_point_tmp<=minimum_distance_to_reference_point_start)
+                            if (minimum_distance_to_reference_point_line_search<=minimum_distance_to_reference_point_start
+                                && minimum_distance_to_reference_point_line_search <= minimum_distance_to_reference_point_tmp)
                               {
                                 break;
                               }
