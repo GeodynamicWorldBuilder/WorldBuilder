@@ -111,6 +111,20 @@ IF(WB_RUN_APP_TESTS)
      -D TEST_DIFF=${TEST_DIFF}
   	 -P ${CMAKE_SOURCE_DIR}/tests/app/run_app_tests.cmake
            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/app/)
+
+
+  # Test two many arguments provided 
+  set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/app/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/app/${test_name}.dat\;lalala\;nonono")
+  add_test(testing_too_many_arguments
+  ${CMAKE_COMMAND} 
+    -D TEST_NAME=testing_too_many_arguments 
+    -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/WorldBuilderApp${CMAKE_EXECUTABLE_SUFFIX} 
+    -D TEST_ARGS=${TEST_ARGUMENTS}
+    -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/app/testing_too_many_arguments/screen-output.log 
+    -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/app/testing_too_many_arguments/screen-output.log
+    -D TEST_DIFF=${TEST_DIFF}
+    -P ${CMAKE_SOURCE_DIR}/tests/app/run_app_tests.cmake
+      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/app/)
   
   #find all the integration test files
   file(GLOB_RECURSE APP_TEST_SOURCES "app/*.wb")
@@ -118,7 +132,7 @@ IF(WB_RUN_APP_TESTS)
   # Run through each sourceUforeach(test_source ${APP_TEST_SOURCES})
   foreach(test_source ${APP_TEST_SOURCES})
           get_filename_component(test_name ${test_source} NAME_WE)
-  	set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/app/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/app/${test_name}.dat")
+          set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/app/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/app/${test_name}.dat\;--limit-debug-consistency-checks")
           add_test(${test_name}
                    ${CMAKE_COMMAND} 
   	         -D TEST_NAME=${test_name}

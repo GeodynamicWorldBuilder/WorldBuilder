@@ -54,6 +54,7 @@ int main(int argc, char **argv)
   unsigned int grain_compositions = 0;
   size_t number_of_grains = 0;
   bool convert_spherical = false;
+  bool limit_debug_consistency_checks = true;
 
   if (find_command_line_option(argv, argv+argc, "-h") || find_command_line_option(argv, argv+argc, "--help"))
     {
@@ -63,6 +64,9 @@ int main(int argc, char **argv)
                 << "-h or --help to get this help screen." << std::endl;
       return 0;
     }
+
+  if (find_command_line_option(argv, argv+argc, "-ldcc") || find_command_line_option(argv, argv+argc, "--limit-debug-consistency-checks"))
+    limit_debug_consistency_checks = false;
 
   if (argc == 1)
     {
@@ -79,9 +83,11 @@ int main(int argc, char **argv)
       return 0;
     }
 
-  if (argc != 3)
+  if ((argc == 3 && limit_debug_consistency_checks) || argc > 4)
     {
-      std::cout << "Only two command line arguments may be given, which should be the world builder file location and the data file location (in that order). " << std::endl;
+      std::cout << "Only exactly two command line arguments may be given, which should be the world builder file location and the data file location (in that order) "
+                << "or exactly three command line arguments, which should be the world builder file location, the data file location and --limit-debug-consistency-checks (in that order). "
+                << ", argc = " << argc << ", limit_debug_consistency_checks = " << (limit_debug_consistency_checks ? "true" : "false") << std::endl;
       return 0;
     }
 
@@ -105,7 +111,7 @@ int main(int argc, char **argv)
       //try
       {
         std::string output_dir = wb_file.substr(0,wb_file.find_last_of("/\\") + 1);
-        world = std::make_unique<WorldBuilder::World>(wb_file, true, output_dir);
+        world = std::make_unique<WorldBuilder::World>(wb_file, true, output_dir,1,limit_debug_consistency_checks);
       }
       /*catch (std::exception &e)
         {
