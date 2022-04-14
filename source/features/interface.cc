@@ -51,7 +51,7 @@ namespace WorldBuilder
                       "You provided an interpolation type which is not supported: " << string
                       << "The options are none, linear, monotone spline and continuous monotone spline. "
                       << "This may be due to all options besides continuous monotone spline have been "
-                      << "removed since version 0.6. It is best to remove the interpolation variable "
+                      << "removed since version 0.5. It is best to remove the interpolation variable "
                       << "from you input file as it may be removed in future versions.");
 
         return InterpolationType::Invalid;
