@@ -34,6 +34,15 @@ namespace WorldBuilder
    */
   struct grains
   {
+    grains();
+
+    grains(const std::vector<double> &vector,
+           const size_t number_of_grains,
+           const size_t start_entry = 0);
+
+    void unroll_into(std::vector<double> &vector,
+                     const size_t start_entry = 0) const;
+
     // The sizes of the grains
     std::vector<double> sizes;
 
