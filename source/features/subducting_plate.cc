@@ -340,7 +340,7 @@ namespace WorldBuilder
         }
 
       // Here, we compute the spherical bounding box using the two extreme points of the box containing all the surface
-      // coordinates and an additional buffer zone that accounts for the fault thickness and length. The first and second
+      // coordinates and an additional buffer zone that accounts for the slab thickness and length. The first and second
       // points correspond to the lower left and the upper right corners of the bounding box, respectively (see the
       // documentation in include/bounding_box.h).
       // For the spherical system, the buffer zone along the longitudal direction is calculated using the
@@ -370,28 +370,22 @@ namespace WorldBuilder
       max_lat_cos_inv = 1. / std::cos(max_along_y);
 
       buffer_around_slab_cartesian = (maximum_slab_thickness + maximum_total_slab_length);
-    }
 
-
-
-    BoundingBox<2>
-    SubductingPlate::get_bounding_box (const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                                       const double depth) const
-    {
-      BoundingBox<2> surface_bounding_box;
-      const double starting_radius_inv = 1 / (position_in_natural_coordinates.get_depth_coordinate() + depth - starting_depth);
+      // Compute the surface bounding box
+      buffer_around_slab_cartesian = (maximum_slab_thickness + maximum_total_slab_length);
       if (world->parameters.coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical)
         {
+          const double starting_radius_inv = 1 / (world->parameters.coordinate_system->max_model_depth());
           std::pair<Point<2>, Point<2> > &spherical_bounding_box = surface_bounding_box.get_boundary_points();
 
-          const double buffer_around_fault_spherical = 2 * const_pi * buffer_around_slab_cartesian * starting_radius_inv;
+          const double buffer_around_slab_spherical = 2 * const_pi * buffer_around_slab_cartesian * starting_radius_inv;
 
-          spherical_bounding_box.first = {(min_along_x - buffer_around_fault_spherical * min_lat_cos_inv) ,
-                                          (min_along_y - buffer_around_fault_spherical), spherical
+          spherical_bounding_box.first = {(min_along_x - buffer_around_slab_spherical * min_lat_cos_inv) ,
+                                          (min_along_y - buffer_around_slab_spherical), spherical
                                          } ;
 
-          spherical_bounding_box.second = {(max_along_x + buffer_around_fault_spherical * max_lat_cos_inv) ,
-                                           (max_along_y + buffer_around_fault_spherical), spherical
+          spherical_bounding_box.second = {(max_along_x + buffer_around_slab_spherical * max_lat_cos_inv) ,
+                                           (max_along_y + buffer_around_slab_spherical), spherical
                                           };
         }
       else if (world->parameters.coordinate_system->natural_coordinate_system() == CoordinateSystem::cartesian)
@@ -401,6 +395,13 @@ namespace WorldBuilder
           bounding_box.second = {max_along_x, max_along_y, cartesian};
           surface_bounding_box.extend(buffer_around_slab_cartesian);
         }
+    }
+
+
+
+    const BoundingBox<2> &
+    SubductingPlate::get_surface_bounding_box () const
+    {
       return surface_bounding_box;
     }
 
@@ -426,8 +427,8 @@ namespace WorldBuilder
 
       // todo: explain and check -starting_depth
       if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness &&
-          get_bounding_box(position_in_natural_coordinates, depth).point_inside(Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
-                                                                                world->parameters.coordinate_system->natural_coordinate_system())))
+          get_surface_bounding_box().point_inside(Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
+                                                           world->parameters.coordinate_system->natural_coordinate_system())))
         {
           /*WBAssert(coordinates.size() == slab_segment_lengths.size(),
                    "Internal error: The size of coordinates (" << coordinates.size()
@@ -565,8 +566,8 @@ namespace WorldBuilder
 
       // todo: explain and check -starting_depth
       if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness &&
-          get_bounding_box(position_in_natural_coordinates, depth).point_inside(Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
-                                                                                world->parameters.coordinate_system->natural_coordinate_system())))
+          get_surface_bounding_box().point_inside(Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
+                                                           world->parameters.coordinate_system->natural_coordinate_system())))
         {
           // todo: explain
           WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
@@ -698,8 +699,8 @@ namespace WorldBuilder
 
       // todo: explain and check -starting_depth
       if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness &&
-          get_bounding_box(position_in_natural_coordinates, depth).point_inside(Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
-                                                                                world->parameters.coordinate_system->natural_coordinate_system())))
+          get_surface_bounding_box().point_inside(Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
+                                                           world->parameters.coordinate_system->natural_coordinate_system())))
         {
           // todo: explain
           WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =

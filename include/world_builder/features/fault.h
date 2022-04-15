@@ -113,8 +113,7 @@ namespace WorldBuilder
          * For the spherical system, the buffer zone along the longitudal direction is calculated using the
          * corresponding latitude points.
          */
-        BoundingBox<2>  get_bounding_box (const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                                          const double depth) const;
+        const BoundingBox<2>  &get_surface_bounding_box () const;
 
         /**
          * Returns a grains (rotation matrix and grain size) based on the
@@ -177,6 +176,16 @@ namespace WorldBuilder
          * this depth.
          */
         double maximum_depth;
+
+        /**
+         * Computee bounding points for a BoundingBox object using two extreme points in all the surface
+         * coordinates and an additional buffer zone that accounts for the fault thickness and length. The first and second
+         * points correspond to the lower left and the upper right corners of the bounding box, respectively (see the
+         * documentation in include/bounding_box.h).
+         * For the spherical system, the buffer zone along the longitudal direction is calculated using the
+         * corresponding latitude points.
+         */
+        BoundingBox<2> surface_bounding_box;
 
         /**
          * A point on the surface to which the fault dips.
