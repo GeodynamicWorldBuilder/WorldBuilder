@@ -143,6 +143,95 @@ namespace WorldBuilder
     }
 
 
+
+    void
+    ContinentalPlate::properties(const Point<3> &position_in_cartesian_coordinates,
+                                 const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                                 const double depth,
+                                 const std::vector<std::array<unsigned int,3>> properties,
+                                 const double gravity_norm,
+                                 const std::vector<size_t> &entry_in_output,
+                                 std::vector<double> &output) const
+    {
+      if (depth <= max_depth && depth >= min_depth &&
+          WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
+                                                                                world->parameters.coordinate_system->natural_coordinate_system())))
+        {
+          const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
+          const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
+          if (depth <= max_depth_local &&  depth >= min_depth_local)
+            {
+              for (unsigned int i_property = 0; i_property < properties.size(); ++i_property)
+                {
+                  switch (properties[i_property][0])
+                    {
+                      case 0: // skip
+                        break;
+                      case 1:  // temperature
+                      {
+                        for (const auto &temperature_model: temperature_models)
+                          {
+                            output[entry_in_output[i_property]] = temperature_model->get_temperature(position_in_cartesian_coordinates,
+                                                                                                     position_in_natural_coordinates,
+                                                                                                     depth,
+                                                                                                     gravity_norm,
+                                                                                                     output[entry_in_output[i_property]],
+                                                                                                     min_depth_local,
+                                                                                                     max_depth_local);
+
+                            WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Temparture is not a number: " << output[entry_in_output[i_property]]
+                                     << ", based on a temperature model with the name " << temperature_model->get_name());
+                            WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Temparture is not a finite: " << output[entry_in_output[i_property]]
+                                     << ", based on a temperature model with the name " << temperature_model->get_name());
+
+                          }
+                        break;
+                        case 2: // composition
+
+                          for (const auto &composition_model: composition_models)
+                            {
+                              output[entry_in_output[i_property]] = composition_model->get_composition(position_in_cartesian_coordinates,
+                                                                                                       position_in_natural_coordinates,
+                                                                                                       depth,
+                                                                                                       properties[i_property][1],
+                                                                                                       output[entry_in_output[i_property]],
+                                                                                                       min_depth_local,
+                                                                                                       max_depth_local);
+
+                              WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Composition is not a number: " << output[entry_in_output[i_property]]
+                                       << ", based on a temperature model with the name " << composition_model->get_name());
+                              WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Composition is not a finite: " << output[entry_in_output[i_property]]
+                                       << ", based on a temperature model with the name " << composition_model->get_name());
+
+                            }
+
+                          break;
+                        }
+                      case 3: // grains
+                      {
+                        WorldBuilder::grains  grains(output,properties[i_property][2],entry_in_output[i_property]);
+                        for (const auto &grains_model: grains_models)
+                          {
+                            grains = grains_model->get_grains(position_in_cartesian_coordinates,
+                                                              position_in_natural_coordinates,
+                                                              depth,
+                                                              properties[i_property][1],
+                                                              grains,
+                                                              min_depth_local,
+                                                              max_depth_local);
+
+                          }
+                        grains.unroll_into(output,entry_in_output[i_property]);
+                      }
+                      break;
+                      default:
+                        WBAssertThrow(false, "Unimplemented property provided. Only temperature (0), composition (1) or grains (2) are allowed.");
+                    }
+                }
+            }
+        }
+    }
+
     double
     ContinentalPlate::temperature(const Point<3> &position_in_cartesian_coordinates,
                                   const Objects::NaturalCoordinate &position_in_natural_coordinates,

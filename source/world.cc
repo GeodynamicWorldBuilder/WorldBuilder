@@ -235,6 +235,116 @@ namespace WorldBuilder
     prm.leave_subsection();
   }
 
+
+
+  std::vector<double>
+  World::properties(const std::array<double, 2> &point,
+                    const double depth,
+                    const std::vector<std::array<unsigned int,3>> &properties) const
+  {
+    // turn it into a 3d coordinate and call the 3d temperature function
+    WBAssertThrow(dim == 2, "This function can only be called when the cross section "
+                  "variable in the world builder file has been set. Dim is "
+                  << dim << '.');
+
+    const CoordinateSystem coordinate_system = this->parameters.coordinate_system->natural_coordinate_system();
+
+    Point<2> point_natural(point[0], point[1],coordinate_system);
+    if (coordinate_system == spherical)
+      {
+        point_natural[1] = std::sqrt(point[0]*point[0]+point[1]*point[1]);
+        point_natural[0] = std::atan2(point[1],point[0]);
+      }
+
+    Point<3> coord_3d(coordinate_system);
+    if (coordinate_system == spherical)
+      {
+        coord_3d[0] = point_natural[1];
+        coord_3d[1] = cross_section[0][0] + point_natural[0] * surface_coord_conversions[0];
+        coord_3d[2] = cross_section[0][1] + point_natural[0] * surface_coord_conversions[1];
+      }
+    else
+      {
+        coord_3d[0] = cross_section[0][0] + point_natural[0] * surface_coord_conversions[0];
+        coord_3d[1] = cross_section[0][1] + point_natural[0] * surface_coord_conversions[1];
+        coord_3d[2] = point_natural[1];
+      }
+
+
+    std::array<double, 3> point_3d_cartesian = this->parameters.coordinate_system->natural_to_cartesian_coordinates(coord_3d.get_array());
+
+    return this->properties(point_3d_cartesian, depth, properties);
+  }
+
+
+  std::vector<double>
+  World::properties(const std::array<double, 3> &point_,
+                    const double depth,
+                    const std::vector<std::array<unsigned int,3>> &properties) const
+  {
+    // We receive the cartesian points from the user.
+    Point<3> point(point_,cartesian);
+
+    WBAssert(!this->limit_debug_consistency_checks || this->parameters.coordinate_system->natural_coordinate_system() == cartesian
+             || approx(depth, this->parameters.coordinate_system->max_model_depth()-sqrt(point_[0]*point_[0]+point_[1]*point_[1]+point_[2]*point_[2])),
+             "Inconsistent input. Please check whether the radius in the sperhical coordiantes is consistent with the radius of the planet as defined "
+             << "in the program that uses the Geodynamic World Builder. "
+             << "Depth = " << depth << ", radius = " << this->parameters.coordinate_system->max_model_depth()
+             << ", point = " << point_[0] << " " << point_[1] << " " << point_[2]
+             << ", radius-point.norm() = " << this->parameters.coordinate_system->max_model_depth()-sqrt(point_[0]*point_[0]+point_[1]*point_[1]+point_[2]*point_[2]));
+
+    Objects::NaturalCoordinate natural_coordinate = Objects::NaturalCoordinate(point,*(this->parameters.coordinate_system));
+
+    // create output vector
+    std::vector<double> output;
+    std::vector<size_t> entry_in_output;
+    std::vector<std::array<unsigned int,3>> properties_local;
+    const double gravity_norm = this->parameters.gravity_model->gravity_norm(point);
+    for (unsigned int i_property = 0; i_property < properties.size(); ++i_property)
+      {
+        switch (properties[i_property][0])
+          {
+            case 0: // Skip
+              break;
+            case 1: // Temperature
+              if (std::fabs(depth) < 2.0 * std::numeric_limits<double>::epsilon() && force_surface_temperature)
+                {
+                  entry_in_output.emplace_back(output.size());
+                  output.emplace_back(this->surface_temperature);
+                  if (properties.size() == 1)
+                    return output;
+                  properties_local.push_back({{0,0,0}});
+                  break;
+                }
+              entry_in_output.emplace_back(output.size());
+              output.emplace_back(potential_mantle_temperature * std::exp(((thermal_expansion_coefficient * gravity_norm) / specific_heat) * depth));
+              properties_local.emplace_back(properties[i_property]);
+              break;
+            case 2: // composition
+              entry_in_output.emplace_back(output.size());
+              output.emplace_back(0.);
+              properties_local.emplace_back(properties[i_property]);
+              break;
+            case 3: // grains (10 entries per grain)
+            {
+              entry_in_output.emplace_back(output.size());
+              const std::vector<double> tmp_vector(properties[i_property][2]*10,0.);
+              output.insert(output.end(), tmp_vector.begin(), tmp_vector.end());
+              properties_local.emplace_back(properties[i_property]);
+              break;
+            }
+            default:
+              WBAssertThrow(false, "Unimplemented property provided. Only skip (0), temperature (1), composition (2) or grains (3) are allowed.");
+          }
+      }
+    for (auto &&it : parameters.features)
+      {
+        it->properties(point, natural_coordinate, depth, properties_local, gravity_norm, entry_in_output, output);
+      }
+
+    return output;
+  }
+
   double
   World::temperature(const std::array<double,2> &point,
                      const double depth) const

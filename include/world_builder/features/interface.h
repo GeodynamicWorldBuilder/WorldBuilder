@@ -76,6 +76,18 @@ namespace WorldBuilder
 
 
         /**
+         * takes a set of properties and a postion and return a new set of properties
+         */
+        virtual
+        void properties(const Point<3> &position_in_cartesian_coordinates,
+                        const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                        const double depth,
+                        const std::vector<std::array<unsigned int,3>> properties,
+                        const double gravity,
+                        const std::vector<size_t> &entry_in_output,
+                        std::vector<double> &output) const = 0;
+
+        /**
          * takes temperature and position and returns a temperature.
          */
         virtual
