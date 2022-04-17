@@ -116,45 +116,6 @@ namespace WorldBuilder
                    const std::vector<size_t> &entry_in_output,
                    std::vector<double> &output) const override final;
 
-
-        /**
-         * Returns a temperature based on the given position, depth in the model,
-         * gravity and current temperature.
-         */
-        double temperature(const Point<3> &position_in_cartesian_coordinates,
-                           const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                           const double depth,
-                           const double gravity,
-                           double temperature) const override final;
-
-        /**
-         * Returns a value for the requests composition (0 is not present,
-         * 1 is present) based on the given position, depth in the model,
-         * the composition which is being requested and the current value
-         * of that composition at this location and depth.
-         */
-        double composition(const Point<3> &position_in_cartesian_coordinates,
-                           const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                           const double depth,
-                           const unsigned int composition_number,
-                           double composition) const override final;
-
-        /**
-         * Returns a grains (rotation matrix and grain size) based on the
-         * given position, depth in the model, the composition (e.g. representing
-         * olvine and/or enstatite) which is being requested and the current value
-         * of that composition at this location and depth.
-         */
-
-        WorldBuilder::grains
-        grains(const Point<3> &position_in_cartesian_coordinates,
-               const Objects::NaturalCoordinate &position_in_natural_coordinates,
-               const double depth,
-               const unsigned int composition_number,
-               WorldBuilder::grains grains) const override final;
-
-
-
       private:
         /**
          * A vector containing all the pointers to the temperature models. This vector is

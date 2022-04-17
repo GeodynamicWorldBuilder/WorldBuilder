@@ -157,8 +157,6 @@ namespace WorldBuilder
                 {
                   switch (properties[i_property][0])
                     {
-                      case 0: // skip
-                        break;
                       case 1:  // temperature
                       {
                         for (const auto &temperature_model: temperature_models)
@@ -217,125 +215,11 @@ namespace WorldBuilder
                       }
                       break;
                       default:
-                        WBAssertThrow(false, "Unimplemented property provided. Only temperature (0), composition (1) or grains (2) are allowed.");
+                        WBAssertThrow(false, "Internal error: Unimplemented property provided. Only temperature (1), composition (2) or grains (3) are allowed.");
                     }
                 }
             }
         }
-    }
-
-
-    double
-    MantleLayer::temperature(const Point<3> &position_in_cartesian_coordinates,
-                             const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                             const double depth,
-                             const double gravity_norm,
-                             double temperature) const
-    {
-      if (depth <= max_depth && depth >= min_depth &&
-          WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
-                                                                                world->parameters.coordinate_system->natural_coordinate_system())))
-        {
-          const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
-          const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
-          if (depth <= max_depth_local &&  depth >= min_depth_local)
-            {
-              for (const auto &temperature_model: temperature_models)
-                {
-                  temperature = temperature_model->get_temperature(position_in_cartesian_coordinates,
-                                                                   position_in_natural_coordinates,
-                                                                   depth,
-                                                                   gravity_norm,
-                                                                   temperature,
-                                                                   min_depth_local,
-                                                                   max_depth_local);
-
-                  WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature
-                           << ", based on a temperature model with the name " << temperature_model->get_name());
-                  WBAssert(std::isfinite(temperature), "Temparture is not a finite: " << temperature
-                           << ", based on a temperature model with the name " << temperature_model->get_name());
-
-                }
-            }
-        }
-
-      return temperature;
-    }
-
-    double
-    MantleLayer::composition(const Point<3> &position_in_cartesian_coordinates,
-                             const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                             const double depth,
-                             const unsigned int composition_number,
-                             double composition) const
-    {
-      if (depth <= max_depth && depth >= min_depth &&
-          WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
-                                                                                world->parameters.coordinate_system->natural_coordinate_system())))
-        {
-          const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
-          const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
-          if (depth <= max_depth_local &&  depth >= min_depth_local)
-            {
-              for (const auto &composition_model: composition_models)
-                {
-                  composition = composition_model->get_composition(position_in_cartesian_coordinates,
-                                                                   position_in_natural_coordinates,
-                                                                   depth,
-                                                                   composition_number,
-                                                                   composition,
-                                                                   min_depth_local,
-                                                                   max_depth_local);
-
-                  WBAssert(!std::isnan(composition), "Composition is not a number: " << composition
-                           << ", based on a temperature model with the name " << composition_model->get_name());
-                  WBAssert(std::isfinite(composition), "Composition is not a finite: " << composition
-                           << ", based on a temperature model with the name " << composition_model->get_name());
-
-                }
-            }
-        }
-
-      return composition;
-    }
-
-
-
-    WorldBuilder::grains
-    MantleLayer::grains(const Point<3> &position_in_cartesian_coordinates,
-                        const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                        const double depth,
-                        const unsigned int composition_number,
-                        WorldBuilder::grains grains) const
-    {
-      if (depth <= max_depth && depth >= min_depth &&
-          WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
-                                                                                world->parameters.coordinate_system->natural_coordinate_system())))
-        {
-          const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
-          const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point());
-          if (depth <= max_depth_local &&  depth >= min_depth_local)
-            {
-              for (const auto &grains_model: grains_models)
-                {
-                  grains = grains_model->get_grains(position_in_cartesian_coordinates,
-                                                    position_in_natural_coordinates,
-                                                    depth,
-                                                    composition_number,
-                                                    grains,
-                                                    min_depth_local,
-                                                    max_depth_local);
-
-                  /*WBAssert(!std::isnan(composition), "Composition is not a number: " << composition
-                           << ", based on a temperature model with the name " << composition_model->get_name());
-                  WBAssert(std::isfinite(composition), "Composition is not a finite: " << composition
-                           << ", based on a temperature model with the name " << composition_model->get_name());*/
-
-                }
-            }
-        }
-
-      return grains;
     }
 
     WB_REGISTER_FEATURE(MantleLayer, mantle layer)

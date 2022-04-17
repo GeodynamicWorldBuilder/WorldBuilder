@@ -304,8 +304,6 @@ namespace WorldBuilder
       {
         switch (properties[i_property][0])
           {
-            case 0: // Skip
-              break;
             case 1: // Temperature
               if (std::fabs(depth) < 2.0 * std::numeric_limits<double>::epsilon() && force_surface_temperature)
                 {
@@ -313,8 +311,6 @@ namespace WorldBuilder
                   output.emplace_back(this->surface_temperature);
                   if (properties.size() == 1)
                     return output;
-                  properties_local.push_back({{0,0,0}});
-                  break;
                 }
               entry_in_output.emplace_back(output.size());
               output.emplace_back(potential_mantle_temperature * std::exp(((thermal_expansion_coefficient * gravity_norm) / specific_heat) * depth));
@@ -334,7 +330,7 @@ namespace WorldBuilder
               break;
             }
             default:
-              WBAssertThrow(false, "Unimplemented property provided. Only skip (0), temperature (1), composition (2) or grains (3) are allowed.");
+              WBAssertThrow(false, "Unimplemented property provided. Only temperature (1), composition (2) or grains (3) are allowed.");
           }
       }
     for (auto &&it : parameters.features)
@@ -349,38 +345,7 @@ namespace WorldBuilder
   World::temperature(const std::array<double,2> &point,
                      const double depth) const
   {
-    // turn it into a 3d coordinate and call the 3d temperature function
-    WBAssertThrow(dim == 2, "This function can only be called when the cross section "
-                  "variable in the world builder file has been set. Dim is "
-                  << dim << '.');
-
-    const CoordinateSystem coordinate_system = this->parameters.coordinate_system->natural_coordinate_system();
-
-    Point<2> point_natural(point[0], point[1],coordinate_system);
-    if (coordinate_system == spherical)
-      {
-        point_natural[1] = std::sqrt(point[0]*point[0]+point[1]*point[1]);
-        point_natural[0] = std::atan2(point[1],point[0]);
-      }
-
-    Point<3> coord_3d(coordinate_system);
-    if (coordinate_system == spherical)
-      {
-        coord_3d[0] = point_natural[1];
-        coord_3d[1] = cross_section[0][0] + point_natural[0] * surface_coord_conversions[0];
-        coord_3d[2] = cross_section[0][1] + point_natural[0] * surface_coord_conversions[1];
-      }
-    else
-      {
-        coord_3d[0] = cross_section[0][0] + point_natural[0] * surface_coord_conversions[0];
-        coord_3d[1] = cross_section[0][1] + point_natural[0] * surface_coord_conversions[1];
-        coord_3d[2] = point_natural[1];
-      }
-
-
-    std::array<double, 3> point_3d_cartesian = this->parameters.coordinate_system->natural_to_cartesian_coordinates(coord_3d.get_array());
-
-    return temperature(point_3d_cartesian, depth);
+    return properties(point, depth, {{1,0,0}})[0];
   }
 
   double
@@ -388,51 +353,14 @@ namespace WorldBuilder
                      const double depth,
                      const double /*gravity_norm*/) const
   {
-    return temperature(point, depth);
+    return properties(point, depth, {{1,0,0}})[0];
   }
 
   double
-  World::temperature(const std::array<double,3> &point_,
+  World::temperature(const std::array<double,3> &point,
                      const double depth) const
   {
-    // We receive the cartesian points from the user.
-    Point<3> point(point_,cartesian);
-
-    const double gravity_norm = this->parameters.gravity_model->gravity_norm(point);
-
-
-    WBAssert(!this->limit_debug_consistency_checks || this->parameters.coordinate_system->natural_coordinate_system() == cartesian
-             || approx(depth, this->parameters.coordinate_system->max_model_depth()-sqrt(point_[0]*point_[0]+point_[1]*point_[1]+point_[2]*point_[2])),
-             "Inconsistent input. Please check whether the radius in the sperhical coordiantes is consistent with the radius of the planet as defined "
-             << "in the program that uses the Geodynamic World Builder. "
-             << "Depth = " << depth << ", radius = " << this->parameters.coordinate_system->max_model_depth()
-             << ", point = " << point_[0] << " " << point_[1] << " " << point_[2]
-             << ", radius-point.norm() = " << this->parameters.coordinate_system->max_model_depth()-sqrt(point_[0]*point_[0]+point_[1]*point_[1]+point_[2]*point_[2]));
-
-    if (std::fabs(depth) < 2.0 * std::numeric_limits<double>::epsilon() && force_surface_temperature)
-      return this->surface_temperature;
-
-    double temperature = potential_mantle_temperature *
-                         std::exp(((thermal_expansion_coefficient * gravity_norm) /
-                                   specific_heat) * depth);
-
-
-    Objects::NaturalCoordinate natural_coordinate = Objects::NaturalCoordinate(point,
-                                                                               *(this->parameters.coordinate_system));
-    for (auto &&it : parameters.features)
-      {
-        temperature = it->temperature(point,natural_coordinate,depth,gravity_norm,temperature);
-
-        WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature
-                 << ", based on a feature with the name " << it->get_name());
-        WBAssert(std::isfinite(temperature), "Temparture is not a finite: " << temperature
-                 << ", based on a feature with the name " << it->get_name());
-      }
-
-    WBAssert(!std::isnan(temperature), "Temparture is not a number: " << temperature);
-    WBAssert(std::isfinite(temperature), "Temparture is not a finite: " << temperature);
-
-    return temperature;
+    return properties(point, depth, {{1,0,0}})[0];
   }
 
   double
@@ -440,7 +368,7 @@ namespace WorldBuilder
                      const double depth,
                      const double /*gravity_norm*/) const
   {
-    return temperature(point, depth);
+    return properties(point, depth, {{1,0,0}})[0];
   }
 
   double
@@ -448,65 +376,15 @@ namespace WorldBuilder
                      const double depth,
                      const unsigned int composition_number) const
   {
-    // turn it into a 3d coordinate and call the 3d temperature function
-    WBAssertThrow(dim == 2, "This function can only be called when the cross section "
-                  "variable in the world builder file has been set. Dim is "
-                  << dim << '.');
-
-    const CoordinateSystem coordinate_system = this->parameters.coordinate_system->natural_coordinate_system();
-
-    Point<2> point_natural(point[0], point[1],coordinate_system);
-    if (coordinate_system == spherical)
-      {
-        point_natural[1] = std::sqrt(point[0]*point[0]+point[1]*point[1]);
-        point_natural[0] = std::atan2(point[1],point[0]);
-      }
-
-    Point<3> coord_3d(coordinate_system);
-    if (coordinate_system == spherical)
-      {
-        coord_3d[0] = point_natural[1];
-        coord_3d[1] = cross_section[0][0] + point_natural[0] * surface_coord_conversions[0];
-        coord_3d[2] = cross_section[0][1] + point_natural[0] * surface_coord_conversions[1];
-      }
-    else
-      {
-        coord_3d[0] = cross_section[0][0] + point_natural[0] * surface_coord_conversions[0];
-        coord_3d[1] = cross_section[0][1] + point_natural[0] * surface_coord_conversions[1];
-        coord_3d[2] = point_natural[1];
-      }
-
-    std::array<double, 3> point_3d_cartesian = this->parameters.coordinate_system->natural_to_cartesian_coordinates(coord_3d.get_array());
-
-    return composition(point_3d_cartesian, depth, composition_number);
+    return properties(point, depth, {{2,composition_number,0}})[0];
   }
 
   double
-  World::composition(const std::array<double,3> &point_,
+  World::composition(const std::array<double,3> &point,
                      const double depth,
                      const unsigned int composition_number) const
   {
-    // We receive the cartesian points from the user.
-    Point<3> point(point_,cartesian);
-
-    Objects::NaturalCoordinate natural_coordinate = Objects::NaturalCoordinate(point,
-                                                                               *(this->parameters.coordinate_system));
-    double composition = 0;
-    for (auto &&it : parameters.features)
-      {
-        composition = it->composition(point,natural_coordinate,depth,composition_number, composition);
-
-        WBAssert(!std::isnan(composition), "Composition is not a number: " << composition
-                 << ", based on a feature with the name " << it->get_name());
-        WBAssert(std::isfinite(composition), "Composition is not a finite: " << composition
-                 << ", based on a feature with the name " << it->get_name());
-      }
-
-    WBAssert(!std::isnan(composition), "Composition is not a number: " << composition);
-    WBAssert(std::isfinite(composition), "Composition is not a finite: " << composition);
-
-
-    return composition;
+    return properties(point, depth, {{2,composition_number,0}})[0];
   }
 
 
@@ -517,67 +395,16 @@ namespace WorldBuilder
                 const unsigned int composition_number,
                 size_t number_of_grains) const
   {
-    // turn it into a 3d coordinate and call the 3d temperature function
-    WBAssertThrow(dim == 2, "This function can only be called when the cross section "
-                  "variable in the world builder file has been set. Dim is "
-                  << dim << '.');
-
-    const CoordinateSystem coordinate_system = this->parameters.coordinate_system->natural_coordinate_system();
-
-    Point<2> point_natural(point[0], point[1],coordinate_system);
-    if (coordinate_system == spherical)
-      {
-        point_natural[1] = std::sqrt(point[0]*point[0]+point[1]*point[1]);
-        point_natural[0] = std::atan2(point[1],point[0]);
-      }
-
-    Point<3> coord_3d(coordinate_system);
-    if (coordinate_system == spherical)
-      {
-        coord_3d[0] = point_natural[1];
-        coord_3d[1] = cross_section[0][0] + point_natural[0] * surface_coord_conversions[0];
-        coord_3d[2] = cross_section[0][1] + point_natural[0] * surface_coord_conversions[1];
-      }
-    else
-      {
-        coord_3d[0] = cross_section[0][0] + point_natural[0] * surface_coord_conversions[0];
-        coord_3d[1] = cross_section[0][1] + point_natural[0] * surface_coord_conversions[1];
-        coord_3d[2] = point_natural[1];
-      }
-
-    std::array<double, 3> point_3d_cartesian = this->parameters.coordinate_system->natural_to_cartesian_coordinates(coord_3d.get_array());
-
-    return grains(point_3d_cartesian, depth, composition_number,number_of_grains);
+    return WorldBuilder::grains(properties(point, depth, {{3,composition_number,(unsigned int)number_of_grains}}),(unsigned int)number_of_grains,0);
   }
 
   WorldBuilder::grains
-  World::grains(const std::array<double,3> &point_,
+  World::grains(const std::array<double,3> &point,
                 const double depth,
                 const unsigned int composition_number,
                 size_t number_of_grains) const
   {
-    // We receive the cartesian points from the user.
-    Point<3> point(point_,cartesian);
-    Objects::NaturalCoordinate natural_coordinate = Objects::NaturalCoordinate(point,
-                                                                               *(this->parameters.coordinate_system));
-    WorldBuilder::grains grains;
-    grains.sizes.resize(number_of_grains,0);
-    grains.rotation_matrices.resize(number_of_grains);
-    for (const auto &feature : parameters.features)
-      {
-        grains = feature->grains(point,natural_coordinate,depth,composition_number, grains);
-
-        /*WBAssert(!std::isnan(composition), "Composition is not a number: " << composition
-                 << ", based on a feature with the name " << (*it)->get_name());
-        WBAssert(std::isfinite(composition), "Composition is not a finite: " << composition
-                 << ", based on a feature with the name " << (*it)->get_name());*/
-      }
-
-    /*WBAssert(!std::isnan(composition), "Composition is not a number: " << composition);
-    WBAssert(std::isfinite(composition), "Composition is not a finite: " << composition);*/
-
-
-    return grains;
+    return WorldBuilder::grains(properties(point, depth, {{3,composition_number,(unsigned int)number_of_grains}}),(unsigned int)number_of_grains,0);
   }
 
   std::mt19937 &
