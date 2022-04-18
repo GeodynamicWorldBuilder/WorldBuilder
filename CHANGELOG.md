@@ -28,6 +28,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - New gravity plugin system with a uniform gravity plugin where the gravity magnitude can be set from the input file. This how replaces the gravity input provided thruogh the interface. The interface itself will be updated in a future pull request, where the gravity norm parameter will be removed. \[Menno Fraters; 2022-03-27; [#370](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/370)\]
 - ApprovalTest have been added to the unit tests. \[Menno Fraters; 2022-04-09; [#401](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/401)\]
 - Added a cmake target to update the reference test results called `update_test_references`. \[Menno Fraters; 2022-04-12; [#404](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/404)\]
+- Added a new multi property query interface called properties to the world. This allows to ask for different properties at the same time, which significantly improve performance. Internally all other interface now use this properties function to reduce complexity. \[Menno Fraters; 2022-04-18; [#409](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/409) and [#410](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/410)\]
  
 ### Changed
 - The World Builder Visualizer will now use zlib compression for vtu files by default. If zlib is not available binary output will be used. \[Menno Fraters; 2021-06-26; [#282](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/282)\]
