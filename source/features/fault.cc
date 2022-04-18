@@ -359,18 +359,12 @@ namespace WorldBuilder
       min_lat_cos_inv = 1. / std::cos(min_along_y);
       max_lat_cos_inv = 1. / std::cos(max_along_y);
 
+
+      // Compute the surface bounding box
       buffer_around_fault_cartesian = (maximum_fault_thickness + maximum_total_fault_length);
-    }
-
-
-    BoundingBox<2>
-    Fault::get_bounding_box (const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                             const double depth) const
-    {
-      BoundingBox<2> surface_bounding_box;
-      const double starting_radius_inv = 1 / (position_in_natural_coordinates.get_depth_coordinate() + depth - starting_depth);
       if (world->parameters.coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical)
         {
+          const double starting_radius_inv = 1 / (world->parameters.coordinate_system->max_model_depth());
           std::pair<Point<2>, Point<2> > &spherical_bounding_box = surface_bounding_box.get_boundary_points();
 
           const double buffer_around_fault_spherical = 2 * const_pi * buffer_around_fault_cartesian * starting_radius_inv;
@@ -390,6 +384,12 @@ namespace WorldBuilder
           bounding_box.second = {max_along_x, max_along_y, cartesian};
           surface_bounding_box.extend(buffer_around_fault_cartesian);
         }
+    }
+
+
+    const BoundingBox<2> &
+    Fault::get_surface_bounding_box () const
+    {
       return surface_bounding_box;
     }
 
@@ -415,8 +415,8 @@ namespace WorldBuilder
 
       // todo: explain and check -starting_depth
       if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_fault_length + maximum_fault_thickness &&
-          get_bounding_box(position_in_natural_coordinates, depth).point_inside(Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
-                                                                                world->parameters.coordinate_system->natural_coordinate_system())))
+          get_surface_bounding_box().point_inside(Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
+                                                           world->parameters.coordinate_system->natural_coordinate_system())))
         {
           // todo: explain
           // This function only returns positive values, because we want
@@ -550,8 +550,8 @@ namespace WorldBuilder
 
       // todo: explain and check -starting_depth
       if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_fault_length + maximum_fault_thickness &&
-          get_bounding_box(position_in_natural_coordinates, depth).point_inside(Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
-                                                                                world->parameters.coordinate_system->natural_coordinate_system())))
+          get_surface_bounding_box().point_inside(Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
+                                                           world->parameters.coordinate_system->natural_coordinate_system())))
         {
           // todo: explain
           // This function only returns positive values, because we want
@@ -687,8 +687,8 @@ namespace WorldBuilder
 
       // todo: explain and check -starting_depth
       if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_fault_length + maximum_fault_thickness &&
-          get_bounding_box(position_in_natural_coordinates, depth).point_inside(Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
-                                                                                world->parameters.coordinate_system->natural_coordinate_system())))
+          get_surface_bounding_box().point_inside(Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
+                                                           world->parameters.coordinate_system->natural_coordinate_system())))
         {
           // todo: explain
           // This function only returns positive values, because we want
