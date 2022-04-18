@@ -1435,16 +1435,32 @@ int main(int argc, char **argv)
           dataSetInfo.emplace_back(vtu11::DataSetInfo( "Composition "+std::to_string(c), vtu11::DataSetType::PointData, 1 ));
         }
 
-      std::cout << "[5/6] Preparing to write the paraview file: stage 5 of 6, computing the temperatures                              \r";
+      std::cout << "[5/6] Preparing to write the paraview file: stage 5 of 5, computing the properties                              \r";
       std::cout.flush();
+
+      std::vector<std::array<unsigned ,3>> properties;
+      properties.push_back({{1,0,0}}); // temperature
+
+      for (size_t c = 0; c < compositions; ++c)
+        properties.push_back({{2,(unsigned int)c,0}}); // composition c
+
       // compute temperature
-      std::vector<double> temperature_vector(n_p);
+      std::vector<vtu11::DataSetData> data_set = { grid_depth };
+      data_set.resize(2+compositions);
+      data_set[1].resize(n_p);
+      for (size_t c = 0; c < compositions; ++c)
+        data_set[2+c].resize(n_p);
       if (dim == 2)
         {
           pool.parallel_for(0, n_p, [&] (size_t i)
           {
             std::array<double,2> coords = {{grid_x[i], grid_z[i]}};
-            temperature_vector[i] = world->temperature(coords, grid_depth[i]);
+            std::vector<double> output = world->properties(coords, grid_depth[i],properties);
+            data_set[1][i] = output[0];
+            for (size_t c = 0; c < compositions; ++c)
+              {
+                data_set[2+c][i] = output[1+c];
+              }
           });
         }
       else
@@ -1452,38 +1468,13 @@ int main(int argc, char **argv)
           pool.parallel_for(0, n_p, [&] (size_t i)
           {
             std::array<double,3> coords = {{grid_x[i], grid_y[i], grid_z[i]}};
-            temperature_vector[i] = world->temperature(coords, grid_depth[i]);
+            std::vector<double> output = world->properties(coords, grid_depth[i],properties);
+            data_set[1][i] = output[0];
+            for (size_t c = 0; c < compositions; ++c)
+              {
+                data_set[2+c][i] = output[1+c];
+              }
           });
-        }
-
-      std::vector<vtu11::DataSetData> data_set = { grid_depth, temperature_vector};
-      std::cout << "[5/6] Preparing to write the paraview file: stage 6 of 6, computing the compositions                              \r";
-      std::cout.flush();
-      // compute compositions
-      std::vector<double> temp_vector(n_p);
-      for (size_t c = 0; c < compositions; ++c)
-        {
-          std::cout << "[5/6] Preparing to write the paraview file: stage 6 of 6, computing composition "
-                    << c << " of " << compositions << "            \r";
-          std::cout.flush();
-
-          if (dim == 2)
-            {
-              pool.parallel_for(0, n_p, [&] (size_t i)
-              {
-                std::array<double,2> coords = {{grid_x[i], grid_z[i]}};
-                temp_vector[i] =  world->composition(coords, grid_depth[i], static_cast<unsigned int>(c));
-              });
-            }
-          else
-            {
-              pool.parallel_for(0, n_p, [&] (size_t i)
-              {
-                std::array<double,3> coords = {{grid_x[i], grid_y[i], grid_z[i]}};
-                temp_vector[i] =  world->composition(coords, grid_depth[i], static_cast<unsigned int>(c));
-              });
-            }
-          data_set.emplace_back(temp_vector);
         }
       std::cout << "[6/6] Writing the paraview file                                                                                \r";
       std::cout.flush();

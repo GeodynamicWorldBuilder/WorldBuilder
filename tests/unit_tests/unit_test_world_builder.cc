@@ -845,6 +845,30 @@ TEST_CASE("WorldBuilder CPP wrapper")
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
+TEST_CASE("WorldBuilder interface")
+{
+
+  std::vector<grains> approval_tests_grains;
+  std::string file = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/continental_plate.wb";
+  WorldBuilder::World world(file);
+
+  CHECK_THROWS_WITH(world.properties({{1,2,3}},1., {{0,0,0}}),Contains("Unimplemented property provided. Only "));
+  CHECK_THROWS_WITH(world.properties({{1,2,3}},1., {{4,0,0}}),Contains("Unimplemented property provided. Only "));
+
+  approval_tests_grains.emplace_back(world.grains(std::array<double,3> {{750e3,250e3,100e3}},10e3,0,3));
+  approval_tests_grains.emplace_back(world.grains(std::array<double,2> {{750e3,100e3}},10e3,0,3));
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests_grains);
+}
+
+TEST_CASE("Worldbuilder grains")
+{
+  // creat a grains object
+  WorldBuilder::grains grains;
+
+  CHECK(grains.sizes.size() == 0);
+  CHECK(grains.rotation_matrices.size() == 0);
+}
+
 TEST_CASE("WorldBuilder World random")
 {
   std::vector<double> approval_tests;
@@ -1025,7 +1049,20 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
   WorldBuilder::World world1(file_name);
 
   // Check continental plate directly
-  std::unique_ptr<Features::Interface> continental_plate = Features::Interface::create("continental plate", &world1);
+  {
+    std::unique_ptr<Features::Interface> continental_plate = Features::Interface::create("continental plate", &world1);
+
+    world1.parameters.enter_subsection("features");
+    world1.parameters.enter_subsection("2");
+    continental_plate->parse_entries(world1.parameters);
+    world1.parameters.leave_subsection();
+    world1.parameters.leave_subsection();
+    auto point = Point<3>(250e3,750e3,400e3,cartesian);
+    std::vector<double> vector(1,0.);
+    auto nat_coord = Objects::NaturalCoordinate(point,*(world1.parameters.coordinate_system));
+    CHECK_THROWS_WITH(continental_plate->properties(point,nat_coord,10e3, {{4,0,0}},10, {0},vector),
+    Contains("Internal error: Unimplemented property provided"));
+  }
 
   // Check continental plate through the world
   std::array<double,3> position = {{0,0,0}};
@@ -1255,13 +1292,24 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
 {
   std::vector<double> approval_tests;
   std::vector<grains> approval_tests_grains;
-
   std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/mantle_layer_cartesian.wb";
   WorldBuilder::World world1(file_name);
 
-  // Check continental plate directly
-  std::unique_ptr<Features::Interface> mantle_layer = Features::Interface::create("mantle layer", &world1);
+  // Check mantle layer directly
+  {
+    std::unique_ptr<Features::Interface> mantle_layer = Features::Interface::create("mantle layer", &world1);
 
+    world1.parameters.enter_subsection("features");
+    world1.parameters.enter_subsection("2");
+    mantle_layer->parse_entries(world1.parameters);
+    world1.parameters.leave_subsection();
+    world1.parameters.leave_subsection();
+    auto point = Point<3>(250e3,750e3,400e3,cartesian);
+    std::vector<double> vector(1,0.);
+    auto nat_coord = Objects::NaturalCoordinate(point,*(world1.parameters.coordinate_system));
+    CHECK_THROWS_WITH(mantle_layer->properties(point,nat_coord,260e3, {{4,0,0}},10, {0},vector),
+    Contains("Internal error: Unimplemented property provided"));
+  }
   // Check continental plate through the world
   std::array<double,3> position = {{0,0,0}};
   approval_tests.emplace_back(world1.temperature(position, 0));
@@ -1495,7 +1543,20 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   WorldBuilder::World world1(file_name);
 
   // Check continental plate directly
-  std::unique_ptr<Features::Interface> continental_plate = Features::Interface::create("oceanic plate", &world1);
+  {
+    std::unique_ptr<Features::Interface> oceanic_plate = Features::Interface::create("oceanic plate", &world1);
+
+    world1.parameters.enter_subsection("features");
+    world1.parameters.enter_subsection("2");
+    oceanic_plate->parse_entries(world1.parameters);
+    world1.parameters.leave_subsection();
+    world1.parameters.leave_subsection();
+    auto point = Point<3>(250e3,750e3,400e3,cartesian);
+    std::vector<double> vector(1,0.);
+    auto nat_coord = Objects::NaturalCoordinate(point,*(world1.parameters.coordinate_system));
+    CHECK_THROWS_WITH(oceanic_plate->properties(point,nat_coord,10e3, {{4,0,0}},10, {0},vector),
+    Contains("Internal error: Unimplemented property provided"));
+  }
 
   // Check continental plate through the world
   // 2d
@@ -1869,8 +1930,20 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   WorldBuilder::World world1(file_name);
 
   // Check continental plate directly (upper case should automatically turn into lower case).
-  std::unique_ptr<Features::Interface> continental_plate = Features::Interface::create("Subducting Plate", &world1);
+  {
+    std::unique_ptr<Features::Interface> subducting_plate = Features::Interface::create("Subducting Plate", &world1);
 
+    world1.parameters.enter_subsection("features");
+    world1.parameters.enter_subsection("2");
+    subducting_plate->parse_entries(world1.parameters);
+    world1.parameters.leave_subsection();
+    world1.parameters.leave_subsection();
+    auto point = Point<3>(250e3,500e3,800e3,cartesian);
+    std::vector<double> vector(1,0.);
+    auto nat_coord = Objects::NaturalCoordinate(point,*(world1.parameters.coordinate_system));
+    CHECK_THROWS_WITH(subducting_plate->properties(point,nat_coord,1000, {{4,0,0}},10, {0},vector),
+    Contains("Internal error: Unimplemented property provided"));
+  }
   // Check continental plate through the world
   std::array<double,3> position = {{0,0,800e3}};
   approval_tests.emplace_back(world1.temperature(position, 0));
@@ -2285,7 +2358,20 @@ TEST_CASE("WorldBuilder Features: Fault")
   WorldBuilder::World world1(file_name);
 
   // Check continental plate directly (upper case should automatically turn into lower case).
-  std::unique_ptr<Features::Interface> fault = Features::Interface::create("fault", &world1);
+  {
+    std::unique_ptr<Features::Interface> fault = Features::Interface::create("Fault", &world1);
+
+    world1.parameters.enter_subsection("features");
+    world1.parameters.enter_subsection("2");
+    fault->parse_entries(world1.parameters);
+    world1.parameters.leave_subsection();
+    world1.parameters.leave_subsection();
+    auto point = Point<3>(50e3,230e3,800e3,cartesian);
+    std::vector<double> vector(1,0.);
+    auto nat_coord = Objects::NaturalCoordinate(point,*(world1.parameters.coordinate_system));
+    CHECK_THROWS_WITH(fault->properties(point,nat_coord,1000, {{4,0,0}},10, {0},vector),
+    Contains("Internal error: Unimplemented property provided"));
+  }
 
   // Check fault plate through the world
   std::array<double,3> position = {{0,0,800e3}};

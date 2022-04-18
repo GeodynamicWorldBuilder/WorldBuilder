@@ -52,7 +52,7 @@ int main(int argc, char **argv)
   unsigned int dim = 3;
   unsigned int compositions = 0;
   unsigned int grain_compositions = 0;
-  size_t number_of_grains = 0;
+  size_t n_grains = 0;
   bool convert_spherical = false;
   bool limit_debug_consistency_checks = true;
 
@@ -163,11 +163,22 @@ int main(int argc, char **argv)
             grain_compositions = string_to_unsigned_int(line_i[4]);
 
           if (!line_i.empty() && line_i[0] == "#" && line_i[1] == "number" && line_i[2] == "of" && line_i[3] == "grains" && line_i[4] == "=")
-            number_of_grains = string_to_unsigned_int(line_i[5]);
+            n_grains = string_to_unsigned_int(line_i[5]);
 
           if (!line_i.empty() && line_i[0] == "#" && line_i[1] == "convert" && line_i[2] == "spherical" && line_i[3] == "=" && line_i[4] == "true")
             convert_spherical = true;
         }
+
+      // set properties
+      std::vector<std::array<unsigned ,3>> properties;
+      properties.push_back({{1,0,0}}); // temperature
+
+      for (size_t c = 0; c < compositions; ++c)
+        properties.push_back({{2,(unsigned int)c,0}}); // composition c
+
+      for (size_t gc = 0; gc < grain_compositions; ++gc)
+        properties.push_back({{3,(unsigned int)gc,(unsigned int)n_grains}}); // grains gc
+
 
       switch (dim)
         {
@@ -180,7 +191,7 @@ int main(int argc, char **argv)
               std::cout << 'c' << c << ' ';
 
             for (unsigned int gc = 0; gc < grain_compositions; ++gc)
-              for (size_t g = 0; g < number_of_grains; g++)
+              for (size_t g = 0; g < n_grains; g++)
                 std::cout << "gs" << gc << '-' << g << ' ' // gs = grain size, gm = grain rotation matrix
                           << "gm" << gc << '-' << g << "[0:0] " << "gm" << gc << '-' << g << "[0:1] " << "gm" << gc << '-' << g << "[0:2] "
                           << "gm" << gc << '-' << g << "[1:0] " << "gm" << gc << '-' << g << "[1:1] " << "gm" << gc << '-' << g << "[1:2] "
@@ -201,22 +212,24 @@ int main(int argc, char **argv)
                     }
                   };
                   std::cout << data[i][0] << ' ' << data[i][1] << ' ' << data[i][2] << ' ';
-                  std::cout << world->temperature(coords, string_to_double(data[i][2]))  << ' ';
+                  std::vector<double> output = world->properties(coords, string_to_double(data[i][2]),properties);
+                  std::cout << output[0]  << ' ';
 
                   for (unsigned int c = 0; c < compositions; ++c)
                     {
-                      std::cout << world->composition(coords, string_to_double(data[i][2]), c)  << ' ';
+                      std::cout << output[1+c]  << ' ';
                     }
 
                   for (unsigned int gc = 0; gc < grain_compositions; ++gc)
                     {
-                      WorldBuilder::grains grains = world->grains(coords, string_to_double(data[i][2]), gc, number_of_grains);
-                      for (unsigned int g = 0; g < number_of_grains; ++g)
+                      const size_t start = 1+compositions+gc*n_grains*10;
+                      for (unsigned int g = 0; g < n_grains; ++g)
                         {
-                          std::cout << grains.sizes[g]  << ' '
-                                    << grains.rotation_matrices[g][0][0] << ' ' << grains.rotation_matrices[g][0][1] << ' ' << grains.rotation_matrices[g][0][2] << ' '
-                                    << grains.rotation_matrices[g][1][0] << ' ' << grains.rotation_matrices[g][1][1] << ' ' << grains.rotation_matrices[g][1][2] << ' '
-                                    << grains.rotation_matrices[g][2][0] << ' ' << grains.rotation_matrices[g][2][1] << ' ' << grains.rotation_matrices[g][2][2] << ' ';
+                          std::cout << output[start+g]  << ' '
+                                    << output[start+n_grains+g*9] << ' ' << output[start+n_grains+g*9+1] << ' ' << output[start+n_grains+g*9+2] << ' '
+                                    << output[start+n_grains+g*9+3] << ' ' << output[start+n_grains+g*9+4] << ' ' << output[start+n_grains+g*9+5] << ' '
+                                    << output[start+n_grains+g*9+6] << ' ' << output[start+n_grains+g*9+7] << ' ' << output[start+n_grains+g*9+8] << ' ';
+
                         }
                     }
                   std::cout << std::endl;
@@ -231,7 +244,7 @@ int main(int argc, char **argv)
               std::cout << 'c' << c << ' ';
 
             for (unsigned int gc = 0; gc < grain_compositions; ++gc)
-              for (size_t g = 0; g < number_of_grains; g++)
+              for (size_t g = 0; g < n_grains; g++)
                 std::cout << "gs" << gc << '-' << g << ' ' // gs = grain size, gm = grain rotation matrix
                           << "gm" << gc << '-' << g << "[0:0] " << "gm" << gc << '-' << g << "[0:1] " << "gm" << gc << '-' << g << "[0:2] "
                           << "gm" << gc << '-' << g << "[1:0] " << "gm" << gc << '-' << g << "[1:1] " << "gm" << gc << '-' << g << "[1:2] "
@@ -258,22 +271,24 @@ int main(int argc, char **argv)
                     }
 
                   std::cout << data[i][0] << ' ' << data[i][1] << ' ' << data[i][2] << ' ' << data[i][3] << ' ';
-                  std::cout << world->temperature(coords, string_to_double(data[i][3]))  << ' ';
+                  std::vector<double> output = world->properties(coords, string_to_double(data[i][3]),properties);
+                  std::cout << output[0]  << ' ';
 
                   for (unsigned int c = 0; c < compositions; ++c)
                     {
-                      std::cout << world->composition(coords, string_to_double(data[i][3]), c)  << ' ';
+                      std::cout << output[1+c]  << ' ';
                     }
 
                   for (unsigned int gc = 0; gc < grain_compositions; ++gc)
                     {
-                      WorldBuilder::grains grains = world->grains(coords, string_to_double(data[i][3]), gc, number_of_grains);
-                      for (unsigned int g = 0; g < number_of_grains; ++g)
+                      const size_t start = 1+compositions+gc*n_grains*10;
+                      for (unsigned int g = 0; g < n_grains; ++g)
                         {
-                          std::cout << grains.sizes[g]  << ' '
-                                    << grains.rotation_matrices[g][0][0] << ' ' << grains.rotation_matrices[g][0][1] << ' ' << grains.rotation_matrices[g][0][2] << ' '
-                                    << grains.rotation_matrices[g][1][0] << ' ' << grains.rotation_matrices[g][1][1] << ' ' << grains.rotation_matrices[g][1][2] << ' '
-                                    << grains.rotation_matrices[g][2][0] << ' ' << grains.rotation_matrices[g][2][1] << ' ' << grains.rotation_matrices[g][2][2] << ' ';
+                          std::cout << output[start+g]  << ' '
+                                    << output[start+n_grains+g*9] << ' ' << output[start+n_grains+g*9+1] << ' ' << output[start+n_grains+g*9+2] << ' '
+                                    << output[start+n_grains+g*9+3] << ' ' << output[start+n_grains+g*9+4] << ' ' << output[start+n_grains+g*9+5] << ' '
+                                    << output[start+n_grains+g*9+6] << ' ' << output[start+n_grains+g*9+7] << ' ' << output[start+n_grains+g*9+8] << ' ';
+
                         }
                     }
                   std::cout << std::endl;

@@ -83,27 +83,6 @@ namespace WorldBuilder
          */
         void parse_entries(Parameters &prm) override final;
 
-        /**
-         * Returns a temperature based on the given position, depth in the model,
-         * gravity and current temperature.
-         */
-        double temperature(const Point<3> &position_in_cartesian_coordinates,
-                           const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                           const double depth,
-                           const double gravity,
-                           double temperature) const override final;
-
-        /**
-         * Returns a value for the requests composition (0 is not present,
-         * 1 is present) based on the given position, depth in the model,
-         * the composition which is being requested and the current value
-         * of that composition at this location and depth.
-         */
-        double composition(const Point<3> &position_in_cartesian_coordinates,
-                           const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                           const double depth,
-                           const unsigned int composition_number,
-                           double composition_value) const override final;
 
         /**
          * Computes the bounding points for a BoundingBox object using two extreme points in all the surface
@@ -116,20 +95,39 @@ namespace WorldBuilder
         const BoundingBox<2>  &get_surface_bounding_box () const;
 
         /**
-         * Returns a grains (rotation matrix and grain size) based on the
-         * given position, depth in the model, the composition (e.g. representing
-         * olvine and/or enstatite) which is being requested and the current value
-         * of that composition at this location and depth.
+         * Returns different values at a single point in one go stored in a vector of doubles.
+         *
+         * The properties input decides what each entry means, and the output is generated in the
+         * same order as the properties input. The properties input consists of
+         * a 3D array, where the first entry identifies the property and the last two entries
+         * provide extra information about that property.
+         *
+         * Temperature is identified by 1 and no extra information is needed. So temperature
+         * input usually looks like {1,0,0}. A temperature query prodoces one entry in the output
+         * vector.
+         *
+         * Composition is identified by 2. This produces one
+         * value in the output. The second entry  identifies the composition number and the third
+         * number is not used. So a commposition query asking about composition 1 looks like this:
+         * {2,1,0}. A composition query prodoces one entry in the output vector.
+         *
+         * Grains are identified by 2. The second entry is the grain composition number and the third
+         * entry is the number of grains. A query about the grains, where it askes about composition 1
+         * (for example enstatite) and 500 grains, looks like this: {2,1,500}.
+         * A composition query prodoces n_grains*10 entries in the output vector. The first n_grains
+         * entries are the sizes of all the grains, and the other 9 entries are sets of rotation
+         * matrices. The rotation matrix entries are ordered [0][0],[0][1],[0][2],[1][0],[1][1],etc.
+         *
+         * The entries in output variable relates the index of the property to the index in the output.
          */
-
-        WorldBuilder::grains
-        grains(const Point<3> &position_in_cartesian_coordinates,
-               const Objects::NaturalCoordinate &position_in_natural_coordinates,
-               const double depth,
-               const unsigned int composition_number,
-               WorldBuilder::grains grains) const override final;
-
-
+        void
+        properties(const Point<3> &position_in_cartesian_coordinates,
+                   const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                   const double depth,
+                   const std::vector<std::array<unsigned int,3>> properties,
+                   const double gravity,
+                   const std::vector<size_t> &entry_in_output,
+                   std::vector<double> &output) const override final;
 
       private:
         std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface> > default_temperature_models;

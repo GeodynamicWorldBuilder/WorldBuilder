@@ -76,36 +76,16 @@ namespace WorldBuilder
 
 
         /**
-         * takes temperature and position and returns a temperature.
+         * takes a set of properties and a postion and return a new set of properties
          */
         virtual
-        double temperature(const Point<3> &position_in_cartesian_coordinates,
-                           const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                           const double depth,
-                           const double gravity,
-                           double temperature) const = 0;
-        /**
-         * Returns a value for the requested composition (0 is not present,
-         * 1 is present) based on the given position and
-         */
-        virtual
-        double composition(const Point<3> &position_in_cartesian_coordinates,
-                           const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                           const double depth,
-                           const unsigned int composition_number,
-                           double value) const = 0;
-
-        /**
-         * Returns a value for the requested grains based on the
-         * given position and composition number
-         */
-        virtual
-        WorldBuilder::grains grains(const Point<3> &position_in_cartesian_coordinates,
-                                    const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                                    const double depth,
-                                    const unsigned int composition_number,
-                                    WorldBuilder::grains value) const = 0;
-
+        void properties(const Point<3> &position_in_cartesian_coordinates,
+                        const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                        const double depth,
+                        const std::vector<std::array<unsigned int,3>> properties,
+                        const double gravity,
+                        const std::vector<size_t> &entry_in_output,
+                        std::vector<double> &output) const = 0;
 
         /**
          * A function to register a new type. This is part of the automatic
