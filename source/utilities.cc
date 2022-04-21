@@ -1167,6 +1167,10 @@ namespace WorldBuilder
               double interpolated_segment_length     = plane_segment_lengths[original_current_section][current_segment]
                                                        + fraction_CPL_P1P2 * (plane_segment_lengths[original_next_section][current_segment]
                                                                               - plane_segment_lengths[original_current_section][current_segment]);
+
+              if (interpolated_segment_length < 1e-14)
+                continue;
+
               WBAssert(!std::isnan(interpolated_angle_top),
                        "Internal error: The interpolated_angle_top variable is not a number: " << interpolated_angle_top);
 
