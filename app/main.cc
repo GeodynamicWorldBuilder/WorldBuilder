@@ -83,7 +83,7 @@ int main(int argc, char **argv)
       return 0;
     }
 
-  if ((argc == 3 && limit_debug_consistency_checks) || argc > 4)
+  if ((argc == 3 && !limit_debug_consistency_checks) || argc > 4)
     {
       std::cout << "Only exactly two command line arguments may be given, which should be the world builder file location and the data file location (in that order) "
                 << "or exactly three command line arguments, which should be the world builder file location, the data file location and --limit-debug-consistency-checks (in that order). "
