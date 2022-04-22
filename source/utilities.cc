@@ -1098,7 +1098,7 @@ namespace WorldBuilder
                    ||
                    depth_method == DepthMethod::angle_at_begin_segment_applied_to_end_segment_with_surface))
                 {
-                  const double add_angle_inner = (begin_segment * end_segment) / (begin_segment.norm() * end_segment.norm());
+                  double add_angle_inner = (begin_segment * end_segment) / (begin_segment.norm() * end_segment.norm());
 
                   WBAssert(!std::isnan(add_angle_inner),
                            "Internal error: The add_angle_inner variable is not a number: " << add_angle_inner
@@ -1109,6 +1109,11 @@ namespace WorldBuilder
                            << '.');
 
                   // there could be round of error problems here is the inner part is close to one
+                  if (add_angle_inner < 0. && add_angle_inner >= -1e-14)
+                    add_angle_inner = 0.;
+                  if (add_angle_inner > 1. && add_angle_inner <= 1.+1e-14)
+                    add_angle_inner = 1.;
+
                   WBAssert(add_angle_inner >= 0 && add_angle_inner <= 1,
                            "Internal error: The variable add_angle_inner is smaller than zero or larger then one,"
                            "which causes the std::acos to return nan. If it is only a little bit larger then one, "
