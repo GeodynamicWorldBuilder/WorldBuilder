@@ -585,14 +585,14 @@ namespace WorldBuilder
                     }
                   ++i_newton_iteration;
 
-                  WBAssertThrow(i_newton_iteration<49,
+                  WBAssertThrow(i_newton_iteration < 35+4*number_of_points,
                                 "The spline solver doesn't seem to have finished on a reasonable ammount of Newton "
-                                << "iterations. Please check whether your coordinates are resonable, "
+                                << "iterations ("<< 35+4*number_of_points << "). Please check whether your coordinates are resonable, "
                                 << "or contact the maintainers. Newton interations = " << i_newton_iteration
                                 << ", min_estimate_solution_tmp = " << min_estimate_solution_tmp
                                 << ", last update_scaling = " << update_scaling << ", last update = " << update
                                 << ", P1 = " << P1 << ", P2 = " << P2 << ", i_estimate = " << i_estimate
-                                << "cp = " << check_point << ".");
+                                << "cp = " << check_point << ", start_radius = " << start_radius << ".");
                 }
 
               if (minimum_distance_to_reference_point_tmp < minimum_distance_to_reference_point)
@@ -794,13 +794,14 @@ namespace WorldBuilder
                       break;
                     }
                   ++i_newton_iteration;
-                  WBAssertThrow(i_newton_iteration<49,
+                  WBAssertThrow(i_newton_iteration < 35+4*number_of_points,
                                 "The spline solver doesn't seem to have finished on a reasonable ammount of Newton "
-                                << "iterations. Please check whether your coordinates are resonable, "
+                                << "iterations ("<< 35+4*number_of_points << "). Please check whether your coordinates are resonable, "
                                 << "or contact the maintainers. Newton interations = " << i_newton_iteration
-                                << ", min_estimate_solution_tmp = " << min_estimate_solution_tmp << ", update_scaling = " << update_scaling
-                                << ", update = " << update << ", minimum_distance_to_reference_point_start = " << minimum_distance_to_reference_point_start
-                                << ".");
+                                << ", min_estimate_solution_tmp = " << min_estimate_solution_tmp
+                                << ", last update_scaling = " << update_scaling << ", last update = " << update
+                                << ", P1 = " << P1 << ", P2 = " << P2 << ", i_estimate = " << i_estimate
+                                << "cp = " << check_point << ", start_radius = " << start_radius << ".");
                 }
 
               if (minimum_distance_to_reference_point_tmp < minimum_distance_to_reference_point)
