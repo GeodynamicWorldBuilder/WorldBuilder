@@ -711,7 +711,7 @@ namespace WorldBuilder
 
                   // specific spherical part
                   const double derivative = -0.5*cos_k2*dx2*cos_y2*sin_p_x2-cos_k2*dy2*sin_y2*sin_hp_hx2*sin_hp_hx2-0.5*dy2*sin_k_y2;
-                  if (std::fabs(derivative) < 1e-14)
+                  if (std::fabs(derivative) < 1e-7)
                     {
                       minimum_distance_to_reference_point_tmp = FT::sin((k2-y2)*0.5)*FT::sin((k2-y2)*0.5)+FT::sin((p2-x2)*0.5)*FT::sin((p2-x2)*0.5)*cos_y2*cos_k2;
                       break;
