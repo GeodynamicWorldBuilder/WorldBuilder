@@ -622,6 +622,7 @@ namespace WorldBuilder
               // Go one point pair up.
               P1 = P2;
               P2 = point_list[i_estimate+1];
+              Point<2> P1h = Point<2>(x_spline.value_inside(i_estimate,0.5),y_spline.value_inside(i_estimate,0.5),spherical);
 
               // Compute distance to first point on the line.
               double minimum_distance_to_reference_point_tmp = P1.cheap_relative_distance_spherical(check_point_surface_2d);
@@ -631,33 +632,33 @@ namespace WorldBuilder
                   min_estimate_solution = i_estimate;
                 }
 
+              minimum_distance_to_reference_point_tmp = P1h.cheap_relative_distance_spherical(check_point_surface_2d);
+              if (minimum_distance_to_reference_point_tmp < minimum_distance_to_reference_point)
+                {
+                  minimum_distance_to_reference_point = minimum_distance_to_reference_point_tmp;
+                  min_estimate_solution = i_estimate+0.5;
+                }
+
               // Compute fraction of a straight line between the two points where the check point is closest.
               Point<2> P1P2 = (P2)-(P1);
               Point<2> P1Pc = check_point_surface_2d-(P1);
 
-              double c_1 = P1Pc*P1P2;
-              if ( c_1 < 0 )
+              const double c_1 = P1Pc*P1P2;
+              double fraction = 0.5;
+              if ( c_1 >= 0 )
                 {
-                  // closest point to segment beore P1. Continue
-                  // preventing a rounded corner
-                  min_estimate_solution = i_estimate == 0 ? -1 : min_estimate_solution;
-                  continue;
+                  const double c_2 = P1P2*P1P2;
+                  if ( c_2 >= c_1)
+                    {
+                      fraction = c_1 / c_2;
+                    }
                 }
-
-              double c_2 = P1P2*P1P2;
-              if ( c_2 < c_1 )
-                {
-                  // closest point to segment after P2. Continue
-                  continue;
-                }
-
-              double fraction = c_1 / c_2;
 
               // Compute distance of check point to the spline using the computed fraction from the straight line.
               double min_estimate_solution_tmp = (i_estimate+fraction);
-              WBAssert(min_estimate_solution_tmp>=0 && min_estimate_solution_tmp <=number_of_points, "message");
 
               const double idx1 = (size_t)min_estimate_solution_tmp;
+              WBAssert((idx1 < point_list.size()+1), "Internal error: idx1 = " << idx1 << ", min_estimate_solution_tmp = " << min_estimate_solution_tmp << ", i_estimate = " << i_estimate << ", fraction = " << fraction);
               const double sx1 = min_estimate_solution_tmp - idx1;
               const double sx1_2 = sx1*sx1;
               const double sx1_3 = sx1*sx1*sx1;
@@ -677,6 +678,7 @@ namespace WorldBuilder
 
               double new_distance_tmp = -1;
               size_t i_newton_iteration = 0;
+
               // Newton iteration (modified to use the sign of the derivative instead of sign of derivative/second dervative)
               // to compute the point on the spine which is closest to the check point. The modification allows for a larger
               // area of convergence since it will only converge to minima, and not to maxima.
@@ -785,7 +787,8 @@ namespace WorldBuilder
                                     << ", Newton interations = " << i_newton_iteration
                                     << ", min_estimate_solution_tmp = " << min_estimate_solution_tmp << ", update_scaling = " << update_scaling
                                     << ", update = " << update << ", minimum_distance_to_reference_point_start = " << minimum_distance_to_reference_point_start
-                                    << ", minimum_distance_to_reference_point_tmp = " << minimum_distance_to_reference_point_tmp << ".");
+                                    << ", minimum_distance_to_reference_point_tmp = " << minimum_distance_to_reference_point_tmp
+                                    << ", derivative = " << derivative << ", check point = " << check_point <<  ".");
                     }
                   min_estimate_solution_tmp = min_estimate_solution_tmp - update_scaling*update;
 
@@ -810,14 +813,6 @@ namespace WorldBuilder
                   min_estimate_solution = min_estimate_solution_tmp;
                 }
             }
-
-          double minimum_distance_to_reference_point_tmp = P2.cheap_relative_distance_spherical(check_point_surface_2d);
-          if (minimum_distance_to_reference_point_tmp < minimum_distance_to_reference_point)
-            {
-              minimum_distance_to_reference_point = minimum_distance_to_reference_point_tmp;
-              min_estimate_solution = number_of_points-1;
-            }
-
         }
       double solution = min_estimate_solution;
 
@@ -841,7 +836,8 @@ namespace WorldBuilder
 
       Point<3> closest_point_on_line_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_surface.get_array()),cartesian);
 
-      if (solution >= 0 && floor(solution) <=point_list.size()-2 && floor(solution)  >= 0)
+      // Solution == 0 is not included on purpose, since it include a much larger area than intended. This prevents a rounded corner.
+      if (solution > 0 && floor(solution) <=point_list.size()-2 && floor(solution)  >= 0)
         {
           i_section_min_distance = static_cast<size_t>(floor(solution));
           fraction_CPL_P1P2 = solution-floor(solution);
