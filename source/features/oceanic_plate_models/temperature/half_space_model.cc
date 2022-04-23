@@ -228,7 +228,7 @@ namespace WorldBuilder
 
                   double  temperature = bottom_temperature_local;
 
-                  temperature = temperature + (top_temperature - bottom_temperature_local)*std::erfc(depth/(2*std::sqrt(thermal_diffusivity*age)));
+                  temperature = temperature + (age > 0 ? (top_temperature - bottom_temperature_local)*std::erfc(depth/(2*std::sqrt(thermal_diffusivity*age))) : 0.);
 
                   WBAssert(!std::isnan(temperature), "Temperature inside half-space cooling model is not a number: " << temperature
                            << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
