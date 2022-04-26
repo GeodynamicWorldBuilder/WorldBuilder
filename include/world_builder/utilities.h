@@ -296,7 +296,7 @@ namespace WorldBuilder
       double distance_from_plane;
 
       /**
-       * The distance between the the start of the first segment (usually at
+       * The distance between the start of the first segment (usually at
        * the surface) to the provided point following the (curved) plane.
        */
       double distance_along_plane;
@@ -366,7 +366,7 @@ namespace WorldBuilder
      * surface for this slab.
      * \param coordinate_system This is a reference to the coordinate system of the
      * World Builder. This is used to convert cartesian to natural coordinates and back.
-     * \param only_positive This value deterines whether only the the part below the
+     * \param only_positive This value determines whether only the part below the
      * plane should count as distance or both sides of the plane. It is called only_positive
      * because the area below the plane, the distance is positve, and above the plane the
      * distance is negative.
