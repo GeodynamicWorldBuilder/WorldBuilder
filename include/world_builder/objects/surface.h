@@ -72,7 +72,7 @@ namespace WorldBuilder
         /**
          * Stores the triangles as a list of three points.
          */
-        std::vector<std::array<std::array<double,3>,3> > triangles;
+        std::vector<std::array<std::array<double,3>,3>> triangles;
 
       private:
         /**

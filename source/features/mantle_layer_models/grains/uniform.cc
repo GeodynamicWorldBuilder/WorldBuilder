@@ -110,7 +110,7 @@ namespace WorldBuilder
 
           if (set_euler_angles)
             {
-              std::vector<std::array<double,3> > euler_angles_vector = prm.get_vector<std::array<double,3> >("Euler angles z-x-z");
+              std::vector<std::array<double,3>> euler_angles_vector = prm.get_vector<std::array<double,3>>("Euler angles z-x-z");
               rotation_matrices.resize(euler_angles_vector.size());
               for (size_t i = 0; i<euler_angles_vector.size(); ++i)
                 {
@@ -120,7 +120,7 @@ namespace WorldBuilder
             }
           else
             {
-              rotation_matrices = prm.get_vector<std::array<std::array<double,3>,3> >("rotation matrices");
+              rotation_matrices = prm.get_vector<std::array<std::array<double,3>,3>>("rotation matrices");
             }
           operation = prm.get<std::string>("orientation operation");
           grain_sizes = prm.get_vector<double>("grain sizes");

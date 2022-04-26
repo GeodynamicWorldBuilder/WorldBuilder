@@ -175,7 +175,7 @@ TEST_CASE("create kd-tree: 10 nodes")
         CHECK(index_distance.index == index_results[i]);
       }
 
-    std::vector<std::vector<size_t> > index_distances_results =
+    std::vector<std::vector<size_t>> index_distances_results =
     {
       {5,7,8,4,3,2,1,0},{5,7,4,3,2,1,0},{6,5,7,4,3,2,1},{5,6,7,8,4,3,2,1,0},
       {5,6,7,8,4,3,2,1,0},{8,9,7,5,6,4,},{6,5,7,4,0,1},{6,5,7,4,3,2,1,0},

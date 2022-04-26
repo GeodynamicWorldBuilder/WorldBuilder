@@ -33,7 +33,7 @@ namespace WorldBuilder
   namespace Utilities
   {
     bool
-    polygon_contains_point(const std::vector<Point<2> > &point_list,
+    polygon_contains_point(const std::vector<Point<2>> &point_list,
                            const Point<2> &point)
     {
       if (point.get_coordinate_system() == CoordinateSystem::spherical)
@@ -50,7 +50,7 @@ namespace WorldBuilder
     }
 
     bool
-    polygon_contains_point_implementation(const std::vector<Point<2> > &point_list,
+    polygon_contains_point_implementation(const std::vector<Point<2>> &point_list,
                                           const Point<2> &point)
     {
       /**
@@ -152,7 +152,7 @@ namespace WorldBuilder
     }
 
     double
-    signed_distance_to_polygon(const std::vector<Point<2> > &point_list,
+    signed_distance_to_polygon(const std::vector<Point<2>> &point_list,
                                const Point<2> &point)
     {
       // If the point lies outside polygon, we give it a negative sign,
@@ -179,7 +179,7 @@ namespace WorldBuilder
       std::vector<double> distances(n_poly_points, 1e23);
 
       // Create another polygon but with all points shifted 1 position to the right
-      std::vector<Point<2> > shifted_point_list(n_poly_points, Point<2>(point.get_coordinate_system()));
+      std::vector<Point<2>> shifted_point_list(n_poly_points, Point<2>(point.get_coordinate_system()));
       shifted_point_list[0] = point_list[n_poly_points-1];
 
       for (size_t i = 0; i < n_poly_points-1; ++i)
@@ -344,9 +344,9 @@ namespace WorldBuilder
     distance_point_from_curved_planes(const Point<3> &check_point, // cartesian point in cartesian and spherical system
                                       const Objects::NaturalCoordinate &natural_coordinate, // cartesian point cartesian system, spherical point in spherical system
                                       const Point<2> &reference_point, // in (rad) spherical coordinates in spherical system
-                                      const std::vector<Point<2> > &point_list, // in  (rad) spherical coordinates in spherical system
-                                      const std::vector<std::vector<double> > &plane_segment_lengths,
-                                      const std::vector<std::vector<Point<2> > > &plane_segment_angles,
+                                      const std::vector<Point<2>> &point_list, // in  (rad) spherical coordinates in spherical system
+                                      const std::vector<std::vector<double>> &plane_segment_lengths,
+                                      const std::vector<std::vector<Point<2>>> &plane_segment_angles,
                                       const double start_radius,
                                       const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                       const bool only_positive,

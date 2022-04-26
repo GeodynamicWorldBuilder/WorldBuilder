@@ -120,7 +120,7 @@ namespace WorldBuilder
        */
       std::pair<std::vector<double>,std::vector<double>>
                                                       get(const std::string &name,
-                                                          const std::vector<Point<2> > &addition_points = {});
+                                                          const std::vector<Point<2>> &addition_points = {});
 
       /**
        * A specialized verions of get which can retun vecors/arrays.
@@ -128,7 +128,7 @@ namespace WorldBuilder
        * \param name The name of the entry to retrieved
        */
       template<class T, class A, class B, class C>
-      std::vector<T> get_vector(const std::string &name, std::vector<std::shared_ptr<A> > &, std::vector<std::shared_ptr<B> > &, std::vector<std::shared_ptr<C> > &);
+      std::vector<T> get_vector(const std::string &name, std::vector<std::shared_ptr<A>> &, std::vector<std::shared_ptr<B>> &, std::vector<std::shared_ptr<C>> &);
 
       /**
        * A specialized verions of get which can retun unique pointers.
@@ -146,7 +146,7 @@ namespace WorldBuilder
        */
       template<class T>
       bool
-      get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<T> > &vector);
+      get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<T>> &vector);
 
       /**
        * A specialized verions of get which can retun shared pointers as an argument
@@ -157,7 +157,7 @@ namespace WorldBuilder
        */
       template<class T>
       bool
-      get_shared_pointers(const std::string &name, std::vector<std::shared_ptr<T> > & /*vector*/);
+      get_shared_pointers(const std::string &name, std::vector<std::shared_ptr<T>> & /*vector*/);
 
       /**
        * Checks for the existance of an entry in the parameter file.
@@ -214,7 +214,7 @@ namespace WorldBuilder
                             const std::string &parent_name,
                             const std::map<std::string, void ( *)(Parameters &,const std::string &)> &declare_map,
                             const std::vector<std::string> &required_entries = {},
-                            const std::vector<std::tuple<std::string,const WorldBuilder::Types::Interface &, std::string> > &extra_declarations = {});
+                            const std::vector<std::tuple<std::string,const WorldBuilder::Types::Interface &, std::string>> &extra_declarations = {});
 
 
       /**
@@ -247,7 +247,7 @@ namespace WorldBuilder
        * unique pointers are used.
        * @see Features
        */
-      std::vector<std::unique_ptr<WorldBuilder::Features::Interface> > features;
+      std::vector<std::unique_ptr<WorldBuilder::Features::Interface>> features;
 
       /**
        * A pointers to the corodinate system. This variable is responsible for

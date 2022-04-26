@@ -130,24 +130,24 @@ namespace WorldBuilder
                    std::vector<double> &output) const override final;
 
       private:
-        std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface> > default_temperature_models;
+        std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface>> default_temperature_models;
         std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface>  > default_composition_models;
         std::vector<std::shared_ptr<Features::FaultModels::Grains::Interface>  > default_grains_models;
 
         std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
             Features::FaultModels::Composition::Interface,
-            Features::FaultModels::Grains::Interface> > default_segment_vector;
+            Features::FaultModels::Grains::Interface>> default_segment_vector;
 
         std::vector< std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
             Features::FaultModels::Composition::Interface,
-            Features::FaultModels::Grains::Interface> > > sections_segment_vector;
+            Features::FaultModels::Grains::Interface>>> sections_segment_vector;
 
         // This vector stores segments to this coordiante/section.
         //First used (raw) pointers to the segment relevant to this coordinate/section,
         // but I do not trust it won't fail when memory is moved. So storing the all the data now.
         std::vector<std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
             Features::FaultModels::Composition::Interface,
-            Features::FaultModels::Grains::Interface> > > segment_vector;
+            Features::FaultModels::Grains::Interface>>> segment_vector;
 
         // todo: the memory of this can be greatly improved by
         // or using a plugin system for the submodules, or
@@ -190,10 +190,10 @@ namespace WorldBuilder
          */
         WorldBuilder::Point<2> reference_point;
 
-        std::vector<std::vector<double> > fault_segment_lengths;
-        std::vector<std::vector<Point<2> > > fault_segment_thickness;
-        std::vector<std::vector<Point<2> > > fault_segment_top_truncation;
-        std::vector<std::vector<Point<2> > > fault_segment_angles;
+        std::vector<std::vector<double>> fault_segment_lengths;
+        std::vector<std::vector<Point<2>>> fault_segment_thickness;
+        std::vector<std::vector<Point<2>>> fault_segment_top_truncation;
+        std::vector<std::vector<Point<2>>> fault_segment_angles;
         std::vector<double> total_fault_length;
         double maximum_total_fault_length;
         double maximum_fault_thickness;

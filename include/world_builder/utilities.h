@@ -61,7 +61,7 @@ namespace WorldBuilder
      * polygon_contains_point_implementation to do the real work.
      */
     bool
-    polygon_contains_point(const std::vector<Point<2> > &point_list,
+    polygon_contains_point(const std::vector<Point<2>> &point_list,
                            const Point<2> &point);
 
     /**
@@ -69,7 +69,7 @@ namespace WorldBuilder
      * falls within the polygon.
      */
     bool
-    polygon_contains_point_implementation(const std::vector<Point<2> > &point_list,
+    polygon_contains_point_implementation(const std::vector<Point<2>> &point_list,
                                           const Point<2> &point);
 
     /**
@@ -78,7 +78,7 @@ namespace WorldBuilder
      * the polygon and positive for points inside the polygon.
      */
     double
-    signed_distance_to_polygon(const std::vector<Point<2> > &point_list_,
+    signed_distance_to_polygon(const std::vector<Point<2>> &point_list_,
                                const Point<2> &point_);
 
 
@@ -391,9 +391,9 @@ namespace WorldBuilder
     PointDistanceFromCurvedPlanes distance_point_from_curved_planes(const Point<3> &check_point,
                                                                     const Objects::NaturalCoordinate &check_point_natural,
                                                                     const Point<2> &reference_point,
-                                                                    const std::vector<Point<2> > &point_list,
-                                                                    const std::vector<std::vector<double> > &plane_segment_lengths,
-                                                                    const std::vector<std::vector<Point<2> > > &plane_segment_angles,
+                                                                    const std::vector<Point<2>> &point_list,
+                                                                    const std::vector<std::vector<double>> &plane_segment_lengths,
+                                                                    const std::vector<std::vector<Point<2>>> &plane_segment_angles,
                                                                     const double start_radius,
                                                                     const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                                                     const bool only_positive,

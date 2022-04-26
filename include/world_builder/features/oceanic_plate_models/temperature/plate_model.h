@@ -93,7 +93,7 @@ namespace WorldBuilder
             double top_temperature;
             double bottom_temperature;
             double spreading_velocity;
-            std::vector<std::vector<Point<2> > > mid_oceanic_ridges;
+            std::vector<std::vector<Point<2>>> mid_oceanic_ridges;
             Utilities::Operations operation;
 
         };

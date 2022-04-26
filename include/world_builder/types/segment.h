@@ -114,9 +114,9 @@ namespace WorldBuilder
                 const WorldBuilder::Point<2> &default_thickness,
                 const WorldBuilder::Point<2> &default_top_truncation,
                 const WorldBuilder::Point<2> &default_angle,
-                std::vector<std::shared_ptr<A> > temperature_systems,
-                std::vector<std::shared_ptr<B> > composition_systems,
-                std::vector<std::shared_ptr<C> > grains_systems);
+                std::vector<std::shared_ptr<A>> temperature_systems,
+                std::vector<std::shared_ptr<B>> composition_systems,
+                std::vector<std::shared_ptr<C>> grains_systems);
 
         /**
          * Copy constructor
@@ -141,9 +141,9 @@ namespace WorldBuilder
         WorldBuilder::Point<2> value_thickness;
         WorldBuilder::Point<2> value_top_truncation;
         WorldBuilder::Point<2> value_angle;
-        std::vector<std::shared_ptr<A> > temperature_systems;
-        std::vector<std::shared_ptr<B> > composition_systems;
-        std::vector<std::shared_ptr<C> > grains_systems;
+        std::vector<std::shared_ptr<A>> temperature_systems;
+        std::vector<std::shared_ptr<B>> composition_systems;
+        std::vector<std::shared_ptr<C>> grains_systems;
 
       protected:
         Segment *clone_impl() const override final
