@@ -369,11 +369,11 @@ namespace WorldBuilder
 
           const double buffer_around_fault_spherical = 2 * const_pi * buffer_around_fault_cartesian * starting_radius_inv;
 
-          spherical_bounding_box.first = {(min_along_x - buffer_around_fault_spherical * min_lat_cos_inv) ,
+          spherical_bounding_box.first = {(min_along_x - buffer_around_fault_spherical * min_lat_cos_inv),
                                           (min_along_y - buffer_around_fault_spherical), spherical
                                          } ;
 
-          spherical_bounding_box.second = {(max_along_x + buffer_around_fault_spherical * max_lat_cos_inv) ,
+          spherical_bounding_box.second = {(max_along_x + buffer_around_fault_spherical * max_lat_cos_inv),
                                            (max_along_y + buffer_around_fault_spherical), spherical
                                           };
         }

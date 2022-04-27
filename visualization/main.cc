@@ -1438,7 +1438,7 @@ int main(int argc, char **argv)
       std::cout << "[5/6] Preparing to write the paraview file: stage 5 of 5, computing the properties                              \r";
       std::cout.flush();
 
-      std::vector<std::array<unsigned ,3>> properties;
+      std::vector<std::array<unsigned,3>> properties;
       properties.push_back({{1,0,0}}); // temperature
 
       for (size_t c = 0; c < compositions; ++c)

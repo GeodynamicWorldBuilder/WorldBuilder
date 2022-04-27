@@ -882,7 +882,7 @@ class GenericValue
 
     //! Move assignment from a GenericDocument is not permitted.
     template <typename StackAllocator>
-    GenericValue &operator=(GenericDocument<Encoding,Allocator,StackAllocator>&& rhs);
+    GenericValue &operator=(GenericDocument<Encoding,Allocator,StackAllocator> &&rhs);
 #endif
 
   public:
@@ -1164,7 +1164,7 @@ class GenericValue
 
 #if RAPIDJSON_HAS_CXX11_RVALUE_REFS
     //! Move assignment in C++11
-    GenericValue &operator=(GenericValue&& rhs) RAPIDJSON_NOEXCEPT
+    GenericValue &operator=(GenericValue &&rhs) RAPIDJSON_NOEXCEPT
     {
       return *this = rhs.Move();
     }
@@ -2910,7 +2910,7 @@ class GenericDocument : public GenericValue<Encoding, Allocator>
 
 #if RAPIDJSON_HAS_CXX11_RVALUE_REFS
     //! Move assignment in C++11
-    GenericDocument &operator=(GenericDocument&& rhs) RAPIDJSON_NOEXCEPT
+    GenericDocument &operator=(GenericDocument &&rhs) RAPIDJSON_NOEXCEPT
     {
       // The cast to ValueType is necessary here, because otherwise it would
       // attempt to call GenericValue's templated assignment operator.

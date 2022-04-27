@@ -575,7 +575,7 @@ namespace doctest
       String &operator+=(const String &other);
 
       String(String &&other);
-      String &operator=(String&& other);
+      String &operator=(String &&other);
 
       char  operator[](unsigned i) const;
       char &operator[](unsigned i);
@@ -878,7 +878,7 @@ namespace doctest
     {
       typedef T type;
     };
-    template<class T> struct remove_reference<T&&>
+    template<class T> struct remove_reference<T &&>
     {
       typedef T type;
     };
@@ -902,7 +902,7 @@ namespace doctest
     {
       const static bool value=false;
     };
-    template<class T> struct is_rvalue_reference<T&&>
+    template<class T> struct is_rvalue_reference<T &&>
     {
       const static bool value=true;
     };
@@ -3904,14 +3904,14 @@ namespace doctest
     return *this;
   }
 
-  String::String(String&& other)
+  String::String(String &&other)
   {
     memcpy(buf, other.buf, len);
     other.buf[0] = '\0';
     other.setLast();
   }
 
-  String &String::operator=(String&& other)
+  String &String::operator=(String &&other)
   {
     if (this != &other)
       {
@@ -5607,8 +5607,8 @@ namespace doctest
           public:
             ScopedElement( XmlWriter *writer );
 
-            ScopedElement( ScopedElement&& other ) DOCTEST_NOEXCEPT;
-            ScopedElement &operator=( ScopedElement&& other ) DOCTEST_NOEXCEPT;
+            ScopedElement( ScopedElement &&other ) DOCTEST_NOEXCEPT;
+            ScopedElement &operator=( ScopedElement &&other ) DOCTEST_NOEXCEPT;
 
             ~ScopedElement();
 
@@ -5852,13 +5852,13 @@ namespace doctest
       :   m_writer( writer )
     {}
 
-    XmlWriter::ScopedElement::ScopedElement( ScopedElement&& other ) DOCTEST_NOEXCEPT
+    XmlWriter::ScopedElement::ScopedElement( ScopedElement &&other ) DOCTEST_NOEXCEPT
   :
     m_writer( other.m_writer )
     {
       other.m_writer = nullptr;
     }
-    XmlWriter::ScopedElement &XmlWriter::ScopedElement::operator=( ScopedElement&& other ) DOCTEST_NOEXCEPT
+    XmlWriter::ScopedElement &XmlWriter::ScopedElement::operator=( ScopedElement &&other ) DOCTEST_NOEXCEPT
     {
       if ( m_writer )
         {

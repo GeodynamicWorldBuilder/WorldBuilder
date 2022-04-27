@@ -47,7 +47,7 @@ class GenericStringBuffer
 
 #if RAPIDJSON_HAS_CXX11_RVALUE_REFS
     GenericStringBuffer(GenericStringBuffer &&rhs) : stack_(std::move(rhs.stack_)) {}
-    GenericStringBuffer &operator=(GenericStringBuffer&& rhs)
+    GenericStringBuffer &operator=(GenericStringBuffer &&rhs)
     {
       if (&rhs != this)
         stack_ = std::move(rhs.stack_);
