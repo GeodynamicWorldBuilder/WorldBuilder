@@ -239,14 +239,14 @@ namespace WorldBuilder
     :
     boundary_points ({{
       -std::numeric_limits<double>::max(),
-      -std::numeric_limits<double>::max(),
-      cartesian
-    },
+        -std::numeric_limits<double>::max(),
+        cartesian
+      },
     {
       +std::numeric_limits<double>::max(),
-      +std::numeric_limits<double>::max(),
-      cartesian
-    }
+        +std::numeric_limits<double>::max(),
+        cartesian
+      }
   })
   {}
 
@@ -255,16 +255,16 @@ namespace WorldBuilder
     :
     boundary_points ({{
       -std::numeric_limits<double>::max(),
-      -std::numeric_limits<double>::max(),
-      -std::numeric_limits<double>::max(),
-      cartesian
-    },
+        -std::numeric_limits<double>::max(),
+        -std::numeric_limits<double>::max(),
+        cartesian
+      },
     {
       +std::numeric_limits<double>::max(),
-      +std::numeric_limits<double>::max(),
-      +std::numeric_limits<double>::max(),
-      cartesian
-    }
+        +std::numeric_limits<double>::max(),
+        +std::numeric_limits<double>::max(),
+        cartesian
+      }
   })
   {}
 
