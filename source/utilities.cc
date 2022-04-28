@@ -502,7 +502,7 @@ namespace WorldBuilder
                   const double dx2 = 3.*a2*sx2_2+2.*b2*sx2+c2;
                   const double dy2 = 3.*e2*sx2_2+2.*f2*sx2+g2;
                   const double derivative = 2.*(x2*dx2+y2*dy2);
-                  if (std::fabs(derivative) < 1e-14)
+                  if (std::fabs(derivative) < 1e-8)
                     {
                       minimum_distance_to_reference_point_tmp = x2*x2+y2*y2;
                       break;
@@ -531,9 +531,9 @@ namespace WorldBuilder
                   if (std::fabs(update) > 1e-2)
                     {
                       minimum_distance_to_reference_point_tmp = x2*x2+y2*y2;
+
                       // Do a line search
-                      unsigned int i_line_search = 0;
-                      for (; i_line_search < 50; ++i_line_search)
+                      for (unsigned int i_line_search = 0; i_line_search < 10; ++i_line_search)
                         {
                           const double test_x = min_estimate_solution_tmp - update_scaling*update;
                           {
@@ -566,15 +566,6 @@ namespace WorldBuilder
 
                         }
 
-                      WBAssertThrow(i_line_search < 49,
-                                    "The spline solver doesn't seem to have finished on a reasonable ammount of line search "
-                                    << "iterations. Please check whether your coordinates are resonable, "
-                                    << "or contact the maintainers. Line search iterations = " << i_line_search
-                                    << ", Newton interations = " << i_newton_iteration
-                                    << ", min_estimate_solution_tmp = " << min_estimate_solution_tmp
-                                    << ", last update_scaling = " << update_scaling << ", last update = " << update
-                                    << ", P1 = " << P1 << ", P2 = " << P2 << ", i_estimate = " << i_estimate
-                                    << "cp = " << check_point << ".");
                     }
 
                   min_estimate_solution_tmp = min_estimate_solution_tmp - update_scaling*update;
@@ -592,7 +583,7 @@ namespace WorldBuilder
                                 << ", min_estimate_solution_tmp = " << min_estimate_solution_tmp
                                 << ", last update_scaling = " << update_scaling << ", last update = " << update
                                 << ", P1 = " << P1 << ", P2 = " << P2 << ", i_estimate = " << i_estimate
-                                << "cp = " << check_point << ", start_radius = " << start_radius << ".");
+                                << "cp = " << check_point << ", norm = " << check_point.norm() << ", start_radius = " << start_radius << ".");
                 }
 
               if (minimum_distance_to_reference_point_tmp < minimum_distance_to_reference_point)
@@ -622,6 +613,8 @@ namespace WorldBuilder
               // Go one point pair up.
               P1 = P2;
               P2 = point_list[i_estimate+1];
+              if (P1 == P2)
+                continue;
               Point<2> P1h = Point<2>(x_spline.value_inside(i_estimate,0.5),y_spline.value_inside(i_estimate,0.5),spherical);
 
               // Compute distance to first point on the line.
@@ -658,7 +651,11 @@ namespace WorldBuilder
               double min_estimate_solution_tmp = (i_estimate+fraction);
 
               const double idx1 = (size_t)min_estimate_solution_tmp;
-              WBAssert((idx1 < point_list.size()+1), "Internal error: idx1 = " << idx1 << ", min_estimate_solution_tmp = " << min_estimate_solution_tmp << ", i_estimate = " << i_estimate << ", fraction = " << fraction);
+              WBAssert((idx1 < point_list.size()+1),
+                       "Internal error: idx1 = " << idx1 << ", min_estimate_solution_tmp = " << min_estimate_solution_tmp <<
+                       ", i_estimate = " << i_estimate << ", fraction = " << fraction << ", c_1 = " << c_1 <<
+                       ", c_2 = " << P1P2*P1P2 << ", P1 = " << P1 << ", P2 = " << P2 << ", Check point = " << check_point <<
+                       ", norm = " << check_point.norm() << '.');
               const double sx1 = min_estimate_solution_tmp - idx1;
               const double sx1_2 = sx1*sx1;
               const double sx1_3 = sx1*sx1*sx1;
@@ -713,7 +710,7 @@ namespace WorldBuilder
 
                   // specific spherical part
                   const double derivative = -0.5*cos_k2*dx2*cos_y2*sin_p_x2-cos_k2*dy2*sin_y2*sin_hp_hx2*sin_hp_hx2-0.5*dy2*sin_k_y2;
-                  if (std::fabs(derivative) < 1e-6)
+                  if (std::fabs(derivative) < 1e-8)
                     {
                       minimum_distance_to_reference_point_tmp = FT::sin((k2-y2)*0.5)*FT::sin((k2-y2)*0.5)+FT::sin((p2-x2)*0.5)*FT::sin((p2-x2)*0.5)*cos_y2*cos_k2;
                       break;
@@ -741,12 +738,12 @@ namespace WorldBuilder
                     }
                   double update_scaling = 1;
                   // only the first few iterations need some guidence from line search
-                  if (std::fabs(update) > 1e-3)
+                  if (std::fabs(update) > 1e-2)
                     {
                       minimum_distance_to_reference_point_tmp = FT::sin((k2-y2)*0.5)*FT::sin((k2-y2)*0.5)+FT::sin((p2-x2)*0.5)*FT::sin((p2-x2)*0.5)*cos_y2*cos_k2;
-                      unsigned int i_line_search = 0;
+
                       // Do a line search.
-                      for (; i_line_search < 50; ++i_line_search)
+                      for (unsigned int i_line_search = 0; i_line_search < 10; ++i_line_search)
                         {
                           const double test_x = min_estimate_solution_tmp - update_scaling*update;
                           {
@@ -779,16 +776,6 @@ namespace WorldBuilder
                           update_scaling*=2./3.;
 
                         }
-
-                      WBAssertThrow(i_line_search < 49,
-                                    "The spline solver doesn't seem to have finished on a reasonable ammount of line search "
-                                    << "iterations. Please check whether your coordinates are resonable, "
-                                    << "or contact the maintainers. Line search iterations = " << i_line_search
-                                    << ", Newton interations = " << i_newton_iteration
-                                    << ", min_estimate_solution_tmp = " << min_estimate_solution_tmp << ", update_scaling = " << update_scaling
-                                    << ", update = " << update << ", minimum_distance_to_reference_point_start = " << minimum_distance_to_reference_point_start
-                                    << ", minimum_distance_to_reference_point_tmp = " << minimum_distance_to_reference_point_tmp
-                                    << ", derivative = " << derivative << ", check point = " << check_point <<  ".");
                     }
                   min_estimate_solution_tmp = min_estimate_solution_tmp - update_scaling*update;
 
