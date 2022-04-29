@@ -1303,7 +1303,7 @@ namespace WorldBuilder
 
 
                   WBAssert(std::fabs((end_segment-center_circle).norm() - std::fabs(radius_angle_circle))
-                           < 1e-8 * std::fabs((end_segment-center_circle).norm() + std::fabs(radius_angle_circle)) ,
+                           < 1e-8 * std::fabs((end_segment-center_circle).norm() + std::fabs(radius_angle_circle)),
                            "Internal error: The center of the circle is not a radius away from the end point. " << std::endl
                            << "The center is located at " << center_circle[0] << ':' << center_circle[1] << std::endl
                            << "The end point is located at " << end_segment[0] << ':' << end_segment[1] << std::endl

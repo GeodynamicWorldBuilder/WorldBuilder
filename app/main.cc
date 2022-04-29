@@ -170,7 +170,7 @@ int main(int argc, char **argv)
         }
 
       // set properties
-      std::vector<std::array<unsigned ,3>> properties;
+      std::vector<std::array<unsigned,3>> properties;
       properties.push_back({{1,0,0}}); // temperature
 
       for (size_t c = 0; c < compositions; ++c)

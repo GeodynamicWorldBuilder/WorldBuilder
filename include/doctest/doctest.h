@@ -575,7 +575,7 @@ namespace doctest
       String &operator+=(const String &other);
 
       String(String &&other);
-      String &operator=(String&& other);
+      String &operator=(String &&other);
 
       char  operator[](unsigned i) const;
       char &operator[](unsigned i);
@@ -878,7 +878,7 @@ namespace doctest
     {
       typedef T type;
     };
-    template<class T> struct remove_reference<T&&>
+    template<class T> struct remove_reference<T &&>
     {
       typedef T type;
     };
@@ -902,7 +902,7 @@ namespace doctest
     {
       const static bool value=false;
     };
-    template<class T> struct is_rvalue_reference<T&&>
+    template<class T> struct is_rvalue_reference<T &&>
     {
       const static bool value=true;
     };
@@ -917,7 +917,7 @@ namespace doctest
     inline T &&forward(typename remove_reference<T>::type &&t) DOCTEST_NOEXCEPT
     {
       static_assert(!is_lvalue_reference<T>::value,
-      "Can not forward an rvalue as an lvalue.");
+                    "Can not forward an rvalue as an lvalue.");
       return static_cast<T&&>(t);
     }
 
@@ -947,7 +947,7 @@ namespace doctest
 
     template <typename T>
     struct deferred_false
-      // cppcheck-suppress unusedStructMember
+  // cppcheck-suppress unusedStructMember
     {
       static const bool value = false;
     };
@@ -3904,14 +3904,14 @@ namespace doctest
     return *this;
   }
 
-  String::String(String&& other)
+  String::String(String &&other)
   {
     memcpy(buf, other.buf, len);
     other.buf[0] = '\0';
     other.setLast();
   }
 
-  String &String::operator=(String&& other)
+  String &String::operator=(String &&other)
   {
     if (this != &other)
       {
@@ -5607,8 +5607,8 @@ namespace doctest
           public:
             ScopedElement( XmlWriter *writer );
 
-            ScopedElement( ScopedElement&& other ) DOCTEST_NOEXCEPT;
-            ScopedElement &operator=( ScopedElement&& other ) DOCTEST_NOEXCEPT;
+            ScopedElement( ScopedElement &&other ) DOCTEST_NOEXCEPT;
+            ScopedElement &operator=( ScopedElement &&other ) DOCTEST_NOEXCEPT;
 
             ~ScopedElement();
 
@@ -5852,13 +5852,13 @@ namespace doctest
       :   m_writer( writer )
     {}
 
-    XmlWriter::ScopedElement::ScopedElement( ScopedElement&& other ) DOCTEST_NOEXCEPT
+    XmlWriter::ScopedElement::ScopedElement( ScopedElement &&other ) DOCTEST_NOEXCEPT
   :
     m_writer( other.m_writer )
     {
       other.m_writer = nullptr;
     }
-    XmlWriter::ScopedElement &XmlWriter::ScopedElement::operator=( ScopedElement&& other ) DOCTEST_NOEXCEPT
+    XmlWriter::ScopedElement &XmlWriter::ScopedElement::operator=( ScopedElement &&other ) DOCTEST_NOEXCEPT
     {
       if ( m_writer )
         {
@@ -7379,14 +7379,14 @@ namespace doctest
           parseFlag(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX sname))                            \
     p->var = true;                                                                             \
   else if(withDefaults)                                                                          \
-  p->var = default
+    p->var = default
 
 #define DOCTEST_PARSE_INT_OPTION(name, sname, var, default)                                        \
   if(parseIntOption(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX name "=", option_int, intRes) ||   \
      parseIntOption(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX sname "=", option_int, intRes))    \
     p->var = intRes;                                                                           \
   else if(withDefaults)                                                                          \
-  p->var = default
+    p->var = default
 
 #define DOCTEST_PARSE_STR_OPTION(name, sname, var, default)                                        \
   if(parseOption(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX name "=", &strRes, default) ||        \

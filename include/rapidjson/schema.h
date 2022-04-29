@@ -2626,7 +2626,7 @@ class GenericSchemaValidator :
           if (count > 0)
             {
               CurrentContext().objectPatternValidatorType = patternValidatorType;
-              ISchemaValidator ** &va = CurrentContext().patternPropertiesValidators;
+              ISchemaValidator** &va = CurrentContext().patternPropertiesValidators;
               SizeType &validatorCount = CurrentContext().patternPropertiesValidatorCount;
               va = static_cast<ISchemaValidator **>(MallocState(sizeof(ISchemaValidator *) * count));
               for (SizeType i = 0; i < count; i++)

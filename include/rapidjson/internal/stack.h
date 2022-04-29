@@ -67,7 +67,7 @@ namespace internal
       }
 
 #if RAPIDJSON_HAS_CXX11_RVALUE_REFS
-      Stack &operator=(Stack&& rhs)
+      Stack &operator=(Stack &&rhs)
       {
         if (&rhs != this)
           {

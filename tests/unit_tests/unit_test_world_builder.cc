@@ -1273,13 +1273,13 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
 
 
   std::vector<std::string> approvals;
-  for (auto&& value : approval_tests)
+  for (auto &&value : approval_tests)
     {
       std::stringstream s;
       s << value;
       approvals.emplace_back(s.str());
     }
-  for (auto&& value : approval_tests_grains)
+  for (auto &&value : approval_tests_grains)
     {
       std::stringstream s;
       s << value;
@@ -1518,13 +1518,13 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
   approval_tests.emplace_back(world1.composition(position, 260e3+350e3, 9));
 
   std::vector<std::string> approvals;
-  for (auto&& value : approval_tests)
+  for (auto &&value : approval_tests)
     {
       std::stringstream s;
       s << value;
       approvals.emplace_back(s.str());
     }
-  for (auto&& value : approval_tests_grains)
+  for (auto &&value : approval_tests_grains)
     {
       std::stringstream s;
       s << value;
@@ -1905,13 +1905,13 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   approval_tests.emplace_back(world2.temperature(position, 260e3));
 
   std::vector<std::string> approvals;
-  for (auto&& value : approval_tests)
+  for (auto &&value : approval_tests)
     {
       std::stringstream s;
       s << value;
       approvals.emplace_back(s.str());
     }
-  for (auto&& value : approval_tests_grains)
+  for (auto &&value : approval_tests_grains)
     {
       std::stringstream s;
       s << value;
@@ -2333,13 +2333,13 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
 
 
   std::vector<std::string> approvals;
-  for (auto&& value : approval_tests)
+  for (auto &&value : approval_tests)
     {
       std::stringstream s;
       s << value;
       approvals.emplace_back(s.str());
     }
-  for (auto&& value : approval_tests_grains)
+  for (auto &&value : approval_tests_grains)
     {
       std::stringstream s;
       s << value;
@@ -2943,13 +2943,13 @@ TEST_CASE("WorldBuilder Features: Fault")
   approval_tests.emplace_back(world4.composition(position, 100e3, 0));
 
   std::vector<std::string> approvals;
-  for (auto&& value : approval_tests)
+  for (auto &&value : approval_tests)
     {
       std::stringstream s;
       s << value;
       approvals.emplace_back(s.str());
     }
-  for (auto&& value : approval_tests_grains)
+  for (auto &&value : approval_tests_grains)
     {
       std::stringstream s;
       s << value << " ";
