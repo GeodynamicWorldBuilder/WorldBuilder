@@ -330,11 +330,17 @@ namespace WorldBuilder
 
               double zero = 0.0;
               double one = 1.0;
+             
               double vsubfact = (1 - (plate_velocity - sink_velocity_min) / sink_velocity_max);
               vsubfact = std::max(zero, std::min(vsubfact,one));
+              
+              double ref_age = 40e6; // yr
+              double age_con = 4.0;
+              double agefact = - age_con*(age_at_trench - ref_age)/ref_age;
+              agefact = std::max(zero, std::min(agefact,age_con));
 
               double slope_distance_shallow = slope_distance_min + vsubfact * (slope_distance_max - slope_distance_min);
-              double slope_temperature_shallow = slope_temperature_min + vsubfact * (slope_temperature_max - slope_temperature_min);
+              double slope_temperature_shallow = slope_temperature_min + (vsubfact + agefact) * (slope_temperature_max - slope_temperature_min);
 
               double offset_coupling_depth = slope_distance_shallow * mantle_coupling_depth;                    // m  mantle_coupling_length
               double offset_660 = offset_distance_min + vsubfact * (offset_distance_max - offset_distance_min); // m
