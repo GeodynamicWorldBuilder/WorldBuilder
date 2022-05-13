@@ -330,26 +330,30 @@ namespace WorldBuilder
 
               double zero = 0.0;
               double one = 1.0;
-             
+
               double vsubfact = (1 - (plate_velocity - sink_velocity_min) / sink_velocity_max);
               vsubfact = std::max(zero, std::min(vsubfact,one));
-              
-              double ref_age = 40e6; // yr
-              double age_con = 4.0;
-              double agefact = - age_con*(age_at_trench - ref_age)/ref_age;
-              agefact = std::max(zero, std::min(agefact,age_con));
 
-              double slope_distance_shallow = slope_distance_min + vsubfact * (slope_distance_max - slope_distance_min);
-              double slope_temperature_shallow = slope_temperature_min + (vsubfact + agefact) * (slope_temperature_max - slope_temperature_min);
+              double reference_age = 40e6; // yr
+              double age_con_temperature_min = 4.0;
+              double agefact_temperature_min = - age_con_temperature_min*(age_at_trench - reference_age)/reference_age;
+              agefact_temperature_min = std::max(zero, std::min(agefact_temperature_min,age_con_temperature_min));
+
+              double age_con_offset_min = 1.0;
+              double agefact_offset_min = - age_con_offset_min*(age_at_trench - reference_age)/reference_age;
+              agefact_offset_min = std::max(zero, std::min(agefact_offset_min,age_con_offset_min));
+
+              double slope_distance_shallow = slope_distance_min + (vsubfact - agefact_offset_min) * (slope_distance_max - slope_distance_min);
+              double slope_temperature_shallow = slope_temperature_min + (vsubfact + agefact_temperature_min) * (slope_temperature_max - slope_temperature_min);
 
               double offset_coupling_depth = slope_distance_shallow * mantle_coupling_depth;                    // m  mantle_coupling_length
-              double offset_660 = offset_distance_min + vsubfact * (offset_distance_max - offset_distance_min); // m
+              double offset_660 = offset_distance_min + (vsubfact - agefact_offset_min) * (offset_distance_max - offset_distance_min); // m
 
               double slope_distance_deep = (offset_660 - offset_coupling_depth) / (upper_mantle_length - mantle_coupling_length);
               double intercept_dist_deep = (slope_distance_shallow - slope_distance_deep) * mantle_coupling_length;
 
               double temperature_min_coupling_depth = slope_temperature_shallow * mantle_coupling_length;
-              double temperature_min_660 = temperature_min + vsubfact * (temperature_max - temperature_min);
+              double temperature_min_660 = temperature_min + (vsubfact + agefact_temperature_min) * (temperature_max - temperature_min);
 
               double slope_temperature_deep = (temperature_min_660 - temperature_min_coupling_depth) / (upper_mantle_length - mantle_coupling_length);
               double intercept_temperature_deep = (slope_temperature_shallow - slope_temperature_deep) * (mantle_coupling_length);
