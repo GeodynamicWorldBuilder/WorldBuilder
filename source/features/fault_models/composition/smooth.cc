@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2018 - 2020 by the authors of the World Builder code.
+  Copyright (C) 2020 - 2022 by the authors of the World Builder code.
 
   This file is part of the World Builder.
 
@@ -17,15 +17,18 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "world_builder/features/fault_models/composition/smooth.h"
+
 #include <world_builder/utilities.h>
 #include <world_builder/assert.h>
 #include <world_builder/nan.h>
 #include <world_builder/parameters.h>
 
 #include <world_builder/types/double.h>
+#include <world_builder/types/unsigned_int.h>
+#include <world_builder/types/array.h>
 #include <world_builder/types/string.h>
 #include <world_builder/types/object.h>
-#include <world_builder/features/fault_models/composition/smooth.h>
 
 
 namespace WorldBuilder
