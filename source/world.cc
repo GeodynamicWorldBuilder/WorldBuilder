@@ -345,7 +345,7 @@ namespace WorldBuilder
   World::temperature(const std::array<double,2> &point,
                      const double depth) const
   {
-    return properties(point, depth, {{1,0,0}})[0];
+    return properties(point, depth, {{{1,0,0}}})[0];
   }
 
   double
@@ -353,14 +353,14 @@ namespace WorldBuilder
                      const double depth,
                      const double /*gravity_norm*/) const
   {
-    return properties(point, depth, {{1,0,0}})[0];
+    return properties(point, depth, {{{1,0,0}}})[0];
   }
 
   double
   World::temperature(const std::array<double,3> &point,
                      const double depth) const
   {
-    return properties(point, depth, {{1,0,0}})[0];
+    return properties(point, depth, {{{1,0,0}}})[0];
   }
 
   double
@@ -368,7 +368,7 @@ namespace WorldBuilder
                      const double depth,
                      const double /*gravity_norm*/) const
   {
-    return properties(point, depth, {{1,0,0}})[0];
+    return properties(point, depth, {{{1,0,0}}})[0];
   }
 
   double
@@ -376,7 +376,7 @@ namespace WorldBuilder
                      const double depth,
                      const unsigned int composition_number) const
   {
-    return properties(point, depth, {{2,composition_number,0}})[0];
+    return properties(point, depth, {{{2,composition_number,0}}})[0];
   }
 
   double
@@ -384,7 +384,7 @@ namespace WorldBuilder
                      const double depth,
                      const unsigned int composition_number) const
   {
-    return properties(point, depth, {{2,composition_number,0}})[0];
+    return properties(point, depth, {{{2,composition_number,0}}})[0];
   }
 
 
@@ -395,7 +395,7 @@ namespace WorldBuilder
                 const unsigned int composition_number,
                 size_t number_of_grains) const
   {
-    return WorldBuilder::grains(properties(point, depth, {{3,composition_number,(unsigned int)number_of_grains}}),(unsigned int)number_of_grains,0);
+    return WorldBuilder::grains(properties(point, depth, {{{3,composition_number,(unsigned int)number_of_grains}}}),(unsigned int)number_of_grains,0);
   }
 
   WorldBuilder::grains
@@ -404,7 +404,7 @@ namespace WorldBuilder
                 const unsigned int composition_number,
                 size_t number_of_grains) const
   {
-    return WorldBuilder::grains(properties(point, depth, {{3,composition_number,(unsigned int)number_of_grains}}),(unsigned int)number_of_grains,0);
+    return WorldBuilder::grains(properties(point, depth, {{{3,composition_number,(unsigned int)number_of_grains}}}),(unsigned int)number_of_grains,0);
   }
 
   std::mt19937 &
