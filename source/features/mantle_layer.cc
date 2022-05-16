@@ -52,7 +52,7 @@ namespace WorldBuilder
 
     void
     MantleLayer::declare_entries(Parameters &prm,
-                                 const std::string &parent_name,
+                                 const std::string &/*parent_name*/,
                                  const std::vector<std::string> &required_entries)
     {
       prm.declare_entry("", Types::Object(required_entries), "Mantle layer object");

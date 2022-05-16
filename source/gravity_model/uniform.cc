@@ -79,7 +79,7 @@ namespace WorldBuilder
 
 
     double
-    Uniform::gravity_norm(Point<3> point) const
+    Uniform::gravity_norm(Point<3> /*point*/) const
     {
       return gravity_magnitude;
     }
