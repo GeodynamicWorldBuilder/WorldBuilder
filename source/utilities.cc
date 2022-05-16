@@ -388,18 +388,13 @@ namespace WorldBuilder
 
       const DepthMethod depth_method = coordinate_system->depth_method();
 
-      double min_distance_check_point_surface_2d_line = std::numeric_limits<double>::infinity();
       size_t i_section_min_distance = 0;
-      double fraction_CPL_P1P2_strict =  std::numeric_limits<double>::infinity(); // or NAN?
       double fraction_CPL_P1P2 = std::numeric_limits<double>::infinity();
-
-      bool continue_computation = false;
 
       // get an estimate for the closest point between P1 and P2.
       //constexpr double parts = 1;
       //constexpr double one_div_parts = 1./parts;
       double min_estimate_solution = -1.;
-      double min_estimate_solution_temp = min_estimate_solution;
       double minimum_distance_to_reference_point = std::numeric_limits<double>::infinity();
       const size_t number_of_points = point_list.size();
 
