@@ -83,7 +83,7 @@ namespace WorldBuilder
 
       private:
         /**
-         * An enum which stores the the coordinate system of this natural
+         * An enum which stores the coordinate system of this natural
          * point
          */
         CoordinateSystem coordinate_system;

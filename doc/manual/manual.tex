@@ -449,7 +449,7 @@ The spherical coordinate system is a bit more complex. It works with radius (in 
     \centering
     \includegraphics[width=0.35\textwidth]{spherical_approximations_line}
     \includegraphics[width=0.35\textwidth]{spherical_approximations_spiral}
-    \caption{Two possible interpretations of what a line with a constant angle in a spherical geometry could mean. On the left side a line with a constant angle (of 45 degrees) relative to the the surface where it started. Although this is the most intuitive way of interpreting a plate going down with a certain dip, when using very long plates this means that the plate may go back out the earth again. Note that this will only happen with unrealistically long slabs and/or dips very close to zero. On the right side is the other interpretation, constant dip with resprect to the surface directly above it. This resutls in a logarithmic spiral.}
+    \caption{Two possible interpretations of what a line with a constant angle in a spherical geometry could mean. On the left side a line with a constant angle (of 45 degrees) relative to the surface where it started. Although this is the most intuitive way of interpreting a plate going down with a certain dip, when using very long plates this means that the plate may go back out the earth again. Note that this will only happen with unrealistically long slabs and/or dips very close to zero. On the right side is the other interpretation, constant dip with resprect to the surface directly above it. This resutls in a logarithmic spiral.}
     \label{fig:coordinate_systems_line_spiral}
 \end{figure}
 
@@ -518,7 +518,7 @@ Before we can make our first real model, there is one more topic to discuss: fea
 }
 \end{javascriptcode}
 
-A feature has a name and for every available property an array of models attached. Note that this example would not work in practice, because there is no feature implemented which is called \hl{feature model 1} or a temperature model with the name \hl{temperature model 1}. Only specific feature names are allowed, which will be introduced in section \ref{section:continetnal_plate} and can be found in the the \WB{} input file parameter reference (see Appendix \ref{chapter:WB_file_parameter_reference}). Note that there is no requirement to have the temperature models or compositional models keys in the feature object. If you leave them out, they will just not do anything. Let's now expand the generic example:
+A feature has a name and for every available property an array of models attached. Note that this example would not work in practice, because there is no feature implemented which is called \hl{feature model 1} or a temperature model with the name \hl{temperature model 1}. Only specific feature names are allowed, which will be introduced in section \ref{section:continetnal_plate} and can be found in the \WB{} input file parameter reference (see Appendix \ref{chapter:WB_file_parameter_reference}). Note that there is no requirement to have the temperature models or compositional models keys in the feature object. If you leave them out, they will just not do anything. Let's now expand the generic example:
 
 \begin{javascriptcode}{A example of two generic features use}{}
 {
@@ -920,7 +920,7 @@ Although this is already an interesting model things might not only change down 
 
 The example in listing \ref{lst_json:simple_2d_subduction_layered_second_segment_sections} shows that an enormous amount of flexibility is available, but only to those who really need it. If you want something simple, your input file will be simple.
 
-The subducting plate has, like the oceanic plate, a special temperature model. This is also called the plate model. It it based on the \cite{mckenzie1970} paper. Because that paper assumes a constant angle, and the slabs in the \GWB{} are not constant, we compute an average angle at the the depth we are currently intrested in. Lets combine everything we know up to now and create a more realistic slab with a crust an a plate model. Feel free to visualize this yourself through the world builder visualizer or any other program.
+The subducting plate has, like the oceanic plate, a special temperature model. This is also called the plate model. It it based on the \cite{mckenzie1970} paper. Because that paper assumes a constant angle, and the slabs in the \GWB{} are not constant, we compute an average angle at the depth we are currently intrested in. Lets combine everything we know up to now and create a more realistic slab with a crust an a plate model. Feel free to visualize this yourself through the world builder visualizer or any other program.
 
 \begin{javascriptcode}{Using the subducting plate changing segment}{lst_json:simple_2d_subduction_layered_second_segment}
 {

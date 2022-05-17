@@ -1068,7 +1068,7 @@ namespace WorldBuilder
             {
               const size_t current_segment = i_segment;
 
-              // compute the angle between the the previous begin and end if
+              // compute the angle between the previous begin and end if
               // the depth method is angle_at_begin_segment_with_surface.
               if (i_segment != 0
                   &&

@@ -12,7 +12,7 @@
 ## What is the Geodynamic World Builder?
 The Geodynamic World Builder(GWB) is an open source code library intended to set up initial conditions for computational geodynamic models and/or visualize complex 3d teconic setting, in both Cartesian and Spherical geometries. The inputs for the JSON-style parameter file are not mathematical, but rather a structured nested list describing tectonic features, e.g. a continental, an oceanic or a subducting plate. Each of these tectonic features can be assigned a specific temperature profile (e.g. plate model) or composition label (e.g. uniform). For each point in space, the GWB can return the composition and/or temperature. It is written in C++, but can be used in almost any language through its C and Fortran wrappers. Various examples of 2D and 3D subduction settings are presented.
 
-For more information see the the [GWB site](https://geodynamicworldbuilder.github.io/), see the automatically generated extensive [online User Manual](https://gwb.mfraters.net/manual.pdf) or the automatically generated [code documentation](https://codedocs.xyz/GeodynamicWorldBuilder/WorldBuilder/index.html).
+For more information see the [GWB site](https://geodynamicworldbuilder.github.io/), see the automatically generated extensive [online User Manual](https://gwb.mfraters.net/manual.pdf) or the automatically generated [code documentation](https://codedocs.xyz/GeodynamicWorldBuilder/WorldBuilder/index.html).
 
 ## Frequently Asked Questions (FAQ)
 ### What are the minimum requirements to compile the library and tools?
@@ -39,6 +39,6 @@ Menno Fraters and others. 2021, June 22. The Geodynamic World Builder v0.4.0. Ze
 There are multiple ways in which you can follow this project:
  1. Watch the repository on github. This will give you an update of what happening in the repository. This happens automatically and you can set it up to notify you for different kind of events. 
  2. Follow the [world builder Mastodon account](https://social.mfraters.net/@world_builder). This is a manually updated feed which updates when there are new release or major new features merged in the main branch. More general new related to the project may also be posted.
- 3. Subscribe the the Mastodon RSS feed: https://social.mfraters.net/@world_builder.rss. This will show exactly the same information as the mastodon account, but you can use any RSS reader.
+ 3. Subscribe the Mastodon RSS feed: https://social.mfraters.net/@world_builder.rss. This will show exactly the same information as the mastodon account, but you can use any RSS reader.
  4. Visit the [world builder website](https://geodynamicworldbuilder.github.io/). Besides all kind of useful information and links, it also contains a RSS feed viewer the world builder Mastodon account.
  5. Join the [main GWB Matrix chat room](https://app.element.io/#/room/#gwb:matrix.org) or the whole [GWB Matrix space](https://matrix.to/#/!vhukRUGUINnZOIutoQ:matrix.org)!
