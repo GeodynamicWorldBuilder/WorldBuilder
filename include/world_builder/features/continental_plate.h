@@ -123,7 +123,7 @@ namespace WorldBuilder
          * unique pointers are used.
          * @see Features
          */
-        std::vector<std::unique_ptr<Features::ContinentalPlateModels::Temperature::Interface> > temperature_models;
+        std::vector<std::unique_ptr<Features::ContinentalPlateModels::Temperature::Interface>> temperature_models;
 
         /**
          * A vector containing all the pointers to the composition models. This vector is
@@ -131,7 +131,7 @@ namespace WorldBuilder
          * unique pointers are used.
          * @see Features
          */
-        std::vector<std::unique_ptr<Features::ContinentalPlateModels::Composition::Interface> > composition_models;
+        std::vector<std::unique_ptr<Features::ContinentalPlateModels::Composition::Interface>> composition_models;
 
         /**
          * A vector containing all the pointers to the grains models. This vector is
@@ -139,7 +139,7 @@ namespace WorldBuilder
          * unique pointers are used.
          * @see Features
          */
-        std::vector<std::unique_ptr<Features::ContinentalPlateModels::Grains::Interface> > grains_models;
+        std::vector<std::unique_ptr<Features::ContinentalPlateModels::Grains::Interface>> grains_models;
 
 
         double min_depth;

@@ -176,9 +176,9 @@ namespace WorldBuilder
                             const WorldBuilder::Point<2> &default_thickness_,
                             const WorldBuilder::Point<2> &default_top_truncation_,
                             const WorldBuilder::Point<2> &default_angle_,
-                            const std::vector<std::shared_ptr<A> > temperature_systems_,
-                            const std::vector<std::shared_ptr<B> > composition_systems_,
-                            const std::vector<std::shared_ptr<C> > grains_systems_)
+                            const std::vector<std::shared_ptr<A>> temperature_systems_,
+                            const std::vector<std::shared_ptr<B>> composition_systems_,
+                            const std::vector<std::shared_ptr<C>> grains_systems_)
       :
       value_length(default_length_),
       default_length(default_length_),

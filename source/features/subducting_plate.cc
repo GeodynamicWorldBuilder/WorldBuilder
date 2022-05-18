@@ -125,7 +125,7 @@ namespace WorldBuilder
 
       const size_t n_sections = this->original_number_of_coordinates;
 
-      reference_point = prm.get<Point<2> >("dip point");
+      reference_point = prm.get<Point<2>>("dip point");
 
       default_temperature_models.resize(0);
       default_composition_models.resize(0);
@@ -137,7 +137,7 @@ namespace WorldBuilder
       // get the default segments.
       default_segment_vector = prm.get_vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
       Features::SubductingPlateModels::Composition::Interface,
-      Features::SubductingPlateModels::Grains::Interface> >("segments", default_temperature_models, default_composition_models, default_grains_models);
+      Features::SubductingPlateModels::Grains::Interface>>("segments", default_temperature_models, default_composition_models, default_grains_models);
 
 
       // This vector stores segments to this coordiante/section.
@@ -148,7 +148,7 @@ namespace WorldBuilder
 
 
       // now search whether a section is present, if so, replace the default segments.
-      std::vector<std::unique_ptr<Features::SubductingPlate> > sections_vector;
+      std::vector<std::unique_ptr<Features::SubductingPlate>> sections_vector;
       prm.get_unique_pointers("sections", sections_vector);
 
       prm.enter_subsection("sections");
@@ -165,7 +165,7 @@ namespace WorldBuilder
                               << "', trying to change the section of coordinate " << change_coord_number
                               << " while only " << segment_vector.size() << " coordinates are defined.");
 
-                std::vector<std::shared_ptr<Features::SubductingPlateModels::Temperature::Interface> > local_default_temperature_models;
+                std::vector<std::shared_ptr<Features::SubductingPlateModels::Temperature::Interface>> local_default_temperature_models;
                 std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface>  > local_default_composition_models;
                 std::vector<std::shared_ptr<Features::SubductingPlateModels::Grains::Interface>  > local_default_grains_models;
 
@@ -189,7 +189,7 @@ namespace WorldBuilder
 
                 segment_vector[change_coord_number] = prm.get_vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
                                                       Features::SubductingPlateModels::Composition::Interface,
-                                                      Features::SubductingPlateModels::Grains::Interface> >("segments", local_default_temperature_models, local_default_composition_models, local_default_grains_models);
+                                                      Features::SubductingPlateModels::Grains::Interface>>("segments", local_default_temperature_models, local_default_composition_models, local_default_grains_models);
 
 
                 WBAssertThrow(segment_vector[change_coord_number].size() == default_segment_vector.size(),
@@ -376,7 +376,7 @@ namespace WorldBuilder
       if (world->parameters.coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical)
         {
           const double starting_radius_inv = 1 / (world->parameters.coordinate_system->max_model_depth());
-          std::pair<Point<2>, Point<2> > &spherical_bounding_box = surface_bounding_box.get_boundary_points();
+          std::pair<Point<2>, Point<2>> &spherical_bounding_box = surface_bounding_box.get_boundary_points();
 
           const double buffer_around_slab_spherical = 2 * const_pi * buffer_around_slab_cartesian * starting_radius_inv;
 
@@ -390,7 +390,7 @@ namespace WorldBuilder
         }
       else if (world->parameters.coordinate_system->natural_coordinate_system() == CoordinateSystem::cartesian)
         {
-          std::pair<Point<2>, Point<2> > &bounding_box = surface_bounding_box.get_boundary_points();
+          std::pair<Point<2>, Point<2>> &bounding_box = surface_bounding_box.get_boundary_points();
           bounding_box.first = {min_along_x, min_along_y, cartesian};
           bounding_box.second = {max_along_x, max_along_y, cartesian};
           surface_bounding_box.extend(buffer_around_slab_cartesian);

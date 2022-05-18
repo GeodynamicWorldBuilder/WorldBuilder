@@ -214,7 +214,7 @@ namespace WorldBuilder
       /**
        * Todo
        */
-      std::vector<Point<2> > cross_section;
+      std::vector<Point<2>> cross_section;
 
       /**
        * Todo

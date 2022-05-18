@@ -178,7 +178,7 @@ namespace WorldBuilder
     if (set_cross_section)
       {
         dim = 2;
-        std::vector<Point<2> > cross_section_natural = prm.get_vector<Point<2> >("cross section");
+        std::vector<Point<2>> cross_section_natural = prm.get_vector<Point<2>>("cross section");
 
         WBAssertThrow(cross_section_natural.size() == 2, "The cross section should contain two points, but it contains "
                       << cross_section.size() << " points.");

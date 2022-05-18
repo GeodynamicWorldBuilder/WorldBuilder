@@ -409,7 +409,7 @@ namespace WorldBuilder
           }
         return Point<2>(value1,value2,this->coordinate_system->natural_coordinate_system());
       }
-    WBAssertThrow(false, "default values not implemented in get<Point<2> >. Looked in: " + strict_base + "/" << name);
+    WBAssertThrow(false, "default values not implemented in get<Point<2>>. Looked in: " + strict_base + "/" << name);
 
     return Point<2>(invalid);;
   }
@@ -454,7 +454,7 @@ namespace WorldBuilder
 
   std::pair<std::vector<double>,std::vector<double>>
                                                   Parameters::get(const std::string &name,
-                                                                  const std::vector<Point<2> > &addition_points)
+                                                                  const std::vector<Point<2>> &addition_points)
   {
     // There are four cases:
     // 1. No value provided: use the default value everywhere. Return first with one value and second with size 0.
@@ -656,10 +656,10 @@ namespace WorldBuilder
   }
 
   template<>
-  std::vector<Point<2> >
-  Parameters::get_vector(const std::string &name)
+  std::vector<Point<2>>
+                     Parameters::get_vector(const std::string &name)
   {
-    std::vector<Point<2> > vector;
+    std::vector<Point<2>> vector;
     const std::string strict_base = this->get_full_json_path();
     if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr)
       {
@@ -689,10 +689,10 @@ namespace WorldBuilder
   }
 
   template<>
-  std::vector<std::array<double,3> >
-  Parameters::get_vector(const std::string &name)
+  std::vector<std::array<double,3>>
+                                 Parameters::get_vector(const std::string &name)
   {
-    std::vector<std::array<double,3> > vector;
+    std::vector<std::array<double,3>> vector;
     const std::string strict_base = this->get_full_json_path();
     if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr)
       {
@@ -721,8 +721,8 @@ namespace WorldBuilder
   }
 
   template<>
-  std::vector<std::array<std::array<double,3>,3> >
-  Parameters::get_vector(const std::string &name)
+  std::vector<std::array<std::array<double,3>,3>>
+                                               Parameters::get_vector(const std::string &name)
   {
     std::vector<std::array<std::array<double,3>,3>  > vector;
     const std::string strict_base = this->get_full_json_path();
@@ -774,10 +774,10 @@ namespace WorldBuilder
 
 
   template<>
-  std::vector<std::vector<Point<2> > >
+  std::vector<std::vector<Point<2>>>
   Parameters::get_vector(const std::string &name)
   {
-    std::vector<std::vector<Point<2> >  > vector;
+    std::vector<std::vector<Point<2>>  > vector;
     const std::string strict_base = this->get_full_json_path();
     if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr)
       {
@@ -791,7 +791,7 @@ namespace WorldBuilder
             // Not sure why cppcheck it is generating the warning
             // Filed a question at: https://sourceforge.net/p/cppcheck/discussion/general/thread/429759f85e/
             // cppcheck-suppress constStatement
-            std::vector<Point<2> > sub_vector(array2->Size(),Point<2>(NaN::DSNAN,NaN::DSNAN,coordinate_system->natural_coordinate_system()));
+            std::vector<Point<2>> sub_vector(array2->Size(),Point<2>(NaN::DSNAN,NaN::DSNAN,coordinate_system->natural_coordinate_system()));
             for (size_t j = 0; j < array2->Size(); ++j )
               {
                 const std::string base_extended = base + "/" + std::to_string(j);
@@ -824,14 +824,14 @@ namespace WorldBuilder
   template<>
   std::vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
       Features::SubductingPlateModels::Composition::Interface,
-      Features::SubductingPlateModels::Grains::Interface> >
+      Features::SubductingPlateModels::Grains::Interface>>
       Parameters::get_vector(const std::string &name,
-                             std::vector<std::shared_ptr<Features::SubductingPlateModels::Temperature::Interface> > &default_temperature_models,
-                             std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface> > &default_composition_models,
-                             std::vector<std::shared_ptr<Features::SubductingPlateModels::Grains::Interface> > &default_grains_models)
+                             std::vector<std::shared_ptr<Features::SubductingPlateModels::Temperature::Interface>> &default_temperature_models,
+                             std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface>> &default_composition_models,
+                             std::vector<std::shared_ptr<Features::SubductingPlateModels::Grains::Interface>> &default_grains_models)
   {
     using namespace Features::SubductingPlateModels;
-    std::vector<Objects::Segment<Temperature::Interface,Composition::Interface,Grains::Interface> > vector;
+    std::vector<Objects::Segment<Temperature::Interface,Composition::Interface,Grains::Interface>> vector;
     this->enter_subsection(name);
     const std::string strict_base = this->get_full_json_path();
     if (Pointer((strict_base).c_str()).Get(parameters) != nullptr)
@@ -904,7 +904,7 @@ namespace WorldBuilder
               }
 
             // Get temperature models
-            std::vector<std::shared_ptr<Temperature::Interface> > temperature_models;
+            std::vector<std::shared_ptr<Temperature::Interface>> temperature_models;
 
             //This is a value to look back in the path elements.
             size_t searchback = 0;
@@ -942,7 +942,7 @@ namespace WorldBuilder
               }
 
             // now do the same for compositions
-            std::vector<std::shared_ptr<Composition::Interface> > composition_models;
+            std::vector<std::shared_ptr<Composition::Interface>> composition_models;
             if (!this->get_shared_pointers<Composition::Interface>("composition models", composition_models) ||
                 Pointer((base + "/composition model default entry").c_str()).Get(parameters) != nullptr)
               {
@@ -978,7 +978,7 @@ namespace WorldBuilder
               }
 
             // now do the same for grains
-            std::vector<std::shared_ptr<Grains::Interface> > grains_models;
+            std::vector<std::shared_ptr<Grains::Interface>> grains_models;
             if (!this->get_shared_pointers<Grains::Interface>("grains models", grains_models) ||
                 Pointer((base + "/grains model default entry").c_str()).Get(parameters) != nullptr)
               {
@@ -1023,14 +1023,14 @@ namespace WorldBuilder
 
 
   template<>
-  std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,Features::FaultModels::Composition::Interface, Features::FaultModels::Grains::Interface> >
-  Parameters::get_vector(const std::string &name,
-                         std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface> > &default_temperature_models,
-                         std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface> > &default_composition_models,
-                         std::vector<std::shared_ptr<Features::FaultModels::Grains::Interface> > &default_grains_models)
+  std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,Features::FaultModels::Composition::Interface, Features::FaultModels::Grains::Interface>>
+      Parameters::get_vector(const std::string &name,
+                             std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface>> &default_temperature_models,
+                             std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface>> &default_composition_models,
+                             std::vector<std::shared_ptr<Features::FaultModels::Grains::Interface>> &default_grains_models)
   {
     using namespace Features::FaultModels;
-    std::vector<Objects::Segment<Temperature::Interface,Composition::Interface,Grains::Interface> > vector;
+    std::vector<Objects::Segment<Temperature::Interface,Composition::Interface,Grains::Interface>> vector;
     this->enter_subsection(name);
     const std::string strict_base = this->get_full_json_path();
     if (Pointer((strict_base).c_str()).Get(parameters) != nullptr)
@@ -1103,7 +1103,7 @@ namespace WorldBuilder
               }
 
             // Get temperature models
-            std::vector<std::shared_ptr<Temperature::Interface> > temperature_models;
+            std::vector<std::shared_ptr<Temperature::Interface>> temperature_models;
 
             //This is a value to look back in the path elements.
             size_t searchback = 0;
@@ -1141,7 +1141,7 @@ namespace WorldBuilder
               }
 
             // now do the same for compositions
-            std::vector<std::shared_ptr<Composition::Interface> > composition_models;
+            std::vector<std::shared_ptr<Composition::Interface>> composition_models;
             if (!this->get_shared_pointers<Composition::Interface>("composition models", composition_models) ||
                 Pointer((base + "/composition model default entry").c_str()).Get(parameters) != nullptr)
               {
@@ -1177,7 +1177,7 @@ namespace WorldBuilder
               }
 
             // now do the same for grains
-            std::vector<std::shared_ptr<Grains::Interface> > grains_models;
+            std::vector<std::shared_ptr<Grains::Interface>> grains_models;
             if (!this->get_shared_pointers<Grains::Interface>("grains models", grains_models) ||
                 Pointer((base + "/grains model default entry").c_str()).Get(parameters) != nullptr)
               {
@@ -1375,7 +1375,7 @@ namespace WorldBuilder
 
   template<class T>
   bool
-  Parameters::get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<T> > &vector)
+  Parameters::get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<T>> &vector)
   {
     vector.resize(0);
     const std::string strict_base = this->get_full_json_path();
@@ -1402,7 +1402,7 @@ namespace WorldBuilder
 
   template<>
   bool
-  Parameters::get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<Features::SubductingPlate> > &vector)
+  Parameters::get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<Features::SubductingPlate>> &vector)
   {
     vector.resize(0);
     const std::string strict_base = this->get_full_json_path();
@@ -1425,7 +1425,7 @@ namespace WorldBuilder
 
   template<>
   bool
-  Parameters::get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<Features::Fault> > &vector)
+  Parameters::get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<Features::Fault>> &vector)
   {
     vector.resize(0);
     const std::string strict_base = this->get_full_json_path();
@@ -1450,7 +1450,7 @@ namespace WorldBuilder
 
   template<class T>
   bool
-  Parameters::get_shared_pointers(const std::string &name, std::vector<std::shared_ptr<T> > &vector)
+  Parameters::get_shared_pointers(const std::string &name, std::vector<std::shared_ptr<T>> &vector)
   {
     vector.resize(0);
     const std::string strict_base = this->get_full_json_path();
@@ -1495,7 +1495,7 @@ namespace WorldBuilder
                                     const std::string &parent_name,
                                     const std::map<std::string, void ( *)(Parameters &,const std::string &)> &declare_map,
                                     const std::vector<std::string> &required_entries,
-                                    const std::vector<std::tuple<std::string,const WorldBuilder::Types::Interface &, std::string> > &extra_declarations)
+                                    const std::vector<std::tuple<std::string,const WorldBuilder::Types::Interface &, std::string>> &extra_declarations)
   {
     unsigned int counter = 0;
     for (const auto &it : declare_map)
@@ -1705,7 +1705,7 @@ namespace WorldBuilder
    */
   template bool
   Parameters::get_unique_pointers<Features::Interface>(const std::string &name,
-                                                       std::vector<std::unique_ptr<Features::Interface> > &vector);
+                                                       std::vector<std::unique_ptr<Features::Interface>> &vector);
 
 
   /**
@@ -1714,7 +1714,7 @@ namespace WorldBuilder
    */
   template bool
   Parameters::get_unique_pointers<Features::ContinentalPlateModels::Temperature::Interface>(const std::string &name,
-      std::vector<std::unique_ptr<Features::ContinentalPlateModels::Temperature::Interface> > &vector);
+      std::vector<std::unique_ptr<Features::ContinentalPlateModels::Temperature::Interface>> &vector);
 
   /**
   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -1722,7 +1722,7 @@ namespace WorldBuilder
   */
   template bool
   Parameters::get_unique_pointers<Features::ContinentalPlateModels::Composition::Interface>(const std::string &name,
-      std::vector<std::unique_ptr<Features::ContinentalPlateModels::Composition::Interface> > &vector);
+      std::vector<std::unique_ptr<Features::ContinentalPlateModels::Composition::Interface>> &vector);
 
   /**
   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -1730,7 +1730,7 @@ namespace WorldBuilder
   */
   template bool
   Parameters::get_unique_pointers<Features::ContinentalPlateModels::Grains::Interface>(const std::string &name,
-      std::vector<std::unique_ptr<Features::ContinentalPlateModels::Grains::Interface> > &vector);
+      std::vector<std::unique_ptr<Features::ContinentalPlateModels::Grains::Interface>> &vector);
 
 
 
@@ -1740,7 +1740,7 @@ namespace WorldBuilder
    */
   template bool
   Parameters::get_unique_pointers<Features::OceanicPlateModels::Temperature::Interface>(const std::string &name,
-      std::vector<std::unique_ptr<Features::OceanicPlateModels::Temperature::Interface> > &vector);
+      std::vector<std::unique_ptr<Features::OceanicPlateModels::Temperature::Interface>> &vector);
 
   /**
   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -1748,7 +1748,7 @@ namespace WorldBuilder
   */
   template bool
   Parameters::get_unique_pointers<Features::OceanicPlateModels::Composition::Interface>(const std::string &name,
-      std::vector<std::unique_ptr<Features::OceanicPlateModels::Composition::Interface> > &vector);
+      std::vector<std::unique_ptr<Features::OceanicPlateModels::Composition::Interface>> &vector);
 
   /**
   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -1756,7 +1756,7 @@ namespace WorldBuilder
   */
   template bool
   Parameters::get_unique_pointers<Features::OceanicPlateModels::Grains::Interface>(const std::string &name,
-      std::vector<std::unique_ptr<Features::OceanicPlateModels::Grains::Interface> > &vector);
+      std::vector<std::unique_ptr<Features::OceanicPlateModels::Grains::Interface>> &vector);
 
 
 
@@ -1766,7 +1766,7 @@ namespace WorldBuilder
    */
   template bool
   Parameters::get_unique_pointers<Features::MantleLayerModels::Temperature::Interface>(const std::string &name,
-      std::vector<std::unique_ptr<Features::MantleLayerModels::Temperature::Interface> > &vector);
+      std::vector<std::unique_ptr<Features::MantleLayerModels::Temperature::Interface>> &vector);
 
   /**
   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -1774,7 +1774,7 @@ namespace WorldBuilder
   */
   template bool
   Parameters::get_unique_pointers<Features::MantleLayerModels::Composition::Interface>(const std::string &name,
-      std::vector<std::unique_ptr<Features::MantleLayerModels::Composition::Interface> > &vector);
+      std::vector<std::unique_ptr<Features::MantleLayerModels::Composition::Interface>> &vector);
 
   /**
   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -1782,7 +1782,7 @@ namespace WorldBuilder
   */
   template bool
   Parameters::get_unique_pointers<Features::MantleLayerModels::Grains::Interface>(const std::string &name,
-                                                                                  std::vector<std::unique_ptr<Features::MantleLayerModels::Grains::Interface> > &vector);
+                                                                                  std::vector<std::unique_ptr<Features::MantleLayerModels::Grains::Interface>> &vector);
 
 
 
@@ -1792,7 +1792,7 @@ namespace WorldBuilder
    */
   template bool
   Parameters::get_unique_pointers<Features::SubductingPlateModels::Temperature::Interface>(const std::string &name,
-      std::vector<std::unique_ptr<Features::SubductingPlateModels::Temperature::Interface> > &vector);
+      std::vector<std::unique_ptr<Features::SubductingPlateModels::Temperature::Interface>> &vector);
 
   /**
   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -1800,7 +1800,7 @@ namespace WorldBuilder
   */
   template bool
   Parameters::get_unique_pointers<Features::SubductingPlateModels::Composition::Interface>(const std::string &name,
-      std::vector<std::unique_ptr<Features::SubductingPlateModels::Composition::Interface> > &vector);
+      std::vector<std::unique_ptr<Features::SubductingPlateModels::Composition::Interface>> &vector);
 
   /**
   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -1808,7 +1808,7 @@ namespace WorldBuilder
   */
   template bool
   Parameters::get_unique_pointers<Features::SubductingPlateModels::Grains::Interface>(const std::string &name,
-      std::vector<std::unique_ptr<Features::SubductingPlateModels::Grains::Interface> > &vector);
+      std::vector<std::unique_ptr<Features::SubductingPlateModels::Grains::Interface>> &vector);
 
 
 
@@ -1818,7 +1818,7 @@ namespace WorldBuilder
    */
   template bool
   Parameters::get_unique_pointers<Features::FaultModels::Temperature::Interface>(const std::string &name,
-                                                                                 std::vector<std::unique_ptr<Features::FaultModels::Temperature::Interface> > &vector);
+                                                                                 std::vector<std::unique_ptr<Features::FaultModels::Temperature::Interface>> &vector);
 
   /**
   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -1826,14 +1826,14 @@ namespace WorldBuilder
   */
   template bool
   Parameters::get_unique_pointers<Features::FaultModels::Composition::Interface>(const std::string &name,
-                                                                                 std::vector<std::unique_ptr<Features::FaultModels::Composition::Interface> > &vector);
+                                                                                 std::vector<std::unique_ptr<Features::FaultModels::Composition::Interface>> &vector);
   /**
   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
   * Note that the variable with this name has to be loaded before this function is called.
   */
   template bool
   Parameters::get_unique_pointers<Features::FaultModels::Grains::Interface>(const std::string &name,
-                                                                            std::vector<std::unique_ptr<Features::FaultModels::Grains::Interface> > &vector);
+                                                                            std::vector<std::unique_ptr<Features::FaultModels::Grains::Interface>> &vector);
 
 
 
@@ -1843,7 +1843,7 @@ namespace WorldBuilder
    */
   template bool
   Parameters::get_shared_pointers<Features::SubductingPlateModels::Temperature::Interface>(const std::string &name,
-      std::vector<std::shared_ptr<Features::SubductingPlateModels::Temperature::Interface> > &vector);
+      std::vector<std::shared_ptr<Features::SubductingPlateModels::Temperature::Interface>> &vector);
 
   /**
   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -1851,7 +1851,7 @@ namespace WorldBuilder
   */
   template bool
   Parameters::get_shared_pointers<Features::SubductingPlateModels::Composition::Interface>(const std::string &name,
-      std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface> > &vector);
+      std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface>> &vector);
 
   /**
   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -1859,7 +1859,7 @@ namespace WorldBuilder
   */
   template bool
   Parameters::get_shared_pointers<Features::SubductingPlateModels::Grains::Interface>(const std::string &name,
-      std::vector<std::shared_ptr<Features::SubductingPlateModels::Grains::Interface> > &vector);
+      std::vector<std::shared_ptr<Features::SubductingPlateModels::Grains::Interface>> &vector);
 
 
   /**
@@ -1868,7 +1868,7 @@ namespace WorldBuilder
    */
   template bool
   Parameters::get_shared_pointers<Features::FaultModels::Temperature::Interface>(const std::string &name,
-                                                                                 std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface> > &vector);
+                                                                                 std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface>> &vector);
 
   /**
   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -1876,14 +1876,14 @@ namespace WorldBuilder
   */
   template bool
   Parameters::get_shared_pointers<Features::FaultModels::Composition::Interface>(const std::string &name,
-                                                                                 std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface> > &vector);
+                                                                                 std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface>> &vector);
   /**
   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
   * Note that the variable with this name has to be loaded before this function is called.
   */
   template bool
   Parameters::get_shared_pointers<Features::FaultModels::Grains::Interface>(const std::string &name,
-                                                                            std::vector<std::shared_ptr<Features::FaultModels::Grains::Interface> > &vector);
+                                                                            std::vector<std::shared_ptr<Features::FaultModels::Grains::Interface>> &vector);
 
 
 

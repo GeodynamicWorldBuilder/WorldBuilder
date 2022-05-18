@@ -135,11 +135,11 @@ inline void compare_3d_arrays_approx(
 }
 
 /**
- * Compare the given two std::vector<std::array<std::array<double,3>,3> > entries with an epsilon (using Catch::Approx)
+ * Compare the given two std::vector<std::array<std::array<double,3>,3>> entries with an epsilon (using Catch::Approx)
  */
 inline void compare_vectors_array3_array3_approx(
-  const std::vector<std::array<std::array<double,3>,3> > &computed,
-  const std::vector<std::array<std::array<double,3>,3> > &expected)
+  const std::vector<std::array<std::array<double,3>,3>> &computed,
+  const std::vector<std::array<std::array<double,3>,3>> &expected)
 {
   CHECK(computed.size() == expected.size());
   for (unsigned int i=0; i< computed.size(); ++i)
@@ -490,18 +490,18 @@ TEST_CASE("WorldBuilder Utilities: interpolation")
 
 TEST_CASE("WorldBuilder Utilities: Point in polygon")
 {
-  std::vector<Point<2> > point_list_4_elements(4, Point<2>(cartesian));
+  std::vector<Point<2>> point_list_4_elements(4, Point<2>(cartesian));
   point_list_4_elements[0] = Point<2>(0,0,cartesian);
   point_list_4_elements[1] = Point<2>(5,0,cartesian);
   point_list_4_elements[2] = Point<2>(5,5,cartesian);
   point_list_4_elements[3] = Point<2>(0,5,cartesian);
 
-  std::vector<Point<2> > point_list_3_elements(3, Point<2>(cartesian));
+  std::vector<Point<2>> point_list_3_elements(3, Point<2>(cartesian));
   point_list_3_elements[0] = Point<2>(10,10,cartesian);
   point_list_3_elements[1] = Point<2>(10,15,cartesian);
   point_list_3_elements[2] = Point<2>(15,15,cartesian);
 
-  std::vector<Point<2> > check_points(9, Point<2>(cartesian));
+  std::vector<Point<2>> check_points(9, Point<2>(cartesian));
   check_points[0] = Point<2>(-1,-1,cartesian);
   check_points[1] = Point<2>(0,0,cartesian);
   check_points[2] = Point<2>(0,5,cartesian);
@@ -512,7 +512,7 @@ TEST_CASE("WorldBuilder Utilities: Point in polygon")
   check_points[7] = Point<2>(12.5,12,cartesian);
   check_points[8] = Point<2>(11.5,12,cartesian);
 
-  std::vector<std::array<bool,2> > awnsers(9);
+  std::vector<std::array<bool,2>> awnsers(9);
   awnsers[0] = {{false,false}};
   awnsers[1] = {{true,false}};
   awnsers[2] = {{true,false}};
@@ -523,7 +523,7 @@ TEST_CASE("WorldBuilder Utilities: Point in polygon")
   awnsers[7] = {{false,false}};
   awnsers[8] = {{false,true}};
 
-  std::vector<std::array<double,2> > awnsers_signed_distance(9);
+  std::vector<std::array<double,2>> awnsers_signed_distance(9);
   awnsers_signed_distance[0] = {{-std::sqrt(2), -std::sqrt(11 * 11 + 11 * 11)}};
   awnsers_signed_distance[1] = {{0,-std::sqrt(10 * 10 + 10 * 10)}};
   awnsers_signed_distance[2] = {{0,-std::sqrt(125)}};
@@ -543,15 +543,15 @@ TEST_CASE("WorldBuilder Utilities: Point in polygon")
       CHECK(Utilities::signed_distance_to_polygon(point_list_3_elements,check_points[i]) == Approx(awnsers_signed_distance[i][1]));
     }
 
-  std::vector<Point<2> > point_list_2_elements(2, Point<2>(cartesian));
+  std::vector<Point<2>> point_list_2_elements(2, Point<2>(cartesian));
   CHECK_THROWS_WITH(Utilities::signed_distance_to_polygon(point_list_2_elements,check_points[0]),
                     Contains("Not enough polygon points were specified."));
 
-  std::vector<Point<2> > point_list_1_elements(1, Point<2>(cartesian));
+  std::vector<Point<2>> point_list_1_elements(1, Point<2>(cartesian));
   CHECK_THROWS_WITH(Utilities::signed_distance_to_polygon(point_list_1_elements,check_points[0]),
                     Contains("Not enough polygon points were specified."));
 
-  std::vector<Point<2> > point_list_0_elements(0, Point<2>(cartesian));
+  std::vector<Point<2>> point_list_0_elements(0, Point<2>(cartesian));
   CHECK_THROWS_WITH(Utilities::signed_distance_to_polygon(point_list_0_elements,check_points[0]),
                     Contains("Not enough polygon points were specified."));
 }
@@ -2906,7 +2906,7 @@ TEST_CASE("WorldBuilder Features: Fault")
 //
     //std::array<std::array<double, 3>, 3> array_1 = {{{{-0.5760272563,-0.3302260164,0.7477589038}},{{-0.3927671635,-0.6904395086,-0.6074761232}},{{0.7168867103,-0.6436179481,0.26801004}}}};
     //std::array<std::array<double, 3>, 3> array_2 = {{{{0.7622618339,-0.3280663618,0.5579689586}},{{-0.2767873192,-0.9444558064,-0.1771779043}},{{0.5851031332,-0.01938277797,-0.8107272238}}}};
-    //std::vector<std::array<std::array<double, 3>, 3> > vector_1 = {array_1,array_2};
+    //std::vector<std::array<std::array<double, 3>, 3>> vector_1 = {array_1,array_2};
     //compare_vectors_array3_array3_approx(grains.rotation_matrices, vector_1);
   }
 
@@ -3328,9 +3328,9 @@ TEST_CASE("WorldBuilder Types: Segment Object")
   WorldBuilder::Point<2> angle(5,6,invalid);
   Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface, Features::FaultModels::Grains::Interface>
   type (1.0, thickness, top_trucation, angle,
-        std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface> >(),
-        std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface> >(),
-        std::vector<std::shared_ptr<Features::FaultModels::Grains::Interface> >());
+        std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface>>(),
+        std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface>>(),
+        std::vector<std::shared_ptr<Features::FaultModels::Grains::Interface>>());
   CHECK(type.value_length == Approx(1.0));
   CHECK(type.value_thickness[0] == Approx(1.0));
   CHECK(type.value_thickness[1] == Approx(2.0));
@@ -3717,9 +3717,9 @@ TEST_CASE("WorldBuilder Parameters")
   prm.declare_entry("value at points default ap",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101.))),
                     "Documentation");
   prm.leave_subsection();
-  std::vector<Point<2> > additional_points = {Point<2>(-10,-10,cartesian),Point<2>(-10,10,cartesian),
-                                              Point<2>(10,10,cartesian),Point<2>(10,-10,cartesian)
-                                             };
+  std::vector<Point<2>> additional_points = {Point<2>(-10,-10,cartesian),Point<2>(-10,10,cartesian),
+                                             Point<2>(10,10,cartesian),Point<2>(10,-10,cartesian)
+                                            };
   CHECK_THROWS_WITH(prm.get("value at points non existant",additional_points), Contains("internal error: could not retrieve"));
   std::pair<std::vector<double>,std::vector<double>> v_at_p_one_value = prm.get("one value at points one value",additional_points);
 
@@ -3904,7 +3904,7 @@ TEST_CASE("WorldBuilder Parameters")
   approval_tests.emplace_back(v_double[0]);
   approval_tests.emplace_back(v_double[1]);
 
-  CHECK_THROWS_WITH(prm.get<Point<2> >("string array"),
+  CHECK_THROWS_WITH(prm.get<Point<2>>("string array"),
                     Contains("Could not convert values of /string array into Point<2>, because it could not convert the sub-elements into doubles."));
 
   v_double = prm.get_vector<double>("double array");
@@ -3913,10 +3913,10 @@ TEST_CASE("WorldBuilder Parameters")
   approval_tests.emplace_back(v_double[1]);
   approval_tests.emplace_back(v_double[2]);
 
-  CHECK_THROWS_WITH(prm.get_vector<Point<2> >("point<2> array nan"),
+  CHECK_THROWS_WITH(prm.get_vector<Point<2>>("point<2> array nan"),
                     Contains("Could not convert values of /point<2> array nan/0 into a Point<2> array, because it could not convert the sub-elements into doubles."));
 
-  std::vector<std::array<std::array<double,3>,3> > v_3x3_array = prm.get_vector<std::array<std::array<double,3>,3> >("vector of 3x3 arrays");
+  std::vector<std::array<std::array<double,3>,3>> v_3x3_array = prm.get_vector<std::array<std::array<double,3>,3>>("vector of 3x3 arrays");
   approval_tests.emplace_back(v_3x3_array.size());
   approval_tests.emplace_back(v_3x3_array[0][0][0]);
   approval_tests.emplace_back(v_3x3_array[0][0][1]);
@@ -3938,7 +3938,7 @@ TEST_CASE("WorldBuilder Parameters")
   approval_tests.emplace_back(v_3x3_array[1][2][1]);
   approval_tests.emplace_back(v_3x3_array[1][2][2]);
 
-  std::vector<std::vector<Point<2> > > v_v_p2 = prm.get_vector<std::vector<Point<2>>>("vector of vectors of points<2>");
+  std::vector<std::vector<Point<2>>> v_v_p2 = prm.get_vector<std::vector<Point<2>>>("vector of vectors of points<2>");
   approval_tests.emplace_back(v_v_p2.size());
   approval_tests.emplace_back(v_v_p2[0].size());
   approval_tests.emplace_back(v_v_p2[0][0][0]);
@@ -4085,7 +4085,7 @@ TEST_CASE("WorldBuilder Parameters")
     approval_tests.emplace_back(true_loaded_typed_double[2].value);
 
 
-    // Test the Array<Types::Point<2> > functions
+    // Test the Array<Types::Point<2>> functions
     CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2,cartesian),"description"),"description")),
                       Contains("Could not find .non existent point<2> array, while it is set as required."));
 
@@ -4096,25 +4096,25 @@ TEST_CASE("WorldBuilder Parameters")
     CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<2>(Point<2>(3,4,cartesian),"description"),"description")) == false);
 
   #ifndef NDEBUG
-    CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("non existent point<2> array"),
+    CHECK_THROWS_WITH(prm.get_array<Types::Point<2>>("non existent point<2> array"),
                       Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set."));
     // This is not desired behavior, but it is not implemented yet.
   #endif
 
     prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
-    std::vector<Types::Point<2> > set_typed_point_2d = prm.get_array<Types::Point<2> >("new point<2> array");
+    std::vector<Types::Point<2>> set_typed_point_2d = prm.get_array<Types::Point<2>>("new point<2> array");
     approval_tests.emplace_back(set_typed_point_2d.size());
     // This is not desired behavior, but it is not implemented yet.
 
     prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
-    std::vector<Types::Point<2> > true_loaded_typed_point_2d =  prm.get_array<Types::Point<2> >("point<2> array");
+    std::vector<Types::Point<2>> true_loaded_typed_point_2d =  prm.get_array<Types::Point<2>>("point<2> array");
     approval_tests.emplace_back(true_loaded_typed_point_2d.size());
     CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {10,11});
     CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {12,13});
     CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {14,15});
 
 
-    // Test the Array<Types::Point<3> > functions
+    // Test the Array<Types::Point<3>> functions
     CHECK_THROWS_WITH(prm.load_entry("non existent point<3> array", true, Types::Array(Types::Point<3>(Point<3>(1,2,3,cartesian),"description"),"description")),
                       Contains("Could not find .non existent point<3> array, while it is set as required."));
 
@@ -4125,18 +4125,18 @@ TEST_CASE("WorldBuilder Parameters")
     CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<3>(Point<3>(4,5,6,cartesian),"description"),"description")) == false);
 
   #ifndef NDEBUG
-    CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("non existent point<3> array"),
+    CHECK_THROWS_WITH(prm.get_array<Types::Point<3>>("non existent point<3> array"),
                       Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set."));
     // This is not desired behavior, but it is not implemented yet.
   #endif
 
     prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
-    std::vector<Types::Point<3> > set_typed_point_3d = prm.get_array<Types::Point<3> >("new point<3> array");
+    std::vector<Types::Point<3>> set_typed_point_3d = prm.get_array<Types::Point<3>>("new point<3> array");
     approval_tests.emplace_back(set_typed_point_3d.size());
     // This is not desired behavior, but it is not implemented yet.
 
     prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
-    std::vector<Types::Point<3> > true_loaded_typed_point_3d =  prm.get_array<Types::Point<3> >("point<3> array");
+    std::vector<Types::Point<3>> true_loaded_typed_point_3d =  prm.get_array<Types::Point<3>>("point<3> array");
     approval_tests.emplace_back(true_loaded_typed_point_3d.size());
     CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {20,21,22});
     CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {23,24,25});
@@ -4148,14 +4148,14 @@ TEST_CASE("WorldBuilder Parameters")
     CHECK_THROWS_WITH(prm.get_array<Types::Double >("point<3> array"),
                       Contains("Could not get point<3> array, because it is not a 3d Point."));
 
-    CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("point<3> array"),
+    CHECK_THROWS_WITH(prm.get_array<Types::Point<2>>("point<3> array"),
                       Contains("Could not get point<3> array, because it is not a 3d Point."));
-    CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("double array"),
+    CHECK_THROWS_WITH(prm.get_array<Types::Point<2>>("double array"),
                       Contains("Could not get double array, because it is not a Double."));
 
-    CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("point<2> array"),
+    CHECK_THROWS_WITH(prm.get_array<Types::Point<3>>("point<2> array"),
                       Contains("Could not get point<2> array, because it is not a 2d Point."));
-    CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("double array"),
+    CHECK_THROWS_WITH(prm.get_array<Types::Point<3>>("double array"),
                       Contains("Could not get double array, because it is not a Double."));
   #endif
 
@@ -4278,7 +4278,7 @@ TEST_CASE("WorldBuilder Parameters")
       approval_tests.emplace_back(true_loaded_typed_double[1].value);
       approval_tests.emplace_back(true_loaded_typed_double[2].value);
 
-      // Test the Array<Types::Point<2> > functions
+      // Test the Array<Types::Point<2>> functions
       CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2,cartesian),"description"),"description")),
                         Contains("Could not find subsection 1.non existent point<2> array, while it is set as required."));
 
@@ -4287,25 +4287,25 @@ TEST_CASE("WorldBuilder Parameters")
                         Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set"));
 
       CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<2>(Point<2>(3,4,cartesian),"description"),"description")) == false);
-      CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("non existent point<2> array"),
+      CHECK_THROWS_WITH(prm.get_array<Types::Point<2>>("non existent point<2> array"),
                         Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set."));
       // This is not desired behavior, but it is not implemented yet.
   #endif
 
       prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
-      std::vector<Types::Point<2> > set_typed_point_2d = prm.get_array<Types::Point<2> >("new point<2> array");
+      std::vector<Types::Point<2>> set_typed_point_2d = prm.get_array<Types::Point<2>>("new point<2> array");
       approval_tests.emplace_back(set_typed_point_2d.size());
       // This is not desired behavior, but it is not implemented yet.
 
       prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
-      std::vector<Types::Point<2> > true_loaded_typed_point_2d =  prm.get_array<Types::Point<2> >("point<2> array");
+      std::vector<Types::Point<2>> true_loaded_typed_point_2d =  prm.get_array<Types::Point<2>>("point<2> array");
       approval_tests.emplace_back(true_loaded_typed_point_2d.size());
       CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {20,21});
       CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {22,23});
       CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {24,25});
 
 
-      // Test the Array<Types::Point<3> > functions
+      // Test the Array<Types::Point<3>> functions
       CHECK_THROWS_WITH(prm.load_entry("non existent point<3> array", true, Types::Array(Types::Point<3>(Point<3>(1,2,3,cartesian),"description"),"description")),
                         Contains("Could not find subsection 1.non existent point<3> array, while it is set as required."));
 
@@ -4314,18 +4314,18 @@ TEST_CASE("WorldBuilder Parameters")
                         Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set"));
 
       CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<3>(Point<3>(4,5,6,cartesian),"description"),"description")) == false);
-      CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("non existent point<3> array"),
+      CHECK_THROWS_WITH(prm.get_array<Types::Point<3>>("non existent point<3> array"),
                         Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set."));
       // This is not desired behavior, but it is not implemented yet.
   #endif
 
       prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
-      std::vector<Types::Point<3> > set_typed_point_3d = prm.get_array<Types::Point<3> >("new point<3> array");
+      std::vector<Types::Point<3>> set_typed_point_3d = prm.get_array<Types::Point<3>>("new point<3> array");
       approval_tests.emplace_back(set_typed_point_3d.size());
       // This is not desired behavior, but it is not implemented yet.
 
       prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
-      std::vector<Types::Point<3> > true_loaded_typed_point_3d =  prm.get_array<Types::Point<3> >("point<3> array");
+      std::vector<Types::Point<3>> true_loaded_typed_point_3d =  prm.get_array<Types::Point<3>>("point<3> array");
       approval_tests.emplace_back(true_loaded_typed_point_3d.size());
       CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {30,31,32});
       CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {33,34,35});
@@ -4337,14 +4337,14 @@ TEST_CASE("WorldBuilder Parameters")
       CHECK_THROWS_WITH(prm.get_array<Types::Double >("point<3> array"),
                         Contains("Could not get subsection 1.point<3> array, because it is not a 3d Point."));
 
-      CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("point<3> array"),
+      CHECK_THROWS_WITH(prm.get_array<Types::Point<2>>("point<3> array"),
                         Contains("Could not get subsection 1.point<3> array, because it is not a 3d Point."));
-      CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("double array"),
+      CHECK_THROWS_WITH(prm.get_array<Types::Point<2>>("double array"),
                         Contains("Could not get subsection 1.double array, because it is not a Double."));
 
-      CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("point<2> array"),
+      CHECK_THROWS_WITH(prm.get_array<Types::Point<3>>("point<2> array"),
                         Contains("Could not get subsection 1.point<2> array, because it is not a 2d Point."));
-      CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("double array"),
+      CHECK_THROWS_WITH(prm.get_array<Types::Point<3>>("double array"),
                         Contains("Could not get subsection 1.double array, because it is not a Double."));
   #endif
 
@@ -4467,7 +4467,7 @@ TEST_CASE("WorldBuilder Parameters")
         approval_tests.emplace_back(true_loaded_typed_double[2].value);
 
 
-        // Test the Array<Types::Point<2> > functions
+        // Test the Array<Types::Point<2>> functions
   #ifndef NDEBUG
         CHECK_THROWS_WITH(prm.load_entry("non existent point<2> array", true, Types::Array(Types::Point<2>(Point<2>(1,2,cartesian),"description"),"description")),
                           Contains("Could not find subsection 1.subsection 2.non existent point<2> array, while it is set as required."));
@@ -4479,25 +4479,25 @@ TEST_CASE("WorldBuilder Parameters")
         CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<2>(Point<2>(3,4,cartesian),"description"),"description")) == false);
 
   #ifndef NDEBUG
-        CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("non existent point<2> array"),
+        CHECK_THROWS_WITH(prm.get_array<Types::Point<2>>("non existent point<2> array"),
                           Contains("Could not find entry 'non existent point<2> array' not found. Make sure it is loaded or set."));
         // This is not desired behavior, but it is not implemented yet.
   #endif
 
         prm.set_entry("new point<2> array", Types::Array(Types::Point<2>(Point<2>(5,6,cartesian),"description"),"description"));
-        std::vector<Types::Point<2> > set_typed_point_2d = prm.get_array<Types::Point<2> >("new point<2> array");
+        std::vector<Types::Point<2>> set_typed_point_2d = prm.get_array<Types::Point<2>>("new point<2> array");
         approval_tests.emplace_back(set_typed_point_2d.size());
         // This is not desired behavior, but it is not implemented yet.
 
         prm.load_entry("point<2> array", true, Types::Array(Types::Point<2>(Point<2>(7,8,cartesian),"description"),"description"));
-        std::vector<Types::Point<2> > true_loaded_typed_point_2d =  prm.get_array<Types::Point<2> >("point<2> array");
+        std::vector<Types::Point<2>> true_loaded_typed_point_2d =  prm.get_array<Types::Point<2>>("point<2> array");
         approval_tests.emplace_back(true_loaded_typed_point_2d.size());
         CHECK(true_loaded_typed_point_2d[0].value.get_array() == std::array<double,2> {40,41});
         CHECK(true_loaded_typed_point_2d[1].value.get_array() == std::array<double,2> {42,43});
         CHECK(true_loaded_typed_point_2d[2].value.get_array() == std::array<double,2> {44,45});
 
 
-        // Test the Array<Types::Point<3> > functions
+        // Test the Array<Types::Point<3>> functions
   #ifndef NDEBUG
         CHECK_THROWS_WITH(prm.load_entry("non existent point<3> array", true, Types::Array(Types::Point<3>(Point<3>(1,2,3,cartesian),"description"),"description")),
                           Contains("Could not find subsection 1.subsection 2.non existent point<3> array, while it is set as required."));
@@ -4509,18 +4509,18 @@ TEST_CASE("WorldBuilder Parameters")
         CHECK(prm.load_entry("non exitent double array", false, Types::Array(Types::Point<3>(Point<3>(4,5,6,cartesian),"description"),"description")) == false);
 
   #ifndef NDEBUG
-        CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("non existent point<3> array"),
+        CHECK_THROWS_WITH(prm.get_array<Types::Point<3>>("non existent point<3> array"),
                           Contains("Could not find entry 'non existent point<3> array' not found. Make sure it is loaded or set."));
         // This is not desired behavior, but it is not implemented yet.
   #endif
 
         prm.set_entry("new point<3> array", Types::Array(Types::Point<3>(Point<3>(7,8,9,cartesian),"description"),"description"));
-        std::vector<Types::Point<3> > set_typed_point_3d = prm.get_array<Types::Point<3> >("new point<3> array");
+        std::vector<Types::Point<3>> set_typed_point_3d = prm.get_array<Types::Point<3>>("new point<3> array");
         approval_tests.emplace_back(set_typed_point_3d.size());
         // This is not desired behavior, but it is not implemented yet.
 
         prm.load_entry("point<3> array", true, Types::Array(Types::Point<3>(Point<3>(10,11,12,cartesian),"description"),"description"));
-        std::vector<Types::Point<3> > true_loaded_typed_point_3d =  prm.get_array<Types::Point<3> >("point<3> array");
+        std::vector<Types::Point<3>> true_loaded_typed_point_3d =  prm.get_array<Types::Point<3>>("point<3> array");
         approval_tests.emplace_back(true_loaded_typed_point_3d.size());
         CHECK(true_loaded_typed_point_3d[0].value.get_array() == std::array<double,3> {40,41,42});
         CHECK(true_loaded_typed_point_3d[1].value.get_array() == std::array<double,3> {43,44,45});
@@ -4532,14 +4532,14 @@ TEST_CASE("WorldBuilder Parameters")
         CHECK_THROWS_WITH(prm.get_array<Types::Double >("point<3> array"),
                           Contains("Could not get subsection 1.subsection 2.point<3> array, because it is not a 3d Point."));
 
-        CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("point<3> array"),
+        CHECK_THROWS_WITH(prm.get_array<Types::Point<2>>("point<3> array"),
                           Contains("Could not get subsection 1.subsection 2.point<3> array, because it is not a 3d Point."));
-        CHECK_THROWS_WITH(prm.get_array<Types::Point<2> >("double array"),
+        CHECK_THROWS_WITH(prm.get_array<Types::Point<2>>("double array"),
                           Contains("Could not get subsection 1.subsection 2.double array, because it is not a Double."));
 
-        CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("point<2> array"),
+        CHECK_THROWS_WITH(prm.get_array<Types::Point<3>>("point<2> array"),
                           Contains("Could not get subsection 1.subsection 2.point<2> array, because it is not a 2d Point."));
-        CHECK_THROWS_WITH(prm.get_array<Types::Point<3> >("double array"),
+        CHECK_THROWS_WITH(prm.get_array<Types::Point<3>>("double array"),
                           Contains("Could not get subsection 1.subsection 2.double array, because it is not a Double."));
   #endif
       }
@@ -4612,18 +4612,18 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                                              *cartesian_system);
   Point<2> reference_point(0,0,cartesian);
 
-  std::vector<Point<2> > coordinates;
+  std::vector<Point<2>> coordinates;
   coordinates.emplace_back(0,10,cartesian);
   coordinates.emplace_back(20,10,cartesian);
 
-  std::vector<std::vector<double> > slab_segment_lengths(2);
+  std::vector<std::vector<double>> slab_segment_lengths(2);
   slab_segment_lengths[0].push_back(std::sqrt(10*10+10*10));
   slab_segment_lengths[0].push_back(200);
   slab_segment_lengths[1].push_back(std::sqrt(10*10+10*10));
   slab_segment_lengths[1].push_back(200);
 
   double dtr = Utilities::const_pi/180;
-  std::vector<std::vector<Point<2> > > slab_segment_angles(2);
+  std::vector<std::vector<Point<2>>> slab_segment_angles(2);
   slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
   slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
   slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
@@ -4636,7 +4636,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   std::vector<double> x_list = {0.,20.};
   std::vector<double> y_list = {10.,10.};
-  std::vector<Point<2> > coordinate_list_local = coordinates;
+  std::vector<Point<2>> coordinate_list_local = coordinates;
 
   x_spline.set_points(x_list);
   y_spline.set_points(y_list);
@@ -5562,12 +5562,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
                                                                              *cartesian_system);
   Point<2> reference_point(0,0,cartesian);
 
-  std::vector<Point<2> > coordinates;
+  std::vector<Point<2>> coordinates;
   coordinates.emplace_back(0,10,cartesian);
   coordinates.emplace_back(20,10,cartesian);
   coordinates.emplace_back(30,10,cartesian);
 
-  std::vector<std::vector<double> > slab_segment_lengths(3);
+  std::vector<std::vector<double>> slab_segment_lengths(3);
   slab_segment_lengths[0].push_back(std::sqrt(10*10+10*10));
   slab_segment_lengths[0].push_back(200);
   slab_segment_lengths[1].push_back(std::sqrt(10*10+10*10));
@@ -5576,7 +5576,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   slab_segment_lengths[2].push_back(200);
 
   double dtr = Utilities::const_pi/180;
-  std::vector<std::vector<Point<2> > > slab_segment_angles(3);
+  std::vector<std::vector<Point<2>>> slab_segment_angles(3);
   slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
   slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
   slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
@@ -5622,7 +5622,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   std::vector<double> x_list = {0.,20., 30.};
   std::vector<double> y_list = {10.,10., 10.};
-  std::vector<Point<2> > coordinate_list_local = coordinates;
+  std::vector<Point<2>> coordinate_list_local = coordinates;
 
   x_spline.set_points(x_list);
   y_spline.set_points(y_list);
@@ -6992,18 +6992,18 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
                                                                              *(world.parameters.coordinate_system));
   Point<2> reference_point(0,0,spherical);
 
-  std::vector<Point<2> > coordinates;
+  std::vector<Point<2>> coordinates;
   coordinates.emplace_back(0 * dtr,10 * dtr,spherical);
   coordinates.emplace_back(10 * dtr,10 * dtr,spherical);
 
-  std::vector<std::vector<double> > slab_segment_lengths(2);
+  std::vector<std::vector<double>> slab_segment_lengths(2);
   slab_segment_lengths[0].push_back(std::sqrt(10*10+10*10));
   slab_segment_lengths[0].push_back(200);
   slab_segment_lengths[1].push_back(std::sqrt(10*10+10*10));
   slab_segment_lengths[1].push_back(200);
 
   //double dtr = Utilities::const_pi/180;
-  std::vector<std::vector<Point<2> > > slab_segment_angles(2);
+  std::vector<std::vector<Point<2>>> slab_segment_angles(2);
   slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
   slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
   slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
@@ -7017,7 +7017,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
 
   std::vector<double> x_list = {0.,10 * dtr};
   std::vector<double> y_list = {10 * dtr,10 * dtr};
-  std::vector<Point<2> > coordinate_list_local = coordinates;
+  std::vector<Point<2>> coordinate_list_local = coordinates;
 
   x_spline.set_points(x_list);
   y_spline.set_points(y_list);

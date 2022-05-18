@@ -352,7 +352,7 @@ int main(int argc, char **argv)
 
 
       // move the data into a vector of strings
-      std::vector<std::vector<std::string> > data;
+      std::vector<std::vector<std::string>> data;
       std::string temp;
 
       while (std::getline(data_stream, temp))
@@ -478,7 +478,7 @@ int main(int argc, char **argv)
       std::vector<double> grid_z(0);
       std::vector<double> grid_depth(0);
 
-      std::vector<std::vector<size_t> > grid_connectivity(0);
+      std::vector<std::vector<size_t>> grid_connectivity(0);
 
 
       bool compress_size = true;
@@ -993,11 +993,11 @@ int main(int argc, char **argv)
           size_t block_n_v = 4;
 
 
-          std::vector<std::vector<double> > block_grid_x(n_block,std::vector<double>(block_n_p));
-          std::vector<std::vector<double> > block_grid_y(n_block,std::vector<double>(block_n_p));
-          std::vector<std::vector<double> > block_grid_z(n_block,std::vector<double>(block_n_p));
-          std::vector<std::vector<std::vector<size_t> > > block_grid_connectivity(n_block,std::vector<std::vector<size_t> >(block_n_cell,std::vector<size_t>(block_n_v)));
-          std::vector<std::vector<bool> > block_grid_hull(n_block,std::vector<bool>(block_n_p));
+          std::vector<std::vector<double>> block_grid_x(n_block,std::vector<double>(block_n_p));
+          std::vector<std::vector<double>> block_grid_y(n_block,std::vector<double>(block_n_p));
+          std::vector<std::vector<double>> block_grid_z(n_block,std::vector<double>(block_n_p));
+          std::vector<std::vector<std::vector<size_t>>> block_grid_connectivity(n_block,std::vector<std::vector<size_t>>(block_n_cell,std::vector<size_t>(block_n_v)));
+          std::vector<std::vector<bool>> block_grid_hull(n_block,std::vector<bool>(block_n_p));
 
           /**
            * block node layout
@@ -1208,7 +1208,7 @@ int main(int argc, char **argv)
           std::vector<double> shell_grid_x(shell_n_p);
           std::vector<double> shell_grid_y(shell_n_p);
           std::vector<double> shell_grid_z(shell_n_p);
-          std::vector<std::vector<size_t> > shell_grid_connectivity(shell_n_cell,std::vector<size_t>(shell_n_v));
+          std::vector<std::vector<size_t>> shell_grid_connectivity(shell_n_cell,std::vector<size_t>(shell_n_v));
 
           counter = 0;
           for (size_t i = 0; i < n_block * block_n_p; ++i)

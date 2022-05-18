@@ -131,7 +131,7 @@ int main(int argc, char **argv)
       std::ifstream data_stream(data_file);
 
       // move the data into a vector of strings
-      std::vector<std::vector<std::string> > data;
+      std::vector<std::vector<std::string>> data;
       std::string temp;
 
       while (std::getline(data_stream, temp))

@@ -61,7 +61,7 @@ namespace WorldBuilder
                           const std::string &documentation) const override final;
 
         double default_value;
-        std::vector<Point<2> > default_points;
+        std::vector<Point<2>> default_points;
 
       protected:
         ValueAtPoints *clone_impl() const override final

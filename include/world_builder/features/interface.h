@@ -132,7 +132,7 @@ namespace WorldBuilder
         /**
          * The coordinates at the surface of the feature
          */
-        std::vector<Point<2> > coordinates;
+        std::vector<Point<2>> coordinates;
 
         /**
          * The x and y spline
