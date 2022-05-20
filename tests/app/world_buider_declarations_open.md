@@ -2488,7 +2488,7 @@
 :name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **documentation**:Compositional model object
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -2499,7 +2499,7 @@
 - **default value**:
 - **type**:string
 - **documentation**:The name of the composition model.
-- **enum**:[uniform]
+- **enum**:[smooth]
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/min distance fault center
@@ -2511,13 +2511,53 @@
 - **documentation**:The distance in meters from which the composition of this feature is present.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/max distance fault center
+::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/side distance fault center
 :open:
-:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_1_max-distance-fault-center
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_1_side-distance-fault-center
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance in meters to which the composition of this feature is present.
+- **documentation**:The distance over which the composition is reduced from 1 to 0.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/center fractions
+:open:
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_1_center-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:The composition fraction at the center of the fault.
+:::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/center fractions/items
+:open:
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_1_center-fractions_items
+
+- **default value**:1.0
+- **type**:number
+- **documentation**:
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/side fractions
+:open:
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_1_side-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:The composition fraction at the sides of this feature.
+:::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/side fractions/items
+:open:
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_1_side-fractions_items
+
+- **default value**:0.0
+- **type**:number
+- **documentation**:
+:::::::::::::
+
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/compositions
@@ -2540,18 +2580,89 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/fractions
+::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/operation
 :open:
-:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_1_fractions
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_1_operation
+
+- **default value**:replace
+- **type**:string
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **enum**:[replace]
+::::::::::::::
+
+
+
+:::::::::::::::
+
+:::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_2
+
+- **type**:object
+- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/2/model
+:open:
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_2_model
+
+- **default value**:
+- **type**:string
+- **documentation**:The name of the composition model.
+- **enum**:[uniform]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/2/min distance fault center
+:open:
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_2_min-distance-fault-center
+
+- **default value**:0.0
+- **type**:number
+- **documentation**:The distance in meters from which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/2/max distance fault center
+:open:
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_2_max-distance-fault-center
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **documentation**:The distance in meters to which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/2/compositions
+:open:
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_2_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:A list with the labels of the composition which are present there.
+:::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/2/compositions/items
+:open:
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_2_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **documentation**:
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/2/fractions
+:open:
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_2_fractions
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **documentation**:TA list of compositional fractions corresponding to the compositions list.
-:::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/fractions/items
+:::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/2/fractions/items
 :open:
-:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_1_fractions_items
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_2_fractions_items
 
 - **default value**:1.0
 - **type**:number
@@ -2560,9 +2671,9 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/operation
+::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/2/operation
 :open:
-:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_1_operation
+:name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_2_operation
 
 - **default value**:replace
 - **type**:string
@@ -3127,7 +3238,7 @@
 :name: open_features_items_oneOf_2_composition-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **documentation**:Compositional model object
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -3138,7 +3249,7 @@
 - **default value**:
 - **type**:string
 - **documentation**:The name of the composition model.
-- **enum**:[uniform]
+- **enum**:[smooth]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/min distance fault center
@@ -3150,13 +3261,53 @@
 - **documentation**:The distance in meters from which the composition of this feature is present.
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/max distance fault center
+::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/side distance fault center
 :open:
-:name: open_features_items_oneOf_2_composition-models_items_oneOf_1_max-distance-fault-center
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_1_side-distance-fault-center
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance in meters to which the composition of this feature is present.
+- **documentation**:The distance over which the composition is reduced from 1 to 0.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/center fractions
+:open:
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_1_center-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:The composition fraction at the center of the fault.
+:::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/center fractions/items
+:open:
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_1_center-fractions_items
+
+- **default value**:1.0
+- **type**:number
+- **documentation**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/side fractions
+:open:
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_1_side-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:The composition fraction at the sides of this feature.
+:::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/side fractions/items
+:open:
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_1_side-fractions_items
+
+- **default value**:0.0
+- **type**:number
+- **documentation**:
+:::::::::::::::
+
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/compositions
@@ -3179,18 +3330,89 @@
 
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/fractions
+::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/operation
 :open:
-:name: open_features_items_oneOf_2_composition-models_items_oneOf_1_fractions
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_1_operation
+
+- **default value**:replace
+- **type**:string
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **enum**:[replace]
+::::::::::::::::
+
+
+
+:::::::::::::::::
+
+:::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_2
+
+- **type**:object
+- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/2/model
+:open:
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_2_model
+
+- **default value**:
+- **type**:string
+- **documentation**:The name of the composition model.
+- **enum**:[uniform]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/2/min distance fault center
+:open:
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_2_min-distance-fault-center
+
+- **default value**:0.0
+- **type**:number
+- **documentation**:The distance in meters from which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/2/max distance fault center
+:open:
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_2_max-distance-fault-center
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **documentation**:The distance in meters to which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/2/compositions
+:open:
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_2_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:A list with the labels of the composition which are present there.
+:::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/2/compositions/items
+:open:
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_2_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **documentation**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/2/fractions
+:open:
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_2_fractions
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **documentation**:TA list of compositional fractions corresponding to the compositions list.
-:::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/fractions/items
+:::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/2/fractions/items
 :open:
-:name: open_features_items_oneOf_2_composition-models_items_oneOf_1_fractions_items
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_2_fractions_items
 
 - **default value**:1.0
 - **type**:number
@@ -3199,9 +3421,9 @@
 
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/operation
+::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/2/operation
 :open:
-:name: open_features_items_oneOf_2_composition-models_items_oneOf_1_operation
+:name: open_features_items_oneOf_2_composition-models_items_oneOf_2_operation
 
 - **default value**:replace
 - **type**:string
@@ -3885,7 +4107,7 @@
 :name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **documentation**:Compositional model object
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -3896,7 +4118,7 @@
 - **default value**:
 - **type**:string
 - **documentation**:The name of the composition model.
-- **enum**:[uniform]
+- **enum**:[smooth]
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/min distance fault center
@@ -3908,13 +4130,53 @@
 - **documentation**:The distance in meters from which the composition of this feature is present.
 ::::::::::::
 
-::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/max distance fault center
+::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/side distance fault center
 :open:
-:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_1_max-distance-fault-center
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_1_side-distance-fault-center
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance in meters to which the composition of this feature is present.
+- **documentation**:The distance over which the composition is reduced from 1 to 0.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/center fractions
+:open:
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_1_center-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:The composition fraction at the center of the fault.
+:::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/center fractions/items
+:open:
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_1_center-fractions_items
+
+- **default value**:1.0
+- **type**:number
+- **documentation**:
+:::::::::::
+
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/side fractions
+:open:
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_1_side-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:The composition fraction at the sides of this feature.
+:::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/side fractions/items
+:open:
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_1_side-fractions_items
+
+- **default value**:0.0
+- **type**:number
+- **documentation**:
+:::::::::::
+
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/compositions
@@ -3937,18 +4199,89 @@
 
 ::::::::::::
 
-::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/fractions
+::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/operation
 :open:
-:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_1_fractions
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_1_operation
+
+- **default value**:replace
+- **type**:string
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **enum**:[replace]
+::::::::::::
+
+
+
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_2
+
+- **type**:object
+- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/2/model
+:open:
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_2_model
+
+- **default value**:
+- **type**:string
+- **documentation**:The name of the composition model.
+- **enum**:[uniform]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/2/min distance fault center
+:open:
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_2_min-distance-fault-center
+
+- **default value**:0.0
+- **type**:number
+- **documentation**:The distance in meters from which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/2/max distance fault center
+:open:
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_2_max-distance-fault-center
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **documentation**:The distance in meters to which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/2/compositions
+:open:
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_2_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:A list with the labels of the composition which are present there.
+:::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/2/compositions/items
+:open:
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **documentation**:
+:::::::::::
+
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/2/fractions
+:open:
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_2_fractions
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **documentation**:TA list of compositional fractions corresponding to the compositions list.
-:::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/fractions/items
+:::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/2/fractions/items
 :open:
-:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_1_fractions_items
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_2_fractions_items
 
 - **default value**:1.0
 - **type**:number
@@ -3957,9 +4290,9 @@
 
 ::::::::::::
 
-::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/operation
+::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/2/operation
 :open:
-:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_1_operation
+:name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_2_operation
 
 - **default value**:replace
 - **type**:string
@@ -4524,7 +4857,7 @@
 :name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **documentation**:Compositional model object
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -4535,7 +4868,7 @@
 - **default value**:
 - **type**:string
 - **documentation**:The name of the composition model.
-- **enum**:[uniform]
+- **enum**:[smooth]
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/min distance fault center
@@ -4547,13 +4880,53 @@
 - **documentation**:The distance in meters from which the composition of this feature is present.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/max distance fault center
+::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/side distance fault center
 :open:
-:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_1_max-distance-fault-center
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_1_side-distance-fault-center
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance in meters to which the composition of this feature is present.
+- **documentation**:The distance over which the composition is reduced from 1 to 0.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/center fractions
+:open:
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_1_center-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:The composition fraction at the center of the fault.
+:::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/center fractions/items
+:open:
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_1_center-fractions_items
+
+- **default value**:1.0
+- **type**:number
+- **documentation**:
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/side fractions
+:open:
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_1_side-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:The composition fraction at the sides of this feature.
+:::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/side fractions/items
+:open:
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_1_side-fractions_items
+
+- **default value**:0.0
+- **type**:number
+- **documentation**:
+:::::::::::::
+
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/compositions
@@ -4576,18 +4949,89 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/fractions
+::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/operation
 :open:
-:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_1_fractions
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_1_operation
+
+- **default value**:replace
+- **type**:string
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **enum**:[replace]
+::::::::::::::
+
+
+
+:::::::::::::::
+
+:::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_2
+
+- **type**:object
+- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/2/model
+:open:
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_2_model
+
+- **default value**:
+- **type**:string
+- **documentation**:The name of the composition model.
+- **enum**:[uniform]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/2/min distance fault center
+:open:
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_2_min-distance-fault-center
+
+- **default value**:0.0
+- **type**:number
+- **documentation**:The distance in meters from which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/2/max distance fault center
+:open:
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_2_max-distance-fault-center
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **documentation**:The distance in meters to which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/2/compositions
+:open:
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_2_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:A list with the labels of the composition which are present there.
+:::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/2/compositions/items
+:open:
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_2_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **documentation**:
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/2/fractions
+:open:
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_2_fractions
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **documentation**:TA list of compositional fractions corresponding to the compositions list.
-:::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/fractions/items
+:::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/2/fractions/items
 :open:
-:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_1_fractions_items
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_2_fractions_items
 
 - **default value**:1.0
 - **type**:number
@@ -4596,9 +5040,9 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/operation
+::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/2/operation
 :open:
-:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_1_operation
+:name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_2_operation
 
 - **default value**:replace
 - **type**:string
