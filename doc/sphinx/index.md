@@ -19,7 +19,7 @@ introduction/bibliography
 
 
 ```{toctree}
-:caption: Input file manual
+:caption: User manual
 :maxdepth: 4
 :hidden:
 
