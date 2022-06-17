@@ -1,7 +1,8 @@
-(part:user_manual:chap:introduction:sec:acknowledgmetns)=
-Acknowledgments
+(part:user_manual:chap:introduction:sec:acknowledgments)=
+Developers, Contributors and Acknowledgments
 ===============
 
-```{todo}
-Put acknowledgmetns and list of contributors here
-```
+:::{include} ../../../../AUTHORS
+::::
+
+We also like to acknowledge funding support through NWO, CIG and NSF.
