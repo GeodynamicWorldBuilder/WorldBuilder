@@ -1,3 +1,4 @@
+(part:user_manual:chap:concepts:sec:point_features)=
 Point features
 =============================
 

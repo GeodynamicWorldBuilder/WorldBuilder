@@ -1,4 +1,4 @@
-(sec:using_the_visualizer)=
+(part:user_manual:chap:how_to_use_the_apps:sec:using_the_visualizer)=
 The world builder vtu app
 =========================
 

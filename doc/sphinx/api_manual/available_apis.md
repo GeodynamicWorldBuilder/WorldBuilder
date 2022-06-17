@@ -1,3 +1,4 @@
+(part:api_manual:chap:available_apis)=
 Available APIs
 ==============
 

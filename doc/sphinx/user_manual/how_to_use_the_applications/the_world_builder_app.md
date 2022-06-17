@@ -1,4 +1,4 @@
-(sec:using_the_app)=
+(part:user_manual:chap:how_to_use_the_apps:sec:world_builder_app)=
 The world builder app
 =====================
 

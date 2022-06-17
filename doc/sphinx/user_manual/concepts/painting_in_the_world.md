@@ -1,3 +1,4 @@
+(part:user_manual:chap:concepts:sec:painting_the_world)=
 Painting in the world
 =====================
 

@@ -1,3 +1,4 @@
+(part:dev_manual:chap:start_devel_and_contrib:sec:tools:subsec:git)=
 Git
 ===
 

@@ -1,3 +1,4 @@
+(part:user_manual:chap:concepts:sec:04_first_tectonic_feature)=
 Adding your first tectonic feature
 ========================
 

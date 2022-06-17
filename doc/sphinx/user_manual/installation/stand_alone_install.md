@@ -1,4 +1,4 @@
-(sec:stand-alone-install)=
+(part:user_manual:chap:installation:sec:stand-alone-install)=
 Stand-alone installation with all apps
 ======================================
 
@@ -28,4 +28,4 @@ Stand-alone installation with all apps
 ::::
 
 
-Now the library, tester, and the two programs (described in {ref}`sec:included`) are ready for use.
+Now the library, tester, and the two programs (described in {ref}`part:user_manual:chap:installation:sec:included`) are ready for use.

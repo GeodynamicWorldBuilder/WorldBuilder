@@ -1,3 +1,4 @@
+(part:user_manual:chap:concepts:sec:06_oceanic_plate_temperature)=
 Oceanic plate temperature
 =========================
 

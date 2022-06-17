@@ -1,3 +1,4 @@
+(part:dev_manual:chap:contrib_to_code:sec:index)=
 Contributing to the code
 =================================
 

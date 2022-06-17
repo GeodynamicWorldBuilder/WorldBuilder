@@ -1,3 +1,4 @@
+(part:user_manual:chap:concepts:sec:const_angle_spherical)=
 Constant angle in spherical domain issue
 ========================================
 

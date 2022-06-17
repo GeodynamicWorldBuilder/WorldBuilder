@@ -1,3 +1,4 @@
+(part:dev_manual:chap:developing_for_the_GWB:sec:creating_new_plugins)=
 Creating new plugins
 ====================
 
