@@ -1,4 +1,4 @@
-(part:user_manual:chap:concepts:sec:index)=
+(part:user_manual:chap:basic_starter_tutorial:sec:index)=
 Basic Starter Tutorial
 ========================
 
