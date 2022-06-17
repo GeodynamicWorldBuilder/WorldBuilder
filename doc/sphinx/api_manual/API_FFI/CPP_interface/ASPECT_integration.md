@@ -1,3 +1,4 @@
+(part:api_manual:chap:API_FFI:sec:CPP_interface:subsec:ASPECT_integration)=
 ASPECT intgration
 =================
 

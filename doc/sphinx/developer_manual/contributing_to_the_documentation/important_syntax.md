@@ -1,3 +1,4 @@
+(part:dev_manual:chap:contrib_to_doc:sec:important_syntax)=
 Important sytax
 ===============
 

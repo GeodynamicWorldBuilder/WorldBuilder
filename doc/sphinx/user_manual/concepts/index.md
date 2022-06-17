@@ -1,3 +1,4 @@
+(part:user_manual:chap:concepts:sec:index)=
 Important GWB Concepts
 ======================
 

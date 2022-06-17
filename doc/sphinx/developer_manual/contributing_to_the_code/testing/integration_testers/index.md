@@ -1,3 +1,4 @@
+(part:dev_manual:chap:contrib_to_code:sec:testing:subsec:integration_testers:subsubsec:index)=
 Integration testers
 ===================
 

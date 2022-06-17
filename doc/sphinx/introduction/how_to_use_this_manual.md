@@ -1,3 +1,4 @@
+(part:introduction:chap:how_to_use_this_manual)=
 How to use this manual
 ======================
 

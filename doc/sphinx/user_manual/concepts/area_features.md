@@ -1,3 +1,4 @@
+(part:user_manual:chap:concepts:sec:area_features)=
 Area features
 =============================
 

@@ -1,3 +1,4 @@
+(part:user_manual:chap:cookbooks:sec:index)=
 Cookbooks
 ======================
 

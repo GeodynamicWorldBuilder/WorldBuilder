@@ -1,3 +1,4 @@
+(part:dev_manual:chap:contrib_to_doc:sec:index)=
 Contributing to the documentation
 =================================
 

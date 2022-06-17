@@ -1,4 +1,5 @@
-Fortran interface
+(part:api_manual:chap:API_FFI:sec:fortran_interface)=
+FORTRAN interface
 ===========
 
 ```{todo}

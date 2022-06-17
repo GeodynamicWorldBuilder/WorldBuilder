@@ -1,3 +1,4 @@
+(part:user_manual:chap:installation:sec:other_instalation_methods)=
 Other installation methods
 =======
 
@@ -11,7 +12,7 @@ For this case, there are two options. Either compile the library and link it, or
 
 ::::{tab-set}
 :::{tab-item} Compile the library and link it
-First, follow the instructions from {ref}`sec:stand-alone-install`.
+First, follow the instructions from {ref}`part:user_manual:chap:installation:sec:stand-alone-install`.
 The library can be found in the `build/lib` directory with the name `libWorldBuilder.a`.
 Link your project with this file.
 
@@ -36,7 +37,7 @@ Then implement in the correct locations the temperature and composition querying
 :::::
 
 :::::{tab-item} c program
-First, follow the instructions from {ref}`sec:stand-alone-install`. The library can be found in the `build/lib/` directory with the name `libWorldBuilder.a`. Link your project with this file.
+First, follow the instructions from {ref}`part:user_manual:chap:installation:sec:stand-alone-install`. The library can be found in the `build/lib/` directory with the name `libWorldBuilder.a`. Link your project with this file.
 
 The only file you need to include in your code is `world_builder/wrapper_c.h`.
 Create a void variable which is a pointer to a pointer and set it so NULL (e.g. `void **ptr_ptr_world`), and create a pointer to a c-string (e.g. `char *world_builder_file`).
@@ -52,7 +53,7 @@ This will clean up the memory used by the world builder.
 :::::
 
 :::::{tab-item} fortran program
-First, follow the instructions from {ref}`sec:stand-alone-install`.
+First, follow the instructions from {ref}`part:user_manual:chap:installation:sec:stand-alone-install`.
 The library can be found in the `build/mod/` directory with the name `worldbuilder.mod`.
 Link your project with this file.
 Include the module into your project. The only thing you need to care for, when creating the world is to provide file name which ends with `//C_NULL_CHAR`.

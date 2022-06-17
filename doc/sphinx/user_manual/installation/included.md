@@ -1,4 +1,4 @@
-(sec:included)=
+(part:user_manual:chap:installation:sec:included)=
 What is in the Geodynamic World Builder package?
 ================================================
 

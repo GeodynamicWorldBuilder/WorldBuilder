@@ -1,4 +1,4 @@
-(sec:installing_prerequisites)=
+(part:user_manual:chap:installation:sec:installing_prerequisites)=
 Installing the prerequisites
 ============================
 

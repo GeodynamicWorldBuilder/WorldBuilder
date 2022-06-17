@@ -1,3 +1,4 @@
+(part:user_manual:chap:how_to_use_the_apps:sec:index)=
 How to use the applications
 ===========================
 

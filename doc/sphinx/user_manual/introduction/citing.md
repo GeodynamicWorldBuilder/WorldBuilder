@@ -1,3 +1,4 @@
+(part:user_manual:chap:introduction:sec:citing_the_world_builder)=
 Citing the world builder
 ========================
 
