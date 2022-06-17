@@ -17,6 +17,5 @@ included
 installing_prerequisites
 stand_alone_install
 installation_methods
-%install_as_part_of_ASPECT
-%running_the_tester
+running_the_tester
 ```
