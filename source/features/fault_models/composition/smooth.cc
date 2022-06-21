@@ -97,7 +97,7 @@ namespace WorldBuilder
                                  const double ,
                                  const double ,
                                  const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
-                                 const Utilities::AdditionalParameters &additional_paramters) const
+                                 const Utilities::AdditionalParameters &) const
         {
           double composition = composition_;
 
