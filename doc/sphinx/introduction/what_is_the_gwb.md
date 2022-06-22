@@ -16,4 +16,4 @@ The geodynamic models can be divided in **three broad classes**.
 
 **The GWB has been designed to make the third case a *lot* easier**, but can also be used to design simple synthetic models and in currently work is being done to also be able to integrate datasets in a way which aligns with the GWB design philosophies.
 
-Besides setting up initial conditions for geodynamic models, the GWB can also be used to make detailed 3D visualizations of geologic and geodynamic settings (see {ref}`sec:using_the_visualizer`)
+Besides setting up initial conditions for geodynamic models, the GWB can also be used to make detailed 3D visualizations of geologic and geodynamic settings (see {ref}`part:user_manual:chap:how_to_use_the_apps:sec:using_the_visualizer`)
