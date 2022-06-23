@@ -24,9 +24,9 @@ introduction/bibliography
 :hidden:
 
 user_manual/introduction/index
-user_manual/concepts/index
 user_manual/installation/index
 user_manual/how_to_use_the_applications/index
+user_manual/concepts/index
 user_manual/basic_starter_tutorial/index
 user_manual/cookbooks/index
 ```
