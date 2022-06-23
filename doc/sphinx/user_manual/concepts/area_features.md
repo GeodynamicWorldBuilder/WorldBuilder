@@ -2,6 +2,4 @@
 Area features
 =============================
 
-```{note}
-Explain how area features like contintal and oceanic plates are made (this page will be very short, since it is only about the concept)
-```
+Since the idea that you should look at a map first when making GWB models, all features are named after what they would look like on a map. In {ref}`part:user_manual:chap:concepts:sec:painting_the_world` we were already introduced to the **area feature**. This is the `oceanic plate` feature we use there. Other examples of area features are the `continetal plate` and `mantle layer` features. We will explain how they work in practice in the {ref}`part:user_manual:chap:basic_starter_tutorial:sec:index`. 
