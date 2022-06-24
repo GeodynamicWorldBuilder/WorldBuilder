@@ -457,6 +457,7 @@ if(MAKE_PYTHON_WRAPPER)
       -D TEST_INPUT=
       -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/python/run_python_version_test.log
       -D TEST_REFERENCE=${CMAKE_BINARY_DIR}/tests/python/run_python_version_test.log # the output is not important
+      -D TEST_NO_DIFF=TRUE
       -P ${CMAKE_SOURCE_DIR}/tests/python/run_python_tests.cmake
      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/python/)   
 
