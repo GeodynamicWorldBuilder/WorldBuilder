@@ -2,9 +2,7 @@
 Important GWB Concepts
 ======================
 
-```{todo}
-This section is about all the high level concepts and termeology used in this manual and the world builder. Note that there is a strong link between the input file and the sources files.
-```
+To understand how to make a world builder file which creates some interesting initial conditions, it is important understand some of the concepts it is build upon. This chapter is dedicated to make sure you get to understand these  concepts. It is also important when you want to look into the source files, because the code is build up around these concepts as well. So having a good understanding of these concepts will both make reading the rest of this manual as reading the code a lot easier.
 
 ```{toctree}
 :hidden:

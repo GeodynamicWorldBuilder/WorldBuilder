@@ -14,7 +14,7 @@ The manual is build up out of six different parts, which can be viewed in the le
 
 2. **User Manual**
 
-   This is the main place new users should start. This part starts by explaining the concepts behind the GWB, then explain how to install the GWB in different cases (for example on different operating systems). Then it contains a brief section on how to use the different applications which are provided by the world builder. The main section of this part is the Basic Starter Tutorial. It will guide you, step-by-step, through building a full 3D (and 2D) geodynamic setup. The last section of the part contains a list of cookbooks, which are specific self-contained tutorials on different aspects of using the GWB.
+   This is the main place new users should start. This part starts by explaining how to install the GWB in different cases (for example on different operating systems). Then it contains a brief section on how to use the different applications which are provided by the world builder. Next it core concepts behind the GWB are discussed. The main section of this part is the Basic Starter Tutorial. It will guide you, step-by-step, through building a full 3D (and 2D) geodynamic setup. The last section of the part contains a list of cookbooks, which are specific self-contained tutorials on different aspects of using the GWB.
 
 3. **API Manual**
 
