@@ -1,4 +1,4 @@
-(part:user_manual:chap:installation:sec:other_instalation_methods)=
+(part:user_manual:chap:installation:sec:other_installation_methods)=
 Other installation methods
 =======
 
@@ -6,9 +6,9 @@ Choose how you would like to install: as part of a...
 
 ::::::{tab-set}
 
-:::::{tab-item} cpp program
+:::::{tab-item} C++ program
 
-For this case, there are two options. Either compile the library and link it, or directly compile the library source files within your project. Compiling the Geodynamic World Builder separately and linking it through the CPP wrapper is the recommended option.
+For this case, there are two options. Either compile the library and link it, or directly compile the library source files within your project. Compiling the Geodynamic World Builder separately and linking it through the C++ wrapper is the recommended option.
 
 ::::{tab-set}
 :::{tab-item} Compile the library and link it
@@ -43,7 +43,7 @@ The only file you need to include in your code is `world_builder/wrapper_c.h`.
 Create a void variable which is a pointer to a pointer and set it so NULL (e.g. `void **ptr_ptr_world`), and create a pointer to a c-string (e.g. `char *world_builder_file`).
 Pass these variables to the `create_world` function.
 This function will create the World Builder world.
-Now this pointer can be used to call the temperature and composition quering functions.
+Now this pointer can be used to call the temperature and composition querying functions.
 
 ```{important}
 When done with the World Builder, call the `release_world` function.
@@ -52,7 +52,7 @@ This will clean up the memory used by the world builder.
 
 :::::
 
-:::::{tab-item} fortran program
+:::::{tab-item} Fortran program
 First, follow the instructions from {ref}`part:user_manual:chap:installation:sec:stand-alone-install`.
 The library can be found in the `build/mod/` directory with the name `worldbuilder.mod`.
 Link your project with this file.
