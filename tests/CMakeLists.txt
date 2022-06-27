@@ -158,7 +158,7 @@ foreach(test_source ${VISU_TEST_SOURCES})
         add_test(${test_name}
                  ${CMAKE_COMMAND} 
 	         -D TEST_NAME=${test_name}
-	         -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/WorldBuilderVisualization${CMAKE_EXECUTABLE_SUFFIX} 
+	         -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX} 
 	         -D TEST_ARGS=${TEST_ARGUMENTS}
 	         -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/visualization/${test_name}.vtu 
 	         -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/visualization/${test_name}.vtu
@@ -183,7 +183,7 @@ add_custom_target(update_test_references
          add_test(${test_name}
                   ${CMAKE_COMMAND} 
             -D TEST_NAME=${test_name}
-            -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/WorldBuilderVisualization${CMAKE_EXECUTABLE_SUFFIX} 
+            -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX} 
             -D TEST_ARGS=${TEST_ARGUMENTS}
             -P ${CMAKE_SOURCE_DIR}/tests/documentation/run_documentation_tests.cmake
                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/documentation/)
