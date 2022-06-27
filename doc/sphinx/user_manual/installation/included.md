@@ -39,7 +39,7 @@ This tester allows testing of individual functions of the World Builder library 
 The second type of tester is an integration tester, which works through the World Builder app.
 This tester tests whether the whole library works in the expected way it is supposed to by providing a World Builder file and data points to get temperature and composition from them.
 The tester package is run every time on proposed new code before that code is added to the main World Builder repository, and all tests have to pass before the code can be merged.
-This happens through Github actions (see <https://github.com/GeodynamicWorldBuilder/WorldBuilder/actions>) and AppVeyor (see <https://ci.appveyor.com/project/MFraters/worldbuilder>).
+This happens through GitHub actions (see <https://github.com/GeodynamicWorldBuilder/WorldBuilder/actions>) and AppVeyor (see <https://ci.appveyor.com/project/MFraters/worldbuilder>).
 
 Having tests alone is not good enough to make sure that the World Builder actually does what it is supposed to do.
 The tester should theoretically cover all the possible cases which a software package can provide.
@@ -48,7 +48,7 @@ This is counted and reported by the program Gcov (<https://gcc.gnu.org/onlinedoc
 
 This approach is not perfect and has two main problems.
 The first problem is that a 100% coverage is practically not achievable, since the code might have fail assertions in places which should never be reached.
-The second problem is that even though a line of code is touched by the tester, it may not mean that al possible cases in that line are tested.
+The second problem is that even though a line of code is touched by the tester, it may not mean that all possible cases in that line are tested.
 Think for example of an inline if statement, or an assertion macro lines.
 These lines count as being touched by the tester, but only one case may actually be tested.
 
