@@ -8,6 +8,6 @@ The Geodynamic World Builder is in its core a code library, which can be used by
 :caption: User manual
 :hidden:
 
-the_world_builder_app
-world_builder_vtu_app
+gwb-dat_app
+gwb-grid_app
 ```

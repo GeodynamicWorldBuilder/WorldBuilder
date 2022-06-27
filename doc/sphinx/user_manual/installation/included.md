@@ -18,7 +18,7 @@ The World Builder app
 This is a program which can be used to query the World Builder from the command line, by providing it a world builder file, and then a data file.
 This data file should contain in the header information on the dimension you want to use and the amount of compositions, and in the main part, the required information (for example, for a 3d case: x, y, and z; position, depth, and gravity).
  It then outputs a file with these properties, and the temperature and compositional values behind them.
- For more information on how to use the World Builder app see {ref}`part:user_manual:chap:how_to_use_the_apps:sec:world_builder_app`.
+ For more information on how to use the World Builder app see {ref}`part:user_manual:chap:how_to_use_the_apps:sec:gwb-dat_app`.
 
 The World Builder Visualization program
 ---------------------------------------
@@ -26,7 +26,7 @@ The World Builder Visualization program
 This program helps with visualizing the World Builder file by producing pvd files which can be opened with visualization programs like Paraview.
 It requires a World Builder file and a grid file.
 A grid file is a file which contains information about what part of the World Builder domain should be visualized and with what resolution.
-For more information on how to use the World Builder visualizer see {ref}`part:user_manual:chap:how_to_use_the_apps:sec:using_the_visualizer`.
+For more information on how to use the World Builder visualizer see {ref}`part:user_manual:chap:how_to_use_the_apps:sec:gwb-grid_app`.
 
 The tester
 ----------
