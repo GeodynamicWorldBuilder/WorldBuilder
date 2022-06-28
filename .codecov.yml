@@ -4,5 +4,5 @@ codecov:
     - !codacy
 ignore:
   - tests/.*
-  - visualization/.*
+  - source/gwb-grid/.*
   - include/.*
