@@ -43,6 +43,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - NaturalCoordinate has moved out of utilities to the objects namespace and folder. \[Menno Fraters; 2022-03-26; [#399](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/399)\]
 - Breaking Change: Non-continuous interpolation has been removed, a lot of corner cases for the continuous interpolation have been fixed and accuracy has been improved with a new algorithm to compute the closest point on a spline. \[Menno Fraters; 2022-04-09; [#401](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/401)\]
 - Breaking change: The temperature interfaces with gravity as a parameter are now deprecated and the App and Visualization programs no longer use or accept gravity. \[Menno Fraters; 2022-04-12; [#404](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/404)\]
+- Breaking change: The WorldBuilderApp application has been renamed to gwb-dat. \[Menno Fraters; 2022-06-27; [#379](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/379), [#440](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/440)\]
+- Breaking change: The WorldBuilderVisualization application has been renamed to gwb-grid. \[Menno Fraters; 2022-06-27; [#379](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/379), [#440](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/440)\]
 
 ### Fixed
 - Using slabs and faults beyond the -180 to 180 range gave issues. These are now fixed and it now works and is tested for the -380 to 380 range. \[Menno Fraters; 2021-10-22; [#338](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/338), [#340](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/340) and [#342](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/342)\]
