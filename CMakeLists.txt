@@ -259,7 +259,7 @@ ELSE()
   MESSAGE(STATUS "Disabling unity build.")
 ENDIF()
 
-add_executable(gwb-dat "${CMAKE_CURRENT_SOURCE_DIR}/app/main.cc")
+add_executable(gwb-dat "${CMAKE_CURRENT_SOURCE_DIR}/source/gwb-dat/main.cc")
 add_executable(gwb-grid "${CMAKE_CURRENT_SOURCE_DIR}/visualization/main.cc")
 
 if(MAKE_PYTHON_WRAPPER)
