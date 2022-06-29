@@ -146,24 +146,24 @@ IF(WB_RUN_APP_TESTS)
   endforeach(test_source)
 ENDIF()
 
-# visualization tests
+# gwb-grid tests
  # Create directory for the test results
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/visualization)
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/gwb-grid)
 #find all the integration visu files
-file(GLOB_RECURSE VISU_TEST_SOURCES "visualization/*.wb")
+file(GLOB_RECURSE VISU_TEST_SOURCES "gwb-grid/*.wb")
 # Run through each sourceUforeach(test_source ${VISU_TEST_SOURCES})
 foreach(test_source ${VISU_TEST_SOURCES})
         get_filename_component(test_name ${test_source} NAME_WE)
-	set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/visualization/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/visualization/${test_name}.grid")
+	set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.grid")
         add_test(${test_name}
                  ${CMAKE_COMMAND} 
 	         -D TEST_NAME=${test_name}
 	         -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX} 
 	         -D TEST_ARGS=${TEST_ARGUMENTS}
-	         -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/visualization/${test_name}.vtu 
-	         -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/visualization/${test_name}.vtu
-	         -P ${CMAKE_SOURCE_DIR}/tests/visualization/run_visualization_tests.cmake
-                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/visualization/)
+	         -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-grid/${test_name}.vtu 
+	         -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/${test_name}.vtu
+	         -P ${CMAKE_SOURCE_DIR}/tests/gwb-grid/run_gwb-grid_tests.cmake
+                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/)
 endforeach(test_source)
 
 add_custom_target(update_test_references 

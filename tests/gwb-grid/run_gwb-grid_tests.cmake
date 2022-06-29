@@ -13,14 +13,14 @@ if( NOT TEST_REFERENCE )
 endif( NOT TEST_REFERENCE )
 
 # create a directory for the test
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/visualization/${TEST_NAME})
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/gwb-grid/${TEST_NAME})
 
 set(EXECUTE_COMMAND ${TEST_PROGRAM} ${TEST_ARGS})
 
 # run the test program, capture the stdout/stderr and the result var ${TEST_ARGS}
 execute_process(
   COMMAND ${TEST_PROGRAM} ${TEST_ARGS} 
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/visualization/ 
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/ 
   OUTPUT_FILE ${TEST_OUTPUT}.log
   ERROR_VARIABLE TEST_ERROR_VAR
   RESULT_VARIABLE TEST_RESULT_VAR
