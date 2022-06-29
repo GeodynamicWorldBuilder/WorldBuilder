@@ -16,14 +16,14 @@ message( FATAL_ERROR "Require TEST_DIFF to be defined" )
 endif( NOT TEST_DIFF )
 
 # create a directory for the test
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/app/${TEST_NAME})
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/gwb-dat/${TEST_NAME})
 
 set(EXECUTE_COMMAND ${TEST_PROGRAM} ${TEST_ARGS})
 
 # run the test program, capture the stdout/stderr and the result var ${TEST_ARGS}
 execute_process(
   COMMAND ${TEST_PROGRAM} ${TEST_ARGS} 
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/app/ 
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/ 
   OUTPUT_FILE ${TEST_OUTPUT}
   ERROR_VARIABLE TEST_ERROR_VAR
   RESULT_VARIABLE TEST_RESULT_VAR
