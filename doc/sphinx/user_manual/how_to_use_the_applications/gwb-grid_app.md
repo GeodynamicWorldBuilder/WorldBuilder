@@ -22,11 +22,11 @@ A grid file consists of a number of parameters you can set. The start with a nam
 
 An example of a grid file is the following: 
 
-```{literalinclude} ../../../../tests/visualization/spherical_subducting_plate_gridfile.grid 
+```{literalinclude} ../../../../tests/gwb-grid/spherical_subducting_plate_gridfile.grid 
 :language: python
 :lineno-start: 1
 ```
 
 When you run it, it will produce a vtu file with the same name in the directory you run it from. 
 
-More examples can be found in the `tests/visualization/` directory.
+More examples can be found in the `tests/gwb-grid/` directory.
