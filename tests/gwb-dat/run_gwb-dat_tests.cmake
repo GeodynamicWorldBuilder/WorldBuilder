@@ -11,17 +11,20 @@ endif( NOT TEST_OUTPUT )
 if( NOT TEST_REFERENCE )
   message( FATAL_ERROR "Require TEST_REFERENCE to be defined" )
 endif( NOT TEST_REFERENCE )
+if( NOT TEST_DIFF )
+message( FATAL_ERROR "Require TEST_DIFF to be defined" )
+endif( NOT TEST_DIFF )
 
 # create a directory for the test
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/visualization/${TEST_NAME})
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/gwb-dat/${TEST_NAME})
 
 set(EXECUTE_COMMAND ${TEST_PROGRAM} ${TEST_ARGS})
 
 # run the test program, capture the stdout/stderr and the result var ${TEST_ARGS}
 execute_process(
   COMMAND ${TEST_PROGRAM} ${TEST_ARGS} 
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/visualization/ 
-  OUTPUT_FILE ${TEST_OUTPUT}.log
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/ 
+  OUTPUT_FILE ${TEST_OUTPUT}
   ERROR_VARIABLE TEST_ERROR_VAR
   RESULT_VARIABLE TEST_RESULT_VAR
   OUTPUT_VARIABLE TEST_OUTPUT_VAR
@@ -34,20 +37,6 @@ endif( TEST_RESULT_VAR )
 file(TO_NATIVE_PATH "${TEST_OUTPUT}" TEST_NATIVE_OUTPUT)
 file(TO_NATIVE_PATH "${TEST_REFERENCE}" TEST_NATIVE_REFERENCE)
 
-FIND_PROGRAM(DIFF_EXECUTABLE
-	     NAMES diff FC
-	     HINTS ${DIFF_DIR}
-	     PATH_SUFFIXES bin
-	     )
-
- IF(NOT DIFF_EXECUTABLE MATCHES "-NOTFOUND")
-	 SET(TEST_DIFF ${DIFF_EXECUTABLE})
- ELSE()
-	     MESSAGE(FATAL_ERROR
-		     "Could not find diff or fc. This is required for running the testsuite.\n"
-		     "Please specify TEST_DIFF by hand."
-		     )
-ENDIF()
 
 IF("${TEST_DIFF}" MATCHES ".*exe")
   # windows
@@ -70,7 +59,7 @@ ENDIF()
 
 # now compare the output with the reference
 execute_process(
-	COMMAND ${TEST_DIFF} -q  ${TEST_NATIVE_OUTPUT} ${TEST_NATIVE_REFERENCE}
+	COMMAND ${TEST_DIFF} -q ${TEST_NATIVE_OUTPUT} ${TEST_NATIVE_REFERENCE}
   RESULT_VARIABLE TEST_RESULT
   )
 

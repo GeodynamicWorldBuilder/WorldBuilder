@@ -16,20 +16,20 @@ Lines with a `#` are either ignored or can have a special meaning. For example a
 
 An example of a `.dat` file is the following:
 
-```{literalinclude} ../../../../tests/app/app_oceanic_plate_cartesian.dat
+```{literalinclude} ../../../../tests/gwb-dat/app_oceanic_plate_cartesian.dat
 :language: python
 :lineno-start: 1
 ```
 
-This file can be found in the tests directory: `tests/app/app_oceanic_plate_cartesian.dat`.
+This file can be found in the tests directory: `tests/gwb-dat/app_oceanic_plate_cartesian.dat`.
 
-Running `gwb-dat tests/app/app_oceanic_plate_cartesian.wb tests/app/app_oceanic_plate_cartesian.dat` will give the following output: 
+Running `gwb-dat tests/gwb-dat/app_oceanic_plate_cartesian.wb tests/gwb-dat/app_oceanic_plate_cartesian.dat` will give the following output: 
 
-```{literalinclude} ../../../../tests/app/app_oceanic_plate_cartesian/screen-output.log
+```{literalinclude} ../../../../tests/gwb-dat/app_oceanic_plate_cartesian/screen-output.log
 :language: python
 :lineno-start: 1
 ```
 
 You can see add it appends all the temperature and 9 compositions. It also provides a header line with a symbol indicating what each field means.
 
-More examples of `.dat` files can be found in the `tests/app/` directory.
+More examples of `.dat` files can be found in the `tests/gwb-dat/` directory.

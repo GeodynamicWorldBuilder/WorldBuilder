@@ -26,7 +26,7 @@ message(STATUS "Building the Geodynamic World Builder version ${WORLD_BUILDER_VE
 set (WORLD_BUILDER_SOURCE_DIR ${PROJECT_SOURCE_DIR})
 
 # generate version.cc
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/source/config.cc.in" "${CMAKE_BINARY_DIR}/source/config.cc" @ONLY)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/source/world_builder/config.cc.in" "${CMAKE_BINARY_DIR}/source/world_builder/config.cc" @ONLY)
 
 # determine whether to use clang-tidy
 set(WB_CHECK_CLANG_TIDY OFF CACHE BOOL "Whether or not to check the code with clang-tidy while compiling the world builder.")
@@ -211,10 +211,10 @@ endif()
 include_directories("include/" "tests/") 
 
 # Add source directory
-file(GLOB_RECURSE SOURCES_CXX "source/*.cc" "${CMAKE_BINARY_DIR}/source/*.cc")
+file(GLOB_RECURSE SOURCES_CXX "source/world_builder/*.cc" "${CMAKE_BINARY_DIR}/source/world_builder/*.cc")
 
 if(CMAKE_Fortran_COMPILER)
-  file(GLOB_RECURSE SOURCES_FORTAN "source/*.f90")
+  file(GLOB_RECURSE SOURCES_FORTAN "source/world_builder/*.f90")
 endif()
 
 set(SOURCES ${SOURCES_CXX} ${SOURCES_FORTAN})
@@ -224,7 +224,7 @@ set(CMAKE_UNITY_BUILD_BATCH_SIZE  5000)
 # Special treatment of some files for unity builds. We disable the unity
 # build for them.
 SET(UNITY_DISABLE_FILES
-  "source/parameters.cc;source/point.cc;")
+  "source/world_builder/parameters.cc;source/world_builder/point.cc;")
 
 FOREACH(_source_file ${UNITY_DISABLE_FILES})
   SET(_full_name "${CMAKE_SOURCE_DIR}/${_source_file}")
@@ -259,8 +259,8 @@ ELSE()
   MESSAGE(STATUS "Disabling unity build.")
 ENDIF()
 
-add_executable(gwb-dat "${CMAKE_CURRENT_SOURCE_DIR}/app/main.cc")
-add_executable(gwb-grid "${CMAKE_CURRENT_SOURCE_DIR}/visualization/main.cc")
+add_executable(gwb-dat "${CMAKE_CURRENT_SOURCE_DIR}/source/gwb-dat/main.cc")
+add_executable(gwb-grid "${CMAKE_CURRENT_SOURCE_DIR}/source/gwb-grid/main.cc")
 
 if(MAKE_PYTHON_WRAPPER)
 
@@ -271,11 +271,11 @@ if(MAKE_PYTHON_WRAPPER)
   endif()
 
   # Add swig module
-  SET_SOURCE_FILES_PROPERTIES(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/source/wrapper_cpp.i PROPERTIES CPLUSPLUS ON)
+  SET_SOURCE_FILES_PROPERTIES(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/source/world_builder/wrapper_cpp.i PROPERTIES CPLUSPLUS ON)
   if(${CMAKE_VERSION} VERSION_LESS "3.8.0") 
-    swig_add_module(gwb python ${CMAKE_CURRENT_SOURCE_DIR}/source/wrapper_cpp.i)
+    swig_add_module(gwb python ${CMAKE_CURRENT_SOURCE_DIR}/source/world_builder/wrapper_cpp.i)
   else()
-    swig_add_library(gwb LANGUAGE python SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/source/wrapper_cpp.i)
+    swig_add_library(gwb LANGUAGE python SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/source/world_builder/wrapper_cpp.i)
   endif()
 
 endif()

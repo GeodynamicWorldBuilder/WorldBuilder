@@ -73,7 +73,7 @@ endif()
 # App testing
 IF(WB_RUN_APP_TESTS)
   # Create directory for the test results
-  file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/app)
+  file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/gwb-dat)
 
   # Test help
   add_test(testing_help
@@ -81,11 +81,11 @@ IF(WB_RUN_APP_TESTS)
   	 -D TEST_NAME=testing_help 
      -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} 
   	 -D TEST_ARGS=--help 
-  	 -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/app/testing_help/screen-output.log 
-     -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/app/testing_help/screen-output.log
+  	 -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/testing_help/screen-output.log 
+     -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/testing_help/screen-output.log
      -D TEST_DIFF=${TEST_DIFF}
-  	 -P ${CMAKE_SOURCE_DIR}/tests/app/run_app_tests.cmake
-           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/app/)
+  	 -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
+           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
   
   # Test no files provided
   add_test(testing_no_file
@@ -93,11 +93,11 @@ IF(WB_RUN_APP_TESTS)
   	 -D TEST_NAME=testing_no_file 
   	 -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} 
   	 -D TEST_ARGS= 
-  	 -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/app/testing_no_file/screen-output.log 
-  	 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/app/testing_no_file/screen-output.log
+  	 -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/testing_no_file/screen-output.log 
+  	 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/testing_no_file/screen-output.log
      -D TEST_DIFF=${TEST_DIFF}
-  	 -P ${CMAKE_SOURCE_DIR}/tests/app/run_app_tests.cmake
-           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/app/)
+  	 -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
+           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
   
   
   # Test one file provided 
@@ -106,64 +106,64 @@ IF(WB_RUN_APP_TESTS)
   	 -D TEST_NAME=testing_one_file 
   	 -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} 
   	 -D TEST_ARGS=non_existend_file
-  	 -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/app/testing_one_file/screen-output.log 
-  	 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/app/testing_one_file/screen-output.log
+  	 -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/testing_one_file/screen-output.log 
+  	 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/testing_one_file/screen-output.log
      -D TEST_DIFF=${TEST_DIFF}
-  	 -P ${CMAKE_SOURCE_DIR}/tests/app/run_app_tests.cmake
-           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/app/)
+  	 -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
+           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
 
 
   # Test two many arguments provided 
-  set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/app/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/app/${test_name}.dat\;lalala\;nonono")
+  set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat\;lalala\;nonono")
   add_test(testing_too_many_arguments
   ${CMAKE_COMMAND} 
     -D TEST_NAME=testing_too_many_arguments 
     -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} 
     -D TEST_ARGS=${TEST_ARGUMENTS}
-    -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/app/testing_too_many_arguments/screen-output.log 
-    -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/app/testing_too_many_arguments/screen-output.log
+    -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/testing_too_many_arguments/screen-output.log 
+    -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/testing_too_many_arguments/screen-output.log
     -D TEST_DIFF=${TEST_DIFF}
-    -P ${CMAKE_SOURCE_DIR}/tests/app/run_app_tests.cmake
-      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/app/)
+    -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
+      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
   
   #find all the integration test files
-  file(GLOB_RECURSE APP_TEST_SOURCES "app/*.wb")
+  file(GLOB_RECURSE APP_TEST_SOURCES "gwb-dat/*.wb")
   
   # Run through each sourceUforeach(test_source ${APP_TEST_SOURCES})
   foreach(test_source ${APP_TEST_SOURCES})
           get_filename_component(test_name ${test_source} NAME_WE)
-          set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/app/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/app/${test_name}.dat\;--limit-debug-consistency-checks")
+          set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat\;--limit-debug-consistency-checks")
           add_test(${test_name}
                    ${CMAKE_COMMAND} 
   	         -D TEST_NAME=${test_name}
   	         -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} 
   	         -D TEST_ARGS=${TEST_ARGUMENTS}
-  	         -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/app/${test_name}/screen-output.log 
-  	         -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/app/${test_name}/screen-output.log
+  	         -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/${test_name}/screen-output.log 
+  	         -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/${test_name}/screen-output.log
              -D TEST_DIFF=${TEST_DIFF}
-  	         -P ${CMAKE_SOURCE_DIR}/tests/app/run_app_tests.cmake
-                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/app/)
+  	         -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
+                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
   endforeach(test_source)
 ENDIF()
 
-# visualization tests
+# gwb-grid tests
  # Create directory for the test results
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/visualization)
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/gwb-grid)
 #find all the integration visu files
-file(GLOB_RECURSE VISU_TEST_SOURCES "visualization/*.wb")
+file(GLOB_RECURSE VISU_TEST_SOURCES "gwb-grid/*.wb")
 # Run through each sourceUforeach(test_source ${VISU_TEST_SOURCES})
 foreach(test_source ${VISU_TEST_SOURCES})
         get_filename_component(test_name ${test_source} NAME_WE)
-	set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/visualization/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/visualization/${test_name}.grid")
+	set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.grid")
         add_test(${test_name}
                  ${CMAKE_COMMAND} 
 	         -D TEST_NAME=${test_name}
 	         -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX} 
 	         -D TEST_ARGS=${TEST_ARGUMENTS}
-	         -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/visualization/${test_name}.vtu 
-	         -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/visualization/${test_name}.vtu
-	         -P ${CMAKE_SOURCE_DIR}/tests/visualization/run_visualization_tests.cmake
-                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/visualization/)
+	         -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-grid/${test_name}.vtu 
+	         -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/${test_name}.vtu
+	         -P ${CMAKE_SOURCE_DIR}/tests/gwb-grid/run_gwb-grid_tests.cmake
+                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/)
 endforeach(test_source)
 
 add_custom_target(update_test_references 
