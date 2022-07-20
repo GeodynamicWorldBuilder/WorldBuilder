@@ -26,7 +26,7 @@ message(STATUS "Building the Geodynamic World Builder version ${WORLD_BUILDER_VE
 set (WORLD_BUILDER_SOURCE_DIR ${PROJECT_SOURCE_DIR})
 
 # generate version.cc
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/source/world_builder/config.cc.in" "${CMAKE_BINARY_DIR}/source/world_builder/config.cc" @ONLY)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/include/world_builder/config.h.in" "${CMAKE_BINARY_DIR}/include/world_builder/config.h" @ONLY)
 
 # determine whether to use clang-tidy
 set(WB_CHECK_CLANG_TIDY OFF CACHE BOOL "Whether or not to check the code with clang-tidy while compiling the world builder.")
@@ -208,7 +208,7 @@ if(MAKE_PYTHON_WRAPPER)
 endif()
 
 # Add include directory
-include_directories("include/" "tests/") 
+include_directories("include/" "tests/" "${CMAKE_CURRENT_BINARY_DIR}/include")
 
 # Add source directory
 file(GLOB_RECURSE SOURCES_CXX "source/world_builder/*.cc" "${CMAKE_BINARY_DIR}/source/world_builder/*.cc")
