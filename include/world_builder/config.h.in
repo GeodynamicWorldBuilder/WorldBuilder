@@ -28,6 +28,19 @@
 #define WORLD_BUILDER_VERSION_PATCH @WORLD_BUILDER_VERSION_PATCH@
 #define WORLD_BUILDER_VERSION_LABEL @WORLD_BUILDER_VERSION_LABEL@
 
+/**
+ * Returns true if the used World Builder version is greater or equal than the
+ * version specified by the three arguments. The internal implementation
+ * assumes that the number of minor and subminor versions is not larger
+ * than 100.
+ */
+#define WORLD_BUILDER_VERSION_GTE(major,minor,patch) \
+ ((@WORLD_BUILDER_VERSION_MAJOR@ * 10000 + \
+    @WORLD_BUILDER_VERSION_MINOR@ * 100 + \
+     @WORLD_BUILDER_VERSION_PATCH@) \
+    >=  \
+    (major)*10000 + (minor)*100 + (patch))
+
 namespace WorldBuilder
 {
   namespace Version
