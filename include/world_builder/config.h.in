@@ -23,25 +23,32 @@
 
 #include <string>
 
+#define WORLD_BUILDER_VERSION_MAJOR @WORLD_BUILDER_VERSION_MAJOR@
+#define WORLD_BUILDER_VERSION_MINOR @WORLD_BUILDER_VERSION_MINOR@
+#define WORLD_BUILDER_VERSION_PATCH @WORLD_BUILDER_VERSION_PATCH@
+#define WORLD_BUILDER_VERSION_LABEL @WORLD_BUILDER_VERSION_LABEL@
+
 namespace WorldBuilder
 {
-  struct Version
+  namespace Version
   {
-    static const std::string MAJOR;
-    static const std::string MINOR;
-    static const std::string PATCH;
-    static const std::string LABEL;
+    // with c++20, this should be able to become a constexpr.
+    const std::string MAJOR = "@WORLD_BUILDER_VERSION_MAJOR@";
+    const std::string MINOR = "@WORLD_BUILDER_VERSION_MINOR@";
+    const std::string PATCH = "@WORLD_BUILDER_VERSION_PATCH@";
+    const std::string LABEL = "@WORLD_BUILDER_VERSION_LABEL@";
 
-    static const std::string GIT_SHA1;
-    static const std::string GIT_BRANCH;
-    static const std::string GIT_DATE;
-    static const std::string GIT_COMMIT_SUBJECT;
-  };
+    const std::string GIT_SHA1 = "@GIT_SHA1@";
+    const std::string GIT_BRANCH = "@GIT_BRANCH@";
+    const std::string GIT_DATE = "@GIT_DATE@";
+    const std::string GIT_COMMIT_SUBJECT = "@GIT_COMMIT_SUBJECT@";
+  }
 
-  struct Data
+  namespace Data
   {
-    static const std::string WORLD_BUILDER_SOURCE_DIR;
-  };
+    const std::string WORLD_BUILDER_SOURCE_DIR = "@WORLD_BUILDER_SOURCE_DIR@";
+  }
+
 } // namespace WorldBuilder
 
 
