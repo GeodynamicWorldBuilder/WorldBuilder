@@ -121,6 +121,12 @@ namespace WorldBuilder
 
       reference_point = prm.get<Point<2> >("dip point");
 
+      if (coordinate_system == spherical)
+        {
+          // We do this because the distance function in utilies needs the values in radians.
+          reference_point *= (const_pi/180);
+        }
+
       default_temperature_models.resize(0);
       default_composition_models.resize(0);
       default_grains_models.resize(0);
