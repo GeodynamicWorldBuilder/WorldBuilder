@@ -129,7 +129,7 @@ namespace WorldBuilder
 
       if (coordinate_system == spherical)
         {
-          // We do this because the distance function in utilies needs the values in radians.
+          // When spherical, input is in degrees, so change to radians for internal use.
           reference_point *= (const_pi/180);
         }
 
