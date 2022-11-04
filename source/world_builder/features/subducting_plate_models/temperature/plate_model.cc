@@ -188,9 +188,9 @@ namespace WorldBuilder
               double sum=0;
               for (int i=1; i<=n_sum; i++)
                 {
-                  sum += (std::pow((-1.0),i)/(i*const_pi)) *
-                         (exp((R - std::pow(R * R + i * i * const_pi * const_pi, 0.5)) * x_scaled))
-                         * (sin(i * const_pi * z_scaled));
+                  sum += (std::pow((-1.0),i)/(i*Consts::PI)) *
+                         (exp((R - std::pow(R * R + i * i * Consts::PI * Consts::PI, 0.5)) * x_scaled))
+                         * (sin(i * Consts::PI * z_scaled));
                 }
               // todo: investiage wheter this 273.15 should just be the surface temperature.
               double temperature = temp * (potential_mantle_temperature

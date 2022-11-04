@@ -158,7 +158,7 @@ void lay_points(double x1, double y1, double z1,
           // double s = -1.0 + (2.0 / level) * j;
 
           // equiangular
-          const double pi4 = const_pi*0.25;
+          const double pi4 = Consts::PI*0.25;
           const double x0 = -pi4 + static_cast<double>(i) * 2.0 * static_cast<double>(pi4)/static_cast<double>(level);
           const double y0 = -pi4 + static_cast<double>(j) * 2.0 * static_cast<double>(pi4)/static_cast<double>(level);
           const double r = std::tan(x0);
@@ -459,10 +459,10 @@ int main(int argc, char **argv)
           grid_type == "chunk" ||
           grid_type == "anullus")
         {
-          x_min *= (const_pi/180);
-          x_max *= (const_pi/180);
-          y_min *= (const_pi/180);
-          y_max *= (const_pi/180);
+          x_min *= (Consts::PI/180);
+          x_max *= (Consts::PI/180);
+          y_min *= (Consts::PI/180);
+          y_max *= (Consts::PI/180);
         }
 
 
@@ -689,12 +689,12 @@ int main(int argc, char **argv)
           double inner_radius = z_min;
           double outer_radius = z_max;
 
-          double l_outer = 2.0 * const_pi * outer_radius;
+          double l_outer = 2.0 * Consts::PI * outer_radius;
 
           double lr = outer_radius - inner_radius;
           double dr = lr / static_cast<double>(n_cell_z);
 
-          size_t n_cell_t = static_cast<size_t>((2.0 * const_pi * outer_radius)/dr);
+          size_t n_cell_t = static_cast<size_t>((2.0 * Consts::PI * outer_radius)/dr);
 
           // compute the ammount of cells
           n_cell = n_cell_t *n_cell_z;
@@ -725,7 +725,7 @@ int main(int argc, char **argv)
                 {
                   double xi = grid_x[counter];
                   double zi = grid_z[counter];
-                  double theta = xi / l_outer * 2.0 * const_pi;
+                  double theta = xi / l_outer * 2.0 * Consts::PI;
                   grid_x[counter] = std::cos(theta) * (inner_radius + zi);
                   grid_z[counter] = std::sin(theta) * (inner_radius + zi);
                   grid_depth[counter] = outer_radius - std::sqrt(grid_x[counter] * grid_x[counter] + grid_z[counter] * grid_z [counter]);
@@ -766,11 +766,11 @@ int main(int argc, char **argv)
           WBAssertThrow(y_min <= y_max, "The minimum latitude must be less than the maximum latitude.");
           WBAssertThrow(inner_radius < outer_radius, "The inner radius must be less than the outer radius.");
 
-          WBAssertThrow(x_min - x_max <= 2.0 * const_pi, "The difference between the minimum and maximum longitude "
+          WBAssertThrow(x_min - x_max <= 2.0 * Consts::PI, "The difference between the minimum and maximum longitude "
                         " must be less than or equal to 360 degree.");
 
-          WBAssertThrow(y_min >= - 0.5 * const_pi, "The minimum latitude must be larger then or equal to -90 degree.");
-          WBAssertThrow(y_min <= 0.5 * const_pi, "The maximum latitude must be smaller then or equal to 90 degree.");
+          WBAssertThrow(y_min >= - 0.5 * Consts::PI, "The minimum latitude must be larger then or equal to -90 degree.");
+          WBAssertThrow(y_min <= 0.5 * Consts::PI, "The maximum latitude must be smaller then or equal to 90 degree.");
 
           double opening_angle_long_rad = (x_max - x_min);
           double opening_angle_lat_rad =  (y_max - y_min);

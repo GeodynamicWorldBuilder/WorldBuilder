@@ -114,7 +114,7 @@ namespace WorldBuilder
       coordinates = prm.get_vector<Point<2> >("coordinates");
       if (coordinate_system == CoordinateSystem::spherical)
         std::transform(coordinates.begin(),coordinates.end(), coordinates.begin(),
-                       [](const WorldBuilder::Point<2> &p) -> WorldBuilder::Point<2> { return p *const_pi / 180.0;});
+                       [](const WorldBuilder::Point<2> &p) -> WorldBuilder::Point<2> { return p *Consts::PI / 180.0;});
 
 
       // If global is given, we use the global interpolation setting, otherwise use the provided value.
