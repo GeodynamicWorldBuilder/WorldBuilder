@@ -381,12 +381,12 @@ namespace WorldBuilder
         Point<spacedim> other_point = point;
         if (spacedim == 2)
           {
-            other_point[0] += point[0] < 0 ? 2.0 * WorldBuilder::FT::const_pi : -2.0 * WorldBuilder::FT::const_pi;
+            other_point[0] += point[0] < 0 ? 2.0 * Consts::PI : -2.0 * Consts::PI;
           }
         else
           {
             // spacedim == 3 (rad,long,lat)
-            other_point[1] += point[1] < 0 ? 2.0 * WorldBuilder::FT::const_pi : -2.0 * WorldBuilder::FT::const_pi;
+            other_point[1] += point[1] < 0 ? 2.0 * Consts::PI : -2.0 * Consts::PI;
           }
 
         return (point_inside_implementation(point, tolerance) ||

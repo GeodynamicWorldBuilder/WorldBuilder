@@ -611,8 +611,8 @@ namespace WorldBuilder
                               {
                                 // add a new point
                                 result.first.emplace_back(value);
-                                result.second.emplace_back(coordinate_0 * (coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical ? Utilities::const_pi / 180.0 : 1.));
-                                result.second.emplace_back(coordinate_1 * (coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical ? Utilities::const_pi / 180.0 : 1.));
+                                result.second.emplace_back(coordinate_0 * (coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical ? Consts::PI / 180.0 : 1.));
+                                result.second.emplace_back(coordinate_1 * (coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical ? Consts::PI / 180.0 : 1.));
                               }
                           }
 

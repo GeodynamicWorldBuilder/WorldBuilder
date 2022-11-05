@@ -26,6 +26,7 @@
 #include <iostream>
 
 #include "world_builder/assert.h"
+#include "world_builder/consts.h"
 #include "world_builder/coordinate_system.h"
 
 namespace WorldBuilder
@@ -37,8 +38,6 @@ namespace WorldBuilder
    */
   namespace FT
   {
-    constexpr double const_pi = 3.141592653589793238462643383279502884;
-
     /**
      * Fast version of the fmod function.
      */
@@ -61,10 +60,10 @@ namespace WorldBuilder
      */
     inline double fast_sin_d(const double angle)
     {
-      constexpr double A = 4.0/(const_pi *const_pi);
+      constexpr double A = 4.0/(Consts::PI * Consts::PI);
       constexpr double oneminPmin = 1.-0.1952403377008734-0.01915214119105392;
 
-      const double y = A* angle * ( const_pi - angle );
+      const double y = A* angle * ( Consts::PI - angle );
       return y*( oneminPmin + y*( 0.1952403377008734 + y * 0.01915214119105392 ) ) ;
     }
 
@@ -76,11 +75,11 @@ namespace WorldBuilder
      */
     inline double sin(const double raw_angle)
     {
-      const double angle = (raw_angle > -const_pi && raw_angle < const_pi)
+      const double angle = (raw_angle > -Consts::PI && raw_angle < Consts::PI)
                            ?
                            raw_angle
                            :
-                           FT::fmod(raw_angle + std::copysign(const_pi,raw_angle), const_pi * 2.0) - std::copysign(const_pi,raw_angle);
+                           FT::fmod(raw_angle + std::copysign(Consts::PI,raw_angle), Consts::PI * 2.0) - std::copysign(Consts::PI,raw_angle);
 
       if (angle >= 0)
         return fast_sin_d(angle);
@@ -92,7 +91,7 @@ namespace WorldBuilder
      */
     inline double cos(const double angle)
     {
-      return FT::sin((const_pi*0.5)-angle);
+      return FT::sin((Consts::PI*0.5)-angle);
     }
   } // namespace FT
 

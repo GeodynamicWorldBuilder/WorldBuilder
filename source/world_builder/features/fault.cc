@@ -124,7 +124,7 @@ namespace WorldBuilder
       if (coordinate_system == spherical)
         {
           // When spherical, input is in degrees, so change to radians for internal use.
-          reference_point *= (const_pi/180);
+          reference_point *= (Consts::PI/180);
         }
 
       default_temperature_models.resize(0);
@@ -335,7 +335,7 @@ namespace WorldBuilder
               maximum_fault_thickness = std::max(maximum_fault_thickness, fault_segment_thickness[i][j][1]);
               fault_segment_top_truncation[i][j] = segment_vector[i][j].value_top_truncation;
 
-              fault_segment_angles[i][j] = segment_vector[i][j].value_angle * (const_pi/180);
+              fault_segment_angles[i][j] = segment_vector[i][j].value_angle * (Consts::PI/180);
             }
           total_fault_length[i] = local_total_fault_length;
           maximum_total_fault_length = std::max(maximum_total_fault_length, local_total_fault_length);
@@ -373,7 +373,7 @@ namespace WorldBuilder
           const double starting_radius_inv = 1 / (world->parameters.coordinate_system->max_model_depth());
           std::pair<Point<2>, Point<2> > &spherical_bounding_box = surface_bounding_box.get_boundary_points();
 
-          const double buffer_around_fault_spherical = 2 * const_pi * buffer_around_fault_cartesian * starting_radius_inv;
+          const double buffer_around_fault_spherical = 2 * Consts::PI * buffer_around_fault_cartesian * starting_radius_inv;
 
           spherical_bounding_box.first = {(min_along_x - buffer_around_fault_spherical * min_lat_cos_inv) ,
                                           (min_along_y - buffer_around_fault_spherical), spherical

@@ -194,7 +194,7 @@ namespace WorldBuilder
           surface_temperature = this->world->surface_temperature;
 
           mid_oceanic_ridges = prm.get_vector<std::vector<Point<2>>>("ridge coordinates");
-          const double dtr = prm.coordinate_system->natural_coordinate_system() == spherical ? const_pi / 180.0 : 1.0;
+          const double dtr = prm.coordinate_system->natural_coordinate_system() == spherical ? Consts::PI / 180.0 : 1.0;
           for (auto &ridge_coordinates : mid_oceanic_ridges)
             for (auto &ridge_coordinate : ridge_coordinates)
               {
@@ -303,14 +303,14 @@ namespace WorldBuilder
               // 1. Determine initial heat content of the slab based on age of plate at trench
               //    This uses the integral of the half-space temperature profile
               double initial_heat_content = 2 * thermal_conductivity * (surface_temperature - potential_mantle_temperature) *
-                                            std::sqrt(plate_age_sec / (thermal_diffusivity * const_pi));
+                                            std::sqrt(plate_age_sec / (thermal_diffusivity * Consts::PI));
 
               //  2. Get Tmin and distance_offset given distance along slab and depth of point on the slab.
               //  These equations are empirical based on fitting the temperature profiles from dynamic subduction models.
               double min_temperature = 0.0;
               double distance_offset = 0.0;
 
-              const double mantle_coupling_length = mantle_coupling_depth / std::sin(shallow_average_dip * const_pi / 180.0); //m
+              const double mantle_coupling_length = mantle_coupling_depth / std::sin(shallow_average_dip * Consts::PI / 180.0); //m
 
               /* Empirical model parameters */
               //double upper_mantle_depth = 660e3;   // m
@@ -397,7 +397,7 @@ namespace WorldBuilder
                     }
 
                   const double bottom_heat_content = 2 * thermal_conductivity * (min_temperature - potential_mantle_temperature) *
-                                                     std::sqrt(effective_plate_age /(thermal_diffusivity * const_pi));
+                                                     std::sqrt(effective_plate_age /(thermal_diffusivity * Consts::PI));
 
                   // 4. The difference in heat content goes into the temperature above where Tmin occurs.
                   double top_heat_content = initial_heat_content - bottom_heat_content;
@@ -412,8 +412,8 @@ namespace WorldBuilder
                     {
                       // use 1D infinite space solution for top (side 2) of slab the slab
                       // 2 times the "top_heat_content" because all this heat needs to be on one side of the Gaussian
-                      double time_top_slab = (1/(const_pi*thermal_diffusivity))*pow(((2*top_heat_content)/
-                                                                                     (2*density*specific_heat*(min_temperature - temperature_ + 1e-16))),2) + 1e-16;
+                      double time_top_slab = (1/(Consts::PI*thermal_diffusivity))*pow(((2*top_heat_content)/
+                                                                                       (2*density*specific_heat*(min_temperature - temperature_ + 1e-16))),2) + 1e-16;
 
                       // for overriding plate region where plate temperature is less the minimum slab temperature
                       // need to set temperature = temperature_ otherwise end up with temperature less than surface temperature ;
@@ -423,10 +423,10 @@ namespace WorldBuilder
                         }
                       else
                         {
-                          temperature  = temperature_ + (2*top_heat_content/(2*density*specific_heat*std::sqrt(const_pi*thermal_diffusivity*time_top_slab)))*
+                          temperature  = temperature_ + (2*top_heat_content/(2*density*specific_heat*std::sqrt(Consts::PI*thermal_diffusivity*time_top_slab)))*
                                          std::exp(-(adjusted_distance*adjusted_distance)/(4*thermal_diffusivity*time_top_slab));
                         }
-                      // temperature = temperature_ + (2 * top_heat_content / (2 * density * specific_heat * std::sqrt(const_pi * thermal_diffusivity * time_top_slab))) *
+                      // temperature = temperature_ + (2 * top_heat_content / (2 * density * specific_heat * std::sqrt(Consts::PI * thermal_diffusivity * time_top_slab))) *
                       //              std::exp(-(adjusted_distance * adjusted_distance) / (4 * thermal_diffusivity * time_top_slab));
                     }
                   else

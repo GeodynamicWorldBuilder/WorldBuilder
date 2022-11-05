@@ -137,7 +137,7 @@ namespace WorldBuilder
       if (check_point.get_coordinate_system() == CoordinateSystem::spherical)
         {
           spherical = true;
-          other_point[0] += check_point[0] < 0 ? 2.0 * WorldBuilder::Utilities::const_pi : -2.0 * WorldBuilder::Utilities::const_pi;
+          other_point[0] += check_point[0] < 0 ? 2.0 * WorldBuilder::Consts::PI : -2.0 * WorldBuilder::Consts::PI;
           index_distances_other = tree.find_closest_points(other_point);
         }
       // try triangle of the closest centroid

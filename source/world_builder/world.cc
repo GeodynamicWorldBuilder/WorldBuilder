@@ -184,7 +184,7 @@ namespace WorldBuilder
                       << cross_section.size() << " points.");
 
         for (const auto &it : cross_section_natural)
-          cross_section.push_back(it *  (coordinate_system == spherical ? const_pi / 180.0 : 1.0));
+          cross_section.push_back(it *  (coordinate_system == spherical ? Consts::PI / 180.0 : 1.0));
 
 
         /**

@@ -37,10 +37,6 @@ namespace WorldBuilder
   namespace Utilities
   {
 
-    // define pi. Directly defining it seems to be
-    // the safest option.
-    constexpr double const_pi = 3.141592653589793238462643383279502884;
-
     /**
      * provide a short way to test if two doubles are equal.
      * Based on https://stackoverflow.com/a/4010279.
@@ -53,6 +49,7 @@ namespace WorldBuilder
       return std::abs(a-b)<std::abs(std::min(a,b))*std::numeric_limits<double>::epsilon()*
              error_factor;
     }
+
     /**
      * Given a 2d point and a list of points which form a polygon, computes if
      * the point falls within the polygon. For spherical coordinates it will
