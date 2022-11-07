@@ -458,8 +458,7 @@ namespace WorldBuilder
                                                                        starting_radius,
                                                                        this->world->parameters.coordinate_system,
                                                                        false,
-                                                                       this->x_spline,
-                                                                       this->y_spline);
+                                                                       this->bezier_curve);
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
           const double distance_along_plane = distance_from_planes.distance_along_plane;
@@ -516,10 +515,12 @@ namespace WorldBuilder
                   const Features::Utilities::AdditionalParameters additional_parameters = {max_slab_length,thickness_local};
                   for (unsigned int i_property = 0; i_property < properties.size(); ++i_property)
                     {
+                      std::cout << "================>>>> properties[i_property][0] = " << properties[i_property][0] << std::endl;
                       switch (properties[i_property][0])
                         {
                           case 1: // temperature
                           {
+                            std::cout << "temperature" << std::endl;
                             double temperature_current_section = output[entry_in_output[i_property]];
                             double temperature_next_section = output[entry_in_output[i_property]];
 
@@ -565,6 +566,7 @@ namespace WorldBuilder
                           }
                           case 2: // composition
                           {
+                            std::cout << "comp" << std::endl;
                             double composition_current_section = output[entry_in_output[i_property]];
                             double composition_next_section = output[entry_in_output[i_property]];
 
@@ -610,6 +612,7 @@ namespace WorldBuilder
                           }
                           case 3: // grains
                           {
+                            std::cout << "grains" << std::endl;
                             WorldBuilder::grains grains(output,properties[i_property][2],entry_in_output[i_property]);
                             WorldBuilder::grains  grains_current_section = grains;
                             WorldBuilder::grains  grains_next_section = grains;
@@ -660,8 +663,14 @@ namespace WorldBuilder
                             grains.unroll_into(output,entry_in_output[i_property]);
                             break;
                           }
-                          default:
-                            WBAssertThrow(false, "Internal error: Unimplemented property provided. Only temperature (1), composition (2) or grains (3) are allowed.");
+                          default:{
+
+                            std::cout << "assert!" << std::endl;
+                            WBAssertThrow(false, 
+                            "Internal error: Unimplemented property provided. " << 
+                            "Only temperature (1), composition (2) or grains (3) are allowed. "
+                            "Provided property number was: " << properties[i_property][0]);
+                            }
                         }
                     }
 

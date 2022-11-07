@@ -57,6 +57,7 @@ namespace WorldBuilder
         return InterpolationType::Invalid;
       }
     } // namespace Internal
+    
     Interface::Interface()
       = default;
 
@@ -129,19 +130,7 @@ namespace WorldBuilder
                "For interpolation, linear and monotone spline are the only allowed values. "
                << "You provided " << interpolation_type_string << '.');
 
-      // I don't think this is usefull for continuous monotone spline, although it might
-      // help in a spherical case like for the linear case.
-      std::vector<double> x_list(original_number_of_coordinates,0.0);
-      std::vector<double> y_list(original_number_of_coordinates,0.0);
-      std::vector<Point<2> > coordinate_list_local = coordinates;
-      for (size_t j=0; j<original_number_of_coordinates; ++j)
-        {
-          x_list[j] = coordinates[j][0];
-          y_list[j] = coordinates[j][1];
-        }
-
-      x_spline.set_points(x_list);
-      y_spline.set_points(y_list);
+      bezier_curve = Objects::BezierCurve(coordinates);
 
     }
 
