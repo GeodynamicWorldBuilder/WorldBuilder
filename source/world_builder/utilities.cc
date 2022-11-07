@@ -393,16 +393,22 @@ namespace WorldBuilder
       // get an estimate for the closest point between P1 and P2.
       //constexpr double parts = 1;
       //constexpr double one_div_parts = 1./parts;
-      double min_estimate_solution = -1.;
       double minimum_distance_to_reference_point = std::numeric_limits<double>::infinity();
       const size_t number_of_points = point_list.size();
 
       Objects::ClosestPointOnCurve closest_point_on_curve = bezier_curve.closest_point_on_curve_segment(check_point_surface_2d);
-      std::cout << "closest_point_on_curve.index = " << closest_point_on_curve.index << std::endl;
-      double solution = min_estimate_solution;
+      //std::cout << "closest_point_on_curve.index = " << closest_point_on_curve.index << std::endl;
 
       Point<2> closest_point_on_line_2d = closest_point_on_curve.point;
 
+          if(check_point[0] > 5.87179e6-1e2 && check_point[0] < 5.87179e6+1e2
+          && check_point[1] > 755666-1e2 && check_point[1] < 755666+1e2
+          && check_point[2] > -109126-1e2 && check_point[2] < -109126+1e2)
+          {
+            std::cout << "===>>> index = " << closest_point_on_curve.index << ", pf: " << closest_point_on_curve.parametric_fraction
+            << ", point = " << closest_point_on_curve.point << ", check_point_surface_2d = " << check_point_surface_2d 
+            << ", deg = " << check_point_surface_2d[0]*180./Consts::PI << ":" << check_point_surface_2d[1]*180./Consts::PI  << ". " << std::endl << std::endl;;
+          }
 
       // We now need 3d points from this point on, so make them.
       // The order of a Cartesian coordinate is x,y,z and the order of
@@ -417,8 +423,14 @@ namespace WorldBuilder
       // Solution == 0 is not included on purpose, since it include a much larger area than intended. This prevents a rounded corner.
       if (!std::isnan(closest_point_on_line_2d[0]))
         {
+          if(check_point[0] > 5.87179e6-1e2 && check_point[0] < 5.87179e6+1e2
+          && check_point[1] > 755666-1e2 && check_point[1] < 755666+1e2
+          && check_point[2] > -109126-1e2 && check_point[2] < -109126+1e2)
+          {
+            std::cout << "===>>> Hello!!!" << std::endl;
+          }
           i_section_min_distance = closest_point_on_curve.index;
-          std::cout << "i_section_min_distance = " << i_section_min_distance << ", closest_point_on_curve.index = " << closest_point_on_curve.index << std::endl;
+          //std::cout << "i_section_min_distance = " << i_section_min_distance << ", closest_point_on_curve.index = " << closest_point_on_curve.index << std::endl;
           fraction_CPL_P1P2 = closest_point_on_curve.parametric_fraction;
 
           Point<3> closest_point_on_line_bottom = closest_point_on_line_surface;

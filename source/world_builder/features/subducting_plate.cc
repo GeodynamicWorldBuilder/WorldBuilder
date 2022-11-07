@@ -515,12 +515,12 @@ namespace WorldBuilder
                   const Features::Utilities::AdditionalParameters additional_parameters = {max_slab_length,thickness_local};
                   for (unsigned int i_property = 0; i_property < properties.size(); ++i_property)
                     {
-                      std::cout << "================>>>> properties[i_property][0] = " << properties[i_property][0] << std::endl;
+                      //std::cout << "================>>>> properties[i_property][0] = " << properties[i_property][0] << std::endl;
                       switch (properties[i_property][0])
                         {
                           case 1: // temperature
                           {
-                            std::cout << "temperature" << std::endl;
+                            //std::cout << "temperature" << std::endl;
                             double temperature_current_section = output[entry_in_output[i_property]];
                             double temperature_next_section = output[entry_in_output[i_property]];
 
@@ -566,7 +566,7 @@ namespace WorldBuilder
                           }
                           case 2: // composition
                           {
-                            std::cout << "comp" << std::endl;
+                            //std::cout << "comp" << std::endl;
                             double composition_current_section = output[entry_in_output[i_property]];
                             double composition_next_section = output[entry_in_output[i_property]];
 
@@ -612,7 +612,7 @@ namespace WorldBuilder
                           }
                           case 3: // grains
                           {
-                            std::cout << "grains" << std::endl;
+                            //std::cout << "grains" << std::endl;
                             WorldBuilder::grains grains(output,properties[i_property][2],entry_in_output[i_property]);
                             WorldBuilder::grains  grains_current_section = grains;
                             WorldBuilder::grains  grains_next_section = grains;
