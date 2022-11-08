@@ -396,6 +396,13 @@ namespace WorldBuilder
       double minimum_distance_to_reference_point = std::numeric_limits<double>::infinity();
       const size_t number_of_points = point_list.size();
 
+
+          if(check_point[0] > 5.87179e6-1e2 && check_point[0] < 5.87179e6+1e2
+          && check_point[1] > 755666-1e2 && check_point[1] < 755666+1e2
+          && check_point[2] > -109126-1e2 && check_point[2] < -109126+1e2)
+          {
+            std::cout << "start" << std::endl;
+          }
       Objects::ClosestPointOnCurve closest_point_on_curve = bezier_curve.closest_point_on_curve_segment(check_point_surface_2d);
       //std::cout << "closest_point_on_curve.index = " << closest_point_on_curve.index << std::endl;
 
