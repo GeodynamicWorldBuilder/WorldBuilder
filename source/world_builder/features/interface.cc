@@ -57,7 +57,7 @@ namespace WorldBuilder
         return InterpolationType::Invalid;
       }
     } // namespace Internal
-    
+
     Interface::Interface()
       = default;
 

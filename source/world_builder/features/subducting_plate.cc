@@ -663,14 +663,15 @@ namespace WorldBuilder
                             grains.unroll_into(output,entry_in_output[i_property]);
                             break;
                           }
-                          default:{
+                          default:
+                          {
 
                             std::cout << "assert!" << std::endl;
-                            WBAssertThrow(false, 
-                            "Internal error: Unimplemented property provided. " << 
-                            "Only temperature (1), composition (2) or grains (3) are allowed. "
-                            "Provided property number was: " << properties[i_property][0]);
-                            }
+                            WBAssertThrow(false,
+                                          "Internal error: Unimplemented property provided. " <<
+                                          "Only temperature (1), composition (2) or grains (3) are allowed. "
+                                          "Provided property number was: " << properties[i_property][0]);
+                          }
                         }
                     }
 
