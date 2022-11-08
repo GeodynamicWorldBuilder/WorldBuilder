@@ -1939,10 +1939,10 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
     subducting_plate->parse_entries(world1.parameters);
     world1.parameters.leave_subsection();
     world1.parameters.leave_subsection();
-    auto point = Point<3>(250e3,500e3,800e3,cartesian);
+    auto point = Point<3>(250e3,490e3,800e3,cartesian);
     std::vector<double> vector(1,0.);
     auto nat_coord = Objects::NaturalCoordinate(point,*(world1.parameters.coordinate_system));
-    CHECK_THROWS_WITH(subducting_plate->properties(point,nat_coord,1000, {{4,0,0}},10, {0},vector),
+    CHECK_THROWS_WITH(subducting_plate->properties(point,nat_coord,10000, {{4,0,0}},10, {0},vector),
     Contains("Internal error: Unimplemented property provided"));
   }
   // Check continental plate through the world
@@ -1973,6 +1973,7 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   //approval_tests.emplace_back(world1.temperature(position, 75e3));
   //approval_tests.emplace_back(world1.temperature(position, 150e3));
 
+  position = {{250e3,488.750e3,800e3}};
   position = {{250e3,500e3,800e3}};
   // results strongly dependent on the summation number of the McKenzie temperature.
   approval_tests.emplace_back(world1.temperature(position, 0));
