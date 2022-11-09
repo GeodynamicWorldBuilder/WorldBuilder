@@ -245,14 +245,18 @@ namespace WorldBuilder
 
       const double b = 4*(dt[0]*ddt[0]+dt[1]*ddt[1]);//2*ddt*dt;////at*bt;
 
-      const double u = (b*b)/(4*a);
-      const double k = (4*a*c-b*b)/(4*a);
-      double x = t*sqrt(a)+sqrt(u);
+      const double inv_4a = 1./(4*a);
+      const double u = (b*b)*inv_4a;
+      const double k = (4*a*c-b*b)*inv_4a;
+      const double sqrt_a = sqrt(a);
+      const double sqrt_c = sqrt(c);
+      const double inv_8_sqrt_a_a_a = 1./(8.*sqrt(a*a*a));
+      const double sqrt_c_t_b_at = sqrt(c+t*(b+a*t));
+      double x = t*sqrt_a+sqrt(u);
 
       // todo: optimize
-      const double integral = ((b+2.*a*t)*sqrt(c+t*(b+a*t)))/(4*a) - ((b*b-4.*a*c)*log(b+2.*a*t+2.*sqrt(a)*sqrt(c+t*(b+a*t))))/(8.*pow(a,(3./2.)));
-      const double constant = (b*sqrt(c))/(4*a) - ((b*b-4.*a*c)*log(b+2.*sqrt(a)*sqrt(c)))/(8.*pow(a,(3./2.)));
-      //std::cout << "integral = " << integral << ", constant = " << constant << ", min = " << integral-constant << std::endl;
+      const double integral = ((b+2.*a*t)*sqrt_c_t_b_at)*inv_4a - ((b*b-4.*a*c)*log(b+2.*a*t+2.*sqrt_a*sqrt_c_t_b_at))*inv_8_sqrt_a_a_a;
+      const double constant = (b*sqrt_c)*inv_4a - ((b*b-4.*a*c)*log(b+2.*sqrt_a*sqrt_c))*inv_8_sqrt_a_a_a;
 
       return integral-constant;
     }
