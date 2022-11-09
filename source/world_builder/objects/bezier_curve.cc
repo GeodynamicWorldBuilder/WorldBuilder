@@ -403,7 +403,7 @@ namespace WorldBuilder
 
       std::vector<double> real_roots;
       real_roots.reserve(3);
-      constexpr double tolerance = std::numeric_limits<double>::epsilon()*10.;
+      constexpr double tolerance = 1e-10;
       if (std::abs(a_original) <= tolerance)
         {
           if (std::abs(b_original) <= tolerance)
@@ -437,7 +437,7 @@ namespace WorldBuilder
         {
           // based on https://quarticequations.com/Cubic.pdf
           // divide by a
-          constexpr double one_third = 1./3.;
+          //constexpr double one_third = 1./3.;
           const double b = b_original/a_original; // a_2
           const double c = c_original/a_original; // a_1
           const double d = d_original/a_original; //a_0
@@ -448,19 +448,19 @@ namespace WorldBuilder
           if (discriminant > 0)
             {
               // only one real solution
-              const double A = std::pow(std::abs(r) + sqrt(discriminant),one_third);
+              const double A = std::pow(std::abs(r) + sqrt(discriminant),1./3.);
               const double t = r >= 0 ? A-q/A : q/A-A;
-              real_roots.emplace_back(t-b*one_third);
+              real_roots.emplace_back(t-b/3.);
             }
           else
             {
               // three real solutions
               // std::pow(-q,3./2.) == sqrt(-q*q*q)
-              const double phi_1 = std::abs(q) <= tolerance ? 0 : (acos(r/sqrt(-q*q*q))*one_third);
-              const double phi_2 = phi_1 - 2.*Consts::PI*one_third;
-              const double phi_3 = phi_1 + 2.*Consts::PI*one_third;
+              const double phi_1 = std::abs(q) <= tolerance ? 0 : (acos(r/sqrt(-q*q*q))/3.);
+              const double phi_2 = phi_1 - 2.*Consts::PI/3.;
+              const double phi_3 = phi_1 + 2.*Consts::PI/3.;
               const double sqrt_q_3 = 2*sqrt(-q);
-              const double b_t_one_third = b*one_third;
+              const double b_t_one_third = b/3.;
               const double value_1 = sqrt_q_3 * cos(phi_1)-b_t_one_third;
               const double value_2 = sqrt_q_3 * cos(phi_2)-b_t_one_third;
               const double value_3 = sqrt_q_3 * cos(phi_3)-b_t_one_third;
