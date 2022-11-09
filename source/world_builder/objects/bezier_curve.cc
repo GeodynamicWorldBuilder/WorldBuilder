@@ -442,14 +442,15 @@ namespace WorldBuilder
           if (discriminant > 0)
             {
               // only one real solution
-              const double A = std::cbrt(std::abs(r) + sqrt(discriminant));
+              const double A = std::pow(std::abs(r) + sqrt(discriminant),1./3.);
               const double t = r >= 0 ? A-q/A : q/A-A;
               real_roots.emplace_back(t-b/3.);
             }
           else
             {
               // three real solutions
-              const double theta = std::abs(q) <= std::numeric_limits<double>::epsilon()*10. ? 0 : acos(r/std::pow(-q,3./2.));
+              // std::pow(-q,3./2.) == sqrt(-q*q*q)
+              const double theta = std::abs(q) <= std::numeric_limits<double>::epsilon()*10. ? 0 : acos(r/sqrt(-q*q*q));
               const double phi_1 = theta/3.;
               const double phi_2 = phi_1 - 2.*Consts::PI/3.;
               const double phi_3 = phi_1 + 2.*Consts::PI/3.;
