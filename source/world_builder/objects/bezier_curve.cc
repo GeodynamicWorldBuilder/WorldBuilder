@@ -273,20 +273,22 @@ namespace WorldBuilder
 
       for ( size_t i = 0; i < control_points.size(); ++i)
         {
-          std::vector<double> real_roots;
-          real_roots.reserve(3);
+          double real_roots[4] = {NaN::DSNAN,NaN::DSNAN,NaN::DSNAN,0.};
+          size_t index = 0;
           if (points[i] == control_points[i] || control_points[i] == points[i+1])
             {
               const Point<2> point_a = control_points[i]-points[i];
               if (std::abs(points[i][1]) < std::numeric_limits<double>::epsilon()*10 )
                 {
                   // point i is on zero, so set the root to the x of point i
-                  real_roots.emplace_back(points[i][0]);
+                  real_roots[index] = points[i][0];
+                  index++;
                 }
               else if (std::abs(point_a[0]) < std::numeric_limits<double>::epsilon()*10)
                 {
                   // vertical line going through x.
-                  real_roots.emplace_back(points[i][0]);
+                  real_roots[index] = points[i][0];
+                  index++;
                 }
               else if (std::abs(point_a[1]) < std::numeric_limits<double>::epsilon()*10)
                 {
@@ -317,10 +319,12 @@ namespace WorldBuilder
               else
                 {
                   const double a = point_a[1]/point_a[0];
-                  real_roots.emplace_back((-points[i][1]/a)+points[i][0]);
+                  real_roots[index] = (-points[i][1]/a)+points[i][0];
+                  index++;
                   //std::cout << "flag 3: root = " << (-points[i][1]/a)+points[i][0] << ", point_a[0] = " << point_a[0] << ", point_a[1] = "<< point_a[1] << std::endl;
                 }
               //real_roots.emplace_back(points[i+1]-points[i]);
+              real_roots[3] = index;
             }
           else
             {
@@ -333,10 +337,10 @@ namespace WorldBuilder
               const double b = 3*A*B;
               const double c = 2.*A*A+(points[i]-check_point)*B;
               const double d = (points[i]-check_point)*A;
-              real_roots = this->solve_cubic_equation_real(a,b,c,d);
+              this->solve_cubic_equation_real(a,b,c,d,real_roots);
             }
 
-          for (size_t root_i = 0; root_i < real_roots.size(); ++root_i)
+          for (size_t root_i = 0; root_i < real_roots[3]; ++root_i)
             {
               if (real_roots[root_i] >= 0. && real_roots[root_i] <= 1.)
                 {
@@ -398,12 +402,13 @@ namespace WorldBuilder
     }
 
 
-    std::vector<double>
-    BezierCurve::solve_cubic_equation_real(const double a_original,const double b_original,const double c_original,const double d_original)
+    double *
+    BezierCurve::solve_cubic_equation_real(const double a_original,const double b_original,const double c_original,const double d_original, double real_roots[4])
     {
 
-      std::vector<double> real_roots;
-      real_roots.reserve(3);
+      //real_roots = {NaN::DSNAN,NaN::DSNAN,NaN::DSNAN,0.};
+      //real_roots.reserve(3);
+      size_t index = real_roots[3];
       constexpr double tolerance = 1e-10;
       if (std::abs(a_original) <= tolerance)
         {
@@ -413,7 +418,9 @@ namespace WorldBuilder
               //std::cout << "LINEAR EQUATION!!" << std::endl;
               const double &a = c_original;
               const double &b = d_original;
-              real_roots.emplace_back(-b/a);
+              real_roots[index] = -b/a;
+              index++;
+              real_roots[3] = index;
               return real_roots;
             }
           // quadratic equation
@@ -423,13 +430,17 @@ namespace WorldBuilder
           const double discriminant = b*b -4.*a*c;
           if (std::abs(discriminant) <= tolerance)
             {
-              real_roots.emplace_back((-b+sqrt(discriminant))/(2*a));
+              real_roots[index] = (-b+sqrt(discriminant))/(2*a);
+              index++;
+              real_roots[3] = index;
               return real_roots;
             }
           else if (discriminant > 0)
             {
-              real_roots.emplace_back((-b + sqrt(discriminant))/(2.*a));
-              real_roots.emplace_back((-b - sqrt(discriminant))/(2.*a));
+              real_roots[index] = (-b + sqrt(discriminant))/(2.*a);
+              real_roots[index+1] = (-b - sqrt(discriminant))/(2.*a);
+              index += 2;
+              real_roots[3] = index;
               return real_roots;
             }
           return real_roots;
@@ -446,12 +457,14 @@ namespace WorldBuilder
           const double q = (c/3.)-(b*b/9.);
           const double r = (c*b-3*d)/6. - b*b*b/27.;
           const double discriminant = r*r+q*q*q;
+
           if (discriminant > 0)
             {
               // only one real solution
               const double A = std::pow(std::abs(r) + sqrt(discriminant),1./3.);
               const double t = r >= 0 ? A-q/A : q/A-A;
-              real_roots.emplace_back(t-b/3.);
+              real_roots[0] = t-b/3.;
+              index++;
             }
           else
             {
@@ -466,19 +479,23 @@ namespace WorldBuilder
               const double value_2 = sqrt_q_3 * cos(phi_2)-b_t_one_third;
               const double value_3 = sqrt_q_3 * cos(phi_3)-b_t_one_third;
 
-              real_roots.emplace_back(value_1);
+              real_roots[0] = value_1;
+              index++;
               if (std::abs(value_1 - value_2) > tolerance)
                 {
-                  real_roots.emplace_back(value_2);
+                  real_roots[index] = value_2;
+                  index++;
                 }
               // we don't have to check value 1 and 3 because z3 <= z2 <= z1
               // so if z2 and z3 are not equal, z1 and z3 are not either.
               if (std::abs(value_2 - value_3) > tolerance)
                 {
-                  real_roots.emplace_back(value_3);
+                  real_roots[index] = value_3;
+                  index++;
                 }
             }
         }
+      real_roots[3] = index;
       return real_roots;
     }
 

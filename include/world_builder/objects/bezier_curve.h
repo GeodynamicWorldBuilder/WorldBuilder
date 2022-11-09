@@ -115,7 +115,7 @@ namespace WorldBuilder
 
         //private:
 
-        static std::vector<double>  solve_cubic_equation_real(const double a_original,const double b_original,const double c_original,const double d_original);
+        static double  *solve_cubic_equation_real(const double a_original,const double b_original,const double c_original,const double d_original, double *real_roots);
 
 
     };
