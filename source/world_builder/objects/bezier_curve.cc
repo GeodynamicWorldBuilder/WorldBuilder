@@ -274,6 +274,7 @@ namespace WorldBuilder
       for ( size_t i = 0; i < control_points.size(); ++i)
         {
           std::vector<double> real_roots;
+          real_roots.reserve(3);
           if (points[i] == control_points[i] || control_points[i] == points[i+1])
             {
               const Point<2> point_a = control_points[i]-points[i];
