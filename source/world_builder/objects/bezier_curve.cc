@@ -406,7 +406,7 @@ namespace WorldBuilder
           if (discriminant > 0)
             {
               // only one real solution
-              const double A = FT::cbrt(std::abs(r) + sqrt(discriminant));
+              const double A = std::pow(std::abs(r) + sqrt(discriminant),1./3.);
               const double t = r >= 0 ? A-q/A : q/A-A;
               real_roots[0] = t-b/3.;
               index++;
