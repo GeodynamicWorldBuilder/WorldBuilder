@@ -268,7 +268,6 @@ namespace WorldBuilder
     ClosestPointOnCurve
     BezierCurve::closest_point_on_curve_segment(const Point<2> &check_point) const
     {
-      Point<2> other(760000,50000,cartesian);
       // go through each section and find all roots in domain 0 to 1 and choose the smallest
       ClosestPointOnCurve closest_point_on_curve;
 
@@ -285,7 +284,6 @@ namespace WorldBuilder
           const double c = 2.*A*A+(points[i]-check_point)*B;
           const double d = (points[i]-check_point)*A;
           this->solve_cubic_equation_real(a,b,c,d,real_roots);
-
 
           for (size_t root_i = 0; root_i < real_roots[3]; ++root_i)
             {
@@ -353,9 +351,9 @@ namespace WorldBuilder
     double *
     BezierCurve::solve_cubic_equation_real(const double a_original,const double b_original,const double c_original,const double d_original, double real_roots[4])
     {
-
       //real_roots = {NaN::DSNAN,NaN::DSNAN,NaN::DSNAN,0.};
       //real_roots.reserve(3);
+      //constexpr double one_third = 1./3.;
       size_t index = real_roots[3];
       constexpr double tolerance = 1e-10;
       if (std::abs(a_original) <= tolerance)
@@ -363,7 +361,6 @@ namespace WorldBuilder
           if (std::abs(b_original) <= tolerance)
             {
               // linear equation
-              //std::cout << "LINEAR EQUATION!!" << std::endl;
               const double &a = c_original;
               const double &b = d_original;
               real_roots[index] = -b/a;
@@ -409,7 +406,7 @@ namespace WorldBuilder
           if (discriminant > 0)
             {
               // only one real solution
-              const double A = std::pow(std::abs(r) + sqrt(discriminant),1./3.);
+              const double A = FT::cbrt(std::abs(r) + sqrt(discriminant));
               const double t = r >= 0 ? A-q/A : q/A-A;
               real_roots[0] = t-b/3.;
               index++;
@@ -423,9 +420,9 @@ namespace WorldBuilder
               const double phi_3 = phi_1 + 2.*Consts::PI/3.;
               const double sqrt_q_3 = 2*sqrt(-q);
               const double b_t_one_third = b/3.;
-              const double value_1 = sqrt_q_3 * cos(phi_1)-b_t_one_third;
-              const double value_2 = sqrt_q_3 * cos(phi_2)-b_t_one_third;
-              const double value_3 = sqrt_q_3 * cos(phi_3)-b_t_one_third;
+              const double value_1 = sqrt_q_3 * FT::cos(phi_1)-b_t_one_third;
+              const double value_2 = sqrt_q_3 * FT::cos(phi_2)-b_t_one_third;
+              const double value_3 = sqrt_q_3 * FT::cos(phi_3)-b_t_one_third;
 
               real_roots[0] = value_1;
               index++;

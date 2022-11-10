@@ -4820,7 +4820,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(distance_from_planes.segment);
   approval_tests.emplace_back(distance_from_planes.fraction_of_segment); // practically zero
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
-  CHECK(distance_from_planes.closest_trench_point.get_array() == std::array<double,3> {{0.,10.,10.}});
+  CHECK(distance_from_planes.closest_trench_point.get_array() == std::array<double,3> {{20.,10.,10.}});
 
 
   // end section square test 7
@@ -7249,6 +7249,24 @@ TEST_CASE("Fast sin functions")
       const double angle = (WorldBuilder::Consts::PI/100.)*static_cast<double>(i);
       CHECK(fabs(FT::cos(angle)-std::cos(angle)) < 1.2e-5);
     }
+}
+
+TEST_CASE("Fast cbrt function")
+{
+
+  for (int i = -4000; i < 4000; i++)
+    {
+      const double input = (WorldBuilder::Consts::PI/1000.)*static_cast<double>(i);
+      CHECK(fabs(FT::cbrt(input)-std::cbrt(input)) <= 1e-14);
+    }
+
+  double input = 1.;
+  for (int i = 0; i < 4000; i++)
+    {
+      CHECK(fabs(FT::cbrt(input)-std::cbrt(input)) <= 1e-14);
+      input /= 2.;
+    }
+
 }
 
 TEST_CASE("Fast vs slow distance function")

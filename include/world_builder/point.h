@@ -93,6 +93,34 @@ namespace WorldBuilder
     {
       return FT::sin((Consts::PI*0.5)-angle);
     }
+
+    inline double cbrt(double y)
+    {
+      constexpr double one_third = 1./3.;
+      double x = 1. - y/3.;
+      x = 2.*one_third*x + one_third*y/(x*x);
+      x = 2.*one_third*x + one_third*y/(x*x);
+      x = 2.*one_third*x + one_third*y/(x*x);
+      x = 2.*one_third*x + one_third*y/(x*x);
+      x = 2.*one_third*x + one_third*y/(x*x);
+      double new_value = 2.*one_third*x + one_third*y/(x*x);;
+      if (std::abs(x-new_value) < 1e-15)
+        return x;
+      x = new_value;
+      for (unsigned int i = 0; i < 100; i++)
+        {
+          x = 2.*one_third*x + one_third*y/(x*x);
+          x = 2.*one_third*x + one_third*y/(x*x);
+          x = 2.*one_third*x + one_third*y/(x*x);
+          x = 2.*one_third*x + one_third*y/(x*x);
+          x = 2.*one_third*x + one_third*y/(x*x);
+          new_value = 2.*one_third*x + one_third*y/(x*x);;
+          if (std::abs(x-new_value) < 1e-15)
+            return x;
+          x = new_value;
+        }
+      return 2.*one_third*x + one_third*y/(x*x);
+    }
   } // namespace FT
 
 
