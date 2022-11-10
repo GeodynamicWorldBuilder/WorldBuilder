@@ -226,7 +226,7 @@ namespace WorldBuilder
 
 
     double
-    BezierCurve::arc_length(const size_t index, const double t) const//const Point<2> &P0, const Point<2>  &Pc, const Point<2> &P1, const double t) const
+    BezierCurve::arc_length(const size_t index, const double fraction) const
     {
       // This method uses a similair approach as https://malczak.info/blog/quadratic-bezier-curve-length
       // but instead of the full length, we integrate the full equaion (https://www.wolframalpha.com/input?i=integrate+sqrt%28A*t%5E2%2BB*t%2Bc%29+dt)
@@ -240,10 +240,10 @@ namespace WorldBuilder
       if (a < 5e-4 * c || points[index] == control_points[index] || control_points[index] == points[index+1])
         {
           // all points are on a line
-          return sqrt(((points[index+1]-points[index])*t)*((points[index+1]-points[index])*t));//std::sqrt((points[index][0] + dx1*t)*(points[index][0] + dx1*t) + (points[index][1] + dy1*t)*(points[index][1] + dy1*t));
+          return sqrt(((points[index+1]-points[index])*fraction)*((points[index+1]-points[index])*fraction));//std::sqrt((points[index][0] + dx1*t)*(points[index][0] + dx1*t) + (points[index][1] + dy1*t)*(points[index][1] + dy1*t));
         }
 
-      const double b = 4*(dt[0]*ddt[0]+dt[1]*ddt[1]);//2*ddt*dt;////at*bt;
+      const double b = 4*(dt[0]*ddt[0]+dt[1]*ddt[1]);
 
       const double inv_4a = 1./(4*a);
       const double u = (b*b)*inv_4a;
@@ -251,11 +251,11 @@ namespace WorldBuilder
       const double sqrt_a = sqrt(a);
       const double sqrt_c = sqrt(c);
       const double inv_8_sqrt_a_a_a = 1./(8.*sqrt(a*a*a));
-      const double sqrt_c_t_b_at = sqrt(c+t*(b+a*t));
-      double x = t*sqrt_a+sqrt(u);
+      const double sqrt_c_t_b_at = sqrt(c+fraction*(b+a*fraction));
+      double x = fraction*sqrt_a+sqrt(u);
 
       // todo: optimize
-      const double integral = ((b+2.*a*t)*sqrt_c_t_b_at)*inv_4a - ((b*b-4.*a*c)*log(b+2.*a*t+2.*sqrt_a*sqrt_c_t_b_at))*inv_8_sqrt_a_a_a;
+      const double integral = ((b+2.*a*fraction)*sqrt_c_t_b_at)*inv_4a - ((b*b-4.*a*c)*log(b+2.*a*fraction+2.*sqrt_a*sqrt_c_t_b_at))*inv_8_sqrt_a_a_a;
       const double constant = (b*sqrt_c)*inv_4a - ((b*b-4.*a*c)*log(b+2.*sqrt_a*sqrt_c))*inv_8_sqrt_a_a_a;
 
       return integral-constant;
