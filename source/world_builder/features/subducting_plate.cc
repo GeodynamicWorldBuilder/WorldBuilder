@@ -433,6 +433,11 @@ namespace WorldBuilder
                << ", starting_depth " << starting_depth
               );
 
+      //Point<3> other(760000,50000,708000,cartesian);
+      //if (position_in_cartesian_coordinates == other)
+      //  {
+      //    std::cout << "======> hello subduction " << std::endl;
+      //  }
       // todo: explain and check -starting_depth
       if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness &&
           get_surface_bounding_box().point_inside(Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
@@ -515,7 +520,8 @@ namespace WorldBuilder
                   const Features::Utilities::AdditionalParameters additional_parameters = {max_slab_length,thickness_local};
                   for (unsigned int i_property = 0; i_property < properties.size(); ++i_property)
                     {
-                      //std::cout << "================>>>> properties[i_property][0] = " << properties[i_property][0] << std::endl;
+                      //if (position_in_cartesian_coordinates == other)
+                      //  std::cout << "================>>>> properties[i_property][0] = " << properties[i_property][0] << std::endl;
                       switch (properties[i_property][0])
                         {
                           case 1: // temperature

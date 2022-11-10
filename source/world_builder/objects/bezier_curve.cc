@@ -268,66 +268,13 @@ namespace WorldBuilder
     ClosestPointOnCurve
     BezierCurve::closest_point_on_curve_segment(const Point<2> &check_point) const
     {
+      Point<2> other(760000,50000,cartesian);
       // go through each section and find all roots in domain 0 to 1 and choose the smallest
       ClosestPointOnCurve closest_point_on_curve;
 
       for ( size_t i = 0; i < control_points.size(); ++i)
         {
           double real_roots[4] = {NaN::DSNAN,NaN::DSNAN,NaN::DSNAN,0.};
-          size_t index = 0;
-          if (points[i] == control_points[i] || control_points[i] == points[i+1])
-            {
-              const Point<2> point_a = control_points[i]-points[i];
-              if (std::abs(points[i][1]) < std::numeric_limits<double>::epsilon()*10 )
-                {
-                  // point i is on zero, so set the root to the x of point i
-                  real_roots[index] = points[i][0];
-                  index++;
-                }
-              else if (std::abs(point_a[0]) < std::numeric_limits<double>::epsilon()*10)
-                {
-                  // vertical line going through x.
-                  real_roots[index] = points[i][0];
-                  index++;
-                }
-              else if (std::abs(point_a[1]) < std::numeric_limits<double>::epsilon()*10)
-                {
-                  // horizontal line, so there is no root x (unless x=0, but then there
-                  // are infinite roots).
-                  // We can just compute what we are interested in in a different way and
-                  // continue to the next curve.
-                  const double fraction = check_point[0]-points[i][0];
-                  if (fraction >= 0. && fraction <= 1.)
-                    {
-                      //The closest point on the line has a y of point[i] and a x of the check point
-                      const Point<2> point_on_curve = Point<2>(check_point[0],points[i][1],check_point.get_coordinate_system());
-
-                      if (point_on_curve.distance(check_point) < std::abs(closest_point_on_curve.distance))
-                        {
-                          // base the sign (like the other methods) on the direction of the points.
-                          const double sign = (points[i+1][0]-points[i][0])*(check_point[1]-points[i][1]);//dot_product < 0. ? -1. : 1.;
-
-                          closest_point_on_curve.distance = sign*point_on_curve.distance(check_point); //todo: checkpoint natural?
-                          closest_point_on_curve.parametric_fraction = fraction;
-                          closest_point_on_curve.interpolation_fraction = fraction;
-                          closest_point_on_curve.index = i;
-                          closest_point_on_curve.point = point_on_curve;
-                        }
-                    }
-                  continue;
-                }
-              else
-                {
-                  const double a = point_a[1]/point_a[0];
-                  real_roots[index] = (-points[i][1]/a)+points[i][0];
-                  index++;
-                  //std::cout << "flag 3: root = " << (-points[i][1]/a)+points[i][0] << ", point_a[0] = " << point_a[0] << ", point_a[1] = "<< point_a[1] << std::endl;
-                }
-              //real_roots.emplace_back(points[i+1]-points[i]);
-              real_roots[3] = index;
-            }
-          else
-            {
               // compute a,b,c and d in the cubic equation describing the distance from point p to the local quadratic Bezier curve.
               // using https://blog.gludion.com/2009/08/distance-to-quadratic-bezier-curve.html
               // todo: I should also take a look at: https://iquilezles.org/articles/distfunctions2d/
@@ -338,12 +285,13 @@ namespace WorldBuilder
               const double c = 2.*A*A+(points[i]-check_point)*B;
               const double d = (points[i]-check_point)*A;
               this->solve_cubic_equation_real(a,b,c,d,real_roots);
-            }
+
 
           for (size_t root_i = 0; root_i < real_roots[3]; ++root_i)
             {
               if (real_roots[root_i] >= 0. && real_roots[root_i] <= 1.)
                 {
+
                   const Point<2> point_on_curve = (*this)(i,real_roots[root_i]);
 
                   if (point_on_curve.distance(check_point) < std::abs(closest_point_on_curve.distance))

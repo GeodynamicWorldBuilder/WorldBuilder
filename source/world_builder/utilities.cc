@@ -352,6 +352,13 @@ namespace WorldBuilder
                                       const bool only_positive,
                                       const Objects::BezierCurve &bezier_curve)
     {
+      //Point<3> other(540e3,175e3,752e3,cartesian);
+
+      //Point<3> other(760000,50000,708000,cartesian);
+      //if (check_point== other)
+      //  {
+      //    std::cout << "======> hello " << std::endl;
+      //  }
 
       double distance = std::numeric_limits<double>::infinity();
       double new_distance = std::numeric_limits<double>::infinity();
@@ -798,6 +805,7 @@ namespace WorldBuilder
                           new_distance = side_of_line * (check_point_2d - Pb).norm();
                           new_along_plane_distance = (begin_segment - Pb).norm();
                           new_depth_reference_surface = start_radius - Pb[1];
+
                         }
                     }
                 }
@@ -932,6 +940,7 @@ namespace WorldBuilder
                       new_along_plane_distance = (radius_angle_circle * check_point_angle - radius_angle_circle * interpolated_angle_top) * (difference_in_angle_along_segment < 0 ? 1 : -1);
                       // compute the new depth by rotating the begin point to the check point location.
                       new_depth_reference_surface = start_radius-(sin(check_point_angle + interpolated_angle_top) * BSPC[0] + cos(check_point_angle + interpolated_angle_top) * BSPC[1] + center_circle[1]);
+
                     }
 
                 }
