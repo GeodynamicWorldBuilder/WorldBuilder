@@ -275,16 +275,16 @@ namespace WorldBuilder
       for ( size_t i = 0; i < control_points.size(); ++i)
         {
           double real_roots[4] = {NaN::DSNAN,NaN::DSNAN,NaN::DSNAN,0.};
-              // compute a,b,c and d in the cubic equation describing the distance from point p to the local quadratic Bezier curve.
-              // using https://blog.gludion.com/2009/08/distance-to-quadratic-bezier-curve.html
-              // todo: I should also take a look at: https://iquilezles.org/articles/distfunctions2d/
-              const Point<2> A = control_points[i]-points[i];
-              const Point<2> B = points[i+1]-control_points[i]-A;
-              const double a = B*B;
-              const double b = 3*A*B;
-              const double c = 2.*A*A+(points[i]-check_point)*B;
-              const double d = (points[i]-check_point)*A;
-              this->solve_cubic_equation_real(a,b,c,d,real_roots);
+          // compute a,b,c and d in the cubic equation describing the distance from point p to the local quadratic Bezier curve.
+          // using https://blog.gludion.com/2009/08/distance-to-quadratic-bezier-curve.html
+          // todo: I should also take a look at: https://iquilezles.org/articles/distfunctions2d/
+          const Point<2> A = control_points[i]-points[i];
+          const Point<2> B = points[i+1]-control_points[i]-A;
+          const double a = B*B;
+          const double b = 3*A*B;
+          const double c = 2.*A*A+(points[i]-check_point)*B;
+          const double d = (points[i]-check_point)*A;
+          this->solve_cubic_equation_real(a,b,c,d,real_roots);
 
 
           for (size_t root_i = 0; root_i < real_roots[3]; ++root_i)
