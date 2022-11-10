@@ -307,7 +307,7 @@ namespace WorldBuilder
 
                       closest_point_on_curve.distance = sign*point_on_curve.distance(check_point);
                       closest_point_on_curve.parametric_fraction = real_roots[root_i];
-                      closest_point_on_curve.interpolation_fraction = arc_length(i,real_roots[root_i])/lengths[i];
+                      closest_point_on_curve.interpolation_fraction = NaN::DSNAN; //arc_length(i,real_roots[root_i])/lengths[i];
                       closest_point_on_curve.index = i;
                       closest_point_on_curve.point = point_on_curve;
                     }
