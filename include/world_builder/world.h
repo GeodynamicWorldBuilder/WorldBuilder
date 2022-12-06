@@ -22,6 +22,8 @@
 
 #include "world_builder/grains.h"
 #include "world_builder/parameters.h"
+#include "world_builder/utilities.h"
+#include "world_builder/objects/distance_from_surface.h"
 
 #include <random>
 
@@ -30,6 +32,7 @@
 */
 namespace WorldBuilder
 {
+
   namespace Features
   {
     class Interface;
@@ -188,6 +191,17 @@ namespace WorldBuilder
                                   const double depth,
                                   const unsigned int composition_number,
                                   size_t number_of_grains) const;
+      /**
+       * Returns a PlaneDistances object that has the distance from and along a feature plane,
+       * caculated from the coordinates and the depth of the point.
+       \param point the coordinates in the cartesian geometry
+       \param depth the depth of the point
+       \param name the name of the feature (i.e. the string provided to the key word "name" in the wb file)
+      */
+      Objects::PlaneDistances
+      distance_to_plane(const std::array<double, 3> &point,
+                        const double depth,
+                        const std::string name) const;
 
       /**
        * The MPI rank. Set to zero if MPI is not available.
