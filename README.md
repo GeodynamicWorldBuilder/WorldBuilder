@@ -1,6 +1,6 @@
 [![Contributors](https://img.shields.io/github/contributors/GeodynamicWorldBuilder/WorldBuilder?logo=git&logoColor=eeeeee&color=success)](https://github.com/GeodynamicWorldBuilder/WorldBuilder/graphs/contributors)
 [![Documentation](https://img.shields.io/badge/code-documented-success)](https://codedocs.xyz/GeodynamicWorldBuilder/WorldBuilder/index.html)
-[![actions](https://img.shields.io/github/workflow/status/GeodynamicWorldBuilder/WorldBuilder/tests/main?label=tests&logo=github&logoColor=eeeeee)](https://github.com/GeodynamicWorldBuilder/WorldBuilder/actions?query=branch%3Amain)
+[![actions](https://img.shields.io/github/actions/workflow/status/GeodynamicWorldBuilder/WorldBuilder/test.yml?branch=main&label=tests&logo=github&logoColor=eeeeee)](https://github.com/GeodynamicWorldBuilder/WorldBuilder/actions?query=branch%3Amain)
 [![AppVeyor Build status](https://img.shields.io/appveyor/build/MFraters/WorldBuilder/main?label=tests&logo=appveyor&logoColor=eeeeee)](https://ci.appveyor.com/project/MFraters/worldbuilder)
 [![Coverage Status](https://img.shields.io/coveralls/github/GeodynamicWorldBuilder/WorldBuilder?logo=coveralls&logoColor=eeeeee)](https://coveralls.io/github/GeodynamicWorldBuilder/WorldBuilder?branch=main)
 [![codecov](https://img.shields.io/codecov/c/github/GeodynamicWorldBuilder/WorldBuilder/main?logo=codecov&logoColor=eeeeee)](https://codecov.io/gh/GeodynamicWorldBuilder/WorldBuilder)  
