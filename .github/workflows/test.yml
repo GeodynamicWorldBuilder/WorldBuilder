@@ -397,7 +397,7 @@ jobs:
       run:   |
          if [ "$RUNNER_OS" == "Linux" ]; then
             sudo apt update;
-            sudo apt install gfortran swig python3-setuptools openmpi-bin libopenmpi-dev
+            sudo apt install gfortran swig python3-setuptools openmpi-bin
          elif [ "$RUNNER_OS" == "macOS" ]; then
             sudo brew install open-mpi || true
          else
