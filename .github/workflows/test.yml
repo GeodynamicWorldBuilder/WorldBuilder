@@ -217,7 +217,7 @@ jobs:
       run:   |
          if [ "$RUNNER_OS" == "Linux" ]; then
             sudo apt update;
-            sudo apt install gfortran swig python3-setuptools openmpi-bin
+            sudo apt install gfortran swig python3-setuptools openmpi-bin libopenmpi-dev
          elif [ "$RUNNER_OS" == "macOS" ]; then
             sudo brew install open-mpi || true    
             echo "4"
@@ -262,7 +262,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name:  Install optional dependencies
-        run: sudo apt install gfortran swig python3-setuptools openmpi-bin
+        run: sudo apt install gfortran swig python3-setuptools openmpi-bin libopenmpi-dev
         shell: bash
 
       - name: extend path
@@ -337,7 +337,7 @@ jobs:
       run:   |
          if [ "$RUNNER_OS" == "Linux" ]; then
             sudo apt update;
-            sudo apt install gfortran swig python3-setuptools openmpi-bin
+            sudo apt install gfortran swig python3-setuptools openmpi-bin libopenmpi-dev
          elif [ "$RUNNER_OS" == "macOS" ]; then
             sudo brew install open-mpi || true    
          else          
@@ -397,7 +397,7 @@ jobs:
       run:   |
          if [ "$RUNNER_OS" == "Linux" ]; then
             sudo apt update;
-            sudo apt install gfortran swig python3-setuptools openmpi-bin
+            sudo apt install gfortran swig python3-setuptools openmpi-bin libopenmpi-dev
          elif [ "$RUNNER_OS" == "macOS" ]; then
             sudo brew install open-mpi || true
          else
