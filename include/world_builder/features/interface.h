@@ -23,6 +23,7 @@
 
 #include "world_builder/grains.h"
 #include "world_builder/utilities.h"
+#include "world_builder/objects/distance_from_surface.h"
 
 namespace WorldBuilder
 {
@@ -106,6 +107,17 @@ namespace WorldBuilder
          * registration of the object factory.
          */
         static std::unique_ptr<Interface> create(const std::string &name, WorldBuilder::World *world);
+
+        /**
+        * Returns a PlaneDistances object that has the distance from and along a feature plane,
+        * caculated from the coordinates and the depth of the point.
+        */
+        virtual
+        Objects::PlaneDistances
+        distance_to_feature_plane(const Point<3> &position_in_cartesian_coordinates,
+                                  const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                                  const double depth) const;
+
 
       protected:
         /**

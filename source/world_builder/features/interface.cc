@@ -176,6 +176,14 @@ namespace WorldBuilder
       return get_factory_map().at(lower_case_name)->create(world);
     }
 
+    Objects::PlaneDistances
+    Interface::distance_to_feature_plane(const Point<3> &,
+                                         const Objects::NaturalCoordinate &,
+                                         const double) const
+    {
+      WBAssertThrow(false, "The distance_to_feature_plane is not yet implemented for the desinated object");
+    }
+
   } // namespace Features
 } // namespace WorldBuilder
 

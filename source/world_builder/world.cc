@@ -29,9 +29,11 @@
 #include "world_builder/types/plugin_system.h"
 #include "world_builder/types/point.h"
 #include "world_builder/gravity_model/interface.h"
+#include "world_builder/features/subducting_plate.h"
 
 #include <iostream>
 #include <world_builder/coordinate_system.h>
+#include <world_builder/objects/distance_from_surface.h>
 
 #ifdef WB_WITH_MPI
 #define OMPI_SKIP_MPICXX 1
@@ -411,6 +413,36 @@ namespace WorldBuilder
   World::get_random_number_engine()
   {
     return random_number_engine;
+  }
+
+  Objects::PlaneDistances
+  World::distance_to_plane(const std::array<double, 3> &point_,
+                           const double depth,
+                           const std::string name) const
+  {
+    // We receive the cartesian points from the user.
+    Point<3> point(point_,cartesian);
+
+    WBAssert(!this->limit_debug_consistency_checks || this->parameters.coordinate_system->natural_coordinate_system() == cartesian
+             || approx(depth, this->parameters.coordinate_system->max_model_depth()-sqrt(point_[0]*point_[0]+point_[1]*point_[1]+point_[2]*point_[2])),
+             "Inconsistent input. Please check whether the radius in the sperhical coordiantes is consistent with the radius of the planet as defined "
+             << "in the program that uses the Geodynamic World Builder. "
+             << "Depth = " << depth << ", radius = " << this->parameters.coordinate_system->max_model_depth()
+             << ", point = " << point_[0] << " " << point_[1] << " " << point_[2]
+             << ", radius-point.norm() = " << this->parameters.coordinate_system->max_model_depth()-sqrt(point_[0]*point_[0]+point_[1]*point_[1]+point_[2]*point_[2]));
+
+    Objects::NaturalCoordinate natural_coordinate = Objects::NaturalCoordinate(point,*(this->parameters.coordinate_system));
+
+    Objects::PlaneDistances plane_distances(0.0, 0.0);
+    for (auto &&it : this->parameters.features)
+      {
+        if (it->get_name() == name)
+          {
+            plane_distances = it->distance_to_feature_plane(point, natural_coordinate, depth);
+            break;
+          }
+      }
+    return plane_distances;
   }
 
 } // namespace WorldBuilder
