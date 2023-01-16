@@ -592,6 +592,10 @@ namespace WorldBuilder
                                               <<  Pointer((base + "/1/" + std::to_string(coordinate_i) + "/1").c_str()).Get(parameters)->GetString()
                                               << "\".");
                               }
+
+                            coordinate_0 *= (coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical ? Consts::PI / 180.0 : 1.);
+                            coordinate_1 *= (coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical ? Consts::PI / 180.0 : 1.);
+
                             bool found_same_point = false;
                             unsigned int coordinate_pair_i = 0;
                             for (; coordinate_pair_i < result.second.size(); coordinate_pair_i+=2)
@@ -611,8 +615,8 @@ namespace WorldBuilder
                               {
                                 // add a new point
                                 result.first.emplace_back(value);
-                                result.second.emplace_back(coordinate_0 * (coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical ? Consts::PI / 180.0 : 1.));
-                                result.second.emplace_back(coordinate_1 * (coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical ? Consts::PI / 180.0 : 1.));
+                                result.second.emplace_back(coordinate_0);
+                                result.second.emplace_back(coordinate_1);
                               }
                           }
 
