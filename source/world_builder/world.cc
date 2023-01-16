@@ -314,8 +314,11 @@ namespace WorldBuilder
                   if (properties.size() == 1)
                     return output;
                 }
-              entry_in_output.emplace_back(output.size());
-              output.emplace_back(potential_mantle_temperature * std::exp(((thermal_expansion_coefficient * gravity_norm) / specific_heat) * depth));
+              else
+                {
+                  entry_in_output.emplace_back(output.size());
+                  output.emplace_back(potential_mantle_temperature * std::exp(((thermal_expansion_coefficient * gravity_norm) / specific_heat) * depth));
+                }
               properties_local.emplace_back(properties[i_property]);
               break;
             case 2: // composition
