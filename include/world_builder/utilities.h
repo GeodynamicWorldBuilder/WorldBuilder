@@ -44,7 +44,7 @@ namespace WorldBuilder
      * performance critical parts where this could matter, a fast
      * version could be added.
      */
-    inline bool approx(double a, double b, double error_factor=1.0)
+    inline bool approx(double a, double b, double error_factor=1e4)
     {
       return std::abs(a-b)<std::abs(std::min(a,b))*std::numeric_limits<double>::epsilon()*
              error_factor;

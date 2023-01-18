@@ -102,7 +102,7 @@ namespace WorldBuilder
                               const Point<2> check_point,
                               double &interpolate_value) const
     {
-      double factor = 20.;
+      double factor = 1e4;
       // based on https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
       // compute s, t and area
       const double s_no_area = -(points[0][1]*points[2][0] - points[0][0]*points[2][1] + (points[2][1] - points[0][1])*check_point[0] + (points[0][0] - points[2][0])*check_point[1]);
