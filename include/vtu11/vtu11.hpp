@@ -6013,12 +6013,12 @@ inline std::string base64Encode( Iterator begin, Iterator end )
 
     for( size_t i = 0; i < rawBytes / 3; ++i )
     {
-        encodeTriplet( { next( ), next( ), next( ) }, 0 );
+        encodeTriplet( {{ next( ), next( ), next( ) }}, 0 );
     }
 
     if( it != end )
     {
-        std::array<char, 3> bytes { '\0', '\0', '\0' };
+        std::array<char, 3> bytes {{ '\0', '\0', '\0' }};
 
         size_t remainder = static_cast<size_t>( std::distance( it, end ) ) * size - static_cast<size_t>( byteIndex );
 

@@ -35,8 +35,8 @@ TEST_CASE("bounding box 2D")
   CHECK(BoundingBox<2>().center().distance(Point<2>(0,0,CoordinateSystem::cartesian)) < 1e-12);
 
   CHECK(bb1.point_inside(Point<2>(2,2.5,CoordinateSystem::cartesian)) == true);
-  Point<2> p1 ({1,1}, CoordinateSystem::cartesian);
-  Point<2> p2 ({2,3}, CoordinateSystem::cartesian);
+  Point<2> p1 ({{1,1}}, CoordinateSystem::cartesian);
+  Point<2> p2 ({{2,3}}, CoordinateSystem::cartesian);
 
 
   CHECK(BoundingBox<2>().center().distance(Point<2>(0,0,CoordinateSystem::cartesian)) < 1e-12);
@@ -61,8 +61,8 @@ TEST_CASE("bounding box 3D")
   CHECK(bb1.point_inside(Point<3>(2,2.5,2.5,CoordinateSystem::cartesian)) == true);
 
   // Check constructor with provided points
-  Point<3> p1 ({1,1,1}, CoordinateSystem::cartesian);
-  Point<3> p2 ({2,3,4}, CoordinateSystem::cartesian);
+  Point<3> p1 ({{1,1,1}}, CoordinateSystem::cartesian);
+  Point<3> p2 ({{2,3,4}}, CoordinateSystem::cartesian);
   BoundingBox<3> bb2({p1, p2});
 
   // Check the center function
