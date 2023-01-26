@@ -55,28 +55,28 @@ namespace WorldBuilder
     std::array<double,3>
     Invalid::cartesian_to_natural_coordinates(const std::array<double,3> &) const
     {
-      return {{NaN::DSNAN,NaN::DSNAN,NaN::DSNAN}};
+      return {{NaN::DQNAN,NaN::DQNAN,NaN::DQNAN}};
     }
 
 
     std::array<double,3>
     Invalid::natural_to_cartesian_coordinates(const std::array<double,3> &) const
     {
-      return {{NaN::DSNAN,NaN::DSNAN,NaN::DSNAN}};
+      return {{NaN::DQNAN,NaN::DQNAN,NaN::DQNAN}};
     }
 
 
     double
     Invalid::distance_between_points_at_same_depth(const Point<3> &, const Point<3> &) const
     {
-      return NaN::DSNAN;
+      return NaN::DQNAN;
     }
 
 
     double
     Invalid::max_model_depth() const
     {
-      return NaN::DSNAN;
+      return NaN::DQNAN;
     }
 
     /**

@@ -83,14 +83,15 @@ namespace WorldBuilder
         const double cl = ex * ex + ey * ey;
         const double d = dx * ey - dy * ex;
 
-        const double x = (ey * bl - dy * cl) * 0.5 / d;
-        const double y = (dx * cl - ex * bl) * 0.5 / d;
+        if(d > 0.0 || d < 0.0){
+            const double x = (ey * bl - dy * cl) * 0.5 / d;
+            const double y = (dx * cl - ex * bl) * 0.5 / d;
 
-        if ((bl > 0.0 || bl < 0.0) && (cl > 0.0 || cl < 0.0) && (d > 0.0 || d < 0.0)) {
-            return x * x + y * y;
-        } else {
-            return std::numeric_limits<double>::max();
+            if ((bl > 0.0 || bl < 0.0) && (cl > 0.0 || cl < 0.0) && (d > 0.0 || d < 0.0)) {
+                return x * x + y * y;
+            }
         }
+        return std::numeric_limits<double>::max();
     }
 
     inline bool orient(

@@ -7419,6 +7419,6 @@ TEST_CASE("Fast version of fmod")
   CHECK(FT::fmod(5.3,2) == Approx(std::fmod(5.3,2)));
   CHECK(FT::fmod(18.5,4.2) == Approx(std::fmod(18.5,4.2)));
   CHECK(std::isnan(FT::fmod(1,0)));
-  CHECK(std::isnan(std::fmod(1,0)));
+  //CHECK(std::isnan(std::fmod(1,0))); Return a signaling NAN (FE_INVALID is raised)
 }
 

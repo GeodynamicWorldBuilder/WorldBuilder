@@ -23,6 +23,18 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 message(STATUS "Building the Geodynamic World Builder version ${WORLD_BUILDER_VERSION} in ${CMAKE_BUILD_TYPE} mode")
 
+
+include(CheckCXXSymbolExists)
+check_cxx_symbol_exists(feenableexcept fenv.h HAVE_DECL_FEENABLEEXCEPT)
+check_cxx_symbol_exists(feclearexcept fenv.h HAVE_DECL_FECLEAREXCEPT)
+
+IF(HAVE_DECL_FEENABLEEXCEPT AND HAVE_DECL_FECLEAREXCEPT)
+  SET(WB_USE_FP_EXCEPTIONS TRUE CACHE BOOL "Whether to turn on floating point exceptions in debug mode.")
+  MESSAGE(STATUS "Using Floating Point Exceptions if in Debug mode.")
+ELSE()
+  MESSAGE(STATUS "Not using Floating Point Exceptions.")
+ENDIF()
+
 set (WORLD_BUILDER_SOURCE_DIR ${PROJECT_SOURCE_DIR})
 
 # generate version.cc
@@ -438,6 +450,10 @@ else()
     target_link_options(gwb-dat INTERFACE ${WB_LINKER_OPTIONS} )
     target_link_options(gwb-grid INTERFACE ${WB_LINKER_OPTIONS})
     target_link_options(gwb-grid PRIVATE  ${WB_VISU_LINKER_OPTIONS})
+endif()
+
+if(${WB_USE_FP_EXCEPTIONS})
+  add_definitions(-DWB_USE_FP_EXCEPTIONS)
 endif()
 
 if(${USE_MPI})

@@ -35,6 +35,12 @@
 #include <iostream>
 #include <memory>
 
+#ifndef NDEBUG
+#ifdef WB_USE_FP_EXCEPTIONS
+#include <cfenv>
+#endif
+#endif
+
 using namespace WorldBuilder::Utilities;
 
 bool find_command_line_option(char **begin, char **end, const std::string &option)
@@ -44,6 +50,18 @@ bool find_command_line_option(char **begin, char **end, const std::string &optio
 
 int main(int argc, char **argv)
 {
+
+#ifndef NDEBUG
+#ifdef WB_USE_FP_EXCEPTIONS
+  // Some implementations seem to not initialize the floating point exception
+  // bits to zero. Make sure we start from a clean state.
+  feclearexcept(FE_DIVBYZERO|FE_INVALID);
+
+  // enable floating point exceptions
+  feenableexcept(FE_DIVBYZERO|FE_INVALID);
+#endif
+#endif
+
   /**
    * First parse the command line options
    */

@@ -19,6 +19,7 @@
 
 #ifndef WORLD_BUILDER_POINT_H
 #define WORLD_BUILDER_POINT_H
+#include "nan.h"
 #define _USE_MATH_DEFINES
 #include <array>
 #include <cmath>
@@ -43,8 +44,12 @@ namespace WorldBuilder
      */
     inline double fmod(const double x, const double y)
     {
-      const double x_div_y = x/y;
-      return (x_div_y-static_cast<int>(x_div_y))*y;
+      if (y < 0.0 || y > 0.0)
+        {
+          const double x_div_y = x/y;
+          return (x_div_y-static_cast<int>(x_div_y))*y;
+        }
+      return NaN::DQNAN;
     }
 
     /**
