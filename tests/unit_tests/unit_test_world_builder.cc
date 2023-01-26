@@ -5670,8 +5670,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   natural_coordinate = Objects::NaturalCoordinate(position,
                                                   *cartesian_system);
 
-  Utilities::InterpolationType interpolation_type = Utilities::InterpolationType::ContinuousMonotoneSpline;
-
   Utilities::interpolation x_spline;
   Utilities::interpolation y_spline;
 
@@ -7067,8 +7065,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   double starting_radius = 10;
   Utilities::interpolation x_spline;
   Utilities::interpolation y_spline;
-  Utilities::InterpolationType interpolation_type = Utilities::InterpolationType::ContinuousMonotoneSpline;
-
 
   std::vector<double> x_list = {0.,10 * dtr};
   std::vector<double> y_list = {10 * dtr,10 * dtr};

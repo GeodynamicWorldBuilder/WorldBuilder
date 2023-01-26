@@ -209,7 +209,6 @@ int main(int argc, char **argv)
 
   size_t dim = 3;
   size_t compositions = 0;
-  double gravity = 10;
 
   //commmon
   std::string grid_type = "chunk";

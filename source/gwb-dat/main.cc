@@ -93,8 +93,8 @@ int main(int argc, char **argv)
     }
 
   int MPI_RANK = 0;
-  int MPI_SIZE = 1;
 #ifdef WB_WITH_MPI
+  int MPI_SIZE = 1;
   MPI_Init(&argc,&argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &MPI_RANK);
   MPI_Comm_size(MPI_COMM_WORLD, &MPI_SIZE);
