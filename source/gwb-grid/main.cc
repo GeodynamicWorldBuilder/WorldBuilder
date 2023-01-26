@@ -40,6 +40,12 @@
 #include <mpi.h>
 #endif
 
+#ifndef NDEBUG
+#ifdef WB_USE_FP_EXCEPTIONS
+#include <cfenv>
+#endif
+#endif
+
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -49,7 +55,6 @@
 #include <string>
 #include <thread>
 #include <vector>
-
 
 using namespace WorldBuilder;
 using namespace WorldBuilder::Utilities;
@@ -200,6 +205,18 @@ bool find_command_line_option(char **begin, char **end, const std::string &optio
 
 int main(int argc, char **argv)
 {
+
+#ifndef NDEBUG
+#ifdef WB_USE_FP_EXCEPTIONS
+  // Some implementations seem to not initialize the floating point exception
+  // bits to zero. Make sure we start from a clean state.
+  feclearexcept(FE_DIVBYZERO|FE_INVALID);
+
+  // enable floating point exceptions
+  feenableexcept(FE_DIVBYZERO|FE_INVALID);
+#endif
+#endif
+
   /**
    * First parse the command line options
    */
@@ -502,7 +519,7 @@ int main(int argc, char **argv)
 
 
           double dx = (x_max - x_min) / static_cast<double>(n_cell_x);
-          double dy = (y_max - y_min) / static_cast<double>(n_cell_y);
+          double dy = dim == 2 ? 0 : (y_max - y_min) / static_cast<double>(n_cell_y);
           double dz = (z_max - z_min) / static_cast<double>(n_cell_z);
 
 

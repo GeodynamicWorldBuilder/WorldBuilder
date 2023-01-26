@@ -40,6 +40,11 @@
 #include <mpi.h>
 #endif
 
+#ifndef NDEBUG
+#ifdef WB_USE_FP_EXCEPTIONS
+#include <cfenv>
+#endif
+#endif
 
 namespace WorldBuilder
 {
@@ -53,6 +58,18 @@ namespace WorldBuilder
     random_number_engine(random_number_seed),
     limit_debug_consistency_checks(limit_debug_consistency_checks_)
   {
+
+#ifndef NDEBUG
+#ifdef WB_USE_FP_EXCEPTIONS
+    // Some implementations seem to not initialize the floating point exception
+    // bits to zero. Make sure we start from a clean state.
+    feclearexcept(FE_DIVBYZERO|FE_INVALID);
+
+    // enable floating point exceptions
+    feenableexcept(FE_DIVBYZERO|FE_INVALID);
+#endif
+#endif
+
 #ifdef WB_WITH_MPI
     int mpi_initialized;
     MPI_Initialized(&mpi_initialized);
