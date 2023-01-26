@@ -446,8 +446,7 @@ namespace WorldBuilder
                                                                        starting_radius,
                                                                        this->world->parameters.coordinate_system,
                                                                        true,
-                                                                       this->x_spline,
-                                                                       this->y_spline);
+                                                                       this->bezier_curve);
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
           const double distance_along_plane = distance_from_planes.distance_along_plane;

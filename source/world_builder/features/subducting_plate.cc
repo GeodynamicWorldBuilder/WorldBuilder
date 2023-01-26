@@ -130,7 +130,7 @@ namespace WorldBuilder
       if (coordinate_system == spherical)
         {
           // When spherical, input is in degrees, so change to radians for internal use.
-          reference_point *= (Consts::PI/180);
+          reference_point *= (Consts::PI/180.);
         }
 
       default_temperature_models.resize(0);
@@ -458,8 +458,7 @@ namespace WorldBuilder
                                                                        starting_radius,
                                                                        this->world->parameters.coordinate_system,
                                                                        false,
-                                                                       this->x_spline,
-                                                                       this->y_spline);
+                                                                       this->bezier_curve);
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
           const double distance_along_plane = distance_from_planes.distance_along_plane;
@@ -661,7 +660,12 @@ namespace WorldBuilder
                             break;
                           }
                           default:
-                            WBAssertThrow(false, "Internal error: Unimplemented property provided. Only temperature (1), composition (2) or grains (3) are allowed.");
+                          {
+                            WBAssertThrow(false,
+                                          "Internal error: Unimplemented property provided. " <<
+                                          "Only temperature (1), composition (2) or grains (3) are allowed. "
+                                          "Provided property number was: " << properties[i_property][0]);
+                          }
                         }
                     }
 
@@ -698,8 +702,7 @@ namespace WorldBuilder
                                                                    starting_radius,
                                                                    this->world->parameters.coordinate_system,
                                                                    false,
-                                                                   this->x_spline,
-                                                                   this->y_spline);
+                                                                   this->bezier_curve);
 
       Objects::PlaneDistances plane_distances(distance_from_planes.distance_from_plane, distance_from_planes.distance_along_plane);
       return plane_distances;

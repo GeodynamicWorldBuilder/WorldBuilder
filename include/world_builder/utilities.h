@@ -24,6 +24,7 @@
 #include "world_builder/nan.h"
 #include "world_builder/coordinate_systems/interface.h"
 #include "world_builder/objects/natural_coordinate.h"
+#include "world_builder/objects/bezier_curve.h"
 #include <iostream>
 
 
@@ -394,8 +395,7 @@ namespace WorldBuilder
                                                                     const double start_radius,
                                                                     const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                                                     const bool only_positive,
-                                                                    const interpolation &x_spline,
-                                                                    const interpolation &y_spline);
+                                                                    const Objects::BezierCurve &bezier_curve);
 
 
 

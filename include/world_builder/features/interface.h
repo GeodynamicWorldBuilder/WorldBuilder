@@ -149,7 +149,7 @@ namespace WorldBuilder
         /**
          * The x and y spline
          */
-        WorldBuilder::Utilities::interpolation x_spline, y_spline;
+        WorldBuilder::Objects::BezierCurve bezier_curve;
 
 
         /**
