@@ -106,12 +106,12 @@ namespace WorldBuilder
             control_points[0][1][0] = cos(angles[1])*length*fraction_of_length+p2[0];
             control_points[0][1][1] = sin(angles[1])*length*fraction_of_length+p2[1];
             {
-              const int side_of_line_1 =  (p1[0] - p2[0]) * (control_points[0][1][1] - p1[1])
-                                          - (p1[1] - p2[1]) * (control_points[0][1][0] - p1[0])
-                                          < 0 ? -1.0 : 1.0;
-              const int side_of_line_2 =  (p1[0] - p2[0]) * (p3[1] - p1[1])
-                                          - (p1[1] - p2[1]) * (p3[0] - p1[0])
-                                          < 0 ? -1.0 : 1.0;
+              const bool side_of_line_1 =  (p1[0] - p2[0]) * (control_points[0][1][1] - p1[1])
+                                           - (p1[1] - p2[1]) * (control_points[0][1][0] - p1[0])
+                                           < 0;
+              const bool side_of_line_2 =  (p1[0] - p2[0]) * (p3[1] - p1[1])
+                                           - (p1[1] - p2[1]) * (p3[0] - p1[0])
+                                           < 0;
               if (side_of_line_1 == side_of_line_2)
                 {
                   // use a 180 degree rotated angle to create this control_point
@@ -131,12 +131,12 @@ namespace WorldBuilder
               control_points[p_i][0][1] = sin(angles[p_i])*length*fraction_of_length+p1[1];
 
               {
-                const int side_of_line_1 =  (p1[0] - p2[0]) * (control_points[p_i-1][1][1] - p1[1])
-                                            - (p1[1] - p2[1]) * (control_points[p_i-1][1][0] - p1[0])
-                                            < 0 ? -1.0 : 1.0;
-                const int side_of_line_2 =  (p1[0] - p2[0]) * (control_points[p_i][0][1] - p1[1])
-                                            - (p1[1] - p2[1]) * (control_points[p_i][0][0] - p1[0])
-                                            < 0 ? -1.0 : 1.0;
+                const bool side_of_line_1 =  (p1[0] - p2[0]) * (control_points[p_i-1][1][1] - p1[1])
+                                             - (p1[1] - p2[1]) * (control_points[p_i-1][1][0] - p1[0])
+                                             < 0;
+                const bool side_of_line_2 =  (p1[0] - p2[0]) * (control_points[p_i][0][1] - p1[1])
+                                             - (p1[1] - p2[1]) * (control_points[p_i][0][0] - p1[0])
+                                             < 0;
                 if (side_of_line_1 == side_of_line_2)
                   {
                     // use a 180 degree rotated angle to create this control_point
@@ -150,12 +150,12 @@ namespace WorldBuilder
 
               if (p_i+1 < n_points-1)
                 {
-                  const int side_of_line_1 =  (p1[0] - p2[0]) * (control_points[p_i][1][1] - p1[1])
-                                              - (p1[1] - p2[1]) * (control_points[p_i][1][0] - p1[0])
-                                              < 0 ? -1.0 : 1.0;
-                  const int side_of_line_2 =  (p1[0] - p2[0]) * (p3[1] - p1[1])
-                                              - (p1[1] - p2[1]) * (p3[0] - p1[0])
-                                              < 0 ? -1.0 : 1.0;
+                  const bool side_of_line_1 =  (p1[0] - p2[0]) * (control_points[p_i][1][1] - p1[1])
+                                               - (p1[1] - p2[1]) * (control_points[p_i][1][0] - p1[0])
+                                               < 0;
+                  const bool side_of_line_2 =  (p1[0] - p2[0]) * (p3[1] - p1[1])
+                                               - (p1[1] - p2[1]) * (p3[0] - p1[0])
+                                               < 0;
                   if (side_of_line_1 == side_of_line_2)
                     {
                       // use a 180 degree rotated angle to create this control_point

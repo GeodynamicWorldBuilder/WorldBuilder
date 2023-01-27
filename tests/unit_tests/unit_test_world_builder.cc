@@ -761,7 +761,7 @@ TEST_CASE("WorldBuilder C wrapper")
   const char *world_builder_file2 = file.c_str();
   has_output_dir = false;
 
-  create_world(ptr_ptr_world, world_builder_file2, &has_output_dir, "", 1.0);
+  create_world(ptr_ptr_world, world_builder_file2, &has_output_dir, "", 1);
 
 
   CHECK_THROWS_WITH(temperature_2d(*ptr_ptr_world, 1, 2, 0, &temperature),
@@ -3722,12 +3722,12 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK_THROWS_WITH(prm.get<unsigned int>("non existent unsigned int"),
                     Contains("internal error: could not retrieve the default value at"));
 
-  CHECK(prm.get<unsigned int>("unsigned int") == Approx(4.0));
+  CHECK(prm.get<unsigned int>("unsigned int") == 4);
 
   CHECK_THROWS_WITH(prm.get<size_t>("non existent unsigned int"),
                     Contains("internal error: could not retrieve the default value at"));
 
-  CHECK(prm.get<size_t>("unsigned int") == Approx(4.0));
+  CHECK(prm.get<size_t>("unsigned int") == 4);
 
 
   CHECK_THROWS_WITH(prm.get<double>("non existent double"),
@@ -3779,9 +3779,9 @@ TEST_CASE("WorldBuilder Parameters")
   CHECK_THROWS_WITH(prm.get("value at points non existant",additional_points), Contains("internal error: could not retrieve"));
   std::pair<std::vector<double>,std::vector<double>> v_at_p_one_value = prm.get("one value at points one value",additional_points);
 
-  approval_tests.emplace_back(v_at_p_one_value.first.size());
-  approval_tests.emplace_back(v_at_p_one_value.first[0]);
-  approval_tests.emplace_back(v_at_p_one_value.second.size());
+  approval_tests.emplace_back((double)v_at_p_one_value.first.size());
+  approval_tests.emplace_back((double)v_at_p_one_value.first[0]);
+  approval_tests.emplace_back((double)v_at_p_one_value.second.size());
 
   {
     Objects::Surface surface(v_at_p_one_value);
@@ -3789,19 +3789,19 @@ TEST_CASE("WorldBuilder Parameters")
   }
   std::pair<std::vector<double>,std::vector<double>> v_at_p_one_array_value = prm.get("array value at points one value",additional_points);
 
-  approval_tests.emplace_back(v_at_p_one_array_value.first.size());
-  approval_tests.emplace_back(v_at_p_one_array_value.first[0]);
-  approval_tests.emplace_back(v_at_p_one_array_value.second.size());
+  approval_tests.emplace_back((double)v_at_p_one_array_value.first.size());
+  approval_tests.emplace_back((double)v_at_p_one_array_value.first[0]);
+  approval_tests.emplace_back((double)v_at_p_one_array_value.second.size());
 
   std::pair<std::vector<double>,std::vector<double>> v_at_p_full_default = prm.get("value at points",additional_points);
 
-  approval_tests.emplace_back(v_at_p_full_default.first.size());
-  approval_tests.emplace_back(v_at_p_full_default.first[0]);
-  approval_tests.emplace_back(v_at_p_full_default.second.size());
+  approval_tests.emplace_back((double)v_at_p_full_default.first.size());
+  approval_tests.emplace_back((double)v_at_p_full_default.first[0]);
+  approval_tests.emplace_back((double)v_at_p_full_default.second.size());
 
   std::pair<std::vector<double>,std::vector<double>> v_at_p_dap = prm.get("value at points default ap",additional_points);
 
-  approval_tests.emplace_back(v_at_p_dap.first.size());
+  approval_tests.emplace_back((double)v_at_p_dap.first.size());
   approval_tests.emplace_back(v_at_p_dap.first[0]);
   approval_tests.emplace_back(v_at_p_dap.first[1]);
   approval_tests.emplace_back(v_at_p_dap.first[2]);
@@ -3809,7 +3809,7 @@ TEST_CASE("WorldBuilder Parameters")
   approval_tests.emplace_back(v_at_p_dap.first[4]);
   approval_tests.emplace_back(v_at_p_dap.first[5]);
   approval_tests.emplace_back(v_at_p_dap.first[6]);
-  approval_tests.emplace_back(v_at_p_dap.second.size());
+  approval_tests.emplace_back((double)v_at_p_dap.second.size());
   approval_tests.emplace_back(v_at_p_dap.second[0]);
   approval_tests.emplace_back(v_at_p_dap.second[1]);
   approval_tests.emplace_back(v_at_p_dap.second[2]);
@@ -3888,15 +3888,15 @@ TEST_CASE("WorldBuilder Parameters")
   prm.leave_subsection();
 
   std::vector<unsigned int> v_int = prm.get_vector<unsigned int>("now existent unsigned int vector");
-  approval_tests.emplace_back(v_int.size());
-  approval_tests.emplace_back(v_int[0]);
-  approval_tests.emplace_back(v_int[1]);
+  approval_tests.emplace_back((double)v_int.size());
+  approval_tests.emplace_back((double)v_int[0]);
+  approval_tests.emplace_back((double)v_int[1]);
 
   v_int = prm.get_vector<unsigned int>("unsigned int array");
-  approval_tests.emplace_back(v_int.size());
-  approval_tests.emplace_back(v_int[0]);
-  approval_tests.emplace_back(v_int[1]);
-  approval_tests.emplace_back(v_int[2]);
+  approval_tests.emplace_back((double)v_int.size());
+  approval_tests.emplace_back((double)v_int[0]);
+  approval_tests.emplace_back((double)v_int[1]);
+  approval_tests.emplace_back((double)v_int[2]);
 
   CHECK_THROWS_WITH(prm.get_vector<size_t>("non existent unsigned int vector"),
                     Contains("internal error: could not retrieve the minItems value"));
@@ -3904,15 +3904,15 @@ TEST_CASE("WorldBuilder Parameters")
 
 
   std::vector<size_t> v_size_t = prm.get_vector<size_t>("now existent unsigned int vector");
-  approval_tests.emplace_back(v_size_t.size());
-  approval_tests.emplace_back(v_size_t[0]);
-  approval_tests.emplace_back(v_size_t[1]);
+  approval_tests.emplace_back((double)v_size_t.size());
+  approval_tests.emplace_back((double)v_size_t[0]);
+  approval_tests.emplace_back((double)v_size_t[1]);
 
   v_size_t = prm.get_vector<size_t>("unsigned int array");
-  approval_tests.emplace_back(v_size_t.size());
-  approval_tests.emplace_back(v_size_t[0]);
-  approval_tests.emplace_back(v_size_t[1]);
-  approval_tests.emplace_back(v_size_t[2]);
+  approval_tests.emplace_back((double)v_size_t.size());
+  approval_tests.emplace_back((double)v_size_t[0]);
+  approval_tests.emplace_back((double)v_size_t[1]);
+  approval_tests.emplace_back((double)v_size_t[2]);
 
 
   CHECK_THROWS_WITH(prm.get_vector<size_t>("non existent unsigned int vector"),
@@ -3927,18 +3927,18 @@ TEST_CASE("WorldBuilder Parameters")
   prm.leave_subsection();
 
   std::vector<bool> v_bool = prm.get_vector<bool>("now existent bool vector");
-  approval_tests.emplace_back(v_bool.size());
-  approval_tests.emplace_back(v_bool[0]);
-  approval_tests.emplace_back(v_bool[1]);
+  approval_tests.emplace_back((double)v_bool.size());
+  approval_tests.emplace_back((double)v_bool[0]);
+  approval_tests.emplace_back((double)v_bool[1]);
 
   v_bool = prm.get_vector<bool>("bool array");
-  approval_tests.emplace_back(v_bool.size());
-  approval_tests.emplace_back(v_bool[0]);
-  approval_tests.emplace_back(v_bool[1]);
-  approval_tests.emplace_back(v_bool[2]);
-  approval_tests.emplace_back(v_bool[3]);
-  approval_tests.emplace_back(v_bool[4]);
-  approval_tests.emplace_back(v_bool[1]);
+  approval_tests.emplace_back((double)v_bool.size());
+  approval_tests.emplace_back((double)v_bool[0]);
+  approval_tests.emplace_back((double)v_bool[1]);
+  approval_tests.emplace_back((double)v_bool[2]);
+  approval_tests.emplace_back((double)v_bool[3]);
+  approval_tests.emplace_back((double)v_bool[4]);
+  approval_tests.emplace_back((double)v_bool[1]);
 
   CHECK_THROWS_WITH(prm.get_vector<bool>("bool array nob"),
                     Contains("IsBool()"));
@@ -3956,7 +3956,7 @@ TEST_CASE("WorldBuilder Parameters")
   prm.leave_subsection();
 
   std::vector<double> v_double = prm.get_vector<double>("now existent double vector");
-  approval_tests.emplace_back(v_double.size());
+  approval_tests.emplace_back((double)v_double.size());
   approval_tests.emplace_back(v_double[0]);
   approval_tests.emplace_back(v_double[1]);
 
@@ -3964,7 +3964,7 @@ TEST_CASE("WorldBuilder Parameters")
                     Contains("Could not convert values of /string array into Point<2>, because it could not convert the sub-elements into doubles."));
 
   v_double = prm.get_vector<double>("double array");
-  approval_tests.emplace_back(v_double.size());
+  approval_tests.emplace_back((double)v_double.size());
   approval_tests.emplace_back(v_double[0]);
   approval_tests.emplace_back(v_double[1]);
   approval_tests.emplace_back(v_double[2]);
@@ -3973,7 +3973,7 @@ TEST_CASE("WorldBuilder Parameters")
                     Contains("Could not convert values of /point<2> array nan/0 into a Point<2> array, because it could not convert the sub-elements into doubles."));
 
   std::vector<std::array<std::array<double,3>,3> > v_3x3_array = prm.get_vector<std::array<std::array<double,3>,3> >("vector of 3x3 arrays");
-  approval_tests.emplace_back(v_3x3_array.size());
+  approval_tests.emplace_back((double)v_3x3_array.size());
   approval_tests.emplace_back(v_3x3_array[0][0][0]);
   approval_tests.emplace_back(v_3x3_array[0][0][1]);
   approval_tests.emplace_back(v_3x3_array[0][0][2]);
@@ -3995,14 +3995,14 @@ TEST_CASE("WorldBuilder Parameters")
   approval_tests.emplace_back(v_3x3_array[1][2][2]);
 
   std::vector<std::vector<Point<2> > > v_v_p2 = prm.get_vector<std::vector<Point<2>>>("vector of vectors of points<2>");
-  approval_tests.emplace_back(v_v_p2.size());
-  approval_tests.emplace_back(v_v_p2[0].size());
+  approval_tests.emplace_back((double)v_v_p2.size());
+  approval_tests.emplace_back((double)v_v_p2[0].size());
   approval_tests.emplace_back(v_v_p2[0][0][0]);
   approval_tests.emplace_back(v_v_p2[0][0][1]);
   approval_tests.emplace_back(v_v_p2[0][1][0]);
   approval_tests.emplace_back(v_v_p2[0][1][1]);
 
-  approval_tests.emplace_back(v_v_p2[1].size());
+  approval_tests.emplace_back((double)v_v_p2[1].size());
   approval_tests.emplace_back(v_v_p2[1][0][0]);
   approval_tests.emplace_back(v_v_p2[1][0][1]);
   approval_tests.emplace_back(v_v_p2[1][1][0]);
@@ -4712,8 +4712,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
   approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
@@ -4736,8 +4736,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-4); // practically zero
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-5);
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
   approval_tests.insert( approval_tests.end(), std::begin(distance_from_planes.closest_trench_point.get_array()),
@@ -4762,8 +4762,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
   approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
@@ -4789,8 +4789,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
   approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
@@ -4815,8 +4815,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
   approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
@@ -4843,8 +4843,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers // practically zero
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers // practically zero
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
   approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
@@ -4870,8 +4870,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_section) < 1e-14);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers // practically zero
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
   approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
@@ -4898,8 +4898,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers // practically zero
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers // practically zero
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
   approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
@@ -4925,8 +4925,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
   // The old method for slabs can not provide the corners when out of bounds and returns a nan. The new method can do this,
@@ -4949,8 +4949,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
   approval_tests.insert( approval_tests.end(), std::begin(distance_from_planes.closest_trench_point.get_array()), std::end(distance_from_planes.closest_trench_point.get_array()));
@@ -4975,8 +4975,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
   // The old method for slabs can not provide the corners when out of bounds and returns a nan. The new method can do this,
@@ -4999,8 +4999,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14); // practically zero
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
   approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
@@ -5029,8 +5029,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(distance_from_planes.distance_from_plane);
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
   approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
@@ -5058,8 +5058,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(distance_from_planes.distance_from_plane);
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
 
@@ -5084,8 +5084,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(distance_from_planes.distance_from_plane);
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
 
@@ -5110,8 +5110,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(distance_from_planes.distance_from_plane);
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // add coordinate
@@ -5146,8 +5146,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // practically zero
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-12);
 
   // different angle
@@ -5180,8 +5180,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)<1e-10);
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // check interpolation 1 (in the middle of a segment with 22.5 degree and a segement with 45)
@@ -5205,8 +5205,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // check interpolation 2 (at the end of the segment at 45 degree)
@@ -5230,8 +5230,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // check length interpolation with 90 degree angles for simplicity
@@ -5276,8 +5276,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers // practically zero
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // check length interpolation first segment center 2
@@ -5301,8 +5301,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers // practically zero
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // check length interpolation first segment center 3
@@ -5326,8 +5326,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
 
@@ -5353,8 +5353,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
@@ -5381,8 +5381,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers // practically zero
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // check length interpolation second segment center 2
@@ -5406,8 +5406,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers // practically zero
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // check length interpolation second segment center 3
@@ -5431,8 +5431,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
 
@@ -5458,8 +5458,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(distance_from_planes.distance_from_plane);
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // Now check the end of the second segment, each segment should have a length of 50.
@@ -5484,8 +5484,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers // practically zero
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // check length interpolation second segment center 2
@@ -5509,8 +5509,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers // practically zero
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // check length interpolation second segment center 3
@@ -5534,8 +5534,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
 
@@ -5561,8 +5561,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(distance_from_planes.distance_from_plane);
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
@@ -5657,8 +5657,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-10);
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
@@ -5683,8 +5683,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about 5 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
@@ -5709,8 +5709,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about -5 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
@@ -5736,8 +5736,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(distance_from_planes.distance_from_plane);
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
@@ -5762,8 +5762,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about -10 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
@@ -5792,8 +5792,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   // where the check point has angle 0. This means that the distanceAlongPlate is zero.
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
@@ -5819,8 +5819,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
@@ -5850,8 +5850,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
@@ -5876,8 +5876,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
 
@@ -5916,8 +5916,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test 11
@@ -5941,8 +5941,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test 12
@@ -5966,8 +5966,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
 
@@ -5993,8 +5993,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test 14
@@ -6032,8 +6032,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test 15
@@ -6057,8 +6057,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test 16
@@ -6082,8 +6082,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about -1 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test 16
@@ -6107,8 +6107,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about -1 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test 17
@@ -6132,8 +6132,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers // checked that it should be about 0 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
 
@@ -6158,8 +6158,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about 1 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test 19
@@ -6183,8 +6183,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about 1 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
 
@@ -6223,8 +6223,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers // checked that it should be about 0 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test 21
@@ -6248,8 +6248,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers // checked that it should be about 0 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test 21
@@ -6273,8 +6273,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers // checked that it should be about 0 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test 22
@@ -6298,8 +6298,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers // checked that it should be about 0 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test start 45 degree 1
@@ -6340,8 +6340,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about -7.3 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test change reference point 1
@@ -6369,8 +6369,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test change reference point 2
@@ -6394,8 +6394,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be about 2.3 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test angle interpolation 1
@@ -6437,8 +6437,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test reverse angle 1
@@ -6479,8 +6479,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers // checked that it should be about 0 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test reverse angle 2
@@ -6504,8 +6504,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test reverse angle 3
@@ -6529,8 +6529,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers // checked that it should be about 0 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test reverse angle 4
@@ -6556,8 +6556,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) ); // checked that it should be about 0 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
 
@@ -6582,8 +6582,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) > 1e-12 ? distance_from_planes.distance_from_plane : 0.); // to make sure the approval test have the same characters for very small numbers // checked that it should be about 0 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test reverse angle 6
@@ -6621,8 +6621,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-10); // checked that it should be about 0 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-10);
 
   // curve test reverse angle 6
@@ -6647,8 +6647,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-10);
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-10);
 
   // curve test reverse angle 6
@@ -6673,8 +6673,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-10);
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-10);
 
 
@@ -6700,8 +6700,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane)< 1e-10);
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
 
@@ -6728,8 +6728,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(fabs(distance_from_planes.distance_from_plane)); // checked that it should be small positive this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test reverse angle 9
@@ -6754,8 +6754,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked that it should be small negative this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // curve test reverse angle 10
@@ -6780,8 +6780,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
 
@@ -6807,8 +6807,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // global_x_list test 2
@@ -6832,8 +6832,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // global_x_list test 3
@@ -6857,8 +6857,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // global_x_list test 4
@@ -6882,8 +6882,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // checked that it should be about 0 this with a drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // global_x_list test 5
@@ -6907,8 +6907,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane)); // checked that it should be about 0 this with a drawing
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-12);
 
 
@@ -6934,8 +6934,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
@@ -7002,8 +7002,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_section) < 1e-14);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14);
 
 
@@ -7028,8 +7028,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14); // practically zero
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) < 1e-14);
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14);
 
 
@@ -7058,8 +7058,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_from_plane));
   approval_tests.emplace_back(std::isinf(distance_from_planes.distance_along_plane));
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14);
 
 
@@ -7083,8 +7083,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   approval_tests.emplace_back(distance_from_planes.distance_from_plane);
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
 
@@ -7117,8 +7117,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   approval_tests.emplace_back(distance_from_planes.distance_from_plane); // checked it with a geometric drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) < 1e-14); // checked it with a geometric drawing
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) < 1e-14);
 
 
@@ -7141,8 +7141,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_from_plane) < 1e-14);  // checked it with a geometric drawing
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers // checked it with a geometric drawing
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
   // spherical curve test 1
@@ -7177,8 +7177,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   approval_tests.emplace_back(distance_from_planes.distance_from_plane);  // see comment at the top of the test
   approval_tests.emplace_back(std::fabs(distance_from_planes.distance_along_plane) > 1e-12 ? distance_from_planes.distance_along_plane : 0.); // to make sure the approval test have the same characters for very small numbers // see comment at the top of the test
   approval_tests.emplace_back(distance_from_planes.fraction_of_section);
-  approval_tests.emplace_back(distance_from_planes.section);
-  approval_tests.emplace_back(distance_from_planes.segment);
+  approval_tests.emplace_back((double)distance_from_planes.section);
+  approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers*/
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }

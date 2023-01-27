@@ -145,6 +145,16 @@ namespace WorldBuilder
     }
 
     /**
+     * access index
+     */
+    template<int dim>
+    const double &
+    Point<dim>::operator[](const unsigned int index) const
+    {
+      return value[index];
+    }
+
+    /**
      * Multiplies a Types::Point<dim> with a scalr and returns a
      * WorldBuilder::Point<dim>.
      */
