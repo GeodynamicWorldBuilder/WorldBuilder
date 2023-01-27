@@ -171,81 +171,9 @@ namespace WorldBuilder
     Point<2>
     BezierCurve::operator()(const size_t i, const double t) const
     {
-      return (1-t)*(1-t)*(1-t)*points[i] + 3*(1-t)*(1-t)*t*control_points[i][0] + 3.*(1-t)*t*t*control_points[i][1]+t*t*t*points[i+1]; //(1-t)*(1-t)*points[i] + 2*t*(1-t)*control_points[i] + t*t*points[i+1];
-    }
-
-    double
-    BezierCurve::arc_length(const Point<2> &a, const Point<2>  &b, const Point<2> &c) const
-    {
-      // compute the arc length of the Bezier curve
-      // see https://gamedev.stackexchange.com/questions/6009/bezier-curve-arc-length
-      Point<2> v = a;
-      Point<2> w = b;
-      v[0] = 2.*(b[0] - a[0]);
-      v[1] = 2.*(b[1] - a[1]);
-      w[0] = c[0] - 2.*b[0] + a[0];
-      w[1] = c[1] - 2.*b[1] + a[1];
-
-      const double uu = 4.*(w[0]*w[0] + w[1]*w[1]);
-
-      // check if all points are in a line
-      if (uu < 0.00001 || (a-b).norm() < 1e-6 || (b-c).norm() < 1e-6 || fabs(a[0] * (b[1] - c[1]) + b[0] * (c[1] - a[1]) + c[0] * (a[1] - b[1])) <= 1e-9)
-        {
-          return std::sqrt((c[0] - a[0])*(c[0] - a[0]) + (c[1] - a[1])*(c[1] - a[1]));
-        }
-
-      const double vv = 4.*(v[0]*w[0] + v[1]*w[1]);
-      const double ww = v[0]*v[0] + v[1]*v[1];
-
-      const double t1 = (2.*std::sqrt(uu*(uu + vv + ww)));
-      const double t2 = 2.*uu+vv;
-      const double t3 = vv*vv - 4.*uu*ww;
-      const double t4 = (2.*std::sqrt(uu*ww));
-
-      WBAssert(!std::isnan(((t1*t2 - t3*std::log(t2+t1) -(vv*t4 - t3*std::log(vv+t4))) / (8*std::pow(uu, 1.5)))), "result is nan: " << ((t1*t2 - t3*std::log(t2+t1) -(vv*t4 - t3*std::log(vv+t4))) / (8*std::pow(uu, 1.5)))
-               << ", t1=" << t1 << ", t2=" << t2 << ", t3=" << t3 << ", t4=" << t4 << ", v = " << v << ", w=" << w << ", vv=" << vv << ", uu=" << uu
-               << ", a=" << a << ", b=" << b << ", c=" << c
-               << ", std::log(t2+t1)=" << std::log(t2+t1) << ", std::log(vv+t4)=" << std::log(vv+t4) << ", std::pow(uu, 1.5)=" << std::pow(uu, 1.5) << ", std::log(vv+t4)=" << std::log(vv+t4));
-
-      return ((t1*t2 - t3*std::log(t2+t1) -(vv*t4 - t3*std::log(vv+t4))) / (8*std::pow(uu, 1.5)));
-    }
-
-
-    double
-    BezierCurve::arc_length(const size_t , const double ) const
-    {
-      /*// This method uses a similair approach as https://malczak.info/blog/quadratic-bezier-curve-length
-      // but instead of the full length, we integrate the full equaion (https://www.wolframalpha.com/input?i=integrate+sqrt%28A*t%5E2%2BB*t%2Bc%29+dt)
-      // leaving t in there. Then we compute the integration constant by stating that the length at t=0 should
-      // be zero.
-      auto dt = points[index]-2.*control_points[index]+points[index+1];
-      auto ddt = 2.*control_points[index]-2.*points[index];
-      const double a = 4*(dt[0]*dt[0]+dt[1]*dt[1]);
-      const double c = ddt[0]*ddt[0]+ddt[1]*ddt[1];
-
-      if (a < 5e-4 * c || points[index] == control_points[index] || control_points[index] == points[index+1])
-        {
-          // all points are on a line
-          return sqrt(((points[index+1]-points[index])*fraction)*((points[index+1]-points[index])*fraction));//std::sqrt((points[index][0] + dx1*t)*(points[index][0] + dx1*t) + (points[index][1] + dy1*t)*(points[index][1] + dy1*t));
-        }
-
-      const double b = 4*(dt[0]*ddt[0]+dt[1]*ddt[1]);
-
-      const double inv_4a = 1./(4*a);
-      const double u = (b*b)*inv_4a;
-      const double k = (4*a*c-b*b)*inv_4a;
-      const double sqrt_a = sqrt(a);
-      const double sqrt_c = sqrt(c);
-      const double inv_8_sqrt_a_a_a = 1./(8.*sqrt(a*a*a));
-      const double sqrt_c_t_b_at = sqrt(c+fraction*(b+a*fraction));
-      double x = fraction*sqrt_a+sqrt(u);
-
-      // todo: optimize
-      const double integral = ((b+2.*a*fraction)*sqrt_c_t_b_at)*inv_4a - ((b*b-4.*a*c)*log(b+2.*a*fraction+2.*sqrt_a*sqrt_c_t_b_at))*inv_8_sqrt_a_a_a;
-      const double constant = (b*sqrt_c)*inv_4a - ((b*b-4.*a*c)*log(b+2.*sqrt_a*sqrt_c))*inv_8_sqrt_a_a_a;
-
-      return integral-constant;*/
-      return 0;
+      WBAssert(i < points.size()-1 && i < control_points.size() ,
+               "Trying to access index " << i << ", but points.size() = " << points.size() << ", and control_points = " << control_points.size() << ".");
+      return (1-t)*(1-t)*(1-t)*points[i] + 3*(1-t)*(1-t)*t*control_points[i][0] + 3.*(1-t)*t*t*control_points[i][1]+t*t*t*points[i+1];
     }
 
 
@@ -605,36 +533,6 @@ namespace WorldBuilder
 #endif
             }
 
-        }
-      return closest_point_on_curve;
-    }
-
-
-    ClosestPointOnCurve
-    BezierCurve::closest_point_on_curve(const Point<2> &check_point) const
-    {
-      ClosestPointOnCurve closest_point_on_curve = this->closest_point_on_curve_segment(check_point);
-      if (std::isnan(closest_point_on_curve.point[0]))
-        {
-          // The closest point is one of the edges, find which one
-          const double distance_to_first_point = (points[0]-check_point).norm();
-          const double distance_to_last_point = (points[points.size()-1]-check_point).norm();
-          if (distance_to_first_point < distance_to_last_point)
-            {
-              closest_point_on_curve.distance = NaN::DSNAN; // the distance computed above is not following the curve. Could be computed if needed.
-              closest_point_on_curve.index = 0;
-              closest_point_on_curve.parametric_fraction = 0;
-              closest_point_on_curve.interpolation_fraction = 0;
-              closest_point_on_curve.point = points[0];
-            }
-          else
-            {
-              closest_point_on_curve.distance = NaN::DSNAN; // the distance computed above is not following the curve. Could be computed if needed.
-              closest_point_on_curve.index = points.size()-1;
-              closest_point_on_curve.parametric_fraction = 0;
-              closest_point_on_curve.interpolation_fraction = 0;
-              closest_point_on_curve.point = points[points.size()-1];
-            }
         }
       return closest_point_on_curve;
     }
