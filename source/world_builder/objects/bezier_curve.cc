@@ -121,7 +121,7 @@ namespace WorldBuilder
             }
           }
 
-          for (size_t p_i = 1; p_i < n_points-1; ++p_i)
+          for (size_t p_i = 1; p_i < n_points-2; ++p_i)
             {
               const Point<2> &p1 = points[p_i];
               const Point<2> &p2 = points[p_i+1];
