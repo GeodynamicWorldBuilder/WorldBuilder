@@ -436,3 +436,75 @@ jobs:
       working-directory: ${{github.workspace}}/build
       shell: bash
       run: ctest -VV -C ${{ matrix.build_type }}
+
+
+  linux-gdb-valgrind:
+    needs: [test_indentation]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['ubuntu-22.04']
+        build_type: ['Debug']
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name:  Install optional dependencies
+      run:   |
+         if [ "$RUNNER_OS" == "Linux" ]; then
+            sudo apt update;
+            sudo apt install gfortran swig python3-setuptools gdb valgrind
+         elif [ "$RUNNER_OS" == "macOS" ]; then
+            sudo brew install open-mpi || true
+         else
+            echo "$RUNNER_OS not supported"
+            exit 1
+         fi
+      shell: bash
+
+    - name: CMake version
+      run: cmake --version
+
+    - name: GCC version
+      run: gcc --version
+
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{github.workspace}}/build
+
+    - name: Configure CMake
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: |
+            cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS=-Werror -DWB_RUN_TESTS_WITH_GDB=ON  -DWB_RUN_TESTS_WITH_VALGRIND=OFF;
+            cat ${{github.workspace}}/build/CMakeFiles/CMakeError.log ||:;
+
+    - name: Build gwb
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: cmake --build . --config ${{ matrix.build_type }}
+
+    - name: Install gwb Linux and macOS
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: sudo cmake --install . --config ${{ matrix.build_type }}
+
+    - name: Test gwb normal and gdb
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: ctest -VV -C ${{ matrix.build_type }}
+
+    - name: Configure CMake
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: |
+            cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS=-Werror -DWB_RUN_TESTS_WITH_GDB=OFF  -DWB_RUN_TESTS_WITH_VALGRIND=ON;
+            cat ${{github.workspace}}/build/CMakeFiles/CMakeError.log ||:;
+
+
+    - name: Test gwb valgrind
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: ctest -VV -C ${{ matrix.build_type }} -R _valgrind
+

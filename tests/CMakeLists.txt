@@ -20,6 +20,12 @@ ENDIF()
 SET(WB_INCLUDE_UNIT_TEST ON
 CACHE BOOL "Whether to include unit tests or not in the build.")
 
+SET(WB_RUN_TESTS_WITH_GDB OFF
+CACHE BOOL "Whether to also run the test with GDB")
+
+SET(WB_RUN_TESTS_WITH_VALGRIND OFF
+CACHE BOOL "Whether to also run the test with Valgrind")
+
 if(WB_INCLUDE_UNIT_TEST)
   file(GLOB_RECURSE UNIT_TEST_SOURCES_CXX "unit_tests/*.cc")
 
@@ -69,6 +75,18 @@ if(WB_INCLUDE_UNIT_TEST)
   add_test(NAME ${test_name}
            WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
            COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${test_name})
+
+  if(WB_RUN_TESTS_WITH_GDB)
+    add_test(NAME ${test_name}_gdb
+             WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+             COMMAND gdb --ex r --ex bt -ex "set confirm off" --ex exit($_exitcode) --args ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${test_name})
+  endif()
+
+  if(WB_RUN_TESTS_WITH_VALGRIND)
+    add_test(NAME ${test_name}_valgrind
+             WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+             COMMAND valgrind -v --leak-check=full --error-exitcode=1  ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${test_name})
+  endif()
 endif()
 # App testing
 IF(WB_RUN_APP_TESTS)
@@ -143,6 +161,18 @@ IF(WB_RUN_APP_TESTS)
              -D TEST_DIFF=${TEST_DIFF}
   	         -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
+
+  if(WB_RUN_TESTS_WITH_GDB)
+    add_test(NAME ${test_name}_gdb
+             WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+             COMMAND gdb --return-child-result --ex "set confirm off" --ex r  --ex bt --ex exit  --args ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat --limit-debug-consistency-checks)
+  endif()
+
+  if(WB_RUN_TESTS_WITH_VALGRIND)
+    add_test(NAME ${test_name}_valgrind
+             WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+             COMMAND valgrind -v --leak-check=full --error-exitcode=1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX}  ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat --limit-debug-consistency-checks)
+  endif()
   endforeach(test_source)
 ENDIF()
 
@@ -164,6 +194,18 @@ foreach(test_source ${VISU_TEST_SOURCES})
 	         -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/${test_name}.vtu
 	         -P ${CMAKE_SOURCE_DIR}/tests/gwb-grid/run_gwb-grid_tests.cmake
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/)
+
+  if(WB_RUN_TESTS_WITH_GDB)
+   add_test(NAME ${test_name}_gdb
+            WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+            COMMAND gdb --return-child-result --ex "set confirm off" --ex r  --ex bt --ex exit  --args ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.grid)
+  endif()
+
+  if(WB_RUN_TESTS_WITH_VALGRIND)
+    add_test(NAME ${test_name}_valgrind
+             WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+             COMMAND valgrind -v --leak-check=full --error-exitcode=1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}  ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.grid)
+  endif()
 endforeach(test_source)
 
 add_custom_target(update_test_references 
