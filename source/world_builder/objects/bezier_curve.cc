@@ -121,11 +121,10 @@ namespace WorldBuilder
             }
           }
 
-          for (size_t p_i = 1; p_i < n_points-2; ++p_i)
+          for (size_t p_i = 1; p_i < n_points-1; ++p_i)
             {
               const Point<2> &p1 = points[p_i];
               const Point<2> &p2 = points[p_i+1];
-              const Point<2> &p3 = points[p_i+2];
               const double length = (points[p_i]-points[p_i+1]).norm(); // can be squared
               control_points[p_i][0][0] = cos(angles[p_i])*length*fraction_of_length+p1[0];
               control_points[p_i][0][1] = sin(angles[p_i])*length*fraction_of_length+p1[1];
@@ -150,6 +149,7 @@ namespace WorldBuilder
 
               if (p_i+1 < n_points-1)
                 {
+                  const Point<2> &p3 = points[p_i+2];
                   const bool side_of_line_1 =  (p1[0] - p2[0]) * (control_points[p_i][1][1] - p1[1])
                                                - (p1[1] - p2[1]) * (control_points[p_i][1][0] - p1[0])
                                                < 0;
