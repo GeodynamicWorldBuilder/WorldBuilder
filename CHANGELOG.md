@@ -32,6 +32,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Added a new compositional model for fault models such that ensures a smooth transition of compositional value from the fault trace until a particular user-determined distance. This feature can be helpful for model that uses composition of fault to compute other material properties, e.g., viscosity. \[Arushi Saxena; 2022-05-19; [#356](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/356)
 - Added an interface to compute the distance of a query point to a feature's plane. For example, the distance of a point to a subducting slab could be duely computed. This interface simply calls the previously implemented interfaces of the feature objects and wrap them up. Thus it only takes variables like coordinates and depth in the model and could be called from ASPECT directly.
 \[Haoyuan Li; 2022-12-23; [#453](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/453)
+- Added tester options to allow running the tester with gdb and/or valgrind. Also setup a github action which automatically runs gdb and valgrind when running the tester. \[Menno Fraters; 2023-01-26; [#466](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/466)\]
  
 ### Changed
 - The World Builder Visualizer will now use zlib compression for vtu files by default. If zlib is not available binary output will be used. \[Menno Fraters; 2021-06-26; [#282](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/282)\]
