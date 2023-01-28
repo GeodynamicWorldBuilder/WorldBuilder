@@ -91,30 +91,45 @@ namespace WorldBuilder
           // now feed and create the KD-tree
           tree = KDTree::KDTree(node_list);
           tree.create_tree(0, node_list.size()-1, false);
+
+
+          // precompute values for in_triangle
+          in_triangle_precomputed.resize(tree.get_nodes().size());
+          for (size_t iii = 0; iii < tree.get_nodes().size(); iii++)
+            {
+              in_triangle_precomputed[iii][0] = triangles[iii][0][1]*triangles[iii][2][0] - triangles[iii][0][0]*triangles[iii][2][1];
+              in_triangle_precomputed[iii][1] = triangles[iii][2][1] - triangles[iii][0][1];
+              in_triangle_precomputed[iii][2] = triangles[iii][0][0] - triangles[iii][2][0];
+              in_triangle_precomputed[iii][3] = triangles[iii][0][0]*triangles[iii][1][1] - triangles[iii][0][1]*triangles[iii][1][0];
+              in_triangle_precomputed[iii][4] = triangles[iii][0][1] - triangles[iii][1][1];
+              in_triangle_precomputed[iii][5] = triangles[iii][1][0] - triangles[iii][0][0];
+              in_triangle_precomputed[iii][6] = -(-triangles[iii][1][1]*triangles[iii][2][0] + triangles[iii][0][1]*(-triangles[iii][1][0] + triangles[iii][2][0]) + triangles[iii][0][0]*(triangles[iii][1][1] - triangles[iii][2][1]) + triangles[iii][1][0]*triangles[iii][2][1]);
+              in_triangle_precomputed[iii][7] = 1./in_triangle_precomputed[iii][6];
+            }
         }
       else
         {
           constant_value = true;
         }
+
     }
 
     bool Surface::in_triangle(const std::array<std::array<double,3>,3> &points,
+                              const std::array<double,8> &precomputed,
                               const Point<2> check_point,
                               double &interpolate_value) const
     {
       double factor = 1e4;
       // based on https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
       // compute s, t and area
-      const double s_no_area = -(points[0][1]*points[2][0] - points[0][0]*points[2][1] + (points[2][1] - points[0][1])*check_point[0] + (points[0][0] - points[2][0])*check_point[1]);
-      const double t_no_area = -(points[0][0]*points[1][1] - points[0][1]*points[1][0] + (points[0][1] - points[1][1])*check_point[0] + (points[1][0] - points[0][0])*check_point[1]);
-      const double two_times_area = -(-points[1][1]*points[2][0] + points[0][1]*(-points[1][0] + points[2][0]) + points[0][0]*(points[1][1] - points[2][1]) + points[1][0]*points[2][1]);
+      const double s_no_area = -(precomputed[0] + precomputed[1]*check_point[0] + precomputed[2]*check_point[1]);
+      const double t_no_area = -(precomputed[3] + precomputed[4]*check_point[0] + precomputed[5]*check_point[1]);
 
-      if (s_no_area >= -factor*std::numeric_limits<double>::epsilon() && t_no_area >= -factor*std::numeric_limits<double>::epsilon() && s_no_area+t_no_area-two_times_area<=two_times_area*factor*std::numeric_limits<double>::epsilon())
+      if (s_no_area >= -factor*std::numeric_limits<double>::epsilon() && t_no_area >= -factor*std::numeric_limits<double>::epsilon() && s_no_area+t_no_area-precomputed[6]<=precomputed[6]*factor*std::numeric_limits<double>::epsilon())
         {
           // point is in this triangle
-          const double one_over_two_times_area = 1./two_times_area;
-          const double s = one_over_two_times_area*s_no_area;
-          const double t = one_over_two_times_area*t_no_area;
+          const double s = precomputed[7]*s_no_area;
+          const double t = precomputed[7]*t_no_area;
           interpolate_value = points[0][2]*(1-s-t)+points[1][2]*s+points[2][2]*t;
           return true;
         }
@@ -143,11 +158,11 @@ namespace WorldBuilder
       // try triangle of the closest centroid
       double interpolated_value = 0;
 
-      if (in_triangle(triangles[tree.get_nodes()[index_distances.min_index].index],check_point,interpolated_value))
+      if (in_triangle(triangles[tree.get_nodes()[index_distances.min_index].index],in_triangle_precomputed[tree.get_nodes()[index_distances.min_index].index],check_point,interpolated_value))
         {
           return interpolated_value;
         }
-      else if (spherical && in_triangle(triangles[tree.get_nodes()[index_distances_other.min_index].index],other_point,interpolated_value))
+      else if (spherical && in_triangle(triangles[tree.get_nodes()[index_distances_other.min_index].index],in_triangle_precomputed[tree.get_nodes()[index_distances_other.min_index].index],other_point,interpolated_value))
         {
           return interpolated_value;
         }
@@ -157,11 +172,11 @@ namespace WorldBuilder
           // Todo: could remove the cosest node, because it was already tested. Could also sort based no distance.
           for (auto &index_distance: index_distances.vector)
             {
-              if (in_triangle(triangles[tree.get_nodes()[index_distance.index].index],check_point,interpolated_value))
+              if (in_triangle(triangles[tree.get_nodes()[index_distance.index].index],in_triangle_precomputed[tree.get_nodes()[index_distance.index].index],check_point,interpolated_value))
                 {
                   return interpolated_value;
                 }
-              else if (spherical && in_triangle(triangles[tree.get_nodes()[index_distance.index].index],other_point,interpolated_value))
+              else if (spherical && in_triangle(triangles[tree.get_nodes()[index_distance.index].index],in_triangle_precomputed[tree.get_nodes()[index_distance.index].index],other_point,interpolated_value))
                 {
                   // This is probably non-optimal, but it seems to work better than expected
                   return interpolated_value;
@@ -172,11 +187,11 @@ namespace WorldBuilder
           // Todo: Although this shouldonly very rearly happen, could remove already tested nodes.
           for (const auto &nodes: tree.get_nodes())
             {
-              if (in_triangle(triangles[nodes.index],check_point,interpolated_value))
+              if (in_triangle(triangles[nodes.index],in_triangle_precomputed[nodes.index],check_point,interpolated_value))
                 {
                   return interpolated_value;
                 }
-              else  if (spherical && in_triangle(triangles[nodes.index],other_point,interpolated_value))
+              else  if (spherical && in_triangle(triangles[nodes.index],in_triangle_precomputed[nodes.index],other_point,interpolated_value))
                 {
                   return interpolated_value;
                 }
