@@ -176,10 +176,15 @@ namespace WorldBuilder
                 {
                   return interpolated_value;
                 }
-              else if (spherical && in_triangle(triangles[tree.get_nodes()[index_distance.index].index],in_triangle_precomputed[tree.get_nodes()[index_distance.index].index],other_point,interpolated_value))
+            }
+          if (spherical)
+            {
+              for (auto &index_distance: index_distances_other.vector)
                 {
-                  // This is probably non-optimal, but it seems to work better than expected
-                  return interpolated_value;
+                  if (in_triangle(triangles[tree.get_nodes()[index_distance.index].index],in_triangle_precomputed[tree.get_nodes()[index_distance.index].index],other_point,interpolated_value))
+                    {
+                      return interpolated_value;
+                    }
                 }
             }
 
