@@ -146,15 +146,6 @@ namespace WorldBuilder
       // first find the closest centeroids
       const KDTree::IndexDistances index_distances = tree.find_closest_points(check_point);
 
-      Point<2> other_point = check_point;
-      KDTree::IndexDistances index_distances_other;
-      bool spherical = false;
-      if (check_point.get_coordinate_system() == CoordinateSystem::spherical)
-        {
-          spherical = true;
-          other_point[0] += check_point[0] < 0 ? 2.0 * WorldBuilder::Consts::PI : -2.0 * WorldBuilder::Consts::PI;
-          index_distances_other = tree.find_closest_points(other_point);
-        }
       // try triangle of the closest centroid
       double interpolated_value = 0;
 
@@ -162,50 +153,61 @@ namespace WorldBuilder
         {
           return interpolated_value;
         }
-      else if (spherical && in_triangle(triangles[tree.get_nodes()[index_distances_other.min_index].index],in_triangle_precomputed[tree.get_nodes()[index_distances_other.min_index].index],other_point,interpolated_value))
-        {
-          return interpolated_value;
-        }
-      else
-        {
-          // if not found go to closets nodes
-          // Todo: could remove the cosest node, because it was already tested. Could also sort based no distance.
-          for (auto &index_distance: index_distances.vector)
-            {
-              if (in_triangle(triangles[tree.get_nodes()[index_distance.index].index],in_triangle_precomputed[tree.get_nodes()[index_distance.index].index],check_point,interpolated_value))
-                {
-                  return interpolated_value;
-                }
-            }
-          if (spherical)
-            {
-              for (auto &index_distance: index_distances_other.vector)
-                {
-                  if (in_triangle(triangles[tree.get_nodes()[index_distance.index].index],in_triangle_precomputed[tree.get_nodes()[index_distance.index].index],other_point,interpolated_value))
-                    {
-                      return interpolated_value;
-                    }
-                }
-            }
 
-          // if still not found, go through all nodes
-          // Todo: Although this shouldonly very rearly happen, could remove already tested nodes.
-          for (const auto &nodes: tree.get_nodes())
+      Point<2> other_point = check_point;
+      KDTree::IndexDistances index_distances_other;
+      const bool spherical = check_point.get_coordinate_system() == CoordinateSystem::spherical;
+      if (spherical)
+        {
+          other_point[0] += check_point[0] < 0 ? 2.0 * WorldBuilder::Consts::PI : -2.0 * WorldBuilder::Consts::PI;
+          index_distances_other = tree.find_closest_points(other_point);
+
+          if (in_triangle(triangles[tree.get_nodes()[index_distances_other.min_index].index],in_triangle_precomputed[tree.get_nodes()[index_distances_other.min_index].index],other_point,interpolated_value))
             {
-              if (in_triangle(triangles[nodes.index],in_triangle_precomputed[nodes.index],check_point,interpolated_value))
-                {
-                  return interpolated_value;
-                }
-              else  if (spherical && in_triangle(triangles[nodes.index],in_triangle_precomputed[nodes.index],other_point,interpolated_value))
-                {
-                  return interpolated_value;
-                }
+              return interpolated_value;
             }
-          WBAssertThrow(false, "Internal error: The requested point was not in any triangle. "
-                        << "This could be due to rounding errors if the difference between the check point and triangle points are small, "
-                        << "or you are requesting a point ouside the bounderies defined by the additional points. The check point was "
-                        << check_point[0] <<  ":" << check_point[1] << ".");
         }
+
+
+      {
+        // if not found go to closets nodes
+        // Todo: could remove the cosest node, because it was already tested. Could also sort based no distance.
+        for (auto &index_distance: index_distances.vector)
+          {
+            if (in_triangle(triangles[tree.get_nodes()[index_distance.index].index],in_triangle_precomputed[tree.get_nodes()[index_distance.index].index],check_point,interpolated_value))
+              {
+                return interpolated_value;
+              }
+          }
+        if (spherical)
+          {
+            for (auto &index_distance: index_distances_other.vector)
+              {
+                if (in_triangle(triangles[tree.get_nodes()[index_distance.index].index],in_triangle_precomputed[tree.get_nodes()[index_distance.index].index],other_point,interpolated_value))
+                  {
+                    return interpolated_value;
+                  }
+              }
+          }
+
+        // if still not found, go through all nodes
+        // Todo: Although this shouldonly very rearly happen, could remove already tested nodes.
+        for (const auto &nodes: tree.get_nodes())
+          {
+            if (in_triangle(triangles[nodes.index],in_triangle_precomputed[nodes.index],check_point,interpolated_value))
+              {
+                return interpolated_value;
+              }
+            else  if (spherical && in_triangle(triangles[nodes.index],in_triangle_precomputed[nodes.index],other_point,interpolated_value))
+              {
+                return interpolated_value;
+              }
+          }
+        WBAssertThrow(false, "Internal error: The requested point was not in any triangle. "
+                      << "This could be due to rounding errors if the difference between the check point and triangle points are small, "
+                      << "or you are requesting a point ouside the bounderies defined by the additional points. The check point was "
+                      << check_point[0] <<  ":" << check_point[1] << ".");
+      }
       return 0;
     }
   } // namespace Objects
