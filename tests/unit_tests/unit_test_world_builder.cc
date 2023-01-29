@@ -3784,7 +3784,7 @@ TEST_CASE("WorldBuilder Parameters")
 
   {
     Objects::Surface surface(v_at_p_one_value);
-    approval_tests.emplace_back(surface.local_value(Point<2>(0,0,CoordinateSystem::cartesian)));
+    approval_tests.emplace_back(surface.local_value(Point<2>(0,0,CoordinateSystem::cartesian)).interpolated_value);
   }
   std::pair<std::vector<double>,std::vector<double>> v_at_p_one_array_value = prm.get("array value at points one value",additional_points);
 
@@ -3827,16 +3827,16 @@ TEST_CASE("WorldBuilder Parameters")
   {
     Objects::Surface surface(v_at_p_dap);
 
-    approval_tests.emplace_back(surface.local_value(Point<2>(0,0,CoordinateSystem::cartesian)));
-    approval_tests.emplace_back(surface.local_value(Point<2>(0.99,1.99,CoordinateSystem::cartesian)));
-    approval_tests.emplace_back(surface.local_value(Point<2>(1.01,2.01,CoordinateSystem::cartesian)));
-    approval_tests.emplace_back(surface.local_value(Point<2>(0.99,0.99,CoordinateSystem::cartesian)));
-    approval_tests.emplace_back(surface.local_value(Point<2>(1.01,1.01,CoordinateSystem::cartesian)));
-    approval_tests.emplace_back(surface.local_value(Point<2>(2.99,3.99,CoordinateSystem::cartesian)));
-    approval_tests.emplace_back(surface.local_value(Point<2>(2.01,4.01,CoordinateSystem::cartesian)));
-    approval_tests.emplace_back(surface.local_value(Point<2>(-0.5,7.48,CoordinateSystem::cartesian)));
-    approval_tests.emplace_back(surface.local_value(Point<2>(-1,7.6,CoordinateSystem::cartesian)));
-    approval_tests.emplace_back(surface.local_value(Point<2>(-2.4,8.2,CoordinateSystem::cartesian)));
+    approval_tests.emplace_back(surface.local_value(Point<2>(0,0,CoordinateSystem::cartesian)).interpolated_value);
+    approval_tests.emplace_back(surface.local_value(Point<2>(0.99,1.99,CoordinateSystem::cartesian)).interpolated_value);
+    approval_tests.emplace_back(surface.local_value(Point<2>(1.01,2.01,CoordinateSystem::cartesian)).interpolated_value);
+    approval_tests.emplace_back(surface.local_value(Point<2>(0.99,0.99,CoordinateSystem::cartesian)).interpolated_value);
+    approval_tests.emplace_back(surface.local_value(Point<2>(1.01,1.01,CoordinateSystem::cartesian)).interpolated_value);
+    approval_tests.emplace_back(surface.local_value(Point<2>(2.99,3.99,CoordinateSystem::cartesian)).interpolated_value);
+    approval_tests.emplace_back(surface.local_value(Point<2>(2.01,4.01,CoordinateSystem::cartesian)).interpolated_value);
+    approval_tests.emplace_back(surface.local_value(Point<2>(-0.5,7.48,CoordinateSystem::cartesian)).interpolated_value);
+    approval_tests.emplace_back(surface.local_value(Point<2>(-1,7.6,CoordinateSystem::cartesian)).interpolated_value);
+    approval_tests.emplace_back(surface.local_value(Point<2>(-2.4,8.2,CoordinateSystem::cartesian)).interpolated_value);
     CHECK_THROWS_WITH(surface.local_value(Point<2>(11,11,CoordinateSystem::cartesian)), Contains("The requested point was not in any triangle."));
   }
 

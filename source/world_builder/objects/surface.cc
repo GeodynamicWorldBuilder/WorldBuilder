@@ -117,7 +117,9 @@ namespace WorldBuilder
     bool Surface::in_triangle(const std::array<std::array<double,3>,3> &points,
                               const std::array<double,8> &precomputed,
                               const Point<2> check_point,
-                              double &interpolate_value) const
+                              double &interpolate_value,
+                              double &interpolator_s,
+                              double &interpolator_t) const
     {
       double factor = 1e4;
       // based on https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
@@ -128,15 +130,16 @@ namespace WorldBuilder
       if (s_no_area >= -factor*std::numeric_limits<double>::epsilon() && t_no_area >= -factor*std::numeric_limits<double>::epsilon() && s_no_area+t_no_area-precomputed[6]<=precomputed[6]*factor*std::numeric_limits<double>::epsilon())
         {
           // point is in this triangle
-          const double s = precomputed[7]*s_no_area;
-          const double t = precomputed[7]*t_no_area;
-          interpolate_value = points[0][2]*(1-s-t)+points[1][2]*s+points[2][2]*t;
+          interpolator_s = precomputed[7]*s_no_area;
+          interpolator_t = precomputed[7]*t_no_area;
+          interpolate_value = points[0][2]*(1-interpolator_s-interpolator_t)+points[1][2]*interpolator_s+points[2][2]*interpolator_t;
           return true;
         }
       return false;
     }
 
-    double Surface::local_value(const Point<2> check_point) const
+    SurfaceValueInfo
+    Surface::local_value(const Point<2> check_point) const
     {
       if (constant_value)
         {
@@ -148,10 +151,12 @@ namespace WorldBuilder
 
       // try triangle of the closest centroid
       double interpolated_value = 0;
+      double interpolator_s = NaN::DQNAN;
+      double interpolator_t = NaN::DQNAN;
 
-      if (in_triangle(triangles[tree.get_nodes()[index_distances.min_index].index],in_triangle_precomputed[tree.get_nodes()[index_distances.min_index].index],check_point,interpolated_value))
+      if (in_triangle(triangles[tree.get_nodes()[index_distances.min_index].index],in_triangle_precomputed[tree.get_nodes()[index_distances.min_index].index],check_point,interpolated_value,interpolator_s,interpolator_t))
         {
-          return interpolated_value;
+          return SurfaceValueInfo {tree.get_nodes()[index_distances.min_index].index,interpolated_value,interpolator_s,interpolator_t};
         }
 
       Point<2> other_point = check_point;
@@ -162,9 +167,9 @@ namespace WorldBuilder
           other_point[0] += check_point[0] < 0 ? 2.0 * WorldBuilder::Consts::PI : -2.0 * WorldBuilder::Consts::PI;
           index_distances_other = tree.find_closest_points(other_point);
 
-          if (in_triangle(triangles[tree.get_nodes()[index_distances_other.min_index].index],in_triangle_precomputed[tree.get_nodes()[index_distances_other.min_index].index],other_point,interpolated_value))
+          if (in_triangle(triangles[tree.get_nodes()[index_distances_other.min_index].index],in_triangle_precomputed[tree.get_nodes()[index_distances_other.min_index].index],other_point,interpolated_value,interpolator_s,interpolator_t))
             {
-              return interpolated_value;
+              return SurfaceValueInfo {tree.get_nodes()[index_distances_other.min_index].index,interpolated_value,interpolator_s,interpolator_t};
             }
         }
 
@@ -174,18 +179,18 @@ namespace WorldBuilder
         // Todo: could remove the cosest node, because it was already tested. Could also sort based no distance.
         for (auto &index_distance: index_distances.vector)
           {
-            if (in_triangle(triangles[tree.get_nodes()[index_distance.index].index],in_triangle_precomputed[tree.get_nodes()[index_distance.index].index],check_point,interpolated_value))
+            if (in_triangle(triangles[tree.get_nodes()[index_distance.index].index],in_triangle_precomputed[tree.get_nodes()[index_distance.index].index],check_point,interpolated_value,interpolator_s,interpolator_t))
               {
-                return interpolated_value;
+                return SurfaceValueInfo {tree.get_nodes()[index_distance.index].index,interpolated_value,interpolator_s,interpolator_t};
               }
           }
         if (spherical)
           {
             for (auto &index_distance: index_distances_other.vector)
               {
-                if (in_triangle(triangles[tree.get_nodes()[index_distance.index].index],in_triangle_precomputed[tree.get_nodes()[index_distance.index].index],other_point,interpolated_value))
+                if (in_triangle(triangles[tree.get_nodes()[index_distance.index].index],in_triangle_precomputed[tree.get_nodes()[index_distance.index].index],other_point,interpolated_value,interpolator_s,interpolator_t))
                   {
-                    return interpolated_value;
+                    return SurfaceValueInfo {tree.get_nodes()[index_distance.index].index,interpolated_value,interpolator_s,interpolator_t};
                   }
               }
           }
@@ -194,13 +199,13 @@ namespace WorldBuilder
         // Todo: Although this shouldonly very rearly happen, could remove already tested nodes.
         for (const auto &nodes: tree.get_nodes())
           {
-            if (in_triangle(triangles[nodes.index],in_triangle_precomputed[nodes.index],check_point,interpolated_value))
+            if (in_triangle(triangles[nodes.index],in_triangle_precomputed[nodes.index],check_point,interpolated_value,interpolator_s,interpolator_t))
               {
-                return interpolated_value;
+                return SurfaceValueInfo {nodes.index,interpolated_value,interpolator_s,interpolator_t};
               }
-            else  if (spherical && in_triangle(triangles[nodes.index],in_triangle_precomputed[nodes.index],other_point,interpolated_value))
+            else  if (spherical && in_triangle(triangles[nodes.index],in_triangle_precomputed[nodes.index],other_point,interpolated_value,interpolator_s,interpolator_t))
               {
-                return interpolated_value;
+                return SurfaceValueInfo {nodes.index,interpolated_value,interpolator_s,interpolator_t};
               }
           }
         WBAssertThrow(false, "Internal error: The requested point was not in any triangle. "
