@@ -136,6 +136,7 @@ namespace WorldBuilder
                                         std::numeric_limits<double>::max(),
                                         {}
                                        };
+      index_distances.vector.reserve(nodes.size());
 
       find_closest_points_recursive(check_point,0,nodes.size()-1,false,index_distances);
 
@@ -169,7 +170,7 @@ namespace WorldBuilder
               index_distances.min_distance = distance;
             }
 
-          index_distances.vector.push_back({mid, distance});
+          index_distances.vector.emplace_back(IndexDistance {mid, distance});
 
           // Traverse right child
           if (right>mid)
@@ -195,7 +196,7 @@ namespace WorldBuilder
               index_distances.min_distance = distance;
             }
 
-          index_distances.vector.push_back({mid, distance});
+          index_distances.vector.emplace_back(IndexDistance {mid, distance});
 
           // Traverse left child
           if (left<mid)
