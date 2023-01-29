@@ -23,13 +23,38 @@ This file is part of the World Builder.
 #define WORLD_BUILDER_OBJECTSS_SURFACE_H
 
 #include "world_builder/utilities.h"
-
 #include "world_builder/kd_tree.h"
 
 namespace WorldBuilder
 {
   namespace Objects
   {
+    struct SurfaceValueInfo
+    {
+      size_t triangle_index;
+      double interpolated_value;
+      double interpolator_s;
+      double interpolator_t;
+
+      SurfaceValueInfo(
+        size_t triangle_index_,
+        double interpolated_value_,
+        double interpolator_s_,
+        double interpolator_t_)
+        :
+        triangle_index(triangle_index_),
+        interpolated_value(interpolated_value_),
+        interpolator_s(interpolator_s_),
+        interpolator_t(interpolator_t_) {};
+
+      SurfaceValueInfo(double interpolated_value_)
+        :
+        triangle_index(NaN::IQNAN),
+        interpolated_value(interpolated_value_),
+        interpolator_s(NaN::DQNAN),
+        interpolator_t(NaN::DQNAN) {};
+    };
+
     class Surface
     {
       public:
@@ -46,7 +71,7 @@ namespace WorldBuilder
         /**
          * Returns the value of the surface at the check point.
          */
-        double local_value(const Point<2> check_point) const;
+        SurfaceValueInfo local_value(const Point<2> check_point) const;
 
         /**
          * Wether the surface is a constant value or not. This is used for optimalization.
@@ -87,7 +112,9 @@ namespace WorldBuilder
         bool in_triangle(const std::array<std::array<double,3>,3> &points,
                          const std::array<double,8> &precomputed,
                          const Point<2> check_point,
-                         double &interpolate_value) const;
+                         double &interpolate_value,
+                         double &interpolator_s,
+                         double &interpolator_t) const;
     };
   }
 
