@@ -78,7 +78,8 @@ namespace WorldBuilder
     {
       // Calculate the index of this node
       const size_t mid=(left+right)>>1;
-      if (check_point[y_axis] < nodes[mid][y_axis])
+      const Node &node = nodes[mid];
+      if (check_point[y_axis] < node[y_axis])
         {
           // Traverse left child
           if (left<mid)
@@ -87,8 +88,8 @@ namespace WorldBuilder
             }
 
           // Compare node's point to current closest point
-          double distance = sqrt((nodes[mid][0]-check_point[0])*(nodes[mid][0]-check_point[0])
-                                 +(nodes[mid][1]-check_point[1])*(nodes[mid][1]-check_point[1]));
+          const double distance = sqrt((node[0]-check_point[0])*(node[0]-check_point[0])
+                                       +(node[1]-check_point[1])*(node[1]-check_point[1]));
           if (index_distance.distance > distance)
             {
               index_distance.index = mid;
@@ -98,7 +99,7 @@ namespace WorldBuilder
           // Traverse right child
           if (right>mid)
             {
-              if ((nodes[mid][y_axis]-check_point[y_axis]) < index_distance.distance)
+              if ((node[y_axis]-check_point[y_axis]) < index_distance.distance)
                 {
                   find_closest_point_recursive(check_point,mid+1,right,!y_axis,index_distance);
                 }
@@ -111,8 +112,8 @@ namespace WorldBuilder
             find_closest_point_recursive(check_point,mid+1,right,!y_axis,index_distance);
 
           // Compare node's point to current closest point
-          double distance = sqrt((nodes[mid][0]-check_point[0])*(nodes[mid][0]-check_point[0])
-                                 +(nodes[mid][1]-check_point[1])*(nodes[mid][1]-check_point[1]));
+          const double distance = sqrt((node[0]-check_point[0])*(node[0]-check_point[0])
+                                       +(node[1]-check_point[1])*(node[1]-check_point[1]));
           if (index_distance.distance > distance)
             {
               index_distance.index = mid;
@@ -121,7 +122,7 @@ namespace WorldBuilder
 
           // Traverse left child
           if (left<mid)
-            if ((nodes[mid][y_axis]-check_point[y_axis]) < index_distance.distance)
+            if ((node[y_axis]-check_point[y_axis]) < index_distance.distance)
               find_closest_point_recursive(check_point,left,mid-1,!y_axis,index_distance);
         }
     }
@@ -136,6 +137,7 @@ namespace WorldBuilder
                                         std::numeric_limits<double>::max(),
                                         {}
                                        };
+      index_distances.vector.reserve(nodes.size());
 
       find_closest_points_recursive(check_point,0,nodes.size()-1,false,index_distances);
 
@@ -152,7 +154,8 @@ namespace WorldBuilder
     {
       // Calculate the index of this node
       const size_t mid=(left+right)>>1;
-      if (check_point[y_axis] < nodes[mid][y_axis])
+      const Node &node = nodes[mid];
+      if (check_point[y_axis] < node[y_axis])
         {
           // Traverse left child
           if (left<mid)
@@ -161,20 +164,20 @@ namespace WorldBuilder
             }
 
           // Compare node's point to current closest point
-          double distance = sqrt((nodes[mid][0]-check_point[0])*(nodes[mid][0]-check_point[0])
-                                 +(nodes[mid][1]-check_point[1])*(nodes[mid][1]-check_point[1]));
+          const double distance = sqrt((node[0]-check_point[0])*(node[0]-check_point[0])
+                                       +(node[1]-check_point[1])*(node[1]-check_point[1]));
           if (index_distances.min_distance > distance)
             {
               index_distances.min_index = mid;
               index_distances.min_distance = distance;
             }
 
-          index_distances.vector.push_back({mid, distance});
+          index_distances.vector.emplace_back(IndexDistance {mid, distance});
 
           // Traverse right child
           if (right>mid)
             {
-              if ((nodes[mid][y_axis]-check_point[y_axis]) < index_distances.min_distance)
+              if ((node[y_axis]-check_point[y_axis]) < index_distances.min_distance)
                 {
                   find_closest_points_recursive(check_point,mid+1,right,!y_axis,index_distances);
                 }
@@ -187,19 +190,19 @@ namespace WorldBuilder
             find_closest_points_recursive(check_point,mid+1,right,!y_axis,index_distances);
 
           // Compare node's point to current closest point
-          double distance = sqrt((nodes[mid][0]-check_point[0])*(nodes[mid][0]-check_point[0])
-                                 +(nodes[mid][1]-check_point[1])*(nodes[mid][1]-check_point[1]));
+          const double distance = sqrt((node[0]-check_point[0])*(node[0]-check_point[0])
+                                       +(node[1]-check_point[1])*(node[1]-check_point[1]));
           if (index_distances.min_distance > distance)
             {
               index_distances.min_index = mid;
               index_distances.min_distance = distance;
             }
 
-          index_distances.vector.push_back({mid, distance});
+          index_distances.vector.emplace_back(IndexDistance {mid, distance});
 
           // Traverse left child
           if (left<mid)
-            if ((nodes[mid][y_axis]-check_point[y_axis]) < index_distances.min_distance)
+            if ((node[y_axis]-check_point[y_axis]) < index_distances.min_distance)
               find_closest_points_recursive(check_point,left,mid-1,!y_axis,index_distances);
         }
     }
