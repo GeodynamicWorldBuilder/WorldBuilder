@@ -5055,8 +5055,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_section) < 1e-14);
   approval_tests.emplace_back((double)distance_from_planes.section);
   approval_tests.emplace_back((double)distance_from_planes.segment);
-  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers // practically zero
-  approval_tests.emplace_back(distance_from_planes.depth_reference_surface);
+  approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
+  approval_tests.emplace_back(std::fabs(distance_from_planes.depth_reference_surface) > 1e-12 ? distance_from_planes.depth_reference_surface : 0.); // to make sure the approval test have the same characters for very small numbers
   approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[0]);
   approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[1]);
   approval_tests.emplace_back(distance_from_planes.closest_trench_point.get_array()[2]);
