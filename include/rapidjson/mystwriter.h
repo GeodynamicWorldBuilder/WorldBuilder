@@ -177,7 +177,7 @@ class MySTWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, S
 
           if (skip_next_push_back == false)
             {
-              for (unsigned int level = MAX_PATH_LEVEL-path.size(); level != 0; level--)
+              for (size_t level =MAX_PATH_LEVEL-path.size(); level != 0; level--)
                 {
                   begin += ":";
                 }
@@ -198,7 +198,7 @@ class MySTWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, S
           path.push_back(std::to_string(array_number.back()));
           level_type.push_back(0);
 
-          for (unsigned int level = MAX_PATH_LEVEL-path.size(); level != 0; level--)
+          for (size_t level =MAX_PATH_LEVEL-path.size(); level != 0; level--)
             {
               begin += ":";
             }
@@ -214,7 +214,7 @@ class MySTWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, S
           path.push_back(std::to_string(array_number.back()));
           level_type.push_back(0);
 
-          for (unsigned int level = MAX_PATH_LEVEL-path.size(); level != 0; level--)
+          for (size_t level =MAX_PATH_LEVEL-path.size(); level != 0; level--)
             {
               begin += ":";
             }
@@ -225,7 +225,7 @@ class MySTWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, S
         }
       else
         {
-          for (unsigned int level = MAX_PATH_LEVEL-path.size(); level != 0; level--)
+          for (size_t level =MAX_PATH_LEVEL-path.size(); level != 0; level--)
             {
               begin += ":";
             }
@@ -337,7 +337,7 @@ class MySTWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, S
           ( level_type.back() == 3 || level_type.back() == 0))
         {
 
-          for (unsigned int level = MAX_PATH_LEVEL-path.size(); level != 0; level--)
+          for (size_t level =MAX_PATH_LEVEL-path.size(); level != 0; level--)
             {
               WBAssert(path.size() < MAX_PATH_LEVEL, "EA: path size is larger than 90: " << path.size() << ", level = " << level);
               end += ':';
@@ -368,7 +368,7 @@ class MySTWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, S
           // this is a properties starting, so first clear all the itemize
           // the lvel_type.push_back(1) has already been done by the key: properties
 
-          for (unsigned int level = MAX_PATH_LEVEL-path.size(); level != 0; level--)
+          for (size_t level = MAX_PATH_LEVEL-path.size(); level != 0; level--)
             {
               WBAssert(path.size() < MAX_PATH_LEVEL, "SA: path size is larger than 90: " << path.size() << ", level = " << level);
               begin += ":";

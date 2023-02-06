@@ -5,14 +5,24 @@
   "features":
   [
     {
-       "model":"subducting plate", "name":"Antilles slab", "dip point":[-10,10],
+       "model":"subducting plate", "name":"Antilles slab 1", "dip point":[10,-10],
+       "coordinates":[[0,0],[0.1,0.2],[0.2,0.3],[1,1],[1.1,1.1],[10,10],[25,15],[35,35]], 
+       "segments":
+       [
+         {"length":450e3, "thickness":[100e3], "angle":[0,20]},
+         {"length":450e3, "thickness":[100e3], "angle":[20,40]}
+       ],
+       "temperature models":[{"model":"uniform", "temperature":600}]
+    },
+    {
+       "model":"subducting plate", "name":"Antilles slab 2", "dip point":[-10,10],
        "coordinates":[[0,0],[10,10],[25,15],[35,35]], 
        "segments":
        [
-         {"length":450e3, "thickness":[100e3], "angle":[20]},
-         {"length":450e3, "thickness":[100e3], "angle":[40]}
+         {"length":450e3, "thickness":[100e3], "angle":[0,20]},
+         {"length":150e3, "thickness":[100e3], "angle":[20,40]}
        ],
-       "temperature models":[{"model":"uniform", "temperature":600}]
+       "temperature models":[{"model":"uniform", "temperature":400}]
     },
     {
        "model":"subducting plate", "name":"Out model slab", "dip point":[-10,10],
