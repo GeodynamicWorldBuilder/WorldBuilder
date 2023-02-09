@@ -10117,7 +10117,7 @@
 :name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3
 
 - **type**:object
-- **documentation**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical (linear) model is used to define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided in to top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Also note that the parameter "thickness" for the subducting plate segments needs to be defined but is not used. Note that the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
+- **documentation**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
 - **additionalProperties**:false
 - **required**:[model, plate velocity]
 
@@ -10147,7 +10147,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger thatn the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value  of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
+- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger thatn the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/max distance slab top
@@ -10172,27 +10172,27 @@
 :open:
 :name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_plate-velocity
 
-- **default value**:NaN
+- **default value**:0.05
 - **type**:number
-- **documentation**:The velocity with which the plate subducts in meters per year.
+- **documentation**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/coupling depth
 :open:
 :name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_coupling-depth
 
-- **default value**:NaN
+- **default value**:100000.0
 - **type**:number
-- **documentation**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters.
+- **documentation**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters. Default is 100 km.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/shallow dip
+::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/forearc cooling factor
 :open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_shallow-dip
+:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_forearc-cooling-factor
 
-- **default value**:NaN
+- **default value**:1.0
 - **type**:number
-- **documentation**:The average dip of the slab at depths shallower than the coupling depth in degrees. If the shallow slab dip changes with distance along the slab surface, then this will need to be adjusted to get the temperature above and below the coupling depth to match.
+- **documentation**:Increase the value to create thin (~2 km) cold thermal boundary layer above the slab.Any value greater than 1 does NOT meet the instantaneous conservation of mass, but does allow one to account for the history of insulating the forearc from heating up to this point in time. Note younger subducting lithosphere provides less insulation, while thicker, older slabs provide more insulation. Values up to 10 to 30 have been tested and don't cause any other extraneous effects. The larger th value the more you are not meeting the mass conserving criteria, so you don't want to see this affecting the temperature beyond the coupling depth as it will increase the mass of the slab and affect how it sinks.  If you use higher values, you will start to see that this creates a very thick cool layer above the entire slab - if you see this extending beyond the coupling zone reduce the value. You should use a value of 1 first and then only increase as little as possible to cool just the forearc region. Please examine the output temperature carefully. 
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/thermal conductivity
@@ -11059,7 +11059,7 @@
 :name: open_features_items_oneOf_5_temperature-models_items_oneOf_3
 
 - **type**:object
-- **documentation**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical (linear) model is used to define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided in to top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Also note that the parameter "thickness" for the subducting plate segments needs to be defined but is not used. Note that the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
+- **documentation**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
 - **additionalProperties**:false
 - **required**:[model, plate velocity]
 
@@ -11089,7 +11089,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger thatn the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value  of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
+- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger thatn the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/max distance slab top
@@ -11114,27 +11114,27 @@
 :open:
 :name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_plate-velocity
 
-- **default value**:NaN
+- **default value**:0.05
 - **type**:number
-- **documentation**:The velocity with which the plate subducts in meters per year.
+- **documentation**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/coupling depth
 :open:
 :name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_coupling-depth
 
-- **default value**:NaN
+- **default value**:100000.0
 - **type**:number
-- **documentation**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters.
+- **documentation**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters. Default is 100 km.
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/shallow dip
+::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/forearc cooling factor
 :open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_shallow-dip
+:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_forearc-cooling-factor
 
-- **default value**:NaN
+- **default value**:1.0
 - **type**:number
-- **documentation**:The average dip of the slab at depths shallower than the coupling depth in degrees. If the shallow slab dip changes with distance along the slab surface, then this will need to be adjusted to get the temperature above and below the coupling depth to match.
+- **documentation**:Increase the value to create thin (~2 km) cold thermal boundary layer above the slab.Any value greater than 1 does NOT meet the instantaneous conservation of mass, but does allow one to account for the history of insulating the forearc from heating up to this point in time. Note younger subducting lithosphere provides less insulation, while thicker, older slabs provide more insulation. Values up to 10 to 30 have been tested and don't cause any other extraneous effects. The larger th value the more you are not meeting the mass conserving criteria, so you don't want to see this affecting the temperature beyond the coupling depth as it will increase the mass of the slab and affect how it sinks.  If you use higher values, you will start to see that this creates a very thick cool layer above the entire slab - if you see this extending beyond the coupling zone reduce the value. You should use a value of 1 first and then only increase as little as possible to cool just the forearc region. Please examine the output temperature carefully. 
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/thermal conductivity
@@ -12120,7 +12120,7 @@
 :name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3
 
 - **type**:object
-- **documentation**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical (linear) model is used to define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided in to top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Also note that the parameter "thickness" for the subducting plate segments needs to be defined but is not used. Note that the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
+- **documentation**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
 - **additionalProperties**:false
 - **required**:[model, plate velocity]
 
@@ -12150,7 +12150,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger thatn the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value  of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
+- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger thatn the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/max distance slab top
@@ -12175,27 +12175,27 @@
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity
 
-- **default value**:NaN
+- **default value**:0.05
 - **type**:number
-- **documentation**:The velocity with which the plate subducts in meters per year.
+- **documentation**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/coupling depth
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_coupling-depth
 
-- **default value**:NaN
+- **default value**:100000.0
 - **type**:number
-- **documentation**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters.
+- **documentation**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters. Default is 100 km.
 ::::::::::::
 
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/shallow dip
+::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/forearc cooling factor
 :open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_shallow-dip
+:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_forearc-cooling-factor
 
-- **default value**:NaN
+- **default value**:1.0
 - **type**:number
-- **documentation**:The average dip of the slab at depths shallower than the coupling depth in degrees. If the shallow slab dip changes with distance along the slab surface, then this will need to be adjusted to get the temperature above and below the coupling depth to match.
+- **documentation**:Increase the value to create thin (~2 km) cold thermal boundary layer above the slab.Any value greater than 1 does NOT meet the instantaneous conservation of mass, but does allow one to account for the history of insulating the forearc from heating up to this point in time. Note younger subducting lithosphere provides less insulation, while thicker, older slabs provide more insulation. Values up to 10 to 30 have been tested and don't cause any other extraneous effects. The larger th value the more you are not meeting the mass conserving criteria, so you don't want to see this affecting the temperature beyond the coupling depth as it will increase the mass of the slab and affect how it sinks.  If you use higher values, you will start to see that this creates a very thick cool layer above the entire slab - if you see this extending beyond the coupling zone reduce the value. You should use a value of 1 first and then only increase as little as possible to cool just the forearc region. Please examine the output temperature carefully. 
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/thermal conductivity
@@ -13062,7 +13062,7 @@
 :name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3
 
 - **type**:object
-- **documentation**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical (linear) model is used to define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided in to top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Also note that the parameter "thickness" for the subducting plate segments needs to be defined but is not used. Note that the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
+- **documentation**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
 - **additionalProperties**:false
 - **required**:[model, plate velocity]
 
@@ -13092,7 +13092,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger thatn the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value  of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
+- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger thatn the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/max distance slab top
@@ -13117,27 +13117,27 @@
 :open:
 :name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_plate-velocity
 
-- **default value**:NaN
+- **default value**:0.05
 - **type**:number
-- **documentation**:The velocity with which the plate subducts in meters per year.
+- **documentation**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/coupling depth
 :open:
 :name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_coupling-depth
 
-- **default value**:NaN
+- **default value**:100000.0
 - **type**:number
-- **documentation**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters.
+- **documentation**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters. Default is 100 km.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/shallow dip
+::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/forearc cooling factor
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_shallow-dip
+:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_forearc-cooling-factor
 
-- **default value**:NaN
+- **default value**:1.0
 - **type**:number
-- **documentation**:The average dip of the slab at depths shallower than the coupling depth in degrees. If the shallow slab dip changes with distance along the slab surface, then this will need to be adjusted to get the temperature above and below the coupling depth to match.
+- **documentation**:Increase the value to create thin (~2 km) cold thermal boundary layer above the slab.Any value greater than 1 does NOT meet the instantaneous conservation of mass, but does allow one to account for the history of insulating the forearc from heating up to this point in time. Note younger subducting lithosphere provides less insulation, while thicker, older slabs provide more insulation. Values up to 10 to 30 have been tested and don't cause any other extraneous effects. The larger th value the more you are not meeting the mass conserving criteria, so you don't want to see this affecting the temperature beyond the coupling depth as it will increase the mass of the slab and affect how it sinks.  If you use higher values, you will start to see that this creates a very thick cool layer above the entire slab - if you see this extending beyond the coupling zone reduce the value. You should use a value of 1 first and then only increase as little as possible to cool just the forearc region. Please examine the output temperature carefully. 
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/thermal conductivity
