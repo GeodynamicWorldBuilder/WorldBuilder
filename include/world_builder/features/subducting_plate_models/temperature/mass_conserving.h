@@ -99,7 +99,7 @@ namespace WorldBuilder
             double density;
             double plate_velocity;
             double mantle_coupling_depth;
-            double shallow_average_dip;
+            double forearc_cooling_factor;
             double thermal_conductivity;
             double thermal_expansion_coefficient;
             double specific_heat;
