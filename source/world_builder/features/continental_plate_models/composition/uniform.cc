@@ -46,8 +46,7 @@ namespace WorldBuilder
         Uniform::Uniform(WorldBuilder::World *world_)
           :
           min_depth(NaN::DSNAN),
-          max_depth(NaN::DSNAN),
-          operation("")
+          max_depth(NaN::DSNAN)
         {
           this->world = world_;
           this->name = "uniform";
@@ -77,10 +76,10 @@ namespace WorldBuilder
           prm.declare_entry("fractions", Types::Array(Types::Double(1.0),1),
                             "TA list of compositional fractions corresponding to the compositions list.");
 
-          prm.declare_entry("operation", Types::String("replace",std::vector<std::string> {"replace"}),
+          prm.declare_entry("operation", Types::String("replace", std::vector<std::string> {"replace", "replace defined only", "add", "subtract"}),
                             "Whether the value should replace any value previously defined at this location (replace) or "
-                            "add the value to the previously define value (add, not implemented). Replacing implies that all values not "
-                            "explicitly defined are set to zero.");
+                            "add the value to the previously define value. Replacing implies that all compositions not "
+                            "explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.");
 
         }
 
@@ -94,7 +93,7 @@ namespace WorldBuilder
 
           compositions = prm.get_vector<unsigned int>("compositions");
           fractions = prm.get_vector<double>("fractions");
-          operation = prm.get<std::string>("operation");
+          operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
 
           WBAssertThrow(compositions.size() == fractions.size(),
                         "There are not the same amount of compositions and fractions.");
@@ -121,11 +120,11 @@ namespace WorldBuilder
                     {
                       if (compositions[i] == composition_number)
                         {
-                          return fractions[i];
+                          return Utilities::apply_operation(operation,composition_,fractions[i]);
                         }
                     }
 
-                  if (operation == "replace")
+                  if (operation == Utilities::Operations::REPLACE)
                     return 0.0;
                 }
             }

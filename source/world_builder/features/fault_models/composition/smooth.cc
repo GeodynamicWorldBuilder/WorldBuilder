@@ -70,10 +70,10 @@ namespace WorldBuilder
                             "The composition fraction at the sides of this feature.");
           prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
                             "A list with the labels of the composition which are present there.");
-          prm.declare_entry("operation", Types::String("replace", std::vector<std::string> {"replace"}),
+          prm.declare_entry("operation", Types::String("replace", std::vector<std::string> {"replace", "replace defined only", "add", "subtract"}),
                             "Whether the value should replace any value previously defined at this location (replace) or "
-                            "add the value to the previously define value (add, not implemented). Replacing implies that all values not "
-                            "explicitly defined are set to zero.");
+                            "add the value to the previously define value. Replacing implies that all compositions not "
+                            "explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.");
         }
 
         void
@@ -114,6 +114,10 @@ namespace WorldBuilder
                   return Utilities::apply_operation(operation,composition_,composition);
                 }
             }
+
+          if (operation == Utilities::Operations::REPLACE)
+            return 0.0;
+
           return composition;
         }
 

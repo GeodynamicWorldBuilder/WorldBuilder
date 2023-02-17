@@ -23,6 +23,7 @@
 
 #include "world_builder/features/oceanic_plate_models/composition/interface.h"
 #include "world_builder/objects/surface.h"
+#include "world_builder/features/utilities.h"
 
 
 namespace WorldBuilder
@@ -86,7 +87,7 @@ namespace WorldBuilder
             Objects::Surface max_depth_surface;
             std::vector<unsigned int> compositions;
             std::vector<double> fractions;
-            std::string operation;
+            Utilities::Operations operation;
 
         };
       } // namespace Composition

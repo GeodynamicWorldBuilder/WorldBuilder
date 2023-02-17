@@ -84,7 +84,7 @@ namespace WorldBuilder
             double max_depth;
             std::vector<unsigned int> compositions;
             std::vector<double> fractions;
-            std::string operation;
+            Utilities::Operations operation;
 
         };
       } // namespace Composition
