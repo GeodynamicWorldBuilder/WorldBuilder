@@ -197,9 +197,9 @@ namespace WorldBuilder
                                                                                                        max_depth_local);
 
                               WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Composition is not a number: " << output[entry_in_output[i_property]]
-                                       << ", based on a temperature model with the name " << composition_model->get_name());
+                                       << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
                               WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Composition is not a finite: " << output[entry_in_output[i_property]]
-                                       << ", based on a temperature model with the name " << composition_model->get_name());
+                                       << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
 
                             }
 

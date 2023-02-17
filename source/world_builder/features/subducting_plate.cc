@@ -579,9 +579,9 @@ namespace WorldBuilder
                                                                                                  additional_parameters);
 
                                 WBAssert(!std::isnan(composition_current_section), "Composition_current_section is not a number: " << composition_current_section
-                                         << ", based on a temperature model with the name " << composition_model->get_name());
+                                         << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
                                 WBAssert(std::isfinite(composition_current_section), "Composition_current_section is not a finite: " << composition_current_section
-                                         << ", based on a temperature model with the name " << composition_model->get_name());
+                                         << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
 
                               }
 
@@ -597,9 +597,9 @@ namespace WorldBuilder
                                                                                               additional_parameters);
 
                                 WBAssert(!std::isnan(composition_next_section), "Composition_next_section is not a number: " << composition_next_section
-                                         << ", based on a temperature model with the name " << composition_model->get_name());
+                                         << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
                                 WBAssert(std::isfinite(composition_next_section), "Composition_next_section is not a finite: " << composition_next_section
-                                         << ", based on a temperature model with the name " << composition_model->get_name());
+                                         << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
 
                               }
 

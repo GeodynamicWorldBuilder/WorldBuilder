@@ -133,6 +133,15 @@ namespace WorldBuilder
                                                  (depth - min_depth_local) *
                                                  ((bottom_temperature_local - top_temperature_local) / (max_depth_local_local - min_depth_local_local));
 
+                  WBAssert(!std::isnan(new_temperature), "Temparture is not a number: " << new_temperature
+                           << ", based on a temperature model with the name " << this->name);
+                  WBAssert(std::isfinite(new_temperature), "Temparture is not a finite: " << new_temperature
+                           << ", based on a temperature model with the name " << this->name
+                           << ", top_temperature_local = " << top_temperature_local << ", depth = " << depth << ", min_depth_local = " << min_depth_local
+                           << ", bottom_temperature_local= " << bottom_temperature_local << ", top_temperature_local=" << top_temperature_local
+                           << ",max_depth_local_local=" << max_depth_local_local << ", min_depth_local_local =" << min_depth_local_local
+                           << ", feature_max_depth = " << feature_max_depth << ", feature_max_depth = " << feature_max_depth);
+
                   return Utilities::apply_operation(operation,temperature_,new_temperature);
                 }
             }
