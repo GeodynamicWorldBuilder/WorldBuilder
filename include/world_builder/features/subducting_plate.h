@@ -36,6 +36,7 @@ namespace WorldBuilder
 
   namespace Features
   {
+    using namespace FeatureUtilities;
     namespace SubductingPlateModels
     {
       namespace Composition

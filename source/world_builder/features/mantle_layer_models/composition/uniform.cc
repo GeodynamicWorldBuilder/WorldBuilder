@@ -86,7 +86,7 @@ namespace WorldBuilder
           max_depth = max_depth_surface.maximum;
           compositions = prm.get_vector<unsigned int>("compositions");
           fractions = prm.get_vector<double>("fractions");
-          operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
+          operation = string_operations_to_enum(prm.get<std::string>("operation"));
 
           WBAssertThrow(compositions.size() == fractions.size(),
                         "There are not the same amount of compositions and fractions.");
@@ -113,11 +113,11 @@ namespace WorldBuilder
                     {
                       if (compositions[i] == composition_number)
                         {
-                          return Utilities::apply_operation(operation,composition_,fractions[i]);
+                          return apply_operation(operation,composition_,fractions[i]);
                         }
                     }
 
-                  if (operation == Utilities::Operations::REPLACE)
+                  if (operation == Operations::REPLACE)
                     return 0.0;
                 }
             }

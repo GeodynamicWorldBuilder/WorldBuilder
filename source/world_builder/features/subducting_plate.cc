@@ -512,7 +512,7 @@ namespace WorldBuilder
                   distance_along_plane <= max_slab_length)
                 {
                   // Inside the slab!
-                  const Features::Utilities::AdditionalParameters additional_parameters = {max_slab_length,thickness_local};
+                  const Features::AdditionalParameters additional_parameters = {max_slab_length,thickness_local};
                   for (unsigned int i_property = 0; i_property < properties.size(); ++i_property)
                     {
                       switch (properties[i_property][0])

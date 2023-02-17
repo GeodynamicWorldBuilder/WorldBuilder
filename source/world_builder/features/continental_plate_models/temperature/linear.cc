@@ -37,6 +37,7 @@ namespace WorldBuilder
 
   namespace Features
   {
+    using namespace FeatureUtilities;
     namespace ContinentalPlateModels
     {
       namespace Temperature
@@ -47,7 +48,7 @@ namespace WorldBuilder
           max_depth(NaN::DSNAN),
           top_temperature(NaN::DSNAN),
           bottom_temperature(NaN::DSNAN),
-          operation(Utilities::Operations::REPLACE)
+          operation(Operations::REPLACE)
         {
           this->world = world_;
           this->name = "linear";
@@ -89,7 +90,7 @@ namespace WorldBuilder
           max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
           max_depth = max_depth_surface.maximum;
           WBAssert(max_depth >= min_depth, "max depth needs to be larger or equal to min depth.");
-          operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
+          operation = string_operations_to_enum(prm.get<std::string>("operation"));
           top_temperature = prm.get<double>("top temperature");
           bottom_temperature = prm.get<double>("bottom temperature");
         }
@@ -142,7 +143,7 @@ namespace WorldBuilder
                            << ",max_depth_local_local=" << max_depth_local_local << ", min_depth_local_local =" << min_depth_local_local
                            << ", feature_max_depth = " << feature_max_depth << ", feature_max_depth = " << feature_max_depth);
 
-                  return Utilities::apply_operation(operation,temperature_,new_temperature);
+                  return apply_operation(operation,temperature_,new_temperature);
                 }
             }
 

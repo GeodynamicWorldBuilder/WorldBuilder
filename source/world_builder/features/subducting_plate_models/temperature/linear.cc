@@ -43,7 +43,7 @@ namespace WorldBuilder
           max_depth(NaN::DSNAN),
           top_temperature(NaN::DSNAN),
           bottom_temperature(NaN::DSNAN),
-          operation(Utilities::Operations::REPLACE)
+          operation(Operations::REPLACE)
         {
           this->world = world_;
           this->name = "linear";
@@ -82,7 +82,7 @@ namespace WorldBuilder
           min_depth = prm.get<double>("min distance slab top");
           max_depth = prm.get<double>("max distance slab top");
           WBAssert(max_depth >= min_depth, "max depth needs to be larger or equal to min depth.");
-          operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
+          operation = string_operations_to_enum(prm.get<std::string>("operation"));
           top_temperature = prm.get<double>("top temperature");
           bottom_temperature = prm.get<double>("bottom temperature");
         }
@@ -96,7 +96,7 @@ namespace WorldBuilder
                                 const double /*feature_min_depth*/,
                                 const double /*feature_max_depth*/,
                                 const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_plane,
-                                const Utilities::AdditionalParameters & /*additional_paramters*/) const
+                                const AdditionalParameters & /*additional_paramters*/) const
         {
           if (distance_from_plane.distance_from_plane <= max_depth && distance_from_plane.distance_from_plane >= min_depth)
             {
@@ -123,7 +123,7 @@ namespace WorldBuilder
               const double new_temperature = top_temperature_local +
                                              (distance_from_plane.distance_from_plane - min_depth_local) *
                                              ((bottom_temperature_local - top_temperature_local) / (max_depth_local - min_depth_local));
-              return Utilities::apply_operation(operation,temperature_,new_temperature);
+              return apply_operation(operation,temperature_,new_temperature);
 
 
             }

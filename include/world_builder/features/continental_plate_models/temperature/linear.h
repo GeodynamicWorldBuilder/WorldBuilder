@@ -22,7 +22,7 @@
 
 
 #include "world_builder/features/continental_plate_models/temperature/interface.h"
-#include "world_builder/features/utilities.h"
+#include "world_builder/features/feature_utilities.h"
 #include "world_builder/objects/surface.h"
 
 
@@ -31,6 +31,7 @@ namespace WorldBuilder
 
   namespace Features
   {
+    using namespace FeatureUtilities;
     namespace ContinentalPlateModels
     {
       namespace Temperature
@@ -87,7 +88,7 @@ namespace WorldBuilder
             Objects::Surface max_depth_surface;
             double top_temperature;
             double bottom_temperature;
-            Utilities::Operations operation;
+            Operations operation;
 
         };
       } // namespace Temperature

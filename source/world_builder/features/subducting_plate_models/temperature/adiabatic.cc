@@ -44,7 +44,7 @@ namespace WorldBuilder
           potential_mantle_temperature(NaN::DSNAN),
           thermal_expansion_coefficient(NaN::DSNAN),
           specific_heat(NaN::DSNAN),
-          operation(Utilities::Operations::REPLACE)
+          operation(Operations::REPLACE)
         {
           this->world = world_;
           this->name = "adiabatic";
@@ -87,7 +87,7 @@ namespace WorldBuilder
 
           min_depth = prm.get<double>("min distance slab top");
           max_depth = prm.get<double>("max distance slab top");
-          operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
+          operation = string_operations_to_enum(prm.get<std::string>("operation"));
 
           potential_mantle_temperature = prm.get<double>("potential mantle temperature");
           if (potential_mantle_temperature < 0)
@@ -129,7 +129,7 @@ namespace WorldBuilder
                                    const double  /*feature_min_depth*/,
                                    const double  /*feature_max_depth*/,
                                    const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
-                                   const Utilities::AdditionalParameters & /*additional_paramters*/) const
+                                   const AdditionalParameters & /*additional_paramters*/) const
         {
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
@@ -151,7 +151,7 @@ namespace WorldBuilder
               WBAssert(std::isfinite(adabatic_temperature),
                        "adabatic_temperature is not a finite: " << adabatic_temperature << '.');
 
-              return Utilities::apply_operation(operation,temperature_,adabatic_temperature);
+              return apply_operation(operation,temperature_,adabatic_temperature);
             }
 
 

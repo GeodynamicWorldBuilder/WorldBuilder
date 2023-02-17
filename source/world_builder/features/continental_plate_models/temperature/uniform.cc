@@ -46,7 +46,7 @@ namespace WorldBuilder
           min_depth(NaN::DSNAN),
           max_depth(NaN::DSNAN),
           temperature(NaN::DSNAN),
-          operation(Utilities::Operations::REPLACE)
+          operation(Operations::REPLACE)
         {
           this->world = world_;
           this->name = "uniform";
@@ -83,7 +83,7 @@ namespace WorldBuilder
           min_depth = min_depth_surface.minimum;
           max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
           max_depth = max_depth_surface.maximum;
-          operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
+          operation = string_operations_to_enum(prm.get<std::string>("operation"));
           temperature = prm.get<double>("temperature");
         }
 
@@ -103,7 +103,7 @@ namespace WorldBuilder
             {
               if (depth <= max_depth && depth >= min_depth)
                 {
-                  return Utilities::apply_operation(operation,temperature_,temperature);
+                  return apply_operation(operation,temperature_,temperature);
                 }
             }
           return temperature_;

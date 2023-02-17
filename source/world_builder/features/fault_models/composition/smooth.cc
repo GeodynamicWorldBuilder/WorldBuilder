@@ -45,7 +45,7 @@ namespace WorldBuilder
           :
           min_distance(NaN::DSNAN),
           side_distance(NaN::DSNAN),
-          operation(Utilities::Operations::REPLACE)
+          operation(Operations::REPLACE)
         {
           this->world = world_;
           this->name = "smooth";
@@ -82,7 +82,7 @@ namespace WorldBuilder
           min_distance = prm.get<double>("min distance fault center");
           side_distance = prm.get<double>("side distance fault center");
           WBAssert(side_distance >= min_distance, "distance at the side needs to be larger or equal than the min distance.");
-          operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
+          operation = string_operations_to_enum(prm.get<std::string>("operation"));
           center_fraction = prm.get_vector<double>("center fractions");
           side_fraction = prm.get_vector<double>("side fractions");
           compositions = prm.get_vector<unsigned int>("compositions");
@@ -97,7 +97,7 @@ namespace WorldBuilder
                                  const double ,
                                  const double ,
                                  const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
-                                 const Utilities::AdditionalParameters &) const
+                                 const AdditionalParameters &) const
         {
           double composition = composition_;
 
@@ -111,11 +111,11 @@ namespace WorldBuilder
                   composition = (center_fraction[i] - side_fraction[i]) * ( 1 - std::tanh(10 * (distance_from_planes.distance_from_plane
                                                                                                 - side_distance/2)/side_distance ) )/2 ;
 
-                  return Utilities::apply_operation(operation,composition_,composition);
+                  return apply_operation(operation,composition_,composition);
                 }
             }
 
-          if (operation == Utilities::Operations::REPLACE)
+          if (operation == Operations::REPLACE)
             return 0.0;
 
           return composition;

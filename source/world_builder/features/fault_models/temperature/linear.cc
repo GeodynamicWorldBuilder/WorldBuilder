@@ -43,7 +43,7 @@ namespace WorldBuilder
           max_depth(NaN::DSNAN),
           center_temperature(NaN::DSNAN),
           side_temperature(NaN::DSNAN),
-          operation(Utilities::Operations::REPLACE)
+          operation(Operations::REPLACE)
         {
           this->world = world_;
           this->name = "linear";
@@ -83,7 +83,7 @@ namespace WorldBuilder
           min_depth = prm.get<double>("min distance fault center");
           max_depth = prm.get<double>("max distance fault center");
           WBAssert(max_depth >= min_depth, "max depth needs to be larger or equal to min depth.");
-          operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
+          operation = string_operations_to_enum(prm.get<std::string>("operation"));
           center_temperature = prm.get<double>("center temperature");
           side_temperature = prm.get<double>("side temperature");
         }
@@ -97,7 +97,7 @@ namespace WorldBuilder
                                 const double /*feature_min_depth*/,
                                 const double /*feature_max_depth*/,
                                 const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
-                                const Utilities::AdditionalParameters & /*additional_paramters*/) const
+                                const AdditionalParameters & /*additional_paramters*/) const
         {
 
           if (std::fabs(distance_from_planes.distance_from_plane) <= max_depth && std::fabs(distance_from_planes.distance_from_plane) >= min_depth)
@@ -125,7 +125,7 @@ namespace WorldBuilder
                                                (std::fabs(distance_from_planes.distance_from_plane) - min_depth_local) *
                                                ((side_temperature_local - center_temperature_local) / (max_depth_local - min_depth_local));
 
-              return Utilities::apply_operation(operation,temperature_,new_temperature);
+              return apply_operation(operation,temperature_,new_temperature);
 
             }
 

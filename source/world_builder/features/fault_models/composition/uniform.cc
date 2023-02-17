@@ -35,6 +35,7 @@ namespace WorldBuilder
 
   namespace Features
   {
+    using namespace FeatureUtilities;
     namespace FaultModels
     {
       namespace Composition
@@ -82,7 +83,7 @@ namespace WorldBuilder
           max_depth = prm.get<double>("max distance fault center");
           compositions = prm.get_vector<unsigned int>("compositions");
           fractions = prm.get_vector<double>("fractions");
-          operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
+          operation = string_operations_to_enum(prm.get<std::string>("operation"));
 
           WBAssertThrow(compositions.size() == fractions.size(),
                         "There are not the same amount of compositions and fractions.");
@@ -97,7 +98,7 @@ namespace WorldBuilder
                                  const double  /*feature_min_depth*/,
                                  const double  /*feature_max_depth*/,
                                  const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_plane,
-                                 const Utilities::AdditionalParameters & /*additional_paramters*/) const
+                                 const AdditionalParameters & /*additional_paramters*/) const
         {
           double composition = composition_;
           if (std::fabs(distance_from_plane.distance_from_plane) <= max_depth && std::fabs(distance_from_plane.distance_from_plane) >= min_depth)
@@ -106,11 +107,11 @@ namespace WorldBuilder
                 {
                   if (compositions[i] == composition_number)
                     {
-                      return Utilities::apply_operation(operation,composition_,fractions[i]);
+                      return apply_operation(operation,composition_,fractions[i]);
                     }
                 }
 
-              if (operation == Utilities::Operations::REPLACE)
+              if (operation == Operations::REPLACE)
                 return 0.0;
             }
           return composition;
