@@ -527,9 +527,9 @@ namespace WorldBuilder
                                                                                                  additional_parameters);
 
                                 WBAssert(!std::isnan(temperature_current_section), "Temparture is not a number: " << temperature_current_section
-                                         << ", based on a temperature model with the name " << temperature_model->get_name());
+                                         << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
                                 WBAssert(std::isfinite(temperature_current_section), "Temparture is not a finite: " << temperature_current_section
-                                         << ", based on a temperature model with the name " << temperature_model->get_name());
+                                         << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
 
                               }
 
@@ -545,9 +545,9 @@ namespace WorldBuilder
                                                                                               additional_parameters);
 
                                 WBAssert(!std::isnan(temperature_next_section), "Temparture is not a number: " << temperature_next_section
-                                         << ", based on a temperature model with the name " << temperature_model->get_name());
+                                         << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
                                 WBAssert(std::isfinite(temperature_next_section), "Temparture is not a finite: " << temperature_next_section
-                                         << ", based on a temperature model with the name " << temperature_model->get_name());
+                                         << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
 
                               }
 
