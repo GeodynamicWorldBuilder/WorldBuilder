@@ -31,6 +31,7 @@ namespace WorldBuilder
       {
         if (operation == "add") return Operations::ADD;
         if (operation == "subtract") return Operations::SUBTRACT;
+        if (operation == "replace defined only") return Operations::REPLACE_DEFINED_ONLY;
 
         WBAssert(operation == "replace", "Could not find operation: " << operation << '.');
         return Operations::REPLACE;

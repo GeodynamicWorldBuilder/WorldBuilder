@@ -33,7 +33,7 @@ namespace WorldBuilder
     {
       enum class Operations
       {
-        REPLACE,ADD,SUBTRACT
+        REPLACE,ADD,SUBTRACT,REPLACE_DEFINED_ONLY
       };
 
       /**
@@ -54,6 +54,7 @@ namespace WorldBuilder
         switch (operation)
           {
             case Utilities::Operations::REPLACE:
+            case Utilities::Operations::REPLACE_DEFINED_ONLY:
               return new_value;
               break;
 
