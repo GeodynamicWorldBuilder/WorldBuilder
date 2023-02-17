@@ -1271,8 +1271,8 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, only replace defined, add, subtract]
 ::::::::::::::::
 
 
@@ -2285,8 +2285,8 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, only replace defined, add, subtract]
 ::::::::::::::
 
 
@@ -2367,8 +2367,8 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, only replace defined, add, subtract]
 ::::::::::::::
 
 
@@ -2958,8 +2958,8 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, only replace defined, add, subtract]
 ::::::::::::::::
 
 
@@ -3040,8 +3040,8 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, only replace defined, add, subtract]
 ::::::::::::::::
 
 
@@ -3735,8 +3735,8 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, only replace defined, add, subtract]
 ::::::::::::
 
 
@@ -3817,8 +3817,8 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, only replace defined, add, subtract]
 ::::::::::::
 
 
@@ -4408,8 +4408,8 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, only replace defined, add, subtract]
 ::::::::::::::
 
 
@@ -4490,8 +4490,8 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, only replace defined, add, subtract]
 ::::::::::::::
 
 
@@ -5829,8 +5829,8 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, only replace defined, add, subtract]
 ::::::::::::::::
 
 
@@ -8114,8 +8114,8 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, only replace defined, add, subtract]
 ::::::::::::::::
 
 
@@ -9381,8 +9381,8 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, only replace defined, add, subtract]
 ::::::::::::::
 
 
@@ -10225,8 +10225,8 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, only replace defined, add, subtract]
 ::::::::::::::::
 
 
@@ -11173,8 +11173,8 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, only replace defined, add, subtract]
 ::::::::::::
 
 
@@ -12017,8 +12017,8 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, only replace defined, add, subtract]
 ::::::::::::::
 
 
