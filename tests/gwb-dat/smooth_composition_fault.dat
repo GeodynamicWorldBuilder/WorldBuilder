@@ -2,7 +2,7 @@
 # file. 
 # Now define parameters:
 # dim = 3
-# compositions = 1
+# compositions = 2
 # grain compositions = 0
 # number of grains = 0
 # convert spherical = true
