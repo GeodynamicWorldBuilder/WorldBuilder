@@ -431,7 +431,6 @@ namespace WorldBuilder
                           est_test = est-update*line_search;
                           estimate_point = a*est_test*est_test*est_test+b*est_test*est_test+c*est_test+d;
 
-                          double cos_lat = cos(estimate_point[1]);
                           sin_d_long_h = sin((estimate_point[0]-cp[0])*0.5);
                           sin_d_lat_h = sin((estimate_point[1]-cp[1])*0.5);
                           squared_distance_cartesian_test = sin_d_lat_h*sin_d_lat_h+sin_d_long_h*sin_d_long_h*cos_cp_lat*cos(estimate_point[1]-cp[1]);
@@ -458,7 +457,6 @@ namespace WorldBuilder
                                   est_test = est-update*line_search;
                                   estimate_point = a*est_test*est_test*est_test+b*est_test*est_test+c*est_test+d;
 
-                                  cos_lat = cos(estimate_point[1]);
                                   sin_d_long_h = sin((estimate_point[0]-cp[0])*0.5);
                                   sin_d_lat_h = sin((estimate_point[1]-cp[1])*0.5);
                                   squared_distance_cartesian_test_previous = sin_d_lat_h*sin_d_lat_h+sin_d_long_h*sin_d_long_h*cos_cp_lat*cos(estimate_point[1]-cp[1]);
