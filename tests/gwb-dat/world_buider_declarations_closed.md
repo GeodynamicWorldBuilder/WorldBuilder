@@ -1272,7 +1272,7 @@
 - **default value**:replace
 - **type**:string
 - **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-- **enum**:[replace, only replace defined, add, subtract]
+- **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::::
 
 
@@ -2286,7 +2286,7 @@
 - **default value**:replace
 - **type**:string
 - **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-- **enum**:[replace, only replace defined, add, subtract]
+- **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::
 
 
@@ -2368,7 +2368,7 @@
 - **default value**:replace
 - **type**:string
 - **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-- **enum**:[replace, only replace defined, add, subtract]
+- **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::
 
 
@@ -2959,7 +2959,7 @@
 - **default value**:replace
 - **type**:string
 - **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-- **enum**:[replace, only replace defined, add, subtract]
+- **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::::
 
 
@@ -3041,7 +3041,7 @@
 - **default value**:replace
 - **type**:string
 - **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-- **enum**:[replace, only replace defined, add, subtract]
+- **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::::
 
 
@@ -3736,7 +3736,7 @@
 - **default value**:replace
 - **type**:string
 - **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-- **enum**:[replace, only replace defined, add, subtract]
+- **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::
 
 
@@ -3818,7 +3818,7 @@
 - **default value**:replace
 - **type**:string
 - **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-- **enum**:[replace, only replace defined, add, subtract]
+- **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::
 
 
@@ -4409,7 +4409,7 @@
 - **default value**:replace
 - **type**:string
 - **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-- **enum**:[replace, only replace defined, add, subtract]
+- **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::
 
 
@@ -4491,7 +4491,7 @@
 - **default value**:replace
 - **type**:string
 - **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-- **enum**:[replace, only replace defined, add, subtract]
+- **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::
 
 
@@ -5830,7 +5830,7 @@
 - **default value**:replace
 - **type**:string
 - **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-- **enum**:[replace, only replace defined, add, subtract]
+- **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::::
 
 
@@ -8115,7 +8115,7 @@
 - **default value**:replace
 - **type**:string
 - **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-- **enum**:[replace, only replace defined, add, subtract]
+- **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::::
 
 
@@ -9311,7 +9311,7 @@
 :name: closed_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **documentation**:Compositional model object
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -9321,7 +9321,7 @@
 - **default value**:
 - **type**:string
 - **documentation**:The name of the composition model.
-- **enum**:[uniform]
+- **enum**:[smooth]
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/min distance slab top
@@ -9329,15 +9329,51 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **documentation**:The distance in meters from which the composition of this layer is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/max distance slab top
 :name: closed_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_max-distance-slab-top
 
-- **default value**:1.7976931348623157e308
+- **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **documentation**:The distance in meters from which the composition of this layer is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/top fractions
+:name: closed_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_top-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:The composition fraction at the top of the slab (layer).
+:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/top fractions/items
+:name: closed_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_top-fractions_items
+
+- **default value**:1.0
+- **type**:number
+- **documentation**:
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/bottom fractions
+:name: closed_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_bottom-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:The composition fraction at the bottom of the slab (layer).
+:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/bottom fractions/items
+:name: closed_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_bottom-fractions_items
+
+- **default value**:0.0
+- **type**:number
+- **documentation**:
+:::::::::::::
+
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/compositions
@@ -9358,16 +9394,80 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/fractions
-:name: closed_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_fractions
+::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/operation
+:name: closed_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_operation
+
+- **default value**:replace
+- **type**:string
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, replace defined only, add, subtract]
+::::::::::::::
+
+
+
+:::::::::::::::
+
+:::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2
+:name: closed_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2
+
+- **type**:object
+- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2/model
+:name: closed_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2_model
+
+- **default value**:
+- **type**:string
+- **documentation**:The name of the composition model.
+- **enum**:[uniform]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2/min distance slab top
+:name: closed_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **documentation**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2/max distance slab top
+:name: closed_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **documentation**:todo The depth in meters to which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2/compositions
+:name: closed_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:A list with the labels of the composition which are present there.
+:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2/compositions/items
+:name: closed_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **documentation**:
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2/fractions
+:name: closed_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2_fractions
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **documentation**:TA list of compositional fractions corresponding to the compositions list.
-:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/fractions/items
-:name: closed_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_fractions_items
+:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2/fractions/items
+:name: closed_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2_fractions_items
 
 - **default value**:1.0
 - **type**:number
@@ -9376,13 +9476,13 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/operation
-:name: closed_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_operation
+::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2/operation
+:name: closed_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2_operation
 
 - **default value**:replace
 - **type**:string
 - **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-- **enum**:[replace, only replace defined, add, subtract]
+- **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::
 
 
@@ -10155,7 +10255,7 @@
 :name: closed_features_items_oneOf_5_composition-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **documentation**:Compositional model object
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -10165,7 +10265,7 @@
 - **default value**:
 - **type**:string
 - **documentation**:The name of the composition model.
-- **enum**:[uniform]
+- **enum**:[smooth]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/min distance slab top
@@ -10173,15 +10273,51 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **documentation**:The distance in meters from which the composition of this layer is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/max distance slab top
 :name: closed_features_items_oneOf_5_composition-models_items_oneOf_1_max-distance-slab-top
 
-- **default value**:1.7976931348623157e308
+- **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **documentation**:The distance in meters from which the composition of this layer is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/top fractions
+:name: closed_features_items_oneOf_5_composition-models_items_oneOf_1_top-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:The composition fraction at the top of the slab (layer).
+:::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/top fractions/items
+:name: closed_features_items_oneOf_5_composition-models_items_oneOf_1_top-fractions_items
+
+- **default value**:1.0
+- **type**:number
+- **documentation**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/bottom fractions
+:name: closed_features_items_oneOf_5_composition-models_items_oneOf_1_bottom-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:The composition fraction at the bottom of the slab (layer).
+:::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/bottom fractions/items
+:name: closed_features_items_oneOf_5_composition-models_items_oneOf_1_bottom-fractions_items
+
+- **default value**:0.0
+- **type**:number
+- **documentation**:
+:::::::::::::::
+
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/compositions
@@ -10202,16 +10338,80 @@
 
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/fractions
-:name: closed_features_items_oneOf_5_composition-models_items_oneOf_1_fractions
+::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/operation
+:name: closed_features_items_oneOf_5_composition-models_items_oneOf_1_operation
+
+- **default value**:replace
+- **type**:string
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, replace defined only, add, subtract]
+::::::::::::::::
+
+
+
+:::::::::::::::::
+
+:::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2
+:name: closed_features_items_oneOf_5_composition-models_items_oneOf_2
+
+- **type**:object
+- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/model
+:name: closed_features_items_oneOf_5_composition-models_items_oneOf_2_model
+
+- **default value**:
+- **type**:string
+- **documentation**:The name of the composition model.
+- **enum**:[uniform]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/min distance slab top
+:name: closed_features_items_oneOf_5_composition-models_items_oneOf_2_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **documentation**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/max distance slab top
+:name: closed_features_items_oneOf_5_composition-models_items_oneOf_2_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **documentation**:todo The depth in meters to which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/compositions
+:name: closed_features_items_oneOf_5_composition-models_items_oneOf_2_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:A list with the labels of the composition which are present there.
+:::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/compositions/items
+:name: closed_features_items_oneOf_5_composition-models_items_oneOf_2_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **documentation**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/fractions
+:name: closed_features_items_oneOf_5_composition-models_items_oneOf_2_fractions
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **documentation**:TA list of compositional fractions corresponding to the compositions list.
-:::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/fractions/items
-:name: closed_features_items_oneOf_5_composition-models_items_oneOf_1_fractions_items
+:::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/fractions/items
+:name: closed_features_items_oneOf_5_composition-models_items_oneOf_2_fractions_items
 
 - **default value**:1.0
 - **type**:number
@@ -10220,13 +10420,13 @@
 
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/operation
-:name: closed_features_items_oneOf_5_composition-models_items_oneOf_1_operation
+::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/operation
+:name: closed_features_items_oneOf_5_composition-models_items_oneOf_2_operation
 
 - **default value**:replace
 - **type**:string
 - **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-- **enum**:[replace, only replace defined, add, subtract]
+- **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::::
 
 
@@ -11103,7 +11303,7 @@
 :name: closed_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **documentation**:Compositional model object
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -11113,7 +11313,7 @@
 - **default value**:
 - **type**:string
 - **documentation**:The name of the composition model.
-- **enum**:[uniform]
+- **enum**:[smooth]
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/min distance slab top
@@ -11121,15 +11321,51 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **documentation**:The distance in meters from which the composition of this layer is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/max distance slab top
 :name: closed_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_max-distance-slab-top
 
-- **default value**:1.7976931348623157e308
+- **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **documentation**:The distance in meters from which the composition of this layer is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/top fractions
+:name: closed_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_top-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:The composition fraction at the top of the slab (layer).
+:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/top fractions/items
+:name: closed_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_top-fractions_items
+
+- **default value**:1.0
+- **type**:number
+- **documentation**:
+:::::::::::
+
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/bottom fractions
+:name: closed_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_bottom-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:The composition fraction at the bottom of the slab (layer).
+:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/bottom fractions/items
+:name: closed_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_bottom-fractions_items
+
+- **default value**:0.0
+- **type**:number
+- **documentation**:
+:::::::::::
+
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/compositions
@@ -11150,16 +11386,80 @@
 
 ::::::::::::
 
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/fractions
-:name: closed_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_fractions
+::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/operation
+:name: closed_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_operation
+
+- **default value**:replace
+- **type**:string
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, replace defined only, add, subtract]
+::::::::::::
+
+
+
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2
+:name: closed_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2
+
+- **type**:object
+- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2/model
+:name: closed_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2_model
+
+- **default value**:
+- **type**:string
+- **documentation**:The name of the composition model.
+- **enum**:[uniform]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2/min distance slab top
+:name: closed_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **documentation**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2/max distance slab top
+:name: closed_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **documentation**:todo The depth in meters to which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2/compositions
+:name: closed_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:A list with the labels of the composition which are present there.
+:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2/compositions/items
+:name: closed_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **documentation**:
+:::::::::::
+
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2/fractions
+:name: closed_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2_fractions
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **documentation**:TA list of compositional fractions corresponding to the compositions list.
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/fractions/items
-:name: closed_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_fractions_items
+:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2/fractions/items
+:name: closed_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2_fractions_items
 
 - **default value**:1.0
 - **type**:number
@@ -11168,13 +11468,13 @@
 
 ::::::::::::
 
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/operation
-:name: closed_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_operation
+::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2/operation
+:name: closed_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2_operation
 
 - **default value**:replace
 - **type**:string
 - **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-- **enum**:[replace, only replace defined, add, subtract]
+- **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::
 
 
@@ -11947,7 +12247,7 @@
 :name: closed_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **documentation**:Compositional model object
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -11957,7 +12257,7 @@
 - **default value**:
 - **type**:string
 - **documentation**:The name of the composition model.
-- **enum**:[uniform]
+- **enum**:[smooth]
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/min distance slab top
@@ -11965,15 +12265,51 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **documentation**:The distance in meters from which the composition of this layer is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/max distance slab top
 :name: closed_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_max-distance-slab-top
 
-- **default value**:1.7976931348623157e308
+- **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **documentation**:The distance in meters from which the composition of this layer is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/top fractions
+:name: closed_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_top-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:The composition fraction at the top of the slab (layer).
+:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/top fractions/items
+:name: closed_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_top-fractions_items
+
+- **default value**:1.0
+- **type**:number
+- **documentation**:
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/bottom fractions
+:name: closed_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_bottom-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:The composition fraction at the bottom of the slab (layer).
+:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/bottom fractions/items
+:name: closed_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_bottom-fractions_items
+
+- **default value**:0.0
+- **type**:number
+- **documentation**:
+:::::::::::::
+
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/compositions
@@ -11994,16 +12330,80 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/fractions
-:name: closed_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_fractions
+::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/operation
+:name: closed_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_operation
+
+- **default value**:replace
+- **type**:string
+- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, replace defined only, add, subtract]
+::::::::::::::
+
+
+
+:::::::::::::::
+
+:::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2
+:name: closed_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2
+
+- **type**:object
+- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2/model
+:name: closed_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2_model
+
+- **default value**:
+- **type**:string
+- **documentation**:The name of the composition model.
+- **enum**:[uniform]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2/min distance slab top
+:name: closed_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **documentation**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2/max distance slab top
+:name: closed_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **documentation**:todo The depth in meters to which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2/compositions
+:name: closed_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **documentation**:A list with the labels of the composition which are present there.
+:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2/compositions/items
+:name: closed_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **documentation**:
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2/fractions
+:name: closed_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2_fractions
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **documentation**:TA list of compositional fractions corresponding to the compositions list.
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/fractions/items
-:name: closed_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_fractions_items
+:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2/fractions/items
+:name: closed_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2_fractions_items
 
 - **default value**:1.0
 - **type**:number
@@ -12012,13 +12412,13 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/operation
-:name: closed_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_operation
+::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2/operation
+:name: closed_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2_operation
 
 - **default value**:replace
 - **type**:string
 - **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-- **enum**:[replace, only replace defined, add, subtract]
+- **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::
 
 
