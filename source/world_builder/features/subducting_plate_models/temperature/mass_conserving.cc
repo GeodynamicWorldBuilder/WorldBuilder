@@ -59,7 +59,7 @@ namespace WorldBuilder
           surface_temperature(NaN::DSNAN),
           taper_distance(NaN::DSNAN),
           adiabatic_heating(true),
-          operation(Utilities::Operations::REPLACE)
+          operation(Operations::REPLACE)
         {
           this->world = world_;
           this->name = "mass conserving";
@@ -172,7 +172,7 @@ namespace WorldBuilder
 
           min_depth = prm.get<double>("min distance slab top");
           max_depth = prm.get<double>("max distance slab top");
-          operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
+          operation = string_operations_to_enum(prm.get<std::string>("operation"));
 
           density = prm.get<double>("density");
           thermal_conductivity = prm.get<double>("thermal conductivity");
@@ -222,7 +222,7 @@ namespace WorldBuilder
                                         const double /*feature_min_depth*/,
                                         const double /*feature_max_depth*/,
                                         const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
-                                        const Utilities::AdditionalParameters &additional_parameters) const
+                                        const AdditionalParameters &additional_parameters) const
         {
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
@@ -500,7 +500,7 @@ namespace WorldBuilder
               WBAssert(!std::isnan(temperature), "Internal error: temperature is not a number: " << temperature << '.');
               WBAssert(std::isfinite(temperature), "Internal error: temperature is not finite: " << temperature << '.');
 
-              return Utilities::apply_operation(operation, temperature_, temperature);
+              return apply_operation(operation, temperature_, temperature);
             }
 
           return temperature_;

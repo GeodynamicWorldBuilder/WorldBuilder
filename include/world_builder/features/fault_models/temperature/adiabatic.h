@@ -22,7 +22,7 @@
 
 
 #include "world_builder/features/fault_models/temperature/interface.h"
-#include "world_builder/features/utilities.h"
+#include "world_builder/features/feature_utilities.h"
 
 
 namespace WorldBuilder
@@ -76,7 +76,7 @@ namespace WorldBuilder
                                    const double feature_min_depth,
                                    const double feature_max_depth,
                                    const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
-                                   const Utilities::AdditionalParameters &additional_paramters) const override final;
+                                   const AdditionalParameters &additional_paramters) const override final;
 
 
           private:
@@ -99,7 +99,7 @@ namespace WorldBuilder
              */
             double specific_heat;
 
-            Utilities::Operations operation;
+            Operations operation;
 
         };
       } // namespace Temperature

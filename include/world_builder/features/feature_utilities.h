@@ -18,8 +18,8 @@
 */
 
 
-#ifndef WORLD_BUILDER_FEATURES_UTILITIES_H
-#define WORLD_BUILDER_FEATURES_UTILITIES_H
+#ifndef WORLD_BUILDER_FEATURES_FEATURE_UTILITIES_H
+#define WORLD_BUILDER_FEATURES_FEATURE_UTILITIES_H
 
 #include <limits>
 
@@ -29,11 +29,11 @@ namespace WorldBuilder
 {
   namespace Features
   {
-    namespace Utilities
+    namespace FeatureUtilities
     {
       enum class Operations
       {
-        REPLACE,ADD,SUBTRACT
+        REPLACE,ADD,SUBTRACT,REPLACE_DEFINED_ONLY
       };
 
       /**
@@ -47,21 +47,22 @@ namespace WorldBuilder
        * Applies different opertions such as replace, add and subtract to the original values
        */
       inline double
-      apply_operation(const Utilities::Operations operation,
+      apply_operation(const Operations operation,
                       const double old_value,
                       const double new_value)
       {
         switch (operation)
           {
-            case Utilities::Operations::REPLACE:
+            case Operations::REPLACE:
+            case Operations::REPLACE_DEFINED_ONLY:
               return new_value;
               break;
 
-            case Utilities::Operations::ADD:
+            case Operations::ADD:
               return old_value + new_value;
               break;
 
-            case Utilities::Operations::SUBTRACT:
+            case Operations::SUBTRACT:
               return old_value - new_value;
 
             default:

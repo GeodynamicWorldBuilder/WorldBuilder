@@ -35,6 +35,7 @@ namespace WorldBuilder
 
   namespace Features
   {
+    using namespace FeatureUtilities;
     namespace FaultModels
     {
       namespace Composition
@@ -42,8 +43,7 @@ namespace WorldBuilder
         Uniform::Uniform(WorldBuilder::World *world_)
           :
           min_depth(NaN::DSNAN),
-          max_depth(NaN::DSNAN),
-          operation("")
+          max_depth(NaN::DSNAN)
         {
           this->world = world_;
           this->name = "uniform";
@@ -69,10 +69,10 @@ namespace WorldBuilder
                             "A list with the labels of the composition which are present there.");
           prm.declare_entry("fractions", Types::Array(Types::Double(1.0),1),
                             "TA list of compositional fractions corresponding to the compositions list.");
-          prm.declare_entry("operation", Types::String("replace", std::vector<std::string> {"replace"}),
+          prm.declare_entry("operation", Types::String("replace", std::vector<std::string> {"replace", "replace defined only", "add", "subtract"}),
                             "Whether the value should replace any value previously defined at this location (replace) or "
-                            "add the value to the previously define value (add, not implemented). Replacing implies that all values not "
-                            "explicitly defined are set to zero.");
+                            "add the value to the previously define value. Replacing implies that all compositions not "
+                            "explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.");
 
         }
 
@@ -83,7 +83,7 @@ namespace WorldBuilder
           max_depth = prm.get<double>("max distance fault center");
           compositions = prm.get_vector<unsigned int>("compositions");
           fractions = prm.get_vector<double>("fractions");
-          operation = prm.get<std::string>("operation");
+          operation = string_operations_to_enum(prm.get<std::string>("operation"));
 
           WBAssertThrow(compositions.size() == fractions.size(),
                         "There are not the same amount of compositions and fractions.");
@@ -98,7 +98,7 @@ namespace WorldBuilder
                                  const double  /*feature_min_depth*/,
                                  const double  /*feature_max_depth*/,
                                  const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_plane,
-                                 const Utilities::AdditionalParameters & /*additional_paramters*/) const
+                                 const AdditionalParameters & /*additional_paramters*/) const
         {
           double composition = composition_;
           if (std::fabs(distance_from_plane.distance_from_plane) <= max_depth && std::fabs(distance_from_plane.distance_from_plane) >= min_depth)
@@ -107,11 +107,11 @@ namespace WorldBuilder
                 {
                   if (compositions[i] == composition_number)
                     {
-                      return fractions[i];
+                      return apply_operation(operation,composition_,fractions[i]);
                     }
                 }
 
-              if (operation == "replace")
+              if (operation == Operations::REPLACE)
                 return 0.0;
             }
           return composition;

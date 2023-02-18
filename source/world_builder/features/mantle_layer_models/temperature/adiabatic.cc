@@ -36,6 +36,7 @@ namespace WorldBuilder
 
   namespace Features
   {
+    using namespace FeatureUtilities;
     namespace MantleLayerModels
     {
       namespace Temperature
@@ -47,7 +48,7 @@ namespace WorldBuilder
           potential_mantle_temperature(NaN::DSNAN),
           thermal_expansion_coefficient(NaN::DSNAN),
           specific_heat(NaN::DSNAN),
-          operation(Utilities::Operations::REPLACE)
+          operation(Operations::REPLACE)
         {
           this->world = world_;
           this->name = "adiabatic";
@@ -91,7 +92,7 @@ namespace WorldBuilder
           min_depth = min_depth_surface.minimum;
           max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
           max_depth = max_depth_surface.maximum;
-          operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
+          operation = string_operations_to_enum(prm.get<std::string>("operation"));
 
           potential_mantle_temperature = prm.get<double>("potential mantle temperature");
           if (potential_mantle_temperature < 0)
@@ -157,7 +158,7 @@ namespace WorldBuilder
                   WBAssert(std::isfinite(adabatic_temperature),
                            "adabatic_temperature is not a finite: " << adabatic_temperature << '.');
 
-                  return Utilities::apply_operation(operation,temperature_,adabatic_temperature);
+                  return apply_operation(operation,temperature_,adabatic_temperature);
                 }
             }
 

@@ -34,6 +34,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 \[Haoyuan Li; 2022-12-23; [#453](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/453)
 - Added tester options to allow running the tester with gdb and/or valgrind. Also setup a github action which automatically runs gdb and valgrind when running the tester. \[Menno Fraters; 2023-01-26; [#466](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/466)\]
 - Added some tips and tricks in the doc/sphinx/developer_manual/contributing_to_the_code/tips_and_tricks.md file. \[Haoyuan Li; 2023-02-09; [#472](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/472)]
+- Added operation options `add`, `substract` and `replace defined only` to the the composition plugins \[Menno Fraters; 2023-02-17; [#474](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/474)\]
  
 ### Changed
 - The World Builder Visualizer will now use zlib compression for vtu files by default. If zlib is not available binary output will be used. \[Menno Fraters; 2021-06-26; [#282](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/282)\]

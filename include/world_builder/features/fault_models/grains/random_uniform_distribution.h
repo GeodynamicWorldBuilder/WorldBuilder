@@ -28,6 +28,7 @@ namespace WorldBuilder
 
   namespace Features
   {
+    using namespace FeatureUtilities;
     namespace FaultModels
     {
       namespace Grains
@@ -92,7 +93,7 @@ namespace WorldBuilder
                        const double feature_min_depth,
                        const double feature_max_depth,
                        const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
-                       const Utilities::AdditionalParameters &additional_paramters) const override final;
+                       const AdditionalParameters &additional_paramters) const override final;
 
           private:
             // uniform grains submodule parameters

@@ -17,20 +17,21 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "world_builder/features/utilities.h"
+#include "world_builder/features/feature_utilities.h"
 
 
 namespace WorldBuilder
 {
   namespace Features
   {
-    namespace Utilities
+    namespace FeatureUtilities
     {
       Operations
       string_operations_to_enum(const std::string &operation)
       {
         if (operation == "add") return Operations::ADD;
         if (operation == "subtract") return Operations::SUBTRACT;
+        if (operation == "replace defined only") return Operations::REPLACE_DEFINED_ONLY;
 
         WBAssert(operation == "replace", "Could not find operation: " << operation << '.');
         return Operations::REPLACE;

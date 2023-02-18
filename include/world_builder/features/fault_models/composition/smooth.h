@@ -21,7 +21,7 @@
 #define _world_builder_features_fault_composition_smooth_h
 
 #include <world_builder/features/fault_models/composition/interface.h>
-#include <world_builder/features/utilities.h>
+#include <world_builder/features/feature_utilities.h>
 #include <world_builder/world.h>
 
 
@@ -29,6 +29,7 @@ namespace WorldBuilder
 {
   namespace Features
   {
+    using namespace FeatureUtilities;
     namespace FaultModels
     {
       namespace Composition
@@ -75,7 +76,7 @@ namespace WorldBuilder
                                    const double feature_min_depth,
                                    const double feature_max_depth,
                                    const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
-                                   const Utilities::AdditionalParameters &additional_paramters) const override final;
+                                   const AdditionalParameters &additional_paramters) const override final;
 
           private:
             // linear temperature submodule parameters
@@ -85,7 +86,7 @@ namespace WorldBuilder
             // currenly not using the side composition, but maybe usefu if you want another composition towards the end
             std::vector<double> side_fraction;
             std::vector<unsigned int> compositions;
-            Utilities::Operations operation;
+            Operations operation;
 
         };
       }

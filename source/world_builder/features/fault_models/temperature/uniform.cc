@@ -42,7 +42,7 @@ namespace WorldBuilder
           min_depth(NaN::DSNAN),
           max_depth(NaN::DSNAN),
           temperature(NaN::DSNAN),
-          operation(Utilities::Operations::REPLACE)
+          operation(Operations::REPLACE)
         {
           this->world = world_;
           this->name = "uniform";
@@ -76,7 +76,7 @@ namespace WorldBuilder
         {
           min_depth = prm.get<double>("min distance fault center");
           max_depth = prm.get<double>("max distance fault center");
-          operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
+          operation = string_operations_to_enum(prm.get<std::string>("operation"));
           temperature = prm.get<double>("temperature");
         }
 
@@ -89,12 +89,12 @@ namespace WorldBuilder
                                  const double  /*feature_min_depth*/,
                                  const double  /*feature_max_depth*/,
                                  const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_plane,
-                                 const Utilities::AdditionalParameters & /*additional_paramters*/) const
+                                 const AdditionalParameters & /*additional_paramters*/) const
         {
 
           if (std::fabs(distance_from_plane.distance_from_plane) <= max_depth && std::fabs(distance_from_plane.distance_from_plane) >= min_depth)
             {
-              return Utilities::apply_operation(operation,temperature_,temperature);
+              return apply_operation(operation,temperature_,temperature);
             }
           return temperature_;
         }

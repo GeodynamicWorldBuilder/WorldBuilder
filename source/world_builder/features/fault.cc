@@ -26,7 +26,7 @@
 #include "world_builder/types/object.h"
 #include "world_builder/types/point.h"
 #include "world_builder/types/unsigned_int.h"
-#include "world_builder/features/utilities.h"
+#include "world_builder/features/feature_utilities.h"
 #include "world_builder/world.h"
 #include <algorithm>
 
@@ -496,7 +496,7 @@ namespace WorldBuilder
               const double max_fault_length = total_fault_length[current_section] +
                                               section_fraction *
                                               (total_fault_length[next_section] - total_fault_length[current_section]);
-              const Features::Utilities::AdditionalParameters additional_parameters = {max_fault_length,thickness_local};
+              const AdditionalParameters additional_parameters = {max_fault_length,thickness_local};
 
               // Because both sides return positve values, we have to
               // devide the thickness_local by two

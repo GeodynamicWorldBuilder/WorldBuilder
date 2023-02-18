@@ -48,7 +48,7 @@ namespace WorldBuilder
           max_depth(NaN::DSNAN),
           top_temperature(NaN::DSNAN),
           bottom_temperature(NaN::DSNAN),
-          operation(Utilities::Operations::REPLACE)
+          operation(Operations::REPLACE)
         {
           this->world = world_;
           this->name = "plate model constant age";
@@ -91,7 +91,7 @@ namespace WorldBuilder
           min_depth = min_depth_surface.minimum;
           max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
           max_depth = max_depth_surface.maximum;
-          operation = Utilities::string_operations_to_enum(prm.get<std::string>("operation"));
+          operation = string_operations_to_enum(prm.get<std::string>("operation"));
           top_temperature = prm.get<double>("top temperature");
           bottom_temperature = prm.get<double>("bottom temperature");
           plate_age = prm.get<double>("plate age")*31557600;
@@ -149,7 +149,7 @@ namespace WorldBuilder
                            << ", age = " << plate_age << '.');
 
 
-                  return Utilities::apply_operation(operation,temperature_,temperature);
+                  return apply_operation(operation,temperature_,temperature);
 
                 }
             }
