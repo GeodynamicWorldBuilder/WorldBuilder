@@ -394,7 +394,6 @@ namespace WorldBuilder
                   // based on https://stackoverflow.com/questions/2742610/closest-point-on-a-cubic-bezier-curve
                   estimate_point = a*est*est*est+b*est*est+c*est+d;
 
-                  double cos_lat = cos(estimate_point[1]);
                   double sin_d_long_h = sin((estimate_point[0]-cp[0])*0.5);
                   double sin_d_lat_h = sin((estimate_point[1]-cp[1])*0.5);
                   const double cos_d_lat = cos(estimate_point[1]-cp[1]);
@@ -432,7 +431,7 @@ namespace WorldBuilder
                           est_test = est-update*line_search;
                           estimate_point = a*est_test*est_test*est_test+b*est_test*est_test+c*est_test+d;
 
-                          cos_lat = cos(estimate_point[1]);
+                          double cos_lat = cos(estimate_point[1]);
                           sin_d_long_h = sin((estimate_point[0]-cp[0])*0.5);
                           sin_d_lat_h = sin((estimate_point[1]-cp[1])*0.5);
                           squared_distance_cartesian_test = sin_d_lat_h*sin_d_lat_h+sin_d_long_h*sin_d_long_h*cos_cp_lat*cos(estimate_point[1]-cp[1]);
@@ -492,7 +491,6 @@ namespace WorldBuilder
 
               estimate_point = a*est*est*est+b*est*est+c*est+d;
 
-              //const double cos_lat = cos(estimate_point[1]);
               const double sin_d_long_h = sin((estimate_point[0]-cp[0])*0.5);
               const double sin_d_lat_h = sin((estimate_point[1]-cp[1])*0.5);
 
