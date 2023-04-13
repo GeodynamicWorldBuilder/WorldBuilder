@@ -77,7 +77,6 @@ html_theme_options = {
     "use_edit_page_button": True,
     "use_issues_button": True,
     "home_page_in_toc":False,
-    "extra_navbar": "",
     "extra_footer":"Built with <a href='https://www.sphinx-doc.org/'>Sphinx</a> using a theme provided by <a href='https://ebp.jupyterbook.org/'>Executable Book Project</a>",
 }
 
