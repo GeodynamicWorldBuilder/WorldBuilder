@@ -101,7 +101,7 @@ namespace WorldBuilder
         const double qy,
         const double rx,
         const double ry) {
-        return (qy - py) * (rx - qx) - (qx - px) * (ry - qy) < 0.0;
+        return (qy - py) * (rx - qx) - (qx - px) * (ry - qy) < -std::numeric_limits<double>::epsilon();
     }
 
     inline std::pair<double, double> circumcenter(
