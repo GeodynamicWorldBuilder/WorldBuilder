@@ -36,7 +36,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Added some tips and tricks in the doc/sphinx/developer_manual/contributing_to_the_code/tips_and_tricks.md file. \[Haoyuan Li; 2023-02-09; [#472](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/472)]
 - Added operation options `add`, `substract` and `replace defined only` to the the composition plugins \[Menno Fraters; 2023-02-17; [#474](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/474)\]
 - Added a new compositional model for subducting slab models such that ensures a smooth transition of compositional value from one part of a compositional layer to the other side of the layer. This is based on Arushi Saxena's fault composition plugin with the same name ([#356](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/356)) \[Menno Fraters; 2023-02-18; [#477](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/356)\]
- 
+- If World Builder is configured with MPI it now reads input files on a single process and distributes them via MPI to other processes to reduce I/O load. This can be extended in the future to other input files. \[Rene Gassmoeller; 2023-04-13; [#480](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/480)\]
+
 ### Changed
 - The World Builder Visualizer will now use zlib compression for vtu files by default. If zlib is not available binary output will be used. \[Menno Fraters; 2021-06-26; [#282](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/282)\]
 - The return argument type of the distance_point_from_curved_planes function has been converted from a map to a struct, requiring a change in the plugin interfaces for 'fault_models' and 'subducting_plate_models', but significantly increasing the speed of the function and all functions that access its returned values. \[Rene Gassmoeller; 2021-06-27; [#289](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/289)\]
