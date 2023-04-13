@@ -1110,6 +1110,7 @@ namespace WorldBuilder
     {
       std::string data_string;
 
+#ifdef WB_WITH_MPI
       const unsigned int invalid_unsigned_int = static_cast<unsigned int>(-1);
 
       const MPI_Comm comm = MPI_COMM_WORLD;
@@ -1183,6 +1184,18 @@ namespace WorldBuilder
                            comm);
           WBAssertThrow(ierr == 0, "MPI_Bcast failed.");
         }
+#else
+      std::ifstream filestream;
+      filestream.open(filename.c_str());
+      if (!filestream)
+        {
+          WBAssertThrow (false,
+                         std::string("Could not open file <") + filename + ">.");
+        }
+      std::stringstream datastream;
+      datastream << filestream.rdbuf();
+      data_string = datastream.str();
+#endif
 
       return data_string;
     }
