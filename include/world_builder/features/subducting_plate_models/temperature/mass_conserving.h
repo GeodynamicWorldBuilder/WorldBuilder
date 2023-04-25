@@ -110,7 +110,12 @@ namespace WorldBuilder
             bool adiabatic_heating;
             std::vector<std::vector<Point<2>>> mid_oceanic_ridges;
             Operations operation;
-
+            enum ReferenceModelName
+            {
+              half_space_model,
+              plate_model
+            };
+            ReferenceModelName reference_model_name;
         };
       } // namespace Temperature
     } // namespace SubductingPlateModels
