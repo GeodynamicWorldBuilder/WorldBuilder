@@ -358,7 +358,7 @@ namespace WorldBuilder
         }
       else
         {
-          const size_t max_cp_i = 1; //control_points.size();
+          const size_t max_cp_i = control_points.size();
           for ( size_t cp_i = 0; cp_i < max_cp_i; ++cp_i)
             {
               const Point<2> &p1 = points[cp_i];
@@ -399,6 +399,12 @@ namespace WorldBuilder
                   double sin_d_lat_h = sin((estimate_point[1]-cp[1])*0.5);
                   const double cos_d_lat = cos(estimate_point[1]-cp[1]);
                   const double squared_distance_cartesian = sin_d_lat_h*sin_d_lat_h+sin_d_long_h*sin_d_long_h*cos_cp_lat*cos_d_lat;
+
+                  if (squared_distance_cartesian > min_squared_distance * 1.33)
+                  {
+                    found = true;
+                    break;
+                  }
 
                   double sin_dlat = sin(estimate_point[1]-cp[1]);
                   double cos_dlong_h = cos(0.5*(estimate_point[0]-cp[0]));
