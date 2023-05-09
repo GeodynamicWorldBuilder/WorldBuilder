@@ -358,7 +358,8 @@ namespace WorldBuilder
         }
       else
         {
-          for ( size_t cp_i = 0; cp_i < control_points.size(); ++cp_i)
+          const size_t max_cp_i = 1; //control_points.size();
+          for ( size_t cp_i = 0; cp_i < max_cp_i; ++cp_i)
             {
               const Point<2> &p1 = points[cp_i];
               const Point<2> &p2 = points[cp_i+1];
