@@ -389,7 +389,7 @@ namespace WorldBuilder
 
               if (min_squared_distance_cartesian_temp_dg < minimal_distance)
                 {
-                  minimal_distance = distance;
+                  minimal_distance = min_squared_distance_cartesian_temp_dg;
                   closest_segment = cp_i;
                   best_estimate = est;
                 }
