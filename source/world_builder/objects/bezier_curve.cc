@@ -358,9 +358,46 @@ namespace WorldBuilder
         }
       else
         {
-          const size_t max_cp_i = control_points.size();
-          for ( size_t cp_i = 0; cp_i < max_cp_i; ++cp_i)
+          // First: Find the closest segment
+          double minimal_distance = std::numeric_limits<double>::max();
+          double best_estimate = 0.;
+          unsigned int closest_segment = 0;
+
+          for (size_t cp_i = 0; cp_i < control_points.size(); ++cp_i)
             {
+              const Point<2> &p1 = points[cp_i];
+              const Point<2> &p2 = points[cp_i+1];
+              Point<2> P1P2 = p2-p1;
+              Point<2> P1Pc = check_point-p1;
+
+              const double P2P2_dot = P1P2*P1P2;
+
+              // est=estimate of solution
+              const double est =  P2P2_dot > 0.0 ? std::min(1.,std::max(0.,(P1Pc*P1P2) / P2P2_dot)) : 1.0;
+
+              const Point<2> a = 3.*control_points[cp_i][0] - 3.*control_points[cp_i][1] + points[cp_i+1] - points[cp_i];
+              const Point<2> b = 3.*points[cp_i] - 6.*control_points[cp_i][0] + 3.*control_points[cp_i][1];
+              const Point<2> c = -3.*points[cp_i] + 3.*control_points[cp_i][0];
+              const Point<2> d = points[cp_i];
+
+              const Point<2> estimate_point = a*est*est*est + b*est*est + c*est + d;
+              const double cos_cp_lat = cos(cp[1]);
+              const double cos_lat_dg = cos(estimate_point[1]);
+              const double sin_d_long_h_dg = sin((estimate_point[0]-cp[0])*0.5);
+              const double sin_d_lat_h_dg = sin((estimate_point[1]-cp[1])*0.5);
+              const double min_squared_distance_cartesian_temp_dg = sin_d_lat_h_dg*sin_d_lat_h_dg + sin_d_long_h_dg*sin_d_long_h_dg*cos_cp_lat*cos_lat_dg;
+
+              if (min_squared_distance_cartesian_temp_dg < minimal_distance)
+                {
+                  minimal_distance = distance;
+                  closest_segment = cp_i;
+                  best_estimate = est;
+                }
+            }
+
+          // Second: Find the closest point on the segment
+            {
+              const size_t cp_i = closest_segment;
               const Point<2> &p1 = points[cp_i];
               const Point<2> &p2 = points[cp_i+1];
               // Getting an estimate for where the closest point is with a linear approximation
@@ -369,7 +406,8 @@ namespace WorldBuilder
 
               const double P2P2_dot = P1P2*P1P2;
 
-              double est =  P2P2_dot > 0.0 ? std::min(1.,std::max(0.,(P1Pc*P1P2) / P2P2_dot)) : 1.0; // est=estimate of solution
+              // est=estimate of solution
+              double est =  P2P2_dot > 0.0 ? std::min(1.,std::max(0.,(P1Pc*P1P2) / P2P2_dot)) : 1.0; 
               bool found = false;
 #ifndef NDEBUG
               std::stringstream output;
