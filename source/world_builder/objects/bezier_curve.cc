@@ -438,12 +438,6 @@ namespace WorldBuilder
                 const double cos_d_lat = cos(estimate_point[1]-cp[1]);
                 const double squared_distance_cartesian = sin_d_lat_h*sin_d_lat_h+sin_d_long_h*sin_d_long_h*cos_cp_lat*cos_d_lat;
 
-                if (squared_distance_cartesian > min_squared_distance * 1.33)
-                  {
-                    found = true;
-                    break;
-                  }
-
                 double sin_dlat = sin(estimate_point[1]-cp[1]);
                 double cos_dlong_h = cos(0.5*(estimate_point[0]-cp[0]));
                 double cos_dlat_h = cos(0.5*(estimate_point[1]-cp[1]));
