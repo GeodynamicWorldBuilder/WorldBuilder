@@ -526,12 +526,6 @@ namespace WorldBuilder
                   }
               }
 
-#ifndef NDEBUG
-            WBAssertThrow(found, "Could not find a good solution. " << output.str());
-#else
-            WBAssertThrow(found, "Could not find a good solution. Enable debug mode for more info.");
-#endif
-
             estimate_point = a*est*est*est+b*est*est+c*est+d;
 
             const double sin_d_long_h = sin((estimate_point[0]-cp[0])*0.5);
