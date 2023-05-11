@@ -111,7 +111,7 @@ namespace WorldBuilder
         properties(const Point<3> &position_in_cartesian_coordinates,
                    const Objects::NaturalCoordinate &position_in_natural_coordinates,
                    const double depth,
-                   const std::vector<std::array<unsigned int,3>> properties,
+                   const std::vector<std::array<unsigned int,3>> &properties,
                    const double gravity,
                    const std::vector<size_t> &entry_in_output,
                    std::vector<double> &output) const override final;
