@@ -2,10 +2,8 @@
 Your first input file
 =====================
 
+GWB input files are plain-text files, which generally have the extension `.wb`. At minimum, the world builder input file should contain a object (indicated by `{}` in JSON) containing a version number (JSON key: `version`) and a list (indicated by `[]` in JSON) of features (JSON key: `features`). This results in the following input file:  
 
-```{todo}
-Explaining the minimum wb input file (and what it produces) and include a picture of the final result for both composition and temperature.
-```
 
 
 ```{literalinclude} ../../_static/gwb_input_files/BST_1_minimal_box.wb
@@ -21,3 +19,11 @@ Explaining the minimum wb input file (and what it produces) and include a pictur
 :link: ../../_static/gwb_input_files/BST_1_minimal_box.grid
 :::
 ::::
+
+```{note}
+You can copy the text in the box by selecting it, or by hovering over the box and clicking the copy symbol in the top right corner. The file can also be downloaded by clicking on the `Download BST_1_minimal_box.wb` button below the textbox. 
+
+If you want to inspect the result yourself, you can also download the corresponding `.grid` file and use the `gwb-grid` application (`gwb-grid BST_1_minimal_box.wb BST_1_minimal_box.grid`) to create a vtk output (`BST_1_minimal_box.vtk`) and view it in for example Paraview.
+```
+
+Congratulations on creating your first world builder input file! If you visualize the result you will notice that you are getting an adiabatic temperature profile and that every compositional field is zero everywhere. This is the background, or our canvas, if we want to stay in the painting analogy. Now, before we are going to get our brushes, we should first discuss the shape of our canvas a bit more.

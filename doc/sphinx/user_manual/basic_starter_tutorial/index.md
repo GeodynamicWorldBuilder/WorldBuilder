@@ -2,8 +2,12 @@
 Basic Starter Tutorial
 ========================
 
+
+
+The main goal of this tutorial is to get you to understand how to set up a world builder file to build a simple but functional 2D and 3D model. The example model we will be building is a subduction model, since it will introduce you slowley and step-by-step to a wide range of features and explain how to use them. It is strongly recommended to follow this tutorial before going through any more advanced tutorials or cookbooks and that you have read the previous sections of the User manual. The final result can be viewed in the figure below.
+
 ```{todo}
-Outline what this tutorial is going to teach you: going step-by-step to make a simple 2D and 3D subduction model
+Add figure of end result.
 ```
 
 ```{toctree}
@@ -15,15 +19,16 @@ Outline what this tutorial is going to teach you: going step-by-step to make a s
 04_adding_first_tectonic_feature
 05_limit_temperature_with_depth
 06_oceanic_plate_temperature
-07_subducting_oceanic_plate
+07_subducting_plate_oceanic_part
 08_optional_adding_mantle_layer
-09_adding_basic_subduting_plate
-10_dip_change_in_segment
-11_subducting_plate_temperatures
-12_subducting_slab_adding_a_segment
-13_different_models_in_segments
-14_different_ssegments_in_sections
-15_2D_models
-16_spherical_models
+09_passive_marging_variable_depth
+10_adding_basic_subducting_plate
+11_dip_change_in_segment
+12_subducting_plate_temperatures
+13_subducting_slab_adding_a_segment
+14_different_models_in_segments
+15_different_segments_in_sections
+16_2D_models
+17_spherical_models
 ```
 

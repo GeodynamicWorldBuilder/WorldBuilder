@@ -2,6 +2,4 @@
 World Builder input file design
 =====================================
 
-```{todo}
-Go through the high level input file design
-```
+GWB input files are plain text files using the JSON format. This means you can use any text editor to view and edit the files. If you are not familair with the JSON format, it might be useful to familiarise yourself with it before continuing, although it is not nesseary. The basic idea is that it allows data to be unambigously structured to be readable by both humans and computers. 
