@@ -381,10 +381,10 @@ namespace WorldBuilder
               const Point<2> d = points[cp_i];
 
               const Point<2> estimate_point = a*est*est*est + b*est*est + c*est + d;
-              const double cos_cp_lat = cos(cp[1]);
-              const double cos_lat_dg = cos(estimate_point[1]);
-              const double sin_d_long_h_dg = sin((estimate_point[0]-cp[0])*0.5);
-              const double sin_d_lat_h_dg = sin((estimate_point[1]-cp[1])*0.5);
+              const double cos_cp_lat = FT::cos(cp[1]);
+              const double cos_lat_dg = FT::cos(estimate_point[1]);
+              const double sin_d_long_h_dg = FT::sin((estimate_point[0]-cp[0])*0.5);
+              const double sin_d_lat_h_dg = FT::sin((estimate_point[1]-cp[1])*0.5);
               const double min_squared_distance_cartesian_temp_dg = sin_d_lat_h_dg*sin_d_lat_h_dg + sin_d_long_h_dg*sin_d_long_h_dg*cos_cp_lat*cos_lat_dg;
 
               if (min_squared_distance_cartesian_temp_dg < minimal_distance)
@@ -418,11 +418,11 @@ namespace WorldBuilder
             Point<2> d = points[cp_i];
 
             Point<2> estimate_point = a*est*est*est+b*est*est+c*est+d;
-            const double cos_cp_lat = cos(cp[1]);
+            const double cos_cp_lat = FT::cos(cp[1]);
 #ifndef NDEBUG
-            const double cos_lat_dg = cos(estimate_point[1]);
-            const double sin_d_long_h_dg = sin((estimate_point[0]-cp[0])*0.5);
-            const double sin_d_lat_h_dg = sin((estimate_point[1]-cp[1])*0.5);
+            const double cos_lat_dg = FT::cos(estimate_point[1]);
+            const double sin_d_long_h_dg = FT::sin((estimate_point[0]-cp[0])*0.5);
+            const double sin_d_lat_h_dg = FT::sin((estimate_point[1]-cp[1])*0.5);
             const double min_squared_distance_cartesian_temp_dg = sin_d_lat_h_dg*sin_d_lat_h_dg+sin_d_long_h_dg*sin_d_long_h_dg*cos_cp_lat*cos_lat_dg;
             output << "cp_i=" << cp_i << ", init est = " << est << ", min_squared_distance = " << min_squared_distance << ", min_squared_distance_cartesian_temp_dg: " << min_squared_distance_cartesian_temp_dg << ", p1: " << p1 << ", p2: " << p2 << std::endl;
             output  << std::setprecision(6) << "  wolfram: sin((" << a[1] << "*x^3+" << b[1] << "*x^2+"<< c[1] << "*x+" << d[1] << "-" << cp[1] << ")*.5)^2+sin((" << a[0] << "*x^3+" << b[0] << "*x^2+"<< c[0] << "*x+" << d[0] << "-" << cp[0] << ")*.5)^2*cos(" << cp[1] << ")*cos(" << a[1] << "*x^3+" << b[1] << "*x^2+"<< c[1] << "*x+" << d[1] << "-" << cp[1] << ") with x=" << est << std::endl;
@@ -433,14 +433,14 @@ namespace WorldBuilder
                 // based on https://stackoverflow.com/questions/2742610/closest-point-on-a-cubic-bezier-curve
                 estimate_point = a*est*est*est+b*est*est+c*est+d;
 
-                double sin_d_long_h = sin((estimate_point[0]-cp[0])*0.5);
-                double sin_d_lat_h = sin((estimate_point[1]-cp[1])*0.5);
-                const double cos_d_lat = cos(estimate_point[1]-cp[1]);
+                double sin_d_long_h = FT::sin((estimate_point[0]-cp[0])*0.5);
+                double sin_d_lat_h = FT::sin((estimate_point[1]-cp[1])*0.5);
+                const double cos_d_lat = FT::cos(estimate_point[1]-cp[1]);
                 const double squared_distance_cartesian = sin_d_lat_h*sin_d_lat_h+sin_d_long_h*sin_d_long_h*cos_cp_lat*cos_d_lat;
 
-                double sin_dlat = sin(estimate_point[1]-cp[1]);
-                double cos_dlong_h = cos(0.5*(estimate_point[0]-cp[0]));
-                double cos_dlat_h = cos(0.5*(estimate_point[1]-cp[1]));
+                double sin_dlat = FT::sin(estimate_point[1]-cp[1]);
+                double cos_dlong_h = FT::cos(0.5*(estimate_point[0]-cp[0]));
+                double cos_dlat_h = FT::cos(0.5*(estimate_point[1]-cp[1]));
                 double deriv_long = (3.0*a[0]*est*est+2.0*b[0]*est+c[0]);
                 double deriv_lat = (3.0*a[1]*est*est+2.0*b[1]*est+c[1]);
 
@@ -451,10 +451,10 @@ namespace WorldBuilder
                     const double squared_distance_cartesian_second_derivative = cos_cp_lat*cos_d_lat*(-0.5*deriv_long*deriv_long*sin_d_long_h*sin_d_long_h+0.5*deriv_long*deriv_long*cos_dlong_h*cos_dlong_h+(6.0*a[0]*est+2.0*b[0])*sin_d_long_h*cos_dlong_h)+cos_cp_lat*sin_d_long_h*sin_d_long_h*(deriv_lat*deriv_lat*(-cos_d_lat)-(6.0*a[1]*est+2.0*b[1])*sin_dlat)-2.0*cos_cp_lat*deriv_long*deriv_lat*sin_d_long_h*cos_dlong_h*sin_dlat-0.5*deriv_lat*deriv_lat*sin_d_lat_h*sin_d_lat_h+0.5*deriv_lat*deriv_lat*cos_dlat_h*cos_dlat_h+(6.0*a[1]*est+2.0*b[1])*sin_d_lat_h*cos_dlat_h;
 
 #ifndef NDEBUG
-                    const double squared_distance_cartesian_full = sin((a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])*0.5)*sin((a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])*0.5)+sin((a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0])*0.5)*sin((a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0])*0.5)*cos(cp[1])*cos(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]);
-                    double cos_dlong = cos(estimate_point[0]-cp[0]);
-                    const double squared_distance_cartesian_derivative_full = cos(cp[1])*(-(3.0*a[1]*est*est+2.0*b[1]*est+c[1]))*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*sin(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])+cos(cp[1])*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*cos(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*cos(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])+(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*sin(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))*cos(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]));
-                    const double squared_distance_cartesian_second_derivative_full = cos(cp[1])*cos(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])*(-0.5*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))+0.5*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*cos(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*cos(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))+(6.0*a[0]*est+2.0*b[0])*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*cos(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0])))+cos(cp[1])*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*((3.0*a[1]*est*est+2.0*b[1]*est+c[1])*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*(-cos(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))-(6.0*a[1]*est+2.0*b[1])*sin(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))-2.0*cos(cp[1])*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*cos(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*sin(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])-0.5*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*sin(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))*sin(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))+0.5*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*cos(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))*cos(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))+(6.0*a[1]*est+2.0*b[1])*sin(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))*cos(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]));
+                    const double squared_distance_cartesian_full = FT::sin((a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])*0.5)*FT::sin((a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])*0.5)+FT::sin((a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0])*0.5)*FT::sin((a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0])*0.5)*FT::cos(cp[1])*FT::cos(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]);
+                    double cos_dlong = FT::cos(estimate_point[0]-cp[0]);
+                    const double squared_distance_cartesian_derivative_full = FT::cos(cp[1])*(-(3.0*a[1]*est*est+2.0*b[1]*est+c[1]))*FT::sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*FT::sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*FT::sin(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])+FT::cos(cp[1])*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*FT::sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*FT::cos(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*FT::cos(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])+(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*FT::sin(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))*FT::cos(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]));
+                    const double squared_distance_cartesian_second_derivative_full = FT::cos(cp[1])*FT::cos(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])*(-0.5*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*FT::sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*FT::sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))+0.5*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*FT::cos(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*FT::cos(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))+(6.0*a[0]*est+2.0*b[0])*FT::sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*FT::cos(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0])))+FT::cos(cp[1])*FT::sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*FT::sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*((3.0*a[1]*est*est+2.0*b[1]*est+c[1])*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*(-FT::cos(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))-(6.0*a[1]*est+2.0*b[1])*FT::sin(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))-2.0*FT::cos(cp[1])*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*FT::sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*FT::cos(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*FT::sin(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])-0.5*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*FT::sin(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))*FT::sin(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))+0.5*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*FT::cos(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))*FT::cos(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))+(6.0*a[1]*est+2.0*b[1])*FT::sin(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))*FT::cos(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]));
                     output <<"sqd = " << squared_distance_cartesian <<":" << squared_distance_cartesian_full << ", diff=" << squared_distance_cartesian-squared_distance_cartesian_full << ", sqdd: " << squared_distance_cartesian_derivative <<":" << squared_distance_cartesian_derivative_full << ", diff="<< squared_distance_cartesian_derivative-squared_distance_cartesian_derivative_full << ", sqdd: " << squared_distance_cartesian_second_derivative << ":" << squared_distance_cartesian_second_derivative_full << ", diff= " << squared_distance_cartesian_second_derivative-squared_distance_cartesian_second_derivative_full << ", est: " << est << std::endl;
 #endif
                     // the local minimum is where  squared_distance_cartesian_derivative=0 and squared_distance_cartesian_derivative>=0
@@ -470,13 +470,13 @@ namespace WorldBuilder
                         est_test = est-update*line_search;
                         estimate_point = a*est_test*est_test*est_test+b*est_test*est_test+c*est_test+d;
 
-                        sin_d_long_h = sin((estimate_point[0]-cp[0])*0.5);
-                        sin_d_lat_h = sin((estimate_point[1]-cp[1])*0.5);
-                        squared_distance_cartesian_test = sin_d_lat_h*sin_d_lat_h+sin_d_long_h*sin_d_long_h*cos_cp_lat*cos(estimate_point[1]-cp[1]);
+                        sin_d_long_h = FT::sin((estimate_point[0]-cp[0])*0.5);
+                        sin_d_lat_h = FT::sin((estimate_point[1]-cp[1])*0.5);
+                        squared_distance_cartesian_test = sin_d_lat_h*sin_d_lat_h+sin_d_long_h*sin_d_long_h*cos_cp_lat*FT::cos(estimate_point[1]-cp[1]);
 
 #ifndef NDEBUG
-                        sin_dlat = sin(estimate_point[1]-cp[1]);
-                        cos_dlong = cos(estimate_point[0]-cp[0]);
+                        sin_dlat = FT::sin(estimate_point[1]-cp[1]);
+                        cos_dlong = FT::cos(estimate_point[0]-cp[0]);
                         deriv_long = (3.0*a[0]*est_test*est_test+2.0*b[0]*est_test+c[0]);
                         deriv_lat = (3.0*a[1]*est_test*est_test+2.0*b[1]*est_test+c[1]);
                         const double squared_distance_cartesian_derivative_test = cos_cp_lat*(-deriv_lat)*sin_d_long_h*sin_d_long_h*sin_dlat+cos_cp_lat*deriv_long*sin_d_long_h*cos_dlong_h*cos_d_lat+deriv_lat*sin_d_lat_h*cos_dlat_h;
@@ -496,9 +496,9 @@ namespace WorldBuilder
                                 est_test = est-update*line_search;
                                 estimate_point = a*est_test*est_test*est_test+b*est_test*est_test+c*est_test+d;
 
-                                sin_d_long_h = sin((estimate_point[0]-cp[0])*0.5);
-                                sin_d_lat_h = sin((estimate_point[1]-cp[1])*0.5);
-                                squared_distance_cartesian_test_previous = sin_d_lat_h*sin_d_lat_h+sin_d_long_h*sin_d_long_h*cos_cp_lat*cos(estimate_point[1]-cp[1]);
+                                sin_d_long_h = FT::sin((estimate_point[0]-cp[0])*0.5);
+                                sin_d_lat_h = FT::sin((estimate_point[1]-cp[1])*0.5);
+                                squared_distance_cartesian_test_previous = sin_d_lat_h*sin_d_lat_h+sin_d_long_h*sin_d_long_h*cos_cp_lat*FT::cos(estimate_point[1]-cp[1]);
                                 line_search_step = std::min(line_search_step*(11./10.),0.95);
                                 continue;
                               }
@@ -522,10 +522,10 @@ namespace WorldBuilder
 
             estimate_point = a*est*est*est+b*est*est+c*est+d;
 
-            const double sin_d_long_h = sin((estimate_point[0]-cp[0])*0.5);
-            const double sin_d_lat_h = sin((estimate_point[1]-cp[1])*0.5);
+            const double sin_d_long_h = FT::sin((estimate_point[0]-cp[0])*0.5);
+            const double sin_d_lat_h = FT::sin((estimate_point[1]-cp[1])*0.5);
 
-            const double min_squared_distance_cartesian_temp = sin_d_lat_h*sin_d_lat_h+sin_d_long_h*sin_d_long_h*cos_cp_lat*cos(estimate_point[1]-cp[1]);
+            const double min_squared_distance_cartesian_temp = sin_d_lat_h*sin_d_lat_h+sin_d_long_h*sin_d_long_h*cos_cp_lat*FT::cos(estimate_point[1]-cp[1]);
 
             if (min_squared_distance_cartesian_temp < min_squared_distance)
               {
