@@ -20,8 +20,8 @@ Add figure of end result.
 05_limit_temperature_with_depth
 06_oceanic_plate_temperature
 07_subducting_plate_oceanic_part
-08_optional_adding_mantle_layer
-09_passive_marging_variable_depth
+08_passive_margin_variable_depth
+09_optional_adding_mantle_layer
 10_adding_basic_subducting_plate
 11_dip_change_in_segment
 12_subducting_plate_temperatures

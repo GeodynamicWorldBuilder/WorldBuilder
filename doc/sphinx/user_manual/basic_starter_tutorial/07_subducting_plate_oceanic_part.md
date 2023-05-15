@@ -11,18 +11,18 @@ For the composition, we are going to do something a bit more special. A commen t
 :::::{tab-item} Important lines
 :sync: Partial
 
-```{literalinclude} ../../_static/gwb_input_files/BST_5_subducting_plate_oceanic_part.wb
+```{literalinclude} ../../_static/gwb_input_files/BST_07_subducting_plate_oceanic_part.wb
 :language: json
 :lineno-start: 18
 :lines: 18-25
 :emphasize-lines: 5,6,7
 ```
 ::::{grid} 2
-:::{grid-item-card}  Download BST_5_subducting_plate_oceanic_part.wb
-:link: ../../_static/gwb_input_files/BST_5_subducting_plate_oceanic_part.wb
+:::{grid-item-card}  Download BST_07_subducting_plate_oceanic_part.wb
+:link: ../../_static/gwb_input_files/BST_07_subducting_plate_oceanic_part.wb
 :::
-:::{grid-item-card}  Download BST_5_subducting_plate_oceanic_part.grid
-:link: ../../_static/gwb_input_files/BST_5_subducting_plate_oceanic_part.grid
+:::{grid-item-card}  Download BST_07_subducting_plate_oceanic_part.grid
+:link: ../../_static/gwb_input_files/BST_07_subducting_plate_oceanic_part.grid
 :::
 ::::
 :::::
@@ -31,18 +31,18 @@ For the composition, we are going to do something a bit more special. A commen t
 :sync: Full
 
 
-```{literalinclude} ../../_static/gwb_input_files/BST_5_subducting_plate_oceanic_part.wb
+```{literalinclude} ../../_static/gwb_input_files/BST_07_subducting_plate_oceanic_part.wb
 :language: json
 :lineno-start: 1
 :emphasize-lines: 22,23,24
 ```
 
 ::::{grid} 2
-:::{grid-item-card}  Download BST_5_subducting_plate_oceanic_part.wb
-:link: ../../_static/gwb_input_files/BST_5_subducting_plate_oceanic_part.wb
+:::{grid-item-card}  Download BST_07_subducting_plate_oceanic_part.wb
+:link: ../../_static/gwb_input_files/BST_07_subducting_plate_oceanic_part.wb
 :::
-:::{grid-item-card}  Download BST_5_subducting_plate_oceanic_part.grid
-:link: ../../_static/gwb_input_files/BST_5_subducting_plate_oceanic_part.grid
+:::{grid-item-card}  Download BST_07_subducting_plate_oceanic_part.grid
+:link: ../../_static/gwb_input_files/BST_07_subducting_plate_oceanic_part.grid
 :::
 ::::
 :::::

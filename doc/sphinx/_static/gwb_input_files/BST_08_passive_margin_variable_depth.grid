@@ -5,7 +5,7 @@ compositions = 3
 vtu_output_format = ASCII
 
 # domain of the grid
-x_min = 0e3
+x_min = -1000e3
 x_max = 2000e3 
 y_min = 0e3
 y_max = 1000e3 

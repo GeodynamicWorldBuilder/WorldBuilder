@@ -14,18 +14,18 @@ If we would have set the max depth of the composition to be larger than the feat
 :::::{tab-item} Important lines
 :sync: Partial
 
-```{literalinclude} ../../_static/gwb_input_files/BST_3_limit_depth.wb
+```{literalinclude} ../../_static/gwb_input_files/BST_05_limit_depth.wb
 :language: json
 :lineno-start: 5
 :lines: 5-15
 :emphasize-lines: 3,8
 ```
 ::::{grid} 2
-:::{grid-item-card}  Download BST_3_limit_depth.wb
-:link: ../../_static/gwb_input_files/BST_3_limit_depth.wb
+:::{grid-item-card}  Download BST_05_limit_depth.wb
+:link: ../../_static/gwb_input_files/BST_05_limit_depth.wb
 :::
-:::{grid-item-card}  Download BST_3_limit_depth.grid
-:link: ../../_static/gwb_input_files/BST_3_limit_depth.grid
+:::{grid-item-card}  Download BST_05_limit_depth.grid
+:link: ../../_static/gwb_input_files/BST_05_limit_depth.grid
 :::
 ::::
 :::::
@@ -34,18 +34,18 @@ If we would have set the max depth of the composition to be larger than the feat
 :sync: Full
 
 
-```{literalinclude} ../../_static/gwb_input_files/BST_3_limit_depth.wb
+```{literalinclude} ../../_static/gwb_input_files/BST_05_limit_depth.wb
 :language: json
 :lineno-start: 1
 :emphasize-lines: 7,12
 ```
 
 ::::{grid} 2
-:::{grid-item-card}  Download BST_3_limit_depth.wb
-:link: ../../_static/gwb_input_files/BST_3_limit_depth.wb
+:::{grid-item-card}  Download BST_05_limit_depth.wb
+:link: ../../_static/gwb_input_files/BST_05_limit_depth.wb
 :::
-:::{grid-item-card}  Download BST_3_limit_depth.grid
-:link: ../../_static/gwb_input_files/BST_3_limit_depth.grid
+:::{grid-item-card}  Download BST_05_limit_depth.grid
+:link: ../../_static/gwb_input_files/BST_05_limit_depth.grid
 :::
 ::::
 :::::

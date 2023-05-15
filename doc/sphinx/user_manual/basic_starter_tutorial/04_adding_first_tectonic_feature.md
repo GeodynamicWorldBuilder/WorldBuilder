@@ -20,17 +20,17 @@ There are some other options, which we will cover later. The file below shows th
 :::::{tab-item} Important lines
 :sync: Partial
 
-```{literalinclude} ../../_static/gwb_input_files/BST_2_overriding_plate.wb
+```{literalinclude} ../../_static/gwb_input_files/BST_04_overriding_plate.wb
 :language: json
 :lineno-start: 4
 :lines: 4-12
 ```
 ::::{grid} 2
-:::{grid-item-card}  Download BST_2_overriding_plate.wb
-:link: ../../_static/gwb_input_files/BST_2_overriding_plate.wb
+:::{grid-item-card}  Download BST_04_overriding_plate.wb
+:link: ../../_static/gwb_input_files/BST_04_overriding_plate.wb
 :::
-:::{grid-item-card}  Download BST_2_overriding_plate.grid
-:link: ../../_static/gwb_input_files/BST_2_overriding_plate.grid
+:::{grid-item-card}  Download BST_04_overriding_plate.grid
+:link: ../../_static/gwb_input_files/BST_04_overriding_plate.grid
 :::
 ::::
 :::::
@@ -39,17 +39,17 @@ There are some other options, which we will cover later. The file below shows th
 :sync: Full
 
 
-```{literalinclude} ../../_static/gwb_input_files/BST_2_overriding_plate.wb
+```{literalinclude} ../../_static/gwb_input_files/BST_04_overriding_plate.wb
 :language: json
 :lineno-start: 1
 ```
 
 ::::{grid} 2
-:::{grid-item-card}  Download BST_2_overriding_plate.wb
-:link: ../../_static/gwb_input_files/BST_2_overriding_plate.wb
+:::{grid-item-card}  Download BST_04_overriding_plate.wb
+:link: ../../_static/gwb_input_files/BST_04_overriding_plate.wb
 :::
-:::{grid-item-card}  Download BST_2_overriding_plate.grid
-:link: ../../_static/gwb_input_files/BST_2_overriding_plate.grid
+:::{grid-item-card}  Download BST_04_overriding_plate.grid
+:link: ../../_static/gwb_input_files/BST_04_overriding_plate.grid
 :::
 ::::
 :::::

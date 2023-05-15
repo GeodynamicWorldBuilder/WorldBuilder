@@ -5,7 +5,7 @@
   [
     {
        "model":"mantle layer", "name":"upper mantle", "max depth":660e3,
-       "coordinates":[[0,0],[0,1000e3],[2000e3,1000e3],[2000e3,0]],
+       "coordinates":[[-1000e3,0],[-1000e3,1000e3],[3000e3,1000e3],[3000e3,0]],
        "composition models":[{"model":"uniform", "compositions":[4]}]
     },
     {
@@ -16,9 +16,21 @@
            {"model":"half space model", "max depth":100e3, "spreading velocity":0.04, 
             "ridge coordinates":[[[400e3,-1],[-100e3,2000e3]]]}
          ],
+       "composition models":[{"model":"uniform", "compositions":[0], "max depth":50e3}]
+    },
+    {
+       "model":"continental plate", "name":"Passive margin", "max depth":[[200e3]], 
+       "coordinates":[[-1000e3,0],[-1000e3,1000e3],[0,1000e3],[0,0]],
+       "temperature models":
+         [
+           {"model":"linear", "max depth":[[150e3],[200e3,[[-500e3,0],[-500e3,1000e3]]]]}
+         ],
        "composition models":
          [
-           {"model":"uniform", "compositions":[0], "max depth":50e3}
+           {"model":"uniform", "compositions":[3], 
+            "max depth":[[150e3],[200e3,[[-500e3,0],[-500e3,1000e3]]]]},
+           {"model":"uniform", "compositions":[1], 
+            "min depth":[[150e3],[200e3,[[-500e3,0],[-500e3,1000e3]]]]}
          ]
     },
     {

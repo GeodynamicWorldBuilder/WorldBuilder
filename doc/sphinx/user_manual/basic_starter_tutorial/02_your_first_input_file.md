@@ -6,17 +6,17 @@ GWB input files are plain-text files, which generally have the extension `.wb`. 
 
 
 
-```{literalinclude} ../../_static/gwb_input_files/BST_1_minimal_box.wb
+```{literalinclude} ../../_static/gwb_input_files/BST_02_minimal_box.wb
 :language: json
 :lineno-start: 1
 ```
 
 ::::{grid} 2
 :::{grid-item-card}  Download BST_1_minimal_box.wb
-:link: ../../_static/gwb_input_files/BST_1_minimal_box.wb
+:link: ../../_static/gwb_input_files/BST_02_minimal_box.wb
 :::
 :::{grid-item-card}  Download BST_1_minimal_box.grid
-:link: ../../_static/gwb_input_files/BST_1_minimal_box.grid
+:link: ../../_static/gwb_input_files/BST_02_minimal_box.grid
 :::
 ::::
 

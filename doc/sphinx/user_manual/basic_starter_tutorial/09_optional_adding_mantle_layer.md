@@ -1,4 +1,4 @@
-(part:user_manual:chap:concepts:sec:08_optinal_adding_mantle_layer)=
+(part:user_manual:chap:concepts:sec:09_optinal_adding_mantle_layer)=
 Optional adding mantle layer
 ============================
 
@@ -13,23 +13,24 @@ We are going to add the mantle layer as the first object in the feature list, so
 ```{note}
 The default values of for example the [potenial mantle temperature](open_features_items_oneOf_3_temperature-models_items_oneOf_1_potential-mantle-temperature), the [thermal expansion coefficient](open_features_items_oneOf_3_temperature-models_items_oneOf_1_thermal-expansion-coefficient) or the [specific heat](open_features_items_oneOf_3_temperature-models_items_oneOf_1_specific-heat) have a default value of -1. This is, like we have seen before, a special value. In this case it means that the global value is used (as you can read in the documentation of the value). It is generally recommended to only set the global values so that the whole setup remains self-consistent, but if you do want to change it in individual locations, you can!
 ```
+
 ::::::{tab-set}
 
 :::::{tab-item} Important lines
 :sync: Partial
 
-```{literalinclude} ../../_static/gwb_input_files/BST_6_adding_mantle_layer.wb
+```{literalinclude} ../../_static/gwb_input_files/BST_09_adding_mantle_layer.wb
 :language: json
 :lineno-start: 5
 :lines: 5-10
 :emphasize-lines: 5
 ```
 ::::{grid} 2
-:::{grid-item-card}  Download BST_6_adding_mantle_layer.wb
-:link: ../../_static/gwb_input_files/BST_6_adding_mantle_layer.wb
+:::{grid-item-card}  Download BST_09_adding_mantle_layer.wb
+:link: ../../_static/gwb_input_files/BST_09_adding_mantle_layer.wb
 :::
-:::{grid-item-card}  Download BST_6_adding_mantle_layer.grid
-:link: ../../_static/gwb_input_files/BST_6_adding_mantle_layer.grid
+:::{grid-item-card}  Download BST_09_adding_mantle_layer.grid
+:link: ../../_static/gwb_input_files/BST_09_adding_mantle_layer.grid
 :::
 ::::
 :::::
@@ -38,18 +39,18 @@ The default values of for example the [potenial mantle temperature](open_feature
 :sync: Full
 
 
-```{literalinclude} ../../_static/gwb_input_files/BST_6_adding_mantle_layer.wb
+```{literalinclude} ../../_static/gwb_input_files/BST_09_adding_mantle_layer.wb
 :language: json
 :lineno-start: 1
 :emphasize-lines: 9
 ```
 
 ::::{grid} 2
-:::{grid-item-card}  Download BST_6_adding_mantle_layer.wb
-:link: ../../_static/gwb_input_files/BST_6_adding_mantle_layer.wb
+:::{grid-item-card}  Download BST_09_adding_mantle_layer.wb
+:link: ../../_static/gwb_input_files/BST_09_adding_mantle_layer.wb
 :::
-:::{grid-item-card}  Download BST_6_adding_mantle_layer.grid
-:link: ../../_static/gwb_input_files/BST_6_adding_mantle_layer.grid
+:::{grid-item-card}  Download BST_09_adding_mantle_layer.grid
+:link: ../../_static/gwb_input_files/BST_09_adding_mantle_layer.grid
 :::
 ::::
 :::::

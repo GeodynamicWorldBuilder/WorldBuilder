@@ -16,18 +16,18 @@ If you are familair with the half space cooling model, you would also think some
 :::::{tab-item} Important lines
 :sync: Partial
 
-```{literalinclude} ../../_static/gwb_input_files/BST_4_oceanic_plate_temperature.wb
+```{literalinclude} ../../_static/gwb_input_files/BST_06_oceanic_plate_temperature.wb
 :language: json
 :lineno-start: 6
 :lines: 6-14
 :emphasize-lines: 6,7
 ```
 ::::{grid} 2
-:::{grid-item-card}  Download BST_4_oceanic_plate_temperature.wb
-:link: ../../_static/gwb_input_files/BST_4_oceanic_plate_temperature.wb
+:::{grid-item-card}  Download BST_06_oceanic_plate_temperature.wb
+:link: ../../_static/gwb_input_files/BST_06_oceanic_plate_temperature.wb
 :::
-:::{grid-item-card}  Download BST_4_oceanic_plate_temperature.grid
-:link: ../../_static/gwb_input_files/BST_4_oceanic_plate_temperature.grid
+:::{grid-item-card}  Download BST_06_oceanic_plate_temperature.grid
+:link: ../../_static/gwb_input_files/BST_06_oceanic_plate_temperature.grid
 :::
 ::::
 :::::
@@ -36,18 +36,18 @@ If you are familair with the half space cooling model, you would also think some
 :sync: Full
 
 
-```{literalinclude} ../../_static/gwb_input_files/BST_4_oceanic_plate_temperature.wb
+```{literalinclude} ../../_static/gwb_input_files/BST_06_oceanic_plate_temperature.wb
 :language: json
 :lineno-start: 1
 :emphasize-lines: 11,12
 ```
 
 ::::{grid} 2
-:::{grid-item-card}  Download BST_4_oceanic_plate_temperature.wb
-:link: ../../_static/gwb_input_files/BST_4_oceanic_plate_temperature.wb
+:::{grid-item-card}  Download BST_06_oceanic_plate_temperature.wb
+:link: ../../_static/gwb_input_files/BST_06_oceanic_plate_temperature.wb
 :::
-:::{grid-item-card}  Download BST_4_oceanic_plate_temperature.grid
-:link: ../../_static/gwb_input_files/BST_4_oceanic_plate_temperature.grid
+:::{grid-item-card}  Download BST_06_oceanic_plate_temperature.grid
+:link: ../../_static/gwb_input_files/BST_06_oceanic_plate_temperature.grid
 :::
 ::::
 :::::
