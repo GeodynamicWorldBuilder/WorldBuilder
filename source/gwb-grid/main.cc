@@ -778,6 +778,7 @@ int main(int argc, char **argv)
           double inner_radius = z_min;
           double outer_radius = z_max;
 
+          WBAssertThrow(dim ==3, "2D is currently not supported for the chunk.");
           WBAssertThrow(x_min <= x_max, "The minimum longitude must be less than the maximum longitude.");
           WBAssertThrow(y_min <= y_max, "The minimum latitude must be less than the maximum latitude.");
           WBAssertThrow(inner_radius < outer_radius, "The inner radius must be less than the outer radius.");
@@ -798,7 +799,7 @@ int main(int argc, char **argv)
             n_p = (n_cell_x + 1) * (n_cell_z + 1) * (dim == 3 ? (n_cell_y + 1) : 1);
 
           double dlong = opening_angle_long_rad / static_cast<double>(n_cell_x);
-          double dlat = opening_angle_lat_rad / static_cast<double>(n_cell_y);
+          double dlat = dim == 3 ? opening_angle_lat_rad / static_cast<double>(n_cell_y) : 0.;
           double lr = outer_radius - inner_radius;
           double dr = lr / static_cast<double>(n_cell_z);
 
