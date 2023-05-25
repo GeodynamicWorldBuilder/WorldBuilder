@@ -11,12 +11,15 @@ GWB input files are plain-text files, which generally have the extension `.wb`. 
 :lineno-start: 1
 ```
 
-::::{grid} 2
-:::{grid-item-card}  Download BST_1_minimal_box.wb
+::::{grid} 3
+:::{grid-item-card} BST_1_minimal_box.wb
 :link: ../../_static/gwb_input_files/BST_02_minimal_box.wb
 :::
-:::{grid-item-card}  Download BST_1_minimal_box.grid
+:::{grid-item-card} BST_1_minimal_box.grid
 :link: ../../_static/gwb_input_files/BST_02_minimal_box.grid
+:::
+:::{grid-item-card} Pavaview v1 state file 
+:link: ../../_static/paraview_state_files/BST_v1.pvsm
 :::
 ::::
 
@@ -27,3 +30,12 @@ If you want to inspect the result yourself, you can also download the correspond
 ```
 
 Congratulations on creating your first world builder input file! If you visualize the result you will notice that you are getting an adiabatic temperature profile and that every compositional field is zero everywhere. This is the background, or our canvas, if we want to stay in the painting analogy. Now, before we are going to get our brushes, we should first discuss the shape of our canvas a bit more.
+
+
+```{figure} ../../../../doc/sphinx/_static/images/user_manual/basic_starter_tutorial/BST_02.png
+:name: BST_02
+:alt: Basic Starter Tutorial section 16 highres result. 
+:align: center
+
+Basic Starter Tutorial section 2. The top part of the figure shows any place where the composition is not zero as seen sligthly from above. Currently all compositional fields are zero everywhere, so nothing is shown. The botttom part shows the temperature as seen sligthly from below. This shows an adiabatic temperature gradient.
+```

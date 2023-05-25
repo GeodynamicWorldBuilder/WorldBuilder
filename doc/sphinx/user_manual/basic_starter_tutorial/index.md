@@ -4,12 +4,16 @@ Basic Starter Tutorial
 
 
 
-The main goal of this tutorial is to get you to understand how to set up a world builder file to build a simple but functional 2D and 3D model. The example model we will be building is a subduction model, since it will introduce you slowley and step-by-step to a wide range of features and explain how to use them. It is strongly recommended to follow this tutorial before going through any more advanced tutorials or cookbooks and that you have read the previous sections of the User manual. The final result can be viewed in the figure below.
+The main goal of this tutorial is to get you to understand how to set up a world builder file to build a simple but functional 2D and 3D model. The example model we will be building is a subduction model, since it will introduce you slowly and step-by-step to a wide range of features and explain how to use them. It is strongly recommended to follow this tutorial before going through any more advanced tutorials or cookbooks and that you have read the previous sections of the User manual. The final result can be viewed in the figure below.
 
-```{todo}
-Add figure of end result.
+
+```{figure} ../../../../doc/sphinx/_static/images/user_manual/basic_starter_tutorial/BST_17.png
+:name: BST_index_highres
+:alt: Basic Starter Tutorial section 17 highres result. 
+:align: center
+
+Basic Starter Tutorial section will take you step by step to teach you how to create this model in both Cartesian, spherical and 2D!  
 ```
-
 ```{toctree}
 :hidden:
 

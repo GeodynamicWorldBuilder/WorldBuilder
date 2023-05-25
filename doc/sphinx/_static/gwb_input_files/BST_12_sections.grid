@@ -2,17 +2,16 @@
 grid_type = cartesian
 dim = 3
 compositions = 4
-vtu_output_format = ASCII
 
 # domain of the grid
-x_min = 0e3
+x_min = -1000e3
 x_max = 2000e3 
 y_min = 0e3
 y_max = 1000e3 
 z_min = 0 
-z_max = 500e3 
+z_max = 600e3 
 
 # grid properties
-n_cell_x = 640 #160 
-n_cell_y = 320 #80
-n_cell_z = 160 #40
+n_cell_x = 300 
+n_cell_y = 100
+n_cell_z = 60

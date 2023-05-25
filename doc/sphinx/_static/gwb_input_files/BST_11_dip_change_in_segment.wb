@@ -39,6 +39,13 @@
       "temperature models":[{"model":"linear", "max depth":100e3}],
        "composition models":[{"model":"uniform", "compositions":[3], "max depth":50e3},
                              {"model":"uniform", "compositions":[1], "min depth":50e3}]
+    },
+    { 
+      "model":"subducting plate", "name":"Slab", "dip point":[0,0],
+      "coordinates":[[1500e3,1000e3],[1600e3,350e3],[1500e3,0]],
+      "segments":[{"length":300e3, "thickness":[100e3], "angle":[0,60]}],
+      "temperature models":[{"model":"uniform", "temperature":400 }],
+      "composition models":[{"model":"uniform", "compositions":[2]}]
     }
   ]
 }
