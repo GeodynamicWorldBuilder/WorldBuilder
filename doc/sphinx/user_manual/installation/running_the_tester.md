@@ -2,7 +2,7 @@
 Running the tester
 ==================
 
-Once you have installed the GWB, it is always a good idea to run the tester to see if the installation works. There are a few ways to call the tester:`make test`, `ninja test` and `ctest`. They can all run the same tests suit, but `ctest` is the most universal and versatile of the option. Running ctest may give you output like below:
+Once you have installed the GWB, it is always a good idea to run the tester to see if the installation works. There are a few ways to call the tester:`make test`, `ninja test` and `ctest`. They can all run the same tests suit, but `ctest` is the most universal and versatile of the option. Running CTest may give you output like below:
 
 ```
 Test project /path/toworld-builder/WorldBuilder/build-rl

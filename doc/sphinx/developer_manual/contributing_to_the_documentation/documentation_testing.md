@@ -1,4 +1,4 @@
-(part:dev_manual:chap:contrib_to_doc:sec:doc_testing)=
+(part:dev_manual:chap:contribute_to_doc:sec:doc_testing)=
 Documentation testing
 =====================
 

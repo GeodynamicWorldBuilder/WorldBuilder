@@ -1,4 +1,4 @@
-(part:dev_manual:chap:start_devel_and_contrib:sec:tools:subsec:index)=
+(part:dev_manual:chap:start_developing_and_contribute:sec:tools:subsec:index)=
 required and recommended tools
 ============
 

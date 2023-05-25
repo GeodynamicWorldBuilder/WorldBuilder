@@ -1,4 +1,4 @@
-(part:dev_manual:chap:contrib_to_code:sec:tips_tricks)=
+(part:dev_manual:chap:contribute_to_code:sec:tips_tricks)=
 Tips and tricks
 ===============
 
@@ -59,7 +59,7 @@ for more info, check with:
 
 ## Trick 4: Interact with visualization when generating new tests
 
-The tests in the WorldBuilder contain a wb file for the setup and a dat file for the mesh point. 
+The tests in the World Builder contain a .wb file for the setup and a .dat file for the mesh point. 
 For example, the mass_conserving_slab_temperature test contains two files:
 
     tests/gwb-dat/mass_conserving_slab_temperature.wb
@@ -70,7 +70,7 @@ And a folder:
      tests/gwb-dat/mass_conserving_slab_temperature
 
 
-The first few lines of the contents in the dat file are:
+The first few lines of the contents in the .dat file are:
 
 ```{code-block} python
 ---
@@ -96,7 +96,7 @@ A trick is to interact with the gwb-grid application and pick up appropriate rep
 
     ./build/bin/gwb-grid  tests/gwb-dat/some_test.wb  some_grid.grid
 
-This command is composed of the "gwb-grid" executable in the "bin" subfolder, a wb file for the test, and a grid for the gwb-grid to generate output. There are already a few examples of grids in the tests/gwb-grid folder one could modify from. The output of this command is a vtu file that could be easily visualized in software like Paraview.
+This command is composed of the "gwb-grid" executable in the "bin" sub-folder, a wb file for the test, and a grid for the gwb-grid to generate output. There are already a few examples of grids in the tests/gwb-grid folder one could modify from. The output of this command is a vtu file that could be easily visualized in software like Paraview.
 
 For more information, please refer to the manual page for the gwb-grid app:
 {ref}`part:user_manual:chap:how_to_use_the_apps:sec:gwb-grid_app`

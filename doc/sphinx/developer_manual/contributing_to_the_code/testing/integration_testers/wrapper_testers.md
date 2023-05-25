@@ -1,4 +1,4 @@
-(part:dev_manual:chap:contrib_to_code:sec:testing:subsec:integration_testers:subsubsec:wrapper_tester)=
+(part:dev_manual:chap:contribute_to_code:sec:testing:subsec:integration_testers:subsubsec:wrapper_tester)=
 Wrapper tester
 ==============
 

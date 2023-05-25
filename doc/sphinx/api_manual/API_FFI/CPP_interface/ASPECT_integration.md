@@ -1,5 +1,5 @@
-(part:api_manual:chap:API_FFI:sec:CPP_interface:subsec:ASPECT_integration)=
-ASPECT intgration
+(part:API_manual:chap:API_FFI:sec:CPP_interface:subsec:ASPECT_integration)=
+ASPECT integration
 =================
 
 ```{todo}

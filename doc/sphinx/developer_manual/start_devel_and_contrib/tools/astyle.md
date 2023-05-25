@@ -1,4 +1,4 @@
-(part:dev_manual:chap:start_devel_and_contrib:sec:tools:subsec:astyle)=
+(part:dev_manual:chap:start_developing_and_contribute:sec:tools:subsec:astyle)=
 Astyle
 =====
 

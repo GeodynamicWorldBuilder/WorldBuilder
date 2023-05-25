@@ -1,4 +1,4 @@
-(part:api_manual:chap:API_FFI:sec:fortran_interface)=
+(part:API_manual:chap:API_FFI:sec:Fortran_interface)=
 FORTRAN interface
 ===========
 

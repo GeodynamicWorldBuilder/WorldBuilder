@@ -1,4 +1,4 @@
-(part:introduction:chap:gwb_philosophy)=
+(part:introduction:chap:GWB_philosophy)=
 GWB philosophy
 ==============
 

@@ -8,7 +8,7 @@ When it is downloaded, the folder contains the main library, two programs, and a
 The World Builder library
 -------------------------
 
-This is the main code of the Geodynamics World Builder.
+This is the main code of the Geodynamic World Builder.
 In this library is all the code related to setting up and querying the World Builder world.
 It also contains the wrapper code to interface with C, Python, and Fortran programs.
 
@@ -23,7 +23,7 @@ This data file should contain in the header information on the dimension you wan
 The World Builder Visualization program
 ---------------------------------------
 
-This program helps with visualizing the World Builder file by producing pvd files which can be opened with visualization programs like Paraview.
+This program helps with visualizing the World Builder file by producing vtu files which can be opened with visualization programs like Paraview.
 It requires a World Builder file and a grid file.
 A grid file is a file which contains information about what part of the World Builder domain should be visualized and with what resolution.
 For more information on how to use the World Builder visualizer see {ref}`part:user_manual:chap:how_to_use_the_apps:sec:gwb-grid_app`.

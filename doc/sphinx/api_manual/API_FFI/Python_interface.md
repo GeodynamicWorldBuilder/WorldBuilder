@@ -1,4 +1,4 @@
-(part:api_manual:chap:API_FFI:sec:python_interface)=
+(part:API_manual:chap:API_FFI:sec:python_interface)=
 Python interface
 ===========
 
