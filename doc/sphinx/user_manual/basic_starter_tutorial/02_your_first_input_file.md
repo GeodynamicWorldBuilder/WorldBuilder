@@ -1,4 +1,4 @@
-(part:user_manual:chap:concepts:sec:02_first_input_file)=
+(part:user_manual:chap:basic_starter_tutorial:sec:02_first_input_file)=
 Your first input file
 =====================
 

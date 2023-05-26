@@ -1,4 +1,4 @@
-(part:user_manual:chap:concepts:sec:12_subducting_plate_temp)=
+(part:user_manual:chap:basic_starter_tutorial:sec:12_subducting_plate_temp)=
 Subducting plate temperatures
 =============================
 

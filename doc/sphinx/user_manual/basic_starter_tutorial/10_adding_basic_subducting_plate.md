@@ -1,4 +1,4 @@
-(part:user_manual:chap:concepts:sec:BST_10_adding_basic_subducting_plate)=
+(part:user_manual:chap:basic_starter_tutorial:sec:BST_10_adding_basic_subducting_plate)=
 Adding basic subducting plate
 ============================
 

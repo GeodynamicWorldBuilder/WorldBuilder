@@ -1,4 +1,4 @@
-(part:user_manual:chap:concepts:sec:05_limit_temperature_with_depth)=
+(part:user_manual:chap:basic_starter_tutorial:sec:05_limit_temperature_with_depth)=
 Limit temperature with depth
 ============================
 

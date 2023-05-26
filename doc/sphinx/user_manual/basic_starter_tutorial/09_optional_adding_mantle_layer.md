@@ -1,4 +1,4 @@
-(part:user_manual:chap:concepts:sec:09_optional_adding_mantle_layer)=
+(part:user_manual:chap:basic_starter_tutorial:sec:09_optional_adding_mantle_layer)=
 Optional adding mantle layer
 ============================
 

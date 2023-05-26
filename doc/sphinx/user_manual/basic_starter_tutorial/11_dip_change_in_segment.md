@@ -1,4 +1,4 @@
-(part:user_manual:chap:concepts:sec:11_dip_change_in_segment)=
+(part:user_manual:chap:basic_starter_tutorial:sec:11_dip_change_in_segment)=
 Dip change in segment
 =====================
 

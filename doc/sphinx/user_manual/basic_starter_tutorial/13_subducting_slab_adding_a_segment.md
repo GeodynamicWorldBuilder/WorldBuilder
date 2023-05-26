@@ -1,4 +1,4 @@
-(part:user_manual:chap:concepts:sec:13_subducting_slab_adding_a_segment)=
+(part:user_manual:chap:basic_starter_tutorial:sec:13_subducting_slab_adding_a_segment)=
 Subducting slab adding a segment
 ================================
 

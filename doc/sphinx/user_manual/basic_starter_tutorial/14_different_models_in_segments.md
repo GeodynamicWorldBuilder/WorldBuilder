@@ -1,4 +1,4 @@
-(part:user_manual:chap:concepts:sec:14_different_models_in_segment)=
+(part:user_manual:chap:basic_starter_tutorial:sec:14_different_models_in_segment)=
 Different models in segments
 ============================
 

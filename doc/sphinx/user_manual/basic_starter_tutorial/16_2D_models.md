@@ -1,4 +1,4 @@
-(part:user_manual:chap:concepts:sec:16_2D_models)=
+(part:user_manual:chap:basic_starter_tutorial:sec:16_2D_models)=
 2D models
 =========
 

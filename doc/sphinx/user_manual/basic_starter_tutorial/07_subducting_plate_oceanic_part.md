@@ -1,4 +1,4 @@
-(part:user_manual:chap:concepts:sec:07_subducting_plate_oceanic_part)=
+(part:user_manual:chap:basic_starter_tutorial:sec:07_subducting_plate_oceanic_part)=
 Subducting plate oceanic part
 ========================
 

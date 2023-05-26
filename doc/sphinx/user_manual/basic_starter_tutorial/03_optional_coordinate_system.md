@@ -1,4 +1,4 @@
-(part:user_manual:chap:concepts:sec:03_coordinate_system)=
+(part:user_manual:chap:basic_starter_tutorial:sec:03_coordinate_system)=
 Optional parameter: coordinate system
 =====================================
 
@@ -89,5 +89,5 @@ lineno-start: 1
 
 This should be a good default spherical coordiante system. For more information on how to derive this from the paramter listing and what the options are, please expand and read the dropbox above.
 
-In the following sections we will continue using the Cartesian coordinate system. We will also show this in  {ref}`part:user_manual:chap:concepts:sec:17_spherical_models`, where we show how easy it is to switch between cartesian an spherical coordiante systems in our finished subdction example.
+In the following sections we will continue using the Cartesian coordinate system. We will also show this in  {ref}`part:user_manual:chap:basic_starter_tutorial:sec:17_spherical_models`, where we show how easy it is to switch between cartesian an spherical coordiante systems in our finished subdction example.
 ````

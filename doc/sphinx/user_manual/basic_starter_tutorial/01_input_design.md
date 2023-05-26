@@ -1,4 +1,4 @@
-(part:user_manual:chap:concepts:sec:01_input_design)=
+(part:user_manual:chap:basic_starter_tutorial:sec:01_input_design)=
 World Builder input file design
 =====================================
 

@@ -1,8 +1,8 @@
-(part:user_manual:chap:concepts:sec:17_spherical_models)=
+(part:user_manual:chap:basic_starter_tutorial:sec:17_spherical_models)=
 Spherical models
 ================
 
-We have already mentioned spherical coordinates in {ref}`part:user_manual:chap:concepts:sec:03_coordinate_system`. In this section we will focus on converting our current Cartesian model to a spherical model. 
+We have already mentioned spherical coordinates in {ref}`part:user_manual:chap:basic_starter_tutorial:sec:03_coordinate_system`. In this section we will focus on converting our current Cartesian model to a spherical model. 
 
 To make this change two changes need to be made:
 

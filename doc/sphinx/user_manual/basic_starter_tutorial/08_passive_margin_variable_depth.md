@@ -1,4 +1,4 @@
-(part:user_manual:chap:concepts:sec:08_passive_margin_variable_depth)=
+(part:user_manual:chap:basic_starter_tutorial:sec:08_passive_margin_variable_depth)=
 Adding a passive margin with variable depth
 ============================
 

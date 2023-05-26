@@ -1,4 +1,4 @@
-(part:user_manual:chap:concepts:sec:15_different_segment_in_sections)=
+(part:user_manual:chap:basic_starter_tutorial:sec:15_different_segment_in_sections)=
 Different segments in sections
 ===============================
 
