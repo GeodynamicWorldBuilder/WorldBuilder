@@ -2,7 +2,7 @@
 Adding a passive margin with variable depth
 ============================
 
-Although we have hinted towards it before, there is also an [area feature](part:user_manual:chap:concepts:sec:area_features) called `continental plate`. It works as you would expect based on what you have seen with the oceanic plate, but we are going to use it to do something very cool in our model: have a variable depths of a feature or even of layers within a given feature!
+Although we have hinted towards it before, there is also an [area feature](part:user_manual:chap:concepts:sec:area_features) called `continental plate`. It works as you would expect based on what you have seen with the oceanic plate, but we are going to use it to do something very cool in our model: have variable depths of a feature or even of layers within a given feature!
 
 To showcase this, we will be adding a passive margin to our model at the overriding plate side of our model. To start out, we need to know that both the `min depth` and `max depth` accept two types of values: a number and an array of values at points. 
 

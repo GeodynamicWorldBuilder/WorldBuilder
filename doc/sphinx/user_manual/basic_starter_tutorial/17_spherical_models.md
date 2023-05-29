@@ -66,5 +66,5 @@ To simplify the transition for this tutorial, we will just divide each coordinat
 :alt: Basic Starter Tutorial section 17 highres result. 
 :align: center
 
-Basic Starter Tutorial section 17 high resolution result. This has 4 times the resolution then the grid file above. Note that you can see the Earth's curvature! 
+Basic Starter Tutorial section 17 high resolution result. This has 4 times the resolution than the grid file above. Note that you can see the Earth's curvature! 
 ```

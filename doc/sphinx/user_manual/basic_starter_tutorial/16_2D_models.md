@@ -69,5 +69,5 @@ You need to change the gridfile to a 2D grid to be able to see the difference.
 :alt: Basic Starter Tutorial section 16 highres result. 
 :align: center
 
-Basic Starter Tutorial section 16 high resolution result. This has 4 times the resolution then the grid file above. Note that some of the issues with the slab, like it's abrubt ending can be solved by using the mass conserving temperature model instead of the McKenzie plate model. 
+Basic Starter Tutorial section 16 high resolution result. This has 4 times the resolution than the grid file above. Note that some of the issues with the slab, like it's abrubt ending can be solved by using the mass conserving temperature model instead of the McKenzie plate model. 
 ```

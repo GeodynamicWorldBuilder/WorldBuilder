@@ -2,7 +2,7 @@
 Adding basic subducting plate
 ============================
 
-Now that we have a solid understanding of how area features like `oceanic plate`, `continental plate` and `mantle layer` work, we can start to take a look at [line features](part:user_manual:chap:concepts:sec:line_features). In this case we are going to take a look at the `subducting plate`, but note that there is also the `fault`. On a fundamental level, they both function in a very similar way, with the main difference being that the slab has a slab surface and a up and down direction from that surface, while the fault has a center surface and is symmetric on both sides. The temperature and compositional models available for each also may differ.
+Now that we have a solid understanding of how area features like `oceanic plate`, `continental plate` and `mantle layer` work, we can start to take a look at [line features](part:user_manual:chap:concepts:sec:line_features). In this case we are going to take a look at the `subducting plate`, but note that there is also the `fault`. On a fundamental level, they both function in a very similar way, with the main difference being that the slab has a slab surface and a up and down direction from that surface, while the fault has a center surface and is symmetric on both sides. The temperature and compositional models available for each may also differ.
 
 There are five properties these line features objects require:
 
@@ -10,12 +10,12 @@ There are five properties these line features objects require:
 2. `name`: Like with area features, a descriptive name to improve readability of the file.
 3. `coordinates`: The location of where the feature intersects with the surface. For a subducting plate, this would be the location of the trench. This is what the line in line feature refers to, these coordinates represent a line on a map view.
 4. `dip point`: This is often most confusing to new users, but the concept is really simple. If the slab or fault makes an angle, we need to decide what side of the line (trench for a slab) the slab or fault is dipping. There are many ways of doing this, but in GWB it is done through simply defining a point on one side of the line. The slab or fault will then dip in that direction. It is often good to choose a point far away from the trench, especially if the trench makes a lot of curves.
-5. `segments`: Defines the downwards part of the subducting plate (i.e. the slab) or fault. Each segment requires at least a `length` as a number, a `thickness`, which is an array of one or two numbers and a `angle`, which is also an array of one or two numbers. We will first show an example to get our first slab in the model before explaining further. It will hopefully be easier to understand when you see it in action in this and the next few sections.
+5. `segments`: Defines the downwards part of the subducting plate (i.e. the slab) or fault. Each segment requires at least a `length` as a number, a `thickness`, which is an array of one or two numbers and an `angle`, which is also an array of one or two numbers. We will first show an example to get our first slab in the model before explaining further. It will hopefully be easier to understand when you see it in action in this and the next few sections.
 
 For the example in this section, we will make a trench at the interface of two area features, where the slab is dipping with a constant angle of 60 degrees in the direction of the overriding plate. We make this slab (segment) 300 km long and give it a constant thickness of 100 km. So we set a dip point at a location on the side of the overriding plate with respect to the trench. In this case the origin (0,0) will work fine. 
 
 ```{note}
-The result will not change based on the exact location of the dip point, as long as it is on one side of all the lines formed by connection the line features coordinate points.
+The result will not change based on the exact location of the dip point, as long as it is on one side of all the lines formed by connecting the line features coordinate points.
 ```
 
 ::::::{tab-set}
