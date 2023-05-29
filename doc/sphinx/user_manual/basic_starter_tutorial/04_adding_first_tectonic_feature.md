@@ -68,5 +68,5 @@ There are some other options, which we will cover later. The file below shows th
 :alt: Basic Starter Tutorial section 16 highres result. 
 :align: center
 
-Basic Starter Tutorial section 04. The top part of the figure shows any place where the composition is not zero as seen slightly from above. Currently is only shows composition 0 as green. The bottom part shows the temperature as seen slightly from below. This shows that the overriding plate with a temperature of 293K goes all the way down to the bottom of the model.
+Basic Starter Tutorial section 04. The top part of the figure shows where the composition as been assigned as an object. Currently it only shows composition 0 as green. The bottom part shows the temperature as seen slightly from below. This shows that the overriding plate with a temperature of 293K goes all the way down to the bottom of the model.
 ```

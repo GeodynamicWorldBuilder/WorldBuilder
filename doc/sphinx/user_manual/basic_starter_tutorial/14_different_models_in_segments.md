@@ -2,7 +2,7 @@
 Different models in segments
 ============================
 
-Slabs and faults can be heterogeneous in depth, and this is very easy to represent in the world builder. The segments we just added allow for defining temperature and compositional models, which overwrite the temperature and compositional models for the whole feature. You can think of it this way: you set the default models for each segment in the feature (line 54 and 55) and then you overwrite that default model in the segments where you want something else. 
+Slabs and faults can be heterogeneous in depth, and this is very easy to represent in the world builder. The segments we just added allow for defining temperature and compositional models, which overwrite the temperature and compositional models for the whole feature. You can think of it this way: you set the feature models for each segment in the feature (line 54 and 55) and then you overwrite that feature model in the segments where you want something else. 
 
 In this case we want to have two layers in the first segment, where the upper layer is the same as the upper layer of the oceanic plate and the lower layer is the same as the rest of the subducting plate. This layout is mainly chosen to highlight how the transition between the oceanic plate can both be seamless and sharp.
 
@@ -61,5 +61,5 @@ In this case we want to have two layers in the first segment, where the upper la
 :alt: Basic Starter Tutorial section 14. 
 :align: center
 
-Basic Starter Tutorial section 14. The top part of the figure shows any place where the composition is not zero as seen sligthly from above. Currently is shows composition 0 as green, composition 1 as yellow, composition 2 as purple and composition 3 as blue. Composition 4 is not shown to be able to see the slab. The font half of the overriding plate (compsition 1) has also been removed to be able to better view the slab. The botttom part shows the temperature as seen sligthly from below where only temperatures between 300K and 1600K are shown. 
+Basic Starter Tutorial section 14. The top part of the figure shows where the composition as been assigned as an object. Currently is shows composition 0 as green, composition 1 as yellow, composition 2 as purple and composition 3 as blue. Composition 4 is not shown to be able to see the slab. The front half of the overriding plate (composition 1) has also been removed to be able to better view the slab. The bottom part shows the temperature as seen slightly from below where only temperatures between 300K and 1600K are shown. 
 ```

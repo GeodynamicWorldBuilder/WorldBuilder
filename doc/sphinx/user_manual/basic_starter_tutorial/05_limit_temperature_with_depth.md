@@ -64,5 +64,5 @@ If we would have set the max depth of the composition to be larger than the feat
 :alt: Basic Starter Tutorial section 5. 
 :align: center
 
-Basic Starter Tutorial section 5. The top part of the figure shows any place where the composition is not zero as seen slightly from above. Currently it only shows composition 0 as green which is now limited to 100km depth. The bottom part shows the temperature as seen slightly from below. This shows that the overriding plate with a temperature of 293K is now limited to 100km depth.
+Basic Starter Tutorial section 5. The top part of the figure shows where the composition as been assigned as an object. Currently it only shows composition 0 as green which is now limited to 100km depth. The bottom part shows the temperature as seen slightly from below. This shows that the overriding plate with a temperature of 293K is now limited to 100km depth.
 ```

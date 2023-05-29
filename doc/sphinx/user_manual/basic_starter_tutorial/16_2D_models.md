@@ -8,7 +8,7 @@
 Even if you have a `cross section` defined in your world builder file, you can still use it for 3D models. If you want to use 2D models, you will need to have a cross section defined.
 ```
 
-Now, lets add a cross section through the slab in our model. 
+Now, let's add a cross section through the slab in our model. 
 
 ::::::{tab-set}
 

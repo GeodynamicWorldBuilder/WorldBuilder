@@ -6,6 +6,10 @@ Now that we have made the overriding (Caribbean) plate, it is time to add the oc
 
 For the composition, we are going to do something a bit more special. A common thing you will probably want to do with compositional fields is have multiple layers of them within a feature. This is very easy to do in the GWB. If you remember from the last section, both the `temperature models` and `compositional models` are a list of objects. Making layers is thus as easy as adding multiple compositional models with each their own `min depth` and `max depth`. 
 
+```{note}
+If you provide a `min depth` or `max depth` outside the min and max depth range of the feature, it will be cut off by the feature min and max depth range.
+```
+
 ::::::{tab-set}
 
 :::::{tab-item} Important lines
@@ -61,5 +65,5 @@ For the composition, we are going to do something a bit more special. A common t
 :alt: Basic Starter Tutorial section 7. 
 :align: center
 
-Basic Starter Tutorial section 7. The top part of the figure shows any place where the composition is not zero as seen slightly from above. Currently is shows composition 0 as green, composition 1 as yellow and composition 3 as blue. The bottom part shows the temperature as seen slightly from below where only temperatures between 300K and 1600K are shown. Both the oceanic plate with the ridge and the oceanic plate with a linear temperature profile are visible.
+Basic Starter Tutorial section 7. The top part of the figure shows where the composition as been assigned as an object. Currently is shows composition 0 as green, composition 1 as yellow and composition 3 as blue. The bottom part shows the temperature as seen slightly from below where only temperatures between 300K and 1600K are shown. Both the oceanic plate with the ridge and the oceanic plate with a linear temperature profile are visible.
 ```

@@ -37,5 +37,5 @@ Congratulations on creating your first world builder input file! If you visualiz
 :alt: Basic Starter Tutorial section 16 highres result. 
 :align: center
 
-Basic Starter Tutorial section 2. The top part of the figure shows any place where the composition is not zero as seen sligthly from above. Currently all compositional fields are zero everywhere, so nothing is shown. The botttom part shows the temperature as seen sligthly from below. This shows an adiabatic temperature gradient.
+Basic Starter Tutorial section 2. The top part of the figure shows where the composition has been assigned as object. Since no compositions have been assigned yet, nothing is plotted when we view the composition solution. The bottom part shows the temperature solution that has been assigned. This shows the adiabatic temperature gradient.
 ```

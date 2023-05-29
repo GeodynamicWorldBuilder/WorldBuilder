@@ -86,5 +86,5 @@ If you provide a point twice, explicitly, or implicity through the use of the co
 :alt: Basic Starter Tutorial section 8. 
 :align: center
 
-Basic Starter Tutorial section 8. The top part of the figure shows any place where the composition is not zero as seen slightly from above. Currently it shows composition 0 as green, composition 1 as yellow and composition 3 as blue. The bottom part shows the temperature as seen slightly from below where only temperatures between 300K and 1600K are shown. The added continental plate with variable thickness of it's two layers is now visible on the left side of the image.
+Basic Starter Tutorial section 8. The top part of the figure shows where the composition as been assigned as an object. Currently it shows composition 0 as green, composition 1 as yellow and composition 3 as blue. The bottom part shows the temperature as seen slightly from below where only temperatures between 300K and 1600K are shown. The added continental plate with variable thickness of it's two layers is now visible on the left side of the image.
 ```

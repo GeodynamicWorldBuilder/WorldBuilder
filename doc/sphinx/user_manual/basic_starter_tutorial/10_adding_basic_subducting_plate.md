@@ -76,5 +76,5 @@ The explanation can be significantly improved by adding conceptual figures
 :alt: Basic Starter Tutorial section 10. 
 :align: center
 
-Basic Starter Tutorial section 10. The top part of the figure shows any place where the composition is not zero as seen slightly from above. Currently it shows composition 0 as green, composition 1 as yellow, composition 2 as purple and composition 3 as blue. Composition 4 is not shown to be able to see the slab. The front half of the overriding plate (composition 1) has also been removed to be able to better view the slab. The bottom part shows the temperature as seen slightly from below where only temperatures between 300K and 1600K are shown. 
+Basic Starter Tutorial section 10. The top part of the figure shows where the composition as been assigned as an object. Currently it shows composition 0 as green, composition 1 as yellow, composition 2 as purple and composition 3 as blue. Composition 4 is not shown to be able to see the slab. The front half of the overriding plate (composition 1) has also been removed to be able to better view the slab. The bottom part shows the temperature as seen slightly from below where only temperatures between 300K and 1600K are shown. 
 ```

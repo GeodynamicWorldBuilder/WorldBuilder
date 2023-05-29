@@ -68,5 +68,5 @@ The [potential mantle temperature](open_features_items_oneOf_3_temperature-model
 :alt: Basic Starter Tutorial section 9. 
 :align: center
 
-Basic Starter Tutorial section 9. The top part of the figure shows any place where the composition is not zero as seen slightly from above. Currently it shows composition 0 as green, composition 1 as yellow, composition 3 as blue and composition 4 is shown as red. The bottom part shows the temperature as seen slightly from below where only temperatures between 300K and 1600K are shown. We will not show composition 4 in future figures anymore to be able to show other features more clearly.
+Basic Starter Tutorial section 9. The top part of the figure shows where the composition as been assigned as an object. Currently it shows composition 0 as green, composition 1 as yellow, composition 3 as blue and composition 4 is shown as red. The bottom part shows the temperature as seen slightly from below where only temperatures between 300K and 1600K are shown. We will not show composition 4 in future figures anymore to be able to show other features more clearly.
 ```
