@@ -2,13 +2,13 @@
 Oceanic plate temperature
 =========================
 
-Using uniform temperatures will only allow you to build very simple models. So lets make the model a bit more interesting adding a half space model to the overriding plate. This allows us to add a temperature structure based the distance from a ridge. 
+Using uniform temperatures will only allow you to build very simple models. So let's make the model a bit more interesting by adding a half space cooling model to the overriding plate. This allows us to add a temperature structure based on the distance along the plate from a ridge. 
 
-To be able to do this, we need to provide the following information to the model: `model`, `ridge coordianates`, `spreading velocity` and `max depth`. Please see {ref}`open_features_items_oneOf_4_temperature-models_items_oneOf_2` for more info.
+To be able to do this, we need to provide the following information to the model: `model`, `ridge coordinates`, `spreading velocity` and `max depth`. Please see {ref}`open_features_items_oneOf_4_temperature-models_items_oneOf_2` for more info.
 
 We are already familiar with `max depth`, but `spreading velocity` and `ridge coordinates` are new. The [spreading velocity](open_features_items_oneOf_4_temperature-models_items_oneOf_2_spreading-velocity) is simply the velocity of how fast one part of the plate is moving away from the ridge. The [ridge coordinates](open_features_items_oneOf_4_temperature-models_items_oneOf_2_ridge-coordinates) are a list of spreading ridges, where each ridge is a list of 2D points. The half space is computed with the distance to the closest point on any ridge and the spreading velocity. 
 
-If you are familiar with the half space cooling model, you would also think some kind of top and bottom/mantle temperature is required. These values can be provided, but are by default they are set to reasonable values. The top temperature is set to 193.15K and the bottom temperature is set to -1K. For this model, if the temperature is set  to a negative value, it automatically uses the computed adiabatic temperature at that depth. This will be good enough for our tutorial, so we won't be changing those values here, but you are free to do so!
+If you are familiar with the half space cooling model, you would also think some kind of top and bottom/mantle temperature is required. These values can be provided, but by default they are set to reasonable values. The top temperature is set to 293.15K and the bottom temperature is set to -1K. For this model, if the temperature is set  to a negative value, it automatically uses the computed adiabatic temperature at that depth. This will be good enough for our tutorial, so we won't be changing those values here, but you are free to do so!
 
 
 ::::::{tab-set}
@@ -66,5 +66,5 @@ If you are familiar with the half space cooling model, you would also think some
 :alt: Basic Starter Tutorial section 6. 
 :align: center
 
-Basic Starter Tutorial section 6. The top part of the figure shows any place where the composition is not zero as seen sligthly from above. Currently is only shows composition 0 as green and is now limited to 100km depth. The botttom part shows the temperature as seen sligthly from below where only temperatures between 300K and 1600K are shown. This allows to better view the ridge.
+Basic Starter Tutorial section 6. The top part of the figure shows any place where the composition is not zero as seen sligthly from above. Currently is only shows composition 0 as green and is now limited to 100km depth. The bottom part shows the temperature as seen slightly from below where only temperatures between 300K and 1600K are shown. This allows to better view the ridge.
 ```

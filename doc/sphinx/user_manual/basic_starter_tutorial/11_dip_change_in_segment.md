@@ -2,9 +2,9 @@
 Dip change in segment
 =====================
 
-What we have achieved in the last section was already great, but slabs in the Earth are usually not thought of as straight lines.  For example near the surface they start with an angle of zero and then dip to maybe 60 degrees. So, how do we do that in the world builder?
+What we have achieved in the last section was already great, but slabs in the Earth are usually not thought of as straight lines.  For example, near the surface they start with a dip angle of zero and then increase their dip with depth to maybe 60 degrees. So, how do we do that in the world builder?
 
-This is where the array for the `angle` comes in. Last time we provided just one value, but we are also allowed to provide two values. If you provide two values, the first value is the angle at the top of the segment and the second value is the angle at the bottom of the segment. So to achieve this we only need to add a zero before the 60 in the `angle` array.
+This is where the array for the `angle` comes in. Last time we provided just one value, but we are also allowed to provide two values. If you provide two values, the first value is the dip angle at the top of the segment and the second value is the dip angle at the bottom of the segment. So to achieve this we only need to add a zero before the 60 in the `angle` array.
 
 
 ::::::{tab-set}
@@ -57,7 +57,7 @@ This is where the array for the `angle` comes in. Last time we provided just one
 ::::::
 
 ```{note}
-You can do the same for the `thickness`. If we want to start with a thickness of 100km and linearly taper it down to 0 km to form a slab tip, we can do the following: `"tickness":[100e3,0]`
+You can do the same for the `thickness`. If we want to start with a thickness of 100km and linearly taper it down to 0 km to form a slab tip, we can do the following: `"thickness":[100e3,0]`
 ```
 
 ```{todo}
@@ -69,5 +69,5 @@ The explanation can be significantly improved by adding conceptual figures
 :alt: Basic Starter Tutorial section 11. 
 :align: center
 
-Basic Starter Tutorial section 11. The top part of the figure shows any place where the composition is not zero as seen sligthly from above. Currently is shows composition 0 as green, composition 1 as yellow, composition 2 as purple and composition 3 as blue. Composition 4 is not shown to be able to see the slab. The font half of the overriding plate (compsition 1) has also been removed to be able to better view the slab. The botttom part shows the temperature as seen sligthly from below where only temperatures between 300K and 1600K are shown. 
+Basic Starter Tutorial section 11. The top part of the figure shows any place where the composition is not zero as seen slightly from above. Currently is shows composition 0 as green, composition 1 as yellow, composition 2 as purple and composition 3 as blue. Composition 4 is not shown to be able to see the slab. The front half of the overriding plate (composition 1) has also been removed to be able to better view the slab. The bottom part shows the temperature as seen slightly from below where only temperatures between 300K and 1600K are shown. 
 ```

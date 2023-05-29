@@ -4,7 +4,7 @@ Different models in segments
 
 Slabs and faults can be heterogeneous in depth, and this is very easy to represent in the world builder. The segments we just added allow for defining temperature and compositional models, which overwrite the temperature and compositional models for the whole feature. You can think of it this way: you set the default models for each segment in the feature (line 54 and 55) and then you overwrite that default model in the segments where you want something else. 
 
-In this case we want to have two layers in the upper segment, where the upper layer is the same as the upper layer of the oceanic plate and the lower layer is the same as the rest of the subducting plate. This layout is mainly chosen to highlight how the transition between the oceanic plate can both be seamless and sharp.
+In this case we want to have two layers in the first segment, where the upper layer is the same as the upper layer of the oceanic plate and the lower layer is the same as the rest of the subducting plate. This layout is mainly chosen to highlight how the transition between the oceanic plate can both be seamless and sharp.
 
 ::::::{tab-set}
 

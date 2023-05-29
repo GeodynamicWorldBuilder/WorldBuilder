@@ -74,7 +74,7 @@ lineno-start: 1
 ```
 
 ````{note}
-If you want to have a spherical model, please see {ref}`part:user_manual:chap:concepts:sec:const_angle_spherical` first. An input file for a spherical model could like somthing like this:
+If you want to have a spherical model, please see {ref}`part:user_manual:chap:concepts:sec:const_angle_spherical` first. An input file for a spherical model could like something like this:
 
 ```{code-block} json
 ---
@@ -89,5 +89,5 @@ lineno-start: 1
 
 This should be a good default spherical coordiante system. For more information on how to derive this from the paramter listing and what the options are, please expand and read the dropbox above.
 
-In the following sections we will continue using the Cartesian coordinate system. We will also show this in  {ref}`part:user_manual:chap:basic_starter_tutorial:sec:17_spherical_models`, where we show how easy it is to switch between cartesian an spherical coordiante systems in our finished subdction example.
+In the following sections we will continue using the Cartesian coordinate system. We will also show this in  {ref}`part:user_manual:chap:basic_starter_tutorial:sec:17_spherical_models`, where we show how easy it is to switch between cartesian and spherical coordinate systems in our finished subduction example.
 ````

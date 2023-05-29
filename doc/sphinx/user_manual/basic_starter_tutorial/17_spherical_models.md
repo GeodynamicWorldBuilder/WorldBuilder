@@ -6,7 +6,7 @@ We have already mentioned spherical coordinates in {ref}`part:user_manual:chap:b
 
 To make this change two changes need to be made:
 
-1. The coordinate system should be set to spherical and a depth method need to be set.
+1. The coordinate system should be set to spherical and a depth method needs to be set.
 2. The coordinates you provide need to be changed from Cartesian to spherical.
 
 To simplify the transition for this tutorial, we will just divide each coordinate by 10000, which will get is into a nice degree range.

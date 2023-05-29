@@ -12,9 +12,9 @@ For an example of what this looks like in techical terms, see {ref}`open_feature
 
 The number input we have seen before, and just sets the maximum depth to a single value. The value at points system works a bit differently, but can be used to achieve the same result. To start out easy, this is exactly what we are going to to for the `max depth` of the continental feature. 
 
-The value at points system  creates a list of points, which at least include all the edge points and assigns a value to them. Then to get the actual value, `max depth` in our case, an interpolation between some close points is performed to get the value at that point. 
+The value at points system  creates a list of points, which at least include all the edge points of an object and assigns a value to them. Then to get the actual value at the rest of the points, `max depth` in our case, an interpolation between some close points is performed to get the value at that point. 
 
-Below are two examples of how to first set the depth of two points to 200, and then an example of how to also set a third point to a value of 100.
+Below are two examples of how to first set the depth of two points to 200 km, and then an example of how to also set a third point to a value of 100 km.
 
 ```{code-block} json
 ---
@@ -25,7 +25,7 @@ lineno-start: 1
     "max depth":[[200e3, [[10e3,0],[20e3,10e3]]],[100e3,[[15e3,0]]]]
 ```
 
-A common operation is to set all the corners to a single value, and then maybe overwrite individual ones. To make life easy, there is a quick way to (re)set the value at the corner points: just pass a value with no points. This is what is done in the code sample below at the emphasised lines. The first entry is a value without points. That means that all the corner points are set to that value.
+A common operation is to set all the corners to a single value, and then maybe overwrite individual corners. To make life easy, there is a quick way to (re)set the value at the corner points: just pass a value with no points. This is what is done in the code sample below at the emphasized lines. The first entry is a value without points. That means that all the corner points are set to that value.
 
 ```{note}
 If you provide a point twice, explicitly, or implicity through the use of the corner values shortcut (e.g. `[200]`), the last defined value is used. This follows the painting analogy used before, where you overpaint older values.
@@ -86,5 +86,5 @@ If you provide a point twice, explicitly, or implicity through the use of the co
 :alt: Basic Starter Tutorial section 8. 
 :align: center
 
-Basic Starter Tutorial section 8. The top part of the figure shows any place where the composition is not zero as seen sligthly from above. Currently is shows composition 0 as green, composition 1 as yellow and composition 3 as blue. The botttom part shows the temperature as seen sligthly from below where only temperatures between 300K and 1600K are shown. The added continental plate with variable thickness of it's two layers is now visible on the left side of the image.
+Basic Starter Tutorial section 8. The top part of the figure shows any place where the composition is not zero as seen slightly from above. Currently it shows composition 0 as green, composition 1 as yellow and composition 3 as blue. The bottom part shows the temperature as seen slightly from below where only temperatures between 300K and 1600K are shown. The added continental plate with variable thickness of it's two layers is now visible on the left side of the image.
 ```

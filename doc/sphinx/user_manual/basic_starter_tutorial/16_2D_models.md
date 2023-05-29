@@ -2,7 +2,7 @@
 2D models
 =========
 
-2D models in the world builder are nothing more than a cross section through a 3D model. This means that you need to do to be able to create a 2D model is to state in the world builder file the origin of the cross section (where x=0) and in what direction the cross section should go (the positive y direction). You can set this with the global parameter `cross section`. It takes two points. The first point is the origin, and the second point is the direction of the cross section. 
+2D models in the world builder are nothing more than a cross section through a 3D model. This means that what you need to do to be able to create a 2D model is to state in the world builder file the origin of the cross section (where x=0) and in what direction the cross section should go (the positive y direction). You can set this with the global parameter `cross section`. It takes two points. The first point is the origin, and the second point is the direction of the cross section. 
 
 ```{note}
 Even if you have a `cross section` defined in your world builder file, you can still use it for 3D models. If you want to use 2D models, you will need to have a cross section defined.
