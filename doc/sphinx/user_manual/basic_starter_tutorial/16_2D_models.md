@@ -64,6 +64,14 @@ You need to change the gridfile to a 2D grid to be able to see the difference.
 ```
 
 
+```{figure} ../../../../doc/sphinx/_static/images/user_manual/basic_starter_tutorial/BST_16_3D_cross_section.png
+:name: BST_16_3D_cross_section
+:alt: Basic Starter Tutorial section 16 highres result. 
+:align: center
+
+The location of the 2D cross-section in the 3D model. The turquoise arrow show at the dot `[0,200e3]` and at the arrow head `[100e3,200e3]`, where `[0,200e3]` is the origin of the 2D plane. The semi-transparant turquoise plane show the full cross section location.
+```
+
 ```{figure} ../../../../doc/sphinx/_static/images/user_manual/basic_starter_tutorial/BST_16.png
 :name: BST_16_highres
 :alt: Basic Starter Tutorial section 16 highres result. 
