@@ -29,7 +29,7 @@ If you are familiar with the half space cooling model, you would also think some
 :::{grid-item-card} BST_06_oceanic_plate_temperature.grid
 :link: ../../_static/gwb_input_files/BST_06_oceanic_plate_temperature.grid
 :::
-:::{grid-item-card} Pavaview v2 state file 
+:::{grid-item-card} Paraview v2 state file 
 :link: ../../_static/paraview_state_files/BST_v2.pvsm
 :::
 ::::
@@ -52,7 +52,7 @@ If you are familiar with the half space cooling model, you would also think some
 :::{grid-item-card} BST_06_oceanic_plate_temperature.grid
 :link: ../../_static/gwb_input_files/BST_06_oceanic_plate_temperature.grid
 :::
-:::{grid-item-card} Pavaview v2 state file 
+:::{grid-item-card} Paraview v2 state file 
 :link: ../../_static/paraview_state_files/BST_v2.pvsm
 :::
 ::::

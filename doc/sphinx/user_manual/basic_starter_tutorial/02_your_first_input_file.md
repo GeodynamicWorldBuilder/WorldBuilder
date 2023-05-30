@@ -18,7 +18,7 @@ GWB input files are plain-text files, which generally have the extension `.wb`. 
 :::{grid-item-card} BST_1_minimal_box.grid
 :link: ../../_static/gwb_input_files/BST_02_minimal_box.grid
 :::
-:::{grid-item-card} Pavaview v1 state file 
+:::{grid-item-card} Paraview v1 state file 
 :link: ../../_static/paraview_state_files/BST_v1.pvsm
 :::
 ::::
@@ -37,5 +37,5 @@ Congratulations on creating your first world builder input file! If you visualiz
 :alt: Basic Starter Tutorial section 16 highres result. 
 :align: center
 
-Basic Starter Tutorial section 2. The top part of the figure shows where the composition has been assigned as object. Since no compositions have been assigned yet, nothing is plotted when we view the composition solution. The bottom part shows the temperature solution that has been assigned. This shows the adiabatic temperature gradient.
+Basic Starter Tutorial section 2. The top part of the figure shows where the composition has been assigned as object. Since no compositions have been assigned yet, nothing is plotted when we view the composition solution. The bottom part shows the temperature solution that has been assigned. This shows the adiabatic temperature gradient. Unless otherwise stated, all figures are generated with double the resolution as in the above grid file. This is because all tutorials are automatically tested and running them at full resolution for every pull request would take too much computational time. The resolution shown in the figures is commented out under the subsection `shown grid properties`.
 ```

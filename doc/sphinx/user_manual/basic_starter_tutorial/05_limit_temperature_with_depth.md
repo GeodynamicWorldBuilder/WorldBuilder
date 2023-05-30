@@ -27,7 +27,7 @@ If we would have set the max depth of the composition to be larger than the feat
 :::{grid-item-card} BST_05_limit_depth.grid
 :link: ../../_static/gwb_input_files/BST_05_limit_depth.grid
 :::
-:::{grid-item-card} Pavaview v1 state file 
+:::{grid-item-card} Paraview v1 state file 
 :link: ../../_static/paraview_state_files/BST_v1.pvsm
 :::
 ::::
@@ -50,7 +50,7 @@ If we would have set the max depth of the composition to be larger than the feat
 :::{grid-item-card} BST_05_limit_depth.grid
 :link: ../../_static/gwb_input_files/BST_05_limit_depth.grid
 :::
-:::{grid-item-card} Pavaview v1 state file 
+:::{grid-item-card} Paraview v1 state file 
 :link: ../../_static/paraview_state_files/BST_v1.pvsm
 :::
 ::::

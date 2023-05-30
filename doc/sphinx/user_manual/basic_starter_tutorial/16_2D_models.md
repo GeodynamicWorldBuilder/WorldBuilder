@@ -28,7 +28,7 @@ Now, let's add a cross section through the slab in our model.
 :::{grid-item-card} BST_16_2D_models.grid
 :link: ../../_static/gwb_input_files/BST_16_2D_models.grid
 :::
-:::{grid-item-card} Pavaview 2D state file 
+:::{grid-item-card} Paraview 2D state file 
 :link: ../../_static/paraview_state_files/BST_2D.pvsm
 :::
 ::::
@@ -51,7 +51,7 @@ Now, let's add a cross section through the slab in our model.
 :::{grid-item-card} BST_16_2D_models.grid
 :link: ../../_static/gwb_input_files/BST_16_2D_models.grid
 :::
-:::{grid-item-card} Pavaview 2D state file 
+:::{grid-item-card} Paraview 2D state file 
 :link: ../../_static/paraview_state_files/BST_2D.pvsm
 :::
 ::::

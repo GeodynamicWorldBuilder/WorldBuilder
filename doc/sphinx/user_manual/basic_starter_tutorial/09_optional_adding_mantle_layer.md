@@ -32,7 +32,7 @@ The [potential mantle temperature](open_features_items_oneOf_3_temperature-model
 :::{grid-item-card} BST_09_adding_mantle_layer.grid
 :link: ../../_static/gwb_input_files/BST_09_adding_mantle_layer.grid
 :::
-:::{grid-item-card} Pavaview v2 state file 
+:::{grid-item-card} Paraview v2 state file 
 :link: ../../_static/paraview_state_files/BST_v2.pvsm
 :::
 ::::
@@ -55,7 +55,7 @@ The [potential mantle temperature](open_features_items_oneOf_3_temperature-model
 :::{grid-item-card} BST_09_adding_mantle_layer.grid
 :link: ../../_static/gwb_input_files/BST_09_adding_mantle_layer.grid
 :::
-:::{grid-item-card} Pavaview v2 state file 
+:::{grid-item-card} Paraview v2 state file 
 :link: ../../_static/paraview_state_files/BST_v2.pvsm
 :::
 ::::

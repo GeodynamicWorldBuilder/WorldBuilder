@@ -11,12 +11,12 @@ y_max = 10
 z_min = 5671000 
 z_max = 6371000 
 
-# grid properties
-n_cell_x = 300 
-n_cell_y = 100
-n_cell_z = 60
+# low res grid properties
+n_cell_x = 150 
+n_cell_y = 50
+n_cell_z = 30
 
-# grid properties
-#n_cell_x = 1200 
-#n_cell_y = 400
-#n_cell_z = 240
+# shown grid properties
+# n_cell_x = 1200 
+# n_cell_y = 400
+# n_cell_z = 240

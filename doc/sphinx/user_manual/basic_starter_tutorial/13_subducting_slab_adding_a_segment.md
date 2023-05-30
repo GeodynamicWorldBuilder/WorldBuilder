@@ -24,7 +24,7 @@ So how do we achieve this? We just add a second object to the segments line. Usu
 :::{grid-item-card} BST_13_subducting_slab_adding_a_segment.grid
 :link: ../../_static/gwb_input_files/BST_13_subducting_slab_adding_a_segment.grid
 :::
-:::{grid-item-card} Pavaview v3 state file 
+:::{grid-item-card} Paraview v3 state file 
 :link: ../../_static/paraview_state_files/BST_v3.pvsm
 :::
 ::::
@@ -47,7 +47,7 @@ So how do we achieve this? We just add a second object to the segments line. Usu
 :::{grid-item-card} BST_13_subducting_slab_adding_a_segment.grid
 :link: ../../_static/gwb_input_files/BST_13_subducting_slab_adding_a_segment.grid
 :::
-:::{grid-item-card} Pavaview v3 state file 
+:::{grid-item-card} Paraview v3 state file 
 :link: ../../_static/paraview_state_files/BST_v3.pvsm
 :::
 ::::

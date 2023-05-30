@@ -24,7 +24,7 @@ In this case we want to have two layers in the first segment, where the upper la
 :::{grid-item-card} BST_14_different_models_in_segments.grid
 :link: ../../_static/gwb_input_files/BST_14_different_models_in_segments.grid
 :::
-:::{grid-item-card} Pavaview v3 state file 
+:::{grid-item-card} Paraview v3 state file 
 :link: ../../_static/paraview_state_files/BST_v3.pvsm
 :::
 ::::
@@ -47,7 +47,7 @@ In this case we want to have two layers in the first segment, where the upper la
 :::{grid-item-card} BST_14_different_models_in_segments.grid
 :link: ../../_static/gwb_input_files/BST_14_different_models_in_segments.grid
 :::
-:::{grid-item-card} Pavaview v3 state file 
+:::{grid-item-card} Paraview v3 state file 
 :link: ../../_static/paraview_state_files/BST_v3.pvsm
 :::
 ::::

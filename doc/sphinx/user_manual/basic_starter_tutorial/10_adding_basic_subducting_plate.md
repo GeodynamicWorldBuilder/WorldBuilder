@@ -36,7 +36,7 @@ The result will not change based on the exact location of the dip point, as long
 :::{grid-item-card} BST_10_adding_basic_subducting_plate.grid
 :link: ../../_static/gwb_input_files/BST_10_adding_basic_subducting_plate.grid
 :::
-:::{grid-item-card} Pavaview v3 state file 
+:::{grid-item-card} Paraview v3 state file 
 :link: ../../_static/paraview_state_files/BST_v3.pvsm
 :::
 ::::
@@ -59,7 +59,7 @@ The result will not change based on the exact location of the dip point, as long
 :::{grid-item-card} BST_10_adding_basic_subducting_plate.grid
 :link: ../../_static/gwb_input_files/BST_10_adding_basic_subducting_plate.grid
 :::
-:::{grid-item-card} Pavaview v3 state file 
+:::{grid-item-card} Paraview v3 state file 
 :link: ../../_static/paraview_state_files/BST_v3.pvsm
 :::
 ::::

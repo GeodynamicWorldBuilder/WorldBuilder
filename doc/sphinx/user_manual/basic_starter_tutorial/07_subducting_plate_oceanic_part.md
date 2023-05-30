@@ -28,7 +28,7 @@ If you provide a `min depth` or `max depth` outside the min and max depth range 
 :::{grid-item-card} BST_07_subducting_plate_oceanic_part.grid
 :link: ../../_static/gwb_input_files/BST_07_subducting_plate_oceanic_part.grid
 :::
-:::{grid-item-card} Pavaview v2 state file 
+:::{grid-item-card} Paraview v2 state file 
 :link: ../../_static/paraview_state_files/BST_v2.pvsm
 :::
 ::::
@@ -51,7 +51,7 @@ If you provide a `min depth` or `max depth` outside the min and max depth range 
 :::{grid-item-card} BST_07_subducting_plate_oceanic_part.grid
 :link: ../../_static/gwb_input_files/BST_07_subducting_plate_oceanic_part.grid
 :::
-:::{grid-item-card} Pavaview v2 state file 
+:::{grid-item-card} Paraview v2 state file 
 :link: ../../_static/paraview_state_files/BST_v2.pvsm
 :::
 ::::

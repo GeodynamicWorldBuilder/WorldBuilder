@@ -49,7 +49,7 @@ If you provide a point twice, explicitly, or implicity through the use of the co
 :::{grid-item-card} BST_08_passive_margin_variable_depth.grid
 :link: ../../_static/gwb_input_files/BST_08_passive_margin_variable_depth.grid
 :::
-:::{grid-item-card} Pavaview v2 state file 
+:::{grid-item-card} Paraview v2 state file 
 :link: ../../_static/paraview_state_files/BST_v2.pvsm
 :::
 ::::
@@ -72,7 +72,7 @@ If you provide a point twice, explicitly, or implicity through the use of the co
 :::{grid-item-card} BST_08_passive_margin_variable_depth.grid
 :link: ../../_static/gwb_input_files/BST_08_passive_margin_variable_depth.grid
 :::
-:::{grid-item-card} Pavaview v2 state file 
+:::{grid-item-card} Paraview v2 state file 
 :link: ../../_static/paraview_state_files/BST_v2.pvsm
 :::
 ::::

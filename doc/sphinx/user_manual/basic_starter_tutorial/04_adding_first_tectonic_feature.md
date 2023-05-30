@@ -32,7 +32,7 @@ There are some other options, which we will cover later. The file below shows th
 :::{grid-item-card} BST_04_overriding_plate.grid
 :link: ../../_static/gwb_input_files/BST_04_overriding_plate.grid
 :::
-:::{grid-item-card} Pavaview v1 state file 
+:::{grid-item-card} Paraview v1 state file 
 :link: ../../_static/paraview_state_files/BST_v1.pvsm
 :::
 ::::
@@ -54,7 +54,7 @@ There are some other options, which we will cover later. The file below shows th
 :::{grid-item-card} BST_04_overriding_plate.grid
 :link: ../../_static/gwb_input_files/BST_04_overriding_plate.grid
 :::
-:::{grid-item-card} Pavaview v1 state file 
+:::{grid-item-card} Paraview v1 state file 
 :link: ../../_static/paraview_state_files/BST_v1.pvsm
 :::
 ::::

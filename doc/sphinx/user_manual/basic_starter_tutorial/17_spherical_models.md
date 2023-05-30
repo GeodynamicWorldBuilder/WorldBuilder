@@ -29,7 +29,7 @@ To simplify the transition for this tutorial, we will just divide each coordinat
 :::{grid-item-card} BST_17_spherical_models.grid
 :link: ../../_static/gwb_input_files/BST_17_spherical_models.grid
 :::
-:::{grid-item-card} Pavaview Spherical state file 
+:::{grid-item-card} Paraview Spherical state file 
 :link: ../../_static/paraview_state_files/BST_spherical.pvsm
 :::
 ::::
@@ -52,7 +52,7 @@ To simplify the transition for this tutorial, we will just divide each coordinat
 :::{grid-item-card} BST_17_spherical_models.grid
 :link: ../../_static/gwb_input_files/BST_17_spherical_models.grid
 :::
-:::{grid-item-card} Pavaview Spherical state file 
+:::{grid-item-card} Paraview Spherical state file 
 :link: ../../_static/paraview_state_files/BST_spherical.pvsm
 :::
 ::::
@@ -66,5 +66,5 @@ To simplify the transition for this tutorial, we will just divide each coordinat
 :alt: Basic Starter Tutorial section 17 highres result. 
 :align: center
 
-Basic Starter Tutorial section 17 high resolution result. This has 4 times the resolution than the grid file above. Note that you can see the Earth's curvature! 
+Basic Starter Tutorial section 17 high resolution result. This has 8 times the resolution than the grid file above. Note that you can see the Earth's curvature! 
 ```
