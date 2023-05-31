@@ -1,4 +1,4 @@
-(part:introduction:chap:what_is_the_gwb)=
+(part:introduction:chap:what_is_the_GWB)=
 What is the GWB?
 ================
 

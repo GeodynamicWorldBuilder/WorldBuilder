@@ -1,4 +1,4 @@
-(part:api_manual:chap:API_FFI:sec:CPP_interface:subsec:cpp_integration)=
+(part:API_manual:chap:API_FFI:sec:CPP_interface:subsec:CPP_integration)=
 C++ interface
 =============
 

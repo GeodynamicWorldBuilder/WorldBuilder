@@ -1,4 +1,4 @@
-(part:api_manual:chap:api_design)=
+(part:API_manual:chap:API_design)=
 API design
 ==========
 

@@ -1,4 +1,4 @@
-(part:dev_manual:chap:contrib_to_code:sec:code_style_guide)=
+(part:dev_manual:chap:contribute_to_code:sec:code_style_guide)=
 Code Style Guide
 ================
 

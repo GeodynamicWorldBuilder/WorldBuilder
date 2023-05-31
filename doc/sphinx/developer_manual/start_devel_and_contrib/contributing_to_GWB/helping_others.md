@@ -1,4 +1,4 @@
-(part:dev_manual:chap:start_devel_and_contib:sec:contributing_to_gwb:subsec:helping_others)=
+(part:dev_manual:chap:start_developing_and_contribute:sec:contributing_to_gwb:subsec:helping_others)=
 Helping others
 ==============
 

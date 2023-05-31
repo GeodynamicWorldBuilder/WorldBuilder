@@ -1,4 +1,4 @@
-(part:dev_manual:chap:contrib_to_code:sec:code_doc_and_doxygen)=
+(part:dev_manual:chap:contribute_to_code:sec:code_doc_and_Doxygen)=
 Code documentation and Doxygen
 ==============================
 

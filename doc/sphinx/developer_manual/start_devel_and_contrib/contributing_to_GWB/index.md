@@ -1,5 +1,5 @@
-(part:dev_manual:chap:start_devel_and_contib:sec:contributing_to_gwb:subsec:index)=
-Contrbuting to the GWB
+(part:dev_manual:chap:start_developing_and_contribute:sec:contributing_to_gwb:subsec:index)=
+Contributing to the GWB
 ======================
 
 ```{todo}

@@ -1,4 +1,4 @@
-(part:dev_manual:chap:start_devel_and_contib:sec:contributing_to_gwb:subsec:making_a_pull_request)=
+(part:dev_manual:chap:start_developing_and_contribute:sec:contributing_to_gwb:subsec:making_a_pull_request)=
 Making a pull request
 =====================
 

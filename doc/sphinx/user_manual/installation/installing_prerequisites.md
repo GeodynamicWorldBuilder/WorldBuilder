@@ -2,8 +2,8 @@
 Installing the prerequisites
 ============================
 
-When installing the World Builder on a system, make sure cmake is installed.
-If you want a Fortran wrapper, then also make sure a Fortran compiler is installed (gFortran is the preferred option, but other Fortran compilers should work as well).
+When installing the World Builder on a system, make sure CMake is installed.
+If you want a Fortran wrapper, then also make sure a Fortran compiler is installed (GFortran is the preferred option, but other Fortran compilers should work as well).
 If you want a Python interface, make sure you have Python 3 installed.
 
 There are many ways to install the prerequisites of the World Builder per operating system.
@@ -28,15 +28,15 @@ Choose one of the options. "No Fortran compiler" is recommended for normal use:
 
 The world builder can create a Fortran wrapper to be able to link to Fortran programs.
 If you don't explicitly need a Fortran wrapper to be built, you can use the following instructions:
-1. If not already installed, install homebrew. Run in a terminal: `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+1. If not already installed, install Homebrew. Run in a terminal: `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 2. Run in a terminal `brew install cmake`
 3. For a Python wrapper, also run in a terminal `brew install swig`
 
-Note that if you already had a Fortran compiler installed and cmake can find it, the Fortran wrapper will still be built.
+Note that if you already had a Fortran compiler installed and CMake can find it, the Fortran wrapper will still be built.
 :::
 
 :::{tab-item} Before Xcode 10 with Fortran compiler
-1. If not already installed, install homebrew. Run in a terminal: `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+1. If not already installed, install Homebrew. Run in a terminal: `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 2. Run in a terminal `brew install cmake`
 3. Run in a terminal `brew install gcc || true && brew link –overwrite gcc`
 4. Run in a terminal `export LDFLAGS="-I/usr/local/opt/llvm/lib"`
@@ -51,7 +51,7 @@ Note that if you already had a Fortran compiler installed and cmake can find it,
 You will need to check where clang is installed.
 It should be installed in a folder called /Applications/X-code.X.X.app/ or something similar, where the X represents a number.
 For Xcode 10 for example, use the following:
-1. If not already installed, install homebrew. Run in a terminal: `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+1. If not already installed, install Homebrew. Run in a terminal: `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 2. Run in a terminal `brew install cmake`
 3. Run in a terminal `brew install gcc || true && brew link –overwrite gcc`
 4. Run in a terminal `export LDFLAGS="-L/Applications/Xcode-10.0.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib"`

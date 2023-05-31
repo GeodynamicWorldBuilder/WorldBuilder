@@ -11,7 +11,7 @@ Stand-alone installation with all apps
 
 ::::{tab-set}
 :::{tab-item} For Windows with Visual Studio
-6. Run cmake by entering: `cmake MAKE_FILE_GENERATOR="Visual Studio 15 2017 Win64"..`, or the version of Visual Studio you have installed, and make sure cmake finds all the dependencies.
+6. Run CMake by entering: `cmake MAKE_FILE_GENERATOR="Visual Studio 15 2017 Win64"..`, or the version of Visual Studio you have installed, and make sure CMake finds all the dependencies.
 7. For production runs, set build type to release by entering `-DCMAKE_BUILD_TYPE=Release`.
 8. Run make with the amount of threads you want to use (e.g. use 8 processes: `make -j 8`).
 9. If you want the Geodynamic World Builder to be installed on your system, run `cmake -build . -target install -j 8`
@@ -19,7 +19,7 @@ Stand-alone installation with all apps
 :::
 
 :::{tab-item} For all other configurations
-6. Run cmake by entering: `cmake ..` and make sure cmake finds all the dependencies.
+6. Run CMake by entering: `cmake ..` and make sure CMake finds all the dependencies.
 7. For production runs, set build type to release by entering `make release`.
 8. Run make with the amount of threads you want to use (e.g. use 8 processes: `make -j 8`).
 9. If you want the Geodynamic World Builder to be installed on your system, run `sudo make install -j 4`

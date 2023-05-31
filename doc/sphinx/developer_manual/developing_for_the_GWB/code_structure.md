@@ -1,4 +1,4 @@
-(part:dev_manual:chap:developing_for_the_GWB:sec:code_strucuture)=
+(part:dev_manual:chap:developing_for_the_GWB:sec:code_structure)=
 Code structure
 ==============
 

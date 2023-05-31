@@ -1,4 +1,4 @@
-(part:api_manual:chap:API_FFI:sec:C_interface)=
+(part:API_manual:chap:API_FFI:sec:C_interface)=
 C interface
 ===========
 

@@ -1,5 +1,5 @@
-(part:dev_manual:chap:contrib_to_doc:sec:important_syntax)=
-Important sytax
+(part:dev_manual:chap:contribute_to_doc:sec:important_syntax)=
+Important syntax
 ===============
 
 ```{todo}

@@ -1,4 +1,4 @@
-(part:dev_manual:chap:contrib_to_doc:sec:tips_and_tricks)=
+(part:dev_manual:chap:contribute_to_doc:sec:tips_and_tricks)=
 Tips and tricks
 ================
 

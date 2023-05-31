@@ -1,4 +1,4 @@
-(part:dev_manual:chap:contrib_to_code:sec:testing:subsec:index)=
+(part:dev_manual:chap:contribute_to_code:sec:testing:subsec:index)=
 Testing your code
 =================
 

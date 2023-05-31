@@ -1,4 +1,4 @@
-(part:dev_manual:chap:contrib_to_doc:sec:review_process)=
+(part:dev_manual:chap:contribute_to_doc:sec:review_process)=
 The review process
 ================
 
