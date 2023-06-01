@@ -3,12 +3,17 @@
 [![actions](https://img.shields.io/github/actions/workflow/status/GeodynamicWorldBuilder/WorldBuilder/test.yml?branch=main&label=tests&logo=github&logoColor=eeeeee)](https://github.com/GeodynamicWorldBuilder/WorldBuilder/actions?query=branch%3Amain)
 [![AppVeyor Build status](https://img.shields.io/appveyor/build/MFraters/WorldBuilder/main?label=tests&logo=appveyor&logoColor=eeeeee)](https://ci.appveyor.com/project/MFraters/worldbuilder)
 [![Coverage Status](https://img.shields.io/coveralls/github/GeodynamicWorldBuilder/WorldBuilder?logo=coveralls&logoColor=eeeeee)](https://coveralls.io/github/GeodynamicWorldBuilder/WorldBuilder?branch=main)
-[![codecov](https://img.shields.io/codecov/c/github/GeodynamicWorldBuilder/WorldBuilder/main?logo=codecov&logoColor=eeeeee)](https://codecov.io/gh/GeodynamicWorldBuilder/WorldBuilder)  
+[![codecov](https://img.shields.io/codecov/c/github/GeodynamicWorldBuilder/WorldBuilder/main?logo=codecov&logoColor=eeeeee)](https://codecov.io/gh/GeodynamicWorldBuilder/WorldBuilder)
 [![Matrix space](https://img.shields.io/badge/Chat-matrix.org-brightgreen?logo=matrix&logoColor=eeeeee)](https://app.element.io/#/room/#gwb:matrix.org)
-[![Mastodon Follow](https://img.shields.io/mastodon/follow/106136314313793382?domain=https%3A%2F%2Fsocial.mfraters.net&style=social)](https://social.mfraters.net/@world_builder)
+[![Mastodon Follow](https://img.shields.io/badge/News-%40world__builder-brightgreen?logo=mastodon&logoColor=eeeeee)](https://social.mfraters.net/@world_builder)
+
+<p align="center">
+<img src="doc/sphinx/_static/images/world_builder_logo_v4_b_text.png" width="30%" alt="The Geodynamic World Builder logo"/> &nbsp;&nbsp;&nbsp;&nbsp; 
+<img src="doc/sphinx/_static/images/user_manual/basic_starter_tutorial/BST_17.png" width="65%" alt="The resulting model from the first tutorial"/>
+</p>
 
 # The Geodynamic World Builder (GWB)
-![Cascadia_real7_Jps2_v5_view1_highres_v1](https://user-images.githubusercontent.com/7631629/123048354-992dc680-d3fe-11eb-8e91-6fac6125f7de.png)
+
 ## What is the Geodynamic World Builder?
 The Geodynamic World Builder(GWB) is an open source code library intended to set up initial conditions for computational geodynamic models and/or visualize complex 3d teconic setting, in both Cartesian and Spherical geometries. The inputs for the JSON-style parameter file are not mathematical, but rather a structured nested list describing tectonic features, e.g. a continental, an oceanic or a subducting plate. Each of these tectonic features can be assigned a specific temperature profile (e.g. plate model) or composition label (e.g. uniform). For each point in space, the GWB can return the composition and/or temperature. It is written in C++, but can be used in almost any language through its C and Fortran wrappers. Various examples of 2D and 3D subduction settings are presented.
 
