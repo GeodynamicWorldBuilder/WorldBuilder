@@ -19,16 +19,16 @@
 
 #include "world_builder/features/fault_models/composition/smooth.h"
 
-#include <world_builder/utilities.h>
 #include <world_builder/assert.h>
 #include <world_builder/nan.h>
 #include <world_builder/parameters.h>
+#include <world_builder/utilities.h>
 
-#include <world_builder/types/double.h>
-#include <world_builder/types/unsigned_int.h>
 #include <world_builder/types/array.h>
-#include <world_builder/types/string.h>
+#include <world_builder/types/double.h>
 #include <world_builder/types/object.h>
+#include <world_builder/types/string.h>
+#include <world_builder/types/unsigned_int.h>
 
 
 namespace WorldBuilder
@@ -52,10 +52,10 @@ namespace WorldBuilder
         }
 
         Smooth::~Smooth()
-        { }
+          = default;
 
         void
-        Smooth::declare_entries(Parameters &prm, const std::string &)
+        Smooth::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
           // Add compositions to the required parameters.
           prm.declare_entry("", Types::Object({"compositions"}), "Compositional model object");
@@ -90,14 +90,14 @@ namespace WorldBuilder
 
 
         double
-        Smooth::get_composition( const Point<3> &,
-                                 const double ,
+        Smooth::get_composition( const Point<3> & /*position*/,
+                                 const double  /*depth*/,
                                  const unsigned int composition_number,
                                  double composition_,
-                                 const double ,
-                                 const double ,
+                                 const double  /*feature_min_depth*/,
+                                 const double  /*feature_max_depth*/,
                                  const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
-                                 const AdditionalParameters &) const
+                                 const AdditionalParameters & /*additional_parameters*/) const
         {
           double composition = composition_;
 
@@ -122,8 +122,8 @@ namespace WorldBuilder
         }
 
         WB_REGISTER_FEATURE_FAULT_COMPOSITION_MODEL (Smooth, smooth)
-      }
-    }
-  }
-}
+      } // namespace Composition
+    } // namespace FaultModels
+  } // namespace Features
+} // namespace WorldBuilder
 

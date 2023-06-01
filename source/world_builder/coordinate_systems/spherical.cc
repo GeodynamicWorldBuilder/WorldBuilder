@@ -20,8 +20,8 @@
 #include "world_builder/coordinate_systems/spherical.h"
 
 
-#include "world_builder/types/object.h"
 #include "world_builder/types/double.h"
+#include "world_builder/types/object.h"
 #include "world_builder/utilities.h"
 
 namespace WorldBuilder
@@ -66,7 +66,7 @@ namespace WorldBuilder
     {
       prm.enter_subsection("coordinate system");
       {
-        std::string string_depth_method = prm.get<std::string>("depth method");
+        const std::string string_depth_method = prm.get<std::string>("depth method");
         if (string_depth_method == "starting point")
           used_depth_method = DepthMethod::angle_at_starting_point_with_surface;
         else if (string_depth_method == "begin segment")

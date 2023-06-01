@@ -25,8 +25,8 @@
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
 #include "world_builder/types/one_of.h"
-#include "world_builder/types/value_at_points.h"
 #include "world_builder/types/unsigned_int.h"
+#include "world_builder/types/value_at_points.h"
 #include "world_builder/utilities.h"
 
 
@@ -44,8 +44,8 @@ namespace WorldBuilder
         Uniform::Uniform(WorldBuilder::World *world_)
           :
           min_depth(NaN::DSNAN),
-          max_depth(NaN::DSNAN),
-          operation("")
+          max_depth(NaN::DSNAN)
+
         {
           this->world = world_;
           this->name = "uniform";

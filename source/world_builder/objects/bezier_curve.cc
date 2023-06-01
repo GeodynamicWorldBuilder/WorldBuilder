@@ -16,16 +16,16 @@ GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#include "world_builder/objects/bezier_curve.h"
 #include "world_builder/assert.h"
 #include "world_builder/nan.h"
+#include "world_builder/objects/bezier_curve.h"
 #include "world_builder/utilities.h"
 
 #include <cmath>
-#include <limits>
-#include <sstream>
 #include <cstddef>
 #include <iomanip>
+#include <limits>
+#include <sstream>
 
 using namespace WorldBuilder;
 
@@ -81,7 +81,7 @@ namespace WorldBuilder
       if (std::isnan(angle_constrains[n_points-1]))
         {
           Point<2> P1P2 = points[n_points-2]-points[n_points-1];
-          Point<2> P2P1 = points[n_points-1]-points[n_points-2];
+          const Point<2> P2P1 = points[n_points-1]-points[n_points-2];
           angles[n_points-1] =  atan2(P1P2[1],P1P2[0]);
         }
       else
@@ -344,7 +344,7 @@ namespace WorldBuilder
                       {
                         Point<2> derivative = Point<2>(a_0*est*est+b_0*est+c_0,a_1*est*est+b_1*est+c_1,cp.get_coordinate_system());
                         normal=derivative;
-                        double normal_size = derivative.norm();
+                        const double normal_size = derivative.norm();
                         if (normal_size > 0.)
                           {
                             normal[0] = derivative[1]/normal_size;
@@ -363,8 +363,8 @@ namespace WorldBuilder
               const Point<2> &p1 = points[cp_i];
               const Point<2> &p2 = points[cp_i+1];
               // Getting an estimate for where the closest point is with a linear approximation
-              Point<2> P1P2 = p2-p1;
-              Point<2> P1Pc = check_point-p1;
+              const Point<2> P1P2 = p2-p1;
+              const Point<2> P1Pc = check_point-p1;
 
               const double P2P2_dot = P1P2*P1P2;
 
@@ -376,7 +376,7 @@ namespace WorldBuilder
               Point<2> a = 3.*control_points[cp_i][0]-3.*control_points[cp_i][1]+points[cp_i+1]-points[cp_i];
               Point<2> b = 3.*points[cp_i] - 6.*control_points[cp_i][0]+3.*control_points[cp_i][1];
               Point<2> c = -3.*points[cp_i] + 3.*control_points[cp_i][0];
-              Point<2> d = points[cp_i];
+              const Point<2> d = points[cp_i];
 
               Point<2> estimate_point = a*est*est*est+b*est*est+c*est+d;
               const double cos_cp_lat = cos(cp[1]);
@@ -400,7 +400,7 @@ namespace WorldBuilder
                   const double squared_distance_cartesian = sin_d_lat_h*sin_d_lat_h+sin_d_long_h*sin_d_long_h*cos_cp_lat*cos_d_lat;
 
                   double sin_dlat = sin(estimate_point[1]-cp[1]);
-                  double cos_dlong_h = cos(0.5*(estimate_point[0]-cp[0]));
+                  const double cos_dlong_h = cos(0.5*(estimate_point[0]-cp[0]));
                   double cos_dlat_h = cos(0.5*(estimate_point[1]-cp[1]));
                   double deriv_long = (3.0*a[0]*est*est+2.0*b[0]*est+c[0]);
                   double deriv_lat = (3.0*a[1]*est*est+2.0*b[1]*est+c[1]);
@@ -523,7 +523,7 @@ namespace WorldBuilder
                       {
                         Point<2> derivative = a*est*est+b*est+c;
                         normal=derivative;
-                        double normal_size = derivative.norm();
+                        const double normal_size = derivative.norm();
                         if (normal_size > 0.)
                           {
                             normal[0] = derivative[1]/normal_size;
@@ -538,5 +538,5 @@ namespace WorldBuilder
         }
       return closest_point_on_curve;
     }
-  }
-}
+  } // namespace Objects
+} // namespace WorldBuilder

@@ -16,8 +16,8 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#include "world_builder/objects/surface.h"
 #include "world_builder/assert.h"
+#include "world_builder/objects/surface.h"
 #include "world_builder/utilities.h"
 
 #include <iostream>
@@ -30,13 +30,13 @@ namespace WorldBuilder
   namespace Objects
   {
     Surface::Surface()
-    {}
+      = default;
 
 
     Surface::Surface(std::pair<std::vector<double>,std::vector<double>> values_at_points)
     {
       // first find the min and max. This need always to be done;
-      WBAssertThrow(values_at_points.first.size() > 0, "internal error: no values in values_at_points.first.");
+      WBAssertThrow(!values_at_points.first.empty(), "internal error: no values in values_at_points.first.");
       minimum = values_at_points.first[0];
       maximum = values_at_points.first[0];
 
@@ -54,7 +54,7 @@ namespace WorldBuilder
 
       // if there are points defined there is not a constant value,
       // if there are no points defined there is a constant value.
-      if (values_at_points.second.size() > 0)
+      if (!values_at_points.second.empty())
         {
           constant_value = false;
 
@@ -83,9 +83,9 @@ namespace WorldBuilder
               triangles[i/3][2][1] = t.coords[2 * t.triangles[i+2]+1]; // ty2
               triangles[i/3][2][2] = values_at_points.first[t.triangles[i+2]]; // v2
 
-              node_list.emplace_back(KDTree::Node(i/3,
-                                                  (t.coords[2*t.triangles[i]]+t.coords[2*t.triangles[i+1]]+t.coords[2*t.triangles[i+2]])/3.,
-                                                  (t.coords[2*t.triangles[i]+1]+t.coords[2*t.triangles[i+1]+1]+t.coords[2*t.triangles[i+2]+1])/3.));
+              node_list.emplace_back(i/3,
+                                     (t.coords[2*t.triangles[i]]+t.coords[2*t.triangles[i+1]]+t.coords[2*t.triangles[i+2]])/3.,
+                                     (t.coords[2*t.triangles[i]+1]+t.coords[2*t.triangles[i+1]+1]+t.coords[2*t.triangles[i+2]+1])/3.);
 
             }
           // now feed and create the KD-tree
@@ -116,12 +116,12 @@ namespace WorldBuilder
 
     bool Surface::in_triangle(const std::array<std::array<double,3>,3> &points,
                               const std::array<double,8> &precomputed,
-                              const Point<2> check_point,
+                              const Point<2> &check_point,
                               double &interpolate_value,
                               double &interpolator_s,
-                              double &interpolator_t) const
+                              double &interpolator_t)
     {
-      double factor = 1e4;
+      const double factor = 1e4;
       // based on https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
       // compute s, t and area
       const double s_no_area = -(precomputed[0] + precomputed[1]*check_point[0] + precomputed[2]*check_point[1]);
@@ -139,7 +139,7 @@ namespace WorldBuilder
     }
 
     SurfaceValueInfo
-    Surface::local_value(const Point<2> check_point) const
+    Surface::local_value(const Point<2> &check_point) const
     {
       if (constant_value)
         {
@@ -177,7 +177,7 @@ namespace WorldBuilder
       {
         // if not found go to closets nodes
         // Todo: could remove the cosest node, because it was already tested. Could also sort based no distance.
-        for (auto &index_distance: index_distances.vector)
+        for (const auto &index_distance: index_distances.vector)
           {
             if (in_triangle(triangles[tree.get_nodes()[index_distance.index].index],in_triangle_precomputed[tree.get_nodes()[index_distance.index].index],check_point,interpolated_value,interpolator_s,interpolator_t))
               {
@@ -203,7 +203,7 @@ namespace WorldBuilder
               {
                 return SurfaceValueInfo {nodes.index,interpolated_value,interpolator_s,interpolator_t};
               }
-            else  if (spherical && in_triangle(triangles[nodes.index],in_triangle_precomputed[nodes.index],other_point,interpolated_value,interpolator_s,interpolator_t))
+            if (spherical && in_triangle(triangles[nodes.index],in_triangle_precomputed[nodes.index],other_point,interpolated_value,interpolator_s,interpolator_t))
               {
                 return SurfaceValueInfo {nodes.index,interpolated_value,interpolator_s,interpolator_t};
               }

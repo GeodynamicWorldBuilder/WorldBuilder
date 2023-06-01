@@ -30,8 +30,8 @@ namespace WorldBuilder
     Point<dim>::Point()
       :
       value(WorldBuilder::Point<dim>(CoordinateSystem::cartesian)),
-      default_value(WorldBuilder::Point<dim>(CoordinateSystem::cartesian)),
-      description("")
+      default_value(WorldBuilder::Point<dim>(CoordinateSystem::cartesian))
+
     {
       this->type_name = dim == 2 ? Types::type::Point2D : Types::type::Point3D;
     }

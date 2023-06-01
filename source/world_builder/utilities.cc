@@ -19,20 +19,20 @@
 
 #include <algorithm>
 #include <cmath>
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <limits>
 #include <sstream>
-#include <fstream>
 
 #ifdef WB_WITH_MPI
 #define OMPI_SKIP_MPICXX 1
 #include <mpi.h>
 #endif
 
-#include <world_builder/coordinate_system.h>
 #include "world_builder/nan.h"
 #include "world_builder/utilities.h"
+#include <world_builder/coordinate_system.h>
 
 
 namespace WorldBuilder
@@ -78,7 +78,7 @@ namespace WorldBuilder
        * exact arithmetic this algorithm would work (also see polygon
        * in point test).
        */
-      size_t pointNo = point_list.size();
+      const size_t pointNo = point_list.size();
       size_t    wn = 0;    // the  winding number counter
       size_t   j=pointNo-1;
 
@@ -195,9 +195,9 @@ namespace WorldBuilder
       for (size_t i = 0; i < n_poly_points; ++i)
         {
           // Create vector along the polygon line segment
-          Point<2> vector_segment = shifted_point_list[i] - point_list[i];
+          const Point<2> vector_segment = shifted_point_list[i] - point_list[i];
           // Create vector from point to the second segment point
-          Point<2> vector_point_segment = point - point_list[i];
+          const Point<2> vector_point_segment = point - point_list[i];
 
           // Compute dot products to get angles
           const double c1 = vector_point_segment * vector_segment;
@@ -402,7 +402,7 @@ namespace WorldBuilder
       //double minimum_distance_to_reference_point = std::numeric_limits<double>::infinity();
       //const size_t number_of_points = point_list.size();
 
-      Objects::ClosestPointOnCurve closest_point_on_curve = bezier_curve.closest_point_on_curve_segment(check_point_surface_2d);
+      const Objects::ClosestPointOnCurve closest_point_on_curve = bezier_curve.closest_point_on_curve_segment(check_point_surface_2d);
       Point<2> closest_point_on_line_2d = closest_point_on_curve.point;
 
       // We now need 3d points from this point on, so make them.
@@ -432,8 +432,8 @@ namespace WorldBuilder
 
           // Now that we have both the check point and the
           // closest_point_on_line, we need to push them to cartesian.
-          Point<3> closest_point_on_line_bottom_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_bottom.get_array()),cartesian);
-          Point<3> check_point_surface_cartesian(coordinate_system->natural_to_cartesian_coordinates(check_point_surface.get_array()),cartesian);
+          const Point<3> closest_point_on_line_bottom_cartesian(coordinate_system->natural_to_cartesian_coordinates(closest_point_on_line_bottom.get_array()),cartesian);
+          const Point<3> check_point_surface_cartesian(coordinate_system->natural_to_cartesian_coordinates(check_point_surface.get_array()),cartesian);
 
 
           WBAssert(!std::isnan(closest_point_on_line_bottom_cartesian[0]),
@@ -445,8 +445,8 @@ namespace WorldBuilder
 
 
           // translate to original coordinates current and next section
-          size_t original_current_section = i_section_min_distance;
-          size_t original_next_section = original_current_section + 1;
+          const size_t original_current_section = i_section_min_distance;
+          const size_t original_next_section = original_current_section + 1;
 
 
           // These are the mostly likely cases for the x and y axis, so initialize them to these values. They will be checked
@@ -463,8 +463,8 @@ namespace WorldBuilder
               // If the point to check is on the line, we don't need to search any further, because we know the distance is zero.
               if (std::fabs((check_point - closest_point_on_line_cartesian).norm()) > 2e-14)
                 {
-                  const Point<2> P1(point_list[i_section_min_distance]);
-                  const Point<2> P2(point_list[i_section_min_distance+1]);
+                  const Point<2> &P1(point_list[i_section_min_distance]);
+                  const Point<2> &P2(point_list[i_section_min_distance+1]);
 
                   const Point<2> P1P2 = P2 - P1;
                   const Point<2> unit_normal_to_plane_spherical = P1P2 / P1P2.norm();
@@ -591,9 +591,9 @@ namespace WorldBuilder
 
               if (!bool_cartesian)
                 {
-                  double normal = std::fabs(point_list[i_section_min_distance+(int)(std::round(fraction_CPL_P1P2))][0]-check_point_surface_2d[0]);
-                  double plus   = std::fabs(point_list[i_section_min_distance+(int)(std::round(fraction_CPL_P1P2))][0]-(check_point_surface_2d[0]+2*Consts::PI));
-                  double min    = std::fabs(point_list[i_section_min_distance+(int)(std::round(fraction_CPL_P1P2))][0]-(check_point_surface_2d[0]-2*Consts::PI));
+                  const double normal = std::fabs(point_list[i_section_min_distance+(int)(std::round(fraction_CPL_P1P2))][0]-check_point_surface_2d[0]);
+                  const double plus   = std::fabs(point_list[i_section_min_distance+(int)(std::round(fraction_CPL_P1P2))][0]-(check_point_surface_2d[0]+2*Consts::PI));
+                  const double min    = std::fabs(point_list[i_section_min_distance+(int)(std::round(fraction_CPL_P1P2))][0]-(check_point_surface_2d[0]-2*Consts::PI));
 
                   // find out whether the check point, checkpoint + 2pi or check point -2 pi is closest to the point list.
                   if (plus < normal)
@@ -608,7 +608,7 @@ namespace WorldBuilder
 
               // check whether the check point and the reference point are on the same side, if not, change the side.
               const Point<2> reference_normal = closest_point_on_curve.normal*10e3+closest_point_on_line_2d;
-              Point<2> AB_normal = closest_point_on_curve.normal*closest_point_on_line_2d.distance(reference_point);//*AB.norm();
+              const Point<2> AB_normal = closest_point_on_curve.normal*closest_point_on_line_2d.distance(reference_point);//*AB.norm();
               const Point<2> local_reference_point = AB_normal*1.+closest_point_on_line_2d;
               const bool reference_normal_on_side_of_line =  (closest_point_on_line_2d-local_reference_point).norm_square() < (check_point_surface_2d_temp-local_reference_point).norm_square();
               const bool reference_point_on_side_of_line =  (point_list[point_list.size()-1][0] - point_list[0][0])*(reference_point[1] - point_list[0][1]) - (reference_point[0] - point_list[0][0])*(point_list[point_list.size()-1][1] - point_list[0][1]) < 0.;
@@ -751,9 +751,9 @@ namespace WorldBuilder
                                                        + add_angle;
 
 
-              double interpolated_segment_length     = plane_segment_lengths[original_current_section][current_segment]
-                                                       + fraction_CPL_P1P2 * (plane_segment_lengths[original_next_section][current_segment]
-                                                                              - plane_segment_lengths[original_current_section][current_segment]);
+              const double interpolated_segment_length     = plane_segment_lengths[original_current_section][current_segment]
+                                                             + fraction_CPL_P1P2 * (plane_segment_lengths[original_next_section][current_segment]
+                                                                                    - plane_segment_lengths[original_current_section][current_segment]);
 
               if (interpolated_segment_length < 1e-14)
                 continue;
@@ -851,7 +851,7 @@ namespace WorldBuilder
                     }
                   else
                     {
-                      double tan_angle_top = std::tan(interpolated_angle_top);
+                      const double tan_angle_top = std::tan(interpolated_angle_top);
 
                       WBAssert(!std::isnan(tan_angle_top),
                                "Internal error: The tan_angle_top variable is not a number: " << tan_angle_top);
@@ -1058,7 +1058,7 @@ namespace WorldBuilder
       const double rad_to_degree = 180.0/Consts::PI;
       std::array<double,3> euler_angles;
       //const double s2 = std::sqrt(rotation_matrix[2][1] * rotation_matrix[2][1] + rotation_matrix[2][0] * rotation_matrix[2][0]);
-      std::ostringstream os;
+      const std::ostringstream os;
       for (size_t i = 0; i < 3; i++)
         for (size_t j = 0; j < 3; j++)
           WBAssert(std::fabs(rotation_matrix[i][j]) <= 1.0,

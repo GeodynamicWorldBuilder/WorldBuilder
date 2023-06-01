@@ -85,7 +85,7 @@ class ThreadPool
     void parallel_for(size_t start, size_t end, Callable func)
     {
       // Determine the size of the slice for the loop
-      size_t n = end - start + 1;
+      const size_t n = end - start + 1;
       size_t slice = static_cast<size_t>(std::round(n / static_cast<size_t>((pool.size()))));
       slice = std::max(slice, static_cast<size_t>(1));
 
@@ -134,10 +134,10 @@ void project_on_sphere(double radius, double &x_, double &y_, double &z_)
   double y = y_;
   double z = z_;
   const WorldBuilder::Point<3> in_point(std::array<double,3> {{x,y,z}}, WorldBuilder::CoordinateSystem::cartesian);
-  WorldBuilder::Point<3> output_point(std::array<double,3> {{0,0,0}}, WorldBuilder::CoordinateSystem::cartesian);
-  double r = in_point.norm();
-  double theta = std::atan2(in_point[1],in_point[0]);
-  double phi = std::acos(in_point[2]/r);
+  const WorldBuilder::Point<3> output_point(std::array<double,3> {{0,0,0}}, WorldBuilder::CoordinateSystem::cartesian);
+  const double r = in_point.norm();
+  const double theta = std::atan2(in_point[1],in_point[0]);
+  const double phi = std::acos(in_point[2]/r);
 
   x_ = radius * std::cos(theta) * std::sin(phi);
   y_ = radius * std::sin(theta) * std::sin(phi);
@@ -170,10 +170,10 @@ void lay_points(double x1, double y1, double z1,
           const double s = std::tan(y0);
 
 
-          double N1 = 0.25 * (1.0 - r) * (1.0 - s);
-          double N2 = 0.25 * (1.0 + r) * (1.0 - s);
-          double N3 = 0.25 * (1.0 + r) * (1.0 + s);
-          double N4 = 0.25 * (1.0 - r) * (1.0 + s);
+          const double N1 = 0.25 * (1.0 - r) * (1.0 - s);
+          const double N2 = 0.25 * (1.0 + r) * (1.0 - s);
+          const double N3 = 0.25 * (1.0 + r) * (1.0 + s);
+          const double N4 = 0.25 * (1.0 - r) * (1.0 + s);
 
           x[counter] = x1 * N1 + x2 * N2 + x3 * N3 + x4 * N4;
           y[counter] = y1 * N1 + y2 * N2 + y3 * N3 + y4 * N4;
@@ -497,7 +497,7 @@ int main(int argc, char **argv)
       std::vector<std::vector<size_t> > grid_connectivity(0);
 
 
-      bool compress_size = true;
+      const bool compress_size = true;
 
 
 
@@ -517,9 +517,9 @@ int main(int argc, char **argv)
             n_p = (n_cell_x + 1) * (n_cell_z + 1) * (dim == 3 ? (n_cell_y + 1) : 1);
 
 
-          double dx = (x_max - x_min) / static_cast<double>(n_cell_x);
-          double dy = dim == 2 ? 0 : (y_max - y_min) / static_cast<double>(n_cell_y);
-          double dz = (z_max - z_min) / static_cast<double>(n_cell_z);
+          const double dx = (x_max - x_min) / static_cast<double>(n_cell_x);
+          const double dy = dim == 2 ? 0 : (y_max - y_min) / static_cast<double>(n_cell_y);
+          const double dz = (z_max - z_min) / static_cast<double>(n_cell_z);
 
 
           WBAssertThrow(!std::isnan(dx), "dz is not a number:" << dz << '.');
@@ -527,7 +527,7 @@ int main(int argc, char **argv)
           WBAssertThrow(!std::isnan(dz), "dz is not a number:" << dz << '.');
 
           // todo: determine whether a input variable is desirable for this.
-          double surface = z_max;
+          const double surface = z_max;
 
           grid_x.resize(n_p);
           grid_z.resize(n_p);
@@ -702,22 +702,22 @@ int main(int argc, char **argv)
           WBAssertThrow(dim == 2, "The annulus only works in 2d.");
 
 
-          double inner_radius = z_min;
-          double outer_radius = z_max;
+          const double inner_radius = z_min;
+          const double outer_radius = z_max;
 
-          double l_outer = 2.0 * Consts::PI * outer_radius;
+          const double l_outer = 2.0 * Consts::PI * outer_radius;
 
-          double lr = outer_radius - inner_radius;
-          double dr = lr / static_cast<double>(n_cell_z);
+          const double lr = outer_radius - inner_radius;
+          const double dr = lr / static_cast<double>(n_cell_z);
 
-          size_t n_cell_t = static_cast<size_t>((2.0 * Consts::PI * outer_radius)/dr);
+          const size_t n_cell_t = static_cast<size_t>((2.0 * Consts::PI * outer_radius)/dr);
 
           // compute the amount of cells
           n_cell = n_cell_t *n_cell_z;
           n_p = n_cell_t *(n_cell_z + 1);  // one less then cartesian because two cells overlap.
 
-          double sx = l_outer / static_cast<double>(n_cell_t);
-          double sz = dr;
+          const double sx = l_outer / static_cast<double>(n_cell_t);
+          const double sz = dr;
 
           grid_x.resize(n_p);
           grid_z.resize(n_p);
@@ -739,9 +739,9 @@ int main(int argc, char **argv)
             {
               for (size_t i = 1; i <= n_cell_t; ++i)
                 {
-                  double xi = grid_x[counter];
-                  double zi = grid_z[counter];
-                  double theta = xi / l_outer * 2.0 * Consts::PI;
+                  const double xi = grid_x[counter];
+                  const double zi = grid_z[counter];
+                  const double theta = xi / l_outer * 2.0 * Consts::PI;
                   grid_x[counter] = std::cos(theta) * (inner_radius + zi);
                   grid_z[counter] = std::sin(theta) * (inner_radius + zi);
                   grid_depth[counter] = outer_radius - std::sqrt(grid_x[counter] * grid_x[counter] + grid_z[counter] * grid_z [counter]);
@@ -775,8 +775,8 @@ int main(int argc, char **argv)
         }
       else if (grid_type == "chunk")
         {
-          double inner_radius = z_min;
-          double outer_radius = z_max;
+          const double inner_radius = z_min;
+          const double outer_radius = z_max;
 
           WBAssertThrow(dim ==3, "2D is currently not supported for the chunk.");
           WBAssertThrow(x_min <= x_max, "The minimum longitude must be less than the maximum longitude.");
@@ -789,8 +789,8 @@ int main(int argc, char **argv)
           WBAssertThrow(y_min >= - 0.5 * Consts::PI, "The minimum latitude must be larger then or equal to -90 degree.");
           WBAssertThrow(y_min <= 0.5 * Consts::PI, "The maximum latitude must be smaller then or equal to 90 degree.");
 
-          double opening_angle_long_rad = (x_max - x_min);
-          double opening_angle_lat_rad =  (y_max - y_min);
+          const double opening_angle_long_rad = (x_max - x_min);
+          const double opening_angle_lat_rad =  (y_max - y_min);
 
           n_cell = n_cell_x * n_cell_z * (dim == 3 ? n_cell_y : 1);
           if (!compress_size && dim == 3)
@@ -798,10 +798,10 @@ int main(int argc, char **argv)
           else
             n_p = (n_cell_x + 1) * (n_cell_z + 1) * (dim == 3 ? (n_cell_y + 1) : 1);
 
-          double dlong = opening_angle_long_rad / static_cast<double>(n_cell_x);
-          double dlat = dim == 3 ? opening_angle_lat_rad / static_cast<double>(n_cell_y) : 0.;
-          double lr = outer_radius - inner_radius;
-          double dr = lr / static_cast<double>(n_cell_z);
+          const double dlong = opening_angle_long_rad / static_cast<double>(n_cell_x);
+          const double dlat = dim == 3 ? opening_angle_lat_rad / static_cast<double>(n_cell_y) : 0.;
+          const double lr = outer_radius - inner_radius;
+          const double dr = lr / static_cast<double>(n_cell_z);
 
           grid_x.resize(n_p);
           grid_y.resize(dim == 3 ? n_p : 0);
@@ -908,8 +908,8 @@ int main(int argc, char **argv)
               for (size_t i = 0; i < n_p; ++i)
                 {
 
-                  double longitude = grid_x[i];
-                  double radius = grid_z[i];
+                  const double longitude = grid_x[i];
+                  const double radius = grid_z[i];
 
                   grid_x[i] = radius * std::cos(longitude);
                   grid_z[i] = radius * std::sin(longitude);
@@ -920,9 +920,9 @@ int main(int argc, char **argv)
               for (size_t i = 0; i < n_p; ++i)
                 {
 
-                  double longitude = grid_x[i];
-                  double latitutde = grid_y[i];
-                  double radius = grid_z[i];
+                  const double longitude = grid_x[i];
+                  const double latitutde = grid_y[i];
+                  const double radius = grid_z[i];
 
                   grid_x[i] = radius * std::cos(latitutde) * std::cos(longitude);
                   grid_y[i] = radius * std::cos(latitutde) * std::sin(longitude);
@@ -1000,14 +1000,14 @@ int main(int argc, char **argv)
           WBAssertThrow(dim == 3, "The sphere only works in 3d.");
 
 
-          double inner_radius = z_min;
-          double outer_radius = z_max;
+          const double inner_radius = z_min;
+          const double outer_radius = z_max;
 
-          size_t n_block = 12;
+          const size_t n_block = 12;
 
-          size_t block_n_cell = n_cell_x*n_cell_x;
-          size_t block_n_p = (n_cell_x + 1) * (n_cell_x + 1);
-          size_t block_n_v = 4;
+          const size_t block_n_cell = n_cell_x*n_cell_x;
+          const size_t block_n_p = (n_cell_x + 1) * (n_cell_x + 1);
+          const size_t block_n_v = 4;
 
 
           std::vector<std::vector<double> > block_grid_x(n_block,std::vector<double>(block_n_p));
@@ -1021,10 +1021,10 @@ int main(int argc, char **argv)
            */
           for (size_t i_block = 0; i_block < n_block; ++i_block)
             {
-              size_t block_n_cell_x = n_cell_x;
-              size_t block_n_cell_y = n_cell_x;
-              double Lx = 1.0;
-              double Ly = 1.0;
+              const size_t block_n_cell_x = n_cell_x;
+              const size_t block_n_cell_y = n_cell_x;
+              const double Lx = 1.0;
+              const double Ly = 1.0;
 
               size_t counter = 0;
               for (size_t j = 0; j <= block_n_cell_y; ++j)
@@ -1188,7 +1188,7 @@ int main(int argc, char **argv)
             point_to[i] = i;
 
           // TODO: This becomes problematic with too large values of outer radius. Find a better way, maybe through an epsilon.
-          double distance = 1e-12*outer_radius;
+          const double distance = 1e-12*outer_radius;
 
           size_t counter = 0;
           size_t amount_of_double_points = 0;
@@ -1196,9 +1196,9 @@ int main(int argc, char **argv)
             {
               if (sides[i])
                 {
-                  double gxip = temp_x[i];
-                  double gyip = temp_y[i];
-                  double gzip = temp_z[i];
+                  const double gxip = temp_x[i];
+                  const double gyip = temp_y[i];
+                  const double gzip = temp_z[i];
                   for (size_t j = 0; j < i-1; ++j)
                     {
                       if (sides[j])
@@ -1218,9 +1218,9 @@ int main(int argc, char **argv)
             }
 
 
-          size_t shell_n_p = n_block * block_n_p - amount_of_double_points;
-          size_t shell_n_cell = n_block * block_n_cell;
-          size_t shell_n_v = block_n_v;
+          const size_t shell_n_p = n_block * block_n_p - amount_of_double_points;
+          const size_t shell_n_cell = n_block * block_n_cell;
+          const size_t shell_n_v = block_n_v;
 
           std::vector<double> shell_grid_x(shell_n_p);
           std::vector<double> shell_grid_y(shell_n_p);
@@ -1291,7 +1291,7 @@ int main(int argc, char **argv)
           std::vector<double> temp_shell_grid_y(shell_n_p);
           std::vector<double> temp_shell_grid_z(shell_n_p);
 
-          size_t n_v = shell_n_v * 2;
+          const size_t n_v = shell_n_v * 2;
           n_p = (n_cell_z + 1) * shell_n_p;
           n_cell = (n_cell_z) * shell_n_cell;
 
@@ -1321,8 +1321,8 @@ int main(int argc, char **argv)
                   project_on_sphere(radius, temp_shell_grid_x[j], temp_shell_grid_y[j], temp_shell_grid_z[j]);
                 }
 
-              size_t i_beg =  i * shell_n_p;
-              size_t i_end = (i+1) * shell_n_p;
+              const size_t i_beg =  i * shell_n_p;
+              const size_t i_end = (i+1) * shell_n_p;
               counter = 0;
               for (size_t j = i_beg; j < i_end; ++j)
                 {
@@ -1340,8 +1340,8 @@ int main(int argc, char **argv)
 
           for (size_t i = 0; i < n_cell_z; ++i)
             {
-              size_t i_beg = i * shell_n_cell;
-              size_t i_end = (i+1) * shell_n_cell;
+              const size_t i_beg = i * shell_n_cell;
+              const size_t i_end = (i+1) * shell_n_cell;
               counter = 0;
               for (size_t j = i_beg; j < i_end; ++j)
                 {
@@ -1376,12 +1376,12 @@ int main(int argc, char **argv)
       std::cout << "[5/6] Preparing to write the paraview file...                                                   \r";
       std::cout.flush();
 
-      std::string base_filename = wb_file.substr(wb_file.find_last_of("/\\") + 1);
-      std::string::size_type const p(base_filename.find_last_of('.'));
-      std::string file_without_extension = base_filename.substr(0, p);
+      const std::string base_filename = wb_file.substr(wb_file.find_last_of("/\\") + 1);
+      std::string::size_type  const p(base_filename.find_last_of('.'));
+      const std::string file_without_extension = base_filename.substr(0, p);
 
-      std::stringstream buffer;
-      std::ofstream myfile;
+      const std::stringstream buffer;
+      const std::ofstream myfile;
 
       std::cout << "[5/6] Preparing to write the paraview file: stage 1 of 6, converting the points                              \r";
       std::cout.flush();
@@ -1449,7 +1449,7 @@ int main(int argc, char **argv)
       };
       for (size_t c = 0; c < compositions; ++c)
         {
-          dataSetInfo.emplace_back(vtu11::DataSetInfo( "Composition "+std::to_string(c), vtu11::DataSetType::PointData, 1 ));
+          dataSetInfo.emplace_back( "Composition "+std::to_string(c), vtu11::DataSetType::PointData, 1 );
         }
 
       std::cout << "[5/6] Preparing to write the paraview file: stage 5 of 5, computing the properties                              \r";
@@ -1471,7 +1471,7 @@ int main(int argc, char **argv)
         {
           pool.parallel_for(0, n_p, [&] (size_t i)
           {
-            std::array<double,2> coords = {{grid_x[i], grid_z[i]}};
+            const std::array<double,2> coords = {{grid_x[i], grid_z[i]}};
             std::vector<double> output = world->properties(coords, grid_depth[i],properties);
             data_set[1][i] = output[0];
             for (size_t c = 0; c < compositions; ++c)
@@ -1484,7 +1484,7 @@ int main(int argc, char **argv)
         {
           pool.parallel_for(0, n_p, [&] (size_t i)
           {
-            std::array<double,3> coords = {{grid_x[i], grid_y[i], grid_z[i]}};
+            const std::array<double,3> coords = {{grid_x[i], grid_y[i], grid_z[i]}};
             std::vector<double> output = world->properties(coords, grid_depth[i],properties);
             data_set[1][i] = output[0];
             for (size_t c = 0; c < compositions; ++c)

@@ -42,7 +42,7 @@ namespace wrapper_cpp
   double
   WorldBuilderWrapper::temperature_2d(double x, double z, double depth)
   {
-    std::array<double,2> position = {{x,z}};
+    const std::array<double,2> position = {{x,z}};
     return reinterpret_cast<WorldBuilder::World *>(ptr_ptr_world)->temperature(position,depth);
   }
 
@@ -54,7 +54,7 @@ namespace wrapper_cpp
 
   double WorldBuilderWrapper::temperature_3d(double x, double y, double z, double depth)
   {
-    std::array<double,3> position = {{x,y,z}};
+    const std::array<double,3> position = {{x,y,z}};
     return reinterpret_cast<WorldBuilder::World *>(ptr_ptr_world)->temperature(position,depth);
   }
 
@@ -65,13 +65,13 @@ namespace wrapper_cpp
 
   double WorldBuilderWrapper::composition_2d(double x, double z, double depth, unsigned int composition_number)
   {
-    std::array<double,2> position = {{x,z}};
+    const std::array<double,2> position = {{x,z}};
     return reinterpret_cast<WorldBuilder::World *>(ptr_ptr_world)->composition(position,depth,composition_number);
   }
 
   double WorldBuilderWrapper::composition_3d(double x, double y, double z, double depth, unsigned int composition_number)
   {
-    std::array<double,3> position = {{x,y,z}};
+    const std::array<double,3> position = {{x,y,z}};
     return reinterpret_cast<WorldBuilder::World *>(ptr_ptr_world)->composition(position,depth,composition_number);
   }
 } // namespace wrapper_cpp

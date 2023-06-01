@@ -42,8 +42,8 @@ namespace WorldBuilder
         Uniform::Uniform(WorldBuilder::World *world_)
           :
           min_depth(NaN::DSNAN),
-          max_depth(NaN::DSNAN),
-          operation("")
+          max_depth(NaN::DSNAN)
+
         {
           this->world = world_;
           this->name = "uniform";

@@ -19,17 +19,20 @@
 
 #define DOCTEST_CONFIG_SUPER_FAST_ASSERTS
 
-#include "doctest/doctest.h"
 #include "ApprovalTests/ApprovalTests.hpp"
+#include "doctest/doctest.h"
 
 #include "world_builder/config.h"
+#include "world_builder/consts.h"
 #include "world_builder/coordinate_system.h"
 #include "world_builder/coordinate_systems/cartesian.h"
-#include "world_builder/coordinate_systems/invalid.h"
 #include "world_builder/coordinate_systems/interface.h"
+#include "world_builder/coordinate_systems/invalid.h"
 #include "world_builder/features/continental_plate.h"
 #include "world_builder/features/interface.h"
 #include "world_builder/grains.h"
+#include "world_builder/objects/natural_coordinate.h"
+#include "world_builder/objects/surface.h"
 #include "world_builder/parameters.h"
 #include "world_builder/point.h"
 #include "world_builder/types/array.h"
@@ -44,10 +47,7 @@
 #include "world_builder/types/string.h"
 #include "world_builder/types/unsigned_int.h"
 #include "world_builder/types/value_at_points.h"
-#include "world_builder/objects/surface.h"
-#include "world_builder/objects/natural_coordinate.h"
 #include "world_builder/utilities.h"
-#include "world_builder/consts.h"
 #include "world_builder/world.h"
 
 
@@ -280,8 +280,8 @@ TEST_CASE("WorldBuilder Point: Testing initialize and operators")
   approval_tests.emplace_back(p3.norm());
 
   // Test Point utility classes
-  std::array<double,2> an2 = Utilities::convert_point_to_array(p2_point);
-  std::array<double,3> an3 = Utilities::convert_point_to_array(p3_point);
+  const std::array<double,2> an2 = Utilities::convert_point_to_array(p2_point);
+  const std::array<double,3> an3 = Utilities::convert_point_to_array(p3_point);
 
   CHECK(an2 == std::array<double,2> {{1,2}});
   CHECK(an3 == std::array<double,3> {{1,2,3}});
@@ -349,7 +349,6 @@ TEST_CASE("WorldBuilder Utilities: interpolation")
 {
   std::vector<double> approval_tests;
 
-  Utilities::interpolation linear;
   std::vector<double> x = {{0,1,2,3}};
   std::vector<double> y = {{10,5,5,35}};
 
@@ -544,15 +543,15 @@ TEST_CASE("WorldBuilder Utilities: Point in polygon")
       CHECK(Utilities::signed_distance_to_polygon(point_list_3_elements,check_points[i]) == Approx(answers_signed_distance[i][1]));
     }
 
-  std::vector<Point<2> > point_list_2_elements(2, Point<2>(cartesian));
+  const std::vector<Point<2> > point_list_2_elements(2, Point<2>(cartesian));
   CHECK_THROWS_WITH(Utilities::signed_distance_to_polygon(point_list_2_elements,check_points[0]),
                     Contains("Not enough polygon points were specified."));
 
-  std::vector<Point<2> > point_list_1_elements(1, Point<2>(cartesian));
+  const std::vector<Point<2> > point_list_1_elements(1, Point<2>(cartesian));
   CHECK_THROWS_WITH(Utilities::signed_distance_to_polygon(point_list_1_elements,check_points[0]),
                     Contains("Not enough polygon points were specified."));
 
-  std::vector<Point<2> > point_list_0_elements(0, Point<2>(cartesian));
+  const std::vector<Point<2> > point_list_0_elements(0, Point<2>(cartesian));
   CHECK_THROWS_WITH(Utilities::signed_distance_to_polygon(point_list_0_elements,check_points[0]),
                     Contains("Not enough polygon points were specified."));
 }
@@ -563,24 +562,24 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   std::vector<double> approval_tests;
 
   // Cartesian
-  std::unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",nullptr));
+  const std::unique_ptr<CoordinateSystems::Interface> cartesian(CoordinateSystems::Interface::create("cartesian",nullptr));
 
   // Test the natural coordinate system
-  Objects::NaturalCoordinate nca1(std::array<double,3> {{1,2,3}},*cartesian);
+  const Objects::NaturalCoordinate nca1(std::array<double,3> {{1,2,3}},*cartesian);
   CHECK(nca1.get_coordinates() == std::array<double,3> {{1,2,3}});
   CHECK(nca1.get_surface_coordinates() == std::array<double,2> {{1,2}});
   approval_tests.emplace_back(nca1.get_depth_coordinate());
 
-  Objects::NaturalCoordinate ncp1(Point<3>(1,2,3,CoordinateSystem::cartesian),*cartesian);
+  const Objects::NaturalCoordinate ncp1(Point<3>(1,2,3,CoordinateSystem::cartesian),*cartesian);
   CHECK(ncp1.get_coordinates() == std::array<double,3> {{1,2,3}});
   CHECK(ncp1.get_surface_coordinates() == std::array<double,2> {{1,2}});
   approval_tests.emplace_back(ncp1.get_depth_coordinate());
 
 
-  std::unique_ptr<CoordinateSystems::Interface> spherical(CoordinateSystems::Interface::create("spherical",nullptr));
+  const std::unique_ptr<CoordinateSystems::Interface> spherical(CoordinateSystems::Interface::create("spherical",nullptr));
 
   // Test the natural coordinate system
-  Objects::NaturalCoordinate nsa1(std::array<double,3> {{1,2,3}},*spherical);
+  const Objects::NaturalCoordinate nsa1(std::array<double,3> {{1,2,3}},*spherical);
   std::array<double,3> nsa1_array = nsa1.get_coordinates();
   approval_tests.emplace_back(nsa1_array[0]);
   approval_tests.emplace_back(nsa1_array[1]);
@@ -591,7 +590,7 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   approval_tests.emplace_back(nsa1.get_depth_coordinate());
 
 
-  Objects::NaturalCoordinate nsp1(Point<3>(1,2,3,CoordinateSystem::spherical),*spherical);
+  const Objects::NaturalCoordinate nsp1(Point<3>(1,2,3,CoordinateSystem::spherical),*spherical);
   std::array<double,3> nsp1_array = nsp1.get_coordinates();
   approval_tests.emplace_back(nsp1_array[0]);
   approval_tests.emplace_back(nsp1_array[1]);
@@ -602,7 +601,7 @@ TEST_CASE("WorldBuilder Utilities: Natural Coordinate")
   approval_tests.emplace_back(nsp1.get_depth_coordinate());
 
   // Invalid tests
-  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_cartesian.wb";
+  const std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_cartesian.wb";
   WorldBuilder::World world(file_name);
   Parameters prm(world);
   std::unique_ptr<CoordinateSystems::Interface> invalid(new CoordinateSystems::Invalid(nullptr));
@@ -637,28 +636,28 @@ TEST_CASE("WorldBuilder Utilities: Coordinate systems transformations")
 
   // Test coordinate system transformation
   {
-    Point<3> cartesian(3,4,5,CoordinateSystem::cartesian);
+    const Point<3> cartesian(3,4,5,CoordinateSystem::cartesian);
 
-    Point<3> spherical(Utilities::cartesian_to_spherical_coordinates(Point<3>(cartesian.get_array(),CoordinateSystem::cartesian)), CoordinateSystem::spherical);
+    const Point<3> spherical(Utilities::cartesian_to_spherical_coordinates(Point<3>(cartesian.get_array(),CoordinateSystem::cartesian)), CoordinateSystem::spherical);
 
     compare_vectors_approx(std::vector<double>(std::begin(spherical.get_array()), std::end(spherical.get_array())),
     std::vector<double> {{std::sqrt(3*3+4*4+5*5),0.927295218001613,0.7853982}});
 
-    Point<3> cartesian_back(Utilities::spherical_to_cartesian_coordinates(spherical.get_array()), CoordinateSystem::cartesian);
+    const Point<3> cartesian_back(Utilities::spherical_to_cartesian_coordinates(spherical.get_array()), CoordinateSystem::cartesian);
 
     compare_vectors_approx(std::vector<double>(std::begin(cartesian_back.get_array()), std::end(cartesian_back.get_array())),
     std::vector<double> {{3,4,5}});
   }
 
   {
-    Point<3> cartesian(-2,-1,6,CoordinateSystem::cartesian);
+    const Point<3> cartesian(-2,-1,6,CoordinateSystem::cartesian);
 
-    Point<3> spherical(Utilities::cartesian_to_spherical_coordinates(Point<3>(cartesian.get_array(),CoordinateSystem::cartesian)), CoordinateSystem::spherical);
+    const Point<3> spherical(Utilities::cartesian_to_spherical_coordinates(Point<3>(cartesian.get_array(),CoordinateSystem::cartesian)), CoordinateSystem::spherical);
 
     compare_vectors_approx(std::vector<double>(std::begin(spherical.get_array()), std::end(spherical.get_array())),
     std::vector<double> {{std::sqrt(2*2+1*1+6*6),-2.6779450446,1.2140629383}});
 
-    Point<3> cartesian_back(Utilities::spherical_to_cartesian_coordinates(spherical.get_array()), CoordinateSystem::cartesian);
+    const Point<3> cartesian_back(Utilities::spherical_to_cartesian_coordinates(spherical.get_array()), CoordinateSystem::cartesian);
 
     approval_tests.insert(approval_tests.end(), std::begin(cartesian_back.get_array()), std::end(cartesian_back.get_array()));
   }
@@ -669,7 +668,7 @@ TEST_CASE("WorldBuilder Utilities: Coordinate systems transformations")
 
 TEST_CASE("WorldBuilder Utilities: cross product")
 {
-  std::vector<double> approval_tests;
+  const std::vector<double> approval_tests;
 
   const Point<3> unit_x(1,0,0,cartesian);
   const Point<3> unit_y(0,1,0,cartesian);
@@ -850,8 +849,8 @@ TEST_CASE("WorldBuilder interface")
 {
 
   std::vector<grains> approval_tests_grains;
-  std::string file = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/continental_plate.wb";
-  WorldBuilder::World world(file);
+  const std::string file = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/continental_plate.wb";
+  const WorldBuilder::World world(file);
 
   CHECK_THROWS_WITH(world.properties({{1,2,3}},1., {{{{0,0,0}}}}),Contains("Unimplemented property provided. Only "));
   CHECK_THROWS_WITH(world.properties({{1,2,3}},1., {{{{4,0,0}}}}),Contains("Unimplemented property provided. Only "));
@@ -864,7 +863,7 @@ TEST_CASE("WorldBuilder interface")
 TEST_CASE("Worldbuilder grains")
 {
   // creat a grains object
-  WorldBuilder::grains grains;
+  const WorldBuilder::grains grains;
 
   CHECK(grains.sizes.size() == 0);
   CHECK(grains.rotation_matrices.size() == 0);
@@ -881,7 +880,7 @@ TEST_CASE("WorldBuilder World random")
   // can use the MPI RANK for this (seed is seed + MPI_RANK). Because the generator is
   // deterministic (known and documented algorithm), we can test the results and they
   // should be the same even for different compilers and machines.
-  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate_spherical.wb";
+  const std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate_spherical.wb";
   WorldBuilder::World world1(file_name, false, "", 1);
   // same result as https://en.cppreference.com/w/cpp/numeric/random/mersenne_twister_engine/seed
   approval_tests.emplace_back(world1.get_random_number_engine()());
@@ -911,7 +910,7 @@ TEST_CASE("WorldBuilder Coordinate Systems: Interface")
 {
   std::vector<double> approval_tests;
 
-  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate_spherical.wb";
+  const std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate_spherical.wb";
   WorldBuilder::World world(file_name);
 
   CHECK_THROWS_WITH(CoordinateSystems::Interface::create("!not_implemented_coordinate_system!",&world),
@@ -945,10 +944,10 @@ TEST_CASE("WorldBuilder Coordinate Systems: Cartesian")
   approval_tests.emplace_back(cartesian->natural_coordinate_system());
 
   // distance between two points at the same depth
-  Point<3> point_1(0.0,0.0,10.0, CoordinateSystem::cartesian);
-  Point<3> point_2(1.0,2.0,10.0, CoordinateSystem::cartesian);
-  Point<3> point_3(3.0,2.0,10.0, CoordinateSystem::cartesian);
-  Point<3> point_4(3.0,3.0,10.0, CoordinateSystem::cartesian);
+  const Point<3> point_1(0.0,0.0,10.0, CoordinateSystem::cartesian);
+  const Point<3> point_2(1.0,2.0,10.0, CoordinateSystem::cartesian);
+  const Point<3> point_3(3.0,2.0,10.0, CoordinateSystem::cartesian);
+  const Point<3> point_4(3.0,3.0,10.0, CoordinateSystem::cartesian);
 
   approval_tests.emplace_back(cartesian->distance_between_points_at_same_depth(point_1, point_2));
   approval_tests.emplace_back(cartesian->distance_between_points_at_same_depth(point_2, point_3));
@@ -962,7 +961,7 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
   std::vector<double> approval_tests;
 
   // TODO: make test where a cartesian wb file is loaded into a spherical coordinate system.
-  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate_spherical.wb";
+  const std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/oceanic_plate_spherical.wb";
 
   WorldBuilder::World world(file_name);
 
@@ -990,15 +989,15 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
   approval_tests.emplace_back(spherical->natural_coordinate_system());
 
   // distance between two points at the same depth
-  double dtr = Consts::PI / 180.0;
+  const double dtr = Consts::PI / 180.0;
   // first check unit radius, this the central angle
-  Point<3> unit_point_1(1.0, 0.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
-  Point<3> unit_point_2(1.0, 1.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
-  Point<3> unit_point_3(1.0, 0.0 * dtr, 1.0 * dtr, CoordinateSystem::spherical);
-  Point<3> unit_point_4(1.0, 1.0 * dtr, 1.0 * dtr, CoordinateSystem::spherical);
-  Point<3> unit_point_5(1.0, 90.0 * dtr, 90.0 * dtr, CoordinateSystem::spherical);
-  Point<3> unit_point_6(1.0, -90.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
-  Point<3> unit_point_7(1.0, 90.0 * dtr, 180.0 * dtr, CoordinateSystem::spherical);
+  const Point<3> unit_point_1(1.0, 0.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
+  const Point<3> unit_point_2(1.0, 1.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
+  const Point<3> unit_point_3(1.0, 0.0 * dtr, 1.0 * dtr, CoordinateSystem::spherical);
+  const Point<3> unit_point_4(1.0, 1.0 * dtr, 1.0 * dtr, CoordinateSystem::spherical);
+  const Point<3> unit_point_5(1.0, 90.0 * dtr, 90.0 * dtr, CoordinateSystem::spherical);
+  const Point<3> unit_point_6(1.0, -90.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
+  const Point<3> unit_point_7(1.0, 90.0 * dtr, 180.0 * dtr, CoordinateSystem::spherical);
 
   approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_2));
   approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(unit_point_1, unit_point_3));
@@ -1009,13 +1008,13 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
   approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(unit_point_6, unit_point_7));
 
   // secondly check non-unit radius
-  Point<3> point_1(10.0, 0.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
-  Point<3> point_2(10.0, 1.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
-  Point<3> point_3(10.0, 0.0 * dtr, 1.0 * dtr, CoordinateSystem::spherical);
-  Point<3> point_4(10.0, 1.0 * dtr, 1.0 * dtr, CoordinateSystem::spherical);
-  Point<3> point_5(10.0, 90.0 * dtr, 90.0 * dtr, CoordinateSystem::spherical);
-  Point<3> point_6(10.0, -90.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
-  Point<3> point_7(10.0, 90.0 * dtr, 180.0 * dtr, CoordinateSystem::spherical);
+  const Point<3> point_1(10.0, 0.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
+  const Point<3> point_2(10.0, 1.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
+  const Point<3> point_3(10.0, 0.0 * dtr, 1.0 * dtr, CoordinateSystem::spherical);
+  const Point<3> point_4(10.0, 1.0 * dtr, 1.0 * dtr, CoordinateSystem::spherical);
+  const Point<3> point_5(10.0, 90.0 * dtr, 90.0 * dtr, CoordinateSystem::spherical);
+  const Point<3> point_6(10.0, -90.0 * dtr, 0.0 * dtr, CoordinateSystem::spherical);
+  const Point<3> point_7(10.0, 90.0 * dtr, 180.0 * dtr, CoordinateSystem::spherical);
 
   approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(point_1, point_2));
   approval_tests.emplace_back(spherical->distance_between_points_at_same_depth(point_1, point_3));
@@ -1030,14 +1029,14 @@ TEST_CASE("WorldBuilder Coordinate Systems: Spherical")
 
 TEST_CASE("WorldBuilder Features: Interface")
 {
-  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb1.json";
+  const std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/simple_wb1.json";
 
   WorldBuilder::World world(file_name);
   CHECK_THROWS_WITH(Features::Interface::create("!not_implemented_feature!", &world),
                     Contains("Internal error: Plugin with name '!not_implemented_feature!' is not found. "
                              "The size of factories is "));
 
-  std::unique_ptr<Features::Interface> interface = Features::Interface::create("continental plate", &world);
+  const std::unique_ptr<Features::Interface> interface = Features::Interface::create("continental plate", &world);
 
 }
 
@@ -1046,7 +1045,7 @@ TEST_CASE("WorldBuilder Features: Distance to Feature Plane")
   std::vector<double> approval_tests;
 
   //  call the distance_to_plane to a subducting plate feature,
-  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_constant_angles_cartesian.wb";
+  const std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_constant_angles_cartesian.wb";
   WorldBuilder::World world1(file_name);
   {
     std::unique_ptr<Features::Interface> subducting_plate = Features::Interface::create("Subducting Plate", &world1);
@@ -1077,7 +1076,7 @@ TEST_CASE("WorldBuilder Features: Distance to Feature Plane")
 
   // call the distance_to_plane to a fault feature, as this is not implemented yet, we should be
   // informed by the assertion error message.
-  std::string file_name2 = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/fault_constant_angles_cartesian.wb";
+  const std::string file_name2 = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/fault_constant_angles_cartesian.wb";
   WorldBuilder::World world2(file_name2);
   {
     std::unique_ptr<Features::Interface> fault = Features::Interface::create("Fault", &world2);
@@ -1100,7 +1099,7 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
   std::vector<double> approval_tests;
   std::vector<grains> approval_tests_grains;
 
-  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/continental_plate.wb";
+  const std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/continental_plate.wb";
   WorldBuilder::World world1(file_name);
 
   // Check continental plate directly
@@ -1156,7 +1155,7 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
 
   // check grains
   {
-    WorldBuilder::grains grains = world1.grains(position, 0, 0, 3);
+    const WorldBuilder::grains grains = world1.grains(position, 0, 0, 3);
     approval_tests_grains.emplace_back(grains);
   }
 
@@ -1187,7 +1186,7 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
 
   // check grains
   {
-    WorldBuilder::grains grains = world1.grains(position, 0, 0, 3);
+    const WorldBuilder::grains grains = world1.grains(position, 0, 0, 3);
     approval_tests_grains.emplace_back(grains);
   }
 
@@ -1243,13 +1242,13 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
 
   // check grains layer 1
   {
-    WorldBuilder::grains grains = world1.grains(position, 0, 0, 2);
+    const WorldBuilder::grains grains = world1.grains(position, 0, 0, 2);
     approval_tests_grains.emplace_back(grains);
   }
 
   // check grains layer 2
   {
-    WorldBuilder::grains grains = world1.grains(position, 150e3, 0, 2);
+    const WorldBuilder::grains grains = world1.grains(position, 150e3, 0, 2);
     approval_tests_grains.emplace_back(grains);
 
   }
@@ -1347,7 +1346,7 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
 {
   std::vector<double> approval_tests;
   std::vector<grains> approval_tests_grains;
-  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/mantle_layer_cartesian.wb";
+  const std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/mantle_layer_cartesian.wb";
   WorldBuilder::World world1(file_name);
 
   // Check mantle layer directly
@@ -1395,7 +1394,7 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
 
   // check grains
   {
-    WorldBuilder::grains grains = world1.grains(position, 200e3, 0, 3);
+    const WorldBuilder::grains grains = world1.grains(position, 200e3, 0, 3);
     approval_tests_grains.emplace_back(grains);
   }
 
@@ -1425,7 +1424,7 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
 
   // check grains
   {
-    WorldBuilder::grains grains = world1.grains(position, 150e3, 0, 3);
+    const WorldBuilder::grains grains = world1.grains(position, 150e3, 0, 3);
     approval_tests_grains.emplace_back(grains);
   }
 
@@ -1484,13 +1483,13 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
 
   // check grains layer 1
   {
-    WorldBuilder::grains grains = world1.grains(position, 0+300e3, 0, 2);
+    const WorldBuilder::grains grains = world1.grains(position, 0+300e3, 0, 2);
     approval_tests_grains.emplace_back(grains);
   }
 
   // check grains layer 2
   {
-    WorldBuilder::grains grains = world1.grains(position, 150e3+300e3, 0, 2);
+    const WorldBuilder::grains grains = world1.grains(position, 150e3+300e3, 0, 2);
     approval_tests_grains.emplace_back(grains);
 
   }
@@ -1808,10 +1807,10 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   WorldBuilder::World world2(file_name);
 
   // Check continental plate directly
-  std::unique_ptr<Features::Interface> oceanic_plate = Features::Interface::create("oceanic plate", &world2);
+  const std::unique_ptr<Features::Interface> oceanic_plate = Features::Interface::create("oceanic plate", &world2);
 
   // Check continental plate through the world
-  double dtr = Consts::PI / 180.0;
+  const double dtr = Consts::PI / 180.0;
   std::unique_ptr<WorldBuilder::CoordinateSystems::Interface> &coordinate_system = world2.parameters.coordinate_system;
 
   // 2d
@@ -1866,7 +1865,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
 
   // check grains
   {
-    WorldBuilder::grains grains = world2.grains(position, 240e3, 0, 3);
+    const WorldBuilder::grains grains = world2.grains(position, 240e3, 0, 3);
     approval_tests_grains.emplace_back(grains);
   }
 
@@ -1887,7 +1886,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
 
   // check grains
   {
-    WorldBuilder::grains grains = world2.grains(position, 240e3, 0, 3);
+    const WorldBuilder::grains grains = world2.grains(position, 240e3, 0, 3);
     approval_tests_grains.emplace_back(grains);
   }
 
@@ -1910,13 +1909,13 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
 
   // check grains layer 1
   {
-    WorldBuilder::grains grains = world2.grains(position, 0, 0, 2);
+    const WorldBuilder::grains grains = world2.grains(position, 0, 0, 2);
     approval_tests_grains.emplace_back(grains);
   }
 
   // check grains layer 2
   {
-    WorldBuilder::grains grains = world2.grains(position, 150e3, 0, 2);
+    const WorldBuilder::grains grains = world2.grains(position, 150e3, 0, 2);
     approval_tests_grains.emplace_back(grains);
   }
 
@@ -2160,7 +2159,7 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
 
   // check grains layer 2
   {
-    WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 66e3 - 1, 0, 2);
+    const WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 66e3 - 1, 0, 2);
     approval_tests_grains.emplace_back(grains);
   }
 
@@ -2346,26 +2345,26 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
   {
     {
       // layer 1
-      WorldBuilder::grains grains = world1.grains(position, 80e3, 0, 3);
+      const WorldBuilder::grains grains = world1.grains(position, 80e3, 0, 3);
       approval_tests_grains.emplace_back(grains);
     }
 
     {
       // layer 2
-      WorldBuilder::grains grains = world1.grains(position, 100e3, 0, 3);
+      const WorldBuilder::grains grains = world1.grains(position, 100e3, 0, 3);
       approval_tests_grains.emplace_back(grains);
     }
 
     {
       // layer 3
-      WorldBuilder::grains grains = world1.grains(position, 250e3, 0, 3);
+      const WorldBuilder::grains grains = world1.grains(position, 250e3, 0, 3);
       approval_tests_grains.emplace_back(grains);
     }
   }
 
 
-  std::string file_name2 = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_cartesian.wb";
-  WorldBuilder::World world2(file_name2);
+  const std::string file_name2 = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_cartesian.wb";
+  const WorldBuilder::World world2(file_name2);
 
   position = {{250e3,500e3,800e3}};
   approval_tests.emplace_back(world2.temperature(position, 0));
@@ -2389,7 +2388,7 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
 
 
   file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_cartesian_2.wb";
-  WorldBuilder::World world4(file_name);
+  const WorldBuilder::World world4(file_name);
 
   position = {{250e3,500e3,800e3}};
   approval_tests.emplace_back(world4.temperature(position, 0));
@@ -2629,7 +2628,7 @@ TEST_CASE("WorldBuilder Features: Fault")
 
     {
       // layer 3
-      WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 99e3 * 0.5 - 5e3, 0, 3);
+      const WorldBuilder::grains grains = world1.grains(position, std::sqrt(2) * 99e3 * 0.5 - 5e3, 0, 3);
       approval_tests_grains.emplace_back(grains);
     }
   }
@@ -2653,8 +2652,8 @@ TEST_CASE("WorldBuilder Features: Fault")
   approval_tests.emplace_back(world1.composition(position, 1, 2));
   approval_tests.emplace_back(world1.composition(position, 1, 3));
 
-  std::string file_name2 = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/fault_constant_angles_cartesian_force_temp.wb";
-  WorldBuilder::World world2(file_name2);
+  const std::string file_name2 = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/fault_constant_angles_cartesian_force_temp.wb";
+  const WorldBuilder::World world2(file_name2);
 
   // Check fault plate through the world
   position = {{0,0,800e3}};
@@ -2755,7 +2754,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   WorldBuilder::World world3(file_name);
 
   // Check fault directly (upper case should automatically turn into lower case).
-  std::unique_ptr<Features::Interface> continental_plate = Features::Interface::create("Fault", &world3);
+  const std::unique_ptr<Features::Interface> continental_plate = Features::Interface::create("Fault", &world3);
 
   // Check fault through the world
   position = {{0,0,800e3}};
@@ -2814,7 +2813,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   approval_tests.emplace_back(world3.composition(position, 0, 6));
 
   {
-    WorldBuilder::grains grains = world3.grains(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0, 3);
+    const WorldBuilder::grains grains = world3.grains(position, std::sqrt(2) * 33e3 * 0.5 - 1, 0, 3);
     approval_tests_grains.emplace_back(grains);
   }
 
@@ -2865,7 +2864,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   approval_tests.emplace_back(world3.composition(position, 0, 6));
 
   {
-    WorldBuilder::grains grains = world3.grains(position, 101e3+1, 0, 3);
+    const WorldBuilder::grains grains = world3.grains(position, 101e3+1, 0, 3);
     approval_tests_grains.emplace_back(grains);
   }
 
@@ -2916,7 +2915,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   approval_tests.emplace_back(world3.composition(position, 0, 6));
 
   {
-    WorldBuilder::grains grains = world3.grains(position, 100e3+1, 0, 3);
+    const WorldBuilder::grains grains = world3.grains(position, 100e3+1, 0, 3);
     approval_tests_grains.emplace_back(grains);
   }
 
@@ -3009,7 +3008,7 @@ TEST_CASE("WorldBuilder Features: Fault")
 
   // check grains layer 1
   {
-    WorldBuilder::grains grains = world3.grains(position, 95e3, 0, 2);
+    const WorldBuilder::grains grains = world3.grains(position, 95e3, 0, 2);
     // these are random numbers, but they should stay the same.
     // note that the values are different from for example the continental plate since
     // this performs a interpolation between segments of the slab.
@@ -3018,14 +3017,14 @@ TEST_CASE("WorldBuilder Features: Fault")
 
   // check grains layer 2 bottom (because of the randomness it will have different values.)
   {
-    WorldBuilder::grains grains = world3.grains(position, 150e3, 0, 2);
+    const WorldBuilder::grains grains = world3.grains(position, 150e3, 0, 2);
     approval_tests_grains.emplace_back(grains);
 
   }
 
   // check grains layer 2 top
   {
-    WorldBuilder::grains grains = world3.grains(position, 35e3, 0, 2);
+    const WorldBuilder::grains grains = world3.grains(position, 35e3, 0, 2);
     approval_tests_grains.emplace_back(grains);
     //compare_vectors_approx(grains.sizes, {0.3512381923,0.6487618077});
     //approval_tests.emplace_back(grains.sizes[0] + grains.sizes[1]);
@@ -3039,7 +3038,7 @@ TEST_CASE("WorldBuilder Features: Fault")
 
 
   file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/fault_different_angles_cartesian.wb";
-  WorldBuilder::World world4(file_name);
+  const WorldBuilder::World world4(file_name);
 
   position = {{250e3,501e3,800e3}};
   approval_tests.emplace_back(world4.temperature(position, 0));
@@ -3090,8 +3089,8 @@ TEST_CASE("WorldBuilder Features: coordinate interpolation")
   std::vector<double> approval_tests;
 
   {
-    std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/interpolation_monotone_spline_cartesian.wb";
-    WorldBuilder::World world1(file_name);
+    const std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/interpolation_monotone_spline_cartesian.wb";
+    const WorldBuilder::World world1(file_name);
 
     std::array<double,3> position = {{374e3,875e3,800e3}};
     approval_tests.emplace_back(world1.temperature(position, 0));
@@ -3154,19 +3153,19 @@ TEST_CASE("WorldBuilder Features: coordinate interpolation")
 TEST_CASE("WorldBuilder Types: Double")
 {
 #define TYPE Double
-  Types::TYPE type(1);
+  Types::TYPE const type(1);
   CHECK(type.default_value == Approx(1.0));
   CHECK(type.get_type() == Types::type::TYPE);
 
-  Types::TYPE type_copy(type);
+  Types::TYPE const type_copy(type);
   CHECK(type_copy.default_value == Approx(1.0));
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
-  Types::TYPE type_explicit(3);
+  Types::TYPE const type_explicit(3);
   CHECK(type_explicit.default_value == Approx(3.0));
   CHECK(type_explicit.get_type() == Types::type::TYPE);
 
-  std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
+  const std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
   CHECK(type_clone_natural->default_value == Approx(3.0));
   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
@@ -3203,19 +3202,19 @@ TEST_CASE("WorldBuilder Types: Double")
 TEST_CASE("WorldBuilder Types: String")
 {
 #define TYPE String
-  Types::TYPE type("1","test");
+  Types::TYPE const type("1","test");
   CHECK(type.default_value == "1");
   CHECK(type.get_type() == Types::type::TYPE);
 
-  Types::TYPE type_copy(type);
+  Types::TYPE const type_copy(type);
   CHECK(type_copy.default_value == "1");
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
-  Types::TYPE type_explicit("2", "3", "test explicit");
+  Types::TYPE const type_explicit("2", "3", "test explicit");
   CHECK(type_explicit.default_value == "3");
   CHECK(type_explicit.get_type() == Types::type::TYPE);
 
-  std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
+  const std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
   CHECK(type_clone_natural->default_value == "3");
   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
@@ -3249,7 +3248,7 @@ TEST_CASE("WorldBuilder Types: Point 2d")
   CHECK(type_explicit.description == "test explicit");
   CHECK(type_explicit.get_type() == Types::type::Point2D);
 
-  std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
+  const std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
   CHECK(type_clone_natural->value[0] == Approx(TYPE(3,4,cartesian)[0]));
   CHECK(type_clone_natural->value[1] == Approx(TYPE(3,4,cartesian)[1]));
@@ -3267,7 +3266,7 @@ TEST_CASE("WorldBuilder Types: Point 2d")
 
   Types::TYPE type_point_array(point_array, point_array, "test array");
   const Types::TYPE type_point_array_const(point_array, point_array, "test array");
-  Types::TYPE type_point_explicit(point_explicit, point_explicit, "test array");
+  Types::TYPE const type_point_explicit(point_explicit, point_explicit, "test array");
 
   CHECK(type_point_array.value.get_array() == std::array<double,2> {{1,2}});
   CHECK(type_point_explicit.value.get_array() == std::array<double,2> {{3,4}});
@@ -3303,7 +3302,7 @@ TEST_CASE("WorldBuilder Types: Point 2d")
   // Test the point output stream.
   std::ostringstream stream;
   stream << point_array;
-  std::string str =  stream.str();
+  const std::string str =  stream.str();
   CHECK(str == "1 2");
 #undef TYPE
 }
@@ -3342,7 +3341,7 @@ TEST_CASE("WorldBuilder Types: Point 3d")
   CHECK(type_explicit.description == "test explicit");
   CHECK(type_explicit.get_type() == Types::type::Point3D);
 
-  std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
+  const std::unique_ptr<Types::Interface> type_clone = type_explicit.clone();
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
   CHECK(type_clone_natural->value[0] == Approx(4.0));
   CHECK(type_clone_natural->value[1] == Approx(5.0));
@@ -3361,7 +3360,7 @@ TEST_CASE("WorldBuilder Types: Point 3d")
 
   Types::TYPE type_point_array(point_array, point_array, "test array");
   const Types::TYPE type_point_array_const(point_array, point_array, "test array");
-  Types::TYPE type_point_explicit(point_explicit, point_explicit, "test array");
+  Types::TYPE const type_point_explicit(point_explicit, point_explicit, "test array");
 
   CHECK(type_point_array.value.get_array() == std::array<double,3> {{1,2,3}});
   CHECK(type_point_explicit.value.get_array() == std::array<double,3> {{4,5,6}});
@@ -3406,7 +3405,7 @@ TEST_CASE("WorldBuilder Types: Point 3d")
   // Test the point output stream.
   std::ostringstream stream;
   stream << point_array;
-  std::string str =  stream.str();
+  const std::string str =  stream.str();
   CHECK(str == "1 2 3");
 
 #undef TYPE
@@ -3446,7 +3445,7 @@ TEST_CASE("WorldBuilder Types: PluginSystem")
   CHECK(type_copy.allow_multiple == false);
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
-  std::unique_ptr<Types::Interface> type_clone = type_copy.clone();
+  const std::unique_ptr<Types::Interface> type_clone = type_copy.clone();
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
   CHECK(type_clone_natural->default_value == "test");
   CHECK(type_clone_natural->required_entries[0] == "test required");
@@ -3461,9 +3460,9 @@ TEST_CASE("WorldBuilder Types: PluginSystem")
 TEST_CASE("WorldBuilder Types: Segment Object")
 {
 #define TYPE Segment
-  WorldBuilder::Point<2> thickness(1,2,invalid);
-  WorldBuilder::Point<2> top_trucation(3,4,invalid);
-  WorldBuilder::Point<2> angle(5,6,invalid);
+  const WorldBuilder::Point<2> thickness(1,2,invalid);
+  const WorldBuilder::Point<2> top_trucation(3,4,invalid);
+  const WorldBuilder::Point<2> angle(5,6,invalid);
   Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface, Features::FaultModels::Grains::Interface>
   type (1.0, thickness, top_trucation, angle,
         std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface> >(),
@@ -3490,7 +3489,7 @@ TEST_CASE("WorldBuilder Types: Segment Object")
   CHECK(type_copy.value_angle[1] == Approx(6.0));
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
-  std::unique_ptr<Types::Interface> type_clone = type_copy.clone();
+  const std::unique_ptr<Types::Interface> type_clone = type_copy.clone();
   Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface, Features::FaultModels::Grains::Interface>
   *type_clone_natural = dynamic_cast<Objects::TYPE<Features::FaultModels::Temperature::Interface,
    Features::FaultModels::Composition::Interface,
@@ -3510,12 +3509,12 @@ TEST_CASE("WorldBuilder Types: Segment Object")
 TEST_CASE("WorldBuilder Types: Array")
 {
 #define TYPE Array
-  Types::TYPE type(Types::Double(0));
+  Types::TYPE const type(Types::Double(0));
   CHECK(type.inner_type == Types::type::Double);
   CHECK(type.inner_type_ptr.get() != nullptr);
   CHECK(type.get_type() == Types::type::TYPE);
 
-  Types::TYPE type_copy(type);
+  Types::TYPE const type_copy(type);
   CHECK(type_copy.inner_type == Types::type::Double);
   CHECK(type_copy.inner_type_ptr.get() != nullptr);
   CHECK(type_copy.get_type() == Types::type::TYPE);
@@ -3563,7 +3562,7 @@ TEST_CASE("WorldBuilder Types: Object")
   CHECK(type_copy.additional_properties == true);
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
-  std::unique_ptr<Types::Interface> type_clone = type_copy.clone();
+  const std::unique_ptr<Types::Interface> type_clone = type_copy.clone();
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
   CHECK(type_clone_natural->required.size() == 2);
   CHECK(type_clone_natural->required[0] == "test1");
@@ -3585,21 +3584,21 @@ TEST_CASE("WorldBuilder Types: Object")
 TEST_CASE("WorldBuilder Types: Bool")
 {
 #define TYPE Bool
-  Types::TYPE type(true);
+  Types::TYPE const type(true);
   CHECK(type.default_value == true);
   CHECK(type.get_type() == Types::type::TYPE);
 
 
-  Types::TYPE type_copy(type);
+  Types::TYPE const type_copy(type);
   CHECK(type_copy.default_value == true);
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
-  std::unique_ptr<Types::Interface> type_clone = type_copy.clone();
+  const std::unique_ptr<Types::Interface> type_clone = type_copy.clone();
   Types::TYPE *type_clone_natural = dynamic_cast<Types::TYPE *>(type_clone.get());
   CHECK(type_clone_natural->default_value == true);
   CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 
-  Types::TYPE type_copy2(*type_clone_natural);
+  Types::TYPE const type_copy2(*type_clone_natural);
   CHECK(type_copy2.default_value == true);
   CHECK(type_copy2.get_type() == Types::type::TYPE);
 
@@ -3790,7 +3789,7 @@ TEST_CASE("WorldBuilder Parameters")
 
   // First test a world builder file with a cross section defined
   std::string file = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/type_data.json";
-  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_cartesian.wb";
+  const std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_cartesian.wb";
   WorldBuilder::World world(file_name);
 
   world.parse_entries(world.parameters);
@@ -3855,9 +3854,9 @@ TEST_CASE("WorldBuilder Parameters")
   prm.declare_entry("value at points default ap",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101.))),
                     "Documentation");
   prm.leave_subsection();
-  std::vector<Point<2> > additional_points = {Point<2>(-10,-10,cartesian),Point<2>(-10,10,cartesian),
-                                              Point<2>(10,10,cartesian),Point<2>(10,-10,cartesian)
-                                             };
+  const std::vector<Point<2> > additional_points = {Point<2>(-10,-10,cartesian),Point<2>(-10,10,cartesian),
+                                                    Point<2>(10,10,cartesian),Point<2>(10,-10,cartesian)
+                                                   };
   CHECK_THROWS_WITH(prm.get("value at points non existent",additional_points), Contains("internal error: could not retrieve"));
   std::pair<std::vector<double>,std::vector<double>> v_at_p_one_value = prm.get("one value at points one value",additional_points);
 
@@ -3866,7 +3865,7 @@ TEST_CASE("WorldBuilder Parameters")
   approval_tests.emplace_back((double)v_at_p_one_value.second.size());
 
   {
-    Objects::Surface surface(v_at_p_one_value);
+    const Objects::Surface surface(v_at_p_one_value);
     approval_tests.emplace_back(surface.local_value(Point<2>(0,0,CoordinateSystem::cartesian)).interpolated_value);
   }
   std::pair<std::vector<double>,std::vector<double>> v_at_p_one_array_value = prm.get("array value at points one value",additional_points);
@@ -3908,7 +3907,7 @@ TEST_CASE("WorldBuilder Parameters")
   approval_tests.emplace_back(v_at_p_dap.second[13]);
 
   {
-    Objects::Surface surface(v_at_p_dap);
+    const Objects::Surface surface(v_at_p_dap);
 
     approval_tests.emplace_back(surface.local_value(Point<2>(0,0,CoordinateSystem::cartesian)).interpolated_value);
     approval_tests.emplace_back(surface.local_value(Point<2>(0.99,1.99,CoordinateSystem::cartesian)).interpolated_value);
@@ -4694,7 +4693,7 @@ TEST_CASE("WorldBuilder Parameters")
 
 TEST_CASE("Euler angle functions")
 {
-  std::vector<double> approval_tests;
+  const std::vector<double> approval_tests;
 
   // note, this is only testing consistency (can it convert back and forth) and
   // it only works for rotation matrices which are defined in the same way (z-x-z).
@@ -4720,7 +4719,7 @@ TEST_CASE("Euler angle functions")
   }
 
   {
-    std::array<double,3> ea0 = {{20,30,40}};
+    const std::array<double,3> ea0 = {{20,30,40}};
     auto rot0 = Utilities::euler_angles_to_rotation_matrix(20,30,40);
     auto ea1 = Utilities::euler_angles_from_rotation_matrix(rot0);
     compare_3d_arrays_approx(ea1,ea0);
@@ -4744,7 +4743,7 @@ TEST_CASE("GWB Bezier curve")
   coordinates.emplace_back(20,10,cartesian);
   coordinates.emplace_back(30,20,cartesian);
 
-  Objects::BezierCurve bezier_curve(coordinates);
+  const Objects::BezierCurve bezier_curve(coordinates);
 
   approval_tests.emplace_back(bezier_curve(0,-0.1));
   approval_tests.emplace_back(bezier_curve(0,0.0));
@@ -4775,7 +4774,10 @@ TEST_CASE("GWB Bezier curve")
   approval_tests.emplace_back(bezier_curve(1,1.1));
 
 
-  Objects::BezierCurve bezier_curve_defined(coordinates, {0.,Consts::PI,0.});
+  const Objects::BezierCurve bezier_curve_defined(coordinates,
+  {
+    0.,Consts::PI,0.
+  });
 
   approval_tests.emplace_back(bezier_curve_defined(0,-0.1));
   approval_tests.emplace_back(bezier_curve_defined(0,0.0));
@@ -4813,7 +4815,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 {
   std::vector<double> approval_tests;
 
-  std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::Interface::create("cartesian", nullptr);;
+  const std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::Interface::create("cartesian", nullptr);;
 
   //Todo:fix
   //cartesian_system->declare_entries();
@@ -4834,21 +4836,18 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   slab_segment_lengths[1].push_back(std::sqrt(10*10+10*10));
   slab_segment_lengths[1].push_back(200);
 
-  double dtr = Consts::PI/180;
+  const double dtr = Consts::PI/180;
   std::vector<std::vector<Point<2> > > slab_segment_angles(2);
   slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
   slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
   slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
   slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
 
-  double starting_radius = 10;
+  const double starting_radius = 10;
 
-  Utilities::interpolation x_spline;
-  Utilities::interpolation y_spline;
-
-  std::vector<double> x_list = {0.,20.};
-  std::vector<double> y_list = {10.,10.};
-  std::vector<Point<2> > coordinate_list_local = coordinates;
+  const std::vector<double> x_list = {0.,20.};
+  const std::vector<double> y_list = {10.,10.};
+  const std::vector<Point<2> > coordinate_list_local = coordinates;
 
   Objects::BezierCurve bezier_curve(coordinate_list_local);
 
@@ -5754,7 +5753,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 {
   std::vector<double> approval_tests;
 
-  std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::Interface::create("cartesian", nullptr);;
+  const std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::Interface::create("cartesian", nullptr);;
 
   //todo: fix
   //cartesian_system->declare_entries();
@@ -5777,7 +5776,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   slab_segment_lengths[2].push_back(std::sqrt(10*10+10*10));
   slab_segment_lengths[2].push_back(200);
 
-  double dtr = Consts::PI/180;
+  const double dtr = Consts::PI/180;
   std::vector<std::vector<Point<2> > > slab_segment_angles(3);
   slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
   slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
@@ -5786,7 +5785,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   slab_segment_angles[2].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
   slab_segment_angles[2].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
 
-  double starting_radius = 10;
+  const double starting_radius = 10;
   // Now test the curves into the depth
   // curve test 1
 
@@ -5817,12 +5816,10 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   natural_coordinate = Objects::NaturalCoordinate(position,
                                                   *cartesian_system);
 
-  Utilities::interpolation x_spline;
-  Utilities::interpolation y_spline;
 
-  std::vector<double> x_list = {0.,20., 30.};
-  std::vector<double> y_list = {10.,10., 10.};
-  std::vector<Point<2> > coordinate_list_local = coordinates;
+  const std::vector<double> x_list = {0.,20., 30.};
+  const std::vector<double> y_list = {10.,10., 10.};
+  const std::vector<Point<2> > coordinate_list_local = coordinates;
   const Objects::BezierCurve bezier_curve(coordinates);
 
   WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
@@ -7133,7 +7130,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   // the code which is different for the spherical case is correct.
 
   // spherical test 1
-  std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_spherical.wb";
+  const std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_different_angles_spherical.wb";
   WorldBuilder::World world(file_name);
 
   const double dtr = Consts::PI/180.0;
@@ -7142,7 +7139,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
 
   Objects::NaturalCoordinate natural_coordinate = Objects::NaturalCoordinate(position,
                                                                              *(world.parameters.coordinate_system));
-  Point<2> reference_point(0,0,spherical);
+  const Point<2> reference_point(0,0,spherical);
 
   std::vector<Point<2> > coordinates;
   coordinates.emplace_back(0 * dtr,10 * dtr,spherical);
@@ -7161,13 +7158,11 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
   slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
   slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
 
-  double starting_radius = 10;
-  Utilities::interpolation x_spline;
-  Utilities::interpolation y_spline;
+  const double starting_radius = 10;
 
-  std::vector<double> x_list = {0.,10 * dtr};
-  std::vector<double> y_list = {10 * dtr,10 * dtr};
-  std::vector<Point<2> > coordinate_list_local = coordinates;
+  const std::vector<double> x_list = {0.,10 * dtr};
+  const std::vector<double> y_list = {10 * dtr,10 * dtr};
+  const std::vector<Point<2> > coordinate_list_local = coordinates;
   const Objects::BezierCurve bezier_curve(coordinates);
 
   WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
@@ -7372,7 +7367,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
 
   {
     // starting point
-    std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/spherical_depth_method_starting_point.wb";
+    const std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/spherical_depth_method_starting_point.wb";
     WorldBuilder::World world(file_name);
 
     const double dtr = Consts::PI/180.0;
@@ -7419,7 +7414,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
 
   {
     // begin segment depth method
-    std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/spherical_depth_method_begin_segment.wb";
+    const std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/spherical_depth_method_begin_segment.wb";
     WorldBuilder::World world(file_name);
 
     const double dtr = Consts::PI/180.0;

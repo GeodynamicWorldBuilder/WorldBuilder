@@ -23,10 +23,9 @@ namespace WorldBuilder
 {
 
   grains::grains()
-    :
-    sizes(),
-    rotation_matrices()
-  {}
+
+
+    = default;
 
 
   grains::grains(const std::vector<double> &vector,
@@ -78,4 +77,4 @@ namespace WorldBuilder
         vector[start_entry+number_of_grains+i_grain*9+8] = rotation_matrices[i_grain][2][2];
       }
   }
-}
+} // namespace WorldBuilder

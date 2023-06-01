@@ -32,7 +32,7 @@ namespace WorldBuilder
                                  std::vector<Point<2>> default_points_)
       :
       default_value(default_value_),
-      default_points(default_points_)
+      default_points(std::move(std::move(default_points_)))
     {
       this->type_name = Types::type::ValueAtPoints;
 
@@ -62,7 +62,7 @@ namespace WorldBuilder
       prm.enter_subsection(name);
       {
         Document &declarations = prm.declarations;
-        std::string base = prm.get_full_json_path();
+        const std::string base = prm.get_full_json_path();
 
         Pointer((base + "/type").c_str()).Set(declarations,"array");
         Pointer((base + "/additionalProperties").c_str()).Set(declarations,false);

@@ -21,12 +21,12 @@
 
 
 #include "glm/glm.h"
+#include "world_builder/features/feature_utilities.h"
 #include "world_builder/types/array.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
 #include "world_builder/types/point.h"
 #include "world_builder/types/unsigned_int.h"
-#include "world_builder/features/feature_utilities.h"
 #include "world_builder/world.h"
 #include <algorithm>
 
@@ -436,7 +436,7 @@ namespace WorldBuilder
                    "Internal error: The size of coordinates (" << coordinates.size()
                    << ") and one_dimensional_coordinates (" << one_dimensional_coordinates.size() << ") are different.");*/
           // todo: explain
-          WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
+          const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position_in_cartesian_coordinates,
                                                                        position_in_natural_coordinates,
                                                                        reference_point,
@@ -641,10 +641,10 @@ namespace WorldBuilder
                             // average two rotations matrices throu quaternions.
                             for (size_t i = 0; i < grains_current_section.rotation_matrices.size(); i++)
                               {
-                                glm::quaternion::quat quat_current = glm::quaternion::quat_cast(grains_current_section.rotation_matrices[i]);
-                                glm::quaternion::quat quat_next = glm::quaternion::quat_cast(grains_next_section.rotation_matrices[i]);
+                                const glm::quaternion::quat quat_current = glm::quaternion::quat_cast(grains_current_section.rotation_matrices[i]);
+                                const glm::quaternion::quat quat_next = glm::quaternion::quat_cast(grains_next_section.rotation_matrices[i]);
 
-                                glm::quaternion::quat quat_average = glm::quaternion::slerp(quat_current,quat_next,section_fraction);
+                                const glm::quaternion::quat quat_average = glm::quaternion::slerp(quat_current,quat_next,section_fraction);
 
                                 grains.rotation_matrices[i] = glm::quaternion::mat3_cast(quat_average);
                               }

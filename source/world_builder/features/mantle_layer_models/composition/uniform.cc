@@ -25,8 +25,8 @@
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
 #include "world_builder/types/one_of.h"
-#include "world_builder/types/value_at_points.h"
 #include "world_builder/types/unsigned_int.h"
+#include "world_builder/types/value_at_points.h"
 #include "world_builder/utilities.h"
 
 
@@ -98,11 +98,10 @@ namespace WorldBuilder
                                  const Objects::NaturalCoordinate &position_in_natural_coordinates,
                                  const double depth,
                                  const unsigned int composition_number,
-                                 double composition_,
+                                 double composition,
                                  const double  /*feature_min_depth*/,
                                  const double  /*feature_max_depth*/) const
         {
-          double composition = composition_;
           if (depth <= max_depth && depth >= min_depth)
             {
               const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
@@ -113,7 +112,7 @@ namespace WorldBuilder
                     {
                       if (compositions[i] == composition_number)
                         {
-                          return apply_operation(operation,composition_,fractions[i]);
+                          return apply_operation(operation,composition,fractions[i]);
                         }
                     }
 

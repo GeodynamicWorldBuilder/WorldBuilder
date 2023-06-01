@@ -29,7 +29,7 @@ namespace WorldBuilder
     String::String(std::string default_value_)
       :
       default_value(std::move(default_value_)),
-      description(""),
+
       restricted_values({})
     {
       this->type_name = Types::type::String;

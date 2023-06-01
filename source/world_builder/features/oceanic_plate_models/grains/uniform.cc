@@ -20,14 +20,14 @@
 #include "world_builder/features/oceanic_plate_models/grains/uniform.h"
 
 
+#include "world_builder/kd_tree.h"
 #include "world_builder/nan.h"
 #include "world_builder/types/array.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
 #include "world_builder/types/one_of.h"
-#include "world_builder/types/value_at_points.h"
 #include "world_builder/types/unsigned_int.h"
-#include "world_builder/kd_tree.h"
+#include "world_builder/types/value_at_points.h"
 #include "world_builder/utilities.h"
 
 
@@ -45,8 +45,8 @@ namespace WorldBuilder
         Uniform::Uniform(WorldBuilder::World *world_)
           :
           min_depth(NaN::DSNAN),
-          max_depth(NaN::DSNAN),
-          operation("")
+          max_depth(NaN::DSNAN)
+
         {
           this->world = world_;
           this->name = "uniform";

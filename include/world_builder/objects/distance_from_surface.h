@@ -41,12 +41,12 @@ namespace WorldBuilder
         /**
          * Function to get the distance from the surface
         */
-        double get_distance_from_surface();
+        double get_distance_from_surface() const;
 
         /**
          * Function to get the distance along the surface
         */
-        double get_distance_along_surface();
+        double get_distance_along_surface() const;
 
       private:
         /**

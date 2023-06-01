@@ -23,14 +23,14 @@ namespace WorldBuilder
 {
   namespace Objects
   {
-    double PlaneDistances::get_distance_from_surface()
+    double PlaneDistances::get_distance_from_surface() const
     {
       return this->distance_from_surface;
     }
 
-    double PlaneDistances::get_distance_along_surface()
+    double PlaneDistances::get_distance_along_surface() const
     {
       return this->distance_along_surface;
     }
-  }
-}
+  } // namespace Objects
+} // namespace WorldBuilder
