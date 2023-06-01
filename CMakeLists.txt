@@ -151,13 +151,13 @@ endif()
 
 find_package(ZLIB)
 
-SET(WB_USE_ZLIB ON CACHE BOOL "Whether or not to use zlib for compiling the world buildler visualizer.")
+SET(WB_USE_ZLIB ON CACHE BOOL "Whether or not to use zlib for compiling the world builder visualizer.")
 if(ZLIB_FOUND AND WB_USE_ZLIB)
   message(STATUS "Enabling the use of ZLIB.")
   include_directories(${ZLIB_INCLUDE_DIRS})
 else()
   message(STATUS "Disabling the use of ZLIB.")
-  SET(WB_USE_ZLIB OFF CACHE BOOL "Whether or not to use zlib for compiling the world buildler visualizer." FORCE)
+  SET(WB_USE_ZLIB OFF CACHE BOOL "Whether or not to use zlib for compiling the world builder visualizer." FORCE)
 endif()
 
 
