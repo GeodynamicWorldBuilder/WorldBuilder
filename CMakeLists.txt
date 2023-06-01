@@ -16,8 +16,8 @@ if(POLICY CMP0058)
 endif()
 
 # load in version info and export it
-SET(WORLD_BUILDER_SOURCE_DIR ${CMAKE_SOURCE_DIR})
-INCLUDE("${CMAKE_SOURCE_DIR}/cmake/version.cmake")
+SET(WORLD_BUILDER_SOURCE_DIR ${PROJECT_SOURCE_DIR})
+INCLUDE("${PROJECT_SOURCE_DIR}/cmake/version.cmake")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -38,7 +38,7 @@ ENDIF()
 set (WORLD_BUILDER_SOURCE_DIR ${PROJECT_SOURCE_DIR})
 
 # generate version.cc
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/include/world_builder/config.h.in" "${CMAKE_BINARY_DIR}/include/world_builder/config.h" @ONLY)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/include/world_builder/config.h.in" "${PROJECT_BINARY_DIR}/include/world_builder/config.h" @ONLY)
 
 # determine whether to use clang-tidy
 set(WB_CHECK_CLANG_TIDY OFF CACHE BOOL "Whether or not to check the code with clang-tidy while compiling the world builder.")
@@ -185,21 +185,21 @@ MARK_AS_ADVANCED(
     CMAKE_SHARED_LINKER_FLAGS_COVERAGE )
 ENDIF()
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
   string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
-  set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_BINARY_DIR}/bin)
-  set( CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_BINARY_DIR}/lib)
-  set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_BINARY_DIR}/lib)
+  set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${PROJECT_BINARY_DIR}/bin)
+  set( CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${PROJECT_BINARY_DIR}/lib)
+  set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${PROJECT_BINARY_DIR}/lib)
 endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
 
 if(MAKE_PYTHON_WRAPPER)
-  set(CMAKE_SWIG_OUTDIR ${CMAKE_BINARY_DIR}/lib)
+  set(CMAKE_SWIG_OUTDIR ${PROJECT_BINARY_DIR}/lib)
 endif()
 if(CMAKE_Fortran_COMPILER)
-  set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/mod)
+  set(CMAKE_Fortran_MODULE_DIRECTORY ${PROJECT_BINARY_DIR}/mod)
 endif()
 
 if(MAKE_PYTHON_WRAPPER)
@@ -223,7 +223,7 @@ endif()
 include_directories("include/" "tests/" "${CMAKE_CURRENT_BINARY_DIR}/include")
 
 # Add source directory
-file(GLOB_RECURSE SOURCES_CXX "source/world_builder/*.cc" "${CMAKE_BINARY_DIR}/source/world_builder/*.cc")
+file(GLOB_RECURSE SOURCES_CXX "source/world_builder/*.cc" "${PROJECT_BINARY_DIR}/source/world_builder/*.cc")
 
 if(CMAKE_Fortran_COMPILER)
   file(GLOB_RECURSE SOURCES_FORTAN "source/world_builder/*.f90")
@@ -239,7 +239,7 @@ SET(UNITY_DISABLE_FILES
   "source/world_builder/parameters.cc;source/world_builder/point.cc;")
 
 FOREACH(_source_file ${UNITY_DISABLE_FILES})
-  SET(_full_name "${CMAKE_SOURCE_DIR}/${_source_file}")
+  SET(_full_name "${PROJECT_SOURCE_DIR}/${_source_file}")
   LIST(FIND SOURCES ${_full_name} _index)
   IF(_index EQUAL -1)
     MESSAGE(FATAL_ERROR "could not find ${_full_name}.")
@@ -300,14 +300,21 @@ ELSE()
 ENDIF()
 
 # Provide "indent" target for indenting all headers and source files
-ADD_CUSTOM_TARGET(indent
-  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+IF(CMAKE_SOURCE_DIR MATCHES "${PROJECT_SOURCE_DIR}")
+  SET(TARGET_WB_PREFIX "")
+ELSE()
+  SET(TARGET_WB_PREFIX "wb_")
+ENDIF()
+
+# Provide "indent" target for indenting all headers and source files
+ADD_CUSTOM_TARGET(${TARGET_WB_PREFIX}indent
+  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
   COMMAND ./doc/indent
   COMMENT "Indenting all the World Builder header and source files..."
   )
 
 # Provide "release" target for switching to release mode
-ADD_CUSTOM_TARGET(release
+ADD_CUSTOM_TARGET(${TARGET_WB_PREFIX}release
   COMMAND ${CMAKE_COMMAND} -D CMAKE_BUILD_TYPE=Release .
   COMMAND ${CMAKE_COMMAND} -E echo "Switched to Release mode. Now recompile with: ${_make_command}"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
@@ -317,7 +324,7 @@ ADD_CUSTOM_TARGET(release
 
 
 # Provide "debug" target for switching to release mode
-ADD_CUSTOM_TARGET(debug
+ADD_CUSTOM_TARGET(${TARGET_WB_PREFIX}debug
   COMMAND ${CMAKE_COMMAND} -D CMAKE_BUILD_TYPE=Debug .
   COMMAND ${CMAKE_COMMAND} -E echo "Switched to Debug mode. Now recompile with: ${_make_command}"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
