@@ -99,7 +99,7 @@ namespace WorldBuilder
          * {2,1,0}. A composition query prodoces one entry in the output vector.
          *
          * Grains are identified by 2. The second entry is the grain composition number and the third
-         * entry is the number of grains. A query about the grains, where it askes about composition 1
+         * entry is the number of grains. A query about the grains, where it asks about composition 1
          * (for example enstatite) and 500 grains, looks like this: {2,1,500}.
          * A composition query prodoces n_grains*10 entries in the output vector. The first n_grains
          * entries are the sizes of all the grains, and the other 9 entries are sets of rotation

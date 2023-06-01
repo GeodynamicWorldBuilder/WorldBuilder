@@ -77,7 +77,7 @@ namespace WorldBuilder
 
 
         /**
-         * takes a set of properties and a postion and return a new set of properties
+         * takes a set of properties and a position and return a new set of properties
          */
         virtual
         void properties(const Point<3> &position_in_cartesian_coordinates,
@@ -110,7 +110,7 @@ namespace WorldBuilder
 
         /**
         * Returns a PlaneDistances object that has the distance from and along a feature plane,
-        * caculated from the coordinates and the depth of the point.
+        * calculated from the coordinates and the depth of the point.
         */
         virtual
         Objects::PlaneDistances

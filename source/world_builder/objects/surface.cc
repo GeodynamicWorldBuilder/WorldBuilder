@@ -210,7 +210,7 @@ namespace WorldBuilder
           }
         WBAssertThrow(false, "Internal error: The requested point was not in any triangle. "
                       << "This could be due to rounding errors if the difference between the check point and triangle points are small, "
-                      << "or you are requesting a point ouside the bounderies defined by the additional points. The check point was "
+                      << "or you are requesting a point outside the boundaries defined by the additional points. The check point was "
                       << check_point[0] <<  ":" << check_point[1] << ".");
       }
       return 0;

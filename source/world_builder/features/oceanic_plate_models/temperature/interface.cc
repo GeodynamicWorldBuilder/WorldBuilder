@@ -42,7 +42,7 @@ namespace WorldBuilder
                                    const std::string &parent_name,
                                    const std::vector<std::string> &required_entries)
         {
-          // The type needs to be stored in a separte value, otherwise there are memory issues
+          // The type needs to be stored in a separate value, otherwise there are memory issues
           const Types::String type = Types::String("replace", std::vector<std::string> {"replace", "add", "subtract"});
 
           prm.declare_model_entries("temperature",parent_name, get_declare_map(),required_entries,

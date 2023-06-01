@@ -44,7 +44,7 @@ namespace WorldBuilder
 
 
       /**
-       * Applies different opertions such as replace, add and subtract to the original values
+       * Applies different operations such as replace, add and subtract to the original values
        */
       inline double
       apply_operation(const Operations operation,

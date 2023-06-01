@@ -218,8 +218,8 @@ namespace WorldBuilder
         inline
         double value_inside (const size_t idx, const double h) const
         {
-          WBAssert(idx <= mx_size_min, "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << idx << ".");
-          WBAssert(h >= 0 && h <= 1., "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << h << ".");
+          WBAssert(idx <= mx_size_min, "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was outside of this range: " << idx << ".");
+          WBAssert(h >= 0 && h <= 1., "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was outside of this range: " << h << ".");
           return ((m[idx][0]*h + m[idx][1])*h + m[idx][2])*h + m[idx][3];
         }
 
@@ -231,8 +231,8 @@ namespace WorldBuilder
         inline
         double value_outside (const size_t idx, const double h) const
         {
-          WBAssert(idx <= mx_size_min, "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << idx << ".");
-          WBAssert(!(idx + h >= 0 && idx + h <= 1.), "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was ouside of this range: " << idx + h << " (h=" << h << ", idx = " << idx << ").");
+          WBAssert(idx <= mx_size_min, "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was outside of this range: " << idx << ".");
+          WBAssert(!(idx + h >= 0 && idx + h <= 1.), "Internal error: using value_inside outside the range of 0 to " << mx_size_min << ", but value was outside of this range: " << idx + h << " (h=" << h << ", idx = " << idx << ").");
           return (m[idx][1]*h + m[idx][2])*h + m[idx][3];
         }
 
@@ -266,7 +266,7 @@ namespace WorldBuilder
      * segments). These variables are called fractions.
      *
      * This structure furthermore provides the distance the provided point is
-     * from the closest point on the surface and the avarage angle. The variable
+     * from the closest point on the surface and the average angle. The variable
      * local_thickness will not be automatically filled by the distance_point_from_curved_planes
      * function.
      */
@@ -366,18 +366,18 @@ namespace WorldBuilder
      * World Builder. This is used to convert cartesian to natural coordinates and back.
      * \param only_positive This value determines whether only the part below the
      * plane should count as distance or both sides of the plane. It is called only_positive
-     * because the area below the plane, the distance is positve, and above the plane the
+     * because the area below the plane, the distance is positive, and above the plane the
      * distance is negative.
      * \param interpolation_type This value determines what interpolation type should be used
      * when determining the location with respect to the curved plane.
      * \param spline_x the spline representing the x coordinate.
      * \param spline_y the spline representing the y coordinate.
      * \param global_x_list This is a list of one dimensional coorindates, with zero or the
-     * amount of coordinates entries, used for interpolation. An empty list is interpretated
+     * amount of coordinates entries, used for interpolation. An empty list is interpreted
      * as a list filled with {0,1,2,...,number of coordinates}. Filling this list with other
      * values changes the returned section fraction. It allows for, for example, adding
      * extra coordinates automatically, and still reference the user provided coordinates by
-     * the original number. Note that no whole numbers may be skiped. So for a list of 4 points,
+     * the original number. Note that no whole numbers may be skipped. So for a list of 4 points,
      * {0,0.5,1,2} is allowed, but {0,2,3,4} is not.
      *
      * The function returns a struct that contains which segment and section of the curved
@@ -406,7 +406,7 @@ namespace WorldBuilder
 
 
     /**
-     * Transorm a rotation matrix into euler angles
+     * Transform a rotation matrix into euler angles
      */
     std::array<double,3>
     euler_angles_from_rotation_matrix(const std::array<std::array<double,3>,3> &rotation_matrix);

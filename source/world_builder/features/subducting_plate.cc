@@ -55,7 +55,7 @@ namespace WorldBuilder
                                      const std::string &parent_name,
                                      const std::vector<std::string> &required_entries)
     {
-      // This statment is needed because of the recursion associated with
+      // This statement is needed because of the recursion associated with
       // the sections entry.
       if (parent_name == "items")
         {
@@ -146,7 +146,7 @@ namespace WorldBuilder
       Features::SubductingPlateModels::Grains::Interface> >("segments", default_temperature_models, default_composition_models, default_grains_models);
 
 
-      // This vector stores segments to this coordiante/section.
+      // This vector stores segments to this coordinate/section.
       //First used (raw) pointers to the segment relevant to this coordinate/section,
       // but I do not trust it won't fail when memory is moved. So storing the all the data now.
       segment_vector.resize(0);
@@ -350,7 +350,7 @@ namespace WorldBuilder
       // points correspond to the lower left and the upper right corners of the bounding box, respectively (see the
       // documentation in include/bounding_box.h).
       // For the spherical system, the buffer zone along the longitudal direction is calculated using the
-      // correponding latitude points.
+      // corresponding latitude points.
 
       // Find minimal and maximal coordinates. Do this by finding the
       // leftmost/rightmost point with regard to either the [0] or [1]

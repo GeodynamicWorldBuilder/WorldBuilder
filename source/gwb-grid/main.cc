@@ -84,7 +84,7 @@ class ThreadPool
     template<typename Callable>
     void parallel_for(size_t start, size_t end, Callable func)
     {
-      // Deterimine the size of the slice for the loop
+      // Determine the size of the slice for the loop
       size_t n = end - start + 1;
       size_t slice = static_cast<size_t>(std::round(n / static_cast<size_t>((pool.size()))));
       slice = std::max(slice, static_cast<size_t>(1));
@@ -227,7 +227,7 @@ int main(int argc, char **argv)
   size_t dim = 3;
   size_t compositions = 0;
 
-  //commmon
+  // common
   std::string grid_type = "chunk";
 
   size_t n_cell_x = NaN::ISNAN; // x or long
@@ -251,7 +251,7 @@ int main(int argc, char **argv)
       if (find_command_line_option(argv, argv+argc, "-h") || find_command_line_option(argv, argv+argc, "--help"))
         {
           std::cout << "This program allows to use the world builder library directly with a world builder file and a grid file. "
-                    "The data file will be filled with intitial conditions from the world as set by the world builder file." << std::endl
+                    "The data file will be filled with initial conditions from the world as set by the world builder file." << std::endl
                     << "Besides providing two files, where the first is the world builder file and the second is the grid file, the available options are: " << std::endl
                     << "-h or --help to get this help screen," << std::endl
                     << "-j the number of threads the visualizer is allowed to use." << std::endl;
@@ -386,7 +386,7 @@ int main(int argc, char **argv)
         }
 
       std::string vtu_output_format = "RawBinaryCompressed";
-      // Read config from data if pressent
+      // Read config from data if present
       for (auto &line_i : data)
         {
           if (line_i.empty())
@@ -526,7 +526,7 @@ int main(int argc, char **argv)
           WBAssertThrow(dim == 2 || !std::isnan(dy), "dz is not a number:" << dz << '.');
           WBAssertThrow(!std::isnan(dz), "dz is not a number:" << dz << '.');
 
-          // todo: determine wheter a input variable is desirable for this.
+          // todo: determine whether a input variable is desirable for this.
           double surface = z_max;
 
           grid_x.resize(n_p);
@@ -712,7 +712,7 @@ int main(int argc, char **argv)
 
           size_t n_cell_t = static_cast<size_t>((2.0 * Consts::PI * outer_radius)/dr);
 
-          // compute the ammount of cells
+          // compute the amount of cells
           n_cell = n_cell_t *n_cell_z;
           n_p = n_cell_t *(n_cell_z + 1);  // one less then cartesian because two cells overlap.
 

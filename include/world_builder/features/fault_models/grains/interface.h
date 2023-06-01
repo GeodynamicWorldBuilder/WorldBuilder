@@ -88,7 +88,7 @@ namespace WorldBuilder
                        const double feature_min_depth,
                        const double feature_max_depth,
                        const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
-                       const AdditionalParameters &additional_paramters) const = 0;
+                       const AdditionalParameters &additional_parameters) const = 0;
             /**
              * A function to register a new type. This is part of the automatic
              * registration of the object factory.

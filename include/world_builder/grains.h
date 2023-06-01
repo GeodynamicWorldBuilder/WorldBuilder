@@ -28,7 +28,7 @@ namespace WorldBuilder
 {
   /**
    * This is a simple structure to store information about grains.
-   * The advantage of storing all grains in seperate vectors, compared
+   * The advantage of storing all grains in separate vectors, compared
    * to having a vector of individual grains, is that the vectors can
    * be empty if the information is not needed.
    */

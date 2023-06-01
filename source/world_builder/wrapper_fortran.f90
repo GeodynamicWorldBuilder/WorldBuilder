@@ -40,7 +40,7 @@ USE, INTRINSIC :: ISO_C_BINDING!, ONLY: C_PTR
       INTEGER(C_LONG), intent(in), value ::random_number_seed
     END SUBROUTINE create_world
 
-    !> Create an interface with the 2d tempearture C function of the World builder.
+    !> Create an interface with the 2d temperature C function of the World builder.
     !! This function return the temperature at a specific location given x, z and depth.
     SUBROUTINE temperature_2d(cworld, x, z, depth, temperature) BIND(C, NAME='temperature_2d')
       USE, INTRINSIC :: ISO_C_BINDING
@@ -53,7 +53,7 @@ USE, INTRINSIC :: ISO_C_BINDING!, ONLY: C_PTR
       REAL(C_DOUBLE), intent(out) :: temperature
     END SUBROUTINE temperature_2d
 
-    !> Create an interface with the 3d tempearture function of the World builder.
+    !> Create an interface with the 3d temperature function of the World builder.
     !! This function return the temperature at a specific location given x, y, z and depth.
         SUBROUTINE temperature_3d(cworld, x, y, z, depth, temperature) BIND(C, NAME='temperature_3d')
       USE, INTRINSIC :: ISO_C_BINDING

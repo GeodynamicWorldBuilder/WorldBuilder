@@ -53,7 +53,7 @@ namespace WorldBuilder
     }
 
     /**
-     * Fast sin function, accurate for values between 0 and pi. The implemenation is
+     * Fast sin function, accurate for values between 0 and pi. The implementation is
      * based on discussion at https://stackoverflow.com/a/6104692.
      *
      * The accuracy seem good enough for most purposes. The unit test tests in steps
@@ -240,13 +240,13 @@ namespace WorldBuilder
 
 
       /**
-       * Substract two points
+       * Subtract two points
        */
       inline
       Point<dim> operator-(const Point<dim> &point_right) const
       {
         WBAssert(coordinate_system == point_right.get_coordinate_system(),
-                 "Cannot substract two points which represent different coordinate systems. Internal has type " << static_cast<int>(coordinate_system)
+                 "Cannot subtract two points which represent different coordinate systems. Internal has type " << static_cast<int>(coordinate_system)
                  << ", other point has type " << static_cast<int>(point_right.get_coordinate_system()));
         Point<dim> point_tmp(point,coordinate_system);
         for (unsigned int i = 0; i < dim; ++i)
@@ -313,7 +313,7 @@ namespace WorldBuilder
       }
 
       /**
-       * substract two points
+       * subtract two points
        */
       inline
       Point<dim> &operator-=(const Point<dim> &point_right)
@@ -364,8 +364,8 @@ namespace WorldBuilder
       cheap_relative_distance_spherical(const Point<2> &two) const
       {
         const double d_longitude = two[0] - this->point[0];
-        const double d_lattitude = two[1] - this->point[1];
-        const double sin_d_lat = FT::sin(d_lattitude * 0.5);
+        const double d_latitude = two[1] - this->point[1];
+        const double sin_d_lat = FT::sin(d_latitude * 0.5);
         const double sin_d_long = FT::sin(d_longitude * 0.5);
         return (sin_d_lat * sin_d_lat) + (sin_d_long*sin_d_long) * FT::cos(this->point[1]) * FT::cos(two[1]);
       }

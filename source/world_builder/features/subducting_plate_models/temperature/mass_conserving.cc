@@ -99,7 +99,7 @@ namespace WorldBuilder
           prm.declare_entry("min distance slab top", Types::Double(0),
                             "The distance in meters from the top surface of the slab over which the temperature is "
                             "determined by this feature. This parameter should be negative and should be 1.5-2 times "
-                            "larger thatn the nominal slab thickness to allow the diffusion of cold "
+                            "larger than the nominal slab thickness to allow the diffusion of cold "
                             "temperatures from in the slab into the mantle above the slab surface. "
                             "Also note that the top truncation value for the slab segment needs to have a value "
                             "of -1, otherwise the temperature above the slab will be cut off at a distance less than "
@@ -162,7 +162,7 @@ namespace WorldBuilder
           prm.declare_entry("ridge coordinates", Types::Array(Types::Array(Types::Point<2>(), 2),1),
                             "An list of ridges. Each ridge is a lists of at least 2 2d points which "
                             "define the location of the ridge. You need to define at least one ridge."
-                            "So the an exmple with two ridges is "
+                            "So the an example with two ridges is "
                             "[[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].");
         }
 

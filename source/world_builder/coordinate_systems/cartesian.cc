@@ -37,7 +37,7 @@ namespace WorldBuilder
     Cartesian::declare_entries(Parameters &prm, const std::string & /*unused*/)
     {
       prm.declare_entry("", Types::Object(),
-                        "A Cartesian coordinate sytem. Coordinates are (x,y,z) and extend infintly in all directions.");
+                        "A Cartesian coordinate system. Coordinates are (x,y,z) and extend infintly in all directions.");
     }
 
     void

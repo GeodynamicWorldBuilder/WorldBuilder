@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
   temperature = world->temperature(coords_2d,depth);
   printf("temperature in C = %f \n", temperature);
 
-  printf("2d temperature (depricated): \n");
+  printf("2d temperature (deprecated): \n");
   coords_2d = {{x, z}};
   temperature = world->temperature(coords_2d,depth,gravity);
   printf("temperature in C = %f \n", temperature);
@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
   temperature = world->temperature(coords_3d,depth);
   printf("temperature in C = %f \n", temperature);
 
-  printf("3d temperature (depricated): \n");
+  printf("3d temperature (deprecated): \n");
   coords_3d = {{x, y, y}};
   temperature = world->temperature(coords_3d,depth,gravity);
   printf("temperature in C = %f \n", temperature);

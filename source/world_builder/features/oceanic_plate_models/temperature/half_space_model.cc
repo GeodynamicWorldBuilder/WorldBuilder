@@ -90,7 +90,7 @@ namespace WorldBuilder
           prm.declare_entry("ridge coordinates", Types::Array(Types::Array(Types::Point<2>(), 2),1),
                             "An list of ridges. Each ridge is a lists of at least 2 2d points which "
                             "define the location of the ridge. You need to define at least one ridge."
-                            "So the an exmple with two ridges is "
+                            "So the an example with two ridges is "
                             "[[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].");
         }
 

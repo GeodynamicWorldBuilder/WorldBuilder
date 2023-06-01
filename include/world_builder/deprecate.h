@@ -1,4 +1,4 @@
-// if depricated is supported, which is definitely C++14, but some compilers support it before C++14.
+// if deprecated is supported, which is definitely C++14, but some compilers support it before C++14.
 // Once the world builder switches to C++14 this can be simplified.
 #if defined(__has_cpp_attribute)
 #if __has_cpp_attribute(deprecated)

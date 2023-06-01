@@ -78,7 +78,7 @@ int main(int argc, char **argv)
   if (find_command_line_option(argv, argv+argc, "-h") || find_command_line_option(argv, argv+argc, "--help"))
     {
       std::cout << "This program allows to use the world builder library directly with a world builder file and a data file. "
-                "The data file will be filled with intitial conditions from the world as set by the world builder file." << std::endl
+                "The data file will be filled with initial conditions from the world as set by the world builder file." << std::endl
                 << "Besides providing two files, where the first is the world builder file and the second is the data file, the available options are: " << std::endl
                 << "-h or --help to get this help screen." << std::endl;
       return 0;
@@ -167,7 +167,7 @@ int main(int argc, char **argv)
           data.push_back(line);
         }
 
-      // Read config from data if pressent
+      // Read config from data if present
       for (auto &line_i : data)
         {
           if (!line_i.empty() && line_i[0] == "#" && line_i[1] == "dim" && line_i[2] == "=")

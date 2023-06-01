@@ -117,7 +117,7 @@ namespace WorldBuilder
                                               const double /*feature_min_depth*/,
                                               const double /*feature_max_depth*/,
                                               const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
-                                              const AdditionalParameters & /*additional_paramters*/) const
+                                              const AdditionalParameters & /*additional_parameters*/) const
         {
           WorldBuilder::grains  grains_local = grains_;
           if (std::fabs(distance_from_planes.distance_from_plane) <= max_depth && std::fabs(distance_from_planes.distance_from_plane) >= min_depth)

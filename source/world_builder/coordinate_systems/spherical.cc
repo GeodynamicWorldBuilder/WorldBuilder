@@ -40,7 +40,7 @@ namespace WorldBuilder
     Spherical::declare_entries(Parameters &prm, const std::string & /*unused*/)
     {
 
-      // Add depth method to the requried parameters.
+      // Add depth method to the required parameters.
       prm.declare_entry("", Types::Object({"depth method"}),
                         "A spherical coordinate system. The coordinates are (radius, longitude, latitude). "
                         "The radius is set in this plugin, the longitude extends at least from -360 to 360 degrees, "

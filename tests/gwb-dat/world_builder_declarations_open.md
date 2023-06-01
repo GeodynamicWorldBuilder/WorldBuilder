@@ -10399,7 +10399,7 @@
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:Wheter adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
+- **documentation**:Whether adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4/potential mantle temperature
@@ -11452,7 +11452,7 @@
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:Wheter adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
+- **documentation**:Whether adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4/potential mantle temperature
@@ -12624,7 +12624,7 @@
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:Wheter adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
+- **documentation**:Whether adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4/potential mantle temperature
@@ -13677,7 +13677,7 @@
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:Wheter adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
+- **documentation**:Whether adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4/potential mantle temperature

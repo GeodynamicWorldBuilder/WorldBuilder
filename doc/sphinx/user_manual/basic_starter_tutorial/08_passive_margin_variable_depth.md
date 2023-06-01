@@ -7,7 +7,7 @@ Although we have hinted towards it before, there is also an [area feature](part:
 To showcase this, we will be adding a passive margin to our model at the overriding plate side of our model. To start out, we need to know that both the `min depth` and `max depth` accept two types of values: a number and an array of values at points. 
 
 ```{note}
-For an example of what this looks like in techical terms, see {ref}`open_features_items_oneOf_1_max-depth`.
+For an example of what this looks like in technical terms, see {ref}`open_features_items_oneOf_1_max-depth`.
 ```
 
 The number input we have seen before, and just sets the maximum depth to a single value. The value at points system works a bit differently, but can be used to achieve the same result. To start out easy, this is exactly what we are going to to for the `max depth` of the continental feature. 
@@ -28,7 +28,7 @@ lineno-start: 1
 A common operation is to set all the corners to a single value, and then maybe overwrite individual corners. To make life easy, there is a quick way to (re)set the value at the corner points: just pass a value with no points. This is what is done in the code sample below at the emphasized lines. The first entry is a value without points. That means that all the corner points are set to that value.
 
 ```{note}
-If you provide a point twice, explicitly, or implicity through the use of the corner values shortcut (e.g. `[200]`), the last defined value is used. This follows the painting analogy used before, where you overpaint older values.
+If you provide a point twice, explicitly, or implicitly through the use of the corner values shortcut (e.g. `[200]`), the last defined value is used. This follows the painting analogy used before, where you overpaint older values.
 ```
 
 ::::::{tab-set}

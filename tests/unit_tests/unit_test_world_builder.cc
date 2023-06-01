@@ -513,35 +513,35 @@ TEST_CASE("WorldBuilder Utilities: Point in polygon")
   check_points[7] = Point<2>(12.5,12,cartesian);
   check_points[8] = Point<2>(11.5,12,cartesian);
 
-  std::vector<std::array<bool,2> > awnsers(9);
-  awnsers[0] = {{false,false}};
-  awnsers[1] = {{true,false}};
-  awnsers[2] = {{true,false}};
-  awnsers[3] = {{true,false}};
-  awnsers[4] = {{true,false}};
-  awnsers[5] = {{false,false}};
-  awnsers[6] = {{true,false}};
-  awnsers[7] = {{false,false}};
-  awnsers[8] = {{false,true}};
+  std::vector<std::array<bool,2> > answers(9);
+  answers[0] = {{false,false}};
+  answers[1] = {{true,false}};
+  answers[2] = {{true,false}};
+  answers[3] = {{true,false}};
+  answers[4] = {{true,false}};
+  answers[5] = {{false,false}};
+  answers[6] = {{true,false}};
+  answers[7] = {{false,false}};
+  answers[8] = {{false,true}};
 
-  std::vector<std::array<double,2> > awnsers_signed_distance(9);
-  awnsers_signed_distance[0] = {{-std::sqrt(2), -std::sqrt(11 * 11 + 11 * 11)}};
-  awnsers_signed_distance[1] = {{0,-std::sqrt(10 * 10 + 10 * 10)}};
-  awnsers_signed_distance[2] = {{0,-std::sqrt(125)}};
-  awnsers_signed_distance[3] = {{0,-std::sqrt(125)}};
-  awnsers_signed_distance[4] = {{0,-std::sqrt(50)}};
-  awnsers_signed_distance[5] = {{-std::sqrt(0.01 * 0.01),-std::sqrt(5 * 5 + 4.99 * 4.99)}};
-  awnsers_signed_distance[6] = {{1,-std::sqrt(9 * 9 + 9 * 9)}};
-  awnsers_signed_distance[7] = {{-10.2591422643,-0.3535533906}};
-  awnsers_signed_distance[8] = {{-9.5524865873,0.3535533906}};
+  std::vector<std::array<double,2> > answers_signed_distance(9);
+  answers_signed_distance[0] = {{-std::sqrt(2), -std::sqrt(11 * 11 + 11 * 11)}};
+  answers_signed_distance[1] = {{0,-std::sqrt(10 * 10 + 10 * 10)}};
+  answers_signed_distance[2] = {{0,-std::sqrt(125)}};
+  answers_signed_distance[3] = {{0,-std::sqrt(125)}};
+  answers_signed_distance[4] = {{0,-std::sqrt(50)}};
+  answers_signed_distance[5] = {{-std::sqrt(0.01 * 0.01),-std::sqrt(5 * 5 + 4.99 * 4.99)}};
+  answers_signed_distance[6] = {{1,-std::sqrt(9 * 9 + 9 * 9)}};
+  answers_signed_distance[7] = {{-10.2591422643,-0.3535533906}};
+  answers_signed_distance[8] = {{-9.5524865873,0.3535533906}};
 
   for (unsigned int i = 0; i < check_points.size(); ++i)
     {
       INFO("checking point " << i << " = (" << check_points[i][0] << ':' << check_points[i][1] << ')');
-      CHECK(Utilities::polygon_contains_point(point_list_4_elements,check_points[i]) == awnsers[i][0]);
-      CHECK(Utilities::polygon_contains_point(point_list_3_elements,check_points[i]) == awnsers[i][1]);
-      CHECK(Utilities::signed_distance_to_polygon(point_list_4_elements,check_points[i]) == Approx(awnsers_signed_distance[i][0]));
-      CHECK(Utilities::signed_distance_to_polygon(point_list_3_elements,check_points[i]) == Approx(awnsers_signed_distance[i][1]));
+      CHECK(Utilities::polygon_contains_point(point_list_4_elements,check_points[i]) == answers[i][0]);
+      CHECK(Utilities::polygon_contains_point(point_list_3_elements,check_points[i]) == answers[i][1]);
+      CHECK(Utilities::signed_distance_to_polygon(point_list_4_elements,check_points[i]) == Approx(answers_signed_distance[i][0]));
+      CHECK(Utilities::signed_distance_to_polygon(point_list_3_elements,check_points[i]) == Approx(answers_signed_distance[i][1]));
     }
 
   std::vector<Point<2> > point_list_2_elements(2, Point<2>(cartesian));
@@ -876,7 +876,7 @@ TEST_CASE("WorldBuilder World random")
 
   // The world builder uses a deterministic random number generator. This is on prorpose
   // because even though you might want to use random numbers, the result should be
-  // reproducable. Note that when the world builder is used in for example MPI programs
+  // reproducible. Note that when the world builder is used in for example MPI programs
   // you should supply the world builder created each MPI process a different seed. You
   // can use the MPI RANK for this (seed is seed + MPI_RANK). Because the generator is
   // deterministic (known and documented algorithm), we can test the results and they
@@ -890,14 +890,14 @@ TEST_CASE("WorldBuilder World random")
   approval_tests.emplace_back(dist(world1.get_random_number_engine()));
   approval_tests.emplace_back(dist(world1.get_random_number_engine()));
 
-  // test wheter the seed indeed changes the resuls
+  // test whether the seed indeed changes the resuls
   WorldBuilder::World world2(file_name, false, "", 2);
   approval_tests.emplace_back(world2.get_random_number_engine()());
   approval_tests.emplace_back(world2.get_random_number_engine()());
   approval_tests.emplace_back(dist(world2.get_random_number_engine()));
   approval_tests.emplace_back(dist(world2.get_random_number_engine()));
 
-  // Test reproducability with the same seed.
+  // Test reproducibility with the same seed.
   WorldBuilder::World world3(file_name, false, "", 1);
   approval_tests.emplace_back(world3.get_random_number_engine()());
   approval_tests.emplace_back(world3.get_random_number_engine()());
@@ -3300,7 +3300,7 @@ TEST_CASE("WorldBuilder Types: Point 2d")
   CHECK(type_point_array_const[0] == Approx(1.0));
   CHECK(type_point_array_const[1] == Approx(2.0));
 
-  // Thest the point output stream.
+  // Test the point output stream.
   std::ostringstream stream;
   stream << point_array;
   std::string str =  stream.str();
@@ -3403,7 +3403,7 @@ TEST_CASE("WorldBuilder Types: Point 3d")
   CHECK(type_point_array_const[1] == Approx(2.0));
   CHECK(type_point_array_const[2] == Approx(3.0));
 
-  // Thest the point output stream.
+  // Test the point output stream.
   std::ostringstream stream;
   stream << point_array;
   std::string str =  stream.str();
@@ -3641,7 +3641,7 @@ TEST_CASE("WorldBuilder Types: print_tree")
          "    \"\": \n"
          "    {\n"
          "      \"model\": \"continental plate\",\n"
-         "      \"name\": \"Carribean\",\n"
+         "      \"name\": \"Caribbean\",\n"
          "      \"max depth\": \"300e3\",\n"
          "      \"coordinates\": \n"
          "      {\n"
@@ -3730,7 +3730,7 @@ TEST_CASE("WorldBuilder Types: print_tree")
          "    \"\": \n"
          "    {\n"
          "      \"model\": \"continental plate\",\n"
-         "      \"name\": \"Carribean2\",\n"
+         "      \"name\": \"Caribbean2\",\n"
          "      \"max depth\": \"300e3\",\n"
          "      \"coordinates\": \n"
          "      {\n"
@@ -3858,7 +3858,7 @@ TEST_CASE("WorldBuilder Parameters")
   std::vector<Point<2> > additional_points = {Point<2>(-10,-10,cartesian),Point<2>(-10,10,cartesian),
                                               Point<2>(10,10,cartesian),Point<2>(10,-10,cartesian)
                                              };
-  CHECK_THROWS_WITH(prm.get("value at points non existant",additional_points), Contains("internal error: could not retrieve"));
+  CHECK_THROWS_WITH(prm.get("value at points non existent",additional_points), Contains("internal error: could not retrieve"));
   std::pair<std::vector<double>,std::vector<double>> v_at_p_one_value = prm.get("one value at points one value",additional_points);
 
   approval_tests.emplace_back((double)v_at_p_one_value.first.size());
@@ -4696,7 +4696,7 @@ TEST_CASE("Euler angle functions")
 {
   std::vector<double> approval_tests;
 
-  // note, this is only testing consitency (can it convert back and forth) and
+  // note, this is only testing consistency (can it convert back and forth) and
   // it only works for rotation matrices which are defined in the same way (z-x-z).
   {
     auto rot1 = Utilities::euler_angles_to_rotation_matrix(-85,340,56);
@@ -5272,7 +5272,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
 
-  // beyond end section square test 11 (only positve version)
+  // beyond end section square test 11 (only positive version)
   position[0] = 10;
   position[1] = 0;
   position[2] = -5;
@@ -5367,7 +5367,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back((double)distance_from_planes.segment);
   approval_tests.emplace_back(std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.); // to make sure the approval test have the same characters for very small numbers
 
-  // check interpolation 1 (in the middle of a segment with 22.5 degree and a segement with 45)
+  // check interpolation 1 (in the middle of a segment with 22.5 degree and a segment with 45)
   position[0] = 25;
   position[1] = 0;
   position[2] = 10-10*tan((22.5*1.5)*dtr);
@@ -7128,7 +7128,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
 {
   std::vector<double> approval_tests;
 
-  // Because most functionallity is already tested by the cartesian version
+  // Because most functionality is already tested by the cartesian version
   // of this test case, the scope of this test case is only to test whether
   // the code which is different for the spherical case is correct.
 
@@ -7275,7 +7275,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
    * I can't figure out why these are not working in the new structure, although I know it has to do with the different computation of the
    * x-axis. In this new computation of the x-axis, the direction is no longer computed as perpendicual to the line P1-P2, but instead as
    * the line from the closest point on the line to the check point. This is more accurate for the continuous case and seems to visually
-   * work well for the non-contiuous case, with only minor changes and of which some are clear improvments and for the rest it is not clear
+   * work well for the non-contiuous case, with only minor changes and of which some are clear improvements and for the rest it is not clear
    * if is not clear whether it is an improvement or not. Since the new code seems to be an improvement, I don't have the original drawings
    * at hand, don't have the time to redo them or spend much more time on these 18 checks, I will disable the failing parts of them for now.
    */

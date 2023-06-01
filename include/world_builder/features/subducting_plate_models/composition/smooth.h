@@ -67,7 +67,7 @@ namespace WorldBuilder
 
             /**
              * Returns a composition based on the given position, depth in the model,
-             * and current compostion.
+             * and current composition.
              */
             double get_composition(const Point<3> &position,
                                    const double depth,
@@ -76,7 +76,7 @@ namespace WorldBuilder
                                    const double feature_min_depth,
                                    const double feature_max_depth,
                                    const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
-                                   const AdditionalParameters &additional_paramters) const override final;
+                                   const AdditionalParameters &additional_parameters) const override final;
 
           private:
             // linear temperature submodule parameters
@@ -84,7 +84,7 @@ namespace WorldBuilder
             double max_distance;
             double side_distance;
             std::vector<double> top_fraction;
-            // currenly not using the side composition, but maybe usefu if you want another composition towards the end
+            // currently not using the side composition, but maybe usefu if you want another composition towards the end
             std::vector<double> bottom_fraction;
             std::vector<unsigned int> compositions;
             Operations operation;

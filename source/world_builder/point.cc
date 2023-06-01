@@ -72,8 +72,8 @@ namespace WorldBuilder
       {
         // spherical
         const double d_longitude = two[0] - this->point[0];
-        const double d_lattitude = two[1] - this->point[1];
-        const double sin_d_lat = std::sin(d_lattitude * 0.5);
+        const double d_latitude = two[1] - this->point[1];
+        const double sin_d_lat = std::sin(d_latitude * 0.5);
         const double sin_d_long = std::sin(d_longitude * 0.5);
         return 2.0 * asin(sqrt((sin_d_lat * sin_d_lat) + (sin_d_long*sin_d_long) * std::cos(this->point[1]) * std::cos(two[1])));
       }

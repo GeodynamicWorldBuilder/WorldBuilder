@@ -129,7 +129,7 @@ namespace WorldBuilder
                                    const double  /*feature_min_depth*/,
                                    const double  /*feature_max_depth*/,
                                    const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes & /*distance_from_planes*/,
-                                   const AdditionalParameters & /*additional_paramters*/) const
+                                   const AdditionalParameters & /*additional_parameters*/) const
         {
 
           if (depth <= max_depth && depth >= min_depth)

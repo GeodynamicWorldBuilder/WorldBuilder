@@ -3,7 +3,7 @@ Contributing to the code
 =================================
 
 ```{todo}
-Explain that keeping code readable, understanble, maintable and efficient is hard, and there will aways be tradeoffs. But having conventions can help.
+Explain that keeping code readable, understanble, maintable and efficient is hard, and there will always be tradeoffs. But having conventions can help.
 ```
 
 ```{toctree}
