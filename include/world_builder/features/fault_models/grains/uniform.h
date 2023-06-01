@@ -92,7 +92,7 @@ namespace WorldBuilder
                        const double feature_min_depth,
                        const double feature_max_depth,
                        const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
-                       const AdditionalParameters &additional_paramters) const override final;
+                       const AdditionalParameters &additional_parameters) const override final;
 
           private:
             // uniform grains submodule parameters

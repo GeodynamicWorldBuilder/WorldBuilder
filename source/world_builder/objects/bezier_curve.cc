@@ -43,7 +43,7 @@ namespace WorldBuilder
       std::vector<double> angle_constrains = angle_constrains_input;
       angle_constrains.resize(n_points,NaN::DQNAN);
 
-      // if no angle is provided, compute the angle as the average angle bewteen the previous and next point.
+      // if no angle is provided, compute the angle as the average angle between the previous and next point.
       // The first angle points at the second point and the last angle points at the second to last point.
       // The check points are set at a distance of 1/10th the line length from the point in the direction of the angle.
       if (std::isnan(angle_constrains[0]))
@@ -277,7 +277,7 @@ namespace WorldBuilder
                                                                                            + 2.0*(3.0*a_1*est_test*est_test + 2.0*b_1*est_test + c_1)*(3.0*a_1*est_test*est_test + 2.0*b_1*est_test + c_1) ;
                           output << "    i: " << cp_i << ", ni: " << newton_i<< ", lsi: " << i << ", line_search_step=" << 2./3. << ": squared_distance_cartesian_test = " << squared_distance_cartesian_test << ", diff= " << squared_distance_cartesian_test-squared_distance_cartesian
                                  << ", tests: " << (squared_distance_cartesian_test_previous < squared_distance_cartesian ? "true" : "false") << ":" << (squared_distance_cartesian_test > squared_distance_cartesian_test_previous ? "true" : "false") << ", est_test=" << est_test
-                                 << ", update=" << update << ", ls=" << line_search << ", up*ls=" << update *line_search << ", test deriv =" << squared_distance_cartesian_derivative_test  << ", test upate=" << squared_distance_cartesian_derivative_test/fabs(squared_distance_cartesian_second_derivative_test)
+                                 << ", update=" << update << ", ls=" << line_search << ", up*ls=" << update *line_search << ", test deriv =" << squared_distance_cartesian_derivative_test  << ", test update=" << squared_distance_cartesian_derivative_test/fabs(squared_distance_cartesian_second_derivative_test)
                                  << ", p1=" << p1 << ", p2= " << p2 << ", poc= " << a *est_test *est_test *est_test + b *est_test *est_test+c *est_test+d << ", cp= " <<  check_point << ", ds:" << ((a*est_test*est_test*est_test+b*est_test*est_test+c*est_test+d)-check_point).norm_square() << ":" << min_squared_distance_cartesian_temp_dg
                                  << ", diff = " << squared_distance_cartesian_test-min_squared_distance_cartesian_temp_dg << std::endl;
 #endif
@@ -320,7 +320,7 @@ namespace WorldBuilder
                       const Point<2> point_on_curve = Point<2>(a_0*est*est*est+b_0*est*est+c_0*est+d_0,a_1*est*est*est+b_1*est*est+c_1*est+d_1,cp.get_coordinate_system());
                       WBAssert(!std::isnan(point_on_curve[0]) && !std::isnan(point_on_curve[1]), "Point on curve has NAN entries: " << point_on_curve);
                       // the sign is rotating the derivative by 90 degrees.
-                      // When moving in the direction of increasing t, left is positve and right is negative.
+                      // When moving in the direction of increasing t, left is positive and right is negative.
                       // https://www.wolframalpha.com/input?i=d%2Fdt+%281-t%29*%281-t%29*%281-t%29*a+%2B+3*%281-t%29*%281-t%29*t*b+%2B+3.*%281-t%29*t*t*c%2Bt*t*t*d
                       const Point<2> derivative_point = points[cp_i]*((6.-3.*est)*est-3.) + control_points[cp_i][0]*(est*(9*est-12)+3)
                                                         + control_points[cp_i][1]*(6.-9.*est)*est + points[cp_i+1]*3.*est*est;
@@ -329,7 +329,7 @@ namespace WorldBuilder
                                                                + control_points[cp_i][1]*-18*est+ points[cp_i+1]*6*est;
 
                       Point<2> tangent_point = derivative_point - point_on_curve;
-                      // if angle between check point and tangent point is larget than 90 degrees, return a negative distance
+                      // if angle between check point and tangent point is larger than 90 degrees, return a negative distance
                       const double dot_product = (tangent_point*(check_point-point_on_curve));
                       const double sign = dot_product < 0. ? -1. : 1.;
                       tangent_point = Point<2>(-tangent_point[1],tangent_point[0],tangent_point.get_coordinate_system());
@@ -442,7 +442,7 @@ namespace WorldBuilder
                           deriv_lat = (3.0*a[1]*est_test*est_test+2.0*b[1]*est_test+c[1]);
                           const double squared_distance_cartesian_derivative_test = cos_cp_lat*(-deriv_lat)*sin_d_long_h*sin_d_long_h*sin_dlat+cos_cp_lat*deriv_long*sin_d_long_h*cos_dlong_h*cos_d_lat+deriv_lat*sin_d_lat_h*cos_dlat_h;
                           const double squared_distance_cartesian_second_derivative_test = cos_cp_lat*cos_d_lat*(-0.5*deriv_long*deriv_long*sin_d_long_h*sin_d_long_h+0.5*deriv_long*deriv_long*cos_dlong_h*cos_dlong_h+(6.0*a[0]*est_test+2.0*b[0])*sin_d_long_h*cos_dlong_h)+cos_cp_lat*sin_d_long_h*sin_d_long_h*(deriv_lat*deriv_lat*(-cos_d_lat)-(6.0*a[1]*est_test+2.0*b[1])*sin_dlat)-2.0*cos_cp_lat*deriv_long*deriv_lat*sin_d_long_h*cos_dlong_h*sin_dlat-0.5*deriv_lat*deriv_lat*sin_d_lat_h*sin_d_lat_h+0.5*deriv_lat*deriv_lat*cos_dlat_h*cos_dlat_h+(6.0*a[1]*est_test+2.0*b[1])*sin_d_lat_h*cos_dlat_h;
-                          output << "    i: " << cp_i << ", ni: " << newton_i<< ", lsi: " << i << ", line_search_step=" << line_search_step << ": squared_distance_cartesian_test = " << squared_distance_cartesian_test << ", diff= " << squared_distance_cartesian_test-squared_distance_cartesian << ", tests: " << (squared_distance_cartesian_test_previous < squared_distance_cartesian ? "true" : "false") << ":" << (squared_distance_cartesian_test > squared_distance_cartesian_test_previous ? "true" : "false") << ", est_test=" << est_test << ", update=" << update << ", ls=" << line_search << ", up*ls=" << update *line_search << ", test deriv =" << squared_distance_cartesian_derivative_test  << ", test upate=" << squared_distance_cartesian_derivative_test/fabs(squared_distance_cartesian_second_derivative_test) << ", p1=" << p1 << ", p2= " << p2 << ", poc= " << a *est_test *est_test *est_test+b *est_test *est_test+c *est_test+d << ", cp= " <<  check_point << ", ds:" << ((a*est_test*est_test*est_test+b*est_test*est_test+c*est_test+d)-check_point).norm_square() << ":" << min_squared_distance_cartesian_temp_dg << ", diff = " << squared_distance_cartesian_test-min_squared_distance_cartesian_temp_dg<< std::endl;
+                          output << "    i: " << cp_i << ", ni: " << newton_i<< ", lsi: " << i << ", line_search_step=" << line_search_step << ": squared_distance_cartesian_test = " << squared_distance_cartesian_test << ", diff= " << squared_distance_cartesian_test-squared_distance_cartesian << ", tests: " << (squared_distance_cartesian_test_previous < squared_distance_cartesian ? "true" : "false") << ":" << (squared_distance_cartesian_test > squared_distance_cartesian_test_previous ? "true" : "false") << ", est_test=" << est_test << ", update=" << update << ", ls=" << line_search << ", up*ls=" << update *line_search << ", test deriv =" << squared_distance_cartesian_derivative_test  << ", test update=" << squared_distance_cartesian_derivative_test/fabs(squared_distance_cartesian_second_derivative_test) << ", p1=" << p1 << ", p2= " << p2 << ", poc= " << a *est_test *est_test *est_test+b *est_test *est_test+c *est_test+d << ", cp= " <<  check_point << ", ds:" << ((a*est_test*est_test*est_test+b*est_test*est_test+c*est_test+d)-check_point).norm_square() << ":" << min_squared_distance_cartesian_temp_dg << ", diff = " << squared_distance_cartesian_test-min_squared_distance_cartesian_temp_dg<< std::endl;
 #endif
                           if (i > 0 && (squared_distance_cartesian_test > squared_distance_cartesian_test_previous))
                             {
@@ -502,7 +502,7 @@ namespace WorldBuilder
                       const Point<2> point_on_curve = a*est*est*est+b*est*est+c*est+d;
 
                       // the sign is rotating the derivative by 90 degrees.
-                      // When moving in the direction of increasing t, left is positve and right is negative.
+                      // When moving in the direction of increasing t, left is positive and right is negative.
                       // https://www.wolframalpha.com/input?i=d%2Fdt+%281-t%29*%281-t%29*%281-t%29*a+%2B+3*%281-t%29*%281-t%29*t*b+%2B+3.*%281-t%29*t*t*c%2Bt*t*t*d
                       const Point<2> derivative_point = points[cp_i]*((6.-3.*est)*est-3.) + control_points[cp_i][0]*(est*(9*est-12)+3)
                                                         + control_points[cp_i][1]*(6.-9.*est)*est + points[cp_i+1]*3.*est*est;
@@ -511,7 +511,7 @@ namespace WorldBuilder
                                                                + control_points[cp_i][1]*-18*est+ points[cp_i+1]*6*est;
 
                       Point<2> tangent_point = derivative_point - point_on_curve;
-                      // if angle between check point and tangent point is larget than 90 degrees, return a negative distance
+                      // if angle between check point and tangent point is larger than 90 degrees, return a negative distance
                       const double dot_product = (tangent_point*(check_point-point_on_curve));
                       const double sign = dot_product < 0. ? -1. : 1.;
                       tangent_point = Point<2>(-tangent_point[1],tangent_point[0],tangent_point.get_coordinate_system());

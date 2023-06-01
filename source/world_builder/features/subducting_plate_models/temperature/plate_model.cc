@@ -88,7 +88,7 @@ namespace WorldBuilder
                             "The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.");
 
           prm.declare_entry("adiabatic heating", Types::Bool(true),
-                            "Wheter adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),"
+                            "Whether adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),"
                             "which is the result obtained from McKenzie 1969.");
 
           prm.declare_entry("potential mantle temperature", Types::Double(-1),
@@ -135,9 +135,9 @@ namespace WorldBuilder
                                     const double /*feature_min_depth*/,
                                     const double /*feature_max_depth*/,
                                     const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
-                                    const AdditionalParameters &additional_paramters) const
+                                    const AdditionalParameters &additional_parameters) const
         {
-          const double thickness_local = std::min(additional_paramters.local_thickness, max_depth);
+          const double thickness_local = std::min(additional_parameters.local_thickness, max_depth);
           const double distance_from_plane = distance_from_planes.distance_from_plane;
           const double distance_along_plane = distance_from_planes.distance_along_plane;
 
@@ -174,7 +174,7 @@ namespace WorldBuilder
               // their result it seems to me (Menno) that it should have been `(1-z_scaled)` instead of `z_scaled`.
               // To avoid this whole problem we just use the depth directly since we have that.
               // todo: get the local thickniss out of H, that prevents an other division.
-              // If we want to specifiy the bottom temperature, because we have defined a linear temperture increase in the
+              // If we want to specify the bottom temperature, because we have defined a linear temperature increase in the
               // mantle and/or oceanic plate, we have to switch off adiabatic heating for now.
               // Todo: there may be a better way to deal with this.
               ;
@@ -192,7 +192,7 @@ namespace WorldBuilder
                          (exp((R - std::pow(R * R + i * i * Consts::PI * Consts::PI, 0.5)) * x_scaled))
                          * (sin(i * Consts::PI * z_scaled));
                 }
-              // todo: investiage wheter this 273.15 should just be the surface temperature.
+              // todo: investigate whether this 273.15 should just be the surface temperature.
               double temperature = temp * (potential_mantle_temperature
                                            + 2.0 * (potential_mantle_temperature - 273.15) * sum);
 

@@ -3,7 +3,7 @@ Pull request review process
 ===========================
 
 ```{todo}
-Explain how pull requests are reviewed and how you can help with that (get invovled!).
+Explain how pull requests are reviewed and how you can help with that (get involved!).
 ```
 
 

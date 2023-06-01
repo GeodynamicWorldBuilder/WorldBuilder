@@ -38,7 +38,7 @@ namespace WorldBuilder
     void
     Uniform::declare_entries(Parameters &prm, const std::string & /*unused*/)
     {
-      // Add depth method to the requried parameters.
+      // Add depth method to the required parameters.
       prm.declare_entry("", Types::Object(),
                         "Uniform gravity model. It returns the gravity vector in a Cartesian coordinate system at "
                         "a given position, which has a constant magitude for the whole domain. The vector points "

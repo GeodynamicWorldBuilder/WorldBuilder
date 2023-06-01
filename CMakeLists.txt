@@ -81,7 +81,7 @@ else()
   message(STATUS "Did not find Fortran support or it has been requested to be disabled. Disabling Fortran wrapper and tests.")
 endif()
 
-#finding support for makeing a python wrapper
+#finding support for making a python wrapper
 SET(MAKE_PYTHON_WRAPPER FALSE)
 #find swig
 FIND_PACKAGE(SWIG)
@@ -151,13 +151,13 @@ endif()
 
 find_package(ZLIB)
 
-SET(WB_USE_ZLIB ON CACHE BOOL "Whether or not to use zlib for compiling the world buidler visualizer.")
+SET(WB_USE_ZLIB ON CACHE BOOL "Whether or not to use zlib for compiling the world buildler visualizer.")
 if(ZLIB_FOUND AND WB_USE_ZLIB)
   message(STATUS "Enabling the use of ZLIB.")
   include_directories(${ZLIB_INCLUDE_DIRS})
 else()
   message(STATUS "Disabling the use of ZLIB.")
-  SET(WB_USE_ZLIB OFF CACHE BOOL "Whether or not to use zlib for compiling the world buidler visualizer." FORCE)
+  SET(WB_USE_ZLIB OFF CACHE BOOL "Whether or not to use zlib for compiling the world buildler visualizer." FORCE)
 endif()
 
 
@@ -226,10 +226,10 @@ include_directories("include/" "tests/" "${CMAKE_CURRENT_BINARY_DIR}/include")
 file(GLOB_RECURSE SOURCES_CXX "source/world_builder/*.cc" "${PROJECT_BINARY_DIR}/source/world_builder/*.cc")
 
 if(CMAKE_Fortran_COMPILER)
-  file(GLOB_RECURSE SOURCES_FORTAN "source/world_builder/*.f90")
+  file(GLOB_RECURSE SOURCES_FORTRAN "source/world_builder/*.f90")
 endif()
 
-set(SOURCES ${SOURCES_CXX} ${SOURCES_FORTAN})
+set(SOURCES ${SOURCES_CXX} ${SOURCES_FORTRAN})
 
 set(CMAKE_UNITY_BUILD_BATCH_SIZE  5000)
 
@@ -333,7 +333,7 @@ ADD_CUSTOM_TARGET(${TARGET_WB_PREFIX}debug
   )
 
 
-  SET(FORCE_COLORED_OUTPUT ON CACHE BOOL "Forces colored ouput when compiling with gcc and clang.")
+  SET(FORCE_COLORED_OUTPUT ON CACHE BOOL "Forces colored output when compiling with gcc and clang.")
 
 
 IF ( CMAKE_BUILD_TYPE STREQUAL Coverage )
@@ -355,7 +355,7 @@ if (NOT MSVC AND NOT APPLE)
    #TODO: if other compiles need to be threaded, see https://computing.llnl.gov/tutorials/pthreads/#Compiling to add the correct cases.
    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER MATCHES "AppleClang")
       # Preventing issues with older cmake compilers (<2.8.12) which do not support VERSION_GREATER_EQUAL
-      # cmake vesrion 3.12.0 introduces COMPILE_LANGUAGE:FORTAN, otherwise this would be >=2.8.12
+      # cmake vesrion 3.12.0 introduces COMPILE_LANGUAGE:FORTRAN, otherwise this would be >=2.8.12
       if(NOT ${CMAKE_VERSION} VERSION_LESS "3.9.0")
         SET(WB_COMPILER_OPTIONS_PRIVATE -pedantic -fPIC -Wall -Wextra  
         $<$<COMPILE_LANGUAGE:CXX>:-std=c++14 -Wmost -Wconversion -Wunreachable-code -Wuninitialized -Wmissing-braces -Wunused-parameter -Wold-style-cast -Wshadow -Wfloat-equal -Wpointer-arith -Wwrite-strings
@@ -382,7 +382,7 @@ if (NOT MSVC AND NOT APPLE)
       # gcc linux
 
       # Preventing issues with older cmake compilers (<2.8.12) which do not support VERSION_GREATER_EQUAL
-      # cmake vesrion 3.12.0 introduces COMPILE_LANGUAGE:FORTAN, otherwise this would be >=2.8.12
+      # cmake vesrion 3.12.0 introduces COMPILE_LANGUAGE:FORTRAN, otherwise this would be >=2.8.12
       if(NOT ${CMAKE_VERSION} VERSION_LESS "3.9.0")
         SET(WB_COMPILER_OPTIONS_PRIVATE -pedantic -fPIC -Wall -Wextra  $<$<COMPILE_LANGUAGE:CXX>:-std=c++14 -Wunused-variable -Wmissing-braces -Wunused-parameter -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>)
 
@@ -413,7 +413,7 @@ if (NOT MSVC AND NOT APPLE)
           SET(WB_COMPILER_OPTIONS_PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE} $<$<COMPILE_LANGUAGE:CXX>:-Wno-placement-new>)
         endif()
 
-        # untill 4.9.0 Wshadow is too strict: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=57709,
+        # until 4.9.0 Wshadow is too strict: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=57709,
         # but still some issues in 4.9.0, so only add it after 5.0.0.
         if(CMAKE_COMPILER_IS_GNUCC AND NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.0.0)
           SET(WB_COMPILER_OPTIONS_PRIVATE ${WB_COMPILER_OPTIONS_PRIVATE} $<$<COMPILE_LANGUAGE:CXX>:-Wshadow>)
@@ -505,7 +505,7 @@ if(MAKE_PYTHON_WRAPPER)
   if(SWIG_VERSION VERSION_LESS "4.0.1" AND NOT MSVC)
     set_target_properties(${TARGET} PROPERTIES COMPILE_FLAGS "-Wno-cast-qual")
   elseif(SWIG_VERSION VERSION_GREATER_EQUAL "4.0.1" AND APPLE)
-    # see https://github.com/swig/swig/issues/1790 for mor info.
+    # see https://github.com/swig/swig/issues/1790 for more info.
     # this could be made more specific, but decrecation for the rest will be
     # testers will still be tested. TODO: only do this for the file which needs it
     set_target_properties(${TARGET} PROPERTIES COMPILE_FLAGS "-Wno-error=deprecated-declarations")

@@ -17,8 +17,8 @@ This file is part of the World Builder.
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef WORLD_BUILDER_OBJECTSS_NATURAL_COORDINATE_H
-#define WORLD_BUILDER_OBJECTSS_NATURAL_COORDINATE_H
+#ifndef WORLD_BUILDER_OBJECTS_NATURAL_COORDINATE_H
+#define WORLD_BUILDER_OBJECTS_NATURAL_COORDINATE_H
 
 #include <array>
 #include "world_builder/point.h"

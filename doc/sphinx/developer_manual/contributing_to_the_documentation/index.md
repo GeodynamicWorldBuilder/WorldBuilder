@@ -3,7 +3,7 @@ Contributing to the documentation
 =================================
 
 ```{todo}
-The documentation is very important and it is also a good way to learn git and the review process. Show that there is a button on each documetation page where you can suggest edits!
+The documentation is very important and it is also a good way to learn git and the review process. Show that there is a button on each documentation page where you can suggest edits!
 ```
 
 ```{toctree}

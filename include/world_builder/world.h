@@ -53,7 +53,7 @@ namespace WorldBuilder
        * \param random_number_seed a double containing a seed for the random number generator.
        * The world builder uses a deterministic random number generator for some plugins. This
        * is a deterministic random number generator on prorpose because even though you might
-       * want to use random numbers to initialize some fields, the result should be reproducable.
+       * want to use random numbers to initialize some fields, the result should be reproducible.
        * Note that when the world builder is used in for example MPI programs you should supply
        * the world builder created each MPI process a different seed. You can use the MPI RANK
        * for this (seed is seed + MPI_RANK). Because the generator is deterministic (known and
@@ -96,7 +96,7 @@ namespace WorldBuilder
        * {2,1,0}. A composition query prodoces one entry in the output vector.
        *
        * Grains are identified by 2. The second entry is the grain composition number and the third
-       * entry is the number of grains. A query about the grains, where it askes about composition 1
+       * entry is the number of grains. A query about the grains, where it asks about composition 1
        * (for example enstatite) and 500 grains, looks like this: {2,1,500}.
        * A composition query prodoces n_grains*10 entries in the output vector. The first n_grains
        * entries are the sizes of all the grains, and the other 9 entries are sets of rotation
@@ -124,7 +124,7 @@ namespace WorldBuilder
        * {2,1,0}. A composition query prodoces one entry in the output vector.
        *
        * Grains are identified by 2. The second entry is the grain composition number and the third
-       * entry is the number of grains. A query about the grains, where it askes about composition 1
+       * entry is the number of grains. A query about the grains, where it asks about composition 1
        * (for example enstatite) and 500 grains, looks like this: {2,1,500}.
        * A composition query prodoces n_grains*10 entries in the output vector. The first n_grains
        * entries are the sizes of all the grains, and the other 9 entries are sets of rotation
@@ -193,7 +193,7 @@ namespace WorldBuilder
                                   size_t number_of_grains) const;
       /**
        * Returns a PlaneDistances object that has the distance from and along a feature plane,
-       * caculated from the coordinates and the depth of the point.
+       * calculated from the coordinates and the depth of the point.
        \param point the coordinates in the cartesian geometry
        \param depth the depth of the point
        \param name the name of the feature (i.e. the string provided to the key word "name" in the wb file)
@@ -292,7 +292,7 @@ namespace WorldBuilder
       std::mt19937 random_number_engine;
 
       /**
-       * limits some of the consitency checks in debug mode.
+       * limits some of the consistency checks in debug mode.
        * Current only prevents a check whether depth in spherical
        * coordinates is consistent with the computed depth from
        * x,y,z and provided radius.

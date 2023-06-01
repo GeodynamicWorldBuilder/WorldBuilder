@@ -162,7 +162,7 @@ namespace WorldBuilder
                   "version (for major versions after 0) for which is input file was written "
                   "is not the same as the version of the World Builder you are running. This means "
                   "That there may have been incompatible changes made between the versions. \n\n"
-                  "Verify those changes and wheter they affect your model. If this is not "
+                  "Verify those changes and whether they affect your model. If this is not "
                   "the case, adjust the version number in the input file. \n\nThe provided version "
                   "number is \"" << prm.get<std::string>("version") << "\", while the used world builder "
                   "has  (major.minor) version \"" << Version::MAJOR << "." << Version::MINOR << "\". "
@@ -172,7 +172,7 @@ namespace WorldBuilder
                   "backwards incompatible changes may have been made to the code.");
 
     /**
-     * Seconly load the coordinate system parameters.
+     * Secondly load the coordinate system parameters.
      */
     prm.coordinate_system = prm.get_unique_pointer<CoordinateSystems::Interface>("coordinate system");
     prm.coordinate_system->parse_entries(prm);
@@ -231,7 +231,7 @@ namespace WorldBuilder
     thermal_diffusivity = prm.get<double>("thermal diffusivity");
 
     /**
-     * Model discretiation paramters
+     * Model discretiation parameters
      */
     maximum_distance_between_coordinates = prm.get<double>("maximum distance between coordinates");
     interpolation = prm.get<std::string>("interpolation");
@@ -306,7 +306,7 @@ namespace WorldBuilder
 
     WBAssert(!this->limit_debug_consistency_checks || this->parameters.coordinate_system->natural_coordinate_system() == cartesian
              || approx(depth, this->parameters.coordinate_system->max_model_depth()-sqrt(point_[0]*point_[0]+point_[1]*point_[1]+point_[2]*point_[2])),
-             "Inconsistent input. Please check whether the radius in the sperhical coordiantes is consistent with the radius of the planet as defined "
+             "Inconsistent input. Please check whether the radius in the sperhical coordinates is consistent with the radius of the planet as defined "
              << "in the program that uses the Geodynamic World Builder. "
              << "Depth = " << depth << ", radius = " << this->parameters.coordinate_system->max_model_depth()
              << ", point = " << point_[0] << " " << point_[1] << " " << point_[2]
@@ -445,7 +445,7 @@ namespace WorldBuilder
 
     WBAssert(!this->limit_debug_consistency_checks || this->parameters.coordinate_system->natural_coordinate_system() == cartesian
              || approx(depth, this->parameters.coordinate_system->max_model_depth()-sqrt(point_[0]*point_[0]+point_[1]*point_[1]+point_[2]*point_[2])),
-             "Inconsistent input. Please check whether the radius in the sperhical coordiantes is consistent with the radius of the planet as defined "
+             "Inconsistent input. Please check whether the radius in the sperhical coordinates is consistent with the radius of the planet as defined "
              << "in the program that uses the Geodynamic World Builder. "
              << "Depth = " << depth << ", radius = " << this->parameters.coordinate_system->max_model_depth()
              << ", point = " << point_[0] << " " << point_[1] << " " << point_[2]

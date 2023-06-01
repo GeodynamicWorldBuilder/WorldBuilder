@@ -19,8 +19,8 @@ This file is part of the World Builder.
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef WORLD_BUILDER_OBJECTSS_SURFACE_H
-#define WORLD_BUILDER_OBJECTSS_SURFACE_H
+#ifndef WORLD_BUILDER_OBJECTS_SURFACE_H
+#define WORLD_BUILDER_OBJECTS_SURFACE_H
 
 #include "world_builder/utilities.h"
 #include "world_builder/kd_tree.h"
@@ -74,7 +74,7 @@ namespace WorldBuilder
         SurfaceValueInfo local_value(const Point<2> check_point) const;
 
         /**
-         * Wether the surface is a constant value or not. This is used for optimalization.
+         * Whether the surface is a constant value or not. This is used for optimalization.
          */
         bool constant_value;
 
@@ -107,7 +107,7 @@ namespace WorldBuilder
       private:
         /**
          * Test whether a point is in a triangle. If that is the case is stores the interpolated
-         * value of the tirangle into `interpolated_value` and returns true.
+         * value of the triangle into `interpolated_value` and returns true.
          */
         bool in_triangle(const std::array<std::array<double,3>,3> &points,
                          const std::array<double,8> &precomputed,

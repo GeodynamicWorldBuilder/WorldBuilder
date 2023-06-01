@@ -93,7 +93,7 @@ namespace WorldBuilder
 
 
         /**
-         * Substract two points
+         * Subtract two points
          */
         WorldBuilder::Point<dim> operator-(const Point<dim> &point) const;
 

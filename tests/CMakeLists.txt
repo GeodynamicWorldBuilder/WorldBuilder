@@ -30,10 +30,10 @@ if(WB_INCLUDE_UNIT_TEST)
   file(GLOB_RECURSE UNIT_TEST_SOURCES_CXX "unit_tests/*.cc")
 
   if(CMAKE_Fortran_COMPILER)
-    file(GLOB_RECURSE UNIT_TEST_SOURCES_FORTAN "unit_tests/*.f90")
+    file(GLOB_RECURSE UNIT_TEST_SOURCES_FORTRAN "unit_tests/*.f90")
   endif()
 
-  set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES_CXX} ${UNIT_TEST_SOURCES_FORTAN})
+  set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES_CXX} ${UNIT_TEST_SOURCES_FORTRAN})
 
   set(test_name "unit_tests")
   
@@ -123,7 +123,7 @@ IF(WB_RUN_APP_TESTS)
            ${CMAKE_COMMAND} 
   	 -D TEST_NAME=testing_one_file 
   	 -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} 
-  	 -D TEST_ARGS=non_existend_file
+  	 -D TEST_ARGS=non_existent_file
   	 -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/testing_one_file/screen-output.log 
   	 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/testing_one_file/screen-output.log
      -D TEST_DIFF=${TEST_DIFF}

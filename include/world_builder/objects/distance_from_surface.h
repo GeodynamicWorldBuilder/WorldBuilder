@@ -17,8 +17,8 @@ This file is part of the World Builder.
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef WORLD_BUILDER_OBJECTSS_DISTANCE_FROM_SURFACE_H
-#define WORLD_BUILDER_OBJECTSS_DISTANCE_FROM_SURFACE_H
+#ifndef WORLD_BUILDER_OBJECTS_DISTANCE_FROM_SURFACE_H
+#define WORLD_BUILDER_OBJECTS_DISTANCE_FROM_SURFACE_H
 
 namespace WorldBuilder
 {

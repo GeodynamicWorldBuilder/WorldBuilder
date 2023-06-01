@@ -5,7 +5,7 @@
 "cross section": [[100e3,100e3],[400e3,500e3]],
 "features":[
 {
-  "model":"continental plate", "name":"Carribean", "max depth":250e3, "coordinates":[[-125,50],[-60,50],[-60,25],[-125,25]],
+  "model":"continental plate", "name":"Caribbean", "max depth":250e3, "coordinates":[[-125,50],[-60,50],[-60,25],[-125,25]],
   "temperature models":[{"model":"uniform", "temperature":10}],
   "composition models":[{"model":"uniform", "compositions":[1]}],
          "grains models":[
@@ -23,7 +23,7 @@
                            "grain sizes":[0.3,-1]}
 ]},
 
-     {"model":"continental plate", "name":"Carribean2", "max depth":250e3, "coordinates":[[10,-10],[10,-40],[125,-40],[125,-10]],
+     {"model":"continental plate", "name":"Caribbean2", "max depth":250e3, "coordinates":[[10,-10],[10,-40],[125,-40],[125,-10]],
          "temperature models":[{"model":"uniform", "temperature":30}],
          "composition models":[{"model":"uniform", "compositions":[3]}],
      "grains models":[
@@ -37,7 +37,7 @@
                       "rotation matrices":[[[102,202,302],[402,502,602],[702,802,902]],[[1002,1102,1202],[1302,1402,1502],[1602,1702,1802]]],
                       "grain sizes":[0.33,-1]}]},
 
-     {"model":"continental plate", "name":"Carribean3", "max depth":250e3, "coordinates":[[-10,-10],[-10,-40],[-125,-40],[-125,-10]],
+     {"model":"continental plate", "name":"Caribbean3", "max depth":250e3, "coordinates":[[-10,-10],[-10,-40],[-125,-40],[-125,-10]],
          "temperature models":[{"model":"uniform", "temperature":40}],
          "composition models":[{"model":"uniform", "compositions":[4]}]},
 

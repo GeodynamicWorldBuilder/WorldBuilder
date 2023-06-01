@@ -236,7 +236,7 @@ TEST_CASE("glm quat slerp functions")
   }
 
   {
-    // This shows that a significant difference in the rotation matrix causes a significat difference in the resulting rotation matrix.
+    // This shows that a significant difference in the rotation matrix causes a significant difference in the resulting rotation matrix.
     std::array<std::array<double,3>,3> rot1 = {{{{0.360000,0.480000,-0.800000}},{{-0.800000,0.600000,0.000000000}}, {{0.480000,0.640000, 0.600000}}}};
     std::array<std::array<double,3>,3> rot2 = {{{{0.200000,0.250000,-0.400000}},{{-0.500000,0.200000,0.300000000}}, {{0.380000,0.840000, 0.500000}}}};
     std::array<std::array<double,3>,3> expt = {{{{0.493495,0.403007,-0.707894}},{{-0.70133,0.664351,-0.0720395}}, {{0.414325,0.578479, 0.656215}}}};

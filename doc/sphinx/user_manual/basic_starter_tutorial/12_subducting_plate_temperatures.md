@@ -17,7 +17,7 @@ lineno-start: 1
 This is still perfectly valid and usable, but the approach has some fundamental issues, including that the way the temperature structure is set up is not mass conservative. This is why the `mass conserving` slab temperature model was developed (Todo: insert reference when paper is done). This temperature model also brings a lot of other large and small improvements, which we can't go over in this starter tutorial. Although this temperature is generally recommended over the older McKenzie model, it is also is a bit more complicated in usage. So to keep this tutorial simple, we will use the `plate model` here, but we strongly recommend looking into the `mass conserving` temperature model for subduction models.
 
 ```{todo}
-Create a cookbook for the mass conserving temperature strucutre and point to it from here.
+Create a cookbook for the mass conserving temperature structure and point to it from here.
 ```
 
 

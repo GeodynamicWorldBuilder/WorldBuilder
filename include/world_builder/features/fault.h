@@ -112,7 +112,7 @@ namespace WorldBuilder
          * {2,1,0}. A composition query prodoces one entry in the output vector.
          *
          * Grains are identified by 2. The second entry is the grain composition number and the third
-         * entry is the number of grains. A query about the grains, where it askes about composition 1
+         * entry is the number of grains. A query about the grains, where it asks about composition 1
          * (for example enstatite) and 500 grains, looks like this: {2,1,500}.
          * A composition query prodoces n_grains*10 entries in the output vector. The first n_grains
          * entries are the sizes of all the grains, and the other 9 entries are sets of rotation
@@ -142,7 +142,7 @@ namespace WorldBuilder
             Features::FaultModels::Composition::Interface,
             Features::FaultModels::Grains::Interface> > > sections_segment_vector;
 
-        // This vector stores segments to this coordiante/section.
+        // This vector stores segments to this coordinate/section.
         //First used (raw) pointers to the segment relevant to this coordinate/section,
         // but I do not trust it won't fail when memory is moved. So storing the all the data now.
         std::vector<std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,

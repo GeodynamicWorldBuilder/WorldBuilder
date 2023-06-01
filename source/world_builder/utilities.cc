@@ -444,7 +444,7 @@ namespace WorldBuilder
                    "Internal error: The closest_point_on_line_bottom_cartesian[2] variable is not a number: " << closest_point_on_line_bottom_cartesian[2]);
 
 
-          // translate to orignal coordinates current and next section
+          // translate to original coordinates current and next section
           size_t original_current_section = i_section_min_distance;
           size_t original_next_section = original_current_section + 1;
 
@@ -454,7 +454,7 @@ namespace WorldBuilder
           Point<3> y_axis = closest_point_on_line_cartesian - closest_point_on_line_bottom_cartesian;
           Point<3> x_axis = closest_point_on_line_cartesian - check_point_surface_cartesian;
 
-          // This are accouting for corner cases.
+          // This are accounting for corner cases.
           // If the point to check is exactly on or below the line, we can not compute the x-axis with this method.
           // We could use an other method where we use the two point before and after it, but we can also
           // just nudge it into a direction, which seems to work very well.
@@ -489,8 +489,8 @@ namespace WorldBuilder
                   y_axis = closest_point_on_line_cartesian - closest_point_on_line_bottom_cartesian;
 
                   WBAssert(std::abs(y_axis.norm()) > std::numeric_limits<double>::epsilon(),
-                           "World Builder error: Cannot detemine the up direction in the model. This is most likely due to the provided start radius being zero."
-                           << " Techical details: The y_axis.norm() is zero. Y_axis is " << y_axis[0] << ':' << y_axis[1] << ':' << y_axis[2]
+                           "World Builder error: Cannot determine the up direction in the model. This is most likely due to the provided start radius being zero."
+                           << " Technical details: The y_axis.norm() is zero. Y_axis is " << y_axis[0] << ':' << y_axis[1] << ':' << y_axis[2]
                            << ". closest_point_on_line_cartesian = " << closest_point_on_line_cartesian[0] << ':' << closest_point_on_line_cartesian[1] << ':' << closest_point_on_line_cartesian[2]
                            << ", closest_point_on_line_bottom_cartesian = " << closest_point_on_line_bottom_cartesian[0] << ':' << closest_point_on_line_bottom_cartesian[1] << ':' << closest_point_on_line_bottom_cartesian[2]);
 
@@ -565,8 +565,8 @@ namespace WorldBuilder
           else
             {
               WBAssert(std::abs(y_axis.norm()) > std::numeric_limits<double>::epsilon(),
-                       "World Builder error: Cannot detemine the up direction in the model. This is most likely due to the provided start radius being zero."
-                       << " Techical details: The y_axis.norm() is zero. Y_axis is " << y_axis
+                       "World Builder error: Cannot determine the up direction in the model. This is most likely due to the provided start radius being zero."
+                       << " Technical details: The y_axis.norm() is zero. Y_axis is " << y_axis
                        << ". closest_point_on_line_cartesian = " << closest_point_on_line_cartesian
                        << ", closest_point_on_line_bottom_cartesian = " << closest_point_on_line_bottom_cartesian);
 
@@ -865,7 +865,7 @@ namespace WorldBuilder
                                << ", radius_angle_circle = " << radius_angle_circle
                                << ", cos_angle_top = " << cos_angle_top);
 
-                      // to prevent round off errors becomming dominant, we check
+                      // to prevent round off errors becoming dominant, we check
                       // whether center_circle_y - begin_segment[1] should be zero.
                       // TODO: improve this to some kind of relative difference.
                       const double CCYBS = center_circle_y - begin_segment[1];

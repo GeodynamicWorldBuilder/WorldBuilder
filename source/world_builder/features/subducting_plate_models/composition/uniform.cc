@@ -97,7 +97,7 @@ namespace WorldBuilder
                                  const double  /*feature_min_depth*/,
                                  const double  /*feature_max_depth*/,
                                  const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_plane,
-                                 const AdditionalParameters & /*additional_paramters*/) const
+                                 const AdditionalParameters & /*additional_parameters*/) const
         {
           double composition = composition_;
           if (distance_from_plane.distance_from_plane <= max_depth && distance_from_plane.distance_from_plane >= min_depth)

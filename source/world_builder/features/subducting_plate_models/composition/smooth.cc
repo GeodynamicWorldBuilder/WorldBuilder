@@ -108,7 +108,7 @@ namespace WorldBuilder
                   if (compositions[i] == composition_number)
                     {
 
-                      // Hyperbolic tangent goes from 0 to 1 over approximately x=(0, 2) without any arguements. The function is written
+                      // Hyperbolic tangent goes from 0 to 1 over approximately x=(0, 2) without any arguments. The function is written
                       // so that the composition returned 1 to 0 over the side_distance on either sides.
                       const double scaling = ( 1 - std::tanh(10 * (distance_from_planes.distance_from_plane-side_distance/2.0-min_distance)/side_distance ) )/2.0;
                       composition = top_fraction[i]*scaling + bottom_fraction[i] * (1-scaling);

@@ -56,7 +56,7 @@ namespace WorldBuilder
                            const std::vector<std::string> &required_entries)
     {
 
-      // This statment is needed because of the recursion associated with
+      // This statement is needed because of the recursion associated with
       // the sections entry.
       if (parent_name == "items")
         {
@@ -140,7 +140,7 @@ namespace WorldBuilder
       Features::FaultModels::Grains::Interface> >("segments", default_temperature_models, default_composition_models,default_grains_models);
 
 
-      // This vector stores segments to this coordiante/section.
+      // This vector stores segments to this coordinate/section.
       // First used (raw) pointers to the segment relevant to this coordinate/section,
       // but I do not trust it won't fail when memory is moved. So storing the all the data now.
       segment_vector.resize(0);
@@ -498,8 +498,8 @@ namespace WorldBuilder
                                               (total_fault_length[next_section] - total_fault_length[current_section]);
               const AdditionalParameters additional_parameters = {max_fault_length,thickness_local};
 
-              // Because both sides return positve values, we have to
-              // devide the thickness_local by two
+              // Because both sides return positive values, we have to
+              // divide the thickness_local by two
               if (std::fabs(distance_from_plane) > 0 &&
                   std::fabs(distance_from_plane) <= thickness_local * 0.5 &&
                   distance_along_plane > 0 &&

@@ -104,7 +104,7 @@ namespace WorldBuilder
                          const bool x_axis);
 
         /**
-         * Retun a reference to the vector containing the nodes.
+         * Return a reference to the vector containing the nodes.
          */
         const std::vector<Node> &get_nodes() const;
 
@@ -120,7 +120,7 @@ namespace WorldBuilder
          * Returns the index of the closest point and the distance
          * of that point to the check point. Stores the points searched
          * through in a unsorted vector.
-         * Note: I can only guarentee that the point with the least distance
+         * Note: I can only guarantee that the point with the least distance
          * is the closest point. The point in the list with the second/third/etc.
          * smallest distance may or may not actually be the global point
          * with the second/third/etc. smallest distance. It will most likely be a
