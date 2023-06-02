@@ -21,10 +21,10 @@
 #include "app/main.h"
 
 #include "world_builder/assert.h"
-#include "world_builder/utilities.h"
 #include "world_builder/consts.h"
-#include "world_builder/world.h"
 #include "world_builder/point.h"
+#include "world_builder/utilities.h"
+#include "world_builder/world.h"
 
 #ifdef WB_WITH_MPI
 #include <mpi.h>
@@ -129,7 +129,7 @@ int main(int argc, char **argv)
       std::unique_ptr<WorldBuilder::World> world;
       //try
       {
-        std::string output_dir = wb_file.substr(0,wb_file.find_last_of("/\\") + 1);
+        const std::string output_dir = wb_file.substr(0,wb_file.find_last_of("/\\") + 1);
         world = std::make_unique<WorldBuilder::World>(wb_file, true, output_dir,1,limit_debug_consistency_checks);
       }
       /*catch (std::exception &e)
@@ -225,7 +225,7 @@ int main(int argc, char **argv)
 
                   WBAssertThrow(data[i].size() == dim + 1, "The file needs to contain dim + 1 entries, but contains " << data[i].size() << " entries "
                                 " on line " << i+1 << " of the data file (" << data_file << ").  Dim is " << dim << '.');
-                  std::array<double,2> coords = {{
+                  const std::array<double,2> coords = {{
                       string_to_double(data[i][0]),
                       string_to_double(data[i][1])
                     }

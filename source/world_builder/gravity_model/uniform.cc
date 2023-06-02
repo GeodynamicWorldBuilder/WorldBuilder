@@ -18,8 +18,8 @@
 */
 
 #include "world_builder/gravity_model/uniform.h"
-#include "world_builder/types/object.h"
 #include "world_builder/types/double.h"
+#include "world_builder/types/object.h"
 #include "world_builder/world.h"
 
 
@@ -89,6 +89,6 @@ namespace WorldBuilder
      * Register plugin
      */
     WB_REGISTER_GRAVITY_MODEL(Uniform, uniform)
-  } // namespace CoordinateSystems
+  } // namespace GravityModel
 } // namespace WorldBuilder
 

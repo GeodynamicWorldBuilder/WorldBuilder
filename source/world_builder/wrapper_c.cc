@@ -55,7 +55,7 @@ extern "C" {
   void temperature_2d(void *ptr_ptr_world, double x, double z, double depth, double *temperature)
   {
     WorldBuilder::World *a = reinterpret_cast<WorldBuilder::World *>(ptr_ptr_world);
-    std::array<double,2> position = {{x,z}};
+    const std::array<double,2> position = {{x,z}};
     *temperature = a->temperature(position,depth);
   }
 
@@ -67,7 +67,7 @@ extern "C" {
   void temperature_3d(void *ptr_ptr_world, double x, double y, double z, double depth, double *temperature)
   {
     WorldBuilder::World *a = reinterpret_cast<WorldBuilder::World *>(ptr_ptr_world);
-    std::array<double,3> position = {{x,y,z}};
+    const std::array<double,3> position = {{x,y,z}};
     *temperature = a->temperature(position,depth);
   }
 
@@ -79,7 +79,7 @@ extern "C" {
   void composition_2d(void *ptr_ptr_world, double x, double z, double depth, unsigned int composition_number, double *composition)
   {
     WorldBuilder::World *a = reinterpret_cast<WorldBuilder::World *>(ptr_ptr_world);
-    std::array<double,2> position = {{x,z}};
+    const std::array<double,2> position = {{x,z}};
     *composition = a->composition(position,depth,composition_number);
   }
 
@@ -91,7 +91,7 @@ extern "C" {
   void composition_3d(void *ptr_ptr_world, double x, double y, double z, double depth, unsigned int composition_number, double *composition)
   {
     WorldBuilder::World *a = reinterpret_cast<WorldBuilder::World *>(ptr_ptr_world);
-    std::array<double,3> position = {{x,y,z}};
+    const std::array<double,3> position = {{x,y,z}};
     *composition = a->composition(position,depth,composition_number);
   }
 

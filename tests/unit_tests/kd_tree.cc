@@ -19,9 +19,9 @@
 
 #define DOCTEST_CONFIG_SUPER_FAST_ASSERTS
 
-#include "world_builder/kd_tree.h"
-#include "world_builder/coordinate_system.h"
 #include "doctest/doctest.h"
+#include "world_builder/coordinate_system.h"
+#include "world_builder/kd_tree.h"
 
 #include <iostream>
 
@@ -45,19 +45,19 @@ inline void compare_node_trees(
 
 TEST_CASE("create kd-tree: 15 nodes")
 {
-  std::vector<Node> reference = {Node(8,2,3),Node(4,4,4),Node(9,5,2),
-                                 Node(2,1,5),Node(10,2,9),Node(5,5,8),
-                                 Node(11,6,7),Node(1,7,3),Node(12,9,2.5),
-                                 Node(6,10,2),Node(13,11.5,1),Node(3,11,4),
-                                 Node(14,8,6),Node(7,9,7),Node(15,11,8)
-                                };
+  const std::vector<Node> reference = {Node(8,2,3),Node(4,4,4),Node(9,5,2),
+                                       Node(2,1,5),Node(10,2,9),Node(5,5,8),
+                                       Node(11,6,7),Node(1,7,3),Node(12,9,2.5),
+                                       Node(6,10,2),Node(13,11.5,1),Node(3,11,4),
+                                       Node(14,8,6),Node(7,9,7),Node(15,11,8)
+                                      };
   {
-    std::vector<Node> nodes = {Node(1,7,3),Node(2,1,5),Node(3,11,4),
-                               Node(4,4,4),Node(5,5,8),Node(6,10,2),
-                               Node(7,9,7),Node(8,2,3),Node(9,5,2),
-                               Node(10,2,9),Node(11,6,7),Node(12,9,2.5),
-                               Node(13,11.5,1),Node(14,8,6),Node(15,11,8)
-                              };
+    const std::vector<Node> nodes = {Node(1,7,3),Node(2,1,5),Node(3,11,4),
+                                     Node(4,4,4),Node(5,5,8),Node(6,10,2),
+                                     Node(7,9,7),Node(8,2,3),Node(9,5,2),
+                                     Node(10,2,9),Node(11,6,7),Node(12,9,2.5),
+                                     Node(13,11.5,1),Node(14,8,6),Node(15,11,8)
+                                    };
 
     KDTree tree = KDTree(nodes);
 
@@ -68,12 +68,12 @@ TEST_CASE("create kd-tree: 15 nodes")
 
   {
     // shuffle nodes
-    std::vector<Node> nodes = {Node(2,1,5),Node(3,11,4),Node(9,5,2),
-                               Node(4,4,4),Node(1,7,3),Node(5,5,8),
-                               Node(7,9,7),Node(8,2,3),Node(11,6,7),
-                               Node(10,2,9),Node(12,9,2.5),Node(14,8,6),
-                               Node(13,11.5,1),Node(6,10,2),Node(15,11,8)
-                              };
+    const std::vector<Node> nodes = {Node(2,1,5),Node(3,11,4),Node(9,5,2),
+                                     Node(4,4,4),Node(1,7,3),Node(5,5,8),
+                                     Node(7,9,7),Node(8,2,3),Node(11,6,7),
+                                     Node(10,2,9),Node(12,9,2.5),Node(14,8,6),
+                                     Node(13,11.5,1),Node(6,10,2),Node(15,11,8)
+                                    };
 
     KDTree tree = KDTree(nodes);
 
@@ -86,13 +86,13 @@ TEST_CASE("create kd-tree: 15 nodes")
 
 TEST_CASE("create kd-tree: 6 nodes")
 {
-  std::vector<Node> reference = {Node(4,4,2),Node(5,2,6),Node(2,7,6),
-                                 Node(1,9,2),Node(6,12,3),Node(3,11,6)
-                                };
+  const std::vector<Node> reference = {Node(4,4,2),Node(5,2,6),Node(2,7,6),
+                                       Node(1,9,2),Node(6,12,3),Node(3,11,6)
+                                      };
   {
-    std::vector<Node> nodes = {Node(1,9,2),Node(2,7,6),Node(3,11,6),
-                               Node(4,4,2),Node(5,2,6),Node(6,12,3)
-                              };
+    const std::vector<Node> nodes = {Node(1,9,2),Node(2,7,6),Node(3,11,6),
+                                     Node(4,4,2),Node(5,2,6),Node(6,12,3)
+                                    };
 
     KDTree tree = KDTree(nodes);
 
@@ -103,9 +103,9 @@ TEST_CASE("create kd-tree: 6 nodes")
 
   {
     // shuffle nodes
-    std::vector<Node> nodes = {Node(5,2,6),Node(2,7,6),Node(1,9,2),
-                               Node(6,12,3),Node(4,4,2),Node(3,11,6)
-                              };
+    const std::vector<Node> nodes = {Node(5,2,6),Node(2,7,6),Node(1,9,2),
+                                     Node(6,12,3),Node(4,4,2),Node(3,11,6)
+                                    };
 
     KDTree tree = KDTree(nodes);
 
@@ -118,17 +118,17 @@ TEST_CASE("create kd-tree: 6 nodes")
 
 TEST_CASE("create kd-tree: 10 nodes")
 {
-  std::vector<Node> reference = {Node(3,2,1),Node(1,4,2),Node(4,1,4),
-                                 Node(7,3,6),Node(0,7,3),Node(5,9,2),
-                                 Node(8,11,1),Node(2,12,3),Node(9,10,5),
-                                 Node(6,11,6)
-                                };
+  const std::vector<Node> reference = {Node(3,2,1),Node(1,4,2),Node(4,1,4),
+                                       Node(7,3,6),Node(0,7,3),Node(5,9,2),
+                                       Node(8,11,1),Node(2,12,3),Node(9,10,5),
+                                       Node(6,11,6)
+                                      };
   {
-    std::vector<Node> nodes = {Node(0,7,3),Node(1,4,2),Node(2,12,3),
-                               Node(3,2,1),Node(4,1,4),Node(5,9,2),
-                               Node(7,3,6),Node(6,11,6),Node(9,10,5),
-                               Node(8,11,1)
-                              };
+    const std::vector<Node> nodes = {Node(0,7,3),Node(1,4,2),Node(2,12,3),
+                                     Node(3,2,1),Node(4,1,4),Node(5,9,2),
+                                     Node(7,3,6),Node(6,11,6),Node(9,10,5),
+                                     Node(8,11,1)
+                                    };
 
     KDTree tree = KDTree(nodes);
 
@@ -170,7 +170,7 @@ TEST_CASE("create kd-tree: 10 nodes")
 
     for (size_t i = 0; i < check_points.size(); ++i)
       {
-        IndexDistance index_distance = tree.find_closest_point(check_points[i]);
+        IndexDistance const index_distance = tree.find_closest_point(check_points[i]);
 
         CHECK(index_distance.index == index_results[i]);
       }
@@ -199,11 +199,11 @@ TEST_CASE("create kd-tree: 10 nodes")
 
   {
     // shuffle nodes
-    std::vector<Node> nodes = {Node(3,2,1),Node(4,1,4),Node(5,9,2),
-                               Node(0,7,3),Node(6,11,6),Node(2,12,3),
-                               Node(7,3,6),Node(9,10,5),Node(1,4,2),
-                               Node(8,11,1)
-                              };
+    const std::vector<Node> nodes = {Node(3,2,1),Node(4,1,4),Node(5,9,2),
+                                     Node(0,7,3),Node(6,11,6),Node(2,12,3),
+                                     Node(7,3,6),Node(9,10,5),Node(1,4,2),
+                                     Node(8,11,1)
+                                    };
 
     KDTree tree = KDTree(nodes);
 

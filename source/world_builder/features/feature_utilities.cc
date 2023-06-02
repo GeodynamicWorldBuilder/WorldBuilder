@@ -36,6 +36,6 @@ namespace WorldBuilder
         WBAssert(operation == "replace", "Could not find operation: " << operation << '.');
         return Operations::REPLACE;
       }
-    } // namespace Utilities
+    } // namespace FeatureUtilities
   } // namespace Features
 } // namespace WorldBuilder

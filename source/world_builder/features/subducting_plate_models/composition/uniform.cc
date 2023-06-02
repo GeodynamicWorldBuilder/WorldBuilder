@@ -93,20 +93,19 @@ namespace WorldBuilder
         Uniform::get_composition(const Point<3> & /*position_in_cartesian_coordinates*/,
                                  const double /*depth*/,
                                  const unsigned int composition_number,
-                                 double composition_,
+                                 double composition,
                                  const double  /*feature_min_depth*/,
                                  const double  /*feature_max_depth*/,
                                  const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_plane,
                                  const AdditionalParameters & /*additional_parameters*/) const
         {
-          double composition = composition_;
           if (distance_from_plane.distance_from_plane <= max_depth && distance_from_plane.distance_from_plane >= min_depth)
             {
               for (unsigned int i =0; i < compositions.size(); ++i)
                 {
                   if (compositions[i] == composition_number)
                     {
-                      return apply_operation(operation,composition_,fractions[i]);
+                      return apply_operation(operation,composition,fractions[i]);
                     }
                 }
 

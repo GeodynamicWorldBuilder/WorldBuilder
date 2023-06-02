@@ -158,16 +158,16 @@ namespace WorldBuilder
 
               const int n_sum = 500;
               // distance_from_plane can be zero, so protect division.
-              double z_scaled = 1 - (std::fabs(distance_from_plane) < 2.0 * std::numeric_limits<double>::epsilon() ?
-                                     2.0 * std::numeric_limits<double>::epsilon()
-                                     :
-                                     distance_from_plane/thickness_local);
+              const double z_scaled = 1 - (std::fabs(distance_from_plane) < 2.0 * std::numeric_limits<double>::epsilon() ?
+                                           2.0 * std::numeric_limits<double>::epsilon()
+                                           :
+                                           distance_from_plane/thickness_local);
 
               // distance_along_plane can be zero, so protect division.
-              double x_scaled = (std::fabs(distance_along_plane) < 2.0 * std::numeric_limits<double>::epsilon() ?
-                                 2.0 *std::numeric_limits<double>::epsilon()
-                                 :
-                                 distance_along_plane/thickness_local);
+              const double x_scaled = (std::fabs(distance_along_plane) < 2.0 * std::numeric_limits<double>::epsilon() ?
+                                       2.0 *std::numeric_limits<double>::epsilon()
+                                       :
+                                       distance_along_plane/thickness_local);
 
               // the paper uses `(x_scaled * sin(average_angle) - z_scaled * cos(average_angle))` to compute the
               // depth (execpt that you do not use average angles since they only have on angle). On recomputing
@@ -178,7 +178,7 @@ namespace WorldBuilder
               // mantle and/or oceanic plate, we have to switch off adiabatic heating for now.
               // Todo: there may be a better way to deal with this.
               ;
-              double temp = adiabatic_heating ? std::exp(((thermal_expansion_coefficient * gravity_norm * depth) / specific_heat)) : 1;
+              const double temp = adiabatic_heating ? std::exp(((thermal_expansion_coefficient * gravity_norm * depth) / specific_heat)) : 1;
 
               WBAssert(!std::isnan(temp), "Internal error: temp is not a number: " << temp << ". In exponent: "
                        << std::exp(((thermal_expansion_coefficient * gravity_norm) / specific_heat) * depth)
@@ -193,8 +193,8 @@ namespace WorldBuilder
                          * (sin(i * Consts::PI * z_scaled));
                 }
               // todo: investigate whether this 273.15 should just be the surface temperature.
-              double temperature = temp * (potential_mantle_temperature
-                                           + 2.0 * (potential_mantle_temperature - 273.15) * sum);
+              const double temperature = temp * (potential_mantle_temperature
+                                                 + 2.0 * (potential_mantle_temperature - 273.15) * sum);
 
               WBAssert(!std::isnan(temperature), "Internal error: temperature is not a number: " << temperature << '.');
               WBAssert(std::isfinite(temperature), "Internal error: temperature is not finite: " << temperature << '.');

@@ -19,13 +19,14 @@
 
 #include "world_builder/kd_tree.h"
 #include <algorithm>
+#include <utility>
 
 namespace WorldBuilder
 {
   namespace KDTree
   {
     KDTree::KDTree(std::vector<Node> point_list)
-      : nodes(point_list)
+      : nodes(std::move(std::move(point_list)))
     {}
 
 
@@ -34,7 +35,7 @@ namespace WorldBuilder
                         const size_t right,
                         const bool y_axis)
     {
-      size_t mid=(left+right)>>1;
+      const size_t mid=(left+right)>>1;
       std::nth_element(nodes.begin()+left,nodes.begin()+mid,nodes.begin()+right+1,
                        [y_axis](Node& i, Node& j) -> bool
       {
@@ -58,7 +59,7 @@ namespace WorldBuilder
     IndexDistance
     KDTree::find_closest_point(const Point<2> &check_point) const
     {
-      size_t start_node_index = 0;
+      const size_t start_node_index = 0;
       IndexDistance index_distance = {start_node_index,
                                       std::numeric_limits<double>::max()
                                      };
@@ -79,7 +80,7 @@ namespace WorldBuilder
       // Calculate the index of this node
       const size_t mid=(left+right)>>1;
       const Node &node = nodes[mid];
-      if (check_point[y_axis] < node[y_axis])
+      if (check_point[static_cast<size_t>(y_axis)] < node[y_axis])
         {
           // Traverse left child
           if (left<mid)
@@ -99,7 +100,7 @@ namespace WorldBuilder
           // Traverse right child
           if (right>mid)
             {
-              if ((node[y_axis]-check_point[y_axis]) < index_distance.distance)
+              if ((node[y_axis]-check_point[static_cast<size_t>(y_axis)]) < index_distance.distance)
                 {
                   find_closest_point_recursive(check_point,mid+1,right,!y_axis,index_distance);
                 }
@@ -122,7 +123,7 @@ namespace WorldBuilder
 
           // Traverse left child
           if (left<mid)
-            if ((node[y_axis]-check_point[y_axis]) < index_distance.distance)
+            if ((node[y_axis]-check_point[static_cast<size_t>(y_axis)]) < index_distance.distance)
               find_closest_point_recursive(check_point,left,mid-1,!y_axis,index_distance);
         }
     }
@@ -132,7 +133,7 @@ namespace WorldBuilder
     IndexDistances
     KDTree::find_closest_points(const Point<2> &check_point) const
     {
-      size_t start_node_index = 0;
+      const size_t start_node_index = 0;
       IndexDistances index_distances = {start_node_index,
                                         std::numeric_limits<double>::max(),
                                         {}
@@ -155,7 +156,7 @@ namespace WorldBuilder
       // Calculate the index of this node
       const size_t mid=(left+right)>>1;
       const Node &node = nodes[mid];
-      if (check_point[y_axis] < node[y_axis])
+      if (check_point[static_cast<size_t>(y_axis)] < node[y_axis])
         {
           // Traverse left child
           if (left<mid)
@@ -177,7 +178,7 @@ namespace WorldBuilder
           // Traverse right child
           if (right>mid)
             {
-              if ((node[y_axis]-check_point[y_axis]) < index_distances.min_distance)
+              if ((node[y_axis]-check_point[static_cast<size_t>(y_axis)]) < index_distances.min_distance)
                 {
                   find_closest_points_recursive(check_point,mid+1,right,!y_axis,index_distances);
                 }
@@ -202,9 +203,9 @@ namespace WorldBuilder
 
           // Traverse left child
           if (left<mid)
-            if ((node[y_axis]-check_point[y_axis]) < index_distances.min_distance)
+            if ((node[y_axis]-check_point[static_cast<size_t>(y_axis)]) < index_distances.min_distance)
               find_closest_points_recursive(check_point,left,mid-1,!y_axis,index_distances);
         }
     }
-  }
-}
+  } // namespace KDTree
+} // namespace WorldBuilder

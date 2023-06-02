@@ -94,6 +94,6 @@ namespace WorldBuilder
       // thrown when the name is not present.
       return get_factory_map().at(lower_case_name)->create(world);
     }
-  } // namespace CoordinateSystems
+  } // namespace GravityModel
 } // namespace WorldBuilder
 

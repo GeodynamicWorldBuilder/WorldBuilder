@@ -142,7 +142,7 @@ namespace WorldBuilder
     WBAssertThrow(parameters.IsObject(), "World builder file is is not an object.");
 
 
-    SchemaDocument schema(declarations);
+    const SchemaDocument schema(declarations);
     SchemaValidator validator(schema);
 
     if (!parameters.Accept(validator))
@@ -403,7 +403,7 @@ namespace WorldBuilder
       }
     WBAssertThrow(false, "default values not implemented in get<Point<2> >. Looked in: " + strict_base + "/" << name);
 
-    return Point<2>(invalid);;
+    return {invalid};;
   }
 
   template<>
@@ -430,9 +430,9 @@ namespace WorldBuilder
                       "internal error: could not retrieve the minItems value at: "
                       << this->get_full_json_schema_path() + "/" + name + "/minItems value");
 
-        size_t min_size = value->GetUint();
+        const size_t min_size = value->GetUint();
 
-        bool default_value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/items/default value").c_str()).Get(declarations)->GetBool();
+        const bool default_value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/items/default value").c_str()).Get(declarations)->GetBool();
 
         // set to min size
         for (size_t i = 0; i < min_size; ++i)
@@ -464,7 +464,7 @@ namespace WorldBuilder
     bool is_array = true;
     if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr && Pointer((strict_base + "/" + name).c_str()).Get(parameters)->IsArray())
       {
-        std::string value_def_path = get_full_json_schema_path() + "/" + name + "/oneOf/1/items/items/anyOf/0/default value";
+        const std::string value_def_path = get_full_json_schema_path() + "/" + name + "/oneOf/1/items/items/anyOf/0/default value";
         Value *value_def = Pointer(value_def_path.c_str()).Get(declarations);
         WBAssertThrow(value_def != nullptr,
                       "internal error: could not retrieve the default value at: "
@@ -519,11 +519,11 @@ namespace WorldBuilder
                 //         If a value without points is encountered, the additional points are used.
 
                 // first fill with additional points at default value
-                for (unsigned int addition_point_i = 0; addition_point_i < addition_points.size(); ++addition_point_i)
+                for (const auto &addition_point : addition_points)
                   {
                     result.first.emplace_back(default_value);
-                    result.second.emplace_back(addition_points[addition_point_i][0]);
-                    result.second.emplace_back(addition_points[addition_point_i][1]);
+                    result.second.emplace_back(addition_point[0]);
+                    result.second.emplace_back(addition_point[1]);
                   }
 
                 // second, go through all the points in order
@@ -841,7 +841,7 @@ namespace WorldBuilder
             const std::string base = this->get_full_json_path();
             // get one segment
             // length
-            double length = Pointer((base + "/length").c_str()).Get(parameters)->GetDouble();
+            const double length = Pointer((base + "/length").c_str()).Get(parameters)->GetDouble();
 
             // get thickness
             Value *point_array = Pointer((base  + "/thickness").c_str()).Get(parameters);
@@ -851,13 +851,13 @@ namespace WorldBuilder
                 if (point_array->Size() == 1)
                   {
                     // There is only one value, set it for both elements
-                    double local0 = Pointer((base + "/thickness/0").c_str()).Get(parameters)->GetDouble();
+                    const double local0 = Pointer((base + "/thickness/0").c_str()).Get(parameters)->GetDouble();
                     thickness = Point<2>(local0,local0,invalid);
                   }
                 else
                   {
-                    double local0 = Pointer((base + "/thickness/0").c_str()).Get(parameters)->GetDouble();
-                    double local1 = Pointer((base + "/thickness/1").c_str()).Get(parameters)->GetDouble();
+                    const double local0 = Pointer((base + "/thickness/0").c_str()).Get(parameters)->GetDouble();
+                    const double local1 = Pointer((base + "/thickness/1").c_str()).Get(parameters)->GetDouble();
                     thickness = Point<2>(local0,local1,invalid);
                   }
               }
@@ -870,13 +870,13 @@ namespace WorldBuilder
                 if (point_array->Size() == 1)
                   {
                     // There is only one value, set it for both elements
-                    double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
+                    const double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
                     top_trunctation = Point<2>(local0,local0,invalid);
                   }
                 else
                   {
-                    double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
-                    double local1 = Pointer((base + "/top truncation/1").c_str()).Get(parameters)->GetDouble();
+                    const double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
+                    const double local1 = Pointer((base + "/top truncation/1").c_str()).Get(parameters)->GetDouble();
                     top_trunctation = Point<2>(local0,local1,invalid);
                   }
               }
@@ -888,13 +888,13 @@ namespace WorldBuilder
                 if (point_array->Size() == 1)
                   {
                     // There is only one value, set it for both elements
-                    double local0 = Pointer((base + "/angle/0").c_str()).Get(parameters)->GetDouble();
+                    const double local0 = Pointer((base + "/angle/0").c_str()).Get(parameters)->GetDouble();
                     angle = Point<2>(local0,local0,invalid);
                   }
                 else
                   {
-                    double local0 = Pointer((base + "/angle/0").c_str()).Get(parameters)->GetDouble();
-                    double local1 = Pointer((base + "/angle/1").c_str()).Get(parameters)->GetDouble();
+                    const double local0 = Pointer((base + "/angle/0").c_str()).Get(parameters)->GetDouble();
+                    const double local1 = Pointer((base + "/angle/1").c_str()).Get(parameters)->GetDouble();
                     angle = Point<2>(local0,local1,invalid);
                   }
               }
@@ -1040,7 +1040,7 @@ namespace WorldBuilder
             const std::string base = this->get_full_json_path();
             // get one segment
             // length
-            double length = Pointer((base + "/length").c_str()).Get(parameters)->GetDouble();
+            const double length = Pointer((base + "/length").c_str()).Get(parameters)->GetDouble();
 
             // get thickness
             Value *point_array = Pointer((base  + "/thickness").c_str()).Get(parameters);
@@ -1050,13 +1050,13 @@ namespace WorldBuilder
                 if (point_array->Size() == 1)
                   {
                     // There is only one value, set it for both elements
-                    double local0 = Pointer((base + "/thickness/0").c_str()).Get(parameters)->GetDouble();
+                    const double local0 = Pointer((base + "/thickness/0").c_str()).Get(parameters)->GetDouble();
                     thickness = Point<2>(local0,local0,invalid);
                   }
                 else
                   {
-                    double local0 = Pointer((base + "/thickness/0").c_str()).Get(parameters)->GetDouble();
-                    double local1 = Pointer((base + "/thickness/1").c_str()).Get(parameters)->GetDouble();
+                    const double local0 = Pointer((base + "/thickness/0").c_str()).Get(parameters)->GetDouble();
+                    const double local1 = Pointer((base + "/thickness/1").c_str()).Get(parameters)->GetDouble();
                     thickness = Point<2>(local0,local1,invalid);
                   }
               }
@@ -1069,13 +1069,13 @@ namespace WorldBuilder
                 if (point_array->Size() == 1)
                   {
                     // There is only one value, set it for both elements
-                    double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
+                    const double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
                     top_trunctation = Point<2>(local0,local0,invalid);
                   }
                 else
                   {
-                    double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
-                    double local1 = Pointer((base + "/top truncation/1").c_str()).Get(parameters)->GetDouble();
+                    const double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
+                    const double local1 = Pointer((base + "/top truncation/1").c_str()).Get(parameters)->GetDouble();
                     top_trunctation = Point<2>(local0,local1,invalid);
                   }
               }
@@ -1087,13 +1087,13 @@ namespace WorldBuilder
                 if (point_array->Size() == 1)
                   {
                     // There is only one value, set it for both elements
-                    double local0 = Pointer((base + "/angle/0").c_str()).Get(parameters)->GetDouble();
+                    const double local0 = Pointer((base + "/angle/0").c_str()).Get(parameters)->GetDouble();
                     angle = Point<2>(local0,local0,invalid);
                   }
                 else
                   {
-                    double local0 = Pointer((base + "/angle/0").c_str()).Get(parameters)->GetDouble();
-                    double local1 = Pointer((base + "/angle/1").c_str()).Get(parameters)->GetDouble();
+                    const double local0 = Pointer((base + "/angle/0").c_str()).Get(parameters)->GetDouble();
+                    const double local1 = Pointer((base + "/angle/1").c_str()).Get(parameters)->GetDouble();
                     angle = Point<2>(local0,local1,invalid);
                   }
               }
@@ -1240,14 +1240,14 @@ namespace WorldBuilder
                       "internal error: could not retrieve the minItems value at: "
                       << this->get_full_json_schema_path() + "/" + name + "/minItems");
 
-        size_t min_size = value->GetUint();
+        const size_t min_size = value->GetUint();
 
         value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/items/default value").c_str()).Get(declarations);
         WBAssertThrow(value != nullptr,
                       "internal error: could not retrieve the default value at: "
                       << this->get_full_json_schema_path() + "/" + name + "/default value");
 
-        double default_value = value->GetDouble();
+        const double default_value = value->GetDouble();
 
         // set to min size
         for (size_t i = 0; i < min_size; ++i)
@@ -1282,14 +1282,14 @@ namespace WorldBuilder
                       "internal error: could not retrieve the minItems value at: "
                       << this->get_full_json_schema_path() + "/" + name + "/minItems");
 
-        size_t min_size = value->GetUint();
+        const size_t min_size = value->GetUint();
 
         value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/items/default value").c_str()).Get(declarations);
         WBAssertThrow(value != nullptr,
                       "internal error: could not retrieve the default value at: "
                       << this->get_full_json_schema_path() + "/" + name + "/default value");
 
-        size_t default_value = value->GetUint();
+        const size_t default_value = value->GetUint();
 
         // set to min size
         for (size_t i = 0; i < min_size; ++i)
@@ -1324,9 +1324,9 @@ namespace WorldBuilder
                       "internal error: could not retrieve the minItems value at: "
                       << this->get_full_json_schema_path() + "/" + name + "/minItems value");
 
-        size_t min_size = value->GetUint();
+        const size_t min_size = value->GetUint();
 
-        unsigned int default_value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/items/default value").c_str()).Get(declarations)->GetUint();
+        const unsigned int default_value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/items/default value").c_str()).Get(declarations)->GetUint();
 
         // set to min size
         for (size_t i = 0; i < min_size; ++i)
@@ -1383,7 +1383,7 @@ namespace WorldBuilder
           {
             const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
 
-            std::string value = Pointer((base + "/model").c_str()).Get(parameters)->GetString();
+            const std::string value = Pointer((base + "/model").c_str()).Get(parameters)->GetString();
 
             vector.push_back(std::move(T::create(value, &world)));
           }
@@ -1458,7 +1458,7 @@ namespace WorldBuilder
           {
             const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
 
-            std::string value = Pointer((base + "/model").c_str()).Get(parameters)->GetString();
+            const std::string value = Pointer((base + "/model").c_str()).Get(parameters)->GetString();
 
             vector.push_back(std::move(T::create(value, &world)));
           }
@@ -1553,13 +1553,13 @@ namespace WorldBuilder
         // first get the type
         //WBAssert(Pointer((collapse + "/" + path[i] + "/type").c_str()).Get(declarations) != NULL, "Internal error: could not find " << collapse + "/" + path[i] + "/type");
 
-        std::string base_path = Pointer((collapse + "/" + path[i] + "/type").c_str()).Get(declarations) != nullptr
-                                ?
-                                collapse + "/" + path[i]
-                                :
-                                collapse;
+        const std::string base_path = Pointer((collapse + "/" + path[i] + "/type").c_str()).Get(declarations) != nullptr
+                                      ?
+                                      collapse + "/" + path[i]
+                                      :
+                                      collapse;
 
-        std::string type = Pointer((base_path + "/type").c_str()).Get(declarations)->GetString();
+        const std::string type = Pointer((base_path + "/type").c_str()).Get(declarations)->GetString();
 
         if (type == "array")
           {
@@ -1571,20 +1571,20 @@ namespace WorldBuilder
                 // it has a structure with oneOf. Find out which of the entries is needed.
                 // This means we have to take a sneak peak to figure out how to get to the
                 // next value.
-                size_t size = Pointer((base_path + "/items/oneOf").c_str()).Get(declarations)->Size();
+                const size_t size = Pointer((base_path + "/items/oneOf").c_str()).Get(declarations)->Size();
 #ifdef debug
                 bool found = false;
 #endif
                 size_t index = 0;
                 for (; index < size; ++index)
                   {
-                    std::string declarations_string = Pointer((base_path + "/items/oneOf/" + std::to_string(index)
-                                                               + "/properties/model/enum/0").c_str()).Get(declarations)->GetString();
+                    const std::string declarations_string = Pointer((base_path + "/items/oneOf/" + std::to_string(index)
+                                                                     + "/properties/model/enum/0").c_str()).Get(declarations)->GetString();
 
                     // we need to get the json path relevant for the current declaration string
                     // we are interested in, which requires an offset of 2.
                     WBAssert(Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters) != nullptr, "Could not find model in: " << get_full_json_path(i+2) + "/model");
-                    std::string parameters_string = Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters)->GetString();
+                    const std::string parameters_string = Pointer((get_full_json_path(i+2) + "/model").c_str()).Get(parameters)->GetString();
 
                     // currently in our case these are always objects, so go directly to find the option we need.
                     if (declarations_string == parameters_string)
@@ -1618,15 +1618,15 @@ namespace WorldBuilder
                 // it has a structure with oneOf. Find out which of the entries is needed.
                 // This means we have to take a sneak peak to figure out how to get to the
                 // next value.
-                size_t size = Pointer((base_path + "/oneOf").c_str()).Get(declarations)->Size();
+                const size_t size = Pointer((base_path + "/oneOf").c_str()).Get(declarations)->Size();
 #ifdef debug
                 bool found = false;
 #endif
                 size_t index = 0;
                 for (; index < size; ++index)
                   {
-                    std::string declarations_string = Pointer((base_path + "/oneOf/" + std::to_string(index)
-                                                               + "/properties/model/enum/0").c_str()).Get(declarations)->GetString();
+                    const std::string declarations_string = Pointer((base_path + "/oneOf/" + std::to_string(index)
+                                                                     + "/properties/model/enum/0").c_str()).Get(declarations)->GetString();
 
                     // we need to get the json path relevant for the current declaration string
                     // we are interested in, which requires an offset of 2.
@@ -1641,7 +1641,7 @@ namespace WorldBuilder
                                       << collapse + "/" + path[i]  + "/default value, for value: ");
                       }
 
-                    std::string parameters_string = value->GetString();
+                    const std::string parameters_string = value->GetString();
 
                     // currently in our case these are always objects, so go directly to find the option we need.
                     if (declarations_string == parameters_string)

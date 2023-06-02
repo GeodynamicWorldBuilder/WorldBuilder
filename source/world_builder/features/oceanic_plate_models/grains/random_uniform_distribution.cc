@@ -21,15 +21,15 @@
 
 #include <algorithm>
 
+#include "world_builder/kd_tree.h"
 #include "world_builder/nan.h"
 #include "world_builder/types/array.h"
 #include "world_builder/types/bool.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
 #include "world_builder/types/one_of.h"
-#include "world_builder/types/value_at_points.h"
 #include "world_builder/types/unsigned_int.h"
-#include "world_builder/kd_tree.h"
+#include "world_builder/types/value_at_points.h"
 #include "world_builder/utilities.h"
 #include "world_builder/world.h"
 
@@ -46,8 +46,8 @@ namespace WorldBuilder
         RandomUniformDistribution::RandomUniformDistribution(WorldBuilder::World *world_)
           :
           min_depth(NaN::DSNAN),
-          max_depth(NaN::DSNAN),
-          operation("")
+          max_depth(NaN::DSNAN)
+
         {
           this->world = world_;
           this->name = "random uniform distribution";
@@ -152,13 +152,13 @@ namespace WorldBuilder
                               // the public domain, and is yours to study, modify, and use."
 
                               // first generate three random numbers between 0 and 1 and multiply them with 2 PI or 2 for z. Note that these are not the same as phi_1, theta and phi_2.
-                              double one = dist(world->get_random_number_engine());
-                              double two = dist(world->get_random_number_engine());
-                              double three = dist(world->get_random_number_engine());
+                              const double one = dist(world->get_random_number_engine());
+                              const double two = dist(world->get_random_number_engine());
+                              const double three = dist(world->get_random_number_engine());
 
-                              double theta = 2.0 * Consts::PI * one; // Rotation about the pole (Z)
-                              double phi = 2.0 * Consts::PI * two; // For direction of pole deflection.
-                              double z = 2.0* three; //For magnitude of pole deflection.
+                              const double theta = 2.0 * Consts::PI * one; // Rotation about the pole (Z)
+                              const double phi = 2.0 * Consts::PI * two; // For direction of pole deflection.
+                              const double z = 2.0* three; //For magnitude of pole deflection.
 
                               // Compute a vector V used for distributing points over the sphere
                               // via the reflection I - V Transpose(V).  This formulation of V
@@ -166,19 +166,19 @@ namespace WorldBuilder
                               // the reflected points will be uniform on the sphere.  Note that V
                               // has length sqrt(2) to eliminate the 2 in the Householder matrix.
 
-                              double r  = std::sqrt( z );
-                              double Vx = std::sin( phi ) * r;
-                              double Vy = std::cos( phi ) * r;
-                              double Vz = std::sqrt( 2.F - z );
+                              const double r  = std::sqrt( z );
+                              const double Vx = std::sin( phi ) * r;
+                              const double Vy = std::cos( phi ) * r;
+                              const double Vz = std::sqrt( 2.F - z );
 
                               // Compute the row vector S = Transpose(V) * R, where R is a simple
                               // rotation by theta about the z-axis.  No need to compute Sz since
                               // it's just Vz.
 
-                              double st = std::sin( theta );
-                              double ct = std::cos( theta );
-                              double Sx = Vx * ct - Vy * st;
-                              double Sy = Vx * st + Vy * ct;
+                              const double st = std::sin( theta );
+                              const double ct = std::cos( theta );
+                              const double Sx = Vx * ct - Vy * st;
+                              const double Sy = Vx * st + Vy * ct;
 
                               // Construct the rotation matrix  ( V Transpose(V) - I ) R, which
                               // is equivalent to V S - R.
@@ -205,7 +205,7 @@ namespace WorldBuilder
 
                           if (normalize_grain_sizes[i])
                             {
-                              double one_over_total_size = 1/total_size;
+                              const double one_over_total_size = 1/total_size;
                               std::transform(grains_local.sizes.begin(), grains_local.sizes.end(), grains_local.sizes.begin(),
                                              [one_over_total_size](double sizes) -> double { return sizes *one_over_total_size; });
                             }

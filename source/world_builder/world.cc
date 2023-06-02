@@ -21,6 +21,8 @@
 
 
 #include "world_builder/config.h"
+#include "world_builder/features/subducting_plate.h"
+#include "world_builder/gravity_model/interface.h"
 #include "world_builder/nan.h"
 #include "world_builder/types/array.h"
 #include "world_builder/types/bool.h"
@@ -28,8 +30,6 @@
 #include "world_builder/types/object.h"
 #include "world_builder/types/plugin_system.h"
 #include "world_builder/types/point.h"
-#include "world_builder/gravity_model/interface.h"
-#include "world_builder/features/subducting_plate.h"
 
 #include <iostream>
 #include <world_builder/coordinate_system.h>
@@ -197,7 +197,7 @@ namespace WorldBuilder
     if (set_cross_section)
       {
         dim = 2;
-        std::vector<Point<2> > cross_section_natural = prm.get_vector<Point<2> >("cross section");
+        const std::vector<Point<2> > cross_section_natural = prm.get_vector<Point<2> >("cross section");
 
         WBAssertThrow(cross_section_natural.size() == 2, "The cross section should contain two points, but it contains "
                       << cross_section.size() << " points.");
@@ -290,7 +290,7 @@ namespace WorldBuilder
       }
 
 
-    std::array<double, 3> point_3d_cartesian = this->parameters.coordinate_system->natural_to_cartesian_coordinates(coord_3d.get_array());
+    const std::array<double, 3> point_3d_cartesian = this->parameters.coordinate_system->natural_to_cartesian_coordinates(coord_3d.get_array());
 
     return this->properties(point_3d_cartesian, depth, properties);
   }
@@ -302,7 +302,7 @@ namespace WorldBuilder
                     const std::vector<std::array<unsigned int,3>> &properties) const
   {
     // We receive the cartesian points from the user.
-    Point<3> point(point_,cartesian);
+    const Point<3> point(point_,cartesian);
 
     WBAssert(!this->limit_debug_consistency_checks || this->parameters.coordinate_system->natural_coordinate_system() == cartesian
              || approx(depth, this->parameters.coordinate_system->max_model_depth()-sqrt(point_[0]*point_[0]+point_[1]*point_[1]+point_[2]*point_[2])),
@@ -312,7 +312,7 @@ namespace WorldBuilder
              << ", point = " << point_[0] << " " << point_[1] << " " << point_[2]
              << ", radius-point.norm() = " << this->parameters.coordinate_system->max_model_depth()-sqrt(point_[0]*point_[0]+point_[1]*point_[1]+point_[2]*point_[2]));
 
-    Objects::NaturalCoordinate natural_coordinate = Objects::NaturalCoordinate(point,*(this->parameters.coordinate_system));
+    const Objects::NaturalCoordinate natural_coordinate = Objects::NaturalCoordinate(point,*(this->parameters.coordinate_system));
 
     // create output vector
     std::vector<double> output;
@@ -438,10 +438,10 @@ namespace WorldBuilder
   Objects::PlaneDistances
   World::distance_to_plane(const std::array<double, 3> &point_,
                            const double depth,
-                           const std::string name) const
+                           const std::string &name) const
   {
     // We receive the cartesian points from the user.
-    Point<3> point(point_,cartesian);
+    const Point<3> point(point_,cartesian);
 
     WBAssert(!this->limit_debug_consistency_checks || this->parameters.coordinate_system->natural_coordinate_system() == cartesian
              || approx(depth, this->parameters.coordinate_system->max_model_depth()-sqrt(point_[0]*point_[0]+point_[1]*point_[1]+point_[2]*point_[2])),
@@ -451,7 +451,7 @@ namespace WorldBuilder
              << ", point = " << point_[0] << " " << point_[1] << " " << point_[2]
              << ", radius-point.norm() = " << this->parameters.coordinate_system->max_model_depth()-sqrt(point_[0]*point_[0]+point_[1]*point_[1]+point_[2]*point_[2]));
 
-    Objects::NaturalCoordinate natural_coordinate = Objects::NaturalCoordinate(point,*(this->parameters.coordinate_system));
+    const Objects::NaturalCoordinate natural_coordinate = Objects::NaturalCoordinate(point,*(this->parameters.coordinate_system));
 
     Objects::PlaneDistances plane_distances(0.0, 0.0);
     for (auto &&it : this->parameters.features)

@@ -134,5 +134,5 @@ namespace WorldBuilder
 
       return coordinates[2];
     }
-  }
-}
+  } // namespace Objects
+} // namespace WorldBuilder

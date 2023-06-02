@@ -166,9 +166,9 @@ namespace WorldBuilder
     }
 
     Objects::PlaneDistances
-    Interface::distance_to_feature_plane(const Point<3> &,
-                                         const Objects::NaturalCoordinate &,
-                                         const double) const
+    Interface::distance_to_feature_plane(const Point<3> & /*unused*/,
+                                         const Objects::NaturalCoordinate & /*unused*/,
+                                         const double /*unused*/) const
     {
       WBAssertThrow(false, "The distance_to_feature_plane is not yet implemented for the desinated object");
     }

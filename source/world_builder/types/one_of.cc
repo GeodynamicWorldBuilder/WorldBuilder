@@ -36,9 +36,9 @@ namespace WorldBuilder
     OneOf::OneOf(OneOf const &other)
     {
       this->type_name = Types::type::OneOf;
-      for (size_t i = 0; i < other.inner_types_ptr.size(); i++)
+      for (const auto &i : other.inner_types_ptr)
         {
-          inner_types_ptr.emplace_back(other.inner_types_ptr[i]->clone());
+          inner_types_ptr.emplace_back(i->clone());
         }
     }
 

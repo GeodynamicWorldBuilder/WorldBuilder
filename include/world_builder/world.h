@@ -201,7 +201,7 @@ namespace WorldBuilder
       Objects::PlaneDistances
       distance_to_plane(const std::array<double, 3> &point,
                         const double depth,
-                        const std::string name) const;
+                        const std::string &name) const;
 
       /**
        * The MPI rank. Set to zero if MPI is not available.

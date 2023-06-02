@@ -53,21 +53,21 @@ namespace WorldBuilder
 
 
     std::array<double,3>
-    Invalid::cartesian_to_natural_coordinates(const std::array<double,3> &) const
+    Invalid::cartesian_to_natural_coordinates(const std::array<double,3> & /*position*/) const
     {
       return {{NaN::DQNAN,NaN::DQNAN,NaN::DQNAN}};
     }
 
 
     std::array<double,3>
-    Invalid::natural_to_cartesian_coordinates(const std::array<double,3> &) const
+    Invalid::natural_to_cartesian_coordinates(const std::array<double,3> & /*position*/) const
     {
       return {{NaN::DQNAN,NaN::DQNAN,NaN::DQNAN}};
     }
 
 
     double
-    Invalid::distance_between_points_at_same_depth(const Point<3> &, const Point<3> &) const
+    Invalid::distance_between_points_at_same_depth(const Point<3> & /*point_1*/, const Point<3> & /*point_2*/) const
     {
       return NaN::DQNAN;
     }

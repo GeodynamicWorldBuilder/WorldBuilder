@@ -329,16 +329,16 @@ namespace WorldBuilder
 
 
               // Need adiabatic temperature at position of grid point
-              double background_temperature = adiabatic_heating ? potential_mantle_temperature *
-                                              std::exp(thermal_expansion_coefficient * gravity_norm * depth / specific_heat)
-                                              : potential_mantle_temperature;
+              const double background_temperature = adiabatic_heating ? potential_mantle_temperature *
+                                                    std::exp(thermal_expansion_coefficient * gravity_norm * depth / specific_heat)
+                                                    : potential_mantle_temperature;
 
               WBAssert(!std::isnan(background_temperature), "Internal error: temp is not a number: " << background_temperature << ". In exponent: "
                        << std::exp(((thermal_expansion_coefficient * gravity_norm) / specific_heat) * depth)
                        << ", thermal_expansion_coefficient = " << thermal_expansion_coefficient << ", gravity_norm = " << gravity_norm
                        << ", specific_heat = " << specific_heat << ", depth = " << depth);
 
-              double adiabatic_gradient = adiabatic_heating ? background_temperature - potential_mantle_temperature : 0;
+              const double adiabatic_gradient = adiabatic_heating ? background_temperature - potential_mantle_temperature : 0;
 
               //  2. Get Tmin and offset as a function of depth: these depend on plate velocity and plate age_at_trench.
               //     shallow-dipping slabs will take longer to reach the same depth - this leads to larger effective age at a given depth
@@ -390,7 +390,7 @@ namespace WorldBuilder
               const double upper_mantle_lengthscale = 660e3 - mantle_coupling_depth; // m
 
 
-              double taper_con = 0.8;  // controls how close taper gets to end of segment
+              const double taper_con = 0.8;  // controls how close taper gets to end of segment
               double theta = 0;
               double min_temperature = 0;
               double offset = 0;
@@ -406,12 +406,12 @@ namespace WorldBuilder
                 {
                   // beyond start taper distance to taper the slab tip
 
-                  double depth_start_taper = depth_to_reference_surface - (distance_along_plane - start_taper_distance)
-                                             * std::sin(average_angle * Consts::PI / 180.0);
-                  double theta_start = (mantle_coupling_depth - depth_start_taper) / (subfact * upper_mantle_lengthscale);
-                  double Tmin_start_taper = Tcoup + Tmin660 * (std::erfc(theta_start)) - Tmin660;
+                  const double depth_start_taper = depth_to_reference_surface - (distance_along_plane - start_taper_distance)
+                                                   * std::sin(average_angle * Consts::PI / 180.0);
+                  const double theta_start = (mantle_coupling_depth - depth_start_taper) / (subfact * upper_mantle_lengthscale);
+                  const double Tmin_start_taper = Tcoup + Tmin660 * (std::erfc(theta_start)) - Tmin660;
                   //keep the offset location constant in the taper
-                  double offset_start_taper = offset_coup + (offset660) * std::erfc(theta_start) - offset660;
+                  const double offset_start_taper = offset_coup + (offset660) * std::erfc(theta_start) - offset660;
 
                   // taper Tmin to the mantle temperature
                   theta = (distance_along_plane - start_taper_distance) / (taper_distance);
@@ -468,8 +468,8 @@ namespace WorldBuilder
                     {
                       // use 1D infinite space solution for top (side 2) of slab the slab
                       // 2 times the "top_heat_content" because all this heat needs to be on one side of the Gaussian
-                      double time_top_slab = (1/(Consts::PI*thermal_diffusivity)) *
-                                             pow(((2 * top_heat_content) / (2 * density * specific_heat * (min_temperature - temperature_ + 1e-16))),2) + 1e-16;
+                      const double time_top_slab = (1/(Consts::PI*thermal_diffusivity)) *
+                                                   pow(((2 * top_heat_content) / (2 * density * specific_heat * (min_temperature - temperature_ + 1e-16))),2) + 1e-16;
 
                       // for overriding plate region where plate temperature is less the minimum slab temperature
                       // need to set temperature = temperature_ otherwise end up with temperature less than surface temperature ;
