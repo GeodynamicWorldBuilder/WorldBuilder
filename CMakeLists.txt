@@ -535,6 +535,7 @@ if(MAKE_PYTHON_WRAPPER)
   # Install target to call setup.py
   add_custom_target(install-python
           DEPENDS _gwb
+          BYPRODUCTS _gwb
           COMMAND ${Python_EXECUTABLE} ${SETUP_PY_OUT} install)
 endif()
 
