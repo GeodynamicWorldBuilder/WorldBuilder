@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.8.4)
+cmake_minimum_required (VERSION 2.8.12)
 
 project(WorldBuilder C CXX)
 
@@ -60,11 +60,7 @@ endif()
 # finding support for different languages
 # finding a fortran compiler
 set(WB_MAKE_FORTRAN_WRAPPER ON CACHE BOOL "Whether or not to create a Fortran wrapper for the world builder.")
-if(${CMAKE_VERSION} VERSION_LESS "2.8.8") 
-  message(STATUS "Fortran not supported with cmake version lower than  2.8.8. Please upgrade your cmake version if you need it. Disabling Fortran wrapper and tests.")
-  SET(CMAKE_Fortran_COMPILER FALSE)
-  set(WB_MAKE_FORTRAN_WRAPPER OFF CACHE BOOL "Whether or not to create a Fortran wrapper for the world builder." FORCE)
-elseif(WB_MAKE_FORTRAN_WRAPPER)
+if(WB_MAKE_FORTRAN_WRAPPER)
   include(CheckLanguage)
   message(STATUS "Looking for Fortran support.")
   check_language(Fortran)
@@ -354,7 +350,7 @@ endif()
 if (NOT MSVC AND NOT APPLE)
    #TODO: if other compiles need to be threaded, see https://computing.llnl.gov/tutorials/pthreads/#Compiling to add the correct cases.
    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER MATCHES "AppleClang")
-      # Preventing issues with older cmake compilers (<2.8.12) which do not support VERSION_GREATER_EQUAL
+      # Preventing issues with older cmake compilers (<3.7) which do not support VERSION_GREATER_EQUAL
       # cmake vesrion 3.12.0 introduces COMPILE_LANGUAGE:FORTRAN, otherwise this would be >=2.8.12
       if(NOT ${CMAKE_VERSION} VERSION_LESS "3.9.0")
         SET(WB_COMPILER_OPTIONS_PRIVATE -pedantic -fPIC -Wall -Wextra  
@@ -381,7 +377,7 @@ if (NOT MSVC AND NOT APPLE)
    else()
       # gcc linux
 
-      # Preventing issues with older cmake compilers (<2.8.12) which do not support VERSION_GREATER_EQUAL
+      # Preventing issues with older cmake compilers (<3.7) which do not support VERSION_GREATER_EQUAL
       # cmake vesrion 3.12.0 introduces COMPILE_LANGUAGE:FORTRAN, otherwise this would be >=2.8.12
       if(NOT ${CMAKE_VERSION} VERSION_LESS "3.9.0")
         SET(WB_COMPILER_OPTIONS_PRIVATE -pedantic -fPIC -Wall -Wextra  $<$<COMPILE_LANGUAGE:CXX>:-std=c++14 -Wunused-variable -Wmissing-braces -Wunused-parameter -Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-placement-new -Wno-literal-suffix -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized -Wparentheses -Wfloat-equal -Wundef -Wcast-align -Wlogical-op -Wmissing-declarations -Wredundant-decls -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wno-unused>)

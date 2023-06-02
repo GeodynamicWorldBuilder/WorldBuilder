@@ -21,7 +21,7 @@ For more information see the [GWB site](https://geodynamicworldbuilder.github.io
 
 ## Frequently Asked Questions (FAQ)
 ### What are the minimum requirements to compile the library and tools?
-For GWB version 0.4.0 only a C++11 compiler and CMake version higher than 2.8.4 are required to compile the library tools. From GWB version 0.5.0 C++14 has become the new minimum c++ version. The new minimum CMake version for version 0.5.0 has not been decided on yet and remains for now version 2.8.4. Note that for some optional features (such as certain wrappers and unity build) a higher version of CMake and other dependencies may be needed (e.g. a Fortran compiler to compile the Fortran wrapper).
+For GWB version 0.4.0 only a C++11 compiler and CMake version higher than 2.8.12 are required to compile the library tools. From GWB version 0.5.0 C++14 has become the new minimum c++ version. The new minimum CMake version for version 0.5.0 has not been decided on yet and remains for now version 2.8.12. Note that for some optional features (such as certain wrappers and unity build) a higher version of CMake and other dependencies may be needed (e.g. a Fortran compiler to compile the Fortran wrapper).
 ### What do I do when I have a question or want to request a feature?
 If you have a question about the code and you can not find the answer easily in the documentation or the question is already raised as an [issue](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues), please let us know by opening an [issue on github](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/new). This is also the preferred method for asking for new features for GWB.
 
