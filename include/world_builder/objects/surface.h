@@ -105,16 +105,7 @@ namespace WorldBuilder
         std::vector<std::array<double,8> > in_triangle_precomputed;
 
       private:
-        /**
-         * Test whether a point is in a triangle. If that is the case is stores the interpolated
-         * value of the triangle into `interpolated_value` and returns true.
-         */
-        static bool in_triangle(const std::array<std::array<double,3>,3> &points,
-                                const std::array<double,8> &precomputed,
-                                const Point<2> &check_point,
-                                double &interpolate_value,
-                                double &interpolator_s,
-                                double &interpolator_t) ;
+
     };
   }
 

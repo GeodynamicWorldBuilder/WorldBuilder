@@ -29,6 +29,38 @@ namespace WorldBuilder
 {
   namespace Objects
   {
+
+    namespace
+    {
+      /**
+       * Test whether a point is in a triangle. If that is the case is stores the interpolated
+       * value of the triangle into `interpolated_value` and returns true.
+       */
+      bool in_triangle(const std::array<std::array<double,3>,3> &points,
+                       const std::array<double,8> &precomputed,
+                       const Point<2> check_point,
+                       double &interpolate_value,
+                       double &interpolator_s,
+                       double &interpolator_t)
+      {
+        double factor = 1e4;
+        // based on https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
+        // compute s, t and area
+        const double s_no_area = -(precomputed[0] + precomputed[1]*check_point[0] + precomputed[2]*check_point[1]);
+        const double t_no_area = -(precomputed[3] + precomputed[4]*check_point[0] + precomputed[5]*check_point[1]);
+
+        if (s_no_area >= -factor*std::numeric_limits<double>::epsilon() && t_no_area >= -factor*std::numeric_limits<double>::epsilon() && s_no_area+t_no_area-precomputed[6]<=precomputed[6]*factor*std::numeric_limits<double>::epsilon())
+          {
+            // point is in this triangle
+            interpolator_s = precomputed[7]*s_no_area;
+            interpolator_t = precomputed[7]*t_no_area;
+            interpolate_value = points[0][2]*(1-interpolator_s-interpolator_t)+points[1][2]*interpolator_s+points[2][2]*interpolator_t;
+            return true;
+          }
+        return false;
+      }
+    }
+
     Surface::Surface()
       = default;
 
@@ -112,30 +144,6 @@ namespace WorldBuilder
           constant_value = true;
         }
 
-    }
-
-    bool Surface::in_triangle(const std::array<std::array<double,3>,3> &points,
-                              const std::array<double,8> &precomputed,
-                              const Point<2> &check_point,
-                              double &interpolate_value,
-                              double &interpolator_s,
-                              double &interpolator_t)
-    {
-      const double factor = 1e4;
-      // based on https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
-      // compute s, t and area
-      const double s_no_area = -(precomputed[0] + precomputed[1]*check_point[0] + precomputed[2]*check_point[1]);
-      const double t_no_area = -(precomputed[3] + precomputed[4]*check_point[0] + precomputed[5]*check_point[1]);
-
-      if (s_no_area >= -factor*std::numeric_limits<double>::epsilon() && t_no_area >= -factor*std::numeric_limits<double>::epsilon() && s_no_area+t_no_area-precomputed[6]<=precomputed[6]*factor*std::numeric_limits<double>::epsilon())
-        {
-          // point is in this triangle
-          interpolator_s = precomputed[7]*s_no_area;
-          interpolator_t = precomputed[7]*t_no_area;
-          interpolate_value = points[0][2]*(1-interpolator_s-interpolator_t)+points[1][2]*interpolator_s+points[2][2]*interpolator_t;
-          return true;
-        }
-      return false;
     }
 
     SurfaceValueInfo
