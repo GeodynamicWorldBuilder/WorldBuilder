@@ -5,8 +5,8 @@ Citing the world builder
 :::::{tab-set}
 :class: full-width
 
-::::{tab-item} v0.4.0 Bibtex
-:name: v0.4.0_bibtex
+::::{tab-item} v0.5.0 Bibtex
+:name: v0.5.0_bibtex
 
 :::{include} ../../../../CITATION
 ::::

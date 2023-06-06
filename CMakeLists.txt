@@ -2,6 +2,9 @@ cmake_minimum_required (VERSION 2.8.12)
 
 project(WorldBuilder C CXX)
 
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # SWIG: use standard target name.
 if(POLICY CMP0078)
   cmake_policy(SET CMP0078 NEW)
