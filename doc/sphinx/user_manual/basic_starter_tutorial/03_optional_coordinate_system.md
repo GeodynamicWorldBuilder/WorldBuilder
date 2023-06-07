@@ -55,7 +55,7 @@ This is what we had in our minimal example.
 lineno-start: 1
 ---
 {
-    "version":"0.5",
+    "version": "0.6",
     "features":[ ]
 }
 ```
@@ -67,7 +67,7 @@ And now we add one line and set it to the default value. There is no difference 
 lineno-start: 1
 ---
 {
-    "version":"0.5",
+    "version": "0.6",
     "coordinate system":{"model":"cartesian"},
     "features":[ ]
 }
@@ -81,7 +81,7 @@ If you want to have a spherical model, please see {ref}`part:user_manual:chap:co
 lineno-start: 1
 ---
 {
-    "version":"0.5",
+    "version": "0.6",
     "coordinate system":{"model":"spherical", "depth method":"begin segment"}, 
     "features":[ ]
 }
