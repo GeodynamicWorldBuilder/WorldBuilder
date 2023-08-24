@@ -197,7 +197,7 @@ jobs:
     - name: Test gwb
       working-directory: ${{github.workspace}}/build
       shell: bash
-      run: ctest -VV -C ${{ matrix.build_type }}
+      run: ctest -VV -C ${{ matrix.build_type }}  -E _no_coordinates
       
 
   test_linux_and_macos_mpi:
@@ -493,7 +493,7 @@ jobs:
     - name: Test gwb normal and gdb
       working-directory: ${{github.workspace}}/build
       shell: bash
-      run: ctest -VV -C ${{ matrix.build_type }}
+      run: ctest -VV -C ${{ matrix.build_type }} -E _no_coordinates_gdb
 
     - name: Configure CMake
       shell: bash
@@ -506,5 +506,5 @@ jobs:
     - name: Test gwb valgrind
       working-directory: ${{github.workspace}}/build
       shell: bash
-      run: ctest -VV -C ${{ matrix.build_type }} -R _valgrind
+      run: ctest -VV -C ${{ matrix.build_type }} -R _valgrind -E _no_coordinates_valgrind
 

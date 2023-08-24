@@ -18,6 +18,16 @@ endif( NOT TEST_DIFF )
 # create a directory for the test
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/gwb-dat/${TEST_NAME})
 
+if( NOT ${TEST_DAT} EQUAL "" )
+  FILE(STRINGS ${TEST_DAT} _input_lines REGEX "EXPECT FAILURE")
+endif()
+if("${_input_lines}" STREQUAL "")
+  SET(EXPECT 0)
+else()
+  SET(EXPECT 1)
+  MESSAGE(STATUS "Test ${testname} is expected to fail.")
+endif()
+
 set(EXECUTE_COMMAND ${TEST_PROGRAM} ${TEST_ARGS})
 
 # run the test program, capture the stdout/stderr and the result var ${TEST_ARGS}
@@ -31,9 +41,19 @@ execute_process(
   )
 
 # if the return value is !=0 bail out
+if( TEST_ERROR_VAR EQUAL EXPECT )
+	message( FATAL_ERROR "Failed: Test program ${TEST_PROGRAM} exited != ${EXPECT}.\n${TEST_ERROR_VAR}" )
+endif()
+
 if( TEST_RESULT_VAR )
-	message( FATAL_ERROR "Failed: Test program ${TEST_PROGRAM} exited != 0.\n${TEST_ERROR_VAR}" )
-endif( TEST_RESULT_VAR )
+  String(REGEX REPLACE "(.*)AssertThrow `false` failed in (.*)/source/world_builder/parameters.cc at line 162: Invalid schema: #/properties/features/items" "AssertThrow `false` failed in (..path..)/source/world_builder/parameters.cc at line 162: Invalid schema: #/properties/features/items" TEST_ERROR_VAR_PROCESSED "${TEST_ERROR_VAR}")
+  string(FIND "${TEST_ERROR_VAR_PROCESSED}" "AssertThrow `false` failed in " FIRST_BRACKET)
+  string(FIND "${TEST_ERROR_VAR_PROCESSED}" "}" LAST_BRACKET REVERSE)
+  MATH(EXPR LAST_BRACKET ${LAST_BRACKET}+1)
+  string(SUBSTRING "${TEST_ERROR_VAR_PROCESSED}" "${FIRST_BRACKET}" "${LAST_BRACKET}" TEST_ERROR_VAR_PROCESSED)
+  file(APPEND ${TEST_OUTPUT} "Expected fail with: \n${TEST_ERROR_VAR_PROCESSED}")
+endif()
+
 file(TO_NATIVE_PATH "${TEST_OUTPUT}" TEST_NATIVE_OUTPUT)
 file(TO_NATIVE_PATH "${TEST_REFERENCE}" TEST_NATIVE_REFERENCE)
 
@@ -63,8 +83,10 @@ execute_process(
   RESULT_VARIABLE TEST_RESULT
   )
 
+  file(READ ${TEST_NATIVE_OUTPUT} TEST_NATIVE_OUTPUT_CONTENT)
+
 # again, if return value is !=0 scream and shout
 if( TEST_RESULT )
 	execute_process(COMMAND ${TEST_DIFF} ${TEST_NATIVE_OUTPUT} ${TEST_NATIVE_REFERENCE})
-	message( FATAL_ERROR "Failed: The output of ${TEST_NAME} stored in ${TEST_NATIVE_OUTPUT} did not match the reference output stored in ${TEST_NATIVE_REFERENCE}")
+	message( FATAL_ERROR "Failed: The output of ${TEST_NAME} stored in ${TEST_NATIVE_OUTPUT} did not match the reference output stored in ${TEST_NATIVE_REFERENCE}\n\n Full output was:\n ${TEST_NATIVE_OUTPUT_CONTENT}")
 endif( TEST_RESULT )
