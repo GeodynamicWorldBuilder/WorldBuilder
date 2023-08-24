@@ -32,6 +32,7 @@
 #include "world_builder/features/interface.h"
 #include "world_builder/grains.h"
 #include "world_builder/objects/natural_coordinate.h"
+#include "world_builder/objects/segment.h"
 #include "world_builder/objects/surface.h"
 #include "world_builder/parameters.h"
 #include "world_builder/point.h"
@@ -3475,7 +3476,6 @@ TEST_CASE("WorldBuilder Types: Segment Object")
   CHECK(type.value_top_truncation[1] == Approx(4.0));
   CHECK(type.value_angle[0] == Approx(5.0));
   CHECK(type.value_angle[1] == Approx(6.0));
-  CHECK(type.get_type() == Types::type::TYPE);
 
   Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface, Features::FaultModels::Grains::Interface>
   type_copy(type);
@@ -3487,21 +3487,6 @@ TEST_CASE("WorldBuilder Types: Segment Object")
   CHECK(type_copy.value_top_truncation[1] == Approx(4.0));
   CHECK(type_copy.value_angle[0] == Approx(5.0));
   CHECK(type_copy.value_angle[1] == Approx(6.0));
-  CHECK(type_copy.get_type() == Types::type::TYPE);
-
-  const std::unique_ptr<Types::Interface> type_clone = type_copy.clone();
-  Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface, Features::FaultModels::Grains::Interface>
-  *type_clone_natural = dynamic_cast<Objects::TYPE<Features::FaultModels::Temperature::Interface,
-   Features::FaultModels::Composition::Interface,
-   Features::FaultModels::Grains::Interface> *>(type_clone.get());
-  CHECK(type_clone_natural->value_length == Approx(1.0));
-  CHECK(type_clone_natural->value_thickness[0] == Approx(1.0));
-  CHECK(type_clone_natural->value_thickness[1] == Approx(2.0));
-  CHECK(type_clone_natural->value_top_truncation[0] == Approx(3.0));
-  CHECK(type_clone_natural->value_top_truncation[1] == Approx(4.0));
-  CHECK(type_clone_natural->value_angle[0] == Approx(5.0));
-  CHECK(type_clone_natural->value_angle[1] == Approx(6.0));
-  CHECK(type_clone_natural->get_type() == Types::type::TYPE);
 
 #undef TYPE
 }

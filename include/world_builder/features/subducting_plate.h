@@ -24,7 +24,7 @@
 #include "world_builder/features/subducting_plate_models/composition/interface.h"
 #include "world_builder/features/subducting_plate_models/grains/interface.h"
 #include "world_builder/features/subducting_plate_models/temperature/interface.h"
-#include "world_builder/types/segment.h"
+#include "world_builder/objects/segment.h"
 #include "world_builder/bounding_box.h"
 #include "world_builder/objects/distance_from_surface.h"
 
