@@ -149,18 +149,20 @@ IF(WB_RUN_APP_TESTS)
   
   # Run through each sourceUforeach(test_source ${APP_TEST_SOURCES})
   foreach(test_source ${APP_TEST_SOURCES})
-          get_filename_component(test_name ${test_source} NAME_WE)
-          set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat\;--limit-debug-consistency-checks")
-          add_test(${test_name}
-                   ${CMAKE_COMMAND} 
-  	         -D TEST_NAME=${test_name}
-  	         -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} 
-  	         -D TEST_ARGS=${TEST_ARGUMENTS}
-  	         -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/${test_name}/screen-output.log 
-  	         -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/${test_name}/screen-output.log
-             -D TEST_DIFF=${TEST_DIFF}
-  	         -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
-                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
+    get_filename_component(test_name ${test_source} NAME_WE)
+    set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat\;--limit-debug-consistency-checks")
+    add_test(${test_name}
+             ${CMAKE_COMMAND} 
+  	   -D TEST_NAME=${test_name}
+  	   -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} 
+  	   -D TEST_ARGS=${TEST_ARGUMENTS}
+  	   -D TEST_DAT=${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat 
+       -D TEST_SOURCE_DIR=${CMAKE_SOURCE_DIR}
+  	   -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/${test_name}/screen-output.log 
+  	   -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/${test_name}/screen-output.log
+       -D TEST_DIFF=${TEST_DIFF}
+  	   -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
+             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
 
   if(WB_RUN_TESTS_WITH_GDB)
     add_test(NAME ${test_name}_gdb

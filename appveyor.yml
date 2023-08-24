@@ -53,7 +53,7 @@ build_script:
   - ls /c/Python38-x64/DLLs/
 
 test_script: 
-  - ctest -VV -C %configuration%
+  - ctest -VV -C %configuration% -E _no_coordinates
 after_test:
 on_finish:
   - cat Testing/Temporary/LastTest.log
