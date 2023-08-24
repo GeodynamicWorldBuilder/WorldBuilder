@@ -132,7 +132,7 @@
 :name: open_coordinate-system_oneOf_1
 
 - **type**:object
-- **documentation**:A Cartesian coordinate sytem. Coordinates are (x,y,z) and extend infintly in all directions.
+- **documentation**:A Cartesian coordinate system. Coordinates are (x,y,z) and extend infintly in all directions.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -7911,7 +7911,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an exmple with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
+- **documentation**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/ridge coordinates/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_ridge-coordinates_items
@@ -8409,7 +8409,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an exmple with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
+- **documentation**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/ridge coordinates/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_ridge-coordinates_items
@@ -10147,7 +10147,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger thatn the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
+- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/max distance slab top
@@ -10266,7 +10266,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an exmple with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
+- **documentation**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
 :::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/ridge coordinates/items
 :open:
 :name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_ridge-coordinates_items
@@ -11200,7 +11200,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger thatn the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
+- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/max distance slab top
@@ -11319,7 +11319,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an exmple with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
+- **documentation**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
 :::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/ridge coordinates/items
 :open:
 :name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_ridge-coordinates_items
@@ -12372,7 +12372,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger thatn the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
+- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/max distance slab top
@@ -12491,7 +12491,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an exmple with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
+- **documentation**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
 :::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/ridge coordinates/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_ridge-coordinates_items
@@ -13425,7 +13425,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger thatn the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
+- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/max distance slab top
@@ -13544,7 +13544,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an exmple with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
+- **documentation**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
 :::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/ridge coordinates/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_ridge-coordinates_items
