@@ -137,7 +137,7 @@ namespace WorldBuilder
 
       prm.declare_entry("gravity model", Types::PluginSystem("uniform", GravityModel::Interface::declare_entries, {"model"}, false),"A gravity model for the world.");
 
-      prm.declare_entry("features", Types::PluginSystem("",Features::Interface::declare_entries, {"model", "coordinates"}),"A list of features.");
+      prm.declare_entry("features", Types::PluginSystem("",Features::Interface::declare_entries, {"model"}),"A list of features.");
 
     }
     prm.leave_subsection();

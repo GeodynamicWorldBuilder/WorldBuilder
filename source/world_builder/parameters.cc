@@ -657,30 +657,31 @@ namespace WorldBuilder
   {
     std::vector<Point<2> > vector;
     const std::string strict_base = this->get_full_json_path();
-    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr)
+    WBAssertThrow(Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr,"Error: " << name
+                  << " was not defined in " << strict_base << ", schema path: " << this->get_full_json_schema_path() << ".");
+
+    Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+    for (size_t i = 0; i < array->Size(); ++i )
       {
-        Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+        const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
+        //let's assume that the file is correct, because it has been checked with the json schema.
+        // So there are exactly two values.
+        double value1;
+        double value2;
 
-        for (size_t i = 0; i < array->Size(); ++i )
+        try
           {
-            const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
-            //let's assume that the file is correct, because it has been checked with the json schema.
-            // So there are exactly two values.
-            double value1;
-            double value2;
-
-            try
-              {
-                value1 = Pointer((base + "/0").c_str()).Get(parameters)->GetDouble();
-                value2 = Pointer((base + "/1").c_str()).Get(parameters)->GetDouble();
-              }
-            catch (...)
-              {
-                WBAssertThrow(false, "Could not convert values of " << base << " into a Point<2> array, because it could not convert the sub-elements into doubles.");
-              }
-            vector.emplace_back(value1,value2,this->coordinate_system->natural_coordinate_system());
+            value1 = Pointer((base + "/0").c_str()).Get(parameters)->GetDouble();
+            value2 = Pointer((base + "/1").c_str()).Get(parameters)->GetDouble();
           }
+        catch (...)
+          {
+            WBAssertThrow(false, "Could not convert values of " << base << " into a Point<2> array, because it could not convert the sub-elements into doubles.");
+          }
+        vector.emplace_back(value1,value2,this->coordinate_system->natural_coordinate_system());
       }
+
     return vector;
   }
 
@@ -690,28 +691,29 @@ namespace WorldBuilder
   {
     std::vector<std::array<double,3> > vector;
     const std::string strict_base = this->get_full_json_path();
-    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr)
-      {
-        Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+    WBAssertThrow(Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr,"Error: " << name
+                  << " was not defined in " << strict_base << ", schema path: " << this->get_full_json_schema_path() << ".");
 
-        for (size_t i = 0; i < array->Size(); ++i )
+    Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+    for (size_t i = 0; i < array->Size(); ++i )
+      {
+        const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
+        //let's assume that the file is correct, because it has been checked with the json schema.
+        // So there are exactly three values.
+        try
           {
-            const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
-            //let's assume that the file is correct, because it has been checked with the json schema.
-            // So there are exactly three values.
-            try
-              {
-                const double value1 = Pointer((base + "/0").c_str()).Get(parameters)->GetDouble();
-                const double value2 = Pointer((base + "/1").c_str()).Get(parameters)->GetDouble();
-                const double value3 = Pointer((base + "/2").c_str()).Get(parameters)->GetDouble();
-                vector.push_back({{value1,value2,value3}});
-              }
-            catch (...)
-              {
-                WBAssertThrow(false, "Could not convert values of " << base << " into doubles.");
-              }
+            const double value1 = Pointer((base + "/0").c_str()).Get(parameters)->GetDouble();
+            const double value2 = Pointer((base + "/1").c_str()).Get(parameters)->GetDouble();
+            const double value3 = Pointer((base + "/2").c_str()).Get(parameters)->GetDouble();
+            vector.push_back({{value1,value2,value3}});
+          }
+        catch (...)
+          {
+            WBAssertThrow(false, "Could not convert values of " << base << " into doubles.");
           }
       }
+
 
     return vector;
   }
@@ -722,49 +724,50 @@ namespace WorldBuilder
   {
     std::vector<std::array<std::array<double,3>,3>  > vector;
     const std::string strict_base = this->get_full_json_path();
-    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr)
+    WBAssertThrow(Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr,"Error: " << name
+                  << " was not defined in " << strict_base << ", schema path: " << this->get_full_json_schema_path() << ".");
+
+    Value *array1 = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+    for (size_t i = 0; i < array1->Size(); ++i )
       {
-        Value *array1 = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+        const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
+        Value *array2 = Pointer((base).c_str()).Get(parameters);
 
-        for (size_t i = 0; i < array1->Size(); ++i )
+        // Not sure why cppcheck it is generating the warning
+        // Filed a question at: https://sourceforge.net/p/cppcheck/discussion/general/thread/429759f85e/
+        // cppcheck-suppress constStatement
+        std::array<std::array<double,3>,3> array;
+        WBAssertThrow(array2->Size() == 3, "Array " << i << " is supposed to be a 3x3 array, but the outer array dimensions is "
+                      << array2->Size() << '.');
+        for (size_t j = 0; j < array2->Size(); ++j )
           {
-            const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
-            Value *array2 = Pointer((base).c_str()).Get(parameters);
+            const std::string base_extended = base + "/" + std::to_string(j);
 
-            // Not sure why cppcheck it is generating the warning
-            // Filed a question at: https://sourceforge.net/p/cppcheck/discussion/general/thread/429759f85e/
-            // cppcheck-suppress constStatement
-            std::array<std::array<double,3>,3> array;
-            WBAssertThrow(array2->Size() == 3, "Array " << i << " is supposed to be a 3x3 array, but the outer array dimensions is "
-                          << array2->Size() << '.');
-            for (size_t j = 0; j < array2->Size(); ++j )
+            WBAssertThrow(Pointer((base_extended).c_str()).Get(parameters)->Size() == 3,
+                          "Array " << i << " is supposed to be a 3x3 array, but the inner array dimensions of "
+                          << j << " is " << Pointer((base_extended).c_str()).Get(parameters)->Size() << '.');
+            double value1;
+            double value2;
+            double value3;
+
+            try
               {
-                const std::string base_extended = base + "/" + std::to_string(j);
-
-                WBAssertThrow(Pointer((base_extended).c_str()).Get(parameters)->Size() == 3,
-                              "Array " << i << " is supposed to be a 3x3 array, but the inner array dimensions of "
-                              << j << " is " << Pointer((base_extended).c_str()).Get(parameters)->Size() << '.');
-                double value1;
-                double value2;
-                double value3;
-
-                try
-                  {
-                    value1 = Pointer((base_extended + "/0").c_str()).Get(parameters)->GetDouble();
-                    value2 = Pointer((base_extended + "/1").c_str()).Get(parameters)->GetDouble();
-                    value3 = Pointer((base_extended + "/2").c_str()).Get(parameters)->GetDouble();
-                  }
-                catch (...)
-                  {
-                    WBAssertThrow(false, "Could not convert values of " << base << " into doubles.");
-                  }
-                array[j][0] = value1;
-                array[j][1] = value2;
-                array[j][2] = value3;
+                value1 = Pointer((base_extended + "/0").c_str()).Get(parameters)->GetDouble();
+                value2 = Pointer((base_extended + "/1").c_str()).Get(parameters)->GetDouble();
+                value3 = Pointer((base_extended + "/2").c_str()).Get(parameters)->GetDouble();
               }
-            vector.push_back(array);
+            catch (...)
+              {
+                WBAssertThrow(false, "Could not convert values of " << base << " into doubles.");
+              }
+            array[j][0] = value1;
+            array[j][1] = value2;
+            array[j][2] = value3;
           }
+        vector.push_back(array);
       }
+
     return vector;
   }
 
@@ -775,44 +778,45 @@ namespace WorldBuilder
   {
     std::vector<std::vector<Point<2> >  > vector;
     const std::string strict_base = this->get_full_json_path();
-    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr)
+    WBAssertThrow(Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr,"Error: " << name
+                  << " was not defined in " << strict_base << ", schema path: " << this->get_full_json_schema_path() << ".");
+
+    Value *array1 = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+    for (size_t i = 0; i < array1->Size(); ++i )
       {
-        Value *array1 = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+        const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
+        Value *array2 = Pointer((base).c_str()).Get(parameters);
 
-        for (size_t i = 0; i < array1->Size(); ++i )
+        // Not sure why cppcheck it is generating the warning
+        // Filed a question at: https://sourceforge.net/p/cppcheck/discussion/general/thread/429759f85e/
+        // cppcheck-suppress constStatement
+        std::vector<Point<2> > sub_vector(array2->Size(),Point<2>(NaN::DSNAN,NaN::DSNAN,coordinate_system->natural_coordinate_system()));
+        for (size_t j = 0; j < array2->Size(); ++j )
           {
-            const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
-            Value *array2 = Pointer((base).c_str()).Get(parameters);
+            const std::string base_extended = base + "/" + std::to_string(j);
 
-            // Not sure why cppcheck it is generating the warning
-            // Filed a question at: https://sourceforge.net/p/cppcheck/discussion/general/thread/429759f85e/
-            // cppcheck-suppress constStatement
-            std::vector<Point<2> > sub_vector(array2->Size(),Point<2>(NaN::DSNAN,NaN::DSNAN,coordinate_system->natural_coordinate_system()));
-            for (size_t j = 0; j < array2->Size(); ++j )
+            WBAssertThrow(Pointer((base_extended).c_str()).Get(parameters)->Size() == 2,
+                          "Array " << i << " is supposed to be a 2d point, but the inner array dimensions of "
+                          << j << " is " << Pointer((base_extended).c_str()).Get(parameters)->Size() << '.');
+            double value1;
+            double value2;
+
+            try
               {
-                const std::string base_extended = base + "/" + std::to_string(j);
-
-                WBAssertThrow(Pointer((base_extended).c_str()).Get(parameters)->Size() == 2,
-                              "Array " << i << " is supposed to be a 2d point, but the inner array dimensions of "
-                              << j << " is " << Pointer((base_extended).c_str()).Get(parameters)->Size() << '.');
-                double value1;
-                double value2;
-
-                try
-                  {
-                    value1 = Pointer((base_extended + "/0").c_str()).Get(parameters)->GetDouble();
-                    value2 = Pointer((base_extended + "/1").c_str()).Get(parameters)->GetDouble();
-                  }
-                catch (...)
-                  {
-                    WBAssertThrow(false, "Could not convert values of " << base << " into doubles, because it could not covert the sub-elements into doubles.");
-                  }
-                sub_vector[j][0] = value1;
-                sub_vector[j][1] = value2;
+                value1 = Pointer((base_extended + "/0").c_str()).Get(parameters)->GetDouble();
+                value2 = Pointer((base_extended + "/1").c_str()).Get(parameters)->GetDouble();
               }
-            vector.push_back(sub_vector);
+            catch (...)
+              {
+                WBAssertThrow(false, "Could not convert values of " << base << " into doubles, because it could not covert the sub-elements into doubles.");
+              }
+            sub_vector[j][0] = value1;
+            sub_vector[j][1] = value2;
           }
+        vector.push_back(sub_vector);
       }
+
     return vector;
   }
 
@@ -830,189 +834,192 @@ namespace WorldBuilder
     std::vector<Objects::Segment<Temperature::Interface,Composition::Interface,Grains::Interface> > vector;
     this->enter_subsection(name);
     const std::string strict_base = this->get_full_json_path();
-    if (Pointer((strict_base).c_str()).Get(parameters) != nullptr)
+    WBAssertThrow(Pointer((strict_base).c_str()).Get(parameters) != nullptr,"Error: " << name
+                  << " was not defined in " << strict_base << ", schema path: " << this->get_full_json_schema_path() << ".");
+
+    // get the array of segments
+    Value *array = Pointer((strict_base).c_str()).Get(parameters);
+
+    for (size_t i = 0; i < array->Size(); ++i )
       {
-        // get the array of segments
-        Value *array = Pointer((strict_base).c_str()).Get(parameters);
+        this->enter_subsection(std::to_string(i));
+        const std::string base = this->get_full_json_path();
+        // get one segment
+        // length
+        const double length = Pointer((base + "/length").c_str()).Get(parameters)->GetDouble();
 
-        for (size_t i = 0; i < array->Size(); ++i )
+        // get thickness
+        Value *point_array = Pointer((base  + "/thickness").c_str()).Get(parameters);
+        Point<2> thickness(invalid);
+        WBAssertThrow(point_array != nullptr,"error: " << name
+                      << " was not defined in " << strict_base << "/thickness, schema path: " << this->get_full_json_schema_path() << "/thickness.");
+
+        if (point_array->Size() == 1)
           {
-            this->enter_subsection(std::to_string(i));
-            const std::string base = this->get_full_json_path();
-            // get one segment
-            // length
-            const double length = Pointer((base + "/length").c_str()).Get(parameters)->GetDouble();
-
-            // get thickness
-            Value *point_array = Pointer((base  + "/thickness").c_str()).Get(parameters);
-            Point<2> thickness(invalid);
-            if (point_array != nullptr) // is required, turn into assertthrow
-              {
-                if (point_array->Size() == 1)
-                  {
-                    // There is only one value, set it for both elements
-                    const double local0 = Pointer((base + "/thickness/0").c_str()).Get(parameters)->GetDouble();
-                    thickness = Point<2>(local0,local0,invalid);
-                  }
-                else
-                  {
-                    const double local0 = Pointer((base + "/thickness/0").c_str()).Get(parameters)->GetDouble();
-                    const double local1 = Pointer((base + "/thickness/1").c_str()).Get(parameters)->GetDouble();
-                    thickness = Point<2>(local0,local1,invalid);
-                  }
-              }
-
-            // get top trunctation (default is 0,0)
-            point_array = Pointer((base  + "/top truncation").c_str()).Get(parameters);
-            Point<2> top_trunctation(invalid);
-            if (point_array != nullptr)
-              {
-                if (point_array->Size() == 1)
-                  {
-                    // There is only one value, set it for both elements
-                    const double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
-                    top_trunctation = Point<2>(local0,local0,invalid);
-                  }
-                else
-                  {
-                    const double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
-                    const double local1 = Pointer((base + "/top truncation/1").c_str()).Get(parameters)->GetDouble();
-                    top_trunctation = Point<2>(local0,local1,invalid);
-                  }
-              }
-            // get thickness
-            point_array = Pointer((base  + "/angle").c_str()).Get(parameters);
-            Point<2> angle(invalid);
-            if (point_array != nullptr) // is required, turn into assertthrow
-              {
-                if (point_array->Size() == 1)
-                  {
-                    // There is only one value, set it for both elements
-                    const double local0 = Pointer((base + "/angle/0").c_str()).Get(parameters)->GetDouble();
-                    angle = Point<2>(local0,local0,invalid);
-                  }
-                else
-                  {
-                    const double local0 = Pointer((base + "/angle/0").c_str()).Get(parameters)->GetDouble();
-                    const double local1 = Pointer((base + "/angle/1").c_str()).Get(parameters)->GetDouble();
-                    angle = Point<2>(local0,local1,invalid);
-                  }
-              }
-
-            // Get temperature models
-            std::vector<std::shared_ptr<Temperature::Interface> > temperature_models;
-
-            //This is a value to look back in the path elements.
-            size_t searchback = 0;
-            if (!this->get_shared_pointers<Temperature::Interface>("temperature models", temperature_models) ||
-                Pointer((base + "/temperature model default entry").c_str()).Get(parameters) != nullptr)
-              {
-                temperature_models = default_temperature_models;
-
-                // find the default value, which is the closest to the current path
-                for (searchback = 0; searchback < path.size(); ++searchback)
-                  {
-                    if (Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Get(parameters) != nullptr)
-                      {
-                        break;
-                      }
-                  }
-
-                // if we can not find default value for the temperature model, skip it
-                if (searchback < path.size())
-                  {
-
-                    // copy the value, this unfortunately removes it.
-                    Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Get(parameters)->GetArray());
-
-                    // now copy it
-                    Value value2;
-                    value2.CopyFrom(value1, parameters.GetAllocator());
-
-                    // now we should have 2x the same value, so put it back and place it in the correct location.
-                    Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
-
-                    Pointer((base).c_str()).Get(parameters)->AddMember("temperature models", value2, parameters.GetAllocator());
-                    Pointer((base + "/temperature model default entry").c_str()).Set(parameters,true);
-                  }
-              }
-
-            // now do the same for compositions
-            std::vector<std::shared_ptr<Composition::Interface> > composition_models;
-            if (!this->get_shared_pointers<Composition::Interface>("composition models", composition_models) ||
-                Pointer((base + "/composition model default entry").c_str()).Get(parameters) != nullptr)
-              {
-                composition_models = default_composition_models;
-
-
-                // find the default value, which is the closest to the current path
-                for (searchback = 0; searchback < path.size(); ++searchback)
-                  {
-                    if (Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Get(parameters) != nullptr)
-                      {
-                        break;
-                      }
-                  }
-
-                // if we can not find default value for the temperature model, skip it
-                if (searchback < path.size())
-                  {
-
-                    // copy the value, this unfortunately removes it.
-                    Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Get(parameters)->GetArray());
-
-                    // now copy it
-                    Value value2;
-                    value2.CopyFrom(value1, parameters.GetAllocator());
-
-                    // now we should have 2x the same value, so put it back and place it in the correct location.
-                    Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
-
-                    Pointer((base).c_str()).Get(parameters)->AddMember("composition models", value2, parameters.GetAllocator());
-                    Pointer((base + "/composition model default entry").c_str()).Set(parameters,true);
-                  }
-              }
-
-            // now do the same for grains
-            std::vector<std::shared_ptr<Grains::Interface> > grains_models;
-            if (!this->get_shared_pointers<Grains::Interface>("grains models", grains_models) ||
-                Pointer((base + "/grains model default entry").c_str()).Get(parameters) != nullptr)
-              {
-                grains_models = default_grains_models;
-
-
-                // find the default value, which is the closest to the current path
-                for (searchback = 0; searchback < path.size(); ++searchback)
-                  {
-                    if (Pointer((this->get_full_json_path(path.size()-searchback) + "/grains models").c_str()).Get(parameters) != nullptr)
-                      {
-                        break;
-                      }
-                  }
-
-                // if we can not find default value for the temperature model, skip it
-                if (searchback < path.size())
-                  {
-
-                    // copy the value, this unfortunately removes it.
-                    Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/grains models").c_str()).Get(parameters)->GetArray());
-
-                    // now copy it
-                    Value value2;
-                    value2.CopyFrom(value1, parameters.GetAllocator());
-
-                    // now we should have 2x the same value, so put it back and place it in the correct location.
-                    Pointer((this->get_full_json_path(path.size()-searchback) + "/grains models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
-
-                    Pointer((base).c_str()).Get(parameters)->AddMember("grains models", value2, parameters.GetAllocator());
-                    Pointer((base + "/grains model default entry").c_str()).Set(parameters,true);
-                  }
-              }
-            vector.emplace_back(length, thickness, top_trunctation, angle, temperature_models, composition_models, grains_models);
-
-            this->leave_subsection();
+            // There is only one value, set it for both elements
+            const double local0 = Pointer((base + "/thickness/0").c_str()).Get(parameters)->GetDouble();
+            thickness = Point<2>(local0,local0,invalid);
           }
+        else
+          {
+            const double local0 = Pointer((base + "/thickness/0").c_str()).Get(parameters)->GetDouble();
+            const double local1 = Pointer((base + "/thickness/1").c_str()).Get(parameters)->GetDouble();
+            thickness = Point<2>(local0,local1,invalid);
+          }
+
+
+        // get top trunctation (default is 0,0)
+        point_array = Pointer((base  + "/top truncation").c_str()).Get(parameters);
+        Point<2> top_trunctation(invalid);
+        if (point_array != nullptr)
+          {
+            if (point_array->Size() == 1)
+              {
+                // There is only one value, set it for both elements
+                const double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
+                top_trunctation = Point<2>(local0,local0,invalid);
+              }
+            else
+              {
+                const double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
+                const double local1 = Pointer((base + "/top truncation/1").c_str()).Get(parameters)->GetDouble();
+                top_trunctation = Point<2>(local0,local1,invalid);
+              }
+          }
+        // get thickness
+        point_array = Pointer((base  + "/angle").c_str()).Get(parameters);
+        Point<2> angle(invalid);
+        WBAssertThrow(point_array != nullptr,"error: " << name
+                      << " was not defined in " << strict_base << "/angle, schema path: " << this->get_full_json_schema_path() << "/angle.");
+
+        if (point_array->Size() == 1)
+          {
+            // There is only one value, set it for both elements
+            const double local0 = Pointer((base + "/angle/0").c_str()).Get(parameters)->GetDouble();
+            angle = Point<2>(local0,local0,invalid);
+          }
+        else
+          {
+            const double local0 = Pointer((base + "/angle/0").c_str()).Get(parameters)->GetDouble();
+            const double local1 = Pointer((base + "/angle/1").c_str()).Get(parameters)->GetDouble();
+            angle = Point<2>(local0,local1,invalid);
+          }
+
+
+        // Get temperature models
+        std::vector<std::shared_ptr<Temperature::Interface> > temperature_models;
+
+        //This is a value to look back in the path elements.
+        size_t searchback = 0;
+        if (!this->get_shared_pointers<Temperature::Interface>("temperature models", temperature_models) ||
+            Pointer((base + "/temperature model default entry").c_str()).Get(parameters) != nullptr)
+          {
+            temperature_models = default_temperature_models;
+
+            // find the default value, which is the closest to the current path
+            for (searchback = 0; searchback < path.size(); ++searchback)
+              {
+                if (Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Get(parameters) != nullptr)
+                  {
+                    break;
+                  }
+              }
+
+            // if we can not find default value for the temperature model, skip it
+            if (searchback < path.size())
+              {
+
+                // copy the value, this unfortunately removes it.
+                Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Get(parameters)->GetArray());
+
+                // now copy it
+                Value value2;
+                value2.CopyFrom(value1, parameters.GetAllocator());
+
+                // now we should have 2x the same value, so put it back and place it in the correct location.
+                Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
+
+                Pointer((base).c_str()).Get(parameters)->AddMember("temperature models", value2, parameters.GetAllocator());
+                Pointer((base + "/temperature model default entry").c_str()).Set(parameters,true);
+              }
+          }
+
+        // now do the same for compositions
+        std::vector<std::shared_ptr<Composition::Interface> > composition_models;
+        if (!this->get_shared_pointers<Composition::Interface>("composition models", composition_models) ||
+            Pointer((base + "/composition model default entry").c_str()).Get(parameters) != nullptr)
+          {
+            composition_models = default_composition_models;
+
+
+            // find the default value, which is the closest to the current path
+            for (searchback = 0; searchback < path.size(); ++searchback)
+              {
+                if (Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Get(parameters) != nullptr)
+                  {
+                    break;
+                  }
+              }
+
+            // if we can not find default value for the temperature model, skip it
+            if (searchback < path.size())
+              {
+
+                // copy the value, this unfortunately removes it.
+                Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Get(parameters)->GetArray());
+
+                // now copy it
+                Value value2;
+                value2.CopyFrom(value1, parameters.GetAllocator());
+
+                // now we should have 2x the same value, so put it back and place it in the correct location.
+                Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
+
+                Pointer((base).c_str()).Get(parameters)->AddMember("composition models", value2, parameters.GetAllocator());
+                Pointer((base + "/composition model default entry").c_str()).Set(parameters,true);
+              }
+          }
+
+        // now do the same for grains
+        std::vector<std::shared_ptr<Grains::Interface> > grains_models;
+        if (!this->get_shared_pointers<Grains::Interface>("grains models", grains_models) ||
+            Pointer((base + "/grains model default entry").c_str()).Get(parameters) != nullptr)
+          {
+            grains_models = default_grains_models;
+
+
+            // find the default value, which is the closest to the current path
+            for (searchback = 0; searchback < path.size(); ++searchback)
+              {
+                if (Pointer((this->get_full_json_path(path.size()-searchback) + "/grains models").c_str()).Get(parameters) != nullptr)
+                  {
+                    break;
+                  }
+              }
+
+            // if we can not find default value for the temperature model, skip it
+            if (searchback < path.size())
+              {
+
+                // copy the value, this unfortunately removes it.
+                Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/grains models").c_str()).Get(parameters)->GetArray());
+
+                // now copy it
+                Value value2;
+                value2.CopyFrom(value1, parameters.GetAllocator());
+
+                // now we should have 2x the same value, so put it back and place it in the correct location.
+                Pointer((this->get_full_json_path(path.size()-searchback) + "/grains models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
+
+                Pointer((base).c_str()).Get(parameters)->AddMember("grains models", value2, parameters.GetAllocator());
+                Pointer((base + "/grains model default entry").c_str()).Set(parameters,true);
+              }
+          }
+        vector.emplace_back(length, thickness, top_trunctation, angle, temperature_models, composition_models, grains_models);
+
+        this->leave_subsection();
       }
+
     this->leave_subsection();
     return vector;
   }
@@ -1029,189 +1036,192 @@ namespace WorldBuilder
     std::vector<Objects::Segment<Temperature::Interface,Composition::Interface,Grains::Interface> > vector;
     this->enter_subsection(name);
     const std::string strict_base = this->get_full_json_path();
-    if (Pointer((strict_base).c_str()).Get(parameters) != nullptr)
+    WBAssertThrow(Pointer((strict_base).c_str()).Get(parameters) != nullptr,"error: " << name
+                  << " was not defined in " << strict_base << ", schema path: " << this->get_full_json_schema_path() << ".");
+
+    // get the array of segments
+    Value *array = Pointer((strict_base).c_str()).Get(parameters);
+
+    for (size_t i = 0; i < array->Size(); ++i )
       {
-        // get the array of segments
-        Value *array = Pointer((strict_base).c_str()).Get(parameters);
+        this->enter_subsection(std::to_string(i));
+        const std::string base = this->get_full_json_path();
+        // get one segment
+        // length
+        const double length = Pointer((base + "/length").c_str()).Get(parameters)->GetDouble();
 
-        for (size_t i = 0; i < array->Size(); ++i )
+        // get thickness
+        Value *point_array = Pointer((base  + "/thickness").c_str()).Get(parameters);
+        Point<2> thickness(invalid);
+        WBAssertThrow(point_array != nullptr,"error: " << name
+                      << " was not defined in " << strict_base << "/thickness, schema path: " << this->get_full_json_schema_path() << "/thickness.");
+
+        if (point_array->Size() == 1)
           {
-            this->enter_subsection(std::to_string(i));
-            const std::string base = this->get_full_json_path();
-            // get one segment
-            // length
-            const double length = Pointer((base + "/length").c_str()).Get(parameters)->GetDouble();
-
-            // get thickness
-            Value *point_array = Pointer((base  + "/thickness").c_str()).Get(parameters);
-            Point<2> thickness(invalid);
-            if (point_array != nullptr) // is required, turn into assertthrow
-              {
-                if (point_array->Size() == 1)
-                  {
-                    // There is only one value, set it for both elements
-                    const double local0 = Pointer((base + "/thickness/0").c_str()).Get(parameters)->GetDouble();
-                    thickness = Point<2>(local0,local0,invalid);
-                  }
-                else
-                  {
-                    const double local0 = Pointer((base + "/thickness/0").c_str()).Get(parameters)->GetDouble();
-                    const double local1 = Pointer((base + "/thickness/1").c_str()).Get(parameters)->GetDouble();
-                    thickness = Point<2>(local0,local1,invalid);
-                  }
-              }
-
-            // get top trunctation (default is 0,0)
-            point_array = Pointer((base  + "/top truncation").c_str()).Get(parameters);
-            Point<2> top_trunctation(invalid);
-            if (point_array != nullptr)
-              {
-                if (point_array->Size() == 1)
-                  {
-                    // There is only one value, set it for both elements
-                    const double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
-                    top_trunctation = Point<2>(local0,local0,invalid);
-                  }
-                else
-                  {
-                    const double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
-                    const double local1 = Pointer((base + "/top truncation/1").c_str()).Get(parameters)->GetDouble();
-                    top_trunctation = Point<2>(local0,local1,invalid);
-                  }
-              }
-            // get thickness
-            point_array = Pointer((base  + "/angle").c_str()).Get(parameters);
-            Point<2> angle(invalid);
-            if (point_array != nullptr) // is required, turn into assertthrow
-              {
-                if (point_array->Size() == 1)
-                  {
-                    // There is only one value, set it for both elements
-                    const double local0 = Pointer((base + "/angle/0").c_str()).Get(parameters)->GetDouble();
-                    angle = Point<2>(local0,local0,invalid);
-                  }
-                else
-                  {
-                    const double local0 = Pointer((base + "/angle/0").c_str()).Get(parameters)->GetDouble();
-                    const double local1 = Pointer((base + "/angle/1").c_str()).Get(parameters)->GetDouble();
-                    angle = Point<2>(local0,local1,invalid);
-                  }
-              }
-
-            // Get temperature models
-            std::vector<std::shared_ptr<Temperature::Interface> > temperature_models;
-
-            //This is a value to look back in the path elements.
-            size_t searchback = 0;
-            if (!this->get_shared_pointers<Temperature::Interface>("temperature models", temperature_models) ||
-                Pointer((base + "/temperature model default entry").c_str()).Get(parameters) != nullptr)
-              {
-                temperature_models = default_temperature_models;
-
-                // find the default value, which is the closest to the current path
-                for (searchback = 0; searchback < path.size(); ++searchback)
-                  {
-                    if (Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Get(parameters) != nullptr)
-                      {
-                        break;
-                      }
-                  }
-
-                // if we can not find default value for the temperature model, skip it
-                if (searchback < path.size())
-                  {
-
-                    // copy the value, this unfortunately removes it.
-                    Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Get(parameters)->GetArray());
-
-                    // now copy it
-                    Value value2;
-                    value2.CopyFrom(value1, parameters.GetAllocator());
-
-                    // now we should have 2x the same value, so put it back and place it in the correct location.
-                    Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
-
-                    Pointer((base).c_str()).Get(parameters)->AddMember("temperature models", value2, parameters.GetAllocator());
-                    Pointer((base + "/temperature model default entry").c_str()).Set(parameters,true);
-                  }
-              }
-
-            // now do the same for compositions
-            std::vector<std::shared_ptr<Composition::Interface> > composition_models;
-            if (!this->get_shared_pointers<Composition::Interface>("composition models", composition_models) ||
-                Pointer((base + "/composition model default entry").c_str()).Get(parameters) != nullptr)
-              {
-                composition_models = default_composition_models;
-
-
-                // find the default value, which is the closest to the current path
-                for (searchback = 0; searchback < path.size(); ++searchback)
-                  {
-                    if (Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Get(parameters) != nullptr)
-                      {
-                        break;
-                      }
-                  }
-
-                // if we can not find default value for the temperature model, skip it
-                if (searchback < path.size())
-                  {
-
-                    // copy the value, this unfortunately removes it.
-                    Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Get(parameters)->GetArray());
-
-                    // now copy it
-                    Value value2;
-                    value2.CopyFrom(value1, parameters.GetAllocator());
-
-                    // now we should have 2x the same value, so put it back and place it in the correct location.
-                    Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
-
-                    Pointer((base).c_str()).Get(parameters)->AddMember("composition models", value2, parameters.GetAllocator());
-                    Pointer((base + "/composition model default entry").c_str()).Set(parameters,true);
-                  }
-              }
-
-            // now do the same for grains
-            std::vector<std::shared_ptr<Grains::Interface> > grains_models;
-            if (!this->get_shared_pointers<Grains::Interface>("grains models", grains_models) ||
-                Pointer((base + "/grains model default entry").c_str()).Get(parameters) != nullptr)
-              {
-                grains_models = default_grains_models;
-
-
-                // find the default value, which is the closest to the current path
-                for (searchback = 0; searchback < path.size(); ++searchback)
-                  {
-                    if (Pointer((this->get_full_json_path(path.size()-searchback) + "/grains models").c_str()).Get(parameters) != nullptr)
-                      {
-                        break;
-                      }
-                  }
-
-                // if we can not find default value for the temperature model, skip it
-                if (searchback < path.size())
-                  {
-
-                    // copy the value, this unfortunately removes it.
-                    Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/grains models").c_str()).Get(parameters)->GetArray());
-
-                    // now copy it
-                    Value value2;
-                    value2.CopyFrom(value1, parameters.GetAllocator());
-
-                    // now we should have 2x the same value, so put it back and place it in the correct location.
-                    Pointer((this->get_full_json_path(path.size()-searchback) + "/grains models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
-
-                    Pointer((base).c_str()).Get(parameters)->AddMember("grains models", value2, parameters.GetAllocator());
-                    Pointer((base + "/grains model default entry").c_str()).Set(parameters,true);
-                  }
-              }
-            vector.emplace_back(length, thickness, top_trunctation, angle, temperature_models, composition_models, grains_models);
-
-            this->leave_subsection();
+            // There is only one value, set it for both elements
+            const double local0 = Pointer((base + "/thickness/0").c_str()).Get(parameters)->GetDouble();
+            thickness = Point<2>(local0,local0,invalid);
           }
+        else
+          {
+            const double local0 = Pointer((base + "/thickness/0").c_str()).Get(parameters)->GetDouble();
+            const double local1 = Pointer((base + "/thickness/1").c_str()).Get(parameters)->GetDouble();
+            thickness = Point<2>(local0,local1,invalid);
+          }
+
+
+        // get top trunctation (default is 0,0)
+        point_array = Pointer((base  + "/top truncation").c_str()).Get(parameters);
+        Point<2> top_trunctation(invalid);
+        if (point_array != nullptr)
+          {
+            if (point_array->Size() == 1)
+              {
+                // There is only one value, set it for both elements
+                const double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
+                top_trunctation = Point<2>(local0,local0,invalid);
+              }
+            else
+              {
+                const double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
+                const double local1 = Pointer((base + "/top truncation/1").c_str()).Get(parameters)->GetDouble();
+                top_trunctation = Point<2>(local0,local1,invalid);
+              }
+          }
+        // get thickness
+        point_array = Pointer((base  + "/angle").c_str()).Get(parameters);
+        Point<2> angle(invalid);
+        WBAssertThrow(point_array != nullptr,"error: " << name
+                      << " was not defined in " << strict_base << "/angle, schema path: " << this->get_full_json_schema_path() << "/angle.");
+
+        if (point_array->Size() == 1)
+          {
+            // There is only one value, set it for both elements
+            const double local0 = Pointer((base + "/angle/0").c_str()).Get(parameters)->GetDouble();
+            angle = Point<2>(local0,local0,invalid);
+          }
+        else
+          {
+            const double local0 = Pointer((base + "/angle/0").c_str()).Get(parameters)->GetDouble();
+            const double local1 = Pointer((base + "/angle/1").c_str()).Get(parameters)->GetDouble();
+            angle = Point<2>(local0,local1,invalid);
+          }
+
+
+        // Get temperature models
+        std::vector<std::shared_ptr<Temperature::Interface> > temperature_models;
+
+        //This is a value to look back in the path elements.
+        size_t searchback = 0;
+        if (!this->get_shared_pointers<Temperature::Interface>("temperature models", temperature_models) ||
+            Pointer((base + "/temperature model default entry").c_str()).Get(parameters) != nullptr)
+          {
+            temperature_models = default_temperature_models;
+
+            // find the default value, which is the closest to the current path
+            for (searchback = 0; searchback < path.size(); ++searchback)
+              {
+                if (Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Get(parameters) != nullptr)
+                  {
+                    break;
+                  }
+              }
+
+            // if we can not find default value for the temperature model, skip it
+            if (searchback < path.size())
+              {
+
+                // copy the value, this unfortunately removes it.
+                Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Get(parameters)->GetArray());
+
+                // now copy it
+                Value value2;
+                value2.CopyFrom(value1, parameters.GetAllocator());
+
+                // now we should have 2x the same value, so put it back and place it in the correct location.
+                Pointer((this->get_full_json_path(path.size()-searchback) + "/temperature models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
+
+                Pointer((base).c_str()).Get(parameters)->AddMember("temperature models", value2, parameters.GetAllocator());
+                Pointer((base + "/temperature model default entry").c_str()).Set(parameters,true);
+              }
+          }
+
+        // now do the same for compositions
+        std::vector<std::shared_ptr<Composition::Interface> > composition_models;
+        if (!this->get_shared_pointers<Composition::Interface>("composition models", composition_models) ||
+            Pointer((base + "/composition model default entry").c_str()).Get(parameters) != nullptr)
+          {
+            composition_models = default_composition_models;
+
+
+            // find the default value, which is the closest to the current path
+            for (searchback = 0; searchback < path.size(); ++searchback)
+              {
+                if (Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Get(parameters) != nullptr)
+                  {
+                    break;
+                  }
+              }
+
+            // if we can not find default value for the temperature model, skip it
+            if (searchback < path.size())
+              {
+
+                // copy the value, this unfortunately removes it.
+                Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Get(parameters)->GetArray());
+
+                // now copy it
+                Value value2;
+                value2.CopyFrom(value1, parameters.GetAllocator());
+
+                // now we should have 2x the same value, so put it back and place it in the correct location.
+                Pointer((this->get_full_json_path(path.size()-searchback) + "/composition models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
+
+                Pointer((base).c_str()).Get(parameters)->AddMember("composition models", value2, parameters.GetAllocator());
+                Pointer((base + "/composition model default entry").c_str()).Set(parameters,true);
+              }
+          }
+
+        // now do the same for grains
+        std::vector<std::shared_ptr<Grains::Interface> > grains_models;
+        if (!this->get_shared_pointers<Grains::Interface>("grains models", grains_models) ||
+            Pointer((base + "/grains model default entry").c_str()).Get(parameters) != nullptr)
+          {
+            grains_models = default_grains_models;
+
+
+            // find the default value, which is the closest to the current path
+            for (searchback = 0; searchback < path.size(); ++searchback)
+              {
+                if (Pointer((this->get_full_json_path(path.size()-searchback) + "/grains models").c_str()).Get(parameters) != nullptr)
+                  {
+                    break;
+                  }
+              }
+
+            // if we can not find default value for the temperature model, skip it
+            if (searchback < path.size())
+              {
+
+                // copy the value, this unfortunately removes it.
+                Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/grains models").c_str()).Get(parameters)->GetArray());
+
+                // now copy it
+                Value value2;
+                value2.CopyFrom(value1, parameters.GetAllocator());
+
+                // now we should have 2x the same value, so put it back and place it in the correct location.
+                Pointer((this->get_full_json_path(path.size()-searchback) + "/grains models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
+
+                Pointer((base).c_str()).Get(parameters)->AddMember("grains models", value2, parameters.GetAllocator());
+                Pointer((base + "/grains model default entry").c_str()).Set(parameters,true);
+              }
+          }
+        vector.emplace_back(length, thickness, top_trunctation, angle, temperature_models, composition_models, grains_models);
+
+        this->leave_subsection();
       }
+
     this->leave_subsection();
     return vector;
   }
