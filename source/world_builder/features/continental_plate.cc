@@ -61,7 +61,7 @@ namespace WorldBuilder
                                       const std::string & /*unused*/,
                                       const std::vector<std::string> &required_entries)
     {
-      prm.declare_entry("", Types::Object(required_entries), "continental plate object");
+      prm.declare_entry("", Types::Object(required_entries), "Continental plate object. Requires properties `model` and `coordinates`.");
 
       prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0.))),
                         "The depth from which this feature is present");

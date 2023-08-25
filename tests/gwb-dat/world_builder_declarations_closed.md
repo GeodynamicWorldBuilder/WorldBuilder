@@ -232,9 +232,9 @@
 :name: closed_features_items_oneOf_1
 
 - **type**:object
-- **documentation**:continental plate object
+- **documentation**:Continental plate object. Requires properties `model` and `coordinates`.
 - **additionalProperties**:false
-- **required**:[model, coordinates]
+- **required**:[model]
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/1/model
 :name: closed_features_items_oneOf_1_model
@@ -1829,9 +1829,9 @@
 :name: closed_features_items_oneOf_2
 
 - **type**:object
-- **documentation**:Fault object
+- **documentation**:Fault object. Requires properties `model` and `coordinates`.
 - **additionalProperties**:false
-- **required**:[model, coordinates]
+- **required**:[model]
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/2/model
 :name: closed_features_items_oneOf_2_model
@@ -4790,9 +4790,9 @@
 :name: closed_features_items_oneOf_3
 
 - **type**:object
-- **documentation**:Mantle layer object
+- **documentation**:Mantle layer object. Requires properties `model` and `coordinates`.
 - **additionalProperties**:false
-- **required**:[model, coordinates]
+- **required**:[model]
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/3/model
 :name: closed_features_items_oneOf_3_model
@@ -6387,9 +6387,9 @@
 :name: closed_features_items_oneOf_4
 
 - **type**:object
-- **documentation**:Oceanic plate object
+- **documentation**:Oceanic plate object. Requires properties `model` and `coordinates`.
 - **additionalProperties**:false
-- **required**:[model, coordinates]
+- **required**:[model]
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/4/model
 :name: closed_features_items_oneOf_4_model
@@ -8672,9 +8672,9 @@
 :name: closed_features_items_oneOf_5
 
 - **type**:object
-- **documentation**:Subducting slab object
+- **documentation**:Subducting slab object. Requires properties `model` and `coordinates`.
 - **additionalProperties**:false
-- **required**:[model, coordinates]
+- **required**:[model]
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/5/model
 :name: closed_features_items_oneOf_5_model

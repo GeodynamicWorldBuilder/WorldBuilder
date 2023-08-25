@@ -65,7 +65,7 @@ namespace WorldBuilder
         }
       else
         {
-          prm.declare_entry("", Types::Object(required_entries), "Fault object");
+          prm.declare_entry("", Types::Object(required_entries), "Fault object. Requires properties `model` and `coordinates`.");
         }
       prm.declare_entry("min depth", Types::Double(0),
                         "The depth to which this feature is present");

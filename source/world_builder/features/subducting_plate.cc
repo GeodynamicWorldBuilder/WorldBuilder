@@ -64,7 +64,7 @@ namespace WorldBuilder
         }
       else
         {
-          prm.declare_entry("", Types::Object(required_entries), "Subducting slab object");
+          prm.declare_entry("", Types::Object(required_entries), "Subducting slab object. Requires properties `model` and `coordinates`.");
         }
 
 
