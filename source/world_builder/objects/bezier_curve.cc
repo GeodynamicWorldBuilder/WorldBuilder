@@ -354,6 +354,7 @@ namespace WorldBuilder
         }
       else
         {
+          const double cos_cp_lat = cos(cp[1]);
           for ( size_t cp_i = 0; cp_i < control_points.size(); ++cp_i)
             {
               const Point<2> &p1 = points[cp_i];
@@ -375,7 +376,6 @@ namespace WorldBuilder
               const Point<2> d = points[cp_i];
 
               Point<2> estimate_point = a*est*est*est+b*est*est+c*est+d;
-              const double cos_cp_lat = cos(cp[1]);
 #ifndef NDEBUG
               const double cos_lat_dg = cos(estimate_point[1]);
               const double sin_d_long_h_dg = sin((estimate_point[0]-cp[0])*0.5);
