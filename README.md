@@ -38,7 +38,7 @@ Fraters, M., Thieulot, C., van den Berg, A., and Spakman, W.: The Geodynamic Wor
 
 And cite the specific version of the software used. Version 0.5.0 can be cited as:
 
-Menno Fraters and others. 2021, June 22. The Geodynamic World Builder v0.5.0. Zenodo. [https://doi.org/10.5281/zenodo.7998525](https://doi.org/10.5281/zenodo.7998525).
+Menno Fraters and others. 2023, June 6. The Geodynamic World Builder v0.5.0. Zenodo. [https://doi.org/10.5281/zenodo.7998525](https://doi.org/10.5281/zenodo.7998525).
 
 ### How can I follow the progress of this project?
 There are multiple ways in which you can follow this project:
