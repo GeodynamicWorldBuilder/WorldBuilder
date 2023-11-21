@@ -220,7 +220,7 @@ int main(int argc, char **argv)
 
             // set the values
             for (unsigned int i = 0; i < data.size(); ++i)
-              if (data[i][0] != "#")
+              if (data[i].size() > 0 && data[i][0] != "#")
                 {
 
                   WBAssertThrow(data[i].size() == dim + 1, "The file needs to contain dim + 1 entries, but contains " << data[i].size() << " entries "
@@ -273,7 +273,7 @@ int main(int argc, char **argv)
 
             // set the values
             for (unsigned int i = 0; i < data.size(); ++i)
-              if (data[i][0] != "#")
+              if (data[i].size() > 0 && data[i][0] != "#")
                 {
                   WBAssertThrow(data[i].size() == dim + 1, "The file needs to contain dim + 1 entries, but contains " << data[i].size() << " entries "
                                 " on line " << i+1 << " of the data file (" << data_file << "). Dim is " << dim << '.');
