@@ -194,62 +194,62 @@ namespace WorldBuilder
                         }
                     }
 
-                   for (unsigned int i_coordinate = 0; i_coordinate < mid_oceanic_ridges[relevant_ridge].size() - 1; i_coordinate++)
+                  for (unsigned int i_coordinate = 0; i_coordinate < mid_oceanic_ridges[relevant_ridge].size() - 1; i_coordinate++)
                     {
                       const Point<2> segment_point0 = mid_oceanic_ridges[relevant_ridge][i_coordinate];
                       const Point<2> segment_point1 = mid_oceanic_ridges[relevant_ridge][i_coordinate + 1];
 
-                      // based on http://geomalgorithms.com/a02-_lines.html
-                      const Point<2> v = segment_point1 - segment_point0;
-                      const Point<2> w1 = check_point - segment_point0;
-                      const Point<2> w2 = other_check_point - segment_point0;
+                      {
+                        // based on http://geomalgorithms.com/a02-_lines.html
+                        const Point<2> v = segment_point1 - segment_point0;
+                        const Point<2> w1 = check_point - segment_point0;
+			const Point<2> w2 = other_check_point - segment_point0;
 
-                      const double c1 = (w1[0] * v[0] + w1[1] * v[1]);
-                      const double c2 = (v[0] * v[0] + v[1] * v[1]);
-                      const double c3 = (w2[0] * v[0] + w2[1] * v[1]);
+                        const double c1 = (w1[0] * v[0] + w1[1] * v[1]);
+                        const double c = (v[0] * v[0] + v[1] * v[1]);
+			const double c2 = (w2[0] * v[0] + w2[1] * v[1]);
 
-                      Point<2> Pb1(coordinate_system);
-                      Point<2> Pb2(coordinate_system);
-                      // This part is needed when we want to consider segments instead of lines
-                      // If you want to have infinite lines, use only the else statement.
 
-                      if (c1 <= 0)
-                        {
+                        Point<2> Pb1(coordinate_system);
+                        // This part is needed when we want to consider segments instead of lines
+                        // If you want to have infinite lines, use only the else statement.
+
+                        if (c1 <= 0)
                           Pb1=segment_point0;
-                          Pb2=segment_point0;
-                        }
-                      else if (c2 <= c1)
-                        Pb1=segment_point1;
-                      else if (c3 <= c1)
-                        Pb2=segment_point1;
-                      else
-                        {
-                          Pb1 = segment_point0 + (c1 / c2) * v;
-                          Pb2 = segment_point0 + (c1 / c3) * v;
-                        }
+                        else if (c <= c1)
+                          Pb1=segment_point1;
+                        else
+                          Pb1=segment_point0 + (c1 / c) * v;
 
-                      Point<3> compare_point1(coordinate_system);
-                      Point<3> compare_point2(coordinate_system);
+			Point<2> Pb2(coordinate_system);
+			if (c2 <= 0)
+			  Pb2=segment_point0;
+			else if (c <= c2)
+			  Pb2=segment_point1;
+			else
+			  Pb2=segment_point0 + (c2 / c) * v;
 
+                        Point<3> compare_point1(coordinate_system);
+			Point<3> compare_point2(coordinate_system);
 
-                      compare_point1[0] = coordinate_system == cartesian ? Pb1[0] :  position_in_natural_coordinates_at_min_depth.get_depth_coordinate();
-                      compare_point1[1] = coordinate_system == cartesian ? Pb1[1] : Pb1[0];
-                      compare_point1[2] = coordinate_system == cartesian ? position_in_natural_coordinates_at_min_depth.get_depth_coordinate() : Pb1[1];
+                        compare_point1[0] = coordinate_system == cartesian ? Pb1[0] :  position_in_natural_coordinates_at_min_depth.get_depth_coordinate();
+                        compare_point1[1] = coordinate_system == cartesian ? Pb1[1] : Pb1[0];
+                        compare_point1[2] = coordinate_system == cartesian ? position_in_natural_coordinates_at_min_depth.get_depth_coordinate() : Pb1[1];
 
-                      compare_point2[0] = coordinate_system == cartesian ? Pb2[0] :  position_in_natural_coordinates_at_min_depth.get_depth_coordinate();
-                      compare_point2[1] = coordinate_system == cartesian ? Pb2[1] : Pb2[0];
-                      compare_point2[2] = coordinate_system == cartesian ? position_in_natural_coordinates_at_min_depth.get_depth_coordinate() : Pb2[1];
+                        compare_point2[0] = coordinate_system == cartesian ? Pb2[0] :  position_in_natural_coordinates_at_min_depth.get_depth_coordinate();
+                        compare_point2[1] = coordinate_system == cartesian ? Pb2[1] : Pb2[0];
+                        compare_point2[2] = coordinate_system == cartesian ? position_in_natural_coordinates_at_min_depth.get_depth_coordinate() : Pb2[1];
 
-                      distance_ridge = std::min(distance_ridge,
-                                                this->world->parameters.coordinate_system->distance_between_points_at_same_depth(Point<3>(position_in_natural_coordinates_at_min_depth.get_coordinates(),
-                                                  position_in_natural_coordinates_at_min_depth.get_coordinate_system()),
-                                                  compare_point1));
+                        distance_ridge = std::min(distance_ridge,
+                                                  this->world->parameters.coordinate_system->distance_between_points_at_same_depth(Point<3>(position_in_natural_coordinates_at_min_depth.get_coordinates(),
+                                                      position_in_natural_coordinates_at_min_depth.get_coordinate_system()),
+                                                      compare_point1));
 
-                      distance_ridge = std::min(distance_ridge,
-                                                this->world->parameters.coordinate_system->distance_between_points_at_same_depth(Point<3>(position_in_natural_coordinates_at_min_depth.get_coordinates(),
-                                                  position_in_natural_coordinates_at_min_depth.get_coordinate_system()),
-                                                  compare_point2));
-
+                        distance_ridge = std::min(distance_ridge,
+                                                  this->world->parameters.coordinate_system->distance_between_points_at_same_depth(Point<3>(position_in_natural_coordinates_at_min_depth.get_coordinates(),
+                                                      position_in_natural_coordinates_at_min_depth.get_coordinate_system()),
+                                                      compare_point2));
+                      }
                     }
 
                   const double thermal_diffusivity = this->world->thermal_diffusivity;
