@@ -152,7 +152,7 @@ namespace WorldBuilder
                   // first find if the coordinate is on this side of a ridge
                   unsigned int relevant_ridge = 0;
                   const Point<2> check_point(position_in_natural_coordinates_at_min_depth.get_surface_coordinates(), \
-				  	     position_in_natural_coordinates_at_min_depth.get_coordinate_system());
+                                             position_in_natural_coordinates_at_min_depth.get_coordinate_system());
 
                   Point<2> other_check_point = check_point;
                   if (check_point.get_coordinate_system() == CoordinateSystem::spherical)
@@ -248,7 +248,7 @@ namespace WorldBuilder
                                                       position_in_natural_coordinates_at_min_depth.get_coordinate_system()),
                                                       compare_point2));
                       }
-		    }
+                    }
 
                   //const double spreading_velocity = spreading_velocity;
                   const double thermal_diffusivity = this->world->thermal_diffusivity;

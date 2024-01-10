@@ -203,11 +203,11 @@ namespace WorldBuilder
                         // based on http://geomalgorithms.com/a02-_lines.html
                         const Point<2> v = segment_point1 - segment_point0;
                         const Point<2> w1 = check_point - segment_point0;
-			const Point<2> w2 = other_check_point - segment_point0;
+                        const Point<2> w2 = other_check_point - segment_point0;
 
                         const double c1 = (w1[0] * v[0] + w1[1] * v[1]);
                         const double c = (v[0] * v[0] + v[1] * v[1]);
-			const double c2 = (w2[0] * v[0] + w2[1] * v[1]);
+                        const double c2 = (w2[0] * v[0] + w2[1] * v[1]);
 
 
                         Point<2> Pb1(coordinate_system);
@@ -221,16 +221,16 @@ namespace WorldBuilder
                         else
                           Pb1=segment_point0 + (c1 / c) * v;
 
-			Point<2> Pb2(coordinate_system);
-			if (c2 <= 0)
-			  Pb2=segment_point0;
-			else if (c <= c2)
-			  Pb2=segment_point1;
-			else
-			  Pb2=segment_point0 + (c2 / c) * v;
+                        Point<2> Pb2(coordinate_system);
+                        if (c2 <= 0)
+                          Pb2=segment_point0;
+                        else if (c <= c2)
+                          Pb2=segment_point1;
+                        else
+                          Pb2=segment_point0 + (c2 / c) * v;
 
                         Point<3> compare_point1(coordinate_system);
-			Point<3> compare_point2(coordinate_system);
+                        Point<3> compare_point2(coordinate_system);
 
                         compare_point1[0] = coordinate_system == cartesian ? Pb1[0] :  position_in_natural_coordinates_at_min_depth.get_depth_coordinate();
                         compare_point1[1] = coordinate_system == cartesian ? Pb1[1] : Pb1[0];
