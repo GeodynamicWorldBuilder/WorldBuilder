@@ -10,6 +10,8 @@ Add new entries a the bottom of the current list in the subheading. Item format:
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Fixed an issue where the ridge feature in spherical geometries for both the half space cooling and plate cooling models gave a discontinuous spreading center when crossing longitudes at intervals of 90 degrees. \[Daniel Douglas; 2024-01-22; [#520](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/520),[#518](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/518)\]
 
 ## [0.5.0]
 ### Added
