@@ -10,8 +10,13 @@ Add new entries a the bottom of the current list in the subheading. Item format:
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+
+### Changed 
+
 ### Fixed
 - Fixed an issue where the ridge feature in spherical geometries for both the half space cooling and plate cooling models gave a discontinuous spreading center when crossing longitudes at intervals of 90 degrees. \[Daniel Douglas; 2024-01-22; [#520](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/520),[#518](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/518)\]
+- In some cases the bezier curve closest_point_on_curve_segment function would include a half circle around the end point(s) as part of a slab/fault. \[Menno Fraters, reported by Daniel Douglas;2023-12-07; [#522](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/522) and [#523](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/523)\]
 
 ## [0.5.0]
 ### Added
