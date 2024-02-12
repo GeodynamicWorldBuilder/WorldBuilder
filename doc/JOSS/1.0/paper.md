@@ -14,10 +14,37 @@ authors:
   - name: Menno R. T. Fraters
     orcid: 0000-0003-0035-7723
     affiliation: "1" # (Multiple affiliations must be quoted)
+  - name: Magali I. Billen
+    orcid: 0000-0002-7316-1791
+    affiliation: "2"
+  - name: Rene Gassmöller
+    orcid: 0000-0001-7098-8198
+    affiliation: "1"
+  - name: Arushi Saxena
+    orcid: 0000-0003-2930-3497
+    affiliation: "3"
+  - name: Timo Heister
+    orcid: 0000-0002-8137-3903
+    affiliation: "3"
+  - name:  Juliane Dannberg
+    orcid: 0000-0003-0357-7115
+    affiliation: "1"
+  - name: Haoyuan Li
+    orcid: 0
+    affiliation: "2"
+  - name: Daniel Douglas
+    orcid: 0
+    affiliation: "4"
 affiliations:
  - name: Universiy of Florida, USA
    index: 1
-date: 9 September 2023
+ - name: UC Davis, USA
+   index: 2
+ - name: Clemson University, USA
+   index: 3
+ - name: New Mexico Tech, USA
+   index: 4
+date: 2 February 2023
 bibliography: paper.bib
 ---
 
@@ -31,7 +58,7 @@ Besides setting up initial conditions for geodynamic models, the GWB can also be
 
 # Statement of need
 
-The increase in available computational resources and new numerical methods and infrastructure, has started to enable the creation of numerical models which closer resemble or mimic actual location on the Earth in 3D with a much finer resolution. This also means that setting up these more detailed regional or global models, becomes exponentially more difficult, both in 2D, but especially in 3D. Furthermore, to properly investigate these models, often many smaller and bigger changes to the model need to be tested, which requires a way to change these models quickly and easily. Although successful attempts have been published, such model setups often have one or many of the following issues:
+The increase in available computational resources and new numerical methods and infrastructure, has started to enable the creation of numerical models which closer resemble or mimic actual location on the Earth in 3D with a much finer resolution. This also means that setting up these more detailed regional or global models, becomes exponentially more difficult, both in 2D, but especially in 3D. Furthermore, to properly investigate these models, often many smaller and bigger changes to the model need to be tested, which requires a way to change these models quickly and easily. Although successful studies have been published, such model setups often have one or many of the following issues:
 
 1. Code is not readable (even hard for their developers)
 2. Code/initial conditions is/are not modifiable (even hard for their developers)
@@ -40,6 +67,8 @@ The increase in available computational resources and new numerical methods and 
 5. Code is not shareable which makes everyone reinvent the wheel.
 
 This is the problem the GWB was designed to solve. Furthermore, since the GWB comes with its own programs to visualize the constructed model through programs like Paraview, and creating the models requires no programming knowledge, it can be easily used to visualize tectonic and geodynamic settings for publication, teaching or discussion purposes. 
+
+Other tools to solve this problem have emerged at around the same time as the first GWB release (@Fraters_Thieulot_etal_2019). Examples include GeomIO (@Bauville_Baumann_2019,@Spang_Baumann_2022), which use an approach based on vector graphics, Easy (https://easyinit.readthedocs.io/), which uses a more generic function based approach, UWGeodynamics (@Beucher_Moresi_etal_2019) is which specificially designed for Underworld (@Moresi_Dufour_2002) and GemPy (@Varga_Schaaf_2019,@Schaaf_Varga_2021), which is designed for structural modelling. 
 
 # Methods
 
@@ -59,7 +88,7 @@ Following these points will help to create a clean, portable, extendable code wi
 
 ## GWB User Philosophy
 
-The user philosophy is build around the idea that users define tectonic features. These tectonic features can be parameterized by defining lines or areas where these features are in a map view. For example, a continental plate is an area on a map, so the user defines the area. A fault is a line on a map, so the user defines that line where the fault is. The user also provides information on the feature, such a thickness, which can be spatially variable, or dip angles. These parameters are then used to create the volume for the feature. Next users can attach one or many models to those volumes to define for example temperature or compositional variables. These can be very simple models, such as a uniform temperture distribution, or a more complex distrubution, such as a half space cooling model, or a McKenzie (ref) or mass conserving (ref) slab temperature model. 
+The user philosophy is build around the idea that users define tectonic features. These tectonic features can be parameterized by defining lines or areas where these features are in a map view. For example, a continental plate is an area on a map, so the user defines the area. A fault is a line on a map, so the user defines that line where the fault is. The user also provides information on the feature, such a thickness, which can be spatially variable, or dip angles. These parameters are then used to create the volume for the feature. Next users can attach one or many models to those volumes to define for example temperature or compositional variables. These can be very simple models, such as a uniform temperture distribution, or a more complex distrubution, such as a half space cooling model, or a McKenzie [@McKenzie_1970] or mass conserving (ref) slab temperature model. 
 
 All these parameterizations are set through a single input file. This file a JSON styled input file, which human read, write and editable. The main idea behind this design of the GWB so that users can easily create and modify complex parameterized initial conditions for their geodynamic or tectonic setting. 
 
@@ -90,16 +119,16 @@ Below we show an example input file for a cartesian model, which can be easily c
 
 ![An schematic example of what can be build with 66 lines of GWB inptu file formatted in the same way as in the above input file example. \label{fig:example}](../../sphinx/_static/images/user_manual/basic_starter_tutorial/BST_17.png)
 
+
 # Acknowledgements
 
-see todo
+We would like to acknolege all other contributors to the project, especially Wolfang Bangerth, (Timo and Daniel if not on co-authors), Lorraine Hwang and John Naliboff for their advice and support through the years for this project. We would also like to acknowledge NSF for their funding and support through grands EAR-1620618 (CPO), OCE-1948902 (Cascadia), EAR-0949446 (CIG), EAR-1550901 (CIG) and EAR-1925677 (FRES).
 
 # References
 
 
 # TODO
-1. Add citations to other initial conditions generators
-2. Decide on co-authors
-3. write acknowledgments for other contributors who are not co-authors and for funding agencies
-4. Update the example with the new contours slab and maybe add a fault as well
+1. Decide on co-authors
+2. write acknowledgments for other contributors who are not co-authors and for funding agencies
+3. Add reference to Mass conserving temperature model?
 
