@@ -778,7 +778,7 @@ int main(int argc, char **argv)
           const double inner_radius = z_min;
           const double outer_radius = z_max;
 
-          WBAssertThrow(dim ==3, "2D is currently not supported for the chunk.");
+          // WBAssertThrow(dim ==3, "2D is currently not supported for the chunk.");
           WBAssertThrow(x_min <= x_max, "The minimum longitude must be less than the maximum longitude.");
           WBAssertThrow(y_min <= y_max, "The minimum latitude must be less than the maximum latitude.");
           WBAssertThrow(inner_radius < outer_radius, "The inner radius must be less than the outer radius.");
