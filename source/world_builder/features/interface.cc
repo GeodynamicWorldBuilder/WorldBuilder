@@ -49,7 +49,6 @@ namespace WorldBuilder
 
         WBAssertThrow(false,
                       "You provided an interpolation type which is not supported: " << string
-                      << "The options are none, linear, monotone spline and continuous monotone spline. "
                       << "This may be due to all options besides continuous monotone spline have been "
                       << "removed since version 0.5. It is best to remove the interpolation variable "
                       << "from you input file as it may be removed in future versions.");
@@ -89,9 +88,10 @@ namespace WorldBuilder
 
                 prm.declare_entry("interpolation",Types::String("global"),
                                   "What type of interpolation should be used to enforce the minimum points per "
-                                  "distance parameter. Options are global, none, linear, monotone spline and "
-                                  "continuous monotone spline interpolation. If this "
-                                  "value is set to global, the global value for interpolation is used.");
+                                  "distance parameter. Options are 'global' and "
+                                  "'continuous monotone spline' interpolation. If this "
+                                  "value is set to global, the global value for interpolation is used. "
+                                  "This option is deprecated and will be removed in a future release.");
                 WBAssert(it.second != NULL, "No declare entries given.");
                 it.second(prm, parent_name, {});
               }
