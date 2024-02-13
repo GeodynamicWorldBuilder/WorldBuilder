@@ -254,7 +254,8 @@ int main(int argc, char **argv)
                     << "GWB Version: " << WorldBuilder::Version::MAJOR << "."
                     << WorldBuilder::Version::MINOR << "."
                     << WorldBuilder::Version::PATCH << "."
-                    << WorldBuilder::Version::LABEL
+                    << WorldBuilder::Version::LABEL << "\n"
+                    << "git hash: " << WorldBuilder::Version::GIT_SHA1 << " branch: " << WorldBuilder::Version::GIT_BRANCH
                     << std::endl;
           return 0;
         }
