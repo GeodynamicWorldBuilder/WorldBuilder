@@ -2,6 +2,10 @@ name: benchmarks
 
 on: [pull_request]
 
+concurrency:
+  group: ${{ github.actor }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   benchmarks:
     strategy:
