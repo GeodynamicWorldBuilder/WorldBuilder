@@ -74,6 +74,7 @@ int main(int argc, char **argv)
   size_t n_grains = 0;
   bool convert_spherical = false;
   bool limit_debug_consistency_checks = true;
+  bool output_json_files = false;
 
   if (find_command_line_option(argv, argv+argc, "-h") || find_command_line_option(argv, argv+argc, "--help"))
     {
@@ -86,6 +87,9 @@ int main(int argc, char **argv)
 
   if (find_command_line_option(argv, argv+argc, "-ldcc") || find_command_line_option(argv, argv+argc, "--limit-debug-consistency-checks"))
     limit_debug_consistency_checks = false;
+
+  if (find_command_line_option(argv, argv+argc, "--output-json-files"))
+    output_json_files = true;
 
   if (argc == 1)
     {
@@ -102,11 +106,12 @@ int main(int argc, char **argv)
       return 0;
     }
 
-  if ((argc == 3 && !limit_debug_consistency_checks) || argc > 4)
+  if ((argc == 3 && (!limit_debug_consistency_checks || output_json_files)) || (argc == 3 && (!limit_debug_consistency_checks && output_json_files)) || argc > 5)
     {
       std::cout << "Only exactly two command line arguments may be given, which should be the world builder file location and the data file location (in that order) "
-                << "or exactly three command line arguments, which should be the world builder file location, the data file location and --limit-debug-consistency-checks (in that order). "
-                << ", argc = " << argc << ", limit_debug_consistency_checks = " << (limit_debug_consistency_checks ? "true" : "false") << std::endl;
+                << "or exactly three command line arguments, which should be the world builder file location, the data file location and --limit-debug-consistency-checks or --output-json-files (in that order),"
+                   "or exactly four comman line arguments, which should be the world builder file location, the data file location and --limit-debug-consistency-checks and --output-json-files (in that order),"
+                << ", argc = " << argc << ", limit_debug_consistency_checks = " << (limit_debug_consistency_checks ? "true" : "false") << ", output_json_files = " << (output_json_files ? "true" : "false") << std::endl;
       return 0;
     }
 
@@ -130,7 +135,7 @@ int main(int argc, char **argv)
       //try
       {
         const std::string output_dir = wb_file.substr(0,wb_file.find_last_of("/\\") + 1);
-        world = std::make_unique<WorldBuilder::World>(wb_file, true, output_dir,1,limit_debug_consistency_checks);
+        world = std::make_unique<WorldBuilder::World>(wb_file, output_json_files, output_dir,1,limit_debug_consistency_checks);
       }
       /*catch (std::exception &e)
         {
