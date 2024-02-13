@@ -15,6 +15,14 @@
 - **documentation**:The major and minor version number for which the input file was written.
 ::::::::::::::::::::::::
 
+::::::::::::::::::::::::{dropdown} /$schema
+:name: closed_$schema
+
+- **default value**:
+- **type**:string
+- **documentation**:The optional filename or https address to a JSON schema file
+::::::::::::::::::::::::
+
 ::::::::::::::::::::::::{dropdown} /cross section
 :name: closed_cross-section
 

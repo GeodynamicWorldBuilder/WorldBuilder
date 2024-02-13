@@ -12,6 +12,11 @@
             "type": "string",
             "documentation": "The major and minor version number for which the input file was written."
         },
+        "$schema": {
+            "default value": "",
+            "type": "string",
+            "documentation": "The optional filename or https address to a JSON schema file"
+        },
         "cross section": {
             "type": "array",
             "minItems": 2,
