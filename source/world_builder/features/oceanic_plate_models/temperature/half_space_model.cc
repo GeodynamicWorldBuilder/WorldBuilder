@@ -83,7 +83,7 @@ namespace WorldBuilder
                             "in degree Kelvin for this feature. If the model has an adiabatic gradient"
                             "this should be the mantle potential temperature, and T = Tad + Thalf. ");
 
-          prm.declare_entry("spreading velocity", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(), 2.))),
+          prm.declare_entry("spreading velocity", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0., std::numeric_limits<double>::max()))),
                             "The spreading velocity of the plate in meter per year. "
                             "This is the velocity with which one side moves away from the ridge.");
 
@@ -208,9 +208,6 @@ namespace WorldBuilder
 
                       const double spreading_velocity_point0 = spreading_velocities.second[i_coordinate];
                       const double spreading_velocity_point1 = spreading_velocities.second[i_coordinate + 1];
-
-                      // const double spreading_velocity_point0 = spreading_velocities[i_coordinate];
-                      // const double spreading_velocity_point1 = spreading_velocities[i_coordinate + 1];
 
                       {
                         // based on http://geomalgorithms.com/a02-_lines.html

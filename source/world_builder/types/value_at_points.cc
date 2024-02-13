@@ -69,7 +69,7 @@ namespace WorldBuilder
         Pointer((base + "/type").c_str()).Set(declarations,"array");
         Pointer((base + "/additionalProperties").c_str()).Set(declarations,false);
         Pointer((base + "/minItems").c_str()).Set(declarations,1);
-        Pointer((base + "/maxItems").c_str()).Set(declarations, 2);
+        Pointer((base + "/maxItems").c_str()).Set(declarations, max_values_in_array);
         Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
 
         {
@@ -82,7 +82,7 @@ namespace WorldBuilder
 
           Pointer((base + "/items/anyOf/1/items/type").c_str()).Set(declarations,"array");
           Pointer((base + "/items/anyOf/1/items/minItems").c_str()).Set(declarations,1);
-          Pointer((base + "/items/anyOf/1/items/maxItems").c_str()).Set(declarations, 2);
+          Pointer((base + "/items/anyOf/1/items/maxItems").c_str()).Set(declarations, max_values_in_array);
 
           Pointer((base + "/items/anyOf/1/items/items/type").c_str()).Set(declarations,"number");
         }
