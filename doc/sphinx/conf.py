@@ -10,10 +10,18 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
+import os
+import sys
+import subprocess
 # sys.path.insert(0, os.path.abspath('.'))
 
+# -- Run Doxygen first if this is a build on ReadTheDocs
+
+read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
+
+if read_the_docs_build:
+     os.mkdir("../doxygen")
+     subprocess.call('cd ../.. ; doxygen doc/doxygen_config.dox', shell=True)
 
 # -- Project information -----------------------------------------------------
 
@@ -38,6 +46,7 @@ extensions = [
 'sphinx_design',
 'sphinx_copybutton',
 'sphinxcontrib.bibtex',
+'breathe',
 ]
 
 bibtex_default_style = 'plain'
@@ -48,6 +57,7 @@ myst_enable_extensions = ["colon_fence"]
 
 # Breathe Configuration
 breathe_default_project = "GWB"
+breathe_projects = {"GWB": "../doxygen/xml"}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
