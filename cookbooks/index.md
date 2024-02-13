@@ -2,13 +2,10 @@
 Cookbooks
 ======================
 
-```{todo}
-This section contains self contained cookbooks on how to design different geodynamic setups.
+This section contains self contained cookbooks on how to design different geodynamic setups. Folders contain World Builder parameter files, grid output files, and optionally markdown files that are incorporated into the online documentation and explain particular features about the setup.
 
-Examples of cookbooks could be how to setup a (more) realistic 2D or 3D subduction zone, how to use topography, how to use slab2 datasets, adding world fault databases, etc.
-```
 
 ```{toctree}
-:hidden:
 
+3d_cartesian_rift/README
 ```
