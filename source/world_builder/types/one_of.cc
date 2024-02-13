@@ -57,7 +57,7 @@ namespace WorldBuilder
 
       prm.enter_subsection(name);
       {
-        Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
+        Pointer((base + "/description").c_str()).Set(declarations,documentation.c_str());
         prm.enter_subsection("oneOf");
         {
           for (size_t i = 0; i < inner_types_ptr.size(); i++)

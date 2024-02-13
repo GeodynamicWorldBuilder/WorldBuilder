@@ -68,7 +68,7 @@ namespace WorldBuilder
         Pointer((base + "/additionalProperties").c_str()).Set(declarations,false);
         Pointer((base + "/minItems").c_str()).Set(declarations,1);
         Pointer((base + "/maxItems").c_str()).Set(declarations,2);
-        Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
+        Pointer((base + "/description").c_str()).Set(declarations,documentation.c_str());
 
         {
           Pointer((base + "/items/anyOf/0/type").c_str()).Set(declarations,"number");

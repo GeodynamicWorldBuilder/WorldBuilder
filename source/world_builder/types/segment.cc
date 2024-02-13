@@ -117,7 +117,7 @@ namespace WorldBuilder
 
         Pointer((base + "/type").c_str()).Set(declarations,"object");
         Pointer((base + "/additionalProperties").c_str()).Set(declarations,false);
-        Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
+        Pointer((base + "/description").c_str()).Set(declarations,documentation.c_str());
         std::vector<std::string> restricted_values = {"length", "thickness", "angle"};
         for (unsigned int i = 0; i < restricted_values.size(); ++i)
           {
