@@ -231,7 +231,7 @@ namespace WorldBuilder
     thermal_diffusivity = prm.get<double>("thermal diffusivity");
 
     /**
-     * Model discretiation parameters
+     * Model discretization parameters
      */
     maximum_distance_between_coordinates = prm.get<double>("maximum distance between coordinates");
     interpolation = prm.get<std::string>("interpolation");
