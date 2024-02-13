@@ -2,7 +2,7 @@
 Adding your first tectonic feature
 ========================
 
-Now we are finely ready to get out our brushes and start coloring in the world. We are going to start by adding an oceanic plate to the feature list. 
+Now we are finally ready to get out our brushes and start coloring in the world. We are going to start by adding an oceanic plate to the feature list. 
 
 Each feature is an object, which means we need to enclose it in curly braces (`{}`). You will need to specify the following keys:
 
