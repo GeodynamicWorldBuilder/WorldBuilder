@@ -143,6 +143,20 @@ IF(WB_RUN_APP_TESTS)
     -D TEST_DIFF=${TEST_DIFF}
     -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
+
+  # Add tests which generates the declarations and schema files in the docs folder. Do not care about the output.
+    set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/doc/generate_decl_schema.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-dat/app_wb2.dat\;--output-json-files")
+  add_test(generate_declarations_and_schema
+  ${CMAKE_COMMAND} 
+    -D TEST_NAME=generate_declarations_and_schema 
+    -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} 
+    -D TEST_ARGS=${TEST_ARGUMENTS}
+    -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/generate_declarations_and_schema/screen-output.log 
+    -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/generate_declarations_and_schema/screen-output.log 
+    -D TEST_DIFF=${TEST_DIFF}
+    -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
+      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
+
   
   #find all the integration test files
   file(GLOB_RECURSE APP_TEST_SOURCES "gwb-dat/*.wb")
