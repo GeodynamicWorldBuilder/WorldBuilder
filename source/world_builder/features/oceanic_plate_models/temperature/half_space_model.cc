@@ -49,7 +49,6 @@ namespace WorldBuilder
           max_depth(NaN::DSNAN),
           top_temperature(NaN::DSNAN),
           bottom_temperature(NaN::DSNAN),
-          spreading_velocity(NaN::DSNAN),
           operation(Operations::REPLACE)
         {
           this->world = world_;
@@ -68,10 +67,10 @@ namespace WorldBuilder
                             "Half space cooling mode");
 
           // Declare entries of this plugin
-          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0.))),
+          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0., 2.))),
                             "The depth in meters from which the temperature of this feature is present.");
 
-          prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max()))),
+          prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(), 2.))),
                             "The depth in meters to which the temperature of this feature is present."
                             "Because half-space reaches background temperature asymptotically, "
                             "this value should be ~2 times the nominal plate thickness of 100 km" );
@@ -84,7 +83,7 @@ namespace WorldBuilder
                             "in degree Kelvin for this feature. If the model has an adiabatic gradient"
                             "this should be the mantle potential temperature, and T = Tad + Thalf. ");
 
-          prm.declare_entry("spreading velocity", Types::Double(-1),
+          prm.declare_entry("spreading velocity", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0., std::numeric_limits<double>::max()))),
                             "The spreading velocity of the plate in meter per year. "
                             "This is the velocity with which one side moves away from the ridge.");
 
@@ -106,15 +105,41 @@ namespace WorldBuilder
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
           top_temperature = prm.get<double>("top temperature");
           bottom_temperature = prm.get<double>("bottom temperature");
-          spreading_velocity = prm.get<double>("spreading velocity")/31557600;  // m/seconds
+          spreading_velocities = prm.get_ya("spreading velocity");
 
           mid_oceanic_ridges = prm.get_vector<std::vector<Point<2>>>("ridge coordinates");
+          // std::vector<std::vector<double>> reworked_velocities; 
           const double dtr = prm.coordinate_system->natural_coordinate_system() == spherical ? Consts::PI / 180.0 : 1.0;
-          for (auto &ridge_coordinates : mid_oceanic_ridges)
-            for (auto &ridge_coordinate : ridge_coordinates)
-              {
-                ridge_coordinate *= dtr;
-              }
+
+          unsigned int index_x = 0;
+          unsigned int index_y = 0;
+          unsigned int test_ind = 0;
+          for (index_x = 0; index_x < mid_oceanic_ridges.size(); index_x++)
+            {
+              std::vector<double> relevant_spreading;
+              for (index_y = 0; index_y < mid_oceanic_ridges[index_x].size(); index_y++)
+                {
+                  relevant_spreading.push_back(spreading_velocities.second[test_ind]);
+                  test_ind += 1;
+                }
+              reworked_velocities.push_back(relevant_spreading);
+              std::cout << "Heyyy";
+            }
+
+
+          // for (auto &ridge_coordinates : mid_oceanic_ridges)
+          //   {
+          //     std::vector<double> relevant_spreading;
+          //     index_y = 0;
+          //     for (auto &ridge_coordinate : ridge_coordinates)
+          //       {
+          //         ridge_coordinate *= dtr;
+          //         relevant_spreading.push_back(spreading_velocities.second[index_x + index_y]);
+          //         index_y += 1;
+          //       }
+          //     index_x += 1;
+          //     reworked_velocities.push_back(relevant_spreading);
+          //   }
         }
 
 
@@ -136,7 +161,6 @@ namespace WorldBuilder
                   Objects::NaturalCoordinate position_in_natural_coordinates_at_min_depth = Objects::NaturalCoordinate(position,
                                                                                             *(world->parameters.coordinate_system));
                   position_in_natural_coordinates_at_min_depth.get_ref_depth_coordinate() += depth-min_depth;
-
 
                   double bottom_temperature_local = bottom_temperature;
 
