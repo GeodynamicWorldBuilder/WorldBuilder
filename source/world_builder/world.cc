@@ -106,6 +106,8 @@ namespace WorldBuilder
 
       prm.declare_entry("version", Types::String(""),"The major and minor version number for which the input file was written.");
 
+      prm.declare_entry("$schema", Types::String(""),"The optional filename or https address to a JSON schema file");
+
       prm.declare_entry("cross section", Types::Array(Types::Point<2>(),2,2),"This is an array of two points along where the cross section is taken");
 
       prm.declare_entry("potential mantle temperature", Types::Double(1600),
