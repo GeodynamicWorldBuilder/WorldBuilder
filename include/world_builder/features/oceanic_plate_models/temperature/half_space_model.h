@@ -90,8 +90,8 @@ namespace WorldBuilder
             Objects::Surface max_depth_surface;
             double top_temperature;
             double bottom_temperature;
-            // std::pair<std::vector<double>,std::vector<double>> spreading_velocities;
-            std::vector<double> spreading_velocities;
+            std::pair<std::vector<double>,std::vector<double>> spreading_velocities;
+            // std::vector<double> spreading_velocities;
             std::vector<std::vector<Point<2> > > mid_oceanic_ridges;
             Operations operation;
 

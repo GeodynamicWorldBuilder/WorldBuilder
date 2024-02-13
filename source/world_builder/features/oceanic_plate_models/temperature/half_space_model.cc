@@ -67,10 +67,10 @@ namespace WorldBuilder
                             "Half space cooling mode");
 
           // Declare entries of this plugin
-          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0.))),
+          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0., 2.))),
                             "The depth in meters from which the temperature of this feature is present.");
 
-          prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max()))),
+          prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(), 2.))),
                             "The depth in meters to which the temperature of this feature is present."
                             "Because half-space reaches background temperature asymptotically, "
                             "this value should be ~2 times the nominal plate thickness of 100 km" );
@@ -83,14 +83,14 @@ namespace WorldBuilder
                             "in degree Kelvin for this feature. If the model has an adiabatic gradient"
                             "this should be the mantle potential temperature, and T = Tad + Thalf. ");
 
-          // prm.declare_entry("spreading velocity", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max()))),
-          //                   "The spreading velocity of the plate in meter per year. "
-          //                   "This is the velocity with which one side moves away from the ridge.");
-
-
-          prm.declare_entry("spreading velocity", Types::Array(Types::Double(1.0),1),
+          prm.declare_entry("spreading velocity", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(), 2.))),
                             "The spreading velocity of the plate in meter per year. "
                             "This is the velocity with which one side moves away from the ridge.");
+
+
+          // prm.declare_entry("spreading velocity", Types::Array(Types::Double(1.0),1),
+          //                   "The spreading velocity of the plate in meter per year. "
+          //                   "This is the velocity with which one side moves away from the ridge.");
 
 
           prm.declare_entry("ridge coordinates", Types::Array(Types::Array(Types::Point<2>(), 2),1),
@@ -111,8 +111,8 @@ namespace WorldBuilder
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
           top_temperature = prm.get<double>("top temperature");
           bottom_temperature = prm.get<double>("bottom temperature");
-          // spreading_velocities = prm.get("spreading velocity", {});
-          spreading_velocities = prm.get_vector<double>("spreading velocity");
+          spreading_velocities = prm.get("spreading velocity", {});
+          // spreading_velocities = prm.get_vector<double>("spreading velocity");
           mid_oceanic_ridges = prm.get_vector<std::vector<Point<2>>>("ridge coordinates");
           const double dtr = prm.coordinate_system->natural_coordinate_system() == spherical ? Consts::PI / 180.0 : 1.0;
           for (auto &ridge_coordinates : mid_oceanic_ridges)
@@ -206,11 +206,11 @@ namespace WorldBuilder
                       const Point<2> segment_point0 = mid_oceanic_ridges[relevant_ridge][i_coordinate];
                       const Point<2> segment_point1 = mid_oceanic_ridges[relevant_ridge][i_coordinate + 1];
 
-                      // const double spreading_velocity_point0 = spreading_velocities.second[i_coordinate];
-                      // const double spreading_velocity_point1 = spreading_velocities.second[i_coordinate + 1];
+                      const double spreading_velocity_point0 = spreading_velocities.second[i_coordinate];
+                      const double spreading_velocity_point1 = spreading_velocities.second[i_coordinate + 1];
 
-                      const double spreading_velocity_point0 = spreading_velocities[i_coordinate];
-                      const double spreading_velocity_point1 = spreading_velocities[i_coordinate + 1];
+                      // const double spreading_velocity_point0 = spreading_velocities[i_coordinate];
+                      // const double spreading_velocity_point1 = spreading_velocities[i_coordinate + 1];
 
                       {
                         // based on http://geomalgorithms.com/a02-_lines.html
@@ -241,7 +241,7 @@ namespace WorldBuilder
                         else
                             {
                             Pb1=segment_point0 + (c1 / c) * v;
-                            spreading_velocity = spreading_velocity_point0 + (spreading_velocity_point1 - spreading_velocity_point0); // * (c1 / c) * 1;
+                            spreading_velocity = spreading_velocity_point0 + (spreading_velocity_point1 - spreading_velocity_point0) * (c1 / c) * 1;
                             }
 
                         if (c2 <= 0)
@@ -257,7 +257,7 @@ namespace WorldBuilder
                         else
                             {
                             Pb2=segment_point0 + (c2 / c) * v;
-                            spreading_velocity = spreading_velocity_point0 + (spreading_velocity_point1 - spreading_velocity_point0); // * (c2 / c) * 1;
+                            spreading_velocity = spreading_velocity_point0 + (spreading_velocity_point1 - spreading_velocity_point0) * (c2 / c) * 1;
                             }
 
                         Point<3> compare_point1(coordinate_system);
