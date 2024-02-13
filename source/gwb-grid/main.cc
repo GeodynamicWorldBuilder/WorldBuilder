@@ -31,6 +31,7 @@
 #include "world_builder/point.h"
 #include "world_builder/utilities.h"
 #include "world_builder/world.h"
+#include "world_builder/config.h"
 
 #include "vtu11/vtu11.hpp"
 #undef max
@@ -247,14 +248,28 @@ int main(int argc, char **argv)
 
   try
     {
+      if (find_command_line_option(argv, argv+argc, "-v") || find_command_line_option(argv, argv+argc, "--version"))
+        {
+          std::cout << "World Builder Grid Visualization tool.\n"
+                    << "GWB Version: " << WorldBuilder::Version::MAJOR << "."
+                    << WorldBuilder::Version::MINOR << "."
+                    << WorldBuilder::Version::PATCH << "."
+                    << WorldBuilder::Version::LABEL
+                    << std::endl;
+          return 0;
+        }
 
       if (find_command_line_option(argv, argv+argc, "-h") || find_command_line_option(argv, argv+argc, "--help"))
         {
-          std::cout << "This program allows to use the world builder library directly with a world builder file and a grid file. "
-                    "The data file will be filled with initial conditions from the world as set by the world builder file." << std::endl
-                    << "Besides providing two files, where the first is the world builder file and the second is the grid file, the available options are: " << std::endl
-                    << "-h or --help to get this help screen," << std::endl
-                    << "-j the number of threads the visualizer is allowed to use." << std::endl;
+          std::cout << "World Builder Grid Visualization tool.\n"
+                    <<  "This program loads a world builder file and generates a visualization on a structured grid "
+                    << "based on information specified in a separate .grid configuration file.\n\n"
+                    << "Usage:\n"
+                    << argv[0] << " [-j N] example.wb example.grid\n\n"
+                    << "Other available options:\n"
+                    << "  -j N              to specify the number of threads the visualizer is allowed to use. Default: 1.\n"
+                    << "  -h or --help      to get this help screen.\n"
+                    << "  -v or --version   to see version information.\n";
           return 0;
         }
 
@@ -270,26 +285,11 @@ int main(int argc, char **argv)
             }
         }
 
-
-      if (options_vector.empty())
-        {
-          std::cout << "Error: There where no files passed to the World Builder, use --help for more " << std::endl
-                    << "information on how  to use the World Builder app." << std::endl;
-          return 0;
-        }
-
-
-      if (options_vector.size() == 1)
-        {
-          std::cout << "Error:  The World Builder app requires at least two files, a World Builder file " << std::endl
-                    << "and a data file to convert." << std::endl;
-          return 0;
-        }
-
       if (options_vector.size() != 2)
         {
-          std::cout << "Only two command line arguments may be given, which should be the world builder file location and the grid file location (in that order). "
-                    << "command line options where given." << std::endl;
+          std::cout << "World Builder Grid Visualization tool.\n"
+                    << "Usage: " << argv[0] << " example.wb example.grid\n"
+                    << "Try '" << argv[0] << " --help' for more information." << std::endl;
           return 0;
         }
 
