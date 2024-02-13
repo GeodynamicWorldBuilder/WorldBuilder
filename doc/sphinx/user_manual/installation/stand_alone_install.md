@@ -29,3 +29,7 @@ Stand-alone installation with all apps
 
 
 Now the library, tester, and the two programs (described in {ref}`part:user_manual:chap:installation:sec:included`) are ready for use.
+
+:::{note}
+By default, the Geodynamic World Builder is configured in `debug` mode, i.e., it includes several assertions to make sure that the input and computed properties (temperature or composition) are reasonable. This makes the program much slower in the `debug ` mode compared to the `release` mode (10 times or more depending on the problem type). It is therefore recommended that you first test the feasibility of the generated output using a small problem (lower resolution or lesser features) in the `debug` mode and then use the `release` mode to run the full-scale problem for faster computation.
+:::
