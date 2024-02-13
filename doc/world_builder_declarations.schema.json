@@ -6248,7 +6248,7 @@
                                                                 "documentation": "The reference density of the subducting plate in $kg/m^3$"
                                                             },
                                                             "plate velocity": {
-                                                                "default value": NaN,
+                                                                "default value": "NaN",
                                                                 "type": "number",
                                                                 "documentation": "The velocity in meters per year with which the plate subducts in meters per year."
                                                             },
@@ -6939,7 +6939,7 @@
                                                     "documentation": "The reference density of the subducting plate in $kg/m^3$"
                                                 },
                                                 "plate velocity": {
-                                                    "default value": NaN,
+                                                    "default value": "NaN",
                                                     "type": "number",
                                                     "documentation": "The velocity in meters per year with which the plate subducts in meters per year."
                                                 },
@@ -7700,7 +7700,7 @@
                                                                             "documentation": "The reference density of the subducting plate in $kg/m^3$"
                                                                         },
                                                                         "plate velocity": {
-                                                                            "default value": NaN,
+                                                                            "default value": "NaN",
                                                                             "type": "number",
                                                                             "documentation": "The velocity in meters per year with which the plate subducts in meters per year."
                                                                         },
@@ -8391,7 +8391,7 @@
                                                                 "documentation": "The reference density of the subducting plate in $kg/m^3$"
                                                             },
                                                             "plate velocity": {
-                                                                "default value": NaN,
+                                                                "default value": "NaN",
                                                                 "type": "number",
                                                                 "documentation": "The velocity in meters per year with which the plate subducts in meters per year."
                                                             },
