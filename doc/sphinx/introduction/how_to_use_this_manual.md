@@ -10,7 +10,7 @@ The manual is built up out of six different parts, which can be viewed in the le
 
 1. **Introduction**
    
-   By now you probably have read through most of this part of the manual already. The goal of this section is to contain the minimum amount of information needed to get started with the the rest of the manual. It briefly explains what the GWB is to new and potential users and how to use the manual.
+   By now you probably have read through most of this part of the manual already. The goal of this section is to contain the minimum amount of information needed to get started with the rest of the manual. It briefly explains what the GWB is to new and potential users and how to use the manual.
 
 2. **User Manual**
 
@@ -42,4 +42,4 @@ Now that you know what to find where in the manual, let's explain the interface 
 
 **Right panel** The right panel contains an outline of the page you are on. This is especially useful for longer pages.
 
-**Navigation** At the bottom of each page there are buttons to go to the the next and previous page. You can also use the arrow keys instead to move to the the next or previous page.
+**Navigation** At the bottom of each page there are buttons to go to the next and previous page. You can also use the arrow keys instead to move to the next or previous page.
