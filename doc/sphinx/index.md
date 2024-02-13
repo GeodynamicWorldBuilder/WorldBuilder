@@ -71,6 +71,6 @@ GWB_parameter_listings/visualization_grid_file/index.md
 
    GitHub <https://github.com/GeodynamicWorldBuilder/WorldBuilder/>
    Doxygen <https://codedocs.xyz/GeodynamicWorldBuilder/WorldBuilder/index.html>
-   Chat <https://app.element.io/#/room/#gwb:matrix.org>
+   Chat <https://app.element.io/%23/room/%23gwb:matrix.org>
 ```
 
