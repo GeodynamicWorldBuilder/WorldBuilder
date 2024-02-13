@@ -182,7 +182,7 @@ Basic Starter Tutorial section 17 high resolution result. This has 8 times the r
 
 # Code blocks
 
-Highlighting code blocks is similar to making notes or todos. Instead of `{note}` you need to use `{code-block}` and then the name of the language which the code should be colored by. For example for json, you would use:
+Creating code blocks is similar to making notes or todos. Instead of `{note}` you need to use `{code-block}` and then the name of the language which the code should be colored by. For example for json, you would use:
 
 ::::{code-block} md
 :::{code-block} json
@@ -328,10 +328,10 @@ Use a comma for multiple, like ({cite:t}`Fraters_Thieulot_etal_2019,Kronbichler_
 
 If the paper you wish to cite is not already in [references.bib](https://github.com/geodynamics/aspect/blob/main/doc/sphinx/bibliography.bib), you will need to add its bibtex entry. Please format the citation tag as:
 
-- `firstauthor:year` for one author
-- `firstauthor:secondauthor:year` for two authors
-- `firstauthor:secondauthor:year` for three authors
-- `firstauthor:secondauthor:etal:year` for more than two authors
+- `firstauthor_year` for one author
+- `firstauthor+secondauthor_year` for two authors
+- `firstauthor+secondauthor_year` for three authors
+- `firstauthor+secondauthor_etal_year` for more than two authors
 
 where `firstauthor` and `secondauthor` refer to the *last* names of the authors.
 
