@@ -2,7 +2,7 @@
 Important syntax
 ===============
 
-The world builder is using [sphinx](https://www.sphinx-doc.org) to generatate the documentation. Sphinx accepts multiple varients of extended markdown, but in this project we are using [myst](https://myst-parser.readthedocs.io). Below we will list some commen commands to use.
+The world builder is using [sphinx](https://www.sphinx-doc.org) to generate the documentation. Sphinx accepts multiple variants of extended markdown, but in this project we are using [myst](https://myst-parser.readthedocs.io). Below we list some common commands to use.
 
 :::{note}
 Everything in this file will look like garbage in a regular markdown viewer, like if you’re viewing this on github. Viewing it on readthedocs will render everything properly.
@@ -18,7 +18,7 @@ Important syntax
 
 ::::
 
-Note that the first line contains a path to the file so that it can be linked from the other files.
+Note that the first line contains a reference to this file that can be used to link to this file from other places of the documentation.
 
 (text)=
 # Text
@@ -29,7 +29,7 @@ Put single asterisks (*) around text you *want to italicize*, but double asteris
 Put single asterisks (*) around text you *want to italicize*, 
 but double asterisks around text you **want to bold**. 
 If you want to `highlight code` you put single Grave Accent (\`) around it.
-You can escape chacters with the backlash (\), like so \`not highlighed\`, \*not italic\*, \*\*not bold\*\*.
+You can escape chacters with the backlash (\\), like so \`not highlighed\`, \*not italic\*, \*\*not bold\*\*.
 :::
 
 (headers)=
@@ -75,7 +75,7 @@ Links are written in the following way:
 
 # Admonitions
 
-Adding note, warning or and todo's which stand out can be done with the following syntax:
+Adding notes, warnings or and todos which stand out can be done with the following syntax:
 
 ::::{code-block} md
 :::{todo}
@@ -182,7 +182,7 @@ Basic Starter Tutorial section 17 high resolution result. This has 8 times the r
 
 # Code blocks
 
-Making code blocks is similair to making notes or todos'. Instead of `{note}` you need to use `{code-block}` and then the name of the language which the code should be colored by. For example for json, you would use:
+Highlighting code blocks is similar to making notes or todos. Instead of `{note}` you need to use `{code-block}` and then the name of the language which the code should be colored by. For example for json, you would use:
 
 ::::{code-block} md
 :::{code-block} json
@@ -195,7 +195,7 @@ Making code blocks is similair to making notes or todos'. Instead of `{note}` yo
 :::
 ::::
 
-The lines starting with a colon (:) specifies certain parameters which can be set, wuch as setting line number and what number they need to start at (lineno-start: 1) and what lines to mark (emphasize-lines: 3,4).
+The lines starting with a colon (:) specify certain parameters which can be set, such as showing line numbers and what number they need to start at (lineno-start: 1) and what lines to mark (emphasize-lines: 3,4).
 
 :::{code-block} json
 :lineno-start: 1
@@ -238,17 +238,17 @@ Including code from files can be done in the following way:
 # Dropdown
 :::::{code-block}
 
-::::{dropdown} Click me to drop down
+::::{dropdown} Click me to open a dropdown box
 :name: this:is:my:label
 
-This text is only show when you click on the dropdown button.
+This text is only shown when you click on the dropdown button.
 ::::
 :::::
 
-::::{dropdown} Click me to drop down
+::::{dropdown} Click me to open a dropdown box
 :name: this:is:my:label
 
-This text is only show when you click on the dropdown button.
+This text is only shown when you click on the dropdown button.
 ::::
 
 # Grids
@@ -295,7 +295,7 @@ Girds work through multiple layers, like a code-block in a code block:
 :::{tab-item} tab 2
 :sync: tab2
 
-tab2
+tab 2
 :::
 ::::
 :::::
@@ -309,7 +309,7 @@ tab2
 :::{tab-item} tab 2
 :sync: tab2
 
-tab2
+tab 2
 :::
 ::::
 
