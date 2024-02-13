@@ -1,6 +1,6 @@
 # The Geodynamic World Builder (GWB)
 
-Welcome to the manual of the Geodynamic World Builder (GWB). The GWB is a stand-alone library which allows for the **easy** creation of **complex** initial conditions for geodynamic models, such as [ASPECT](https://aspect.geodynamics.org) {cite:p}`Kronbichler_Heister_Bangerth_2012,Heister_Dannberg_etal_2017,aspect-doi-v2.3.0,aspectmanual`, [ELEFANT](https://cedricthieulot.net/elefant.html) {cite:p}`Thieulot_2017` or SEPRAN {cite:p}`Berg_Segal_Yuen_2015`.
+Welcome to the manual of the Geodynamic World Builder (GWB). The GWB is a stand-alone library which allows for the **easy** creation of **complex** initial conditions for geodynamic models, such as [ASPECT](https://aspect.geodynamics.org) {cite:p}`Kronbichler_Heister_etal_2012,Heister_Dannberg_etal_2017,aspect-doi-v2.3.0,aspectmanual`, [ELEFANT](https://cedricthieulot.net/elefant.html) {cite:p}`Thieulot_2017` or SEPRAN {cite:p}`Berg_Segal_etal_2015`.
 
 This manual will guide you **step-by-step** to everything you need to know to **use**, or **develop** for the GWB.
 
