@@ -47,9 +47,9 @@ namespace WorldBuilder
           :
           min_depth(NaN::DSNAN),
           max_depth(NaN::DSNAN),
+          // spreading_velocities(NaN::DSNAN),
           top_temperature(NaN::DSNAN),
           bottom_temperature(NaN::DSNAN),
-          spreading_velocity(NaN::DSNAN),
           operation(Operations::REPLACE)
         {
           this->world = world_;
@@ -84,7 +84,11 @@ namespace WorldBuilder
                             "in degree Kelvin for this feature. If the model has an adiabatic gradient"
                             "this should be the mantle potential temperature, and T = Tad + Thalf. ");
 
-          prm.declare_entry("spreading velocity", Types::Double(-1),
+          // prm.declare_entry("spreading velocity", Types::Array(Types::Array(Types::Double(-1))),
+          //                   "The spreading velocity of the plate in meter per year. "
+          //                   "This is the velocity with which one side moves away from the ridge.");
+
+          prm.declare_entry("spreading velocity", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0.))),
                             "The spreading velocity of the plate in meter per year. "
                             "This is the velocity with which one side moves away from the ridge.");
 
@@ -106,8 +110,8 @@ namespace WorldBuilder
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
           top_temperature = prm.get<double>("top temperature");
           bottom_temperature = prm.get<double>("bottom temperature");
-          spreading_velocity = prm.get<double>("spreading velocity")/31557600;  // m/seconds
-
+          // spreading_velocities = prm.get_vector<std::vector<double>>("spreading velocity"); // /31557600;  // m/seconds
+          spreading_velocities = prm.get("spreading velocity",coordinates);
           mid_oceanic_ridges = prm.get_vector<std::vector<Point<2>>>("ridge coordinates");
           const double dtr = prm.coordinate_system->natural_coordinate_system() == spherical ? Consts::PI / 180.0 : 1.0;
           for (auto &ridge_coordinates : mid_oceanic_ridges)
@@ -115,6 +119,8 @@ namespace WorldBuilder
               {
                 ridge_coordinate *= dtr;
               }
+          // Add an Assert that checks to see if spreading velocity is an array of length 1, or of length
+          // N, where N equals the number of segments in the ridge
         }
 
 
@@ -148,7 +154,7 @@ namespace WorldBuilder
                     }
 
                   double distance_ridge = std::numeric_limits<double>::max();
-
+                  double spreading_velocity = 0;
                   const CoordinateSystem coordinate_system = world->parameters.coordinate_system->natural_coordinate_system();
 
 
@@ -199,6 +205,9 @@ namespace WorldBuilder
                       const Point<2> segment_point0 = mid_oceanic_ridges[relevant_ridge][i_coordinate];
                       const Point<2> segment_point1 = mid_oceanic_ridges[relevant_ridge][i_coordinate + 1];
 
+                      const double spreading_velocity_point0 = spreading_velocities.second[i_coordinate] / 31557600;
+                      const double spreading_velocity_point1 = spreading_velocities.second[i_coordinate + 1] / 31557600;
+
                       {
                         // based on http://geomalgorithms.com/a02-_lines.html
                         const Point<2> v = segment_point1 - segment_point0;
@@ -211,23 +220,41 @@ namespace WorldBuilder
 
 
                         Point<2> Pb1(coordinate_system);
+                        Point<2> Pb2(coordinate_system);
                         // This part is needed when we want to consider segments instead of lines
                         // If you want to have infinite lines, use only the else statement.
 
                         if (c1 <= 0)
-                          Pb1=segment_point0;
+                          {
+                            Pb1=segment_point0;
+                            spreading_velocity = spreading_velocity_point0;
+                          }
                         else if (c <= c1)
-                          Pb1=segment_point1;
+                          {
+                            Pb1=segment_point1;
+                            spreading_velocity = spreading_velocity_point1;
+                          }
                         else
-                          Pb1=segment_point0 + (c1 / c) * v;
+                            {
+                            Pb1=segment_point0 + (c1 / c) * v;
+                            spreading_velocity = spreading_velocity_point0 + (spreading_velocity_point1 - spreading_velocity_point0) * (c1 / c) * 1;
+                            }
 
-                        Point<2> Pb2(coordinate_system);
                         if (c2 <= 0)
-                          Pb2=segment_point0;
+                          {
+                            Pb2=segment_point0;
+                            spreading_velocity = spreading_velocity_point0;
+                          }
                         else if (c <= c2)
-                          Pb2=segment_point1;
+                          {
+                            Pb2=segment_point1;
+                            spreading_velocity = spreading_velocity_point1;
+                          }
                         else
-                          Pb2=segment_point0 + (c2 / c) * v;
+                            {
+                            Pb2=segment_point0 + (c2 / c) * v;
+                            spreading_velocity = spreading_velocity_point0 + (spreading_velocity_point1 - spreading_velocity_point0) * (c2 / c) * 1;
+                            }
 
                         Point<3> compare_point1(coordinate_system);
                         Point<3> compare_point2(coordinate_system);
