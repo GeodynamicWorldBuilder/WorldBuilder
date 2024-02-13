@@ -5,9 +5,9 @@
 A simple setup of a rift in a Cartesian box, in which two plates are spreading at a constant spreading rate.
 The files can be found [here](https://github.com/GeodynamicWorldBuilder/WorldBuilder/tree/main/cookbooks/3d_cartesian_rift).
 
-The relevant part of the world builder file looks like this:
+The relevant part of the World Builder file looks like this:
 
-:::{literalinclude} 3d_cartesian_rift.wb
+:::{literalinclude} ../3d_cartesian_rift.wb
 :language: json
 :lineno-start: 1
 :::
