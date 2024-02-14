@@ -61,7 +61,7 @@ namespace WorldBuilder
         Pointer((base + "/default value").c_str()).Set(declarations,default_value);
 
       Pointer((base + "/type").c_str()).Set(declarations,"number");
-      Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
+      Pointer((base + "/description").c_str()).Set(declarations,documentation.c_str());
     }
   } // namespace Types
 } // namespace WorldBuilder
