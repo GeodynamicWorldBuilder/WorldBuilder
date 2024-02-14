@@ -235,8 +235,6 @@ namespace WorldBuilder
         {
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
-          const int plate_model_summation_number = 100; // for the plate model
-
 
           if (distance_from_plane <= max_depth && distance_from_plane >= min_depth)
             {
@@ -523,58 +521,8 @@ namespace WorldBuilder
                       top_heat_content = top_heat_content * std::erfc(taper_con*theta);
                     }
 
-                  // Assign the temperature depending on whether distance is negative (above) or positive (below) the slab
-                  if (adjusted_distance < 0)
-                    {
-                      // use 1D infinite space solution for top (side 2) of slab the slab
-                      // 2 times the "top_heat_content" because all this heat needs to be on one side of the Gaussian
-                      const double time_top_slab = (1/(Consts::PI*thermal_diffusivity)) *
-                                                   pow(((2 * top_heat_content) / (2 * density * specific_heat * (min_temperature - temperature_ + 1e-16))),2) + 1e-16;
-
-                      // for overriding plate region where plate temperature is less the minimum slab temperature
-                      // need to set temperature = temperature_ otherwise end up with temperature less than surface temperature ;
-                      if (temperature_ < min_temperature)
-                        {
-                          temperature = temperature_;
-                        }
-                      else
-                        {
-                          temperature  = temperature_ + (2 * top_heat_content /
-                                                         (2*density*specific_heat * std::sqrt(Consts::PI * thermal_diffusivity * time_top_slab)))*
-                                         std::exp(-(adjusted_distance*adjusted_distance)/(4*thermal_diffusivity*time_top_slab));
-                        }
-                    }
-                  else
-                    {
-                      // use half-space cooling or plate model for the bottom (side 1) of the slab
-                      if (reference_model_name == plate_model)
-                        {
-                          if (adjusted_distance < max_depth)
-                            {
-                              const double plate_velocity_UI = plate_velocity / seconds_in_year;
-                              temperature = background_temperature + (min_temperature - background_temperature) * (1 - adjusted_distance / max_depth);
-                              for (int i = 1; i< std::floor(plate_model_summation_number/2.0); ++i)
-                                {
-                                  temperature = temperature - (min_temperature - background_temperature) *
-                                                ((2 / (double(i) * Consts::PI)) * std::sin((double(i) * Consts::PI * adjusted_distance) / max_depth) *
-                                                 std::exp((((plate_velocity_UI * max_depth)/(2 * thermal_diffusivity)) -
-                                                           std::sqrt(((plate_velocity_UI*plate_velocity_UI*max_depth*max_depth) /
-                                                                      (4*thermal_diffusivity*thermal_diffusivity)) + double(i) * double(i) * Consts::PI * Consts::PI)) *
-                                                          ((plate_velocity_UI * effective_plate_age) / max_depth)));
-                                }
-                            }
-                          else
-                            {
-                              temperature = background_temperature;
-                            }
-                        }
-                      else
-                        {
-                          temperature = background_temperature + (min_temperature - background_temperature) *
-                                        std::erfc(adjusted_distance / (2 * std::sqrt(thermal_diffusivity * effective_plate_age)));
-
-                        }
-                    }
+                  // Call the analytic solution to compute the temperature
+                  temperature = get_temperature_analytic(top_heat_content, min_temperature, background_temperature, temperature_, effective_plate_age, adjusted_distance);
                 }
               else
                 {
@@ -589,6 +537,73 @@ namespace WorldBuilder
             }
 
           return temperature_;
+        }
+
+        double
+        MassConserving::get_temperature_analytic(const double top_heat_content,
+                                                 const double min_temperature,
+                                                 const double background_temperature,
+                                                 const double temperature_,
+                                                 const double effective_plate_age,
+                                                 const double adjusted_distance) const
+        {
+          const double seconds_in_year = 60.0 * 60.0 * 24.0 * 365.25;  // sec/y
+
+          double temperature = 0.0;
+
+          // Assign the temperature depending on whether distance is negative (above) or positive (below) the slab
+          if (adjusted_distance < 0)
+            {
+              // use 1D infinite space solution for top (side 2) of slab the slab
+              // 2 times the "top_heat_content" because all this heat needs to be on one side of the Gaussian
+              const double time_top_slab = (1/(Consts::PI*thermal_diffusivity)) *
+                                           pow(((2 * top_heat_content) / (2 * density * specific_heat * (min_temperature - temperature_ + 1e-16))),2) + 1e-16;
+
+              // for overriding plate region where plate temperature is less the minimum slab temperature
+              // need to set temperature = temperature_ otherwise end up with temperature less than surface temperature ;
+              if (temperature_ < min_temperature)
+                {
+                  temperature = temperature_;
+                }
+              else
+                {
+                  temperature  = temperature_ + (2 * top_heat_content /
+                                                 (2*density*specific_heat * std::sqrt(Consts::PI * thermal_diffusivity * time_top_slab)))*
+                                 std::exp(-(adjusted_distance*adjusted_distance)/(4*thermal_diffusivity*time_top_slab));
+                }
+            }
+          else
+            {
+              // use half-space cooling or plate model for the bottom (side 1) of the slab
+              if (reference_model_name == plate_model)
+                {
+                  if (adjusted_distance < max_depth)
+                    {
+                      const double plate_velocity_UI = plate_velocity / seconds_in_year;
+                      temperature = background_temperature + (min_temperature - background_temperature) * (1 - adjusted_distance / max_depth);
+                      for (int i = 1; i< std::floor(plate_model_summation_number/2.0); ++i)
+                        {
+                          temperature = temperature - (min_temperature - background_temperature) *
+                                        ((2 / (double(i) * Consts::PI)) * std::sin((double(i) * Consts::PI * adjusted_distance) / max_depth) *
+                                         std::exp((((plate_velocity_UI * max_depth)/(2 * thermal_diffusivity)) -
+                                                   std::sqrt(((plate_velocity_UI*plate_velocity_UI*max_depth*max_depth) /
+                                                              (4*thermal_diffusivity*thermal_diffusivity)) + double(i) * double(i) * Consts::PI * Consts::PI)) *
+                                                  ((plate_velocity_UI * effective_plate_age) / max_depth)));
+                        }
+                    }
+                  else
+                    {
+                      temperature = background_temperature;
+                    }
+                }
+              else
+                {
+                  temperature = background_temperature + (min_temperature - background_temperature) *
+                                std::erfc(adjusted_distance / (2 * std::sqrt(thermal_diffusivity * effective_plate_age)));
+
+                }
+            }
+          return temperature;
         }
 
         WB_REGISTER_FEATURE_SUBDUCTING_PLATE_TEMPERATURE_MODEL(MassConserving, mass conserving)

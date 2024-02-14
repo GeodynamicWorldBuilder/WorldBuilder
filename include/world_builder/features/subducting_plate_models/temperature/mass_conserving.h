@@ -91,6 +91,18 @@ namespace WorldBuilder
                                    const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
                                    const AdditionalParameters &additional_parameters) const override final;
 
+            /**
+             * Returns a temperature based on the given heat content, temperatures, effective plate age,
+             * and adjusted distance to the coldest point in the slab. The temperature is formulated by
+             * the analytical solutions.
+             */
+            double get_temperature_analytic(const double top_heat_content,
+                                            const double min_temperature,
+                                            const double background_temperature,
+                                            const double temperature_,
+                                            const double effective_plate_age,
+                                            const double adjusted_distance) const;
+
 
           private:
             //  temperature submodule parameters
@@ -116,6 +128,7 @@ namespace WorldBuilder
               plate_model
             };
             ReferenceModelName reference_model_name;
+            const int plate_model_summation_number = 100; // for the plate model
         };
       } // namespace Temperature
     } // namespace SubductingPlateModels
