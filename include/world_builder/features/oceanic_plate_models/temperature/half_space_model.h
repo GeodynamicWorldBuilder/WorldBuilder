@@ -91,7 +91,7 @@ namespace WorldBuilder
             double bottom_temperature;
             std::pair<std::vector<double>,std::vector<double>> spreading_velocities;
             std::vector<std::vector<Point<2> > > mid_oceanic_ridges;
-            std::vector<std::vector<double>> reworked_velocities;
+            std::vector<std::vector<double>> spreading_velocities_at_each_ridge_point;
             Operations operation;
 
         };

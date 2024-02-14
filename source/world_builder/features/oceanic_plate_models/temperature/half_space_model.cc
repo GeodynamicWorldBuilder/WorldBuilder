@@ -105,10 +105,9 @@ namespace WorldBuilder
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
           top_temperature = prm.get<double>("top temperature");
           bottom_temperature = prm.get<double>("bottom temperature");
-          spreading_velocities = prm.get_ya("spreading velocity");
+          spreading_velocities = prm.get_value_at_array("spreading velocity");
 
           mid_oceanic_ridges = prm.get_vector<std::vector<Point<2>>>("ridge coordinates");
-          // std::vector<std::vector<double>> reworked_velocities; 
           const double dtr = prm.coordinate_system->natural_coordinate_system() == spherical ? Consts::PI / 180.0 : 1.0;
 
           unsigned int index_x = 0;
@@ -116,32 +115,18 @@ namespace WorldBuilder
           unsigned int test_ind = 0;
           for (index_x = 0; index_x < mid_oceanic_ridges.size(); index_x++)
             {
-              std::vector<double> relevant_spreading;
+              std::vector<double> spreading_rates_for_ridge;
               for (index_y = 0; index_y < mid_oceanic_ridges[index_x].size(); index_y++)
                 {
-                  relevant_spreading.push_back(spreading_velocities.second[test_ind]);
+                  if (spreading_velocities.second.size() <= 1)
+                    spreading_rates_for_ridge.push_back(spreading_velocities.first[0]);
+                  else
+                    spreading_rates_for_ridge.push_back(spreading_velocities.second[test_ind]);
                   test_ind += 1;
                 }
-              reworked_velocities.push_back(relevant_spreading);
-              std::cout << "Heyyy";
+              spreading_velocities_at_each_ridge_point.push_back(spreading_rates_for_ridge);
             }
-
-
-          // for (auto &ridge_coordinates : mid_oceanic_ridges)
-          //   {
-          //     std::vector<double> relevant_spreading;
-          //     index_y = 0;
-          //     for (auto &ridge_coordinate : ridge_coordinates)
-          //       {
-          //         ridge_coordinate *= dtr;
-          //         relevant_spreading.push_back(spreading_velocities.second[index_x + index_y]);
-          //         index_y += 1;
-          //       }
-          //     index_x += 1;
-          //     reworked_velocities.push_back(relevant_spreading);
-          //   }
         }
-
 
         double
         HalfSpaceModel::get_temperature(const Point<3> &position,

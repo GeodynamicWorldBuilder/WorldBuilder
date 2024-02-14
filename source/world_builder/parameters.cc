@@ -652,7 +652,7 @@ namespace WorldBuilder
   }
 
 
-  std::pair<std::vector<double>,std::vector<double>> Parameters::get_ya(const std::string &name)
+  std::pair<std::vector<double>,std::vector<double>> Parameters::get_value_at_array(const std::string &name)
   {
     // There are four cases:
     // 1. No value provided: use the default value everywhere. Return first with one value and second with size 0.
@@ -717,7 +717,7 @@ namespace WorldBuilder
                     WBAssertThrow(false, "Could not convert values of " << strict_base << "/" << name << "/0/0 into a double. "
                                   << "The provided value was \"" <<  Pointer((strict_base + "/" + name + "/0/0").c_str()).Get(parameters)->GetString() << "\".");
                   }
-                // result.first.emplace_back(value);
+                result.first.emplace_back(value);
               }
             else
               {
@@ -773,7 +773,7 @@ namespace WorldBuilder
                                                   << "\".");
                                   }
 
-                            result.first.emplace_back(value);
+                                result.first.emplace_back(value);
                                 result.second.emplace_back(testing_value);
                               }
                           }
