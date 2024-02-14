@@ -108,7 +108,7 @@ namespace WorldBuilder
           spreading_velocities = prm.get("spreading velocity", {});
 
           mid_oceanic_ridges = prm.get_vector<std::vector<Point<2>>>("ridge coordinates");
-          std::vector<std::vector<double>> reworked_velocities; 
+          std::vector<std::vector<double>> reworked_velocities;
           const double dtr = prm.coordinate_system->natural_coordinate_system() == spherical ? Consts::PI / 180.0 : 1.0;
 
           unsigned int index_x = 0;
@@ -241,10 +241,10 @@ namespace WorldBuilder
                             spreading_velocity = spreading_velocity_point1;
                           }
                         else
-                            {
+                          {
                             Pb1=segment_point0 + (c1 / c) * v;
                             spreading_velocity = spreading_velocity_point0 + (spreading_velocity_point1 - spreading_velocity_point0) * (c1 / c) * 1;
-                            }
+                          }
 
                         if (c2 <= 0)
                           {
@@ -257,10 +257,10 @@ namespace WorldBuilder
                             spreading_velocity = spreading_velocity_point1;
                           }
                         else
-                            {
+                          {
                             Pb2=segment_point0 + (c2 / c) * v;
                             spreading_velocity = spreading_velocity_point0 + (spreading_velocity_point1 - spreading_velocity_point0) * (c2 / c) * 1;
-                            }
+                          }
 
                         Point<3> compare_point1(coordinate_system);
                         Point<3> compare_point2(coordinate_system);
