@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "*.wb": "jsonc"
+    },
+    "json.validate.enable": true,
+    "json.schemas": [
+        {
+            "fileMatch": [
+                "*.wb"
+            ],
+            "url": "./doc/world_builder_declarations.schema.json"
+        }
+    ],
+}
