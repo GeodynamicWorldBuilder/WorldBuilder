@@ -87,12 +87,6 @@ namespace WorldBuilder
                             "The spreading velocity of the plate in meter per year. "
                             "This is the velocity with which one side moves away from the ridge.");
 
-
-          // prm.declare_entry("spreading velocity", Types::Array(Types::Double(1.0),1),
-          //                   "The spreading velocity of the plate in meter per year. "
-          //                   "This is the velocity with which one side moves away from the ridge.");
-
-
           prm.declare_entry("ridge coordinates", Types::Array(Types::Array(Types::Point<2>(), 2),1),
                             "An list of ridges. Each ridge is a lists of at least 2 2d points which "
                             "define the location of the ridge. You need to define at least one ridge."
@@ -112,16 +106,26 @@ namespace WorldBuilder
           top_temperature = prm.get<double>("top temperature");
           bottom_temperature = prm.get<double>("bottom temperature");
           spreading_velocities = prm.get("spreading velocity", {});
-          // spreading_velocities = prm.get_vector<double>("spreading velocity");
+
           mid_oceanic_ridges = prm.get_vector<std::vector<Point<2>>>("ridge coordinates");
+          std::vector<std::vector<double>> reworked_velocities; 
           const double dtr = prm.coordinate_system->natural_coordinate_system() == spherical ? Consts::PI / 180.0 : 1.0;
+
+          unsigned int index_x = 0;
+          unsigned int index_y = 0;
           for (auto &ridge_coordinates : mid_oceanic_ridges)
-            for (auto &ridge_coordinate : ridge_coordinates)
-              {
-                ridge_coordinate *= dtr;
-              }
-          // Add an Assert that checks to see if spreading velocity is an array of length 1, or of length
-          // N, where N equals the number of segments in the ridge
+            {
+              std::vector<double> relevant_spreading;
+              index_y = 0;
+              for (auto &ridge_coordinate : ridge_coordinates)
+                {
+                  ridge_coordinate *= dtr;
+                  relevant_spreading.push_back(spreading_velocities.second[index_x + index_y]);
+                  index_y += 1;
+                }
+              index_x += 1;
+              reworked_velocities.push_back(relevant_spreading);
+            }
         }
 
 
@@ -144,7 +148,6 @@ namespace WorldBuilder
                                                                                             *(world->parameters.coordinate_system));
                   position_in_natural_coordinates_at_min_depth.get_ref_depth_coordinate() += depth-min_depth;
 
-
                   double bottom_temperature_local = bottom_temperature;
 
                   if (bottom_temperature_local < 0)
@@ -157,7 +160,6 @@ namespace WorldBuilder
                   double distance_ridge = std::numeric_limits<double>::max();
                   double spreading_velocity = 0;
                   const CoordinateSystem coordinate_system = world->parameters.coordinate_system->natural_coordinate_system();
-
 
                   // first find if the coordinate is on this side of a ridge
                   unsigned int relevant_ridge = 0;
@@ -206,8 +208,11 @@ namespace WorldBuilder
                       const Point<2> segment_point0 = mid_oceanic_ridges[relevant_ridge][i_coordinate];
                       const Point<2> segment_point1 = mid_oceanic_ridges[relevant_ridge][i_coordinate + 1];
 
-                      const double spreading_velocity_point0 = spreading_velocities.second[i_coordinate];
-                      const double spreading_velocity_point1 = spreading_velocities.second[i_coordinate + 1];
+                      // const double spreading_velocity_point0 = spreading_velocities.second[i_coordinate];
+                      // const double spreading_velocity_point1 = spreading_velocities.second[i_coordinate + 1];
+
+                      const double spreading_velocity_point0 = reworked_velocities[relevant_ridge][i_coordinate];
+                      const double spreading_velocity_point1 = reworked_velocities[relevant_ridge][i_coordinate + 1];
 
                       {
                         // based on http://geomalgorithms.com/a02-_lines.html

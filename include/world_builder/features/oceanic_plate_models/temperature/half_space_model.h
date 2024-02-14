@@ -81,7 +81,6 @@ namespace WorldBuilder
                                    const double feature_min_depth,
                                    const double feature_max_depth) const override final;
 
-
           private:
             // plate model temperature submodule parameters
             double min_depth;
@@ -91,8 +90,8 @@ namespace WorldBuilder
             double top_temperature;
             double bottom_temperature;
             std::pair<std::vector<double>,std::vector<double>> spreading_velocities;
-            // std::vector<double> spreading_velocities;
             std::vector<std::vector<Point<2> > > mid_oceanic_ridges;
+            std::vector<std::vector<double>> reworked_velocities;
             Operations operation;
 
         };
