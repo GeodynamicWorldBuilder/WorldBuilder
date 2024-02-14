@@ -163,3 +163,7 @@ which looks like this when rendered:
 
 Image descriptionta
 ```
+
+# Units
+
+The easiest way of adding superscripts needed for units such as kg/m<sup>3</sup> is to use HTML tags, as in `<sup>superscript</sup>`.
