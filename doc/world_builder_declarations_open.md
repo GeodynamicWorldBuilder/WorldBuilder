@@ -3,7 +3,7 @@
 :name: open_
 
 - **type**:object
-- **documentation**:Root object
+- **description**:Root object
 - **additionalProperties**:false
 - **required**:[version, features]
 
@@ -13,7 +13,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The major and minor version number for which the input file was written.
+- **description**:The major and minor version number for which the input file was written.
 ::::::::::::::::::::::::
 
 ::::::::::::::::::::::::{dropdown} /$schema
@@ -22,7 +22,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The optional filename or https address to a JSON schema file
+- **description**:The optional filename or https address to a JSON schema file
 ::::::::::::::::::::::::
 
 ::::::::::::::::::::::::{dropdown} /cross section
@@ -33,7 +33,7 @@
 - **minItems**:2
 - **maxItems**:2
 - **uniqueItems**:false
-- **documentation**:This is an array of two points along where the cross section is taken
+- **description**:This is an array of two points along where the cross section is taken
 :::::::::::::::::::::::{dropdown} /cross section/items
 :open:
 :name: open_cross-section_items
@@ -41,7 +41,7 @@
 - **type**:array
 - **minItems**:2
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::::::::::::{dropdown} /cross section/items/items
 :open:
 :name: open_cross-section_items_items
@@ -59,7 +59,7 @@
 
 - **default value**:1600.0
 - **type**:number
-- **documentation**:The potential temperature of the mantle at the surface in Kelvin.
+- **description**:The potential temperature of the mantle at the surface in Kelvin.
 ::::::::::::::::::::::::
 
 ::::::::::::::::::::::::{dropdown} /surface temperature
@@ -68,7 +68,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature at the surface in Kelvin.
+- **description**:The temperature at the surface in Kelvin.
 ::::::::::::::::::::::::
 
 ::::::::::::::::::::::::{dropdown} /force surface temperature
@@ -77,7 +77,7 @@
 
 - **default value**:false
 - **type**:boolean
-- **documentation**:Force the provided surface temperature to be set at the surface
+- **description**:Force the provided surface temperature to be set at the surface
 ::::::::::::::::::::::::
 
 ::::::::::::::::::::::::{dropdown} /thermal expansion coefficient
@@ -86,7 +86,7 @@
 
 - **default value**:0.000035
 - **type**:number
-- **documentation**:The thermal expansion coefficient in $K^{-1}$.
+- **description**:The thermal expansion coefficient in $K^{-1}$.
 ::::::::::::::::::::::::
 
 ::::::::::::::::::::::::{dropdown} /specific heat
@@ -95,7 +95,7 @@
 
 - **default value**:1250.0
 - **type**:number
-- **documentation**:The specific heat in $J kg^{-1} K^{-1}.$
+- **description**:The specific heat in $J kg^{-1} K^{-1}.$
 ::::::::::::::::::::::::
 
 ::::::::::::::::::::::::{dropdown} /thermal diffusivity
@@ -104,7 +104,7 @@
 
 - **default value**:8.04e-7
 - **type**:number
-- **documentation**:The thermal diffusivity in $m^{2} s^{-1}$.
+- **description**:The thermal diffusivity in $m^{2} s^{-1}$.
 ::::::::::::::::::::::::
 
 ::::::::::::::::::::::::{dropdown} /maximum distance between coordinates
@@ -113,7 +113,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:This enforces a maximum distance (in degree for spherical coordinates or meter in cartesian coordinates) between coordinates in the model. If the distance is larger, extra points are added by interpolation. Requires interpolation to be not 'none'.
+- **description**:This enforces a maximum distance (in degree for spherical coordinates or meter in cartesian coordinates) between coordinates in the model. If the distance is larger, extra points are added by interpolation. Requires interpolation to be not 'none'.
 ::::::::::::::::::::::::
 
 ::::::::::::::::::::::::{dropdown} /interpolation
@@ -122,14 +122,14 @@
 
 - **default value**:continuous monotone spline
 - **type**:string
-- **documentation**:What type of interpolation should be used to enforce the minimum points per distance parameter. Options are none, linear, monotone spline and continuous monotone spline interpolation.
+- **description**:What type of interpolation should be used to enforce the minimum points per distance parameter. Options are none, linear, monotone spline and continuous monotone spline interpolation.
 ::::::::::::::::::::::::
 
 ::::::::::::::::::::::::{dropdown} /coordinate system
 :open:
 :name: open_coordinate-system
 
-- **documentation**:A coordinate system. Cartesian or spherical.
+- **description**:A coordinate system. Cartesian or spherical.
 - **default value**:cartesian
 - **type**:object
 :::::::::::::::::::::::{dropdown} /coordinate system/oneOf
@@ -141,7 +141,7 @@
 :name: open_coordinate-system_oneOf_1
 
 - **type**:object
-- **documentation**:A Cartesian coordinate system. Coordinates are (x,y,z) and extend infintly in all directions.
+- **description**:A Cartesian coordinate system. Coordinates are (x,y,z) and extend infintly in all directions.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -151,7 +151,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name which the user has given to the feature.
+- **description**:The name which the user has given to the feature.
 - **enum**:[cartesian]
 :::::::::::::::::::::
 
@@ -164,7 +164,7 @@
 :name: open_coordinate-system_oneOf_2
 
 - **type**:object
-- **documentation**:A spherical coordinate system. The coordinates are (radius, longitude, latitude). The radius is set in this plugin, the longitude extends at least from -360 to 360 degrees, and the latitude extends from -90 to 90. It is required to choose a depth method. Please see the manual for more information.
+- **description**:A spherical coordinate system. The coordinates are (radius, longitude, latitude). The radius is set in this plugin, the longitude extends at least from -360 to 360 degrees, and the latitude extends from -90 to 90. It is required to choose a depth method. Please see the manual for more information.
 - **additionalProperties**:false
 - **required**:[model, depth method]
 
@@ -174,7 +174,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name which the user has given to the feature.
+- **description**:The name which the user has given to the feature.
 - **enum**:[spherical]
 :::::::::::::::::::::
 
@@ -184,7 +184,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:Which depth method to use in the spherical case. The available options are 'starting point', 'begin segment' and 'begin at end segment'. See the manual section on coordinate systems for more info.
+- **description**:Which depth method to use in the spherical case. The available options are 'starting point', 'begin segment' and 'begin at end segment'. See the manual section on coordinate systems for more info.
 - **enum**:[starting point, begin segment, begin at end segment, continuous]
 :::::::::::::::::::::
 
@@ -194,7 +194,7 @@
 
 - **default value**:6371000.0
 - **type**:number
-- **documentation**:The radius of the sphere.
+- **description**:The radius of the sphere.
 :::::::::::::::::::::
 
 
@@ -208,7 +208,7 @@
 :open:
 :name: open_gravity-model
 
-- **documentation**:A gravity model for the world.
+- **description**:A gravity model for the world.
 - **default value**:uniform
 - **type**:object
 :::::::::::::::::::::::{dropdown} /gravity model/oneOf
@@ -220,7 +220,7 @@
 :name: open_gravity-model_oneOf_1
 
 - **type**:object
-- **documentation**:Uniform gravity model. It returns the gravity vector in a Cartesian coordinate system at a given position, which has a constant magitude for the whole domain. The vector points down in cartesian coordinates and to the center of the sphere in spherical coordinates.
+- **description**:Uniform gravity model. It returns the gravity vector in a Cartesian coordinate system at a given position, which has a constant magitude for the whole domain. The vector points down in cartesian coordinates and to the center of the sphere in spherical coordinates.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -230,7 +230,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name which the user has given to the feature.
+- **description**:The name which the user has given to the feature.
 - **enum**:[uniform]
 :::::::::::::::::::::
 
@@ -240,7 +240,7 @@
 
 - **default value**:9.81
 - **type**:number
-- **documentation**:The magnitude of the gravity.
+- **description**:The magnitude of the gravity.
 :::::::::::::::::::::
 
 
@@ -254,7 +254,7 @@
 :open:
 :name: open_features
 
-- **documentation**:A list of features.
+- **description**:A list of features.
 - **default value**:
 - **type**:array
 :::::::::::::::::::::::{dropdown} /features/items
@@ -270,7 +270,7 @@
 :name: open_features_items_oneOf_1
 
 - **type**:object
-- **documentation**:Continental plate object. Requires properties `model` and `coordinates`.
+- **description**:Continental plate object. Requires properties `model` and `coordinates`.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -280,7 +280,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name which the user has given to the feature.
+- **description**:The name which the user has given to the feature.
 - **enum**:[continental plate]
 ::::::::::::::::::::
 
@@ -290,7 +290,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name which the user has given to the feature.
+- **description**:The name which the user has given to the feature.
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/1/coordinates
@@ -301,7 +301,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:An array of 2d Points representing an array of coordinates where the feature is located.
+- **description**:An array of 2d Points representing an array of coordinates where the feature is located.
 :::::::::::::::::::{dropdown} /features/items/oneOf/1/coordinates/items
 :open:
 :name: open_features_items_oneOf_1_coordinates_items
@@ -309,7 +309,7 @@
 - **type**:array
 - **minItems**:2
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::::::::{dropdown} /features/items/oneOf/1/coordinates/items/items
 :open:
 :name: open_features_items_oneOf_1_coordinates_items_items
@@ -327,14 +327,14 @@
 
 - **default value**:global
 - **type**:string
-- **documentation**:What type of interpolation should be used to enforce the minimum points per distance parameter. Options are global, none, linear, monotone spline and continuous monotone spline interpolation. If this value is set to global, the global value for interpolation is used.
+- **description**:What type of interpolation should be used to enforce the minimum points per distance parameter. Options are 'global' and 'continuous monotone spline' interpolation. If this value is set to global, the global value for interpolation is used. This option is deprecated and will be removed in a future release.
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/1/min depth
 :open:
 :name: open_features_items_oneOf_1_min-depth
 
-- **documentation**:The depth from which this feature is present
+- **description**:The depth from which this feature is present
 :::::::::::::::::::{dropdown} /features/items/oneOf/1/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_min-depth_oneOf
@@ -345,7 +345,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::::::
 
 ::::::::::::::::::{dropdown} /features/items/oneOf/1/min depth/oneOf/2
@@ -356,7 +356,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::::::{dropdown} /features/items/oneOf/1/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_1_min-depth_oneOf_2_items
@@ -365,7 +365,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::::::{dropdown} /features/items/oneOf/1/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_min-depth_oneOf_2_items_items
@@ -421,7 +421,7 @@
 :open:
 :name: open_features_items_oneOf_1_max-depth
 
-- **documentation**:The depth to which this feature is present
+- **description**:The depth to which this feature is present
 :::::::::::::::::::{dropdown} /features/items/oneOf/1/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_max-depth_oneOf
@@ -432,7 +432,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::::::
 
 ::::::::::::::::::{dropdown} /features/items/oneOf/1/max depth/oneOf/2
@@ -443,7 +443,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::::::{dropdown} /features/items/oneOf/1/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_1_max-depth_oneOf_2_items
@@ -452,7 +452,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::::::{dropdown} /features/items/oneOf/1/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_max-depth_oneOf_2_items_items
@@ -508,7 +508,7 @@
 :open:
 :name: open_features_items_oneOf_1_temperature-models
 
-- **documentation**:A list of temperature models.
+- **description**:A list of temperature models.
 - **default value**:
 - **type**:array
 :::::::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items
@@ -524,7 +524,7 @@
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Adiabatic temperature model. Uses global values by default.
+- **description**:Adiabatic temperature model. Uses global values by default.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -534,7 +534,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[adiabatic]
 ::::::::::::::::
 
@@ -544,7 +544,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
@@ -552,7 +552,7 @@
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_1_min-depth
 
-- **documentation**:The depth in meters from which the composition of this feature is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/1/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_1_min-depth_oneOf
@@ -563,7 +563,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/1/min depth/oneOf/2
@@ -574,7 +574,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/1/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_1_min-depth_oneOf_2_items
@@ -583,7 +583,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/1/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_1_min-depth_oneOf_2_items_items
@@ -639,7 +639,7 @@
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_1_max-depth
 
-- **documentation**:The depth in meters to which the composition of this feature is present.
+- **description**:The depth in meters to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/1/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_1_max-depth_oneOf
@@ -650,7 +650,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/1/max depth/oneOf/2
@@ -661,7 +661,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/1/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_1_max-depth_oneOf_2_items
@@ -670,7 +670,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/1/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_1_max-depth_oneOf_2_items_items
@@ -728,7 +728,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/1/thermal expansion coefficient
@@ -737,7 +737,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/1/specific heat
@@ -746,7 +746,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::::::
 
 
@@ -758,7 +758,7 @@
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
+- **description**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
 - **additionalProperties**:false
 - **required**:[model, max depth]
 
@@ -768,7 +768,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[linear]
 ::::::::::::::::
 
@@ -778,7 +778,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
@@ -786,7 +786,7 @@
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_min-depth
 
-- **documentation**:The depth in meters from which the composition of this feature is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_min-depth_oneOf
@@ -797,7 +797,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/min depth/oneOf/2
@@ -808,7 +808,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_min-depth_oneOf_2_items
@@ -817,7 +817,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_min-depth_oneOf_2_items_items
@@ -873,7 +873,7 @@
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_max-depth
 
-- **documentation**:The depth in meters to which the composition of this feature is present.
+- **description**:The depth in meters to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_max-depth_oneOf
@@ -884,7 +884,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/max depth/oneOf/2
@@ -895,7 +895,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_max-depth_oneOf_2_items
@@ -904,7 +904,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_max-depth_oneOf_2_items_items
@@ -962,7 +962,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
+- **description**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/bottom temperature
@@ -971,7 +971,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The temperature at the top in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
+- **description**:The temperature at the top in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
 ::::::::::::::::
 
 
@@ -983,7 +983,7 @@
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_3
 
 - **type**:object
-- **documentation**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constan value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -993,7 +993,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[uniform]
 ::::::::::::::::
 
@@ -1003,7 +1003,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
@@ -1011,7 +1011,7 @@
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_3_min-depth
 
-- **documentation**:The depth in meters from which the composition of this feature is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/3/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_3_min-depth_oneOf
@@ -1022,7 +1022,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/3/min depth/oneOf/2
@@ -1033,7 +1033,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/3/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_3_min-depth_oneOf_2_items
@@ -1042,7 +1042,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/3/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_3_min-depth_oneOf_2_items_items
@@ -1098,7 +1098,7 @@
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_3_max-depth
 
-- **documentation**:The depth in meters to which the composition of this feature is present.
+- **description**:The depth in meters to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/3/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_3_max-depth_oneOf
@@ -1109,7 +1109,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/3/max depth/oneOf/2
@@ -1120,7 +1120,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/3/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_3_max-depth_oneOf_2_items
@@ -1129,7 +1129,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/3/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_3_max-depth_oneOf_2_items_items
@@ -1187,7 +1187,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in degree Kelvin which this feature should have
 ::::::::::::::::
 
 
@@ -1203,7 +1203,7 @@
 :open:
 :name: open_features_items_oneOf_1_composition-models
 
-- **documentation**:A list of composition models.
+- **description**:A list of composition models.
 - **default value**:
 - **type**:array
 :::::::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items
@@ -1219,7 +1219,7 @@
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **description**:Uniform compositional model. Sets constant compositional field.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -1229,7 +1229,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the composition model.
+- **description**:The name of the composition model.
 - **enum**:[uniform]
 ::::::::::::::::
 
@@ -1237,7 +1237,7 @@
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_1_min-depth
 
-- **documentation**:The depth in meters from which the composition of this feature is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_1_min-depth_oneOf
@@ -1248,7 +1248,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/min depth/oneOf/2
@@ -1259,7 +1259,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_1_min-depth_oneOf_2_items
@@ -1268,7 +1268,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_1_min-depth_oneOf_2_items_items
@@ -1324,7 +1324,7 @@
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_1_max-depth
 
-- **documentation**:The depth in meters to which the composition of this feature is present.
+- **description**:The depth in meters to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_1_max-depth_oneOf
@@ -1335,7 +1335,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/max depth/oneOf/2
@@ -1346,7 +1346,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_1_max-depth_oneOf_2_items
@@ -1355,7 +1355,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_1_max-depth_oneOf_2_items_items
@@ -1415,14 +1415,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the composition which are present there.
+- **description**:A list with the labels of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -1435,14 +1435,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:TA list of compositional fractions corresponding to the compositions list.
 :::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/fractions/items
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_1_fractions_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -1453,7 +1453,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::::
 
@@ -1470,7 +1470,7 @@
 :open:
 :name: open_features_items_oneOf_1_grains-models
 
-- **documentation**:A list of grains models.
+- **description**:A list of grains models.
 - **default value**:
 - **type**:array
 :::::::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items
@@ -1486,7 +1486,7 @@
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
+- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -1496,7 +1496,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[random uniform distribution]
 ::::::::::::::::
 
@@ -1504,7 +1504,7 @@
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_1_min-depth
 
-- **documentation**:The depth in meters from which the composition of this feature is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/1/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_1_min-depth_oneOf
@@ -1515,7 +1515,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/1/min depth/oneOf/2
@@ -1526,7 +1526,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/1/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_1_min-depth_oneOf_2_items
@@ -1535,7 +1535,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/1/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items
@@ -1591,7 +1591,7 @@
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_1_max-depth
 
-- **documentation**:The depth in meters to which the composition of this feature is present.
+- **description**:The depth in meters to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/1/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_1_max-depth_oneOf
@@ -1602,7 +1602,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/1/max depth/oneOf/2
@@ -1613,7 +1613,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/1/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_1_max-depth_oneOf_2_items
@@ -1622,7 +1622,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/1/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items
@@ -1682,14 +1682,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -1700,7 +1700,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::::::
 
@@ -1712,14 +1712,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
 :::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/1/grain sizes/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_1_grain-sizes_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -1732,14 +1732,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
+- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
 :::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/1/normalize grain sizes/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_1_normalize-grain-sizes_items
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -1753,7 +1753,7 @@
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Uniform grains model. All grains start exactly the same.
+- **description**:Uniform grains model. All grains start exactly the same.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -1763,7 +1763,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[uniform]
 ::::::::::::::::
 
@@ -1771,7 +1771,7 @@
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_min-depth
 
-- **documentation**:The depth in meters from which the composition of this feature is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_min-depth_oneOf
@@ -1782,7 +1782,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/min depth/oneOf/2
@@ -1793,7 +1793,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_min-depth_oneOf_2_items
@@ -1802,7 +1802,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_min-depth_oneOf_2_items_items
@@ -1858,7 +1858,7 @@
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_max-depth
 
-- **documentation**:The depth in meters to which the composition of this feature is present.
+- **description**:The depth in meters to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_max-depth_oneOf
@@ -1869,7 +1869,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/max depth/oneOf/2
@@ -1880,7 +1880,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_max-depth_oneOf_2_items
@@ -1889,7 +1889,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_max-depth_oneOf_2_items_items
@@ -1949,14 +1949,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/compositions/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -1969,7 +1969,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the rotation matrices of the grains which are present there for each compositions.
+- **description**:A list with the rotation matrices of the grains which are present there for each compositions.
 :::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/rotation matrices/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_rotation-matrices_items
@@ -1978,7 +1978,7 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/rotation matrices/items/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_rotation-matrices_items_items
@@ -1987,14 +1987,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/rotation matrices/items/items/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_rotation-matrices_items_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -2011,7 +2011,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
+- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
 :::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/Euler angles z-x-z/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_Euler-angles-z-x-z_items
@@ -2020,14 +2020,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/Euler angles z-x-z/items/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_Euler-angles-z-x-z_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 :::::::::::::::
@@ -2040,7 +2040,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace, multiply]
 ::::::::::::::::
 
@@ -2052,14 +2052,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
 :::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/grain sizes/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_grain-sizes_items
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -2082,7 +2082,7 @@
 :name: open_features_items_oneOf_2
 
 - **type**:object
-- **documentation**:Fault object. Requires properties `model` and `coordinates`.
+- **description**:Fault object. Requires properties `model` and `coordinates`.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -2092,7 +2092,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name which the user has given to the feature.
+- **description**:The name which the user has given to the feature.
 - **enum**:[fault]
 ::::::::::::::::::::
 
@@ -2102,7 +2102,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name which the user has given to the feature.
+- **description**:The name which the user has given to the feature.
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/2/coordinates
@@ -2113,7 +2113,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:An array of 2d Points representing an array of coordinates where the feature is located.
+- **description**:An array of 2d Points representing an array of coordinates where the feature is located.
 :::::::::::::::::::{dropdown} /features/items/oneOf/2/coordinates/items
 :open:
 :name: open_features_items_oneOf_2_coordinates_items
@@ -2121,7 +2121,7 @@
 - **type**:array
 - **minItems**:2
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::::::::{dropdown} /features/items/oneOf/2/coordinates/items/items
 :open:
 :name: open_features_items_oneOf_2_coordinates_items_items
@@ -2139,7 +2139,7 @@
 
 - **default value**:global
 - **type**:string
-- **documentation**:What type of interpolation should be used to enforce the minimum points per distance parameter. Options are global, none, linear, monotone spline and continuous monotone spline interpolation. If this value is set to global, the global value for interpolation is used.
+- **description**:What type of interpolation should be used to enforce the minimum points per distance parameter. Options are 'global' and 'continuous monotone spline' interpolation. If this value is set to global, the global value for interpolation is used. This option is deprecated and will be removed in a future release.
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/2/min depth
@@ -2148,7 +2148,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The depth to which this feature is present
+- **description**:The depth to which this feature is present
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/2/max depth
@@ -2157,7 +2157,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The depth to which this feature is present
+- **description**:The depth to which this feature is present
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/2/dip point
@@ -2167,7 +2167,7 @@
 - **type**:array
 - **minItems**:2
 - **maxItems**:2
-- **documentation**:The depth to which this feature is present
+- **description**:The depth to which this feature is present
 :::::::::::::::::::{dropdown} /features/items/oneOf/2/dip point/items
 :open:
 :name: open_features_items_oneOf_2_dip-point_items
@@ -2185,14 +2185,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:The depth to which this feature is present
+- **description**:The depth to which this feature is present
 :::::::::::::::::::{dropdown} /features/items/oneOf/2/segments/items
 :open:
 :name: open_features_items_oneOf_2_segments_items
 
 - **type**:object
 - **additionalProperties**:false
-- **documentation**:
+- **description**:
 - **required**:[length, thickness, angle]
 
 ::::::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/length
@@ -2254,7 +2254,7 @@
 :open:
 :name: open_features_items_oneOf_2_segments_items_temperature-models
 
-- **documentation**:
+- **description**:
 - **default value**:
 - **type**:array
 :::::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/temperature models/items
@@ -2270,7 +2270,7 @@
 :name: open_features_items_oneOf_2_segments_items_temperature-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Adiabatic temperature model. Uses global values by default.
+- **description**:Adiabatic temperature model. Uses global values by default.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -2280,7 +2280,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[adiabatic]
 ::::::::::::::
 
@@ -2290,7 +2290,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
@@ -2300,7 +2300,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/temperature models/items/oneOf/1/max distance fault center
@@ -2309,7 +2309,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/temperature models/items/oneOf/1/potential mantle temperature
@@ -2318,7 +2318,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/temperature models/items/oneOf/1/thermal expansion coefficient
@@ -2327,7 +2327,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/temperature models/items/oneOf/1/specific heat
@@ -2336,7 +2336,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::::
 
 
@@ -2348,7 +2348,7 @@
 :name: open_features_items_oneOf_2_segments_items_temperature-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
+- **description**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
 - **additionalProperties**:false
 - **required**:[model, max distance fault center]
 
@@ -2358,7 +2358,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[linear]
 ::::::::::::::
 
@@ -2368,7 +2368,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
@@ -2378,7 +2378,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The minimum distance to the center of the fault. This determines where the linear temperature starts.
+- **description**:The minimum distance to the center of the fault. This determines where the linear temperature starts.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/temperature models/items/oneOf/2/max distance fault center
@@ -2387,7 +2387,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The minimum distance to the center of the fault. This determines where the linear temperature end.
+- **description**:The minimum distance to the center of the fault. This determines where the linear temperature end.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/temperature models/items/oneOf/2/center temperature
@@ -2396,7 +2396,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature at the center of this feature in degree Kelvin.If the value is below zero, the an adiabatic temperature is used.
+- **description**:The temperature at the center of this feature in degree Kelvin.If the value is below zero, the an adiabatic temperature is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/temperature models/items/oneOf/2/side temperature
@@ -2405,7 +2405,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The temperature at the sides of this feature in degree Kelvin. If the value is below zero, an adiabatic temperature is used.
+- **description**:The temperature at the sides of this feature in degree Kelvin. If the value is below zero, an adiabatic temperature is used.
 ::::::::::::::
 
 
@@ -2417,7 +2417,7 @@
 :name: open_features_items_oneOf_2_segments_items_temperature-models_items_oneOf_3
 
 - **type**:object
-- **documentation**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constan value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -2427,7 +2427,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[uniform]
 ::::::::::::::
 
@@ -2437,7 +2437,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
@@ -2447,7 +2447,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from which the composition of this feature is present.
+- **description**:The distance in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/temperature models/items/oneOf/3/max distance fault center
@@ -2456,7 +2456,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance in meters to which the composition of this feature is present.
+- **description**:The distance in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/temperature models/items/oneOf/3/temperature
@@ -2465,7 +2465,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in degree Kelvin which this feature should have
 ::::::::::::::
 
 
@@ -2481,7 +2481,7 @@
 :open:
 :name: open_features_items_oneOf_2_segments_items_composition-models
 
-- **documentation**:
+- **description**:
 - **default value**:
 - **type**:array
 :::::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items
@@ -2497,7 +2497,7 @@
 :name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Compositional model object
+- **description**:Compositional model object
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -2507,7 +2507,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the composition model.
+- **description**:The name of the composition model.
 - **enum**:[smooth]
 ::::::::::::::
 
@@ -2517,7 +2517,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from which the composition of this feature is present.
+- **description**:The distance in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/side distance fault center
@@ -2526,7 +2526,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance over which the composition is reduced from 1 to 0.
+- **description**:The distance over which the composition is reduced from 1 to 0.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/center fractions
@@ -2537,14 +2537,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:The composition fraction at the center of the fault.
+- **description**:The composition fraction at the center of the fault.
 :::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/center fractions/items
 :open:
 :name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_1_center-fractions_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -2557,14 +2557,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:The composition fraction at the sides of this feature.
+- **description**:The composition fraction at the sides of this feature.
 :::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/side fractions/items
 :open:
 :name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_1_side-fractions_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -2577,14 +2577,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the composition which are present there.
+- **description**:A list with the labels of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -2595,7 +2595,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::
 
@@ -2608,7 +2608,7 @@
 :name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **description**:Uniform compositional model. Sets constant compositional field.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -2618,7 +2618,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the composition model.
+- **description**:The name of the composition model.
 - **enum**:[uniform]
 ::::::::::::::
 
@@ -2628,7 +2628,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from which the composition of this feature is present.
+- **description**:The distance in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/2/max distance fault center
@@ -2637,7 +2637,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance in meters to which the composition of this feature is present.
+- **description**:The distance in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/2/compositions
@@ -2648,14 +2648,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the composition which are present there.
+- **description**:A list with the labels of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/2/compositions/items
 :open:
 :name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -2668,14 +2668,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:TA list of compositional fractions corresponding to the compositions list.
 :::::::::::::{dropdown} /features/items/oneOf/2/segments/items/composition models/items/oneOf/2/fractions/items
 :open:
 :name: open_features_items_oneOf_2_segments_items_composition-models_items_oneOf_2_fractions_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -2686,7 +2686,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::
 
@@ -2703,7 +2703,7 @@
 :open:
 :name: open_features_items_oneOf_2_segments_items_grains-models
 
-- **documentation**:
+- **description**:
 - **default value**:
 - **type**:array
 :::::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items
@@ -2719,7 +2719,7 @@
 :name: open_features_items_oneOf_2_segments_items_grains-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
+- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -2729,7 +2729,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[random uniform distribution]
 ::::::::::::::
 
@@ -2739,7 +2739,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance from the fault center in meters from which the composition of this feature is present.
+- **description**:The distance from the fault center in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/1/max distance fault center
@@ -2748,7 +2748,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance from the fault in meters to which the composition of this feature is present.
+- **description**:The distance from the fault in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/1/compositions
@@ -2759,14 +2759,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_2_segments_items_grains-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -2777,7 +2777,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::::
 
@@ -2789,14 +2789,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
 :::::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/1/grain sizes/items
 :open:
 :name: open_features_items_oneOf_2_segments_items_grains-models_items_oneOf_1_grain-sizes_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -2809,14 +2809,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
+- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
 :::::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/1/normalize grain sizes/items
 :open:
 :name: open_features_items_oneOf_2_segments_items_grains-models_items_oneOf_1_normalize-grain-sizes_items
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -2830,7 +2830,7 @@
 :name: open_features_items_oneOf_2_segments_items_grains-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Uniform grains model. All grains start exactly the same.
+- **description**:Uniform grains model. All grains start exactly the same.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -2840,7 +2840,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[uniform]
 ::::::::::::::
 
@@ -2850,7 +2850,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance from the fault center in meters from which the composition of this feature is present.
+- **description**:The distance from the fault center in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/2/max distance fault center
@@ -2859,7 +2859,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance from the fault in meters to which the composition of this feature is present.
+- **description**:The distance from the fault in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/2/compositions
@@ -2870,14 +2870,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/2/compositions/items
 :open:
 :name: open_features_items_oneOf_2_segments_items_grains-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -2890,7 +2890,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the grains which are present there for each compositions.
+- **description**:A list with the labels of the grains which are present there for each compositions.
 :::::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/2/rotation matrices/items
 :open:
 :name: open_features_items_oneOf_2_segments_items_grains-models_items_oneOf_2_rotation-matrices_items
@@ -2899,7 +2899,7 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/2/rotation matrices/items/items
 :open:
 :name: open_features_items_oneOf_2_segments_items_grains-models_items_oneOf_2_rotation-matrices_items_items
@@ -2908,14 +2908,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/2/rotation matrices/items/items/items
 :open:
 :name: open_features_items_oneOf_2_segments_items_grains-models_items_oneOf_2_rotation-matrices_items_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -2932,7 +2932,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
+- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
 :::::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/2/Euler angles z-x-z/items
 :open:
 :name: open_features_items_oneOf_2_segments_items_grains-models_items_oneOf_2_Euler-angles-z-x-z_items
@@ -2941,14 +2941,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/2/Euler angles z-x-z/items/items
 :open:
 :name: open_features_items_oneOf_2_segments_items_grains-models_items_oneOf_2_Euler-angles-z-x-z_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::
 
 :::::::::::::
@@ -2961,7 +2961,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::::
 
@@ -2973,14 +2973,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
 :::::::::::::{dropdown} /features/items/oneOf/2/segments/items/grains models/items/oneOf/2/grain sizes/items
 :open:
 :name: open_features_items_oneOf_2_segments_items_grains-models_items_oneOf_2_grain-sizes_items
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -3004,7 +3004,7 @@
 :open:
 :name: open_features_items_oneOf_2_temperature-models
 
-- **documentation**:A list of temperature models.
+- **description**:A list of temperature models.
 - **default value**:
 - **type**:array
 :::::::::::::::::::{dropdown} /features/items/oneOf/2/temperature models/items
@@ -3020,7 +3020,7 @@
 :name: open_features_items_oneOf_2_temperature-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Adiabatic temperature model. Uses global values by default.
+- **description**:Adiabatic temperature model. Uses global values by default.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -3030,7 +3030,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[adiabatic]
 ::::::::::::::::
 
@@ -3040,7 +3040,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
@@ -3050,7 +3050,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/temperature models/items/oneOf/1/max distance fault center
@@ -3059,7 +3059,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/temperature models/items/oneOf/1/potential mantle temperature
@@ -3068,7 +3068,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/temperature models/items/oneOf/1/thermal expansion coefficient
@@ -3077,7 +3077,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/temperature models/items/oneOf/1/specific heat
@@ -3086,7 +3086,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::::::
 
 
@@ -3098,7 +3098,7 @@
 :name: open_features_items_oneOf_2_temperature-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
+- **description**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
 - **additionalProperties**:false
 - **required**:[model, max distance fault center]
 
@@ -3108,7 +3108,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[linear]
 ::::::::::::::::
 
@@ -3118,7 +3118,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
@@ -3128,7 +3128,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The minimum distance to the center of the fault. This determines where the linear temperature starts.
+- **description**:The minimum distance to the center of the fault. This determines where the linear temperature starts.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/temperature models/items/oneOf/2/max distance fault center
@@ -3137,7 +3137,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The minimum distance to the center of the fault. This determines where the linear temperature end.
+- **description**:The minimum distance to the center of the fault. This determines where the linear temperature end.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/temperature models/items/oneOf/2/center temperature
@@ -3146,7 +3146,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature at the center of this feature in degree Kelvin.If the value is below zero, the an adiabatic temperature is used.
+- **description**:The temperature at the center of this feature in degree Kelvin.If the value is below zero, the an adiabatic temperature is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/temperature models/items/oneOf/2/side temperature
@@ -3155,7 +3155,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The temperature at the sides of this feature in degree Kelvin. If the value is below zero, an adiabatic temperature is used.
+- **description**:The temperature at the sides of this feature in degree Kelvin. If the value is below zero, an adiabatic temperature is used.
 ::::::::::::::::
 
 
@@ -3167,7 +3167,7 @@
 :name: open_features_items_oneOf_2_temperature-models_items_oneOf_3
 
 - **type**:object
-- **documentation**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constan value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -3177,7 +3177,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[uniform]
 ::::::::::::::::
 
@@ -3187,7 +3187,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
@@ -3197,7 +3197,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from which the composition of this feature is present.
+- **description**:The distance in meters from which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/temperature models/items/oneOf/3/max distance fault center
@@ -3206,7 +3206,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance in meters to which the composition of this feature is present.
+- **description**:The distance in meters to which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/temperature models/items/oneOf/3/temperature
@@ -3215,7 +3215,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in degree Kelvin which this feature should have
 ::::::::::::::::
 
 
@@ -3231,7 +3231,7 @@
 :open:
 :name: open_features_items_oneOf_2_composition-models
 
-- **documentation**:A list of composition models.
+- **description**:A list of composition models.
 - **default value**:
 - **type**:array
 :::::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items
@@ -3247,7 +3247,7 @@
 :name: open_features_items_oneOf_2_composition-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Compositional model object
+- **description**:Compositional model object
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -3257,7 +3257,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the composition model.
+- **description**:The name of the composition model.
 - **enum**:[smooth]
 ::::::::::::::::
 
@@ -3267,7 +3267,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from which the composition of this feature is present.
+- **description**:The distance in meters from which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/side distance fault center
@@ -3276,7 +3276,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance over which the composition is reduced from 1 to 0.
+- **description**:The distance over which the composition is reduced from 1 to 0.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/center fractions
@@ -3287,14 +3287,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:The composition fraction at the center of the fault.
+- **description**:The composition fraction at the center of the fault.
 :::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/center fractions/items
 :open:
 :name: open_features_items_oneOf_2_composition-models_items_oneOf_1_center-fractions_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -3307,14 +3307,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:The composition fraction at the sides of this feature.
+- **description**:The composition fraction at the sides of this feature.
 :::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/side fractions/items
 :open:
 :name: open_features_items_oneOf_2_composition-models_items_oneOf_1_side-fractions_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -3327,14 +3327,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the composition which are present there.
+- **description**:A list with the labels of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_2_composition-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -3345,7 +3345,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::::
 
@@ -3358,7 +3358,7 @@
 :name: open_features_items_oneOf_2_composition-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **description**:Uniform compositional model. Sets constant compositional field.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -3368,7 +3368,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the composition model.
+- **description**:The name of the composition model.
 - **enum**:[uniform]
 ::::::::::::::::
 
@@ -3378,7 +3378,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from which the composition of this feature is present.
+- **description**:The distance in meters from which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/2/max distance fault center
@@ -3387,7 +3387,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance in meters to which the composition of this feature is present.
+- **description**:The distance in meters to which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/2/compositions
@@ -3398,14 +3398,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the composition which are present there.
+- **description**:A list with the labels of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/2/compositions/items
 :open:
 :name: open_features_items_oneOf_2_composition-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -3418,14 +3418,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:TA list of compositional fractions corresponding to the compositions list.
 :::::::::::::::{dropdown} /features/items/oneOf/2/composition models/items/oneOf/2/fractions/items
 :open:
 :name: open_features_items_oneOf_2_composition-models_items_oneOf_2_fractions_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -3436,7 +3436,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::::
 
@@ -3453,7 +3453,7 @@
 :open:
 :name: open_features_items_oneOf_2_grains-models
 
-- **documentation**:A list of grains models.
+- **description**:A list of grains models.
 - **default value**:
 - **type**:array
 :::::::::::::::::::{dropdown} /features/items/oneOf/2/grains models/items
@@ -3469,7 +3469,7 @@
 :name: open_features_items_oneOf_2_grains-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
+- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -3479,7 +3479,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[random uniform distribution]
 ::::::::::::::::
 
@@ -3489,7 +3489,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance from the fault center in meters from which the composition of this feature is present.
+- **description**:The distance from the fault center in meters from which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/1/max distance fault center
@@ -3498,7 +3498,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance from the fault in meters to which the composition of this feature is present.
+- **description**:The distance from the fault in meters to which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/1/compositions
@@ -3509,14 +3509,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_2_grains-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -3527,7 +3527,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::::::
 
@@ -3539,14 +3539,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
 :::::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/1/grain sizes/items
 :open:
 :name: open_features_items_oneOf_2_grains-models_items_oneOf_1_grain-sizes_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -3559,14 +3559,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
+- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
 :::::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/1/normalize grain sizes/items
 :open:
 :name: open_features_items_oneOf_2_grains-models_items_oneOf_1_normalize-grain-sizes_items
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -3580,7 +3580,7 @@
 :name: open_features_items_oneOf_2_grains-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Uniform grains model. All grains start exactly the same.
+- **description**:Uniform grains model. All grains start exactly the same.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -3590,7 +3590,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[uniform]
 ::::::::::::::::
 
@@ -3600,7 +3600,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance from the fault center in meters from which the composition of this feature is present.
+- **description**:The distance from the fault center in meters from which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/2/max distance fault center
@@ -3609,7 +3609,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance from the fault in meters to which the composition of this feature is present.
+- **description**:The distance from the fault in meters to which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/2/compositions
@@ -3620,14 +3620,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/2/compositions/items
 :open:
 :name: open_features_items_oneOf_2_grains-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -3640,7 +3640,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the grains which are present there for each compositions.
+- **description**:A list with the labels of the grains which are present there for each compositions.
 :::::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/2/rotation matrices/items
 :open:
 :name: open_features_items_oneOf_2_grains-models_items_oneOf_2_rotation-matrices_items
@@ -3649,7 +3649,7 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/2/rotation matrices/items/items
 :open:
 :name: open_features_items_oneOf_2_grains-models_items_oneOf_2_rotation-matrices_items_items
@@ -3658,14 +3658,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/2/rotation matrices/items/items/items
 :open:
 :name: open_features_items_oneOf_2_grains-models_items_oneOf_2_rotation-matrices_items_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -3682,7 +3682,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
+- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
 :::::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/2/Euler angles z-x-z/items
 :open:
 :name: open_features_items_oneOf_2_grains-models_items_oneOf_2_Euler-angles-z-x-z_items
@@ -3691,14 +3691,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/2/Euler angles z-x-z/items/items
 :open:
 :name: open_features_items_oneOf_2_grains-models_items_oneOf_2_Euler-angles-z-x-z_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 :::::::::::::::
@@ -3711,7 +3711,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::::::
 
@@ -3723,14 +3723,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
 :::::::::::::::{dropdown} /features/items/oneOf/2/grains models/items/oneOf/2/grain sizes/items
 :open:
 :name: open_features_items_oneOf_2_grains-models_items_oneOf_2_grain-sizes_items
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -3752,12 +3752,12 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of feature properties for a coordinate.
+- **description**:A list of feature properties for a coordinate.
 :::::::::::::::::::{dropdown} /features/items/oneOf/2/sections/items
 :open:
 :name: open_features_items_oneOf_2_sections_items
 
-- **documentation**:
+- **description**:
 - **default value**:
 - **type**:object
 
@@ -3767,7 +3767,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The depth to which this feature is present
+- **description**:The depth to which this feature is present
 ::::::::::::::::::
 
 ::::::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/max depth
@@ -3776,7 +3776,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The depth to which this feature is present
+- **description**:The depth to which this feature is present
 ::::::::::::::::::
 
 ::::::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/dip point
@@ -3786,7 +3786,7 @@
 - **type**:array
 - **minItems**:2
 - **maxItems**:2
-- **documentation**:The depth to which this feature is present
+- **description**:The depth to which this feature is present
 :::::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/dip point/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_dip-point_items
@@ -3804,14 +3804,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:The depth to which this feature is present
+- **description**:The depth to which this feature is present
 :::::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items
 
 - **type**:object
 - **additionalProperties**:false
-- **documentation**:
+- **description**:
 - **required**:[length, thickness, angle]
 
 ::::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/length
@@ -3873,7 +3873,7 @@
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_temperature-models
 
-- **documentation**:
+- **description**:
 - **default value**:
 - **type**:array
 :::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/temperature models/items
@@ -3889,7 +3889,7 @@
 :name: open_features_items_oneOf_2_sections_items_segments_items_temperature-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Adiabatic temperature model. Uses global values by default.
+- **description**:Adiabatic temperature model. Uses global values by default.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -3899,7 +3899,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[adiabatic]
 ::::::::::::
 
@@ -3909,7 +3909,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::
 
@@ -3919,7 +3919,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/temperature models/items/oneOf/1/max distance fault center
@@ -3928,7 +3928,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/temperature models/items/oneOf/1/potential mantle temperature
@@ -3937,7 +3937,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/temperature models/items/oneOf/1/thermal expansion coefficient
@@ -3946,7 +3946,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/temperature models/items/oneOf/1/specific heat
@@ -3955,7 +3955,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::
 
 
@@ -3967,7 +3967,7 @@
 :name: open_features_items_oneOf_2_sections_items_segments_items_temperature-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
+- **description**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
 - **additionalProperties**:false
 - **required**:[model, max distance fault center]
 
@@ -3977,7 +3977,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[linear]
 ::::::::::::
 
@@ -3987,7 +3987,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::
 
@@ -3997,7 +3997,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The minimum distance to the center of the fault. This determines where the linear temperature starts.
+- **description**:The minimum distance to the center of the fault. This determines where the linear temperature starts.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/temperature models/items/oneOf/2/max distance fault center
@@ -4006,7 +4006,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The minimum distance to the center of the fault. This determines where the linear temperature end.
+- **description**:The minimum distance to the center of the fault. This determines where the linear temperature end.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/temperature models/items/oneOf/2/center temperature
@@ -4015,7 +4015,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature at the center of this feature in degree Kelvin.If the value is below zero, the an adiabatic temperature is used.
+- **description**:The temperature at the center of this feature in degree Kelvin.If the value is below zero, the an adiabatic temperature is used.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/temperature models/items/oneOf/2/side temperature
@@ -4024,7 +4024,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The temperature at the sides of this feature in degree Kelvin. If the value is below zero, an adiabatic temperature is used.
+- **description**:The temperature at the sides of this feature in degree Kelvin. If the value is below zero, an adiabatic temperature is used.
 ::::::::::::
 
 
@@ -4036,7 +4036,7 @@
 :name: open_features_items_oneOf_2_sections_items_segments_items_temperature-models_items_oneOf_3
 
 - **type**:object
-- **documentation**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constan value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -4046,7 +4046,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[uniform]
 ::::::::::::
 
@@ -4056,7 +4056,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::
 
@@ -4066,7 +4066,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from which the composition of this feature is present.
+- **description**:The distance in meters from which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/temperature models/items/oneOf/3/max distance fault center
@@ -4075,7 +4075,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance in meters to which the composition of this feature is present.
+- **description**:The distance in meters to which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/temperature models/items/oneOf/3/temperature
@@ -4084,7 +4084,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in degree Kelvin which this feature should have
 ::::::::::::
 
 
@@ -4100,7 +4100,7 @@
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_composition-models
 
-- **documentation**:
+- **description**:
 - **default value**:
 - **type**:array
 :::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items
@@ -4116,7 +4116,7 @@
 :name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Compositional model object
+- **description**:Compositional model object
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -4126,7 +4126,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the composition model.
+- **description**:The name of the composition model.
 - **enum**:[smooth]
 ::::::::::::
 
@@ -4136,7 +4136,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from which the composition of this feature is present.
+- **description**:The distance in meters from which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/side distance fault center
@@ -4145,7 +4145,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance over which the composition is reduced from 1 to 0.
+- **description**:The distance over which the composition is reduced from 1 to 0.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/center fractions
@@ -4156,14 +4156,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:The composition fraction at the center of the fault.
+- **description**:The composition fraction at the center of the fault.
 :::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/center fractions/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_1_center-fractions_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -4176,14 +4176,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:The composition fraction at the sides of this feature.
+- **description**:The composition fraction at the sides of this feature.
 :::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/side fractions/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_1_side-fractions_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -4196,14 +4196,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the composition which are present there.
+- **description**:A list with the labels of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -4214,7 +4214,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::
 
@@ -4227,7 +4227,7 @@
 :name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **description**:Uniform compositional model. Sets constant compositional field.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -4237,7 +4237,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the composition model.
+- **description**:The name of the composition model.
 - **enum**:[uniform]
 ::::::::::::
 
@@ -4247,7 +4247,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from which the composition of this feature is present.
+- **description**:The distance in meters from which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/2/max distance fault center
@@ -4256,7 +4256,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance in meters to which the composition of this feature is present.
+- **description**:The distance in meters to which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/2/compositions
@@ -4267,14 +4267,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the composition which are present there.
+- **description**:A list with the labels of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/2/compositions/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -4287,14 +4287,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:TA list of compositional fractions corresponding to the compositions list.
 :::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/composition models/items/oneOf/2/fractions/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_composition-models_items_oneOf_2_fractions_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -4305,7 +4305,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::
 
@@ -4322,7 +4322,7 @@
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_grains-models
 
-- **documentation**:
+- **description**:
 - **default value**:
 - **type**:array
 :::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items
@@ -4338,7 +4338,7 @@
 :name: open_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
+- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -4348,7 +4348,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[random uniform distribution]
 ::::::::::::
 
@@ -4358,7 +4358,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance from the fault center in meters from which the composition of this feature is present.
+- **description**:The distance from the fault center in meters from which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/1/max distance fault center
@@ -4367,7 +4367,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance from the fault in meters to which the composition of this feature is present.
+- **description**:The distance from the fault in meters to which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/1/compositions
@@ -4378,14 +4378,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -4396,7 +4396,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::
 
@@ -4408,14 +4408,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
 :::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/1/grain sizes/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_1_grain-sizes_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -4428,14 +4428,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
+- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
 :::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/1/normalize grain sizes/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_1_normalize-grain-sizes_items
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -4449,7 +4449,7 @@
 :name: open_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Uniform grains model. All grains start exactly the same.
+- **description**:Uniform grains model. All grains start exactly the same.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -4459,7 +4459,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[uniform]
 ::::::::::::
 
@@ -4469,7 +4469,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance from the fault center in meters from which the composition of this feature is present.
+- **description**:The distance from the fault center in meters from which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/2/max distance fault center
@@ -4478,7 +4478,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance from the fault in meters to which the composition of this feature is present.
+- **description**:The distance from the fault in meters to which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/2/compositions
@@ -4489,14 +4489,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/2/compositions/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -4509,7 +4509,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the grains which are present there for each compositions.
+- **description**:A list with the labels of the grains which are present there for each compositions.
 :::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/2/rotation matrices/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_2_rotation-matrices_items
@@ -4518,7 +4518,7 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/2/rotation matrices/items/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_2_rotation-matrices_items_items
@@ -4527,14 +4527,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/2/rotation matrices/items/items/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_2_rotation-matrices_items_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::
 
 ::::::::::
@@ -4551,7 +4551,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
+- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
 :::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/2/Euler angles z-x-z/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_2_Euler-angles-z-x-z_items
@@ -4560,14 +4560,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/2/Euler angles z-x-z/items/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_2_Euler-angles-z-x-z_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::
 
 :::::::::::
@@ -4580,7 +4580,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::
 
@@ -4592,14 +4592,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
 :::::::::::{dropdown} /features/items/oneOf/2/sections/items/segments/items/grains models/items/oneOf/2/grain sizes/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_segments_items_grains-models_items_oneOf_2_grain-sizes_items
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -4623,7 +4623,7 @@
 :open:
 :name: open_features_items_oneOf_2_sections_items_temperature-models
 
-- **documentation**:A list of temperature models.
+- **description**:A list of temperature models.
 - **default value**:
 - **type**:array
 :::::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/temperature models/items
@@ -4639,7 +4639,7 @@
 :name: open_features_items_oneOf_2_sections_items_temperature-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Adiabatic temperature model. Uses global values by default.
+- **description**:Adiabatic temperature model. Uses global values by default.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -4649,7 +4649,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[adiabatic]
 ::::::::::::::
 
@@ -4659,7 +4659,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
@@ -4669,7 +4669,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/temperature models/items/oneOf/1/max distance fault center
@@ -4678,7 +4678,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/temperature models/items/oneOf/1/potential mantle temperature
@@ -4687,7 +4687,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/temperature models/items/oneOf/1/thermal expansion coefficient
@@ -4696,7 +4696,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/temperature models/items/oneOf/1/specific heat
@@ -4705,7 +4705,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::::
 
 
@@ -4717,7 +4717,7 @@
 :name: open_features_items_oneOf_2_sections_items_temperature-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
+- **description**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
 - **additionalProperties**:false
 - **required**:[model, max distance fault center]
 
@@ -4727,7 +4727,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[linear]
 ::::::::::::::
 
@@ -4737,7 +4737,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
@@ -4747,7 +4747,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The minimum distance to the center of the fault. This determines where the linear temperature starts.
+- **description**:The minimum distance to the center of the fault. This determines where the linear temperature starts.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/temperature models/items/oneOf/2/max distance fault center
@@ -4756,7 +4756,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The minimum distance to the center of the fault. This determines where the linear temperature end.
+- **description**:The minimum distance to the center of the fault. This determines where the linear temperature end.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/temperature models/items/oneOf/2/center temperature
@@ -4765,7 +4765,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature at the center of this feature in degree Kelvin.If the value is below zero, the an adiabatic temperature is used.
+- **description**:The temperature at the center of this feature in degree Kelvin.If the value is below zero, the an adiabatic temperature is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/temperature models/items/oneOf/2/side temperature
@@ -4774,7 +4774,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The temperature at the sides of this feature in degree Kelvin. If the value is below zero, an adiabatic temperature is used.
+- **description**:The temperature at the sides of this feature in degree Kelvin. If the value is below zero, an adiabatic temperature is used.
 ::::::::::::::
 
 
@@ -4786,7 +4786,7 @@
 :name: open_features_items_oneOf_2_sections_items_temperature-models_items_oneOf_3
 
 - **type**:object
-- **documentation**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constan value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -4796,7 +4796,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[uniform]
 ::::::::::::::
 
@@ -4806,7 +4806,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
@@ -4816,7 +4816,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from which the composition of this feature is present.
+- **description**:The distance in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/temperature models/items/oneOf/3/max distance fault center
@@ -4825,7 +4825,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance in meters to which the composition of this feature is present.
+- **description**:The distance in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/temperature models/items/oneOf/3/temperature
@@ -4834,7 +4834,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in degree Kelvin which this feature should have
 ::::::::::::::
 
 
@@ -4850,7 +4850,7 @@
 :open:
 :name: open_features_items_oneOf_2_sections_items_composition-models
 
-- **documentation**:A list of composition models.
+- **description**:A list of composition models.
 - **default value**:
 - **type**:array
 :::::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items
@@ -4866,7 +4866,7 @@
 :name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Compositional model object
+- **description**:Compositional model object
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -4876,7 +4876,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the composition model.
+- **description**:The name of the composition model.
 - **enum**:[smooth]
 ::::::::::::::
 
@@ -4886,7 +4886,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from which the composition of this feature is present.
+- **description**:The distance in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/side distance fault center
@@ -4895,7 +4895,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance over which the composition is reduced from 1 to 0.
+- **description**:The distance over which the composition is reduced from 1 to 0.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/center fractions
@@ -4906,14 +4906,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:The composition fraction at the center of the fault.
+- **description**:The composition fraction at the center of the fault.
 :::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/center fractions/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_1_center-fractions_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -4926,14 +4926,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:The composition fraction at the sides of this feature.
+- **description**:The composition fraction at the sides of this feature.
 :::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/side fractions/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_1_side-fractions_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -4946,14 +4946,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the composition which are present there.
+- **description**:A list with the labels of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -4964,7 +4964,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::
 
@@ -4977,7 +4977,7 @@
 :name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **description**:Uniform compositional model. Sets constant compositional field.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -4987,7 +4987,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the composition model.
+- **description**:The name of the composition model.
 - **enum**:[uniform]
 ::::::::::::::
 
@@ -4997,7 +4997,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from which the composition of this feature is present.
+- **description**:The distance in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/2/max distance fault center
@@ -5006,7 +5006,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance in meters to which the composition of this feature is present.
+- **description**:The distance in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/2/compositions
@@ -5017,14 +5017,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the composition which are present there.
+- **description**:A list with the labels of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/2/compositions/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -5037,14 +5037,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:TA list of compositional fractions corresponding to the compositions list.
 :::::::::::::{dropdown} /features/items/oneOf/2/sections/items/composition models/items/oneOf/2/fractions/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_composition-models_items_oneOf_2_fractions_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -5055,7 +5055,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::
 
@@ -5072,7 +5072,7 @@
 :open:
 :name: open_features_items_oneOf_2_sections_items_grains-models
 
-- **documentation**:A list of grains models.
+- **description**:A list of grains models.
 - **default value**:
 - **type**:array
 :::::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items
@@ -5088,7 +5088,7 @@
 :name: open_features_items_oneOf_2_sections_items_grains-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
+- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -5098,7 +5098,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[random uniform distribution]
 ::::::::::::::
 
@@ -5108,7 +5108,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance from the fault center in meters from which the composition of this feature is present.
+- **description**:The distance from the fault center in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/1/max distance fault center
@@ -5117,7 +5117,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance from the fault in meters to which the composition of this feature is present.
+- **description**:The distance from the fault in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/1/compositions
@@ -5128,14 +5128,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_grains-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -5146,7 +5146,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::::
 
@@ -5158,14 +5158,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
 :::::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/1/grain sizes/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_grains-models_items_oneOf_1_grain-sizes_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -5178,14 +5178,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
+- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
 :::::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/1/normalize grain sizes/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_grains-models_items_oneOf_1_normalize-grain-sizes_items
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -5199,7 +5199,7 @@
 :name: open_features_items_oneOf_2_sections_items_grains-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Uniform grains model. All grains start exactly the same.
+- **description**:Uniform grains model. All grains start exactly the same.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -5209,7 +5209,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[uniform]
 ::::::::::::::
 
@@ -5219,7 +5219,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance from the fault center in meters from which the composition of this feature is present.
+- **description**:The distance from the fault center in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/2/max distance fault center
@@ -5228,7 +5228,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance from the fault in meters to which the composition of this feature is present.
+- **description**:The distance from the fault in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/2/compositions
@@ -5239,14 +5239,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/2/compositions/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_grains-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -5259,7 +5259,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the grains which are present there for each compositions.
+- **description**:A list with the labels of the grains which are present there for each compositions.
 :::::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/2/rotation matrices/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_grains-models_items_oneOf_2_rotation-matrices_items
@@ -5268,7 +5268,7 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/2/rotation matrices/items/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_grains-models_items_oneOf_2_rotation-matrices_items_items
@@ -5277,14 +5277,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/2/rotation matrices/items/items/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_grains-models_items_oneOf_2_rotation-matrices_items_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -5301,7 +5301,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
+- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
 :::::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/2/Euler angles z-x-z/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_grains-models_items_oneOf_2_Euler-angles-z-x-z_items
@@ -5310,14 +5310,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/2/Euler angles z-x-z/items/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_grains-models_items_oneOf_2_Euler-angles-z-x-z_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::
 
 :::::::::::::
@@ -5330,7 +5330,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::::
 
@@ -5342,14 +5342,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
 :::::::::::::{dropdown} /features/items/oneOf/2/sections/items/grains models/items/oneOf/2/grain sizes/items
 :open:
 :name: open_features_items_oneOf_2_sections_items_grains-models_items_oneOf_2_grain-sizes_items
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -5369,7 +5369,7 @@
 
 - **default value**:0
 - **type**:integer
-- **documentation**:The coordinate which should be overwritten
+- **description**:The coordinate which should be overwritten
 ::::::::::::::::::
 
 
@@ -5387,7 +5387,7 @@
 :name: open_features_items_oneOf_3
 
 - **type**:object
-- **documentation**:Mantle layer object. Requires properties `model` and `coordinates`.
+- **description**:Mantle layer object. Requires properties `model` and `coordinates`.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -5397,7 +5397,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name which the user has given to the feature.
+- **description**:The name which the user has given to the feature.
 - **enum**:[mantle layer]
 ::::::::::::::::::::
 
@@ -5407,7 +5407,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name which the user has given to the feature.
+- **description**:The name which the user has given to the feature.
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/3/coordinates
@@ -5418,7 +5418,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:An array of 2d Points representing an array of coordinates where the feature is located.
+- **description**:An array of 2d Points representing an array of coordinates where the feature is located.
 :::::::::::::::::::{dropdown} /features/items/oneOf/3/coordinates/items
 :open:
 :name: open_features_items_oneOf_3_coordinates_items
@@ -5426,7 +5426,7 @@
 - **type**:array
 - **minItems**:2
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::::::::{dropdown} /features/items/oneOf/3/coordinates/items/items
 :open:
 :name: open_features_items_oneOf_3_coordinates_items_items
@@ -5444,14 +5444,14 @@
 
 - **default value**:global
 - **type**:string
-- **documentation**:What type of interpolation should be used to enforce the minimum points per distance parameter. Options are global, none, linear, monotone spline and continuous monotone spline interpolation. If this value is set to global, the global value for interpolation is used.
+- **description**:What type of interpolation should be used to enforce the minimum points per distance parameter. Options are 'global' and 'continuous monotone spline' interpolation. If this value is set to global, the global value for interpolation is used. This option is deprecated and will be removed in a future release.
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/3/min depth
 :open:
 :name: open_features_items_oneOf_3_min-depth
 
-- **documentation**:The depth from which this feature is present
+- **description**:The depth from which this feature is present
 :::::::::::::::::::{dropdown} /features/items/oneOf/3/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_3_min-depth_oneOf
@@ -5462,7 +5462,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::::::
 
 ::::::::::::::::::{dropdown} /features/items/oneOf/3/min depth/oneOf/2
@@ -5473,7 +5473,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::::::{dropdown} /features/items/oneOf/3/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_3_min-depth_oneOf_2_items
@@ -5482,7 +5482,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::::::{dropdown} /features/items/oneOf/3/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_min-depth_oneOf_2_items_items
@@ -5538,7 +5538,7 @@
 :open:
 :name: open_features_items_oneOf_3_max-depth
 
-- **documentation**:The depth to which this feature is present
+- **description**:The depth to which this feature is present
 :::::::::::::::::::{dropdown} /features/items/oneOf/3/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_3_max-depth_oneOf
@@ -5549,7 +5549,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::::::
 
 ::::::::::::::::::{dropdown} /features/items/oneOf/3/max depth/oneOf/2
@@ -5560,7 +5560,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::::::{dropdown} /features/items/oneOf/3/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_3_max-depth_oneOf_2_items
@@ -5569,7 +5569,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::::::{dropdown} /features/items/oneOf/3/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_max-depth_oneOf_2_items_items
@@ -5625,7 +5625,7 @@
 :open:
 :name: open_features_items_oneOf_3_temperature-models
 
-- **documentation**:A list of temperature models.
+- **description**:A list of temperature models.
 - **default value**:
 - **type**:array
 :::::::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items
@@ -5641,7 +5641,7 @@
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Adiabatic temperature model. Uses global values by default.
+- **description**:Adiabatic temperature model. Uses global values by default.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -5651,7 +5651,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[adiabatic]
 ::::::::::::::::
 
@@ -5661,7 +5661,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
@@ -5669,7 +5669,7 @@
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_min-depth
 
-- **documentation**:The depth in meters from which the temperature of this feature is present.
+- **description**:The depth in meters from which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_min-depth_oneOf
@@ -5680,7 +5680,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/min depth/oneOf/2
@@ -5691,7 +5691,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_min-depth_oneOf_2_items
@@ -5700,7 +5700,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_min-depth_oneOf_2_items_items
@@ -5756,7 +5756,7 @@
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_max-depth
 
-- **documentation**:The depth in meters to which the temperature of this feature is present.
+- **description**:The depth in meters to which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_max-depth_oneOf
@@ -5767,7 +5767,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/max depth/oneOf/2
@@ -5778,7 +5778,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_max-depth_oneOf_2_items
@@ -5787,7 +5787,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_max-depth_oneOf_2_items_items
@@ -5845,7 +5845,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/thermal expansion coefficient
@@ -5854,7 +5854,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/specific heat
@@ -5863,7 +5863,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::::::
 
 
@@ -5875,7 +5875,7 @@
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
+- **description**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
 - **additionalProperties**:false
 - **required**:[model, max depth]
 
@@ -5885,7 +5885,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[linear]
 ::::::::::::::::
 
@@ -5895,7 +5895,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
@@ -5903,7 +5903,7 @@
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_min-depth
 
-- **documentation**:The depth in meters from which the temperature of this feature is present.
+- **description**:The depth in meters from which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_min-depth_oneOf
@@ -5914,7 +5914,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/min depth/oneOf/2
@@ -5925,7 +5925,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_min-depth_oneOf_2_items
@@ -5934,7 +5934,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_min-depth_oneOf_2_items_items
@@ -5990,7 +5990,7 @@
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_max-depth
 
-- **documentation**:The depth in meters to which the temperature of this feature is present.
+- **description**:The depth in meters to which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_max-depth_oneOf
@@ -6001,7 +6001,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/max depth/oneOf/2
@@ -6012,7 +6012,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_max-depth_oneOf_2_items
@@ -6021,7 +6021,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_max-depth_oneOf_2_items_items
@@ -6079,7 +6079,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
+- **description**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/bottom temperature
@@ -6088,7 +6088,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The temperature at the top in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
+- **description**:The temperature at the top in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
 ::::::::::::::::
 
 
@@ -6100,7 +6100,7 @@
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_3
 
 - **type**:object
-- **documentation**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constan value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -6110,7 +6110,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[uniform]
 ::::::::::::::::
 
@@ -6120,7 +6120,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
@@ -6128,7 +6128,7 @@
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_min-depth
 
-- **documentation**:The depth in meters from which the temperature of this feature is present.
+- **description**:The depth in meters from which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_min-depth_oneOf
@@ -6139,7 +6139,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/min depth/oneOf/2
@@ -6150,7 +6150,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_min-depth_oneOf_2_items
@@ -6159,7 +6159,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_min-depth_oneOf_2_items_items
@@ -6215,7 +6215,7 @@
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_max-depth
 
-- **documentation**:The depth in meters to which the temperature of this feature is present.
+- **description**:The depth in meters to which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_max-depth_oneOf
@@ -6226,7 +6226,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/max depth/oneOf/2
@@ -6237,7 +6237,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_max-depth_oneOf_2_items
@@ -6246,7 +6246,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_max-depth_oneOf_2_items_items
@@ -6304,7 +6304,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in degree Kelvin which this feature should have
 ::::::::::::::::
 
 
@@ -6320,7 +6320,7 @@
 :open:
 :name: open_features_items_oneOf_3_composition-models
 
-- **documentation**:A list of composition models.
+- **description**:A list of composition models.
 - **default value**:
 - **type**:array
 :::::::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items
@@ -6336,7 +6336,7 @@
 :name: open_features_items_oneOf_3_composition-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **description**:Uniform compositional model. Sets constant compositional field.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -6346,7 +6346,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the composition model.
+- **description**:The name of the composition model.
 - **enum**:[uniform]
 ::::::::::::::::
 
@@ -6354,7 +6354,7 @@
 :open:
 :name: open_features_items_oneOf_3_composition-models_items_oneOf_1_min-depth
 
-- **documentation**:The depth in meters from which the composition of this feature is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_3_composition-models_items_oneOf_1_min-depth_oneOf
@@ -6365,7 +6365,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/min depth/oneOf/2
@@ -6376,7 +6376,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_3_composition-models_items_oneOf_1_min-depth_oneOf_2_items
@@ -6385,7 +6385,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_composition-models_items_oneOf_1_min-depth_oneOf_2_items_items
@@ -6441,7 +6441,7 @@
 :open:
 :name: open_features_items_oneOf_3_composition-models_items_oneOf_1_max-depth
 
-- **documentation**:The depth in meters to which the composition of this feature is present.
+- **description**:The depth in meters to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_3_composition-models_items_oneOf_1_max-depth_oneOf
@@ -6452,7 +6452,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/max depth/oneOf/2
@@ -6463,7 +6463,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_3_composition-models_items_oneOf_1_max-depth_oneOf_2_items
@@ -6472,7 +6472,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_composition-models_items_oneOf_1_max-depth_oneOf_2_items_items
@@ -6532,14 +6532,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the composition which are present there.
+- **description**:A list with the labels of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_3_composition-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -6552,14 +6552,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:TA list of compositional fractions corresponding to the compositions list.
 :::::::::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/fractions/items
 :open:
 :name: open_features_items_oneOf_3_composition-models_items_oneOf_1_fractions_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -6570,7 +6570,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::::
 
@@ -6587,7 +6587,7 @@
 :open:
 :name: open_features_items_oneOf_3_grains-models
 
-- **documentation**:A list of grains models.
+- **description**:A list of grains models.
 - **default value**:
 - **type**:array
 :::::::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items
@@ -6603,7 +6603,7 @@
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
+- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -6613,7 +6613,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[random uniform distribution]
 ::::::::::::::::
 
@@ -6621,7 +6621,7 @@
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_1_min-depth
 
-- **documentation**:The depth in meters from which the composition of this feature is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_1_min-depth_oneOf
@@ -6632,7 +6632,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/min depth/oneOf/2
@@ -6643,7 +6643,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_1_min-depth_oneOf_2_items
@@ -6652,7 +6652,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items
@@ -6708,7 +6708,7 @@
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_1_max-depth
 
-- **documentation**:The depth in meters to which the composition of this feature is present.
+- **description**:The depth in meters to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_1_max-depth_oneOf
@@ -6719,7 +6719,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/max depth/oneOf/2
@@ -6730,7 +6730,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_1_max-depth_oneOf_2_items
@@ -6739,7 +6739,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items
@@ -6799,14 +6799,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -6817,7 +6817,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::::::
 
@@ -6829,14 +6829,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
 :::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/grain sizes/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_1_grain-sizes_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -6849,14 +6849,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
+- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
 :::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/normalize grain sizes/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_1_normalize-grain-sizes_items
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -6870,7 +6870,7 @@
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Uniform grains model. All grains start exactly the same.
+- **description**:Uniform grains model. All grains start exactly the same.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -6880,7 +6880,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[uniform]
 ::::::::::::::::
 
@@ -6888,7 +6888,7 @@
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_2_min-depth
 
-- **documentation**:The depth in meters from which the composition of this feature is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_2_min-depth_oneOf
@@ -6899,7 +6899,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/min depth/oneOf/2
@@ -6910,7 +6910,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_2_min-depth_oneOf_2_items
@@ -6919,7 +6919,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_2_min-depth_oneOf_2_items_items
@@ -6975,7 +6975,7 @@
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_2_max-depth
 
-- **documentation**:The depth in meters to which the composition of this feature is present.
+- **description**:The depth in meters to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_2_max-depth_oneOf
@@ -6986,7 +6986,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/max depth/oneOf/2
@@ -6997,7 +6997,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_2_max-depth_oneOf_2_items
@@ -7006,7 +7006,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_2_max-depth_oneOf_2_items_items
@@ -7066,14 +7066,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/compositions/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -7086,7 +7086,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the grains which are present there for each compositions.
+- **description**:A list with the labels of the grains which are present there for each compositions.
 :::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/rotation matrices/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_2_rotation-matrices_items
@@ -7095,7 +7095,7 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/rotation matrices/items/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_2_rotation-matrices_items_items
@@ -7104,14 +7104,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/rotation matrices/items/items/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_2_rotation-matrices_items_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -7128,7 +7128,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
+- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
 :::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/Euler angles z-x-z/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_2_Euler-angles-z-x-z_items
@@ -7137,14 +7137,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/Euler angles z-x-z/items/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_2_Euler-angles-z-x-z_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 :::::::::::::::
@@ -7157,7 +7157,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::::::
 
@@ -7169,14 +7169,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
 :::::::::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/grain sizes/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_2_grain-sizes_items
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -7199,7 +7199,7 @@
 :name: open_features_items_oneOf_4
 
 - **type**:object
-- **documentation**:Oceanic plate object. Requires properties `model` and `coordinates`.
+- **description**:Oceanic plate object. Requires properties `model` and `coordinates`.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -7209,7 +7209,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name which the user has given to the feature.
+- **description**:The name which the user has given to the feature.
 - **enum**:[oceanic plate]
 ::::::::::::::::::::
 
@@ -7219,7 +7219,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name which the user has given to the feature.
+- **description**:The name which the user has given to the feature.
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/4/coordinates
@@ -7230,7 +7230,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:An array of 2d Points representing an array of coordinates where the feature is located.
+- **description**:An array of 2d Points representing an array of coordinates where the feature is located.
 :::::::::::::::::::{dropdown} /features/items/oneOf/4/coordinates/items
 :open:
 :name: open_features_items_oneOf_4_coordinates_items
@@ -7238,7 +7238,7 @@
 - **type**:array
 - **minItems**:2
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::::::::{dropdown} /features/items/oneOf/4/coordinates/items/items
 :open:
 :name: open_features_items_oneOf_4_coordinates_items_items
@@ -7256,14 +7256,14 @@
 
 - **default value**:global
 - **type**:string
-- **documentation**:What type of interpolation should be used to enforce the minimum points per distance parameter. Options are global, none, linear, monotone spline and continuous monotone spline interpolation. If this value is set to global, the global value for interpolation is used.
+- **description**:What type of interpolation should be used to enforce the minimum points per distance parameter. Options are 'global' and 'continuous monotone spline' interpolation. If this value is set to global, the global value for interpolation is used. This option is deprecated and will be removed in a future release.
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/4/min depth
 :open:
 :name: open_features_items_oneOf_4_min-depth
 
-- **documentation**:The depth from which this feature is present
+- **description**:The depth from which this feature is present
 :::::::::::::::::::{dropdown} /features/items/oneOf/4/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_min-depth_oneOf
@@ -7274,7 +7274,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::::::
 
 ::::::::::::::::::{dropdown} /features/items/oneOf/4/min depth/oneOf/2
@@ -7285,7 +7285,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::::::{dropdown} /features/items/oneOf/4/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_4_min-depth_oneOf_2_items
@@ -7294,7 +7294,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::::::{dropdown} /features/items/oneOf/4/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_min-depth_oneOf_2_items_items
@@ -7350,7 +7350,7 @@
 :open:
 :name: open_features_items_oneOf_4_max-depth
 
-- **documentation**:The depth to which this feature is present
+- **description**:The depth to which this feature is present
 :::::::::::::::::::{dropdown} /features/items/oneOf/4/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_max-depth_oneOf
@@ -7361,7 +7361,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::::::
 
 ::::::::::::::::::{dropdown} /features/items/oneOf/4/max depth/oneOf/2
@@ -7372,7 +7372,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::::::{dropdown} /features/items/oneOf/4/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_4_max-depth_oneOf_2_items
@@ -7381,7 +7381,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::::::{dropdown} /features/items/oneOf/4/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_max-depth_oneOf_2_items_items
@@ -7437,7 +7437,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models
 
-- **documentation**:A list of temperature models.
+- **description**:A list of temperature models.
 - **default value**:
 - **type**:array
 :::::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items
@@ -7453,7 +7453,7 @@
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Adiabatic temperature model. Uses global values by default.
+- **description**:Adiabatic temperature model. Uses global values by default.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -7463,7 +7463,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[adiabatic]
 ::::::::::::::::
 
@@ -7473,7 +7473,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
@@ -7481,7 +7481,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_min-depth
 
-- **documentation**:The depth in meters from which the temperature of this feature is present.
+- **description**:The depth in meters from which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/1/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_min-depth_oneOf
@@ -7492,7 +7492,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/1/min depth/oneOf/2
@@ -7503,7 +7503,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/1/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_min-depth_oneOf_2_items
@@ -7512,7 +7512,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/1/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_min-depth_oneOf_2_items_items
@@ -7568,7 +7568,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_max-depth
 
-- **documentation**:The depth in meters to which the temperature of this feature is present.
+- **description**:The depth in meters to which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/1/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_max-depth_oneOf
@@ -7579,7 +7579,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/1/max depth/oneOf/2
@@ -7590,7 +7590,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/1/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_max-depth_oneOf_2_items
@@ -7599,7 +7599,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/1/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_max-depth_oneOf_2_items_items
@@ -7657,7 +7657,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/1/thermal expansion coefficient
@@ -7666,7 +7666,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/1/specific heat
@@ -7675,7 +7675,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::::::
 
 
@@ -7687,7 +7687,7 @@
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Half space cooling mode
+- **description**:Half space cooling mode
 - **additionalProperties**:false
 - **required**:[model, ridge coordinates, spreading velocity, max depth]
 
@@ -7697,7 +7697,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[half space model]
 ::::::::::::::::
 
@@ -7707,7 +7707,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
@@ -7715,7 +7715,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_min-depth
 
-- **documentation**:The depth in meters from which the temperature of this feature is present.
+- **description**:The depth in meters from which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_min-depth_oneOf
@@ -7726,7 +7726,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/min depth/oneOf/2
@@ -7737,7 +7737,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_min-depth_oneOf_2_items
@@ -7746,7 +7746,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_min-depth_oneOf_2_items_items
@@ -7802,7 +7802,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_max-depth
 
-- **documentation**:The depth in meters to which the temperature of this feature is present.Because half-space reaches background temperature asymptotically, this value should be ~2 times the nominal plate thickness of 100 km
+- **description**:The depth in meters to which the temperature of this feature is present.Because half-space reaches background temperature asymptotically, this value should be ~2 times the nominal plate thickness of 100 km
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_max-depth_oneOf
@@ -7813,7 +7813,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/max depth/oneOf/2
@@ -7824,7 +7824,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_max-depth_oneOf_2_items
@@ -7833,7 +7833,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_max-depth_oneOf_2_items_items
@@ -7891,7 +7891,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The actual surface temperature in degree Kelvin for this feature.
+- **description**:The actual surface temperature in degree Kelvin for this feature.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/bottom temperature
@@ -7900,7 +7900,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The mantle temperature for the half-space cooling modelin degree Kelvin for this feature. If the model has an adiabatic gradientthis should be the mantle potential temperature, and T = Tad + Thalf. 
+- **description**:The mantle temperature for the half-space cooling modelin degree Kelvin for this feature. If the model has an adiabatic gradientthis should be the mantle potential temperature, and T = Tad + Thalf. 
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/spreading velocity
@@ -7909,7 +7909,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The spreading velocity of the plate in meter per year. This is the velocity with which one side moves away from the ridge.
+- **description**:The spreading velocity of the plate in meter per year. This is the velocity with which one side moves away from the ridge.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/ridge coordinates
@@ -7920,7 +7920,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
+- **description**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/ridge coordinates/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_ridge-coordinates_items
@@ -7929,7 +7929,7 @@
 - **minItems**:2
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/ridge coordinates/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_ridge-coordinates_items_items
@@ -7937,7 +7937,7 @@
 - **type**:array
 - **minItems**:2
 - **maxItems**:2
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/ridge coordinates/items/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_ridge-coordinates_items_items_items
@@ -7960,7 +7960,7 @@
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3
 
 - **type**:object
-- **documentation**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
+- **description**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
 - **additionalProperties**:false
 - **required**:[model, max depth]
 
@@ -7970,7 +7970,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[linear]
 ::::::::::::::::
 
@@ -7980,7 +7980,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
@@ -7988,7 +7988,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_min-depth
 
-- **documentation**:The depth in meters from which the temperature of this feature is present.
+- **description**:The depth in meters from which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/3/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_min-depth_oneOf
@@ -7999,7 +7999,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/3/min depth/oneOf/2
@@ -8010,7 +8010,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/3/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_min-depth_oneOf_2_items
@@ -8019,7 +8019,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/3/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_min-depth_oneOf_2_items_items
@@ -8075,7 +8075,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_max-depth
 
-- **documentation**:The depth in meters to which the temperature of this feature is present.
+- **description**:The depth in meters to which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/3/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_max-depth_oneOf
@@ -8086,7 +8086,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/3/max depth/oneOf/2
@@ -8097,7 +8097,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/3/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_max-depth_oneOf_2_items
@@ -8106,7 +8106,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/3/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_max-depth_oneOf_2_items_items
@@ -8164,7 +8164,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
+- **description**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/3/bottom temperature
@@ -8173,7 +8173,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The temperature at the top in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
+- **description**:The temperature at the top in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
 ::::::::::::::::
 
 
@@ -8185,7 +8185,7 @@
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4
 
 - **type**:object
-- **documentation**:Plate model.
+- **description**:Plate model.
 - **additionalProperties**:false
 - **required**:[model, max depth]
 
@@ -8195,7 +8195,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[plate model]
 ::::::::::::::::
 
@@ -8205,7 +8205,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
@@ -8213,7 +8213,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_min-depth
 
-- **documentation**:The depth in meters from which the temperature of this feature is present.
+- **description**:The depth in meters from which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_min-depth_oneOf
@@ -8224,7 +8224,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/min depth/oneOf/2
@@ -8235,7 +8235,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_min-depth_oneOf_2_items
@@ -8244,7 +8244,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_min-depth_oneOf_2_items_items
@@ -8300,7 +8300,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_max-depth
 
-- **documentation**:The depth in meters to which the temperature of this feature is present.
+- **description**:The depth in meters to which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_max-depth_oneOf
@@ -8311,7 +8311,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/max depth/oneOf/2
@@ -8322,7 +8322,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_max-depth_oneOf_2_items
@@ -8331,7 +8331,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_max-depth_oneOf_2_items_items
@@ -8389,7 +8389,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in degree Kelvin which this feature should have
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/bottom temperature
@@ -8398,7 +8398,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in degree Kelvin which this feature should have
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/spreading velocity
@@ -8407,7 +8407,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The spreading velocity of the plate in meter per year. This is the velocity with which one side moves away from the ridge.
+- **description**:The spreading velocity of the plate in meter per year. This is the velocity with which one side moves away from the ridge.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/ridge coordinates
@@ -8418,7 +8418,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
+- **description**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/ridge coordinates/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_ridge-coordinates_items
@@ -8427,7 +8427,7 @@
 - **minItems**:2
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/ridge coordinates/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_ridge-coordinates_items_items
@@ -8435,7 +8435,7 @@
 - **type**:array
 - **minItems**:2
 - **maxItems**:2
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/ridge coordinates/items/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_ridge-coordinates_items_items_items
@@ -8458,7 +8458,7 @@
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5
 
 - **type**:object
-- **documentation**:Plate model, but with a fixed age.
+- **description**:Plate model, but with a fixed age.
 - **additionalProperties**:false
 - **required**:[model, max depth]
 
@@ -8468,7 +8468,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[plate model constant age]
 ::::::::::::::::
 
@@ -8478,7 +8478,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
@@ -8486,7 +8486,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_min-depth
 
-- **documentation**:The depth in meters from which the temperature of this feature is present.
+- **description**:The depth in meters from which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_min-depth_oneOf
@@ -8497,7 +8497,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/min depth/oneOf/2
@@ -8508,7 +8508,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_min-depth_oneOf_2_items
@@ -8517,7 +8517,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_min-depth_oneOf_2_items_items
@@ -8573,7 +8573,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_max-depth
 
-- **documentation**:The depth in meters to which the temperature of this feature is present.
+- **description**:The depth in meters to which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_max-depth_oneOf
@@ -8584,7 +8584,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/max depth/oneOf/2
@@ -8595,7 +8595,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_max-depth_oneOf_2_items
@@ -8604,7 +8604,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_max-depth_oneOf_2_items_items
@@ -8662,7 +8662,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in degree Kelvin which this feature should have
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/bottom temperature
@@ -8671,7 +8671,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in degree Kelvin which this feature should have
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/plate age
@@ -8680,7 +8680,7 @@
 
 - **default value**:80000.0
 - **type**:number
-- **documentation**:The age of the plate in year. This age is assigned to the whole plate. 
+- **description**:The age of the plate in year. This age is assigned to the whole plate. 
 ::::::::::::::::
 
 
@@ -8692,7 +8692,7 @@
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6
 
 - **type**:object
-- **documentation**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constan value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -8702,7 +8702,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[uniform]
 ::::::::::::::::
 
@@ -8712,7 +8712,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
@@ -8720,7 +8720,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_min-depth
 
-- **documentation**:The depth in meters from which the temperature of this feature is present.
+- **description**:The depth in meters from which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/6/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_min-depth_oneOf
@@ -8731,7 +8731,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/6/min depth/oneOf/2
@@ -8742,7 +8742,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/6/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_min-depth_oneOf_2_items
@@ -8751,7 +8751,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/6/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_min-depth_oneOf_2_items_items
@@ -8807,7 +8807,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_max-depth
 
-- **documentation**:The depth in meters to which the temperature of this feature is present.
+- **description**:The depth in meters to which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/6/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_max-depth_oneOf
@@ -8818,7 +8818,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/6/max depth/oneOf/2
@@ -8829,7 +8829,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/6/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_max-depth_oneOf_2_items
@@ -8838,7 +8838,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/6/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_max-depth_oneOf_2_items_items
@@ -8896,7 +8896,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in degree Kelvin which this feature should have
 ::::::::::::::::
 
 
@@ -8912,7 +8912,7 @@
 :open:
 :name: open_features_items_oneOf_4_composition-models
 
-- **documentation**:A list of composition models.
+- **description**:A list of composition models.
 - **default value**:
 - **type**:array
 :::::::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items
@@ -8928,7 +8928,7 @@
 :name: open_features_items_oneOf_4_composition-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **description**:Uniform compositional model. Sets constant compositional field.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -8938,7 +8938,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the composition model.
+- **description**:The name of the composition model.
 - **enum**:[uniform]
 ::::::::::::::::
 
@@ -8946,7 +8946,7 @@
 :open:
 :name: open_features_items_oneOf_4_composition-models_items_oneOf_1_min-depth
 
-- **documentation**:The depth in meters from which the composition of this feature is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/1/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_composition-models_items_oneOf_1_min-depth_oneOf
@@ -8957,7 +8957,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/1/min depth/oneOf/2
@@ -8968,7 +8968,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/1/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_4_composition-models_items_oneOf_1_min-depth_oneOf_2_items
@@ -8977,7 +8977,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/1/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_composition-models_items_oneOf_1_min-depth_oneOf_2_items_items
@@ -9033,7 +9033,7 @@
 :open:
 :name: open_features_items_oneOf_4_composition-models_items_oneOf_1_max-depth
 
-- **documentation**:The depth in meters to which the composition of this feature is present.
+- **description**:The depth in meters to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/1/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_composition-models_items_oneOf_1_max-depth_oneOf
@@ -9044,7 +9044,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/1/max depth/oneOf/2
@@ -9055,7 +9055,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/1/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_4_composition-models_items_oneOf_1_max-depth_oneOf_2_items
@@ -9064,7 +9064,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/1/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_composition-models_items_oneOf_1_max-depth_oneOf_2_items_items
@@ -9124,14 +9124,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the composition which are present there.
+- **description**:A list with the labels of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_4_composition-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -9144,14 +9144,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:TA list of compositional fractions corresponding to the compositions list.
 :::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/1/fractions/items
 :open:
 :name: open_features_items_oneOf_4_composition-models_items_oneOf_1_fractions_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -9162,7 +9162,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::::
 
@@ -9179,7 +9179,7 @@
 :open:
 :name: open_features_items_oneOf_4_grains-models
 
-- **documentation**:A list of grains models.
+- **description**:A list of grains models.
 - **default value**:
 - **type**:array
 :::::::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items
@@ -9195,7 +9195,7 @@
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
+- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -9205,7 +9205,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[random uniform distribution]
 ::::::::::::::::
 
@@ -9213,7 +9213,7 @@
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_1_min-depth
 
-- **documentation**:The depth in meters from which the composition of this feature is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/1/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_1_min-depth_oneOf
@@ -9224,7 +9224,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/1/min depth/oneOf/2
@@ -9235,7 +9235,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/1/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_1_min-depth_oneOf_2_items
@@ -9244,7 +9244,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/1/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items
@@ -9300,7 +9300,7 @@
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_1_max-depth
 
-- **documentation**:The depth in meters to which the composition of this feature is present.
+- **description**:The depth in meters to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/1/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_1_max-depth_oneOf
@@ -9311,7 +9311,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/1/max depth/oneOf/2
@@ -9322,7 +9322,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/1/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_1_max-depth_oneOf_2_items
@@ -9331,7 +9331,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/1/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items
@@ -9391,14 +9391,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -9409,7 +9409,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::::::
 
@@ -9421,14 +9421,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
 :::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/1/grain sizes/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_1_grain-sizes_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -9441,14 +9441,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
+- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
 :::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/1/normalize grain sizes/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_1_normalize-grain-sizes_items
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -9462,7 +9462,7 @@
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Uniform grains model. All grains start exactly the same.
+- **description**:Uniform grains model. All grains start exactly the same.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -9472,7 +9472,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[uniform]
 ::::::::::::::::
 
@@ -9480,7 +9480,7 @@
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_2_min-depth
 
-- **documentation**:The depth in meters from which the composition of this feature is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/2/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_2_min-depth_oneOf
@@ -9491,7 +9491,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/2/min depth/oneOf/2
@@ -9502,7 +9502,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/2/min depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_2_min-depth_oneOf_2_items
@@ -9511,7 +9511,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/2/min depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_2_min-depth_oneOf_2_items_items
@@ -9567,7 +9567,7 @@
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_2_max-depth
 
-- **documentation**:The depth in meters to which the composition of this feature is present.
+- **description**:The depth in meters to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/2/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_2_max-depth_oneOf
@@ -9578,7 +9578,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/2/max depth/oneOf/2
@@ -9589,7 +9589,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/2/max depth/oneOf/2/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_2_max-depth_oneOf_2_items
@@ -9598,7 +9598,7 @@
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/2/max depth/oneOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_2_max-depth_oneOf_2_items_items
@@ -9658,14 +9658,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/2/compositions/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -9678,7 +9678,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the grains which are present there for each compositions.
+- **description**:A list with the labels of the grains which are present there for each compositions.
 :::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/2/rotation matrices/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_2_rotation-matrices_items
@@ -9687,7 +9687,7 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/2/rotation matrices/items/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_2_rotation-matrices_items_items
@@ -9696,14 +9696,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/2/rotation matrices/items/items/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_2_rotation-matrices_items_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -9720,7 +9720,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
+- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
 :::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/2/Euler angles z-x-z/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_2_Euler-angles-z-x-z_items
@@ -9729,14 +9729,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/2/Euler angles z-x-z/items/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_2_Euler-angles-z-x-z_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 :::::::::::::::
@@ -9749,7 +9749,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::::::
 
@@ -9761,14 +9761,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
 :::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/2/grain sizes/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_2_grain-sizes_items
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -9791,7 +9791,7 @@
 :name: open_features_items_oneOf_5
 
 - **type**:object
-- **documentation**:Subducting slab object. Requires properties `model` and `coordinates`.
+- **description**:Subducting slab object. Requires properties `model` and `coordinates`.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -9801,7 +9801,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name which the user has given to the feature.
+- **description**:The name which the user has given to the feature.
 - **enum**:[subducting plate]
 ::::::::::::::::::::
 
@@ -9811,7 +9811,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name which the user has given to the feature.
+- **description**:The name which the user has given to the feature.
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/5/coordinates
@@ -9822,7 +9822,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:An array of 2d Points representing an array of coordinates where the feature is located.
+- **description**:An array of 2d Points representing an array of coordinates where the feature is located.
 :::::::::::::::::::{dropdown} /features/items/oneOf/5/coordinates/items
 :open:
 :name: open_features_items_oneOf_5_coordinates_items
@@ -9830,7 +9830,7 @@
 - **type**:array
 - **minItems**:2
 - **maxItems**:2
-- **documentation**:
+- **description**:
 ::::::::::::::::::{dropdown} /features/items/oneOf/5/coordinates/items/items
 :open:
 :name: open_features_items_oneOf_5_coordinates_items_items
@@ -9848,7 +9848,7 @@
 
 - **default value**:global
 - **type**:string
-- **documentation**:What type of interpolation should be used to enforce the minimum points per distance parameter. Options are global, none, linear, monotone spline and continuous monotone spline interpolation. If this value is set to global, the global value for interpolation is used.
+- **description**:What type of interpolation should be used to enforce the minimum points per distance parameter. Options are 'global' and 'continuous monotone spline' interpolation. If this value is set to global, the global value for interpolation is used. This option is deprecated and will be removed in a future release.
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/5/min depth
@@ -9857,7 +9857,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The depth to which this feature is present
+- **description**:The depth to which this feature is present
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/5/max depth
@@ -9866,7 +9866,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The depth to which this feature is present
+- **description**:The depth to which this feature is present
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/5/dip point
@@ -9876,7 +9876,7 @@
 - **type**:array
 - **minItems**:2
 - **maxItems**:2
-- **documentation**:The depth to which this feature is present
+- **description**:The depth to which this feature is present
 :::::::::::::::::::{dropdown} /features/items/oneOf/5/dip point/items
 :open:
 :name: open_features_items_oneOf_5_dip-point_items
@@ -9894,14 +9894,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:The depth to which this feature is present
+- **description**:The depth to which this feature is present
 :::::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items
 :open:
 :name: open_features_items_oneOf_5_segments_items
 
 - **type**:object
 - **additionalProperties**:false
-- **documentation**:
+- **description**:
 - **required**:[length, thickness, angle]
 
 ::::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/length
@@ -9963,7 +9963,7 @@
 :open:
 :name: open_features_items_oneOf_5_segments_items_temperature-models
 
-- **documentation**:
+- **description**:
 - **default value**:
 - **type**:array
 :::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items
@@ -9979,7 +9979,7 @@
 :name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Adiabatic temperature model. Uses global values by default.
+- **description**:Adiabatic temperature model. Uses global values by default.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -9989,7 +9989,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[adiabatic]
 ::::::::::::::
 
@@ -9999,7 +9999,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
@@ -10009,7 +10009,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/1/max distance slab top
@@ -10018,7 +10018,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/1/potential mantle temperature
@@ -10027,7 +10027,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/1/thermal expansion coefficient
@@ -10036,7 +10036,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/1/specific heat
@@ -10045,7 +10045,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::::
 
 
@@ -10057,7 +10057,7 @@
 :name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
+- **description**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
 - **additionalProperties**:false
 - **required**:[model, max distance slab top]
 
@@ -10067,7 +10067,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[linear]
 ::::::::::::::
 
@@ -10077,7 +10077,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
@@ -10087,7 +10087,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/2/max distance slab top
@@ -10096,7 +10096,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/2/top temperature
@@ -10105,7 +10105,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
+- **description**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/2/bottom temperature
@@ -10114,7 +10114,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The temperature at the bottom in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
+- **description**:The temperature at the bottom in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
 ::::::::::::::
 
 
@@ -10126,7 +10126,7 @@
 :name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3
 
 - **type**:object
-- **documentation**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
+- **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
 - **additionalProperties**:false
 - **required**:[model, plate velocity]
 
@@ -10136,7 +10136,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[mass conserving]
 ::::::::::::::
 
@@ -10146,7 +10146,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
@@ -10156,7 +10156,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
+- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/max distance slab top
@@ -10165,7 +10165,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km.
+- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/density
@@ -10174,7 +10174,7 @@
 
 - **default value**:3300.0
 - **type**:number
-- **documentation**:The reference density of the subducting plate in $kg/m^3$
+- **description**:The reference density of the subducting plate in $kg/m^3$
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/plate velocity
@@ -10183,7 +10183,7 @@
 
 - **default value**:0.05
 - **type**:number
-- **documentation**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
+- **description**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/coupling depth
@@ -10192,7 +10192,7 @@
 
 - **default value**:100000.0
 - **type**:number
-- **documentation**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters. Default is 100 km.
+- **description**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters. Default is 100 km.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/forearc cooling factor
@@ -10201,7 +10201,7 @@
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:Increase the value to create thin (~2 km) cold thermal boundary layer above the slab.Any value greater than 1 does NOT meet the instantaneous conservation of mass, but does allow one to account for the history of insulating the forearc from heating up to this point in time. Note younger subducting lithosphere provides less insulation, while thicker, older slabs provide more insulation. Values up to 10 to 30 have been tested and don't cause any other extraneous effects. The larger th value the more you are not meeting the mass conserving criteria, so you don't want to see this affecting the temperature beyond the coupling depth as it will increase the mass of the slab and affect how it sinks.  If you use higher values, you will start to see that this creates a very thick cool layer above the entire slab - if you see this extending beyond the coupling zone reduce the value. You should use a value of 1 first and then only increase as little as possible to cool just the forearc region. Please examine the output temperature carefully. 
+- **description**:Increase the value to create thin (~2 km) cold thermal boundary layer above the slab.Any value greater than 1 does NOT meet the instantaneous conservation of mass, but does allow one to account for the history of insulating the forearc from heating up to this point in time. Note younger subducting lithosphere provides less insulation, while thicker, older slabs provide more insulation. Values up to 10 to 30 have been tested and don't cause any other extraneous effects. The larger th value the more you are not meeting the mass conserving criteria, so you don't want to see this affecting the temperature beyond the coupling depth as it will increase the mass of the slab and affect how it sinks.  If you use higher values, you will start to see that this creates a very thick cool layer above the entire slab - if you see this extending beyond the coupling zone reduce the value. You should use a value of 1 first and then only increase as little as possible to cool just the forearc region. Please examine the output temperature carefully. 
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/thermal conductivity
@@ -10210,7 +10210,7 @@
 
 - **default value**:3.3
 - **type**:number
-- **documentation**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/thermal expansion coefficient
@@ -10219,7 +10219,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
+- **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/specific heat
@@ -10228,7 +10228,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
+- **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/thermal diffusivity
@@ -10237,7 +10237,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/adiabatic heating
@@ -10246,7 +10246,7 @@
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:Whether adiabatic heating should be used for the slab.
+- **description**:Whether adiabatic heating should be used for the slab.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/taper distance
@@ -10255,7 +10255,7 @@
 
 - **default value**:100000.0
 - **type**:number
-- **documentation**:Distance over which to taper the slab tip.tapers the initial heat content to zero and the minimum temperature to the background temperature.
+- **description**:Distance over which to taper the slab tip.tapers the initial heat content to zero and the minimum temperature to the background temperature.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/potential mantle temperature
@@ -10264,7 +10264,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/ridge coordinates
@@ -10275,7 +10275,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
+- **description**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
 :::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/ridge coordinates/items
 :open:
 :name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_ridge-coordinates_items
@@ -10284,7 +10284,7 @@
 - **minItems**:2
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/ridge coordinates/items/items
 :open:
 :name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_ridge-coordinates_items_items
@@ -10292,7 +10292,7 @@
 - **type**:array
 - **minItems**:2
 - **maxItems**:2
-- **documentation**:
+- **description**:
 :::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/ridge coordinates/items/items/items
 :open:
 :name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_ridge-coordinates_items_items_items
@@ -10312,7 +10312,7 @@
 
 - **default value**:half space model
 - **type**:string
-- **documentation**:The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model
+- **description**:The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model
 ::::::::::::::
 
 
@@ -10324,7 +10324,7 @@
 :name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_4
 
 - **type**:object
-- **documentation**:Plate model (based on McKenzie, 1970).
+- **description**:Plate model (based on McKenzie, 1970).
 - **additionalProperties**:false
 - **required**:[model, plate velocity]
 
@@ -10334,7 +10334,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[plate model]
 ::::::::::::::
 
@@ -10344,7 +10344,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
@@ -10354,7 +10354,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4/max distance slab top
@@ -10363,7 +10363,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4/density
@@ -10372,7 +10372,7 @@
 
 - **default value**:3300.0
 - **type**:number
-- **documentation**:The reference density of the subducting plate in $kg/m^3$
+- **description**:The reference density of the subducting plate in $kg/m^3$
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4/plate velocity
@@ -10381,7 +10381,7 @@
 
 - **default value**:NaN
 - **type**:number
-- **documentation**:The velocity in meters per year with which the plate subducts in meters per year.
+- **description**:The velocity in meters per year with which the plate subducts in meters per year.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4/thermal conductivity
@@ -10390,7 +10390,7 @@
 
 - **default value**:2.0
 - **type**:number
-- **documentation**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4/thermal expansion coefficient
@@ -10399,7 +10399,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
+- **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4/specific heat
@@ -10408,7 +10408,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
+- **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4/adiabatic heating
@@ -10417,7 +10417,7 @@
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:Whether adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
+- **description**:Whether adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4/potential mantle temperature
@@ -10426,7 +10426,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
 ::::::::::::::
 
 
@@ -10438,7 +10438,7 @@
 :name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_5
 
 - **type**:object
-- **documentation**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constan value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -10448,7 +10448,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[uniform]
 ::::::::::::::
 
@@ -10458,7 +10458,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
@@ -10468,7 +10468,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/5/max distance slab top
@@ -10477,7 +10477,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/5/temperature
@@ -10486,7 +10486,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in degree Kelvin which this feature should have
 ::::::::::::::
 
 
@@ -10502,7 +10502,7 @@
 :open:
 :name: open_features_items_oneOf_5_segments_items_composition-models
 
-- **documentation**:
+- **description**:
 - **default value**:
 - **type**:array
 :::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items
@@ -10518,7 +10518,7 @@
 :name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Compositional model object
+- **description**:Compositional model object
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -10528,7 +10528,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the composition model.
+- **description**:The name of the composition model.
 - **enum**:[smooth]
 ::::::::::::::
 
@@ -10538,7 +10538,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from which the composition of this layer is present.
+- **description**:The distance in meters from which the composition of this layer is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/max distance slab top
@@ -10547,7 +10547,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from which the composition of this layer is present.
+- **description**:The distance in meters from which the composition of this layer is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/top fractions
@@ -10558,14 +10558,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:The composition fraction at the top of the slab (layer).
+- **description**:The composition fraction at the top of the slab (layer).
 :::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/top fractions/items
 :open:
 :name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_top-fractions_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -10578,14 +10578,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:The composition fraction at the bottom of the slab (layer).
+- **description**:The composition fraction at the bottom of the slab (layer).
 :::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/bottom fractions/items
 :open:
 :name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_bottom-fractions_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -10598,14 +10598,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the composition which are present there.
+- **description**:A list with the labels of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -10616,7 +10616,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::
 
@@ -10629,7 +10629,7 @@
 :name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **description**:Uniform compositional model. Sets constant compositional field.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -10639,7 +10639,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the composition model.
+- **description**:The name of the composition model.
 - **enum**:[uniform]
 ::::::::::::::
 
@@ -10649,7 +10649,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2/max distance slab top
@@ -10658,7 +10658,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2/compositions
@@ -10669,14 +10669,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the composition which are present there.
+- **description**:A list with the labels of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2/compositions/items
 :open:
 :name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -10689,14 +10689,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:TA list of compositional fractions corresponding to the compositions list.
 :::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2/fractions/items
 :open:
 :name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2_fractions_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -10707,7 +10707,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::
 
@@ -10724,7 +10724,7 @@
 :open:
 :name: open_features_items_oneOf_5_segments_items_grains-models
 
-- **documentation**:
+- **description**:
 - **default value**:
 - **type**:array
 :::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items
@@ -10740,7 +10740,7 @@
 :name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
+- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -10750,7 +10750,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[random uniform distribution]
 ::::::::::::::
 
@@ -10760,7 +10760,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance from the slab top in meters from which the composition of this feature is present.
+- **description**:The distance from the slab top in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/1/max distance slab top
@@ -10769,7 +10769,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance from the slab top in meters to which the composition of this feature is present.
+- **description**:The distance from the slab top in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/1/compositions
@@ -10780,14 +10780,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -10798,7 +10798,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::::
 
@@ -10810,14 +10810,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
 :::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/1/grain sizes/items
 :open:
 :name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_1_grain-sizes_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -10830,14 +10830,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
+- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
 :::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/1/normalize grain sizes/items
 :open:
 :name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_1_normalize-grain-sizes_items
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -10851,7 +10851,7 @@
 :name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Uniform grains model. All grains start exactly the same.
+- **description**:Uniform grains model. All grains start exactly the same.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -10861,7 +10861,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[uniform]
 ::::::::::::::
 
@@ -10871,7 +10871,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance from the slab top in meters from which the composition of this feature is present.
+- **description**:The distance from the slab top in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/max distance slab top
@@ -10880,7 +10880,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance from the slab top in meters to which the composition of this feature is present.
+- **description**:The distance from the slab top in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/compositions
@@ -10891,14 +10891,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/compositions/items
 :open:
 :name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -10911,7 +10911,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the grains which are present there for each compositions.
+- **description**:A list with the labels of the grains which are present there for each compositions.
 :::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/rotation matrices/items
 :open:
 :name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2_rotation-matrices_items
@@ -10920,7 +10920,7 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/rotation matrices/items/items
 :open:
 :name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2_rotation-matrices_items_items
@@ -10929,14 +10929,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/rotation matrices/items/items/items
 :open:
 :name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2_rotation-matrices_items_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -10953,7 +10953,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
+- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
 :::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/Euler angles z-x-z/items
 :open:
 :name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2_Euler-angles-z-x-z_items
@@ -10962,14 +10962,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/Euler angles z-x-z/items/items
 :open:
 :name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2_Euler-angles-z-x-z_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::
 
 :::::::::::::
@@ -10982,7 +10982,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::::
 
@@ -10994,14 +10994,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
 :::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/grain sizes/items
 :open:
 :name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2_grain-sizes_items
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -11025,7 +11025,7 @@
 :open:
 :name: open_features_items_oneOf_5_temperature-models
 
-- **documentation**:A list of temperature models.
+- **description**:A list of temperature models.
 - **default value**:
 - **type**:array
 :::::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items
@@ -11041,7 +11041,7 @@
 :name: open_features_items_oneOf_5_temperature-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Adiabatic temperature model. Uses global values by default.
+- **description**:Adiabatic temperature model. Uses global values by default.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -11051,7 +11051,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[adiabatic]
 ::::::::::::::::
 
@@ -11061,7 +11061,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
@@ -11071,7 +11071,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/max distance slab top
@@ -11080,7 +11080,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/potential mantle temperature
@@ -11089,7 +11089,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/thermal expansion coefficient
@@ -11098,7 +11098,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/specific heat
@@ -11107,7 +11107,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::::::
 
 
@@ -11119,7 +11119,7 @@
 :name: open_features_items_oneOf_5_temperature-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
+- **description**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
 - **additionalProperties**:false
 - **required**:[model, max distance slab top]
 
@@ -11129,7 +11129,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[linear]
 ::::::::::::::::
 
@@ -11139,7 +11139,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
@@ -11149,7 +11149,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/2/max distance slab top
@@ -11158,7 +11158,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/2/top temperature
@@ -11167,7 +11167,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
+- **description**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/2/bottom temperature
@@ -11176,7 +11176,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The temperature at the bottom in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
+- **description**:The temperature at the bottom in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
 ::::::::::::::::
 
 
@@ -11188,7 +11188,7 @@
 :name: open_features_items_oneOf_5_temperature-models_items_oneOf_3
 
 - **type**:object
-- **documentation**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
+- **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
 - **additionalProperties**:false
 - **required**:[model, plate velocity]
 
@@ -11198,7 +11198,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[mass conserving]
 ::::::::::::::::
 
@@ -11208,7 +11208,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
@@ -11218,7 +11218,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
+- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/max distance slab top
@@ -11227,7 +11227,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km.
+- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/density
@@ -11236,7 +11236,7 @@
 
 - **default value**:3300.0
 - **type**:number
-- **documentation**:The reference density of the subducting plate in $kg/m^3$
+- **description**:The reference density of the subducting plate in $kg/m^3$
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/plate velocity
@@ -11245,7 +11245,7 @@
 
 - **default value**:0.05
 - **type**:number
-- **documentation**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
+- **description**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/coupling depth
@@ -11254,7 +11254,7 @@
 
 - **default value**:100000.0
 - **type**:number
-- **documentation**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters. Default is 100 km.
+- **description**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters. Default is 100 km.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/forearc cooling factor
@@ -11263,7 +11263,7 @@
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:Increase the value to create thin (~2 km) cold thermal boundary layer above the slab.Any value greater than 1 does NOT meet the instantaneous conservation of mass, but does allow one to account for the history of insulating the forearc from heating up to this point in time. Note younger subducting lithosphere provides less insulation, while thicker, older slabs provide more insulation. Values up to 10 to 30 have been tested and don't cause any other extraneous effects. The larger th value the more you are not meeting the mass conserving criteria, so you don't want to see this affecting the temperature beyond the coupling depth as it will increase the mass of the slab and affect how it sinks.  If you use higher values, you will start to see that this creates a very thick cool layer above the entire slab - if you see this extending beyond the coupling zone reduce the value. You should use a value of 1 first and then only increase as little as possible to cool just the forearc region. Please examine the output temperature carefully. 
+- **description**:Increase the value to create thin (~2 km) cold thermal boundary layer above the slab.Any value greater than 1 does NOT meet the instantaneous conservation of mass, but does allow one to account for the history of insulating the forearc from heating up to this point in time. Note younger subducting lithosphere provides less insulation, while thicker, older slabs provide more insulation. Values up to 10 to 30 have been tested and don't cause any other extraneous effects. The larger th value the more you are not meeting the mass conserving criteria, so you don't want to see this affecting the temperature beyond the coupling depth as it will increase the mass of the slab and affect how it sinks.  If you use higher values, you will start to see that this creates a very thick cool layer above the entire slab - if you see this extending beyond the coupling zone reduce the value. You should use a value of 1 first and then only increase as little as possible to cool just the forearc region. Please examine the output temperature carefully. 
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/thermal conductivity
@@ -11272,7 +11272,7 @@
 
 - **default value**:3.3
 - **type**:number
-- **documentation**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/thermal expansion coefficient
@@ -11281,7 +11281,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
+- **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/specific heat
@@ -11290,7 +11290,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
+- **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/thermal diffusivity
@@ -11299,7 +11299,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/adiabatic heating
@@ -11308,7 +11308,7 @@
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:Whether adiabatic heating should be used for the slab.
+- **description**:Whether adiabatic heating should be used for the slab.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/taper distance
@@ -11317,7 +11317,7 @@
 
 - **default value**:100000.0
 - **type**:number
-- **documentation**:Distance over which to taper the slab tip.tapers the initial heat content to zero and the minimum temperature to the background temperature.
+- **description**:Distance over which to taper the slab tip.tapers the initial heat content to zero and the minimum temperature to the background temperature.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/potential mantle temperature
@@ -11326,7 +11326,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/ridge coordinates
@@ -11337,7 +11337,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
+- **description**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
 :::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/ridge coordinates/items
 :open:
 :name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_ridge-coordinates_items
@@ -11346,7 +11346,7 @@
 - **minItems**:2
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/ridge coordinates/items/items
 :open:
 :name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_ridge-coordinates_items_items
@@ -11354,7 +11354,7 @@
 - **type**:array
 - **minItems**:2
 - **maxItems**:2
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/ridge coordinates/items/items/items
 :open:
 :name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_ridge-coordinates_items_items_items
@@ -11374,7 +11374,7 @@
 
 - **default value**:half space model
 - **type**:string
-- **documentation**:The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model
+- **description**:The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model
 ::::::::::::::::
 
 
@@ -11386,7 +11386,7 @@
 :name: open_features_items_oneOf_5_temperature-models_items_oneOf_4
 
 - **type**:object
-- **documentation**:Plate model (based on McKenzie, 1970).
+- **description**:Plate model (based on McKenzie, 1970).
 - **additionalProperties**:false
 - **required**:[model, plate velocity]
 
@@ -11396,7 +11396,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[plate model]
 ::::::::::::::::
 
@@ -11406,7 +11406,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
@@ -11416,7 +11416,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4/max distance slab top
@@ -11425,7 +11425,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4/density
@@ -11434,7 +11434,7 @@
 
 - **default value**:3300.0
 - **type**:number
-- **documentation**:The reference density of the subducting plate in $kg/m^3$
+- **description**:The reference density of the subducting plate in $kg/m^3$
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4/plate velocity
@@ -11443,7 +11443,7 @@
 
 - **default value**:NaN
 - **type**:number
-- **documentation**:The velocity in meters per year with which the plate subducts in meters per year.
+- **description**:The velocity in meters per year with which the plate subducts in meters per year.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4/thermal conductivity
@@ -11452,7 +11452,7 @@
 
 - **default value**:2.0
 - **type**:number
-- **documentation**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4/thermal expansion coefficient
@@ -11461,7 +11461,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
+- **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4/specific heat
@@ -11470,7 +11470,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
+- **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4/adiabatic heating
@@ -11479,7 +11479,7 @@
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:Whether adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
+- **description**:Whether adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4/potential mantle temperature
@@ -11488,7 +11488,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
 ::::::::::::::::
 
 
@@ -11500,7 +11500,7 @@
 :name: open_features_items_oneOf_5_temperature-models_items_oneOf_5
 
 - **type**:object
-- **documentation**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constan value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -11510,7 +11510,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[uniform]
 ::::::::::::::::
 
@@ -11520,7 +11520,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
@@ -11530,7 +11530,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/5/max distance slab top
@@ -11539,7 +11539,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/5/temperature
@@ -11548,7 +11548,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in degree Kelvin which this feature should have
 ::::::::::::::::
 
 
@@ -11564,7 +11564,7 @@
 :open:
 :name: open_features_items_oneOf_5_composition-models
 
-- **documentation**:A list of composition models.
+- **description**:A list of composition models.
 - **default value**:
 - **type**:array
 :::::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items
@@ -11580,7 +11580,7 @@
 :name: open_features_items_oneOf_5_composition-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Compositional model object
+- **description**:Compositional model object
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -11590,7 +11590,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the composition model.
+- **description**:The name of the composition model.
 - **enum**:[smooth]
 ::::::::::::::::
 
@@ -11600,7 +11600,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from which the composition of this layer is present.
+- **description**:The distance in meters from which the composition of this layer is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/max distance slab top
@@ -11609,7 +11609,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from which the composition of this layer is present.
+- **description**:The distance in meters from which the composition of this layer is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/top fractions
@@ -11620,14 +11620,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:The composition fraction at the top of the slab (layer).
+- **description**:The composition fraction at the top of the slab (layer).
 :::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/top fractions/items
 :open:
 :name: open_features_items_oneOf_5_composition-models_items_oneOf_1_top-fractions_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -11640,14 +11640,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:The composition fraction at the bottom of the slab (layer).
+- **description**:The composition fraction at the bottom of the slab (layer).
 :::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/bottom fractions/items
 :open:
 :name: open_features_items_oneOf_5_composition-models_items_oneOf_1_bottom-fractions_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -11660,14 +11660,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the composition which are present there.
+- **description**:A list with the labels of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_5_composition-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -11678,7 +11678,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::::
 
@@ -11691,7 +11691,7 @@
 :name: open_features_items_oneOf_5_composition-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **description**:Uniform compositional model. Sets constant compositional field.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -11701,7 +11701,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the composition model.
+- **description**:The name of the composition model.
 - **enum**:[uniform]
 ::::::::::::::::
 
@@ -11711,7 +11711,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/max distance slab top
@@ -11720,7 +11720,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/compositions
@@ -11731,14 +11731,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the composition which are present there.
+- **description**:A list with the labels of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/compositions/items
 :open:
 :name: open_features_items_oneOf_5_composition-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -11751,14 +11751,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:TA list of compositional fractions corresponding to the compositions list.
 :::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/fractions/items
 :open:
 :name: open_features_items_oneOf_5_composition-models_items_oneOf_2_fractions_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -11769,7 +11769,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::::
 
@@ -11786,7 +11786,7 @@
 :open:
 :name: open_features_items_oneOf_5_grains-models
 
-- **documentation**:A list of grains models.
+- **description**:A list of grains models.
 - **default value**:
 - **type**:array
 :::::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items
@@ -11802,7 +11802,7 @@
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
+- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -11812,7 +11812,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[random uniform distribution]
 ::::::::::::::::
 
@@ -11822,7 +11822,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance from the slab top in meters from which the composition of this feature is present.
+- **description**:The distance from the slab top in meters from which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max distance slab top
@@ -11831,7 +11831,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance from the slab top in meters to which the composition of this feature is present.
+- **description**:The distance from the slab top in meters to which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/compositions
@@ -11842,14 +11842,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -11860,7 +11860,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::::::
 
@@ -11872,14 +11872,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
 :::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/grain sizes/items
 :open:
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_1_grain-sizes_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -11892,14 +11892,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
+- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
 :::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/normalize grain sizes/items
 :open:
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_1_normalize-grain-sizes_items
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -11913,7 +11913,7 @@
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Uniform grains model. All grains start exactly the same.
+- **description**:Uniform grains model. All grains start exactly the same.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -11923,7 +11923,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[uniform]
 ::::::::::::::::
 
@@ -11933,7 +11933,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance from the slab top in meters from which the composition of this feature is present.
+- **description**:The distance from the slab top in meters from which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/max distance slab top
@@ -11942,7 +11942,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance from the slab top in meters to which the composition of this feature is present.
+- **description**:The distance from the slab top in meters to which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/compositions
@@ -11953,14 +11953,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/compositions/items
 :open:
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -11973,7 +11973,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the grains which are present there for each compositions.
+- **description**:A list with the labels of the grains which are present there for each compositions.
 :::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/rotation matrices/items
 :open:
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_2_rotation-matrices_items
@@ -11982,7 +11982,7 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/rotation matrices/items/items
 :open:
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_2_rotation-matrices_items_items
@@ -11991,14 +11991,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/rotation matrices/items/items/items
 :open:
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_2_rotation-matrices_items_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -12015,7 +12015,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
+- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
 :::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/Euler angles z-x-z/items
 :open:
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_2_Euler-angles-z-x-z_items
@@ -12024,14 +12024,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/Euler angles z-x-z/items/items
 :open:
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_2_Euler-angles-z-x-z_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::::
 
 :::::::::::::::
@@ -12044,7 +12044,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::::::
 
@@ -12056,14 +12056,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
 :::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/grain sizes/items
 :open:
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_2_grain-sizes_items
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::::
 
 ::::::::::::::::
@@ -12085,12 +12085,12 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of feature properties for a coordinate.
+- **description**:A list of feature properties for a coordinate.
 :::::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items
 :open:
 :name: open_features_items_oneOf_5_sections_items
 
-- **documentation**:
+- **description**:
 - **default value**:
 - **type**:object
 
@@ -12100,7 +12100,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The depth to which this feature is present
+- **description**:The depth to which this feature is present
 ::::::::::::::::::
 
 ::::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/max depth
@@ -12109,7 +12109,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The depth to which this feature is present
+- **description**:The depth to which this feature is present
 ::::::::::::::::::
 
 ::::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/dip point
@@ -12119,7 +12119,7 @@
 - **type**:array
 - **minItems**:2
 - **maxItems**:2
-- **documentation**:The depth to which this feature is present
+- **description**:The depth to which this feature is present
 :::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/dip point/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_dip-point_items
@@ -12137,14 +12137,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:The depth to which this feature is present
+- **description**:The depth to which this feature is present
 :::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items
 
 - **type**:object
 - **additionalProperties**:false
-- **documentation**:
+- **description**:
 - **required**:[length, thickness, angle]
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/length
@@ -12206,7 +12206,7 @@
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models
 
-- **documentation**:
+- **description**:
 - **default value**:
 - **type**:array
 :::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items
@@ -12222,7 +12222,7 @@
 :name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Adiabatic temperature model. Uses global values by default.
+- **description**:Adiabatic temperature model. Uses global values by default.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -12232,7 +12232,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[adiabatic]
 ::::::::::::
 
@@ -12242,7 +12242,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::
 
@@ -12252,7 +12252,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/1/max distance slab top
@@ -12261,7 +12261,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/1/potential mantle temperature
@@ -12270,7 +12270,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/1/thermal expansion coefficient
@@ -12279,7 +12279,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/1/specific heat
@@ -12288,7 +12288,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::
 
 
@@ -12300,7 +12300,7 @@
 :name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
+- **description**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
 - **additionalProperties**:false
 - **required**:[model, max distance slab top]
 
@@ -12310,7 +12310,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[linear]
 ::::::::::::
 
@@ -12320,7 +12320,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::
 
@@ -12330,7 +12330,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/2/max distance slab top
@@ -12339,7 +12339,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/2/top temperature
@@ -12348,7 +12348,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
+- **description**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/2/bottom temperature
@@ -12357,7 +12357,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The temperature at the bottom in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
+- **description**:The temperature at the bottom in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
 ::::::::::::
 
 
@@ -12369,7 +12369,7 @@
 :name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3
 
 - **type**:object
-- **documentation**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
+- **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
 - **additionalProperties**:false
 - **required**:[model, plate velocity]
 
@@ -12379,7 +12379,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[mass conserving]
 ::::::::::::
 
@@ -12389,7 +12389,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::
 
@@ -12399,7 +12399,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
+- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/max distance slab top
@@ -12408,7 +12408,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km.
+- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/density
@@ -12417,7 +12417,7 @@
 
 - **default value**:3300.0
 - **type**:number
-- **documentation**:The reference density of the subducting plate in $kg/m^3$
+- **description**:The reference density of the subducting plate in $kg/m^3$
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity
@@ -12426,7 +12426,7 @@
 
 - **default value**:0.05
 - **type**:number
-- **documentation**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
+- **description**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/coupling depth
@@ -12435,7 +12435,7 @@
 
 - **default value**:100000.0
 - **type**:number
-- **documentation**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters. Default is 100 km.
+- **description**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters. Default is 100 km.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/forearc cooling factor
@@ -12444,7 +12444,7 @@
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:Increase the value to create thin (~2 km) cold thermal boundary layer above the slab.Any value greater than 1 does NOT meet the instantaneous conservation of mass, but does allow one to account for the history of insulating the forearc from heating up to this point in time. Note younger subducting lithosphere provides less insulation, while thicker, older slabs provide more insulation. Values up to 10 to 30 have been tested and don't cause any other extraneous effects. The larger th value the more you are not meeting the mass conserving criteria, so you don't want to see this affecting the temperature beyond the coupling depth as it will increase the mass of the slab and affect how it sinks.  If you use higher values, you will start to see that this creates a very thick cool layer above the entire slab - if you see this extending beyond the coupling zone reduce the value. You should use a value of 1 first and then only increase as little as possible to cool just the forearc region. Please examine the output temperature carefully. 
+- **description**:Increase the value to create thin (~2 km) cold thermal boundary layer above the slab.Any value greater than 1 does NOT meet the instantaneous conservation of mass, but does allow one to account for the history of insulating the forearc from heating up to this point in time. Note younger subducting lithosphere provides less insulation, while thicker, older slabs provide more insulation. Values up to 10 to 30 have been tested and don't cause any other extraneous effects. The larger th value the more you are not meeting the mass conserving criteria, so you don't want to see this affecting the temperature beyond the coupling depth as it will increase the mass of the slab and affect how it sinks.  If you use higher values, you will start to see that this creates a very thick cool layer above the entire slab - if you see this extending beyond the coupling zone reduce the value. You should use a value of 1 first and then only increase as little as possible to cool just the forearc region. Please examine the output temperature carefully. 
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/thermal conductivity
@@ -12453,7 +12453,7 @@
 
 - **default value**:3.3
 - **type**:number
-- **documentation**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/thermal expansion coefficient
@@ -12462,7 +12462,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
+- **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/specific heat
@@ -12471,7 +12471,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
+- **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/thermal diffusivity
@@ -12480,7 +12480,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/adiabatic heating
@@ -12489,7 +12489,7 @@
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:Whether adiabatic heating should be used for the slab.
+- **description**:Whether adiabatic heating should be used for the slab.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/taper distance
@@ -12498,7 +12498,7 @@
 
 - **default value**:100000.0
 - **type**:number
-- **documentation**:Distance over which to taper the slab tip.tapers the initial heat content to zero and the minimum temperature to the background temperature.
+- **description**:Distance over which to taper the slab tip.tapers the initial heat content to zero and the minimum temperature to the background temperature.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/potential mantle temperature
@@ -12507,7 +12507,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/ridge coordinates
@@ -12518,7 +12518,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
+- **description**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
 :::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/ridge coordinates/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_ridge-coordinates_items
@@ -12527,7 +12527,7 @@
 - **minItems**:2
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/ridge coordinates/items/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_ridge-coordinates_items_items
@@ -12535,7 +12535,7 @@
 - **type**:array
 - **minItems**:2
 - **maxItems**:2
-- **documentation**:
+- **description**:
 :::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/ridge coordinates/items/items/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_ridge-coordinates_items_items_items
@@ -12555,7 +12555,7 @@
 
 - **default value**:half space model
 - **type**:string
-- **documentation**:The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model
+- **description**:The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model
 ::::::::::::
 
 
@@ -12567,7 +12567,7 @@
 :name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_4
 
 - **type**:object
-- **documentation**:Plate model (based on McKenzie, 1970).
+- **description**:Plate model (based on McKenzie, 1970).
 - **additionalProperties**:false
 - **required**:[model, plate velocity]
 
@@ -12577,7 +12577,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[plate model]
 ::::::::::::
 
@@ -12587,7 +12587,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::
 
@@ -12597,7 +12597,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4/max distance slab top
@@ -12606,7 +12606,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4/density
@@ -12615,7 +12615,7 @@
 
 - **default value**:3300.0
 - **type**:number
-- **documentation**:The reference density of the subducting plate in $kg/m^3$
+- **description**:The reference density of the subducting plate in $kg/m^3$
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4/plate velocity
@@ -12624,7 +12624,7 @@
 
 - **default value**:NaN
 - **type**:number
-- **documentation**:The velocity in meters per year with which the plate subducts in meters per year.
+- **description**:The velocity in meters per year with which the plate subducts in meters per year.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4/thermal conductivity
@@ -12633,7 +12633,7 @@
 
 - **default value**:2.0
 - **type**:number
-- **documentation**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4/thermal expansion coefficient
@@ -12642,7 +12642,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
+- **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4/specific heat
@@ -12651,7 +12651,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
+- **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4/adiabatic heating
@@ -12660,7 +12660,7 @@
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:Whether adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
+- **description**:Whether adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4/potential mantle temperature
@@ -12669,7 +12669,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
 ::::::::::::
 
 
@@ -12681,7 +12681,7 @@
 :name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_5
 
 - **type**:object
-- **documentation**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constan value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -12691,7 +12691,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[uniform]
 ::::::::::::
 
@@ -12701,7 +12701,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::
 
@@ -12711,7 +12711,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/5/max distance slab top
@@ -12720,7 +12720,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/5/temperature
@@ -12729,7 +12729,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in degree Kelvin which this feature should have
 ::::::::::::
 
 
@@ -12745,7 +12745,7 @@
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_composition-models
 
-- **documentation**:
+- **description**:
 - **default value**:
 - **type**:array
 :::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items
@@ -12761,7 +12761,7 @@
 :name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Compositional model object
+- **description**:Compositional model object
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -12771,7 +12771,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the composition model.
+- **description**:The name of the composition model.
 - **enum**:[smooth]
 ::::::::::::
 
@@ -12781,7 +12781,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from which the composition of this layer is present.
+- **description**:The distance in meters from which the composition of this layer is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/max distance slab top
@@ -12790,7 +12790,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from which the composition of this layer is present.
+- **description**:The distance in meters from which the composition of this layer is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/top fractions
@@ -12801,14 +12801,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:The composition fraction at the top of the slab (layer).
+- **description**:The composition fraction at the top of the slab (layer).
 :::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/top fractions/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_top-fractions_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -12821,14 +12821,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:The composition fraction at the bottom of the slab (layer).
+- **description**:The composition fraction at the bottom of the slab (layer).
 :::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/bottom fractions/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_bottom-fractions_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -12841,14 +12841,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the composition which are present there.
+- **description**:A list with the labels of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -12859,7 +12859,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::
 
@@ -12872,7 +12872,7 @@
 :name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **description**:Uniform compositional model. Sets constant compositional field.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -12882,7 +12882,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the composition model.
+- **description**:The name of the composition model.
 - **enum**:[uniform]
 ::::::::::::
 
@@ -12892,7 +12892,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2/max distance slab top
@@ -12901,7 +12901,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2/compositions
@@ -12912,14 +12912,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the composition which are present there.
+- **description**:A list with the labels of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2/compositions/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -12932,14 +12932,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:TA list of compositional fractions corresponding to the compositions list.
 :::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2/fractions/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2_fractions_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -12950,7 +12950,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::
 
@@ -12967,7 +12967,7 @@
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_grains-models
 
-- **documentation**:
+- **description**:
 - **default value**:
 - **type**:array
 :::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items
@@ -12983,7 +12983,7 @@
 :name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
+- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -12993,7 +12993,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[random uniform distribution]
 ::::::::::::
 
@@ -13003,7 +13003,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance from the slab top in meters from which the composition of this feature is present.
+- **description**:The distance from the slab top in meters from which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/1/max distance slab top
@@ -13012,7 +13012,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance from the slab top in meters to which the composition of this feature is present.
+- **description**:The distance from the slab top in meters to which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/1/compositions
@@ -13023,14 +13023,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -13041,7 +13041,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::
 
@@ -13053,14 +13053,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
 :::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/1/grain sizes/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_1_grain-sizes_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -13073,14 +13073,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
+- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
 :::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/1/normalize grain sizes/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_1_normalize-grain-sizes_items
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -13094,7 +13094,7 @@
 :name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Uniform grains model. All grains start exactly the same.
+- **description**:Uniform grains model. All grains start exactly the same.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -13104,7 +13104,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[uniform]
 ::::::::::::
 
@@ -13114,7 +13114,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance from the slab top in meters from which the composition of this feature is present.
+- **description**:The distance from the slab top in meters from which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/max distance slab top
@@ -13123,7 +13123,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance from the slab top in meters to which the composition of this feature is present.
+- **description**:The distance from the slab top in meters to which the composition of this feature is present.
 ::::::::::::
 
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/compositions
@@ -13134,14 +13134,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/compositions/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -13154,7 +13154,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the grains which are present there for each compositions.
+- **description**:A list with the labels of the grains which are present there for each compositions.
 :::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/rotation matrices/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2_rotation-matrices_items
@@ -13163,7 +13163,7 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/rotation matrices/items/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2_rotation-matrices_items_items
@@ -13172,14 +13172,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/rotation matrices/items/items/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2_rotation-matrices_items_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::
 
 ::::::::::
@@ -13196,7 +13196,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
+- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
 :::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/Euler angles z-x-z/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2_Euler-angles-z-x-z_items
@@ -13205,14 +13205,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/Euler angles z-x-z/items/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2_Euler-angles-z-x-z_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::
 
 :::::::::::
@@ -13225,7 +13225,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::
 
@@ -13237,14 +13237,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
 :::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/grain sizes/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2_grain-sizes_items
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -13268,7 +13268,7 @@
 :open:
 :name: open_features_items_oneOf_5_sections_items_temperature-models
 
-- **documentation**:A list of temperature models.
+- **description**:A list of temperature models.
 - **default value**:
 - **type**:array
 :::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items
@@ -13284,7 +13284,7 @@
 :name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Adiabatic temperature model. Uses global values by default.
+- **description**:Adiabatic temperature model. Uses global values by default.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -13294,7 +13294,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[adiabatic]
 ::::::::::::::
 
@@ -13304,7 +13304,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
@@ -13314,7 +13314,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/1/max distance slab top
@@ -13323,7 +13323,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/1/potential mantle temperature
@@ -13332,7 +13332,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/1/thermal expansion coefficient
@@ -13341,7 +13341,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/1/specific heat
@@ -13350,7 +13350,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
+- **description**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::::
 
 
@@ -13362,7 +13362,7 @@
 :name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
+- **description**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
 - **additionalProperties**:false
 - **required**:[model, max distance slab top]
 
@@ -13372,7 +13372,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[linear]
 ::::::::::::::
 
@@ -13382,7 +13382,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
@@ -13392,7 +13392,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/2/max distance slab top
@@ -13401,7 +13401,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/2/top temperature
@@ -13410,7 +13410,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
+- **description**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/2/bottom temperature
@@ -13419,7 +13419,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The temperature at the bottom in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
+- **description**:The temperature at the bottom in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
 ::::::::::::::
 
 
@@ -13431,7 +13431,7 @@
 :name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3
 
 - **type**:object
-- **documentation**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
+- **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
 - **additionalProperties**:false
 - **required**:[model, plate velocity]
 
@@ -13441,7 +13441,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[mass conserving]
 ::::::::::::::
 
@@ -13451,7 +13451,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
@@ -13461,7 +13461,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
+- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/max distance slab top
@@ -13470,7 +13470,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km.
+- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/density
@@ -13479,7 +13479,7 @@
 
 - **default value**:3300.0
 - **type**:number
-- **documentation**:The reference density of the subducting plate in $kg/m^3$
+- **description**:The reference density of the subducting plate in $kg/m^3$
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/plate velocity
@@ -13488,7 +13488,7 @@
 
 - **default value**:0.05
 - **type**:number
-- **documentation**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
+- **description**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/coupling depth
@@ -13497,7 +13497,7 @@
 
 - **default value**:100000.0
 - **type**:number
-- **documentation**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters. Default is 100 km.
+- **description**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters. Default is 100 km.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/forearc cooling factor
@@ -13506,7 +13506,7 @@
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:Increase the value to create thin (~2 km) cold thermal boundary layer above the slab.Any value greater than 1 does NOT meet the instantaneous conservation of mass, but does allow one to account for the history of insulating the forearc from heating up to this point in time. Note younger subducting lithosphere provides less insulation, while thicker, older slabs provide more insulation. Values up to 10 to 30 have been tested and don't cause any other extraneous effects. The larger th value the more you are not meeting the mass conserving criteria, so you don't want to see this affecting the temperature beyond the coupling depth as it will increase the mass of the slab and affect how it sinks.  If you use higher values, you will start to see that this creates a very thick cool layer above the entire slab - if you see this extending beyond the coupling zone reduce the value. You should use a value of 1 first and then only increase as little as possible to cool just the forearc region. Please examine the output temperature carefully. 
+- **description**:Increase the value to create thin (~2 km) cold thermal boundary layer above the slab.Any value greater than 1 does NOT meet the instantaneous conservation of mass, but does allow one to account for the history of insulating the forearc from heating up to this point in time. Note younger subducting lithosphere provides less insulation, while thicker, older slabs provide more insulation. Values up to 10 to 30 have been tested and don't cause any other extraneous effects. The larger th value the more you are not meeting the mass conserving criteria, so you don't want to see this affecting the temperature beyond the coupling depth as it will increase the mass of the slab and affect how it sinks.  If you use higher values, you will start to see that this creates a very thick cool layer above the entire slab - if you see this extending beyond the coupling zone reduce the value. You should use a value of 1 first and then only increase as little as possible to cool just the forearc region. Please examine the output temperature carefully. 
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/thermal conductivity
@@ -13515,7 +13515,7 @@
 
 - **default value**:3.3
 - **type**:number
-- **documentation**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/thermal expansion coefficient
@@ -13524,7 +13524,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
+- **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/specific heat
@@ -13533,7 +13533,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
+- **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/thermal diffusivity
@@ -13542,7 +13542,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/adiabatic heating
@@ -13551,7 +13551,7 @@
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:Whether adiabatic heating should be used for the slab.
+- **description**:Whether adiabatic heating should be used for the slab.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/taper distance
@@ -13560,7 +13560,7 @@
 
 - **default value**:100000.0
 - **type**:number
-- **documentation**:Distance over which to taper the slab tip.tapers the initial heat content to zero and the minimum temperature to the background temperature.
+- **description**:Distance over which to taper the slab tip.tapers the initial heat content to zero and the minimum temperature to the background temperature.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/potential mantle temperature
@@ -13569,7 +13569,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/ridge coordinates
@@ -13580,7 +13580,7 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
+- **description**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
 :::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/ridge coordinates/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_ridge-coordinates_items
@@ -13589,7 +13589,7 @@
 - **minItems**:2
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/ridge coordinates/items/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_ridge-coordinates_items_items
@@ -13597,7 +13597,7 @@
 - **type**:array
 - **minItems**:2
 - **maxItems**:2
-- **documentation**:
+- **description**:
 :::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/ridge coordinates/items/items/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_ridge-coordinates_items_items_items
@@ -13617,7 +13617,7 @@
 
 - **default value**:half space model
 - **type**:string
-- **documentation**:The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model
+- **description**:The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model
 ::::::::::::::
 
 
@@ -13629,7 +13629,7 @@
 :name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_4
 
 - **type**:object
-- **documentation**:Plate model (based on McKenzie, 1970).
+- **description**:Plate model (based on McKenzie, 1970).
 - **additionalProperties**:false
 - **required**:[model, plate velocity]
 
@@ -13639,7 +13639,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[plate model]
 ::::::::::::::
 
@@ -13649,7 +13649,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
@@ -13659,7 +13659,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4/max distance slab top
@@ -13668,7 +13668,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4/density
@@ -13677,7 +13677,7 @@
 
 - **default value**:3300.0
 - **type**:number
-- **documentation**:The reference density of the subducting plate in $kg/m^3$
+- **description**:The reference density of the subducting plate in $kg/m^3$
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4/plate velocity
@@ -13686,7 +13686,7 @@
 
 - **default value**:NaN
 - **type**:number
-- **documentation**:The velocity in meters per year with which the plate subducts in meters per year.
+- **description**:The velocity in meters per year with which the plate subducts in meters per year.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4/thermal conductivity
@@ -13695,7 +13695,7 @@
 
 - **default value**:2.0
 - **type**:number
-- **documentation**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4/thermal expansion coefficient
@@ -13704,7 +13704,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
+- **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4/specific heat
@@ -13713,7 +13713,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
+- **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4/adiabatic heating
@@ -13722,7 +13722,7 @@
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:Whether adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
+- **description**:Whether adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4/potential mantle temperature
@@ -13731,7 +13731,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
 ::::::::::::::
 
 
@@ -13743,7 +13743,7 @@
 :name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_5
 
 - **type**:object
-- **documentation**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constan value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -13753,7 +13753,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the temperature model.
+- **description**:The name of the temperature model.
 - **enum**:[uniform]
 ::::::::::::::
 
@@ -13763,7 +13763,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
@@ -13773,7 +13773,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/5/max distance slab top
@@ -13782,7 +13782,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/5/temperature
@@ -13791,7 +13791,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **documentation**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in degree Kelvin which this feature should have
 ::::::::::::::
 
 
@@ -13807,7 +13807,7 @@
 :open:
 :name: open_features_items_oneOf_5_sections_items_composition-models
 
-- **documentation**:A list of composition models.
+- **description**:A list of composition models.
 - **default value**:
 - **type**:array
 :::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items
@@ -13823,7 +13823,7 @@
 :name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Compositional model object
+- **description**:Compositional model object
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -13833,7 +13833,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the composition model.
+- **description**:The name of the composition model.
 - **enum**:[smooth]
 ::::::::::::::
 
@@ -13843,7 +13843,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from which the composition of this layer is present.
+- **description**:The distance in meters from which the composition of this layer is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/max distance slab top
@@ -13852,7 +13852,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance in meters from which the composition of this layer is present.
+- **description**:The distance in meters from which the composition of this layer is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/top fractions
@@ -13863,14 +13863,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:The composition fraction at the top of the slab (layer).
+- **description**:The composition fraction at the top of the slab (layer).
 :::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/top fractions/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_top-fractions_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -13883,14 +13883,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:The composition fraction at the bottom of the slab (layer).
+- **description**:The composition fraction at the bottom of the slab (layer).
 :::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/bottom fractions/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_bottom-fractions_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -13903,14 +13903,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the composition which are present there.
+- **description**:A list with the labels of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -13921,7 +13921,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::
 
@@ -13934,7 +13934,7 @@
 :name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Uniform compositional model. Sets constant compositional field.
+- **description**:Uniform compositional model. Sets constant compositional field.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -13944,7 +13944,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the composition model.
+- **description**:The name of the composition model.
 - **enum**:[uniform]
 ::::::::::::::
 
@@ -13954,7 +13954,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:todo The depth in meters from which the composition of this feature is present.
+- **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2/max distance slab top
@@ -13963,7 +13963,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:todo The depth in meters to which the composition of this feature is present.
+- **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2/compositions
@@ -13974,14 +13974,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the composition which are present there.
+- **description**:A list with the labels of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2/compositions/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -13994,14 +13994,14 @@
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:TA list of compositional fractions corresponding to the compositions list.
+- **description**:TA list of compositional fractions corresponding to the compositions list.
 :::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2/fractions/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2_fractions_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -14012,7 +14012,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
 - **enum**:[replace, replace defined only, add, subtract]
 ::::::::::::::
 
@@ -14029,7 +14029,7 @@
 :open:
 :name: open_features_items_oneOf_5_sections_items_grains-models
 
-- **documentation**:A list of grains models.
+- **description**:A list of grains models.
 - **default value**:
 - **type**:array
 :::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items
@@ -14045,7 +14045,7 @@
 :name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_1
 
 - **type**:object
-- **documentation**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
+- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -14055,7 +14055,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[random uniform distribution]
 ::::::::::::::
 
@@ -14065,7 +14065,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance from the slab top in meters from which the composition of this feature is present.
+- **description**:The distance from the slab top in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/1/max distance slab top
@@ -14074,7 +14074,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance from the slab top in meters to which the composition of this feature is present.
+- **description**:The distance from the slab top in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/1/compositions
@@ -14085,14 +14085,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/1/compositions/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -14103,7 +14103,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::::
 
@@ -14115,14 +14115,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
 :::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/1/grain sizes/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_1_grain-sizes_items
 
 - **default value**:1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -14135,14 +14135,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
+- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
 :::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/1/normalize grain sizes/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_1_normalize-grain-sizes_items
 
 - **default value**:true
 - **type**:boolean
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -14156,7 +14156,7 @@
 :name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2
 
 - **type**:object
-- **documentation**:Uniform grains model. All grains start exactly the same.
+- **description**:Uniform grains model. All grains start exactly the same.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -14166,7 +14166,7 @@
 
 - **default value**:
 - **type**:string
-- **documentation**:The name of the grains model.
+- **description**:The name of the grains model.
 - **enum**:[uniform]
 ::::::::::::::
 
@@ -14176,7 +14176,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:The distance from the slab top in meters from which the composition of this feature is present.
+- **description**:The distance from the slab top in meters from which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/max distance slab top
@@ -14185,7 +14185,7 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **documentation**:The distance from the slab top in meters to which the composition of this feature is present.
+- **description**:The distance from the slab top in meters to which the composition of this feature is present.
 ::::::::::::::
 
 ::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/compositions
@@ -14196,14 +14196,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the integer labels of the composition which are present there.
+- **description**:A list with the integer labels of the composition which are present there.
 :::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/compositions/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -14216,7 +14216,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the labels of the grains which are present there for each compositions.
+- **description**:A list with the labels of the grains which are present there for each compositions.
 :::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/rotation matrices/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2_rotation-matrices_items
@@ -14225,7 +14225,7 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/rotation matrices/items/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2_rotation-matrices_items_items
@@ -14234,14 +14234,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 :::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/rotation matrices/items/items/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2_rotation-matrices_items_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::
 
 ::::::::::::
@@ -14258,7 +14258,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
+- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
 :::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/Euler angles z-x-z/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2_Euler-angles-z-x-z_items
@@ -14267,14 +14267,14 @@
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
-- **documentation**:
+- **description**:
 ::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/Euler angles z-x-z/items/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2_Euler-angles-z-x-z_items_items
 
 - **default value**:0.0
 - **type**:number
-- **documentation**:
+- **description**:
 ::::::::::::
 
 :::::::::::::
@@ -14287,7 +14287,7 @@
 
 - **default value**:replace
 - **type**:string
-- **documentation**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
 - **enum**:[replace]
 ::::::::::::::
 
@@ -14299,14 +14299,14 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **documentation**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
 :::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/grain sizes/items
 :open:
 :name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2_grain-sizes_items
 
 - **default value**:-1.0
 - **type**:number
-- **documentation**:
+- **description**:
 :::::::::::::
 
 ::::::::::::::
@@ -14326,7 +14326,7 @@
 
 - **default value**:0
 - **type**:integer
-- **documentation**:The coordinate which should be overwritten
+- **description**:The coordinate which should be overwritten
 ::::::::::::::::::
 
 
