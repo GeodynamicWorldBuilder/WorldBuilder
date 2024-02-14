@@ -6,7 +6,7 @@ Not only are there many ways to style the documents, there are also many ways wi
 
 # Page titles
 
-Page titles should always use equal signs below it (`=`) to create the heading. This creates a clear visual destincation between normal headers and the page title.
+Page titles should always use equal signs below it (`=`) to create the heading. This creates a clear visual distinction between normal headers and the page title.
 
 # Page label
 
@@ -14,7 +14,7 @@ The page label should always be a path, sepearted by colons (`:`) in the followi
 
 # Including advanced elements
 
-When possible, the use of colons (`:`) should be preffered over the use of grave accents (\`) when creating advaced elements such as todo notes, figures code blocks or grids. This means that:
+When possible, the use of colons (`:`) should be preferred over the use of grave accents (\`) when creating advanced elements such as todo notes, figures, code blocks, or tables. This means that:
 
 ::::{code-block} md
 :::{note}
@@ -22,7 +22,7 @@ My Note
 :::
 ::::
 
-is preffered over the use of 
+is preferred over the use of 
 
 ::::{code-block} md
 ```{note}
@@ -32,11 +32,11 @@ My Note
 
 # Including World Builder files
 
-When including a world builder file, it is imporant to be able to focus on the parts which are important, while also enabling the reader to see the  surrounding context and the whole file. Furthermore, the user should have the capability to run the models themselfs and get the same output as shown. To standerize this the following structure is strongly encuraged. 
+When including a world builder file, it is imporant to be able to focus on the parts which are important, while also enabling the reader to see the  surrounding context and the whole file. Furthermore, the user should have the capability to run the models themselves and get the same output as shown. To standardize this the following structure is strongly encouraged. 
 
-1. The world builder file and a corresponding grid file need to be stored seperately, either in the cookbook, or in the _static directory.
-2. The use of a tab-set with a tab with important lines and a tab with a the full world builder file, highlighting imporant lines
-3. Adding at least a link to the world bulider file and a grid file to visualize it, preferably also a link to a `.pvtu` file which allows to get the same output as the figure, if present.
+1. The world builder file and a corresponding grid file need to be stored separately, either in the cookbook, or in the _static directory.
+2. The use of a tab-set with a tab with important lines and a tab with the full world builder file, highlighting important lines.
+3. Adding at least a link to the world builder file and a grid file to visualize it, preferably also a link to a `.pvtu` file which allows to get the same output as the figure, if present.
 4. Add a figure of the output.
 
 Below is an example code block.
