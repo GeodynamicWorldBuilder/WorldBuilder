@@ -2,7 +2,7 @@
 Mid-ocean ridge with a transform fault
 =========================
 
-The goal of this tutorial is to learn how to set up a model of a mid-ocean ridge with a transform fault, reproducing the setup of Behn et al., 2007: Thermal structure of oceanic transform faults. In addition, this tutorial shows how the created Geodynamic World Builder file can be used as initial condition for the geodynamic modeling code ASPECT. The corresponding cookbook for setting up the ASPECT model can be found here: TODO
+The goal of this tutorial is to learn how to set up a model of a mid-ocean ridge with a transform fault, reproducing the setup of Behn et al., 2007: Thermal structure of oceanic transform faults. In addition, this tutorial shows how the created Geodynamic World Builder file can be used as initial condition for the geodynamic modeling code ASPECT. The corresponding cookbook for setting up the ASPECT model can be found [here](https://aspect-documentation.readthedocs.io/en/latest/user/cookbooks/cookbooks/transform_fault_behn_2007/doc/transform_fault_behn_2007.html).
 
 The first step is to prescribe some global parameters for the GWB. This is important because we use the half-space cooling model to compute the temperature distribution within the oceanic plates, and this model uses the thermal diffusivity. In addition, the GWB needs to know what the adiabatic gradient is to compute the correct temperature, and we need to specify the surface and mantle temperature to be consistent with the study we want to reproduce.
 
