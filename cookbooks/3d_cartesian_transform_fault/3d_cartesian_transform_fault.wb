@@ -6,8 +6,20 @@
   "thermal diffusivity":1.06060606e-6,
   "features":
   [
-    {"model":"oceanic plate", "name":"oceanic plate A", "coordinates":[[-1e3,-1e3],[251e3,-1e3],[251e3,101e3],[-1e3,101e3]],
-     "temperature models":[{"model":"half space model", "max depth":100e3, "spreading velocity":0.03, "top temperature":273.15, "ridge coordinates":[[[200e3,-1e3],[200e3,50e3]],[[50e3,50e3],[50e3,101e3]]]}]
+    {
+      "model":"oceanic plate", 
+      "name":"oceanic plate A", 
+      "coordinates":[[-1e3,-1e3],[251e3,-1e3],[251e3,101e3],[-1e3,101e3]],
+      "temperature models":
+      [
+        {
+          "model":"half space model", 
+          "max depth":100e3, 
+          "spreading velocity":0.03, 
+          "top temperature":273.15, 
+          "ridge coordinates":[[[200e3,-1e3],[200e3,50e3]],[[50e3,50e3],[50e3,101e3]]]
+        }
+      ]
     }
   ]
 }

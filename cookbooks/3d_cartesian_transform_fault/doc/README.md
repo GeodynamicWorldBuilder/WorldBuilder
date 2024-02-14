@@ -6,7 +6,7 @@ The goal of this tutorial is to learn how to set up a model of a mid-ocean ridge
 
 The first step is to prescribe some global parameters for the GWB. This is important because we use the half-space cooling model to compute the temperature distribution within the oceanic plates, and this model uses the thermal diffusivity. In addition, the GWB needs to know what the adiabatic gradient is to compute the correct temperature, and we need to specify the surface and mantle temperature to be consistent with the study we want to reproduce.
 
-Specifically, we here want to set the `surface temperature` to 0 degrees Celsius (273.25 K) and the `potential mantle temperature` to 1300 degrees Celsius (1573.25 K) as in Behn et al., 2007. Since that study does not include adiabatic heating, we need to set the `thermal expansion coefficient` to zero. To reproduce the temperature profile shown in Figure 2 in  Behn et al. (2007), we set the `thermal diffusivity` to 1.06060606e-6 m2/s (which corresponds to a thermal conductivity of 3.5 W/m/K assuming that the density is 3300 kg/m3 and the specific keat is 1000 J/kg/K). Note that we need to make sure that these properties are consistent between the Geodynamic World Builder input file and the input file of the geodynamic modeling code that we are using this file as an initial condition for, in this case ASPECT.
+Specifically, we here want to set the `surface temperature` to 0 degrees Celsius (273.25 K) and the `potential mantle temperature` to 1300 degrees Celsius (1573.25 K) as in Behn et al., 2007. Since that study does not include adiabatic heating, we need to set the `thermal expansion coefficient` to zero. To reproduce the temperature profile shown in Figure 2 in  Behn et al. (2007), we set the `thermal diffusivity` to 1.06060606e-6 m<sup>2</sup>/s (which corresponds to a thermal conductivity of 3.5 W/m/K assuming that the density is 3300 kg/m<sup>3</sup> and the specific keat is 1000 J/kg/K). Note that we need to make sure that these properties are consistent between the Geodynamic World Builder input file and the input file of the geodynamic modeling code that we are using this file as an initial condition for, in this case ASPECT.
 
 ::::::{tab-set}
 
@@ -67,8 +67,8 @@ We also set the [top temperature](open_features_items_oneOf_4_temperature-models
 ```{literalinclude} ../3d_cartesian_transform_fault.wb
 :language: json
 :lineno-start: 7
-:lines: 7-12
-:emphasize-lines: 3,4
+:lines: 7-24
+:emphasize-lines: 4-14
 ```
 ::::{grid} 2
 :::{grid-item-card} 3d_cartesian_transform_fault.wb
@@ -87,7 +87,7 @@ We also set the [top temperature](open_features_items_oneOf_4_temperature-models
 ```{literalinclude} ../3d_cartesian_transform_fault.wb
 :language: json
 :lineno-start: 1
-:emphasize-lines: 9,10
+:emphasize-lines: 10-20
 ```
 
 ::::{grid} 2
