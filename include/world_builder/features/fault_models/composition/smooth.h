@@ -83,7 +83,7 @@ namespace WorldBuilder
             double min_distance;
             double side_distance;
             std::vector<double> center_fraction;
-            // currently not using the side composition, but maybe usefu if you want another composition towards the end
+            // currently not using the side composition, but maybe useful if you want another composition towards the end
             std::vector<double> side_fraction;
             std::vector<unsigned int> compositions;
             Operations operation;
