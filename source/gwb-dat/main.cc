@@ -110,7 +110,7 @@ int main(int argc, char **argv)
     {
       std::cout << "Only exactly two command line arguments may be given, which should be the world builder file location and the data file location (in that order) "
                 << "or exactly three command line arguments, which should be the world builder file location, the data file location and --limit-debug-consistency-checks or --output-json-files (in that order),"
-                   "or exactly four comman line arguments, which should be the world builder file location, the data file location and --limit-debug-consistency-checks and --output-json-files (in that order),"
+                "or exactly four comman line arguments, which should be the world builder file location, the data file location and --limit-debug-consistency-checks and --output-json-files (in that order),"
                 << ", argc = " << argc << ", limit_debug_consistency_checks = " << (limit_debug_consistency_checks ? "true" : "false") << ", output_json_files = " << (output_json_files ? "true" : "false") << std::endl;
       return 0;
     }
