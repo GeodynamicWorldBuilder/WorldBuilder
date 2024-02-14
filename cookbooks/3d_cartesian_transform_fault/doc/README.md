@@ -68,7 +68,7 @@ We also set the [top temperature](open_features_items_oneOf_4_temperature-models
 :language: json
 :lineno-start: 7
 :lines: 7-12
-:emphasize-lines: 9,10
+:emphasize-lines: 3,4
 ```
 ::::{grid} 2
 :::{grid-item-card} 3d_cartesian_transform_fault.wb
