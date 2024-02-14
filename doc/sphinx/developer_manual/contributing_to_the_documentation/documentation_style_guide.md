@@ -161,5 +161,5 @@ which looks like this when rendered:
 :alt: Basic Starter Tutorial section 5. 
 :align: center
 
-Image description
+Image descriptionta
 ```
