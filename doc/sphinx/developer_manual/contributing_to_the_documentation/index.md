@@ -9,6 +9,7 @@ The documentation is very important and it is also a good way to learn git and t
 ```{toctree}
 :hidden:
 
+building_documentation
 important_syntax
 documentation_style_guide
 documentation_testing
