@@ -73,7 +73,7 @@ int main(int argc, char **argv)
   unsigned int grain_compositions = 0;
   size_t n_grains = 0;
   bool convert_spherical = false;
-  bool limit_debug_consistency_checks = true;
+  bool limit_debug_consistency_checks = false;
   bool output_json_files = false;
 
   if (find_command_line_option(argv, argv+argc, "-h") || find_command_line_option(argv, argv+argc, "--help"))
@@ -86,7 +86,7 @@ int main(int argc, char **argv)
     }
 
   if (find_command_line_option(argv, argv+argc, "-ldcc") || find_command_line_option(argv, argv+argc, "--limit-debug-consistency-checks"))
-    limit_debug_consistency_checks = false;
+    limit_debug_consistency_checks = true;
 
   if (find_command_line_option(argv, argv+argc, "--output-json-files"))
     output_json_files = true;
@@ -106,7 +106,7 @@ int main(int argc, char **argv)
       return 0;
     }
 
-  if ((argc == 3 && (!limit_debug_consistency_checks || output_json_files)) || (argc == 3 && (!limit_debug_consistency_checks && output_json_files)) || argc > 5)
+  if ((argc == 3 && !(limit_debug_consistency_checks && output_json_files)) || (argc == 4 && !(!limit_debug_consistency_checks != !output_json_files)) || (argc == 5 && (!limit_debug_consistency_checks && !output_json_files)) || argc > 5)
     {
       std::cout << "Only exactly two command line arguments may be given, which should be the world builder file location and the data file location (in that order) "
                 << "or exactly three command line arguments, which should be the world builder file location, the data file location and --limit-debug-consistency-checks or --output-json-files (in that order),"

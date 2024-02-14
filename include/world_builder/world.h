@@ -60,7 +60,7 @@ namespace WorldBuilder
        * documented algorithm), we can test the results and they should be the same even for different
        * compilers and machines.
        */
-      World(std::string filename, bool has_output_dir = false, const std::string &output_dir = "", unsigned long random_number_seed = 1, const bool limit_debug_consistency_checks = false);
+      World(std::string filename, bool has_output_dir = false, const std::string &output_dir = "", unsigned long random_number_seed = 1, const bool limit_debug_consistency_checks = true);
 
       /**
        * Destructor
