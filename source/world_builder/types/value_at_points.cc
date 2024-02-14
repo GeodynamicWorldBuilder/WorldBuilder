@@ -29,7 +29,7 @@ namespace WorldBuilder
   {
 
     ValueAtPoints::ValueAtPoints(const double default_value_,
-                                 const double max_values_in_array_,
+                                 size_t max_values_in_array_,
                                  std::vector<Point<2>> default_points_)
       :
       default_value(default_value_),
@@ -69,7 +69,7 @@ namespace WorldBuilder
         Pointer((base + "/type").c_str()).Set(declarations,"array");
         Pointer((base + "/additionalProperties").c_str()).Set(declarations,false);
         Pointer((base + "/minItems").c_str()).Set(declarations,1);
-        Pointer((base + "/maxItems").c_str()).Set(declarations,2);
+        Pointer((base + "/maxItems").c_str()).Set(declarations, max_values_in_array);
         Pointer((base + "/documentation").c_str()).Set(declarations,documentation.c_str());
 
         {

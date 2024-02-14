@@ -395,7 +395,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::::::{dropdown} /features/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -482,7 +482,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::::::{dropdown} /features/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -613,7 +613,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -700,7 +700,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -847,7 +847,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -934,7 +934,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -1072,7 +1072,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/3/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -1159,7 +1159,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/3/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_3_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -1298,7 +1298,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -1385,7 +1385,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -1565,7 +1565,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -1652,7 +1652,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -1832,7 +1832,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -1919,7 +1919,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -5512,7 +5512,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::::::{dropdown} /features/items/oneOf/3/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -5599,7 +5599,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::::::{dropdown} /features/items/oneOf/3/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -5730,7 +5730,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -5817,7 +5817,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -5964,7 +5964,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -6051,7 +6051,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -6189,7 +6189,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -6276,7 +6276,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/3/temperature models/items/oneOf/3/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_temperature-models_items_oneOf_3_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -6415,7 +6415,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_composition-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -6502,7 +6502,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/3/composition models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_composition-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -6682,7 +6682,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -6769,7 +6769,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -6949,7 +6949,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -7036,7 +7036,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/3/grains models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_3_grains-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -7324,7 +7324,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::::::{dropdown} /features/items/oneOf/4/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -7411,7 +7411,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::::::{dropdown} /features/items/oneOf/4/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -7542,7 +7542,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -7629,7 +7629,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -7776,7 +7776,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -7863,7 +7863,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -7907,7 +7907,16 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_spreading-velocity
 
-- **default value**:-1.0
+- **description**:The spreading velocity of the plate in meter per year. This is the velocity with which one side moves away from the ridge.
+:::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/spreading velocity/oneOf
+:open:
+:name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_spreading-velocity_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/spreading velocity/oneOf/1
+:open:
+:name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_spreading-velocity_oneOf_1
+
+- **default value**:0.01
 - **type**:number
 - **documentation**:The spreading velocity of the plate in meter per year. This is the velocity with which one side moves away from the ridge.
 ::::::::::::::::
@@ -8049,7 +8058,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/3/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -8136,7 +8145,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/3/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -8274,7 +8283,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -8361,7 +8370,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -8547,7 +8556,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -8634,7 +8643,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -8781,7 +8790,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/6/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -8868,7 +8877,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/6/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -9007,7 +9016,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_composition-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -9094,7 +9103,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_composition-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -9274,7 +9283,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -9361,7 +9370,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/1/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_1_max-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -9541,7 +9550,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_2_items_items
@@ -9628,7 +9637,7 @@
 
 - **type**:array
 - **minItems**:1
-- **maxItems**:2
+- **maxItems**:2.0
 ::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf/2/items/items
 :open:
 :name: open_features_items_oneOf_4_grains-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf_2_items_items

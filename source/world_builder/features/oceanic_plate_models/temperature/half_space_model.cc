@@ -83,7 +83,7 @@ namespace WorldBuilder
                             "in degree Kelvin for this feature. If the model has an adiabatic gradient"
                             "this should be the mantle potential temperature, and T = Tad + Thalf. ");
 
-          prm.declare_entry("spreading velocity", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0., std::numeric_limits<double>::max()))),
+          prm.declare_entry("spreading velocity", Types::OneOf(Types::Double(0.01),Types::Array(Types::Array(Types::Double(0.01)))),
                             "The spreading velocity of the plate in meter per year. "
                             "This is the velocity with which one side moves away from the ridge.");
 
@@ -105,27 +105,32 @@ namespace WorldBuilder
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
           top_temperature = prm.get<double>("top temperature");
           bottom_temperature = prm.get<double>("bottom temperature");
-          spreading_velocities = prm.get_value_at_array("spreading velocity");
+          spreading_velocities = prm.get_vector<std::vector<double>>("spreading velocity");
 
           mid_oceanic_ridges = prm.get_vector<std::vector<Point<2>>>("ridge coordinates");
           const double dtr = prm.coordinate_system->natural_coordinate_system() == spherical ? Consts::PI / 180.0 : 1.0;
+          for (auto &ridge_coordinates : mid_oceanic_ridges)
+            for (auto &ridge_coordinate : ridge_coordinates)
+              {
+                ridge_coordinate *= dtr;
+              }
 
-          unsigned int index_x = 0;
-          unsigned int index_y = 0;
-          unsigned int test_ind = 0;
-          for (index_x = 0; index_x < mid_oceanic_ridges.size(); index_x++)
-            {
-              std::vector<double> spreading_rates_for_ridge;
-              for (index_y = 0; index_y < mid_oceanic_ridges[index_x].size(); index_y++)
-                {
-                  if (spreading_velocities.second.size() <= 1)
-                    spreading_rates_for_ridge.push_back(spreading_velocities.first[0]);
-                  else
-                    spreading_rates_for_ridge.push_back(spreading_velocities.second[test_ind]);
-                  test_ind += 1;
-                }
-              spreading_velocities_at_each_ridge_point.push_back(spreading_rates_for_ridge);
-            }
+        //   unsigned int index_x = 0;
+        //   unsigned int index_y = 0;
+        //   unsigned int ridge_point_index = 0;
+        //   for (index_x = 0; index_x < mid_oceanic_ridges.size(); index_x++)
+        //     {
+        //       std::vector<double> spreading_rates_for_ridge;
+        //       for (index_y = 0; index_y < mid_oceanic_ridges[index_x].size(); index_y++)
+        //         {
+        //           if (spreading_velocities.second.size() <= 1)
+        //             spreading_rates_for_ridge.push_back(spreading_velocities.first[0] / 31557600); // m/s
+        //           else
+        //             spreading_rates_for_ridge.push_back(spreading_velocities.second[ridge_point_index] / 31557600); // m/s
+        //           ridge_point_index += 1;
+        //         }
+        //       spreading_velocities_at_each_ridge_point.push_back(spreading_rates_for_ridge);
+        //     }
         }
 
         double
@@ -156,7 +161,10 @@ namespace WorldBuilder
                                                             this->world->specific_heat) * depth);
                     }
 
-                  double distance_ridge = std::numeric_limits<double>::max();
+                  std::pair<double, double> ridge_parameters = Utilities::calculate_ridge_distance_and_spreading(mid_oceanic_ridges,
+                                                               spreading_velocities,
+                                                               world->parameters.coordinate_system,
+                                                               position_in_natural_coordinates_at_min_depth);
 
                   const CoordinateSystem coordinate_system = world->parameters.coordinate_system->natural_coordinate_system();
 
@@ -272,12 +280,12 @@ namespace WorldBuilder
                            << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
                            << ", top_temperature = " << top_temperature
                            << ", max_depth = " << max_depth
-                           << ", spreading_velocity = " << spreading_velocity
+                           << ", spreading_velocity = " << ridge_parameters.first
                            << ", thermal_diffusivity = " << thermal_diffusivity
                            << ", age = " << age << '.');
                   WBAssert(std::isfinite(temperature), "Temperature inside half-space cooling model is not a finite: " << temperature                           << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
                            << ", top_temperature = " << top_temperature
-                           << ", spreading_velocity = " << spreading_velocity
+                           << ", spreading_velocity = " << ridge_parameters.first
                            << ", thermal_diffusivity = " << thermal_diffusivity
                            << ", age = " << age << '.');
 

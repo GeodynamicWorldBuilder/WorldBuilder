@@ -40,7 +40,7 @@ namespace WorldBuilder
          * A constructor
          */
         ValueAtPoints(const double default_value,
-                      const double max_values_in_array,
+                      size_t max_values_in_array,
                       std::vector<Point<2>> default_points_ = std::vector<Point<2>>());
 
         /**
