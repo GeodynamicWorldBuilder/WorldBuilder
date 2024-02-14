@@ -244,7 +244,8 @@ int main(int argc, char **argv)
   double z_min = NaN::DSNAN; // z or inner_radius
   double z_max = NaN::DSNAN; // z or outer_radius
 
-  size_t number_of_threads = 1;
+  // Conservative choice for the number of threads to use:
+  size_t number_of_threads = std::min(20u,1+std::thread::hardware_concurrency()/2);
 
   try
     {
@@ -268,7 +269,7 @@ int main(int argc, char **argv)
                     << "Usage:\n"
                     << argv[0] << " [-j N] example.wb example.grid\n\n"
                     << "Other available options:\n"
-                    << "  -j N              to specify the number of threads the visualizer is allowed to use. Default: 1.\n"
+                    << "  -j N              to specify the number of threads the visualizer is allowed to use. Default: " << number_of_threads << ".\n"
                     << "  -h or --help      to get this help screen.\n"
                     << "  -v or --version   to see version information.\n";
           return 0;
