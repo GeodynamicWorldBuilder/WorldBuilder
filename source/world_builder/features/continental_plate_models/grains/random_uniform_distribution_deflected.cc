@@ -167,7 +167,7 @@ namespace WorldBuilder
                               const double theta = 2.0 * Consts::PI * one * deflections[i]; // Rotation about the pole (Z)
                               const double phi = 2.0 * Consts::PI * two; // For direction of pole deflection.
                               const double z = 2.0* three * deflections[i]; //For magnitude of pole deflection.
-
+                              
                               // Compute a vector V used for distributing points over the sphere
                               // via the reflection I - V Transpose(V).  This formulation of V
                               // will guarantee that if x[1] and x[2] are uniformly distributed,
