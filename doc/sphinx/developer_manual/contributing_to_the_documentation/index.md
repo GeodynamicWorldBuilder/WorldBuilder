@@ -13,6 +13,5 @@ building_documentation
 important_syntax
 documentation_style_guide
 documentation_testing
-tips_and_tricks
 review_process
 ```
