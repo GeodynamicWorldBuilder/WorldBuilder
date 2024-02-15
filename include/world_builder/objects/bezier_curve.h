@@ -58,9 +58,12 @@ namespace WorldBuilder
          *        doesn't fall on the segment, return a point with x and y being nan.
          *
          * @param p
+         * @param verbose Whether this function should be outputting its Newton iteration
+         * to std::cout while running. This is very expensive, but useful for debugging
+         * purposes.
          * @return ClosestPointOnCurve
          */
-        ClosestPointOnCurve closest_point_on_curve_segment(const Point<2> &p) const;
+        ClosestPointOnCurve closest_point_on_curve_segment(const Point<2> &p, const bool verbose = false) const;
 
         /**
          * @brief
