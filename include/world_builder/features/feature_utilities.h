@@ -88,7 +88,7 @@ namespace WorldBuilder
 
 
       /**
-       * Add a string to a vector of strings, if the exact string isn't areadly
+       * Add a string to a vector of strings, if the exact string isn't already
        * in the vector. Returns the location of the string in the final vector.
        */
       size_t

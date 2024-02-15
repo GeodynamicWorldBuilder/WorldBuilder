@@ -132,7 +132,7 @@ namespace WorldBuilder
 
         /**
          * The index of the tag for this feature.
-         * This corresponds to the index in the feature_tags variable which is store in the world.
+         * This corresponds to the index in the feature_tags variable which is store in the World.
          */
         size_t tag_index;
 
