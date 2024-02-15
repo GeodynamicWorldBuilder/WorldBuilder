@@ -188,7 +188,12 @@
                             "name": {
                                 "default value": "",
                                 "type": "string",
-                                "description": "The name which the user has given to the feature."
+                                "description": "The name which the user has given to the feature. This is mostly used for documentation purposes, and should in most cases be unique, although this is not enforced."
+                            },
+                            "tag": {
+                                "default value": "",
+                                "type": "string",
+                                "description": "A tag which can be given to a feature. This is meant to catagorize different features. If the tag is not provided or empty, it is set to the model name."
                             },
                             "coordinates": {
                                 "type": "array",
@@ -1219,7 +1224,12 @@
                             "name": {
                                 "default value": "",
                                 "type": "string",
-                                "description": "The name which the user has given to the feature."
+                                "description": "The name which the user has given to the feature. This is mostly used for documentation purposes, and should in most cases be unique, although this is not enforced."
+                            },
+                            "tag": {
+                                "default value": "",
+                                "type": "string",
+                                "description": "A tag which can be given to a feature. This is meant to catagorize different features. If the tag is not provided or empty, it is set to the model name."
                             },
                             "coordinates": {
                                 "type": "array",
@@ -3380,7 +3390,12 @@
                             "name": {
                                 "default value": "",
                                 "type": "string",
-                                "description": "The name which the user has given to the feature."
+                                "description": "The name which the user has given to the feature. This is mostly used for documentation purposes, and should in most cases be unique, although this is not enforced."
+                            },
+                            "tag": {
+                                "default value": "",
+                                "type": "string",
+                                "description": "A tag which can be given to a feature. This is meant to catagorize different features. If the tag is not provided or empty, it is set to the model name."
                             },
                             "coordinates": {
                                 "type": "array",
@@ -4410,7 +4425,12 @@
                             "name": {
                                 "default value": "",
                                 "type": "string",
-                                "description": "The name which the user has given to the feature."
+                                "description": "The name which the user has given to the feature. This is mostly used for documentation purposes, and should in most cases be unique, although this is not enforced."
+                            },
+                            "tag": {
+                                "default value": "",
+                                "type": "string",
+                                "description": "A tag which can be given to a feature. This is meant to catagorize different features. If the tag is not provided or empty, it is set to the model name."
                             },
                             "coordinates": {
                                 "type": "array",
@@ -5890,7 +5910,12 @@
                             "name": {
                                 "default value": "",
                                 "type": "string",
-                                "description": "The name which the user has given to the feature."
+                                "description": "The name which the user has given to the feature. This is mostly used for documentation purposes, and should in most cases be unique, although this is not enforced."
+                            },
+                            "tag": {
+                                "default value": "",
+                                "type": "string",
+                                "description": "A tag which can be given to a feature. This is meant to catagorize different features. If the tag is not provided or empty, it is set to the model name."
                             },
                             "coordinates": {
                                 "type": "array",

@@ -258,7 +258,15 @@
 
 - **default value**:
 - **type**:string
-- **description**:The name which the user has given to the feature.
+- **description**:The name which the user has given to the feature. This is mostly used for documentation purposes, and should in most cases be unique, although this is not enforced.
+::::::::::::::::::::
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/1/tag
+:name: closed_features_items_oneOf_1_tag
+
+- **default value**:
+- **type**:string
+- **description**:A tag which can be given to a feature. This is meant to catagorize different features. If the tag is not provided or empty, it is set to the model name.
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/1/coordinates
@@ -1855,7 +1863,15 @@
 
 - **default value**:
 - **type**:string
-- **description**:The name which the user has given to the feature.
+- **description**:The name which the user has given to the feature. This is mostly used for documentation purposes, and should in most cases be unique, although this is not enforced.
+::::::::::::::::::::
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/2/tag
+:name: closed_features_items_oneOf_2_tag
+
+- **default value**:
+- **type**:string
+- **description**:A tag which can be given to a feature. This is meant to catagorize different features. If the tag is not provided or empty, it is set to the model name.
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/2/coordinates
@@ -4816,7 +4832,15 @@
 
 - **default value**:
 - **type**:string
-- **description**:The name which the user has given to the feature.
+- **description**:The name which the user has given to the feature. This is mostly used for documentation purposes, and should in most cases be unique, although this is not enforced.
+::::::::::::::::::::
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/3/tag
+:name: closed_features_items_oneOf_3_tag
+
+- **default value**:
+- **type**:string
+- **description**:A tag which can be given to a feature. This is meant to catagorize different features. If the tag is not provided or empty, it is set to the model name.
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/3/coordinates
@@ -6413,7 +6437,15 @@
 
 - **default value**:
 - **type**:string
-- **description**:The name which the user has given to the feature.
+- **description**:The name which the user has given to the feature. This is mostly used for documentation purposes, and should in most cases be unique, although this is not enforced.
+::::::::::::::::::::
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/4/tag
+:name: closed_features_items_oneOf_4_tag
+
+- **default value**:
+- **type**:string
+- **description**:A tag which can be given to a feature. This is meant to catagorize different features. If the tag is not provided or empty, it is set to the model name.
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/4/coordinates
@@ -8698,7 +8730,15 @@
 
 - **default value**:
 - **type**:string
-- **description**:The name which the user has given to the feature.
+- **description**:The name which the user has given to the feature. This is mostly used for documentation purposes, and should in most cases be unique, although this is not enforced.
+::::::::::::::::::::
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/5/tag
+:name: closed_features_items_oneOf_5_tag
+
+- **default value**:
+- **type**:string
+- **description**:A tag which can be given to a feature. This is meant to catagorize different features. If the tag is not provided or empty, it is set to the model name.
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/5/coordinates
