@@ -107,14 +107,14 @@ namespace WorldBuilder
       T get(const std::string &name);
 
       /**
-       * A specialized verions of get which can return vecors/arrays.
+       * A specialized version of get which can return vectors/arrays.
        * \param name The name of the entry to retrieved
        */
       template<class T>
       std::vector<T> get_vector(const std::string &name);
 
       /**
-       * A specialized verions of get which can return a value at points type.
+       * A specialized version of get which can return a value at points type.
        * \param name The name of the entry to retrieved
        * \param name additional points to be added to the list at either the default value or at the value of a single value array in the list
        */
@@ -123,7 +123,7 @@ namespace WorldBuilder
                                                           const std::vector<Point<2> > &addition_points = {});
 
       /**
-       * A specialized verions of get which can return vecors/arrays.
+       * A specialized version of get which can return vectors/arrays.
        * This version is designed for the plugin system.
        * \param name The name of the entry to retrieved
        */
@@ -131,14 +131,14 @@ namespace WorldBuilder
       std::vector<T> get_vector(const std::string &name, std::vector<std::shared_ptr<A> > &, std::vector<std::shared_ptr<B> > &, std::vector<std::shared_ptr<C> > &);
 
       /**
-       * A specialized verions of get which can return unique pointers.
+       * A specialized version of get which can return unique pointers.
        * \param name The name of the entry to retrieved
        */
       template<class T>
       std::unique_ptr<T> get_unique_pointer(const std::string &name);
 
       /**
-       * A specialized verions of get which can return unique pointers as an argument
+       * A specialized version of get which can return unique pointers as an argument
        * and returns a bool to indicate whether it was successful or not.
        * Note that this function will erase all information in the vector.
        * \param name The name of the entry to retrieved
@@ -149,7 +149,7 @@ namespace WorldBuilder
       get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<T> > &vector);
 
       /**
-       * A specialized verions of get which can return shared pointers as an argument
+       * A specialized version of get which can return shared pointers as an argument
        * and returns a bool to indicate whether it was successful or not.
        * Note that this function will erase all information in the vector.
        * \param name The name of the entry to retrieved
