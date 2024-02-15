@@ -141,7 +141,7 @@
 :name: open_coordinate-system_oneOf_1
 
 - **type**:object
-- **description**:A Cartesian coordinate system. Coordinates are (x,y,z) and extend infintly in all directions.
+- **description**:A Cartesian coordinate system. Coordinates are (x,y,z) and extend infinitely in all directions.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -151,7 +151,7 @@
 
 - **default value**:
 - **type**:string
-- **description**:The name which the user has given to the feature.
+- **description**:The name of the coordinate system to use.
 - **enum**:[cartesian]
 :::::::::::::::::::::
 
@@ -174,7 +174,7 @@
 
 - **default value**:
 - **type**:string
-- **description**:The name which the user has given to the feature.
+- **description**:The name of the coordinate system to use.
 - **enum**:[spherical]
 :::::::::::::::::::::
 
@@ -230,7 +230,7 @@
 
 - **default value**:
 - **type**:string
-- **description**:The name which the user has given to the feature.
+- **description**:The name of the model for the gravity to use.
 - **enum**:[uniform]
 :::::::::::::::::::::
 
@@ -280,7 +280,7 @@
 
 - **default value**:
 - **type**:string
-- **description**:The name which the user has given to the feature.
+- **description**:The model name of the feature determining its type.
 - **enum**:[continental plate]
 ::::::::::::::::::::
 
@@ -2092,7 +2092,7 @@
 
 - **default value**:
 - **type**:string
-- **description**:The name which the user has given to the feature.
+- **description**:The model name of the feature determining its type.
 - **enum**:[fault]
 ::::::::::::::::::::
 
@@ -5397,7 +5397,7 @@
 
 - **default value**:
 - **type**:string
-- **description**:The name which the user has given to the feature.
+- **description**:The model name of the feature determining its type.
 - **enum**:[mantle layer]
 ::::::::::::::::::::
 
@@ -7209,7 +7209,7 @@
 
 - **default value**:
 - **type**:string
-- **description**:The name which the user has given to the feature.
+- **description**:The model name of the feature determining its type.
 - **enum**:[oceanic plate]
 ::::::::::::::::::::
 
@@ -9801,7 +9801,7 @@
 
 - **default value**:
 - **type**:string
-- **description**:The name which the user has given to the feature.
+- **description**:The model name of the feature determining its type.
 - **enum**:[subducting plate]
 ::::::::::::::::::::
 

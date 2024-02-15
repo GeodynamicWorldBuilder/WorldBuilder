@@ -80,7 +80,7 @@
             "oneOf": [
                 {
                     "type": "object",
-                    "description": "A Cartesian coordinate system. Coordinates are (x,y,z) and extend infintly in all directions.",
+                    "description": "A Cartesian coordinate system. Coordinates are (x,y,z) and extend infinitely in all directions.",
                     "additionalProperties": false,
                     "required": [
                         "model"
@@ -89,7 +89,7 @@
                         "model": {
                             "default value": "",
                             "type": "string",
-                            "description": "The name which the user has given to the feature.",
+                            "description": "The name of the coordinate system to use.",
                             "enum": [
                                 "cartesian"
                             ]
@@ -108,7 +108,7 @@
                         "model": {
                             "default value": "",
                             "type": "string",
-                            "description": "The name which the user has given to the feature.",
+                            "description": "The name of the coordinate system to use.",
                             "enum": [
                                 "spherical"
                             ]
@@ -149,7 +149,7 @@
                         "model": {
                             "default value": "",
                             "type": "string",
-                            "description": "The name which the user has given to the feature.",
+                            "description": "The name of the model for the gravity to use.",
                             "enum": [
                                 "uniform"
                             ]
@@ -180,7 +180,7 @@
                             "model": {
                                 "default value": "",
                                 "type": "string",
-                                "description": "The name which the user has given to the feature.",
+                                "description": "The model name of the feature determining its type.",
                                 "enum": [
                                     "continental plate"
                                 ]
@@ -1211,7 +1211,7 @@
                             "model": {
                                 "default value": "",
                                 "type": "string",
-                                "description": "The name which the user has given to the feature.",
+                                "description": "The model name of the feature determining its type.",
                                 "enum": [
                                     "fault"
                                 ]
@@ -3372,7 +3372,7 @@
                             "model": {
                                 "default value": "",
                                 "type": "string",
-                                "description": "The name which the user has given to the feature.",
+                                "description": "The model name of the feature determining its type.",
                                 "enum": [
                                     "mantle layer"
                                 ]
@@ -4402,7 +4402,7 @@
                             "model": {
                                 "default value": "",
                                 "type": "string",
-                                "description": "The name which the user has given to the feature.",
+                                "description": "The model name of the feature determining its type.",
                                 "enum": [
                                     "oceanic plate"
                                 ]
@@ -5882,7 +5882,7 @@
                             "model": {
                                 "default value": "",
                                 "type": "string",
-                                "description": "The name which the user has given to the feature.",
+                                "description": "The model name of the feature determining its type.",
                                 "enum": [
                                     "subducting plate"
                                 ]
