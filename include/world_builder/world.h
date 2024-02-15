@@ -129,6 +129,10 @@ namespace WorldBuilder
        * A composition query prodoces n_grains*10 entries in the output vector. The first n_grains
        * entries are the sizes of all the grains, and the other 9 entries are sets of rotation
        * matrices. The rotation matrix entries are ordered [0][0],[0][1],[0][2],[1][0],[1][1],etc.
+       * 
+       * The tag is identified by 4 and no extra information is needed. So the tag
+       * input usually looks like {1,0,0}. A tag query prodoces one entry in the output
+       * vector, represeting the tag of the last/dominant feature.
        */
       std::vector<double> properties(const std::array<double, 3> &point,
                                      const double depth,
