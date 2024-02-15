@@ -97,7 +97,8 @@ namespace WorldBuilder
             double min_depth;
             double max_depth;
             double density;
-            double plate_velocity;
+            std::pair<std::vector<double>,std::vector<double>> plate_velocities;
+            std::vector<std::vector<double>> plate_velocities_at_each_ridge_point;
             double mantle_coupling_depth;
             double forearc_cooling_factor;
             double thermal_conductivity;

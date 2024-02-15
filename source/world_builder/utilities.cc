@@ -1352,7 +1352,7 @@ namespace WorldBuilder
           }
         }
       std::pair<double, double> result;
-      result.first = spreading_velocity_at_ridge;
+      result.first = spreading_velocity_at_ridge / 31557600; // m/s;
       result.second = distance_ridge;
       return result;
     }

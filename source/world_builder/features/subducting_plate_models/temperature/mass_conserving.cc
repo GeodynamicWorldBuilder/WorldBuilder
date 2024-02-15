@@ -28,8 +28,10 @@
 #include "world_builder/types/array.h"
 #include "world_builder/types/bool.h"
 #include "world_builder/types/double.h"
+#include "world_builder/types/one_of.h"
 #include "world_builder/types/object.h"
 #include "world_builder/types/point.h"
+#include "world_builder/types/value_at_points.h"
 #include "world_builder/utilities.h"
 #include "world_builder/world.h"
 
@@ -48,7 +50,6 @@ namespace WorldBuilder
           min_depth(NaN::DSNAN),
           max_depth(NaN::DSNAN),
           density(NaN::DSNAN),
-          plate_velocity(NaN::DSNAN),
           mantle_coupling_depth(NaN::DSNAN),
           forearc_cooling_factor(NaN::DSNAN),
           thermal_conductivity(NaN::DSNAN),
@@ -116,7 +117,7 @@ namespace WorldBuilder
           prm.declare_entry("density", Types::Double(3300),
                             "The reference density of the subducting plate in $kg/m^3$");
 
-          prm.declare_entry("plate velocity", Types::Double(0.05),
+          prm.declare_entry("plate velocity", Types::OneOf(Types::Double(0.01),Types::Array(Types::ValueAtPoints(0.01, std::numeric_limits<size_t>::max()))),
                             "The velocity with which the plate subducts in meters per year. Default is 5 cm/yr");
 
           prm.declare_entry("coupling depth", Types::Double(100e3),
@@ -180,7 +181,7 @@ namespace WorldBuilder
 
           density = prm.get<double>("density");
           thermal_conductivity = prm.get<double>("thermal conductivity");
-          plate_velocity = prm.get<double>("plate velocity");
+          plate_velocities = prm.get_value_at_array("plate velocity");
 
           mantle_coupling_depth = prm.get<double>("coupling depth");
           forearc_cooling_factor = prm.get<double>("forearc cooling factor");
@@ -216,6 +217,24 @@ namespace WorldBuilder
               {
                 ridge_coordinate *= dtr;
               }
+
+          unsigned int index_x = 0;
+          unsigned int index_y = 0;
+          unsigned int ridge_point_index = 0;
+          for (index_x = 0; index_x < mid_oceanic_ridges.size(); index_x++)
+            {
+              std::vector<double> plate_velocities_for_ridge;
+              for (index_y = 0; index_y < mid_oceanic_ridges[index_x].size(); index_y++)
+                {
+                  if (plate_velocities.second.size() <= 1)
+                    plate_velocities_for_ridge.push_back(plate_velocities.first[0]);
+                  else
+                    plate_velocities_for_ridge.push_back(plate_velocities.second[ridge_point_index]);
+                  ridge_point_index += 1;
+                }
+              plate_velocities_at_each_ridge_point.push_back(plate_velocities_for_ridge);
+            }
+
           std::string reference_model_name_str = prm.get<std::string>("reference model name");
           if (reference_model_name_str=="plate model")
             reference_model_name = plate_model;
@@ -246,80 +265,17 @@ namespace WorldBuilder
               const Point<3> trench_point = distance_from_planes.closest_trench_point;
               const Objects::NaturalCoordinate trench_point_natural = Objects::NaturalCoordinate(trench_point,
                                                                       *(world->parameters.coordinate_system));
-              const Point<2> trench_point_2d(trench_point_natural.get_surface_coordinates(),trench_point_natural.get_coordinate_system());
-              // find the distance between the trench and ridge
 
-
-              // first find if the coordinate is on this side of a ridge
-              unsigned int relevant_ridge = 0;
-
-
-              // if there is only one ridge, there is no transform
-              if (mid_oceanic_ridges.size() > 1)
-                {
-                  // There are more than one ridge, so there are transform faults
-                  // Find the first which is on the same side
-                  for (relevant_ridge = 0; relevant_ridge < mid_oceanic_ridges.size()-1; relevant_ridge++)
-                    {
-                      const Point<2> transform_point_0 = mid_oceanic_ridges[relevant_ridge+1][0];
-                      const Point<2> transform_point_1 = mid_oceanic_ridges[relevant_ridge][mid_oceanic_ridges[relevant_ridge].size()-1];
-                      const Point<2> reference_point   = mid_oceanic_ridges[relevant_ridge][0];
-
-                      const bool reference_on_side_of_line = (transform_point_1[0] - transform_point_0[0])
-                                                             * (reference_point[1] - transform_point_0[1])
-                                                             - (transform_point_1[1] - transform_point_0[1])
-                                                             * (reference_point[0] - transform_point_0[0])
-                                                             < 0;
-                      const bool checkpoint_on_side_of_line = (transform_point_1[0] - transform_point_0[0])
-                                                              * (trench_point_2d[1] - transform_point_0[1])
-                                                              - (transform_point_1[1] - transform_point_0[1])
-                                                              * (trench_point_2d[0] - transform_point_0[0])
-                                                              < 0;
-
-                      if (reference_on_side_of_line == checkpoint_on_side_of_line)
-                        {
-                          break;
-                        }
-
-                    }
-                }
-
-              for (unsigned int i_coordinate = 0; i_coordinate < mid_oceanic_ridges[relevant_ridge].size() - 1; i_coordinate++)
-                {
-                  const Point<2> segment_point0 = mid_oceanic_ridges[relevant_ridge][i_coordinate];
-                  const Point<2> segment_point1 = mid_oceanic_ridges[relevant_ridge][i_coordinate + 1];
-
-                  // based on http://geomalgorithms.com/a02-_lines.html
-                  const Point<2> v = segment_point1 - segment_point0;
-                  const Point<2> w = trench_point_2d - segment_point0;
-
-                  const double c1 = (w[0] * v[0] + w[1] * v[1]);
-                  const double c2 = (v[0] * v[0] + v[1] * v[1]);
-
-                  Point<2> Pb(coordinate_system);
-                  // This part is needed when we want to consider segments instead of lines
-                  // If you want to have infinite lines, use only the else statement.
-
-                  if (c1 <= 0)
-                    Pb = segment_point0;
-                  else if (c2 <= c1)
-                    Pb = segment_point1;
-                  else
-                    Pb = segment_point0 + (c1 / c2) * v;
-
-                  Point<3> compare_point(coordinate_system);
-
-                  compare_point[0] = coordinate_system == cartesian ? Pb[0] : trench_point_natural.get_depth_coordinate();
-                  compare_point[1] = coordinate_system == cartesian ? Pb[1] : Pb[0];
-                  compare_point[2] = coordinate_system == cartesian ? trench_point_natural.get_depth_coordinate() : Pb[1];
-
-                  distance_ridge = std::min(distance_ridge, this->world->parameters.coordinate_system->distance_between_points_at_same_depth(Point<3>(trench_point_natural.get_coordinates(),trench_point_natural.get_coordinate_system()), compare_point));
-                }
+              std::pair<double, double> ridge_parameters = Utilities::calculate_ridge_distance_and_spreading(mid_oceanic_ridges,
+                                                           plate_velocities_at_each_ridge_point,
+                                                           world->parameters.coordinate_system,
+                                                           trench_point_natural);
 
               const double km2m = 1.0e3; // 1000 m/km
               const double cm2m = 100; // 100 cm/m
               const double my = 1.0e6;  // 1e6 y/my
               const double seconds_in_year = 60.0 * 60.0 * 24.0 * 365.25;  // sec/y
+              const double plate_velocity = ridge_parameters.first * seconds_in_year; // m/yr
 
               const double age_at_trench = distance_ridge / plate_velocity; // m/(m/y) = yr
               const double plate_age_sec = age_at_trench * seconds_in_year; // y --> seconds
