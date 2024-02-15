@@ -37,7 +37,7 @@ We currently have two types of tests implemented.
 The first, and currently the most important one, is the unit tester.
 This tester allows testing of individual functions of the World Builder library in relative isolation.
 The second type of tester is an integration tester, which works through the World Builder app.
-This tester tests whether the whole library works as expected way by providing a World Builder file and data points to obtain temperature and composition.
+This tester tests whether the whole library works as expected by providing a World Builder file and data points to obtain temperature and composition.
 The tester package is run every time on proposed new code before that code is added to the main World Builder repository, and all tests have to pass before the code can be merged.
 This happens through GitHub actions (see <https://github.com/GeodynamicWorldBuilder/WorldBuilder/actions>) and AppVeyor (see <https://ci.appveyor.com/project/MFraters/worldbuilder>).
 
