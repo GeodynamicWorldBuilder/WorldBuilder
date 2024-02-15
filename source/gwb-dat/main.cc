@@ -203,6 +203,8 @@ int main(int argc, char **argv)
       for (size_t gc = 0; gc < grain_compositions; ++gc)
         properties.push_back({{3,(unsigned int)gc,(unsigned int)n_grains}}); // grains gc
 
+      properties.push_back({{4,0,0}}); // tag
+
 
       switch (dim)
         {
@@ -221,6 +223,7 @@ int main(int argc, char **argv)
                           << "gm" << gc << '-' << g << "[1:0] " << "gm" << gc << '-' << g << "[1:1] " << "gm" << gc << '-' << g << "[1:2] "
                           << "gm" << gc << '-' << g << "[2:0] " << "gm" << gc << '-' << g << "[2:1] " << "gm" << gc << '-' << g << "[2:2] ";
 
+            std::cout << "tag ";
             std::cout <<std::endl;
 
             // set the values
@@ -256,7 +259,7 @@ int main(int argc, char **argv)
 
                         }
                     }
-                  std::cout << std::endl;
+                  std::cout << " " << output[output.size()-1] << std::endl;
 
                 }
             break;
@@ -274,6 +277,7 @@ int main(int argc, char **argv)
                           << "gm" << gc << '-' << g << "[1:0] " << "gm" << gc << '-' << g << "[1:1] " << "gm" << gc << '-' << g << "[1:2] "
                           << "gm" << gc << '-' << g << "[2:0] " << "gm" << gc << '-' << g << "[2:1] " << "gm" << gc << '-' << g << "[2:2] ";
 
+            std::cout << "tag ";
             std::cout <<std::endl;
 
             // set the values
@@ -315,7 +319,7 @@ int main(int argc, char **argv)
 
                         }
                     }
-                  std::cout << std::endl;
+                  std::cout << " " << output[output.size()-1] << std::endl;
 
                 }
             break;
