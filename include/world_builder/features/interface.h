@@ -131,6 +131,12 @@ namespace WorldBuilder
         std::string name;
 
         /**
+         * The index of the tag for this feature.
+         * This corresponds to the index in the feature_tags variable which is store in the world.
+         */
+        size_t tag_index;
+
+        /**
          * The type of interpolation used to get the line position between the points.
          */
         WorldBuilder::Utilities::InterpolationType interpolation_type;

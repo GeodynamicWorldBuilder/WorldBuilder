@@ -82,7 +82,12 @@ namespace WorldBuilder
                 prm.declare_entry("model", Types::String("",it.first),
                                   "The name which the user has given to the feature.");
                 prm.declare_entry("name", Types::String(""),
-                                  "The name which the user has given to the feature.");
+                                  "The name which the user has given to the feature. "
+                                  "This is mostly used for documentation purposes, and should in most cases be unique, "
+                                  "although this is not enforced.");
+                prm.declare_entry("tag", Types::String(""),
+                                  "A tag which can be given to a feature. This is meant to catagorize different features. "
+                                  "If the tag is not provided or empty, it is set to the model name.");
                 prm.declare_entry("coordinates", Types::Array(Types::Point<2>(), 1),
                                   "An array of 2d Points representing an array of coordinates where the feature is located.");
 

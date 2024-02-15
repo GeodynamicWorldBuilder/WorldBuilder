@@ -353,8 +353,18 @@ namespace WorldBuilder
               properties_local.emplace_back(properties[i_property]);
               break;
             }
+            case 4: // tag
+            {
+              entry_in_output.emplace_back(output.size());
+              output.emplace_back(-1);
+              properties_local.emplace_back(properties[i_property]);
+              break;
+            }
             default:
-              WBAssertThrow(false, "Unimplemented property provided. Only temperature (1), composition (2) or grains (3) are allowed.");
+              WBAssertThrow(false,
+                            "Internal error: Unimplemented property provided. " <<
+                            "Only temperature (1), composition (2), grains (3) or tag (4) are allowed. "
+                            "Provided property number was: " << properties[i_property][0]);
           }
       }
     for (auto &&it : parameters.features)
