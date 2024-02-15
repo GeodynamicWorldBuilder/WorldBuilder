@@ -80,7 +80,7 @@ namespace WorldBuilder
                 prm.declare_entry("", Types::Object(required_entries), "feature object");
 
                 prm.declare_entry("model", Types::String("",it.first),
-                                  "The name which the user has given to the feature.");
+                                  "The model name of the feature determining its type.");
                 prm.declare_entry("name", Types::String(""),
                                   "The name which the user has given to the feature.");
                 prm.declare_entry("coordinates", Types::Array(Types::Point<2>(), 1),
