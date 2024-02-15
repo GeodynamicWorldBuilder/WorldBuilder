@@ -2,7 +2,7 @@
 Contributing to the documentation
 =================================
 
-Good documentation is very for a project. It enables potential users to learn what a the GWB can do for them, it allows new users to effectively learn how to use it and it allows developers to easily contribute. Contributing to the documentation also requires no knowledge of how to code and will get you familair withthe review process, which is exactly the same for documentation and code. If you want to change something on this page, it can be as easy as clicking on the GitHub button above and suggesting an edit.
+Good documentation enables users to learn what the GWB can do, how to use it effectively and how to contribute easily. Contributing to the documentation requires minimal knowledge of how to code and we welcome every single contribution; finding and fixing typos is greatly appreciated! If you want to change something on any page, contributing is as easy as clicking on the GitHub button above and suggesting an edit. Welcome to the World Builder developers!
 
 This section will explain in detail how the documentation is made and how you can contribute!
 
