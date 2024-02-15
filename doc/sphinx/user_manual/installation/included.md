@@ -42,7 +42,7 @@ The tester package is run every time on proposed new code before that code is ad
 This happens through GitHub actions (see <https://github.com/GeodynamicWorldBuilder/WorldBuilder/actions>) and AppVeyor (see <https://ci.appveyor.com/project/MFraters/worldbuilder>).
 
 Having tests alone is not good enough to make sure that the World Builder actually does what it is supposed to do.
-The tester should theoretically cover all the possible use case scenarios.
+The tester should theoretically cover all the possible use cases.
 In practice we test the coverage by counting the number of 'relevant' lines and how many of these lines are touched when running the tester.
 This is counted and reported by the program Gcov (<https://gcc.gnu.org/onlinedocs/gcc/Gcov.html>).
 
