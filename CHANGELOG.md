@@ -17,6 +17,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Changed 
 - Unified the directories `cookbooks/` and `doc/sphinx/user_manual/cookbooks`. All information about cookbooks including the documentation is now bundled in the top-level `cookbooks/` directory. \[Rene Gassmoeller; 2024-02-14; [#558](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/558)\]
 - Deleted the deprecated Latex manual. Use the new sphinx documentation instead, which can be build into a .pdf file as well. \[Rene Gassmoeller; 2024-02-14; [#595](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/595)
+- Relocated the code that is used to calculate spreading center quantities like distance from the ridge, and spreading rate. Currently the spreading rate is just a constant value, but this will be changed in a follow up pull request. \[Daniel Douglas; 2024-02-14; [#590](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/590)
 
 ### Fixed
 - Fixed an issue where the ridge feature in spherical geometries for both the half space cooling and plate cooling models gave a discontinuous spreading center when crossing longitudes at intervals of 90 degrees. \[Daniel Douglas; 2024-01-22; [#520](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/520),[#518](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/518)\]
