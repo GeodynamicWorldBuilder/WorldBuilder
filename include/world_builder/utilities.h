@@ -71,6 +71,16 @@ namespace WorldBuilder
                                           const Point<2> &point);
 
     /**
+     * Given a 2d point, a semi-major axis, and an eccentricity, computes if
+     * the point falls within the ellipse. 
+     */
+    bool
+    ellipse_contains_point(const Point<2> &ellipse_center,
+                           const double semi_major_axis,
+                           const double eccentricity, 
+                           const Point<2> &point);
+
+    /**
      * Given a 2d point and a list of points which form a polygon, compute the smallest
      * distance of the point to the polygon. The sign is negative for points outside of
      * the polygon and positive for points inside the polygon.
