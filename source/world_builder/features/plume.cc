@@ -69,11 +69,15 @@ namespace WorldBuilder
       prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max()))),
                         "The depth to which this feature is present");
       prm.declare_entry("cross section depths", Types::Array(Types::Double(0)),
-                        "The depths of the elliptic cross section of the plume");
+                        "The depths of the elliptic cross section of the plume.");
       prm.declare_entry("semi-major axis", Types::Array(Types::Double(100.e3)),
-                        "The lengths of the semi-major axes of the elliptic cross sections of the plume");
+                        "The lengths of the semi-major axes of the elliptic cross sections of the plume. "
+                        "In spherical coordinates, this is in degrees, otherise in meters.");
       prm.declare_entry("eccentricity", Types::Array(Types::Double(0)),
                         "The eccentricities of the cross sections");
+      prm.declare_entry("rotation angles", Types::Array(Types::Double(0)),
+                        "The directions that the semi-major axis of the elliptic cross-sections "
+                        "are pointing to, as an angle from geographic North in degrees.");
 
       prm.declare_entry("temperature models",
                         Types::PluginSystem("", Features::PlumeModels::Temperature::Interface::declare_entries, {"model"}),
@@ -103,6 +107,12 @@ namespace WorldBuilder
       depths = prm.get_vector<double>("cross section depths");
       semi_major_axis_lengths = prm.get_vector<double>("semi-major axis");
       eccentricities = prm.get_vector<double>("eccentricity");
+      rotation_angles = prm.get_vector<double>("rotation angles");
+
+      // Convert to radians, convert from geographical to mathematical
+      // TODO: convert semi_major_axis_lengths as well for spherical coordinates
+      for (unsigned int i = 0; i < rotation_angles.size(); ++i)
+        rotation_angles[i] = Consts::PI/2. - rotation_angles[i] * Consts::PI/180.;
 
       for (unsigned int i = 0; i < depths.size()-1; ++i)
         WBAssert(depths[i] < depths[i+1],
@@ -126,6 +136,13 @@ namespace WorldBuilder
                "The eccentricity array needs to have the same number of entries as there are coordinates. At the moment there are: " 
                 << eccentricities.size()
                 << " eccentricity entries but " 
+                << coordinates.size() 
+                << " coordinates!");
+
+      WBAssert(rotation_angles.size() == coordinates.size(), 
+               "The rotation angles array needs to have the same number of entries as there are coordinates. At the moment there are: " 
+                << rotation_angles.size()
+                << " rotation angle entries but " 
                 << coordinates.size() 
                 << " coordinates!");
 
@@ -195,6 +212,7 @@ namespace WorldBuilder
       Point<2> plume_center(coordinates[0]);
       double semi_major_axis_length;
       double eccentricity;
+      double rotation_angle;
 
       if (upper == depths.begin())
         return;
@@ -203,6 +221,7 @@ namespace WorldBuilder
         plume_center = coordinates.back();
         semi_major_axis_length = semi_major_axis_lengths.back();
         eccentricity = eccentricities.back();
+        rotation_angle = rotation_angles.back();
       }
       else
       {
@@ -214,16 +233,37 @@ namespace WorldBuilder
 
         semi_major_axis_length = (1-fraction) * semi_major_axis_lengths[index-1] + fraction * semi_major_axis_lengths[index];
         eccentricity = (1-fraction) * eccentricities[index-1] + fraction * eccentricities[index];
+
+        // For the angles, we only want to go between zero and pi, and we have to make sure we
+        // interpolate the values close to zero/pi correctly: 
+        // TODO: make utilities function
+        double angle_1 = rotation_angles[index-1];
+        double angle_2 = rotation_angles[index];
+        if (std::abs(angle_2 - angle_1) > Consts::PI)
+        {
+          if (angle_2 > angle_1)
+            angle_1 += 2.*Consts::PI;
+          else
+            angle_2 += 2.*Consts::PI;
+       
+        }
+        rotation_angle = (1-fraction) * angle_1 + fraction * angle_2;
+
+        // make sure angle is between 0 and 360 degrees
+        rotation_angle = rotation_angle - 2*Consts::PI*std::floor(rotation_angle/(2 * Consts::PI));
+
+        //std::cout << rotation_angles[index-1] << " " << rotation_angles[index] << " " <<  rotation_angle << std::endl;
       }
 
       if (depth <= depths.back() && depth >= depths.front() &&
           WorldBuilder::Utilities::ellipse_contains_point(plume_center,
                                                           semi_major_axis_length,
-                                                          eccentricity, 
+                                                          eccentricity,
+                                                          rotation_angle,
                                                           Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
                                                                    world->parameters.coordinate_system->natural_coordinate_system())))
         {
-          // TODO: How do I do this with my depth vector?
+          // TODO: In the future, we could remove the min and max depth and instead use the coordinates
           const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
           const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
           if (depth <= max_depth_local &&  depth >= min_depth_local)

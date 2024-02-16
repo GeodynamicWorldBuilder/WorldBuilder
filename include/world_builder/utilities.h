@@ -77,7 +77,8 @@ namespace WorldBuilder
     bool
     ellipse_contains_point(const Point<2> &ellipse_center,
                            const double semi_major_axis,
-                           const double eccentricity, 
+                           const double eccentricity,
+                           const double rotation_angle,
                            const Point<2> &point);
 
     /**

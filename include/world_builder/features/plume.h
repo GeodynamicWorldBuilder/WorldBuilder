@@ -150,6 +150,7 @@ namespace WorldBuilder
         std::vector<double> depths;
         std::vector<double> semi_major_axis_lengths;
         std::vector<double> eccentricities;
+        std::vector<double> rotation_angles;
     };
 
 
