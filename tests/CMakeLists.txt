@@ -230,21 +230,40 @@ add_custom_target(update_test_references
                   COMMENT "Updating the World Builder test results...")
 
 # Documentation tests
- # Create directory for the test results
- file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/documentation)
- #find all the integration visu files
- file(GLOB_RECURSE DOCU_TEST_SOURCES "${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/*.wb")
- # Run through each sourceUforeach(test_source ${DOCU_TEST_SOURCES})
- foreach(test_source ${DOCU_TEST_SOURCES})
-         get_filename_component(test_name ${test_source} NAME_WE)
-   set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/${test_name}.wb\;${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/${test_name}.grid")
-         add_test(${test_name}
-                  ${CMAKE_COMMAND} 
-            -D TEST_NAME=${test_name}
-            -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX} 
-            -D TEST_ARGS=${TEST_ARGUMENTS}
-            -P ${CMAKE_SOURCE_DIR}/tests/documentation/run_documentation_tests.cmake
-                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/documentation/)
+# Create directory for the test results
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/documentation)
+#find all the integration visu files
+file(GLOB_RECURSE DOCU_TEST_SOURCES "${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/*.wb")
+# Run through each source and create a test for each one
+foreach(test_source ${DOCU_TEST_SOURCES})
+  get_filename_component(test_name ${test_source} NAME_WE)
+  set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/${test_name}.wb\;${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/${test_name}.grid")
+  add_test(${test_name}
+           ${CMAKE_COMMAND}
+           -D TEST_NAME=${test_name}
+           -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}
+           -D TEST_ARGS=${TEST_ARGUMENTS}
+           -P ${CMAKE_SOURCE_DIR}/tests/documentation/run_documentation_tests.cmake
+           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/documentation/)
+ endforeach(test_source)
+
+# Cookbook tests
+# Create directory for the test results
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/cookbooks)
+#find all the integration visu files
+file(GLOB_RECURSE COOKBOOK_TEST_SOURCES "${CMAKE_SOURCE_DIR}/cookbooks/*/*.wb")
+# Run through each source and add a test for each one
+foreach(test_source ${COOKBOOK_TEST_SOURCES})
+  get_filename_component(test_name ${test_source} NAME_WE)
+  get_filename_component(test_dir ${test_source} DIRECTORY)
+  set(TEST_ARGUMENTS "${test_dir}/${test_name}.wb\;${test_dir}/${test_name}.grid")
+  add_test(${test_name}
+           ${CMAKE_COMMAND}
+           -D TEST_NAME=${test_name}
+           -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}
+           -D TEST_ARGS=${TEST_ARGUMENTS}
+           -P ${CMAKE_SOURCE_DIR}/tests/documentation/run_documentation_tests.cmake
+           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/cookbooks/)
  endforeach(test_source)
 
 
