@@ -31,22 +31,20 @@ namespace WorldBuilder
   {
 
     /**
-     * @brief Class for circle line/spline, including interpolation on it
+     * @brief A Class representing bezier curves.
      *
      */
     class BezierCurve
     {
       public:
         /**
-         * @brief Construct a new Bezier Curve object
+         * @brief Construct a new Bezier Curve object.
          *
-         * @param p
-         * @param angle_constrains
          */
         BezierCurve() {};
 
         /**
-         * @brief Construct a new Bezier Curve object
+         * @brief Construct a new Bezier Curve object from a list of points and a list of angle constrains.
          *
          * @param p
          * @param angle_constrains
@@ -66,7 +64,7 @@ namespace WorldBuilder
         ClosestPointOnCurve closest_point_on_curve_segment(const Point<2> &p, const bool verbose = false) const;
 
         /**
-         * @brief
+         * @brief Compute a point on the curve at a given parameter value and section.
          *
          * @param i
          * @param x
