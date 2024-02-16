@@ -4,7 +4,7 @@ Constant angle in spherical domain issue
 
 There is one last concept we need to discuss before we can move on to {ref}`part:user_manual:chap:basic_starter_tutorial:sec:index`, this  is the problem of defining a constant angle in a sphere. This does not matter for Cartesian models but is important for line features in spherical models.
 
-When defining a line with a certain angle to the surface in a sphere, you can look at this in one of two ways. The first option is to define a constant angle at its starting point. This works mostly fine except for large distances where it will burst through the surface of the planet out into space. This can be see in the left figure below. The other option is to define a constatnt angle with respect to the surface above. This results in a logarithmic spiral as seen in the right figure below.
+When defining a line with a certain angle to the surface in a sphere, you can look at this in one of two ways. The first option is to define a constant angle at its starting point. This works mostly fine except for large distances where it will burst through the surface of the planet out into space. This can be seen in the left figure below. The other option is to define a constant angle with respect to the surface above. This results in a logarithmic spiral as seen in the right figure below.
 
 ::::{grid} 2
 
