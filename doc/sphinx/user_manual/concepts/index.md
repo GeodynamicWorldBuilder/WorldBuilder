@@ -10,8 +10,6 @@ To understand how to make a World Builder file that creates some interesting ini
 boundless_world
 features
 painting_in_the_world
-area_features
-line_features
-point_features
+feature_list
 constant_angle_in_spherical_domain_issue
 ```
