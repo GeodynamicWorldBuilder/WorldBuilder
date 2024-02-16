@@ -498,7 +498,7 @@ namespace WorldBuilder
               const AdditionalParameters additional_parameters = {max_fault_length,thickness_local};
 
               // Check if we are inside the fault.
-              // Every distance from -thickness/2 to +thickness/2 is inside the fault. 
+              // Every distance from -thickness/2 to +thickness/2 is inside the fault.
               if (std::fabs(distance_from_plane) <= thickness_local * 0.5 &&
                   distance_along_plane > 0 &&
                   distance_along_plane <= max_fault_length)
