@@ -440,9 +440,10 @@ namespace WorldBuilder
     */
     std::pair<double, double>
     calculate_ridge_distance_and_spreading(std::vector<std::vector<Point<2>>> mid_oceanic_ridges,
-                                           const double spreading_velocity,
+                                           std::vector<std::vector<double>> mid_oceanic_spreading_velocities,
                                            const std::unique_ptr<WorldBuilder::CoordinateSystems::Interface> &coordinate_system,
                                            const Objects::NaturalCoordinate &position_in_natural_coordinates_at_min_depth);
+
   } // namespace Utilities
 } // namespace WorldBuilder
 

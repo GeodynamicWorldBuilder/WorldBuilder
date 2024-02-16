@@ -1223,12 +1223,13 @@ namespace WorldBuilder
 
     std::pair<double, double>
     calculate_ridge_distance_and_spreading(std::vector<std::vector<Point<2>>> mid_oceanic_ridges,
-                                           const double spreading_velocity,
+                                           std::vector<std::vector<double>> mid_oceanic_spreading_velocities,
                                            const std::unique_ptr<WorldBuilder::CoordinateSystems::Interface> &coordinate_system,
                                            const Objects::NaturalCoordinate &position_in_natural_coordinates_at_min_depth)
     {
 
       double distance_ridge = std::numeric_limits<double>::max();
+      double spreading_velocity_at_ridge = 0;
 
       // first find if the coordinate is on this side of a ridge
       unsigned int relevant_ridge = 0;
@@ -1277,6 +1278,9 @@ namespace WorldBuilder
           const Point<2> segment_point0 = mid_oceanic_ridges[relevant_ridge][i_coordinate];
           const Point<2> segment_point1 = mid_oceanic_ridges[relevant_ridge][i_coordinate + 1];
 
+          const double spreading_velocity_point0 = mid_oceanic_spreading_velocities[relevant_ridge][i_coordinate];
+          const double spreading_velocity_point1 = mid_oceanic_spreading_velocities[relevant_ridge][i_coordinate + 1];
+
           {
             // based on http://geomalgorithms.com/a02-_lines.html
             const Point<2> v = segment_point1 - segment_point0;
@@ -1293,19 +1297,37 @@ namespace WorldBuilder
             // If you want to have infinite lines, use only the else statement.
 
             if (c1 <= 0)
-              Pb1=segment_point0;
+              {
+                Pb1=segment_point0;
+                spreading_velocity_at_ridge = spreading_velocity_point0;
+              }
             else if (c <= c1)
-              Pb1=segment_point1;
+              {
+                Pb1=segment_point1;
+                spreading_velocity_at_ridge = spreading_velocity_point1;
+              }
             else
-              Pb1=segment_point0 + (c1 / c) * v;
+              {
+                Pb1=segment_point0 + (c1 / c) * v;
+                spreading_velocity_at_ridge = spreading_velocity_point0 + (spreading_velocity_point1 - spreading_velocity_point0) * (c1 / c) * 1;
+              }
 
             Point<2> Pb2(coordinate_system->natural_coordinate_system());
             if (c2 <= 0)
-              Pb2=segment_point0;
+              {
+                Pb2=segment_point0;
+                spreading_velocity_at_ridge = spreading_velocity_point0;
+              }
             else if (c <= c2)
-              Pb2=segment_point1;
+              {
+                Pb2=segment_point1;
+                spreading_velocity_at_ridge = spreading_velocity_point1;
+              }
             else
-              Pb2=segment_point0 + (c2 / c) * v;
+              {
+                Pb2=segment_point0 + (c1 / c) * v;
+                spreading_velocity_at_ridge = spreading_velocity_point0 + (spreading_velocity_point1 - spreading_velocity_point0) * (c1 / c) * 1;
+              }
 
             Point<3> compare_point1(coordinate_system->natural_coordinate_system());
             Point<3> compare_point2(coordinate_system->natural_coordinate_system());
@@ -1330,7 +1352,7 @@ namespace WorldBuilder
           }
         }
       std::pair<double, double> result;
-      result.first = spreading_velocity;
+      result.first = spreading_velocity_at_ridge / 31557600; // m/s;
       result.second = distance_ridge;
       return result;
     }

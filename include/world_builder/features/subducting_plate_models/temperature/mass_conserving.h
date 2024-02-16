@@ -100,6 +100,7 @@ namespace WorldBuilder
                                             const double min_temperature,
                                             const double background_temperature,
                                             const double temperature_,
+                                            const double plate_velocity,
                                             const double effective_plate_age,
                                             const double adjusted_distance) const;
 
@@ -109,7 +110,8 @@ namespace WorldBuilder
             double min_depth;
             double max_depth;
             double density;
-            double plate_velocity;
+            std::pair<std::vector<double>,std::vector<double>> plate_velocities;
+            std::vector<std::vector<double>> plate_velocities_at_each_ridge_point;
             double mantle_coupling_depth;
             double forearc_cooling_factor;
             double thermal_conductivity;

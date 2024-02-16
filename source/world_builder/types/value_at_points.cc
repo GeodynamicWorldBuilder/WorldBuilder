@@ -29,9 +29,11 @@ namespace WorldBuilder
   {
 
     ValueAtPoints::ValueAtPoints(const double default_value_,
+                                 size_t max_values_in_array_,
                                  std::vector<Point<2>> default_points_)
       :
       default_value(default_value_),
+      max_values_in_array(max_values_in_array_),
       default_points(std::move(std::move(default_points_)))
     {
       this->type_name = Types::type::ValueAtPoints;
@@ -42,6 +44,7 @@ namespace WorldBuilder
     ValueAtPoints::ValueAtPoints(ValueAtPoints const &other)
       :
       default_value(other.default_value),
+      max_values_in_array(other.max_values_in_array),
       default_points(other.default_points)
     {
       this->type_name = Types::type::ValueAtPoints;
@@ -50,7 +53,6 @@ namespace WorldBuilder
 
     ValueAtPoints::~ValueAtPoints ()
       = default;
-
 
 
     void
@@ -67,7 +69,7 @@ namespace WorldBuilder
         Pointer((base + "/type").c_str()).Set(declarations,"array");
         Pointer((base + "/additionalProperties").c_str()).Set(declarations,false);
         Pointer((base + "/minItems").c_str()).Set(declarations,1);
-        Pointer((base + "/maxItems").c_str()).Set(declarations,2);
+        Pointer((base + "/maxItems").c_str()).Set(declarations, max_values_in_array);
         Pointer((base + "/description").c_str()).Set(declarations,documentation.c_str());
 
         {
@@ -80,7 +82,7 @@ namespace WorldBuilder
 
           Pointer((base + "/items/anyOf/1/items/type").c_str()).Set(declarations,"array");
           Pointer((base + "/items/anyOf/1/items/minItems").c_str()).Set(declarations,1);
-          Pointer((base + "/items/anyOf/1/items/maxItems").c_str()).Set(declarations,2);
+          Pointer((base + "/items/anyOf/1/items/maxItems").c_str()).Set(declarations, max_values_in_array);
 
           Pointer((base + "/items/anyOf/1/items/items/type").c_str()).Set(declarations,"number");
         }
