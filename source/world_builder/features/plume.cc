@@ -232,9 +232,25 @@ namespace WorldBuilder
       double eccentricity;
       double rotation_angle;
 
-      if (upper == depths.begin())
+      if (depth < min_depth)
         return;
-      else if (upper == depths.end())
+      else if (upper - depths.begin() == 0)
+        {
+          // interpolate to make the top of the plume spherical
+          plume_center = coordinates.front();
+          eccentricity = eccentricities.front();
+          rotation_angle = rotation_angles.front();
+
+          const double fraction = (depth - min_depth) / (depths.front() - min_depth);
+
+          const double a = depths.front() - min_depth;
+          const double b = semi_major_axis_lengths.front();
+          const double y = (1. - fraction) * a;
+
+          // use ellipse equation:
+          semi_major_axis_length = std::sqrt((1 - std::pow(y/a,2)) * b*b);
+        }
+      else if (upper - depths.end() == 0)
         {
           plume_center = coordinates.back();
           semi_major_axis_length = semi_major_axis_lengths.back();
@@ -257,7 +273,7 @@ namespace WorldBuilder
           rotation_angle = interpolate_angle_across_zero(rotation_angles[index-1], rotation_angles[index], fraction);
         }
 
-      if (depth <= depths.back() && depth >= depths.front() &&
+      if (depth <= depths.back() && depth >= min_depth &&
           WorldBuilder::Utilities::ellipse_contains_point(plume_center,
                                                           semi_major_axis_length,
                                                           eccentricity,
