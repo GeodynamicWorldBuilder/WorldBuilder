@@ -30,6 +30,7 @@
 #include "world_builder/types/object.h"
 #include "world_builder/types/plugin_system.h"
 #include "world_builder/types/point.h"
+#include "world_builder/types/int.h"
 
 #include <iostream>
 #include <world_builder/coordinate_system.h>
@@ -143,6 +144,9 @@ namespace WorldBuilder
 
       prm.declare_entry("features", Types::PluginSystem("",Features::Interface::declare_entries, {"model"}),"A list of features.");
 
+      prm.declare_entry("random number seed", Types::Int(-1),
+                        "Use random number seed input to generate random numbers.");
+
     }
     prm.leave_subsection();
 
@@ -239,6 +243,14 @@ namespace WorldBuilder
      */
     maximum_distance_between_coordinates = prm.get<double>("maximum distance between coordinates");
     interpolation = prm.get<std::string>("interpolation");
+
+    /**
+     * Local random number seed parameter
+    */
+    const int local_seed = prm.get<int>("random number seed");
+
+    if (local_seed>=0)
+      random_number_engine.seed(local_seed);
 
     /**
      * Now load the features. Some features use for example temperature values,

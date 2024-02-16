@@ -40,6 +40,7 @@ namespace WorldBuilder
     class Array;
     class Bool;
     class UnsignedInt;
+    class Int;
   } // namespace Types
 
   namespace Features
