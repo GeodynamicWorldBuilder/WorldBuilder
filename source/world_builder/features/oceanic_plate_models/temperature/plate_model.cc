@@ -144,115 +144,13 @@ namespace WorldBuilder
 
                   const int sommation_number = 100;
 
-                  double distance_ridge = std::numeric_limits<double>::max();
+                  std::pair<double, double> ridge_parameters = Utilities::calculate_ridge_distance_and_spreading(mid_oceanic_ridges,
+                                                               spreading_velocity,
+                                                               world->parameters.coordinate_system,
+                                                               position_in_natural_coordinates_at_min_depth);
 
-                  const CoordinateSystem coordinate_system = world->parameters.coordinate_system->natural_coordinate_system();
-
-
-                  // first find if the coordinate is on this side of a ridge
-                  unsigned int relevant_ridge = 0;
-                  const Point<2> check_point(position_in_natural_coordinates_at_min_depth.get_surface_coordinates(), \
-                                             position_in_natural_coordinates_at_min_depth.get_coordinate_system());
-
-                  Point<2> other_check_point = check_point;
-                  if (check_point.get_coordinate_system() == CoordinateSystem::spherical)
-                    {
-                      other_check_point[0] += check_point[0] < 0 ? 2.0 * WorldBuilder::Consts::PI : -2.0 * WorldBuilder::Consts::PI;
-                    }
-
-
-                  // if there is only one ridge, there is no transform
-                  if (mid_oceanic_ridges.size() > 1)
-                    {
-                      // There are more than one ridge, so there are transform faults
-                      // Find the first which is on the same side
-                      for (relevant_ridge = 0; relevant_ridge < mid_oceanic_ridges.size()-1; relevant_ridge++)
-                        {
-                          const Point<2> transform_point_0 = mid_oceanic_ridges[relevant_ridge+1][0];
-                          const Point<2> transform_point_1 = mid_oceanic_ridges[relevant_ridge][mid_oceanic_ridges[relevant_ridge].size()-1];
-                          const Point<2> reference_point   = mid_oceanic_ridges[relevant_ridge][0];
-
-                          const bool reference_on_side_of_line = (transform_point_1[0] - transform_point_0[0])
-                                                                 * (reference_point[1] - transform_point_0[1])
-                                                                 - (transform_point_1[1] - transform_point_0[1])
-                                                                 * (reference_point[0] - transform_point_0[0])
-                                                                 < 0;
-                          const bool checkpoint_on_side_of_line = (transform_point_1[0] - transform_point_0[0])
-                                                                  * (check_point[1] - transform_point_0[1])
-                                                                  - (transform_point_1[1] - transform_point_0[1])
-                                                                  * (check_point[0] - transform_point_0[0])
-                                                                  < 0;
-
-
-                          if (reference_on_side_of_line == checkpoint_on_side_of_line)
-                            {
-                              break;
-                            }
-
-                        }
-                    }
-
-                  for (unsigned int i_coordinate = 0; i_coordinate < mid_oceanic_ridges[relevant_ridge].size() - 1; i_coordinate++)
-                    {
-                      const Point<2> segment_point0 = mid_oceanic_ridges[relevant_ridge][i_coordinate];
-                      const Point<2> segment_point1 = mid_oceanic_ridges[relevant_ridge][i_coordinate + 1];
-
-                      {
-                        // based on http://geomalgorithms.com/a02-_lines.html
-                        const Point<2> v = segment_point1 - segment_point0;
-                        const Point<2> w1 = check_point - segment_point0;
-                        const Point<2> w2 = other_check_point - segment_point0;
-
-                        const double c1 = (w1[0] * v[0] + w1[1] * v[1]);
-                        const double c = (v[0] * v[0] + v[1] * v[1]);
-                        const double c2 = (w2[0] * v[0] + w2[1] * v[1]);
-
-
-                        Point<2> Pb1(coordinate_system);
-                        // This part is needed when we want to consider segments instead of lines
-                        // If you want to have infinite lines, use only the else statement.
-
-                        if (c1 <= 0)
-                          Pb1=segment_point0;
-                        else if (c <= c1)
-                          Pb1=segment_point1;
-                        else
-                          Pb1=segment_point0 + (c1 / c) * v;
-
-                        Point<2> Pb2(coordinate_system);
-                        if (c2 <= 0)
-                          Pb2=segment_point0;
-                        else if (c <= c2)
-                          Pb2=segment_point1;
-                        else
-                          Pb2=segment_point0 + (c2 / c) * v;
-
-                        Point<3> compare_point1(coordinate_system);
-                        Point<3> compare_point2(coordinate_system);
-
-                        compare_point1[0] = coordinate_system == cartesian ? Pb1[0] :  position_in_natural_coordinates_at_min_depth.get_depth_coordinate();
-                        compare_point1[1] = coordinate_system == cartesian ? Pb1[1] : Pb1[0];
-                        compare_point1[2] = coordinate_system == cartesian ? position_in_natural_coordinates_at_min_depth.get_depth_coordinate() : Pb1[1];
-
-                        compare_point2[0] = coordinate_system == cartesian ? Pb2[0] :  position_in_natural_coordinates_at_min_depth.get_depth_coordinate();
-                        compare_point2[1] = coordinate_system == cartesian ? Pb2[1] : Pb2[0];
-                        compare_point2[2] = coordinate_system == cartesian ? position_in_natural_coordinates_at_min_depth.get_depth_coordinate() : Pb2[1];
-
-                        distance_ridge = std::min(distance_ridge,
-                                                  this->world->parameters.coordinate_system->distance_between_points_at_same_depth(Point<3>(position_in_natural_coordinates_at_min_depth.get_coordinates(),
-                                                      position_in_natural_coordinates_at_min_depth.get_coordinate_system()),
-                                                      compare_point1));
-
-                        distance_ridge = std::min(distance_ridge,
-                                                  this->world->parameters.coordinate_system->distance_between_points_at_same_depth(Point<3>(position_in_natural_coordinates_at_min_depth.get_coordinates(),
-                                                      position_in_natural_coordinates_at_min_depth.get_coordinate_system()),
-                                                      compare_point2));
-                      }
-                    }
-
-                  //const double spreading_velocity = spreading_velocity;
                   const double thermal_diffusivity = this->world->thermal_diffusivity;
-                  const double age = distance_ridge / spreading_velocity;
+                  const double age = ridge_parameters.second / ridge_parameters.first;
                   double temperature = top_temperature + (bottom_temperature_local - top_temperature) * (depth / max_depth);
 
                   // This formula addresses the horizontal heat transfer by having the spreading velocity and distance to the ridge in it.

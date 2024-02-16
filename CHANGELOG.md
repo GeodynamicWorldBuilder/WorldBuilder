@@ -12,9 +12,14 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [Unreleased]
 ### Added
 - Added a cookbook tutorial for a simple subduction model in 2D Cartesian geometry. \[Magali Billen; 2024-02-14; [#535](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/535)
-- Added an option to use the plate model as the reference model for the mass conserving temperature of the slab. \[Haoyuan Li; 2024-02-02; [#471](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/471)
+- Added an option to use the plate model as the reference model for the mass conserving temperature of the slab. \[Haoyuan Li; 2024-02-02; [#471](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/471)\]
+- Added a cookbook for making a transform fault and using this model in ASPECT. \[Juliane Dannberg; 2024-02-14; [#563](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/563)\]
+- Added a system which allows users to tag features. The tag index can then be written out throught the gwb-dat program. \[Menno Fraters and Timo Heister; 2024-02-15; [[#598](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/598)]\]
 
 ### Changed 
+- Unified the directories `cookbooks/` and `doc/sphinx/user_manual/cookbooks`. All information about cookbooks including the documentation is now bundled in the top-level `cookbooks/` directory. \[Rene Gassmoeller; 2024-02-14; [#558](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/558)\]
+- Deleted the deprecated Latex manual. Use the new sphinx documentation instead, which can be build into a .pdf file as well. \[Rene Gassmoeller; 2024-02-14; [#595](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/595)
+- Relocated the code that is used to calculate spreading center quantities like distance from the ridge, and spreading rate. Currently the spreading rate is just a constant value, but this will be changed in a follow up pull request. \[Daniel Douglas; 2024-02-14; [#590](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/590)
 
 ### Fixed
 - Fixed an issue where the ridge feature in spherical geometries for both the half space cooling and plate cooling models gave a discontinuous spreading center when crossing longitudes at intervals of 90 degrees. \[Daniel Douglas; 2024-01-22; [#520](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/520),[#518](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/518)\]

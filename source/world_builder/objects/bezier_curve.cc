@@ -177,7 +177,8 @@ namespace WorldBuilder
 
 
     ClosestPointOnCurve
-    BezierCurve::closest_point_on_curve_segment(const Point<2> &check_point) const
+    BezierCurve::closest_point_on_curve_segment(const Point<2> &check_point,
+                                                const bool verbose) const
     {
       ClosestPointOnCurve closest_point_on_curve;
       const Point<2> &cp = check_point;
@@ -367,24 +368,31 @@ namespace WorldBuilder
 
               double est =  P2P2_dot > 0.0 ? std::min(1.,std::max(0.,(P1Pc*P1P2) / P2P2_dot)) : 1.0; // est=estimate of solution
               bool found = false;
-#ifndef NDEBUG
+
+              // only used if verbose is true
               std::stringstream output;
-#endif
+
               Point<2> a = 3.*control_points[cp_i][0]-3.*control_points[cp_i][1]+points[cp_i+1]-points[cp_i];
               Point<2> b = 3.*points[cp_i] - 6.*control_points[cp_i][0]+3.*control_points[cp_i][1];
               Point<2> c = -3.*points[cp_i] + 3.*control_points[cp_i][0];
               const Point<2> d = points[cp_i];
 
               Point<2> estimate_point = a*est*est*est+b*est*est+c*est+d;
-#ifndef NDEBUG
-              const double cos_lat_dg = cos(estimate_point[1]);
-              const double sin_d_long_h_dg = sin((estimate_point[0]-cp[0])*0.5);
-              const double sin_d_lat_h_dg = sin((estimate_point[1]-cp[1])*0.5);
-              const double min_squared_distance_cartesian_temp_dg = sin_d_lat_h_dg*sin_d_lat_h_dg+sin_d_long_h_dg*sin_d_long_h_dg*cos_cp_lat*cos_lat_dg;
-              output << "cp_i=" << cp_i << ", init est = " << est << ", min_squared_distance = " << min_squared_distance << ", min_squared_distance_cartesian_temp_dg: " << min_squared_distance_cartesian_temp_dg << ", p1: " << p1 << ", p2: " << p2 << std::endl;
-              output  << std::setprecision(6) << "  wolfram: sin((" << a[1] << "*x^3+" << b[1] << "*x^2+"<< c[1] << "*x+" << d[1] << "-" << cp[1] << ")*.5)^2+sin((" << a[0] << "*x^3+" << b[0] << "*x^2+"<< c[0] << "*x+" << d[0] << "-" << cp[0] << ")*.5)^2*cos(" << cp[1] << ")*cos(" << a[1] << "*x^3+" << b[1] << "*x^2+"<< c[1] << "*x+" << d[1] << "-" << cp[1] << ") with x=" << est << std::endl;
-              output  << std::setprecision(10) << "  python: y=np.sin((" << a[1] << "*x**3+" << b[1] << "*x**2+"<< c[1] << "*x+" << d[1] << "-" << cp[1] << ")*.5)**2+np.sin((" << a[0] << "*x**3+" << b[0] << "*x**2+"<< c[0] << "*x+" << d[0] << "-" << cp[0] << ")*.5)**2*np.cos(" << cp[1] << ")*np.cos(" << a[1] << "*x**3+" << b[1] << "*x**2+"<< c[1] << "*x+" << d[1] << "-" << cp[1] << "); x=" << est << std::endl;
-#endif
+
+              double cos_lat_dg;
+              double sin_d_long_h_dg;
+              double sin_d_lat_h_dg;
+              double min_squared_distance_cartesian_temp_dg;
+              if (verbose == true)
+                {
+                  cos_lat_dg = cos(estimate_point[1]);
+                  sin_d_long_h_dg = sin((estimate_point[0]-cp[0])*0.5);
+                  sin_d_lat_h_dg = sin((estimate_point[1]-cp[1])*0.5);
+                  min_squared_distance_cartesian_temp_dg = sin_d_lat_h_dg*sin_d_lat_h_dg+sin_d_long_h_dg*sin_d_long_h_dg*cos_cp_lat*cos_lat_dg;
+                  output << "cp_i=" << cp_i << ", init est = " << est << ", min_squared_distance = " << min_squared_distance << ", min_squared_distance_cartesian_temp_dg: " << min_squared_distance_cartesian_temp_dg << ", p1: " << p1 << ", p2: " << p2 << std::endl;
+                  output  << std::setprecision(6) << "  wolfram: sin((" << a[1] << "*x^3+" << b[1] << "*x^2+"<< c[1] << "*x+" << d[1] << "-" << cp[1] << ")*.5)^2+sin((" << a[0] << "*x^3+" << b[0] << "*x^2+"<< c[0] << "*x+" << d[0] << "-" << cp[0] << ")*.5)^2*cos(" << cp[1] << ")*cos(" << a[1] << "*x^3+" << b[1] << "*x^2+"<< c[1] << "*x+" << d[1] << "-" << cp[1] << ") with x=" << est << std::endl;
+                  output  << std::setprecision(10) << "  python: y=np.sin((" << a[1] << "*x**3+" << b[1] << "*x**2+"<< c[1] << "*x+" << d[1] << "-" << cp[1] << ")*.5)**2+np.sin((" << a[0] << "*x**3+" << b[0] << "*x**2+"<< c[0] << "*x+" << d[0] << "-" << cp[0] << ")*.5)**2*np.cos(" << cp[1] << ")*np.cos(" << a[1] << "*x**3+" << b[1] << "*x**2+"<< c[1] << "*x+" << d[1] << "-" << cp[1] << "); x=" << est << std::endl;
+                }
               for (size_t newton_i = 0; newton_i < 150; newton_i++)
                 {
                   // based on https://stackoverflow.com/questions/2742610/closest-point-on-a-cubic-bezier-curve
@@ -407,12 +415,13 @@ namespace WorldBuilder
                     {
                       const double squared_distance_cartesian_second_derivative = cos_cp_lat*cos_d_lat*(-0.5*deriv_long*deriv_long*sin_d_long_h*sin_d_long_h+0.5*deriv_long*deriv_long*cos_dlong_h*cos_dlong_h+(6.0*a[0]*est+2.0*b[0])*sin_d_long_h*cos_dlong_h)+cos_cp_lat*sin_d_long_h*sin_d_long_h*(deriv_lat*deriv_lat*(-cos_d_lat)-(6.0*a[1]*est+2.0*b[1])*sin_dlat)-2.0*cos_cp_lat*deriv_long*deriv_lat*sin_d_long_h*cos_dlong_h*sin_dlat-0.5*deriv_lat*deriv_lat*sin_d_lat_h*sin_d_lat_h+0.5*deriv_lat*deriv_lat*cos_dlat_h*cos_dlat_h+(6.0*a[1]*est+2.0*b[1])*sin_d_lat_h*cos_dlat_h;
 
-#ifndef NDEBUG
-                      const double squared_distance_cartesian_full = sin((a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])*0.5)*sin((a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])*0.5)+sin((a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0])*0.5)*sin((a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0])*0.5)*cos(cp[1])*cos(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]);
-                      const double squared_distance_cartesian_derivative_full = cos(cp[1])*(-(3.0*a[1]*est*est+2.0*b[1]*est+c[1]))*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*sin(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])+cos(cp[1])*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*cos(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*cos(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])+(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*sin(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))*cos(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]));
-                      const double squared_distance_cartesian_second_derivative_full = cos(cp[1])*cos(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])*(-0.5*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))+0.5*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*cos(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*cos(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))+(6.0*a[0]*est+2.0*b[0])*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*cos(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0])))+cos(cp[1])*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*((3.0*a[1]*est*est+2.0*b[1]*est+c[1])*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*(-cos(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))-(6.0*a[1]*est+2.0*b[1])*sin(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))-2.0*cos(cp[1])*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*cos(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*sin(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])-0.5*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*sin(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))*sin(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))+0.5*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*cos(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))*cos(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))+(6.0*a[1]*est+2.0*b[1])*sin(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))*cos(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]));
-                      output <<"sqd = " << squared_distance_cartesian <<":" << squared_distance_cartesian_full << ", diff=" << squared_distance_cartesian-squared_distance_cartesian_full << ", sqdd: " << squared_distance_cartesian_derivative <<":" << squared_distance_cartesian_derivative_full << ", diff="<< squared_distance_cartesian_derivative-squared_distance_cartesian_derivative_full << ", sqdd: " << squared_distance_cartesian_second_derivative << ":" << squared_distance_cartesian_second_derivative_full << ", diff= " << squared_distance_cartesian_second_derivative-squared_distance_cartesian_second_derivative_full << ", est: " << est << std::endl;
-#endif
+                      if (verbose == true)
+                        {
+                          const double squared_distance_cartesian_full = sin((a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])*0.5)*sin((a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])*0.5)+sin((a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0])*0.5)*sin((a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0])*0.5)*cos(cp[1])*cos(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]);
+                          const double squared_distance_cartesian_derivative_full = cos(cp[1])*(-(3.0*a[1]*est*est+2.0*b[1]*est+c[1]))*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*sin(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])+cos(cp[1])*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*cos(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*cos(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])+(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*sin(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))*cos(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]));
+                          const double squared_distance_cartesian_second_derivative_full = cos(cp[1])*cos(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])*(-0.5*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))+0.5*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*cos(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*cos(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))+(6.0*a[0]*est+2.0*b[0])*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*cos(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0])))+cos(cp[1])*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*((3.0*a[1]*est*est+2.0*b[1]*est+c[1])*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*(-cos(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))-(6.0*a[1]*est+2.0*b[1])*sin(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))-2.0*cos(cp[1])*(3.0*a[0]*est*est+2.0*b[0]*est+c[0])*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*sin(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*cos(0.5*(a[0]*est*est*est+b[0]*est*est+c[0]*est+d[0]-cp[0]))*sin(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1])-0.5*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*sin(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))*sin(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))+0.5*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*(3.0*a[1]*est*est+2.0*b[1]*est+c[1])*cos(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))*cos(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))+(6.0*a[1]*est+2.0*b[1])*sin(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]))*cos(0.5*(a[1]*est*est*est+b[1]*est*est+c[1]*est+d[1]-cp[1]));
+                          output <<"sqd = " << squared_distance_cartesian <<":" << squared_distance_cartesian_full << ", diff=" << squared_distance_cartesian-squared_distance_cartesian_full << ", sqdd: " << squared_distance_cartesian_derivative <<":" << squared_distance_cartesian_derivative_full << ", diff="<< squared_distance_cartesian_derivative-squared_distance_cartesian_derivative_full << ", sqdd: " << squared_distance_cartesian_second_derivative << ":" << squared_distance_cartesian_second_derivative_full << ", diff= " << squared_distance_cartesian_second_derivative-squared_distance_cartesian_second_derivative_full << ", est: " << est << std::endl;
+                        }
                       // the local minimum is where  squared_distance_cartesian_derivative=0 and squared_distance_cartesian_derivative>=0
                       update = std::min(0.5,std::max(-0.5,squared_distance_cartesian_derivative/std::fabs(squared_distance_cartesian_second_derivative)));
                       double line_search = 1.;
@@ -430,14 +439,15 @@ namespace WorldBuilder
                           sin_d_lat_h = sin((estimate_point[1]-cp[1])*0.5);
                           squared_distance_cartesian_test = sin_d_lat_h*sin_d_lat_h+sin_d_long_h*sin_d_long_h*cos_cp_lat*cos(estimate_point[1]-cp[1]);
 
-#ifndef NDEBUG
-                          sin_dlat = sin(estimate_point[1]-cp[1]);
-                          deriv_long = (3.0*a[0]*est_test*est_test+2.0*b[0]*est_test+c[0]);
-                          deriv_lat = (3.0*a[1]*est_test*est_test+2.0*b[1]*est_test+c[1]);
-                          const double squared_distance_cartesian_derivative_test = cos_cp_lat*(-deriv_lat)*sin_d_long_h*sin_d_long_h*sin_dlat+cos_cp_lat*deriv_long*sin_d_long_h*cos_dlong_h*cos_d_lat+deriv_lat*sin_d_lat_h*cos_dlat_h;
-                          const double squared_distance_cartesian_second_derivative_test = cos_cp_lat*cos_d_lat*(-0.5*deriv_long*deriv_long*sin_d_long_h*sin_d_long_h+0.5*deriv_long*deriv_long*cos_dlong_h*cos_dlong_h+(6.0*a[0]*est_test+2.0*b[0])*sin_d_long_h*cos_dlong_h)+cos_cp_lat*sin_d_long_h*sin_d_long_h*(deriv_lat*deriv_lat*(-cos_d_lat)-(6.0*a[1]*est_test+2.0*b[1])*sin_dlat)-2.0*cos_cp_lat*deriv_long*deriv_lat*sin_d_long_h*cos_dlong_h*sin_dlat-0.5*deriv_lat*deriv_lat*sin_d_lat_h*sin_d_lat_h+0.5*deriv_lat*deriv_lat*cos_dlat_h*cos_dlat_h+(6.0*a[1]*est_test+2.0*b[1])*sin_d_lat_h*cos_dlat_h;
-                          output << "    i: " << cp_i << ", ni: " << newton_i<< ", lsi: " << i << ", line_search_step=" << line_search_step << ": squared_distance_cartesian_test = " << squared_distance_cartesian_test << ", diff= " << squared_distance_cartesian_test-squared_distance_cartesian << ", tests: " << (squared_distance_cartesian_test_previous < squared_distance_cartesian ? "true" : "false") << ":" << (squared_distance_cartesian_test > squared_distance_cartesian_test_previous ? "true" : "false") << ", est_test=" << est_test << ", update=" << update << ", ls=" << line_search << ", up*ls=" << update *line_search << ", test deriv =" << squared_distance_cartesian_derivative_test  << ", test update=" << squared_distance_cartesian_derivative_test/fabs(squared_distance_cartesian_second_derivative_test) << ", p1=" << p1 << ", p2= " << p2 << ", poc= " << a *est_test *est_test *est_test+b *est_test *est_test+c *est_test+d << ", cp= " <<  check_point << ", ds:" << ((a*est_test*est_test*est_test+b*est_test*est_test+c*est_test+d)-check_point).norm_square() << ":" << min_squared_distance_cartesian_temp_dg << ", diff = " << squared_distance_cartesian_test-min_squared_distance_cartesian_temp_dg<< std::endl;
-#endif
+                          if (verbose == true)
+                            {
+                              sin_dlat = sin(estimate_point[1]-cp[1]);
+                              deriv_long = (3.0*a[0]*est_test*est_test+2.0*b[0]*est_test+c[0]);
+                              deriv_lat = (3.0*a[1]*est_test*est_test+2.0*b[1]*est_test+c[1]);
+                              const double squared_distance_cartesian_derivative_test = cos_cp_lat*(-deriv_lat)*sin_d_long_h*sin_d_long_h*sin_dlat+cos_cp_lat*deriv_long*sin_d_long_h*cos_dlong_h*cos_d_lat+deriv_lat*sin_d_lat_h*cos_dlat_h;
+                              const double squared_distance_cartesian_second_derivative_test = cos_cp_lat*cos_d_lat*(-0.5*deriv_long*deriv_long*sin_d_long_h*sin_d_long_h+0.5*deriv_long*deriv_long*cos_dlong_h*cos_dlong_h+(6.0*a[0]*est_test+2.0*b[0])*sin_d_long_h*cos_dlong_h)+cos_cp_lat*sin_d_long_h*sin_d_long_h*(deriv_lat*deriv_lat*(-cos_d_lat)-(6.0*a[1]*est_test+2.0*b[1])*sin_dlat)-2.0*cos_cp_lat*deriv_long*deriv_lat*sin_d_long_h*cos_dlong_h*sin_dlat-0.5*deriv_lat*deriv_lat*sin_d_lat_h*sin_d_lat_h+0.5*deriv_lat*deriv_lat*cos_dlat_h*cos_dlat_h+(6.0*a[1]*est_test+2.0*b[1])*sin_d_lat_h*cos_dlat_h;
+                              output << "    i: " << cp_i << ", ni: " << newton_i<< ", lsi: " << i << ", line_search_step=" << line_search_step << ": squared_distance_cartesian_test = " << squared_distance_cartesian_test << ", diff= " << squared_distance_cartesian_test-squared_distance_cartesian << ", tests: " << (squared_distance_cartesian_test_previous < squared_distance_cartesian ? "true" : "false") << ":" << (squared_distance_cartesian_test > squared_distance_cartesian_test_previous ? "true" : "false") << ", est_test=" << est_test << ", update=" << update << ", ls=" << line_search << ", up*ls=" << update *line_search << ", test deriv =" << squared_distance_cartesian_derivative_test  << ", test update=" << squared_distance_cartesian_derivative_test/fabs(squared_distance_cartesian_second_derivative_test) << ", p1=" << p1 << ", p2= " << p2 << ", poc= " << a *est_test *est_test *est_test+b *est_test *est_test+c *est_test+d << ", cp= " <<  check_point << ", ds:" << ((a*est_test*est_test*est_test+b*est_test*est_test+c*est_test+d)-check_point).norm_square() << ":" << min_squared_distance_cartesian_temp_dg << ", diff = " << squared_distance_cartesian_test-min_squared_distance_cartesian_temp_dg<< std::endl;
+                            }
                           if (i > 0 && (squared_distance_cartesian_test > squared_distance_cartesian_test_previous))
                             {
                               if (squared_distance_cartesian_test_previous-squared_distance_cartesian < 0)
@@ -462,9 +472,10 @@ namespace WorldBuilder
 
                           line_search *= line_search_step;
                         }
-#ifndef NDEBUG
-                      output << "    i: " << cp_i << ", ni: " << newton_i<< ", est= " << est-update *line_search << ", ls:" << line_search << ": squared_distance_cartesian_test = " << squared_distance_cartesian_test << ", diff= " << squared_distance_cartesian_test-squared_distance_cartesian << std::endl;
-#endif
+                      if (verbose == true)
+                        {
+                          output << "    i: " << cp_i << ", ni: " << newton_i<< ", est= " << est-update *line_search << ", ls:" << line_search << ": squared_distance_cartesian_test = " << squared_distance_cartesian_test << ", diff= " << squared_distance_cartesian_test-squared_distance_cartesian << std::endl;
+                        }
                       est -= update*line_search;
                     }
 
@@ -475,11 +486,16 @@ namespace WorldBuilder
                     }
                 }
 
-#ifndef NDEBUG
-              WBAssertThrow(found, "Could not find a good solution. " << output.str());
-#else
-              WBAssertThrow(found, "Could not find a good solution. Enable debug mode for more info.");
-#endif
+              if (verbose == true && found == false)
+                {
+                  // report the error and print the output
+                  WBAssertThrow(found, "Could not find a good solution. " << output.str());
+                }
+              else if (verbose == false && found == false)
+                {
+                  // redo the iteration with verbose=true to be able to report the error
+                  return closest_point_on_curve_segment(check_point, true);
+                }
 
               estimate_point = a*est*est*est+b*est*est+c*est+d;
 

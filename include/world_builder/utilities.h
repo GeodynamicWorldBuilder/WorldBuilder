@@ -261,7 +261,7 @@ namespace WorldBuilder
      * meshed by a grid. The axis parallel to the surface are formed by
      * sections, and the axis perpendicuar to the surface are formed segments.
      * Both sections and elements represent a whole cell in the grid, which is
-     * an inteter. This structure also provides the fraction in each direction
+     * an integer. This structure also provides the fraction in each direction
      * the closest point on the plane is along these two axes (sections and
      * segments). These variables are called fractions.
      *
@@ -426,6 +426,23 @@ namespace WorldBuilder
     */
     std::string
     read_and_distribute_file_content(const std::string &filename);
+
+    /**
+     * Calculate the distance of a point from a mid oceanic ridge, and also calulate
+     * the spreading velocity of the ridge at this point.
+     * TODO: make the spreading velocity spatially/temporally variable
+     *
+     * @param mid_oceanic_ridges The coordinates of the mid oceanic ridges
+     * @param spreading_velocity The spreading rate of the mid oceanic ridges
+     * @param coordinate_system The coordinate system
+     * @param position_in_natural_coordinates_at_min_depth the current position in natural_coordinates
+     * @return The content of the file.
+    */
+    std::pair<double, double>
+    calculate_ridge_distance_and_spreading(std::vector<std::vector<Point<2>>> mid_oceanic_ridges,
+                                           const double spreading_velocity,
+                                           const std::unique_ptr<WorldBuilder::CoordinateSystems::Interface> &coordinate_system,
+                                           const Objects::NaturalCoordinate &position_in_natural_coordinates_at_min_depth);
   } // namespace Utilities
 } // namespace WorldBuilder
 
