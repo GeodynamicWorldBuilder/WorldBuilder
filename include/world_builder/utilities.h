@@ -415,6 +415,14 @@ namespace WorldBuilder
      */
     double wrap_angle(const double angle);
 
+    /**
+     * Interpolate between two angles (angle1 and angle2),
+     * with fraction defining the weighting between the two,
+     * taking into account we might cross over from 360 to 0 degrees.
+     */
+    double interpolate_angle_across_zero(const double angle_1,
+                                         const double angle_2,
+                                         const double fraction);
 
     /**
      * Transform a rotation matrix into euler angles

@@ -254,20 +254,7 @@ namespace WorldBuilder
 
           // For the angles, we only want to go between zero and pi, and we have to make sure we
           // interpolate the values close to zero/pi correctly:
-          // TODO: make utilities function
-          double angle_1 = rotation_angles[index-1];
-          double angle_2 = rotation_angles[index];
-          if (std::abs(angle_2 - angle_1) > Consts::PI)
-            {
-              if (angle_2 > angle_1)
-                angle_1 += 2.*Consts::PI;
-              else
-                angle_2 += 2.*Consts::PI;
-            }
-          rotation_angle = (1-fraction) * angle_1 + fraction * angle_2;
-
-          // make sure angle is between 0 and 360 degrees
-          rotation_angle = rotation_angle - 2*Consts::PI*std::floor(rotation_angle/(2 * Consts::PI));
+          rotation_angle = interpolate_angle_across_zero(rotation_angles[index-1], rotation_angles[index], fraction);
         }
 
       if (depth <= depths.back() && depth >= depths.front() &&

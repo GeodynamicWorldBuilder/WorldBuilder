@@ -1078,6 +1078,29 @@ namespace WorldBuilder
       return angle - 360.0*std::floor(angle/360.0);
     }
 
+    double interpolate_angle_across_zero(const double angle_1,
+                                         const double angle_2,
+                                         const double fraction)
+    {
+      double theta_1 = angle_1;
+      double theta_2 = angle_2;
+      double rotation_angle;
+
+      if (std::abs(theta_2 - theta_1) > Consts::PI)
+        {
+          if (theta_2 > theta_1)
+            theta_1 += 2.*Consts::PI;
+          else
+            theta_2 += 2.*Consts::PI;
+        }
+      rotation_angle = (1-fraction) * theta_1 + fraction * theta_2;
+
+      // make sure angle is between 0 and 360 degrees
+      rotation_angle = rotation_angle - 2*Consts::PI*std::floor(rotation_angle/(2 * Consts::PI));
+
+      return rotation_angle;
+    }
+
     std::array<double,3>
     euler_angles_from_rotation_matrix(const std::array<std::array<double,3>,3> &rotation_matrix)
     {
