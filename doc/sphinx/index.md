@@ -29,6 +29,7 @@ user_manual/how_to_use_the_applications/index
 user_manual/concepts/index
 user_manual/basic_starter_tutorial/index
 user_manual/cookbooks/index
+user_manual/parameter_documentation/index
 ```
 
 
