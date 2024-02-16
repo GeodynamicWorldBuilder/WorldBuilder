@@ -2,6 +2,10 @@
 #include "world_builder/world.h"
 
 #include <stdio.h>
+
+// we don't need the c++ MPI wrappers
+#define OMPI_SKIP_MPICXX 1
+#define MPICH_SKIP_MPICXX
 #include <mpi.h>
 
 int main(int argc, char *argv[]) {
