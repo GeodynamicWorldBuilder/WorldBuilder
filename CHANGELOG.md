@@ -15,6 +15,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Added an option to use the plate model as the reference model for the mass conserving temperature of the slab. \[Haoyuan Li; 2024-02-02; [#471](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/471)\]
 - Added a cookbook for making a transform fault and using this model in ASPECT. \[Juliane Dannberg; 2024-02-14; [#563](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/563)\]
 - Added a system which allows users to tag features. The tag index can then be written out throught the gwb-dat program. \[Menno Fraters and Timo Heister; 2024-02-15; [[#598](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/598)]\]
+- Added variable spreading for mid oceanic ridges. \[Daniel Douglas; 2024-02-16; [#617](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/617)\]
 
 ### Changed 
 - Unified the directories `cookbooks/` and `doc/sphinx/user_manual/cookbooks`. All information about cookbooks including the documentation is now bundled in the top-level `cookbooks/` directory. \[Rene Gassmoeller; 2024-02-14; [#558](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/558)\]

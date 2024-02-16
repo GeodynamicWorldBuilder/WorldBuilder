@@ -254,8 +254,6 @@ namespace WorldBuilder
         {
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
-          const int plate_model_summation_number = 100; // for the plate model
-
 
           if (distance_from_plane <= max_depth && distance_from_plane >= min_depth)
             {
