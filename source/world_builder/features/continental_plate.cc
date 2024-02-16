@@ -234,7 +234,6 @@ namespace WorldBuilder
                       case 4:
                       {
                         output[entry_in_output[i_property]] = tag_index;
-                        std::cout << "tag index = " << tag_index << std::endl;
                         break;
                       }
                       default:

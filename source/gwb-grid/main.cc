@@ -1447,6 +1447,7 @@ int main(int argc, char **argv)
       {
         { "Depth", vtu11::DataSetType::PointData, 1 },
         { "Temperature", vtu11::DataSetType::PointData, 1 },
+        { "Tag", vtu11::DataSetType::PointData, 1 },
       };
       for (size_t c = 0; c < compositions; ++c)
         {
@@ -1459,15 +1460,20 @@ int main(int argc, char **argv)
       std::vector<std::array<unsigned ,3>> properties;
       properties.push_back({{1,0,0}}); // temperature
 
+      properties.push_back({{4,0,0}}); // tag
+
       for (size_t c = 0; c < compositions; ++c)
         properties.push_back({{2,(unsigned int)c,0}}); // composition c
 
+
       // compute temperature
-      std::vector<vtu11::DataSetData> data_set = { grid_depth };
-      data_set.resize(2+compositions);
+      std::vector<vtu11::DataSetData> data_set(3+compositions);
+      data_set[0] = grid_depth;
       data_set[1].resize(n_p);
+      data_set[2].resize(n_p);
       for (size_t c = 0; c < compositions; ++c)
-        data_set[2+c].resize(n_p);
+        data_set[3+c].resize(n_p);
+
       if (dim == 2)
         {
           pool.parallel_for(0, n_p, [&] (size_t i)
@@ -1475,9 +1481,10 @@ int main(int argc, char **argv)
             const std::array<double,2> coords = {{grid_x[i], grid_z[i]}};
             std::vector<double> output = world->properties(coords, grid_depth[i],properties);
             data_set[1][i] = output[0];
+            data_set[2][i] = output[1];
             for (size_t c = 0; c < compositions; ++c)
               {
-                data_set[2+c][i] = output[1+c];
+                data_set[3+c][i] = output[2+c];
               }
           });
         }
@@ -1488,9 +1495,10 @@ int main(int argc, char **argv)
             const std::array<double,3> coords = {{grid_x[i], grid_y[i], grid_z[i]}};
             std::vector<double> output = world->properties(coords, grid_depth[i],properties);
             data_set[1][i] = output[0];
+            data_set[2][i] = output[1];
             for (size_t c = 0; c < compositions; ++c)
               {
-                data_set[2+c][i] = output[1+c];
+                data_set[3+c][i] = output[2+c];
               }
           });
         }
