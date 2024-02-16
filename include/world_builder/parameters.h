@@ -26,6 +26,7 @@
 
 #include "rapidjson/schema.h"
 #include "world_builder/point.h"
+#include "world_builder/types/unsigned_int.h"
 
 namespace WorldBuilder
 {
