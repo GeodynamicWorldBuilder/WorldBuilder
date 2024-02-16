@@ -143,9 +143,7 @@ namespace WorldBuilder
 
 
         double min_depth;
-        Objects::Surface min_depth_surface;
         double max_depth;
-        Objects::Surface max_depth_surface;
 
         std::vector<double> depths;
         std::vector<double> semi_major_axis_lengths;

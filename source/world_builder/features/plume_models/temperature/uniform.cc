@@ -64,11 +64,10 @@ namespace WorldBuilder
                             "Uniform temperature model. Set the temperature to a constant value.");
 
           // Declare entries of this plugin
-          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0.))),
-                            "The depth in meters from which the composition of this feature is present.");
-
-          prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max()))),
-                            "The depth in meters to which the composition of this feature is present.");
+          prm.declare_entry("min depth", Types::Double(0),
+                            "The depth in meters from which the temperature of this feature is present.");
+          prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),
+                            "The depth in meters to which the temperature of this feature is present.");
 
           prm.declare_entry("temperature", Types::Double(293.15),
                             "The temperature in degree Kelvin which this feature should have");
@@ -76,13 +75,10 @@ namespace WorldBuilder
         }
 
         void
-        Uniform::parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates)
+        Uniform::parse_entries(Parameters &prm)
         {
-
-          min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
-          min_depth = min_depth_surface.minimum;
-          max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
-          max_depth = max_depth_surface.maximum;
+          min_depth = prm.get<double>("min depth");
+          max_depth = prm.get<double>("max depth");
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
           temperature = prm.get<double>("temperature");
         }
@@ -90,21 +86,16 @@ namespace WorldBuilder
 
         double
         Uniform::get_temperature(const Point<3> & /*position_in_cartesian_coordinates*/,
-                                 const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                                 const Objects::NaturalCoordinate & /*position_in_natural_coordinates*/,
                                  const double depth,
                                  const double  /*gravity*/,
                                  double temperature_,
                                  const double /*feature_min_depth*/,
                                  const double /*feature_max_depth*/) const
         {
-          const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
-          const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
-          if (depth <= max_depth_local &&  depth >= min_depth_local)
+          if (depth <= max_depth && depth >= min_depth)
             {
-              if (depth <= max_depth && depth >= min_depth)
-                {
-                  return apply_operation(operation,temperature_,temperature);
-                }
+              return apply_operation(operation,temperature_,temperature);
             }
           return temperature_;
         }

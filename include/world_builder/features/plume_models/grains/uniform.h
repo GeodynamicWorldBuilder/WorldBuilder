@@ -78,7 +78,7 @@ namespace WorldBuilder
              * declare and read in the world builder file into the parameters
              * class
              */
-            void parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates) override final;
+            void parse_entries(Parameters &prm) override final;
 
             /**
              * Returns a grains based on the given position, composition (e.g.
@@ -96,9 +96,7 @@ namespace WorldBuilder
           private:
             // uniform grains submodule parameters
             double min_depth;
-            Objects::Surface min_depth_surface;
             double max_depth;
-            Objects::Surface max_depth_surface;
             std::vector<unsigned int> grains;
             std::vector<unsigned int> compositions;
             std::string operation;

@@ -70,7 +70,7 @@ namespace WorldBuilder
              * declare and read in the world builder file into the parameters class
              */
             virtual
-            void parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates) = 0;
+            void parse_entries(Parameters &prm) = 0;
 
 
             /**

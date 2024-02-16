@@ -64,9 +64,12 @@ namespace WorldBuilder
     {
       prm.declare_entry("", Types::Object(required_entries), "Plume object. Requires properties `model` and `coordinates`.");
 
-      prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0.))),
-                        "The depth from which this feature is present. Units: m.");
-      prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max()))),
+      prm.declare_entry("min depth", Types::Double(0),
+                        "The depth from which this feature is present, in other words, the "
+                        "depth of the tip of the plume. If the first entry in the cross "
+                        "section depths has a greater depth, an ellipsoidal plume head will "
+                        "be added in between. Units: m.");
+      prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),
                         "The depth to which this feature is present. Units: m.");
       prm.declare_entry("cross section depths", Types::Array(Types::Double(0)),
                         "The depths of the elliptic cross section of the plume. Units: m.");
@@ -109,11 +112,8 @@ namespace WorldBuilder
 
       this->get_coordinates("coordinates", prm, coordinate_system);
 
-      min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
-      min_depth = min_depth_surface.minimum;
-
-      max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
-      max_depth = max_depth_surface.maximum;
+      min_depth = prm.get<double>("min depth");
+      max_depth = prm.get<double>("max depth");
 
       depths = prm.get_vector<double>("cross section depths");
       semi_major_axis_lengths = prm.get_vector<double>("semi-major axis");
@@ -172,7 +172,7 @@ namespace WorldBuilder
           {
             prm.enter_subsection(std::to_string(i));
             {
-              temperature_models[i]->parse_entries(prm,coordinates);
+              temperature_models[i]->parse_entries(prm);
             }
             prm.leave_subsection();
           }
@@ -188,7 +188,7 @@ namespace WorldBuilder
           {
             prm.enter_subsection(std::to_string(i));
             {
-              composition_models[i]->parse_entries(prm, coordinates);
+              composition_models[i]->parse_entries(prm);
             }
             prm.leave_subsection();
           }
@@ -204,7 +204,7 @@ namespace WorldBuilder
           {
             prm.enter_subsection(std::to_string(i));
             {
-              grains_models[i]->parse_entries(prm,coordinates);
+              grains_models[i]->parse_entries(prm);
             }
             prm.leave_subsection();
           }
@@ -281,9 +281,7 @@ namespace WorldBuilder
                                                           Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
                                                                    world->parameters.coordinate_system->natural_coordinate_system())))
         {
-          const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
-          const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
-          if (depth <= max_depth_local &&  depth >= min_depth_local)
+          if (depth <= max_depth &&  depth >= min_depth)
             {
               for (unsigned int i_property = 0; i_property < properties.size(); ++i_property)
                 {
@@ -298,8 +296,8 @@ namespace WorldBuilder
                                                                                                      depth,
                                                                                                      gravity_norm,
                                                                                                      output[entry_in_output[i_property]],
-                                                                                                     min_depth_local,
-                                                                                                     max_depth_local);
+                                                                                                     min_depth,
+                                                                                                     max_depth);
 
                             WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Temparture is not a number: " << output[entry_in_output[i_property]]
                                      << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
@@ -317,8 +315,8 @@ namespace WorldBuilder
                                                                                                        depth,
                                                                                                        properties[i_property][1],
                                                                                                        output[entry_in_output[i_property]],
-                                                                                                       min_depth_local,
-                                                                                                       max_depth_local);
+                                                                                                       min_depth,
+                                                                                                       max_depth);
 
                               WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Composition is not a number: " << output[entry_in_output[i_property]]
                                        << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
@@ -339,8 +337,8 @@ namespace WorldBuilder
                                                               depth,
                                                               properties[i_property][1],
                                                               grains,
-                                                              min_depth_local,
-                                                              max_depth_local);
+                                                              min_depth,
+                                                              max_depth);
 
                           }
                         grains.unroll_into(output,entry_in_output[i_property]);
