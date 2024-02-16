@@ -63,21 +63,21 @@ namespace WorldBuilder
     {
       prm.declare_entry("", Types::Object(required_entries), "Plume object. Requires properties `model` and `coordinates`.");
 
-      // TODO remove min and max depth
       prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0.))),
-                        "The depth from which this feature is present");
+                        "The depth from which this feature is present. Units: m.");
       prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max()))),
-                        "The depth to which this feature is present");
+                        "The depth to which this feature is present. Units: m.");
       prm.declare_entry("cross section depths", Types::Array(Types::Double(0)),
-                        "The depths of the elliptic cross section of the plume.");
+                        "The depths of the elliptic cross section of the plume. Units: m.");
       prm.declare_entry("semi-major axis", Types::Array(Types::Double(100.e3)),
                         "The lengths of the semi-major axes of the elliptic cross sections of the plume. "
-                        "In spherical coordinates, this is in degrees, otherise in meters.");
+                        "In spherical coordinates, this is in degrees, otherwise in meters.");
       prm.declare_entry("eccentricity", Types::Array(Types::Double(0)),
-                        "The eccentricities of the cross sections");
+                        "The eccentricities of the cross sections.");
       prm.declare_entry("rotation angles", Types::Array(Types::Double(0)),
                         "The directions that the semi-major axis of the elliptic cross-sections "
-                        "are pointing to, as an angle from geographic North in degrees.");
+                        "are pointing to, as an angle from geographic North in degrees. "
+                        "The angle should be between 0 and 360 degrees.");
 
       prm.declare_entry("temperature models",
                         Types::PluginSystem("", Features::PlumeModels::Temperature::Interface::declare_entries, {"model"}),
@@ -108,11 +108,6 @@ namespace WorldBuilder
       semi_major_axis_lengths = prm.get_vector<double>("semi-major axis");
       eccentricities = prm.get_vector<double>("eccentricity");
       rotation_angles = prm.get_vector<double>("rotation angles");
-
-      // Convert to radians, convert from geographical to mathematical
-      // TODO: convert semi_major_axis_lengths as well for spherical coordinates
-      for (unsigned int i = 0; i < rotation_angles.size(); ++i)
-        rotation_angles[i] = Consts::PI/2. - rotation_angles[i] * Consts::PI/180.;
 
       for (unsigned int i = 0; i < depths.size()-1; ++i)
         WBAssert(depths[i] < depths[i+1],
@@ -145,6 +140,18 @@ namespace WorldBuilder
                 << " rotation angle entries but " 
                 << coordinates.size() 
                 << " coordinates!");
+
+      
+      // Convert degrees to radians, convert from geographical to mathematical
+      // TODO: convert semi_major_axis_lengths as well for spherical coordinates
+      for (unsigned int i = 0; i < rotation_angles.size(); ++i)
+        rotation_angles[i] = Consts::PI/2. - rotation_angles[i] * Consts::PI/180.;
+
+      if (world->parameters.coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical)
+        for (unsigned int i = 0; i < semi_major_axis_lengths.size(); ++i)
+      {
+        semi_major_axis_lengths[i] *= Consts::PI/180.;
+      }
 
       prm.get_unique_pointers<Features::PlumeModels::Temperature::Interface>("temperature models", temperature_models);
 
@@ -245,14 +252,11 @@ namespace WorldBuilder
             angle_1 += 2.*Consts::PI;
           else
             angle_2 += 2.*Consts::PI;
-       
         }
         rotation_angle = (1-fraction) * angle_1 + fraction * angle_2;
 
         // make sure angle is between 0 and 360 degrees
         rotation_angle = rotation_angle - 2*Consts::PI*std::floor(rotation_angle/(2 * Consts::PI));
-
-        //std::cout << rotation_angles[index-1] << " " << rotation_angles[index] << " " <<  rotation_angle << std::endl;
       }
 
       if (depth <= depths.back() && depth >= depths.front() &&
@@ -263,7 +267,6 @@ namespace WorldBuilder
                                                           Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
                                                                    world->parameters.coordinate_system->natural_coordinate_system())))
         {
-          // TODO: In the future, we could remove the min and max depth and instead use the coordinates
           const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
           const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
           if (depth <= max_depth_local &&  depth >= min_depth_local)
