@@ -682,6 +682,39 @@ namespace WorldBuilder
 
     }
 
+    Objects::PlaneDistances
+    Fault::distance_to_feature_plane(const Point<3> &position_in_cartesian_coordinates,
+                                     const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                                     const double depth) const
+    {
+      // The depth variable is the distance from the surface to the position, the depth
+      // coordinate is the distance from the bottom of the model to the position and
+      // the starting radius is the distance from the bottom of the model to the surface.
+      const double starting_radius = position_in_natural_coordinates.get_depth_coordinate() + depth - starting_depth;
+
+      WBAssert(std::abs(starting_radius) > std::numeric_limits<double>::epsilon(), "World Builder error: starting_radius can not be zero. "
+               << "Position = " << position_in_cartesian_coordinates[0] << ':' << position_in_cartesian_coordinates[1] << ':' << position_in_cartesian_coordinates[2]
+               << ", natural_coordinate.get_depth_coordinate() = " << position_in_natural_coordinates.get_depth_coordinate()
+               << ", depth = " << depth
+               << ", starting_depth " << starting_depth
+              );
+
+      const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
+        WorldBuilder::Utilities::distance_point_from_curved_planes(position_in_cartesian_coordinates,
+                                                                   position_in_natural_coordinates,
+                                                                   reference_point,
+                                                                   coordinates,
+                                                                   fault_segment_lengths,
+                                                                   fault_segment_angles,
+                                                                   starting_radius,
+                                                                   this->world->parameters.coordinate_system,
+                                                                   false,
+                                                                   this->bezier_curve);
+
+      Objects::PlaneDistances plane_distances(distance_from_planes.distance_from_plane, distance_from_planes.distance_along_plane);
+      return plane_distances;
+    }
+
     /**
      * Register plugin
      */
