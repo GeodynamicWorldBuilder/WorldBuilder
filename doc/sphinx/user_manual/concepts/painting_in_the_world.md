@@ -11,7 +11,7 @@ GWB features are specified as a list. The GWB goes through this list sequentiall
 Starting with a topographic map
 -------------------------------
 
-In thi section we will take a map of a region and start to make a model. 
+In this section we will take a map of a region and start to make a model. 
 
 Below you can see three figures. In the leftmost one we start with a map of the region of interest - in this case a simplified map of the eastern Caribbean plate. For simplicity's sake, we will focus on a small part as indicated by the black box in the middle figure. Next, we define important points P1 to P7 on the box. These points are defined by the different tectonic units in the area. In the figure to the right, P1, P2, P7, P5 and P6 define the area to the left of the trench (green) which represents the Caribbean plate. P2, P3, P4, P5 and P7 define the area to the right of the trench (blue) which represents the Atlantic part of the South American plate. Finally, P2, P7 and P5 describe a line for the trench (magenta).
 
