@@ -93,6 +93,32 @@ namespace WorldBuilder
          */
         std::array<double,3> coordinates;
     };
+
+
+    inline
+    double
+    NaturalCoordinate::get_depth_coordinate() const
+    {
+      switch (coordinate_system)
+        {
+          case CoordinateSystem::cartesian:
+          {
+            return coordinates[2];
+            break;
+          }
+
+          case CoordinateSystem::spherical:
+          {
+            return coordinates[0];
+            break;
+          }
+
+          default:
+            WBAssertThrow (false, "Coordinate system not implemented.");
+        }
+
+      return 0;
+    }
   }
 }
 
