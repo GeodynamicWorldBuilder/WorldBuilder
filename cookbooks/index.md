@@ -9,4 +9,5 @@ This section contains self-contained cookbooks on how to design different geodyn
 : hidden:
 
 3d_cartesian_rift/doc/README
+3d_cartesian_transform_fault/doc/README
 ```

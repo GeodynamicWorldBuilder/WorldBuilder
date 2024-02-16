@@ -261,7 +261,7 @@ namespace WorldBuilder
      * meshed by a grid. The axis parallel to the surface are formed by
      * sections, and the axis perpendicuar to the surface are formed segments.
      * Both sections and elements represent a whole cell in the grid, which is
-     * an inteter. This structure also provides the fraction in each direction
+     * an integer. This structure also provides the fraction in each direction
      * the closest point on the plane is along these two axes (sections and
      * segments). These variables are called fractions.
      *

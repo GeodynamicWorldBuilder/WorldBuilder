@@ -260,8 +260,6 @@ namespace WorldBuilder
           if (distance_from_plane <= max_depth && distance_from_plane >= min_depth)
             {
 
-              const CoordinateSystem coordinate_system = world->parameters.coordinate_system->natural_coordinate_system();
-              double distance_ridge = std::numeric_limits<double>::max();
               const Point<3> trench_point = distance_from_planes.closest_trench_point;
               const Objects::NaturalCoordinate trench_point_natural = Objects::NaturalCoordinate(trench_point,
                                                                       *(world->parameters.coordinate_system));
@@ -277,7 +275,7 @@ namespace WorldBuilder
               const double seconds_in_year = 60.0 * 60.0 * 24.0 * 365.25;  // sec/y
               const double plate_velocity = ridge_parameters.first * seconds_in_year; // m/yr
 
-              const double age_at_trench = distance_ridge / plate_velocity; // m/(m/y) = yr
+              const double age_at_trench = ridge_parameters.second / plate_velocity; // m/(m/y) = yr
               const double plate_age_sec = age_at_trench * seconds_in_year; // y --> seconds
 
               /* information about nearest point on the slab segment */

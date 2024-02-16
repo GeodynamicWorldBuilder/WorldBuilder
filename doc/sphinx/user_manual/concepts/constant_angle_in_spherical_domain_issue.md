@@ -12,13 +12,13 @@ The issue arises when you want to define a line with a certain angle to the surf
 
 **Constant angle with the starting position**
 
-![spherical subduction line](../../../manual/images/spherical_approximations_line.png)
+![spherical subduction line](../../_static/images/spherical_approximations_line.png)
 :::
 :::{grid-item-card}
 
 **Constant angle with the surface above the current position**
 
-![spherical subduction spiral](../../../manual/images/spherical_approximations_spiral.png)
+![spherical subduction spiral](../../_static/images/spherical_approximations_spiral.png)
 :::
 ::::
 

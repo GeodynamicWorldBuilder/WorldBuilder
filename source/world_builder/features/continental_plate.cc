@@ -23,6 +23,7 @@
 #include "world_builder/features/continental_plate_models/composition/interface.h"
 #include "world_builder/features/continental_plate_models/grains/interface.h"
 #include "world_builder/features/continental_plate_models/temperature/interface.h"
+#include "world_builder/features/feature_utilities.h"
 #include "world_builder/nan.h"
 #include "world_builder/types/array.h"
 #include "world_builder/types/double.h"
@@ -84,6 +85,14 @@ namespace WorldBuilder
       const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 
       this->name = prm.get<std::string>("name");
+
+      std::string tag = prm.get<std::string>("tag");
+      if (tag == "")
+        {
+          tag = "continental plate";
+        }
+      this->tag_index = FeatureUtilities::add_vector_unique(this->world->feature_tags,tag);
+
       this->get_coordinates("coordinates", prm, coordinate_system);
 
       min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
@@ -220,10 +229,21 @@ namespace WorldBuilder
 
                           }
                         grains.unroll_into(output,entry_in_output[i_property]);
+                        break;
                       }
-                      break;
+                      case 4:
+                      {
+                        output[entry_in_output[i_property]] = tag_index;
+                        std::cout << "tag index = " << tag_index << std::endl;
+                        break;
+                      }
                       default:
-                        WBAssertThrow(false, "Internal error: Unimplemented property provided. Only temperature (1), composition (2) or grains (3) are allowed.");
+                      {
+                        WBAssertThrow(false,
+                                      "Internal error: Unimplemented property provided. " <<
+                                      "Only temperature (1), composition (2), grains (3) or tag (4) are allowed. "
+                                      "Provided property number was: " << properties[i_property][0]);
+                      }
                     }
                 }
             }

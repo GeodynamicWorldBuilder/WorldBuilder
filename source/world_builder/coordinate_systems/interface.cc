@@ -51,7 +51,7 @@ namespace WorldBuilder
                 prm.declare_entry("", Types::Object(required_entries), "Coordinate system object");
 
                 prm.declare_entry("model",Types::String("",iter.first),
-                                  "The name which the user has given to the feature.");
+                                  "The name of the coordinate system to use.");
 
                 iter.second(prm, parent_name);
               }
