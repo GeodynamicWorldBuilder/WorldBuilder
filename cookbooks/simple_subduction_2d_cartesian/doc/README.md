@@ -23,7 +23,9 @@ boundaries.
 
 When building a new World Builder model for input to some other software, we recommend 
 creating a grid file so you can check the construction of your model as you add in 
-additional features by visualizing the model output using Paraview (or similar). 
+additional features by visualizing the model output created by 
+[gwb-grid](part:user_manual:chap:how_to_use_the_apps:sec:gwb-grid_app)
+using Paraview (or similar). 
 A grid file has a specific structure defining the geometry, extent of the model region 
 to visualize and the grid spacing. Choose a grid spacing that is sufficient to check the 
 model is defined properly. For a 2D model only the information for the 2D grid of points 
@@ -44,11 +46,21 @@ points of the cross section at x = 0 and x = 8000e3 m. The other physical parame
 are defined as reference values, which will be used by the feature temperature models 
 if the values are not entered separately.
 
+::::{tab-set}
+:::{tab-item} Root model information
 ```{literalinclude} ../simple_subduction_2d_cartesian.wb
 :language: json
 :lineno-start: 1
 :lines: 1-6
 ```
+:::
+:::{tab-item} Full File
+```{literalinclude} ../simple_subduction_2d_cartesian.wb
+:language: json
+:lineno-start: 1
+```
+:::
+::::
  
 ### Feature Geometry, temperature and composition 
 
@@ -63,23 +75,33 @@ We don't need to define a thickness for the mantle, but we need to define its la
 extent. This is done by assigning the x, y coordinates of the vertices of a polygon 
 given in clockwise order. In this example, the polygon is a rectangle, so there are 4 
 pairs of coordinates provide.  Because this is the first feature in the parameter file, 
-features that follow and overlap with this layer will replace (default) the existing value. 
+features that follow and overlap with this layer will replace (by default) the existing value. 
 
 The reason we define a mantle layer is so we can set the background temperature to a u
 uniform value of 1573 K. The same value will be used as the bottom temperature in the 
-plate models. A constant temperature mantle is a simplification, but is some times useful 
+plate models. A constant temperature mantle is a simplification, but is sometimes useful 
 for testing ideas. A large model domain size is chosen to reduce the effects of the side 
 boundaries, However, an even wider model is likely needed with a depth of only 1600 km. 
 Alternatively, the box depth can be increased to 3000 km.  
 
+::::{tab-set}
+:::{tab-item} Root model information
 ```{literalinclude} ../simple_subduction_2d_cartesian.wb
 :language: json
 :lineno-start: 7
 :lines: 7-11
 ```
+:::
+:::{tab-item} Full File
+```{literalinclude} ../simple_subduction_2d_cartesian.wb
+:language: json
+:lineno-start: 1
+```
+:::
+::::
 
 #### Oceanic Plates
-The geometry of the oceanic plates are defined by their lateral extent in the x direction
+The geometry of the oceanic plates is defined by their lateral extent in the x direction
 and their depth in the z direction, again setting the y direction width to an arbitrary value: 
 * Overriding plate extends from 0 to 3500e3 m in the x-direction.
 * Sinking plate extends from 3500e3 m to 8000e3 m in the x-direction. 
@@ -124,11 +146,21 @@ not correspond to a geological feature, but can be used to refer to or show the 
 location or thickness of the slab.  The same approach can be used to define a crustal 
 layer with a max depth/thickness of 8e3 m. 
 
-:::{literalinclude} ../simple_subduction_2d_cartesian.wb
+::::{tab-set}
+:::{tab-item} Root model information
+```{literalinclude} ../simple_subduction_2d_cartesian.wb
 :language: json
 :lineno-start: 12
 :lines: 12-31
+```
 :::
+:::{tab-item} Full File
+```{literalinclude} ../simple_subduction_2d_cartesian.wb
+:language: json
+:lineno-start: 1
+```
+:::
+::::
 
 #### Subducting Plate
 Here we illustrate how to define a generic slab profile by defining segments of the slab
@@ -141,11 +173,21 @@ over which the composition or temperature will also be calculated. Distances abo
 are negative. The code block below illustrates how the parameters defining the segments are
 input in the World Builder file. 
 
-:::{literalinclude} ../simple_subduction_2d_cartesian.wb
+::::{tab-set}
+:::{tab-item} Root model information
+```{literalinclude} ../simple_subduction_2d_cartesian.wb
 :language: json
 :lineno-start: 32
 :lines: 32-41
+```
 :::
+:::{tab-item} Full File
+```{literalinclude} ../simple_subduction_2d_cartesian.wb
+:language: json
+:lineno-start: 1
+```
+:::
+::::
 
 Here we first add the compositional layer for visualization (above) of the location and 
 thickness of the slab. We chose segments of different lengths, some with constant dip angle 
@@ -171,11 +213,22 @@ subducting plate velocity and length of the slab. The parameter `min distance sl
 has the same role as `top truncation` and the parameter `max distance slab top` has the 
 same role as `thickness`.
 
-:::{literalinclude} ../simple_subduction_2d_cartesian.wb
+::::{tab-set}
+:::{tab-item} Root model information
+
+```{literalinclude} ../simple_subduction_2d_cartesian.wb
 :language: json
 :lineno-start: 42
 :lines: 42-51
+```
 :::
+:::{tab-item} Full File
+```{literalinclude} ../simple_subduction_2d_cartesian.wb
+:language: json
+:lineno-start: 1
+```
+:::
+::::
 
 Three other paramaters control details of the temperature structure:
 * the rate of heating is different where the slab is in contact with the overriding plate 
