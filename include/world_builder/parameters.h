@@ -123,7 +123,13 @@ namespace WorldBuilder
                                                           const std::vector<Point<2> > &addition_points = {});
 
       /**
-       * A specialized version of get which can return vectors/arrays.
+       * A specialized version of get which can return a values at times type.
+       * \param name The name of the entry to retrieved
+       */
+      std::pair<std::vector<double>,std::vector<double>> get_value_at_array(const std::string &name);
+
+      /**
+       * A specialized verions of get which can return vectors/arrays.
        * This version is designed for the plugin system.
        * \param name The name of the entry to retrieved
        */

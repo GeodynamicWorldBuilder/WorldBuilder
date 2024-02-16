@@ -3820,23 +3820,23 @@ TEST_CASE("WorldBuilder Parameters")
     CHECK(rapidjson::Pointer("/test/oneOf/0/oneOf/1/default value").Get(prm_temp.declarations)->GetDouble() == Approx(102.));
     CHECK(rapidjson::Pointer("/test/oneOf/1/default value").Get(prm_temp.declarations)->GetDouble() == Approx(103.));
   }
-  prm.declare_entry("one value at points one value string",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101.))),
+  prm.declare_entry("one value at points one value string",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101., 2.))),
                     "Documentation");
-  prm.declare_entry("array value at points one value string",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101.))),
+  prm.declare_entry("array value at points one value string",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101., 2.))),
                     "Documentation");
-  prm.declare_entry("value at points set ap val string",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101.))),
+  prm.declare_entry("value at points set ap val string",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101., 2.))),
                     "Documentation");
-  prm.declare_entry("value at points set ap p1 string",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101.))),
+  prm.declare_entry("value at points set ap p1 string",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101., 2.))),
                     "Documentation");
-  prm.declare_entry("value at points set ap p2 string",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101.))),
+  prm.declare_entry("value at points set ap p2 string",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101., 2.))),
                     "Documentation");
-  prm.declare_entry("one value at points one value",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101.))),
+  prm.declare_entry("one value at points one value",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101., 2.))),
                     "Documentation");
-  prm.declare_entry("array value at points one value",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101.))),
+  prm.declare_entry("array value at points one value",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101., 2.))),
                     "Documentation");
-  prm.declare_entry("value at points",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101.))),
+  prm.declare_entry("value at points",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101., 2.))),
                     "Documentation");
-  prm.declare_entry("value at points default ap",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101.))),
+  prm.declare_entry("value at points default ap",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101., 2.))),
                     "Documentation");
   prm.leave_subsection();
   const std::vector<Point<2> > additional_points = {Point<2>(-10,-10,cartesian),Point<2>(-10,10,cartesian),

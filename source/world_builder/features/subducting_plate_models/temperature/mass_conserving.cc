@@ -28,8 +28,10 @@
 #include "world_builder/types/array.h"
 #include "world_builder/types/bool.h"
 #include "world_builder/types/double.h"
+#include "world_builder/types/one_of.h"
 #include "world_builder/types/object.h"
 #include "world_builder/types/point.h"
+#include "world_builder/types/value_at_points.h"
 #include "world_builder/utilities.h"
 #include "world_builder/world.h"
 
@@ -48,7 +50,6 @@ namespace WorldBuilder
           min_depth(NaN::DSNAN),
           max_depth(NaN::DSNAN),
           density(NaN::DSNAN),
-          plate_velocity(NaN::DSNAN),
           mantle_coupling_depth(NaN::DSNAN),
           forearc_cooling_factor(NaN::DSNAN),
           thermal_conductivity(NaN::DSNAN),
@@ -116,7 +117,7 @@ namespace WorldBuilder
           prm.declare_entry("density", Types::Double(3300),
                             "The reference density of the subducting plate in $kg/m^3$");
 
-          prm.declare_entry("plate velocity", Types::Double(0.05),
+          prm.declare_entry("plate velocity", Types::OneOf(Types::Double(0.01),Types::Array(Types::ValueAtPoints(0.01, std::numeric_limits<size_t>::max()))),
                             "The velocity with which the plate subducts in meters per year. Default is 5 cm/yr");
 
           prm.declare_entry("coupling depth", Types::Double(100e3),
@@ -180,7 +181,7 @@ namespace WorldBuilder
 
           density = prm.get<double>("density");
           thermal_conductivity = prm.get<double>("thermal conductivity");
-          plate_velocity = prm.get<double>("plate velocity");
+          plate_velocities = prm.get_value_at_array("plate velocity");
 
           mantle_coupling_depth = prm.get<double>("coupling depth");
           forearc_cooling_factor = prm.get<double>("forearc cooling factor");
@@ -216,6 +217,24 @@ namespace WorldBuilder
               {
                 ridge_coordinate *= dtr;
               }
+
+          unsigned int index_x = 0;
+          unsigned int index_y = 0;
+          unsigned int ridge_point_index = 0;
+          for (index_x = 0; index_x < mid_oceanic_ridges.size(); index_x++)
+            {
+              std::vector<double> plate_velocities_for_ridge;
+              for (index_y = 0; index_y < mid_oceanic_ridges[index_x].size(); index_y++)
+                {
+                  if (plate_velocities.second.size() <= 1)
+                    plate_velocities_for_ridge.push_back(plate_velocities.first[0]);
+                  else
+                    plate_velocities_for_ridge.push_back(plate_velocities.second[ridge_point_index]);
+                  ridge_point_index += 1;
+                }
+              plate_velocities_at_each_ridge_point.push_back(plate_velocities_for_ridge);
+            }
+
           std::string reference_model_name_str = prm.get<std::string>("reference model name");
           if (reference_model_name_str=="plate model")
             reference_model_name = plate_model;
@@ -242,8 +261,9 @@ namespace WorldBuilder
               const Point<3> trench_point = distance_from_planes.closest_trench_point;
               const Objects::NaturalCoordinate trench_point_natural = Objects::NaturalCoordinate(trench_point,
                                                                       *(world->parameters.coordinate_system));
+
               std::pair<double, double> ridge_parameters = Utilities::calculate_ridge_distance_and_spreading(mid_oceanic_ridges,
-                                                           plate_velocity,
+                                                           plate_velocities_at_each_ridge_point,
                                                            world->parameters.coordinate_system,
                                                            trench_point_natural);
 
@@ -251,6 +271,7 @@ namespace WorldBuilder
               const double cm2m = 100; // 100 cm/m
               const double my = 1.0e6;  // 1e6 y/my
               const double seconds_in_year = 60.0 * 60.0 * 24.0 * 365.25;  // sec/y
+              const double plate_velocity = ridge_parameters.first * seconds_in_year; // m/yr
 
               const double age_at_trench = ridge_parameters.second / plate_velocity; // m/(m/y) = yr
               const double plate_age_sec = age_at_trench * seconds_in_year; // y --> seconds
@@ -455,7 +476,7 @@ namespace WorldBuilder
                     }
 
                   // Call the analytic solution to compute the temperature
-                  temperature = get_temperature_analytic(top_heat_content, min_temperature, background_temperature, temperature_, effective_plate_age, adjusted_distance);
+                  temperature = get_temperature_analytic(top_heat_content, min_temperature, background_temperature, temperature_, plate_velocity, effective_plate_age, adjusted_distance);
                 }
               else
                 {
@@ -477,6 +498,7 @@ namespace WorldBuilder
                                                  const double min_temperature,
                                                  const double background_temperature,
                                                  const double temperature_,
+                                                 const double plate_velocity,
                                                  const double effective_plate_age,
                                                  const double adjusted_distance) const
         {
