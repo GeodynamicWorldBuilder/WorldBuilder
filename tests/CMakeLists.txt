@@ -5,26 +5,25 @@ FIND_PROGRAM(DIFF_EXECUTABLE
 	     PATH_SUFFIXES bin
 	     )
 
- IF(NOT DIFF_EXECUTABLE MATCHES "-NOTFOUND")
-	 SET(TEST_DIFF ${DIFF_EXECUTABLE})
-	 MESSAGE(STATUS "Found ${DIFF_EXECUTABLE} to test the difference between files.")
- ELSE()
-	     MESSAGE(FATAL_ERROR
-		     "Could not find numdiff, diff or fc. This is required for running the testsuite.\n"
-		     "Please specify TEST_DIFF by hand."
-		     )
+IF(NOT DIFF_EXECUTABLE MATCHES "-NOTFOUND")
+  SET(TEST_DIFF ${DIFF_EXECUTABLE})
+	MESSAGE(STATUS "Found ${DIFF_EXECUTABLE} to test the difference between files.")
+ELSE()
+  MESSAGE(FATAL_ERROR
+          "Could not find numdiff, diff or fc. This is required for running the testsuite.\n"
+          "Please specify TEST_DIFF by hand.")
 ENDIF()
 
 # Unit test testing
 #find all the unit test files
 SET(WB_INCLUDE_UNIT_TEST ON
-CACHE BOOL "Whether to include unit tests or not in the build.")
+    CACHE BOOL "Whether to include unit tests or not in the build.")
 
 SET(WB_RUN_TESTS_WITH_GDB OFF
-CACHE BOOL "Whether to also run the test with GDB")
+    CACHE BOOL "Whether to also run the test with GDB")
 
 SET(WB_RUN_TESTS_WITH_VALGRIND OFF
-CACHE BOOL "Whether to also run the test with Valgrind")
+    CACHE BOOL "Whether to also run the test with Valgrind")
 
 if(WB_INCLUDE_UNIT_TEST)
   file(GLOB_RECURSE UNIT_TEST_SOURCES_CXX "unit_tests/*.cc")
@@ -73,13 +72,13 @@ if(WB_INCLUDE_UNIT_TEST)
   #Finally add it to test execution -
   #Notice the WORKING_DIRECTORY and COMMAND
   add_test(NAME ${test_name}
-           WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
-           COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${test_name})
+          WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+          COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${test_name})
 
   if(WB_RUN_TESTS_WITH_GDB)
     add_test(NAME ${test_name}_gdb
-             WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
-             COMMAND gdb --ex r --ex bt -ex "set confirm off" --ex exit($_exitcode) --args ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${test_name})
+            WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+            COMMAND gdb --ex r --ex bt -ex "set confirm off" --ex exit($_exitcode) --args ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${test_name})
   endif()
 
   if(WB_RUN_TESTS_WITH_VALGRIND)
@@ -88,6 +87,7 @@ if(WB_INCLUDE_UNIT_TEST)
              COMMAND valgrind -v --leak-check=full --error-exitcode=1  ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${test_name})
   endif()
 endif()
+
 # App testing
 IF(WB_RUN_APP_TESTS)
   # Create directory for the test results
@@ -95,67 +95,67 @@ IF(WB_RUN_APP_TESTS)
 
   # Test help
   add_test(testing_help
-           ${CMAKE_COMMAND} 
-  	 -D TEST_NAME=testing_help 
-     -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} 
-  	 -D TEST_ARGS=--help 
-  	 -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/testing_help/screen-output.log 
-     -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/testing_help/screen-output.log
-     -D TEST_DIFF=${TEST_DIFF}
-  	 -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
-           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
+           ${CMAKE_COMMAND}
+           -D TEST_NAME=testing_help
+           -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX}
+           -D TEST_ARGS=--help
+           -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/testing_help/screen-output.log
+           -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/testing_help/screen-output.log
+           -D TEST_DIFF=${TEST_DIFF}
+           -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
   
   # Test no files provided
   add_test(testing_no_file
-           ${CMAKE_COMMAND} 
-  	 -D TEST_NAME=testing_no_file 
-  	 -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} 
-  	 -D TEST_ARGS= 
-  	 -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/testing_no_file/screen-output.log 
-  	 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/testing_no_file/screen-output.log
-     -D TEST_DIFF=${TEST_DIFF}
-  	 -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
-           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
+          ${CMAKE_COMMAND}
+          -D TEST_NAME=testing_no_file
+          -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX}
+          -D TEST_ARGS=
+          -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/testing_no_file/screen-output.log
+          -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/testing_no_file/screen-output.log
+          -D TEST_DIFF=${TEST_DIFF}
+          -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
   
   
   # Test one file provided 
   add_test(testing_one_file
-           ${CMAKE_COMMAND} 
-  	 -D TEST_NAME=testing_one_file 
-  	 -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} 
-  	 -D TEST_ARGS=non_existent_file
-  	 -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/testing_one_file/screen-output.log 
-  	 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/testing_one_file/screen-output.log
-     -D TEST_DIFF=${TEST_DIFF}
-  	 -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
-           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
+           ${CMAKE_COMMAND}
+           -D TEST_NAME=testing_one_file
+           -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX}
+           -D TEST_ARGS=non_existent_file
+           -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/testing_one_file/screen-output.log
+           -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/testing_one_file/screen-output.log
+           -D TEST_DIFF=${TEST_DIFF}
+           -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
 
 
   # Test two many arguments provided 
   set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat\;lalala\;nonono")
   add_test(testing_too_many_arguments
-  ${CMAKE_COMMAND} 
-    -D TEST_NAME=testing_too_many_arguments 
-    -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} 
-    -D TEST_ARGS=${TEST_ARGUMENTS}
-    -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/testing_too_many_arguments/screen-output.log 
-    -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/testing_too_many_arguments/screen-output.log
-    -D TEST_DIFF=${TEST_DIFF}
-    -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
-      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
+           ${CMAKE_COMMAND}
+           -D TEST_NAME=testing_too_many_arguments
+           -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX}
+           -D TEST_ARGS=${TEST_ARGUMENTS}
+           -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/testing_too_many_arguments/screen-output.log
+           -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/testing_too_many_arguments/screen-output.log
+           -D TEST_DIFF=${TEST_DIFF}
+           -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
 
   # Add tests which generates the declarations and schema files in the docs folder. Do not care about the output.
-    set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/doc/generate_decl_schema.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-dat/app_wb2.dat\;--output-json-files")
+  set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/doc/generate_decl_schema.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-dat/app_wb2.dat\;--output-json-files")
   add_test(generate_declarations_and_schema
-  ${CMAKE_COMMAND} 
-    -D TEST_NAME=generate_declarations_and_schema 
-    -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} 
-    -D TEST_ARGS=${TEST_ARGUMENTS}
-    -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/generate_declarations_and_schema/screen-output.log 
-    -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/generate_declarations_and_schema/screen-output.log 
-    -D TEST_DIFF=${TEST_DIFF}
-    -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
-      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
+           ${CMAKE_COMMAND}
+           -D TEST_NAME=generate_declarations_and_schema
+           -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX}
+           -D TEST_ARGS=${TEST_ARGUMENTS}
+           -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/generate_declarations_and_schema/screen-output.log
+           -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/generate_declarations_and_schema/screen-output.log
+           -D TEST_DIFF=${TEST_DIFF}
+           -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
 
   
   #find all the integration test files
@@ -166,55 +166,55 @@ IF(WB_RUN_APP_TESTS)
     get_filename_component(test_name ${test_source} NAME_WE)
     set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat\;--limit-debug-consistency-checks")
     add_test(${test_name}
-             ${CMAKE_COMMAND} 
-  	   -D TEST_NAME=${test_name}
-  	   -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} 
-  	   -D TEST_ARGS=${TEST_ARGUMENTS}
-  	   -D TEST_DAT=${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat 
-       -D TEST_SOURCE_DIR=${CMAKE_SOURCE_DIR}
-  	   -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/${test_name}/screen-output.log 
-  	   -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/${test_name}/screen-output.log
-       -D TEST_DIFF=${TEST_DIFF}
-  	   -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
+             ${CMAKE_COMMAND}
+             -D TEST_NAME=${test_name}
+             -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX}
+             -D TEST_ARGS=${TEST_ARGUMENTS}
+             -D TEST_DAT=${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat
+             -D TEST_SOURCE_DIR=${CMAKE_SOURCE_DIR}
+             -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-dat/${test_name}/screen-output.log
+             -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/${test_name}/screen-output.log
+             -D TEST_DIFF=${TEST_DIFF}
+             -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
              WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
 
-  if(WB_RUN_TESTS_WITH_GDB)
-    add_test(NAME ${test_name}_gdb
-             WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
-             COMMAND gdb --return-child-result --ex "set confirm off" --ex r  --ex bt --ex exit  --args ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat --limit-debug-consistency-checks)
-  endif()
+    if(WB_RUN_TESTS_WITH_GDB)
+      add_test(NAME ${test_name}_gdb
+              WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+              COMMAND gdb --return-child-result --ex "set confirm off" --ex r  --ex bt --ex exit  --args ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat --limit-debug-consistency-checks)
+    endif()
 
-  if(WB_RUN_TESTS_WITH_VALGRIND)
-    add_test(NAME ${test_name}_valgrind
-             WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
-             COMMAND valgrind -v --leak-check=full --error-exitcode=1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX}  ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat --limit-debug-consistency-checks)
-  endif()
+    if(WB_RUN_TESTS_WITH_VALGRIND)
+      add_test(NAME ${test_name}_valgrind
+              WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+              COMMAND valgrind -v --leak-check=full --error-exitcode=1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX}  ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat --limit-debug-consistency-checks)
+    endif()
   endforeach(test_source)
 ENDIF()
 
 # gwb-grid tests
- # Create directory for the test results
+# Create directory for the test results
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/gwb-grid)
-#find all the integration visu files
+# find all the integration visu files
 file(GLOB_RECURSE VISU_TEST_SOURCES "gwb-grid/*.wb")
 # Run through each sourceUforeach(test_source ${VISU_TEST_SOURCES})
 foreach(test_source ${VISU_TEST_SOURCES})
-        get_filename_component(test_name ${test_source} NAME_WE)
+  get_filename_component(test_name ${test_source} NAME_WE)
 	set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.grid")
-        add_test(${test_name}
-                 ${CMAKE_COMMAND} 
+  add_test(${test_name}
+           ${CMAKE_COMMAND}
 	         -D TEST_NAME=${test_name}
-	         -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX} 
+	         -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}
 	         -D TEST_ARGS=${TEST_ARGUMENTS}
-	         -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-grid/${test_name}.vtu 
+	         -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-grid/${test_name}.vtu
 	         -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/${test_name}.vtu
 	         -P ${CMAKE_SOURCE_DIR}/tests/gwb-grid/run_gwb-grid_tests.cmake
-                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/)
+           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/)
 
   if(WB_RUN_TESTS_WITH_GDB)
-   add_test(NAME ${test_name}_gdb
-            WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
-            COMMAND gdb --return-child-result --ex "set confirm off" --ex r  --ex bt --ex exit  --args ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.grid)
+    add_test(NAME ${test_name}_gdb
+             WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+             COMMAND gdb --return-child-result --ex "set confirm off" --ex r  --ex bt --ex exit  --args ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.grid)
   endif()
 
   if(WB_RUN_TESTS_WITH_VALGRIND)
