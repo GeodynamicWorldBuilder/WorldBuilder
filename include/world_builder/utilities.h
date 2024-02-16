@@ -72,7 +72,7 @@ namespace WorldBuilder
 
     /**
      * Given a 2d point, a semi-major axis, and an eccentricity, computes if
-     * the point falls within the ellipse. 
+     * the point falls within the ellipse.
      */
     bool
     ellipse_contains_point(const Point<2> &ellipse_center,

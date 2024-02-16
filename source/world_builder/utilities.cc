@@ -164,7 +164,7 @@ namespace WorldBuilder
     bool
     ellipse_contains_point(const Point<2> &ellipse_center,
                            const double semi_major_axis,
-                           const double eccentricity, 
+                           const double eccentricity,
                            const double theta,
                            const Point<2> &point)
     {
@@ -174,12 +174,12 @@ namespace WorldBuilder
 
       const double semi_minor_axis = semi_major_axis * std::sqrt(1 - std::pow(eccentricity, 2));
 
-      WBAssert(semi_minor_axis > 10 * std::numeric_limits<double>::min(), 
+      WBAssert(semi_minor_axis > 10 * std::numeric_limits<double>::min(),
                "The semi-minor axis needs to be larger than 0, but currently is "
                << semi_minor_axis);
 
-      const double ellipse = std::pow((x_rotated), 2) / std::pow(semi_major_axis, 2) 
-                           + std::pow((y_rotated), 2) / std::pow(semi_minor_axis, 2);
+      const double ellipse = std::pow((x_rotated), 2) / std::pow(semi_major_axis, 2)
+                             + std::pow((y_rotated), 2) / std::pow(semi_minor_axis, 2);
 
       return ellipse <= 1.;
     }

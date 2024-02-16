@@ -1915,7 +1915,7 @@ namespace WorldBuilder
    */
   template bool
   Parameters::get_unique_pointers<Features::PlumeModels::Temperature::Interface>(const std::string &name,
-      std::vector<std::unique_ptr<Features::PlumeModels::Temperature::Interface> > &vector);
+                                                                                 std::vector<std::unique_ptr<Features::PlumeModels::Temperature::Interface> > &vector);
 
   /**
   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -1923,7 +1923,7 @@ namespace WorldBuilder
   */
   template bool
   Parameters::get_unique_pointers<Features::PlumeModels::Composition::Interface>(const std::string &name,
-      std::vector<std::unique_ptr<Features::PlumeModels::Composition::Interface> > &vector);
+                                                                                 std::vector<std::unique_ptr<Features::PlumeModels::Composition::Interface> > &vector);
 
   /**
   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -1931,7 +1931,7 @@ namespace WorldBuilder
   */
   template bool
   Parameters::get_unique_pointers<Features::PlumeModels::Grains::Interface>(const std::string &name,
-      std::vector<std::unique_ptr<Features::PlumeModels::Grains::Interface> > &vector);
+                                                                            std::vector<std::unique_ptr<Features::PlumeModels::Grains::Interface> > &vector);
 
 
 
