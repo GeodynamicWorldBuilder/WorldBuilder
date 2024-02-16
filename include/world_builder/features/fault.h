@@ -26,6 +26,7 @@
 #include "world_builder/features/fault_models/temperature/interface.h"
 #include "world_builder/objects/segment.h"
 #include "world_builder/bounding_box.h"
+#include "world_builder/objects/distance_from_surface.h"
 
 
 namespace WorldBuilder
@@ -128,6 +129,15 @@ namespace WorldBuilder
                    const double gravity,
                    const std::vector<size_t> &entry_in_output,
                    std::vector<double> &output) const override final;
+
+        /**
+        * Returns a PlaneDistances object that has the distance from and along a fault plane,
+        * calculated from the coordinates and the depth of the point.
+        */
+        Objects::PlaneDistances
+        distance_to_feature_plane(const Point<3> &position_in_cartesian_coordinates,
+                                  const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                                  const double depth) const override;
 
       private:
         std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface> > default_temperature_models;

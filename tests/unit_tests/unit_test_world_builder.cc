@@ -1072,11 +1072,9 @@ TEST_CASE("WorldBuilder Features: Distance to Feature Plane")
     approval_tests.emplace_back(plane_distances3.get_distance_from_surface());
     approval_tests.emplace_back(plane_distances3.get_distance_along_surface());
 
-    ApprovalTests::Approvals::verifyAll("Test", approval_tests);
   }
 
-  // call the distance_to_plane to a fault feature, as this is not implemented yet, we should be
-  // informed by the assertion error message.
+  // call the distance_to_plane to a fault feature.
   const std::string file_name2 = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/fault_constant_angles_cartesian.wb";
   WorldBuilder::World world2(file_name2);
   {
@@ -1087,10 +1085,23 @@ TEST_CASE("WorldBuilder Features: Distance to Feature Plane")
     fault->parse_entries(world2.parameters);
     world2.parameters.leave_subsection();
     world2.parameters.leave_subsection();
-    const std::array<double, 3> point = {{50e3,230e3,800e3}};
-    const double depth = 10e3;
-    CHECK_THROWS_WITH(world2.distance_to_plane(point, depth, "First fault"),
-                      Contains("The distance_to_feature_plane is not yet implemented for the desinated object"));
+    const std::array<double, 3> point1 = {{250e3,495e3,800e3}};
+    const double depth1 = 5.1e3;
+    auto plane_distances1 = world2.distance_to_plane(point1, depth1, "First fault");
+    approval_tests.emplace_back(plane_distances1.get_distance_from_surface());
+    approval_tests.emplace_back(plane_distances1.get_distance_along_surface());
+    const std::array<double, 3> point2 = {{502e3,500e3,800e3}};
+    const double depth2 = 0.45e3;
+    auto plane_distances2 = world2.distance_to_plane(point2, depth2, "First fault");
+    approval_tests.emplace_back(plane_distances2.get_distance_from_surface());
+    approval_tests.emplace_back(plane_distances2.get_distance_along_surface());
+    const std::array<double, 3> point3 = {{502e3,500e3,800e3}}; // point 3, shallower than point2, thus distance from plane = inf
+    const double depth3 = 0.43e3;
+    auto plane_distances3 = world2.distance_to_plane(point3, depth3, "First fault");
+    approval_tests.emplace_back(plane_distances3.get_distance_from_surface());
+    approval_tests.emplace_back(plane_distances3.get_distance_along_surface());
+
+    ApprovalTests::Approvals::verifyAll("Test", approval_tests);
   }
 }
 
