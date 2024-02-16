@@ -2,4 +2,5 @@
 Area features
 =============================
 
-Since the idea that you should look at a map first when making GWB models, all features are named after what they would look like on a map. In {ref}`part:user_manual:chap:concepts:sec:painting_the_world` we were already introduced to the **area feature**. This is the `oceanic plate` feature we use there. Other examples of area features are the `continental plate` and `mantle layer` features. We will explain how they work in practice in the {ref}`part:user_manual:chap:basic_starter_tutorial:sec:index`. 
+Looking at a map that illustrates geologic and tectonic features first will help you build GWB models. All features are named based on nomenclature typically used in the Earth sciences.
+In {ref}`part:user_manual:chap:concepts:sec:painting_the_world`, we have already introduced you to the **area feature** which includes `oceanic plate`, `subducting plate` and `mantle layer` features. Another area feature is `continental plate`. We will explain how these features are implemented in practice in {ref}`part:user_manual:chap:basic_starter_tutorial:sec:index`. 
