@@ -33,6 +33,9 @@
 #include "world_builder/world.h"
 #include "world_builder/config.h"
 
+#include <algorithm>
+
+
 #include "vtu11/vtu11.hpp"
 #undef max
 #undef min
@@ -60,6 +63,71 @@
 using namespace WorldBuilder;
 using namespace WorldBuilder::Utilities;
 
+
+
+/**
+ * Filter the cells of a VTU mesh based on a given tag. All tags with smaller value than @p first_tag will be removed
+ */
+void filter_vtu_mesh(int dim,
+                     int first_tag,
+                     vtu11::Vtu11UnstructuredMesh &input_mesh,
+                     const std::vector<vtu11::DataSetData> &input_data,
+                     vtu11::Vtu11UnstructuredMesh &output_mesh,
+                     std::vector<vtu11::DataSetData> &output_data);
+
+void filter_vtu_mesh(int dim,
+                     int first_tag,
+                     vtu11::Vtu11UnstructuredMesh &input_mesh,
+                     const std::vector<vtu11::DataSetData> &input_data,
+                     vtu11::Vtu11UnstructuredMesh &output_mesh,
+                     std::vector<vtu11::DataSetData> &output_data)
+{
+  output_data.resize(input_data.size());
+  const std::int64_t invalid = static_cast<std::uint64_t>(-1);
+  std::vector<std::int64_t> vertex_index_map(input_mesh.points().size(), invalid);
+
+  const unsigned int n_vert_per_cell = (dim==3)?8:4;
+
+  const std::size_t n_cells = input_mesh.types().size();
+  std::uint64_t dst_cellid = 0;
+  for (std::size_t cellidx = 0; cellidx <n_cells; ++cellidx)
+    {
+      int highest_tag = -1;
+      for (unsigned int idx=cellidx*n_vert_per_cell; idx<(cellidx+1)*n_vert_per_cell; ++idx)
+        {
+          const std::int64_t src_vid = input_mesh.connectivity()[idx];
+          highest_tag = std::max(highest_tag,static_cast<int>(input_data[2][src_vid]));
+        }
+      if (highest_tag < first_tag)
+        continue;
+
+      ++dst_cellid;
+
+      for (unsigned int idx=cellidx*n_vert_per_cell; idx<(cellidx+1)*n_vert_per_cell; ++idx)
+        {
+          const std::int64_t src_vid = input_mesh.connectivity()[idx];
+
+          std::int64_t dst_vid = vertex_index_map[src_vid];
+          if (dst_vid == invalid)
+            {
+              dst_vid = output_mesh.points().size()/3;
+              vertex_index_map[src_vid] = dst_vid;
+
+              for (int i=0; i<3; ++i)
+                output_mesh.points().push_back(input_mesh.points()[src_vid*3+i]);
+
+              for (unsigned int d=0; d<input_data.size(); ++d)
+                output_data[d].push_back(input_data[d][src_vid]);
+            }
+
+          output_mesh.connectivity().push_back(dst_vid);
+
+        }
+      output_mesh.offsets().push_back(dst_cellid*n_vert_per_cell);
+
+      output_mesh.types().push_back(input_mesh.types()[cellidx]);
+    }
+}
 
 /**
  * A very simple threadpool class. The threadpool currently only supports a
@@ -225,6 +293,10 @@ int main(int argc, char **argv)
   std::string wb_file;
   std::string data_file;
 
+  // If set to true, we will output one visualization file per "tag"
+  // with only the cells corresponding to that tag included.
+  bool output_by_tag = false;
+
   size_t dim = 3;
   size_t compositions = 0;
 
@@ -283,6 +355,11 @@ int main(int argc, char **argv)
             {
               number_of_threads = Utilities::string_to_unsigned_int(options_vector[i+1]);
               options_vector.erase(options_vector.begin()+static_cast<std::vector<std::string>::difference_type>(i));
+              options_vector.erase(options_vector.begin()+static_cast<std::vector<std::string>::difference_type>(i));
+            }
+          if (options_vector[i] == "--by-tag")
+            {
+              output_by_tag = true;
               options_vector.erase(options_vector.begin()+static_cast<std::vector<std::string>::difference_type>(i));
             }
         }
@@ -1505,9 +1582,26 @@ int main(int argc, char **argv)
       std::cout << "[6/6] Writing the paraview file                                                                                \r";
       std::cout.flush();
 
-      vtu11::Vtu11UnstructuredMesh mesh { points, connectivity, offsets, types };
-      vtu11::writeVtu( file_without_extension + ".vtu", mesh, dataSetInfo, data_set, vtu_output_format );
+      {
+        vtu11::Vtu11UnstructuredMesh mesh { points, connectivity, offsets, types };
+        vtu11::writeVtu( file_without_extension + ".vtu", mesh, dataSetInfo, data_set, vtu_output_format );
 
+        if (output_by_tag)
+          {
+            std::vector<double> filtered_points;
+            std::vector<vtu11::VtkIndexType> filtered_connectivity;
+            std::vector<vtu11::VtkIndexType> filtered_offsets;
+            std::vector<vtu11::VtkCellType> filtered_types;
+
+            vtu11::Vtu11UnstructuredMesh filtered_mesh {filtered_points, filtered_connectivity, filtered_offsets, filtered_types};
+            std::vector<vtu11::DataSetData> filtered_data_set;
+
+            int first_tag = 0;
+            filter_vtu_mesh(dim, first_tag, mesh, data_set, filtered_mesh, filtered_data_set);
+
+            vtu11::writeVtu( file_without_extension + ".filtered.vtu", filtered_mesh, dataSetInfo, filtered_data_set, vtu_output_format );
+          }
+      }
       std::cout << "                                                                                                               \r";
       std::cout.flush();
     }
