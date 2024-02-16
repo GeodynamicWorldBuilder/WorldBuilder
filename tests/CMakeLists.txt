@@ -262,7 +262,7 @@ foreach(test_source ${COOKBOOK_TEST_SOURCES})
            -D TEST_NAME=${test_name}
            -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}
            -D TEST_ARGS=${TEST_ARGUMENTS}
-           -P ${CMAKE_SOURCE_DIR}/tests/cookbooks/run_cookbook_tests.cmake
+           -P ${CMAKE_SOURCE_DIR}/tests/documentation/run_documentation_tests.cmake
            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/cookbooks/)
  endforeach(test_source)
 
