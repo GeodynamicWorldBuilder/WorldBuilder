@@ -26,7 +26,9 @@
 #include <sstream>
 
 #ifdef WB_WITH_MPI
+// we don't need the c++ MPI wrappers
 #define OMPI_SKIP_MPICXX 1
+#define MPICH_SKIP_MPICXX
 #include <mpi.h>
 #endif
 
