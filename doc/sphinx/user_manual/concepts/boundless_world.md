@@ -6,7 +6,7 @@ A concept that often confuses new and potential users is that the GWB domain doe
 
 ## Boundless Cartesian coordinate system
 
-Users of the World Builder provide the locations where they want to have some tectonic features. They do this through providing map view coordinates (x and y) through the input file. We will explain later how we get the z coordinate. Coordinates can be set anywhere in an infinite 2D plane e.g., the origin (0,0) is not restricted to the "center" of the domain but all features share a common coordinate system. This is not an issue for the World Builder since when World Builder computes a property, e.g., temperature, at a location, it just checks whether a feature is present at that location. So no need to limit the domain! 
+Users of the World Builder provide the locations where they want to have some tectonic features. They do this through providing map view coordinates (x and y) through the input file. We will explain later how we get the z coordinate. Coordinates can be set anywhere in an infinite 2D plane. For example the origin (0,0) is not restricted to the "center" of the domain but all features share a common coordinate system. This is not an issue for the World Builder since when World Builder computes a property, e.g., temperature, at a location, it just checks whether a feature is present at that location. So there is no need to define or limit the size of the domain! 
 
 The reason the GWB doesn't need a mesh is similar. When the World Builder computes the temperature at a location, it determines whether it is within a feature and then determines its location within the feature. That allows the temperature model to provide different temperatures based on where it is within the feature. 
 
