@@ -35,6 +35,7 @@
 #include "world_builder/kd_tree.h"
 
 #include <iostream>
+#include <algorithm>
 
 
 namespace WorldBuilder
@@ -76,7 +77,9 @@ namespace WorldBuilder
                         "The eccentricities of the cross sections.");
       prm.declare_entry("rotation angles", Types::Array(Types::Double(0)),
                         "The directions that the semi-major axis of the elliptic cross-sections "
-                        "are pointing to, as an angle from geographic North in degrees. "
+                        "are pointing to, in degrees. This direction is expressed as the angle from "
+                        "geographic North in spherical coordinates, or as the angle from the Y axis "
+                        "(clockwise) in Cartesian coordinates. "
                         "The angle should be between 0 and 360 degrees.");
 
       prm.declare_entry("temperature models",
@@ -96,6 +99,14 @@ namespace WorldBuilder
       const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 
       this->name = prm.get<std::string>("name");
+
+      std::string tag = prm.get<std::string>("tag");
+      if (tag == "")
+        {
+          tag = "plume";
+        }
+      this->tag_index = FeatureUtilities::add_vector_unique(this->world->feature_tags,tag);
+
       this->get_coordinates("coordinates", prm, coordinate_system);
 
       min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
@@ -143,10 +154,10 @@ namespace WorldBuilder
 
 
       // Convert degrees to radians, convert from geographical to mathematical
-      // TODO: convert semi_major_axis_lengths as well for spherical coordinates
       for (unsigned int i = 0; i < rotation_angles.size(); ++i)
         rotation_angles[i] = Consts::PI/2. - rotation_angles[i] * Consts::PI/180.;
 
+      // convert semi_major_axis_lengths to radians if we are in spherical coordinates
       if (world->parameters.coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical)
         for (unsigned int i = 0; i < semi_major_axis_lengths.size(); ++i)
           {
@@ -330,10 +341,20 @@ namespace WorldBuilder
 
                           }
                         grains.unroll_into(output,entry_in_output[i_property]);
+                        break;
                       }
-                      break;
+                      case 4:
+                      {
+                        output[entry_in_output[i_property]] = tag_index;
+                        break;
+                      }
                       default:
-                        WBAssertThrow(false, "Internal error: Unimplemented property provided. Only temperature (1), composition (2) or grains (3) are allowed.");
+                      {
+                        WBAssertThrow(false,
+                                      "Internal error: Unimplemented property provided. " <<
+                                      "Only temperature (1), composition (2), grains (3) or tag (4) are allowed. "
+                                      "Provided property number was: " << properties[i_property][0]);
+                      }
                     }
                 }
             }
