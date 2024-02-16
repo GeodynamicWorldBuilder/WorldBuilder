@@ -443,7 +443,7 @@ int main(int argc, char **argv)
 
       // if config file is available, parse it
       WBAssertThrow(data_stream.good(),
-                    "Could not find the provided convig file at the specified location: " + data_file);
+                    "Could not find the provided config file at the specified location: " + data_file);
 
 
       // move the data into a vector of strings
