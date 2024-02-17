@@ -14,7 +14,7 @@ Parameter listings is a very big collapsible tree in which each heading contains
 
 Since coordinate system is an object, we need to write something like `"coordinate system": {}` in our input file. 
 
-The next dropbox has the path `/coordinate system/oneOf`. This is the only dropbox heirarchally beneath the `/coordinate system` dropbox. The oneOf subpath indicates you need to choose one object out of a few options. These are listed in the oneOf box. The paths of these dropboxes in the oneOf dropbox are numbered and unfortunately not named. This means we will have to inspect each to see what they actually represent.
+The next dropbox has the path `/coordinate system/oneOf`. This is the only entry beneath the `/coordinate system` dropbox. The oneOf subpath indicates you need to choose one object out of a few options. These are listed in the oneOf box. The paths of these dropboxes in the oneOf dropbox are numbered and unfortunately not named. This means we will have to inspect each to see what they actually represent.
 
  In this case there are two dropboxes. Let's look at path number 1 (`/coordinate system/oneOf/1`). We can see that this is an object which has one required key (parameter): `model`. The documentation already states that this is a Cartesian coordinate system. When we look into the model dropbox (`/coordinate system/oneOf/1/model`), we see that there is an enum with only one possible value: `cartesian`. 
  
