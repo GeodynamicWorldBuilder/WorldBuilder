@@ -418,8 +418,8 @@ namespace WorldBuilder
                       const std::vector<size_t> &entry_in_output,
                       std::vector<double> &output) const
     {
-      // The depth variable is the distance from the surface to the position, the depth
-      // coordinate is the distance from the bottom of the model to the position and
+      // The 'depth coordinate' is the z-coordinate in Cartesian coordinates, and radius in spherical coordinates.
+      // The depth input parameter is the distance from the surface to the position,
       // the starting radius is the distance from the bottom of the model to the surface.
       const double starting_radius = position_in_natural_coordinates.get_depth_coordinate() + depth - starting_depth;
 
@@ -435,15 +435,6 @@ namespace WorldBuilder
           get_surface_bounding_box().point_inside(Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
                                                            world->parameters.coordinate_system->natural_coordinate_system())))
         {
-          /*WBAssert(coordinates.size() == fault_segment_lengths.size(),
-                   "Internal error: The size of coordinates (" << coordinates.size()
-                   << ") and fault_segment_lengths (" << fault_segment_lengths.size() << ") are different.");
-          WBAssert(coordinates.size() == fault_segment_angles.size(),
-                   "Internal error: The size of coordinates (" << coordinates.size()
-                   << ") and fault_segment_angles (" << fault_segment_angles.size() << ") are different.");
-          WBAssert(coordinates.size() == fault_segment_angles.size(),
-                   "Internal error: The size of coordinates (" << coordinates.size()
-                   << ") and one_dimensional_coordinates (" << one_dimensional_coordinates.size() << ") are different.");*/
           // todo: explain
           const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position_in_cartesian_coordinates,
@@ -462,8 +453,7 @@ namespace WorldBuilder
           const double section_fraction = distance_from_planes.fraction_of_section;
           const size_t current_section = distance_from_planes.section;
           const size_t next_section = current_section + 1;
-          const size_t current_segment = distance_from_planes.segment; // the original value was a unsigned in, converting it back.
-          //const size_t next_segment = current_segment + 1;
+          const size_t current_segment = distance_from_planes.segment;
           const double segment_fraction = distance_from_planes.fraction_of_segment;
 
           if (abs(distance_from_plane) < std::numeric_limits<double>::infinity() || (distance_along_plane) < std::numeric_limits<double>::infinity())
@@ -507,14 +497,12 @@ namespace WorldBuilder
                                               (total_fault_length[next_section] - total_fault_length[current_section]);
               const AdditionalParameters additional_parameters = {max_fault_length,thickness_local};
 
-              // Because both sides return positive values, we have to
-              // divide the thickness_local by two
-              if (std::fabs(distance_from_plane) > 0 &&
-                  std::fabs(distance_from_plane) <= thickness_local * 0.5 &&
+              // Check if we are inside the fault.
+              // Every distance from -thickness/2 to +thickness/2 is inside the fault.
+              if (std::fabs(distance_from_plane) <= thickness_local * 0.5 &&
                   distance_along_plane > 0 &&
                   distance_along_plane <= max_fault_length)
                 {
-                  // Inside the fault!
                   for (unsigned int i_property = 0; i_property < properties.size(); ++i_property)
                     {
                       switch (properties[i_property][0])
@@ -535,9 +523,9 @@ namespace WorldBuilder
                                                                                                  distance_from_planes,
                                                                                                  additional_parameters);
 
-                                WBAssert(!std::isnan(temperature_current_section), "Temparture is not a number: " << temperature_current_section
+                                WBAssert(!std::isnan(temperature_current_section), "Temperature is not a number: " << temperature_current_section
                                          << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
-                                WBAssert(std::isfinite(temperature_current_section), "Temparture is not a finite: " << temperature_current_section
+                                WBAssert(std::isfinite(temperature_current_section), "Temparture is not finite: " << temperature_current_section
                                          << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
 
                               }
@@ -553,7 +541,7 @@ namespace WorldBuilder
                                                                                               distance_from_planes,
                                                                                               additional_parameters);
 
-                                WBAssert(!std::isnan(temperature_next_section), "Temparture is not a number: " << temperature_next_section
+                                WBAssert(!std::isnan(temperature_next_section), "Temperature is not a number: " << temperature_next_section
                                          << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
                                 WBAssert(std::isfinite(temperature_next_section), "Temparture is not a finite: " << temperature_next_section
                                          << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
@@ -582,7 +570,7 @@ namespace WorldBuilder
 
                                 WBAssert(!std::isnan(composition_current_section), "Composition_current_section is not a number: " << composition_current_section
                                          << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
-                                WBAssert(std::isfinite(composition_current_section), "Composition_current_section is not a finite: " << composition_current_section
+                                WBAssert(std::isfinite(composition_current_section), "Composition_current_section is not finite: " << composition_current_section
                                          << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
 
                               }
@@ -600,7 +588,7 @@ namespace WorldBuilder
 
                                 WBAssert(!std::isnan(composition_next_section), "Composition_next_section is not a number: " << composition_next_section
                                          << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
-                                WBAssert(std::isfinite(composition_next_section), "Composition_next_section is not a finite: " << composition_next_section
+                                WBAssert(std::isfinite(composition_next_section), "Composition_next_section is not finite: " << composition_next_section
                                          << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
 
                               }
@@ -612,8 +600,8 @@ namespace WorldBuilder
                           case 3: // grains
                           {
                             WorldBuilder::grains grains(output,properties[i_property][2],entry_in_output[i_property]);
-                            WorldBuilder::grains  grains_current_section = grains;
-                            WorldBuilder::grains  grains_next_section = grains;
+                            WorldBuilder::grains grains_current_section = grains;
+                            WorldBuilder::grains grains_next_section = grains;
 
                             for (const auto &grains_model: segment_vector[current_section][current_segment].grains_systems)
                               {
@@ -647,7 +635,7 @@ namespace WorldBuilder
                                 grains.sizes[i] = grains_current_section.sizes[i] + section_fraction * (grains_next_section.sizes[i] - grains_current_section.sizes[i]);
                               }
 
-                            // average two rotations matrices throu quaternions.
+                            // average two rotations matrices through quaternions.
                             for (size_t i = 0; i < grains_current_section.rotation_matrices.size(); i++)
                               {
                                 const glm::quaternion::quat quat_current = glm::quaternion::quat_cast(grains_current_section.rotation_matrices[i]);
