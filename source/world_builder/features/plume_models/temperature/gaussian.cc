@@ -105,7 +105,34 @@ namespace WorldBuilder
         {
           if (depth <= max_depth && depth >= min_depth && relative_distance_from_center <= 1.)
             {
-              double center_temperature_local = center_temperatures[0];
+              // Figure out if the point is within the plume
+              auto upper = std::upper_bound(depths.begin(), depths.end(), depth);
+
+              double center_temperature_local;
+              double gaussian_sigma;
+
+              if (upper - depths.begin() == 0)
+                {
+                  // interpolate to make the top of the plume spherical
+                  center_temperature_local = center_temperatures.front();
+                  gaussian_sigma = gaussian_sigmas.front();
+
+                  // TODO: deal with spherical plume tip
+                }
+              else if (upper - depths.end() == 0)
+                {
+                  center_temperature_local = center_temperatures.back();
+                  gaussian_sigma = gaussian_sigmas.back();
+                }
+              else
+                {
+                  const unsigned int index = std::distance(depths.begin(), upper);
+                  const double fraction = (depth - depths[index-1]) / (depths[index] - depths[index-1]);
+
+                  center_temperature_local = (1-fraction) * center_temperatures[index-1] + fraction * center_temperatures[index];
+                  gaussian_sigma = (1-fraction) * gaussian_sigmas[index-1] + fraction * gaussian_sigmas[index];
+                }
+
               if (center_temperature_local < 0)
                 {
                   center_temperature_local =  this->world->potential_mantle_temperature *
@@ -113,8 +140,7 @@ namespace WorldBuilder
                                                         this->world->specific_heat) * depth);
                 }
 
-              const double sigma = gaussian_sigmas[0];
-              const double new_temperature =   center_temperature_local * std::exp(-relative_distance_from_center/(2.*std::pow(sigma, 2)));
+              const double new_temperature =   center_temperature_local * std::exp(-relative_distance_from_center/(2.*std::pow(gaussian_sigma, 2)));
 
               return apply_operation(operation,temperature_,new_temperature);
 
