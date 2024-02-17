@@ -1,7 +1,7 @@
 # output variables
 grid_type = cartesian
 dim = 2
-
+vtu_output_format = ASCII
 
 # domain of the grid
 x_min = 0e3

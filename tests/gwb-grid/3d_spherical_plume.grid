@@ -2,6 +2,7 @@
 grid_type = chunk
 dim = 3
 compositions = 3
+vtu_output_format = ASCII
 
 # domain of the grid
 x_max = 25
