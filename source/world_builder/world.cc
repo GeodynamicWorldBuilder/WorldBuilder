@@ -145,7 +145,8 @@ namespace WorldBuilder
       prm.declare_entry("features", Types::PluginSystem("",Features::Interface::declare_entries, {"model"}),"A list of features.");
 
       prm.declare_entry("random number seed", Types::Int(-1),
-                        "Use random number seed input to generate random numbers.");
+                        "This allows the input of a preferred random number seed to generate random numbers."
+                        " If no input is given, this value is -1 and triggers the use of default seed = 1.");
 
     }
     prm.leave_subsection();
