@@ -34,6 +34,7 @@
 #include "world_builder/config.h"
 
 #include <algorithm>
+#include <limits>
 
 
 #include "vtu11/vtu11.hpp"
@@ -323,6 +324,7 @@ int main(int argc, char **argv)
 
   // Conservative choice for the number of threads to use:
   size_t number_of_threads = std::min(20u,1+std::thread::hardware_concurrency()/2);
+  unsigned int max_resolution = std::numeric_limits<unsigned int>::max();
 
   try
     {
@@ -346,11 +348,12 @@ int main(int argc, char **argv)
                     << "Usage:\n"
                     << argv[0] << " [-j N] [--filtered] [--by-tag] example.wb example.grid\n\n"
                     << "Available options:\n"
-                    << "  -j N              Specify the number of threads the visualizer is allowed to use. Default: " << number_of_threads << ".\n"
-                    << "  --filtered        Also produce a .filtered.vtu that removes cells only containing mantle or background.\n"
-                    << "  --by-tag          Also produce a sequence of .N.vtu files that only contain cells of a specific tag.\n"
-                    << "  -h or --help      To get this help screen.\n"
-                    << "  -v or --version   To see version information.\n";
+                    << "  -j N                  Specify the number of threads the visualizer is allowed to use. Default: " << number_of_threads << ".\n"
+                    << "  --filtered            Also produce a .filtered.vtu that removes cells only containing mantle or background.\n"
+                    << "  --by-tag              Also produce a sequence of .N.vtu files that only contain cells of a specific tag.\n"
+                    << "  --resolution-limit X  Specify a maximum resolution."
+                    << "  -h or --help          To get this help screen.\n"
+                    << "  -v or --version       To see version information.\n";
           return 0;
         }
 
@@ -376,6 +379,14 @@ int main(int argc, char **argv)
           if (options_vector[i] == "--by-tag")
             {
               output_by_tag = true;
+              options_vector.erase(options_vector.begin()+static_cast<std::vector<std::string>::difference_type>(i));
+              --i;
+              continue;
+            }
+          if (options_vector[i] == "--resolution-limit")
+            {
+              max_resolution = Utilities::string_to_unsigned_int(options_vector[i+1]);
+              options_vector.erase(options_vector.begin()+static_cast<std::vector<std::string>::difference_type>(i));
               options_vector.erase(options_vector.begin()+static_cast<std::vector<std::string>::difference_type>(i));
               --i;
               continue;
@@ -524,11 +535,11 @@ int main(int argc, char **argv)
             z_max = string_to_double(line_i[2]);
 
           if (line_i[0] == "n_cell_x" && line_i[1] == "=")
-            n_cell_x = string_to_unsigned_int(line_i[2]);
+            n_cell_x = std::min(string_to_unsigned_int(line_i[2]),max_resolution);
           if (line_i[0] == "n_cell_y" && line_i[1] == "=")
-            n_cell_y = string_to_unsigned_int(line_i[2]);
+            n_cell_y = std::min(string_to_unsigned_int(line_i[2]),max_resolution);
           if (line_i[0] == "n_cell_z" && line_i[1] == "=")
-            n_cell_z = string_to_unsigned_int(line_i[2]);
+            n_cell_z = std::min(string_to_unsigned_int(line_i[2]),max_resolution);
 
         }
 
