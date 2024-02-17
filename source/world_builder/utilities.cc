@@ -1358,7 +1358,7 @@ namespace WorldBuilder
             else
               {
                 Pb1=segment_point0 + (c1 / c) * v;
-                spreading_velocity_at_ridge = spreading_velocity_point0 + (spreading_velocity_point1 - spreading_velocity_point0) * (c1 / c) * 1;
+                spreading_velocity_at_ridge = spreading_velocity_point0 + (spreading_velocity_point1 - spreading_velocity_point0) * (c1 / c);
               }
 
             Point<2> Pb2(coordinate_system->natural_coordinate_system());
@@ -1375,7 +1375,7 @@ namespace WorldBuilder
             else
               {
                 Pb2=segment_point0 + (c1 / c) * v;
-                spreading_velocity_at_ridge = spreading_velocity_point0 + (spreading_velocity_point1 - spreading_velocity_point0) * (c1 / c) * 1;
+                spreading_velocity_at_ridge = spreading_velocity_point0 + (spreading_velocity_point1 - spreading_velocity_point0) * (c1 / c);
               }
 
             Point<3> compare_point1(coordinate_system->natural_coordinate_system());

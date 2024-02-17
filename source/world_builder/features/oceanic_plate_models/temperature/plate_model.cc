@@ -111,13 +111,11 @@ namespace WorldBuilder
                 ridge_coordinate *= dtr;
               }
 
-          unsigned int index_x = 0;
-          unsigned int index_y = 0;
           unsigned int ridge_point_index = 0;
-          for (index_x = 0; index_x < mid_oceanic_ridges.size(); index_x++)
+          for (unsigned int index_x = 0; index_x < mid_oceanic_ridges.size(); index_x++)
             {
               std::vector<double> spreading_rates_for_ridge;
-              for (index_y = 0; index_y < mid_oceanic_ridges[index_x].size(); index_y++)
+              for (unsigned int index_y = 0; index_y < mid_oceanic_ridges[index_x].size(); index_y++)
                 {
                   if (spreading_velocities.second.size() <= 1)
                     spreading_rates_for_ridge.push_back(spreading_velocities.first[0]);
@@ -158,7 +156,7 @@ namespace WorldBuilder
                                                             this->world->specific_heat) * depth);
                     }
 
-                  const int sommation_number = 100;
+                  const int summation_number = 100;
 
                   std::pair<double, double> ridge_parameters = Utilities::calculate_ridge_distance_and_spreading(mid_oceanic_ridges,
                                                                spreading_velocities_at_each_ridge_point,
@@ -171,7 +169,7 @@ namespace WorldBuilder
 
                   // This formula addresses the horizontal heat transfer by having the spreading velocity and distance to the ridge in it.
                   // (Chapter 7 Heat, Fowler M. The solid earth: an introduction to global geophysics[M]. Cambridge University Press, 1990)
-                  for (int i = 1; i<sommation_number+1; ++i)
+                  for (int i = 1; i<summation_number+1; ++i)
                     {
                       temperature = temperature + (bottom_temperature_local - top_temperature) *
                                     ((2 / (double(i) * Consts::PI)) * std::sin((double(i) * Consts::PI * depth) / max_depth) *
