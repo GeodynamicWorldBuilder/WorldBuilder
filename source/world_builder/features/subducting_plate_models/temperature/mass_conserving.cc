@@ -218,13 +218,11 @@ namespace WorldBuilder
                 ridge_coordinate *= dtr;
               }
 
-          unsigned int index_x = 0;
-          unsigned int index_y = 0;
           unsigned int ridge_point_index = 0;
-          for (index_x = 0; index_x < mid_oceanic_ridges.size(); index_x++)
+          for (unsigned int index_x = 0; index_x < mid_oceanic_ridges.size(); index_x++)
             {
               std::vector<double> plate_velocities_for_ridge;
-              for (index_y = 0; index_y < mid_oceanic_ridges[index_x].size(); index_y++)
+              for (unsigned int index_y = 0; index_y < mid_oceanic_ridges[index_x].size(); index_y++)
                 {
                   if (plate_velocities.second.size() <= 1)
                     plate_velocities_for_ridge.push_back(plate_velocities.first[0]);
