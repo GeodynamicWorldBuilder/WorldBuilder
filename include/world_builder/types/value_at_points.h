@@ -62,7 +62,7 @@ namespace WorldBuilder
                           const std::string &documentation) const override final;
 
         double default_value;
-        double max_values_in_array;
+        size_t max_values_in_array;
         std::vector<Point<2> > default_points;
 
       protected:
