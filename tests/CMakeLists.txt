@@ -256,7 +256,7 @@ file(GLOB_RECURSE COOKBOOK_TEST_SOURCES "${CMAKE_SOURCE_DIR}/cookbooks/*/*.wb")
 foreach(test_source ${COOKBOOK_TEST_SOURCES})
   get_filename_component(test_name ${test_source} NAME_WE)
   get_filename_component(test_dir ${test_source} DIRECTORY)
-  set(TEST_ARGUMENTS "${test_dir}/${test_name}.wb\;${test_dir}/${test_name}.grid")
+  set(TEST_ARGUMENTS "${test_dir}/${test_name}.wb\;${test_dir}/${test_name}.grid\;--resolution-limit\;50")
   add_test(cookbooks_${test_name}
            ${CMAKE_COMMAND}
            -D TEST_NAME=${test_name}
