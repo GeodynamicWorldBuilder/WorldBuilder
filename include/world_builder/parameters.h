@@ -26,6 +26,7 @@
 
 #include "rapidjson/schema.h"
 #include "world_builder/point.h"
+#include "world_builder/types/unsigned_int.h"
 
 namespace WorldBuilder
 {
@@ -40,6 +41,7 @@ namespace WorldBuilder
     class Array;
     class Bool;
     class UnsignedInt;
+    class Int;
   } // namespace Types
 
   namespace Features
