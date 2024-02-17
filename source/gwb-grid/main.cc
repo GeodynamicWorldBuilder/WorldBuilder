@@ -72,14 +72,14 @@ using namespace WorldBuilder::Utilities;
  * Filter the cells of a VTU mesh based on a given tag. All tags with smaller value than @p first_tag will be removed
  */
 void filter_vtu_mesh(int dim,
-                     int first_tag,
+                     const std::vector<bool> &include_tag,
                      vtu11::Vtu11UnstructuredMesh &input_mesh,
                      const std::vector<vtu11::DataSetData> &input_data,
                      vtu11::Vtu11UnstructuredMesh &output_mesh,
                      std::vector<vtu11::DataSetData> &output_data);
 
 void filter_vtu_mesh(int dim,
-                     int first_tag,
+                     const std::vector<bool> &include_tag,
                      vtu11::Vtu11UnstructuredMesh &input_mesh,
                      const std::vector<vtu11::DataSetData> &input_data,
                      vtu11::Vtu11UnstructuredMesh &output_mesh,
@@ -101,7 +101,7 @@ void filter_vtu_mesh(int dim,
           const std::int64_t src_vid = input_mesh.connectivity()[idx];
           highest_tag = std::max(highest_tag,static_cast<int>(input_data[2][src_vid]));
         }
-      if (highest_tag < first_tag)
+      if (highest_tag < 0 || include_tag[highest_tag]==false)
         continue;
 
       ++dst_cellid;
@@ -299,6 +299,8 @@ int main(int argc, char **argv)
   // If set to true, we will output one visualization file per "tag"
   // with only the cells corresponding to that tag included.
   bool output_by_tag = false;
+  // If set to true, we output a .filtered.vtu file without the background/mantle
+  bool output_filtered = false;
 
   size_t dim = 3;
   size_t compositions = 0;
@@ -342,11 +344,13 @@ int main(int argc, char **argv)
                     <<  "This program loads a world builder file and generates a visualization on a structured grid "
                     << "based on information specified in a separate .grid configuration file.\n\n"
                     << "Usage:\n"
-                    << argv[0] << " [-j N] example.wb example.grid\n\n"
-                    << "Other available options:\n"
-                    << "  -j N              to specify the number of threads the visualizer is allowed to use. Default: " << number_of_threads << ".\n"
-                    << "  -h or --help      to get this help screen.\n"
-                    << "  -v or --version   to see version information.\n";
+                    << argv[0] << " [-j N] [--filtered] [--by-tag] example.wb example.grid\n\n"
+                    << "Available options:\n"
+                    << "  -j N              Specify the number of threads the visualizer is allowed to use. Default: " << number_of_threads << ".\n"
+                    << "  --filtered        Also produce a .filtered.vtu that removes cells only containing mantle or background.\n"
+                    << "  --by-tag          Also produce a sequence of .N.vtu files that only contain cells of a specific tag.\n"
+                    << "  -h or --help      To get this help screen.\n"
+                    << "  -v or --version   To see version information.\n";
           return 0;
         }
 
@@ -359,11 +363,22 @@ int main(int argc, char **argv)
               number_of_threads = Utilities::string_to_unsigned_int(options_vector[i+1]);
               options_vector.erase(options_vector.begin()+static_cast<std::vector<std::string>::difference_type>(i));
               options_vector.erase(options_vector.begin()+static_cast<std::vector<std::string>::difference_type>(i));
+              --i;
+              continue;
+            }
+          if (options_vector[i] == "--filtered")
+            {
+              output_filtered = true;
+              options_vector.erase(options_vector.begin()+static_cast<std::vector<std::string>::difference_type>(i));
+              --i;
+              continue;
             }
           if (options_vector[i] == "--by-tag")
             {
               output_by_tag = true;
               options_vector.erase(options_vector.begin()+static_cast<std::vector<std::string>::difference_type>(i));
+              --i;
+              continue;
             }
         }
 
@@ -1589,8 +1604,14 @@ int main(int argc, char **argv)
         vtu11::Vtu11UnstructuredMesh mesh { points, connectivity, offsets, types };
         vtu11::writeVtu( file_without_extension + ".vtu", mesh, dataSetInfo, data_set, vtu_output_format );
 
-        if (output_by_tag)
+        if (output_filtered)
           {
+            std::vector<bool> include_tag(world->feature_tags.size(), true);
+            for (unsigned int idx = 0; idx<include_tag.size(); ++idx)
+              {
+                if (world->feature_tags[idx]=="mantle layer")
+                  include_tag[idx] = false;
+              }
             std::vector<double> filtered_points;
             std::vector<vtu11::VtkIndexType> filtered_connectivity;
             std::vector<vtu11::VtkIndexType> filtered_offsets;
@@ -1599,10 +1620,31 @@ int main(int argc, char **argv)
             vtu11::Vtu11UnstructuredMesh filtered_mesh {filtered_points, filtered_connectivity, filtered_offsets, filtered_types};
             std::vector<vtu11::DataSetData> filtered_data_set;
 
-            int first_tag = 0;
-            filter_vtu_mesh(dim, first_tag, mesh, data_set, filtered_mesh, filtered_data_set);
-
+            filter_vtu_mesh(dim, include_tag, mesh, data_set, filtered_mesh, filtered_data_set);
             vtu11::writeVtu( file_without_extension + ".filtered.vtu", filtered_mesh, dataSetInfo, filtered_data_set, vtu_output_format );
+          }
+
+        if (output_by_tag)
+          {
+            for (unsigned int idx = 0; idx<world->feature_tags.size(); ++idx)
+              {
+                if (world->feature_tags[idx]=="mantle layer")
+                  continue;
+
+                std::vector<double> filtered_points;
+                std::vector<vtu11::VtkIndexType> filtered_connectivity;
+                std::vector<vtu11::VtkIndexType> filtered_offsets;
+                std::vector<vtu11::VtkCellType> filtered_types;
+
+                vtu11::Vtu11UnstructuredMesh filtered_mesh {filtered_points, filtered_connectivity, filtered_offsets, filtered_types};
+                std::vector<vtu11::DataSetData> filtered_data_set;
+
+                std::vector<bool> include_tag(world->feature_tags.size(), false);
+                include_tag[idx]=true;
+                filter_vtu_mesh(dim, include_tag, mesh, data_set, filtered_mesh, filtered_data_set);
+                const std::string filename = file_without_extension + "."+ std::to_string(idx)+".vtu";
+                vtu11::writeVtu( filename, filtered_mesh, dataSetInfo, filtered_data_set, vtu_output_format );
+              }
           }
       }
       std::cout << "                                                                                                               \r";
