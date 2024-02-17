@@ -17,6 +17,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Added a system which allows users to tag features. The tag index can then be written out throught the gwb-dat program. \[Menno Fraters and Timo Heister; 2024-02-15; [[#598](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/598)]\]
 - Added variable spreading for mid oceanic ridges. \[Daniel Douglas; 2024-02-16; [#617](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/617)\]
 - Added a new plume feature. \[Juliane Dannberg; 2024-02-15; [[#620](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/620)]\]
+- Added a `--resolution-limit` option to gwb-grid to limit the resolution secified in the .grid file. \[Menno Fraters; 2024-02-16; [#653](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/653)\]
 
 ### Changed 
 - Unified the directories `cookbooks/` and `doc/sphinx/user_manual/cookbooks`. All information about cookbooks including the documentation is now bundled in the top-level `cookbooks/` directory. \[Rene Gassmoeller; 2024-02-14; [#558](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/558)\]
