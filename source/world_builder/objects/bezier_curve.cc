@@ -411,7 +411,7 @@ namespace WorldBuilder
 
                   const double squared_distance_cartesian_derivative = cos_cp_lat*(-deriv_lat)*sin_d_long_h*sin_d_long_h*sin_dlat+cos_cp_lat*deriv_long*sin_d_long_h*cos_dlong_h*cos_d_lat+deriv_lat*sin_d_lat_h*cos_dlat_h;
                   double update = NaN::DSNAN;
-                  if (std::fabs(squared_distance_cartesian_derivative) > 1e-16)
+                  if (std::fabs(squared_distance_cartesian_derivative) > 1e-15)
                     {
                       const double squared_distance_cartesian_second_derivative = cos_cp_lat*cos_d_lat*(-0.5*deriv_long*deriv_long*sin_d_long_h*sin_d_long_h+0.5*deriv_long*deriv_long*cos_dlong_h*cos_dlong_h+(6.0*a[0]*est+2.0*b[0])*sin_d_long_h*cos_dlong_h)+cos_cp_lat*sin_d_long_h*sin_d_long_h*(deriv_lat*deriv_lat*(-cos_d_lat)-(6.0*a[1]*est+2.0*b[1])*sin_dlat)-2.0*cos_cp_lat*deriv_long*deriv_lat*sin_d_long_h*cos_dlong_h*sin_dlat-0.5*deriv_lat*deriv_lat*sin_d_lat_h*sin_d_lat_h+0.5*deriv_lat*deriv_lat*cos_dlat_h*cos_dlat_h+(6.0*a[1]*est+2.0*b[1])*sin_d_lat_h*cos_dlat_h;
 
@@ -479,7 +479,7 @@ namespace WorldBuilder
                       est -= update*line_search;
                     }
 
-                  if (std::fabs(squared_distance_cartesian_derivative) <= 1e-16 || std::fabs(update) < 1e-4 || est < -0.1 || est > 1.1)
+                  if (std::fabs(squared_distance_cartesian_derivative) <= 1e-15 || std::fabs(update) < 1e-4 || est < -0.1 || est > 1.1)
                     {
                       found = true;
                       break;
