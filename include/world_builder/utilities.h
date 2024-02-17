@@ -70,16 +70,19 @@ namespace WorldBuilder
     polygon_contains_point_implementation(const std::vector<Point<2> > &point_list,
                                           const Point<2> &point);
 
+
     /**
-     * Given a 2d point, a semi-major axis, and an eccentricity, computes if
-     * the point falls within the ellipse.
+     * Given a 2d point, a semi-major axis, and an eccentricity, computes where
+     * the point falls within the ellipse. If the fraction is larger than 1, the
+     * point is outside the ellipse.
      */
-    bool
-    ellipse_contains_point(const Point<2> &ellipse_center,
-                           const double semi_major_axis,
-                           const double eccentricity,
-                           const double rotation_angle,
-                           const Point<2> &point);
+    double
+    fraction_from_ellipse_center (const Point<2> &ellipse_center,
+                                  const double semi_major_axis,
+                                  const double eccentricity,
+                                  const double rotation_angle,
+                                  const Point<2> &point);
+
 
     /**
      * Given a 2d point and a list of points which form a polygon, compute the smallest

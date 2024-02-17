@@ -17,13 +17,11 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef WORLD_BUILDER_FEATURES_PLUME_MODELS_TEMPERATURE_UNIFORM_H
-#define WORLD_BUILDER_FEATURES_PLUME_MODELS_TEMPERATURE_UNIFORM_H
+#ifndef WORLD_BUILDER_FEATURES_PLUME_MODELS_TEMPERATURE_GAUSSIAN_H
+#define WORLD_BUILDER_FEATURES_PLUME_MODELS_TEMPERATURE_GAUSSIAN_H
 
 
 #include "world_builder/features/plume_models/temperature/interface.h"
-#include "world_builder/features/feature_utilities.h"
-#include "world_builder/objects/surface.h"
 
 
 namespace WorldBuilder
@@ -31,7 +29,6 @@ namespace WorldBuilder
 
   namespace Features
   {
-    using namespace FeatureUtilities;
     namespace PlumeModels
     {
       namespace Temperature
@@ -41,20 +38,19 @@ namespace WorldBuilder
          * for temperature and composition. These submodules determine what
          * the returned temperature or composition of the temperature and composition
          * functions of this class will be.
-         * In this class, the temperature within the plume is uniform.
          */
-        class Uniform final: public Interface
+        class Gaussian final: public Interface
         {
           public:
             /**
              * constructor
              */
-            Uniform(WorldBuilder::World *world);
+            Gaussian(WorldBuilder::World *world);
 
             /**
              * Destructor
              */
-            ~Uniform() override final;
+            ~Gaussian() override final;
 
             /**
              * declare and read in the world builder file into the parameters class
@@ -83,15 +79,17 @@ namespace WorldBuilder
 
 
           private:
-            // uniform temperature submodule parameters
+            // Gaussian temperature submodule parameters
             double min_depth;
             double max_depth;
-            double temperature;
+            std::vector<double> depths;
+            std::vector<double> center_temperatures;
+            std::vector<double> gaussian_sigmas;
             Operations operation;
 
         };
       } // namespace Temperature
-    } // namespace PlumeModels
+    } // namespace FaultModels
   } // namespace Features
 } // namespace WorldBuilder
 
