@@ -23,6 +23,7 @@
 #include "world_builder/features/plume_models/composition/interface.h"
 #include "world_builder/features/plume_models/grains/interface.h"
 #include "world_builder/features/plume_models/temperature/interface.h"
+#include "world_builder/features/feature_utilities.h"
 #include "world_builder/nan.h"
 #include "world_builder/types/array.h"
 #include "world_builder/types/double.h"
