@@ -165,7 +165,7 @@ IF(WB_RUN_APP_TESTS)
   foreach(test_source ${APP_TEST_SOURCES})
     get_filename_component(test_name ${test_source} NAME_WE)
     set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat\;--limit-debug-consistency-checks")
-    add_test(${test_name}
+    add_test(dat_${test_name}
              ${CMAKE_COMMAND}
              -D TEST_NAME=${test_name}
              -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX}
@@ -179,13 +179,13 @@ IF(WB_RUN_APP_TESTS)
              WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
 
     if(WB_RUN_TESTS_WITH_GDB)
-      add_test(NAME ${test_name}_gdb
+      add_test(NAME dat_${test_name}_gdb
               WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
               COMMAND gdb --return-child-result --ex "set confirm off" --ex r  --ex bt --ex exit  --args ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat --limit-debug-consistency-checks)
     endif()
 
     if(WB_RUN_TESTS_WITH_VALGRIND)
-      add_test(NAME ${test_name}_valgrind
+      add_test(NAME dat_${test_name}_valgrind
               WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
               COMMAND valgrind -v --leak-check=full --error-exitcode=1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-dat${CMAKE_EXECUTABLE_SUFFIX}  ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-dat/${test_name}.dat --limit-debug-consistency-checks)
     endif()
@@ -201,7 +201,7 @@ file(GLOB_RECURSE VISU_TEST_SOURCES "gwb-grid/*.wb")
 foreach(test_source ${VISU_TEST_SOURCES})
   get_filename_component(test_name ${test_source} NAME_WE)
 	set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.grid")
-  add_test(${test_name}
+  add_test(grid_${test_name}
            ${CMAKE_COMMAND}
 	         -D TEST_NAME=${test_name}
 	         -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}
@@ -212,13 +212,13 @@ foreach(test_source ${VISU_TEST_SOURCES})
            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/)
 
   if(WB_RUN_TESTS_WITH_GDB)
-    add_test(NAME ${test_name}_gdb
+    add_test(NAME grid_${test_name}_gdb
              WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
              COMMAND gdb --return-child-result --ex "set confirm off" --ex r  --ex bt --ex exit  --args ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.grid)
   endif()
 
   if(WB_RUN_TESTS_WITH_VALGRIND)
-    add_test(NAME ${test_name}_valgrind
+    add_test(NAME grid_${test_name}_valgrind
              WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
              COMMAND valgrind -v --leak-check=full --error-exitcode=1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}  ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.grid)
   endif()
@@ -238,7 +238,7 @@ file(GLOB_RECURSE DOCU_TEST_SOURCES "${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_
 foreach(test_source ${DOCU_TEST_SOURCES})
   get_filename_component(test_name ${test_source} NAME_WE)
   set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/${test_name}.wb\;${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/${test_name}.grid")
-  add_test(${test_name}
+  add_test(doc_${test_name}
            ${CMAKE_COMMAND}
            -D TEST_NAME=${test_name}
            -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}
@@ -257,7 +257,7 @@ foreach(test_source ${COOKBOOK_TEST_SOURCES})
   get_filename_component(test_name ${test_source} NAME_WE)
   get_filename_component(test_dir ${test_source} DIRECTORY)
   set(TEST_ARGUMENTS "${test_dir}/${test_name}.wb\;${test_dir}/${test_name}.grid")
-  add_test(${test_name}
+  add_test(cookbooks_${test_name}
            ${CMAKE_COMMAND}
            -D TEST_NAME=${test_name}
            -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}
