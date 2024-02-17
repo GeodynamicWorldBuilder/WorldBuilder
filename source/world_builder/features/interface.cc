@@ -67,6 +67,30 @@ namespace WorldBuilder
     Interface::declare_entries(Parameters &prm, const std::string &parent_name, const std::vector<std::string> &required_entries)
     {
 
+      {
+        using namespace rapidjson;
+        Document &declarations = prm.declarations;
+
+        prm.enter_subsection("defaultSnippets");
+        const std::string path = prm.get_full_json_path();
+
+        unsigned int idx = 0;
+        for (auto  &it : get_snippet_map())
+          {
+            std::string item =  path + "/"+std::to_string(idx);
+
+            Pointer((item).c_str()).Set(declarations, "object");
+            Pointer((item+"/label").c_str()).Set(declarations,("add a '" + it.first + "'").c_str());
+            prm.enter_subsection(std::to_string(idx).c_str());
+            it.second(prm);
+            prm.leave_subsection();
+
+            ++idx;
+          }
+
+        prm.leave_subsection();
+      }
+
       unsigned int counter = 0;
       for (auto  &it : get_declare_map())
         {
@@ -143,10 +167,12 @@ namespace WorldBuilder
     void
     Interface::registerType(const std::string &name,
                             void ( *declare_entries)(Parameters &, const std::string &,const std::vector<std::string> &),
+                            void ( *make_snippet)(Parameters &),
                             ObjectFactory *factory)
     {
       get_factory_map()[name] = factory;
       get_declare_map()[name] = declare_entries;
+      get_snippet_map()[name] = make_snippet;
     }
 
     std::unique_ptr<Interface>

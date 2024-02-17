@@ -58,6 +58,24 @@ namespace WorldBuilder
       = default;
 
 
+
+    void Plume::make_snippet(Parameters &prm)
+    {
+      using namespace rapidjson;
+      Document &declarations = prm.declarations;
+
+      const std::string path = prm.get_full_json_path();
+
+      Pointer((path + "/body").c_str()).Set(declarations,"object");
+      Pointer((path + "/body/model").c_str()).Set(declarations,"plume");
+      Pointer((path + "/body/name").c_str()).Set(declarations,"${1:My Pretty Plume}");
+      Pointer((path + "/body/coordinates").c_str()).Create(declarations).SetArray();
+      Pointer((path + "/body/temperature models").c_str()).Create(declarations).SetArray();
+      Pointer((path + "/body/composition models").c_str()).Create(declarations).SetArray();
+    }
+
+
+
     void
     Plume::declare_entries(Parameters &prm,
                            const std::string & /*unused*/,

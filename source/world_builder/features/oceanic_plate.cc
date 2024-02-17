@@ -53,6 +53,38 @@ namespace WorldBuilder
       = default;
 
 
+
+    void OceanicPlate::make_snippet(Parameters &prm)
+    {
+      using namespace rapidjson;
+      Document &declarations = prm.declarations;
+
+      const std::string path = prm.get_full_json_path();
+
+      /*
+      ideally:
+       {
+        "model": "fault",
+        "name": "${1:default name}",
+        "dip point":[0.0,0.0],
+        "coordinates": [[0.0,0.0]],
+        "segments": [],
+        "sections": [],
+        "temperature models":[{"model":"uniform", "temperature":600.0}],
+        "composition models":[{"model":"uniform", "compositions": [0], "fractions":[1.0]}]
+       }
+       */
+
+      Pointer((path + "/body").c_str()).Set(declarations,"object");
+      Pointer((path + "/body/model").c_str()).Set(declarations,"oceanic plate");
+      Pointer((path + "/body/name").c_str()).Set(declarations,"${1:My Oceanic Plate}");
+      Pointer((path + "/body/coordinates").c_str()).Create(declarations).SetArray();
+      Pointer((path + "/body/temperature models").c_str()).Create(declarations).SetArray();
+      Pointer((path + "/body/composition models").c_str()).Create(declarations).SetArray();
+    }
+
+
+
     void
     OceanicPlate::declare_entries(Parameters &prm,
                                   const std::string & /*unused*/,

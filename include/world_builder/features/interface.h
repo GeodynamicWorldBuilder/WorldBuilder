@@ -94,6 +94,7 @@ namespace WorldBuilder
          */
         static void registerType(const std::string &name,
                                  void ( * /*declare_entries*/)(Parameters &, const std::string &, const std::vector<std::string> &required_entries),
+                                 void ( *make_snippet)(Parameters &),
                                  ObjectFactory *factory);
 
         std::string get_name() const
@@ -185,6 +186,12 @@ namespace WorldBuilder
                                                  const std::vector<std::string>& required_entries)> declares;
           return declares;
         }
+
+        static std::map<std::string, void ( *)(Parameters &)> &get_snippet_map()
+        {
+          static std::map<std::string, void ( *)(Parameters &)> declares;
+          return declares;
+        }
     };
 
 
@@ -207,7 +214,7 @@ namespace WorldBuilder
     public: \
       klass##Factory() \
       { \
-        Interface::registerType(#name, klass::declare_entries, this); \
+        Interface::registerType(#name, klass::declare_entries, klass::make_snippet, this); \
       } \
       std::unique_ptr<Interface> create(World *world) override final { \
         return std::unique_ptr<Interface>(new klass(world)); \

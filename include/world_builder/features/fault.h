@@ -80,6 +80,12 @@ namespace WorldBuilder
                              const std::vector<std::string> &required_entries = {});
 
         /**
+         * Produce a JSON snippet for the schema
+         */
+        static
+        void make_snippet(Parameters &prm);
+
+        /**
          * declare and read in the world builder file into the parameters class
          */
         void parse_entries(Parameters &prm) override final;
