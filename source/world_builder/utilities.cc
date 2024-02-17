@@ -160,6 +160,30 @@ namespace WorldBuilder
       return (wn != 0);
     }
 
+
+    bool
+    ellipse_contains_point(const Point<2> &ellipse_center,
+                           const double semi_major_axis,
+                           const double eccentricity,
+                           const double theta,
+                           const Point<2> &point)
+    {
+      const double x_rotated = (point[0] - ellipse_center[0]) * std::cos(theta) + (point[1] - ellipse_center[1])* std::sin(theta);
+      const double y_rotated = -(point[0] - ellipse_center[0]) * std::sin(theta) + (point[1] - ellipse_center[1])* std::cos(theta);
+
+      const double semi_minor_axis = semi_major_axis * std::sqrt(1 - std::pow(eccentricity, 2));
+
+      if (semi_major_axis < 10 * std::numeric_limits<double>::min()
+          || semi_minor_axis < 10 * std::numeric_limits<double>::min())
+        return false;
+
+      const double ellipse = std::pow((x_rotated), 2) / std::pow(semi_major_axis, 2)
+                             + std::pow((y_rotated), 2) / std::pow(semi_minor_axis, 2);
+
+      return ellipse <= 1.;
+    }
+
+
     double
     signed_distance_to_polygon(const std::vector<Point<2> > &point_list,
                                const Point<2> &point)
@@ -1051,6 +1075,29 @@ namespace WorldBuilder
     double wrap_angle(const double angle)
     {
       return angle - 360.0*std::floor(angle/360.0);
+    }
+
+    double interpolate_angle_across_zero(const double angle_1,
+                                         const double angle_2,
+                                         const double fraction)
+    {
+      double theta_1 = angle_1;
+      double theta_2 = angle_2;
+      double rotation_angle;
+
+      if (std::abs(theta_2 - theta_1) > Consts::PI)
+        {
+          if (theta_2 > theta_1)
+            theta_1 += 2.*Consts::PI;
+          else
+            theta_2 += 2.*Consts::PI;
+        }
+      rotation_angle = (1-fraction) * theta_1 + fraction * theta_2;
+
+      // make sure angle is between 0 and 360 degrees
+      rotation_angle = rotation_angle - 2*Consts::PI*std::floor(rotation_angle/(2 * Consts::PI));
+
+      return rotation_angle;
     }
 
     std::array<double,3>

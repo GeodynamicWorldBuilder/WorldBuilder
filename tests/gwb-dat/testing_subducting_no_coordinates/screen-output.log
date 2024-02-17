@@ -1,3 +1,3 @@
 Expected fail with: 
-AssertThrow `Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr` failed in (..path..)/source/world_builder/parameters.cc at line (..line..): Error: coordinates was not defined in /features/0, schema path: /properties/features/items/oneOf/4/properties.
+AssertThrow `Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr` failed in (..path..)/source/world_builder/parameters.cc at line (..line..): Error: coordinates was not defined in /features/0, schema path: /properties/features/items/oneOf/5/properties.
 

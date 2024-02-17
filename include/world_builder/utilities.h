@@ -71,6 +71,17 @@ namespace WorldBuilder
                                           const Point<2> &point);
 
     /**
+     * Given a 2d point, a semi-major axis, and an eccentricity, computes if
+     * the point falls within the ellipse.
+     */
+    bool
+    ellipse_contains_point(const Point<2> &ellipse_center,
+                           const double semi_major_axis,
+                           const double eccentricity,
+                           const double rotation_angle,
+                           const Point<2> &point);
+
+    /**
      * Given a 2d point and a list of points which form a polygon, compute the smallest
      * distance of the point to the polygon. The sign is negative for points outside of
      * the polygon and positive for points inside the polygon.
@@ -404,6 +415,14 @@ namespace WorldBuilder
      */
     double wrap_angle(const double angle);
 
+    /**
+     * Interpolate between two angles (angle1 and angle2),
+     * with fraction defining the weighting between the two,
+     * taking into account we might cross over from 360 to 0 degrees.
+     */
+    double interpolate_angle_across_zero(const double angle_1,
+                                         const double angle_2,
+                                         const double fraction);
 
     /**
      * Transform a rotation matrix into euler angles

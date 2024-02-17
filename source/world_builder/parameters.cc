@@ -28,6 +28,9 @@
 #include "world_builder/features/oceanic_plate_models/composition/interface.h"
 #include "world_builder/features/oceanic_plate_models/grains/interface.h"
 #include "world_builder/features/oceanic_plate_models/temperature/interface.h"
+#include "world_builder/features/plume_models/composition/interface.h"
+#include "world_builder/features/plume_models/grains/interface.h"
+#include "world_builder/features/plume_models/temperature/interface.h"
 #include "world_builder/features/subducting_plate.h"
 #include "world_builder/gravity_model/interface.h"
 #include "world_builder/types/object.h"
@@ -1904,6 +1907,31 @@ namespace WorldBuilder
   template bool
   Parameters::get_unique_pointers<Features::ContinentalPlateModels::Grains::Interface>(const std::string &name,
       std::vector<std::unique_ptr<Features::ContinentalPlateModels::Grains::Interface> > &vector);
+
+
+  /**
+   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+   * Note that the variable with this name has to be loaded before this function is called.
+   */
+  template bool
+  Parameters::get_unique_pointers<Features::PlumeModels::Temperature::Interface>(const std::string &name,
+                                                                                 std::vector<std::unique_ptr<Features::PlumeModels::Temperature::Interface> > &vector);
+
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_unique_pointers<Features::PlumeModels::Composition::Interface>(const std::string &name,
+                                                                                 std::vector<std::unique_ptr<Features::PlumeModels::Composition::Interface> > &vector);
+
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_unique_pointers<Features::PlumeModels::Grains::Interface>(const std::string &name,
+                                                                            std::vector<std::unique_ptr<Features::PlumeModels::Grains::Interface> > &vector);
 
 
 
