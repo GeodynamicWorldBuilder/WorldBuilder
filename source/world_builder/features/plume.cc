@@ -274,18 +274,37 @@ namespace WorldBuilder
           rotation_angle = interpolate_angle_across_zero(rotation_angles[index-1], rotation_angles[index], fraction);
         }
 
-      const double relative_distance_from_center =
+      const Point<2> surface_point(position_in_natural_coordinates.get_surface_coordinates(),
+                                   world->parameters.coordinate_system->natural_coordinate_system());
+
+      double relative_distance_from_center =
         WorldBuilder::Utilities::fraction_from_ellipse_center(plume_center,
                                                               semi_major_axis_length,
                                                               eccentricity,
                                                               rotation_angle,
-                                                              Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
-                                                                       world->parameters.coordinate_system->natural_coordinate_system()));
+                                                              surface_point);
+
+      // If we are in the tip, we have to compute the difference diffently:
+      // TODO: move to utilities
+      if (depth >= min_depth && depth < depths.front())
+        {
+
+          const double a = semi_major_axis_lengths.front();
+          const double b = a * std::sqrt(1 - std::pow(eccentricity, 2));
+          const double c = depths.front() - min_depth;
+
+          const double x = (surface_point[0] - plume_center[0]) * std::cos(rotation_angle) + (surface_point[1] - plume_center[1])* std::sin(rotation_angle);
+          const double y = -(surface_point[0] - plume_center[0]) * std::sin(rotation_angle) + (surface_point[1] - plume_center[1])* std::cos(rotation_angle);
+          const double z = depths.front() - depth;
+
+          // use ellipsoid equation:
+          relative_distance_from_center = std::pow(x, 2) / std::pow(a, 2)
+                                          + std::pow(y, 2) / std::pow(b, 2)
+                                          + std::pow(z, 2) / std::pow(c, 2);
+        }
 
       if (depth <= max_depth && depth >= min_depth && relative_distance_from_center <= 1.)
         {
-
-
 
           for (unsigned int i_property = 0; i_property < properties.size(); ++i_property)
             {

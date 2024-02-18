@@ -113,11 +113,8 @@ namespace WorldBuilder
 
               if (upper - depths.begin() == 0)
                 {
-                  // interpolate to make the top of the plume spherical
                   center_temperature_local = center_temperatures.front();
                   gaussian_sigma = gaussian_sigmas.front();
-
-                  // TODO: deal with spherical plume tip
                 }
               else if (upper - depths.end() == 0)
                 {
