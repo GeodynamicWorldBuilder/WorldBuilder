@@ -39,8 +39,6 @@ namespace WorldBuilder
       {
         Gaussian::Gaussian(WorldBuilder::World *world_)
           :
-          min_depth(NaN::DSNAN),
-          max_depth(NaN::DSNAN),
           operation(Operations::REPLACE)
         {
           this->world = world_;
@@ -56,13 +54,18 @@ namespace WorldBuilder
           // Document plugin and require entries if needed.
           // Add `max distance fault` center to the required parameters.
           prm.declare_entry("", Types::Object({"centerline temperatures"}),
-                            "Gaussian temperature model. Can be set to use an adiabatic temperature at the boundaries.");
-
-          // Declare entries of this plugin
-          prm.declare_entry("min depth", Types::Double(0),
-                            "The depth in meters from which the temperature of the plume is present.");
-          prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),
-                            "The depth in meters to which the temperature of the plume is present.");
+                            "Gaussian temperature model. The temperature is interpolated between the plume center "
+                            "and margin (as defined by the plume feature) using a Gaussian function: "
+                            "T(r) = T_center(z) exp(-r^2/(2 sigma^2). "
+                            "The temperature at the plume centerline T_center can be changed with depth by defining "
+                            "an array of depths and centerline temperatures, and temperature is interpolated linearly "
+                            "with depth. Similarly, the sigma of the Gaussian function (relative to the width of "
+                            "the plume as given by the plume feature) can be changed with depth. "
+                            "Temperature is always interpolated in a horizonzal/radial plane, except for the plume "
+                            "head: If the first depth of the plume centerline and the minimum depth of the plume "
+                            "feature are different, an ellipsoidal plume head is created in this depth range. "
+                            "Within this plume head, temperature is interpolated radially, i.e., depending on the "
+                            "distance from the center of the ellipsoid.");
 
           prm.declare_entry("depths", Types::Array(Types::Double(0)),
                             "The temperature at the center of this feature in degree Kelvin."
@@ -70,9 +73,15 @@ namespace WorldBuilder
           prm.declare_entry("centerline temperatures", Types::Array(Types::Double(0)),
                             "The temperature at the center of this feature in degree Kelvin."
                             "If the value is below zero, the an adiabatic temperature is used.");
-          prm.declare_entry("gaussian sigmas", Types::Array(Types::Double(-1)),
+          prm.declare_entry("gaussian sigmas", Types::Array(Types::Double(0.3)),
                             "The sigma (standard deviation) of the Gaussian function used to compute the "
-                            "temperature distribution within the plume.");
+                            "temperature distribution within the plume. This sigma is non-dimensinal, i.e. "
+                            "it is defined relative to the distance between the plume center and margin as "
+                            "defined by the plume feature. Choosing a sigma of 1 therefore means that the "
+                            "temperature at the plume margin is set to a fraction of 1/sqrt(e) (approx. 0.61) "
+                            "of the centerline temperature. To achieve a smoother transition between the "
+                            "plume temperature and the outside temperature a smaller values has to be chosen "
+                            "for the gaussian sigmas.");
 
           // TODO: assert that the three have the same length
 
@@ -81,15 +90,18 @@ namespace WorldBuilder
         void
         Gaussian::parse_entries(Parameters &prm)
         {
-          min_depth = prm.get<double>("min depth");
-          max_depth = prm.get<double>("max depth");
-          WBAssert(max_depth >= min_depth, "max depth needs to be larger or equal to min depth.");
-
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
 
           depths = prm.get_vector<double>("depths");
           center_temperatures = prm.get_vector<double>("centerline temperatures");
           gaussian_sigmas = prm.get_vector<double>("gaussian sigmas");
+
+          WBAssert(center_temperatures.size() == depths.size() && gaussian_sigmas.size() == depths.size(),
+                   "The depths, center_temperatures and gaussian_sigmas arrays need to have the same number of entries. "
+                   "At the moment there are: "
+                   << depths.size() << " depth entries, "
+                   << center_temperatures.size() << " centerline temperature entries, and "
+                   << gaussian_sigmas.size() << " gaussian sigma entries!");
         }
 
 
@@ -99,11 +111,11 @@ namespace WorldBuilder
                                   const double depth,
                                   const double gravity_norm,
                                   double temperature_,
-                                  const double /*feature_min_depth*/,
-                                  const double /*feature_max_depth*/,
+                                  const double feature_min_depth,
+                                  const double feature_max_depth,
                                   const double relative_distance_from_center) const
         {
-          if (depth <= max_depth && depth >= min_depth && relative_distance_from_center <= 1.)
+          if (depth <= feature_max_depth && depth >= feature_min_depth && relative_distance_from_center <= 1.)
             {
               // Figure out if the point is within the plume
               auto upper = std::upper_bound(depths.begin(), depths.end(), depth);

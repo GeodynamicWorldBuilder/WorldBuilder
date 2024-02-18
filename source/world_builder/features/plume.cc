@@ -285,10 +285,8 @@ namespace WorldBuilder
                                                               surface_point);
 
       // If we are in the tip, we have to compute the difference diffently:
-      // TODO: move to utilities
       if (depth >= min_depth && depth < depths.front())
         {
-
           const double a = semi_major_axis_lengths.front();
           const double b = a * std::sqrt(1 - std::pow(eccentricity, 2));
           const double c = depths.front() - min_depth;
@@ -298,9 +296,7 @@ namespace WorldBuilder
           const double z = depths.front() - depth;
 
           // use ellipsoid equation:
-          relative_distance_from_center = std::pow(x, 2) / std::pow(a, 2)
-                                          + std::pow(y, 2) / std::pow(b, 2)
-                                          + std::pow(z, 2) / std::pow(c, 2);
+          relative_distance_from_center = (x*x)/(a*a) + (y*y)/(b*b) + (z*z)/(c*c);
         }
 
       if (depth <= max_depth && depth >= min_depth && relative_distance_from_center <= 1.)

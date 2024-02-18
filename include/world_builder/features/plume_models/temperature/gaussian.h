@@ -80,8 +80,6 @@ namespace WorldBuilder
 
           private:
             // Gaussian temperature submodule parameters
-            double min_depth;
-            double max_depth;
             std::vector<double> depths;
             std::vector<double> center_temperatures;
             std::vector<double> gaussian_sigmas;
