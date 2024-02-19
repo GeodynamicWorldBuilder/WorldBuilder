@@ -29,7 +29,7 @@ namespace WorldBuilder
   {
 
     ValueAtPoints::ValueAtPoints(const double default_value_,
-                                 size_t max_values_in_array_,
+                                 uint64_t max_values_in_array_,
                                  std::vector<Point<2>> default_points_)
       :
       default_value(default_value_),

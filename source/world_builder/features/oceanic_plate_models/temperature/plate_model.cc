@@ -78,7 +78,7 @@ namespace WorldBuilder
           prm.declare_entry("bottom temperature", Types::Double(-1),
                             "The temperature in degree Kelvin which this feature should have");
 
-          prm.declare_entry("spreading velocity", Types::OneOf(Types::Double(0.01),Types::Array(Types::ValueAtPoints(0.01, std::numeric_limits<size_t>::max()))),
+          prm.declare_entry("spreading velocity", Types::OneOf(Types::Double(0.01),Types::Array(Types::ValueAtPoints(0.01, std::numeric_limits<uint64_t>::max()))),
                             "The spreading velocity of the plate in meter per year. "
                             "This is the velocity with which one side moves away from the ridge.");
 

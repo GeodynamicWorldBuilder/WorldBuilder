@@ -31,6 +31,7 @@
 #include "world_builder/types/value_at_points.h"
 #include "world_builder/utilities.h"
 #include "world_builder/world.h"
+#include <cstdint>
 
 
 namespace WorldBuilder
@@ -83,7 +84,7 @@ namespace WorldBuilder
                             "in degree Kelvin for this feature. If the model has an adiabatic gradient"
                             "this should be the mantle potential temperature, and T = Tad + Thalf. ");
 
-          prm.declare_entry("spreading velocity", Types::OneOf(Types::Double(0.01),Types::Array(Types::ValueAtPoints(0.01, std::numeric_limits<size_t>::max()))),
+          prm.declare_entry("spreading velocity", Types::OneOf(Types::Double(0.01),Types::Array(Types::ValueAtPoints(0.01, std::numeric_limits<uint64_t>::max()))),
                             "The spreading velocity of the plate in meter per year. "
                             "This is the velocity with which one side moves away from the ridge.");
 
