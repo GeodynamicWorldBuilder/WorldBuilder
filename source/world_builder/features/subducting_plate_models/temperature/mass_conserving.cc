@@ -117,7 +117,7 @@ namespace WorldBuilder
           prm.declare_entry("density", Types::Double(3300),
                             "The reference density of the subducting plate in $kg/m^3$");
 
-          prm.declare_entry("plate velocity", Types::OneOf(Types::Double(0.01),Types::Array(Types::ValueAtPoints(0.01, std::numeric_limits<size_t>::max()))),
+          prm.declare_entry("plate velocity", Types::OneOf(Types::Double(0.01),Types::Array(Types::ValueAtPoints(0.01, std::numeric_limits<uint64_t>::max()))),
                             "The velocity with which the plate subducts in meters per year. Default is 5 cm/yr");
 
           prm.declare_entry("coupling depth", Types::Double(100e3),
