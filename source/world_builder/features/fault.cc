@@ -525,7 +525,7 @@ namespace WorldBuilder
 
                                 WBAssert(!std::isnan(temperature_current_section), "Temperature is not a number: " << temperature_current_section
                                          << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
-                                WBAssert(std::isfinite(temperature_current_section), "Temparture is not finite: " << temperature_current_section
+                                WBAssert(std::isfinite(temperature_current_section), "Temperature is not finite: " << temperature_current_section
                                          << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
 
                               }
@@ -543,7 +543,7 @@ namespace WorldBuilder
 
                                 WBAssert(!std::isnan(temperature_next_section), "Temperature is not a number: " << temperature_next_section
                                          << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
-                                WBAssert(std::isfinite(temperature_next_section), "Temparture is not a finite: " << temperature_next_section
+                                WBAssert(std::isfinite(temperature_next_section), "Temperature is not a finite: " << temperature_next_section
                                          << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
 
                               }
