@@ -137,13 +137,13 @@ namespace WorldBuilder
                                      std::exp(-1.0 * i * i * Consts::PI * Consts::PI * thermal_diffusivity * plate_age / (max_depth * max_depth)));
                     }
 
-                  WBAssert(!std::isnan(temperature), "Temparture inside plate model constant age is not a number: " << temperature
+                  WBAssert(!std::isnan(temperature), "Temperature inside plate model constant age is not a number: " << temperature
                            << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
                            << ", top_temperature = " << top_temperature
                            << ", max_depth = " << max_depth
                            << ", thermal_diffusivity = " << thermal_diffusivity
                            << ", age = " << plate_age << '.');
-                  WBAssert(std::isfinite(temperature), "Temparture inside plate model constant age is not a finite: " << temperature                           << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
+                  WBAssert(std::isfinite(temperature), "Temperature inside plate model constant age is not a finite: " << temperature                           << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
                            << ", top_temperature = " << top_temperature
                            << ", thermal_diffusivity = " << thermal_diffusivity
                            << ", age = " << plate_age << '.');

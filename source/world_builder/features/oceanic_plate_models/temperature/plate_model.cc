@@ -180,14 +180,14 @@ namespace WorldBuilder
 
                     }
 
-                  WBAssert(!std::isnan(temperature), "Temparture inside plate model is not a number: " << temperature
+                  WBAssert(!std::isnan(temperature), "Temperature inside plate model is not a number: " << temperature
                            << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
                            << ", top_temperature = " << top_temperature
                            << ", max_depth = " << max_depth
                            << ", spreading_velocity = " << ridge_parameters.first
                            << ", thermal_diffusivity = " << thermal_diffusivity
                            << ", age = " << age << '.');
-                  WBAssert(std::isfinite(temperature), "Temparture inside plate model is not a finite: " << temperature                           << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
+                  WBAssert(std::isfinite(temperature), "Temperature inside plate model is not a finite: " << temperature                           << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
                            << ", top_temperature = " << top_temperature
                            << ", spreading_velocity = " << ridge_parameters.first
                            << ", thermal_diffusivity = " << thermal_diffusivity
