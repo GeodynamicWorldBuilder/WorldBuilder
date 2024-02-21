@@ -11368,7 +11368,7 @@
 :name: open_features_items_oneOf_5
 
 - **type**:object
-- **description**:Subducting slab object. Requires properties `model` and `coordinates`.
+- **description**:Plume object. Requires properties `model` and `coordinates`.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -11379,7 +11379,7 @@
 - **default value**:
 - **type**:string
 - **description**:The model name of the feature determining its type.
-- **enum**:[subducting plate]
+- **enum**:[plume]
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/5/name
@@ -11443,7 +11443,7 @@
 
 - **default value**:0.0
 - **type**:number
-- **description**:The depth to which this feature is present
+- **description**:The depth from which this feature is present, in other words, the depth of the tip of the plume. If the first entry in the cross section depths has a greater depth, an ellipsoidal plume head will be added in between. Units: m.
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/5/max depth
@@ -11452,1366 +11452,85 @@
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **description**:The depth to which this feature is present
+- **description**:The depth to which this feature is present. Units: m.
 ::::::::::::::::::::
 
-::::::::::::::::::::{dropdown} /features/items/oneOf/5/dip point
+::::::::::::::::::::{dropdown} /features/items/oneOf/5/cross section depths
 :open:
-:name: open_features_items_oneOf_5_dip-point
+:name: open_features_items_oneOf_5_cross-section-depths
 
 - **type**:array
-- **minItems**:2
-- **maxItems**:2
-- **description**:The depth to which this feature is present
-:::::::::::::::::::{dropdown} /features/items/oneOf/5/dip point/items
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:The depths of the elliptic cross section of the plume. Units: m.
+:::::::::::::::::::{dropdown} /features/items/oneOf/5/cross section depths/items
 :open:
-:name: open_features_items_oneOf_5_dip-point_items
+:name: open_features_items_oneOf_5_cross-section-depths_items
 
+- **default value**:0.0
 - **type**:number
+- **description**:
 :::::::::::::::::::
 
 ::::::::::::::::::::
 
-::::::::::::::::::::{dropdown} /features/items/oneOf/5/segments
+::::::::::::::::::::{dropdown} /features/items/oneOf/5/semi-major axis
 :open:
-:name: open_features_items_oneOf_5_segments
+:name: open_features_items_oneOf_5_semi-major-axis
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:The depth to which this feature is present
-:::::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items
+- **description**:The lengths of the semi-major axes of the elliptic cross sections of the plume. In spherical coordinates, this is in degrees, otherwise in meters.
+:::::::::::::::::::{dropdown} /features/items/oneOf/5/semi-major axis/items
 :open:
-:name: open_features_items_oneOf_5_segments_items
-
-- **type**:object
-- **additionalProperties**:false
-- **description**:
-- **required**:[length, thickness, angle]
-
-::::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/length
-:open:
-:name: open_features_items_oneOf_5_segments_items_length
-
-- **type**:number
-::::::::::::::::::
-
-::::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/thickness
-:open:
-:name: open_features_items_oneOf_5_segments_items_thickness
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:2
-:::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/thickness/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_thickness_items
-
-- **type**:number
-:::::::::::::::::
-
-::::::::::::::::::
-
-::::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/top truncation
-:open:
-:name: open_features_items_oneOf_5_segments_items_top-truncation
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:2
-:::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/top truncation/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_top-truncation_items
-
-- **type**:number
-:::::::::::::::::
-
-::::::::::::::::::
-
-::::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/angle
-:open:
-:name: open_features_items_oneOf_5_segments_items_angle
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:2
-:::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/angle/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_angle_items
-
-- **type**:number
-:::::::::::::::::
-
-::::::::::::::::::
-
-::::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models
-
-- **description**:
-- **default value**:
-- **type**:array
-:::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf
-
-:::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/1
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_1
-
-- **type**:object
-- **description**:Adiabatic temperature model. Uses global values by default.
-- **additionalProperties**:false
-- **required**:[model]
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/1/model
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_1_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the temperature model.
-- **enum**:[adiabatic]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/1/operation
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_1_operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/1/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_1_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:todo The depth in meters from which the composition of this feature is present.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/1/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_1_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:todo The depth in meters to which the composition of this feature is present.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/1/potential mantle temperature
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_1_potential-mantle-temperature
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/1/thermal expansion coefficient
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_1_thermal-expansion-coefficient
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/1/specific heat
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_1_specific-heat
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
-::::::::::::::
-
-
-
-:::::::::::::::
-
-:::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/2
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_2
-
-- **type**:object
-- **description**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
-- **additionalProperties**:false
-- **required**:[model, max distance slab top]
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/2/model
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_2_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the temperature model.
-- **enum**:[linear]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/2/operation
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_2_operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/2/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_2_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:todo The depth in meters from which the composition of this feature is present.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/2/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_2_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:todo The depth in meters to which the composition of this feature is present.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/2/top temperature
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_2_top-temperature
-
-- **default value**:293.15
-- **type**:number
-- **description**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/2/bottom temperature
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_2_bottom-temperature
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The temperature at the bottom in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
-::::::::::::::
-
-
-
-:::::::::::::::
-
-:::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3
-
-- **type**:object
-- **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
-- **additionalProperties**:false
-- **required**:[model, plate velocity]
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/model
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the temperature model.
-- **enum**:[mass conserving]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/operation
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/density
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_density
-
-- **default value**:3300.0
-- **type**:number
-- **description**:The reference density of the subducting plate in $kg/m^3$
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/plate velocity
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_plate-velocity
-
-- **description**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
-:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf
-
-::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/1
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_1
-
-- **default value**:0.01
-- **type**:number
-- **description**:
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:
-:::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items
-
-- **type**:array
-- **additionalProperties**:false
-- **minItems**:1
-- **maxItems**:18446744073709551615
-- **description**:
-::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items
-
-:::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf
-
-::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/1
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_1
-
-- **type**:number
-- **default value**:0.01
-::::::::
-
-::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:4294967295
-:::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:18446744073709551615
-::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items_items
-
-- **type**:number
-::::::
-
-:::::::
-
-::::::::
-
-
-::::::::::
-
-:::::::::::
-
-::::::::::::
-
-
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/coupling depth
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_coupling-depth
+:name: open_features_items_oneOf_5_semi-major-axis_items
 
 - **default value**:100000.0
 - **type**:number
-- **description**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters. Default is 100 km.
-::::::::::::::
+- **description**:
+:::::::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/forearc cooling factor
+::::::::::::::::::::
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/5/eccentricity
 :open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_forearc-cooling-factor
-
-- **default value**:1.0
-- **type**:number
-- **description**:Increase the value to create thin (~2 km) cold thermal boundary layer above the slab.Any value greater than 1 does NOT meet the instantaneous conservation of mass, but does allow one to account for the history of insulating the forearc from heating up to this point in time. Note younger subducting lithosphere provides less insulation, while thicker, older slabs provide more insulation. Values up to 10 to 30 have been tested and don't cause any other extraneous effects. The larger th value the more you are not meeting the mass conserving criteria, so you don't want to see this affecting the temperature beyond the coupling depth as it will increase the mass of the slab and affect how it sinks.  If you use higher values, you will start to see that this creates a very thick cool layer above the entire slab - if you see this extending beyond the coupling zone reduce the value. You should use a value of 1 first and then only increase as little as possible to cool just the forearc region. Please examine the output temperature carefully. 
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/thermal conductivity
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_thermal-conductivity
-
-- **default value**:3.3
-- **type**:number
-- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/thermal expansion coefficient
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_thermal-expansion-coefficient
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/specific heat
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_specific-heat
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/thermal diffusivity
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_thermal-diffusivity
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/adiabatic heating
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_adiabatic-heating
-
-- **default value**:true
-- **type**:boolean
-- **description**:Whether adiabatic heating should be used for the slab.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/taper distance
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_taper-distance
-
-- **default value**:100000.0
-- **type**:number
-- **description**:Distance over which to taper the slab tip.tapers the initial heat content to zero and the minimum temperature to the background temperature.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/potential mantle temperature
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_potential-mantle-temperature
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/ridge coordinates
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_ridge-coordinates
+:name: open_features_items_oneOf_5_eccentricity
 
 - **type**:array
-- **minItems**:1
+- **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
-:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/ridge coordinates/items
+- **description**:The eccentricities of the cross sections.
+:::::::::::::::::::{dropdown} /features/items/oneOf/5/eccentricity/items
 :open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_ridge-coordinates_items
-
-- **type**:array
-- **minItems**:2
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:
-::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/ridge coordinates/items/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_ridge-coordinates_items_items
-
-- **type**:array
-- **minItems**:2
-- **maxItems**:2
-- **description**:
-:::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/ridge coordinates/items/items/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_ridge-coordinates_items_items_items
-
-- **type**:number
-:::::::::::
-
-::::::::::::
-
-:::::::::::::
-
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/3/reference model name
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_3_reference-model-name
-
-- **default value**:half space model
-- **type**:string
-- **description**:The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model
-::::::::::::::
-
-
-
-:::::::::::::::
-
-:::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_4
-
-- **type**:object
-- **description**:Plate model (based on McKenzie, 1970).
-- **additionalProperties**:false
-- **required**:[model, plate velocity]
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4/model
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_4_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the temperature model.
-- **enum**:[plate model]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4/operation
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_4_operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_4_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:todo The depth in meters from which the composition of this feature is present.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_4_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:todo The depth in meters to which the composition of this feature is present.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4/density
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_4_density
-
-- **default value**:3300.0
-- **type**:number
-- **description**:The reference density of the subducting plate in $kg/m^3$
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4/plate velocity
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_4_plate-velocity
-
-- **default value**:NaN
-- **type**:number
-- **description**:The velocity in meters per year with which the plate subducts in meters per year.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4/thermal conductivity
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_4_thermal-conductivity
-
-- **default value**:2.0
-- **type**:number
-- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4/thermal expansion coefficient
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_4_thermal-expansion-coefficient
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4/specific heat
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_4_specific-heat
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4/adiabatic heating
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_4_adiabatic-heating
-
-- **default value**:true
-- **type**:boolean
-- **description**:Whether adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/4/potential mantle temperature
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_4_potential-mantle-temperature
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
-::::::::::::::
-
-
-
-:::::::::::::::
-
-:::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/5
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_5
-
-- **type**:object
-- **description**:Uniform temperature model. Set the temperature to a constan value.
-- **additionalProperties**:false
-- **required**:[model, temperature]
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/5/model
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_5_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the temperature model.
-- **enum**:[uniform]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/5/operation
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_5_operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/5/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_5_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:todo The depth in meters from which the composition of this feature is present.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/5/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_5_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:todo The depth in meters to which the composition of this feature is present.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/temperature models/items/oneOf/5/temperature
-:open:
-:name: open_features_items_oneOf_5_segments_items_temperature-models_items_oneOf_5_temperature
-
-- **default value**:293.15
-- **type**:number
-- **description**:The temperature in degree Kelvin which this feature should have
-::::::::::::::
-
-
-
-:::::::::::::::
-
-
-:::::::::::::::::
-
-::::::::::::::::::
-
-::::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models
-
-- **description**:
-- **default value**:
-- **type**:array
-:::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf
-
-:::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1
-
-- **type**:object
-- **description**:Compositional model object
-- **additionalProperties**:false
-- **required**:[model, compositions]
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/model
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the composition model.
-- **enum**:[smooth]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:The distance in meters from which the composition of this layer is present.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_max-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:The distance in meters from which the composition of this layer is present.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/top fractions
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_top-fractions
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:The composition fraction at the top of the slab (layer).
-:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/top fractions/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_top-fractions_items
-
-- **default value**:1.0
-- **type**:number
-- **description**:
-:::::::::::::
-
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/bottom fractions
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_bottom-fractions
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:The composition fraction at the bottom of the slab (layer).
-:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/bottom fractions/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_bottom-fractions_items
+:name: open_features_items_oneOf_5_eccentricity_items
 
 - **default value**:0.0
 - **type**:number
 - **description**:
-:::::::::::::
+:::::::::::::::::::
 
-::::::::::::::
+::::::::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/compositions
+::::::::::::::::::::{dropdown} /features/items/oneOf/5/rotation angles
 :open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_compositions
+:name: open_features_items_oneOf_5_rotation-angles
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
-:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/compositions/items
+- **description**:The directions that the semi-major axis of the elliptic cross-sections are pointing to, in degrees. This direction is expressed as the angle from geographic North in spherical coordinates, or as the angle from the Y axis (clockwise) in Cartesian coordinates. The angle should be between 0 and 360 degrees.
+:::::::::::::::::::{dropdown} /features/items/oneOf/5/rotation angles/items
 :open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_compositions_items
-
-- **default value**:0
-- **type**:integer
-- **description**:
-:::::::::::::
-
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/1/operation
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_1_operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-- **enum**:[replace, replace defined only, add, subtract]
-::::::::::::::
-
-
-
-:::::::::::::::
-
-:::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2
-
-- **type**:object
-- **description**:Uniform compositional model. Sets constant compositional field.
-- **additionalProperties**:false
-- **required**:[model, compositions]
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2/model
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the composition model.
-- **enum**:[uniform]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:todo The depth in meters from which the composition of this feature is present.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:todo The depth in meters to which the composition of this feature is present.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2/compositions
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2_compositions
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
-:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2/compositions/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2_compositions_items
-
-- **default value**:0
-- **type**:integer
-- **description**:
-:::::::::::::
-
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2/fractions
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2_fractions
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:TA list of compositional fractions corresponding to the compositions list.
-:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2/fractions/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2_fractions_items
-
-- **default value**:1.0
-- **type**:number
-- **description**:
-:::::::::::::
-
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/composition models/items/oneOf/2/operation
-:open:
-:name: open_features_items_oneOf_5_segments_items_composition-models_items_oneOf_2_operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-- **enum**:[replace, replace defined only, add, subtract]
-::::::::::::::
-
-
-
-:::::::::::::::
-
-
-:::::::::::::::::
-
-::::::::::::::::::
-
-::::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models
-
-- **description**:
-- **default value**:
-- **type**:array
-:::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf
-
-:::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/1
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_1
-
-- **type**:object
-- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
-- **additionalProperties**:false
-- **required**:[model, compositions]
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/1/model
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_1_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the grains model.
-- **enum**:[random uniform distribution]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/1/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_1_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:The distance from the slab top in meters from which the composition of this feature is present.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/1/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_1_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:The distance from the slab top in meters to which the composition of this feature is present.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/1/compositions
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_1_compositions
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
-:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/1/compositions/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_1_compositions_items
-
-- **default value**:0
-- **type**:integer
-- **description**:
-:::::::::::::
-
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/1/orientation operation
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_1_orientation-operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/1/grain sizes
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_1_grain-sizes
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
-:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/1/grain sizes/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_1_grain-sizes_items
-
-- **default value**:1.0
-- **type**:number
-- **description**:
-:::::::::::::
-
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/1/normalize grain sizes
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_1_normalize-grain-sizes
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
-:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/1/normalize grain sizes/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_1_normalize-grain-sizes_items
-
-- **default value**:true
-- **type**:boolean
-- **description**:
-:::::::::::::
-
-::::::::::::::
-
-
-
-:::::::::::::::
-
-:::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2
-
-- **type**:object
-- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
-- **additionalProperties**:false
-- **required**:[model, compositions]
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/model
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the grains model.
-- **enum**:[random uniform distribution deflected]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:The distance from the slab top in meters from which the composition of this feature is present.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:The distance from the slab top in meters to which the composition of this feature is present.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/compositions
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2_compositions
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
-:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/compositions/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2_compositions_items
-
-- **default value**:0
-- **type**:integer
-- **description**:
-:::::::::::::
-
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/orientation operation
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2_orientation-operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/grain sizes
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2_grain-sizes
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
-:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/grain sizes/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2_grain-sizes_items
-
-- **default value**:1.0
-- **type**:number
-- **description**:
-:::::::::::::
-
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/normalize grain sizes
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2_normalize-grain-sizes
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
-:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/normalize grain sizes/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2_normalize-grain-sizes_items
-
-- **default value**:true
-- **type**:boolean
-- **description**:
-:::::::::::::
-
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/deflections
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2_deflections
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list of the deflections of all of the grains in each composition between 0 and 1.
-:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/2/deflections/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_2_deflections_items
-
-- **default value**:1.0
-- **type**:number
-- **description**:
-:::::::::::::
-
-::::::::::::::
-
-
-
-:::::::::::::::
-
-:::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/3
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_3
-
-- **type**:object
-- **description**:Uniform grains model. All grains start exactly the same.
-- **additionalProperties**:false
-- **required**:[model, compositions]
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/3/model
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_3_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the grains model.
-- **enum**:[uniform]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/3/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_3_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:The distance from the slab top in meters from which the composition of this feature is present.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/3/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_3_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:The distance from the slab top in meters to which the composition of this feature is present.
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/3/compositions
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_3_compositions
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
-:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/3/compositions/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_3_compositions_items
-
-- **default value**:0
-- **type**:integer
-- **description**:
-:::::::::::::
-
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/3/rotation matrices
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_3_rotation-matrices
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the labels of the grains which are present there for each compositions.
-:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/3/rotation matrices/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_3_rotation-matrices_items
-
-- **type**:array
-- **minItems**:3
-- **maxItems**:3
-- **uniqueItems**:false
-- **description**:
-::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/3/rotation matrices/items/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_3_rotation-matrices_items_items
-
-- **type**:array
-- **minItems**:3
-- **maxItems**:3
-- **uniqueItems**:false
-- **description**:
-:::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/3/rotation matrices/items/items/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_3_rotation-matrices_items_items_items
+:name: open_features_items_oneOf_5_rotation-angles_items
 
 - **default value**:0.0
 - **type**:number
 - **description**:
-:::::::::::
-
-::::::::::::
-
-:::::::::::::
-
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/3/Euler angles z-x-z
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_3_Euler-angles-z-x-z
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
-:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/3/Euler angles z-x-z/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_3_Euler-angles-z-x-z_items
-
-- **type**:array
-- **minItems**:3
-- **maxItems**:3
-- **uniqueItems**:false
-- **description**:
-::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/3/Euler angles z-x-z/items/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_3_Euler-angles-z-x-z_items_items
-
-- **default value**:0.0
-- **type**:number
-- **description**:
-::::::::::::
-
-:::::::::::::
-
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/3/orientation operation
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_3_orientation-operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/3/grain sizes
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_3_grain-sizes
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
-:::::::::::::{dropdown} /features/items/oneOf/5/segments/items/grains models/items/oneOf/3/grain sizes/items
-:open:
-:name: open_features_items_oneOf_5_segments_items_grains-models_items_oneOf_3_grain-sizes_items
-
-- **default value**:-1.0
-- **type**:number
-- **description**:
-:::::::::::::
-
-::::::::::::::
-
-
-
-:::::::::::::::
-
-
-:::::::::::::::::
-
-::::::::::::::::::
-
-
-
 :::::::::::::::::::
 
 ::::::::::::::::::::
@@ -12836,9 +11555,9 @@
 :name: open_features_items_oneOf_5_temperature-models_items_oneOf_1
 
 - **type**:object
-- **description**:Adiabatic temperature model. Uses global values by default.
+- **description**:Uniform temperature model. Set the temperature to a constant value.
 - **additionalProperties**:false
-- **required**:[model]
+- **required**:[model, temperature]
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/model
 :open:
@@ -12847,7 +11566,7 @@
 - **default value**:
 - **type**:string
 - **description**:The name of the temperature model.
-- **enum**:[adiabatic]
+- **enum**:[uniform]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/operation
@@ -12860,564 +11579,27 @@
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/min distance slab top
+::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/min depth
 :open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_1_min-distance-slab-top
+:name: open_features_items_oneOf_5_temperature-models_items_oneOf_1_min-depth
 
 - **default value**:0.0
 - **type**:number
-- **description**:todo The depth in meters from which the composition of this feature is present.
+- **description**:The depth in meters from which the temperature of this feature is present.
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/max distance slab top
+::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/max depth
 :open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_1_max-distance-slab-top
+:name: open_features_items_oneOf_5_temperature-models_items_oneOf_1_max-depth
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **description**:todo The depth in meters to which the composition of this feature is present.
+- **description**:The depth in meters to which the temperature of this feature is present.
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/potential mantle temperature
+::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/temperature
 :open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_1_potential-mantle-temperature
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/thermal expansion coefficient
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_1_thermal-expansion-coefficient
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/specific heat
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_1_specific-heat
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
-::::::::::::::::
-
-
-
-:::::::::::::::::
-
-:::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/2
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_2
-
-- **type**:object
-- **description**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
-- **additionalProperties**:false
-- **required**:[model, max distance slab top]
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/2/model
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_2_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the temperature model.
-- **enum**:[linear]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/2/operation
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_2_operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/2/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_2_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:todo The depth in meters from which the composition of this feature is present.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/2/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_2_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:todo The depth in meters to which the composition of this feature is present.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/2/top temperature
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_2_top-temperature
-
-- **default value**:293.15
-- **type**:number
-- **description**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/2/bottom temperature
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_2_bottom-temperature
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The temperature at the bottom in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
-::::::::::::::::
-
-
-
-:::::::::::::::::
-
-:::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3
-
-- **type**:object
-- **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
-- **additionalProperties**:false
-- **required**:[model, plate velocity]
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/model
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the temperature model.
-- **enum**:[mass conserving]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/operation
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/density
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_density
-
-- **default value**:3300.0
-- **type**:number
-- **description**:The reference density of the subducting plate in $kg/m^3$
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/plate velocity
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_plate-velocity
-
-- **description**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
-:::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/plate velocity/oneOf
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_plate-velocity_oneOf
-
-::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/plate velocity/oneOf/1
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_plate-velocity_oneOf_1
-
-- **default value**:0.01
-- **type**:number
-- **description**:
-::::::::::::::
-
-::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/plate velocity/oneOf/2
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_plate-velocity_oneOf_2
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:
-:::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/plate velocity/oneOf/2/items
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items
-
-- **type**:array
-- **additionalProperties**:false
-- **minItems**:1
-- **maxItems**:18446744073709551615
-- **description**:
-::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items
-
-:::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf
-
-::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/1
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_1
-
-- **type**:number
-- **default value**:0.01
-::::::::::
-
-::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:4294967295
-:::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:18446744073709551615
-::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items/items
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items_items
-
-- **type**:number
-::::::::
-
-:::::::::
-
-::::::::::
-
-
-::::::::::::
-
-:::::::::::::
-
-::::::::::::::
-
-
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/coupling depth
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_coupling-depth
-
-- **default value**:100000.0
-- **type**:number
-- **description**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters. Default is 100 km.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/forearc cooling factor
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_forearc-cooling-factor
-
-- **default value**:1.0
-- **type**:number
-- **description**:Increase the value to create thin (~2 km) cold thermal boundary layer above the slab.Any value greater than 1 does NOT meet the instantaneous conservation of mass, but does allow one to account for the history of insulating the forearc from heating up to this point in time. Note younger subducting lithosphere provides less insulation, while thicker, older slabs provide more insulation. Values up to 10 to 30 have been tested and don't cause any other extraneous effects. The larger th value the more you are not meeting the mass conserving criteria, so you don't want to see this affecting the temperature beyond the coupling depth as it will increase the mass of the slab and affect how it sinks.  If you use higher values, you will start to see that this creates a very thick cool layer above the entire slab - if you see this extending beyond the coupling zone reduce the value. You should use a value of 1 first and then only increase as little as possible to cool just the forearc region. Please examine the output temperature carefully. 
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/thermal conductivity
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_thermal-conductivity
-
-- **default value**:3.3
-- **type**:number
-- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/thermal expansion coefficient
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_thermal-expansion-coefficient
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/specific heat
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_specific-heat
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/thermal diffusivity
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_thermal-diffusivity
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/adiabatic heating
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_adiabatic-heating
-
-- **default value**:true
-- **type**:boolean
-- **description**:Whether adiabatic heating should be used for the slab.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/taper distance
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_taper-distance
-
-- **default value**:100000.0
-- **type**:number
-- **description**:Distance over which to taper the slab tip.tapers the initial heat content to zero and the minimum temperature to the background temperature.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/potential mantle temperature
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_potential-mantle-temperature
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/ridge coordinates
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_ridge-coordinates
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
-:::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/ridge coordinates/items
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_ridge-coordinates_items
-
-- **type**:array
-- **minItems**:2
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:
-::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/ridge coordinates/items/items
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_ridge-coordinates_items_items
-
-- **type**:array
-- **minItems**:2
-- **maxItems**:2
-- **description**:
-:::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/ridge coordinates/items/items/items
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_ridge-coordinates_items_items_items
-
-- **type**:number
-:::::::::::::
-
-::::::::::::::
-
-:::::::::::::::
-
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/3/reference model name
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_3_reference-model-name
-
-- **default value**:half space model
-- **type**:string
-- **description**:The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model
-::::::::::::::::
-
-
-
-:::::::::::::::::
-
-:::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_4
-
-- **type**:object
-- **description**:Plate model (based on McKenzie, 1970).
-- **additionalProperties**:false
-- **required**:[model, plate velocity]
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4/model
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_4_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the temperature model.
-- **enum**:[plate model]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4/operation
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_4_operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_4_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:todo The depth in meters from which the composition of this feature is present.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_4_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:todo The depth in meters to which the composition of this feature is present.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4/density
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_4_density
-
-- **default value**:3300.0
-- **type**:number
-- **description**:The reference density of the subducting plate in $kg/m^3$
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4/plate velocity
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_4_plate-velocity
-
-- **default value**:NaN
-- **type**:number
-- **description**:The velocity in meters per year with which the plate subducts in meters per year.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4/thermal conductivity
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_4_thermal-conductivity
-
-- **default value**:2.0
-- **type**:number
-- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4/thermal expansion coefficient
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_4_thermal-expansion-coefficient
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4/specific heat
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_4_specific-heat
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4/adiabatic heating
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_4_adiabatic-heating
-
-- **default value**:true
-- **type**:boolean
-- **description**:Whether adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/4/potential mantle temperature
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_4_potential-mantle-temperature
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
-::::::::::::::::
-
-
-
-:::::::::::::::::
-
-:::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/5
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_5
-
-- **type**:object
-- **description**:Uniform temperature model. Set the temperature to a constan value.
-- **additionalProperties**:false
-- **required**:[model, temperature]
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/5/model
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_5_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the temperature model.
-- **enum**:[uniform]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/5/operation
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_5_operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/5/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_5_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:todo The depth in meters from which the composition of this feature is present.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/5/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_5_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:todo The depth in meters to which the composition of this feature is present.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/5/temperature
-:open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_5_temperature
+:name: open_features_items_oneOf_5_temperature-models_items_oneOf_1_temperature
 
 - **default value**:293.15
 - **type**:number
@@ -13453,7 +11635,7 @@
 :name: open_features_items_oneOf_5_composition-models_items_oneOf_1
 
 - **type**:object
-- **description**:Compositional model object
+- **description**:Uniform compositional model. Sets constant compositional field.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -13464,65 +11646,25 @@
 - **default value**:
 - **type**:string
 - **description**:The name of the composition model.
-- **enum**:[smooth]
+- **enum**:[uniform]
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/min distance slab top
+::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/min depth
 :open:
-:name: open_features_items_oneOf_5_composition-models_items_oneOf_1_min-distance-slab-top
+:name: open_features_items_oneOf_5_composition-models_items_oneOf_1_min-depth
 
 - **default value**:0.0
 - **type**:number
-- **description**:The distance in meters from which the composition of this layer is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/max distance slab top
+::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/max depth
 :open:
-:name: open_features_items_oneOf_5_composition-models_items_oneOf_1_max-distance-slab-top
+:name: open_features_items_oneOf_5_composition-models_items_oneOf_1_max-depth
 
-- **default value**:0.0
+- **default value**:1.7976931348623157e308
 - **type**:number
-- **description**:The distance in meters from which the composition of this layer is present.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/top fractions
-:open:
-:name: open_features_items_oneOf_5_composition-models_items_oneOf_1_top-fractions
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:The composition fraction at the top of the slab (layer).
-:::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/top fractions/items
-:open:
-:name: open_features_items_oneOf_5_composition-models_items_oneOf_1_top-fractions_items
-
-- **default value**:1.0
-- **type**:number
-- **description**:
-:::::::::::::::
-
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/bottom fractions
-:open:
-:name: open_features_items_oneOf_5_composition-models_items_oneOf_1_bottom-fractions
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:The composition fraction at the bottom of the slab (layer).
-:::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/bottom fractions/items
-:open:
-:name: open_features_items_oneOf_5_composition-models_items_oneOf_1_bottom-fractions_items
-
-- **default value**:0.0
-- **type**:number
-- **description**:
-:::::::::::::::
-
+- **description**:The depth in meters to which the composition of this feature is present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/compositions
@@ -13545,89 +11687,18 @@
 
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/operation
+::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/fractions
 :open:
-:name: open_features_items_oneOf_5_composition-models_items_oneOf_1_operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-- **enum**:[replace, replace defined only, add, subtract]
-::::::::::::::::
-
-
-
-:::::::::::::::::
-
-:::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2
-:open:
-:name: open_features_items_oneOf_5_composition-models_items_oneOf_2
-
-- **type**:object
-- **description**:Uniform compositional model. Sets constant compositional field.
-- **additionalProperties**:false
-- **required**:[model, compositions]
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/model
-:open:
-:name: open_features_items_oneOf_5_composition-models_items_oneOf_2_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the composition model.
-- **enum**:[uniform]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_composition-models_items_oneOf_2_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:todo The depth in meters from which the composition of this feature is present.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_composition-models_items_oneOf_2_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:todo The depth in meters to which the composition of this feature is present.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/compositions
-:open:
-:name: open_features_items_oneOf_5_composition-models_items_oneOf_2_compositions
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
-:::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/compositions/items
-:open:
-:name: open_features_items_oneOf_5_composition-models_items_oneOf_2_compositions_items
-
-- **default value**:0
-- **type**:integer
-- **description**:
-:::::::::::::::
-
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/fractions
-:open:
-:name: open_features_items_oneOf_5_composition-models_items_oneOf_2_fractions
+:name: open_features_items_oneOf_5_composition-models_items_oneOf_1_fractions
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:TA list of compositional fractions corresponding to the compositions list.
-:::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/fractions/items
+:::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/fractions/items
 :open:
-:name: open_features_items_oneOf_5_composition-models_items_oneOf_2_fractions_items
+:name: open_features_items_oneOf_5_composition-models_items_oneOf_1_fractions_items
 
 - **default value**:1.0
 - **type**:number
@@ -13636,9 +11707,9 @@
 
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/2/operation
+::::::::::::::::{dropdown} /features/items/oneOf/5/composition models/items/oneOf/1/operation
 :open:
-:name: open_features_items_oneOf_5_composition-models_items_oneOf_2_operation
+:name: open_features_items_oneOf_5_composition-models_items_oneOf_1_operation
 
 - **default value**:replace
 - **type**:string
@@ -13675,7 +11746,7 @@
 :name: open_features_items_oneOf_5_grains-models_items_oneOf_1
 
 - **type**:object
-- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
+- **description**:Uniform grains model. All grains start exactly the same.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
@@ -13686,25 +11757,25 @@
 - **default value**:
 - **type**:string
 - **description**:The name of the grains model.
-- **enum**:[random uniform distribution]
+- **enum**:[uniform]
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min distance slab top
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/min depth
 :open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-distance-slab-top
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_min-depth
 
 - **default value**:0.0
 - **type**:number
-- **description**:The distance from the slab top in meters from which the composition of this feature is present.
+- **description**:The depth in meters from which the grains of this feature are present.
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max distance slab top
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/max depth
 :open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-distance-slab-top
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_max-depth
 
 - **default value**:1.7976931348623157e308
 - **type**:number
-- **description**:The distance from the slab top in meters to which the composition of this feature is present.
+- **description**:The depth in meters to which the grains of this feature are present.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/compositions
@@ -13727,278 +11798,36 @@
 
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/orientation operation
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/rotation matrices
 :open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_orientation-operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/grain sizes
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_grain-sizes
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_rotation-matrices
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
-:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/grain sizes/items
+- **description**:A list with the rotation matrices of the grains which are present there for each compositions.
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/rotation matrices/items
 :open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_grain-sizes_items
-
-- **default value**:1.0
-- **type**:number
-- **description**:
-:::::::::::::::
-
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/normalize grain sizes
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_normalize-grain-sizes
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
-:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/normalize grain sizes/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_normalize-grain-sizes_items
-
-- **default value**:true
-- **type**:boolean
-- **description**:
-:::::::::::::::
-
-::::::::::::::::
-
-
-
-:::::::::::::::::
-
-:::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2
-
-- **type**:object
-- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
-- **additionalProperties**:false
-- **required**:[model, compositions]
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/model
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the grains model.
-- **enum**:[random uniform distribution deflected]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:The distance from the slab top in meters from which the composition of this feature is present.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:The distance from the slab top in meters to which the composition of this feature is present.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/compositions
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_compositions
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
-:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/compositions/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_compositions_items
-
-- **default value**:0
-- **type**:integer
-- **description**:
-:::::::::::::::
-
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/orientation operation
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_orientation-operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/grain sizes
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_grain-sizes
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
-:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/grain sizes/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_grain-sizes_items
-
-- **default value**:1.0
-- **type**:number
-- **description**:
-:::::::::::::::
-
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/normalize grain sizes
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_normalize-grain-sizes
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
-:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/normalize grain sizes/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_normalize-grain-sizes_items
-
-- **default value**:true
-- **type**:boolean
-- **description**:
-:::::::::::::::
-
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/deflections
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_deflections
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list of the deflections of all of the grains in each composition between 0 and 1.
-:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/2/deflections/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_2_deflections_items
-
-- **default value**:1.0
-- **type**:number
-- **description**:
-:::::::::::::::
-
-::::::::::::::::
-
-
-
-:::::::::::::::::
-
-:::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_3
-
-- **type**:object
-- **description**:Uniform grains model. All grains start exactly the same.
-- **additionalProperties**:false
-- **required**:[model, compositions]
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/model
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the grains model.
-- **enum**:[uniform]
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:The distance from the slab top in meters from which the composition of this feature is present.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:The distance from the slab top in meters to which the composition of this feature is present.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/compositions
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_compositions
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
-:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/compositions/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_compositions_items
-
-- **default value**:0
-- **type**:integer
-- **description**:
-:::::::::::::::
-
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/rotation matrices
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_rotation-matrices
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the labels of the grains which are present there for each compositions.
-:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/rotation matrices/items
-:open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_rotation-matrices_items
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_rotation-matrices_items
 
 - **type**:array
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
 - **description**:
-::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/rotation matrices/items/items
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/rotation matrices/items/items
 :open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_rotation-matrices_items_items
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_rotation-matrices_items_items
 
 - **type**:array
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
 - **description**:
-:::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/rotation matrices/items/items/items
+:::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/rotation matrices/items/items/items
 :open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_rotation-matrices_items_items_items
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_rotation-matrices_items_items_items
 
 - **default value**:0.0
 - **type**:number
@@ -14011,27 +11840,27 @@
 
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/Euler angles z-x-z
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/Euler angles z-x-z
 :open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_Euler-angles-z-x-z
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_Euler-angles-z-x-z
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
-:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/Euler angles z-x-z/items
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/Euler angles z-x-z/items
 :open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_Euler-angles-z-x-z_items
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_Euler-angles-z-x-z_items
 
 - **type**:array
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
 - **description**:
-::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/Euler angles z-x-z/items/items
+::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/Euler angles z-x-z/items/items
 :open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_Euler-angles-z-x-z_items_items
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_Euler-angles-z-x-z_items_items
 
 - **default value**:0.0
 - **type**:number
@@ -14042,28 +11871,28 @@
 
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/orientation operation
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/orientation operation
 :open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_orientation-operation
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_orientation-operation
 
 - **default value**:replace
 - **type**:string
 - **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
+- **enum**:[replace, multiply]
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/grain sizes
+::::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/grain sizes
 :open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_grain-sizes
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_grain-sizes
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
-:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/3/grain sizes/items
+:::::::::::::::{dropdown} /features/items/oneOf/5/grains models/items/oneOf/1/grain sizes/items
 :open:
-:name: open_features_items_oneOf_5_grains-models_items_oneOf_3_grain-sizes_items
+:name: open_features_items_oneOf_5_grains-models_items_oneOf_1_grain-sizes_items
 
 - **default value**:-1.0
 - **type**:number
@@ -14081,1429 +11910,219 @@
 
 ::::::::::::::::::::
 
-::::::::::::::::::::{dropdown} /features/items/oneOf/5/sections
+
+
+:::::::::::::::::::::
+
+:::::::::::::::::::::{dropdown} /features/items/oneOf/6
 :open:
-:name: open_features_items_oneOf_5_sections
+:name: open_features_items_oneOf_6
+
+- **type**:object
+- **description**:Subducting slab object. Requires properties `model` and `coordinates`.
+- **additionalProperties**:false
+- **required**:[model]
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/6/model
+:open:
+:name: open_features_items_oneOf_6_model
+
+- **default value**:
+- **type**:string
+- **description**:The model name of the feature determining its type.
+- **enum**:[subducting plate]
+::::::::::::::::::::
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/6/name
+:open:
+:name: open_features_items_oneOf_6_name
+
+- **default value**:
+- **type**:string
+- **description**:The name which the user has given to the feature. This is mostly used for documentation purposes, and should in most cases be unique, although this is not enforced.
+::::::::::::::::::::
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/6/tag
+:open:
+:name: open_features_items_oneOf_6_tag
+
+- **default value**:
+- **type**:string
+- **description**:A tag which can be given to a feature. This is meant to categorize different features. If the tag is not provided or empty, it is set to the model name.
+::::::::::::::::::::
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/6/coordinates
+:open:
+:name: open_features_items_oneOf_6_coordinates
 
 - **type**:array
-- **minItems**:0
+- **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:A list of feature properties for a coordinate.
-:::::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items
+- **description**:An array of 2d Points representing an array of coordinates where the feature is located.
+:::::::::::::::::::{dropdown} /features/items/oneOf/6/coordinates/items
 :open:
-:name: open_features_items_oneOf_5_sections_items
+:name: open_features_items_oneOf_6_coordinates_items
 
+- **type**:array
+- **minItems**:2
+- **maxItems**:2
 - **description**:
-- **default value**:
-- **type**:object
-
-::::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/min depth
+::::::::::::::::::{dropdown} /features/items/oneOf/6/coordinates/items/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_min-depth
+:name: open_features_items_oneOf_6_coordinates_items_items
+
+- **type**:number
+::::::::::::::::::
+
+:::::::::::::::::::
+
+::::::::::::::::::::
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/6/interpolation
+:open:
+:name: open_features_items_oneOf_6_interpolation
+
+- **default value**:global
+- **type**:string
+- **description**:What type of interpolation should be used to enforce the minimum points per distance parameter. Options are 'global' and 'continuous monotone spline' interpolation. If this value is set to global, the global value for interpolation is used. This option is deprecated and will be removed in a future release.
+::::::::::::::::::::
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/6/min depth
+:open:
+:name: open_features_items_oneOf_6_min-depth
 
 - **default value**:0.0
 - **type**:number
 - **description**:The depth to which this feature is present
-::::::::::::::::::
+::::::::::::::::::::
 
-::::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/max depth
+::::::::::::::::::::{dropdown} /features/items/oneOf/6/max depth
 :open:
-:name: open_features_items_oneOf_5_sections_items_max-depth
+:name: open_features_items_oneOf_6_max-depth
 
 - **default value**:1.7976931348623157e308
 - **type**:number
 - **description**:The depth to which this feature is present
-::::::::::::::::::
+::::::::::::::::::::
 
-::::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/dip point
+::::::::::::::::::::{dropdown} /features/items/oneOf/6/dip point
 :open:
-:name: open_features_items_oneOf_5_sections_items_dip-point
+:name: open_features_items_oneOf_6_dip-point
 
 - **type**:array
 - **minItems**:2
 - **maxItems**:2
 - **description**:The depth to which this feature is present
-:::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/dip point/items
+:::::::::::::::::::{dropdown} /features/items/oneOf/6/dip point/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_dip-point_items
+:name: open_features_items_oneOf_6_dip-point_items
 
 - **type**:number
-:::::::::::::::::
+:::::::::::::::::::
 
-::::::::::::::::::
+::::::::::::::::::::
 
-::::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments
+::::::::::::::::::::{dropdown} /features/items/oneOf/6/segments
 :open:
-:name: open_features_items_oneOf_5_sections_items_segments
+:name: open_features_items_oneOf_6_segments
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:The depth to which this feature is present
-:::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items
+:::::::::::::::::::{dropdown} /features/items/oneOf/6/segments/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_segments_items
+:name: open_features_items_oneOf_6_segments_items
 
 - **type**:object
 - **additionalProperties**:false
 - **description**:
 - **required**:[length, thickness, angle]
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/length
+::::::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/length
 :open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_length
+:name: open_features_items_oneOf_6_segments_items_length
 
 - **type**:number
-::::::::::::::::
+::::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/thickness
+::::::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/thickness
 :open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_thickness
+:name: open_features_items_oneOf_6_segments_items_thickness
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:2
-:::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/thickness/items
+:::::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/thickness/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_thickness_items
+:name: open_features_items_oneOf_6_segments_items_thickness_items
 
 - **type**:number
-:::::::::::::::
-
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/top truncation
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_top-truncation
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:2
-:::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/top truncation/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_top-truncation_items
-
-- **type**:number
-:::::::::::::::
-
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/angle
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_angle
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:2
-:::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/angle/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_angle_items
-
-- **type**:number
-:::::::::::::::
-
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models
-
-- **description**:
-- **default value**:
-- **type**:array
-:::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items
-
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf
-
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/1
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_1
-
-- **type**:object
-- **description**:Adiabatic temperature model. Uses global values by default.
-- **additionalProperties**:false
-- **required**:[model]
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/1/model
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_1_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the temperature model.
-- **enum**:[adiabatic]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/1/operation
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_1_operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/1/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_1_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:todo The depth in meters from which the composition of this feature is present.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/1/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_1_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:todo The depth in meters to which the composition of this feature is present.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/1/potential mantle temperature
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_1_potential-mantle-temperature
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/1/thermal expansion coefficient
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_1_thermal-expansion-coefficient
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/1/specific heat
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_1_specific-heat
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
-::::::::::::
-
-
-
-:::::::::::::
-
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/2
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_2
-
-- **type**:object
-- **description**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
-- **additionalProperties**:false
-- **required**:[model, max distance slab top]
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/2/model
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_2_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the temperature model.
-- **enum**:[linear]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/2/operation
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_2_operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/2/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_2_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:todo The depth in meters from which the composition of this feature is present.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/2/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_2_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:todo The depth in meters to which the composition of this feature is present.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/2/top temperature
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_2_top-temperature
-
-- **default value**:293.15
-- **type**:number
-- **description**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/2/bottom temperature
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_2_bottom-temperature
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The temperature at the bottom in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
-::::::::::::
-
-
-
-:::::::::::::
-
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3
-
-- **type**:object
-- **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
-- **additionalProperties**:false
-- **required**:[model, plate velocity]
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/model
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the temperature model.
-- **enum**:[mass conserving]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/operation
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/density
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_density
-
-- **default value**:3300.0
-- **type**:number
-- **description**:The reference density of the subducting plate in $kg/m^3$
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity
-
-- **description**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf
-
-::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/1
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_1
-
-- **default value**:0.01
-- **type**:number
-- **description**:
-::::::::::
-
-::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:
-:::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items
-
-- **type**:array
-- **additionalProperties**:false
-- **minItems**:1
-- **maxItems**:18446744073709551615
-- **description**:
-::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items
-
-:::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf
-
-::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/1
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_1
-
-- **type**:number
-- **default value**:0.01
-::::::
-
-::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:4294967295
-:::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:18446744073709551615
-::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items_items
-
-- **type**:number
-::::
-
-:::::
-
-::::::
-
-
-::::::::
-
-:::::::::
-
-::::::::::
-
-
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/coupling depth
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_coupling-depth
-
-- **default value**:100000.0
-- **type**:number
-- **description**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters. Default is 100 km.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/forearc cooling factor
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_forearc-cooling-factor
-
-- **default value**:1.0
-- **type**:number
-- **description**:Increase the value to create thin (~2 km) cold thermal boundary layer above the slab.Any value greater than 1 does NOT meet the instantaneous conservation of mass, but does allow one to account for the history of insulating the forearc from heating up to this point in time. Note younger subducting lithosphere provides less insulation, while thicker, older slabs provide more insulation. Values up to 10 to 30 have been tested and don't cause any other extraneous effects. The larger th value the more you are not meeting the mass conserving criteria, so you don't want to see this affecting the temperature beyond the coupling depth as it will increase the mass of the slab and affect how it sinks.  If you use higher values, you will start to see that this creates a very thick cool layer above the entire slab - if you see this extending beyond the coupling zone reduce the value. You should use a value of 1 first and then only increase as little as possible to cool just the forearc region. Please examine the output temperature carefully. 
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/thermal conductivity
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_thermal-conductivity
-
-- **default value**:3.3
-- **type**:number
-- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/thermal expansion coefficient
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_thermal-expansion-coefficient
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/specific heat
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_specific-heat
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/thermal diffusivity
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_thermal-diffusivity
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/adiabatic heating
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_adiabatic-heating
-
-- **default value**:true
-- **type**:boolean
-- **description**:Whether adiabatic heating should be used for the slab.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/taper distance
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_taper-distance
-
-- **default value**:100000.0
-- **type**:number
-- **description**:Distance over which to taper the slab tip.tapers the initial heat content to zero and the minimum temperature to the background temperature.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/potential mantle temperature
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_potential-mantle-temperature
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/ridge coordinates
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_ridge-coordinates
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/ridge coordinates/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_ridge-coordinates_items
-
-- **type**:array
-- **minItems**:2
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:
-::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/ridge coordinates/items/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_ridge-coordinates_items_items
-
-- **type**:array
-- **minItems**:2
-- **maxItems**:2
-- **description**:
-:::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/ridge coordinates/items/items/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_ridge-coordinates_items_items_items
-
-- **type**:number
-:::::::::
-
-::::::::::
-
-:::::::::::
-
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/3/reference model name
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_3_reference-model-name
-
-- **default value**:half space model
-- **type**:string
-- **description**:The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model
-::::::::::::
-
-
-
-:::::::::::::
-
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_4
-
-- **type**:object
-- **description**:Plate model (based on McKenzie, 1970).
-- **additionalProperties**:false
-- **required**:[model, plate velocity]
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4/model
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_4_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the temperature model.
-- **enum**:[plate model]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4/operation
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_4_operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_4_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:todo The depth in meters from which the composition of this feature is present.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_4_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:todo The depth in meters to which the composition of this feature is present.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4/density
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_4_density
-
-- **default value**:3300.0
-- **type**:number
-- **description**:The reference density of the subducting plate in $kg/m^3$
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4/plate velocity
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_4_plate-velocity
-
-- **default value**:NaN
-- **type**:number
-- **description**:The velocity in meters per year with which the plate subducts in meters per year.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4/thermal conductivity
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_4_thermal-conductivity
-
-- **default value**:2.0
-- **type**:number
-- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4/thermal expansion coefficient
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_4_thermal-expansion-coefficient
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4/specific heat
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_4_specific-heat
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4/adiabatic heating
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_4_adiabatic-heating
-
-- **default value**:true
-- **type**:boolean
-- **description**:Whether adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/4/potential mantle temperature
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_4_potential-mantle-temperature
-
-- **default value**:-1.0
-- **type**:number
-- **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
-::::::::::::
-
-
-
-:::::::::::::
-
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/5
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_5
-
-- **type**:object
-- **description**:Uniform temperature model. Set the temperature to a constan value.
-- **additionalProperties**:false
-- **required**:[model, temperature]
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/5/model
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_5_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the temperature model.
-- **enum**:[uniform]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/5/operation
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_5_operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
-- **enum**:[replace, add, subtract]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/5/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_5_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:todo The depth in meters from which the composition of this feature is present.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/5/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_5_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:todo The depth in meters to which the composition of this feature is present.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/temperature models/items/oneOf/5/temperature
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_temperature-models_items_oneOf_5_temperature
-
-- **default value**:293.15
-- **type**:number
-- **description**:The temperature in degree Kelvin which this feature should have
-::::::::::::
-
-
-
-:::::::::::::
-
-
-:::::::::::::::
-
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models
-
-- **description**:
-- **default value**:
-- **type**:array
-:::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items
-
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf
-
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1
-
-- **type**:object
-- **description**:Compositional model object
-- **additionalProperties**:false
-- **required**:[model, compositions]
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/model
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the composition model.
-- **enum**:[smooth]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:The distance in meters from which the composition of this layer is present.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_max-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:The distance in meters from which the composition of this layer is present.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/top fractions
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_top-fractions
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:The composition fraction at the top of the slab (layer).
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/top fractions/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_top-fractions_items
-
-- **default value**:1.0
-- **type**:number
-- **description**:
-:::::::::::
-
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/bottom fractions
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_bottom-fractions
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:The composition fraction at the bottom of the slab (layer).
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/bottom fractions/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_bottom-fractions_items
-
-- **default value**:0.0
-- **type**:number
-- **description**:
-:::::::::::
-
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/compositions
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_compositions
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/compositions/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_compositions_items
-
-- **default value**:0
-- **type**:integer
-- **description**:
-:::::::::::
-
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/1/operation
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_1_operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-- **enum**:[replace, replace defined only, add, subtract]
-::::::::::::
-
-
-
-:::::::::::::
-
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2
-
-- **type**:object
-- **description**:Uniform compositional model. Sets constant compositional field.
-- **additionalProperties**:false
-- **required**:[model, compositions]
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2/model
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the composition model.
-- **enum**:[uniform]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:todo The depth in meters from which the composition of this feature is present.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:todo The depth in meters to which the composition of this feature is present.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2/compositions
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2_compositions
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the labels of the composition which are present there.
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2/compositions/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items
-
-- **default value**:0
-- **type**:integer
-- **description**:
-:::::::::::
-
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2/fractions
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2_fractions
-
-- **type**:array
-- **minItems**:1
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:TA list of compositional fractions corresponding to the compositions list.
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2/fractions/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2_fractions_items
-
-- **default value**:1.0
-- **type**:number
-- **description**:
-:::::::::::
-
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/composition models/items/oneOf/2/operation
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_composition-models_items_oneOf_2_operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
-- **enum**:[replace, replace defined only, add, subtract]
-::::::::::::
-
-
-
-:::::::::::::
-
-
-:::::::::::::::
-
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models
-
-- **description**:
-- **default value**:
-- **type**:array
-:::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items
-
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf
-
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/1
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_1
-
-- **type**:object
-- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
-- **additionalProperties**:false
-- **required**:[model, compositions]
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/1/model
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_1_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the grains model.
-- **enum**:[random uniform distribution]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/1/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_1_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:The distance from the slab top in meters from which the composition of this feature is present.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/1/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_1_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:The distance from the slab top in meters to which the composition of this feature is present.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/1/compositions
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_1_compositions
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/1/compositions/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_1_compositions_items
-
-- **default value**:0
-- **type**:integer
-- **description**:
-:::::::::::
-
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/1/orientation operation
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_1_orientation-operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/1/grain sizes
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_1_grain-sizes
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/1/grain sizes/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_1_grain-sizes_items
-
-- **default value**:1.0
-- **type**:number
-- **description**:
-:::::::::::
-
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/1/normalize grain sizes
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_1_normalize-grain-sizes
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/1/normalize grain sizes/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_1_normalize-grain-sizes_items
-
-- **default value**:true
-- **type**:boolean
-- **description**:
-:::::::::::
-
-::::::::::::
-
-
-
-:::::::::::::
-
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2
-
-- **type**:object
-- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
-- **additionalProperties**:false
-- **required**:[model, compositions]
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/model
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the grains model.
-- **enum**:[random uniform distribution deflected]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:The distance from the slab top in meters from which the composition of this feature is present.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:The distance from the slab top in meters to which the composition of this feature is present.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/compositions
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2_compositions
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/compositions/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2_compositions_items
-
-- **default value**:0
-- **type**:integer
-- **description**:
-:::::::::::
-
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/orientation operation
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2_orientation-operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/grain sizes
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2_grain-sizes
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/grain sizes/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2_grain-sizes_items
-
-- **default value**:1.0
-- **type**:number
-- **description**:
-:::::::::::
-
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/normalize grain sizes
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2_normalize-grain-sizes
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/normalize grain sizes/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2_normalize-grain-sizes_items
-
-- **default value**:true
-- **type**:boolean
-- **description**:
-:::::::::::
-
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/deflections
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2_deflections
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list of the deflections of all of the grains in each composition between 0 and 1.
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/2/deflections/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_2_deflections_items
-
-- **default value**:1.0
-- **type**:number
-- **description**:
-:::::::::::
-
-::::::::::::
-
-
-
-:::::::::::::
-
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/3
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_3
-
-- **type**:object
-- **description**:Uniform grains model. All grains start exactly the same.
-- **additionalProperties**:false
-- **required**:[model, compositions]
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/3/model
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_3_model
-
-- **default value**:
-- **type**:string
-- **description**:The name of the grains model.
-- **enum**:[uniform]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/3/min distance slab top
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_3_min-distance-slab-top
-
-- **default value**:0.0
-- **type**:number
-- **description**:The distance from the slab top in meters from which the composition of this feature is present.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/3/max distance slab top
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_3_max-distance-slab-top
-
-- **default value**:1.7976931348623157e308
-- **type**:number
-- **description**:The distance from the slab top in meters to which the composition of this feature is present.
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/3/compositions
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_3_compositions
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the integer labels of the composition which are present there.
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/3/compositions/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_3_compositions_items
-
-- **default value**:0
-- **type**:integer
-- **description**:
-:::::::::::
-
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/3/rotation matrices
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_3_rotation-matrices
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the labels of the grains which are present there for each compositions.
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/3/rotation matrices/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_3_rotation-matrices_items
-
-- **type**:array
-- **minItems**:3
-- **maxItems**:3
-- **uniqueItems**:false
-- **description**:
-::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/3/rotation matrices/items/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_3_rotation-matrices_items_items
-
-- **type**:array
-- **minItems**:3
-- **maxItems**:3
-- **uniqueItems**:false
-- **description**:
-:::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/3/rotation matrices/items/items/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_3_rotation-matrices_items_items_items
-
-- **default value**:0.0
-- **type**:number
-- **description**:
-:::::::::
-
-::::::::::
-
-:::::::::::
-
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/3/Euler angles z-x-z
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_3_Euler-angles-z-x-z
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/3/Euler angles z-x-z/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_3_Euler-angles-z-x-z_items
-
-- **type**:array
-- **minItems**:3
-- **maxItems**:3
-- **uniqueItems**:false
-- **description**:
-::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/3/Euler angles z-x-z/items/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_3_Euler-angles-z-x-z_items_items
-
-- **default value**:0.0
-- **type**:number
-- **description**:
-::::::::::
-
-:::::::::::
-
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/3/orientation operation
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_3_orientation-operation
-
-- **default value**:replace
-- **type**:string
-- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
-- **enum**:[replace]
-::::::::::::
-
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/3/grain sizes
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_3_grain-sizes
-
-- **type**:array
-- **minItems**:0
-- **maxItems**:4294967295
-- **uniqueItems**:false
-- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/segments/items/grains models/items/oneOf/3/grain sizes/items
-:open:
-:name: open_features_items_oneOf_5_sections_items_segments_items_grains-models_items_oneOf_3_grain-sizes_items
-
-- **default value**:-1.0
-- **type**:number
-- **description**:
-:::::::::::
-
-::::::::::::
-
-
-
-:::::::::::::
-
-
-:::::::::::::::
-
-::::::::::::::::
-
-
-
 :::::::::::::::::
 
 ::::::::::::::::::
 
-::::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models
+::::::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/top truncation
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models
+:name: open_features_items_oneOf_6_segments_items_top-truncation
 
-- **description**:A list of temperature models.
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+:::::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/top truncation/items
+:open:
+:name: open_features_items_oneOf_6_segments_items_top-truncation_items
+
+- **type**:number
+:::::::::::::::::
+
+::::::::::::::::::
+
+::::::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/angle
+:open:
+:name: open_features_items_oneOf_6_segments_items_angle
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+:::::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/angle/items
+:open:
+:name: open_features_items_oneOf_6_segments_items_angle_items
+
+- **type**:number
+:::::::::::::::::
+
+::::::::::::::::::
+
+::::::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models
+:open:
+:name: open_features_items_oneOf_6_segments_items_temperature-models
+
+- **description**:
 - **default value**:
 - **type**:array
-:::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items
+:::::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf
+::::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf
 
-:::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/1
+:::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/1
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_1
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_1
 
 - **type**:object
 - **description**:Adiabatic temperature model. Uses global values by default.
 - **additionalProperties**:false
 - **required**:[model]
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/1/model
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/1/model
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_1_model
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_1_model
 
 - **default value**:
 - **type**:string
@@ -15511,9 +12130,9 @@
 - **enum**:[adiabatic]
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/1/operation
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/1/operation
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_1_operation
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_1_operation
 
 - **default value**:replace
 - **type**:string
@@ -15521,45 +12140,45 @@
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/1/min distance slab top
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/1/min distance slab top
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_1_min-distance-slab-top
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_1_min-distance-slab-top
 
 - **default value**:0.0
 - **type**:number
 - **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/1/max distance slab top
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/1/max distance slab top
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_1_max-distance-slab-top
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_1_max-distance-slab-top
 
 - **default value**:1.7976931348623157e308
 - **type**:number
 - **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/1/potential mantle temperature
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/1/potential mantle temperature
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_1_potential-mantle-temperature
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_1_potential-mantle-temperature
 
 - **default value**:-1.0
 - **type**:number
 - **description**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/1/thermal expansion coefficient
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/1/thermal expansion coefficient
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_1_thermal-expansion-coefficient
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_1_thermal-expansion-coefficient
 
 - **default value**:-1.0
 - **type**:number
 - **description**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/1/specific heat
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/1/specific heat
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_1_specific-heat
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_1_specific-heat
 
 - **default value**:-1.0
 - **type**:number
@@ -15570,18 +12189,18 @@
 
 :::::::::::::::
 
-:::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/2
+:::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/2
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_2
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_2
 
 - **type**:object
 - **description**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
 - **additionalProperties**:false
 - **required**:[model, max distance slab top]
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/2/model
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/2/model
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_2_model
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_2_model
 
 - **default value**:
 - **type**:string
@@ -15589,9 +12208,9 @@
 - **enum**:[linear]
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/2/operation
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/2/operation
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_2_operation
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_2_operation
 
 - **default value**:replace
 - **type**:string
@@ -15599,36 +12218,36 @@
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/2/min distance slab top
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/2/min distance slab top
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_2_min-distance-slab-top
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_2_min-distance-slab-top
 
 - **default value**:0.0
 - **type**:number
 - **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/2/max distance slab top
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/2/max distance slab top
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_2_max-distance-slab-top
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_2_max-distance-slab-top
 
 - **default value**:1.7976931348623157e308
 - **type**:number
 - **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/2/top temperature
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/2/top temperature
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_2_top-temperature
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_2_top-temperature
 
 - **default value**:293.15
 - **type**:number
 - **description**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/2/bottom temperature
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/2/bottom temperature
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_2_bottom-temperature
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_2_bottom-temperature
 
 - **default value**:-1.0
 - **type**:number
@@ -15639,18 +12258,18 @@
 
 :::::::::::::::
 
-:::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3
+:::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3
 
 - **type**:object
 - **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
 - **additionalProperties**:false
 - **required**:[model, plate velocity]
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/model
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/model
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_model
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_model
 
 - **default value**:
 - **type**:string
@@ -15658,9 +12277,9 @@
 - **enum**:[mass conserving]
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/operation
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/operation
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_operation
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_operation
 
 - **default value**:replace
 - **type**:string
@@ -15668,102 +12287,102 @@
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/min distance slab top
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/min distance slab top
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_min-distance-slab-top
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_min-distance-slab-top
 
 - **default value**:0.0
 - **type**:number
 - **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/max distance slab top
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/max distance slab top
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_max-distance-slab-top
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_max-distance-slab-top
 
 - **default value**:1.7976931348623157e308
 - **type**:number
 - **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/density
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/density
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_density
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_density
 
 - **default value**:3300.0
 - **type**:number
 - **description**:The reference density of the subducting plate in $kg/m^3$
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/plate velocity
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_plate-velocity
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity
 
 - **description**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf
+:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf
 
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/1
+::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/1
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_1
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_1
 
 - **default value**:0.01
 - **type**:number
 - **description**:
 ::::::::::::
 
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2
+::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items
 
 - **type**:array
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:18446744073709551615
 - **description**:
-::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items
+::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items
 
-:::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf
+:::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf
 
-::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/1
+::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/1
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_1
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_1
 
 - **type**:number
 - **default value**:0.01
 ::::::::
 
-::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2
+::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:4294967295
-:::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items
+:::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:18446744073709551615
-::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items/items
+::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items_items
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items_items
 
 - **type**:number
 ::::::
@@ -15782,116 +12401,116 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/coupling depth
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/coupling depth
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_coupling-depth
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_coupling-depth
 
 - **default value**:100000.0
 - **type**:number
 - **description**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters. Default is 100 km.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/forearc cooling factor
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/forearc cooling factor
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_forearc-cooling-factor
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_forearc-cooling-factor
 
 - **default value**:1.0
 - **type**:number
 - **description**:Increase the value to create thin (~2 km) cold thermal boundary layer above the slab.Any value greater than 1 does NOT meet the instantaneous conservation of mass, but does allow one to account for the history of insulating the forearc from heating up to this point in time. Note younger subducting lithosphere provides less insulation, while thicker, older slabs provide more insulation. Values up to 10 to 30 have been tested and don't cause any other extraneous effects. The larger th value the more you are not meeting the mass conserving criteria, so you don't want to see this affecting the temperature beyond the coupling depth as it will increase the mass of the slab and affect how it sinks.  If you use higher values, you will start to see that this creates a very thick cool layer above the entire slab - if you see this extending beyond the coupling zone reduce the value. You should use a value of 1 first and then only increase as little as possible to cool just the forearc region. Please examine the output temperature carefully. 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/thermal conductivity
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/thermal conductivity
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_thermal-conductivity
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_thermal-conductivity
 
 - **default value**:3.3
 - **type**:number
 - **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/thermal expansion coefficient
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/thermal expansion coefficient
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_thermal-expansion-coefficient
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_thermal-expansion-coefficient
 
 - **default value**:-1.0
 - **type**:number
 - **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/specific heat
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/specific heat
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_specific-heat
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_specific-heat
 
 - **default value**:-1.0
 - **type**:number
 - **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/thermal diffusivity
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/thermal diffusivity
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_thermal-diffusivity
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_thermal-diffusivity
 
 - **default value**:-1.0
 - **type**:number
 - **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/adiabatic heating
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/adiabatic heating
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_adiabatic-heating
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_adiabatic-heating
 
 - **default value**:true
 - **type**:boolean
 - **description**:Whether adiabatic heating should be used for the slab.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/taper distance
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/taper distance
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_taper-distance
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_taper-distance
 
 - **default value**:100000.0
 - **type**:number
 - **description**:Distance over which to taper the slab tip.tapers the initial heat content to zero and the minimum temperature to the background temperature.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/potential mantle temperature
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/potential mantle temperature
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_potential-mantle-temperature
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_potential-mantle-temperature
 
 - **default value**:-1.0
 - **type**:number
 - **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/ridge coordinates
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/ridge coordinates
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_ridge-coordinates
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_ridge-coordinates
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/ridge coordinates/items
+:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/ridge coordinates/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_ridge-coordinates_items
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_ridge-coordinates_items
 
 - **type**:array
 - **minItems**:2
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/ridge coordinates/items/items
+::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/ridge coordinates/items/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_ridge-coordinates_items_items
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_ridge-coordinates_items_items
 
 - **type**:array
 - **minItems**:2
 - **maxItems**:2
 - **description**:
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/ridge coordinates/items/items/items
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/ridge coordinates/items/items/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_ridge-coordinates_items_items_items
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_ridge-coordinates_items_items_items
 
 - **type**:number
 :::::::::::
@@ -15902,9 +12521,9 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/3/reference model name
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/reference model name
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_3_reference-model-name
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_reference-model-name
 
 - **default value**:half space model
 - **type**:string
@@ -15915,18 +12534,18 @@
 
 :::::::::::::::
 
-:::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4
+:::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/4
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_4
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_4
 
 - **type**:object
 - **description**:Plate model (based on McKenzie, 1970).
 - **additionalProperties**:false
 - **required**:[model, plate velocity]
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4/model
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/4/model
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_4_model
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_4_model
 
 - **default value**:
 - **type**:string
@@ -15934,9 +12553,9 @@
 - **enum**:[plate model]
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4/operation
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/4/operation
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_4_operation
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_4_operation
 
 - **default value**:replace
 - **type**:string
@@ -15944,81 +12563,81 @@
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4/min distance slab top
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/4/min distance slab top
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_4_min-distance-slab-top
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_4_min-distance-slab-top
 
 - **default value**:0.0
 - **type**:number
 - **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4/max distance slab top
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/4/max distance slab top
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_4_max-distance-slab-top
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_4_max-distance-slab-top
 
 - **default value**:1.7976931348623157e308
 - **type**:number
 - **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4/density
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/4/density
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_4_density
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_4_density
 
 - **default value**:3300.0
 - **type**:number
 - **description**:The reference density of the subducting plate in $kg/m^3$
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4/plate velocity
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/4/plate velocity
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_4_plate-velocity
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_4_plate-velocity
 
 - **default value**:NaN
 - **type**:number
 - **description**:The velocity in meters per year with which the plate subducts in meters per year.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4/thermal conductivity
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/4/thermal conductivity
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_4_thermal-conductivity
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_4_thermal-conductivity
 
 - **default value**:2.0
 - **type**:number
 - **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4/thermal expansion coefficient
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/4/thermal expansion coefficient
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_4_thermal-expansion-coefficient
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_4_thermal-expansion-coefficient
 
 - **default value**:-1.0
 - **type**:number
 - **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4/specific heat
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/4/specific heat
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_4_specific-heat
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_4_specific-heat
 
 - **default value**:-1.0
 - **type**:number
 - **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4/adiabatic heating
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/4/adiabatic heating
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_4_adiabatic-heating
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_4_adiabatic-heating
 
 - **default value**:true
 - **type**:boolean
 - **description**:Whether adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/4/potential mantle temperature
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/4/potential mantle temperature
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_4_potential-mantle-temperature
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_4_potential-mantle-temperature
 
 - **default value**:-1.0
 - **type**:number
@@ -16029,18 +12648,18 @@
 
 :::::::::::::::
 
-:::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/5
+:::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/5
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_5
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_5
 
 - **type**:object
 - **description**:Uniform temperature model. Set the temperature to a constan value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/5/model
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/5/model
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_5_model
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_5_model
 
 - **default value**:
 - **type**:string
@@ -16048,9 +12667,9 @@
 - **enum**:[uniform]
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/5/operation
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/5/operation
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_5_operation
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_5_operation
 
 - **default value**:replace
 - **type**:string
@@ -16058,27 +12677,27 @@
 - **enum**:[replace, add, subtract]
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/5/min distance slab top
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/5/min distance slab top
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_5_min-distance-slab-top
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_5_min-distance-slab-top
 
 - **default value**:0.0
 - **type**:number
 - **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/5/max distance slab top
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/5/max distance slab top
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_5_max-distance-slab-top
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_5_max-distance-slab-top
 
 - **default value**:1.7976931348623157e308
 - **type**:number
 - **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/temperature models/items/oneOf/5/temperature
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/5/temperature
 :open:
-:name: open_features_items_oneOf_5_sections_items_temperature-models_items_oneOf_5_temperature
+:name: open_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_5_temperature
 
 - **default value**:293.15
 - **type**:number
@@ -16094,33 +12713,33 @@
 
 ::::::::::::::::::
 
-::::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models
+::::::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models
+:name: open_features_items_oneOf_6_segments_items_composition-models
 
-- **description**:A list of composition models.
+- **description**:
 - **default value**:
 - **type**:array
-:::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items
+:::::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items
+:name: open_features_items_oneOf_6_segments_items_composition-models_items
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf
+::::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf
 
-:::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1
+:::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/1
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_1
 
 - **type**:object
 - **description**:Compositional model object
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/model
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/1/model
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_model
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_1_model
 
 - **default value**:
 - **type**:string
@@ -16128,36 +12747,36 @@
 - **enum**:[smooth]
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/min distance slab top
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/1/min distance slab top
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_min-distance-slab-top
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_1_min-distance-slab-top
 
 - **default value**:0.0
 - **type**:number
 - **description**:The distance in meters from which the composition of this layer is present.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/max distance slab top
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/1/max distance slab top
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_max-distance-slab-top
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_1_max-distance-slab-top
 
 - **default value**:0.0
 - **type**:number
 - **description**:The distance in meters from which the composition of this layer is present.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/top fractions
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/1/top fractions
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_top-fractions
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_1_top-fractions
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:The composition fraction at the top of the slab (layer).
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/top fractions/items
+:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/1/top fractions/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_top-fractions_items
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_1_top-fractions_items
 
 - **default value**:1.0
 - **type**:number
@@ -16166,18 +12785,18 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/bottom fractions
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/1/bottom fractions
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_bottom-fractions
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_1_bottom-fractions
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:The composition fraction at the bottom of the slab (layer).
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/bottom fractions/items
+:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/1/bottom fractions/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_bottom-fractions_items
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_1_bottom-fractions_items
 
 - **default value**:0.0
 - **type**:number
@@ -16186,18 +12805,18 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/compositions
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/1/compositions
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_compositions
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_1_compositions
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:A list with the labels of the composition which are present there.
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/compositions/items
+:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/1/compositions/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_compositions_items
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
@@ -16206,9 +12825,9 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/1/operation
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/1/operation
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_1_operation
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_1_operation
 
 - **default value**:replace
 - **type**:string
@@ -16220,18 +12839,18 @@
 
 :::::::::::::::
 
-:::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2
+:::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/2
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_2
 
 - **type**:object
 - **description**:Uniform compositional model. Sets constant compositional field.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2/model
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/2/model
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2_model
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_2_model
 
 - **default value**:
 - **type**:string
@@ -16239,36 +12858,36 @@
 - **enum**:[uniform]
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2/min distance slab top
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/2/min distance slab top
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2_min-distance-slab-top
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_2_min-distance-slab-top
 
 - **default value**:0.0
 - **type**:number
 - **description**:todo The depth in meters from which the composition of this feature is present.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2/max distance slab top
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/2/max distance slab top
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2_max-distance-slab-top
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_2_max-distance-slab-top
 
 - **default value**:1.7976931348623157e308
 - **type**:number
 - **description**:todo The depth in meters to which the composition of this feature is present.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2/compositions
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/2/compositions
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2_compositions
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_2_compositions
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:A list with the labels of the composition which are present there.
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2/compositions/items
+:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/2/compositions/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2_compositions_items
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
@@ -16277,18 +12896,18 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2/fractions
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/2/fractions
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2_fractions
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_2_fractions
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:TA list of compositional fractions corresponding to the compositions list.
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2/fractions/items
+:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/2/fractions/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2_fractions_items
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_2_fractions_items
 
 - **default value**:1.0
 - **type**:number
@@ -16297,9 +12916,9 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/composition models/items/oneOf/2/operation
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/composition models/items/oneOf/2/operation
 :open:
-:name: open_features_items_oneOf_5_sections_items_composition-models_items_oneOf_2_operation
+:name: open_features_items_oneOf_6_segments_items_composition-models_items_oneOf_2_operation
 
 - **default value**:replace
 - **type**:string
@@ -16316,33 +12935,33 @@
 
 ::::::::::::::::::
 
-::::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models
+::::::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models
+:name: open_features_items_oneOf_6_segments_items_grains-models
 
-- **description**:A list of grains models.
+- **description**:
 - **default value**:
 - **type**:array
-:::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items
+:::::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items
+:name: open_features_items_oneOf_6_segments_items_grains-models_items
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf
+::::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf
 
-:::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/1
+:::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/1
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_1
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_1
 
 - **type**:object
 - **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/1/model
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/1/model
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_1_model
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_1_model
 
 - **default value**:
 - **type**:string
@@ -16350,36 +12969,36 @@
 - **enum**:[random uniform distribution]
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/1/min distance slab top
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/1/min distance slab top
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_1_min-distance-slab-top
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_1_min-distance-slab-top
 
 - **default value**:0.0
 - **type**:number
 - **description**:The distance from the slab top in meters from which the composition of this feature is present.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/1/max distance slab top
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/1/max distance slab top
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_1_max-distance-slab-top
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_1_max-distance-slab-top
 
 - **default value**:1.7976931348623157e308
 - **type**:number
 - **description**:The distance from the slab top in meters to which the composition of this feature is present.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/1/compositions
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/1/compositions
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_1_compositions
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_1_compositions
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:A list with the integer labels of the composition which are present there.
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/1/compositions/items
+:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/1/compositions/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_1_compositions_items
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_1_compositions_items
 
 - **default value**:0
 - **type**:integer
@@ -16388,9 +13007,9 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/1/orientation operation
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/1/orientation operation
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_1_orientation-operation
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_1_orientation-operation
 
 - **default value**:replace
 - **type**:string
@@ -16398,18 +13017,18 @@
 - **enum**:[replace]
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/1/grain sizes
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/1/grain sizes
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_1_grain-sizes
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_1_grain-sizes
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/1/grain sizes/items
+:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/1/grain sizes/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_1_grain-sizes_items
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_1_grain-sizes_items
 
 - **default value**:1.0
 - **type**:number
@@ -16418,18 +13037,18 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/1/normalize grain sizes
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/1/normalize grain sizes
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_1_normalize-grain-sizes
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_1_normalize-grain-sizes
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/1/normalize grain sizes/items
+:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/1/normalize grain sizes/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_1_normalize-grain-sizes_items
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_1_normalize-grain-sizes_items
 
 - **default value**:true
 - **type**:boolean
@@ -16442,18 +13061,18 @@
 
 :::::::::::::::
 
-:::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2
+:::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/2
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_2
 
 - **type**:object
 - **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/model
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/2/model
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2_model
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_2_model
 
 - **default value**:
 - **type**:string
@@ -16461,36 +13080,36 @@
 - **enum**:[random uniform distribution deflected]
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/min distance slab top
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/2/min distance slab top
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2_min-distance-slab-top
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_2_min-distance-slab-top
 
 - **default value**:0.0
 - **type**:number
 - **description**:The distance from the slab top in meters from which the composition of this feature is present.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/max distance slab top
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/2/max distance slab top
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2_max-distance-slab-top
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_2_max-distance-slab-top
 
 - **default value**:1.7976931348623157e308
 - **type**:number
 - **description**:The distance from the slab top in meters to which the composition of this feature is present.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/compositions
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/2/compositions
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2_compositions
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_2_compositions
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:A list with the integer labels of the composition which are present there.
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/compositions/items
+:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/2/compositions/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2_compositions_items
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_2_compositions_items
 
 - **default value**:0
 - **type**:integer
@@ -16499,9 +13118,9 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/orientation operation
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/2/orientation operation
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2_orientation-operation
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_2_orientation-operation
 
 - **default value**:replace
 - **type**:string
@@ -16509,18 +13128,18 @@
 - **enum**:[replace]
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/grain sizes
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/2/grain sizes
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2_grain-sizes
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_2_grain-sizes
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/grain sizes/items
+:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/2/grain sizes/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2_grain-sizes_items
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_2_grain-sizes_items
 
 - **default value**:1.0
 - **type**:number
@@ -16529,18 +13148,18 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/normalize grain sizes
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/2/normalize grain sizes
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2_normalize-grain-sizes
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_2_normalize-grain-sizes
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/normalize grain sizes/items
+:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/2/normalize grain sizes/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2_normalize-grain-sizes_items
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_2_normalize-grain-sizes_items
 
 - **default value**:true
 - **type**:boolean
@@ -16549,18 +13168,18 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/deflections
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/2/deflections
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2_deflections
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_2_deflections
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:A list of the deflections of all of the grains in each composition between 0 and 1.
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/2/deflections/items
+:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/2/deflections/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_2_deflections_items
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_2_deflections_items
 
 - **default value**:1.0
 - **type**:number
@@ -16573,18 +13192,18 @@
 
 :::::::::::::::
 
-:::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/3
+:::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/3
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_3
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_3
 
 - **type**:object
 - **description**:Uniform grains model. All grains start exactly the same.
 - **additionalProperties**:false
 - **required**:[model, compositions]
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/3/model
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/3/model
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_3_model
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_3_model
 
 - **default value**:
 - **type**:string
@@ -16592,36 +13211,36 @@
 - **enum**:[uniform]
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/3/min distance slab top
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/3/min distance slab top
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_3_min-distance-slab-top
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_3_min-distance-slab-top
 
 - **default value**:0.0
 - **type**:number
 - **description**:The distance from the slab top in meters from which the composition of this feature is present.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/3/max distance slab top
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/3/max distance slab top
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_3_max-distance-slab-top
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_3_max-distance-slab-top
 
 - **default value**:1.7976931348623157e308
 - **type**:number
 - **description**:The distance from the slab top in meters to which the composition of this feature is present.
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/3/compositions
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/3/compositions
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_3_compositions
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_3_compositions
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:A list with the integer labels of the composition which are present there.
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/3/compositions/items
+:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/3/compositions/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_3_compositions_items
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_3_compositions_items
 
 - **default value**:0
 - **type**:integer
@@ -16630,36 +13249,36 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/3/rotation matrices
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/3/rotation matrices
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_3_rotation-matrices
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_3_rotation-matrices
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:A list with the labels of the grains which are present there for each compositions.
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/3/rotation matrices/items
+:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/3/rotation matrices/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_3_rotation-matrices_items
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_3_rotation-matrices_items
 
 - **type**:array
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
 - **description**:
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/3/rotation matrices/items/items
+::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/3/rotation matrices/items/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_3_rotation-matrices_items_items
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_3_rotation-matrices_items_items
 
 - **type**:array
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
 - **description**:
-:::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/3/rotation matrices/items/items/items
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/3/rotation matrices/items/items/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_3_rotation-matrices_items_items_items
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_3_rotation-matrices_items_items_items
 
 - **default value**:0.0
 - **type**:number
@@ -16672,27 +13291,27 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/3/Euler angles z-x-z
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/3/Euler angles z-x-z
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_3_Euler-angles-z-x-z
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_3_Euler-angles-z-x-z
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/3/Euler angles z-x-z/items
+:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/3/Euler angles z-x-z/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_3_Euler-angles-z-x-z_items
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_3_Euler-angles-z-x-z_items
 
 - **type**:array
 - **minItems**:3
 - **maxItems**:3
 - **uniqueItems**:false
 - **description**:
-::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/3/Euler angles z-x-z/items/items
+::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/3/Euler angles z-x-z/items/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_3_Euler-angles-z-x-z_items_items
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_3_Euler-angles-z-x-z_items_items
 
 - **default value**:0.0
 - **type**:number
@@ -16703,9 +13322,9 @@
 
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/3/orientation operation
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/3/orientation operation
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_3_orientation-operation
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_3_orientation-operation
 
 - **default value**:replace
 - **type**:string
@@ -16713,18 +13332,18 @@
 - **enum**:[replace]
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/3/grain sizes
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/3/grain sizes
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_3_grain-sizes
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_3_grain-sizes
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
-:::::::::::::{dropdown} /features/items/oneOf/5/sections/items/grains models/items/oneOf/3/grain sizes/items
+:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/grains models/items/oneOf/3/grain sizes/items
 :open:
-:name: open_features_items_oneOf_5_sections_items_grains-models_items_oneOf_3_grain-sizes_items
+:name: open_features_items_oneOf_6_segments_items_grains-models_items_oneOf_3_grain-sizes_items
 
 - **default value**:-1.0
 - **type**:number
@@ -16742,9 +13361,3941 @@
 
 ::::::::::::::::::
 
-::::::::::::::::::{dropdown} /features/items/oneOf/5/sections/items/coordinate
+
+
+:::::::::::::::::::
+
+::::::::::::::::::::
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models
 :open:
-:name: open_features_items_oneOf_5_sections_items_coordinate
+:name: open_features_items_oneOf_6_temperature-models
+
+- **description**:A list of temperature models.
+- **default value**:
+- **type**:array
+:::::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items
+
+::::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf
+
+:::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_1
+
+- **type**:object
+- **description**:Adiabatic temperature model. Uses global values by default.
+- **additionalProperties**:false
+- **required**:[model]
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/1/model
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_1_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the temperature model.
+- **enum**:[adiabatic]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/1/operation
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_1_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **enum**:[replace, add, subtract]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/1/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_1_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/1/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_1_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:todo The depth in meters to which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/1/potential mantle temperature
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_1_potential-mantle-temperature
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/1/thermal expansion coefficient
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_1_thermal-expansion-coefficient
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/1/specific heat
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_1_specific-heat
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
+::::::::::::::::
+
+
+
+:::::::::::::::::
+
+:::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_2
+
+- **type**:object
+- **description**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
+- **additionalProperties**:false
+- **required**:[model, max distance slab top]
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/2/model
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_2_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the temperature model.
+- **enum**:[linear]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/2/operation
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_2_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **enum**:[replace, add, subtract]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/2/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_2_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/2/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_2_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:todo The depth in meters to which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/2/top temperature
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_2_top-temperature
+
+- **default value**:293.15
+- **type**:number
+- **description**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/2/bottom temperature
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_2_bottom-temperature
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The temperature at the bottom in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
+::::::::::::::::
+
+
+
+:::::::::::::::::
+
+:::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3
+
+- **type**:object
+- **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
+- **additionalProperties**:false
+- **required**:[model, plate velocity]
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/model
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the temperature model.
+- **enum**:[mass conserving]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/operation
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **enum**:[replace, add, subtract]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/density
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_density
+
+- **default value**:3300.0
+- **type**:number
+- **description**:The reference density of the subducting plate in $kg/m^3$
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity
+
+- **description**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
+:::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity/oneOf
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity_oneOf_1
+
+- **default value**:0.01
+- **type**:number
+- **description**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:18446744073709551615
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:0.01
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:18446744073709551615
+::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/coupling depth
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_coupling-depth
+
+- **default value**:100000.0
+- **type**:number
+- **description**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters. Default is 100 km.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/forearc cooling factor
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_forearc-cooling-factor
+
+- **default value**:1.0
+- **type**:number
+- **description**:Increase the value to create thin (~2 km) cold thermal boundary layer above the slab.Any value greater than 1 does NOT meet the instantaneous conservation of mass, but does allow one to account for the history of insulating the forearc from heating up to this point in time. Note younger subducting lithosphere provides less insulation, while thicker, older slabs provide more insulation. Values up to 10 to 30 have been tested and don't cause any other extraneous effects. The larger th value the more you are not meeting the mass conserving criteria, so you don't want to see this affecting the temperature beyond the coupling depth as it will increase the mass of the slab and affect how it sinks.  If you use higher values, you will start to see that this creates a very thick cool layer above the entire slab - if you see this extending beyond the coupling zone reduce the value. You should use a value of 1 first and then only increase as little as possible to cool just the forearc region. Please examine the output temperature carefully. 
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/thermal conductivity
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_thermal-conductivity
+
+- **default value**:3.3
+- **type**:number
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/thermal expansion coefficient
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_thermal-expansion-coefficient
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/specific heat
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_specific-heat
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/thermal diffusivity
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_thermal-diffusivity
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/adiabatic heating
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_adiabatic-heating
+
+- **default value**:true
+- **type**:boolean
+- **description**:Whether adiabatic heating should be used for the slab.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/taper distance
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_taper-distance
+
+- **default value**:100000.0
+- **type**:number
+- **description**:Distance over which to taper the slab tip.tapers the initial heat content to zero and the minimum temperature to the background temperature.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/potential mantle temperature
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_potential-mantle-temperature
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/ridge coordinates
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_ridge-coordinates
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
+:::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/ridge coordinates/items
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_ridge-coordinates_items
+
+- **type**:array
+- **minItems**:2
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/ridge coordinates/items/items
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_ridge-coordinates_items_items
+
+- **type**:array
+- **minItems**:2
+- **maxItems**:2
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/ridge coordinates/items/items/items
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_ridge-coordinates_items_items_items
+
+- **type**:number
+:::::::::::::
+
+::::::::::::::
+
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/reference model name
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_3_reference-model-name
+
+- **default value**:half space model
+- **type**:string
+- **description**:The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model
+::::::::::::::::
+
+
+
+:::::::::::::::::
+
+:::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/4
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_4
+
+- **type**:object
+- **description**:Plate model (based on McKenzie, 1970).
+- **additionalProperties**:false
+- **required**:[model, plate velocity]
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/4/model
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_4_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the temperature model.
+- **enum**:[plate model]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/4/operation
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_4_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **enum**:[replace, add, subtract]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/4/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_4_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/4/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_4_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:todo The depth in meters to which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/4/density
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_4_density
+
+- **default value**:3300.0
+- **type**:number
+- **description**:The reference density of the subducting plate in $kg/m^3$
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/4/plate velocity
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_4_plate-velocity
+
+- **default value**:NaN
+- **type**:number
+- **description**:The velocity in meters per year with which the plate subducts in meters per year.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/4/thermal conductivity
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_4_thermal-conductivity
+
+- **default value**:2.0
+- **type**:number
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/4/thermal expansion coefficient
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_4_thermal-expansion-coefficient
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/4/specific heat
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_4_specific-heat
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/4/adiabatic heating
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_4_adiabatic-heating
+
+- **default value**:true
+- **type**:boolean
+- **description**:Whether adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/4/potential mantle temperature
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_4_potential-mantle-temperature
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
+::::::::::::::::
+
+
+
+:::::::::::::::::
+
+:::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/5
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_5
+
+- **type**:object
+- **description**:Uniform temperature model. Set the temperature to a constan value.
+- **additionalProperties**:false
+- **required**:[model, temperature]
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/5/model
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_5_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the temperature model.
+- **enum**:[uniform]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/5/operation
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_5_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **enum**:[replace, add, subtract]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/5/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_5_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/5/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_5_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:todo The depth in meters to which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/5/temperature
+:open:
+:name: open_features_items_oneOf_6_temperature-models_items_oneOf_5_temperature
+
+- **default value**:293.15
+- **type**:number
+- **description**:The temperature in degree Kelvin which this feature should have
+::::::::::::::::
+
+
+
+:::::::::::::::::
+
+
+:::::::::::::::::::
+
+::::::::::::::::::::
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/6/composition models
+:open:
+:name: open_features_items_oneOf_6_composition-models
+
+- **description**:A list of composition models.
+- **default value**:
+- **type**:array
+:::::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items
+:open:
+:name: open_features_items_oneOf_6_composition-models_items
+
+::::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf
+
+:::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_1
+
+- **type**:object
+- **description**:Compositional model object
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/1/model
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_1_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the composition model.
+- **enum**:[smooth]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/1/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_1_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance in meters from which the composition of this layer is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/1/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_1_max-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance in meters from which the composition of this layer is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/1/top fractions
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_1_top-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:The composition fraction at the top of the slab (layer).
+:::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/1/top fractions/items
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_1_top-fractions_items
+
+- **default value**:1.0
+- **type**:number
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/1/bottom fractions
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_1_bottom-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:The composition fraction at the bottom of the slab (layer).
+:::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/1/bottom fractions/items
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_1_bottom-fractions_items
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/1/compositions
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_1_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the labels of the composition which are present there.
+:::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/1/compositions/items
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_1_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/1/operation
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_1_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, replace defined only, add, subtract]
+::::::::::::::::
+
+
+
+:::::::::::::::::
+
+:::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_2
+
+- **type**:object
+- **description**:Uniform compositional model. Sets constant compositional field.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/2/model
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_2_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the composition model.
+- **enum**:[uniform]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/2/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_2_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/2/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_2_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:todo The depth in meters to which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/2/compositions
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_2_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the labels of the composition which are present there.
+:::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/2/compositions/items
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_2_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/2/fractions
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_2_fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:TA list of compositional fractions corresponding to the compositions list.
+:::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/2/fractions/items
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_2_fractions_items
+
+- **default value**:1.0
+- **type**:number
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/composition models/items/oneOf/2/operation
+:open:
+:name: open_features_items_oneOf_6_composition-models_items_oneOf_2_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, replace defined only, add, subtract]
+::::::::::::::::
+
+
+
+:::::::::::::::::
+
+
+:::::::::::::::::::
+
+::::::::::::::::::::
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/6/grains models
+:open:
+:name: open_features_items_oneOf_6_grains-models
+
+- **description**:A list of grains models.
+- **default value**:
+- **type**:array
+:::::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items
+:open:
+:name: open_features_items_oneOf_6_grains-models_items
+
+::::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf
+
+:::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_1
+
+- **type**:object
+- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/1/model
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_1_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the grains model.
+- **enum**:[random uniform distribution]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/1/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_1_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance from the slab top in meters from which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/1/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_1_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The distance from the slab top in meters to which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/1/compositions
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_1_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the integer labels of the composition which are present there.
+:::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/1/compositions/items
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_1_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/1/orientation operation
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_1_orientation-operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **enum**:[replace]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/1/grain sizes
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_1_grain-sizes
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
+:::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/1/grain sizes/items
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_1_grain-sizes_items
+
+- **default value**:1.0
+- **type**:number
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/1/normalize grain sizes
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_1_normalize-grain-sizes
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
+:::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/1/normalize grain sizes/items
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_1_normalize-grain-sizes_items
+
+- **default value**:true
+- **type**:boolean
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+
+
+:::::::::::::::::
+
+:::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_2
+
+- **type**:object
+- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/2/model
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_2_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the grains model.
+- **enum**:[random uniform distribution deflected]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/2/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_2_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance from the slab top in meters from which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/2/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_2_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The distance from the slab top in meters to which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/2/compositions
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_2_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the integer labels of the composition which are present there.
+:::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/2/compositions/items
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_2_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/2/orientation operation
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_2_orientation-operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **enum**:[replace]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/2/grain sizes
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_2_grain-sizes
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
+:::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/2/grain sizes/items
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_2_grain-sizes_items
+
+- **default value**:1.0
+- **type**:number
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/2/normalize grain sizes
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_2_normalize-grain-sizes
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
+:::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/2/normalize grain sizes/items
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_2_normalize-grain-sizes_items
+
+- **default value**:true
+- **type**:boolean
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/2/deflections
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_2_deflections
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of the deflections of all of the grains in each composition between 0 and 1.
+:::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/2/deflections/items
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_2_deflections_items
+
+- **default value**:1.0
+- **type**:number
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+
+
+:::::::::::::::::
+
+:::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/3
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_3
+
+- **type**:object
+- **description**:Uniform grains model. All grains start exactly the same.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/3/model
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_3_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the grains model.
+- **enum**:[uniform]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/3/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_3_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance from the slab top in meters from which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/3/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_3_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The distance from the slab top in meters to which the composition of this feature is present.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/3/compositions
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_3_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the integer labels of the composition which are present there.
+:::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/3/compositions/items
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_3_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/3/rotation matrices
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_3_rotation-matrices
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the labels of the grains which are present there for each compositions.
+:::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/3/rotation matrices/items
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_3_rotation-matrices_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/3/rotation matrices/items/items
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_3_rotation-matrices_items_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/3/rotation matrices/items/items/items
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_3_rotation-matrices_items_items_items
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+:::::::::::::
+
+::::::::::::::
+
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/3/Euler angles z-x-z
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_3_Euler-angles-z-x-z
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
+:::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/3/Euler angles z-x-z/items
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_3_Euler-angles-z-x-z_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/3/Euler angles z-x-z/items/items
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_3_Euler-angles-z-x-z_items_items
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+::::::::::::::
+
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/3/orientation operation
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_3_orientation-operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **enum**:[replace]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/3/grain sizes
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_3_grain-sizes
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
+:::::::::::::::{dropdown} /features/items/oneOf/6/grains models/items/oneOf/3/grain sizes/items
+:open:
+:name: open_features_items_oneOf_6_grains-models_items_oneOf_3_grain-sizes_items
+
+- **default value**:-1.0
+- **type**:number
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+
+
+:::::::::::::::::
+
+
+:::::::::::::::::::
+
+::::::::::::::::::::
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/6/sections
+:open:
+:name: open_features_items_oneOf_6_sections
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of feature properties for a coordinate.
+:::::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items
+:open:
+:name: open_features_items_oneOf_6_sections_items
+
+- **description**:
+- **default value**:
+- **type**:object
+
+::::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/min depth
+:open:
+:name: open_features_items_oneOf_6_sections_items_min-depth
+
+- **default value**:0.0
+- **type**:number
+- **description**:The depth to which this feature is present
+::::::::::::::::::
+
+::::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/max depth
+:open:
+:name: open_features_items_oneOf_6_sections_items_max-depth
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The depth to which this feature is present
+::::::::::::::::::
+
+::::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/dip point
+:open:
+:name: open_features_items_oneOf_6_sections_items_dip-point
+
+- **type**:array
+- **minItems**:2
+- **maxItems**:2
+- **description**:The depth to which this feature is present
+:::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/dip point/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_dip-point_items
+
+- **type**:number
+:::::::::::::::::
+
+::::::::::::::::::
+
+::::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:The depth to which this feature is present
+:::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items
+
+- **type**:object
+- **additionalProperties**:false
+- **description**:
+- **required**:[length, thickness, angle]
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/length
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_length
+
+- **type**:number
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/thickness
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_thickness
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+:::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/thickness/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_thickness_items
+
+- **type**:number
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/top truncation
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_top-truncation
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+:::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/top truncation/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_top-truncation_items
+
+- **type**:number
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/angle
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_angle
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+:::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/angle/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_angle_items
+
+- **type**:number
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models
+
+- **description**:
+- **default value**:
+- **type**:array
+:::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_1
+
+- **type**:object
+- **description**:Adiabatic temperature model. Uses global values by default.
+- **additionalProperties**:false
+- **required**:[model]
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/1/model
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_1_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the temperature model.
+- **enum**:[adiabatic]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/1/operation
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_1_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **enum**:[replace, add, subtract]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/1/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_1_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/1/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_1_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:todo The depth in meters to which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/1/potential mantle temperature
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_1_potential-mantle-temperature
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/1/thermal expansion coefficient
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_1_thermal-expansion-coefficient
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/1/specific heat
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_1_specific-heat
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
+::::::::::::
+
+
+
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_2
+
+- **type**:object
+- **description**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
+- **additionalProperties**:false
+- **required**:[model, max distance slab top]
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/2/model
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_2_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the temperature model.
+- **enum**:[linear]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/2/operation
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_2_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **enum**:[replace, add, subtract]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/2/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_2_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/2/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_2_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:todo The depth in meters to which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/2/top temperature
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_2_top-temperature
+
+- **default value**:293.15
+- **type**:number
+- **description**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/2/bottom temperature
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_2_bottom-temperature
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The temperature at the bottom in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
+::::::::::::
+
+
+
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3
+
+- **type**:object
+- **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
+- **additionalProperties**:false
+- **required**:[model, plate velocity]
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/model
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the temperature model.
+- **enum**:[mass conserving]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/operation
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **enum**:[replace, add, subtract]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/density
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_density
+
+- **default value**:3300.0
+- **type**:number
+- **description**:The reference density of the subducting plate in $kg/m^3$
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity
+
+- **description**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf
+
+::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_1
+
+- **default value**:0.01
+- **type**:number
+- **description**:
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:18446744073709551615
+- **description**:
+::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items
+
+:::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf
+
+::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:0.01
+::::::
+
+::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:18446744073709551615
+::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::
+
+:::::
+
+::::::
+
+
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/coupling depth
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_coupling-depth
+
+- **default value**:100000.0
+- **type**:number
+- **description**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters. Default is 100 km.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/forearc cooling factor
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_forearc-cooling-factor
+
+- **default value**:1.0
+- **type**:number
+- **description**:Increase the value to create thin (~2 km) cold thermal boundary layer above the slab.Any value greater than 1 does NOT meet the instantaneous conservation of mass, but does allow one to account for the history of insulating the forearc from heating up to this point in time. Note younger subducting lithosphere provides less insulation, while thicker, older slabs provide more insulation. Values up to 10 to 30 have been tested and don't cause any other extraneous effects. The larger th value the more you are not meeting the mass conserving criteria, so you don't want to see this affecting the temperature beyond the coupling depth as it will increase the mass of the slab and affect how it sinks.  If you use higher values, you will start to see that this creates a very thick cool layer above the entire slab - if you see this extending beyond the coupling zone reduce the value. You should use a value of 1 first and then only increase as little as possible to cool just the forearc region. Please examine the output temperature carefully. 
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/thermal conductivity
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_thermal-conductivity
+
+- **default value**:3.3
+- **type**:number
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/thermal expansion coefficient
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_thermal-expansion-coefficient
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/specific heat
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_specific-heat
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/thermal diffusivity
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_thermal-diffusivity
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/adiabatic heating
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_adiabatic-heating
+
+- **default value**:true
+- **type**:boolean
+- **description**:Whether adiabatic heating should be used for the slab.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/taper distance
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_taper-distance
+
+- **default value**:100000.0
+- **type**:number
+- **description**:Distance over which to taper the slab tip.tapers the initial heat content to zero and the minimum temperature to the background temperature.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/potential mantle temperature
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_potential-mantle-temperature
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/ridge coordinates
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_ridge-coordinates
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/ridge coordinates/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_ridge-coordinates_items
+
+- **type**:array
+- **minItems**:2
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/ridge coordinates/items/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_ridge-coordinates_items_items
+
+- **type**:array
+- **minItems**:2
+- **maxItems**:2
+- **description**:
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/ridge coordinates/items/items/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_ridge-coordinates_items_items_items
+
+- **type**:number
+:::::::::
+
+::::::::::
+
+:::::::::::
+
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/reference model name
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_reference-model-name
+
+- **default value**:half space model
+- **type**:string
+- **description**:The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model
+::::::::::::
+
+
+
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/4
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_4
+
+- **type**:object
+- **description**:Plate model (based on McKenzie, 1970).
+- **additionalProperties**:false
+- **required**:[model, plate velocity]
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/4/model
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_4_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the temperature model.
+- **enum**:[plate model]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/4/operation
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_4_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **enum**:[replace, add, subtract]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/4/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_4_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/4/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_4_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:todo The depth in meters to which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/4/density
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_4_density
+
+- **default value**:3300.0
+- **type**:number
+- **description**:The reference density of the subducting plate in $kg/m^3$
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/4/plate velocity
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_4_plate-velocity
+
+- **default value**:NaN
+- **type**:number
+- **description**:The velocity in meters per year with which the plate subducts in meters per year.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/4/thermal conductivity
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_4_thermal-conductivity
+
+- **default value**:2.0
+- **type**:number
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/4/thermal expansion coefficient
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_4_thermal-expansion-coefficient
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/4/specific heat
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_4_specific-heat
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/4/adiabatic heating
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_4_adiabatic-heating
+
+- **default value**:true
+- **type**:boolean
+- **description**:Whether adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/4/potential mantle temperature
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_4_potential-mantle-temperature
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
+::::::::::::
+
+
+
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/5
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_5
+
+- **type**:object
+- **description**:Uniform temperature model. Set the temperature to a constan value.
+- **additionalProperties**:false
+- **required**:[model, temperature]
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/5/model
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_5_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the temperature model.
+- **enum**:[uniform]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/5/operation
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_5_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **enum**:[replace, add, subtract]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/5/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_5_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/5/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_5_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:todo The depth in meters to which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/5/temperature
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_5_temperature
+
+- **default value**:293.15
+- **type**:number
+- **description**:The temperature in degree Kelvin which this feature should have
+::::::::::::
+
+
+
+:::::::::::::
+
+
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models
+
+- **description**:
+- **default value**:
+- **type**:array
+:::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_1
+
+- **type**:object
+- **description**:Compositional model object
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/1/model
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_1_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the composition model.
+- **enum**:[smooth]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/1/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_1_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance in meters from which the composition of this layer is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/1/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_1_max-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance in meters from which the composition of this layer is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/1/top fractions
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_1_top-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:The composition fraction at the top of the slab (layer).
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/1/top fractions/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_1_top-fractions_items
+
+- **default value**:1.0
+- **type**:number
+- **description**:
+:::::::::::
+
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/1/bottom fractions
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_1_bottom-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:The composition fraction at the bottom of the slab (layer).
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/1/bottom fractions/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_1_bottom-fractions_items
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+:::::::::::
+
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/1/compositions
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_1_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the labels of the composition which are present there.
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/1/compositions/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_1_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::
+
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/1/operation
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_1_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, replace defined only, add, subtract]
+::::::::::::
+
+
+
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_2
+
+- **type**:object
+- **description**:Uniform compositional model. Sets constant compositional field.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/2/model
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_2_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the composition model.
+- **enum**:[uniform]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/2/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_2_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/2/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_2_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:todo The depth in meters to which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/2/compositions
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_2_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the labels of the composition which are present there.
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/2/compositions/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_2_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::
+
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/2/fractions
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_2_fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:TA list of compositional fractions corresponding to the compositions list.
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/2/fractions/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_2_fractions_items
+
+- **default value**:1.0
+- **type**:number
+- **description**:
+:::::::::::
+
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/composition models/items/oneOf/2/operation
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_composition-models_items_oneOf_2_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, replace defined only, add, subtract]
+::::::::::::
+
+
+
+:::::::::::::
+
+
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models
+
+- **description**:
+- **default value**:
+- **type**:array
+:::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_1
+
+- **type**:object
+- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/1/model
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_1_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the grains model.
+- **enum**:[random uniform distribution]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/1/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_1_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance from the slab top in meters from which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/1/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_1_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The distance from the slab top in meters to which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/1/compositions
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_1_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the integer labels of the composition which are present there.
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/1/compositions/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_1_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::
+
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/1/orientation operation
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_1_orientation-operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **enum**:[replace]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/1/grain sizes
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_1_grain-sizes
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/1/grain sizes/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_1_grain-sizes_items
+
+- **default value**:1.0
+- **type**:number
+- **description**:
+:::::::::::
+
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/1/normalize grain sizes
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_1_normalize-grain-sizes
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/1/normalize grain sizes/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_1_normalize-grain-sizes_items
+
+- **default value**:true
+- **type**:boolean
+- **description**:
+:::::::::::
+
+::::::::::::
+
+
+
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_2
+
+- **type**:object
+- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/2/model
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_2_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the grains model.
+- **enum**:[random uniform distribution deflected]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/2/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_2_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance from the slab top in meters from which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/2/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_2_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The distance from the slab top in meters to which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/2/compositions
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_2_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the integer labels of the composition which are present there.
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/2/compositions/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_2_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::
+
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/2/orientation operation
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_2_orientation-operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **enum**:[replace]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/2/grain sizes
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_2_grain-sizes
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/2/grain sizes/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_2_grain-sizes_items
+
+- **default value**:1.0
+- **type**:number
+- **description**:
+:::::::::::
+
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/2/normalize grain sizes
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_2_normalize-grain-sizes
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/2/normalize grain sizes/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_2_normalize-grain-sizes_items
+
+- **default value**:true
+- **type**:boolean
+- **description**:
+:::::::::::
+
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/2/deflections
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_2_deflections
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of the deflections of all of the grains in each composition between 0 and 1.
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/2/deflections/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_2_deflections_items
+
+- **default value**:1.0
+- **type**:number
+- **description**:
+:::::::::::
+
+::::::::::::
+
+
+
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/3
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_3
+
+- **type**:object
+- **description**:Uniform grains model. All grains start exactly the same.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/3/model
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_3_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the grains model.
+- **enum**:[uniform]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/3/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_3_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance from the slab top in meters from which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/3/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_3_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The distance from the slab top in meters to which the composition of this feature is present.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/3/compositions
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_3_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the integer labels of the composition which are present there.
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/3/compositions/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_3_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::
+
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/3/rotation matrices
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_3_rotation-matrices
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the labels of the grains which are present there for each compositions.
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/3/rotation matrices/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_3_rotation-matrices_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/3/rotation matrices/items/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_3_rotation-matrices_items_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/3/rotation matrices/items/items/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_3_rotation-matrices_items_items_items
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+:::::::::
+
+::::::::::
+
+:::::::::::
+
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/3/Euler angles z-x-z
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_3_Euler-angles-z-x-z
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/3/Euler angles z-x-z/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_3_Euler-angles-z-x-z_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/3/Euler angles z-x-z/items/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_3_Euler-angles-z-x-z_items_items
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+::::::::::
+
+:::::::::::
+
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/3/orientation operation
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_3_orientation-operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **enum**:[replace]
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/3/grain sizes
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_3_grain-sizes
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/grains models/items/oneOf/3/grain sizes/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_segments_items_grains-models_items_oneOf_3_grain-sizes_items
+
+- **default value**:-1.0
+- **type**:number
+- **description**:
+:::::::::::
+
+::::::::::::
+
+
+
+:::::::::::::
+
+
+:::::::::::::::
+
+::::::::::::::::
+
+
+
+:::::::::::::::::
+
+::::::::::::::::::
+
+::::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models
+
+- **description**:A list of temperature models.
+- **default value**:
+- **type**:array
+:::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf
+
+:::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_1
+
+- **type**:object
+- **description**:Adiabatic temperature model. Uses global values by default.
+- **additionalProperties**:false
+- **required**:[model]
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/1/model
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_1_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the temperature model.
+- **enum**:[adiabatic]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/1/operation
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_1_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **enum**:[replace, add, subtract]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/1/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_1_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/1/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_1_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:todo The depth in meters to which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/1/potential mantle temperature
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_1_potential-mantle-temperature
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/1/thermal expansion coefficient
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_1_thermal-expansion-coefficient
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The thermal expansion coefficient in $K^{-1}$. If the value is lower then zero, the global value is used.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/1/specific heat
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_1_specific-heat
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The specific heat in $J kg^{-1} K^{-1}$. If the value is lower then zero, the global value is used.
+::::::::::::::
+
+
+
+:::::::::::::::
+
+:::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_2
+
+- **type**:object
+- **description**:Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.
+- **additionalProperties**:false
+- **required**:[model, max distance slab top]
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/2/model
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_2_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the temperature model.
+- **enum**:[linear]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/2/operation
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_2_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **enum**:[replace, add, subtract]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/2/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_2_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/2/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_2_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:todo The depth in meters to which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/2/top temperature
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_2_top-temperature
+
+- **default value**:293.15
+- **type**:number
+- **description**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/2/bottom temperature
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_2_bottom-temperature
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The temperature at the bottom in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
+::::::::::::::
+
+
+
+:::::::::::::::
+
+:::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3
+
+- **type**:object
+- **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
+- **additionalProperties**:false
+- **required**:[model, plate velocity]
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/model
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the temperature model.
+- **enum**:[mass conserving]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/operation
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **enum**:[replace, add, subtract]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be negative and should be 1.5-2 times larger than the nominal slab thickness to allow the diffusion of cold temperatures from in the slab into the mantle above the slab surface. Also note that the top truncation value for the slab segment needs to have a value of -1, otherwise the temperature above the slab will be cut off at a distance less than the value set here.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The distance in meters from the top surface of the slab over which the temperature is determined by this feature. This parameter should be positive and approximately 2.5-3.0 times larger than the nominal slab thickness to allow the diffusion of coldtemperatures from in the slab into the mantle below the slab surface.For example if the slab starts with cold temperatures over a 100 km wide region, thisparameters should be about 250 km.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/density
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_density
+
+- **default value**:3300.0
+- **type**:number
+- **description**:The reference density of the subducting plate in $kg/m^3$
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity
+
+- **description**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_1
+
+- **default value**:0.01
+- **type**:number
+- **description**:
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:18446744073709551615
+- **description**:
+::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items
+
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf
+
+::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/1
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:0.01
+::::::::
+
+::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:18446744073709551615
+::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::
+
+:::::::
+
+::::::::
+
+
+::::::::::
+
+:::::::::::
+
+::::::::::::
+
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/coupling depth
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_coupling-depth
+
+- **default value**:100000.0
+- **type**:number
+- **description**:The depth at which the slab surface first comes in contact with the hot mantle wedge in meters. Default is 100 km.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/forearc cooling factor
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_forearc-cooling-factor
+
+- **default value**:1.0
+- **type**:number
+- **description**:Increase the value to create thin (~2 km) cold thermal boundary layer above the slab.Any value greater than 1 does NOT meet the instantaneous conservation of mass, but does allow one to account for the history of insulating the forearc from heating up to this point in time. Note younger subducting lithosphere provides less insulation, while thicker, older slabs provide more insulation. Values up to 10 to 30 have been tested and don't cause any other extraneous effects. The larger th value the more you are not meeting the mass conserving criteria, so you don't want to see this affecting the temperature beyond the coupling depth as it will increase the mass of the slab and affect how it sinks.  If you use higher values, you will start to see that this creates a very thick cool layer above the entire slab - if you see this extending beyond the coupling zone reduce the value. You should use a value of 1 first and then only increase as little as possible to cool just the forearc region. Please examine the output temperature carefully. 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/thermal conductivity
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_thermal-conductivity
+
+- **default value**:3.3
+- **type**:number
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/thermal expansion coefficient
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_thermal-expansion-coefficient
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/specific heat
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_specific-heat
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/thermal diffusivity
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_thermal-diffusivity
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/adiabatic heating
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_adiabatic-heating
+
+- **default value**:true
+- **type**:boolean
+- **description**:Whether adiabatic heating should be used for the slab.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/taper distance
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_taper-distance
+
+- **default value**:100000.0
+- **type**:number
+- **description**:Distance over which to taper the slab tip.tapers the initial heat content to zero and the minimum temperature to the background temperature.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/potential mantle temperature
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_potential-mantle-temperature
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/ridge coordinates
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_ridge-coordinates
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:An list of ridges. Each ridge is a lists of at least 2 2d points which define the location of the ridge. You need to define at least one ridge.So the an example with two ridges is [[[10,20],[20,30],[10,40]],[[50,10],[60,10]]].
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/ridge coordinates/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_ridge-coordinates_items
+
+- **type**:array
+- **minItems**:2
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/ridge coordinates/items/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_ridge-coordinates_items_items
+
+- **type**:array
+- **minItems**:2
+- **maxItems**:2
+- **description**:
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/ridge coordinates/items/items/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_ridge-coordinates_items_items_items
+
+- **type**:number
+:::::::::::
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/reference model name
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_reference-model-name
+
+- **default value**:half space model
+- **type**:string
+- **description**:The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model
+::::::::::::::
+
+
+
+:::::::::::::::
+
+:::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/4
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_4
+
+- **type**:object
+- **description**:Plate model (based on McKenzie, 1970).
+- **additionalProperties**:false
+- **required**:[model, plate velocity]
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/4/model
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_4_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the temperature model.
+- **enum**:[plate model]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/4/operation
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_4_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **enum**:[replace, add, subtract]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/4/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_4_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/4/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_4_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:todo The depth in meters to which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/4/density
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_4_density
+
+- **default value**:3300.0
+- **type**:number
+- **description**:The reference density of the subducting plate in $kg/m^3$
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/4/plate velocity
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_4_plate-velocity
+
+- **default value**:NaN
+- **type**:number
+- **description**:The velocity in meters per year with which the plate subducts in meters per year.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/4/thermal conductivity
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_4_thermal-conductivity
+
+- **default value**:2.0
+- **type**:number
+- **description**:The thermal conductivity of the subducting plate material in $W m^{-1} K^{-1}$.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/4/thermal expansion coefficient
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_4_thermal-expansion-coefficient
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The thermal expansivity of the subducting plate material in $K^{-1}$. If smaller than zero, the global value is used.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/4/specific heat
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_4_specific-heat
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The specific heat of the subducting plate material in $J kg^{-1} K^{-1}$. If smaller than zero, the global value is used.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/4/adiabatic heating
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_4_adiabatic-heating
+
+- **default value**:true
+- **type**:boolean
+- **description**:Whether adiabatic heating should be used for the slab. Setting the parameter to false leads to equation 26 from McKenzie (1970),which is the result obtained from McKenzie 1969.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/4/potential mantle temperature
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_4_potential-mantle-temperature
+
+- **default value**:-1.0
+- **type**:number
+- **description**:The potential temperature of the mantle at the surface in Kelvin. If smaller than zero, the global value is used.
+::::::::::::::
+
+
+
+:::::::::::::::
+
+:::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/5
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_5
+
+- **type**:object
+- **description**:Uniform temperature model. Set the temperature to a constan value.
+- **additionalProperties**:false
+- **required**:[model, temperature]
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/5/model
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_5_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the temperature model.
+- **enum**:[uniform]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/5/operation
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_5_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **enum**:[replace, add, subtract]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/5/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_5_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/5/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_5_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:todo The depth in meters to which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/5/temperature
+:open:
+:name: open_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_5_temperature
+
+- **default value**:293.15
+- **type**:number
+- **description**:The temperature in degree Kelvin which this feature should have
+::::::::::::::
+
+
+
+:::::::::::::::
+
+
+:::::::::::::::::
+
+::::::::::::::::::
+
+::::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models
+
+- **description**:A list of composition models.
+- **default value**:
+- **type**:array
+:::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf
+
+:::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_1
+
+- **type**:object
+- **description**:Compositional model object
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/1/model
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_1_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the composition model.
+- **enum**:[smooth]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/1/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_1_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance in meters from which the composition of this layer is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/1/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_1_max-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance in meters from which the composition of this layer is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/1/top fractions
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_1_top-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:The composition fraction at the top of the slab (layer).
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/1/top fractions/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_1_top-fractions_items
+
+- **default value**:1.0
+- **type**:number
+- **description**:
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/1/bottom fractions
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_1_bottom-fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:The composition fraction at the bottom of the slab (layer).
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/1/bottom fractions/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_1_bottom-fractions_items
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/1/compositions
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_1_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the labels of the composition which are present there.
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/1/compositions/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_1_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/1/operation
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_1_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, replace defined only, add, subtract]
+::::::::::::::
+
+
+
+:::::::::::::::
+
+:::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_2
+
+- **type**:object
+- **description**:Uniform compositional model. Sets constant compositional field.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/2/model
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_2_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the composition model.
+- **enum**:[uniform]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/2/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_2_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:todo The depth in meters from which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/2/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_2_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:todo The depth in meters to which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/2/compositions
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_2_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the labels of the composition which are present there.
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/2/compositions/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_2_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/2/fractions
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_2_fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:TA list of compositional fractions corresponding to the compositions list.
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/2/fractions/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_2_fractions_items
+
+- **default value**:1.0
+- **type**:number
+- **description**:
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/composition models/items/oneOf/2/operation
+:open:
+:name: open_features_items_oneOf_6_sections_items_composition-models_items_oneOf_2_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, replace defined only, add, subtract]
+::::::::::::::
+
+
+
+:::::::::::::::
+
+
+:::::::::::::::::
+
+::::::::::::::::::
+
+::::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models
+
+- **description**:A list of grains models.
+- **default value**:
+- **type**:array
+:::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf
+
+:::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_1
+
+- **type**:object
+- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/1/model
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_1_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the grains model.
+- **enum**:[random uniform distribution]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/1/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_1_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance from the slab top in meters from which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/1/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_1_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The distance from the slab top in meters to which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/1/compositions
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_1_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the integer labels of the composition which are present there.
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/1/compositions/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_1_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/1/orientation operation
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_1_orientation-operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **enum**:[replace]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/1/grain sizes
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_1_grain-sizes
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/1/grain sizes/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_1_grain-sizes_items
+
+- **default value**:1.0
+- **type**:number
+- **description**:
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/1/normalize grain sizes
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_1_normalize-grain-sizes
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/1/normalize grain sizes/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_1_normalize-grain-sizes_items
+
+- **default value**:true
+- **type**:boolean
+- **description**:
+:::::::::::::
+
+::::::::::::::
+
+
+
+:::::::::::::::
+
+:::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_2
+
+- **type**:object
+- **description**:Random uniform distribution grains model. The size of the grains can be independently set to a single value or to a random distribution.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/2/model
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_2_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the grains model.
+- **enum**:[random uniform distribution deflected]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/2/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_2_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance from the slab top in meters from which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/2/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_2_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The distance from the slab top in meters to which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/2/compositions
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_2_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the integer labels of the composition which are present there.
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/2/compositions/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_2_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/2/orientation operation
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_2_orientation-operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **enum**:[replace]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/2/grain sizes
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_2_grain-sizes
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be randomized between 0 and 1.
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/2/grain sizes/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_2_grain-sizes_items
+
+- **default value**:1.0
+- **type**:number
+- **description**:
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/2/normalize grain sizes
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_2_normalize-grain-sizes
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of whether the sizes of the grains should be normalized or not. If normalized, the total of the grains of a composition will be equal to 1.
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/2/normalize grain sizes/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_2_normalize-grain-sizes_items
+
+- **default value**:true
+- **type**:boolean
+- **description**:
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/2/deflections
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_2_deflections
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of the deflections of all of the grains in each composition between 0 and 1.
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/2/deflections/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_2_deflections_items
+
+- **default value**:1.0
+- **type**:number
+- **description**:
+:::::::::::::
+
+::::::::::::::
+
+
+
+:::::::::::::::
+
+:::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/3
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_3
+
+- **type**:object
+- **description**:Uniform grains model. All grains start exactly the same.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/3/model
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_3_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the grains model.
+- **enum**:[uniform]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/3/min distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_3_min-distance-slab-top
+
+- **default value**:0.0
+- **type**:number
+- **description**:The distance from the slab top in meters from which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/3/max distance slab top
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_3_max-distance-slab-top
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:The distance from the slab top in meters to which the composition of this feature is present.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/3/compositions
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_3_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the integer labels of the composition which are present there.
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/3/compositions/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_3_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/3/rotation matrices
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_3_rotation-matrices
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the labels of the grains which are present there for each compositions.
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/3/rotation matrices/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_3_rotation-matrices_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/3/rotation matrices/items/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_3_rotation-matrices_items_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/3/rotation matrices/items/items/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_3_rotation-matrices_items_items_items
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+:::::::::::
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/3/Euler angles z-x-z
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_3_Euler-angles-z-x-z
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the z-x-z Euler angles of the grains which are present there for each compositions.
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/3/Euler angles z-x-z/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_3_Euler-angles-z-x-z_items
+
+- **type**:array
+- **minItems**:3
+- **maxItems**:3
+- **uniqueItems**:false
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/3/Euler angles z-x-z/items/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_3_Euler-angles-z-x-z_items_items
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/3/orientation operation
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_3_orientation-operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.
+- **enum**:[replace]
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/3/grain sizes
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_3_grain-sizes
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/grains models/items/oneOf/3/grain sizes/items
+:open:
+:name: open_features_items_oneOf_6_sections_items_grains-models_items_oneOf_3_grain-sizes_items
+
+- **default value**:-1.0
+- **type**:number
+- **description**:
+:::::::::::::
+
+::::::::::::::
+
+
+
+:::::::::::::::
+
+
+:::::::::::::::::
+
+::::::::::::::::::
+
+::::::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/coordinate
+:open:
+:name: open_features_items_oneOf_6_sections_items_coordinate
 
 - **default value**:0
 - **type**:integer

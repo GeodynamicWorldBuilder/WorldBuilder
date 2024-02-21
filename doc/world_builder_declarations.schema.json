@@ -6808,6 +6808,355 @@
                     },
                     {
                         "type": "object",
+                        "description": "Plume object. Requires properties `model` and `coordinates`.",
+                        "additionalProperties": false,
+                        "required": [
+                            "model"
+                        ],
+                        "properties": {
+                            "model": {
+                                "default value": "",
+                                "type": "string",
+                                "description": "The model name of the feature determining its type.",
+                                "enum": [
+                                    "plume"
+                                ]
+                            },
+                            "name": {
+                                "default value": "",
+                                "type": "string",
+                                "description": "The name which the user has given to the feature. This is mostly used for documentation purposes, and should in most cases be unique, although this is not enforced."
+                            },
+                            "tag": {
+                                "default value": "",
+                                "type": "string",
+                                "description": "A tag which can be given to a feature. This is meant to categorize different features. If the tag is not provided or empty, it is set to the model name."
+                            },
+                            "coordinates": {
+                                "type": "array",
+                                "minItems": 1,
+                                "maxItems": 4294967295,
+                                "uniqueItems": false,
+                                "description": "An array of 2d Points representing an array of coordinates where the feature is located.",
+                                "items": {
+                                    "type": "array",
+                                    "minItems": 2,
+                                    "maxItems": 2,
+                                    "description": "",
+                                    "items": {
+                                        "type": "number"
+                                    }
+                                }
+                            },
+                            "interpolation": {
+                                "default value": "global",
+                                "type": "string",
+                                "description": "What type of interpolation should be used to enforce the minimum points per distance parameter. Options are 'global' and 'continuous monotone spline' interpolation. If this value is set to global, the global value for interpolation is used. This option is deprecated and will be removed in a future release."
+                            },
+                            "min depth": {
+                                "default value": 0.0,
+                                "type": "number",
+                                "description": "The depth from which this feature is present, in other words, the depth of the tip of the plume. If the first entry in the cross section depths has a greater depth, an ellipsoidal plume head will be added in between. Units: m."
+                            },
+                            "max depth": {
+                                "default value": 1.7976931348623157e308,
+                                "type": "number",
+                                "description": "The depth to which this feature is present. Units: m."
+                            },
+                            "cross section depths": {
+                                "type": "array",
+                                "minItems": 0,
+                                "maxItems": 4294967295,
+                                "uniqueItems": false,
+                                "description": "The depths of the elliptic cross section of the plume. Units: m.",
+                                "items": {
+                                    "default value": 0.0,
+                                    "type": "number",
+                                    "description": ""
+                                }
+                            },
+                            "semi-major axis": {
+                                "type": "array",
+                                "minItems": 0,
+                                "maxItems": 4294967295,
+                                "uniqueItems": false,
+                                "description": "The lengths of the semi-major axes of the elliptic cross sections of the plume. In spherical coordinates, this is in degrees, otherwise in meters.",
+                                "items": {
+                                    "default value": 100000.0,
+                                    "type": "number",
+                                    "description": ""
+                                }
+                            },
+                            "eccentricity": {
+                                "type": "array",
+                                "minItems": 0,
+                                "maxItems": 4294967295,
+                                "uniqueItems": false,
+                                "description": "The eccentricities of the cross sections.",
+                                "items": {
+                                    "default value": 0.0,
+                                    "type": "number",
+                                    "description": ""
+                                }
+                            },
+                            "rotation angles": {
+                                "type": "array",
+                                "minItems": 0,
+                                "maxItems": 4294967295,
+                                "uniqueItems": false,
+                                "description": "The directions that the semi-major axis of the elliptic cross-sections are pointing to, in degrees. This direction is expressed as the angle from geographic North in spherical coordinates, or as the angle from the Y axis (clockwise) in Cartesian coordinates. The angle should be between 0 and 360 degrees.",
+                                "items": {
+                                    "default value": 0.0,
+                                    "type": "number",
+                                    "description": ""
+                                }
+                            },
+                            "temperature models": {
+                                "description": "A list of temperature models.",
+                                "default value": "",
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Uniform temperature model. Set the temperature to a constant value.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "temperature"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the temperature model.",
+                                                    "enum": [
+                                                        "uniform"
+                                                    ]
+                                                },
+                                                "operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "enum": [
+                                                        "replace",
+                                                        "add",
+                                                        "subtract"
+                                                    ]
+                                                },
+                                                "min depth": {
+                                                    "default value": 0.0,
+                                                    "type": "number",
+                                                    "description": "The depth in meters from which the temperature of this feature is present."
+                                                },
+                                                "max depth": {
+                                                    "default value": 1.7976931348623157e308,
+                                                    "type": "number",
+                                                    "description": "The depth in meters to which the temperature of this feature is present."
+                                                },
+                                                "temperature": {
+                                                    "default value": 293.15,
+                                                    "type": "number",
+                                                    "description": "The temperature in degree Kelvin which this feature should have"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "composition models": {
+                                "description": "A list of composition models.",
+                                "default value": "",
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Uniform compositional model. Sets constant compositional field.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "compositions"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the composition model.",
+                                                    "enum": [
+                                                        "uniform"
+                                                    ]
+                                                },
+                                                "min depth": {
+                                                    "default value": 0.0,
+                                                    "type": "number",
+                                                    "description": "The depth in meters from which the composition of this feature is present."
+                                                },
+                                                "max depth": {
+                                                    "default value": 1.7976931348623157e308,
+                                                    "type": "number",
+                                                    "description": "The depth in meters to which the composition of this feature is present."
+                                                },
+                                                "compositions": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "items": {
+                                                        "default value": 0,
+                                                        "type": "integer",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "fractions": {
+                                                    "type": "array",
+                                                    "minItems": 1,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "TA list of compositional fractions corresponding to the compositions list.",
+                                                    "items": {
+                                                        "default value": 1.0,
+                                                        "type": "number",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
+                                                    "enum": [
+                                                        "replace",
+                                                        "replace defined only",
+                                                        "add",
+                                                        "subtract"
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "grains models": {
+                                "description": "A list of grains models.",
+                                "default value": "",
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Uniform grains model. All grains start exactly the same.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "compositions"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the grains model.",
+                                                    "enum": [
+                                                        "uniform"
+                                                    ]
+                                                },
+                                                "min depth": {
+                                                    "default value": 0.0,
+                                                    "type": "number",
+                                                    "description": "The depth in meters from which the grains of this feature are present."
+                                                },
+                                                "max depth": {
+                                                    "default value": 1.7976931348623157e308,
+                                                    "type": "number",
+                                                    "description": "The depth in meters to which the grains of this feature are present."
+                                                },
+                                                "compositions": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list with the integer labels of the composition which are present there.",
+                                                    "items": {
+                                                        "default value": 0,
+                                                        "type": "integer",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "rotation matrices": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list with the rotation matrices of the grains which are present there for each compositions.",
+                                                    "items": {
+                                                        "type": "array",
+                                                        "minItems": 3,
+                                                        "maxItems": 3,
+                                                        "uniqueItems": false,
+                                                        "description": "",
+                                                        "items": {
+                                                            "type": "array",
+                                                            "minItems": 3,
+                                                            "maxItems": 3,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "default value": 0.0,
+                                                                "type": "number",
+                                                                "description": ""
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "Euler angles z-x-z": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list with the z-x-z Euler angles of the grains which are present there for each compositions.",
+                                                    "items": {
+                                                        "type": "array",
+                                                        "minItems": 3,
+                                                        "maxItems": 3,
+                                                        "uniqueItems": false,
+                                                        "description": "",
+                                                        "items": {
+                                                            "default value": 0.0,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        }
+                                                    }
+                                                },
+                                                "orientation operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value (add, not implemented). Replacing implies that all values not explicitly defined are set to zero.",
+                                                    "enum": [
+                                                        "replace",
+                                                        "multiply"
+                                                    ]
+                                                },
+                                                "grain sizes": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.",
+                                                    "items": {
+                                                        "default value": -1.0,
+                                                        "type": "number",
+                                                        "description": ""
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
                         "description": "Subducting slab object. Requires properties `model` and `coordinates`.",
                         "additionalProperties": false,
                         "required": [
