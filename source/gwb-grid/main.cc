@@ -581,7 +581,7 @@ int main(int argc, char **argv)
 
       if (grid_type == "spherical" ||
           grid_type == "chunk" ||
-          grid_type == "anullus")
+          grid_type == "annulus")
         {
           x_min *= (Consts::PI/180);
           x_max *= (Consts::PI/180);
