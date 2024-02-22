@@ -196,8 +196,8 @@ namespace WorldBuilder
       const double sign = polygon_contains_point(point_list, point) ? 1.0 : -1.0;
 
       /**
-       * This code is based on http://geomalgorithms.com/a02-_lines.html#Distance-to-Infinite-Line,
-       * and therefore requires the following copyright notice:
+       * This code is based on https://web.archive.org/web/20191019075858/http://geomalgorithms.com/a02-_lines.html
+       * #Distance-to-Infinite-Line, and therefore requires the following copyright notice:
        *
        * Copyright 2000 softSurfer, 2012 Dan Sunday
        * This code may be freely used and modified for any purpose
@@ -386,13 +386,20 @@ namespace WorldBuilder
                                       const double start_radius,
                                       const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                       const bool only_positive,
-                                      const Objects::BezierCurve &bezier_curve)
+                                      const Objects::BezierCurve &bezier_curve,
+                                      const bool compute_water,
+                                      const WorldBuilder::World *world)
     {
       double distance = std::numeric_limits<double>::infinity();
       double new_distance = std::numeric_limits<double>::infinity();
       double along_plane_distance = std::numeric_limits<double>::infinity();
       double new_along_plane_distance  = std::numeric_limits<double>::infinity();
       double new_depth_reference_surface = std::numeric_limits<double>::infinity();
+
+      // The value of the water_content at a point in the current segment,
+      // and the water_flux through the surface at a point.
+      std::array<double, 4> water_content;
+      double water_flux = std::numeric_limits<double>::infinity();
 
       const CoordinateSystem natural_coordinate_system = coordinate_system->natural_coordinate_system();
       const bool bool_cartesian = natural_coordinate_system == cartesian;
@@ -483,9 +490,9 @@ namespace WorldBuilder
           Point<3> y_axis = closest_point_on_line_cartesian - closest_point_on_line_bottom_cartesian;
           Point<3> x_axis = closest_point_on_line_cartesian - check_point_surface_cartesian;
 
-          // This are accounting for corner cases.
+          // These are accounting for corner cases.
           // If the point to check is exactly on or below the line, we can not compute the x-axis with this method.
-          // We could use an other method where we use the two point before and after it, but we can also
+          // We could use another method where we use the two point before and after it, but we can also
           // just nudge it into a direction, which seems to work very well.
           if (std::fabs((check_point_surface - closest_point_on_line_surface).norm()) < 2e-14)
             {
@@ -691,11 +698,14 @@ namespace WorldBuilder
                    "Internal error: The begin_segment variable is not a number: " << begin_segment[1]);
 
           Point<2> end_segment = begin_segment;
-
           double total_length = 0.0;
           double add_angle = 0.0;
           double add_angle_correction = 0.0;
           double average_angle = 0.0;
+
+          std::vector<Point<2>> previous_segments;
+          std::array<double, 4> initial_water_content = {8, 5, 4, 2};
+
           for (size_t i_segment = 0; i_segment < plane_segment_lengths[original_current_section].size(); i_segment++)
             {
               const size_t current_segment = i_segment;
@@ -744,9 +754,8 @@ namespace WorldBuilder
                 }
 
 
-
-
               begin_segment = end_segment;
+              previous_segments.push_back(begin_segment);
 
               WBAssert(!std::isnan(begin_segment[0]),
                        "Internal error: The begin_segment variable is not a number: " << begin_segment[0]);
@@ -816,7 +825,7 @@ namespace WorldBuilder
                       normal_2d_plane /= normal_2d_plane.norm();
 
                       // Now find the distance of a point to this line.
-                      // Based on http://geomalgorithms.com/a02-_lines.html.
+                      // Based on https://web.archive.org/web/20191019075858/http://geomalgorithms.com/a02-_lines.html.
                       const Point<2> BSP_ESP = end_segment - begin_segment;
                       const Point<2> BSP_CP = check_point_2d - begin_segment;
 
@@ -831,6 +840,8 @@ namespace WorldBuilder
                         }
                       else
                         {
+                          // I need to add here a part that divides up the segment into points where I then calculate the
+                          // water content at these points that divide the segment.
                           const Point<2> Pb = begin_segment + (c1/c2) * BSP_ESP;
                           const double side_of_line =  (begin_segment[0] - end_segment[0]) * (check_point_2d[1] - begin_segment[1])
                                                        - (begin_segment[1] - end_segment[1]) * (check_point_2d[0] - begin_segment[0])
@@ -843,6 +854,77 @@ namespace WorldBuilder
                           WBAssert(!std::isnan(new_depth_reference_surface),
                                    "new_depth_reference_surface is not a number: " << new_depth_reference_surface << ". "
                                    << "start_radius = " << start_radius << ",Pb[1] = " << Pb[1] << ".");
+                          Point<2> new_begin_segment = begin_segment;
+                          Point<2> new_BSP_ESP = BSP_ESP;
+
+                          if (compute_water)
+                            {
+                              double temperature;
+                              double pressure;
+                              double depth;
+                              const unsigned int points_per_segment = 2.0;
+                              Point<2> vector_to_check_point_from_surface = check_point_2d - Pb;
+                              Point<2> begin_segment_at_depth = vector_to_check_point_from_surface + begin_segment;
+                              const double dist_from_current_segment = std::sqrt(vector_to_check_point_from_surface * vector_to_check_point_from_surface);                          
+                              Point<2> interval_point = begin_segment;
+                              Point<2> integration_point = begin_segment;
+                              Point<3> integration_point_3d = check_point;
+                              Point<2> updip_segment_vector = begin_segment;
+                              Point<2> previous_begin_segment_at_depth = begin_segment;
+                              Point<2> previous_end_segment_at_depth = begin_segment;
+
+                              for (unsigned int lithology_ind = 0; lithology_ind < water_content.size(); ++lithology_ind)
+                                {
+                                  std::vector<double> water_content_at_fixed_depth;
+                                  water_content_at_fixed_depth.push_back(initial_water_content[lithology_ind] / 100);
+
+                                  for (unsigned int segment_iteration = 0; segment_iteration <= current_segment; ++segment_iteration)
+                                    {
+                                      for (unsigned int number_of_divisions = 0; number_of_divisions <= points_per_segment; ++number_of_divisions)
+                                        {
+
+                                          if (current_segment > 0 && segment_iteration < current_segment)
+                                            {
+                                              updip_segment_vector = previous_segments[segment_iteration + 1] - previous_segments[segment_iteration];
+                                              updip_segment_vector[0] = -updip_segment_vector[1] / updip_segment_vector[0];
+                                              updip_segment_vector[1] = 1;
+                                              updip_segment_vector = updip_segment_vector / (updip_segment_vector * updip_segment_vector);
+                                              previous_begin_segment_at_depth = previous_segments[segment_iteration] - dist_from_current_segment * updip_segment_vector;
+                                              previous_end_segment_at_depth = previous_segments[segment_iteration + 1] - dist_from_current_segment * updip_segment_vector;
+                                              interval_point = (previous_end_segment_at_depth - previous_begin_segment_at_depth) * number_of_divisions;
+
+                                              integration_point = previous_begin_segment_at_depth + interval_point / points_per_segment;
+                                              // integration_point = previous_begin_segment_at_depth - interval_point * number_of_divisions;
+
+                                              integration_point_3d = closest_point_on_line_bottom_cartesian + x_axis * integration_point[0] + y_axis * integration_point[1];
+                                              depth = start_radius - integration_point_3d[2];
+                                              temperature = world->properties(integration_point_3d.get_array(), depth, {{{1,0,0}}})[0];
+                                              pressure = depth * 9.81 * 3300 / 1e9;
+                                            }
+
+                                          else
+                                            {
+                                              // Currently, when i_segment > 0, number_of_divisions starts at 4 here, meaning that
+                                              // the first integration point is initially halfway along the distance instead of starting
+                                              // at the beginning.
+                                              interval_point = (check_point_2d - begin_segment_at_depth) * number_of_divisions;
+                                              integration_point = begin_segment_at_depth + interval_point  / points_per_segment;
+                                              integration_point_3d = closest_point_on_line_bottom_cartesian + x_axis * integration_point[0] + y_axis * integration_point[1];
+                                              depth = start_radius - integration_point_3d[2];
+                                              temperature = world->properties(integration_point_3d.get_array(), depth, {{{1,0,0}}})[0];
+                                              pressure = depth * 9.81 * 3300 / 1e9;
+                                            }
+
+                                          water_content_at_fixed_depth.push_back(calculate_water_content(pressure, temperature, lithology_ind));
+                                          if (water_content_at_fixed_depth[number_of_divisions + (1 + points_per_segment) * segment_iteration] < water_content_at_fixed_depth[number_of_divisions + (1 + points_per_segment) * segment_iteration + 1])
+                                            {
+                                              water_content_at_fixed_depth[number_of_divisions + (1 + points_per_segment) * segment_iteration + 1] = water_content_at_fixed_depth[number_of_divisions + (1 + points_per_segment) * segment_iteration];
+                                            }
+                                        }
+                                    }
+                                  water_content[lithology_ind] = water_content_at_fixed_depth.back();
+                                }
+                            }
                         }
                     }
                 }
@@ -1026,6 +1108,7 @@ namespace WorldBuilder
 
       PointDistanceFromCurvedPlanes return_values(natural_coordinate.get_coordinate_system());
       return_values.distance_from_plane = distance;
+      return_values.water_content = water_content;
       return_values.distance_along_plane = along_plane_distance;
       return_values.fraction_of_section = section_fraction;
       return_values.fraction_of_segment = segment_fraction;
@@ -1370,7 +1453,7 @@ namespace WorldBuilder
             }
 
           {
-            // based on http://geomalgorithms.com/a02-_lines.html
+            // based on https://web.archive.org/web/20191019075858/http://geomalgorithms.com/a02-_lines.html
             const Point<2> v = segment_point1 - segment_point0;
             const Point<2> w1 = check_point - segment_point0;
             const Point<2> w2 = other_check_point - segment_point0;
@@ -1502,6 +1585,90 @@ namespace WorldBuilder
       result.push_back(effective_plate_age);
       return result;
 
+
+    double
+    calculate_water_content(double pressure,
+                            double temperature,
+                            unsigned int lithology_index)
+    {
+      // Peridotite polynomial coefficients
+      std::vector<double> LR_poly_peridotite = {-19.0609, 168.983, -630.032, 1281.84, -1543.14, 1111.88, -459.142, 95.4143, 1.97246};
+      std::vector<double> c_sat_poly_peridotite = {0.00115628, 2.42179};
+      std::vector<double> Td_poly_peridotite = {-15.4627, 94.9716, 636.603};
+
+      // Gabbro polynomial coefficients
+      std::vector<double> LR_poly_gabbro = {-1.81745, 7.67198, -10.8507, 5.09329, 8.14519};
+      std::vector<double> c_sat_poly_gabbro = {-0.0176673, 0.0893044, 1.52732};
+      std::vector<double> Td_poly_gabbro = {-1.72277, 20.5898, 637.517};
+
+      // MORB polynomial coefficients
+      std::vector<double> LR_poly_MORB = {-1.78177, 7.50871, -10.4840, 5.19725, 7.96365};
+      std::vector<double> c_sat_poly_MORB = {0.0102725, -0.115390, 0.324452, 1.41588};
+      std::vector<double> Td_poly_MORB = {-3.81280, 22.7809, 638.049};
+
+      // Sediment polynomial coefficients
+      std::vector<double> LR_poly_sediment = {-2.03283, 10.8186, -21.2119, 18.3351, -6.48711, 8.32459};
+      std::vector<double> c_sat_poly_sediment = {-0.150662, 0.301807, 1.01867};
+      std::vector<double> Td_poly_sediment = {2.83277, -24.7593, 85.9090, 524.898};
+
+      double inv_pressure = 1/pressure;
+      double ln_LR_value = 0;
+      double ln_c_sat_value = 0;
+      double Td_value = 0;
+      std::vector<double> LR_polynomial_coeffs;
+      std::vector<double> c_sat_polynomial_coeffs;
+      std::vector<double> Td_polynomial_coeffs;
+
+      if (lithology_index == 0)
+        {
+          LR_polynomial_coeffs = LR_poly_peridotite;
+          c_sat_polynomial_coeffs = c_sat_poly_peridotite;
+          Td_polynomial_coeffs = Td_poly_peridotite;
+        }
+
+      if (lithology_index == 1)
+        {
+          LR_polynomial_coeffs = LR_poly_gabbro;
+          c_sat_polynomial_coeffs = c_sat_poly_gabbro;
+          Td_polynomial_coeffs = Td_poly_gabbro;
+        }
+
+      if (lithology_index == 2)
+        {
+          LR_polynomial_coeffs = LR_poly_MORB;
+          c_sat_polynomial_coeffs = c_sat_poly_MORB;
+          Td_polynomial_coeffs = Td_poly_MORB;
+        }
+
+      if (lithology_index == 3)
+        {
+          LR_polynomial_coeffs = LR_poly_sediment;
+          c_sat_polynomial_coeffs = c_sat_poly_sediment;
+          Td_polynomial_coeffs = Td_poly_sediment;
+        }
+
+      // Calculate the c_sat value from Tian et al., 2019
+      if (lithology_index == 3)
+        {
+          for (unsigned int c_sat_index = 0; c_sat_index < c_sat_polynomial_coeffs.size(); ++c_sat_index)
+            ln_c_sat_value += c_sat_polynomial_coeffs[c_sat_index] * (std::pow(std::log10(pressure), c_sat_polynomial_coeffs.size() - 1 - c_sat_index));
+        }
+      else
+        {
+          for (unsigned int c_sat_index = 0; c_sat_index < c_sat_polynomial_coeffs.size(); ++c_sat_index)
+            ln_c_sat_value += c_sat_polynomial_coeffs[c_sat_index] * (std::pow(pressure, c_sat_polynomial_coeffs.size() - 1 - c_sat_index));
+        }
+
+      // Calculate the LR value from Tian et al., 2019
+      for (unsigned int LR_coeff_index = 0; LR_coeff_index < LR_polynomial_coeffs.size(); ++LR_coeff_index)
+        ln_LR_value += LR_polynomial_coeffs[LR_coeff_index] * (std::pow(inv_pressure, LR_polynomial_coeffs.size() - 1 - LR_coeff_index));
+
+      // Calculate the Td value from Tian et al., 2019
+      for (unsigned int Td_coeff_index = 0; Td_coeff_index < Td_polynomial_coeffs.size(); ++Td_coeff_index)
+        Td_value += Td_polynomial_coeffs[Td_coeff_index] * (std::pow(pressure, Td_polynomial_coeffs.size() - 1 - Td_coeff_index));
+
+      // double partition_coeff = std::exp(ln_c_sat_value) * std::exp(std::exp(ln_LR_value) * (1/temperature - 1/Td_value));
+      return std::exp(ln_c_sat_value) * std::exp(std::exp(ln_LR_value) * (1/temperature - 1/Td_value));
     }
   } // namespace Utilities
 } // namespace WorldBuilder

@@ -299,7 +299,8 @@ namespace WorldBuilder
         segment(NaN::ISNAN),
         average_angle(NaN::DSNAN),
         depth_reference_surface(NaN::DSNAN),
-        closest_trench_point(Point<3>(coordinate_system))
+        closest_trench_point(Point<3>(coordinate_system)),
+        water_flux(NaN::DSNAN)
       {}
 
       /**
@@ -345,6 +346,11 @@ namespace WorldBuilder
        * The depth of the closest point on reference surface.
        */
       double depth_reference_surface;
+
+
+      std::array<double, 4> water_content;
+
+      double water_flux;
 
       /**
        * The closest point on the trench line in cartesian coordinates.
@@ -409,7 +415,9 @@ namespace WorldBuilder
                                                                     const double start_radius,
                                                                     const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                                                     const bool only_positive,
-                                                                    const Objects::BezierCurve &bezier_curve);
+                                                                    const Objects::BezierCurve &bezier_curve,
+                                                                    bool compute_water = false,
+                                                                    const WorldBuilder::World *world = nullptr);
 
 
 
@@ -486,6 +494,11 @@ namespace WorldBuilder
     */
     std::vector<double>
     calculate_effective_trench_and_plate_ages(std::vector<double> ridge_parameters, double distance_along_plane);
+
+    double
+    calculate_water_content(double pressure,
+                            double temperature,
+                            unsigned int lithology_index);
 
   } // namespace Utilities
 } // namespace WorldBuilder
