@@ -22,6 +22,7 @@
 
 
 #include "world_builder/features/plume_models/temperature/interface.h"
+#include "world_builder/features/feature_utilities.h"
 
 
 namespace WorldBuilder
@@ -29,6 +30,7 @@ namespace WorldBuilder
 
   namespace Features
   {
+    using namespace FeatureUtilities;
     namespace PlumeModels
     {
       namespace Temperature
