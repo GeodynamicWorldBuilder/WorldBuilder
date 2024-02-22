@@ -68,11 +68,13 @@ namespace WorldBuilder
                             "distance from the center of the ellipsoid.");
 
           prm.declare_entry("depths", Types::Array(Types::Double(0)),
-                            "The temperature at the center of this feature in degree Kelvin."
-                            "If the value is below zero, the an adiabatic temperature is used.");
+                            "The list of depths where both the temperature in the center of the plume "
+                            "and the width of the temperature anomaly in terms of the sigma of a Gaussian "
+                            "function can be provided. Temperature is interpolated linearly in vertical "
+                            "direction between these depths. Units: m.");
           prm.declare_entry("centerline temperatures", Types::Array(Types::Double(0)),
                             "The temperature at the center of this feature in degree Kelvin."
-                            "If the value is below zero, the an adiabatic temperature is used.");
+                            "If the value is below zero, then an adiabatic temperature is used.");
           prm.declare_entry("gaussian sigmas", Types::Array(Types::Double(0.3)),
                             "The sigma (standard deviation) of the Gaussian function used to compute the "
                             "temperature distribution within the plume. This sigma is non-dimensinal, i.e. "
@@ -82,9 +84,6 @@ namespace WorldBuilder
                             "of the centerline temperature. To achieve a smoother transition between the "
                             "plume temperature and the outside temperature a smaller values has to be chosen "
                             "for the gaussian sigmas.");
-
-          // TODO: assert that the three have the same length
-
         }
 
         void

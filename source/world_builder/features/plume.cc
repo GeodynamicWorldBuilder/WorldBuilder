@@ -319,9 +319,9 @@ namespace WorldBuilder
                                                                                                  max_depth,
                                                                                                  relative_distance_from_center);
 
-                            WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Temperature is not a number: " << output[entry_in_output[i_property]]
+                        WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Temperature is not a number: " << output[entry_in_output[i_property]]
                                  << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
-                            WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Temperature is not finite: " << output[entry_in_output[i_property]]
+                        WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Temperature is not finite: " << output[entry_in_output[i_property]]
                                  << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
 
                       }
