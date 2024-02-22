@@ -1442,6 +1442,49 @@ namespace WorldBuilder
       return result;
     }
 
+    // todo_effective
+    std::vector<double>
+    calculate_effective_trench_and_plate_ages(std::vector<double> ridge_parameters, double distance_along_plane)
+    {
+      WBAssert(ridge_parameters.size() == 4, "Internal error: ridge_parameters have the wrong size: " << ridge_parameters.size() << " instead of 4.");
+      const double seconds_in_year = 60.0 * 60.0 * 24.0 * 365.25;  // sec/y
+      const double spreading_velocity = ridge_parameters[0] * seconds_in_year; // m/yr
+      double subducting_velocity = ridge_parameters[2] * seconds_in_year; // m/yr
+      const double ridge_velocity = spreading_velocity - subducting_velocity; // m/yr
+      const int sign_v = (ridge_velocity > 0) ? 1 : ((ridge_velocity < 0) ? -1 : 0);
+
+      const double time_of_ridge_migration = ridge_parameters[3]; //yr
+      const double ridge_drift_distance = abs(ridge_velocity) * time_of_ridge_migration; // m
+
+      double effective_age_shift = 0;
+      double trench_age_shift = 0;
+      if (subducting_velocity <= 0)
+        subducting_velocity = spreading_velocity;
+
+      else
+        {
+          if (distance_along_plane < ridge_drift_distance)
+            {
+              effective_age_shift = (1 - (distance_along_plane / ridge_drift_distance)) * sign_v * \
+                                    distance_along_plane / subducting_velocity; // yr
+              trench_age_shift = (1 - (distance_along_plane / ridge_drift_distance)) * sign_v * \
+                                 distance_along_plane / spreading_velocity; // yr
+            }
+        }
+
+      const double age_at_trench = ridge_parameters[1] / spreading_velocity + trench_age_shift * 0; // m/(m/y) = yr
+      const double plate_age_sec = age_at_trench * seconds_in_year; // y --> seconds
+
+      // Plate age increases with distance along the slab in the mantle
+      double effective_plate_age = plate_age_sec + (distance_along_plane / subducting_velocity + effective_age_shift) * seconds_in_year; // m/(m/y) = y(seconds_in_year)
+
+      std::vector<double> result;
+      result.push_back(age_at_trench);
+      result.push_back(effective_plate_age);
+      return result;
+
+    }
+
   } // namespace Utilities
 } // namespace WorldBuilder
 

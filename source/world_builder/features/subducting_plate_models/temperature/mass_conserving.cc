@@ -296,33 +296,17 @@ namespace WorldBuilder
               const double depth_to_reference_surface = distance_from_planes.depth_reference_surface;
               const double total_segment_length = additional_parameters.total_local_segment_length;
               const double average_angle = distance_from_planes.average_angle;
+    
+              std::vector<double> slab_ages = calculate_effective_trench_and_plate_ages(ridge_parameters, distance_along_plane);
 
               const double seconds_in_year = 60.0 * 60.0 * 24.0 * 365.25;  // sec/y
               const double spreading_velocity = ridge_parameters[0] * seconds_in_year; // m/yr
               double subducting_velocity = ridge_parameters[2] * seconds_in_year; // m/yr
-              const double ridge_velocity = spreading_velocity - subducting_velocity; // m/yr
-              const int sign_v = (ridge_velocity > 0) ? 1 : ((ridge_velocity < 0) ? -1 : 0);
 
-              const double time_of_ridge_migration = ridge_parameters[3]; //yr
-              const double ridge_drift_distance = abs(ridge_velocity) * time_of_ridge_migration; // m
-
-              double effective_age_shift = 0;
-              double trench_age_shift = 0;
               if (subducting_velocity <= 0)
                 subducting_velocity = spreading_velocity;
 
-              else
-                {
-                  if (distance_along_plane < ridge_drift_distance)
-                    {
-                      effective_age_shift = (1 - (distance_along_plane / ridge_drift_distance)) * sign_v * \
-                                            distance_along_plane / subducting_velocity; // yr
-                      trench_age_shift = (1 - (distance_along_plane / ridge_drift_distance)) * sign_v * \
-                                         distance_along_plane / spreading_velocity; // yr
-                    }
-                }
-
-              const double age_at_trench = ridge_parameters[1] / spreading_velocity + trench_age_shift * 0; // m/(m/y) = yr
+              const double age_at_trench = slab_ages[0];
               const double plate_age_sec = age_at_trench * seconds_in_year; // y --> seconds
               // 1. Determine initial heat content of the slab based on age of plate at trench
               // This uses the integral of the half-space temperature profile
@@ -356,7 +340,7 @@ namespace WorldBuilder
                 }
 
               // Plate age increases with distance along the slab in the mantle
-              double effective_plate_age = plate_age_sec + (distance_along_plane / subducting_velocity + effective_age_shift) * seconds_in_year; // m/(m/y) = y(seconds_in_year)
+              double effective_plate_age = slab_ages[1];
 
               // Need adiabatic temperature at position of grid point
               const double background_temperature = adiabatic_heating ? potential_mantle_temperature *
