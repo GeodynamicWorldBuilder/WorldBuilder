@@ -225,7 +225,7 @@ file(GLOB_RECURSE VISU_TEST_SOURCES "gwb-grid/*.wb")
 # Run through each sourceUforeach(test_source ${VISU_TEST_SOURCES})
 foreach(test_source ${VISU_TEST_SOURCES})
   get_filename_component(test_name ${test_source} NAME_WE)
-	set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.grid")
+	set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.grid\;-j\;1")
   add_test(grid_${test_name}
            ${CMAKE_COMMAND}
 	         -D TEST_NAME=${test_name}
