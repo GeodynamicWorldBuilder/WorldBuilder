@@ -6,7 +6,7 @@ While the `gwb-dat` app is great at providing individual points, providing gridd
 
 A grid file consists of a number of parameters. Each parameter should start with a name (no spaces) followed by an equal sign, followed by the value. The available parameters are:
 
-1. `grid_type`: Options are `cartesian`, `sphere`, `chunk` and `anullus`. 
+1. `grid_type`: Options are `cartesian`, `sphere`, `chunk` and `annulus`. 
 2. `dim`: dimension, either 2 or 3.
 3. `composition`: how many compositions
 4. `vtu_output_format`: Either `ASCII` for readable output or `RawBinaryCompressed` for compressed output.
