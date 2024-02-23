@@ -16,7 +16,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Added a cookbook for making a transform fault and using this model in ASPECT. \[Juliane Dannberg; 2024-02-14; [#563](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/563)\]
 - Added a system which allows users to tag features. The tag index can then be written out throught the gwb-dat program. \[Menno Fraters and Timo Heister; 2024-02-15; [[#598](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/598)]\]
 - Added variable spreading for mid oceanic ridges. \[Daniel Douglas; 2024-02-16; [#617](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/617)\]
-- Added a new plume feature. \[Juliane Dannberg; 2024-02-15; [[#620](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/620)]\]
+- Added a new plume feature. This feature also includes a temperature model that allows it to interpolate temperature from the center to the margin of the plume using a Gaussian function. \[Juliane Dannberg; 2024-02-15; [[#620](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/620)], [#657](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/657)\]
 - Added a `--resolution-limit` option to gwb-grid to limit the resolution secified in the .grid file. \[Menno Fraters; 2024-02-16; [#653](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/653)\]
 
 ### Changed 
