@@ -274,90 +274,108 @@ namespace WorldBuilder
           rotation_angle = interpolate_angle_across_zero(rotation_angles[index-1], rotation_angles[index], fraction);
         }
 
-      if (depth <= depths.back() && depth >= min_depth &&
-          WorldBuilder::Utilities::ellipse_contains_point(plume_center,
-                                                          semi_major_axis_length,
-                                                          eccentricity,
-                                                          rotation_angle,
-                                                          Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
-                                                                   world->parameters.coordinate_system->natural_coordinate_system())))
+      const Point<2> surface_point(position_in_natural_coordinates.get_surface_coordinates(),
+                                   world->parameters.coordinate_system->natural_coordinate_system());
+
+      double relative_distance_from_center =
+        WorldBuilder::Utilities::fraction_from_ellipse_center(plume_center,
+                                                              semi_major_axis_length,
+                                                              eccentricity,
+                                                              rotation_angle,
+                                                              surface_point);
+
+      // If we are in the tip, we have to compute the difference diffently:
+      if (depth >= min_depth && depth < depths.front())
         {
-          if (depth <= max_depth &&  depth >= min_depth)
+          const double a = semi_major_axis_lengths.front();
+          const double b = a * std::sqrt(1 - std::pow(eccentricity, 2));
+          const double c = depths.front() - min_depth;
+
+          const double x = (surface_point[0] - plume_center[0]) * std::cos(rotation_angle) + (surface_point[1] - plume_center[1])* std::sin(rotation_angle);
+          const double y = -(surface_point[0] - plume_center[0]) * std::sin(rotation_angle) + (surface_point[1] - plume_center[1])* std::cos(rotation_angle);
+          const double z = depths.front() - depth;
+
+          // use ellipsoid equation:
+          relative_distance_from_center = (x*x)/(a*a) + (y*y)/(b*b) + (z*z)/(c*c);
+        }
+
+      if (depth <= max_depth && depth >= min_depth && relative_distance_from_center <= 1.)
+        {
+
+          for (unsigned int i_property = 0; i_property < properties.size(); ++i_property)
             {
-              for (unsigned int i_property = 0; i_property < properties.size(); ++i_property)
+              switch (properties[i_property][0])
                 {
-                  switch (properties[i_property][0])
-                    {
-                      case 1:  // temperature
+                  case 1:  // temperature
+                  {
+                    for (const auto &temperature_model: temperature_models)
                       {
-                        for (const auto &temperature_model: temperature_models)
-                          {
-                            output[entry_in_output[i_property]] = temperature_model->get_temperature(position_in_cartesian_coordinates,
-                                                                                                     position_in_natural_coordinates,
-                                                                                                     depth,
-                                                                                                     gravity_norm,
-                                                                                                     output[entry_in_output[i_property]],
-                                                                                                     min_depth,
-                                                                                                     max_depth);
+                        output[entry_in_output[i_property]] = temperature_model->get_temperature(position_in_cartesian_coordinates,
+                                                                                                 position_in_natural_coordinates,
+                                                                                                 depth,
+                                                                                                 gravity_norm,
+                                                                                                 output[entry_in_output[i_property]],
+                                                                                                 min_depth,
+                                                                                                 max_depth,
+                                                                                                 relative_distance_from_center);
 
-                            WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Temperature is not a number: " << output[entry_in_output[i_property]]
-                                     << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
-                            WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Temperature is not finite: " << output[entry_in_output[i_property]]
-                                     << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
+                        WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Temperature is not a number: " << output[entry_in_output[i_property]]
+                                 << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
+                        WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Temperature is not finite: " << output[entry_in_output[i_property]]
+                                 << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
 
-                          }
-                        break;
-                        case 2: // composition
+                      }
+                    break;
+                    case 2: // composition
 
-                          for (const auto &composition_model: composition_models)
-                            {
-                              output[entry_in_output[i_property]] = composition_model->get_composition(position_in_cartesian_coordinates,
-                                                                                                       position_in_natural_coordinates,
-                                                                                                       depth,
-                                                                                                       properties[i_property][1],
-                                                                                                       output[entry_in_output[i_property]],
-                                                                                                       min_depth,
-                                                                                                       max_depth);
+                      for (const auto &composition_model: composition_models)
+                        {
+                          output[entry_in_output[i_property]] = composition_model->get_composition(position_in_cartesian_coordinates,
+                                                                                                   position_in_natural_coordinates,
+                                                                                                   depth,
+                                                                                                   properties[i_property][1],
+                                                                                                   output[entry_in_output[i_property]],
+                                                                                                   min_depth,
+                                                                                                   max_depth);
 
-                              WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Composition is not a number: " << output[entry_in_output[i_property]]
-                                       << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
-                              WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Composition is not finite: " << output[entry_in_output[i_property]]
-                                       << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
+                          WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Composition is not a number: " << output[entry_in_output[i_property]]
+                                   << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
+                          WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Composition is not finite: " << output[entry_in_output[i_property]]
+                                   << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
 
-                            }
-
-                          break;
                         }
-                      case 3: // grains
-                      {
-                        WorldBuilder::grains  grains(output,properties[i_property][2],entry_in_output[i_property]);
-                        for (const auto &grains_model: grains_models)
-                          {
-                            grains = grains_model->get_grains(position_in_cartesian_coordinates,
-                                                              position_in_natural_coordinates,
-                                                              depth,
-                                                              properties[i_property][1],
-                                                              grains,
-                                                              min_depth,
-                                                              max_depth);
 
-                          }
-                        grains.unroll_into(output,entry_in_output[i_property]);
-                        break;
-                      }
-                      case 4:
-                      {
-                        output[entry_in_output[i_property]] = tag_index;
-                        break;
-                      }
-                      default:
-                      {
-                        WBAssertThrow(false,
-                                      "Internal error: Unimplemented property provided. " <<
-                                      "Only temperature (1), composition (2), grains (3) or tag (4) are allowed. "
-                                      "Provided property number was: " << properties[i_property][0]);
-                      }
+                      break;
                     }
+                  case 3: // grains
+                  {
+                    WorldBuilder::grains  grains(output,properties[i_property][2],entry_in_output[i_property]);
+                    for (const auto &grains_model: grains_models)
+                      {
+                        grains = grains_model->get_grains(position_in_cartesian_coordinates,
+                                                          position_in_natural_coordinates,
+                                                          depth,
+                                                          properties[i_property][1],
+                                                          grains,
+                                                          min_depth,
+                                                          max_depth);
+
+                      }
+                    grains.unroll_into(output,entry_in_output[i_property]);
+                    break;
+                  }
+                  case 4:
+                  {
+                    output[entry_in_output[i_property]] = tag_index;
+                    break;
+                  }
+                  default:
+                  {
+                    WBAssertThrow(false,
+                                  "Internal error: Unimplemented property provided. " <<
+                                  "Only temperature (1), composition (2), grains (3) or tag (4) are allowed. "
+                                  "Provided property number was: " << properties[i_property][0]);
+                  }
                 }
             }
         }

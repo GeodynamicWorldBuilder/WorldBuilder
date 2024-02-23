@@ -75,6 +75,9 @@ namespace WorldBuilder
 
             /**
              * takes temperature and position and returns a temperature.
+             * The relative distance from center gives the result of the ellipse
+             * equation, i.e., x^2/a^2 + y^2/b^2, i.e., it tells us how far we
+             * are between the center and margin of the ellipse.
              */
             virtual
             double get_temperature(const Point<3> &position,
@@ -83,7 +86,8 @@ namespace WorldBuilder
                                    const double gravity,
                                    double temperature,
                                    const double feature_min_depth,
-                                   const double feature_max_depth) const = 0;
+                                   const double feature_max_depth,
+                                   const double relative_distance_from_center) const = 0;
             /**
              * A function to register a new type. This is part of the automatic
              * registration of the object factory.

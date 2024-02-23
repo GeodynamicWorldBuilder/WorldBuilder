@@ -161,12 +161,13 @@ namespace WorldBuilder
     }
 
 
-    bool
-    ellipse_contains_point(const Point<2> &ellipse_center,
-                           const double semi_major_axis,
-                           const double eccentricity,
-                           const double theta,
-                           const Point<2> &point)
+
+    double
+    fraction_from_ellipse_center(const Point<2> &ellipse_center,
+                                 const double semi_major_axis,
+                                 const double eccentricity,
+                                 const double theta,
+                                 const Point<2> &point)
     {
       const double x_rotated = (point[0] - ellipse_center[0]) * std::cos(theta) + (point[1] - ellipse_center[1])* std::sin(theta);
       const double y_rotated = -(point[0] - ellipse_center[0]) * std::sin(theta) + (point[1] - ellipse_center[1])* std::cos(theta);
@@ -180,8 +181,9 @@ namespace WorldBuilder
       const double ellipse = std::pow((x_rotated), 2) / std::pow(semi_major_axis, 2)
                              + std::pow((y_rotated), 2) / std::pow(semi_minor_axis, 2);
 
-      return ellipse <= 1.;
+      return ellipse;
     }
+
 
 
     double
