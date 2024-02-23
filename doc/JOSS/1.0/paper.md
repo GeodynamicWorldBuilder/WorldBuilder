@@ -35,6 +35,9 @@ authors:
   - name: Daniel Douglas
     orcid: 0
     affiliation: "4"
+  - name: Yijun Wang
+    orcid: 0
+    affiliation: "5"
 affiliations:
  - name: Universiy of Florida, USA
    index: 1
@@ -44,7 +47,9 @@ affiliations:
    index: 3
  - name: New Mexico Tech, USA
    index: 4
-date: 2 February 2023
+ - name: University of Oslo, Norway
+   index: 4
+date: 23 February 2023
 bibliography: paper.bib
 ---
 
@@ -88,7 +93,7 @@ Following these points will help to create a clean, portable, extendable code wi
 
 ## GWB User Philosophy
 
-The user philosophy is build around the idea that users define tectonic features. These tectonic features can be parameterized by defining lines or areas where these features are in a map view. For example, a continental plate is an area on a map, so the user defines the area. A fault is a line on a map, so the user defines that line where the fault is. The user also provides information on the feature, such a thickness, which can be spatially variable, or dip angles. These parameters are then used to create the volume for the feature. Next users can attach one or many models to those volumes to define for example temperature or compositional variables. These can be very simple models, such as a uniform temperture distribution, or a more complex distrubution, such as a half space cooling model, or a McKenzie [@McKenzie_1970] or mass conserving (ref) slab temperature model. 
+The user philosophy is build around the idea that users define tectonic features. These tectonic features can be parameterized by defining lines or areas where these features are in a map view. For example, a continental plate is an area on a map, so the user defines the area. A fault is a line on a map, so the user defines that line where the fault is. The user also provides information on the feature, such a thickness, which can be spatially variable, or dip angles. These parameters are then used to create the volume for the feature. Next users can attach one or many models to those volumes to define for example temperature or compositional variables. These can be very simple models, such as a uniform temperture distribution, or a more complex distrubution, such as a half space cooling model, or a McKenzie [@McKenzie_1970] or mass conserving [@billen_Fraters_AGU_2023] slab temperature model. 
 
 All these parameterizations are set through a single input file. This file a JSON styled input file, which human read, write and editable. The main idea behind this design of the GWB so that users can easily create and modify complex parameterized initial conditions for their geodynamic or tectonic setting. 
 
@@ -122,13 +127,8 @@ Below we show an example input file for a cartesian model, which can be easily c
 
 # Acknowledgements
 
-We would like to acknolege all other contributors to the project, especially Wolfang Bangerth, (Timo and Daniel if not on co-authors), Lorraine Hwang and John Naliboff for their advice and support through the years for this project. We would also like to acknowledge NSF for their funding and support through grands EAR-1620618 (CPO), OCE-1948902 (Cascadia), EAR-0949446 (CIG), EAR-1550901 (CIG) and EAR-1925677 (FRES).
+We would like to acknolege all other contributors to the project, especially Lorraine Hwang, Becky Fildes and John Naliboff for their advice and support through the years for this project. We would also like to acknowledge NSF for their funding and support through grands EAR-1620618 (CPO), OCE-1948902 (Cascadia), EAR-0949446 (CIG), EAR-1550901 (CIG) and EAR-1925677 (FRES).
 
 # References
 
-
-# TODO
-1. Decide on co-authors
-2. write acknowledgments for other contributors who are not co-authors and for funding agencies
-3. Add reference to Mass conserving temperature model?
 
