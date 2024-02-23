@@ -317,7 +317,7 @@ jobs:
         run: |
               sudo apt install lcov;
               lcov --capture --directory ${{github.workspace}}/build --output-file coverage.info;
-              lcov --remove coverage.info '${{github.workspace}}/build/*' '${{github.workspace}}/source/gwb-grid/*' '${{github.workspace}}/include/*' '${{github.workspace}}/tests/*' '/usr/*' -o coverage_filtered.info
+              lcov --remove coverage.info '${{github.workspace}}/build/*' '${{github.workspace}}/include/*' '${{github.workspace}}/tests/*' '/usr/*' -o coverage_filtered.info
               ls;
 
 
