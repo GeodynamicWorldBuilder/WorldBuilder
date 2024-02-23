@@ -11555,9 +11555,9 @@
 :name: open_features_items_oneOf_5_temperature-models_items_oneOf_1
 
 - **type**:object
-- **description**:Uniform temperature model. Set the temperature to a constant value.
+- **description**:Gaussian temperature model. The temperature is interpolated between the plume center and margin (as defined by the plume feature) using a Gaussian function: T(r) = T_center(z) exp(-r^2/(2 sigma^2). The temperature at the plume centerline T_center can be changed with depth by defining an array of depths and centerline temperatures, and temperature is interpolated linearly with depth. Similarly, the sigma of the Gaussian function (relative to the width of the plume as given by the plume feature) can be changed with depth. Temperature is always interpolated in a horizonzal/radial plane, except for the plume head: If the first depth of the plume centerline and the minimum depth of the plume feature are different, an ellipsoidal plume head is created in this depth range. Within this plume head, temperature is interpolated radially, i.e., depending on the distance from the center of the ellipsoid.
 - **additionalProperties**:false
-- **required**:[model, temperature]
+- **required**:[model, centerline temperatures]
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/model
 :open:
@@ -11566,7 +11566,7 @@
 - **default value**:
 - **type**:string
 - **description**:The name of the temperature model.
-- **enum**:[uniform]
+- **enum**:[gaussian]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/operation
@@ -11579,27 +11579,120 @@
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/min depth
+::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/depths
 :open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_1_min-depth
+:name: open_features_items_oneOf_5_temperature-models_items_oneOf_1_depths
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:The list of depths where both the temperature in the center of the plume and the width of the temperature anomaly in terms of the sigma of a Gaussian function can be provided. Temperature is interpolated linearly in vertical direction between these depths. Units: m.
+:::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/depths/items
+:open:
+:name: open_features_items_oneOf_5_temperature-models_items_oneOf_1_depths_items
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/centerline temperatures
+:open:
+:name: open_features_items_oneOf_5_temperature-models_items_oneOf_1_centerline-temperatures
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:The temperature at the center of this feature in degree Kelvin.If the value is below zero, then an adiabatic temperature is used.
+:::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/centerline temperatures/items
+:open:
+:name: open_features_items_oneOf_5_temperature-models_items_oneOf_1_centerline-temperatures_items
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/gaussian sigmas
+:open:
+:name: open_features_items_oneOf_5_temperature-models_items_oneOf_1_gaussian-sigmas
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:The sigma (standard deviation) of the Gaussian function used to compute the temperature distribution within the plume. This sigma is non-dimensinal, i.e. it is defined relative to the distance between the plume center and margin as defined by the plume feature. Choosing a sigma of 1 therefore means that the temperature at the plume margin is set to a fraction of 1/sqrt(e) (approx. 0.61) of the centerline temperature. To achieve a smoother transition between the plume temperature and the outside temperature a smaller values has to be chosen for the gaussian sigmas.
+:::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/gaussian sigmas/items
+:open:
+:name: open_features_items_oneOf_5_temperature-models_items_oneOf_1_gaussian-sigmas_items
+
+- **default value**:0.3
+- **type**:number
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+
+
+:::::::::::::::::
+
+:::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_5_temperature-models_items_oneOf_2
+
+- **type**:object
+- **description**:Uniform temperature model. Set the temperature to a constant value.
+- **additionalProperties**:false
+- **required**:[model, temperature]
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/2/model
+:open:
+:name: open_features_items_oneOf_5_temperature-models_items_oneOf_2_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the temperature model.
+- **enum**:[uniform]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/2/operation
+:open:
+:name: open_features_items_oneOf_5_temperature-models_items_oneOf_2_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).
+- **enum**:[replace, add, subtract]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/2/min depth
+:open:
+:name: open_features_items_oneOf_5_temperature-models_items_oneOf_2_min-depth
 
 - **default value**:0.0
 - **type**:number
 - **description**:The depth in meters from which the temperature of this feature is present.
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/max depth
+::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/2/max depth
 :open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_1_max-depth
+:name: open_features_items_oneOf_5_temperature-models_items_oneOf_2_max-depth
 
 - **default value**:1.7976931348623157e308
 - **type**:number
 - **description**:The depth in meters to which the temperature of this feature is present.
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/temperature
+::::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/2/temperature
 :open:
-:name: open_features_items_oneOf_5_temperature-models_items_oneOf_1_temperature
+:name: open_features_items_oneOf_5_temperature-models_items_oneOf_2_temperature
 
 - **default value**:293.15
 - **type**:number
@@ -17323,7 +17416,7 @@
 
 - **default value**:4294967295
 - **type**:integer
-- **description**:Use random number seed input to generate random numbers.
+- **description**:This allows the input of a preferred random number seed to generate random numbers. If no input is given, this value is -1 and triggers the use of default seed = 1.
 ::::::::::::::::::::::::
 
 
