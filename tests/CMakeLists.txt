@@ -157,6 +157,31 @@ IF(WB_RUN_APP_TESTS)
            -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
 
+
+  # Add tests which filters the output.
+  set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/data/subducting_plate_composition_smooth_filtered.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-grid/subducting_plate_composition_smooth.grid\;--filtered")
+  add_test(grid_filtered  
+           ${CMAKE_COMMAND}
+	         -D TEST_NAME=${test_name}
+	         -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}
+	         -D TEST_ARGS=${TEST_ARGUMENTS}
+	         -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-grid/subducting_plate_composition_smooth_filtered.filtered.vtu
+	         -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/subducting_plate_composition_smooth_filtered.filtered.vtu
+	         -P ${CMAKE_SOURCE_DIR}/tests/gwb-grid/run_gwb-grid_tests.cmake
+           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/)
+
+
+  # Add tests which filters the by tag.
+  set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/data/subducting_plate_composition_smooth_by_tag.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-grid/subducting_plate_composition_smooth.grid\;--by-tag")
+  add_test(grid_by_tag  
+           ${CMAKE_COMMAND}
+           -D TEST_NAME=${test_name}
+           -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}
+           -D TEST_ARGS=${TEST_ARGUMENTS}
+           -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-grid/subducting_plate_composition_smooth_by_tag.1.vtu
+           -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/subducting_plate_composition_smooth_by_tag.1.vtu
+           -P ${CMAKE_SOURCE_DIR}/tests/gwb-grid/run_gwb-grid_tests.cmake
+           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/)
   
   #find all the integration test files
   file(GLOB_RECURSE APP_TEST_SOURCES "gwb-dat/*.wb")
