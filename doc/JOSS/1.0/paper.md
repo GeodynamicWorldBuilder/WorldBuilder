@@ -122,12 +122,12 @@ Below we show an example input file for a cartesian model, which can be easily c
 }
 ```
 
-![An schematic example of what can be build with 66 lines of GWB inptu file formatted in the same way as in the above input file example. \label{fig:example}](../../sphinx/_static/images/user_manual/basic_starter_tutorial/BST_17.png)
+![An schematic example of what can be build with 66 lines of GWB input file formatted in the same way as in the above input file example. \label{fig:example}](../../sphinx/_static/images/user_manual/basic_starter_tutorial/BST_17.png)
 
 
 # Acknowledgements
 
-We would like to acknolege all other contributors to the project, especially Lorraine Hwang, Becky Fildes and John Naliboff for their advice and support through the years for this project. We would also like to acknowledge NSF for their funding and support through grands EAR-1620618 (CPO), OCE-1948902 (Cascadia), EAR-0949446 (CIG), EAR-1550901 (CIG) and EAR-1925677 (FRES).
+We would like to acknowledge all other contributors to the project, especially Lorraine Hwang, Becky Fildes and John Naliboff for their advice and support through the years for this project. We would also like to acknowledge NSF for their funding and support through grants EAR-1620618 (CPO), OCE-1948902 (Cascadia), EAR-0949446 (CIG), EAR-1550901 (CIG) and EAR-1925677 (FRES).
 
 # References
 
