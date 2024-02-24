@@ -68,7 +68,7 @@ namespace WorldBuilder
 
       Pointer((path + "/body").c_str()).Set(declarations,"object");
       Pointer((path + "/body/model").c_str()).Set(declarations,"plume");
-      Pointer((path + "/body/name").c_str()).Set(declarations,"${1:My Pretty Plume}");
+      Pointer((path + "/body/name").c_str()).Set(declarations,"${1:My Plume}");
       Pointer((path + "/body/coordinates").c_str()).Create(declarations).SetArray();
       Pointer((path + "/body/temperature models").c_str()).Create(declarations).SetArray();
       Pointer((path + "/body/composition models").c_str()).Create(declarations).SetArray();

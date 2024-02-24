@@ -181,7 +181,7 @@
                         "label": "add a 'fault'",
                         "body": {
                             "model": "fault",
-                            "name": "${1:Menno's Fault}",
+                            "name": "${1:My Fault}",
                             "coordinates": [],
                             "segments": [],
                             "sections": []
@@ -191,7 +191,7 @@
                         "label": "add a 'mantle layer'",
                         "body": {
                             "model": "mantle layer",
-                            "name": "${1:upper mantle}",
+                            "name": "${1:My Mantle Layer}",
                             "coordinates": [],
                             "temperature models": [],
                             "composition models": []
@@ -211,7 +211,7 @@
                         "label": "add a 'plume'",
                         "body": {
                             "model": "plume",
-                            "name": "${1:My Pretty Plume}",
+                            "name": "${1:My Plume}",
                             "coordinates": [],
                             "temperature models": [],
                             "composition models": []
