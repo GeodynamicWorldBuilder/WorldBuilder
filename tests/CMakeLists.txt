@@ -186,6 +186,20 @@ IF(WB_RUN_APP_TESTS)
            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/)
 
 
+  # Add tests which test the grid version output
+  set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/data/subducting_plate_composition_smooth_filtered.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-grid/subducting_plate_composition_smooth.grid\;--version")
+  add_test(grid_version
+           ${CMAKE_COMMAND}
+           -D TEST_NAME=${test_name}
+           -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}
+           -D TEST_ARGS=${TEST_ARGUMENTS}
+           -D TEST_DIFF=${TEST_DIFF}
+           -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-grid/grid_version.log
+           -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/grid_version.log
+           -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
+           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/)
+
+
   # Add tests which filters the output.
   set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/data/subducting_plate_composition_smooth_filtered.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-grid/subducting_plate_composition_smooth.grid\;--filtered")
   add_test(grid_filtered  
