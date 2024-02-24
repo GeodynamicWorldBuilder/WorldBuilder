@@ -786,7 +786,7 @@ namespace WorldBuilder
 
                 // now get the array of points.
                 Value *array_of_doubles = Pointer((base + "/1").c_str()).Get(parameters);
-                double testing_value;
+                double value_in_array;
                 if (array_of_doubles != nullptr)
                   {
                     for (size_t coordinate_i = 0; coordinate_i < array_of_doubles->Size(); ++coordinate_i )
@@ -798,7 +798,7 @@ namespace WorldBuilder
                             // That means that there are exactly two values per item
                             try
                               {
-                                testing_value = Pointer((base + "/1/" + std::to_string(coordinate_i) + "/" + std::to_string(coordinate_j)).c_str()).Get(parameters)->GetDouble();
+                                value_in_array = Pointer((base + "/1/" + std::to_string(coordinate_i) + "/" + std::to_string(coordinate_j)).c_str()).Get(parameters)->GetDouble();
                               }
                             catch (...)
                               {
@@ -809,11 +809,10 @@ namespace WorldBuilder
                                               << "\".");
                               }
 
-                            result.first.emplace_back(value);
-                            result.second.emplace_back(testing_value);
+                            result.second.emplace_back(value_in_array);
                           }
                       }
-
+                    result.first.emplace_back(value);
                   }
               }
           }
@@ -925,7 +924,6 @@ namespace WorldBuilder
     // start with adding the additional points with the default value
     // to do this we need the default value
     double default_value = 0;
-    std::vector<double> please_work;
     bool is_array = true;
     if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr && Pointer((strict_base + "/" + name).c_str()).Get(parameters)->IsArray())
       {
@@ -971,8 +969,8 @@ namespace WorldBuilder
                 // now get the array of points.
                 // Value *coordinates_array = Pointer((base + "/0").c_str()).Get(parameters);
                 Value *coordinates_array = Pointer((base).c_str()).Get(parameters);
-                double testing_value;
-                std::vector<double> testing_array;
+                double value_in_array;
+                std::vector<double> array_of_values;
                 if (coordinates_array != nullptr)
                   {
                     for (size_t coordinate_i = 0; coordinate_i < coordinates_array->Size(); ++coordinate_i )
@@ -981,7 +979,7 @@ namespace WorldBuilder
                         // That means that there are exactly two values per item
                         try
                           {
-                            testing_value = Pointer(((base + "/") + std::to_string(coordinate_i)).c_str()).Get(parameters)->GetDouble();
+                            value_in_array = Pointer(((base + "/") + std::to_string(coordinate_i)).c_str()).Get(parameters)->GetDouble();
                           }
                         catch (...)
                           {
@@ -991,16 +989,16 @@ namespace WorldBuilder
                                           <<  Pointer((base + "/" + std::to_string(i) + "/" + std::to_string(coordinate_i)).c_str()).Get(parameters)->GetString()
                                           << "\".");
                           }
-                        testing_array.emplace_back(testing_value);
+                        array_of_values.emplace_back(value_in_array);
                       }
-                    result.emplace_back(testing_array);
+                    result.emplace_back(array_of_values);
 
                   }
               }
           }
         else
           {
-            // case 1: there one value, not an array
+            // case 1: there's one value, not an array
             double value = 0;
             try
               {

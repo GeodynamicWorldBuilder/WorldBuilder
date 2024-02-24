@@ -1291,8 +1291,8 @@ namespace WorldBuilder
                                            std::vector<std::vector<double>> mid_oceanic_spreading_velocities,
                                            const std::unique_ptr<WorldBuilder::CoordinateSystems::Interface> &coordinate_system,
                                            const Objects::NaturalCoordinate &position_in_natural_coordinates_at_min_depth,
-                                           std::vector<std::vector<double>> subducting_plate_velocities,
-                                           std::vector<double> ridge_migration_times)
+                                           const std::vector<std::vector<double>> &subducting_plate_velocities,
+                                           const std::vector<double> &ridge_migration_times)
     {
 
       double distance_ridge = std::numeric_limits<double>::max();
@@ -1347,16 +1347,26 @@ namespace WorldBuilder
           const double spreading_velocity_point0 = mid_oceanic_spreading_velocities[relevant_ridge][i_coordinate];
           const double spreading_velocity_point1 = mid_oceanic_spreading_velocities[relevant_ridge][i_coordinate + 1];
 
+          // When subducting_velocities is not input by the user, default value is 0, which
+          // results in subducting velocity == spreading_velocity. When a single value is
+          // input by the user, subducting velocity != spreading_velocity, but
+          // subducting velocity is spatially constant.
           double subducting_velocity_point0 = subducting_plate_velocities[0][0];
           double subducting_velocity_point1 = subducting_plate_velocities[0][0];
 
-          ridge_migration_time = ridge_migration_times[relevant_ridge];
-
-          if (subducting_plate_velocities != std::vector<std::vector<double>> {{0}})
-          {
-            subducting_velocity_point0 = subducting_plate_velocities[relevant_ridge][i_coordinate];
-            subducting_velocity_point1 = subducting_plate_velocities[relevant_ridge][i_coordinate + 1];
-          }
+          // When subducting_velocities is input as an array, spatial variation
+          if (subducting_plate_velocities[0].size() > 1)
+            {
+              WBAssertThrow(subducting_plate_velocities.size() == mid_oceanic_ridges.size() && \
+                            subducting_plate_velocities[relevant_ridge].size() == mid_oceanic_ridges[relevant_ridge].size(),
+                            "subducting velocity and ridge coordinates must be the same dimension");
+              WBAssertThrow(ridge_migration_times.size() == mid_oceanic_ridges.size(),
+                            "the times for ridge migration specified in 'spreading velocity' must be the same dimension "
+                            "as ridge coordinates.");
+              subducting_velocity_point0 = subducting_plate_velocities[relevant_ridge][i_coordinate];
+              subducting_velocity_point1 = subducting_plate_velocities[relevant_ridge][i_coordinate + 1];
+              ridge_migration_time = ridge_migration_times[relevant_ridge];
+            }
 
           {
             // based on http://geomalgorithms.com/a02-_lines.html
@@ -1477,7 +1487,8 @@ namespace WorldBuilder
 
       // Plate age increases with distance along the slab in the mantle
       double effective_plate_age = plate_age_sec + (distance_along_plane / subducting_velocity + effective_age_shift) * seconds_in_year; // m/(m/y) = y(seconds_in_year)
-
+      WBAssertThrow(effective_plate_age >= 0, "The age of the subducting plate is less than or equal to 0. "
+                    "Effective plate age: " << effective_plate_age);
       std::vector<double> result;
       result.push_back(age_at_trench);
       result.push_back(effective_plate_age);

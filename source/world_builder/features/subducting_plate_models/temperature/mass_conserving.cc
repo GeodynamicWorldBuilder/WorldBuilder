@@ -118,10 +118,10 @@ namespace WorldBuilder
           prm.declare_entry("density", Types::Double(3300),
                             "The reference density of the subducting plate in $kg/m^3$");
 
-          prm.declare_entry("plate velocity", Types::OneOf(Types::Double(0.05),Types::Array(Types::ValueAtPoints(0.05, std::numeric_limits<size_t>::max()))),
+          prm.declare_entry("plate velocity", Types::OneOf(Types::Double(0.05),Types::Array(Types::ValueAtPoints(0.05, std::numeric_limits<uint64_t>::max()))),
                             "The velocity with which the plate subducts in meters per year. Default is 5 cm/yr");
 
-          prm.declare_entry("subducting velocity", Types::OneOf(Types::Double(0.0), Types::Array(Types::Array(Types::Double(0.0), 1), 1)),
+          prm.declare_entry("subducting velocity", Types::OneOf(Types::Double(-1), Types::Array(Types::Array(Types::Double(-1), 1), 1)),
                             "The velocity with which the ridge is moving through time, and how long the ridge "
                             "has been moving. First value is the velocity, second is the time. Default is [0 cm/yr, 0 yr]");
 
@@ -195,7 +195,6 @@ namespace WorldBuilder
           thermal_conductivity = prm.get<double>("thermal conductivity");
           ridge_spreading_velocities = prm.get_value_at_array("plate velocity");
           subducting_velocities = prm.get_vector_or_double("subducting velocity");
-
 
           mantle_coupling_depth = prm.get<double>("coupling depth");
           forearc_cooling_factor = prm.get<double>("forearc cooling factor");
@@ -287,16 +286,16 @@ namespace WorldBuilder
                                                      subducting_velocities,
                                                      ridge_spreading_velocities.first);
 
-              const double km2m = 1.0e3; // 1000 m/km
-              const double cm2m = 100; // 100 cm/m
-              const double my = 1.0e6;  // 1e6 y/my
+              constexpr double km2m = 1.0e3; // 1000 m/km
+              constexpr double cm2m = 100; // 100 cm/m
+              constexpr double my = 1.0e6;  // 1e6 y/my
 
               /* information about nearest point on the slab segment */
               const double distance_along_plane = distance_from_planes.distance_along_plane;
               const double depth_to_reference_surface = distance_from_planes.depth_reference_surface;
               const double total_segment_length = additional_parameters.total_local_segment_length;
               const double average_angle = distance_from_planes.average_angle;
-    
+
               std::vector<double> slab_ages = calculate_effective_trench_and_plate_ages(ridge_parameters, distance_along_plane);
 
               const double seconds_in_year = 60.0 * 60.0 * 24.0 * 365.25;  // sec/y

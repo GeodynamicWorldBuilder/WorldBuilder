@@ -83,7 +83,7 @@ namespace WorldBuilder
                             "in degree Kelvin for this feature. If the model has an adiabatic gradient"
                             "this should be the mantle potential temperature, and T = Tad + Thalf. ");
 
-          prm.declare_entry("spreading velocity", Types::OneOf(Types::Double(0.05),Types::Array(Types::ValueAtPoints(0.05, std::numeric_limits<size_t>::max()))),
+          prm.declare_entry("spreading velocity", Types::OneOf(Types::Double(0.05),Types::Array(Types::ValueAtPoints(0.05, std::numeric_limits<uint64_t>::max()))),
                             "The spreading velocity of the plate in meter per year. "
                             "This is the velocity with which one side moves away from the ridge.");
 
@@ -153,6 +153,8 @@ namespace WorldBuilder
                   Objects::NaturalCoordinate position_in_natural_coordinates_at_min_depth = Objects::NaturalCoordinate(position,
                                                                                             *(world->parameters.coordinate_system));
                   position_in_natural_coordinates_at_min_depth.get_ref_depth_coordinate() += depth-min_depth;
+                  std::vector<std::vector<double>> subducting_plate_velocities = {{0}};
+                  std::vector<double> ridge_migration_times = {0.0};
 
                   double bottom_temperature_local = bottom_temperature;
 
@@ -166,7 +168,9 @@ namespace WorldBuilder
                   std::vector<double> ridge_parameters = Utilities::calculate_ridge_distance_and_spreading(mid_oceanic_ridges,
                                                          spreading_velocities_at_each_ridge_point,
                                                          world->parameters.coordinate_system,
-                                                         position_in_natural_coordinates_at_min_depth);
+                                                         position_in_natural_coordinates_at_min_depth,
+                                                         subducting_plate_velocities,
+                                                         ridge_migration_times);
 
 
 
