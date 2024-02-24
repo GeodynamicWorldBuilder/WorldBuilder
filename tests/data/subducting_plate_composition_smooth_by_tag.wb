@@ -5,6 +5,14 @@
   "features":
   [
     {
+      "model":"mantle layer", "name":"filter me", "max depth":2000e3,
+      "coordinates":[[100e3,100e3],[100e3,100e3],[550e3,550e3],[550e3,-550e3]],
+      "composition models":
+          [
+            {"model":"uniform", "compositions":[7], "max depth":30e3}
+          ]
+    },
+    {
       "model":"continental plate", "name":"overriding plate", "max depth":200e3,
       "coordinates":[[-550e3,-550e3],[-550e3,550e3],[550e3,550e3],[550e3,-550e3]],
       "composition models":
