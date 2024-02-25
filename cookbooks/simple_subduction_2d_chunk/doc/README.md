@@ -60,7 +60,7 @@ in each location:
 :::::
 
 These figures illustrate how the temperature structure may look _wrong_ (discontinous) 
-if the mesh is low resolution, but increasing the mesh resolution, it is clear that 
+if the mesh resolution is too low, but increasing the mesh resolution, it is clear that 
 the temperature is smooth across a fine mesh. 
 
 ::::{tab-set}
@@ -81,8 +81,8 @@ the temperature is smooth across a fine mesh.
 ## Root model information
 
 In the root model section we need to indicate a spherical geometry (to agree with the
-spherical coordinate system of the chunk). We also choose the option 'depth method'
-option as "begin at end segment" 
+spherical coordinate system of the chunk). We also set the parameter 'depth method'
+to "begin at end segment" 
 (see [this page](part:user_manual:chap:concepts:sec:const_angle_spherical)) for more information
 The `cross section` parameter defines the start and end locations for the cross section at 
 the surface of the model (z = 0). For this example, we choose to put the cross section at 
@@ -109,7 +109,7 @@ can shift where features appear within the grid.
 The three images below show how changing only the starting value for the cross
 section shifts the position of the slab (no other values are changed; same grid file)
 Therefore, unless you have a specific reason, the `cross section` parameter should 
-start at x = 0 (longitude). For the models with a shift start location, 
+start at x = 0 (longitude). For the models with a shifted start location, 
 the temperature for the region beyond the sinking plate is filled in with the background 
 adiabatic temperature gradient. 
  
@@ -135,7 +135,7 @@ adiabatic temperature gradient.
 The other physical parameters are defined as reference values, which will be used by the 
 feature temperature models if the values are not entered separately.
  
-### Feature Geometry, temperature and composition 
+### Feature Geometry, Temperature and Composition 
 
 For each feature, we define the extent of that feature, a compositional layer and the
 temperature structure.  For the compositional layer, we use a thickness of 100 km as
@@ -146,12 +146,12 @@ sinking plate and subducting plate.
 #### Oceanic Plates
 We will place the trench at the center of the profile at 90 degrees. Therefore,
 * Overriding plate extends from 90 to 135 degrees in longitude.
-* Sinking plate extends from 45 m to 90 degrees in longitude. 
+* Sinking plate extends from 45 to 90 degrees in longitude. 
 
 In the z direction, the maximum depth of the plate is chosen to be deep enough to account 
 for any changes in the plate temperature in depth. If too small a value is chosen, a 
 sharp jump in temperature will be seen in the output,
-(see, for example, [Simple Subduction 2D Cartesian](part:user_manual:chap:cookbooks:sec:simple_subduction_2d_cartesian))
+(see, for example, [Simple Subduction 2D Cartesian](part:user_manual:chap:cookbooks:sec:simple_subduction_2d_cartesian)).
 
 For the temperature model we use the half space cooling model (appropriate for ages less
 than 80 my). The temperature of the oceanic plates is calculated from the plate age, 
