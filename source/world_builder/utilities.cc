@@ -1175,6 +1175,7 @@ namespace WorldBuilder
               std::size_t filesize;
               std::ifstream filestream;
               filestream.open(filename.c_str());
+              WBAssertThrow (filestream.is_open(), std::string("Could not open file <") + filename + ">.");
 
               // Need to convert to unsigned int, because MPI_Bcast does not support
               // size_t or const unsigned int

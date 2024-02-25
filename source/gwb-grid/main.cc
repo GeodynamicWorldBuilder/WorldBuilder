@@ -293,7 +293,6 @@ int main(int argc, char **argv)
   /**
    * First parse the command line options
    */
-  std::cout << "[1/6] Parsing file...                         \r";
   std::string wb_file;
   std::string data_file;
 
@@ -423,6 +422,8 @@ int main(int argc, char **argv)
   MPI_Init(&argc,&argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &MPI_RANK);
 #endif
+
+  std::cout << "[1/6] Parsing file...                         \r";
 
   if (MPI_RANK ==  0)
     {

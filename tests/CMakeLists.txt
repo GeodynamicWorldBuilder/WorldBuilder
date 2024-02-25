@@ -158,6 +158,62 @@ IF(WB_RUN_APP_TESTS)
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-dat/)
 
 
+  # Add tests which tests the help output
+  set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/data/subducting_plate_composition_smooth_filtered.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-grid/subducting_plate_composition_smooth.grid\;--help")
+  add_test(grid_help
+           ${CMAKE_COMMAND}
+	         -D TEST_NAME=${test_name}
+	         -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}
+	         -D TEST_ARGS=${TEST_ARGUMENTS}
+	         -D TEST_DIFF=${TEST_DIFF}
+	         -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-grid/grid_help.log
+	         -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/grid_help.log
+	         -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
+	         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/)
+
+
+  # Add tests which test what happens when too many arguments are provided.
+  set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/data/subducting_plate_composition_smooth_filtered.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-grid/subducting_plate_composition_smooth.grid\;too;many;arguments")
+  add_test(grid_too_many_arguments
+           ${CMAKE_COMMAND}
+           -D TEST_NAME=${test_name}
+           -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}
+           -D TEST_ARGS=${TEST_ARGUMENTS}
+           -D TEST_DIFF=${TEST_DIFF}
+           -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-grid/grid_too_many_arguments.log
+           -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/grid_too_many_arguments.log
+           -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
+           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/)
+
+
+  # Add tests which test the grid version output
+  set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/data/subducting_plate_composition_smooth_filtered.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-grid/subducting_plate_composition_smooth.grid\;--version")
+  add_test(grid_version
+           ${CMAKE_COMMAND}
+           -D TEST_NAME=${test_name}
+           -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}
+           -D TEST_ARGS=${TEST_ARGUMENTS}
+           -D TEST_DIFF=${TEST_DIFF}
+           -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-grid/grid_version.log
+           -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/grid_version.log
+           -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
+           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/)
+
+
+
+  # Add tests which input a non-existing input file
+  set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/data/subducting_plate_composition_smooth_non-existing.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-grid/subducting_plate_composition_smooth.grid")
+  add_test(grid_non_existing_wb
+           ${CMAKE_COMMAND}
+           -D TEST_NAME=${test_name}
+           -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}
+           -D TEST_ARGS=${TEST_ARGUMENTS}
+           -D TEST_DIFF=${TEST_DIFF}
+           -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-grid/grid_non_existing_wb.log
+           -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/grid_non_existing_wb.log
+           -P ${CMAKE_SOURCE_DIR}/tests/gwb-dat/run_gwb-dat_tests.cmake
+           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/)
+
   # Add tests which filters the output.
   set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/data/subducting_plate_composition_smooth_filtered.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-grid/subducting_plate_composition_smooth.grid\;--filtered")
   add_test(grid_filtered  
