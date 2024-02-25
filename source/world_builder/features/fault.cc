@@ -51,6 +51,24 @@ namespace WorldBuilder
       = default;
 
 
+
+    void Fault::make_snippet(Parameters &prm)
+    {
+      using namespace rapidjson;
+      Document &declarations = prm.declarations;
+
+      const std::string path = prm.get_full_json_path();
+
+      Pointer((path + "/body").c_str()).Set(declarations,"object");
+      Pointer((path + "/body/model").c_str()).Set(declarations,"fault");
+      Pointer((path + "/body/name").c_str()).Set(declarations,"${1:My Fault}");
+      Pointer((path + "/body/coordinates").c_str()).Create(declarations).SetArray();
+      Pointer((path + "/body/segments").c_str()).Create(declarations).SetArray();
+      Pointer((path + "/body/sections").c_str()).Create(declarations).SetArray();
+    }
+
+
+
     void
     Fault::declare_entries(Parameters &prm,
                            const std::string &parent_name,

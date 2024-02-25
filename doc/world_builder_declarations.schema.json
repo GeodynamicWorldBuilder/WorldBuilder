@@ -168,6 +168,66 @@
             "default value": "",
             "type": "array",
             "items": {
+                "defaultSnippets": [
+                    {
+                        "label": "add a 'continental plate'",
+                        "body": {
+                            "model": "continental plate",
+                            "name": "${1:My Plate}",
+                            "coordinates": []
+                        }
+                    },
+                    {
+                        "label": "add a 'fault'",
+                        "body": {
+                            "model": "fault",
+                            "name": "${1:My Fault}",
+                            "coordinates": [],
+                            "segments": [],
+                            "sections": []
+                        }
+                    },
+                    {
+                        "label": "add a 'mantle layer'",
+                        "body": {
+                            "model": "mantle layer",
+                            "name": "${1:My Mantle Layer}",
+                            "coordinates": [],
+                            "temperature models": [],
+                            "composition models": []
+                        }
+                    },
+                    {
+                        "label": "add a 'oceanic plate'",
+                        "body": {
+                            "model": "oceanic plate",
+                            "name": "${1:My Oceanic Plate}",
+                            "coordinates": [],
+                            "temperature models": [],
+                            "composition models": []
+                        }
+                    },
+                    {
+                        "label": "add a 'plume'",
+                        "body": {
+                            "model": "plume",
+                            "name": "${1:My Plume}",
+                            "coordinates": [],
+                            "temperature models": [],
+                            "composition models": []
+                        }
+                    },
+                    {
+                        "label": "add a 'subducting plate'",
+                        "body": {
+                            "model": "subducting plate",
+                            "name": "${1:My Subducting Plate}",
+                            "coordinates": [],
+                            "temperature models": [],
+                            "composition models": []
+                        }
+                    }
+                ],
                 "oneOf": [
                     {
                         "type": "object",

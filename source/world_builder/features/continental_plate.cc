@@ -56,12 +56,29 @@ namespace WorldBuilder
     ContinentalPlate::~ContinentalPlate()
       = default;
 
+    void ContinentalPlate::make_snippet(Parameters &prm)
+    {
+      using namespace rapidjson;
+      Document &declarations = prm.declarations;
+
+      const std::string path = prm.get_full_json_path();
+
+      Pointer((path + "/body").c_str()).Set(declarations,"object");
+      Pointer((path + "/body/model").c_str()).Set(declarations,"continental plate");
+      Pointer((path + "/body/name").c_str()).Set(declarations,"${1:My Plate}");
+      Pointer((path + "/body/coordinates").c_str()).Create(declarations).SetArray();
+    }
+
+
 
     void
     ContinentalPlate::declare_entries(Parameters &prm,
                                       const std::string & /*unused*/,
                                       const std::vector<std::string> &required_entries)
     {
+
+
+
       prm.declare_entry("", Types::Object(required_entries), "Continental plate object. Requires properties `model` and `coordinates`.");
 
       prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0., 2.))),
