@@ -22,6 +22,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - gwb-grid new output formats. Two optional additional output formats are now supported: `--filtered` , to remove background cells, and `--by-tag`, to create separate output files for each tag/feature type. \[Timo Heister; 2024-02-16; [#585](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/585) [#639](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/639)\]
 - gwb-grid improvements. This application now uses multiple threads by default, shows a more helpful help screen, and shows version information \[Timo Heister; 2024-02-13; [#587](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/587) [#550](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/550)\]
 - Added a `--resolution-limit` option to gwb-grid to limit the resolution secified in the .grid file. \[Menno Fraters; 2024-02-16; [#653](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/653)\]
+- Added a `random` composition in the `continental plate` feature that allows the user to specify a random compositional value to a given compositional field. \[Arushi Saxena; Menno Fraters; 2024-02-26; [#651](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/651)\]
 
 ### Changed 
 - Unified the directories `cookbooks/` and `doc/sphinx/user_manual/cookbooks`. All information about cookbooks including the documentation is now bundled in the top-level `cookbooks/` directory. \[Rene Gassmoeller; 2024-02-14; [#558](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/558)\]
