@@ -17,6 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "world_builder/assert.h"
 #include <algorithm>
 #include <cmath>
 #include <fstream>
@@ -586,6 +587,7 @@ namespace WorldBuilder
                   return_values.section = i_section_min_distance;
                   return_values.segment = 0;
                   return_values.average_angle = total_average_angle;
+                  return_values.depth_reference_surface = 0.0;
                   return_values.closest_trench_point = closest_point_on_line_cartesian;
                   return return_values;
                 }
@@ -837,6 +839,10 @@ namespace WorldBuilder
                           new_distance = side_of_line * (check_point_2d - Pb).norm();
                           new_along_plane_distance = (begin_segment - Pb).norm();
                           new_depth_reference_surface = start_radius - Pb[1];
+
+                          WBAssert(!std::isnan(new_depth_reference_surface),
+                                   "new_depth_reference_surface is not a number: " << new_depth_reference_surface << ". "
+                                   << "start_radius = " << start_radius << ",Pb[1] = " << Pb[1] << ".");
                         }
                     }
                 }
@@ -971,6 +977,11 @@ namespace WorldBuilder
                       new_along_plane_distance = (radius_angle_circle * check_point_angle - radius_angle_circle * interpolated_angle_top) * (difference_in_angle_along_segment < 0 ? 1 : -1);
                       // compute the new depth by rotating the begin point to the check point location.
                       new_depth_reference_surface = start_radius-(sin(check_point_angle + interpolated_angle_top) * BSPC[0] + cos(check_point_angle + interpolated_angle_top) * BSPC[1] + center_circle[1]);
+
+                      WBAssert(!std::isnan(new_depth_reference_surface),
+                               "new_depth_reference_surface is not a number: " << new_depth_reference_surface << ". "
+                               << "start_radius = " << start_radius << ", check_point_angle = " << check_point_angle << ", interpolated_angle_top = " << interpolated_angle_top
+                               << ", BSPC[0] = " << BSPC[0] << ".");
                     }
 
                 }
@@ -1010,6 +1021,8 @@ namespace WorldBuilder
               total_length += interpolated_segment_length;
             }
         }
+
+      WBAssert(!std::isnan(depth_reference_surface), "depth_reference_surface is not a number: " << depth_reference_surface << ".");
 
       PointDistanceFromCurvedPlanes return_values(natural_coordinate.get_coordinate_system());
       return_values.distance_from_plane = distance;
