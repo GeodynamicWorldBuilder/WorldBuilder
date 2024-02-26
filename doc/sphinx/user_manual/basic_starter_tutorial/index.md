@@ -30,6 +30,7 @@ Basic Starter Tutorial section will take you step by step to teach you how to cr
 13_subducting_slab_adding_a_segment
 14_different_models_in_segments
 15_different_segments_in_sections
+16_mass_conserving
 18_2D_models
 19_spherical_models
 ```
