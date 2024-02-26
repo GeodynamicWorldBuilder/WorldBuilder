@@ -163,21 +163,21 @@ This is an `error` admonition.
 Adding figures looks similair to notes and todo's:
 
 ::::{code-block} md
-:::{figure} ../../../../doc/sphinx/_static/images/user_manual/basic_starter_tutorial/BST_17.png
-:name: BST_17_synatx
-:alt: Basic Starter Tutorial section 17 highres result. 
+:::{figure} ../../../../doc/sphinx/_static/images/user_manual/basic_starter_tutorial/BST_19.png
+:name: BST_19_synatx
+:alt: Basic Starter Tutorial section 19 highres result. 
 :align: center
 
-Basic Starter Tutorial section 17 high resolution result. This has 8 times the resolution than the grid file above. Note that you can see the Earth's curvature! 
+Basic Starter Tutorial section 19 high resolution result. This has 8 times the resolution than the grid file above. Note that you can see the Earth's curvature! 
 :::
 ::::
 
-:::{figure} ../../../../doc/sphinx/_static/images/user_manual/basic_starter_tutorial/BST_17.png
-:name: BST_17_synatx
-:alt: Basic Starter Tutorial section 17 highres result. 
+:::{figure} ../../../../doc/sphinx/_static/images/user_manual/basic_starter_tutorial/BST_19.png
+:name: BST_19_synatx
+:alt: Basic Starter Tutorial section 19 highres result. 
 :align: center
 
-Basic Starter Tutorial section 17 high resolution result. This has 8 times the resolution than the grid file above. Note that you can see the Earth's curvature! 
+Basic Starter Tutorial section 19 high resolution result. This has 8 times the resolution than the grid file above. Note that you can see the Earth's curvature! 
 :::
 
 # Code blocks
@@ -257,11 +257,11 @@ Girds work through multiple layers, like a code-block in a code block:
 
 :::::{code-block}
 ::::{grid} 3
-:::{grid-item-card} BST_17_spherical_models.wb
-:link: ../../_static/gwb_input_files/BST_17_spherical_models.wb
+:::{grid-item-card} BST_19_spherical_models.wb
+:link: ../../_static/gwb_input_files/BST_19_spherical_models.wb
 :::
-:::{grid-item-card} BST_17_spherical_models.grid
-:link: ../../_static/gwb_input_files/BST_17_spherical_models.grid
+:::{grid-item-card} BST_19_spherical_models.grid
+:link: ../../_static/gwb_input_files/BST_19_spherical_models.grid
 :::
 :::{grid-item-card} Paraview Spherical state file 
 :link: ../../_static/paraview_state_files/BST_spherical.pvsm
@@ -270,11 +270,11 @@ Girds work through multiple layers, like a code-block in a code block:
 :::::
 
 ::::{grid} 3
-:::{grid-item-card} BST_17_spherical_models.wb
-:link: ../../_static/gwb_input_files/BST_17_spherical_models.wb
+:::{grid-item-card} BST_19_spherical_models.wb
+:link: ../../_static/gwb_input_files/BST_19_spherical_models.wb
 :::
-:::{grid-item-card} BST_17_spherical_models.grid
-:link: ../../_static/gwb_input_files/BST_17_spherical_models.grid
+:::{grid-item-card} BST_19_spherical_models.grid
+:link: ../../_static/gwb_input_files/BST_19_spherical_models.grid
 :::
 :::{grid-item-card} Paraview Spherical state file 
 :link: ../../_static/paraview_state_files/BST_spherical.pvsm

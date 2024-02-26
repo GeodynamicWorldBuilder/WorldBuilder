@@ -1,4 +1,4 @@
-(part:user_manual:chap:basic_starter_tutorial:sec:16_2D_models)=
+(part:user_manual:chap:basic_starter_tutorial:sec:18_2D_models)=
 2D models
 =========
 
@@ -19,18 +19,18 @@ Now, let's add a cross section through the slab in our model.
 :::::{tab-item} Important lines
 :sync: Partial
 
-```{literalinclude} ../../_static/gwb_input_files/BST_16_2D_models.wb
+```{literalinclude} ../../_static/gwb_input_files/BST_18_2D_models.wb
 :language: json
 :lineno-start: 1
 :lines: 1-6
 :emphasize-lines: 4
 ```
 ::::{grid} 3
-:::{grid-item-card} BST_16_2D_models.wb
-:link: ../../_static/gwb_input_files/BST_16_2D_models.wb
+:::{grid-item-card} BST_18_2D_models.wb
+:link: ../../_static/gwb_input_files/BST_18_2D_models.wb
 :::
-:::{grid-item-card} BST_16_2D_models.grid
-:link: ../../_static/gwb_input_files/BST_16_2D_models.grid
+:::{grid-item-card} BST_18_2D_models.grid
+:link: ../../_static/gwb_input_files/BST_18_2D_models.grid
 :::
 :::{grid-item-card} Paraview 2D state file 
 :link: ../../_static/paraview_state_files/BST_2D.pvsm
@@ -42,18 +42,18 @@ Now, let's add a cross section through the slab in our model.
 :sync: Full
 
 
-```{literalinclude} ../../_static/gwb_input_files/BST_16_2D_models.wb
+```{literalinclude} ../../_static/gwb_input_files/BST_18_2D_models.wb
 :language: json
 :lineno-start: 1
 :emphasize-lines: 4
 ```
 
 ::::{grid} 3
-:::{grid-item-card} BST_16_2D_models.wb
-:link: ../../_static/gwb_input_files/BST_16_2D_models.wb
+:::{grid-item-card} BST_18_2D_models.wb
+:link: ../../_static/gwb_input_files/BST_18_2D_models.wb
 :::
-:::{grid-item-card} BST_16_2D_models.grid
-:link: ../../_static/gwb_input_files/BST_16_2D_models.grid
+:::{grid-item-card} BST_18_2D_models.grid
+:link: ../../_static/gwb_input_files/BST_18_2D_models.grid
 :::
 :::{grid-item-card} Paraview 2D state file 
 :link: ../../_static/paraview_state_files/BST_2D.pvsm
@@ -68,18 +68,18 @@ You need to change the gridfile to a 2D grid to be able to see the difference.
 ```
 
 
-```{figure} ../../../../doc/sphinx/_static/images/user_manual/basic_starter_tutorial/BST_16_3D_cross_section.png
-:name: BST_16_3D_cross_section
-:alt: Basic Starter Tutorial section 16 highres result. 
+```{figure} ../../../../doc/sphinx/_static/images/user_manual/basic_starter_tutorial/BST_18_3D_cross_section.png
+:name: BST_18_3D_cross_section
+:alt: Basic Starter Tutorial section 18 highres result. 
 :align: center
 
 The location of the 2D cross-section in the 3D model. The turquoise arrow show at the dot `[0,200e3]` and at the arrow head `[100e3,200e3]`, where `[0,200e3]` is the origin of the 2D plane. The semi-transparent turquoise plane show the full cross section location.
 ```
 
-```{figure} ../../../../doc/sphinx/_static/images/user_manual/basic_starter_tutorial/BST_16.png
-:name: BST_16_highres
-:alt: Basic Starter Tutorial section 16 highres result. 
+```{figure} ../../../../doc/sphinx/_static/images/user_manual/basic_starter_tutorial/BST_18.png
+:name: BST_18_highres
+:alt: Basic Starter Tutorial section 18 highres result. 
 :align: center
 
-Basic Starter Tutorial section 16 high resolution result. This has 4 times the resolution than the grid file above. Note that some of the issues with the slab, like it's abrubt ending can be solved by using the mass conserving temperature model instead of the McKenzie plate model. 
+Basic Starter Tutorial section 18 high resolution result. This has 4 times the resolution than the grid file above. Note that some of the issues with the slab, like it's abrubt ending can be solved by using the mass conserving temperature model instead of the McKenzie plate model. 
 ```
