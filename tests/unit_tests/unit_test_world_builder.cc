@@ -7556,7 +7556,7 @@ TEST_CASE("WorldBuilder Utilities function: calculate_ridge_distance_and_spreadi
   approval_tests.emplace_back(result1[2]); // subducting velocity at trench
   approval_tests.emplace_back(result1[3]); // ridge migration time
 
-  // Query point 2: locates outside of the ridge, curent solution is to take the end point as the reference point
+  // Query point 2: locates outside of the ridge, current solution is to take the end point as the reference point
   Point<3> position_2(1e3,-2e3,0,cartesian);
   Objects::NaturalCoordinate position_in_natural_coordinates_2 = Objects::NaturalCoordinate(position_2,
                                                                  *cartesian_system);
@@ -7605,6 +7605,94 @@ TEST_CASE("WorldBuilder Utilities function: calculate_ridge_distance_and_spreadi
   approval_tests.emplace_back(result4[1]); // ridge distance
   approval_tests.emplace_back(result4[2]); // subducting velocity at trench
   approval_tests.emplace_back(result4[3]); // ridge migration time
+
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
+}
+
+TEST_CASE("WorldBuilder Utilities function: calculate_ridge_distance_and_spreading spherical")
+{
+  std::vector<double> approval_tests;
+
+  const std::unique_ptr<CoordinateSystems::Interface> spherical_system = CoordinateSystems::Interface::create("spherical", nullptr);;
+
+  // Ridge properties
+  const Point<2> p1a(std::array<double,2> {{0.3491, -0.6981}},spherical);
+  const Point<2> p1b(std::array<double,2> {{0.3491, 0.0}},spherical);
+  const Point<2> p2a(std::array<double,2> {{0.1745, 0.0}},spherical);
+  const Point<2> p2b(std::array<double,2> {{0.1745, 0.5236}},spherical);
+  const Point<2> p2c(std::array<double,2> {{0.3491, 0.6981}},spherical);
+  const std::vector<Point<2>> mid_ocean_ridges_segment_1 = {p1a, p1b};
+  const std::vector<Point<2>> mid_ocean_ridges_segment_2 = {p2a, p2b, p2c};
+
+  std::vector<std::vector<Point<2>>> mid_oceanic_ridges;
+  mid_oceanic_ridges.push_back(mid_ocean_ridges_segment_1);
+  mid_oceanic_ridges.push_back(mid_ocean_ridges_segment_2);
+
+  const double mid_oceanic_spreading_velocitie_1a =  1.0;
+  const double mid_oceanic_spreading_velocitie_1b =  2.0;
+  const double mid_oceanic_spreading_velocitie_2a =  3.0;
+  const double mid_oceanic_spreading_velocitie_2b =  4.0;
+  const double mid_oceanic_spreading_velocitie_2c =  5.0;
+
+  std::vector<double> mid_oceanic_spreading_velocities_segment1 = {mid_oceanic_spreading_velocitie_1a, mid_oceanic_spreading_velocitie_1b};
+  std::vector<double> mid_oceanic_spreading_velocities_segment2 = {mid_oceanic_spreading_velocitie_2a, mid_oceanic_spreading_velocitie_2b,
+                                                                   mid_oceanic_spreading_velocitie_2c
+                                                                  };
+
+  std::vector<std::vector<double>> mid_oceanic_spreading_velocities;
+  mid_oceanic_spreading_velocities.push_back(mid_oceanic_spreading_velocities_segment1);
+  mid_oceanic_spreading_velocities.push_back(mid_oceanic_spreading_velocities_segment2);
+
+  const std::vector<std::vector<double>> subducting_plate_velocities = {{0.0}};
+  const std::vector<double> &ridge_migration_times = {0.0};
+
+  // Query point 1, the nearest point on the ridge is in the middle of p1a and p1b
+  Point<3> position_1(6371e3, 0.1745, -0.3491, spherical);
+  Objects::NaturalCoordinate position_in_natural_coordinates_1 = Objects::NaturalCoordinate(Utilities::spherical_to_cartesian_coordinates(position_1.get_array()),
+                                                                 *spherical_system);
+
+  const std::vector<double> result1 = Utilities::calculate_ridge_distance_and_spreading(mid_oceanic_ridges,
+                                      mid_oceanic_spreading_velocities,
+                                      spherical_system,
+                                      position_in_natural_coordinates_1,
+                                      subducting_plate_velocities,
+                                      ridge_migration_times);
+  approval_tests.emplace_back(result1[0]); // spreading velocity at ridge
+  approval_tests.emplace_back(result1[1]); // ridge distance
+  approval_tests.emplace_back(result1[2]); // subducting velocity at trench
+  approval_tests.emplace_back(result1[3]); // ridge migration time
+
+  // Query point 2, the nearest point on the ridge is in the middle of p2b and p2c
+  Point<3> position_2(6371e3, 0.3491, 0.5236, spherical);
+  Objects::NaturalCoordinate position_in_natural_coordinates_2 = Objects::NaturalCoordinate(Utilities::spherical_to_cartesian_coordinates(position_2.get_array()),
+                                                                 *spherical_system);
+
+  const std::vector<double> result2 = Utilities::calculate_ridge_distance_and_spreading(mid_oceanic_ridges,
+                                      mid_oceanic_spreading_velocities,
+                                      spherical_system,
+                                      position_in_natural_coordinates_2,
+                                      subducting_plate_velocities,
+                                      ridge_migration_times);
+  approval_tests.emplace_back(result2[0]); // spreading velocity at ridge
+  approval_tests.emplace_back(result2[1]); // ridge distance
+  approval_tests.emplace_back(result2[2]); // subducting velocity at trench
+  approval_tests.emplace_back(result2[3]); // ridge migration time
+
+  // Query point 3, the nearest point on the ridge is p2b, the purpose is to test a negative value of longitude
+  Point<3> position_3(6371e3, -0.1745, 0.5236, spherical);
+  Objects::NaturalCoordinate position_in_natural_coordinates_3 = Objects::NaturalCoordinate(Utilities::spherical_to_cartesian_coordinates(position_3.get_array()),
+                                                                 *spherical_system);
+
+  const std::vector<double> result3 = Utilities::calculate_ridge_distance_and_spreading(mid_oceanic_ridges,
+                                      mid_oceanic_spreading_velocities,
+                                      spherical_system,
+                                      position_in_natural_coordinates_3,
+                                      subducting_plate_velocities,
+                                      ridge_migration_times);
+  approval_tests.emplace_back(result3[0]); // spreading velocity at ridge
+  approval_tests.emplace_back(result3[1]); // ridge distance
+  approval_tests.emplace_back(result3[2]); // subducting velocity at trench
+  approval_tests.emplace_back(result3[3]); // ridge migration time
 
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
