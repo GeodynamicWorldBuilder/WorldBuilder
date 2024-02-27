@@ -10,7 +10,7 @@ An example one line command for how to build and install the correct version of 
 
 `mkdir astyle && cd astyle && wget 'https://sourceforge.net/projects/astyle/files/astyle/astyle 2.04/astyle_2.04_linux.tar.gz' && tar -zxvf astyle_2.04_linux.tar.gz && cd astyle/build/gcc && make && sudo make install`
 
-After the download is complete, simply unzip the files in your desired directory, and compile the astyle executible. To do this, run `make` in the `$ASTYLE_DIR/build/$COMPILER`. Here `$ASTYLE_DIR` is the path to the unzipped astyle directory, and `$COMPILER` is the directory within `$ASTYLE_DIR/build/` that corresponds to the compiler you will use to generate astyle (gcc, clang, intel, etc.). This should generate the astyle executible in `$ASTYLE_DIR/build/$COMPILER/bin/`. For the GWB to see this executible, you now need to add this to your `$PATH`. For mac, open your `~/.bash_profile` and add the following line:
+After the download is complete, simply unzip the files in your desired directory, and compile the astyle executable. To do this, run `make` in the `$ASTYLE_DIR/build/$COMPILER`. Here `$ASTYLE_DIR` is the path to the unzipped astyle directory, and `$COMPILER` is the directory within `$ASTYLE_DIR/build/` that corresponds to the compiler you will use to generate astyle (gcc, clang, intel, etc.). This should generate the astyle executable in `$ASTYLE_DIR/build/$COMPILER/bin/`. For the GWB to see this executable, you now need to add this to your `$PATH`. For mac, open your `~/.bash_profile` and add the following line:
 
 `export PATH=$ASTYLE_DIR/build/$COMPILER/bin/:$PATH`
 

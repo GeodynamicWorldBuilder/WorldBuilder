@@ -80,7 +80,7 @@ namespace WorldBuilder
                             "If the value is below zero, then an adiabatic temperature is used.");
           prm.declare_entry("gaussian sigmas", Types::Array(Types::Double(0.3)),
                             "The sigma (standard deviation) of the Gaussian function used to compute the "
-                            "temperature distribution within the plume. This sigma is non-dimensinal, i.e. "
+                            "temperature distribution within the plume. This sigma is non-dimensional, i.e. "
                             "it is defined relative to the distance between the plume center and margin as "
                             "defined by the plume feature. Choosing a sigma of 1 therefore means that the "
                             "temperature at the plume margin is set to a fraction of 1/sqrt(e) (approx. 0.61) "

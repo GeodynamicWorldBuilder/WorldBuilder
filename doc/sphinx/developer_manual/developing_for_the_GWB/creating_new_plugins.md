@@ -12,7 +12,7 @@ As an example, assume that you want to implement faults in your world that have 
 
 ## Write a plugin from scratch
 
-Create your plugin file that contains the declarations and implementations of all the members of your class, which must be derived from the relevant `Interface` class. For example, if you are creating a new temperature computation for a `continental_plate_model`, then you would include the function declarations of `features/continental_plate_models/fault_models/interface.h`. This implies that you need to have the functions `declare_entries`, `parse_enteries`, and `get_temperature` and their definitions for your plugin. Similar to above, it is recommended that you split the function declarations into a header file, say `myplugin.h`.
+Create your plugin file that contains the declarations and implementations of all the members of your class, which must be derived from the relevant `Interface` class. For example, if you are creating a new temperature computation for a `continental_plate_model`, then you would include the function declarations of `features/continental_plate_models/fault_models/interface.h`. This implies that you need to have the functions `declare_entries`, `parse_entries`, and `get_temperature` and their definitions for your plugin. Similar to above, it is recommended that you split the function declarations into a header file, say `myplugin.h`.
 
 -----
 Register the plugin at the bottom of `myplugin.cc` in `WB_REGISTER_*` that instantiates the plugin, documents it, and makes it available to the parameter file handlers. You can do this by using `WB_REGISTER_*`(name of the class, name of the plugin used in the input file). Finally, compile the plugin, using `cmake .` and then `make` in the build directory.

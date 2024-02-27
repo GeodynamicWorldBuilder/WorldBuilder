@@ -3,7 +3,7 @@ Referencing the World Builder
 =============================
 
 ## Citation
-The developers of the Geodynamic World Builder request that you cite the following publication tht describes the code and cite the specific version of the software used.
+The developers of the Geodynamic World Builder request that you cite the following publication that describes the code and cite the specific version of the software used.
 
 :::::{tab-set}
 :class: full-width
@@ -22,7 +22,7 @@ Then add the following to your data availability statement:
 
 :::{code-block} latex
 
-The code modifications, parameter, and visualizaton files used for the models in this study 
+The code modifications, parameter, and visualization files used for the models in this study 
 are available at DOI (Authors X, Y, Z) under CC BY-NC-SA 4.0.
 
 GWB version 0.5 (\cite{se-10-1785-2019,gwb-doi-v0.5.0}) used to build these models is freely 

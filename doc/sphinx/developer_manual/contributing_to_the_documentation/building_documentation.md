@@ -8,7 +8,7 @@ To build the documentation locally, you first need to ensure you have the right 
 pip install -r $WORLD_BUILDER_SOURCE_DIR/doc/requirements.txt
 :::
 
-Now that the Python packages are installed, we need to toggle the option in cmake to build the target for the GWB documention, this can be done using the interactive GUI `ccmake` and enabling `WB_BUILD_DOCUMENTATION` or by running the following command:
+Now that the Python packages are installed, we need to toggle the option in cmake to build the target for the GWB documentation, this can be done using the interactive GUI `ccmake` and enabling `WB_BUILD_DOCUMENTATION` or by running the following command:
 
 :::{code-block}
 cd $WORLD_BUILDER_SOURCE_DIR/build \\
