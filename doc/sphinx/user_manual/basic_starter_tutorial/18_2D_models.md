@@ -73,7 +73,7 @@ You need to change the gridfile to a 2D grid to be able to see the difference.
 :alt: Basic Starter Tutorial section 18 highres result. 
 :align: center
 
-The location of the 2D cross-section in the 3D model. The turquoise arrow show at the dot `[0,200e3]` and at the arrow head `[100e3,200e3]`, where `[0,200e3]` is the origin of the 2D plane. The semi-transparent turquoise plane show the full cross section location.
+The location of the 2D cross-section in the 3D model. The turquoise arrow show at the dot `[0,450e3]` and at the arrow head `[100e3,450e3]`, where `[0,450e3]` is the origin of the 2D plane. The semi-transparent turquoise plane show the full cross section location.
 ```
 
 ```{figure} ../../../../doc/sphinx/_static/images/user_manual/basic_starter_tutorial/BST_18.png

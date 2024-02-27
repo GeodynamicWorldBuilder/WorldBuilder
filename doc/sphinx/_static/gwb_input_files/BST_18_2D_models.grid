@@ -1,7 +1,7 @@
 # output variables
 grid_type = cartesian
 dim = 2
-compositions = 4
+compositions = 6
 vtu_output_format = ASCII
 
 # domain of the grid
