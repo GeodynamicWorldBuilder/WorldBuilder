@@ -1,0 +1,31 @@
+name: Spell Check with Typos
+on:
+  push:
+    branches:
+      - 'main'
+      - 'GWB-*'
+  pull_request:
+
+concurrency:
+  group: ${{ github.actor }}-${{ github.ref }}-typos
+  cancel-in-progress: true
+
+jobs:
+  run:
+    name: Spell Check with Typos
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Actions Repository
+      uses: actions/checkout@v4
+
+    - name: Check for typos
+      continue-on-error: true
+      uses: crate-ci/typos@master
+      with: 
+        config: .typos.toml
+        write_changes: true
+
+    - name: make typos suggestions
+      uses: getsentry/action-git-diff-suggestions@main
+      with:
+        message: 'typos suggests the following change'
