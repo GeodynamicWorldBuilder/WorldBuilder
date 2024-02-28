@@ -29,8 +29,6 @@
 #include "world_builder/types/value_at_points.h"
 #include "world_builder/utilities.h"
 
-#include "world_builder/kd_tree.h"
-
 namespace WorldBuilder
 {
 

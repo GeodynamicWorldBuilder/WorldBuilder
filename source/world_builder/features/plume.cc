@@ -33,8 +33,6 @@
 #include "world_builder/types/value_at_points.h"
 #include "world_builder/world.h"
 
-#include "world_builder/kd_tree.h"
-
 #include <iostream>
 #include <algorithm>
 
