@@ -173,12 +173,12 @@ namespace WorldBuilder
 
 
       // Convert degrees to radians, convert from geographical to mathematical
-      for (double & rotation_angle : rotation_angles)
+      for (double &rotation_angle : rotation_angles)
         rotation_angle = Consts::PI/2. - rotation_angle * Consts::PI/180.;
 
       // convert semi_major_axis_lengths to radians if we are in spherical coordinates
       if (world->parameters.coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical)
-        for (double & semi_major_axis_length : semi_major_axis_lengths)
+        for (double &semi_major_axis_length : semi_major_axis_lengths)
           {
             semi_major_axis_length *= Consts::PI/180.;
           }

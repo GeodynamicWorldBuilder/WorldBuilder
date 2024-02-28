@@ -117,7 +117,7 @@ namespace WorldBuilder
               }
 
           unsigned int ridge_point_index = 0;
-          for (const auto & mid_oceanic_ridge : mid_oceanic_ridges)
+          for (const auto &mid_oceanic_ridge : mid_oceanic_ridges)
             {
               std::vector<double> spreading_rates_for_ridge;
               for (unsigned int index_y = 0; index_y < mid_oceanic_ridge.size(); index_y++)

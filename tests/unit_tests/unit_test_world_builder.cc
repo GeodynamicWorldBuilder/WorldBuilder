@@ -3169,7 +3169,7 @@ TEST_CASE("WorldBuilder Types: Double")
   CHECK(type.default_value == Approx(1.0));
   CHECK(type.get_type() == Types::type::TYPE);
 
-  Types::TYPE const& type_copy(type);
+  Types::TYPE const &type_copy(type);
   CHECK(type_copy.default_value == Approx(1.0));
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
@@ -3218,7 +3218,7 @@ TEST_CASE("WorldBuilder Types: String")
   CHECK(type.default_value == "1");
   CHECK(type.get_type() == Types::type::TYPE);
 
-  Types::TYPE const& type_copy(type);
+  Types::TYPE const &type_copy(type);
   CHECK(type_copy.default_value == "1");
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
@@ -3510,7 +3510,7 @@ TEST_CASE("WorldBuilder Types: Array")
   CHECK(type.inner_type_ptr.get() != nullptr);
   CHECK(type.get_type() == Types::type::TYPE);
 
-  Types::TYPE const& type_copy(type);
+  Types::TYPE const &type_copy(type);
   CHECK(type_copy.inner_type == Types::type::Double);
   CHECK(type_copy.inner_type_ptr.get() != nullptr);
   CHECK(type_copy.get_type() == Types::type::TYPE);
@@ -3585,7 +3585,7 @@ TEST_CASE("WorldBuilder Types: Bool")
   CHECK(type.get_type() == Types::type::TYPE);
 
 
-  Types::TYPE const& type_copy(type);
+  Types::TYPE const &type_copy(type);
   CHECK(type_copy.default_value == true);
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
