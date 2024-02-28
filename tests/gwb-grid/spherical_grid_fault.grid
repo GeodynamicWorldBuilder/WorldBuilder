@@ -1,4 +1,4 @@
-# ouput variables
+# output variables
 grid_type = sphere
 dim = 3
 compositions = 1

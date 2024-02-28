@@ -1,0 +1,45 @@
+[default]
+# Don't check text that matches the following regexes'
+extend-ignore-re = [
+    '\\cite\{.*\}', # citations contain arbitrary keys
+]
+
+locale = "en"
+
+[default.extend-words]
+# Don't correct abbreviations of the Boussinesq approximation
+BA = "BA"
+ba = "ba"
+
+# Don't correct some other abbreviations
+FOT = "FOT"
+GWB = "GWB"
+NWO = "NWO"
+SEH = "SEH"
+mak = "mak" # CMakeLists readability-mak*
+
+# Don't check the following files
+[files]
+extend-exclude = [
+    "/include/glm",
+    "/include/ApprovalTests/*",
+    "/include/vtu11/*",
+    "/include/rapidjson/*",
+    "/include/doctest/doctest.h",
+    "*.svg",
+    "*.pvsm",
+    "*.vtu",
+    "*.js",
+    "*.json", # should be corrected in the original source
+    "*.schema.json", # should be corrected in the original source
+    "*.tex", # should be corrected in the original source
+    "/doc/world_builder_declarations_closed.md", # should be corrected in the original source
+    "/doc/world_builder_declarations_open.md", # should be corrected in the original source
+    "contrib/catch/*",
+    "contrib/world_builder/*",
+    "*.bib", # bib entries contain many arbitrary abbreviations
+    "tests/prmbackslash*", # this test purposefully breaks words on different lines
+    ] 
+
+
+

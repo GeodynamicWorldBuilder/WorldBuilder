@@ -59,7 +59,7 @@ in each location:
 ::::
 :::::
 
-These figures illustrate how the temperature structure may look _wrong_ (discontinous) 
+These figures illustrate how the temperature structure may look _wrong_ (discontinuous) 
 if the mesh resolution is too low, but increasing the mesh resolution, it is clear that 
 the temperature is smooth across a fine mesh. 
 
@@ -220,7 +220,7 @@ the `subducting plate` feature.
 :::
 ::::
 
-Three other paramaters control details of the temperature structure:
+Three other parameters control details of the temperature structure:
 * the rate of heating is different where the slab is in contact with the overriding plate 
 versus when it is in  direct contact with the mantle. This change is controlled by 
 the `coupling depth` parameter.

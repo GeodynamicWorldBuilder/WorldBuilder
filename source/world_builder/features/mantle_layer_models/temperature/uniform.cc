@@ -60,7 +60,7 @@ namespace WorldBuilder
           // Document plugin and require entries if needed.
           // Add `temperature` and to the required parameters.
           prm.declare_entry("", Types::Object({"temperature"}),
-                            "Uniform temperature model. Set the temperature to a constan value.");
+                            "Uniform temperature model. Set the temperature to a constant value.");
 
           // Declare entries of this plugin
           prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0., 2.))),

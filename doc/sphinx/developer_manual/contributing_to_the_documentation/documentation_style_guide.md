@@ -10,7 +10,7 @@ Page titles should always use equal signs below it (`=`) to create the heading. 
 
 # Page label
 
-The page label should always be a path, sepearted by colons (`:`) in the following style: `part:dev_manual:chap:contribute_to_doc:sec:doc_style_guide`.
+The page label should always be a path, separated by colons (`:`) in the following style: `part:dev_manual:chap:contribute_to_doc:sec:doc_style_guide`.
 
 # Including advanced elements
 
@@ -32,7 +32,7 @@ My Note
 
 # Including World Builder files
 
-When including a world builder file, it is imporant to be able to focus on the parts which are important, while also enabling the reader to see the  surrounding context and the whole file. Furthermore, the user should have the capability to run the models themselves and get the same output as shown. To standardize this the following structure is strongly encouraged. 
+When including a world builder file, it is important to be able to focus on the parts which are important, while also enabling the reader to see the  surrounding context and the whole file. Furthermore, the user should have the capability to run the models themselves and get the same output as shown. To standardize this the following structure is strongly encouraged. 
 
 1. The world builder file and a corresponding grid file need to be stored separately, either in the cookbook, or in the _static directory.
 2. The use of a tab-set with a tab with important lines and a tab with the full world builder file, highlighting important lines.

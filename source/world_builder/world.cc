@@ -323,7 +323,7 @@ namespace WorldBuilder
     (void) this->limit_debug_consistency_checks;
     WBAssert(this->limit_debug_consistency_checks || this->parameters.coordinate_system->natural_coordinate_system() == cartesian
              || approx(depth, this->parameters.coordinate_system->max_model_depth()-sqrt(point_[0]*point_[0]+point_[1]*point_[1]+point_[2]*point_[2])),
-             "Inconsistent input. Please check whether the radius in the sperhical coordinates is consistent with the radius of the planet as defined "
+             "Inconsistent input. Please check whether the radius in the spherical coordinates is consistent with the radius of the planet as defined "
              << "in the program that uses the Geodynamic World Builder. This is a debug check in GWB and can be disabled by setting "
              << "limit_debug_consistency_checks to true. "
              << "Depth = " << depth << ", radius = " << this->parameters.coordinate_system->max_model_depth()
@@ -473,7 +473,7 @@ namespace WorldBuilder
 
     WBAssert(this->limit_debug_consistency_checks || this->parameters.coordinate_system->natural_coordinate_system() == cartesian
              || approx(depth, this->parameters.coordinate_system->max_model_depth()-sqrt(point_[0]*point_[0]+point_[1]*point_[1]+point_[2]*point_[2])),
-             "Inconsistent input. Please check whether the radius in the sperhical coordinates is consistent with the radius of the planet as defined "
+             "Inconsistent input. Please check whether the radius in the spherical coordinates is consistent with the radius of the planet as defined "
              << "in the program that uses the Geodynamic World Builder. This is a debug check in GWB and can be disabled by setting "
              << "limit_debug_consistency_checks to true. "
              << "Depth = " << depth << ", radius = " << this->parameters.coordinate_system->max_model_depth()

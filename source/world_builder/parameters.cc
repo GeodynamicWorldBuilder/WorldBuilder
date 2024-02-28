@@ -137,8 +137,8 @@ namespace WorldBuilder
     std::stringstream json_input_stream(WorldBuilder::Utilities::read_and_distribute_file_content(filename));
     rapidjson::IStreamWrapper isw(json_input_stream);
 
-    // relaxing sytax by allowing comments () for now, maybe also allow trailing commas and (kParseTrailingCommasFlag) and nan's, inf etc (kParseNanAndInfFlag)?
-    //WBAssertThrow(!parameters.ParseStream<kParseCommentsFlag>(isw).HasParseError(), "Parsing erros world builder file");
+    // relaxing syntax by allowing comments () for now, maybe also allow trailing commas and (kParseTrailingCommasFlag) and nan's, inf etc (kParseNanAndInfFlag)?
+    //WBAssertThrow(!parameters.ParseStream<kParseCommentsFlag>(isw).HasParseError(), "Parsing errors world builder file");
 
     WBAssertThrowExc(!(parameters.ParseStream<kParseCommentsFlag | kParseNanAndInfFlag>(isw).HasParseError()), std::ifstream json_input_stream_error(filename.c_str()); ,
                      "Parsing errors world builder file: Error(offset " << static_cast<unsigned>(parameters.GetErrorOffset())
@@ -1060,22 +1060,22 @@ namespace WorldBuilder
           }
 
 
-        // get top trunctation (default is 0,0)
+        // get top truncation (default is 0,0)
         point_array = Pointer((base  + "/top truncation").c_str()).Get(parameters);
-        Point<2> top_trunctation(invalid);
+        Point<2> top_truncation(invalid);
         if (point_array != nullptr)
           {
             if (point_array->Size() == 1)
               {
                 // There is only one value, set it for both elements
                 const double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
-                top_trunctation = Point<2>(local0,local0,invalid);
+                top_truncation = Point<2>(local0,local0,invalid);
               }
             else
               {
                 const double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
                 const double local1 = Pointer((base + "/top truncation/1").c_str()).Get(parameters)->GetDouble();
-                top_trunctation = Point<2>(local0,local1,invalid);
+                top_truncation = Point<2>(local0,local1,invalid);
               }
           }
         // get thickness
@@ -1207,7 +1207,7 @@ namespace WorldBuilder
                 Pointer((base + "/grains model default entry").c_str()).Set(parameters,true);
               }
           }
-        vector.emplace_back(length, thickness, top_trunctation, angle, temperature_models, composition_models, grains_models);
+        vector.emplace_back(length, thickness, top_truncation, angle, temperature_models, composition_models, grains_models);
 
         this->leave_subsection();
       }
@@ -1262,22 +1262,22 @@ namespace WorldBuilder
           }
 
 
-        // get top trunctation (default is 0,0)
+        // get top truncation (default is 0,0)
         point_array = Pointer((base  + "/top truncation").c_str()).Get(parameters);
-        Point<2> top_trunctation(invalid);
+        Point<2> top_truncation(invalid);
         if (point_array != nullptr)
           {
             if (point_array->Size() == 1)
               {
                 // There is only one value, set it for both elements
                 const double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
-                top_trunctation = Point<2>(local0,local0,invalid);
+                top_truncation = Point<2>(local0,local0,invalid);
               }
             else
               {
                 const double local0 = Pointer((base + "/top truncation/0").c_str()).Get(parameters)->GetDouble();
                 const double local1 = Pointer((base + "/top truncation/1").c_str()).Get(parameters)->GetDouble();
-                top_trunctation = Point<2>(local0,local1,invalid);
+                top_truncation = Point<2>(local0,local1,invalid);
               }
           }
         // get thickness
@@ -1409,7 +1409,7 @@ namespace WorldBuilder
                 Pointer((base + "/grains model default entry").c_str()).Set(parameters,true);
               }
           }
-        vector.emplace_back(length, thickness, top_trunctation, angle, temperature_models, composition_models, grains_models);
+        vector.emplace_back(length, thickness, top_truncation, angle, temperature_models, composition_models, grains_models);
 
         this->leave_subsection();
       }

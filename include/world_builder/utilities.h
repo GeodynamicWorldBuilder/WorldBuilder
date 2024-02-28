@@ -450,7 +450,7 @@ namespace WorldBuilder
     read_and_distribute_file_content(const std::string &filename);
 
     /**
-     * Calculate the distance of a point from a mid oceanic ridge, and also calulate
+     * Calculate the distance of a point from a mid oceanic ridge, and also calculate
      * the spreading velocity of the ridge at this point.
      * TODO: make the spreading velocity spatially/temporally variable
      *

@@ -131,7 +131,7 @@ namespace WorldBuilder
       std::pair<std::vector<double>,std::vector<double>> get_value_at_array(const std::string &name);
 
       /**
-       * A specialized verions of get which can return vectors/arrays.
+       * A specialized versions of get which can return vectors/arrays.
        * This version is designed for the plugin system.
        * \param name The name of the entry to retrieved
        */
@@ -168,7 +168,7 @@ namespace WorldBuilder
       get_shared_pointers(const std::string &name, std::vector<std::shared_ptr<T> > & /*vector*/);
 
       /**
-       * Checks for the existance of an entry in the parameter file.
+       * Checks for the existence of an entry in the parameter file.
        * Return true when an entry is specified and false when it is not.
        * This is independent of whether an entry has been declared or not.
        * The main intended usage is to check whether the user has provided
@@ -180,7 +180,7 @@ namespace WorldBuilder
       check_entry(const std::string &name) const;
 
       /**
-       * Declares the existance an entry in the parameters class.
+       * Declares the existence an entry in the parameters class.
        * Default values are supplied by the type.
        * \param name The name of the entry to be declared
        * \param type The type of entry (e.g. Double, Array, etc.)
@@ -210,7 +210,7 @@ namespace WorldBuilder
       void leave_subsection();
 
       /**
-       * A utilties function for declaring plugin model entries. This always contains a model declaration entry with the plugin name.
+       * A utilities function for declaring plugin model entries. This always contains a model declaration entry with the plugin name.
        * @param model_group_name The name of the model group which is declared.
        * @param parent_name The name of the parent declaration group.
        * @param declaration_map A map containing plugin names and plugin declaration functions
@@ -231,10 +231,10 @@ namespace WorldBuilder
       World &world;
 
       /**
-       * This variable stores what path separtor is used in the property tree
+       * This variable stores what path separator is used in the property tree
        * and in this class.
        */
-      const std::string path_seperator = ".";
+      const std::string path_separator = ".";
 
       /**
        * This variable stores the path in a vector of strings.

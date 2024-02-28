@@ -230,7 +230,7 @@ same role as `thickness`.
 :::
 ::::
 
-Three other paramaters control details of the temperature structure:
+Three other parameters control details of the temperature structure:
 * the rate of heating is different where the slab is in contact with the overriding plate 
 versus when it is in  direct contact with the mantle. This change is controlled by 
 the `coupling depth` parameter.

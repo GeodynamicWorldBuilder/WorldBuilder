@@ -23,13 +23,13 @@ Note that the first line contains a reference to this file that can be used to l
 (text)=
 # Text
 
-Put single asterisks (*) around text you *want to italicize*, but double asterisks around text you **want to bold**. If you want to `highlight code` you put single Grave Accent (\`) around it. You can escape chacters with the backlash (\), like so \`not highlighed\`, \*not italic\*, \*\*not bold\*\*.
+Put single asterisks (*) around text you *want to italicize*, but double asterisks around text you **want to bold**. If you want to `highlight code` you put single Grave Accent (\`) around it. You can escape chacters with the backlash (\), like so \`not highlighted\`, \*not italic\*, \*\*not bold\*\*.
 
 :::{code-block} md
 Put single asterisks (*) around text you *want to italicize*, 
 but double asterisks around text you **want to bold**. 
 If you want to `highlight code` you put single Grave Accent (\`) around it.
-You can escape chacters with the backlash (\\), like so \`not highlighed\`, \*not italic\*, \*\*not bold\*\*.
+You can escape chacters with the backlash (\\), like so \`not highlighted\`, \*not italic\*, \*\*not bold\*\*.
 :::
 
 (headers)=
@@ -160,7 +160,7 @@ This is an `error` admonition.
 
 # Figures
 
-Adding figures looks similair to notes and todo's:
+Adding figures looks similar to notes and todo's:
 
 ::::{code-block} md
 :::{figure} ../../../../doc/sphinx/_static/images/user_manual/basic_starter_tutorial/BST_19.png
@@ -207,7 +207,7 @@ The lines starting with a colon (:) specify certain parameters which can be set,
  }
 :::
 
-If you need to wrap a code block in a code block, you just use more : on the ouside:
+If you need to wrap a code block in a code block, you just use more : on the outside:
 
 :::::{code-block} md
 ::::{code-block} md
