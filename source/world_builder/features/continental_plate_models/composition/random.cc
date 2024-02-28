@@ -123,9 +123,9 @@ namespace WorldBuilder
               const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
               if (depth <= max_depth_local &&  depth >= min_depth_local)
                 {
-                  for (unsigned int i =0; i < compositions.size(); ++i)
+                  for (unsigned int i : compositions)
                     {
-                      if (compositions[i] == composition_number)
+                      if (i == composition_number)
                         {
                           std::uniform_real_distribution<> dist(min_value[0], max_value[0]);
                           const double composition_ = dist(world->get_random_number_engine());

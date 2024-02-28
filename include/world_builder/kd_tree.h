@@ -89,7 +89,7 @@ namespace WorldBuilder
         /**
          * Constructor.
          */
-        KDTree() {};
+        KDTree() = default;
         /**
          * Constructor. Requires a list of Nodes.
          */

@@ -173,14 +173,14 @@ namespace WorldBuilder
 
 
       // Convert degrees to radians, convert from geographical to mathematical
-      for (unsigned int i = 0; i < rotation_angles.size(); ++i)
-        rotation_angles[i] = Consts::PI/2. - rotation_angles[i] * Consts::PI/180.;
+      for (double & rotation_angle : rotation_angles)
+        rotation_angle = Consts::PI/2. - rotation_angle * Consts::PI/180.;
 
       // convert semi_major_axis_lengths to radians if we are in spherical coordinates
       if (world->parameters.coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical)
-        for (unsigned int i = 0; i < semi_major_axis_lengths.size(); ++i)
+        for (double & semi_major_axis_length : semi_major_axis_lengths)
           {
-            semi_major_axis_lengths[i] *= Consts::PI/180.;
+            semi_major_axis_length *= Consts::PI/180.;
           }
 
       prm.get_unique_pointers<Features::PlumeModels::Temperature::Interface>("temperature models", temperature_models);
