@@ -89,8 +89,8 @@ namespace WorldBuilder
             }
 
           // Compare node's point to current closest point
-          const double distance = sqrt((node[0]-check_point[0])*(node[0]-check_point[0])
-                                       +(node[1]-check_point[1])*(node[1]-check_point[1]));
+          const double distance = sqrt((node[false]-check_point[0])*(node[false]-check_point[0])
+                                       +(node[true]-check_point[1])*(node[true]-check_point[1]));
           if (index_distance.distance > distance)
             {
               index_distance.index = mid;
@@ -113,8 +113,8 @@ namespace WorldBuilder
             find_closest_point_recursive(check_point,mid+1,right,!y_axis,index_distance);
 
           // Compare node's point to current closest point
-          const double distance = sqrt((node[0]-check_point[0])*(node[0]-check_point[0])
-                                       +(node[1]-check_point[1])*(node[1]-check_point[1]));
+          const double distance = sqrt((node[false]-check_point[0])*(node[false]-check_point[0])
+                                       +(node[true]-check_point[1])*(node[true]-check_point[1]));
           if (index_distance.distance > distance)
             {
               index_distance.index = mid;
@@ -165,8 +165,8 @@ namespace WorldBuilder
             }
 
           // Compare node's point to current closest point
-          const double distance = sqrt((node[0]-check_point[0])*(node[0]-check_point[0])
-                                       +(node[1]-check_point[1])*(node[1]-check_point[1]));
+          const double distance = sqrt((node[false]-check_point[0])*(node[false]-check_point[0])
+                                       +(node[true]-check_point[1])*(node[true]-check_point[1]));
           if (index_distances.min_distance > distance)
             {
               index_distances.min_index = mid;
@@ -191,8 +191,8 @@ namespace WorldBuilder
             find_closest_points_recursive(check_point,mid+1,right,!y_axis,index_distances);
 
           // Compare node's point to current closest point
-          const double distance = sqrt((node[0]-check_point[0])*(node[0]-check_point[0])
-                                       +(node[1]-check_point[1])*(node[1]-check_point[1]));
+          const double distance = sqrt((node[false]-check_point[0])*(node[false]-check_point[0])
+                                       +(node[true]-check_point[1])*(node[true]-check_point[1]));
           if (index_distances.min_distance > distance)
             {
               index_distances.min_index = mid;

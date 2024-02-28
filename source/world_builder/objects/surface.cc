@@ -37,7 +37,7 @@ namespace WorldBuilder
        */
       bool in_triangle(const std::array<std::array<double,3>,3> &points,
                        const std::array<double,8> &precomputed,
-                       const Point<2> check_point,
+                       const Point<2> &check_point,
                        double &interpolate_value,
                        double &interpolator_s,
                        double &interpolator_t)

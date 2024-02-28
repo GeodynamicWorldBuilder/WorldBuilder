@@ -66,7 +66,7 @@ extern "C" {
 #include <map>
 #include <memory>
 #include <random>
-#include <stddef.h>
+#include <cstddef>
 #include <string>
 #include <vector>
 
@@ -3169,7 +3169,7 @@ TEST_CASE("WorldBuilder Types: Double")
   CHECK(type.default_value == Approx(1.0));
   CHECK(type.get_type() == Types::type::TYPE);
 
-  Types::TYPE const type_copy(type);
+  Types::TYPE const &type_copy(type);
   CHECK(type_copy.default_value == Approx(1.0));
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
@@ -3218,7 +3218,7 @@ TEST_CASE("WorldBuilder Types: String")
   CHECK(type.default_value == "1");
   CHECK(type.get_type() == Types::type::TYPE);
 
-  Types::TYPE const type_copy(type);
+  Types::TYPE const &type_copy(type);
   CHECK(type_copy.default_value == "1");
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
@@ -3510,7 +3510,7 @@ TEST_CASE("WorldBuilder Types: Array")
   CHECK(type.inner_type_ptr.get() != nullptr);
   CHECK(type.get_type() == Types::type::TYPE);
 
-  Types::TYPE const type_copy(type);
+  Types::TYPE const &type_copy(type);
   CHECK(type_copy.inner_type == Types::type::Double);
   CHECK(type_copy.inner_type_ptr.get() != nullptr);
   CHECK(type_copy.get_type() == Types::type::TYPE);
@@ -3585,7 +3585,7 @@ TEST_CASE("WorldBuilder Types: Bool")
   CHECK(type.get_type() == Types::type::TYPE);
 
 
-  Types::TYPE const type_copy(type);
+  Types::TYPE const &type_copy(type);
   CHECK(type_copy.default_value == true);
   CHECK(type_copy.get_type() == Types::type::TYPE);
 
@@ -4834,10 +4834,10 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   const double dtr = Consts::PI/180;
   std::vector<std::vector<Point<2> > > slab_segment_angles(2);
-  slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
-  slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
-  slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
-  slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
+  slab_segment_angles[0].emplace_back(45 * dtr,45 * dtr,cartesian);
+  slab_segment_angles[0].emplace_back(45 * dtr,45 * dtr,cartesian);
+  slab_segment_angles[1].emplace_back(45 * dtr,45 * dtr,cartesian);
+  slab_segment_angles[1].emplace_back(45 * dtr,45 * dtr,cartesian);
 
   const double starting_radius = 10;
 
@@ -5306,8 +5306,8 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   slab_segment_lengths[2].push_back(200);
 
   slab_segment_angles.resize(3);
-  slab_segment_angles[2].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
-  slab_segment_angles[2].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
+  slab_segment_angles[2].emplace_back(45 * dtr,45 * dtr,cartesian);
+  slab_segment_angles[2].emplace_back(45 * dtr,45 * dtr,cartesian);
 
   distance_from_planes =
     Utilities::distance_point_from_curved_planes(position,
@@ -5774,12 +5774,12 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
 
   const double dtr = Consts::PI/180;
   std::vector<std::vector<Point<2> > > slab_segment_angles(3);
-  slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
-  slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
-  slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
-  slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
-  slab_segment_angles[2].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
-  slab_segment_angles[2].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
+  slab_segment_angles[0].emplace_back(45 * dtr,45 * dtr,cartesian);
+  slab_segment_angles[0].emplace_back(45 * dtr,45 * dtr,cartesian);
+  slab_segment_angles[1].emplace_back(45 * dtr,45 * dtr,cartesian);
+  slab_segment_angles[1].emplace_back(45 * dtr,45 * dtr,cartesian);
+  slab_segment_angles[2].emplace_back(45 * dtr,45 * dtr,cartesian);
+  slab_segment_angles[2].emplace_back(45 * dtr,45 * dtr,cartesian);
 
   const double starting_radius = 10;
   // Now test the curves into the depth
@@ -7149,10 +7149,10 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
 
   //double dtr = Consts::PI/180;
   std::vector<std::vector<Point<2> > > slab_segment_angles(2);
-  slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
-  slab_segment_angles[0].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
-  slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
-  slab_segment_angles[1].push_back(Point<2>(45 * dtr,45 * dtr,cartesian));
+  slab_segment_angles[0].emplace_back(45 * dtr,45 * dtr,cartesian);
+  slab_segment_angles[0].emplace_back(45 * dtr,45 * dtr,cartesian);
+  slab_segment_angles[1].emplace_back(45 * dtr,45 * dtr,cartesian);
+  slab_segment_angles[1].emplace_back(45 * dtr,45 * dtr,cartesian);
 
   const double starting_radius = 10;
 

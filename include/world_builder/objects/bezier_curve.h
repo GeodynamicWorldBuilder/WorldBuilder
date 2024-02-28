@@ -43,7 +43,7 @@ namespace WorldBuilder
          * @param p
          * @param angle_constrains
          */
-        BezierCurve() {};
+        BezierCurve() = default;
 
         /**
          * @brief Construct a new Bezier Curve object
