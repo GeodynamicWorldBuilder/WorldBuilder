@@ -90,3 +90,7 @@ This should be a good default spherical coordinate system. For more information 
 
 In the following sections we will continue using the Cartesian coordinate system. We will also show this in  {ref}`part:user_manual:chap:basic_starter_tutorial:sec:19_spherical_models`, where we show how easy it is to switch between Cartesian and spherical coordinate systems in our finished subduction example.
 ````
+
+:::{important}
+The coordinate convention used in the World Builder for spherical geometries is (Radius, Longitude, Latitude)
+:::
