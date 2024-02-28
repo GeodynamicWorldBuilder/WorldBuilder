@@ -636,7 +636,7 @@
                                         },
                                         {
                                             "type": "object",
-                                            "description": "Uniform temperature model. Set the temperature to a constan value.",
+                                            "description": "Uniform temperature model. Set the temperature to a constant value.",
                                             "additionalProperties": false,
                                             "required": [
                                                 "model",
@@ -767,6 +767,162 @@
                                 "type": "array",
                                 "items": {
                                     "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Uniform compositional model. Sets constant compositional field.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "compositions"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the composition model.",
+                                                    "enum": [
+                                                        "random"
+                                                    ]
+                                                },
+                                                "min depth": {
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 0.0,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 0.0
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "max depth": {
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 1.7976931348623157e308,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 1.7976931348623157e308
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "compositions": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "items": {
+                                                        "default value": 0,
+                                                        "type": "integer",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "min value": {
+                                                    "type": "array",
+                                                    "minItems": 1,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "Minimum value of the range within which we want to generate a random compositional value corresponding to the compositional field.",
+                                                    "items": {
+                                                        "default value": 0.0,
+                                                        "type": "number",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "max value": {
+                                                    "type": "array",
+                                                    "minItems": 1,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "Maximum value of the range within which we want to generate a random compositional value corresponding to the compositional field.",
+                                                    "items": {
+                                                        "default value": 1.0,
+                                                        "type": "number",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
+                                                    "enum": [
+                                                        "replace",
+                                                        "replace defined only",
+                                                        "add",
+                                                        "subtract"
+                                                    ]
+                                                }
+                                            }
+                                        },
                                         {
                                             "type": "object",
                                             "description": "Uniform compositional model. Sets constant compositional field.",
@@ -1649,7 +1805,7 @@
                                                     },
                                                     {
                                                         "type": "object",
-                                                        "description": "Uniform temperature model. Set the temperature to a constan value.",
+                                                        "description": "Uniform temperature model. Set the temperature to a constant value.",
                                                         "additionalProperties": false,
                                                         "required": [
                                                             "model",
@@ -2229,7 +2385,7 @@
                                         },
                                         {
                                             "type": "object",
-                                            "description": "Uniform temperature model. Set the temperature to a constan value.",
+                                            "description": "Uniform temperature model. Set the temperature to a constant value.",
                                             "additionalProperties": false,
                                             "required": [
                                                 "model",
@@ -2879,7 +3035,7 @@
                                                                 },
                                                                 {
                                                                     "type": "object",
-                                                                    "description": "Uniform temperature model. Set the temperature to a constan value.",
+                                                                    "description": "Uniform temperature model. Set the temperature to a constant value.",
                                                                     "additionalProperties": false,
                                                                     "required": [
                                                                         "model",
@@ -3459,7 +3615,7 @@
                                                     },
                                                     {
                                                         "type": "object",
-                                                        "description": "Uniform temperature model. Set the temperature to a constan value.",
+                                                        "description": "Uniform temperature model. Set the temperature to a constant value.",
                                                         "additionalProperties": false,
                                                         "required": [
                                                             "model",
@@ -4343,7 +4499,7 @@
                                         },
                                         {
                                             "type": "object",
-                                            "description": "Uniform temperature model. Set the temperature to a constan value.",
+                                            "description": "Uniform temperature model. Set the temperature to a constant value.",
                                             "additionalProperties": false,
                                             "required": [
                                                 "model",
@@ -6073,7 +6229,7 @@
                                         },
                                         {
                                             "type": "object",
-                                            "description": "Uniform temperature model. Set the temperature to a constan value.",
+                                            "description": "Uniform temperature model. Set the temperature to a constant value.",
                                             "additionalProperties": false,
                                             "required": [
                                                 "model",
@@ -7033,7 +7189,7 @@
                                                     "minItems": 0,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "The sigma (standard deviation) of the Gaussian function used to compute the temperature distribution within the plume. This sigma is non-dimensinal, i.e. it is defined relative to the distance between the plume center and margin as defined by the plume feature. Choosing a sigma of 1 therefore means that the temperature at the plume margin is set to a fraction of 1/sqrt(e) (approx. 0.61) of the centerline temperature. To achieve a smoother transition between the plume temperature and the outside temperature a smaller values has to be chosen for the gaussian sigmas.",
+                                                    "description": "The sigma (standard deviation) of the Gaussian function used to compute the temperature distribution within the plume. This sigma is non-dimensional, i.e. it is defined relative to the distance between the plume center and margin as defined by the plume feature. Choosing a sigma of 1 therefore means that the temperature at the plume margin is set to a fraction of 1/sqrt(e) (approx. 0.61) of the centerline temperature. To achieve a smoother transition between the plume temperature and the outside temperature a smaller values has to be chosen for the gaussian sigmas.",
                                                     "items": {
                                                         "default value": 0.3,
                                                         "type": "number",
@@ -7656,6 +7812,16 @@
                                                                 "default value": "half space model",
                                                                 "type": "string",
                                                                 "description": "The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model"
+                                                            },
+                                                            "apply spline": {
+                                                                "default value": false,
+                                                                "type": "boolean",
+                                                                "description": "Whether a spline should be applied on the mass conserving model."
+                                                            },
+                                                            "number of points in spline": {
+                                                                "default value": 5,
+                                                                "type": "integer",
+                                                                "description": "The number of points in the spline"
                                                             }
                                                         }
                                                     },
@@ -7735,7 +7901,7 @@
                                                     },
                                                     {
                                                         "type": "object",
-                                                        "description": "Uniform temperature model. Set the temperature to a constan value.",
+                                                        "description": "Uniform temperature model. Set the temperature to a constant value.",
                                                         "additionalProperties": false,
                                                         "required": [
                                                             "model",
@@ -8472,6 +8638,16 @@
                                                     "default value": "half space model",
                                                     "type": "string",
                                                     "description": "The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model"
+                                                },
+                                                "apply spline": {
+                                                    "default value": false,
+                                                    "type": "boolean",
+                                                    "description": "Whether a spline should be applied on the mass conserving model."
+                                                },
+                                                "number of points in spline": {
+                                                    "default value": 5,
+                                                    "type": "integer",
+                                                    "description": "The number of points in the spline"
                                                 }
                                             }
                                         },
@@ -8551,7 +8727,7 @@
                                         },
                                         {
                                             "type": "object",
-                                            "description": "Uniform temperature model. Set the temperature to a constan value.",
+                                            "description": "Uniform temperature model. Set the temperature to a constant value.",
                                             "additionalProperties": false,
                                             "required": [
                                                 "model",
@@ -9358,6 +9534,16 @@
                                                                             "default value": "half space model",
                                                                             "type": "string",
                                                                             "description": "The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model"
+                                                                        },
+                                                                        "apply spline": {
+                                                                            "default value": false,
+                                                                            "type": "boolean",
+                                                                            "description": "Whether a spline should be applied on the mass conserving model."
+                                                                        },
+                                                                        "number of points in spline": {
+                                                                            "default value": 5,
+                                                                            "type": "integer",
+                                                                            "description": "The number of points in the spline"
                                                                         }
                                                                     }
                                                                 },
@@ -9437,7 +9623,7 @@
                                                                 },
                                                                 {
                                                                     "type": "object",
-                                                                    "description": "Uniform temperature model. Set the temperature to a constan value.",
+                                                                    "description": "Uniform temperature model. Set the temperature to a constant value.",
                                                                     "additionalProperties": false,
                                                                     "required": [
                                                                         "model",
@@ -10174,6 +10360,16 @@
                                                                 "default value": "half space model",
                                                                 "type": "string",
                                                                 "description": "The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model"
+                                                            },
+                                                            "apply spline": {
+                                                                "default value": false,
+                                                                "type": "boolean",
+                                                                "description": "Whether a spline should be applied on the mass conserving model."
+                                                            },
+                                                            "number of points in spline": {
+                                                                "default value": 5,
+                                                                "type": "integer",
+                                                                "description": "The number of points in the spline"
                                                             }
                                                         }
                                                     },
@@ -10253,7 +10449,7 @@
                                                     },
                                                     {
                                                         "type": "object",
-                                                        "description": "Uniform temperature model. Set the temperature to a constan value.",
+                                                        "description": "Uniform temperature model. Set the temperature to a constant value.",
                                                         "additionalProperties": false,
                                                         "required": [
                                                             "model",

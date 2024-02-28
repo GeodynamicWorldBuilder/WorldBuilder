@@ -34,6 +34,7 @@
 #include "world_builder/types/value_at_points.h"
 #include "world_builder/utilities.h"
 #include "world_builder/world.h"
+#include "world_builder/types/int.h"
 
 namespace WorldBuilder
 {
@@ -169,6 +170,13 @@ namespace WorldBuilder
           prm.declare_entry("reference model name",  Types::String("half space model"),
                             "The type of thermal model to use in the mass conserving model of slab temperature. "
                             "Options are half space model and plate model");
+
+          prm.declare_entry("apply spline",  Types::Bool(false),
+                            "Whether a spline should be applied on the mass conserving model.");
+
+          prm.declare_entry("number of points in spline", Types::Int(5),
+                            "The number of points in the spline");
+
         }
 
         void
@@ -238,6 +246,9 @@ namespace WorldBuilder
             reference_model_name = plate_model;
           else if (reference_model_name_str=="half space model")
             reference_model_name = half_space_model;
+
+          apply_spline = prm.get<bool>("apply spline");
+          spline_n_points = prm.get<int>("number of points in spline");
         }
 
         double
@@ -473,8 +484,35 @@ namespace WorldBuilder
                       top_heat_content = top_heat_content * std::erfc(taper_con*theta);
                     }
 
-                  // Call the analytic solution to compute the temperature
-                  temperature = get_temperature_analytic(top_heat_content, min_temperature, background_temperature, temperature_, plate_velocity, effective_plate_age, adjusted_distance);
+                  double nondimensional_adjusted_distance = adjusted_distance / max_depth;
+
+                  if (apply_spline)
+                    {
+                      // A total number of (2 * spline_n_points + 1) points are picked,
+                      // spline_n_points points on each side and one at the center.
+                      // These points cover a range of (-1.0, 1.0) in adjusted_distance.
+                      Utilities::interpolation monotone_cubic_spline;
+
+                      const double interval_spline_distance = 1.0 / spline_n_points;
+                      std::vector<double> i_temperatures (2*(spline_n_points + 1), 0.0);
+
+                      for (int i = 0; i < 2 * spline_n_points + 1; ++i)
+                        {
+                          const double i_adjusted_distance = (i * interval_spline_distance - 1.0) * max_depth;
+                          const double i_temperature = get_temperature_analytic(top_heat_content, min_temperature, background_temperature, temperature_, plate_velocity, effective_plate_age, i_adjusted_distance);
+                          i_temperatures[i] = i_temperature;
+                        }
+
+                      monotone_cubic_spline.set_points(i_temperatures);
+
+                      const double index_distance = (nondimensional_adjusted_distance + 1.0) / interval_spline_distance;
+                      temperature =  monotone_cubic_spline(index_distance);
+                    }
+                  else
+                    {
+                      // Call the analytic solution to compute the temperature
+                      temperature = get_temperature_analytic(top_heat_content, min_temperature, background_temperature, temperature_, plate_velocity, effective_plate_age, adjusted_distance);
+                    }
                 }
               else
                 {
