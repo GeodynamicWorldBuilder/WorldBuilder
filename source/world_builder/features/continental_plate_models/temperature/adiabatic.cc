@@ -26,10 +26,7 @@
 #include "world_builder/types/object.h"
 #include "world_builder/types/one_of.h"
 #include "world_builder/types/value_at_points.h"
-#include "world_builder/utilities.h"
 #include "world_builder/world.h"
-
-#include "world_builder/kd_tree.h"
 
 namespace WorldBuilder
 {

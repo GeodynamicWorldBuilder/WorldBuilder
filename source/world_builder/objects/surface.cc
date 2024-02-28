@@ -18,7 +18,6 @@
 */
 #include "world_builder/assert.h"
 #include "world_builder/objects/surface.h"
-#include "world_builder/utilities.h"
 
 #include <iostream>
 

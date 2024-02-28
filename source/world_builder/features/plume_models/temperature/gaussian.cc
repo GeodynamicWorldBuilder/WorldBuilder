@@ -20,11 +20,9 @@
 #include "world_builder/features/plume_models/temperature/gaussian.h"
 
 
-#include "world_builder/nan.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
 #include "world_builder/types/array.h"
-#include "world_builder/utilities.h"
 #include "world_builder/world.h"
 
 #include <algorithm>

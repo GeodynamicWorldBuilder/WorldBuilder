@@ -24,7 +24,6 @@
 #include "world_builder/features/mantle_layer_models/grains/interface.h"
 #include "world_builder/features/mantle_layer_models/temperature/interface.h"
 #include "world_builder/features/feature_utilities.h"
-#include "world_builder/kd_tree.h"
 #include "world_builder/types/array.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"

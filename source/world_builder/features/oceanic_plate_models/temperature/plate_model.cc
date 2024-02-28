@@ -19,8 +19,6 @@
 
 #include "world_builder/features/oceanic_plate_models/temperature/plate_model.h"
 
-
-#include "world_builder/kd_tree.h"
 #include "world_builder/nan.h"
 #include "world_builder/types/array.h"
 #include "world_builder/types/double.h"
