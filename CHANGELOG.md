@@ -12,8 +12,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [Unreleased]
 ### Added
 - Added an option to apply a spline in the mass conserving temperature of the slab. \[Haoyuan Li; 2024-02-27; [#659](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/659)\]
-- Added a cookbook tutorial for a simple subduction model in 2D Chunk geometry. \[Magali Billen; 2024-02-16; [#535](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/535)
-- Added a cookbook tutorial for a simple subduction model in 2D Cartesian geometry. \[Magali Billen; 2024-02-14; [#535](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/535)
+- Added a cookbook tutorial for a simple subduction model in 2D Chunk geometry. \[Magali Billen; 2024-02-16; [#535](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/535)\]
+- Added a cookbook tutorial for a simple subduction model in 2D Cartesian geometry. \[Magali Billen; 2024-02-14; [#535](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/535)\]
 - Added an option to use the plate model as the reference model for the mass conserving temperature of the slab. \[Haoyuan Li; 2024-02-02; [#471](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/471)\]
 - Added a cookbook for making a transform fault and using this model in ASPECT. \[Juliane Dannberg; 2024-02-14; [#563](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/563)\]
 - Added a system which allows users to tag features. The tag index can then be written out through the gwb-dat program. \[Menno Fraters and Timo Heister; 2024-02-15; [[#598](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/598)]\]
@@ -27,8 +27,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Changed 
 - Unified the directories `cookbooks/` and `doc/sphinx/user_manual/cookbooks`. All information about cookbooks including the documentation is now bundled in the top-level `cookbooks/` directory. \[Rene Gassmoeller; 2024-02-14; [#558](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/558)\]
-- Deleted the deprecated Latex manual. Use the new sphinx documentation instead, which can be build into a .pdf file as well. \[Rene Gassmoeller; 2024-02-14; [#595](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/595)
-- Relocated the code that is used to calculate spreading center quantities like distance from the ridge, and spreading rate. Currently the spreading rate is just a constant value, but this will be changed in a follow up pull request. \[Daniel Douglas; 2024-02-14; [#590](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/590)
+- Deleted the deprecated Latex manual. Use the new sphinx documentation instead, which can be build into a .pdf file as well. \[Rene Gassmoeller; 2024-02-14; [#595](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/595)\]
+- Relocated the code that is used to calculate spreading center quantities like distance from the ridge, and spreading rate. Currently the spreading rate is just a constant value, but this will be changed in a follow up pull request. \[Daniel Douglas; 2024-02-14; [#590](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/590)\]
 
 ### Fixed
 - Fixed an issue where the ridge feature in spherical geometries for both the half space cooling and plate cooling models gave a discontinuous spreading center when crossing longitudes at intervals of 90 degrees. \[Daniel Douglas; 2024-01-22; [#520](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/520),[#518](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/518)\]
@@ -59,7 +59,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Added a new multi property query interface called properties to the world. This allows to ask for different properties at the same time, which significantly improve performance. Internally all other interface now use this properties function to reduce complexity. \[Menno Fraters; 2022-04-18; [#409](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/409) and [#410](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/410)\]
 - Added a new compositional model for fault models such that ensures a smooth transition of compositional value from the fault trace until a particular user-determined distance. This feature can be helpful for model that uses composition of fault to compute other material properties, e.g., viscosity. \[Arushi Saxena; 2022-05-19; [#356](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/356)
 - Added an interface to compute the distance of a query point to a feature's plane. For example, the distance of a point to a subducting slab could be duely computed. This interface simply calls the previously implemented interfaces of the feature objects and wrap them up. Thus it only takes variables like coordinates and depth in the model and could be called from ASPECT directly.
-\[Haoyuan Li; 2022-12-23; [#453](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/453)
+\[Haoyuan Li; 2022-12-23; [#453](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/453)\]
 - Added tester options to allow running the tester with gdb and/or valgrind. Also setup a github action which automatically runs gdb and valgrind when running the tester. \[Menno Fraters; 2023-01-26; [#466](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/466)\]
 - Added some tips and tricks in the doc/sphinx/developer_manual/contributing_to_the_code/tips_and_tricks.md file. \[Haoyuan Li; 2023-02-09; [#472](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/472)]
 - Added operation options `add`, `subtract` and `replace defined only` to the the composition plugins \[Menno Fraters; 2023-02-17; [#474](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/474)\]
@@ -90,7 +90,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Fixed 
 - Using slabs and faults beyond the -180 to 180 range gave issues. These are now fixed and it now works and is tested for the -380 to 380 range. \[Menno Fraters; 2021-10-22; [#338](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/338), [#340](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/340) and [#342](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/342)\]
 - The ridge coordinates for the mass conservative slab temperature model where not converted to radians internally. \[Menno Fraters; 2021-10-27; [#352](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/352)\]
-- Fixed the taper of temperature at the slab tip for the bottom part of the slab, and fixed issue with negative temperatures above slab when there is an existing overririding plate temperature. \[Magali Billen; 2021-11-02; [#353](https:https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/353)
+- Fixed the taper of temperature at the slab tip for the bottom part of the slab, and fixed issue with negative temperatures above slab when there is an existing overririding plate temperature. \[Magali Billen; 2021-11-02; [#353](https:https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/353)\]
 - The input dip point defined for subduction plate and fault models is now in degrees (as opposed radians) consistent with the system for coordinates. \[Arushi Saxena; 2022-10-07; [#448](github.com/GeodynamicWorldBuilder/WorldBuilder/pull/448)\]
 
 ## [0.4.0] - 2021-06-22
