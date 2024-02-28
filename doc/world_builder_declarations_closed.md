@@ -874,7 +874,7 @@
 :name: closed_features_items_oneOf_1_temperature-models_items_oneOf_3
 
 - **type**:object
-- **description**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constant value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -1091,7 +1091,7 @@
 - **default value**:
 - **type**:string
 - **description**:The name of the composition model.
-- **enum**:[uniform]
+- **enum**:[random]
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/min depth
@@ -1264,16 +1264,34 @@
 
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/fractions
-:name: closed_features_items_oneOf_1_composition-models_items_oneOf_1_fractions
+::::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/min value
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_1_min-value
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:TA list of compositional fractions corresponding to the compositions list.
-:::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/fractions/items
-:name: closed_features_items_oneOf_1_composition-models_items_oneOf_1_fractions_items
+- **description**:Minimum value of the range within which we want to generate a random compositional value corresponding to the compositional field.
+:::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/min value/items
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_1_min-value_items
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/max value
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_1_max-value
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:Maximum value of the range within which we want to generate a random compositional value corresponding to the compositional field.
+:::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/max value/items
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_1_max-value_items
 
 - **default value**:1.0
 - **type**:number
@@ -1284,6 +1302,224 @@
 
 ::::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/operation
 :name: closed_features_items_oneOf_1_composition-models_items_oneOf_1_operation
+
+- **default value**:replace
+- **type**:string
+- **description**:Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.
+- **enum**:[replace, replace defined only, add, subtract]
+::::::::::::::::
+
+
+
+:::::::::::::::::
+
+:::::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2
+
+- **type**:object
+- **description**:Uniform compositional model. Sets constant compositional field.
+- **additionalProperties**:false
+- **required**:[model, compositions]
+
+::::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/model
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_model
+
+- **default value**:
+- **type**:string
+- **description**:The name of the composition model.
+- **enum**:[uniform]
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/min depth
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_min-depth
+
+- **description**:The depth in meters from which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/min depth/oneOf
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_min-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/min depth/oneOf/1
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_min-depth_oneOf_1
+
+- **default value**:0.0
+- **type**:number
+- **description**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/min depth/oneOf/2
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_min-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/min depth/oneOf/2/items
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_min-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/min depth/oneOf/2/items/items
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_min-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/1
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:0.0
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/2
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/2/items
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/2/items/items
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/max depth
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_max-depth
+
+- **description**:The depth in meters to which the composition of this feature is present.
+:::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/max depth/oneOf
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_max-depth_oneOf
+
+::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/max depth/oneOf/1
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_max-depth_oneOf_1
+
+- **default value**:1.7976931348623157e308
+- **type**:number
+- **description**:
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/max depth/oneOf/2
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_max-depth_oneOf_2
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:
+:::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/max depth/oneOf/2/items
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_max-depth_oneOf_2_items
+
+- **type**:array
+- **additionalProperties**:false
+- **minItems**:1
+- **maxItems**:2
+- **description**:
+::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/max depth/oneOf/2/items/items
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_max-depth_oneOf_2_items_items
+
+:::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf
+
+::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf/1
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf_1
+
+- **type**:number
+- **default value**:1.7976931348623157e308
+::::::::::
+
+::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf/2
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf_2
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+:::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf/2/items
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf_2_items
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:2
+::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/max depth/oneOf/2/items/items/anyOf/2/items/items
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_max-depth_oneOf_2_items_items_anyOf_2_items_items
+
+- **type**:number
+::::::::
+
+:::::::::
+
+::::::::::
+
+
+::::::::::::
+
+:::::::::::::
+
+::::::::::::::
+
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/compositions
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_compositions
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:A list with the labels of the composition which are present there.
+:::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/compositions/items
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_compositions_items
+
+- **default value**:0
+- **type**:integer
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/fractions
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_fractions
+
+- **type**:array
+- **minItems**:1
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:TA list of compositional fractions corresponding to the compositions list.
+:::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/fractions/items
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_fractions_items
+
+- **default value**:1.0
+- **type**:number
+- **description**:
+:::::::::::::::
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/operation
+:name: closed_features_items_oneOf_1_composition-models_items_oneOf_2_operation
 
 - **default value**:replace
 - **type**:string
@@ -2404,7 +2640,7 @@
 :name: closed_features_items_oneOf_2_segments_items_temperature-models_items_oneOf_3
 
 - **type**:object
-- **description**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constant value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -3195,7 +3431,7 @@
 :name: closed_features_items_oneOf_2_temperature-models_items_oneOf_3
 
 - **type**:object
-- **description**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constant value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -4090,7 +4326,7 @@
 :name: closed_features_items_oneOf_2_sections_items_segments_items_temperature-models_items_oneOf_3
 
 - **type**:object
-- **description**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constant value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -4881,7 +5117,7 @@
 :name: closed_features_items_oneOf_2_sections_items_temperature-models_items_oneOf_3
 
 - **type**:object
-- **description**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constant value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -6174,7 +6410,7 @@
 :name: closed_features_items_oneOf_3_temperature-models_items_oneOf_3
 
 - **type**:object
-- **description**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constant value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -8857,7 +9093,7 @@
 :name: closed_features_items_oneOf_4_temperature-models_items_oneOf_6
 
 - **type**:object
-- **description**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constant value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -10313,7 +10549,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:The sigma (standard deviation) of the Gaussian function used to compute the temperature distribution within the plume. This sigma is non-dimensinal, i.e. it is defined relative to the distance between the plume center and margin as defined by the plume feature. Choosing a sigma of 1 therefore means that the temperature at the plume margin is set to a fraction of 1/sqrt(e) (approx. 0.61) of the centerline temperature. To achieve a smoother transition between the plume temperature and the outside temperature a smaller values has to be chosen for the gaussian sigmas.
+- **description**:The sigma (standard deviation) of the Gaussian function used to compute the temperature distribution within the plume. This sigma is non-dimensional, i.e. it is defined relative to the distance between the plume center and margin as defined by the plume feature. Choosing a sigma of 1 therefore means that the temperature at the plume margin is set to a fraction of 1/sqrt(e) (approx. 0.61) of the centerline temperature. To achieve a smoother transition between the plume temperature and the outside temperature a smaller values has to be chosen for the gaussian sigmas.
 :::::::::::::::{dropdown} /features/items/oneOf/5/temperature models/items/oneOf/1/gaussian sigmas/items
 :name: closed_features_items_oneOf_5_temperature-models_items_oneOf_1_gaussian-sigmas_items
 
@@ -11201,6 +11437,22 @@
 - **description**:The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/apply spline
+:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_apply-spline
+
+- **default value**:false
+- **type**:boolean
+- **description**:Whether a spline should be applied on the mass conserving model.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/number of points in spline
+:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_number-of-points-in-spline
+
+- **default value**:5
+- **type**:integer
+- **description**:The number of points in the spline
+::::::::::::::
+
 
 
 :::::::::::::::
@@ -11311,7 +11563,7 @@
 :name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_5
 
 - **type**:object
-- **description**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constant value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -12339,6 +12591,22 @@
 - **description**:The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model
 ::::::::::::::::
 
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/apply spline
+:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_apply-spline
+
+- **default value**:false
+- **type**:boolean
+- **description**:Whether a spline should be applied on the mass conserving model.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/number of points in spline
+:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_number-of-points-in-spline
+
+- **default value**:5
+- **type**:integer
+- **description**:The number of points in the spline
+::::::::::::::::
+
 
 
 :::::::::::::::::
@@ -12449,7 +12717,7 @@
 :name: closed_features_items_oneOf_6_temperature-models_items_oneOf_5
 
 - **type**:object
-- **description**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constant value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -13581,6 +13849,22 @@
 - **description**:The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model
 ::::::::::::
 
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/apply spline
+:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_apply-spline
+
+- **default value**:false
+- **type**:boolean
+- **description**:Whether a spline should be applied on the mass conserving model.
+::::::::::::
+
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/number of points in spline
+:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_number-of-points-in-spline
+
+- **default value**:5
+- **type**:integer
+- **description**:The number of points in the spline
+::::::::::::
+
 
 
 :::::::::::::
@@ -13691,7 +13975,7 @@
 :name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_5
 
 - **type**:object
-- **description**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constant value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
@@ -14719,6 +15003,22 @@
 - **description**:The type of thermal model to use in the mass conserving model of slab temperature. Options are half space model and plate model
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/apply spline
+:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_apply-spline
+
+- **default value**:false
+- **type**:boolean
+- **description**:Whether a spline should be applied on the mass conserving model.
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/number of points in spline
+:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_number-of-points-in-spline
+
+- **default value**:5
+- **type**:integer
+- **description**:The number of points in the spline
+::::::::::::::
+
 
 
 :::::::::::::::
@@ -14829,7 +15129,7 @@
 :name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_5
 
 - **type**:object
-- **description**:Uniform temperature model. Set the temperature to a constan value.
+- **description**:Uniform temperature model. Set the temperature to a constant value.
 - **additionalProperties**:false
 - **required**:[model, temperature]
 
