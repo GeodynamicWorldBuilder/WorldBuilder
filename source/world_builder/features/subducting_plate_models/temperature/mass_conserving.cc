@@ -235,6 +235,7 @@ namespace WorldBuilder
           for (const auto &mid_oceanic_ridge : mid_oceanic_ridges)
             {
               std::vector<double> ridge_spreading_velocities_for_ridge;
+              for (unsigned int index_y = 0; index_y < mid_oceanic_ridge.size(); index_y++)
                 {
                   if (ridge_spreading_velocities.second.size() == 1)
                     {
@@ -514,7 +515,7 @@ namespace WorldBuilder
                       for (int i = 0; i < 2 * spline_n_points + 1; ++i)
                         {
                           const double i_adjusted_distance = (i * interval_spline_distance - 1.0) * max_depth;
-                          const double i_temperature = get_temperature_analytic(top_heat_content, min_temperature, background_temperature, temperature_, plate_velocity, effective_plate_age, i_adjusted_distance);
+                          const double i_temperature = get_temperature_analytic(top_heat_content, min_temperature, background_temperature, temperature_, spreading_velocity, effective_plate_age, i_adjusted_distance);
                           i_temperatures[i] = i_temperature;
                         }
 
@@ -526,7 +527,7 @@ namespace WorldBuilder
                   else
                     {
                       // Call the analytic solution to compute the temperature
-                      temperature = get_temperature_analytic(top_heat_content, min_temperature, background_temperature, temperature_, plate_velocity, effective_plate_age, adjusted_distance);
+                      temperature = get_temperature_analytic(top_heat_content, min_temperature, background_temperature, temperature_, spreading_velocity, effective_plate_age, adjusted_distance);
                     }
                 }
               else
