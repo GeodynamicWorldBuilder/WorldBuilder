@@ -455,9 +455,17 @@ namespace WorldBuilder
      * TODO: make the spreading velocity spatially/temporally variable
      *
      * @param mid_oceanic_ridges The coordinates of the mid oceanic ridges
-     * @param spreading_velocity The spreading rate of the mid oceanic ridges
+     * @param mid_oceanic_spreading_velocities The spreading rate of the mid oceanic ridges at each ridge coordinate
      * @param coordinate_system The coordinate system
      * @param position_in_natural_coordinates_at_min_depth the current position in natural_coordinates
+     * @param subducting_plate_velocities the subducting plate velocities, currently this is only an optional parameter
+     * that can be used in the mass conserving subducting plate temperature model. This parameter allows the user to
+     * track the effect of ridge migration on the slab thermal structure
+     * @param ridge_migration_times the times that the corresponding section of the ridge has been moving, in years. This
+     * is used in combination with subducting_plate_velocities, and mid_oceanic_spreading_velocities to compute the distance
+     * that the spreading center has migrated. This vector is obtained from the input parameter "spreading velocity" in the
+     * mass conserving model when "spreading velocity" has the form: [ [t1,[[v11, v12, ...]], [t2,[[v21, v22, ...]], ... ].
+     * where tn is the time that ridge section n has been moving.
      * @return The content of the file.
     */
     std::vector<double>

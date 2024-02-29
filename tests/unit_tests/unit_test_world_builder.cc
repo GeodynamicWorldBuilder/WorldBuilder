@@ -3849,6 +3849,12 @@ TEST_CASE("WorldBuilder Parameters")
                     "Documentation");
   prm.declare_entry("value at points default ap",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101., 2.))),
                     "Documentation");
+  prm.declare_entry("value at array full",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101., std::numeric_limits<uint64_t>::max()))),
+                    "Documentation");
+  prm.declare_entry("value at array",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101., std::numeric_limits<uint64_t>::max()))),
+                    "Documentation");
+  prm.declare_entry("vector for vector or double", Types::OneOf(Types::Double(-1), Types::Array(Types::Array(Types::Double(-1), 1), 1)),
+                    "Documentation");
   prm.leave_subsection();
   const std::vector<Point<2> > additional_points = {Point<2>(-10,-10,cartesian),Point<2>(-10,10,cartesian),
                                                     Point<2>(10,10,cartesian),Point<2>(10,-10,cartesian)
@@ -4092,7 +4098,47 @@ TEST_CASE("WorldBuilder Parameters")
                     Contains("Could not convert values of /vector of vectors of points<2> nan/1 into doubles"));
 
 
+  std::pair<std::vector<double>,std::vector<double>> value_at_array = prm.get_value_at_array("value at array full");
+  approval_tests.emplace_back((double)value_at_array.first.size());
+  approval_tests.emplace_back(value_at_array.first[0]);
+  approval_tests.emplace_back(value_at_array.first[1]);
 
+  approval_tests.emplace_back((double)value_at_array.second.size());
+  approval_tests.emplace_back(value_at_array.second[0]);
+  approval_tests.emplace_back(value_at_array.second[1]);
+  approval_tests.emplace_back(value_at_array.second[2]);
+  approval_tests.emplace_back(value_at_array.second[3]);
+  approval_tests.emplace_back(value_at_array.second[4]);
+
+
+  std::pair<std::vector<double>,std::vector<double>> double_value_at_array = prm.get_value_at_array("one value at points one value");
+  approval_tests.emplace_back((double)double_value_at_array.first.size());
+  approval_tests.emplace_back(double_value_at_array.first[0]);
+  approval_tests.emplace_back((double)double_value_at_array.second.size());
+  approval_tests.emplace_back(double_value_at_array.second[0]);
+
+  std::pair<std::vector<double>,std::vector<double>> default_value_at_array = prm.get_value_at_array("value at array");
+  approval_tests.emplace_back((double)default_value_at_array.first.size());
+  approval_tests.emplace_back(default_value_at_array.first[0]);
+  approval_tests.emplace_back((double)default_value_at_array.second.size());
+  approval_tests.emplace_back(default_value_at_array.second[0]);
+
+  std::vector<std::vector<double>> vector_for_vector_or_double = prm.get_vector_or_double("vector for vector or double");
+  approval_tests.emplace_back((double)vector_for_vector_or_double.size());
+  approval_tests.emplace_back((double)vector_for_vector_or_double[0].size());
+  approval_tests.emplace_back((double)vector_for_vector_or_double[0][0]);
+  approval_tests.emplace_back((double)vector_for_vector_or_double[0][1]);
+  approval_tests.emplace_back((double)vector_for_vector_or_double[0][2]);
+  approval_tests.emplace_back((double)vector_for_vector_or_double[0][3]);
+
+  approval_tests.emplace_back((double)vector_for_vector_or_double[1].size());
+  approval_tests.emplace_back((double)vector_for_vector_or_double[1][0]);
+  approval_tests.emplace_back((double)vector_for_vector_or_double[1][1]);
+
+  std::vector<std::vector<double>> double_for_vector_or_double = prm.get_vector_or_double("one value at points one value");
+  approval_tests.emplace_back((double)double_for_vector_or_double.size());
+  approval_tests.emplace_back((double)double_for_vector_or_double[0].size());
+  approval_tests.emplace_back((double)double_for_vector_or_double[0][0]);
   /*CHECK_THROWS_WITH(prm.get_vector<std::string>("non existent string vector"),
                     Contains("internal error: could not retrieve the default value at"));
 

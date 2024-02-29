@@ -11,7 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Added
-- Implemented a method for modifying the mass conserving temperature model based on the movement of a spreading center through time. \[Daniel Douglas; Haoyuan Li; 2024-02-29; [#654](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/654)\]
+- Implemented the framework that will allow the mass conserving temperature model to account for the the movement of a spreading center through time. \[Daniel Douglas; Haoyuan Li; 2024-02-29; [#654](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/654)\]
 - Added an option to apply a spline in the mass conserving temperature of the slab. \[Haoyuan Li; 2024-02-27; [#659](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/659)\]
 - Added a cookbook tutorial for a simple subduction model in 2D Chunk geometry. \[Magali Billen; 2024-02-16; [#535](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/535)\]
 - Added a cookbook tutorial for a simple subduction model in 2D Cartesian geometry. \[Magali Billen; 2024-02-14; [#535](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/535)\]
@@ -109,7 +109,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Changed the underlying function which determines when you are inside a slab or a fault. This may slightly change the result, but the new result is more realistic I think. \[Menno Fraters; 2021-05-01; [#229](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/229)\]
 - The Vizualizer now uses compressed output by default. This decreases the file size and increases performance. \[Menno Fraters; 2021-05-22; [#239](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/239)\]
 - The Vizualizer buffers output before it writes it to a file. This increases performance. \[Menno Fraters; 2021-05-22; [#239](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/239)\]
-- In the fault temperature model linear, the entiry top temperature is changed to center temperature and the entry bottom temperature is changed to side temperature, since this represents the actual sides more accurately. \[Menno Fraters; 2021-07-09; [#260](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/260)\]
+- In the fault temperature model linear, the entry top temperature is changed to center temperature and the entry bottom temperature is changed to side temperature, since this represents the actual sides more accurately. \[Menno Fraters; 2021-07-09; [#260](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/260)\]
 - A large overhoal of the distance_point_from_curved_planes function improving the accuracy in spherical coordinates. This may slightly change the results, but it should be an improvement both in accuracy and performance. Also makes available a coordinate system independent distrance function and some fast trigonometric functions. \[Menno Fraters; 2021-06-11; [#255](github.com/GeodynamicWorldBuilder/WorldBuilder/issues/255)\]
 
 ### Fixed

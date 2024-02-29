@@ -1358,12 +1358,12 @@ namespace WorldBuilder
           // When subducting_velocities is input as an array, spatial variation
           if (subducting_plate_velocities[0].size() > 1)
             {
-              WBAssertThrow(subducting_plate_velocities.size() == mid_oceanic_ridges.size() && \
-                            subducting_plate_velocities[relevant_ridge].size() == mid_oceanic_ridges[relevant_ridge].size(),
-                            "subducting velocity and ridge coordinates must be the same dimension");
-              WBAssertThrow(ridge_migration_times.size() == mid_oceanic_ridges.size(),
-                            "the times for ridge migration specified in 'spreading velocity' must be the same dimension "
-                            "as ridge coordinates.");
+              WBAssert(subducting_plate_velocities.size() == mid_oceanic_ridges.size() && \
+                       subducting_plate_velocities[relevant_ridge].size() == mid_oceanic_ridges[relevant_ridge].size(),
+                       "subducting velocity and ridge coordinates must be the same dimension");
+              WBAssert(ridge_migration_times.size() == mid_oceanic_ridges.size(),
+                       "the times for ridge migration specified in 'spreading velocity' must be the same dimension "
+                       "as ridge coordinates.");
               subducting_velocity_point0 = subducting_plate_velocities[relevant_ridge][i_coordinate];
               subducting_velocity_point1 = subducting_plate_velocities[relevant_ridge][i_coordinate + 1];
               ridge_migration_time = ridge_migration_times[relevant_ridge];
@@ -1452,6 +1452,8 @@ namespace WorldBuilder
             double spreading_velocity_at_ridge_pt = spreading_velocity_at_ridge_pt1;
             double subducting_velocity_at_trench_pt = subducting_velocity_at_trench_pt1;
 
+            // This is required in spherical coordinates to ensure that the distance
+            // returned is the shortest distance around the sphere.
             if (compare_distance2 < compare_distance1)
               {
                 compare_distance = compare_distance2;
@@ -1476,7 +1478,7 @@ namespace WorldBuilder
       return result;
     }
 
-    // todo_effective
+    // TODO: implement method for modifying the age of the slab based on ridge/trench migration.
     std::vector<double>
     calculate_effective_trench_and_plate_ages(std::vector<double> ridge_parameters, double distance_along_plane)
     {
@@ -1484,33 +1486,15 @@ namespace WorldBuilder
       const double seconds_in_year = 60.0 * 60.0 * 24.0 * 365.25;  // sec/y
       const double spreading_velocity = ridge_parameters[0] * seconds_in_year; // m/yr
       double subducting_velocity = ridge_parameters[2] * seconds_in_year; // m/yr
-      const double ridge_velocity = spreading_velocity - subducting_velocity; // m/yr
-      const int sign_v = (ridge_velocity > 0) ? 1 : ((ridge_velocity < 0) ? -1 : 0);
 
-      const double time_of_ridge_migration = ridge_parameters[3]; //yr
-      const double ridge_drift_distance = abs(ridge_velocity) * time_of_ridge_migration; // m
-
-      double effective_age_shift = 0;
-      double trench_age_shift = 0;
       if (subducting_velocity <= 0)
         subducting_velocity = spreading_velocity;
 
-      else
-        {
-          if (distance_along_plane < ridge_drift_distance)
-            {
-              effective_age_shift = (1 - (distance_along_plane / ridge_drift_distance)) * sign_v * \
-                                    distance_along_plane / subducting_velocity; // yr
-              trench_age_shift = (1 - (distance_along_plane / ridge_drift_distance)) * sign_v * \
-                                 distance_along_plane / spreading_velocity; // yr
-            }
-        }
-
-      const double age_at_trench = ridge_parameters[1] / spreading_velocity + trench_age_shift * 0; // m/(m/y) = yr
+      const double age_at_trench = ridge_parameters[1] / spreading_velocity; // m/(m/y) = yr
       const double plate_age_sec = age_at_trench * seconds_in_year; // y --> seconds
 
       // Plate age increases with distance along the slab in the mantle
-      double effective_plate_age = plate_age_sec + (distance_along_plane / subducting_velocity + effective_age_shift) * seconds_in_year; // m/(m/y) = y(seconds_in_year)
+      double effective_plate_age = plate_age_sec + (distance_along_plane / subducting_velocity) * seconds_in_year; // m/(m/y) = y(seconds_in_year)
       WBAssertThrow(effective_plate_age >= 0, "The age of the subducting plate is less than or equal to 0. "
                     "Effective plate age: " << effective_plate_age);
       std::vector<double> result;
@@ -1519,7 +1503,6 @@ namespace WorldBuilder
       return result;
 
     }
-
   } // namespace Utilities
 } // namespace WorldBuilder
 

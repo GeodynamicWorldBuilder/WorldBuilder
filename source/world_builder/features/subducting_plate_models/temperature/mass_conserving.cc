@@ -258,6 +258,24 @@ namespace WorldBuilder
 
           apply_spline = prm.get<bool>("apply spline");
           spline_n_points = prm.get<int>("number of points in spline");
+
+          if (subducting_velocities[0].size() > 1)
+            {
+              for (unsigned int ridge_index = 0; ridge_index < mid_oceanic_ridges.size(); ridge_index++)
+                {
+                  WBAssertThrow(subducting_velocities.size() == mid_oceanic_ridges.size() &&
+                                subducting_velocities[ridge_index].size() == mid_oceanic_ridges[ridge_index].size(),
+                                "subducting velocity must have the same dimension as the ridge coordinates parameter.");
+                  for (unsigned int point_index = 0; point_index < mid_oceanic_ridges[ridge_index].size(); point_index++)
+                    {
+                      WBAssertThrow(Utilities::approx(subducting_velocities[ridge_index][point_index],
+                                                      ridge_spreading_velocities_at_each_ridge_point[ridge_index][point_index]),
+                                    "Currently, subducting velocity must equal the spreading velocity to satisfy conservation of mass. "
+                                    "This will be changed in the future to allow for the spreading center to move depending on the relative "
+                                    "difference between the spreading velocity and the subducting velocity, thereby conserving mass.");
+                    }
+                }
+            }
         }
 
         double
