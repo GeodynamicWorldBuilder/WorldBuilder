@@ -89,7 +89,7 @@ if(WB_INCLUDE_UNIT_TEST)
 endif()
 
 # App testing
-IF(WB_RUN_APP_TESTS)
+IF(WB_ENABLE_APPS AND WB_RUN_APP_TESTS)
   # Create directory for the test results
   file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/gwb-dat)
 
@@ -274,36 +274,38 @@ IF(WB_RUN_APP_TESTS)
 ENDIF()
 
 # gwb-grid tests
-# Create directory for the test results
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/gwb-grid)
-# find all the integration visu files
-file(GLOB_RECURSE VISU_TEST_SOURCES "gwb-grid/*.wb")
-# Run through each sourceUforeach(test_source ${VISU_TEST_SOURCES})
-foreach(test_source ${VISU_TEST_SOURCES})
-  get_filename_component(test_name ${test_source} NAME_WE)
-	set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.grid\;-j\;1")
-  add_test(grid_${test_name}
-           ${CMAKE_COMMAND}
-	         -D TEST_NAME=${test_name}
-	         -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}
-	         -D TEST_ARGS=${TEST_ARGUMENTS}
-	         -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-grid/${test_name}.vtu
-	         -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/${test_name}.vtu
-	         -P ${CMAKE_SOURCE_DIR}/tests/gwb-grid/run_gwb-grid_tests.cmake
-           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/)
+if (WB_ENABLE_APPS)
+  # Create directory for the test results
+  file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/gwb-grid)
+  # find all the integration visu files
+  file(GLOB_RECURSE VISU_TEST_SOURCES "gwb-grid/*.wb")
+  # Run through each sourceUforeach(test_source ${VISU_TEST_SOURCES})
+  foreach(test_source ${VISU_TEST_SOURCES})
+    get_filename_component(test_name ${test_source} NAME_WE)
+    set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.wb\;${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.grid\;-j\;1")
+    add_test(grid_${test_name}
+            ${CMAKE_COMMAND}
+            -D TEST_NAME=${test_name}
+            -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}
+            -D TEST_ARGS=${TEST_ARGUMENTS}
+            -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/gwb-grid/${test_name}.vtu
+            -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/${test_name}.vtu
+            -P ${CMAKE_SOURCE_DIR}/tests/gwb-grid/run_gwb-grid_tests.cmake
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/gwb-grid/)
 
-  if(WB_RUN_TESTS_WITH_GDB)
-    add_test(NAME grid_${test_name}_gdb
-             WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
-             COMMAND gdb --return-child-result --ex "set confirm off" --ex r  --ex bt --ex exit  --args ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.grid)
-  endif()
+    if(WB_RUN_TESTS_WITH_GDB)
+      add_test(NAME grid_${test_name}_gdb
+              WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+              COMMAND gdb --return-child-result --ex "set confirm off" --ex r  --ex bt --ex exit  --args ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX} ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.grid)
+    endif()
 
-  if(WB_RUN_TESTS_WITH_VALGRIND)
-    add_test(NAME grid_${test_name}_valgrind
-             WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
-             COMMAND valgrind -v --leak-check=full --error-exitcode=1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}  ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.grid)
-  endif()
-endforeach(test_source)
+    if(WB_RUN_TESTS_WITH_VALGRIND)
+      add_test(NAME grid_${test_name}_valgrind
+              WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+              COMMAND valgrind -v --leak-check=full --error-exitcode=1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}  ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.wb ${CMAKE_SOURCE_DIR}/tests/gwb-grid/${test_name}.grid)
+    endif()
+  endforeach(test_source)
+endif()
 
 add_custom_target(update_test_references 
                   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
@@ -311,42 +313,45 @@ add_custom_target(update_test_references
                   COMMENT "Updating the World Builder test results...")
 
 # Documentation tests
-# Create directory for the test results
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/documentation)
-#find all the integration visu files
-file(GLOB_RECURSE DOCU_TEST_SOURCES "${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/*.wb")
-# Run through each source and create a test for each one
-foreach(test_source ${DOCU_TEST_SOURCES})
-  get_filename_component(test_name ${test_source} NAME_WE)
-  set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/${test_name}.wb\;${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/${test_name}.grid")
-  add_test(doc_${test_name}
-           ${CMAKE_COMMAND}
-           -D TEST_NAME=${test_name}
-           -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}
-           -D TEST_ARGS=${TEST_ARGUMENTS}
-           -P ${CMAKE_SOURCE_DIR}/tests/documentation/run_documentation_tests.cmake
-           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/documentation/)
- endforeach(test_source)
+if (WB_ENABLE_APPS)
+  # Create directory for the test results
+  file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/documentation)
+  #find all the integration visu files
+  file(GLOB_RECURSE DOCU_TEST_SOURCES "${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/*.wb")
+  # Run through each source and create a test for each one
+  foreach(test_source ${DOCU_TEST_SOURCES})
+    get_filename_component(test_name ${test_source} NAME_WE)
+    set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/${test_name}.wb\;${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/${test_name}.grid")
+    add_test(doc_${test_name}
+            ${CMAKE_COMMAND}
+            -D TEST_NAME=${test_name}
+            -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}
+            -D TEST_ARGS=${TEST_ARGUMENTS}
+            -P ${CMAKE_SOURCE_DIR}/tests/documentation/run_documentation_tests.cmake
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/documentation/)
+  endforeach(test_source)
+ endif()
 
 # Cookbook tests
-# Create directory for the test results
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/cookbooks)
-#find all the integration visu files
-file(GLOB_RECURSE COOKBOOK_TEST_SOURCES "${CMAKE_SOURCE_DIR}/cookbooks/*/*.wb")
-# Run through each source and add a test for each one
-foreach(test_source ${COOKBOOK_TEST_SOURCES})
-  get_filename_component(test_name ${test_source} NAME_WE)
-  get_filename_component(test_dir ${test_source} DIRECTORY)
-  set(TEST_ARGUMENTS "${test_dir}/${test_name}.wb\;${test_dir}/${test_name}.grid\;--resolution-limit\;50")
-  add_test(cookbooks_${test_name}
-           ${CMAKE_COMMAND}
-           -D TEST_NAME=${test_name}
-           -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}
-           -D TEST_ARGS=${TEST_ARGUMENTS}
-           -P ${CMAKE_SOURCE_DIR}/tests/documentation/run_documentation_tests.cmake
-           WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/cookbooks/)
- endforeach(test_source)
-
+if (WB_ENABLE_APPS)
+  # Create directory for the test results
+  file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/cookbooks)
+  #find all the integration visu files
+  file(GLOB_RECURSE COOKBOOK_TEST_SOURCES "${CMAKE_SOURCE_DIR}/cookbooks/*/*.wb")
+  # Run through each source and add a test for each one
+  foreach(test_source ${COOKBOOK_TEST_SOURCES})
+    get_filename_component(test_name ${test_source} NAME_WE)
+    get_filename_component(test_dir ${test_source} DIRECTORY)
+    set(TEST_ARGUMENTS "${test_dir}/${test_name}.wb\;${test_dir}/${test_name}.grid\;--resolution-limit\;50")
+    add_test(cookbooks_${test_name}
+            ${CMAKE_COMMAND}
+            -D TEST_NAME=${test_name}
+            -D TEST_PROGRAM=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/gwb-grid${CMAKE_EXECUTABLE_SUFFIX}
+            -D TEST_ARGS=${TEST_ARGUMENTS}
+            -P ${CMAKE_SOURCE_DIR}/tests/documentation/run_documentation_tests.cmake
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/cookbooks/)
+  endforeach(test_source)
+endif()
 
 #test C compilation and wrapper if compiler found
   file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C)
