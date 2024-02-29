@@ -33,10 +33,10 @@ authors:
     orcid: 0
     affiliation: "2"
   - name: Daniel Douglas
-    orcid: 0
+    orcid: 0000-0002-7871-018X
     affiliation: "4"
   - name: Yijun Wang
-    orcid: 0
+    orcid: 0000-0002-7637-3239
     affiliation: "5"
 affiliations:
  - name: Universiy of Florida, USA
@@ -49,15 +49,15 @@ affiliations:
    index: 4
  - name: University of Oslo, Norway
    index: 4
-date: 23 February 2023
+date: 28 February 2023
 bibliography: paper.bib
 ---
 
 # Summary
 
-The geodynamic models can be divided in three broad classes. The first class are the simple synthetic models. This class which involve simplistic geometries for generic modeling and are easy to make and parameterize. These are good for simplified problems and benchmarks. The second class of models is the Data driven models. This class which consists of initial conditions (semi-)automatically derived from datasets like tomography. These are often used for instantaneous models. The third class of models are complex synthetic models. The case which blends complex 3D interpretation driven detailed geometrical features and thermal fields. This can be useful to parameterize instantaneous models or make setups for models starting in the past.  
+Many Earth science applications require the discretization, parametrization and/or visualization of complex geological features in a 3D geometry in global or regional settings. A prime example are geodynamic models, which have to make assumptions about the Earth's thermal and chemical structure and the geometry of different features such as plates, subducted slabs, or mantle plumes. This structure is needed in instantaneous models, as model initial conditions, or to test different hypotheses and compare model predictions to observations. Other examples are the creation of an Earth velocity structure for seismic forward modeling and hypothesis-testing, or the visualization of tectonic features in structural geology.
 
-The Geodynamic World Builder (GWB) has been designed to make the third case significantly easier, but can also be used to design simple synthetic models and several types of datasets are supported to be used to setup models in a way which aligns with the GWB design philosophies.
+The Geodynamic World Builder (GWB) has been designed to make the creation of initial conditions for complex parameterized models significantly easier, but can also be used to design simple synthetic models and several types of datasets are supported to be used to setup models in a way which aligns with the GWB design philosophies.
 
 Besides setting up initial conditions for geodynamic models, the GWB can also be used to make detailed 3D visualizations of geologic and geodynamic settings.
 
