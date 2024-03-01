@@ -69,9 +69,9 @@ namespace WorldBuilder
              * temperature. This can be done for 4 different lithologies, "sediment", "gabbro",
              * "MORB", and "peridotite"
              */
-            double calculate_water_content(double pressure,
-                                           double temperature,
-                                           unsigned int lithology_ind) const;
+            // double calculate_water_content(double pressure,
+            //                                double temperature,
+            //                                unsigned int lithology_ind) const;
             /**
              * Returns a value for the bound water contend based on the given position, depth in the model,
              * gravity, and the temperature at that point.
@@ -95,28 +95,9 @@ namespace WorldBuilder
             std::vector<unsigned int> compositions;
             Operations operation;
 
-            double max_water_content;
+            std::vector<double> max_water_contents;
             std::string lithology_str;
             unsigned int lithology_index;
-            // Peridotite polynomial coefficients
-            std::vector<double> LR_poly_peridotite = {-19.0609, 168.983, -630.032, 1281.84, -1543.14, 1111.88, -459.142, 95.4143, 1.97246};
-            std::vector<double> c_sat_poly_peridotite = {0.00115628, 2.42179};
-            std::vector<double> Td_poly_peridotite = {-15.4627, 94.9716, 636.603};
-
-            // Gabbro polynomial coefficients
-            std::vector<double> LR_poly_gabbro = {-1.81745, 7.67198, -10.8507, 5.09329, 8.14519};
-            std::vector<double> c_sat_poly_gabbro = {-0.0176673, 0.0893044, 1.52732};
-            std::vector<double> Td_poly_gabbro = {-1.72277, 20.5898, 637.517};
-
-            // MORB polynomial coefficients
-            std::vector<double> LR_poly_MORB = {-1.78177, 7.50871, -10.4840, 5.19725, 7.96365};
-            std::vector<double> c_sat_poly_MORB = {0.0102725, -0.115390, 0.324452, 1.41588};
-            std::vector<double> Td_poly_MORB = {-3.81280, 22.7809, 638.049};
-
-            // Sediment polynomial coefficients
-            std::vector<double> LR_poly_sediment = {-2.03283, 10.8186, -21.2119, 18.3351, -6.48711, 8.32459};
-            std::vector<double> c_sat_poly_sediment = {-0.150662, 0.301807, 1.01867};
-            std::vector<double> Td_poly_sediment = {2.83277, -24.7593, 85.9090, 524.898};
         };
       } // namespace Composition
     } // namespace SubductingPlateModels

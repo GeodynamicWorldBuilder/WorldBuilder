@@ -704,7 +704,7 @@ namespace WorldBuilder
           double average_angle = 0.0;
 
           std::vector<Point<2>> previous_segments;
-          std::array<double, 4> initial_water_content = {8, 5, 4, 2};
+          // std::array<double, 4> initial_water_content = {8, 5, 4, 2};
 
           for (size_t i_segment = 0; i_segment < plane_segment_lengths[original_current_section].size(); i_segment++)
             {
@@ -862,21 +862,22 @@ namespace WorldBuilder
                               double temperature;
                               double pressure;
                               double depth;
-                              const unsigned int points_per_segment = 2.0;
+                              const unsigned int points_per_segment = 5;
                               Point<2> vector_to_check_point_from_surface = check_point_2d - Pb;
                               Point<2> begin_segment_at_depth = vector_to_check_point_from_surface + begin_segment;
-                              const double dist_from_current_segment = std::sqrt(vector_to_check_point_from_surface * vector_to_check_point_from_surface);                          
+                              const double dist_from_current_segment = std::sqrt(vector_to_check_point_from_surface * vector_to_check_point_from_surface);
                               Point<2> interval_point = begin_segment;
                               Point<2> integration_point = begin_segment;
                               Point<3> integration_point_3d = check_point;
                               Point<2> updip_segment_vector = begin_segment;
+                              Point<2> orthogonal_updip_vector = begin_segment;
                               Point<2> previous_begin_segment_at_depth = begin_segment;
                               Point<2> previous_end_segment_at_depth = begin_segment;
 
                               for (unsigned int lithology_ind = 0; lithology_ind < water_content.size(); ++lithology_ind)
                                 {
                                   std::vector<double> water_content_at_fixed_depth;
-                                  water_content_at_fixed_depth.push_back(initial_water_content[lithology_ind] / 100);
+                                  water_content_at_fixed_depth.push_back(1000000);
 
                                   for (unsigned int segment_iteration = 0; segment_iteration <= current_segment; ++segment_iteration)
                                     {
@@ -886,16 +887,14 @@ namespace WorldBuilder
                                           if (current_segment > 0 && segment_iteration < current_segment)
                                             {
                                               updip_segment_vector = previous_segments[segment_iteration + 1] - previous_segments[segment_iteration];
-                                              updip_segment_vector[0] = -updip_segment_vector[1] / updip_segment_vector[0];
-                                              updip_segment_vector[1] = 1;
-                                              updip_segment_vector = updip_segment_vector / (updip_segment_vector * updip_segment_vector);
-                                              previous_begin_segment_at_depth = previous_segments[segment_iteration] - dist_from_current_segment * updip_segment_vector;
-                                              previous_end_segment_at_depth = previous_segments[segment_iteration + 1] - dist_from_current_segment * updip_segment_vector;
+                                              orthogonal_updip_vector[0] = updip_segment_vector[1];
+                                              orthogonal_updip_vector[1] = -updip_segment_vector[0];
+                                              orthogonal_updip_vector = orthogonal_updip_vector / std::sqrt(orthogonal_updip_vector * orthogonal_updip_vector);
+                                              previous_begin_segment_at_depth = previous_segments[segment_iteration] + dist_from_current_segment * orthogonal_updip_vector;
+                                              previous_end_segment_at_depth = previous_segments[segment_iteration + 1] + dist_from_current_segment * orthogonal_updip_vector;
                                               interval_point = (previous_end_segment_at_depth - previous_begin_segment_at_depth) * number_of_divisions;
 
                                               integration_point = previous_begin_segment_at_depth + interval_point / points_per_segment;
-                                              // integration_point = previous_begin_segment_at_depth - interval_point * number_of_divisions;
-
                                               integration_point_3d = closest_point_on_line_bottom_cartesian + x_axis * integration_point[0] + y_axis * integration_point[1];
                                               depth = start_radius - integration_point_3d[2];
                                               temperature = world->properties(integration_point_3d.get_array(), depth, {{{1,0,0}}})[0];

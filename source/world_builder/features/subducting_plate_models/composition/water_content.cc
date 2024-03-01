@@ -71,7 +71,7 @@ namespace WorldBuilder
                             "A list with the labels of the composition which are present there.");
           prm.declare_entry("lithology",  Types::String("peridotite"),
                             "The lithology used to determine which polynomials to use for calculating the water content.");
-          prm.declare_entry("initial water content", Types::Double(5),
+          prm.declare_entry("initial water contents", Types::Array(Types::Double(5)),
                             "The value of the initial water content (in wt%) for the lithology at the trench. This is essentially the "
                             "max value applied to this lithology.");
           prm.declare_entry("operation", Types::String("replace", std::vector<std::string> {"replace", "replace defined only", "add", "subtract"}),
@@ -88,75 +88,9 @@ namespace WorldBuilder
           max_depth = prm.get<double>("max distance slab top");
           density = prm.get<double>("density");
           compositions = prm.get_vector<unsigned int>("compositions");
-          max_water_content = prm.get<double>("initial water content");
+          max_water_contents = prm.get_vector<double>("initial water contents");
           lithology_str = prm.get<std::string>("lithology");
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
-        }
-
-
-        double
-        WaterContent::calculate_water_content(double pressure,
-                                              double temperature,
-                                              unsigned int lithology_index) const
-        {
-          double inv_pressure = 1/pressure;
-          double ln_LR_value = 0;
-          double ln_c_sat_value = 0;
-          double Td_value = 0;
-          std::vector<double> LR_polynomial_coeffs;
-          std::vector<double> c_sat_polynomial_coeffs;
-          std::vector<double> Td_polynomial_coeffs;
-
-          if (lithology_index == 0)
-            {
-              LR_polynomial_coeffs = LR_poly_peridotite;
-              c_sat_polynomial_coeffs = c_sat_poly_peridotite;
-              Td_polynomial_coeffs = Td_poly_peridotite;
-            }
-
-          if (lithology_index == 1)
-            {
-              LR_polynomial_coeffs = LR_poly_gabbro;
-              c_sat_polynomial_coeffs = c_sat_poly_gabbro;
-              Td_polynomial_coeffs = Td_poly_gabbro;
-            }
-
-          if (lithology_index == 2)
-            {
-              LR_polynomial_coeffs = LR_poly_MORB;
-              c_sat_polynomial_coeffs = c_sat_poly_MORB;
-              Td_polynomial_coeffs = Td_poly_MORB;
-            }
-
-          if (lithology_index == 3)
-            {
-              LR_polynomial_coeffs = LR_poly_sediment;
-              c_sat_polynomial_coeffs = c_sat_poly_sediment;
-              Td_polynomial_coeffs = Td_poly_sediment;
-            }
-
-          // Calculate the c_sat value from Tian et al., 2019
-          if (lithology_index == 3)
-            {
-              for (unsigned int c_sat_index = 0; c_sat_index < c_sat_polynomial_coeffs.size(); ++c_sat_index)
-                ln_c_sat_value += c_sat_polynomial_coeffs[c_sat_index] * (std::pow(std::log10(pressure), c_sat_polynomial_coeffs.size() - 1 - c_sat_index));
-            }
-          else
-            {
-              for (unsigned int c_sat_index = 0; c_sat_index < c_sat_polynomial_coeffs.size(); ++c_sat_index)
-                ln_c_sat_value += c_sat_polynomial_coeffs[c_sat_index] * (std::pow(pressure, c_sat_polynomial_coeffs.size() - 1 - c_sat_index));
-            }
-
-          // Calculate the LR value from Tian et al., 2019
-          for (unsigned int LR_coeff_index = 0; LR_coeff_index < LR_polynomial_coeffs.size(); ++LR_coeff_index)
-            ln_LR_value += LR_polynomial_coeffs[LR_coeff_index] * (std::pow(inv_pressure, LR_polynomial_coeffs.size() - 1 - LR_coeff_index));
-
-          // Calculate the Td value from Tian et al., 2019
-          for (unsigned int Td_coeff_index = 0; Td_coeff_index < Td_polynomial_coeffs.size(); ++Td_coeff_index)
-            Td_value += Td_polynomial_coeffs[Td_coeff_index] * (std::pow(pressure, Td_polynomial_coeffs.size() - 1 - Td_coeff_index));
-
-          double partition_coeff = std::exp(ln_c_sat_value) * std::exp(std::exp(ln_LR_value) * (1/temperature - 1/Td_value));
-          return partition_coeff;
         }
 
 
@@ -174,21 +108,26 @@ namespace WorldBuilder
           if (distance_from_plane.distance_from_plane <= max_depth && distance_from_plane.distance_from_plane >= min_depth)
             {
               unsigned int lithology_index;
+              double max_water_value;
               if (lithology_str == "peridotite")
                 {
                   lithology_index = 0;
+                  max_water_value = max_water_contents[0];
                 }
               if (lithology_str == "gabbro")
                 {
                   lithology_index = 1;
+                  max_water_value = max_water_contents[1];
                 }
               if (lithology_str == "MORB")
                 {
                   lithology_index = 2;
+                  max_water_value = max_water_contents[2];
                 }
               if (lithology_str == "sediment")
                 {
                   lithology_index = 3;
+                  max_water_value = max_water_contents[3];
                 }
 
               for (unsigned int i = 0; i < compositions.size(); ++i)
@@ -196,7 +135,7 @@ namespace WorldBuilder
                   if (compositions[i] == composition_number)
                     {
                       // return apply_operation(operation,composition, partition_coefficient);
-                      return apply_operation(operation,composition,distance_from_plane.water_content[lithology_index]);
+                      return apply_operation(operation,composition,std::min(max_water_value, distance_from_plane.water_content[lithology_index]));
                     }
                 }
 
