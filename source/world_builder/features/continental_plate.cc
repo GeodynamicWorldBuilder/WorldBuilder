@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2018 - 2021 by the authors of the World Builder code.
+  Copyright (C) 2018-2024 by the authors of the World Builder code.
 
   This file is part of the World Builder.
 
@@ -32,8 +32,6 @@
 #include "world_builder/types/plugin_system.h"
 #include "world_builder/types/value_at_points.h"
 #include "world_builder/world.h"
-
-#include "world_builder/kd_tree.h"
 
 #include <iostream>
 
