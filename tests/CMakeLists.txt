@@ -387,6 +387,7 @@ endif()
                  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/) 
   file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C)
   set_tests_properties(run_simple_C_test PROPERTIES TIMEOUT 60) 
+  set_tests_properties(run_simple_C_test PROPERTIES DEPENDS compile_simple_C_test)
 
   if(NOT MSVC AND NOT APPLE)
     add_test(NAME compile_simple_C_example 
@@ -419,6 +420,7 @@ endif()
                  -P ${CMAKE_SOURCE_DIR}/tests/C/run_C_tests.cmake
                  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/C/) 
   set_tests_properties(run_simple_C_example PROPERTIES TIMEOUT 60) 
+  set_tests_properties(run_simple_C_example PROPERTIES DEPENDS compile_simple_C_example)
 
 
 #test CPP compilation and wrapper
@@ -456,7 +458,8 @@ add_test(run_simple_CPP_test
                -P ${CMAKE_SOURCE_DIR}/tests/CPP/run_CPP_tests.cmake
                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/CPP/) 
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/CPP)
-set_tests_properties(run_simple_CPP_test PROPERTIES TIMEOUT 60) 
+set_tests_properties(run_simple_CPP_test PROPERTIES TIMEOUT 60)
+set_tests_properties(run_simple_CPP_test PROPERTIES DEPENDS compile_simple_CPP_test)
 
 if(NOT MSVC AND NOT APPLE)
   add_test(NAME compile_simple_CPP_example 
@@ -490,7 +493,7 @@ add_test(run_simple_CPP_example
                -P ${CMAKE_SOURCE_DIR}/tests/CPP/run_CPP_tests.cmake
                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/CPP/) 
 set_tests_properties(run_simple_CPP_example PROPERTIES TIMEOUT 60) 
-
+set_tests_properties(run_simple_CPP_example PROPERTIES DEPENDS compile_simple_CPP_example)
 
 #test CPP MPI compilation and wrapper if MPI found
 if(USE_MPI)
@@ -528,7 +531,8 @@ add_test(run_simple_CPP_MPI_test
                -P ${CMAKE_SOURCE_DIR}/tests/CPP_MPI/run_CPP_MPI_tests.cmake
                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/CPP_MPI/) 
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/CPP_MPI)
-set_tests_properties(run_simple_CPP_MPI_test PROPERTIES TIMEOUT 60) 
+set_tests_properties(run_simple_CPP_MPI_test PROPERTIES TIMEOUT 60)
+set_tests_properties(run_simple_CPP_MPI_test PROPERTIES DEPENDS compile_simple_CPP_MPI_test)
 
 if(NOT MSVC AND NOT APPLE)
   add_test(NAME compile_simple_CPP_MPI_example 
@@ -562,6 +566,7 @@ add_test(run_simple_CPP_MPI_example
                -P ${CMAKE_SOURCE_DIR}/tests/CPP_MPI/run_CPP_MPI_tests.cmake
                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/CPP_MPI/) 
 set_tests_properties(run_simple_CPP_MPI_example PROPERTIES TIMEOUT 60) 
+set_tests_properties(run_simple_CPP_MPI_example PROPERTIES DEPENDS compile_simple_CPP_MPI_example)
 endif()
 
 #test fortran compilation and wrapper if compiler found
@@ -586,6 +591,7 @@ if(CMAKE_Fortran_COMPILER)
                  -P ${CMAKE_SOURCE_DIR}/tests/fortran/run_fortran_tests.cmake
                  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/) 
   file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran)
+  set_tests_properties(run_simple_fortran_test PROPERTIES DEPENDS compile_simple_fortran_test)
 
   if(NOT APPLE)
     add_test(NAME compile_simple_fortran_example 
@@ -604,7 +610,8 @@ if(CMAKE_Fortran_COMPILER)
                  -D TEST_OUTPUT=${CMAKE_BINARY_DIR}/tests/fortran/run_simple_fortran_example.log
 		 -D TEST_REFERENCE=${CMAKE_CURRENT_SOURCE_DIR}/fortran/run_simple_fortran_example.log
                  -P ${CMAKE_SOURCE_DIR}/tests/fortran/run_fortran_tests.cmake
-                 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/) 
+                 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests/fortran/)
+  set_tests_properties(run_simple_fortran_example PROPERTIES DEPENDS compile_simple_fortran_example)
  endif()
 
 #test python compilation and wrapper if compiler found
