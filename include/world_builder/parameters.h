@@ -115,6 +115,8 @@ namespace WorldBuilder
       template<class T>
       std::vector<T> get_vector(const std::string &name);
 
+      std::vector<std::vector<double>> get_vector_or_double(const std::string &name);
+
       /**
        * A specialized version of get which can return a value at points type.
        * \param name The name of the entry to retrieved
@@ -131,7 +133,7 @@ namespace WorldBuilder
       std::pair<std::vector<double>,std::vector<double>> get_value_at_array(const std::string &name);
 
       /**
-       * A specialized versions of get which can return vectors/arrays.
+       * A specialized version of get which can return vectors/arrays.
        * This version is designed for the plugin system.
        * \param name The name of the entry to retrieved
        */

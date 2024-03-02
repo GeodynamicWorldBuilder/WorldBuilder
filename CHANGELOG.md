@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Added
+- Implemented the framework that will allow the mass conserving temperature model to account for the the movement of a spreading center through time. \[Daniel Douglas; Haoyuan Li; 2024-02-29; [#654](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/654)\]
 - Added an option to apply a spline in the mass conserving temperature of the slab. \[Haoyuan Li; 2024-02-27; [#659](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/659)\]
 - Added a cookbook tutorial for a simple subduction model in 2D Chunk geometry. \[Magali Billen; 2024-02-16; [#535](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/535)\]
 - Added a cookbook tutorial for a simple subduction model in 2D Cartesian geometry. \[Magali Billen; 2024-02-14; [#535](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/535)\]

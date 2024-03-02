@@ -3849,6 +3849,12 @@ TEST_CASE("WorldBuilder Parameters")
                     "Documentation");
   prm.declare_entry("value at points default ap",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101., 2.))),
                     "Documentation");
+  prm.declare_entry("value at array full",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101., std::numeric_limits<uint64_t>::max()))),
+                    "Documentation");
+  prm.declare_entry("value at array",Types::OneOf(Types::Double(101.),Types::Array(Types::ValueAtPoints(101., std::numeric_limits<uint64_t>::max()))),
+                    "Documentation");
+  prm.declare_entry("vector for vector or double", Types::OneOf(Types::Double(-1), Types::Array(Types::Array(Types::Double(-1), 1), 1)),
+                    "Documentation");
   prm.leave_subsection();
   const std::vector<Point<2> > additional_points = {Point<2>(-10,-10,cartesian),Point<2>(-10,10,cartesian),
                                                     Point<2>(10,10,cartesian),Point<2>(10,-10,cartesian)
@@ -4092,7 +4098,47 @@ TEST_CASE("WorldBuilder Parameters")
                     Contains("Could not convert values of /vector of vectors of points<2> nan/1 into doubles"));
 
 
+  std::pair<std::vector<double>,std::vector<double>> value_at_array = prm.get_value_at_array("value at array full");
+  approval_tests.emplace_back((double)value_at_array.first.size());
+  approval_tests.emplace_back(value_at_array.first[0]);
+  approval_tests.emplace_back(value_at_array.first[1]);
 
+  approval_tests.emplace_back((double)value_at_array.second.size());
+  approval_tests.emplace_back(value_at_array.second[0]);
+  approval_tests.emplace_back(value_at_array.second[1]);
+  approval_tests.emplace_back(value_at_array.second[2]);
+  approval_tests.emplace_back(value_at_array.second[3]);
+  approval_tests.emplace_back(value_at_array.second[4]);
+
+
+  std::pair<std::vector<double>,std::vector<double>> double_value_at_array = prm.get_value_at_array("one value at points one value");
+  approval_tests.emplace_back((double)double_value_at_array.first.size());
+  approval_tests.emplace_back(double_value_at_array.first[0]);
+  approval_tests.emplace_back((double)double_value_at_array.second.size());
+  approval_tests.emplace_back(double_value_at_array.second[0]);
+
+  std::pair<std::vector<double>,std::vector<double>> default_value_at_array = prm.get_value_at_array("value at array");
+  approval_tests.emplace_back((double)default_value_at_array.first.size());
+  approval_tests.emplace_back(default_value_at_array.first[0]);
+  approval_tests.emplace_back((double)default_value_at_array.second.size());
+  approval_tests.emplace_back(default_value_at_array.second[0]);
+
+  std::vector<std::vector<double>> vector_for_vector_or_double = prm.get_vector_or_double("vector for vector or double");
+  approval_tests.emplace_back((double)vector_for_vector_or_double.size());
+  approval_tests.emplace_back((double)vector_for_vector_or_double[0].size());
+  approval_tests.emplace_back((double)vector_for_vector_or_double[0][0]);
+  approval_tests.emplace_back((double)vector_for_vector_or_double[0][1]);
+  approval_tests.emplace_back((double)vector_for_vector_or_double[0][2]);
+  approval_tests.emplace_back((double)vector_for_vector_or_double[0][3]);
+
+  approval_tests.emplace_back((double)vector_for_vector_or_double[1].size());
+  approval_tests.emplace_back((double)vector_for_vector_or_double[1][0]);
+  approval_tests.emplace_back((double)vector_for_vector_or_double[1][1]);
+
+  std::vector<std::vector<double>> double_for_vector_or_double = prm.get_vector_or_double("one value at points one value");
+  approval_tests.emplace_back((double)double_for_vector_or_double.size());
+  approval_tests.emplace_back((double)double_for_vector_or_double[0].size());
+  approval_tests.emplace_back((double)double_for_vector_or_double[0][0]);
   /*CHECK_THROWS_WITH(prm.get_vector<std::string>("non existent string vector"),
                     Contains("internal error: could not retrieve the default value at"));
 
@@ -7501,5 +7547,199 @@ TEST_CASE("Fast version of fmod")
   CHECK(FT::fmod(18.5,4.2) == Approx(std::fmod(18.5,4.2)));
   CHECK(std::isnan(FT::fmod(1,0)));
   //CHECK(std::isnan(std::fmod(1,0))); Return a signaling NAN (FE_INVALID is raised)
+}
+
+TEST_CASE("WorldBuilder Utilities function: calculate_ridge_distance_and_spreading")
+{
+  std::vector<double> approval_tests;
+
+  const std::unique_ptr<CoordinateSystems::Interface> cartesian_system = CoordinateSystems::Interface::create("cartesian", nullptr);;
+
+  // Ridge properties
+  const Point<2> p1a(std::array<double,2> {{200e3, -1e3}},cartesian);
+  const Point<2> p1b(std::array<double,2> {{200e3, 50e3}},cartesian);
+  const Point<2> p2a(std::array<double,2> {{50e3, 50e3}},cartesian);
+  const Point<2> p2b(std::array<double,2> {{50e3, 101e3}},cartesian);
+  const Point<2> p2c(std::array<double,2> {{100e3, 151e3}},cartesian);
+  const std::vector<Point<2>> mid_ocean_ridges_segment_1 = {p1a, p1b};
+  const std::vector<Point<2>> mid_ocean_ridges_segment_2 = {p2a, p2b, p2c};
+
+  std::vector<std::vector<Point<2>>> mid_oceanic_ridges;
+  mid_oceanic_ridges.push_back(mid_ocean_ridges_segment_1);
+  mid_oceanic_ridges.push_back(mid_ocean_ridges_segment_2);
+
+  const double mid_oceanic_spreading_velocitie_1a =  1.0;
+  const double mid_oceanic_spreading_velocitie_1b =  2.0;
+  const double mid_oceanic_spreading_velocitie_2a =  3.0;
+  const double mid_oceanic_spreading_velocitie_2b =  4.0;
+  const double mid_oceanic_spreading_velocitie_2c =  5.0;
+
+  std::vector<double> mid_oceanic_spreading_velocities_segment1 = {mid_oceanic_spreading_velocitie_1a, mid_oceanic_spreading_velocitie_1b};
+  std::vector<double> mid_oceanic_spreading_velocities_segment2 = {mid_oceanic_spreading_velocitie_2a, mid_oceanic_spreading_velocitie_2b,
+                                                                   mid_oceanic_spreading_velocitie_2c
+                                                                  };
+
+  std::vector<std::vector<double>> mid_oceanic_spreading_velocities;
+  mid_oceanic_spreading_velocities.push_back(mid_oceanic_spreading_velocities_segment1);
+  mid_oceanic_spreading_velocities.push_back(mid_oceanic_spreading_velocities_segment2);
+
+  const std::vector<std::vector<double>> subducting_plate_velocities = {{0.0}};
+  const std::vector<double> &ridge_migration_times = {0.0};
+
+  // Query point 1
+  Point<3> position_1(1e3,0,0,cartesian);
+  Objects::NaturalCoordinate position_in_natural_coordinates_1 = Objects::NaturalCoordinate(position_1,
+                                                                 *cartesian_system);
+
+  const std::vector<double> result1 = Utilities::calculate_ridge_distance_and_spreading(mid_oceanic_ridges,
+                                      mid_oceanic_spreading_velocities,
+                                      cartesian_system,
+                                      position_in_natural_coordinates_1,
+                                      subducting_plate_velocities,
+                                      ridge_migration_times);
+  approval_tests.emplace_back(result1[0]); // spreading velocity at ridge
+  approval_tests.emplace_back(result1[1]); // ridge distance
+  approval_tests.emplace_back(result1[2]); // subducting velocity at trench
+  approval_tests.emplace_back(result1[3]); // ridge migration time
+
+  // Query point 2: locates outside of the ridge, current solution is to take the end point as the reference point
+  Point<3> position_2(1e3,-2e3,0,cartesian);
+  Objects::NaturalCoordinate position_in_natural_coordinates_2 = Objects::NaturalCoordinate(position_2,
+                                                                 *cartesian_system);
+
+  const std::vector<double> result2 = Utilities::calculate_ridge_distance_and_spreading(mid_oceanic_ridges,
+                                      mid_oceanic_spreading_velocities,
+                                      cartesian_system,
+                                      position_in_natural_coordinates_2,
+                                      subducting_plate_velocities,
+                                      ridge_migration_times);
+  approval_tests.emplace_back(result2[0]); // spreading velocity at ridge
+  approval_tests.emplace_back(result2[1]); // ridge distance
+  approval_tests.emplace_back(result2[2]); // subducting velocity at trench
+  approval_tests.emplace_back(result2[3]); // ridge migration time
+
+  // Query point 3: the nearest point on the ridge is in the middle of p2b and p2c
+  // thus it should have intermediate velocity values
+  Point<3> position_3(50e3,151e3,0,cartesian);
+  Objects::NaturalCoordinate position_in_natural_coordinates_3 = Objects::NaturalCoordinate(position_3,
+                                                                 *cartesian_system);
+
+  const std::vector<double> result3 = Utilities::calculate_ridge_distance_and_spreading(mid_oceanic_ridges,
+                                      mid_oceanic_spreading_velocities,
+                                      cartesian_system,
+                                      position_in_natural_coordinates_3,
+                                      subducting_plate_velocities,
+                                      ridge_migration_times);
+  approval_tests.emplace_back(result3[0]); // spreading velocity at ridge
+  approval_tests.emplace_back(result3[1]); // ridge distance
+  approval_tests.emplace_back(result3[2]); // subducting velocity at trench
+  approval_tests.emplace_back(result3[3]); // ridge migration time
+
+  // Query point 4: the nearest point on the ridge is in the middle of p2a and p2b
+  // thus it should have intermediate velocity values
+  Point<3> position_4(100e3,76e3,0,cartesian);
+  Objects::NaturalCoordinate position_in_natural_coordinates_4 = Objects::NaturalCoordinate(position_4,
+                                                                 *cartesian_system);
+
+  const std::vector<double> result4 = Utilities::calculate_ridge_distance_and_spreading(mid_oceanic_ridges,
+                                      mid_oceanic_spreading_velocities,
+                                      cartesian_system,
+                                      position_in_natural_coordinates_4,
+                                      subducting_plate_velocities,
+                                      ridge_migration_times);
+  approval_tests.emplace_back(result4[0]); // spreading velocity at ridge
+  approval_tests.emplace_back(result4[1]); // ridge distance
+  approval_tests.emplace_back(result4[2]); // subducting velocity at trench
+  approval_tests.emplace_back(result4[3]); // ridge migration time
+
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
+}
+
+TEST_CASE("WorldBuilder Utilities function: calculate_ridge_distance_and_spreading spherical")
+{
+  std::vector<double> approval_tests;
+
+  const std::unique_ptr<CoordinateSystems::Interface> spherical_system = CoordinateSystems::Interface::create("spherical", nullptr);;
+
+  // Ridge properties
+  const Point<2> p1a(std::array<double,2> {{0.3491, -0.6981}},spherical);
+  const Point<2> p1b(std::array<double,2> {{0.3491, 0.0}},spherical);
+  const Point<2> p2a(std::array<double,2> {{0.1745, 0.0}},spherical);
+  const Point<2> p2b(std::array<double,2> {{0.1745, 0.5236}},spherical);
+  const Point<2> p2c(std::array<double,2> {{0.3491, 0.6981}},spherical);
+  const std::vector<Point<2>> mid_ocean_ridges_segment_1 = {p1a, p1b};
+  const std::vector<Point<2>> mid_ocean_ridges_segment_2 = {p2a, p2b, p2c};
+
+  std::vector<std::vector<Point<2>>> mid_oceanic_ridges;
+  mid_oceanic_ridges.push_back(mid_ocean_ridges_segment_1);
+  mid_oceanic_ridges.push_back(mid_ocean_ridges_segment_2);
+
+  const double mid_oceanic_spreading_velocitie_1a =  1.0;
+  const double mid_oceanic_spreading_velocitie_1b =  2.0;
+  const double mid_oceanic_spreading_velocitie_2a =  3.0;
+  const double mid_oceanic_spreading_velocitie_2b =  4.0;
+  const double mid_oceanic_spreading_velocitie_2c =  5.0;
+
+  std::vector<double> mid_oceanic_spreading_velocities_segment1 = {mid_oceanic_spreading_velocitie_1a, mid_oceanic_spreading_velocitie_1b};
+  std::vector<double> mid_oceanic_spreading_velocities_segment2 = {mid_oceanic_spreading_velocitie_2a, mid_oceanic_spreading_velocitie_2b,
+                                                                   mid_oceanic_spreading_velocitie_2c
+                                                                  };
+
+  std::vector<std::vector<double>> mid_oceanic_spreading_velocities;
+  mid_oceanic_spreading_velocities.push_back(mid_oceanic_spreading_velocities_segment1);
+  mid_oceanic_spreading_velocities.push_back(mid_oceanic_spreading_velocities_segment2);
+
+  const std::vector<std::vector<double>> subducting_plate_velocities = {{0.0}};
+  const std::vector<double> &ridge_migration_times = {0.0};
+
+  // Query point 1, the nearest point on the ridge is in the middle of p1a and p1b
+  Point<3> position_1(6371e3, 0.1745, -0.3491, spherical);
+  Objects::NaturalCoordinate position_in_natural_coordinates_1 = Objects::NaturalCoordinate(Utilities::spherical_to_cartesian_coordinates(position_1.get_array()),
+                                                                 *spherical_system);
+
+  const std::vector<double> result1 = Utilities::calculate_ridge_distance_and_spreading(mid_oceanic_ridges,
+                                      mid_oceanic_spreading_velocities,
+                                      spherical_system,
+                                      position_in_natural_coordinates_1,
+                                      subducting_plate_velocities,
+                                      ridge_migration_times);
+  approval_tests.emplace_back(result1[0]); // spreading velocity at ridge
+  approval_tests.emplace_back(result1[1]); // ridge distance
+  approval_tests.emplace_back(result1[2]); // subducting velocity at trench
+  approval_tests.emplace_back(result1[3]); // ridge migration time
+
+  // Query point 2, the nearest point on the ridge is in the middle of p2b and p2c
+  Point<3> position_2(6371e3, 0.3491, 0.5236, spherical);
+  Objects::NaturalCoordinate position_in_natural_coordinates_2 = Objects::NaturalCoordinate(Utilities::spherical_to_cartesian_coordinates(position_2.get_array()),
+                                                                 *spherical_system);
+
+  const std::vector<double> result2 = Utilities::calculate_ridge_distance_and_spreading(mid_oceanic_ridges,
+                                      mid_oceanic_spreading_velocities,
+                                      spherical_system,
+                                      position_in_natural_coordinates_2,
+                                      subducting_plate_velocities,
+                                      ridge_migration_times);
+  approval_tests.emplace_back(result2[0]); // spreading velocity at ridge
+  approval_tests.emplace_back(result2[1]); // ridge distance
+  approval_tests.emplace_back(result2[2]); // subducting velocity at trench
+  approval_tests.emplace_back(result2[3]); // ridge migration time
+
+  // Query point 3, the nearest point on the ridge is p2b, the purpose is to test a negative value of longitude
+  Point<3> position_3(6371e3, -0.1745, 0.5236, spherical);
+  Objects::NaturalCoordinate position_in_natural_coordinates_3 = Objects::NaturalCoordinate(Utilities::spherical_to_cartesian_coordinates(position_3.get_array()),
+                                                                 *spherical_system);
+
+  const std::vector<double> result3 = Utilities::calculate_ridge_distance_and_spreading(mid_oceanic_ridges,
+                                      mid_oceanic_spreading_velocities,
+                                      spherical_system,
+                                      position_in_natural_coordinates_3,
+                                      subducting_plate_velocities,
+                                      ridge_migration_times);
+  approval_tests.emplace_back(result3[0]); // spreading velocity at ridge
+  approval_tests.emplace_back(result3[1]); // ridge distance
+  approval_tests.emplace_back(result3[2]); // subducting velocity at trench
+  approval_tests.emplace_back(result3[3]); // ridge migration time
+
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
