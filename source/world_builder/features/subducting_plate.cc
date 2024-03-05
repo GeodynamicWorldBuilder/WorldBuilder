@@ -28,6 +28,8 @@
 #include "world_builder/types/segment.h"
 #include "world_builder/types/unsigned_int.h"
 #include "world_builder/world.h"
+#include "world_builder/features/subducting_plate_models/composition/uniform.h"
+#include "world_builder/features/subducting_plate_models/composition/water_content.h"
 #include <algorithm>
 
 using namespace std;
@@ -488,6 +490,31 @@ namespace WorldBuilder
                    "Internal error: The size of coordinates (" << coordinates.size()
                    << ") and one_dimensional_coordinates (" << one_dimensional_coordinates.size() << ") are different.");*/
           // todo: explain
+          bool needs_water_plugin = false;
+          std::string str_lithology;
+          for (unsigned int i_property = 0; i_property < properties.size(); ++i_property)
+            {
+              if (properties[i_property][0] == 2) // requesting composition
+                {
+                  for (size_t current_section = 0; current_section < segment_vector.size(); current_section++)
+                    {
+                      for (size_t current_segment = 0; current_segment < segment_vector[current_section].size(); current_segment++)
+                        {
+                          for (const auto &composition_model: segment_vector[current_section][current_segment].composition_systems)
+                            {
+                              needs_water_plugin = dynamic_cast<const WorldBuilder::Features::SubductingPlateModels::Composition::WaterContent *>(composition_model.get()) != NULL;
+                              if (needs_water_plugin)
+                                {
+                                  break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+          // needs_water_plugin = false;
+          // std::string lithology_str;
           const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
             WorldBuilder::Utilities::distance_point_from_curved_planes(position_in_cartesian_coordinates,
                                                                        position_in_natural_coordinates,
@@ -498,7 +525,9 @@ namespace WorldBuilder
                                                                        starting_radius,
                                                                        this->world->parameters.coordinate_system,
                                                                        false,
-                                                                       this->bezier_curve);
+                                                                       this->bezier_curve,
+                                                                       needs_water_plugin,
+                                                                       this->world);
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
           const double distance_along_plane = distance_from_planes.distance_along_plane;
@@ -737,6 +766,7 @@ namespace WorldBuilder
                << ", starting_depth " << starting_depth
               );
 
+      std::string str_lithology;
       const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
         WorldBuilder::Utilities::distance_point_from_curved_planes(position_in_cartesian_coordinates,
                                                                    position_in_natural_coordinates,
