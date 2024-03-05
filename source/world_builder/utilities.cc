@@ -756,7 +756,6 @@ namespace WorldBuilder
 
               begin_segment = end_segment;
               previous_segments.push_back(begin_segment);
-
               WBAssert(!std::isnan(begin_segment[0]),
                        "Internal error: The begin_segment variable is not a number: " << begin_segment[0]);
               WBAssert(!std::isnan(begin_segment[1]),
@@ -903,9 +902,6 @@ namespace WorldBuilder
 
                                           else
                                             {
-                                              // Currently, when i_segment > 0, number_of_divisions starts at 4 here, meaning that
-                                              // the first integration point is initially halfway along the distance instead of starting
-                                              // at the beginning.
                                               interval_point = (check_point_2d - begin_segment_at_depth) * number_of_divisions;
                                               integration_point = begin_segment_at_depth + interval_point  / points_per_segment;
                                               integration_point_3d = closest_point_on_line_bottom_cartesian + x_axis * integration_point[0] + y_axis * integration_point[1];
@@ -1065,6 +1061,81 @@ namespace WorldBuilder
                                << ", BSPC[0] = " << BSPC[0] << ".");
                     }
 
+                  if (compute_water)
+                    {
+
+                      const unsigned int segment_points_test = 1;
+                      double increment_angle_difference;
+                      Point<2> increment_along_segment_test = BSPC;
+                      Point<3> integration_point_3d_test = check_point;
+                      Point<2> BSPC_unit_vector_test = begin_segment;
+                      Point<2> begin_segment_at_depth_test = begin_segment;
+                      bool checkpoint_in_current_segment = std::isfinite(new_distance);
+                      bool checkpoint_reached = std::isfinite(along_plane_distance);
+
+                      double depth_test;
+                      double pressure_test;
+                      double temperature_test;
+
+                      for (unsigned int lithology_ind_test = 0; lithology_ind_test < water_content.size(); ++lithology_ind_test)
+                        {
+                          std::vector<double> water_content_at_fixed_depth_test;
+                          water_content_at_fixed_depth_test.push_back(1000000);
+                          for (unsigned int division_number = 0; division_number <= segment_points_test; division_number++)
+                            {
+                              if (!checkpoint_in_current_segment)
+                                {
+                                  BSPC_unit_vector_test = (begin_segment - center_circle) / (begin_segment - center_circle).norm();
+                                  begin_segment_at_depth_test = radius_angle_circle - CPCR_norm < 0 ?
+                                                           CPCR_norm * BSPC_unit_vector_test :
+                                                           CPCR_norm * BSPC_unit_vector_test;
+                                  increment_angle_difference = (difference_in_angle_along_segment * division_number) / segment_points_test;
+                                  increment_along_segment_test[0] = std::cos(increment_angle_difference) * begin_segment_at_depth_test[0] - \
+                                                               std::sin(increment_angle_difference) * begin_segment_at_depth_test[1] + center_circle[0];
+                                  increment_along_segment_test[1] = std::sin(increment_angle_difference) * begin_segment_at_depth_test[0] + \
+                                                               std::cos(increment_angle_difference) * begin_segment_at_depth_test[1] + center_circle[1];
+
+                                  integration_point_3d_test = closest_point_on_line_bottom_cartesian + x_axis * increment_along_segment_test[0] + \
+                                                         y_axis * increment_along_segment_test[1];
+                                  depth_test = start_radius - integration_point_3d_test[2];
+                                  temperature_test = world->properties(integration_point_3d_test.get_array(), depth_test, {{{1,0,0}}})[0];
+                                  pressure_test = depth_test * 9.81 * 3300 / 1e9;
+                                  checkpoint_reached = true;
+                                }
+
+                              else
+                                {
+                                  if (checkpoint_reached)
+                                    {
+                                      break;
+                                    }
+                                  increment_angle_difference = (interpolated_angle_top - check_point_angle) * division_number / segment_points_test;
+                                  BSPC_unit_vector_test = (begin_segment - center_circle) / (begin_segment - center_circle).norm();
+                                  begin_segment_at_depth_test = radius_angle_circle - CPCR_norm < 0 ?
+                                                           CPCR_norm * BSPC_unit_vector_test :
+                                                           CPCR_norm * BSPC_unit_vector_test;
+                                  increment_along_segment_test[0] = std::cos(increment_angle_difference) * begin_segment_at_depth_test[0] - \
+                                                               std::sin(increment_angle_difference) * begin_segment_at_depth_test[1] + center_circle[0];
+                                  increment_along_segment_test[1] = std::sin(increment_angle_difference) * begin_segment_at_depth_test[0] + \
+                                                               std::cos(increment_angle_difference) * begin_segment_at_depth_test[1] + center_circle[1];
+                                  integration_point_3d_test = closest_point_on_line_bottom_cartesian + x_axis * increment_along_segment_test[0] + \
+                                                         y_axis * increment_along_segment_test[1];
+
+                                  depth_test = start_radius - integration_point_3d_test[2];
+                                  temperature_test = world->properties(integration_point_3d_test.get_array(), depth_test, {{{1,0,0}}})[0];
+                                  pressure_test = depth_test * 9.81 * 3300 / 1e9;
+                                }
+
+                              water_content_at_fixed_depth_test.push_back(calculate_water_content(pressure_test, temperature_test, lithology_ind_test));
+                              if (water_content_at_fixed_depth_test[division_number + (1 + segment_points_test) * current_segment] < water_content_at_fixed_depth_test[division_number + (1 + segment_points_test) * current_segment + 1])
+                                {
+                                  water_content_at_fixed_depth_test[division_number + (1 + segment_points_test) * current_segment + 1] = water_content_at_fixed_depth_test[division_number + (1 + segment_points_test) * current_segment];
+                                }
+                            }
+                          water_content[lithology_ind_test] = water_content_at_fixed_depth_test.back();
+                        }
+
+                    }
                 }
 
               // Now we need to see whether we need to update the information
@@ -1583,6 +1654,7 @@ namespace WorldBuilder
       result.push_back(age_at_trench);
       result.push_back(effective_plate_age);
       return result;
+    }
 
 
     double
