@@ -15,7 +15,7 @@
 	 "temperature models":[
 	 {"model":"mass conserving", 
 	 "density":3300, "thermal conductivity":3.3,"adiabatic heating":true,
-	 "plate velocity":0.04,
+	 "spreading velocity":0.04, "subducting velocity": 0.04,
 	 "ridge coordinates":[[[2900e3,-100e3],[2900e3,100e3]]],
 	 "coupling depth":120e3, 
 	 "forearc cooling factor":10.0, 
