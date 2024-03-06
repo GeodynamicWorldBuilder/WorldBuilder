@@ -118,7 +118,7 @@ Below we show an example input file for a Cartesian model with a subducting plat
 
 Combining several of these features and changing the `coordinate system` to `spherical` can create the model setup shown in Figure 1: A plate subducting beneath an overriding ocean and a rising plume impinging on the base of the lithosphere between a mid-ocean ridge and a passive margin. The resulting input file is just 85 lines of GWB input formatted in the same way as in the example input file above.
 
-![A schematic example of what can be built with 85 lines of a GWB input file formatted in the same way as in the example input file shown above. \label{fig:example}](../../sphinx/_static/images/user_manual/basic_starter_tutorial/BST_19.png)
+![A schematic example of what can be built with 85 lines of a GWB input file formatted in the same way as in the example input file shown above. This includes a slab with variable dip and thickness along depth and trench subducting under an oceanic plate on the right side of the ridge, a passive continental margin, with layers with variable thickness with it, on the left and a mantle plume in the center. The temperature of the continent is linear, the oceanic plates are defined by a half-space cooling model, the slab temperature is defined by a mass conversing temperature model and the plume adds heat based on a Gaussian around the center.\label{fig:example}](../../sphinx/_static/images/user_manual/basic_starter_tutorial/BST_19.png)
 
 
 # Acknowledgements
