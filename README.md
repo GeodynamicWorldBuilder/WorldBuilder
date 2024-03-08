@@ -21,7 +21,7 @@ For more information see the [GWB site](https://geodynamicworldbuilder.github.io
 
 ## Frequently Asked Questions (FAQ)
 ### What are the minimum requirements to compile the library and tools?
-For GWB version 0.5.0 only a C++14 compiler and CMake version higher than 2.8.12 are required to compile the library tools. Note that for some optional features (such as certain wrappers and unity build) a higher version of CMake and other dependencies may be needed (e.g., a Fortran compiler to compile the Fortran wrapper).
+For GWB version 0.6.0 only a C++14 compiler and CMake version higher than 2.8.12 are required to compile the library tools. Note that for some optional features (such as certain wrappers and unity build) a higher version of CMake and other dependencies may be needed (e.g., a Fortran compiler to compile the Fortran wrapper).
 ### What do I do when I have a question or want to request a feature?
 If you have a question about the code and you can not find the answer easily in the documentation or the question is not already raised as an [issue](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues), please let us know by opening an [issue on github](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/new). This is also the preferred method for asking for new features for GWB.
 
@@ -38,9 +38,9 @@ The developers of the Geodynamic World Builder request that you cite the followi
 
 Fraters, M., Thieulot, C., van den Berg, A., and Spakman, W.: The Geodynamic World Builder: a solution for complex initial conditions in numerical modelling, Solid Earth, [https://doi.org/10.5194/se-10-1785-2019](https://doi.org/10.5194/se-10-1785-2019), 2019.
 
-And cite the specific version of the software used. Version 0.5.0 can be cited as:
+And cite the specific version of the software used. Version 0.6.0 can be cited as:
 
-Menno Fraters and others. 2023, June 6. The Geodynamic World Builder v0.5.0. Zenodo. [https://doi.org/10.5281/zenodo.7998525](https://doi.org/10.5281/zenodo.7998525).
+Menno Fraters and others. 2023, June 6. The Geodynamic World Builder v0.6.0. Zenodo. [https://doi.org/10.5281/zenodo.10794862](https://doi.org/10.5281/zenodo.10794862).
 
 ### How can I follow the progress of this project?
 There are multiple ways in which you can follow this project:
