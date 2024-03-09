@@ -1,5 +1,5 @@
 ---
-title: 'The Geodynamic World Builder: A Planetary structure creator for the geosciences'
+title: 'The Geodynamic World Builder: A planetary structure creator for the geosciences'
 tags:
   - C++
   - CPP
@@ -48,7 +48,7 @@ affiliations:
  - name: New Mexico Tech, USA
    index: 4
  - name: University of Oslo, Norway
-   index: 4
+   index: 5
 date: 28 February 2023
 bibliography: paper.bib
 ---
