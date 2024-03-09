@@ -189,7 +189,7 @@ Creating code blocks is similar to making notes or todos. Instead of `{note}` yo
 :lineno-start: 1
 :emphasize-lines: 3,4
  {
-    "version":0.6.0,
+    "version":1.0,
     "coordinate system": {"model":"cartesian"}, 
  }
 :::
@@ -201,7 +201,7 @@ The lines starting with a colon (:) specify certain parameters which can be set,
 :lineno-start: 1
 :emphasize-lines: 3,4
  {
-    "version":0.6.0,
+    "version":1.0,
     "coordinate system": {"model":"cartesian"}, 
     "Features":[]
  }
@@ -215,7 +215,7 @@ If you need to wrap a code block in a code block, you just use more : on the out
 :lineno-start: 1
 :emphasize-lines: 3,4
  {
-    "version":0.6.0,
+    "version":1.0,
     "coordinate system": {"model":"cartesian"}, 
  }
 :::

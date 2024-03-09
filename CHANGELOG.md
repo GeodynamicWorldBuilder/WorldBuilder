@@ -9,6 +9,14 @@ Add new entries a the bottom of the current list in the subheading. Item format:
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+
+### Changed
+
+### Fixed
+
+
 ## [0.6.0]
 ### Added
 - Implemented the framework that will allow the mass conserving temperature model to account for the the movement of a spreading center through time. \[Daniel Douglas; Haoyuan Li; 2024-02-29; [#654](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/654)\]

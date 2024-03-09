@@ -1,5 +1,5 @@
 {
-  "version":"0.6",
+  "version":"1.0",
   "coordinate system":{"model":"cartesian"},
   "cross section":[[0,0],[8000e3,0]],
   "surface temperature":273, "potential mantle temperature":1573,
