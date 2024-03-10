@@ -26,20 +26,20 @@ authors:
   - name: Timo Heister
     orcid: 0000-0002-8137-3903
     affiliation: "3"
-  - name:  Juliane Dannberg
-    orcid: 0000-0003-0357-7115
-    affiliation: "1"
   - name: Haoyuan Li
     orcid: 0000-0003-0676-9884
     affiliation: "2"
   - name: Daniel Douglas
     orcid: 0000-0002-7871-018X
     affiliation: "4"
-  - name: Yijun Wang
-    orcid: 0000-0002-7637-3239
-    affiliation: "5"
+  - name: Juliane Dannberg
+    orcid: 0000-0003-0357-7115
+    affiliation: "1"
   - name: Wolfgang Bangerth
     orcid: 0000-0003-2311-9402
+    affiliation: "5"
+  - name: Yijun Wang
+    orcid: 0000-0002-7637-3239
     affiliation: "6"
 affiliations:
  - name: Universiy of Florida, USA
@@ -50,11 +50,11 @@ affiliations:
    index: 3
  - name: New Mexico Tech, USA
    index: 4
- - name: University of Oslo, Norway
-   index: 5
  - name: Colorado State University, USA
+   index: 5
+ - name: University of Oslo, Norway
    index: 6
-date: 28 February 2023
+date: 11 March 2024
 bibliography: paper.bib
 ---
 
@@ -121,7 +121,7 @@ Below we show an example input file for a Cartesian model that contains a single
 }
 ```
 
-A more complicated example (only requiring 85 lines) features a spherical geometry, a spatially variable subducting plate, continental plate, oceanic plate and plume can be seen in Fig 2.
+A more complicated example (only requiring 85 lines, and can be found [here](https://github.com/GeodynamicWorldBuilder/WorldBuilder/blob/GWB-v1.0.0/doc/sphinx/_static/gwb_input_files/BST_19_spherical_models.wb)) features a spherical geometry, a spatially variable subducting plate, continental plate, oceanic plate and plume can be seen in Fig 2.
 
 ![A schematic example of what can be built with 85 lines of a GWB input file formatted in the same way as in the example input file shown above. This includes a slab with variable dip and thickness along strike and down dip, subducting under an oceanic plate on the right side of the ridge, as well as a passive continental margin with layers of variable on the left side of the ridge, and a mantle plume beneath the ridge. The temperature of the continent is linear, the oceanic plates are defined by a half-space cooling model, the slab temperature is defined by a mass conserving temperature model and the plume adds heat based on a Gaussian around the center.\label{fig:example}](../../sphinx/_static/images/user_manual/basic_starter_tutorial/BST_19.png)
 
