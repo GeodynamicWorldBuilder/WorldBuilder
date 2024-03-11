@@ -13,6 +13,7 @@ ba = "ba"
 
 # Don't correct some other abbreviations
 FOT = "FOT"
+OCE = "OCE"
 GWB = "GWB"
 NWO = "NWO"
 SEH = "SEH"
