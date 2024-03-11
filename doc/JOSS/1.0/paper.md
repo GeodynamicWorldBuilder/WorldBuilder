@@ -75,7 +75,7 @@ Today's computational resources, infrastructure, and numerical methods allow for
 
 These issues lead to a number of problems with the reproducibility and reliability of modeling studies, which threaten to undermine the predictive power and usefulness of modeling results, and highlighting the need for a way to describe model setups that is easy, efficient, and robust. The GWB has been designed to address these challenges, by creating human readable, parameterized, portable, reproducible, and shareable geodynamic model setups. Critically, the GWB comes with its own programs to visualize the constructed model through applications like Paraview. Creating the models requires no programming knowledge. Therefore, the GWB can be easily used to visualize tectonic and geodynamic settings for publications, teaching, and public outreach. 
 
-![A workflow diagram for how a world builder file can be used to create and visualize a geodynamic model. Note that the input files for the intermediate programs are omitted.](workflow_diagram.png)
+![A workflow diagram for how a world builder file can be used to create and visualize a geodynamic model.](workflow_diagram.png)
 
 The GWB has been used in several published studies to model global fault patterns, plume, and plate dynamics (@Saxena_Dannberg_etal_2023, @Gea_Negredo_etal_2023, @Sandiford_Craig_timothy_2023, and @vanderWiel_Hinsbergen_etal_2024). Other tools to solve this problem have emerged at around the same time as the first GWB release (@Fraters_Thieulot_etal_2019). Examples include GeomIO (@Bauville_Baumann_2019 and @Spang_Baumann_2022), which uses an approach based on vector graphics; Easy (https://easyinit.readthedocs.io/), which uses a more generic function-based approach; UWGeodynamics (@Beucher_Moresi_etal_2019), which is specifically designed for Underworld (@Moresi_Dufour_2002); and GemPy (@Varga_Schaaf_2019 and @Schaaf_Varga_2021), which is designed for structural modeling. The GWB was designed to be a more general planetary structure creator, using the methods shown below.
 
@@ -107,15 +107,15 @@ Below we show an example input file for a Cartesian model that contains a single
 
 ```json
 {
-  "version"           : "1.0",
-  "coordinate system" : {"model":"cartesian"},
-  "features"          :
+  "version": "1.0",
+  "coordinate system": {"model":"cartesian"},
+  "features":
   [
     { 
-      "model" : "subducting plate",  "name" : "Slab",  "dip point" : [0,0],
-      "coordinates" : [[1500e3,1000e3],[1600e3,350e3],[1500e3,0]],
-      "segments" : [{"length":300e3, "thickness":[100e3], "angle":[0,60]}],
-      "temperature models" : [{"model":"plate model", "plate velocity":0.02}],
+      "model": "subducting plate",  "name": "Slab",  "dip point": [0,0],
+      "coordinates": [[1500e3,1000e3],[1600e3,350e3],[1500e3,0]],
+      "segments": [{"length":300e3, "thickness": [100e3], "angle": [0,60]}],
+      "temperature models": [{"model": "plate model", "plate velocity": 0.02}],
     }
   ]
 }
