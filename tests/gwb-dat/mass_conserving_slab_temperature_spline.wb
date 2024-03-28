@@ -137,7 +137,8 @@
           "density": 3300,
           "thermal conductivity": 3.3,
           "adiabatic heating": true,
-          "plate velocity": 0.05,
+          "spreading velocity": 0.05,
+          "subducting velocity": 0.05,
           "ridge coordinates": [
             [
               [
