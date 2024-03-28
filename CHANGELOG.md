@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Added
 
 ### Changed
+- In the "mass conserving" model, change the name of the entry "plate velocity" to "spreading velocity" \[Haoyuan Li; 2024-03-11; [#694](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/694)\]
 
 ### Fixed
 

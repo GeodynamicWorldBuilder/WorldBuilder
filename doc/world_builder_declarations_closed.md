@@ -11202,7 +11202,7 @@
 - **type**:object
 - **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
 - **additionalProperties**:false
-- **required**:[model, plate velocity]
+- **required**:[model, spreading velocity, subducting velocity]
 
 ::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/model
 :name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_model
@@ -11246,64 +11246,64 @@
 - **description**:The reference density of the subducting plate in $kg/m^3$
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity
-:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity
+::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/spreading velocity
+:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_spreading-velocity
 
-- **description**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
-:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf
-:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf
+- **description**:The velocity with which the ridge spreads and create the plate in meters per year. Default is 5 cm/yr
+:::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/spreading velocity/oneOf
+:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf
 
-::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/1
-:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_1
+::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/spreading velocity/oneOf/1
+:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_1
 
 - **default value**:0.05
 - **type**:number
 - **description**:
 ::::::::::::
 
-::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2
-:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2
+::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2
+:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:
-:::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items
-:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items
+:::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items
+:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items
 
 - **type**:array
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:18446744073709551615
 - **description**:
-::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items
-:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items
+::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items
+:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items
 
-:::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf
-:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf
+:::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items/anyOf
+:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items_anyOf
 
-::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/1
-:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_1
+::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items/anyOf/1
+:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items_anyOf_1
 
 - **type**:number
 - **default value**:0.05
 ::::::::
 
-::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2
-:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2
+::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items/anyOf/2
+:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items_anyOf_2
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:4294967295
-:::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items
-:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items
+:::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items/anyOf/2/items
+:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items_anyOf_2_items
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:18446744073709551615
-::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items/items
-:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items_items
+::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items/anyOf/2/items/items
+:name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items_anyOf_2_items_items
 
 - **type**:number
 ::::::
@@ -11325,14 +11325,14 @@
 ::::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/subducting velocity
 :name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_subducting-velocity
 
-- **description**:The velocity with which the ridge is moving through time, and how long the ridge has been moving. First value is the velocity, second is the time. Default is [0 cm/yr, 0 yr]
+- **description**:The velocity with which the slab is subducting through time. Default is 5 cm/yr
 :::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/subducting velocity/oneOf
 :name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_subducting-velocity_oneOf
 
 ::::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/subducting velocity/oneOf/1
 :name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_subducting-velocity_oneOf_1
 
-- **default value**:-1.0
+- **default value**:0.05
 - **type**:number
 - **description**:
 ::::::::::::
@@ -11356,7 +11356,7 @@
 ::::::::::{dropdown} /features/items/oneOf/6/segments/items/temperature models/items/oneOf/3/subducting velocity/oneOf/2/items/items
 :name: closed_features_items_oneOf_6_segments_items_temperature-models_items_oneOf_3_subducting-velocity_oneOf_2_items_items
 
-- **default value**:-1.0
+- **default value**:0.05
 - **type**:number
 - **description**:
 ::::::::::
@@ -12402,7 +12402,7 @@
 - **type**:object
 - **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
 - **additionalProperties**:false
-- **required**:[model, plate velocity]
+- **required**:[model, spreading velocity, subducting velocity]
 
 ::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/model
 :name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_model
@@ -12446,64 +12446,64 @@
 - **description**:The reference density of the subducting plate in $kg/m^3$
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity
-:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity
+::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/spreading velocity
+:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_spreading-velocity
 
-- **description**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
-:::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity/oneOf
-:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity_oneOf
+- **description**:The velocity with which the ridge spreads and create the plate in meters per year. Default is 5 cm/yr
+:::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/spreading velocity/oneOf
+:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_spreading-velocity_oneOf
 
-::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity/oneOf/1
-:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity_oneOf_1
+::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/spreading velocity/oneOf/1
+:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_spreading-velocity_oneOf_1
 
 - **default value**:0.05
 - **type**:number
 - **description**:
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity/oneOf/2
-:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity_oneOf_2
+::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/spreading velocity/oneOf/2
+:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:
-:::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity/oneOf/2/items
-:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items
+:::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items
+:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items
 
 - **type**:array
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:18446744073709551615
 - **description**:
-::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items
-:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items
+::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items
+:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items
 
-:::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf
-:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf
+:::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items/anyOf
+:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items_anyOf
 
-::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/1
-:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_1
+::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items/anyOf/1
+:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items_anyOf_1
 
 - **type**:number
 - **default value**:0.05
 ::::::::::
 
-::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2
-:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2
+::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items/anyOf/2
+:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items_anyOf_2
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:4294967295
-:::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items
-:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items
+:::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items/anyOf/2/items
+:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items_anyOf_2_items
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:18446744073709551615
-::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items/items
-:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items_items
+::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items/anyOf/2/items/items
+:name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items_anyOf_2_items_items
 
 - **type**:number
 ::::::::
@@ -12525,14 +12525,14 @@
 ::::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/subducting velocity
 :name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_subducting-velocity
 
-- **description**:The velocity with which the ridge is moving through time, and how long the ridge has been moving. First value is the velocity, second is the time. Default is [0 cm/yr, 0 yr]
+- **description**:The velocity with which the slab is subducting through time. Default is 5 cm/yr
 :::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/subducting velocity/oneOf
 :name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_subducting-velocity_oneOf
 
 ::::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/subducting velocity/oneOf/1
 :name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_subducting-velocity_oneOf_1
 
-- **default value**:-1.0
+- **default value**:0.05
 - **type**:number
 - **description**:
 ::::::::::::::
@@ -12556,7 +12556,7 @@
 ::::::::::::{dropdown} /features/items/oneOf/6/temperature models/items/oneOf/3/subducting velocity/oneOf/2/items/items
 :name: closed_features_items_oneOf_6_temperature-models_items_oneOf_3_subducting-velocity_oneOf_2_items_items
 
-- **default value**:-1.0
+- **default value**:0.05
 - **type**:number
 - **description**:
 ::::::::::::
@@ -13706,7 +13706,7 @@
 - **type**:object
 - **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
 - **additionalProperties**:false
-- **required**:[model, plate velocity]
+- **required**:[model, spreading velocity, subducting velocity]
 
 ::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/model
 :name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_model
@@ -13750,64 +13750,64 @@
 - **description**:The reference density of the subducting plate in $kg/m^3$
 ::::::::::::
 
-::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity
-:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/spreading velocity
+:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_spreading-velocity
 
-- **description**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
-:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf
-:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf
+- **description**:The velocity with which the ridge spreads and create the plate in meters per year. Default is 5 cm/yr
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/spreading velocity/oneOf
+:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf
 
-::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/1
-:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_1
+::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/spreading velocity/oneOf/1
+:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_1
 
 - **default value**:0.05
 - **type**:number
 - **description**:
 ::::::::::
 
-::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2
-:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2
+::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2
+:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:
-:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items
-:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items
+:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items
 
 - **type**:array
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:18446744073709551615
 - **description**:
-::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items
-:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items
+::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items
+:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items
 
-:::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf
-:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf
+:::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items/anyOf
+:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items_anyOf
 
-::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/1
-:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_1
+::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items/anyOf/1
+:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items_anyOf_1
 
 - **type**:number
 - **default value**:0.05
 ::::::
 
-::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2
-:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2
+::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items/anyOf/2
+:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items_anyOf_2
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:4294967295
-:::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items
-:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items
+:::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items/anyOf/2/items
+:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items_anyOf_2_items
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:18446744073709551615
-::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items/items
-:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items_items
+::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items/anyOf/2/items/items
+:name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items_anyOf_2_items_items
 
 - **type**:number
 ::::
@@ -13829,14 +13829,14 @@
 ::::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/subducting velocity
 :name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_subducting-velocity
 
-- **description**:The velocity with which the ridge is moving through time, and how long the ridge has been moving. First value is the velocity, second is the time. Default is [0 cm/yr, 0 yr]
+- **description**:The velocity with which the slab is subducting through time. Default is 5 cm/yr
 :::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/subducting velocity/oneOf
 :name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_subducting-velocity_oneOf
 
 ::::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/subducting velocity/oneOf/1
 :name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_subducting-velocity_oneOf_1
 
-- **default value**:-1.0
+- **default value**:0.05
 - **type**:number
 - **description**:
 ::::::::::
@@ -13860,7 +13860,7 @@
 ::::::::{dropdown} /features/items/oneOf/6/sections/items/segments/items/temperature models/items/oneOf/3/subducting velocity/oneOf/2/items/items
 :name: closed_features_items_oneOf_6_sections_items_segments_items_temperature-models_items_oneOf_3_subducting-velocity_oneOf_2_items_items
 
-- **default value**:-1.0
+- **default value**:0.05
 - **type**:number
 - **description**:
 ::::::::
@@ -14906,7 +14906,7 @@
 - **type**:object
 - **description**:Mass conserving temperature model. The temperature model uses the heat content (proportional to to thermal mass anomaly) to define a smooth temperature profile that conserves mass along the slab length. An empirical model, using error functions for smooth transitions, is used to  define how the minimum temperature increases with depth and how the location of the minimum temperature shifts into the slab interior. The slab is divided into top and bottom parts, which meet at the location where the minimum temperature occurs in the slab. For the bottom slab, the temperature is defined by a half-space cooling model. For the top of the slab the temperature is defined by one side of a 1D infinite space cooling model: this function was chosen to have a smoother temperature function across the minimum temperature position. The age of the overriding plate is used so the slab temperature at shallow depth smoothly transitions to the temperature of the overriding plate: this is not perfect, and is affected by the value of "top truncation" parameter subducting plate. Notes:1) the parameter "thickness" for the subducting plate segments needs to be defined but is not used. 2) because we use a negative truncation for distance above the slab, it is recommended to usedepth method:begin at end segment, in the main part of the world-builder file.Other methods may lead to gpas in temperatures at the segment boundaries.3)the empirical model used to define how Tmin increases with depth and how the position of Tmin shift with depth is expected to change somewhat after better calibrating with further tests.
 - **additionalProperties**:false
-- **required**:[model, plate velocity]
+- **required**:[model, spreading velocity, subducting velocity]
 
 ::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/model
 :name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_model
@@ -14950,64 +14950,64 @@
 - **description**:The reference density of the subducting plate in $kg/m^3$
 ::::::::::::::
 
-::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity
-:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity
+::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/spreading velocity
+:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_spreading-velocity
 
-- **description**:The velocity with which the plate subducts in meters per year. Default is 5 cm/yr
-:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf
-:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf
+- **description**:The velocity with which the ridge spreads and create the plate in meters per year. Default is 5 cm/yr
+:::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/spreading velocity/oneOf
+:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf
 
-::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/1
-:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_1
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/spreading velocity/oneOf/1
+:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_1
 
 - **default value**:0.05
 - **type**:number
 - **description**:
 ::::::::::::
 
-::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2
-:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2
+::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2
+:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2
 
 - **type**:array
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
 - **description**:
-:::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items
-:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items
+:::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items
+:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items
 
 - **type**:array
 - **additionalProperties**:false
 - **minItems**:1
 - **maxItems**:18446744073709551615
 - **description**:
-::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items
-:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items
+::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items
+:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items
 
-:::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf
-:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf
+:::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items/anyOf
+:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items_anyOf
 
-::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/1
-:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_1
+::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items/anyOf/1
+:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items_anyOf_1
 
 - **type**:number
 - **default value**:0.05
 ::::::::
 
-::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2
-:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2
+::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items/anyOf/2
+:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items_anyOf_2
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:4294967295
-:::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items
-:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items
+:::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items/anyOf/2/items
+:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items_anyOf_2_items
 
 - **type**:array
 - **minItems**:1
 - **maxItems**:18446744073709551615
-::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/plate velocity/oneOf/2/items/items/anyOf/2/items/items
-:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_plate-velocity_oneOf_2_items_items_anyOf_2_items_items
+::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/spreading velocity/oneOf/2/items/items/anyOf/2/items/items
+:name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_spreading-velocity_oneOf_2_items_items_anyOf_2_items_items
 
 - **type**:number
 ::::::
@@ -15029,14 +15029,14 @@
 ::::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/subducting velocity
 :name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_subducting-velocity
 
-- **description**:The velocity with which the ridge is moving through time, and how long the ridge has been moving. First value is the velocity, second is the time. Default is [0 cm/yr, 0 yr]
+- **description**:The velocity with which the slab is subducting through time. Default is 5 cm/yr
 :::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/subducting velocity/oneOf
 :name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_subducting-velocity_oneOf
 
 ::::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/subducting velocity/oneOf/1
 :name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_subducting-velocity_oneOf_1
 
-- **default value**:-1.0
+- **default value**:0.05
 - **type**:number
 - **description**:
 ::::::::::::
@@ -15060,7 +15060,7 @@
 ::::::::::{dropdown} /features/items/oneOf/6/sections/items/temperature models/items/oneOf/3/subducting velocity/oneOf/2/items/items
 :name: closed_features_items_oneOf_6_sections_items_temperature-models_items_oneOf_3_subducting-velocity_oneOf_2_items_items
 
-- **default value**:-1.0
+- **default value**:0.05
 - **type**:number
 - **description**:
 ::::::::::

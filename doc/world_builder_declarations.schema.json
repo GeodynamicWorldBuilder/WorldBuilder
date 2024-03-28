@@ -7659,7 +7659,8 @@
                                                         "additionalProperties": false,
                                                         "required": [
                                                             "model",
-                                                            "plate velocity"
+                                                            "spreading velocity",
+                                                            "subducting velocity"
                                                         ],
                                                         "properties": {
                                                             "model": {
@@ -7695,8 +7696,8 @@
                                                                 "type": "number",
                                                                 "description": "The reference density of the subducting plate in $kg/m^3$"
                                                             },
-                                                            "plate velocity": {
-                                                                "description": "The velocity with which the plate subducts in meters per year. Default is 5 cm/yr",
+                                                            "spreading velocity": {
+                                                                "description": "The velocity with which the ridge spreads and create the plate in meters per year. Default is 5 cm/yr",
                                                                 "oneOf": [
                                                                     {
                                                                         "default value": 0.05,
@@ -7741,10 +7742,10 @@
                                                                 ]
                                                             },
                                                             "subducting velocity": {
-                                                                "description": "The velocity with which the ridge is moving through time, and how long the ridge has been moving. First value is the velocity, second is the time. Default is [0 cm/yr, 0 yr]",
+                                                                "description": "The velocity with which the slab is subducting through time. Default is 5 cm/yr",
                                                                 "oneOf": [
                                                                     {
-                                                                        "default value": -1.0,
+                                                                        "default value": 0.05,
                                                                         "type": "number",
                                                                         "description": ""
                                                                     },
@@ -7761,7 +7762,7 @@
                                                                             "uniqueItems": false,
                                                                             "description": "",
                                                                             "items": {
-                                                                                "default value": -1.0,
+                                                                                "default value": 0.05,
                                                                                 "type": "number",
                                                                                 "description": ""
                                                                             }
@@ -8514,7 +8515,8 @@
                                             "additionalProperties": false,
                                             "required": [
                                                 "model",
-                                                "plate velocity"
+                                                "spreading velocity",
+                                                "subducting velocity"
                                             ],
                                             "properties": {
                                                 "model": {
@@ -8550,8 +8552,8 @@
                                                     "type": "number",
                                                     "description": "The reference density of the subducting plate in $kg/m^3$"
                                                 },
-                                                "plate velocity": {
-                                                    "description": "The velocity with which the plate subducts in meters per year. Default is 5 cm/yr",
+                                                "spreading velocity": {
+                                                    "description": "The velocity with which the ridge spreads and create the plate in meters per year. Default is 5 cm/yr",
                                                     "oneOf": [
                                                         {
                                                             "default value": 0.05,
@@ -8596,10 +8598,10 @@
                                                     ]
                                                 },
                                                 "subducting velocity": {
-                                                    "description": "The velocity with which the ridge is moving through time, and how long the ridge has been moving. First value is the velocity, second is the time. Default is [0 cm/yr, 0 yr]",
+                                                    "description": "The velocity with which the slab is subducting through time. Default is 5 cm/yr",
                                                     "oneOf": [
                                                         {
-                                                            "default value": -1.0,
+                                                            "default value": 0.05,
                                                             "type": "number",
                                                             "description": ""
                                                         },
@@ -8616,7 +8618,7 @@
                                                                 "uniqueItems": false,
                                                                 "description": "",
                                                                 "items": {
-                                                                    "default value": -1.0,
+                                                                    "default value": 0.05,
                                                                     "type": "number",
                                                                     "description": ""
                                                                 }
@@ -9439,7 +9441,8 @@
                                                                     "additionalProperties": false,
                                                                     "required": [
                                                                         "model",
-                                                                        "plate velocity"
+                                                                        "spreading velocity",
+                                                                        "subducting velocity"
                                                                     ],
                                                                     "properties": {
                                                                         "model": {
@@ -9475,8 +9478,8 @@
                                                                             "type": "number",
                                                                             "description": "The reference density of the subducting plate in $kg/m^3$"
                                                                         },
-                                                                        "plate velocity": {
-                                                                            "description": "The velocity with which the plate subducts in meters per year. Default is 5 cm/yr",
+                                                                        "spreading velocity": {
+                                                                            "description": "The velocity with which the ridge spreads and create the plate in meters per year. Default is 5 cm/yr",
                                                                             "oneOf": [
                                                                                 {
                                                                                     "default value": 0.05,
@@ -9521,10 +9524,10 @@
                                                                             ]
                                                                         },
                                                                         "subducting velocity": {
-                                                                            "description": "The velocity with which the ridge is moving through time, and how long the ridge has been moving. First value is the velocity, second is the time. Default is [0 cm/yr, 0 yr]",
+                                                                            "description": "The velocity with which the slab is subducting through time. Default is 5 cm/yr",
                                                                             "oneOf": [
                                                                                 {
-                                                                                    "default value": -1.0,
+                                                                                    "default value": 0.05,
                                                                                     "type": "number",
                                                                                     "description": ""
                                                                                 },
@@ -9541,7 +9544,7 @@
                                                                                         "uniqueItems": false,
                                                                                         "description": "",
                                                                                         "items": {
-                                                                                            "default value": -1.0,
+                                                                                            "default value": 0.05,
                                                                                             "type": "number",
                                                                                             "description": ""
                                                                                         }
@@ -10294,7 +10297,8 @@
                                                         "additionalProperties": false,
                                                         "required": [
                                                             "model",
-                                                            "plate velocity"
+                                                            "spreading velocity",
+                                                            "subducting velocity"
                                                         ],
                                                         "properties": {
                                                             "model": {
@@ -10330,8 +10334,8 @@
                                                                 "type": "number",
                                                                 "description": "The reference density of the subducting plate in $kg/m^3$"
                                                             },
-                                                            "plate velocity": {
-                                                                "description": "The velocity with which the plate subducts in meters per year. Default is 5 cm/yr",
+                                                            "spreading velocity": {
+                                                                "description": "The velocity with which the ridge spreads and create the plate in meters per year. Default is 5 cm/yr",
                                                                 "oneOf": [
                                                                     {
                                                                         "default value": 0.05,
@@ -10376,10 +10380,10 @@
                                                                 ]
                                                             },
                                                             "subducting velocity": {
-                                                                "description": "The velocity with which the ridge is moving through time, and how long the ridge has been moving. First value is the velocity, second is the time. Default is [0 cm/yr, 0 yr]",
+                                                                "description": "The velocity with which the slab is subducting through time. Default is 5 cm/yr",
                                                                 "oneOf": [
                                                                     {
-                                                                        "default value": -1.0,
+                                                                        "default value": 0.05,
                                                                         "type": "number",
                                                                         "description": ""
                                                                     },
@@ -10396,7 +10400,7 @@
                                                                             "uniqueItems": false,
                                                                             "description": "",
                                                                             "items": {
-                                                                                "default value": -1.0,
+                                                                                "default value": 0.05,
                                                                                 "type": "number",
                                                                                 "description": ""
                                                                             }

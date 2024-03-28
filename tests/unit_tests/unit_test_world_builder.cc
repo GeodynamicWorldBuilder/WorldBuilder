@@ -7743,3 +7743,38 @@ TEST_CASE("WorldBuilder Utilities function: calculate_ridge_distance_and_spreadi
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
 }
 
+
+TEST_CASE("WorldBuilder Utilities function: calculate_effective_trench_and_plate_ages")
+{
+  std::vector<double> approval_tests;
+
+  // test 1:  trivial case, spreading velocity = subducting velocity and no ridge migration
+  const std::vector<double> ridge_parameters_1 = {4.75299e-10, 1.04512e+06, 4.75299e-10, 0.0}; // m/s, m, m/s, s
+  const double distance_along_plane_1 = 1000e3;
+  std::vector<double> result1 = Utilities::calculate_effective_trench_and_plate_ages(ridge_parameters_1, distance_along_plane_1);
+
+  approval_tests.emplace_back(result1[0]); // age at trench
+  approval_tests.emplace_back(result1[1]); // effective plate age
+
+  // test 2:  2 * spreading velocity = subducting velocity and no ridge migration, trench retreating
+  std::vector<double> ridge_parameters_2 = {4.75299e-10, 1.04512e+06, 9.50598e-10, 0.0}; // m/s, m, m/s, s
+  const double distance_along_plane_2 = 1000e3;
+  std::vector<double> result2 = Utilities::calculate_effective_trench_and_plate_ages(ridge_parameters_2, distance_along_plane_2);
+
+  approval_tests.emplace_back(result2[0]); // age at trench
+  approval_tests.emplace_back(result2[1]); // effective plate age
+
+  ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
+
+  // test 3: negative subducting velocity triggers error
+  std::vector<double> ridge_parameters_3 = {4.75299e-10, 1.04512e+06, -9.50598e-10, 0.0}; // m/s, m, m/s, s
+  const double distance_along_plane_3 = 1000e3;
+  CHECK_THROWS_WITH(Utilities::calculate_effective_trench_and_plate_ages(ridge_parameters_3, distance_along_plane_3),
+                    Contains("The subducting velocity is less than 0."));
+
+  // test 4:  subducting velocity is too small, causing negative trench age at subducting initiation
+  std::vector<double> ridge_parameters_4 = {4.75299e-10, 1.04512e+06, 9.50598e-11, 0.0}; // m/s, m, m/s, s
+  const double distance_along_plane_4 = 1000e3;
+  CHECK_THROWS_WITH(Utilities::calculate_effective_trench_and_plate_ages(ridge_parameters_4, distance_along_plane_4),
+                    Contains("The age of trench at subducting initiation is less than 0. "));
+}
