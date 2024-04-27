@@ -2,7 +2,7 @@
 Adding a mantle plume
 ===============================
 
-The last feature we will be adding in this tutorial is the `plume`. The plume is defined by a set of coordinates which represent where the plume is at different depths. The depth are set through the `cross section depths` parameter, hich requires as many depths as there are coordinates. Each cross-section is an ellipse, for which the parameters can be set individually. Please see [the plume feature description](part:user_manual:chap:parameter_documentation:sec:features:subsec:plume) for more information on what each of the parameters do. In this case we will increase the eccentricity of the plume at the top.
+The last feature we will be adding in this tutorial is the `plume`. The plume is defined by a set of coordinates which represent where the plume is at different depths. The depth are set through the `cross section depths` parameter, which requires as many depths as there are coordinates. Each cross-section is an ellipse, for which the parameters can be set individually. Please see [the plume feature description](part:user_manual:chap:parameter_documentation:sec:features:subsec:plume) for more information on what each of the parameters do. In this case we will increase the eccentricity of the plume at the top.
 
 With the definition of the area the feature plume contains completed, we can now add a temperature and compositional structure. A gaussian is a good first order approximation of the temperature, so we will add that as the temperature model. This temperature model allows you to set change the gaussian distribution parameters for each depth segment. Note that in this case we are not replacing the temperature, but adding to the temperature which was already there.
 
