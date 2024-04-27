@@ -92,7 +92,7 @@ jobs:
             echo "3"
             ls /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/libexec
             echo "4"
-            sudo xcode-select --switch /Applications/Xcode_13.2.1.app
+            sudo xcode-select --switch /Applications/Xcode_15.0.1.app
          fi
       shell: bash
       
@@ -230,7 +230,7 @@ jobs:
          elif [ "$RUNNER_OS" == "macOS" ]; then
             sudo brew install open-mpi || true    
             echo "4"
-            sudo xcode-select --switch /Applications/Xcode_13.2.1.app
+            sudo xcode-select --switch /Applications/Xcode_15.0.1.app
          else          
             echo "$RUNNER_OS not supported"
             exit 1
