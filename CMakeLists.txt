@@ -387,8 +387,9 @@ if (NOT MSVC AND NOT APPLE)
       endif()
 
    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Intel")
-   SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-std=c++14 -pthread -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsign-compare 
-   -Woverloaded-virtual -Wno-parentheses -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized>)
+     SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-std=c++14 -pthread -pedantic -fPIC -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsign-compare 
+     -Woverloaded-virtual -Wno-parentheses -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized>)
+     SET(WB_LINKER_OPTIONS -lstdc++)
    else()
       # gcc linux
 
