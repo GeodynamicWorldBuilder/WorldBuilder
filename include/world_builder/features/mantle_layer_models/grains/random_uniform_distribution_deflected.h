@@ -81,6 +81,14 @@ namespace WorldBuilder
              */
             void parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates) override final;
 
+            /*
+             * Returns the result of the multiplication of two 3*3 matrix,
+             * used in applying the random uniform distribution rotation matrix
+             * to a given orientation (rotation matrix)
+             */
+            std::array<std::array<double,3>,3>
+            matrix_multiply(const std::array<std::array<double,3>,3> mat1, std::array<std::array<double,3>,3> const mat2) const;
+
             /**
              * Returns a grains based on the given position, composition (e.g.
              * olivine and/or enstatite)depth in the model, gravity and current grains.
@@ -105,6 +113,7 @@ namespace WorldBuilder
             std::vector<double> grain_sizes;
             std::vector<bool> normalize_grain_sizes;
             std::vector<double> deflections;
+            std::vector<std::array<std::array<double, 3>, 3>> basis_rotation_matrices;
         };
       } // namespace Grains
     }   // namespace MantleLayerModels

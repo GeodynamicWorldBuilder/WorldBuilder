@@ -17,29 +17,28 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef WORLD_BUILDER_FEATURES_FAULT_MODELS_GRAINS_RANDOM_UNIFORM_DISTRIBUTION_DEFLECTED_H
-#define WORLD_BUILDER_FEATURES_FAULT_MODELS_GRAINS_RANDOM_UNIFORM_DISTRIBUTION_DEFLECTED_H
+#ifndef WORLD_BUILDER_FEATURES_PLUME_MODELS_GRAINS_RANDOM_UNIFORM_DISTRIBUTION_DEFLECTED_H
+#define WORLD_BUILDER_FEATURES_PLUME_MODELS_GRAINS_RANDOM_UNIFORM_DISTRIBUTION_DEFLECTED_H
 
 
-#include "world_builder/features/fault_models/grains/interface.h"
+#include "world_builder/features/plume_models/grains/interface.h"
+#include "world_builder/objects/surface.h"
 
 namespace WorldBuilder
 {
-
   namespace Features
   {
-    using namespace FeatureUtilities;
-    namespace FaultModels
+    namespace PlumeModels
     {
       namespace Grains
       {
         /**
-         * This class represents a fault and can implement
+         * This class represents a plume and can implement
          * submodules for temperature and grains. These submodules determine
          * what the returned temperature or grains of the temperature and grains
          * functions of this class will be.
          */
-        class RandomUniformDistributionDeflected final: public Interface
+        class RandomUniformDistributionDeflected final : public Interface
         {
           public:
             /**
@@ -95,15 +94,15 @@ namespace WorldBuilder
              */
             WorldBuilder::grains
             get_grains(const Point<3> &position,
+                       const Objects::NaturalCoordinate &position_in_natural_coordinates,
                        const double depth,
                        const unsigned int composition_number,
                        WorldBuilder::grains grains,
                        const double feature_min_depth,
-                       const double feature_max_depth,
-                       const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
-                       const AdditionalParameters &additional_parameters) const override final;
+                       const double feature_max_depth) const override final;
 
           private:
+            // uniform grains submodule parameters
             double min_depth;
             double max_depth;
             std::vector<unsigned int> grains;
@@ -115,7 +114,7 @@ namespace WorldBuilder
             std::vector<std::array<std::array<double, 3>, 3>> basis_rotation_matrices;
         };
       } // namespace Grains
-    }   // namespace FaultModels
+    }   // namespace PlumeModels
   }     // namespace Features
 } // namespace WorldBuilder
 
