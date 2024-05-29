@@ -105,6 +105,8 @@ namespace WorldBuilder
                 {
                   if (compositions[i] == composition_number)
                     {
+                      // return apply_operation(operation,composition,distance_from_plane.water_content);
+                      // return apply_operation(operation,composition,fractions[i]);
                       return apply_operation(operation,composition,fractions[i]);
                     }
                 }

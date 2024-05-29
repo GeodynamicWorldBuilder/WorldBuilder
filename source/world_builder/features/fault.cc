@@ -705,6 +705,7 @@ namespace WorldBuilder
                << ", starting_depth " << starting_depth
               );
 
+      std::string lithology_str;
       const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
         WorldBuilder::Utilities::distance_point_from_curved_planes(position_in_cartesian_coordinates,
                                                                    position_in_natural_coordinates,
