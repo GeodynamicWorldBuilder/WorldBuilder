@@ -150,24 +150,6 @@ namespace WorldBuilder
         }
 
 
-        std::array<std::array<double,3>,3>
-        RandomUniformDistributionDeflected::matrix_multiply(const std::array<std::array<double,3>,3> mat1, const std::array<std::array<double,3>,3> mat2) const
-        {
-          std::array<std::array<double,3>,3> result;
-          for (int i = 0; i < 3; i++)
-            {
-              for (int j = 0; j < 3; j++)
-                {
-                  result[i][j] = 0;
-                  for (int k = 0; k < 3; k++)
-                    {
-                      result[i][j] += mat1[i][k] * mat2[k][j];
-                    }
-                }
-            }
-          return result;
-        }
-
 
         WorldBuilder::grains
         RandomUniformDistributionDeflected::get_grains(const Point<3> & /*position_in_cartesian_coordinates*/,
@@ -233,34 +215,34 @@ namespace WorldBuilder
                           const double Sy = Vx * st + Vy * ct;
 
                           // Construct the rotation matrix  ( V Transpose(V) - I ) R, which
-                              // is equivalent to V S - R.
+                          // is equivalent to V S - R.
 
-                              std::array<std::array<double,3>,3> rotation_matrices;
-                              rotation_matrices[0][0] = (Vx * Sx - ct);
-                              rotation_matrices[0][1] = (Vx * Sy - st);
-                              rotation_matrices[0][2] = Vx * Vz;
+                          std::array<std::array<double,3>,3> rotation_matrices;
+                          rotation_matrices[0][0] = (Vx * Sx - ct);
+                          rotation_matrices[0][1] = (Vx * Sy - st);
+                          rotation_matrices[0][2] = Vx * Vz;
 
-                              rotation_matrices[1][0] = (Vy * Sx + st);
-                              rotation_matrices[1][1] = (Vy * Sy - ct);
-                              rotation_matrices[1][2] = Vy * Vz;
+                          rotation_matrices[1][0] = (Vy * Sx + st);
+                          rotation_matrices[1][1] = (Vy * Sy - ct);
+                          rotation_matrices[1][2] = Vy * Vz;
 
-                              rotation_matrices[2][0] = Vz * Sx;
-                              rotation_matrices[2][1] = Vz * Sy;
-                              rotation_matrices[2][2] = 1.0 - z;   // This equals Vz * Vz - 1.0
+                          rotation_matrices[2][0] = Vz * Sx;
+                          rotation_matrices[2][1] = Vz * Sy;
+                          rotation_matrices[2][2] = 1.0 - z;   // This equals Vz * Vz - 1.0
 
-                              // Rotate the basis rotation matrix with the random uniform distribution rotation matrix
-                              // First get the transpose of the rotation matrix
-                              std::array<std::array<double, 3>, 3> rot_T= rotation_matrices;
-                              rot_T[0][1] = rotation_matrices[1][0];
-                              rot_T[1][0] = rotation_matrices[0][1];
-                              rot_T[1][2] = rotation_matrices[2][1];
-                              rot_T[2][1] = rotation_matrices[1][2];
-                              rot_T[0][2] = rotation_matrices[2][0];
-                              rot_T[2][0] = rotation_matrices[0][2];
+                          // Rotate the basis rotation matrix with the random uniform distribution rotation matrix
+                          // First get the transpose of the rotation matrix
+                          std::array<std::array<double, 3>, 3> rot_T= rotation_matrices;
+                          rot_T[0][1] = rotation_matrices[1][0];
+                          rot_T[1][0] = rotation_matrices[0][1];
+                          rot_T[1][2] = rotation_matrices[2][1];
+                          rot_T[2][1] = rotation_matrices[1][2];
+                          rot_T[0][2] = rotation_matrices[2][0];
+                          rot_T[2][0] = rotation_matrices[0][2];
 
                               // Then U' = R * U * R^T
-                              std::array<std::array<double,3>,3> result1 = matrix_multiply(rotation_matrices, basis_rotation_matrices[i]);
-                              // std::array<std::array<double,3>,3> rotated_rotation_matrix = matrix_multiply(result1, rot_T);
+                              std::array<std::array<double,3>,3> result1 = multiply_3x3_matrices(rotation_matrices, basis_rotation_matrices[i]);
+                              // std::array<std::array<double,3>,3> rotated_rotation_matrix = multiply_3x3_matrices(result1, rot_T);
                               it_rotation_matrices = result1;
                             }
 

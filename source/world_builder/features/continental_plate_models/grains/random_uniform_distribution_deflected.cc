@@ -136,7 +136,7 @@ namespace WorldBuilder
           grain_sizes = prm.get_vector<double>("grain sizes");
           normalize_grain_sizes = prm.get_vector<bool>("normalize grain sizes");
           deflections = prm.get_vector<double>("deflections");
-          
+
           WBAssertThrow(compositions.size() == grain_sizes.size(),
                         "There are not the same amount of compositions (" << compositions.size()
                         << ") and grain_sizes (" << grain_sizes.size() << ").");
@@ -149,25 +149,6 @@ namespace WorldBuilder
           WBAssertThrow(compositions.size() == basis_rotation_matrices.size(),
                         "There are not the same amount of compositions (" << compositions.size()
                         << ") and rotation_matrices (" << basis_rotation_matrices.size() << ").");
-        }
-
-
-        std::array<std::array<double,3>,3>
-        RandomUniformDistributionDeflected::matrix_multiply(const std::array<std::array<double,3>,3> mat1, const std::array<std::array<double,3>,3> mat2) const
-        {
-          std::array<std::array<double,3>,3> result;
-          for (int i = 0; i < 3; i++)
-            {
-              for (int j = 0; j < 3; j++)
-                {
-                  result[i][j] = 0;
-                  for (int k = 0; k < 3; k++)
-                    {
-                      result[i][j] += mat1[i][k] * mat2[k][j];
-                    }
-                }
-            }
-          return result;
         }
 
 
@@ -265,7 +246,7 @@ namespace WorldBuilder
                               rot_T[2][0] = rotation_matrices[0][2];
 
                               // Then U' = R * U * R^T
-                              std::array<std::array<double,3>,3> result1 = matrix_multiply(rotation_matrices, basis_rotation_matrices[i]);
+                              std::array<std::array<double,3>,3> result1 = Utilities::multiply_3x3_matrices(rotation_matrices, basis_rotation_matrices[i]);
                               // std::array<std::array<double,3>,3> rotated_rotation_matrix = matrix_multiply(result1, rot_T);
                               it_rotation_matrices = result1;
                             }

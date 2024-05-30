@@ -104,7 +104,7 @@ namespace WorldBuilder
           min_depth = prm.get<double>("min distance fault center");
           max_depth = prm.get<double>("max distance fault center");
           compositions = prm.get_vector<unsigned int>("compositions");
-          
+
           const bool set_euler_angles = prm.check_entry("basis Euler angles z-x-z");
           const bool set_rotation_matrices = prm.check_entry("basis rotation matrices");
 
@@ -150,23 +150,7 @@ namespace WorldBuilder
         }
 
 
-        std::array<std::array<double,3>,3>
-        RandomUniformDistributionDeflected::matrix_multiply(const std::array<std::array<double,3>,3> mat1, const std::array<std::array<double,3>,3> mat2) const
-        {
-          std::array<std::array<double,3>,3> result;
-          for (int i = 0; i < 3; i++)
-            {
-              for (int j = 0; j < 3; j++)
-                {
-                  result[i][j] = 0;
-                  for (int k = 0; k < 3; k++)
-                    {
-                      result[i][j] += mat1[i][k] * mat2[k][j];
-                    }
-                }
-            }
-          return result;
-        }
+        
 
 
         WorldBuilder::grains
@@ -259,8 +243,8 @@ namespace WorldBuilder
                           rot_T[2][0] = rotation_matrices[0][2];
 
                           // Then U' = R * U * R^T
-                          std::array<std::array<double,3>,3> result1 = matrix_multiply(rotation_matrices, basis_rotation_matrices[i]);
-                          // std::array<std::array<double,3>,3> rotated_rotation_matrix = matrix_multiply(result1, rot_T);
+                          std::array<std::array<double,3>,3> result1 = multiply_3x3_matrices(rotation_matrices, basis_rotation_matrices[i]);
+                          // std::array<std::array<double,3>,3> rotated_rotation_matrix = multiply_3x3_matrices(result1, rot_T);
                           it_rotation_matrices = result1;
                         }
 
