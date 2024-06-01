@@ -19,8 +19,6 @@
 
 #include "world_builder/features/fault_models/grains/random_uniform_distribution_deflected.h"
 
-#include <algorithm>
-
 #include "world_builder/nan.h"
 #include "world_builder/types/array.h"
 #include "world_builder/types/bool.h"
@@ -258,8 +256,14 @@ namespace WorldBuilder
                       if (normalize_grain_sizes[i])
                         {
                           const double one_over_total_size = 1/total_size;
-                          std::transform(grains_local.sizes.begin(), grains_local.sizes.end(), grains_local.sizes.begin(),
-                                         [one_over_total_size](double sizes) -> double { return sizes *one_over_total_size; });
+                          // std::transform is a c++17 feature, while current GWB is c++14
+                          // update this after switching to c+=17
+                          // std::transform(grains_local.sizes.begin(), grains_local.sizes.end(), grains_local.sizes.begin(),
+                          //                [one_over_total_size](double sizes) -> double { return sizes *one_over_total_size; });
+                          // Apply the transformation using a loop
+                          for (auto &&size : grains_local.sizes) {
+                              size = size*one_over_total_size;
+                          }
                         }
 
                       return grains_local;
