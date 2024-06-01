@@ -29,43 +29,43 @@ using doctest::Approx;
 
 TEST_CASE("multiply 3x3 matrices")
 {
-    std::array<std::array<double,3>,3> mat1 = {{{{1,2,3}},{{4,5,6}},{{7,8,9}}}};
-    std::array<std::array<double,3>,3> mat2 = {{{{9,8,7}},{{6,5,4}},{{3,2,1}}}};
-    std::array<std::array<double,3>,3> mat3 = {{{{0.1,10,-7}},{{4,-0.5,9}},{{-9,0.3,-5}}}};
-    std::array<std::array<double,3>,3> result1 = {{{{30,24,18}},{{84,69,54}},{{138,114,90}}}}; //mat1*mat2
-    std::array<std::array<double,3>,3> result2 = {{{{90,114,138}},{{54,69,84}},{{18,24,30}}}}; //mat2*mat1
-    std::array<std::array<double,3>,3> result3 = {{{{-18.9,9.9,-4}},{{-33.6,39.3,-13}},{{-48.3,68.7,-22}}}}; //mat1*mat3
-    std::array<std::array<double,3>,3> result4 = {{{{-8.9,-5.8,-2.7}},{{65,77.5,90}},{{-42.8,-56.5,-70.2}}}}; //mat3*mat1
-    std::array<std::array<double,3>,3> result5 = {{{{-30.1,88.1,-26}},{{-15.4,58.7,-17}},{{-0.7,29.3,-8}}}}; //mat2*mat3
-    std::array<std::array<double,3>,3> result6 = {{{{39.9,36.8,33.7}},{{60,47.5,35}},{{-94.2,-80.5,-66.8}}}}; //mat3*mat2
-    
-    CHECK(result1 == Utilities::multiply_3x3_matrices(mat1, mat2));
-    CHECK(result2 == Utilities::multiply_3x3_matrices(mat2, mat1));
+  std::array<std::array<double,3>,3> mat1 = {{{{1,2,3}},{{4,5,6}},{{7,8,9}}}};
+  std::array<std::array<double,3>,3> mat2 = {{{{9,8,7}},{{6,5,4}},{{3,2,1}}}};
+  std::array<std::array<double,3>,3> mat3 = {{{{0.1,10,-7}},{{4,-0.5,9}},{{-9,0.3,-5}}}};
+  std::array<std::array<double,3>,3> result1 = {{{{30,24,18}},{{84,69,54}},{{138,114,90}}}}; //mat1*mat2
+  std::array<std::array<double,3>,3> result2 = {{{{90,114,138}},{{54,69,84}},{{18,24,30}}}}; //mat2*mat1
+  std::array<std::array<double,3>,3> result3 = {{{{-18.9,9.9,-4}},{{-33.6,39.3,-13}},{{-48.3,68.7,-22}}}}; //mat1*mat3
+  std::array<std::array<double,3>,3> result4 = {{{{-8.9,-5.8,-2.7}},{{65,77.5,90}},{{-42.8,-56.5,-70.2}}}}; //mat3*mat1
+  std::array<std::array<double,3>,3> result5 = {{{{-30.1,88.1,-26}},{{-15.4,58.7,-17}},{{-0.7,29.3,-8}}}}; //mat2*mat3
+  std::array<std::array<double,3>,3> result6 = {{{{39.9,36.8,33.7}},{{60,47.5,35}},{{-94.2,-80.5,-66.8}}}}; //mat3*mat2
 
-    std::array<std::array<double,3>,3> result7 = Utilities::multiply_3x3_matrices(mat1, mat3);
-    for (int i = 0; i < 3; i++)
+  CHECK(result1 == Utilities::multiply_3x3_matrices(mat1, mat2));
+  CHECK(result2 == Utilities::multiply_3x3_matrices(mat2, mat1));
+
+  std::array<std::array<double,3>,3> result7 = Utilities::multiply_3x3_matrices(mat1, mat3);
+  for (int i = 0; i < 3; i++)
+    {
+      for (int j = 0; j < 3; j++)
         {
-        for (int j = 0; j < 3; j++)
-            {
-                CHECK(result3[i][j] == result7[i][j]);
-            }
+          CHECK(result3[i][j] == result7[i][j]);
         }
-    std::array<std::array<double,3>,3> result8 = Utilities::multiply_3x3_matrices(mat3, mat1);
-    for (int i = 0; i < 3; i++)
+    }
+  std::array<std::array<double,3>,3> result8 = Utilities::multiply_3x3_matrices(mat3, mat1);
+  for (int i = 0; i < 3; i++)
+    {
+      for (int j = 0; j < 3; j++)
         {
-        for (int j = 0; j < 3; j++)
-            {
-                CHECK(result4[i][j] == Approx(result8[i][j]));
-            }
+          CHECK(result4[i][j] == Approx(result8[i][j]));
         }
-    std::array<std::array<double,3>,3> result9 = Utilities::multiply_3x3_matrices(mat2, mat3);
-    for (int i = 0; i < 3; i++)
+    }
+  std::array<std::array<double,3>,3> result9 = Utilities::multiply_3x3_matrices(mat2, mat3);
+  for (int i = 0; i < 3; i++)
+    {
+      for (int j = 0; j < 3; j++)
         {
-        for (int j = 0; j < 3; j++)
-            {
-                CHECK(result5[i][j] == Approx(result9[i][j]));
-            }
+          CHECK(result5[i][j] == Approx(result9[i][j]));
         }
-    CHECK(result6 == Utilities::multiply_3x3_matrices(mat3, mat2));
+    }
+  CHECK(result6 == Utilities::multiply_3x3_matrices(mat3, mat2));
 
 }

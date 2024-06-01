@@ -81,7 +81,7 @@ namespace WorldBuilder
              */
             void parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates) override final;
 
-            
+
 
             /**
              * Returns a grains based on the given position, composition (e.g.

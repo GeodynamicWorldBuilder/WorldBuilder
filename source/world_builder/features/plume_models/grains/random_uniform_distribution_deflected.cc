@@ -242,10 +242,10 @@ namespace WorldBuilder
                           rot_T[0][2] = rotation_matrices[2][0];
                           rot_T[2][0] = rotation_matrices[0][2];
 
-                            // Then U' = R * U * R^T
-                            std::array<std::array<double,3>,3> result1 = multiply_3x3_matrices(rotation_matrices, basis_rotation_matrices[i]);
-                            // std::array<std::array<double,3>,3> rotated_rotation_matrix = multiply_3x3_matrices(result1, rot_T);
-                            it_rotation_matrices = result1;
+                          // Then U' = R * U * R^T
+                          std::array<std::array<double,3>,3> result1 = multiply_3x3_matrices(rotation_matrices, basis_rotation_matrices[i]);
+                          // std::array<std::array<double,3>,3> rotated_rotation_matrix = multiply_3x3_matrices(result1, rot_T);
+                          it_rotation_matrices = result1;
                         }
 
                       double total_size = 0;
@@ -263,9 +263,10 @@ namespace WorldBuilder
                           // std::transform(grains_local.sizes.begin(), grains_local.sizes.end(), grains_local.sizes.begin(),
                           //                [one_over_total_size](double sizes) -> double { return sizes *one_over_total_size; });
                           // Apply the transformation using a loop
-                          for (auto &&size : grains_local.sizes) {
+                          for (auto &&size : grains_local.sizes)
+                            {
                               size = size*one_over_total_size;
-                          }
+                            }
                         }
 
 

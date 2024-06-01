@@ -80,7 +80,7 @@ namespace WorldBuilder
              * class
              */
             void parse_entries(Parameters &prm) override final;
-            
+
             /**
              * Returns a grains based on the given position, composition (e.g.
              * olivine and/or enstatite)depth in the model, gravity and current grains.

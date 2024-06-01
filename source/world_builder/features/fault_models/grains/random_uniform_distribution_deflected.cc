@@ -148,7 +148,7 @@ namespace WorldBuilder
         }
 
 
-        
+
 
 
         WorldBuilder::grains
@@ -261,9 +261,10 @@ namespace WorldBuilder
                           // std::transform(grains_local.sizes.begin(), grains_local.sizes.end(), grains_local.sizes.begin(),
                           //                [one_over_total_size](double sizes) -> double { return sizes *one_over_total_size; });
                           // Apply the transformation using a loop
-                          for (auto &&size : grains_local.sizes) {
+                          for (auto &&size : grains_local.sizes)
+                            {
                               size = size*one_over_total_size;
-                          }
+                            }
                         }
 
                       return grains_local;

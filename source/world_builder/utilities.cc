@@ -1521,7 +1521,7 @@ namespace WorldBuilder
                 }
             }
         }
- 
+
       return result;
     }
   } // namespace Utilities
