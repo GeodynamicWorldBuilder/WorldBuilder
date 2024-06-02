@@ -2,10 +2,10 @@
 Important syntax
 ===============
 
-The world builder is using [sphinx](https://www.sphinx-doc.org) to generate the documentation. Sphinx accepts multiple variants of extended markdown, but in this project we are using [myst](https://myst-parser.readthedocs.io). Below we list some common commands to use.
+The World Builder is using [sphinx](https://www.sphinx-doc.org) to generate the documentation. Sphinx accepts multiple variants of extended markdown, but in this project we are using [myst](https://myst-parser.readthedocs.io). Below we list some common commands to use.
 
 :::{note}
-Everything in this file will look like garbage in a regular markdown viewer, like if you’re viewing this on github. Viewing it on readthedocs will render everything properly.
+Everything in this file will look like garbage in a regular markdown viewer, like if you’re viewing this on GitHub. Viewing it on readthedocs will render everything properly.
 :::
 
 (title)=
@@ -75,7 +75,7 @@ Links are written in the following way:
 
 # Admonitions
 
-Adding notes, warnings or and todos which stand out can be done with the following syntax:
+Adding notes, warnings or todos boxes can be done with the following syntax:
 
 ::::{code-block} md
 :::{todo}
