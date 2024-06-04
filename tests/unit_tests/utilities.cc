@@ -39,33 +39,58 @@ TEST_CASE("multiply 3x3 matrices")
   std::array<std::array<double,3>,3> result5 = {{{{-30.1,88.1,-26}},{{-15.4,58.7,-17}},{{-0.7,29.3,-8}}}}; //mat2*mat3
   std::array<std::array<double,3>,3> result6 = {{{{39.9,36.8,33.7}},{{60,47.5,35}},{{-94.2,-80.5,-66.8}}}}; //mat3*mat2
 
-  CHECK(result1 == Utilities::multiply_3x3_matrices(mat1, mat2));
-  CHECK(result2 == Utilities::multiply_3x3_matrices(mat2, mat1));
+  std::array<std::array<double,3>,3> result7 = Utilities::multiply_3x3_matrices(mat1, mat2);
+  for (int i = 0; i < 3; i++)
+    {
+      for (int j = 0; j < 3; j++)
+        {
+          CHECK(result1[i][j] == Approx(result7[i][j]));
+        }
+    }
 
-  std::array<std::array<double,3>,3> result7 = Utilities::multiply_3x3_matrices(mat1, mat3);
+  std::array<std::array<double,3>,3> result8 = Utilities::multiply_3x3_matrices(mat2, mat1);
   for (int i = 0; i < 3; i++)
     {
       for (int j = 0; j < 3; j++)
         {
-          CHECK(result3[i][j] == result7[i][j]);
+          CHECK(result2[i][j] == Approx(result8[i][j]));
         }
     }
-  std::array<std::array<double,3>,3> result8 = Utilities::multiply_3x3_matrices(mat3, mat1);
+
+  std::array<std::array<double,3>,3> result9 = Utilities::multiply_3x3_matrices(mat1, mat3);
   for (int i = 0; i < 3; i++)
     {
       for (int j = 0; j < 3; j++)
         {
-          CHECK(result4[i][j] == Approx(result8[i][j]));
+          CHECK(result3[i][j] == Approx(result9[i][j]));
         }
     }
-  std::array<std::array<double,3>,3> result9 = Utilities::multiply_3x3_matrices(mat2, mat3);
+
+  std::array<std::array<double,3>,3> result10 = Utilities::multiply_3x3_matrices(mat3, mat1);
   for (int i = 0; i < 3; i++)
     {
       for (int j = 0; j < 3; j++)
         {
-          CHECK(result5[i][j] == Approx(result9[i][j]));
+          CHECK(result4[i][j] == Approx(result10[i][j]));
         }
     }
-  CHECK(result6 == Utilities::multiply_3x3_matrices(mat3, mat2));
+
+  std::array<std::array<double,3>,3> result11 = Utilities::multiply_3x3_matrices(mat2, mat3);
+  for (int i = 0; i < 3; i++)
+    {
+      for (int j = 0; j < 3; j++)
+        {
+          CHECK(result5[i][j] == Approx(result11[i][j]));
+        }
+    }
+
+  std::array<std::array<double,3>,3> result12 = Utilities::multiply_3x3_matrices(mat3, mat2);
+  for (int i = 0; i < 3; i++)
+    {
+      for (int j = 0; j < 3; j++)
+        {
+          CHECK(result6[i][j] == Approx(result12[i][j]));
+        }
+    }
 
 }
