@@ -455,6 +455,128 @@ jobs:
       run: ctest -VV -C ${{ matrix.build_type }}
 
 
+
+  linux-clang_flang_mpi:
+    needs: []
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['ubuntu-24.04']
+        build_type: ['Debug']
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name:  Install optional dependencies
+      run:   |
+         if [ "$RUNNER_OS" == "Linux" ]; then
+            sudo apt update;
+            sudo apt install clang flang swig python3-setuptools openmpi-bin libopenmpi-dev;
+         else
+            echo "$RUNNER_OS not supported"
+            exit 1
+         fi
+      shell: bash
+
+    - name: CMake version
+      run: cmake --version
+
+    - name: clang version
+      run: clang --version
+
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{github.workspace}}/build
+
+    - name: Configure CMake
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: |
+            export CC=/usr/bin/clang;
+            export CXX=/usr/bin/clang++;
+            export FORTRAN=/usr/bin/flang;
+            export OMPI_CC=clang;
+            export OMPI_CXX=clang++;
+            cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS=-Werror;
+            cat ${{github.workspace}}/build/CMakeFiles/CMakeError.log ||:;
+
+    - name: Build gwb
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: cmake --build . --config ${{ matrix.build_type }}
+
+    - name: Install gwb Linux and macOS
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: sudo cmake --install . --config ${{ matrix.build_type }}
+
+    - name: Test gwb
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: ctest -VV -C ${{ matrix.build_type }}
+
+
+  linux-clang_gfortran_mpi:
+    needs: []
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['ubuntu-24.04']
+        build_type: ['Debug']
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name:  Install optional dependencies
+      run:   |
+         if [ "$RUNNER_OS" == "Linux" ]; then
+            sudo apt update;
+            sudo apt install clang swig python3-setuptools openmpi-bin libopenmpi-dev;
+         else
+            echo "$RUNNER_OS not supported"
+            exit 1
+         fi
+      shell: bash
+
+    - name: CMake version
+      run: cmake --version
+
+    - name: clang version
+      run: clang --version
+
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{github.workspace}}/build
+
+    - name: Configure CMake
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: |
+            export CC=/usr/bin/clang;
+            export CXX=/usr/bin/clang++;
+            export FORTRAN=/usr/bin/flang;
+            export OMPI_CC=clang;
+            export OMPI_CXX=clang++;
+            cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_FLAGS=-Werror;
+            cat ${{github.workspace}}/build/CMakeFiles/CMakeError.log ||:;
+
+    - name: Build gwb
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: cmake --build . --config ${{ matrix.build_type }}
+
+    - name: Install gwb Linux and macOS
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: sudo cmake --install . --config ${{ matrix.build_type }}
+
+    - name: Test gwb
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: ctest -VV -C ${{ matrix.build_type }}
+
   
   linux-gcc_no_apps:
     needs: [test_indentation,coverage]
