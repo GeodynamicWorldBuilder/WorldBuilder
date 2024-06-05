@@ -50,14 +50,8 @@
       "eccentricity":[0, 0, 0, 0, 0],
       "rotation angles":[0, 0, 0, 0, 0],
       "temperature models":[{"model":"uniform", "min depth": 10, "max depth":20, "temperature":1800}],
-      "grains models":
-      [
-                     {
-                     "model":"uniform", "compositions":[4], // olivine and enstatite
-                      "rotation matrices":[[[1,2,3],[4,5,6],[7,8,9]]],
-                      "grain sizes":[-1]
-                      }
-      ]
+      "grains models": [{"model":"random uniform distribution deflected", "compositions":[0], "grain sizes":[-1], 
+                         "deflections": [0.5], "normalize grain sizes": [true], "basis Euler angles z-x-z": [[0,90,90]]}]
     },
 
     {

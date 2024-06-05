@@ -94,7 +94,6 @@ namespace WorldBuilder
                        const double feature_max_depth) const override final;
 
           private:
-            // uniform grains submodule parameters
             double min_depth;
             double max_depth;
             std::vector<unsigned int> grains;

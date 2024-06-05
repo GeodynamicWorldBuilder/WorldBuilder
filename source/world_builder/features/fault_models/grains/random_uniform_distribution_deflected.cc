@@ -147,10 +147,6 @@ namespace WorldBuilder
                         << ") and rotation_matrices (" << basis_rotation_matrices.size() << ").");
         }
 
-
-
-
-
         WorldBuilder::grains
         RandomUniformDistributionDeflected::get_grains(const Point<3> & /*position_in_cartesian_coordinates*/,
                                                        const double /*depth*/,
@@ -242,7 +238,7 @@ namespace WorldBuilder
 
                           // Then U' = R * U * R^T
                           std::array<std::array<double,3>,3> result1 = multiply_3x3_matrices(rotation_matrices, basis_rotation_matrices[i]);
-                          // std::array<std::array<double,3>,3> rotated_rotation_matrix = multiply_3x3_matrices(result1, rot_T);
+
                           it_rotation_matrices = result1;
                         }
 
