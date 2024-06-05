@@ -247,7 +247,7 @@ namespace WorldBuilder
     const int local_seed = prm.get<int>("random number seed");
 
     if (local_seed>=0)
-      random_number_engine.seed(local_seed+MPI_RANK);
+      random_number_engine.seed(static_cast<unsigned int>(local_seed+MPI_RANK));
 
     /**
      * Now load the features. Some features use for example temperature values,

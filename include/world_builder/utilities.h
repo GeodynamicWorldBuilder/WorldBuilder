@@ -142,7 +142,7 @@ namespace WorldBuilder
     /**
      * Convert point to array
      */
-    template<int dim>
+    template<unsigned int dim>
     std::array<double,dim> convert_point_to_array(const Point<dim> &point);
 
     /**
