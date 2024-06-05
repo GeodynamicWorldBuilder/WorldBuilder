@@ -621,9 +621,9 @@ namespace WorldBuilder
 
               if (!bool_cartesian)
                 {
-                  const double normal = std::fabs(point_list[i_section_min_distance+(int)(std::round(fraction_CPL_P1P2))][0]-check_point_surface_2d[0]);
-                  const double plus   = std::fabs(point_list[i_section_min_distance+(int)(std::round(fraction_CPL_P1P2))][0]-(check_point_surface_2d[0]+2*Consts::PI));
-                  const double min    = std::fabs(point_list[i_section_min_distance+(int)(std::round(fraction_CPL_P1P2))][0]-(check_point_surface_2d[0]-2*Consts::PI));
+                  const double normal = std::fabs(point_list[i_section_min_distance+static_cast<int>(std::round(fraction_CPL_P1P2))][0]-check_point_surface_2d[0]);
+                  const double plus   = std::fabs(point_list[i_section_min_distance+static_cast<int>(std::round(fraction_CPL_P1P2))][0]-(check_point_surface_2d[0]+2*Consts::PI));
+                  const double min    = std::fabs(point_list[i_section_min_distance+static_cast<int>(std::round(fraction_CPL_P1P2))][0]-(check_point_surface_2d[0]-2*Consts::PI));
 
                   // find out whether the check point, checkpoint + 2pi or check point -2 pi is closest to the point list.
                   if (plus < normal)
@@ -1227,7 +1227,7 @@ namespace WorldBuilder
 
               // Receive and store data
               ierr = MPI_Bcast(&data_string[0],
-                               filesize,
+                               static_cast<int>(filesize),
                                MPI_CHAR,
                                0,
                                comm);

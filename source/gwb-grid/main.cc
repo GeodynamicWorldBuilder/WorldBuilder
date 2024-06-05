@@ -97,7 +97,7 @@ void filter_vtu_mesh(int dim,
   for (std::size_t cellidx = 0; cellidx <n_cells; ++cellidx)
     {
       int highest_tag = -1;
-      for (unsigned int idx=cellidx*n_vert_per_cell; idx<(cellidx+1)*n_vert_per_cell; ++idx)
+      for (size_t idx=cellidx*n_vert_per_cell; idx<(cellidx+1)*n_vert_per_cell; ++idx)
         {
           const std::int64_t src_vid = input_mesh.connectivity()[idx];
           highest_tag = std::max(highest_tag,static_cast<int>(input_data[2][src_vid]));
@@ -107,7 +107,7 @@ void filter_vtu_mesh(int dim,
 
       ++dst_cellid;
 
-      for (unsigned int idx=cellidx*n_vert_per_cell; idx<(cellidx+1)*n_vert_per_cell; ++idx)
+      for (size_t idx=cellidx*n_vert_per_cell; idx<(cellidx+1)*n_vert_per_cell; ++idx)
         {
           const std::int64_t src_vid = input_mesh.connectivity()[idx];
 
@@ -1571,8 +1571,8 @@ int main(int argc, char **argv)
 
       properties.push_back({{4,0,0}}); // tag
 
-      for (size_t c = 0; c < compositions; ++c)
-        properties.push_back({{2,(unsigned int)c,0}}); // composition c
+      for (unsigned int c = 0; c < compositions; ++c)
+        properties.push_back({{2,c,0}}); // composition c
 
 
       // compute temperature
@@ -1634,7 +1634,7 @@ int main(int argc, char **argv)
             vtu11::Vtu11UnstructuredMesh filtered_mesh {filtered_points, filtered_connectivity, filtered_offsets, filtered_types};
             std::vector<vtu11::DataSetData> filtered_data_set;
 
-            filter_vtu_mesh(dim, include_tag, mesh, data_set, filtered_mesh, filtered_data_set);
+            filter_vtu_mesh(static_cast<int>(dim), include_tag, mesh, data_set, filtered_mesh, filtered_data_set);
             vtu11::writeVtu( file_without_extension + ".filtered.vtu", filtered_mesh, dataSetInfo, filtered_data_set, vtu_output_format );
           }
 
@@ -1655,7 +1655,7 @@ int main(int argc, char **argv)
 
                 std::vector<bool> include_tag(world->feature_tags.size(), false);
                 include_tag[idx]=true;
-                filter_vtu_mesh(dim, include_tag, mesh, data_set, filtered_mesh, filtered_data_set);
+                filter_vtu_mesh(static_cast<int>(dim), include_tag, mesh, data_set, filtered_mesh, filtered_data_set);
                 const std::string filename = file_without_extension + "."+ std::to_string(idx)+".vtu";
                 vtu11::writeVtu( filename, filtered_mesh, dataSetInfo, filtered_data_set, vtu_output_format );
               }

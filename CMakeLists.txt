@@ -376,7 +376,7 @@ if (NOT MSVC AND NOT APPLE)
         -Wcast-align -Wmissing-declarations -Wredundant-decls -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wunused>)
 
         if (${FORCE_COLORED_OUTPUT})
-          SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-fcolor-diagnostics ${WB_COMPILER_OPTIONS_PRIVATE})
+          SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-fcolor-diagnostics> ${WB_COMPILER_OPTIONS_PRIVATE})
         endif ()
 
       else()
