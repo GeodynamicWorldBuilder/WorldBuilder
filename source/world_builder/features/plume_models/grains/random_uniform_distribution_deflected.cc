@@ -17,24 +17,27 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "world_builder/features/fault_models/grains/random_uniform_distribution_deflected.h"
+#include "world_builder/features/plume_models/grains/random_uniform_distribution_deflected.h"
 
 #include "world_builder/nan.h"
 #include "world_builder/types/array.h"
-#include "world_builder/types/bool.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
+#include "world_builder/types/one_of.h"
 #include "world_builder/types/unsigned_int.h"
+#include "world_builder/types/value_at_points.h"
 #include "world_builder/utilities.h"
+#include "world_builder/types/bool.h"
 #include "world_builder/world.h"
 
 namespace WorldBuilder
 {
+
   using namespace Utilities;
 
   namespace Features
   {
-    namespace FaultModels
+    namespace PlumeModels
     {
       namespace Grains
       {
@@ -61,15 +64,15 @@ namespace WorldBuilder
                             "to a single value or to a random distribution.");
 
           // Declare entries of this plugin
-          prm.declare_entry("min distance fault center", Types::Double(0),
-                            "The distance from the fault center in meters from which the composition of this feature is present.");
-          prm.declare_entry("max distance fault center", Types::Double(std::numeric_limits<double>::max()),
-                            "The distance from the fault in meters to which the composition of this feature is present.");
+          prm.declare_entry("min depth", Types::Double(0),
+                            "The depth in meters from which the grains of this feature are present.");
+          prm.declare_entry("max depth", Types::Double(std::numeric_limits<double>::max()),
+                            "The depth in meters to which the grains of this feature are present.");
 
           prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
                             "A list with the integer labels of the composition which are present there.");
 
-          prm.declare_entry("orientation operation", Types::String("replace", std::vector<std::string> {"replace"}),
+          prm.declare_entry("orientation operation", Types::String("replace", std::vector<std::string> {"replace", "multiply"}),
                             "Whether the value should replace any value previously defined at this location (replace) or "
                             "add the value to the previously define value (add, not implemented). Replacing implies that all values not "
                             "explicitly defined are set to zero.");
@@ -93,14 +96,13 @@ namespace WorldBuilder
                             "A list with the z-x-z Euler angles of the grains which are present there for each compositions.");
 
 
-
         }
 
         void
         RandomUniformDistributionDeflected::parse_entries(Parameters &prm)
         {
-          min_depth = prm.get<double>("min distance fault center");
-          max_depth = prm.get<double>("max distance fault center");
+          min_depth = prm.get<double>("min depth");
+          max_depth = prm.get<double>("max depth");
           compositions = prm.get_vector<unsigned int>("compositions");
 
           const bool set_euler_angles = prm.check_entry("basis Euler angles z-x-z");
@@ -133,6 +135,7 @@ namespace WorldBuilder
           normalize_grain_sizes = prm.get_vector<bool>("normalize grain sizes");
           deflections = prm.get_vector<double>("deflections");
 
+
           WBAssertThrow(compositions.size() == grain_sizes.size(),
                         "There are not the same amount of compositions (" << compositions.size()
                         << ") and grain_sizes (" << grain_sizes.size() << ").");
@@ -149,16 +152,15 @@ namespace WorldBuilder
 
         WorldBuilder::grains
         RandomUniformDistributionDeflected::get_grains(const Point<3> & /*position_in_cartesian_coordinates*/,
-                                                       const double /*depth*/,
+                                                       const Objects::NaturalCoordinate & /*position_in_natural_coordinates*/,
+                                                       const double depth,
                                                        const unsigned int composition_number,
                                                        WorldBuilder::grains grains_,
-                                                       const double /*feature_min_depth*/,
-                                                       const double /*feature_max_depth*/,
-                                                       const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
-                                                       const AdditionalParameters & /*additional_parameters*/) const
+                                                       const double  /*feature_min_depth*/,
+                                                       const double /*feature_max_depth*/) const
         {
           WorldBuilder::grains  grains_local = grains_;
-          if (std::fabs(distance_from_planes.distance_from_plane) <= max_depth && std::fabs(distance_from_planes.distance_from_plane) >= min_depth)
+          if (depth <= max_depth && depth >= min_depth)
             {
               for (unsigned int i =0; i < compositions.size(); ++i)
                 {
@@ -186,9 +188,10 @@ namespace WorldBuilder
                           const double two = dist(world->get_random_number_engine());
                           const double three = dist(world->get_random_number_engine());
 
-                          const double theta = 2.0 * Consts::PI * one * deflections[i]; // Rotation about the pole (Z).
+                          // the distribution is restricted by the deflection (between 0 and 1)
+                          const double theta = 2.0 * Consts::PI * one * deflections[i]; // Rotation about the pole (Z)
                           const double phi = 2.0 * Consts::PI * two; // For direction of pole deflection.
-                          const double z = 2.0* three * deflections[i]; //For magnitude of pole deflection.
+                          const double z = 2.0 * three * deflections[i]; //For magnitude of pole deflection.
 
                           // Compute a vector V used for distributing points over the sphere
                           // via the reflection I - V Transpose(V).  This formulation of V
@@ -263,15 +266,17 @@ namespace WorldBuilder
                             }
                         }
 
+
                       return grains_local;
                     }
                 }
             }
           return grains_local;
         }
-        WB_REGISTER_FEATURE_FAULT_GRAINS_MODEL(RandomUniformDistributionDeflected, random uniform distribution deflected)
+        WB_REGISTER_FEATURE_PLUME_GRAINS_MODEL(RandomUniformDistributionDeflected, random uniform distribution deflected)
       } // namespace Grains
-    } // namespace FaultModels
+    } // namespace PlumeModels
   } // namespace Features
 } // namespace WorldBuilder
+
 

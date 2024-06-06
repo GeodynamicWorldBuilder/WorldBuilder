@@ -1505,6 +1505,25 @@ namespace WorldBuilder
       return result;
 
     }
+
+    std::array<std::array<double,3>,3>
+    multiply_3x3_matrices(const std::array<std::array<double,3>,3> mat1, const std::array<std::array<double,3>,3> mat2)
+    {
+      std::array<std::array<double,3>,3> result;
+      for (int i = 0; i < 3; i++)
+        {
+          for (int j = 0; j < 3; j++)
+            {
+              result[i][j] = 0;
+              for (int k = 0; k < 3; k++)
+                {
+                  result[i][j] += mat1[i][k] * mat2[k][j];
+                }
+            }
+        }
+
+      return result;
+    }
   } // namespace Utilities
 } // namespace WorldBuilder
 

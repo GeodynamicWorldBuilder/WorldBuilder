@@ -11,7 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Added
-
+- Added a `random uniform distribution deflected` grains model for all features that allows an initial texture computed from a random uniform distribution of rotation matrices applied to a given orientation specified as a set of Euler angles or a rotation matrix. \[Yijun Wang; 2024-06-06; [#713](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/713)\]
 ### Changed
 - In the "mass conserving" model, change the name of the entry "plate velocity" to "spreading velocity" \[Haoyuan Li; 2024-03-11; [#694](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/694)\]
 
