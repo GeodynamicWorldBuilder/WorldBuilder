@@ -3,7 +3,7 @@
 # Now define parameters:
 # dim = 3
 # compositions = 6
-# grain compositions = 1
+# grain compositions = 2
 # number of grains = 1
 # x y z d c1 c2 c3 c4 c5 c6
 5 5 0 15
