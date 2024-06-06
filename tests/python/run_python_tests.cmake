@@ -29,7 +29,7 @@ execute_process(
 
 # if the return value is !=0 bail out
 if( TEST_RESULT_VAR )
-	message( FATAL_ERROR "Failed: Test program ${TEST_PROGRAM} exited != 0.\n Test args where: ${TEST_ARGS}\n${TEST_ERROR_VAR} \n The test outpup was: \n ${TEST_OUTPUT_VAR}" )
+	message( FATAL_ERROR "Failed: Test program ${TEST_PROGRAM} exited != 0 (${TEST_RESULT_VAR}).\n Test args where: ${TEST_ARGS}\n${TEST_ERROR_VAR} \n The test outpup was: \n ${TEST_OUTPUT_VAR}" )
 endif( TEST_RESULT_VAR )
 
 if( !TEST_NO_DIFF )
