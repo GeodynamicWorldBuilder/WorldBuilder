@@ -457,7 +457,7 @@ jobs:
 
 
   linux-clang_flang_mpi:
-    needs: []
+    needs: [test_indentation]
     strategy:
       fail-fast: false
       matrix:
@@ -518,7 +518,7 @@ jobs:
 
 
   linux-clang_gfortran_mpi:
-    needs: []
+    needs: [test_indentation,coverage]
     strategy:
       fail-fast: false
       matrix:
