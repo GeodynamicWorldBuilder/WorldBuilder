@@ -1218,7 +1218,7 @@ namespace WorldBuilder
 
               data_string = datastream.str();
               WBAssertThrow(static_cast<long int>(data_string.size()) < std::numeric_limits<int>::max(),
-                            "File to large to be send with MPI.");
+                            "File is too large to be send with MPI.");
               filesize = static_cast<int>(data_string.size());
 
               // Distribute data_size and data across processes
