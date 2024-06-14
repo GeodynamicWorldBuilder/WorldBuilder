@@ -87,7 +87,7 @@ void filter_vtu_mesh(int dim,
                      std::vector<vtu11::DataSetData> &output_data)
 {
   output_data.resize(input_data.size());
-  const std::int64_t invalid = static_cast<std::uint64_t>(-1);
+  const std::int64_t invalid = -1;
   std::vector<std::int64_t> vertex_index_map(input_mesh.points().size(), invalid);
 
   const unsigned int n_vert_per_cell = (dim==3)?8:4;
@@ -97,27 +97,27 @@ void filter_vtu_mesh(int dim,
   for (std::size_t cellidx = 0; cellidx <n_cells; ++cellidx)
     {
       int highest_tag = -1;
-      for (unsigned int idx=cellidx*n_vert_per_cell; idx<(cellidx+1)*n_vert_per_cell; ++idx)
+      for (size_t idx=cellidx*n_vert_per_cell; idx<(cellidx+1)*n_vert_per_cell; ++idx)
         {
-          const std::int64_t src_vid = input_mesh.connectivity()[idx];
+          const std::size_t src_vid = static_cast<size_t>(input_mesh.connectivity()[idx]);
           highest_tag = std::max(highest_tag,static_cast<int>(input_data[2][src_vid]));
         }
-      if (highest_tag < 0 || include_tag[highest_tag]==false)
+      if (highest_tag < 0 || include_tag[static_cast<size_t>(highest_tag)]==false)
         continue;
 
       ++dst_cellid;
 
-      for (unsigned int idx=cellidx*n_vert_per_cell; idx<(cellidx+1)*n_vert_per_cell; ++idx)
+      for (size_t idx=cellidx*n_vert_per_cell; idx<(cellidx+1)*n_vert_per_cell; ++idx)
         {
-          const std::int64_t src_vid = input_mesh.connectivity()[idx];
+          const size_t src_vid = static_cast<size_t>(input_mesh.connectivity()[idx]);
 
           std::int64_t dst_vid = vertex_index_map[src_vid];
           if (dst_vid == invalid)
             {
-              dst_vid = output_mesh.points().size()/3;
+              dst_vid = static_cast<std::int64_t>(output_mesh.points().size()/3);
               vertex_index_map[src_vid] = dst_vid;
 
-              for (int i=0; i<3; ++i)
+              for (unsigned int i=0; i<3; ++i)
                 output_mesh.points().push_back(input_mesh.points()[src_vid*3+i]);
 
               for (unsigned int d=0; d<input_data.size(); ++d)
@@ -127,7 +127,7 @@ void filter_vtu_mesh(int dim,
           output_mesh.connectivity().push_back(dst_vid);
 
         }
-      output_mesh.offsets().push_back(dst_cellid*n_vert_per_cell);
+      output_mesh.offsets().push_back(static_cast<long int>(dst_cellid*n_vert_per_cell));
 
       output_mesh.types().push_back(input_mesh.types()[cellidx]);
     }
@@ -1571,8 +1571,8 @@ int main(int argc, char **argv)
 
       properties.push_back({{4,0,0}}); // tag
 
-      for (size_t c = 0; c < compositions; ++c)
-        properties.push_back({{2,(unsigned int)c,0}}); // composition c
+      for (unsigned int c = 0; c < compositions; ++c)
+        properties.push_back({{2,c,0}}); // composition c
 
 
       // compute temperature
@@ -1634,7 +1634,7 @@ int main(int argc, char **argv)
             vtu11::Vtu11UnstructuredMesh filtered_mesh {filtered_points, filtered_connectivity, filtered_offsets, filtered_types};
             std::vector<vtu11::DataSetData> filtered_data_set;
 
-            filter_vtu_mesh(dim, include_tag, mesh, data_set, filtered_mesh, filtered_data_set);
+            filter_vtu_mesh(static_cast<int>(dim), include_tag, mesh, data_set, filtered_mesh, filtered_data_set);
             vtu11::writeVtu( file_without_extension + ".filtered.vtu", filtered_mesh, dataSetInfo, filtered_data_set, vtu_output_format );
           }
 
@@ -1655,7 +1655,7 @@ int main(int argc, char **argv)
 
                 std::vector<bool> include_tag(world->feature_tags.size(), false);
                 include_tag[idx]=true;
-                filter_vtu_mesh(dim, include_tag, mesh, data_set, filtered_mesh, filtered_data_set);
+                filter_vtu_mesh(static_cast<int>(dim), include_tag, mesh, data_set, filtered_mesh, filtered_data_set);
                 const std::string filename = file_without_extension + "."+ std::to_string(idx)+".vtu";
                 vtu11::writeVtu( filename, filtered_mesh, dataSetInfo, filtered_data_set, vtu_output_format );
               }
