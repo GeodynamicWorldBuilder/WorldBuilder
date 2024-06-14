@@ -65,7 +65,7 @@ jobs:
     strategy: 
       fail-fast: false
       matrix: 
-        os: ['ubuntu-latest','macos-12','macos-11','macos-13']
+        os: ['ubuntu-latest','macos-12','macos-13','macos-14']
         build_type: ['Release', 'Debug']
       
     runs-on: ${{ matrix.os }}
@@ -92,7 +92,7 @@ jobs:
             echo "3"
             ls /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/libexec
             echo "4"
-            if [ "${{ matrix.os }}" == "macos-13" ]; then
+            if [ "${{ matrix.os }}" == "macos-13" ] || [ "${{ matrix.os }}" == "macos-14" ]; then
                 sudo xcode-select --switch /Applications/Xcode_15.0.1.app
             else
                 sudo xcode-select --switch /Applications/Xcode_13.2.1.app
@@ -218,7 +218,7 @@ jobs:
     strategy: 
       fail-fast: false
       matrix: 
-        os: ['ubuntu-latest','macos-12','macos-13']
+        os: ['ubuntu-latest','macos-11','macos-12','macos-13','macos-14']
         build_type: ['Release']
       
     runs-on: ${{ matrix.os }}
@@ -234,7 +234,7 @@ jobs:
          elif [ "$RUNNER_OS" == "macOS" ]; then
             sudo brew install open-mpi || true    
             echo "4"
-            if [ "${{ matrix.os }}" == "macos-13" ]; then
+            if [ "${{ matrix.os }}" == "macos-13" ] || [ "${{ matrix.os }}" == "macos-14" ]; then
                 sudo xcode-select --switch /Applications/Xcode_15.0.1.app
             else
                 sudo xcode-select --switch /Applications/Xcode_13.2.1.app
