@@ -1306,6 +1306,7 @@ GHC_INLINE std::error_code make_error_code(portable_error err)
     }
 #else
     switch (err) {
+        default:
         case portable_error::none:
             return std::error_code();
         case portable_error::exists:
@@ -1735,6 +1736,7 @@ GHC_INLINE void path::postprocess_path_with_format(path::format fmt)
 #else
         case path::auto_format:
         case path::native_format:
+        default:
         case path::generic_format:
             // nothing to do
             break;
@@ -6106,15 +6108,15 @@ namespace vtu11
 
 struct Vtu11UnstructuredMesh
 {
-  const std::vector<double>& points_;
-  const std::vector<VtkIndexType>& connectivity_;
-  const std::vector<VtkIndexType>& offsets_;
-  const std::vector<VtkCellType>& types_;
+  std::vector<double>& points_;
+  std::vector<VtkIndexType>& connectivity_;
+  std::vector<VtkIndexType>& offsets_;
+  std::vector<VtkCellType>& types_;
 
-  const std::vector<double>& points( ){ return points_; }
-  const std::vector<VtkIndexType>& connectivity( ){ return connectivity_; }
-  const std::vector<VtkIndexType>& offsets( ){ return offsets_; }
-  const std::vector<VtkCellType>& types( ){ return types_; }
+  std::vector<double>& points( ){ return points_; }
+  std::vector<VtkIndexType>& connectivity( ){ return connectivity_; }
+  std::vector<VtkIndexType>& offsets( ){ return offsets_; }
+  std::vector<VtkCellType>& types( ){ return types_; }
 
   size_t numberOfPoints( ){ return points_.size( ) / 3; }
   size_t numberOfCells( ){ return types_.size( ); }
@@ -6286,13 +6288,13 @@ inline std::string base64Encode( Iterator begin, Iterator end )
     // in steps of 3
     for( size_t i = 0; i < rawBytes / 3; ++i )
     {
-        encodeTriplet( { next( ), next( ), next( ) }, 0 );
+        encodeTriplet( {{ next( ), next( ), next( ) }}, 0 );
     }
 
     // cleanup
     if( it != end )
     {
-        std::array<char, 3> bytes { '\0', '\0', '\0' };
+        std::array<char, 3> bytes {{ '\0', '\0', '\0' }};
 
         size_t remainder = static_cast<size_t>( std::distance( it, end ) ) * size - static_cast<size_t>( byteIndex );
 
