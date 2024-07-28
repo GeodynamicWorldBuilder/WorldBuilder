@@ -118,7 +118,7 @@ void filter_vtu_mesh(int dim,
               vertex_index_map[src_vid] = dst_vid;
 
               for (unsigned int i=0; i<3; ++i)
-                output_mesh.points().push_back(input_mesh.points()[src_vid*3+i]);
+                output_mesh.points().emplace_back(input_mesh.points()[src_vid*3+i]);
 
               for (unsigned int d=0; d<input_data.size(); ++d)
                 output_data[d].push_back(input_data[d][src_vid]);
