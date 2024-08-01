@@ -32,7 +32,7 @@ My Note
 
 # Including World Builder files
 
-When including a World bbilder file, it is important to be able to focus on the parts which are important, while also enabling the reader to see the surrounding context and the whole file. Furthermore, the user should have the capability to run the models themselves and get the same output as shown. To standardize this the following structure is strongly encouraged. 
+When including a World Builder file, it is important to be able to focus on the parts which are important, while also enabling the reader to see the surrounding context and the whole file. Furthermore, the user should have the capability to run the models themselves and get the same output as shown. To standardize this the following structure is strongly encouraged. 
 
 1. The World Builder file and a corresponding grid file need to be stored separately, either in the cookbook, or in the _static directory.
 2. The use of a tab-set with a tab with important lines and a tab with the full World Builder file, highlighting important lines.
