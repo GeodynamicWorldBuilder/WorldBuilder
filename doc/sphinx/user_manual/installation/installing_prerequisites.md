@@ -71,12 +71,7 @@ There are three main ways to install on Windows.
 The recommended way is to use Linux subsystems for Windows (see <https://docs.microsoft.com/en-us/windows/wsl/install-win10>).
 In this case, start Linux in the Windows terminal and follow the Linux installation description.
 
-If you want to have a native installation, the two main options are using Visual Studio and MinGW. Note that the use of MinGW to compile the world builder is currently not supported (see https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/743 for more info).
-In both cases, it might be possible to install both the Fortran wrapper and the Python wrapper, but we have not gotten it to work on our tester setup.
-Currently we know that with MinGW you can create a successful Fortran wrapper, and with Visual Studio you can create a successful Python wrapper.
-The problem with Python in MinGW is not entirely clear, but it seems that only Visual Studio compilers are supported.
-So it may or may not be able to find the GWB Python module when it is compiled and installed.
-The problem with Fortran with Visual Studio is that you need to install a Fortran compiler somehow, so if you know how to do that, please contribute.
+If you want to have a native installation we recomend using  Visual Studio to compile the world builder. The only problem that we are aware of is using Fortran with Visual Studio. The problem here is that you need to install a Fortran compiler somehow, so if you know how to do that, please contribute.
 
 ::::{tab-set}
 
@@ -86,18 +81,6 @@ The problem with Fortran with Visual Studio is that you need to install a Fortra
 3. For a Python wrapper, run in a terminal `choco install python`
 4. For a Python wrapper, run in a terminal `choco install swig` 
 :::
-
-
-:::{tab-item} MinGW (Deprecated)
-This method of installing the world builder is no longer supported and may no longer work in some cases. 
-1. If not already installed, install Chocolatey (<https://chocolatey.org>). In a PowerShell, you can install it with the following command (in one line): `Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(’https://chocolatey.org/install.ps1’))`
-2. Run in a terminal `choco install msys2`
-3. Open a mingw64 terminal
-4. Run in a mingw64 terminal `pacman –noconfirm -Syu`
-5. Run in a mingw64 terminal `pacman -S mingw-w64-x86_64-toolchain`
-6. Run in a mingw64 terminal `pacman –noconfirm -S dos2unix`
-:::
-
 ::::
 :::::
 ::::::
