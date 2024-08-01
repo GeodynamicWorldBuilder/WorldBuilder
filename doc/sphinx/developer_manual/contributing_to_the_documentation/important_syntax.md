@@ -164,7 +164,7 @@ Adding figures looks similar to notes and todo's:
 
 ::::{code-block} md
 :::{figure} ../../../../doc/sphinx/_static/images/user_manual/basic_starter_tutorial/BST_19.png
-:name: BST_19_synatx
+:name: BST_19_syntax
 :alt: Basic Starter Tutorial section 19 highres result. 
 :align: center
 
@@ -173,7 +173,7 @@ Basic Starter Tutorial section 19 high resolution result. This has 8 times the r
 ::::
 
 :::{figure} ../../../../doc/sphinx/_static/images/user_manual/basic_starter_tutorial/BST_19.png
-:name: BST_19_synatx
+:name: BST_19_syntax
 :alt: Basic Starter Tutorial section 19 highres result. 
 :align: center
 

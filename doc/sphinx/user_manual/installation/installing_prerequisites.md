@@ -71,7 +71,7 @@ There are three main ways to install on Windows.
 The recommended way is to use Linux subsystems for Windows (see <https://docs.microsoft.com/en-us/windows/wsl/install-win10>).
 In this case, start Linux in the Windows terminal and follow the Linux installation description.
 
-If you want to have a native installation we recomend using  Visual Studio to compile the world builder. The only problem that we are aware of is using Fortran with Visual Studio. The problem here is that you need to install a Fortran compiler somehow, so if you know how to do that, please contribute.
+If you want to have a native installation we recommend using  Visual Studio to compile the world builder. The only problem that we are aware of is using Fortran with Visual Studio. The problem here is that you need to install a Fortran compiler somehow, so if you know how to do that, please contribute.
 
 ::::{tab-set}
 
