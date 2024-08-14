@@ -92,7 +92,7 @@ namespace WorldBuilder
             double min_depth;
             Objects::Surface min_depth_surface;
             double max_depth;
-            double density;
+            double density; // Density used to compute the lithostatic pressure
             Objects::Surface max_depth_surface;
             std::vector<unsigned int> compositions;
             Operations operation;
@@ -118,6 +118,10 @@ namespace WorldBuilder
             std::vector<double> LR_poly_sediment = {-2.03283, 10.8186, -21.2119, 18.3351, -6.48711, 8.32459};
             std::vector<double> c_sat_poly_sediment = {-0.150662, 0.301807, 1.01867};
             std::vector<double> Td_poly_sediment = {2.83277, -24.7593, 85.9090, 524.898};
+
+            // Maximum pressure for the lithologies (Peridotite, Gabbro, MORB, Sediment). Above these
+            // pressures, the parameterized phase diagrams break down and the solubility goes to infinity.
+            std::vector<double> pressure_cutoffs {10, 26, 16, 1.0};
         };
       } // namespace Composition
     } // namespace OceanicPlateModels

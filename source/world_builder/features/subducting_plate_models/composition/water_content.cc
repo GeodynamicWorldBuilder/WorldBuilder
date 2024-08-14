@@ -74,7 +74,7 @@ namespace WorldBuilder
           prm.declare_entry("initial water content", Types::Double(5),
                             "The value of the initial water content (in wt%) for the lithology at the trench. This is essentially the "
                             "max value applied to this lithology.");
-          prm.declare_entry("operation", Types::String("replace", std::vector<std::string> {"replace", "replace defined only", "add", "subtract"}),
+          prm.declare_entry("operation", Types::String("add", std::vector<std::string> {"replace", "replace defined only", "add", "subtract"}),
                             "Whether the value should replace any value previously defined at this location (replace) or "
                             "add the value to the previously define value. Replacing implies that all compositions not "
                             "explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.");
@@ -97,9 +97,9 @@ namespace WorldBuilder
         double
         WaterContent::calculate_water_content(double pressure,
                                               double temperature,
-                                              std::string lithology_str) const
+                                              std::string lithology_string) const
         {
-          double inv_pressure = 1/pressure;
+          pressure = pressure <= 0.5 ? 0.5 : pressure;
           double ln_LR_value = 0;
           double ln_c_sat_value = 0;
           double Td_value = 0;
@@ -114,15 +114,16 @@ namespace WorldBuilder
             MORB,
             sediment
           };
+
           LithologyName lithology = peridotite;
 
-          if (lithology_str=="peridotite")
+          if (lithology_string=="peridotite")
             lithology = peridotite;
-          else if (lithology_str=="gabbro")
+          else if (lithology_string=="gabbro")
             lithology = gabbro;
-          else if (lithology_str=="MORB")
+          else if (lithology_string=="MORB")
             lithology = MORB;
-          else if (lithology_str=="sediment")
+          else if (lithology_string=="sediment")
             lithology = sediment;
 
           if (lithology == peridotite)
@@ -130,6 +131,7 @@ namespace WorldBuilder
               LR_polynomial_coeffs = LR_poly_peridotite;
               c_sat_polynomial_coeffs = c_sat_poly_peridotite;
               Td_polynomial_coeffs = Td_poly_peridotite;
+              pressure = pressure > pressure_cutoffs[0] ? pressure_cutoffs[0] : pressure;
             }
 
           if (lithology == gabbro)
@@ -137,6 +139,7 @@ namespace WorldBuilder
               LR_polynomial_coeffs = LR_poly_gabbro;
               c_sat_polynomial_coeffs = c_sat_poly_gabbro;
               Td_polynomial_coeffs = Td_poly_gabbro;
+              pressure = pressure > pressure_cutoffs[1] ? pressure_cutoffs[1] : pressure;
             }
 
           if (lithology == MORB)
@@ -144,6 +147,7 @@ namespace WorldBuilder
               LR_polynomial_coeffs = LR_poly_MORB;
               c_sat_polynomial_coeffs = c_sat_poly_MORB;
               Td_polynomial_coeffs = Td_poly_MORB;
+              pressure = pressure > pressure_cutoffs[2] ? pressure_cutoffs[2] : pressure;
             }
 
           if (lithology == sediment)
@@ -151,7 +155,10 @@ namespace WorldBuilder
               LR_polynomial_coeffs = LR_poly_sediment;
               c_sat_polynomial_coeffs = c_sat_poly_sediment;
               Td_polynomial_coeffs = Td_poly_sediment;
+              pressure = pressure > pressure_cutoffs[3] ? 1.0 : pressure;
             }
+
+          double inv_pressure = 1/pressure;
 
           // Calculate the c_sat value from Tian et al., 2019
           if (lithology == sediment)

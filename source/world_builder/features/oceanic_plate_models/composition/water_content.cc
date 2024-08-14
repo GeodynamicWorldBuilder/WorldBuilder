@@ -102,9 +102,9 @@ namespace WorldBuilder
         double
         WaterContent::calculate_water_content(double pressure,
                                               double temperature,
-                                              std::string lithology_str) const
+                                              std::string lithology_string) const
         {
-          double inv_pressure = 1/pressure;
+          pressure = pressure <= 0.5 ? 0.5 : pressure;
           double ln_LR_value = 0;
           double ln_c_sat_value = 0;
           double Td_value = 0;
@@ -121,13 +121,13 @@ namespace WorldBuilder
           };
           LithologyName lithology = peridotite;
 
-          if (lithology_str=="peridotite")
+          if (lithology_string=="peridotite")
             lithology = peridotite;
-          else if (lithology_str=="gabbro")
+          else if (lithology_string=="gabbro")
             lithology = gabbro;
-          else if (lithology_str=="MORB")
+          else if (lithology_string=="MORB")
             lithology = MORB;
-          else if (lithology_str=="sediment")
+          else if (lithology_string=="sediment")
             lithology = sediment;
 
           if (lithology == peridotite)
@@ -135,6 +135,7 @@ namespace WorldBuilder
               LR_polynomial_coeffs = LR_poly_peridotite;
               c_sat_polynomial_coeffs = c_sat_poly_peridotite;
               Td_polynomial_coeffs = Td_poly_peridotite;
+              pressure = pressure > pressure_cutoffs[0] ? pressure_cutoffs[0] : pressure;
             }
 
           if (lithology == gabbro)
@@ -142,6 +143,7 @@ namespace WorldBuilder
               LR_polynomial_coeffs = LR_poly_gabbro;
               c_sat_polynomial_coeffs = c_sat_poly_gabbro;
               Td_polynomial_coeffs = Td_poly_gabbro;
+              pressure = pressure > pressure_cutoffs[1] ? pressure_cutoffs[1] : pressure;
             }
 
           if (lithology == MORB)
@@ -149,6 +151,7 @@ namespace WorldBuilder
               LR_polynomial_coeffs = LR_poly_MORB;
               c_sat_polynomial_coeffs = c_sat_poly_MORB;
               Td_polynomial_coeffs = Td_poly_MORB;
+              pressure = pressure > pressure_cutoffs[2] ? pressure_cutoffs[2] : pressure;
             }
 
           if (lithology == sediment)
@@ -156,7 +159,10 @@ namespace WorldBuilder
               LR_polynomial_coeffs = LR_poly_sediment;
               c_sat_polynomial_coeffs = c_sat_poly_sediment;
               Td_polynomial_coeffs = Td_poly_sediment;
+              pressure = pressure > pressure_cutoffs[3] ? pressure_cutoffs[3] : pressure;
             }
+
+          double inv_pressure = 1/pressure;
 
           // Calculate the c_sat value from Tian et al., 2019
           if (lithology == sediment)
