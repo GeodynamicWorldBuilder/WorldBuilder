@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2018 - 2021 by the authors of the World Builder code.
+  Copyright (C) 2018 - 2024 by the authors of the World Builder code.
 
   This file is part of the World Builder.
 
@@ -36,23 +36,25 @@ namespace WorldBuilder
       namespace Composition
       {
         /**
-         * This class represents the bound water content in an oceanic plate and can implement
+         * This class represents the bound water content in a subducting plate and can implement
          * submodules for computing this bound water content. These submodules determine what
          * the returned water content will be based on the the temperature and pressure at a point
-         * within the world.
+         * within the world. Currently, the bound water content can be determined for four different
+         * lithologies: sediments, mid-ocean ridge basalts, gabbros, and peridotites, using
+         * parameterized phase diagrams from Tian et al., 2019 (https://doi.org/10.1029/2019GC008488).
          */
-        class WaterContent final: public Interface
+        class TianWaterContent final: public Interface
         {
           public:
             /**
              * constructor
              */
-            WaterContent(WorldBuilder::World *world);
+            TianWaterContent(WorldBuilder::World *world);
 
             /**
              * Destructor
              */
-            ~WaterContent() override final;
+            ~TianWaterContent() override final;
 
             /**
              * declare and read in the world builder file into the parameters class
@@ -71,8 +73,7 @@ namespace WorldBuilder
              * "MORB", and "peridotite"
              */
             double calculate_water_content(double pressure,
-                                           double temperature,
-                                           std::string lithology) const;
+                                           double temperature) const;
 
             /**
              * Returns a value for the bound water contend based on the given position, depth in the model,
@@ -88,7 +89,7 @@ namespace WorldBuilder
 
 
           private:
-            // WaterContent composition submodule parameters
+            // TianWaterContent composition submodule parameters
             double min_depth;
             Objects::Surface min_depth_surface;
             double max_depth;
@@ -96,32 +97,49 @@ namespace WorldBuilder
             Objects::Surface max_depth_surface;
             std::vector<unsigned int> compositions;
             Operations operation;
-            std::string lithology_str;
             double max_water_content;
 
-            // Peridotite polynomial coefficients
-            std::vector<double> LR_poly_peridotite = {-19.0609, 168.983, -630.032, 1281.84, -1543.14, 1111.88, -459.142, 95.4143, 1.97246};
-            std::vector<double> c_sat_poly_peridotite = {0.00115628, 2.42179};
-            std::vector<double> Td_poly_peridotite = {-15.4627, 94.9716, 636.603};
+            enum LithologyName
+            {
+              peridotite,
+              gabbro,
+              MORB,
+              sediment
+            };
+            LithologyName lithology_type;
 
-            // Gabbro polynomial coefficients
-            std::vector<double> LR_poly_gabbro = {-1.81745, 7.67198, -10.8507, 5.09329, 8.14519};
-            std::vector<double> c_sat_poly_gabbro = {-0.0176673, 0.0893044, 1.52732};
-            std::vector<double> Td_poly_gabbro = {-1.72277, 20.5898, 637.517};
+            // Define the coefficients for the polynomials for 3 quantities: LR which represents the
+            // enthalpy change of the dehydration reactions, c_sat which represents the volatile saturation
+            // content, and Td which represents the onset temperature of dehydration. The first row is for
+            // 'peridotite', the second row is for 'gabbro', the third row is for 'MORB', and the fourth row
+            // is for 'sediment'.
+            std::vector<std::vector<double>> LR_poly =
+            {
+              {-19.0609, 168.983, -630.032, 1281.84, -1543.14, 1111.88, -459.142, 95.4143, 1.97246},
+              {-1.81745, 7.67198, -10.8507, 5.09329, 8.14519},
+              {-1.78177, 7.50871, -10.4840, 5.19725, 7.96365},
+              {-2.03283, 10.8186, -21.2119, 18.3351, -6.48711, 8.32459}
+            };
 
-            // MORB polynomial coefficients
-            std::vector<double> LR_poly_MORB = {-1.78177, 7.50871, -10.4840, 5.19725, 7.96365};
-            std::vector<double> c_sat_poly_MORB = {0.0102725, -0.115390, 0.324452, 1.41588};
-            std::vector<double> Td_poly_MORB = {-3.81280, 22.7809, 638.049};
+            std::vector<std::vector<double>> c_sat_poly =
+            {
+              {0.00115628, 2.42179},
+              {-0.0176673, 0.0893044, 1.52732},
+              {0.0102725, -0.115390, 0.324452, 1.41588},
+              {-0.150662, 0.301807, 1.01867}
+            };
 
-            // Sediment polynomial coefficients
-            std::vector<double> LR_poly_sediment = {-2.03283, 10.8186, -21.2119, 18.3351, -6.48711, 8.32459};
-            std::vector<double> c_sat_poly_sediment = {-0.150662, 0.301807, 1.01867};
-            std::vector<double> Td_poly_sediment = {2.83277, -24.7593, 85.9090, 524.898};
+            std::vector<std::vector<double>> Td_poly =
+            {
+              {-15.4627, 94.9716, 636.603},
+              {-1.72277, 20.5898, 637.517},
+              {-3.81280, 22.7809, 638.049},
+              {2.83277, -24.7593, 85.9090, 524.898}
+            };
 
-            // Maximum pressure for the lithologies (Peridotite, Gabbro, MORB, Sediment). Above these
-            // pressures, the parameterized phase diagrams break down and the solubility goes to infinity.
-            std::vector<double> pressure_cutoffs {10, 26, 16, 1.0};
+            // Maximum pressure for the lithologies (Peridotite, Gabbro, MORB, Sediment). These are required because
+            // Above these pressures, the parameterized phase diagrams break down and the solubility goes to infinity.
+            double cutoff_pressure;
         };
       } // namespace Composition
     } // namespace OceanicPlateModels
