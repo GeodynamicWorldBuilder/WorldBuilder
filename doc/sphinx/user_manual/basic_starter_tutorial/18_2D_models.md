@@ -5,7 +5,7 @@
 2D models in the World Builder are nothing more than a cross section through a 3D model. To create a 2D model, you must state in the World Builder file the origin of the cross section (where x=0 and depth=0) and in what direction the cross section should go (the positive x direction). You can set this with the global parameter `cross section`. It takes two points. The first point is the origin, and the second point is the direction of the cross section. 
 
 ```{note}
-The origin of the 3D model doesn't have to be the same as the origin of the 2D cross section. In the model below, the origin of the 2D cross section is located at [0,200e3] (plane view, depth=0).
+The origin of the 3D model doesn't have to be the same as the origin of the 2D cross section. In the model below, the origin of the 2D cross section is located at [0,450e3] (plane view, depth=0).
 ```
 
 ```{note}
