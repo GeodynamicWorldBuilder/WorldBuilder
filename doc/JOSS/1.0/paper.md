@@ -19,41 +19,45 @@ authors:
     affiliation: "2"
   - name: Rene Gassmöller
     orcid: 0000-0001-7098-8198
-    affiliation: "1"
+    affiliation: "3,4"
   - name: Arushi Saxena
     orcid: 0000-0003-2930-3497
-    affiliation: "3"
+    affiliation: "2,5"
   - name: Timo Heister
     orcid: 0000-0002-8137-3903
-    affiliation: "3"
+    affiliation: "5"
   - name: Haoyuan Li
     orcid: 0000-0003-0676-9884
     affiliation: "2"
   - name: Daniel Douglas
     orcid: 0000-0002-7871-018X
-    affiliation: "4"
+    affiliation: "6"
   - name: Juliane Dannberg
     orcid: 0000-0003-0357-7115
-    affiliation: "1"
+    affiliation: "3,4"
   - name: Wolfgang Bangerth
     orcid: 0000-0003-2311-9402
-    affiliation: "5"
+    affiliation: "7"
   - name: Yijun Wang
     orcid: 0000-0002-7637-3239
-    affiliation: "6"
+    affiliation: "8"
 affiliations:
- - name: Universiy of Florida, USA
+ - name: GFZ German Research Centre for Geosciences, Potsdam, Germany
    index: 1
  - name: UC Davis, USA
    index: 2
- - name: Clemson University, USA
+ - name: GEOMAR Helmholtz-Zentrum für Ozeanforschung, Kiel, Germany
    index: 3
- - name: New Mexico Tech, USA
+ - name: Universiy of Florida, USA
    index: 4
- - name: Colorado State University, USA
+ - name: Clemson University, USA
    index: 5
- - name: University of Oslo, Norway
+ - name: New Mexico Tech, USA
    index: 6
+ - name: Colorado State University, USA
+   index: 7
+ - name: University of Oslo, Norway
+   index: 8
 date: 11 March 2024
 bibliography: paper.bib
 ---
