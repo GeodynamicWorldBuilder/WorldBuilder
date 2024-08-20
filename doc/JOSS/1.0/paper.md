@@ -134,6 +134,8 @@ A more complicated example (only requiring 85 lines, and can be found [here](htt
 
 We would like to acknowledge all other contributors to the project, especially Lorraine Hwang, Rebecca Fildes, and John Naliboff for their advice and support for this project throughout the years. We would also like to acknowledge NSF for their funding and support through grants EAR-1620618, OCE-1948902, EAR-0949446, EAR-1550901, EAR-1925677, and EAR-2149126.
 
+M. Fraters also acknowledges the support of the Department of Earth and Planetary Sciences at UC Davis and the Department of Geological Sciences at the University of Florida, where much of the research presented was completed while he was a postdoctoral scholar. 
+
 # References
 
 
