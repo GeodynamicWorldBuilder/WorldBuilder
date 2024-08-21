@@ -20,8 +20,8 @@
 project = 'Geodynamic World Builder'
 copyright = '2024, The authors of the Geodynamic World Builder'
 # The full version, including alpha/beta/rc tags
-release = '1.0.0-pre'
-html_title = "Manual GWB 1.0.0-pre"
+release = '1.0.0'
+html_title = "Manual GWB 1.0.0"
 
 
 # -- General configuration ---------------------------------------------------
