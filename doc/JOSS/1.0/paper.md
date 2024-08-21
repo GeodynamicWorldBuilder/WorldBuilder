@@ -19,41 +19,45 @@ authors:
     affiliation: "2"
   - name: Rene Gassmöller
     orcid: 0000-0001-7098-8198
-    affiliation: "1"
+    affiliation: "3,4"
   - name: Arushi Saxena
     orcid: 0000-0003-2930-3497
-    affiliation: "3"
+    affiliation: "2,5"
   - name: Timo Heister
     orcid: 0000-0002-8137-3903
-    affiliation: "3"
+    affiliation: "5"
   - name: Haoyuan Li
     orcid: 0000-0003-0676-9884
     affiliation: "2"
   - name: Daniel Douglas
     orcid: 0000-0002-7871-018X
-    affiliation: "4"
+    affiliation: "6"
   - name: Juliane Dannberg
     orcid: 0000-0003-0357-7115
-    affiliation: "1"
+    affiliation: "3,4"
   - name: Wolfgang Bangerth
     orcid: 0000-0003-2311-9402
-    affiliation: "5"
+    affiliation: "7"
   - name: Yijun Wang
     orcid: 0000-0002-7637-3239
-    affiliation: "6"
+    affiliation: "8"
 affiliations:
- - name: Universiy of Florida, USA
+ - name: GFZ German Research Centre for Geosciences, Potsdam, Germany
    index: 1
  - name: UC Davis, USA
    index: 2
- - name: Clemson University, USA
+ - name: GEOMAR Helmholtz-Zentrum für Ozeanforschung, Kiel, Germany
    index: 3
- - name: New Mexico Tech, USA
+ - name: Universiy of Florida, USA
    index: 4
- - name: Colorado State University, USA
+ - name: Clemson University, USA
    index: 5
- - name: University of Oslo, Norway
+ - name: New Mexico Tech, USA
    index: 6
+ - name: Colorado State University, USA
+   index: 7
+ - name: University of Oslo, Norway
+   index: 8
 date: 11 March 2024
 bibliography: paper.bib
 ---
@@ -73,11 +77,11 @@ Today's computational resources, infrastructure, and numerical methods allow for
 3. The model setup is not portable to other computing systems or reproducible in other software frameworks.
 4. The model setup is not shareable with other users.
 
-These issues lead to a number of problems with the reproducibility and reliability of modeling studies, which threaten to undermine the predictive power and usefulness of modeling results, and highlighting the need for a way to describe model setups that is easy, efficient, and robust. The GWB has been designed to address these challenges, by creating human readable, parameterized, portable, reproducible, and shareable geodynamic model setups. Critically, the GWB comes with its own programs to visualize the constructed model through applications like Paraview. Creating the models requires no programming knowledge. Therefore, the GWB can be easily used to visualize tectonic and geodynamic settings for publications, teaching, and public outreach. 
+These issues lead to a number of problems with the reproducibility and reliability of modeling studies, which threaten to undermine the predictive power and usefulness of modeling results, and highlight the need for an easy, efficient, and robust way to describe model setups. The GWB has been designed to address these challenges, by creating human readable, parameterized, portable, reproducible, and shareable geodynamic model setups. Critically, the GWB comes with its own programs to visualize the constructed model through applications like Paraview. Creating the models requires no programming knowledge. Therefore, the GWB can be easily used to visualize tectonic and geodynamic settings for publications, teaching, and public outreach. 
 
 ![A workflow diagram for how a world builder file can be used to create and visualize a geodynamic model.](workflow_diagram.png)
 
-The GWB has been used in several published studies to model global fault patterns, plume, and plate dynamics [@Saxena_Dannberg_etal_2023; @Gea_Negredo_etal_2023; @Sandiford_Craig_timothy_2023; and @vanderWiel_Hinsbergen_etal_2024]. Other tools to solve this problem have emerged at around the same time as the first GWB release [@Fraters_Thieulot_etal_2019]. Examples include GeomIO [@Bauville_Baumann_2019; @Spang_Baumann_2022], which uses an approach based on vector graphics; Easy (https://easyinit.readthedocs.io/), which uses a more generic function-based approach; UWGeodynamics [@Beucher_Moresi_etal_2019], which is specifically designed for Underworld [@Moresi_Dufour_2002]; and GemPy [@Varga_Schaaf_2019; @Schaaf_Varga_2021], which is designed for structural modeling. The GWB was designed to be a more general planetary structure creator, using the methods shown below.
+The GWB has been used in several published studies to model global fault patterns, plumes, and plate dynamics [@Saxena_Dannberg_etal_2023; @Gea_Negredo_etal_2023; @Sandiford_Craig_timothy_2023; and @vanderWiel_Hinsbergen_etal_2024]. Other tools to solve this problem have emerged at around the same time as the first GWB release [@Fraters_Thieulot_etal_2019]. Examples include GeomIO [@Bauville_Baumann_2019; @Spang_Baumann_2022], which uses an approach based on vector graphics; Easy (https://easyinit.readthedocs.io/), which uses a more generic function-based approach; UWGeodynamics [@Beucher_Moresi_etal_2019], which is specifically designed for Underworld [@Moresi_Dufour_2002]; and GemPy [@Varga_Schaaf_2019; @Schaaf_Varga_2021], which is designed for structural modeling. The GWB was designed to be a more general planetary structure creator, using the methods shown below.
 
 # Methods
 
@@ -121,14 +125,16 @@ Below we show an example input file for a Cartesian model that contains a single
 }
 ```
 
-A more complicated example (only requiring 85 lines, and can be found [here](https://github.com/GeodynamicWorldBuilder/WorldBuilder/blob/GWB-v1.0.0/doc/sphinx/_static/gwb_input_files/BST_19_spherical_models.wb)) features a spherical geometry, a spatially variable subducting plate, continental plate, oceanic plate and plume can be seen in Fig 2.
+A more complicated example (only requiring 85 lines, and can be found [here](https://github.com/GeodynamicWorldBuilder/WorldBuilder/blob/GWB-v1.0.0/doc/sphinx/_static/gwb_input_files/BST_19_spherical_models.wb)) featuring a spherical geometry, a spatially variable subducting plate, continental plate, oceanic plate and plume can be seen in Fig 2.
 
-![A schematic example of what can be built with 85 lines of a GWB input file formatted in the same way as in the example input file shown above. This includes a slab with variable dip and thickness along strike and down dip, subducting under an oceanic plate on the right side of the ridge, as well as a passive continental margin with layers of variable on the left side of the ridge, and a mantle plume beneath the ridge. The temperature of the continent is linear, the oceanic plates are defined by a half-space cooling model, the slab temperature is defined by a mass conserving temperature model and the plume adds heat based on a Gaussian around the center.\label{fig:example}](../../sphinx/_static/images/user_manual/basic_starter_tutorial/BST_19.png)
+![A schematic example of what can be built with 85 lines of a GWB input file formatted in the same way as in the example input file shown above. This includes a slab with variable dip and thickness along strike and down dip, subducting under an oceanic plate on the right side of the ridge, as well as a passive continental margin with variable thickness, and a mantle plume beneath the ridge. The temperature profile of the continent is linear, the oceanic plates are defined by a half-space cooling model, the slab temperature is defined by a mass conserving temperature model and the plume adds heat based on a Gaussian around the center.\label{fig:example}](../../sphinx/_static/images/user_manual/basic_starter_tutorial/BST_19.png)
 
 
 # Acknowledgements
 
 We would like to acknowledge all other contributors to the project, especially Lorraine Hwang, Rebecca Fildes, and John Naliboff for their advice and support for this project throughout the years. We would also like to acknowledge NSF for their funding and support through grants EAR-1620618, OCE-1948902, EAR-0949446, EAR-1550901, EAR-1925677, and EAR-2149126.
+
+M. Fraters also acknowledges the support of the Department of Earth and Planetary Sciences at UC Davis and the Department of Geological Sciences at the University of Florida, where much of the research presented was completed while he was a postdoctoral scholar. 
 
 # References
 
