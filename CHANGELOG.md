@@ -9,6 +9,13 @@ Add new entries a the bottom of the current list in the subheading. Item format:
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+
+## Changed
+
+## Fixed
+
 ## [1.0.0]
 ### Added
 - Added the ability to calculate the water content within the oceanic plate feature and the subducting plate feature. The implementation samples the temperature within the feature, calculates a lithostatic pressure, and determines the water content using parameterized phase diagrams for 4 different lithologies: sediment, mid ocean ridge basalt (MORB), gabbro, and peridotite from [Tian et al., 2019](https://doi.org/10.1029/2019GC008488). \[Daniel Douglas; 2024-08-20; [#661](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/661)\]
