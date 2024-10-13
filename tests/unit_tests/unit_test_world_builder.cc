@@ -3473,10 +3473,10 @@ TEST_CASE("WorldBuilder Types: Segment Object")
 {
 #define TYPE Segment
   const WorldBuilder::Point<2> thickness(1,2,invalid);
-  const WorldBuilder::Point<2> top_trucation(3,4,invalid);
+  const WorldBuilder::Point<2> top_truncation(3,4,invalid);
   const WorldBuilder::Point<2> angle(5,6,invalid);
   Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface, Features::FaultModels::Grains::Interface>
-  type (1.0, thickness, top_trucation, angle,
+  type (1.0, thickness, top_truncation, angle,
         std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface> >(),
         std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface> >(),
         std::vector<std::shared_ptr<Features::FaultModels::Grains::Interface> >());
