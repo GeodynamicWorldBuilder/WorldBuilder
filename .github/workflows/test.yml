@@ -286,7 +286,7 @@ jobs:
         run: echo $PATH && export PATH=$PATH:/home/runner/.local/bin && echo $PATH && export PYTHONPATH=$PYTHONPATH:/home/runner/.local/bin
       
       - name: Install coveralls
-        run: pip install --user cpp-coveralls 
+        run: pipx install cpp-coveralls 
         shell: bash
          
       - name: Create Build Environment
