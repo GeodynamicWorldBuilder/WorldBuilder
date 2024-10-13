@@ -23,6 +23,7 @@
 #include "world_builder/features/mantle_layer_models/composition/interface.h"
 #include "world_builder/features/mantle_layer_models/grains/interface.h"
 #include "world_builder/features/mantle_layer_models/temperature/interface.h"
+#include "world_builder/features/mantle_layer_models/velocity/interface.h"
 #include "world_builder/features/feature_utilities.h"
 #include "world_builder/types/array.h"
 #include "world_builder/types/double.h"
@@ -87,6 +88,9 @@ namespace WorldBuilder
       prm.declare_entry("grains models",
                         Types::PluginSystem("", Features::MantleLayerModels::Grains::Interface::declare_entries, {"model"}),
                         "A list of grains models.");
+      prm.declare_entry("velocity models",
+                        Types::PluginSystem("", Features::MantleLayerModels::Velocity::Interface::declare_entries, {"model"}),
+                        "A list of velocity models.");
     }
 
     void
@@ -158,6 +162,21 @@ namespace WorldBuilder
           }
       }
       prm.leave_subsection();
+
+      prm.get_unique_pointers<Features::MantleLayerModels::Velocity::Interface>("velocity models", velocity_models);
+
+      prm.enter_subsection("velocity models");
+      {
+        for (unsigned int i = 0; i < velocity_models.size(); ++i)
+          {
+            prm.enter_subsection(std::to_string(i));
+            {
+              velocity_models[i]->parse_entries(prm,coordinates);
+            }
+            prm.leave_subsection();
+          }
+      }
+      prm.leave_subsection();
     }
 
 
@@ -201,27 +220,28 @@ namespace WorldBuilder
 
                           }
                         break;
-                        case 2: // composition
+                      }
+                      case 2: // composition
+                      {
+                        for (const auto &composition_model: composition_models)
+                          {
+                            output[entry_in_output[i_property]] = composition_model->get_composition(position_in_cartesian_coordinates,
+                                                                                                     position_in_natural_coordinates,
+                                                                                                     depth,
+                                                                                                     properties[i_property][1],
+                                                                                                     output[entry_in_output[i_property]],
+                                                                                                     min_depth_local,
+                                                                                                     max_depth_local);
 
-                          for (const auto &composition_model: composition_models)
-                            {
-                              output[entry_in_output[i_property]] = composition_model->get_composition(position_in_cartesian_coordinates,
-                                                                                                       position_in_natural_coordinates,
-                                                                                                       depth,
-                                                                                                       properties[i_property][1],
-                                                                                                       output[entry_in_output[i_property]],
-                                                                                                       min_depth_local,
-                                                                                                       max_depth_local);
+                            WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Composition is not a number: " << output[entry_in_output[i_property]]
+                                     << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
+                            WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Composition is not a finite: " << output[entry_in_output[i_property]]
+                                     << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
 
-                              WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Composition is not a number: " << output[entry_in_output[i_property]]
-                                       << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
-                              WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Composition is not a finite: " << output[entry_in_output[i_property]]
-                                       << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
+                          }
 
-                            }
-
-                          break;
-                        }
+                        break;
+                      }
                       case 3: // grains
                       {
                         WorldBuilder::grains  grains(output,properties[i_property][2],entry_in_output[i_property]);
@@ -242,6 +262,30 @@ namespace WorldBuilder
                       case 4:
                       {
                         output[entry_in_output[i_property]] = static_cast<double>(tag_index);
+                        break;
+                      }
+                      case 5:  // velocity
+                      {
+                        std::array<double, 3> velocity = {{0,0,0}};
+                        for (const auto &velocity_model: velocity_models)
+                          {
+                            velocity = velocity_model->get_velocity(position_in_cartesian_coordinates,
+                                                                    position_in_natural_coordinates,
+                                                                    depth,
+                                                                    gravity_norm,
+                                                                    velocity,
+                                                                    min_depth_local,
+                                                                    max_depth_local);
+
+                            //WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Velocity is not a number: " << output[entry_in_output[i_property]]
+                            //         << ", based on a velocity model with the name " << velocity_model->get_name() << ", in feature " << this->name);
+                            //WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Velocity is not a finite: " << output[entry_in_output[i_property]]
+                            //         << ", based on a velocity model with the name " << velocity_model->get_name() << ", in feature " << this->name);
+                          }
+
+                        output[entry_in_output[i_property]] = velocity[0];
+                        output[entry_in_output[i_property]+1] = velocity[1];
+                        output[entry_in_output[i_property]+2] = velocity[2];
                         break;
                       }
                       break;

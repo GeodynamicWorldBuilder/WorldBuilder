@@ -19,19 +19,24 @@
 
 
 #include "world_builder/features/continental_plate_models/composition/interface.h"
+#include "world_builder/features/continental_plate_models/velocity/interface.h"
 #include "world_builder/features/continental_plate_models/grains/interface.h"
 #include "world_builder/features/continental_plate_models/temperature/interface.h"
 #include "world_builder/features/fault.h"
 #include "world_builder/features/mantle_layer_models/composition/interface.h"
 #include "world_builder/features/mantle_layer_models/grains/interface.h"
 #include "world_builder/features/mantle_layer_models/temperature/interface.h"
+#include "world_builder/features/mantle_layer_models/velocity/interface.h"
 #include "world_builder/features/oceanic_plate_models/composition/interface.h"
 #include "world_builder/features/oceanic_plate_models/grains/interface.h"
 #include "world_builder/features/oceanic_plate_models/temperature/interface.h"
+#include "world_builder/features/oceanic_plate_models/velocity/interface.h"
 #include "world_builder/features/plume_models/composition/interface.h"
 #include "world_builder/features/plume_models/grains/interface.h"
 #include "world_builder/features/plume_models/temperature/interface.h"
+#include "world_builder/features/plume_models/velocity/interface.h"
 #include "world_builder/features/subducting_plate.h"
+#include "world_builder/features/subducting_plate_models/velocity/interface.h"
 #include "world_builder/gravity_model/interface.h"
 #include "world_builder/types/object.h"
 #include "world_builder/utilities.h"
@@ -1129,14 +1134,16 @@ namespace WorldBuilder
   template<>
   std::vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
       Features::SubductingPlateModels::Composition::Interface,
-      Features::SubductingPlateModels::Grains::Interface> >
+      Features::SubductingPlateModels::Grains::Interface,
+      Features::SubductingPlateModels::Velocity::Interface> >
       Parameters::get_vector(const std::string &name,
                              std::vector<std::shared_ptr<Features::SubductingPlateModels::Temperature::Interface> > &default_temperature_models,
                              std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface> > &default_composition_models,
-                             std::vector<std::shared_ptr<Features::SubductingPlateModels::Grains::Interface> > &default_grains_models)
+                             std::vector<std::shared_ptr<Features::SubductingPlateModels::Grains::Interface> > &default_grains_models,
+                             std::vector<std::shared_ptr<Features::SubductingPlateModels::Velocity::Interface> > &default_velocity_models)
   {
     using namespace Features::SubductingPlateModels;
-    std::vector<Objects::Segment<Temperature::Interface,Composition::Interface,Grains::Interface> > vector;
+    std::vector<Objects::Segment<Temperature::Interface,Composition::Interface,Grains::Interface,Velocity::Interface> > vector;
     this->enter_subsection(name);
     const std::string strict_base = this->get_full_json_path();
     WBAssertThrow(Pointer((strict_base).c_str()).Get(parameters) != nullptr,"Error: " << name
@@ -1320,7 +1327,43 @@ namespace WorldBuilder
                 Pointer((base + "/grains model default entry").c_str()).Set(parameters,true);
               }
           }
-        vector.emplace_back(length, thickness, top_truncation, angle, temperature_models, composition_models, grains_models);
+
+        // now do the same for velocities
+        std::vector<std::shared_ptr<Velocity::Interface> > velocity_models;
+        if (!this->get_shared_pointers<Velocity::Interface>("velocity models", velocity_models) ||
+            Pointer((base + "/velocity model default entry").c_str()).Get(parameters) != nullptr)
+          {
+            velocity_models = default_velocity_models;
+
+
+            // find the default value, which is the closest to the current path
+            for (searchback = 0; searchback < path.size(); ++searchback)
+              {
+                if (Pointer((this->get_full_json_path(path.size()-searchback) + "/velocity models").c_str()).Get(parameters) != nullptr)
+                  {
+                    break;
+                  }
+              }
+
+            // if we can not find default value for the temperature model, skip it
+            if (searchback < path.size())
+              {
+
+                // copy the value, this unfortunately removes it.
+                Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/velocity models").c_str()).Get(parameters)->GetArray());
+
+                // now copy it
+                Value value2;
+                value2.CopyFrom(value1, parameters.GetAllocator());
+
+                // now we should have 2x the same value, so put it back and place it in the correct location.
+                Pointer((this->get_full_json_path(path.size()-searchback) + "/velocity models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
+
+                Pointer((base).c_str()).Get(parameters)->AddMember("velocity models", value2, parameters.GetAllocator());
+                Pointer((base + "/velocity model default entry").c_str()).Set(parameters,true);
+              }
+          }
+        vector.emplace_back(length, thickness, top_truncation, angle, temperature_models, composition_models, grains_models, velocity_models);
 
         this->leave_subsection();
       }
@@ -1331,14 +1374,15 @@ namespace WorldBuilder
 
 
   template<>
-  std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,Features::FaultModels::Composition::Interface, Features::FaultModels::Grains::Interface> >
+  std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,Features::FaultModels::Composition::Interface, Features::FaultModels::Grains::Interface, Features::FaultModels::Velocity::Interface> >
   Parameters::get_vector(const std::string &name,
                          std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface> > &default_temperature_models,
                          std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface> > &default_composition_models,
-                         std::vector<std::shared_ptr<Features::FaultModels::Grains::Interface> > &default_grains_models)
+                         std::vector<std::shared_ptr<Features::FaultModels::Grains::Interface> > &default_grains_models,
+                         std::vector<std::shared_ptr<Features::FaultModels::Velocity::Interface> > &default_velocity_models)
   {
     using namespace Features::FaultModels;
-    std::vector<Objects::Segment<Temperature::Interface,Composition::Interface,Grains::Interface> > vector;
+    std::vector<Objects::Segment<Temperature::Interface,Composition::Interface,Grains::Interface,Velocity::Interface> > vector;
     this->enter_subsection(name);
     const std::string strict_base = this->get_full_json_path();
     WBAssertThrow(Pointer((strict_base).c_str()).Get(parameters) != nullptr,"error: " << name
@@ -1522,7 +1566,44 @@ namespace WorldBuilder
                 Pointer((base + "/grains model default entry").c_str()).Set(parameters,true);
               }
           }
-        vector.emplace_back(length, thickness, top_truncation, angle, temperature_models, composition_models, grains_models);
+
+        // now do the same for velocitys
+        std::vector<std::shared_ptr<Velocity::Interface> > velocity_models;
+        if (!this->get_shared_pointers<Velocity::Interface>("velocity models", velocity_models) ||
+            Pointer((base + "/velocity model default entry").c_str()).Get(parameters) != nullptr)
+          {
+            velocity_models = default_velocity_models;
+
+
+            // find the default value, which is the closest to the current path
+            for (searchback = 0; searchback < path.size(); ++searchback)
+              {
+                if (Pointer((this->get_full_json_path(path.size()-searchback) + "/velocity models").c_str()).Get(parameters) != nullptr)
+                  {
+                    break;
+                  }
+              }
+
+            // if we can not find default value for the temperature model, skip it
+            if (searchback < path.size())
+              {
+
+                // copy the value, this unfortunately removes it.
+                Value value1 = Value(Pointer((this->get_full_json_path(path.size()-searchback) + "/velocity models").c_str()).Get(parameters)->GetArray());
+
+                // now copy it
+                Value value2;
+                value2.CopyFrom(value1, parameters.GetAllocator());
+
+                // now we should have 2x the same value, so put it back and place it in the correct location.
+                Pointer((this->get_full_json_path(path.size()-searchback) + "/velocity models").c_str()).Set(parameters, value1);//.Get(parameters)->Set("temperature models", value1, parameters.GetAllocator());
+
+                Pointer((base).c_str()).Get(parameters)->AddMember("velocity models", value2, parameters.GetAllocator());
+                Pointer((base + "/velocity model default entry").c_str()).Set(parameters,true);
+              }
+          }
+
+        vector.emplace_back(length, thickness, top_truncation, angle, temperature_models, composition_models, grains_models, velocity_models);
 
         this->leave_subsection();
       }
@@ -2043,6 +2124,14 @@ namespace WorldBuilder
   Parameters::get_unique_pointers<Features::ContinentalPlateModels::Grains::Interface>(const std::string &name,
       std::vector<std::unique_ptr<Features::ContinentalPlateModels::Grains::Interface> > &vector);
 
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_unique_pointers<Features::ContinentalPlateModels::Velocity::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::ContinentalPlateModels::Velocity::Interface> > &vector);
+
 
   /**
    * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -2067,6 +2156,14 @@ namespace WorldBuilder
   template bool
   Parameters::get_unique_pointers<Features::PlumeModels::Grains::Interface>(const std::string &name,
                                                                             std::vector<std::unique_ptr<Features::PlumeModels::Grains::Interface> > &vector);
+
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_unique_pointers<Features::PlumeModels::Velocity::Interface>(const std::string &name,
+                                                                              std::vector<std::unique_ptr<Features::PlumeModels::Velocity::Interface> > &vector);
 
 
 
@@ -2094,6 +2191,14 @@ namespace WorldBuilder
   Parameters::get_unique_pointers<Features::OceanicPlateModels::Grains::Interface>(const std::string &name,
       std::vector<std::unique_ptr<Features::OceanicPlateModels::Grains::Interface> > &vector);
 
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_unique_pointers<Features::OceanicPlateModels::Velocity::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::OceanicPlateModels::Velocity::Interface> > &vector);
+
 
 
   /**
@@ -2119,6 +2224,14 @@ namespace WorldBuilder
   template bool
   Parameters::get_unique_pointers<Features::MantleLayerModels::Grains::Interface>(const std::string &name,
                                                                                   std::vector<std::unique_ptr<Features::MantleLayerModels::Grains::Interface> > &vector);
+
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_unique_pointers<Features::MantleLayerModels::Velocity::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::MantleLayerModels::Velocity::Interface> > &vector);
 
 
 
@@ -2146,6 +2259,14 @@ namespace WorldBuilder
   Parameters::get_unique_pointers<Features::SubductingPlateModels::Grains::Interface>(const std::string &name,
       std::vector<std::unique_ptr<Features::SubductingPlateModels::Grains::Interface> > &vector);
 
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_unique_pointers<Features::SubductingPlateModels::Velocity::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::SubductingPlateModels::Velocity::Interface> > &vector);
+
 
 
   /**
@@ -2170,6 +2291,13 @@ namespace WorldBuilder
   template bool
   Parameters::get_unique_pointers<Features::FaultModels::Grains::Interface>(const std::string &name,
                                                                             std::vector<std::unique_ptr<Features::FaultModels::Grains::Interface> > &vector);
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_unique_pointers<Features::FaultModels::Velocity::Interface>(const std::string &name,
+                                                                              std::vector<std::unique_ptr<Features::FaultModels::Velocity::Interface> > &vector);
 
 
 
@@ -2197,6 +2325,14 @@ namespace WorldBuilder
   Parameters::get_shared_pointers<Features::SubductingPlateModels::Grains::Interface>(const std::string &name,
       std::vector<std::shared_ptr<Features::SubductingPlateModels::Grains::Interface> > &vector);
 
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_shared_pointers<Features::SubductingPlateModels::Velocity::Interface>(const std::string &name,
+      std::vector<std::shared_ptr<Features::SubductingPlateModels::Velocity::Interface> > &vector);
+
 
   /**
    * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
@@ -2220,6 +2356,13 @@ namespace WorldBuilder
   template bool
   Parameters::get_shared_pointers<Features::FaultModels::Grains::Interface>(const std::string &name,
                                                                             std::vector<std::shared_ptr<Features::FaultModels::Grains::Interface> > &vector);
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_shared_pointers<Features::FaultModels::Velocity::Interface>(const std::string &name,
+                                                                              std::vector<std::shared_ptr<Features::FaultModels::Velocity::Interface> > &vector);
 
 
 

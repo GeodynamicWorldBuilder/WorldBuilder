@@ -23,6 +23,7 @@
 #include "world_builder/features/continental_plate_models/composition/interface.h"
 #include "world_builder/features/continental_plate_models/grains/interface.h"
 #include "world_builder/features/continental_plate_models/temperature/interface.h"
+#include "world_builder/features/continental_plate_models/velocity/interface.h"
 #include "world_builder/features/feature_utilities.h"
 #include "world_builder/nan.h"
 #include "world_builder/types/array.h"
@@ -33,6 +34,7 @@
 #include "world_builder/types/value_at_points.h"
 #include "world_builder/world.h"
 
+#include <array>
 #include <iostream>
 
 
@@ -86,6 +88,9 @@ namespace WorldBuilder
       prm.declare_entry("temperature models",
                         Types::PluginSystem("", Features::ContinentalPlateModels::Temperature::Interface::declare_entries, {"model"}),
                         "A list of temperature models.");
+      prm.declare_entry("velocity models",
+                        Types::PluginSystem("", Features::ContinentalPlateModels::Velocity::Interface::declare_entries, {"model"}),
+                        "A list of velocity models.");
       prm.declare_entry("composition models",
                         Types::PluginSystem("", Features::ContinentalPlateModels::Composition::Interface::declare_entries, {"model"}),
                         "A list of composition models.");
@@ -126,6 +131,22 @@ namespace WorldBuilder
             prm.enter_subsection(std::to_string(i));
             {
               temperature_models[i]->parse_entries(prm,coordinates);
+            }
+            prm.leave_subsection();
+          }
+      }
+      prm.leave_subsection();
+
+
+      prm.get_unique_pointers<Features::ContinentalPlateModels::Velocity::Interface>("velocity models", velocity_models);
+
+      prm.enter_subsection("velocity models");
+      {
+        for (unsigned int i = 0; i < velocity_models.size(); ++i)
+          {
+            prm.enter_subsection(std::to_string(i));
+            {
+              velocity_models[i]->parse_entries(prm,coordinates);
             }
             prm.leave_subsection();
           }
@@ -251,11 +272,34 @@ namespace WorldBuilder
                         output[entry_in_output[i_property]] = static_cast<double>(tag_index);
                         break;
                       }
+                      case 5: // velocity
+                      {
+                        std::array<double, 3> velocity = {{0,0,0}};
+                        //std::cout << "velocity_models.size() = " << velocity_models.size() << std::endl;
+                        for (const auto &velocity_model: velocity_models)
+                          {
+                            velocity = velocity_model->get_velocity(position_in_cartesian_coordinates,
+                                                                    position_in_natural_coordinates,
+                                                                    depth,
+                                                                    gravity_norm,
+                                                                    velocity,
+                                                                    min_depth_local,
+                                                                    max_depth_local);
+                            //std::cout << "l vel = " << velocity[0] << ":" << velocity[1] << ":" << velocity[2] << std::endl;
+
+                          }
+                        //std::cout << "o vel = " << velocity[0] << ":" << velocity[1] << ":" << velocity[2] << std::endl;
+                        output[entry_in_output[i_property]] = velocity[0];
+                        output[entry_in_output[i_property]+1] = velocity[1];
+                        output[entry_in_output[i_property]+2] = velocity[2];
+                        //std::cout << "vel=" << output[entry_in_output[i_property]] << ":" << output[entry_in_output[i_property]+1] << ":" << output[entry_in_output[i_property]+2] << std::endl;
+                        break;
+                      }
                       default:
                       {
                         WBAssertThrow(false,
                                       "Internal error: Unimplemented property provided. " <<
-                                      "Only temperature (1), composition (2), grains (3) or tag (4) are allowed. "
+                                      "Only temperature (1), composition (2), grains (3), tag (4) or velocity (5) are allowed. "
                                       "Provided property number was: " << properties[i_property][0]);
                       }
                     }
