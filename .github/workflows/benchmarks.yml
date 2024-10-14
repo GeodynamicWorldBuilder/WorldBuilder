@@ -181,7 +181,7 @@ jobs:
             cat ${{github.workspace}}/result_${{matrix.benchmark_number}}.csv | cargo run --release analyze --disable-dynamic-printing > ${{github.workspace}}/benchmark_${{matrix.benchmark_number}}_results/analyze_${{matrix.benchmark_number}}.log ||:;
             cat ${{github.workspace}}/benchmark_${{matrix.benchmark_number}}_results/analyze_${{matrix.benchmark_number}}.log
     
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: benchmark_${{matrix.benchmark_number}}_results
         path: benchmark_${{matrix.benchmark_number}}_results/
