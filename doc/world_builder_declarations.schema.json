@@ -761,6 +761,146 @@
                                     ]
                                 }
                             },
+                            "velocity models": {
+                                "description": "A list of velocity models.",
+                                "default value": "",
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Uniform velocity model. Set the velocity to a constant value.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "velocity"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the velocity model.",
+                                                    "enum": [
+                                                        "uniform raw"
+                                                    ]
+                                                },
+                                                "operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "enum": [
+                                                        "replace",
+                                                        "add",
+                                                        "subtract"
+                                                    ]
+                                                },
+                                                "min depth": {
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 0.0,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 0.0
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "max depth": {
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 1.7976931348623157e308,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 1.7976931348623157e308
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "velocity": {
+                                                    "type": "array",
+                                                    "minItems": 3,
+                                                    "maxItems": 3,
+                                                    "uniqueItems": false,
+                                                    "description": "The velocity in meter per year",
+                                                    "items": {
+                                                        "default value": 0.0,
+                                                        "type": "number",
+                                                        "description": ""
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
                             "composition models": {
                                 "description": "A list of composition models.",
                                 "default value": "",
@@ -2361,6 +2501,66 @@
                                                     }
                                                 ]
                                             }
+                                        },
+                                        "velocity models": {
+                                            "description": "",
+                                            "default value": "",
+                                            "type": "array",
+                                            "items": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "object",
+                                                        "description": "Uniform velocity model. Set the velocity to a constant value.",
+                                                        "additionalProperties": false,
+                                                        "required": [
+                                                            "model",
+                                                            "velocity"
+                                                        ],
+                                                        "properties": {
+                                                            "model": {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": "The name of the velocity model.",
+                                                                "enum": [
+                                                                    "uniform raw"
+                                                                ]
+                                                            },
+                                                            "operation": {
+                                                                "default value": "replace",
+                                                                "type": "string",
+                                                                "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                                "enum": [
+                                                                    "replace",
+                                                                    "add",
+                                                                    "subtract"
+                                                                ]
+                                                            },
+                                                            "min distance fault center": {
+                                                                "default value": 0.0,
+                                                                "type": "number",
+                                                                "description": "The distance in meters from which the composition of this feature is present."
+                                                            },
+                                                            "max distance fault center": {
+                                                                "default value": 1.7976931348623157e308,
+                                                                "type": "number",
+                                                                "description": "The distance in meters to which the composition of this feature is present."
+                                                            },
+                                                            "velocity": {
+                                                                "type": "array",
+                                                                "minItems": 3,
+                                                                "maxItems": 3,
+                                                                "uniqueItems": false,
+                                                                "description": "The velocity in meter per year",
+                                                                "items": {
+                                                                    "default value": 0.0,
+                                                                    "type": "number",
+                                                                    "description": ""
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            }
                                         }
                                     }
                                 }
@@ -2978,6 +3178,66 @@
                                                     "description": "A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.",
                                                     "items": {
                                                         "default value": -1.0,
+                                                        "type": "number",
+                                                        "description": ""
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "velocity models": {
+                                "description": "A list of velocity models.",
+                                "default value": "",
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Uniform velocity model. Set the velocity to a constant value.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "velocity"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the velocity model.",
+                                                    "enum": [
+                                                        "uniform raw"
+                                                    ]
+                                                },
+                                                "operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "enum": [
+                                                        "replace",
+                                                        "add",
+                                                        "subtract"
+                                                    ]
+                                                },
+                                                "min distance fault center": {
+                                                    "default value": 0.0,
+                                                    "type": "number",
+                                                    "description": "The distance in meters from which the composition of this feature is present."
+                                                },
+                                                "max distance fault center": {
+                                                    "default value": 1.7976931348623157e308,
+                                                    "type": "number",
+                                                    "description": "The distance in meters to which the composition of this feature is present."
+                                                },
+                                                "velocity": {
+                                                    "type": "array",
+                                                    "minItems": 3,
+                                                    "maxItems": 3,
+                                                    "uniqueItems": false,
+                                                    "description": "The velocity in meter per year",
+                                                    "items": {
+                                                        "default value": 0.0,
                                                         "type": "number",
                                                         "description": ""
                                                     }
@@ -3681,6 +3941,66 @@
                                                                 }
                                                             ]
                                                         }
+                                                    },
+                                                    "velocity models": {
+                                                        "description": "",
+                                                        "default value": "",
+                                                        "type": "array",
+                                                        "items": {
+                                                            "oneOf": [
+                                                                {
+                                                                    "type": "object",
+                                                                    "description": "Uniform velocity model. Set the velocity to a constant value.",
+                                                                    "additionalProperties": false,
+                                                                    "required": [
+                                                                        "model",
+                                                                        "velocity"
+                                                                    ],
+                                                                    "properties": {
+                                                                        "model": {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": "The name of the velocity model.",
+                                                                            "enum": [
+                                                                                "uniform raw"
+                                                                            ]
+                                                                        },
+                                                                        "operation": {
+                                                                            "default value": "replace",
+                                                                            "type": "string",
+                                                                            "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                                            "enum": [
+                                                                                "replace",
+                                                                                "add",
+                                                                                "subtract"
+                                                                            ]
+                                                                        },
+                                                                        "min distance fault center": {
+                                                                            "default value": 0.0,
+                                                                            "type": "number",
+                                                                            "description": "The distance in meters from which the composition of this feature is present."
+                                                                        },
+                                                                        "max distance fault center": {
+                                                                            "default value": 1.7976931348623157e308,
+                                                                            "type": "number",
+                                                                            "description": "The distance in meters to which the composition of this feature is present."
+                                                                        },
+                                                                        "velocity": {
+                                                                            "type": "array",
+                                                                            "minItems": 3,
+                                                                            "maxItems": 3,
+                                                                            "uniqueItems": false,
+                                                                            "description": "The velocity in meter per year",
+                                                                            "items": {
+                                                                                "default value": 0.0,
+                                                                                "type": "number",
+                                                                                "description": ""
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
                                                     }
                                                 }
                                             }
@@ -4298,6 +4618,66 @@
                                                                 "description": "A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.",
                                                                 "items": {
                                                                     "default value": -1.0,
+                                                                    "type": "number",
+                                                                    "description": ""
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "velocity models": {
+                                            "description": "A list of velocity models.",
+                                            "default value": "",
+                                            "type": "array",
+                                            "items": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "object",
+                                                        "description": "Uniform velocity model. Set the velocity to a constant value.",
+                                                        "additionalProperties": false,
+                                                        "required": [
+                                                            "model",
+                                                            "velocity"
+                                                        ],
+                                                        "properties": {
+                                                            "model": {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": "The name of the velocity model.",
+                                                                "enum": [
+                                                                    "uniform raw"
+                                                                ]
+                                                            },
+                                                            "operation": {
+                                                                "default value": "replace",
+                                                                "type": "string",
+                                                                "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                                "enum": [
+                                                                    "replace",
+                                                                    "add",
+                                                                    "subtract"
+                                                                ]
+                                                            },
+                                                            "min distance fault center": {
+                                                                "default value": 0.0,
+                                                                "type": "number",
+                                                                "description": "The distance in meters from which the composition of this feature is present."
+                                                            },
+                                                            "max distance fault center": {
+                                                                "default value": 1.7976931348623157e308,
+                                                                "type": "number",
+                                                                "description": "The distance in meters to which the composition of this feature is present."
+                                                            },
+                                                            "velocity": {
+                                                                "type": "array",
+                                                                "minItems": 3,
+                                                                "maxItems": 3,
+                                                                "uniqueItems": false,
+                                                                "description": "The velocity in meter per year",
+                                                                "items": {
+                                                                    "default value": 0.0,
                                                                     "type": "number",
                                                                     "description": ""
                                                                 }
@@ -5551,6 +5931,146 @@
                                                     "description": "A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.",
                                                     "items": {
                                                         "default value": -1.0,
+                                                        "type": "number",
+                                                        "description": ""
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "velocity models": {
+                                "description": "A list of velocity models.",
+                                "default value": "",
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Uniform velocity model. Set the velocity to a constant value.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "velocity"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the velocity model.",
+                                                    "enum": [
+                                                        "uniform raw"
+                                                    ]
+                                                },
+                                                "operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "enum": [
+                                                        "replace",
+                                                        "add",
+                                                        "subtract"
+                                                    ]
+                                                },
+                                                "min depth": {
+                                                    "description": "The depth in meters from which the velocity of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 0.0,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 0.0
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "max depth": {
+                                                    "description": "The depth in meters to which the velocity of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 1.7976931348623157e308,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 1.7976931348623157e308
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "velocity": {
+                                                    "type": "array",
+                                                    "minItems": 3,
+                                                    "maxItems": 3,
+                                                    "uniqueItems": false,
+                                                    "description": "The velocity in meter per year",
+                                                    "items": {
+                                                        "default value": 0.0,
                                                         "type": "number",
                                                         "description": ""
                                                     }
@@ -7486,6 +8006,146 @@
                                         }
                                     ]
                                 }
+                            },
+                            "velocity models": {
+                                "description": "A list of velocity models.",
+                                "default value": "",
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Uniform velocity model. Set the velocity to a constant value.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "velocity"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the velocity model.",
+                                                    "enum": [
+                                                        "uniform raw"
+                                                    ]
+                                                },
+                                                "operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "enum": [
+                                                        "replace",
+                                                        "add",
+                                                        "subtract"
+                                                    ]
+                                                },
+                                                "min depth": {
+                                                    "description": "The depth in meters from which the velocity of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 0.0,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 0.0
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "max depth": {
+                                                    "description": "The depth in meters to which the velocity of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 1.7976931348623157e308,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 1.7976931348623157e308
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "velocity": {
+                                                    "type": "array",
+                                                    "minItems": 3,
+                                                    "maxItems": 3,
+                                                    "uniqueItems": false,
+                                                    "description": "The velocity in meter per year",
+                                                    "items": {
+                                                        "default value": 0.0,
+                                                        "type": "number",
+                                                        "description": ""
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
                             }
                         }
                     },
@@ -8023,6 +8683,66 @@
                                                     "description": "A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.",
                                                     "items": {
                                                         "default value": -1.0,
+                                                        "type": "number",
+                                                        "description": ""
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "velocity models": {
+                                "description": "A list of velocity models.",
+                                "default value": "",
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Uniform velocity model. Set the velocity to a constant value.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "velocity"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the velocity model.",
+                                                    "enum": [
+                                                        "uniform raw"
+                                                    ]
+                                                },
+                                                "operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "enum": [
+                                                        "replace",
+                                                        "add",
+                                                        "subtract"
+                                                    ]
+                                                },
+                                                "min depth": {
+                                                    "default value": 0.0,
+                                                    "type": "number",
+                                                    "description": "The depth in meters from which the velocity of this feature is present."
+                                                },
+                                                "max depth": {
+                                                    "default value": 1.7976931348623157e308,
+                                                    "type": "number",
+                                                    "description": "The depth in meters to which the velocity of this feature is present."
+                                                },
+                                                "velocity": {
+                                                    "type": "array",
+                                                    "minItems": 3,
+                                                    "maxItems": 3,
+                                                    "uniqueItems": false,
+                                                    "description": "The velocity in meter per year",
+                                                    "items": {
+                                                        "default value": 0.0,
                                                         "type": "number",
                                                         "description": ""
                                                     }
@@ -9112,6 +9832,66 @@
                                                     }
                                                 ]
                                             }
+                                        },
+                                        "velocity models": {
+                                            "description": "",
+                                            "default value": "",
+                                            "type": "array",
+                                            "items": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "object",
+                                                        "description": "Uniform velocity model. Set the velocity to a constant value.",
+                                                        "additionalProperties": false,
+                                                        "required": [
+                                                            "model",
+                                                            "velocity"
+                                                        ],
+                                                        "properties": {
+                                                            "model": {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": "The name of the velocity model.",
+                                                                "enum": [
+                                                                    "uniform raw"
+                                                                ]
+                                                            },
+                                                            "operation": {
+                                                                "default value": "replace",
+                                                                "type": "string",
+                                                                "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                                "enum": [
+                                                                    "replace",
+                                                                    "add",
+                                                                    "subtract"
+                                                                ]
+                                                            },
+                                                            "min distance slab top": {
+                                                                "default value": 0.0,
+                                                                "type": "number",
+                                                                "description": "todo The depth in meters from which the composition of this feature is present."
+                                                            },
+                                                            "max distance slab top": {
+                                                                "default value": 1.7976931348623157e308,
+                                                                "type": "number",
+                                                                "description": "todo The depth in meters to which the composition of this feature is present."
+                                                            },
+                                                            "velocity": {
+                                                                "type": "array",
+                                                                "minItems": 3,
+                                                                "maxItems": 3,
+                                                                "uniqueItems": false,
+                                                                "description": "The velocity in meter per year",
+                                                                "items": {
+                                                                    "default value": 0.0,
+                                                                    "type": "number",
+                                                                    "description": ""
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            }
                                         }
                                     }
                                 }
@@ -10077,6 +10857,66 @@
                                                     "description": "A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.",
                                                     "items": {
                                                         "default value": -1.0,
+                                                        "type": "number",
+                                                        "description": ""
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "velocity models": {
+                                "description": "A list of velocity models.",
+                                "default value": "",
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Uniform velocity model. Set the velocity to a constant value.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "velocity"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the velocity model.",
+                                                    "enum": [
+                                                        "uniform raw"
+                                                    ]
+                                                },
+                                                "operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "enum": [
+                                                        "replace",
+                                                        "add",
+                                                        "subtract"
+                                                    ]
+                                                },
+                                                "min distance slab top": {
+                                                    "default value": 0.0,
+                                                    "type": "number",
+                                                    "description": "todo The depth in meters from which the composition of this feature is present."
+                                                },
+                                                "max distance slab top": {
+                                                    "default value": 1.7976931348623157e308,
+                                                    "type": "number",
+                                                    "description": "todo The depth in meters to which the composition of this feature is present."
+                                                },
+                                                "velocity": {
+                                                    "type": "array",
+                                                    "minItems": 3,
+                                                    "maxItems": 3,
+                                                    "uniqueItems": false,
+                                                    "description": "The velocity in meter per year",
+                                                    "items": {
+                                                        "default value": 0.0,
                                                         "type": "number",
                                                         "description": ""
                                                     }
@@ -11128,6 +11968,66 @@
                                                                 }
                                                             ]
                                                         }
+                                                    },
+                                                    "velocity models": {
+                                                        "description": "",
+                                                        "default value": "",
+                                                        "type": "array",
+                                                        "items": {
+                                                            "oneOf": [
+                                                                {
+                                                                    "type": "object",
+                                                                    "description": "Uniform velocity model. Set the velocity to a constant value.",
+                                                                    "additionalProperties": false,
+                                                                    "required": [
+                                                                        "model",
+                                                                        "velocity"
+                                                                    ],
+                                                                    "properties": {
+                                                                        "model": {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": "The name of the velocity model.",
+                                                                            "enum": [
+                                                                                "uniform raw"
+                                                                            ]
+                                                                        },
+                                                                        "operation": {
+                                                                            "default value": "replace",
+                                                                            "type": "string",
+                                                                            "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                                            "enum": [
+                                                                                "replace",
+                                                                                "add",
+                                                                                "subtract"
+                                                                            ]
+                                                                        },
+                                                                        "min distance slab top": {
+                                                                            "default value": 0.0,
+                                                                            "type": "number",
+                                                                            "description": "todo The depth in meters from which the composition of this feature is present."
+                                                                        },
+                                                                        "max distance slab top": {
+                                                                            "default value": 1.7976931348623157e308,
+                                                                            "type": "number",
+                                                                            "description": "todo The depth in meters to which the composition of this feature is present."
+                                                                        },
+                                                                        "velocity": {
+                                                                            "type": "array",
+                                                                            "minItems": 3,
+                                                                            "maxItems": 3,
+                                                                            "uniqueItems": false,
+                                                                            "description": "The velocity in meter per year",
+                                                                            "items": {
+                                                                                "default value": 0.0,
+                                                                                "type": "number",
+                                                                                "description": ""
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
                                                     }
                                                 }
                                             }
@@ -12093,6 +12993,66 @@
                                                                 "description": "A list of the size of all of the grains in each composition. If set to <0, the size will be set so that the total is equal to 1.",
                                                                 "items": {
                                                                     "default value": -1.0,
+                                                                    "type": "number",
+                                                                    "description": ""
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "velocity models": {
+                                            "description": "A list of velocity models.",
+                                            "default value": "",
+                                            "type": "array",
+                                            "items": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "object",
+                                                        "description": "Uniform velocity model. Set the velocity to a constant value.",
+                                                        "additionalProperties": false,
+                                                        "required": [
+                                                            "model",
+                                                            "velocity"
+                                                        ],
+                                                        "properties": {
+                                                            "model": {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": "The name of the velocity model.",
+                                                                "enum": [
+                                                                    "uniform raw"
+                                                                ]
+                                                            },
+                                                            "operation": {
+                                                                "default value": "replace",
+                                                                "type": "string",
+                                                                "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                                "enum": [
+                                                                    "replace",
+                                                                    "add",
+                                                                    "subtract"
+                                                                ]
+                                                            },
+                                                            "min distance slab top": {
+                                                                "default value": 0.0,
+                                                                "type": "number",
+                                                                "description": "todo The depth in meters from which the composition of this feature is present."
+                                                            },
+                                                            "max distance slab top": {
+                                                                "default value": 1.7976931348623157e308,
+                                                                "type": "number",
+                                                                "description": "todo The depth in meters to which the composition of this feature is present."
+                                                            },
+                                                            "velocity": {
+                                                                "type": "array",
+                                                                "minItems": 3,
+                                                                "maxItems": 3,
+                                                                "uniqueItems": false,
+                                                                "description": "The velocity in meter per year",
+                                                                "items": {
+                                                                    "default value": 0.0,
                                                                     "type": "number",
                                                                     "description": ""
                                                                 }
