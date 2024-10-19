@@ -11,6 +11,9 @@ endif( NOT TEST_OUTPUT )
 if( NOT TEST_REFERENCE )
   message( FATAL_ERROR "Require TEST_REFERENCE to be defined" )
 endif( NOT TEST_REFERENCE )
+if( NOT REPLACE_FAILING_TEST_RESULTS )
+  message( FATAL_ERROR "Require REPLACE_FAILING_TEST_RESULTS to be defined" )
+endif( NOT REPLACE_FAILING_TEST_RESULTS )
 
 # create a directory for the test
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/gwb-grid/${TEST_NAME})
@@ -76,6 +79,9 @@ execute_process(
 
 # again, if return value is !=0 scream and shout
 if( TEST_RESULT )
+  if( REPLACE_FAILING_TEST_RESULTS )
+	  file(COPY_FILE ${TEST_NATIVE_OUTPUT} ${TEST_NATIVE_REFERENCE} )
+  endif( REPLACE_FAILING_TEST_RESULTS )
 	execute_process(COMMAND ${TEST_DIFF} ${TEST_NATIVE_OUTPUT} ${TEST_NATIVE_REFERENCE})
 	message( FATAL_ERROR "Failed: The output of ${TEST_NAME} stored in ${TEST_NATIVE_OUTPUT} did not match the reference output stored in ${TEST_NATIVE_REFERENCE}")
 endif( TEST_RESULT )
