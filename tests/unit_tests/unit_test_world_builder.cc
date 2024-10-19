@@ -858,7 +858,7 @@ TEST_CASE("WorldBuilder interface")
   const WorldBuilder::World world(file);
 
   CHECK_THROWS_WITH(world.properties({{1,2,3}},1., {{{{0,0,0}}}}),Contains("Unimplemented property provided. Only "));
-  CHECK_THROWS_WITH(world.properties({{1,2,3}},1., {{{{5,0,0}}}}),Contains("Unimplemented property provided. Only "));
+  CHECK_THROWS_WITH(world.properties({{1,2,3}},1., {{{{10,0,0}}}}),Contains("Unimplemented property provided. Only "));
 
   approval_tests_grains.emplace_back(world.grains(std::array<double,3> {{750e3,250e3,100e3}},10e3,0,3));
   approval_tests_grains.emplace_back(world.grains(std::array<double,2> {{750e3,100e3}},10e3,0,3));
@@ -1130,7 +1130,7 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
     auto point = Point<3>(250e3,750e3,400e3,cartesian);
     std::vector<double> vector(1,0.);
     auto nat_coord = Objects::NaturalCoordinate(point,*(world1.parameters.coordinate_system));
-    CHECK_THROWS_WITH(continental_plate->properties(point,nat_coord,10e3, {{{5,0,0}}},10, {0},vector),
+    CHECK_THROWS_WITH(continental_plate->properties(point,nat_coord,10e3, {{{10,0,0}}},10, {0},vector),
     Contains("Internal error: Unimplemented property provided"));
   }
 
@@ -1377,7 +1377,7 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
     auto point = Point<3>(250e3,750e3,400e3,cartesian);
     std::vector<double> vector(1,0.);
     auto nat_coord = Objects::NaturalCoordinate(point,*(world1.parameters.coordinate_system));
-    CHECK_THROWS_WITH(mantle_layer->properties(point,nat_coord,260e3, {{{5,0,0}}},10, {0},vector),
+    CHECK_THROWS_WITH(mantle_layer->properties(point,nat_coord,260e3, {{{10,0,0}}},10, {0},vector),
     Contains("Internal error: Unimplemented property provided"));
   }
   // Check continental plate through the world
@@ -1624,7 +1624,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
     auto point = Point<3>(250e3,750e3,400e3,cartesian);
     std::vector<double> vector(1,0.);
     auto nat_coord = Objects::NaturalCoordinate(point,*(world1.parameters.coordinate_system));
-    CHECK_THROWS_WITH(oceanic_plate->properties(point,nat_coord,10e3, {{{5,0,0}}},10, {0},vector),
+    CHECK_THROWS_WITH(oceanic_plate->properties(point,nat_coord,10e3, {{{10,0,0}}},10, {0},vector),
     Contains("Internal error: Unimplemented property provided"));
   }
 
@@ -2011,7 +2011,7 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
     auto point = Point<3>(250e3,490e3,800e3,cartesian);
     std::vector<double> vector(1,0.);
     auto nat_coord = Objects::NaturalCoordinate(point,*(world1.parameters.coordinate_system));
-    CHECK_THROWS_WITH(subducting_plate->properties(point,nat_coord,100000, {{{5,0,0}}},10, {0},vector),
+    CHECK_THROWS_WITH(subducting_plate->properties(point,nat_coord,100000, {{{10,0,0}}},10, {0},vector),
     Contains("Internal error: Unimplemented property provided"));
   }
   // Check continental plate through the world
@@ -2511,7 +2511,7 @@ TEST_CASE("WorldBuilder Features: Fault")
     auto point = Point<3>(50e3,230e3,800e3,cartesian);
     std::vector<double> vector(1,0.);
     auto nat_coord = Objects::NaturalCoordinate(point,*(world1.parameters.coordinate_system));
-    CHECK_THROWS_WITH(fault->properties(point,nat_coord,1000, {{{5,0,0}}},10, {0},vector),
+    CHECK_THROWS_WITH(fault->properties(point,nat_coord,1000, {{{10,0,0}}},10, {0},vector),
     Contains("Internal error: Unimplemented property provided"));
   }
 
