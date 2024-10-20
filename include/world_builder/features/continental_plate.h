@@ -46,6 +46,10 @@ namespace WorldBuilder
       {
         class Interface;
       }  // namespace Temperature
+      namespace Velocity
+      {
+        class Interface;
+      }  // namespace Temperature
     }  // namespace ContinentalPlateModels
 
     /**
@@ -146,6 +150,14 @@ namespace WorldBuilder
          * @see Features
          */
         std::vector<std::unique_ptr<Features::ContinentalPlateModels::Grains::Interface> > grains_models;
+
+        /**
+         * A vector containing all the pointers to the velocity models. This vector is
+         * responsible for the features and has ownership over them. Therefore
+         * unique pointers are used.
+         * @see Features
+         */
+        std::vector<std::unique_ptr<Features::ContinentalPlateModels::Velocity::Interface> > velocity_models;
 
 
         double min_depth;

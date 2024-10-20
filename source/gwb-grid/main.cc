@@ -494,7 +494,7 @@ int main(int argc, char **argv)
           data.push_back(line);
         }
 
-      std::string vtu_output_format = "RawBinaryCompressed";
+      std::string vtu_output_format = "ASCII";//"RawBinaryCompressed";
       // Read config from data if present
       for (auto &line_i : data)
         {
@@ -1556,6 +1556,7 @@ int main(int argc, char **argv)
       {
         { "Depth", vtu11::DataSetType::PointData, 1 },
         { "Temperature", vtu11::DataSetType::PointData, 1 },
+        { "velocity", vtu11::DataSetType::PointData, 3 },
         { "Tag", vtu11::DataSetType::PointData, 1 },
       };
       for (size_t c = 0; c < compositions; ++c)
@@ -1569,6 +1570,8 @@ int main(int argc, char **argv)
       std::vector<std::array<unsigned ,3>> properties;
       properties.push_back({{1,0,0}}); // temperature
 
+      properties.push_back({{5,0,0}}); // velocity
+
       properties.push_back({{4,0,0}}); // tag
 
       for (unsigned int c = 0; c < compositions; ++c)
@@ -1576,12 +1579,13 @@ int main(int argc, char **argv)
 
 
       // compute temperature
-      std::vector<vtu11::DataSetData> data_set(3+compositions);
+      std::vector<vtu11::DataSetData> data_set(4+compositions);
       data_set[0] = grid_depth;
       data_set[1].resize(n_p);
-      data_set[2].resize(n_p);
+      data_set[2].resize(n_p*3);
+      data_set[3].resize(n_p);
       for (size_t c = 0; c < compositions; ++c)
-        data_set[3+c].resize(n_p);
+        data_set[4+c].resize(n_p);
 
       if (dim == 2)
         {
@@ -1590,10 +1594,13 @@ int main(int argc, char **argv)
             const std::array<double,2> coords = {{grid_x[i], grid_z[i]}};
             std::vector<double> output = world->properties(coords, grid_depth[i],properties);
             data_set[1][i] = output[0];
-            data_set[2][i] = output[1];
+            data_set[2][3*i] = output[1];
+            data_set[2][3*i+1] = output[2];
+            data_set[2][3*i+2] = output[3];
+            data_set[3][i] = output[3];
             for (size_t c = 0; c < compositions; ++c)
               {
-                data_set[3+c][i] = output[2+c];
+                data_set[4+c][i] = output[2+c];
               }
           });
         }
@@ -1604,10 +1611,13 @@ int main(int argc, char **argv)
             const std::array<double,3> coords = {{grid_x[i], grid_y[i], grid_z[i]}};
             std::vector<double> output = world->properties(coords, grid_depth[i],properties);
             data_set[1][i] = output[0];
-            data_set[2][i] = output[1];
+            data_set[2][3*i] = output[1];
+            data_set[2][3*i+1] = output[2];
+            data_set[2][3*i+2] = output[3];
+            data_set[3][i] = output[4];
             for (size_t c = 0; c < compositions; ++c)
               {
-                data_set[3+c][i] = output[2+c];
+                data_set[4+c][i] = output[5+c];
               }
           });
         }

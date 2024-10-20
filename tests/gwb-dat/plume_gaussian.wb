@@ -32,7 +32,8 @@
       "composition models":
       [
         {"model":"uniform","compositions":[1], "min depth":0, "max depth":100e3}
-      ]
+      ],
+      "velocity models":[{"model":"uniform raw","velocity":[1,2,3]}]
     }
   ]
 }
