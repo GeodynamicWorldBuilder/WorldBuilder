@@ -859,6 +859,7 @@ TEST_CASE("WorldBuilder interface")
 
   CHECK_THROWS_WITH(world.properties({{1,2,3}},1., {{{{0,0,0}}}}),Contains("Unimplemented property provided. Only "));
   CHECK_THROWS_WITH(world.properties({{1,2,3}},1., {{{{10,0,0}}}}),Contains("Unimplemented property provided. Only "));
+  CHECK_THROWS_WITH(world.properties(std::array<double,2>({{1,2}}),1., {{{{10,0,0}}}}),Contains("Unimplemented property provided. Only "));
 
   approval_tests_grains.emplace_back(world.grains(std::array<double,3> {{750e3,250e3,100e3}},10e3,0,3));
   approval_tests_grains.emplace_back(world.grains(std::array<double,2> {{750e3,100e3}},10e3,0,3));
