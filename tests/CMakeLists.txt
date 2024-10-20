@@ -337,7 +337,7 @@ if (WB_ENABLE_APPS)
   # Run through each source and create a test for each one
   foreach(test_source ${DOCU_TEST_SOURCES})
     get_filename_component(test_name ${test_source} NAME_WE)
-    set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/${test_name}.wb\;${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/${test_name}.grid")
+    set(TEST_ARGUMENTS "${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/${test_name}.wb\;${CMAKE_SOURCE_DIR}/doc/sphinx/_static/gwb_input_files/${test_name}.grid\;--resolution-limit\;50")
     add_test(doc_${test_name}
             ${CMAKE_COMMAND}
             -D TEST_NAME=${test_name}
