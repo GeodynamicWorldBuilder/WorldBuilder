@@ -53,6 +53,21 @@ extern "C" {
     *ptr_ptr_world = reinterpret_cast<void *>(a);
   }
 
+  unsigned int properties_output_size(void *ptr_ptr_world,const unsigned int properties_[][3],
+                                      const unsigned int n_properties)
+  {
+    WorldBuilder::World *a =
+      reinterpret_cast<WorldBuilder::World *>(ptr_ptr_world);
+    std::vector<std::array<unsigned int, 3>> properties(n_properties);
+    for (size_t i = 0; i < n_properties; ++i)
+      {
+        properties[i][0] = properties_[i][0];
+        properties[i][1] = properties_[i][1];
+        properties[i][2] = properties_[i][2];
+      }
+    return a->properties_output_size(properties);
+  }
+
   void properties_2d(void *ptr_ptr_world, const double x, const double z,
                      const double depth, const unsigned int properties_[][3],
                      const unsigned int n_properties, double values[])

@@ -34,6 +34,19 @@ extern "C" {
 void create_world(void **ptr_ptr_world, const char *world_builder_file, const bool *has_output_dir, const char *output_dir, const unsigned long random_number_seed);
 
 
+
+/**
+ * Return the size of the output vector returned by the properties function for a given properties vector.
+ *
+ * @param properties The properties parameter from the properties function. See the documentation of that
+ * function for more info.
+ * @param n_properties number of properties
+ * @return unsigned int Return the size of the output vector returned by the properties function for a given properties vector.
+ */
+unsigned int properties_output_size(void *ptr_ptr_world,
+                                    const unsigned int properties[][3],
+                                    const unsigned int n_properties);
+
 /**
  * @brief This function returns 2D properties.
  *
