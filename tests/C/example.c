@@ -1,6 +1,7 @@
 
 #include "world_builder/wrapper_c.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(int argc, char *argv[]) {
   // Declare the types which will be needed.
@@ -52,14 +53,25 @@ int main(int argc, char *argv[]) {
    {1,0,0}, // temmperature
   {2,0,0}, // composition 0
   {2,1,0}, // composition 1
-  {3,0,10}, // grain compositon 0, 10 grains
+  {3,0,3}, // grain composition 0, 10 grains
   {4,0,0}, // tag 
   {5,0,0} // velocity (3 values)
   }; 
-  double values[1];
-  printf("2d temperature: \n");
-  properties_2d(ptr_world,x,z,depth,properties,1,values);
-  printf("temperature in C = %f \n", values[0]);
+  unsigned int n_properties_outputs = properties_output_size(ptr_world, properties, 6);
+  printf("\nn_properties_outputs = %i \n",n_properties_outputs);
+  double *values = (double*)malloc(sizeof(double)*n_properties_outputs);
+  printf("2d properties: \n");
+
+  properties_2d(ptr_world,x,z,depth,properties,6,values);
+  for(unsigned int i = 0; i < n_properties_outputs; ++i){
+   printf("properties output %i = %f \n", i, values[i]);
+  }
+
+  printf("3d properties: \n");
+  properties_3d(ptr_world,x,y,z,depth,properties,6,values);
+  for(unsigned int i = 0; i < n_properties_outputs; ++i){
+   printf("properties output %i = %f \n", i, values[i]);
+  }
 
   release_world(ptr_world);
 
