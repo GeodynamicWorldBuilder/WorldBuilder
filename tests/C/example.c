@@ -30,6 +30,7 @@ int main(int argc, char *argv[]) {
   
   create_world(&ptr_world, argv[1], &has_output_dir, output_dir, random_number_seed);
 
+  // simple specific interfaces
   printf("2d temperature: \n");
   temperature_2d(ptr_world,x,z,depth,&temperature);
   printf("temperature in C = %f \n", temperature);
@@ -45,6 +46,20 @@ int main(int argc, char *argv[]) {
   printf("3d composition: \n");
   composition_3d(ptr_world,x,y,z,depth,composition_number,&composition);
   printf("composition in C = %f \n", composition);
+
+  // High performance generic interface for getting many properties at the same time
+  unsigned int properties[6][3] = {
+   {1,0,0}, // temmperature
+  {2,0,0}, // composition 0
+  {2,1,0}, // composition 1
+  {3,0,10}, // grain compositon 0, 10 grains
+  {4,0,0}, // tag 
+  {5,0,0} // velocity (3 values)
+  }; 
+  double values[1];
+  printf("2d temperature: \n");
+  properties_2d(ptr_world,x,z,depth,properties,1,values);
+  printf("temperature in C = %f \n", values[0]);
 
   release_world(ptr_world);
 
