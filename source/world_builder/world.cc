@@ -270,6 +270,47 @@ namespace WorldBuilder
 
 
 
+  unsigned int
+  World::properties_output_size(const std::vector<std::array<unsigned int,3>> &properties) const
+  {
+    unsigned int n_output_entries = 0;
+    for (auto property : properties)
+      {
+        switch (property[0])
+          {
+            case 1: // Temperature
+              n_output_entries += 1;
+              break;
+            case 2: // composition
+              n_output_entries += 1;
+              break;
+            case 3: // grains (10 entries per grain)
+            {
+              n_output_entries += property[2]*10;
+              break;
+            }
+            case 4: // tag
+            {
+              n_output_entries += 1;
+              break;
+            }
+            case 5: // velocity (3 entries)
+            {
+              n_output_entries += 3;
+              break;
+            }
+            default:
+              WBAssertThrow(false,
+                            "Internal error: Unimplemented property provided. " <<
+                            "Only temperature (1), composition (2), grains (3), tag (4) or velocity (5) are allowed. "
+                            "Provided property number was: " << property[0]);
+          }
+      }
+    return n_output_entries;
+  }
+
+
+
   std::vector<double>
   World::properties(const std::array<double, 2> &point,
                     const double depth,

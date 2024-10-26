@@ -79,6 +79,15 @@ namespace WorldBuilder
       void parse_entries(Parameters &prm);
 
       /**
+       * Return the size of the output vector returned by the properties function for a given properties vector.
+       *
+       * @param properties The properties parameter from the properties function. See the documentation of that
+       * function for more info.
+       * @return unsigned int Return the size of the output vector returned by the properties function for a given properties vector.
+       */
+      unsigned int properties_output_size(const std::vector<std::array<unsigned int,3>> &properties) const;
+
+      /**
        * Returns different values at a single point in one go stored in a vector of doubles.
        *
        * The properties input decides what each entry means, and the output is generated in the
