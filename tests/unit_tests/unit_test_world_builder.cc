@@ -737,24 +737,78 @@ TEST_CASE("WorldBuilder C wrapper")
 
   temperature_2d(*ptr_ptr_world, 1, 2, 0, &temperature);
   approval_tests.emplace_back(temperature);
+  {
+    unsigned int properties[1][3] = {{1,0,0}};
+    double values[1];
+    properties_2d(*ptr_ptr_world, 1, 2, 0, properties, 1, values);
+    CHECK(temperature == Approx(values[0]));
+  }
+
   temperature_3d(*ptr_ptr_world, 1, 2, 3, 0, &temperature);
   approval_tests.emplace_back(temperature);
+  {
+    unsigned int properties[1][3] = {{1,0,0}};
+    double values[1];
+    properties_3d(*ptr_ptr_world, 1, 2,3, 0, properties, 1, values);
+    CHECK(temperature == Approx(values[0]));
+  }
+
   temperature_2d(*ptr_ptr_world, 550e3, 0, 0, &temperature);
   approval_tests.emplace_back(temperature);
+  {
+    unsigned int properties[1][3] = {{1,0,0}};
+    double values[1];
+    properties_2d(*ptr_ptr_world, 550e3, 2, 0, properties, 1, values);
+    CHECK(temperature == Approx(values[0]));
+  }
+
   temperature_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, &temperature);
   approval_tests.emplace_back(temperature);
+  {
+    unsigned int properties[1][3] = {{1,0,0}};
+    double values[1];
+    properties_3d(*ptr_ptr_world, 120e3, 500e3, 2, 0, properties, 1, values);
+    CHECK(temperature == Approx(values[0]));
+  }
 
   // Test the compositions
   double composition = 0.0;
 
   composition_2d(*ptr_ptr_world, 1, 2, 0, 2, &composition);
   approval_tests.emplace_back(composition);
+  {
+    unsigned int properties[1][3] = {{2,2,0}};
+    double values[1];
+    properties_2d(*ptr_ptr_world, 1, 2, 0, properties, 1, values);
+    CHECK(composition == Approx(values[0]));
+  }
+
   composition_3d(*ptr_ptr_world, 1, 2, 3, 0, 2, &composition);
   approval_tests.emplace_back(composition);
+  {
+    unsigned int properties[1][3] = {{2,2,0}};
+    double values[1];
+    properties_3d(*ptr_ptr_world, 1, 2,3, 0, properties, 1, values);
+    CHECK(composition == Approx(values[0]));
+  }
+
   composition_2d(*ptr_ptr_world,  550e3, 0, 0, 3, &composition);
   approval_tests.emplace_back(composition);
+  {
+    unsigned int properties[1][3] = {{2,3,0}};
+    double values[1];
+    properties_2d(*ptr_ptr_world, 550e3, 2, 0, properties, 1, values);
+    CHECK(composition == Approx(values[0]));
+  }
+
   composition_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, 3, &composition);
   approval_tests.emplace_back(composition);
+  {
+    unsigned int properties[1][3] = {{2,3,0}};
+    double values[1];
+    properties_3d(*ptr_ptr_world, 120e3, 500e3,3, 0, properties, 1, values);
+    CHECK(composition == Approx(values[0]));
+  }
 
   release_world(*ptr_ptr_world);
 
@@ -773,8 +827,15 @@ TEST_CASE("WorldBuilder C wrapper")
                              "variable in the world builder file has been set. Dim is 3."));
   temperature_3d(*ptr_ptr_world, 1, 2, 3, 0, &temperature);
   approval_tests.emplace_back(temperature);
+
   temperature_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, &temperature);
   approval_tests.emplace_back(temperature);
+  {
+    unsigned int properties[1][3] = {{1,0,0}};
+    double values[1];
+    properties_3d(*ptr_ptr_world, 120e3, 500e3, 3, 0, properties, 1, values);
+    CHECK(temperature == Approx(values[0]));
+  }
 
   // Test the compositions
   CHECK_THROWS_WITH(composition_2d(*ptr_ptr_world, 1, 2, 0, 2, &composition),
@@ -783,8 +844,15 @@ TEST_CASE("WorldBuilder C wrapper")
 
   composition_3d(*ptr_ptr_world, 1, 2, 3, 0, 2, &composition);
   approval_tests.emplace_back(composition);
+
   composition_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, 3, &composition);
   approval_tests.emplace_back(composition);
+  {
+    unsigned int properties[1][3] = {{2,3,0}};
+    double values[1];
+    properties_3d(*ptr_ptr_world, 120e3, 500e3,3, 0, properties, 1, values);
+    CHECK(composition == Approx(values[0]));
+  }
 
   release_world(*ptr_ptr_world);
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
