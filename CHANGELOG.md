@@ -13,6 +13,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Added
 - Added a velocities system where each feature can define a velocity field and the gwb can return the resulting velocity field. \[Menno Fraters; 2024-10-20; [#761](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/761)\]
 - There is now a CMake variable to automatically update the reference files for failed tests (gdb-dat and gwb-grid tests) \[Menno Fraters; 2024-10-20; [#761](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/761)\]
+- There is now a properties_output_size function, which returns the size of the output vector/array returned by the properties functions for a given properties input vector \[Menno Fraters; 2024-10-27; [#765](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/765)\]
+- Added 2d and 3d versions of the properties function to the C wrapper \[Menno Fraters; 2024-10-27; [#765](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/765)\]
 
 ## Changed
 
