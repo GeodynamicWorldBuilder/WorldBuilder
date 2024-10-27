@@ -735,26 +735,94 @@ TEST_CASE("WorldBuilder C wrapper")
 
   double temperature = 0.;
 
+  {
+    unsigned int properties[1][3] = {{100,0,0}};
+    CHECK_THROWS_WITH(properties_output_size(*ptr_ptr_world, properties,1),
+                      Contains("Unimplemented property provided."));
+  }
+
   temperature_2d(*ptr_ptr_world, 1, 2, 0, &temperature);
   approval_tests.emplace_back(temperature);
+  {
+    unsigned int properties[1][3] = {{1,0,0}};
+    double values[1];
+    properties_2d(*ptr_ptr_world, 1, 2, 0, properties, 1, values);
+    CHECK(properties_output_size(ptr_ptr_world, properties, 1) == 1);
+    CHECK(temperature == Approx(values[0]));
+  }
+
   temperature_3d(*ptr_ptr_world, 1, 2, 3, 0, &temperature);
   approval_tests.emplace_back(temperature);
+  {
+    unsigned int properties[1][3] = {{1,0,0}};
+    double values[1];
+    properties_3d(*ptr_ptr_world, 1, 2,3, 0, properties, 1, values);
+    CHECK(properties_output_size(ptr_ptr_world, properties, 1) == 1);
+    CHECK(temperature == Approx(values[0]));
+  }
+
   temperature_2d(*ptr_ptr_world, 550e3, 0, 0, &temperature);
   approval_tests.emplace_back(temperature);
+  {
+    unsigned int properties[1][3] = {{1,0,0}};
+    double values[1];
+    properties_2d(*ptr_ptr_world, 550e3, 2, 0, properties, 1, values);
+    CHECK(properties_output_size(ptr_ptr_world, properties, 1) == 1);
+    CHECK(temperature == Approx(values[0]));
+  }
+
   temperature_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, &temperature);
   approval_tests.emplace_back(temperature);
+  {
+    unsigned int properties[1][3] = {{1,0,0}};
+    double values[1];
+    properties_3d(*ptr_ptr_world, 120e3, 500e3, 2, 0, properties, 1, values);
+    CHECK(properties_output_size(ptr_ptr_world, properties, 1) == 1);
+    CHECK(temperature == Approx(values[0]));
+  }
 
   // Test the compositions
   double composition = 0.0;
 
   composition_2d(*ptr_ptr_world, 1, 2, 0, 2, &composition);
   approval_tests.emplace_back(composition);
+  {
+    unsigned int properties[1][3] = {{2,2,0}};
+    double values[1];
+    properties_2d(*ptr_ptr_world, 1, 2, 0, properties, 1, values);
+    CHECK(properties_output_size(ptr_ptr_world, properties, 1) == 1);
+    CHECK(composition == Approx(values[0]));
+  }
+
   composition_3d(*ptr_ptr_world, 1, 2, 3, 0, 2, &composition);
   approval_tests.emplace_back(composition);
+  {
+    unsigned int properties[1][3] = {{2,2,0}};
+    double values[1];
+    properties_3d(*ptr_ptr_world, 1, 2,3, 0, properties, 1, values);
+    CHECK(properties_output_size(ptr_ptr_world, properties, 1) == 1);
+    CHECK(composition == Approx(values[0]));
+  }
+
   composition_2d(*ptr_ptr_world,  550e3, 0, 0, 3, &composition);
   approval_tests.emplace_back(composition);
+  {
+    unsigned int properties[1][3] = {{2,3,0}};
+    double values[1];
+    properties_2d(*ptr_ptr_world, 550e3, 2, 0, properties, 1, values);
+    CHECK(properties_output_size(ptr_ptr_world, properties, 1) == 1);
+    CHECK(composition == Approx(values[0]));
+  }
+
   composition_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, 3, &composition);
   approval_tests.emplace_back(composition);
+  {
+    unsigned int properties[1][3] = {{2,3,0}};
+    double values[1];
+    properties_3d(*ptr_ptr_world, 120e3, 500e3,3, 0, properties, 1, values);
+    CHECK(properties_output_size(ptr_ptr_world, properties, 1) == 1);
+    CHECK(composition == Approx(values[0]));
+  }
 
   release_world(*ptr_ptr_world);
 
@@ -771,10 +839,18 @@ TEST_CASE("WorldBuilder C wrapper")
   CHECK_THROWS_WITH(temperature_2d(*ptr_ptr_world, 1, 2, 0, &temperature),
                     Contains("This function can only be called when the cross section "
                              "variable in the world builder file has been set. Dim is 3."));
+
   temperature_3d(*ptr_ptr_world, 1, 2, 3, 0, &temperature);
   approval_tests.emplace_back(temperature);
+
   temperature_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, &temperature);
   approval_tests.emplace_back(temperature);
+  {
+    unsigned int properties[1][3] = {{1,0,0}};
+    double values[1];
+    properties_3d(*ptr_ptr_world, 120e3, 500e3, 3, 0, properties, 1, values);
+    CHECK(temperature == Approx(values[0]));
+  }
 
   // Test the compositions
   CHECK_THROWS_WITH(composition_2d(*ptr_ptr_world, 1, 2, 0, 2, &composition),
@@ -783,8 +859,15 @@ TEST_CASE("WorldBuilder C wrapper")
 
   composition_3d(*ptr_ptr_world, 1, 2, 3, 0, 2, &composition);
   approval_tests.emplace_back(composition);
+
   composition_3d(*ptr_ptr_world, 120e3, 500e3, 0, 0, 3, &composition);
   approval_tests.emplace_back(composition);
+  {
+    unsigned int properties[1][3] = {{2,3,0}};
+    double values[1];
+    properties_3d(*ptr_ptr_world, 120e3, 500e3,3, 0, properties, 1, values);
+    CHECK(composition == Approx(values[0]));
+  }
 
   release_world(*ptr_ptr_world);
   ApprovalTests::Approvals::verifyAll("TITLE", approval_tests);
@@ -860,6 +943,36 @@ TEST_CASE("WorldBuilder interface")
   CHECK_THROWS_WITH(world.properties({{1,2,3}},1., {{{{0,0,0}}}}),Contains("Unimplemented property provided. Only "));
   CHECK_THROWS_WITH(world.properties({{1,2,3}},1., {{{{10,0,0}}}}),Contains("Unimplemented property provided. Only "));
   CHECK_THROWS_WITH(world.properties(std::array<double,2>({{1,2}}),1., {{{{10,0,0}}}}),Contains("Unimplemented property provided. Only "));
+
+  std::vector<std::array<unsigned int,3>> properties = {{{1,0,0}}};
+  CHECK(world.properties_output_size(properties) == world.properties({{1,2,3}},1., properties).size());
+
+  properties = {{{2,0,0}}};
+  CHECK(world.properties_output_size(properties) == world.properties({{1,2,3}},1., properties).size());
+
+  properties = {{{2,1,0}}};
+  CHECK(world.properties_output_size(properties) == world.properties({{1,2,3}},1., properties).size());
+
+  properties = {{{3,0,10}}};
+  CHECK(world.properties_output_size(properties) == world.properties({{1,2,3}},1., properties).size());
+
+  properties = {{{3,1,20}}};
+  CHECK(world.properties_output_size(properties) == world.properties({{1,2,3}},1., properties).size());
+
+  properties = {{{4,0,0}}};
+  CHECK(world.properties_output_size(properties) == world.properties({{1,2,3}},1., properties).size());
+
+  properties = {{{5,0,0}}};
+  CHECK(world.properties_output_size(properties) == world.properties({{1,2,3}},1., properties).size());
+
+  properties = {{{{1,0,0}},{{5,0,0}}}};
+  CHECK(world.properties_output_size(properties) == world.properties({{1,2,3}},1., properties).size());
+
+  properties = {{{{2,1,0}},{{3,1,15}}}};
+  CHECK(world.properties_output_size(properties) == world.properties({{1,2,3}},1., properties).size());
+
+  properties = {{{{1,0,0}},{{2,0,0}},{{2,1,0}},{{3,0,15}},{{3,1,15}},{{4,0,0}},{{5,0,0}}}};
+  CHECK(world.properties_output_size(properties) == world.properties({{1,2,3}},1., properties).size());
 
   approval_tests_grains.emplace_back(world.grains(std::array<double,3> {{750e3,250e3,100e3}},10e3,0,3));
   approval_tests_grains.emplace_back(world.grains(std::array<double,2> {{750e3,100e3}},10e3,0,3));
