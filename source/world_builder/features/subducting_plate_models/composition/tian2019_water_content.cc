@@ -172,7 +172,7 @@ namespace WorldBuilder
               double partition_coefficient = calculate_water_content(lithostatic_pressure,
                                                                      slab_temperature);
 
-              partition_coefficient = std::min(max_water_content, partition_coefficient);
+              partition_coefficient = std::min(max_water_content, partition_coefficient) / 100;
 
               for (unsigned int i = 0; i < compositions.size(); ++i)
                 {
