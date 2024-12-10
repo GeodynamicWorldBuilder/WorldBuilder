@@ -1195,7 +1195,7 @@ namespace WorldBuilder
               if (!filestream)
                 {
                   // broadcast failure state, then throw
-                  const int ierr = MPI_Bcast(&invalid_file_size, 1, MPI_UNSIGNED, 0, comm);
+                  const int ierr = MPI_Bcast(&invalid_file_size, 1, MPI_INT, 0, comm);
                   WBAssertThrow (ierr,
                                  std::string("Could not open file <") + filename + ">.");
                 }
@@ -1210,7 +1210,7 @@ namespace WorldBuilder
               catch (const std::ios::failure &)
                 {
                   // broadcast failure state, then throw
-                  const int ierr = MPI_Bcast(&invalid_file_size, 1, MPI_UNSIGNED, 0, comm);
+                  const int ierr = MPI_Bcast(&invalid_file_size, 1, MPI_INT, 0, comm);
                   WBAssertThrow(ierr == 0, "MPI_Bcast failed.");
                   WBAssertThrow (false,
                                  std::string("Could not read file content from <") + filename + ">.");
@@ -1222,7 +1222,7 @@ namespace WorldBuilder
               filesize = static_cast<int>(data_string.size());
 
               // Distribute data_size and data across processes
-              int ierr = MPI_Bcast(&filesize, 1, MPI_UNSIGNED, 0, comm);
+              int ierr = MPI_Bcast(&filesize, 1, MPI_INT, 0, comm);
               WBAssertThrow(ierr == 0, "MPI_Bcast failed.");
 
               // Receive and store data
@@ -1237,7 +1237,7 @@ namespace WorldBuilder
             {
               // Prepare for receiving data
               int filesize = 0;
-              int ierr = MPI_Bcast(&filesize, 1, MPI_UNSIGNED, 0, comm);
+              int ierr = MPI_Bcast(&filesize, 1, MPI_INT, 0, comm);
               WBAssertThrow(ierr == 0, "MPI_Bcast failed.");
               WBAssertThrow(filesize != -1,
                             std::string("Could not open file <") + filename + ">.");
