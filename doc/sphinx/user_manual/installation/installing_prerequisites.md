@@ -12,10 +12,11 @@ If it doesn't work for your system, please let us know through GitHub issues (<h
 
 ::::::{tab-set}
 :::::{tab-item} Linux (Debian based)
-
-1. Run in a terminal `sudo apt install cmake`
-2. For a Fortran wrapper, also run in a terminal `sudo apt install gFortran`
-3. For a Python wrapper, also run in a terminal `sudo apt install swig python3-setuptools`
+1. Ensure that all modules are up-to-date by running `sudo apt update` and `sudo apt upgrade`.
+2. Run in a terminal `sudo apt install [module]` to install all the required modules. These include `cmake`, `gcc`, `g++`, and `libopenmpi-dev`. Use `which [module]` to locate their installation path.
+3. Set the environment variables using `export CC=gcc; export CXX=g++;`.
+4. (Optional) For a Fortran wrapper, run `sudo apt install gFortran`.
+5. (Optional) For a Python wrapper, run `sudo apt install swig python3-setuptools`.
 
 :::::
 
