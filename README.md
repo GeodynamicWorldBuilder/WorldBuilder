@@ -51,3 +51,15 @@ There are multiple ways in which you can follow this project:
  3. Subscribe to the Mastodon RSS feed: https://social.mfraters.net/@world_builder.rss. This will show exactly the same information as the Mastodon account, but you can use any RSS reader.
  4. Visit the [World Builder website](https://geodynamicworldbuilder.github.io/). Besides all kinds of useful information and links, it also contains a RSS feed viewer for the World Builder Mastodon account.
  5. Join the [main GWB Matrix chat room](https://app.element.io/#/room/#gwb:matrix.org) or the whole [GWB Matrix space](https://matrix.to/#/!vhukRUGUINnZOIutoQ:matrix.org)!
+
+## Developers of the GWB
+The development of the Geodynamic World Builderis currently lead by Menno Fraters.
+
+The following people currently serve as GWB developers -- people who have and are providing substantial technical contributions to the Geodynamic World Builder:
+
+- Juliane Dannberg (GEOMAR Helmholtz Centre for Ocean Research, Germany)
+- Daniel Douglas (New Mexico Tech, USA)
+- Menno Fraters (Geoforschungszentrum Potsdam, Germany)
+- Rene Gassmoeller (GEOMAR Helmholtz Centre for Ocean Research, Germany)
+- Timo Heister (Clemson University, USA)
+- Arushi Saxena (UC Davis, USA)
