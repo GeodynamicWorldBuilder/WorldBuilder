@@ -18,6 +18,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Changed
 - The tian2019 composition model now returns a mass fraction instead of a mass percentage. \[Daniel Douglas; 2024-11-12; [#767](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/767)\]
+- Only link to MPI libraries if the cmake variable USE_MPI has been set. No longer automatically link to MPI if MPI is found. \[Rene Gassmoeller; 2025-01-20; [#792](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/792)\]
+
 ### Fixed
 
 ## [1.0.0]
