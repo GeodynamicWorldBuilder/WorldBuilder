@@ -22,6 +22,7 @@
 #include "world_builder/features/continental_plate_models/velocity/interface.h"
 #include "world_builder/features/continental_plate_models/grains/interface.h"
 #include "world_builder/features/continental_plate_models/temperature/interface.h"
+#include "world_builder/features/continental_plate_models/density/interface.h"
 #include "world_builder/features/fault.h"
 #include "world_builder/features/mantle_layer_models/composition/interface.h"
 #include "world_builder/features/mantle_layer_models/grains/interface.h"
@@ -2131,6 +2132,14 @@ namespace WorldBuilder
   template bool
   Parameters::get_unique_pointers<Features::ContinentalPlateModels::Velocity::Interface>(const std::string &name,
       std::vector<std::unique_ptr<Features::ContinentalPlateModels::Velocity::Interface> > &vector);
+
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_unique_pointers<Features::ContinentalPlateModels::Density::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::ContinentalPlateModels::Density::Interface> > &vector);
 
 
   /**
