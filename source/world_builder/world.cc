@@ -299,6 +299,11 @@ namespace WorldBuilder
               n_output_entries += 3;
               break;
             }
+            case 7: // elevation
+            {
+              n_output_entries += 1;
+              break;
+            }
             default:
               WBAssertThrow(false,
                             "Internal error: Unimplemented property provided. " <<
@@ -385,6 +390,11 @@ namespace WorldBuilder
               counter += 3;
               break;
             }
+            case 7:   // elevation
+            {
+              counter += 1;
+              break;
+            }
             default:
             {
               WBAssert(false,
@@ -467,6 +477,13 @@ namespace WorldBuilder
               entry_in_output.emplace_back(output.size());
               output.emplace_back(0);
               output.emplace_back(0);
+              output.emplace_back(0);
+              properties_local.emplace_back(properties[i_property]);
+              break;
+            }
+            case 7: // elevation
+            {
+              entry_in_output.emplace_back(output.size());
               output.emplace_back(0);
               properties_local.emplace_back(properties[i_property]);
               break;
