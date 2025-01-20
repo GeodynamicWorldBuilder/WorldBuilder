@@ -1600,7 +1600,7 @@ int main(int argc, char **argv)
             data_set[3][i] = output[3];
             for (size_t c = 0; c < compositions; ++c)
               {
-                data_set[4+c][i] = output[2+c];
+                data_set[4+c][i] = output[5+c];
               }
           });
         }
