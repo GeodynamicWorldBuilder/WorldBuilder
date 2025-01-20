@@ -297,7 +297,7 @@ namespace WorldBuilder
                       }
                       case 7: // elevation
                       {
-                        if(!std::isnan(output[entry_in_output[i_property]])){
+                        if(std::isnan(output[entry_in_output[i_property]])){
                           // for the first time, set the output to local min depth
                           output[entry_in_output[i_property]] = min_depth_local
                         } else {
