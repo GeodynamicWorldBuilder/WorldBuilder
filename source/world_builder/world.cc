@@ -552,16 +552,14 @@ namespace WorldBuilder
 
   double
   World::density(const std::array<double,2> &point,
-                     const double depth,
-                     double density) const
+                     const double depth) const
   {
     return properties(point, depth, {{{6,0,0}}})[0];
   }
 
   double
   World::density(const std::array<double,3> &point,
-                     const double depth,
-                     double density) const
+                     const double depth) const
   {
     return properties(point, depth, {{{6,0,0}}})[0];
   }

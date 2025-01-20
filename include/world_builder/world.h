@@ -205,13 +205,13 @@ namespace WorldBuilder
        * Returns the composition value based on a 2d Cartesian point, the depth in
        * the model at that point and the gravity norm at that point.
        */
-      double density(const std::array<double, 2> &point, const double depth, double density) const;
+      double density(const std::array<double, 2> &point, const double depth) const;
 
       /**
        * Returns the composition value based on a 3d Cartesian point, the depth in
        * the model at that point and the gravity norm at that point.
        */
-      double density(const std::array<double, 3> &point, const double depth, double density) const;
+      double density(const std::array<double, 3> &point, const double depth) const;
 
       /**
        * Returns the grain orientations and sizes based on a 2d Cartesian point, the depth in
