@@ -249,7 +249,6 @@ namespace WorldBuilder
                           }
                         break;
                         case 2: // composition
-
                           for (const auto &composition_model: composition_models)
                             {
                               output[entry_in_output[i_property]] = composition_model->get_composition(position_in_cartesian_coordinates,
@@ -314,7 +313,7 @@ namespace WorldBuilder
                         //std::cout << "vel=" << output[entry_in_output[i_property]] << ":" << output[entry_in_output[i_property]+1] << ":" << output[entry_in_output[i_property]+2] << std::endl;
                         break;
                       }
-                      case 6: // composition
+                      case 6: // density
                       {
                           for (const auto &density_model: density_models)
                             {
@@ -323,6 +322,7 @@ namespace WorldBuilder
                                                                                                      depth,
                                                                                                      gravity_norm,
                                                                                                      output[entry_in_output[i_property]],
+                                                                                                     properties[2][1],
                                                                                                      min_depth_local,
                                                                                                      max_depth_local);
 
