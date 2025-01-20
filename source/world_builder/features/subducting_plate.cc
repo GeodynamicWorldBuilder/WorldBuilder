@@ -851,4 +851,3 @@ namespace WorldBuilder
     WB_REGISTER_FEATURE(SubductingPlate, subducting plate)
   } // namespace Features
 } // namespace WorldBuilder
-
