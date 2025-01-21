@@ -24,6 +24,7 @@
 #include "world_builder/features/mantle_layer_models/grains/interface.h"
 #include "world_builder/features/mantle_layer_models/temperature/interface.h"
 #include "world_builder/features/mantle_layer_models/velocity/interface.h"
+#include "world_builder/features/mantle_layer_models/density/interface.h"
 #include "world_builder/features/feature_utilities.h"
 #include "world_builder/types/array.h"
 #include "world_builder/types/double.h"
@@ -91,6 +92,9 @@ namespace WorldBuilder
       prm.declare_entry("velocity models",
                         Types::PluginSystem("", Features::MantleLayerModels::Velocity::Interface::declare_entries, {"model"}),
                         "A list of velocity models.");
+      prm.declare_entry("density models",
+                        Types::PluginSystem("", Features::MantleLayerModels::Density::Interface::declare_entries, {"model"}),
+                        "A list of density models.");
     }
 
     void
@@ -172,6 +176,21 @@ namespace WorldBuilder
             prm.enter_subsection(std::to_string(i));
             {
               velocity_models[i]->parse_entries(prm,coordinates);
+            }
+            prm.leave_subsection();
+          }
+      }
+      prm.leave_subsection();
+
+prm.get_unique_pointers<Features::MantleLayerModels::Density::Interface>("density models", density_models);
+
+      prm.enter_subsection("density models");
+      {
+        for (unsigned int i = 0; i < density_models.size(); ++i)
+          {
+            prm.enter_subsection(std::to_string(i));
+            {
+              density_models[i]->parse_entries(prm,coordinates);
             }
             prm.leave_subsection();
           }
@@ -286,6 +305,22 @@ namespace WorldBuilder
                         output[entry_in_output[i_property]] = velocity[0];
                         output[entry_in_output[i_property]+1] = velocity[1];
                         output[entry_in_output[i_property]+2] = velocity[2];
+                        break;
+                      }
+                      case 6: // density
+                      {
+                        for (const auto &density_model: density_models)
+                          {
+                            output[entry_in_output[i_property]] = density_model->get_density(position_in_cartesian_coordinates,
+                                                                                             position_in_natural_coordinates,
+                                                                                             depth,
+                                                                                             gravity_norm,
+                                                                                             output[entry_in_output[i_property]],
+                                                                                             min_depth_local,
+                                                                                             max_depth_local);
+
+
+                          }
                         break;
                       }
                       break;

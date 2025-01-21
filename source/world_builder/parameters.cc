@@ -28,6 +28,7 @@
 #include "world_builder/features/mantle_layer_models/grains/interface.h"
 #include "world_builder/features/mantle_layer_models/temperature/interface.h"
 #include "world_builder/features/mantle_layer_models/velocity/interface.h"
+#include "world_builder/features/mantle_layer_models/density/interface.h"
 #include "world_builder/features/oceanic_plate_models/composition/interface.h"
 #include "world_builder/features/oceanic_plate_models/grains/interface.h"
 #include "world_builder/features/oceanic_plate_models/temperature/interface.h"
@@ -2250,6 +2251,14 @@ namespace WorldBuilder
   template bool
   Parameters::get_unique_pointers<Features::MantleLayerModels::Velocity::Interface>(const std::string &name,
       std::vector<std::unique_ptr<Features::MantleLayerModels::Velocity::Interface> > &vector);
+
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_unique_pointers<Features::MantleLayerModels::Density::Interface>(const std::string &name,
+      std::vector<std::unique_ptr<Features::MantleLayerModels::Density::Interface> > &vector);
 
 
 
