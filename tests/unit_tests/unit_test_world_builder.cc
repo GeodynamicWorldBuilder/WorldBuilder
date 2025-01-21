@@ -92,6 +92,10 @@ namespace WorldBuilder
       {
         class Interface;
       }  // namespace Temperature
+      namespace Density
+      {
+        class Interface;
+      }  // namespace Temperature
     }  // namespace FaultModels
   }  // namespace Features
 }  // namespace WorldBuilder
@@ -3593,12 +3597,13 @@ TEST_CASE("WorldBuilder Types: Segment Object")
   const WorldBuilder::Point<2> thickness(1,2,invalid);
   const WorldBuilder::Point<2> top_truncation(3,4,invalid);
   const WorldBuilder::Point<2> angle(5,6,invalid);
-  Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface, Features::FaultModels::Grains::Interface, Features::FaultModels::Velocity::Interface>
+  Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface, Features::FaultModels::Grains::Interface, Features::FaultModels::Velocity::Interface, Features::FaultModels::Density::Interface>
   type (1.0, thickness, top_truncation, angle,
         std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface> >(),
         std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface> >(),
         std::vector<std::shared_ptr<Features::FaultModels::Grains::Interface> >(),
-        std::vector<std::shared_ptr<Features::FaultModels::Velocity::Interface> >());
+        std::vector<std::shared_ptr<Features::FaultModels::Velocity::Interface> >(),
+        std::vector<std::shared_ptr<Features::FaultModels::Density::Interface> >());
   CHECK(type.value_length == Approx(1.0));
   CHECK(type.value_thickness[0] == Approx(1.0));
   CHECK(type.value_thickness[1] == Approx(2.0));
@@ -3607,7 +3612,7 @@ TEST_CASE("WorldBuilder Types: Segment Object")
   CHECK(type.value_angle[0] == Approx(5.0));
   CHECK(type.value_angle[1] == Approx(6.0));
 
-  Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface, Features::FaultModels::Grains::Interface, Features::FaultModels::Velocity::Interface>
+  Objects::TYPE<Features::FaultModels::Temperature::Interface, Features::FaultModels::Composition::Interface, Features::FaultModels::Grains::Interface, Features::FaultModels::Velocity::Interface, Features::FaultModels::Density::Interface>
   type_copy(type);
   const double &value_length = type_copy.value_length;
   CHECK(value_length == Approx(1.0));

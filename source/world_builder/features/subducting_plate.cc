@@ -116,7 +116,8 @@ namespace WorldBuilder
                                                                 Types::PluginSystem("", Features::SubductingPlateModels::Temperature::Interface::declare_entries, {"model"}),
                                                                 Types::PluginSystem("", Features::SubductingPlateModels::Composition::Interface::declare_entries, {"model"}),
                                                                 Types::PluginSystem("", Features::SubductingPlateModels::Grains::Interface::declare_entries, {"model"}),
-                                                                Types::PluginSystem("", Features::SubductingPlateModels::Velocity::Interface::declare_entries, {"model"}))),
+                                                                Types::PluginSystem("", Features::SubductingPlateModels::Velocity::Interface::declare_entries, {"model"}),
+                                                                Types::PluginSystem("", Features::SubductingPlateModels::Density::Interface::declare_entries, {"model"}))),
                         "The depth to which this feature is present");
 
       prm.declare_entry("temperature models",
@@ -131,6 +132,9 @@ namespace WorldBuilder
       prm.declare_entry("velocity models",
                         Types::PluginSystem("", Features::SubductingPlateModels::Velocity::Interface::declare_entries, {"model"}),
                         "A list of velocity models.");
+      prm.declare_entry("density models",
+                        Types::PluginSystem("", Features::SubductingPlateModels::Density::Interface::declare_entries, {"model"}),
+                        "A list of density models.");
 
       if (parent_name != "items")
         {
@@ -186,12 +190,14 @@ namespace WorldBuilder
       prm.get_shared_pointers<Features::SubductingPlateModels::Composition::Interface>("composition models", default_composition_models);
       prm.get_shared_pointers<Features::SubductingPlateModels::Grains::Interface>("grains models", default_grains_models);
       prm.get_shared_pointers<Features::SubductingPlateModels::Velocity::Interface>("velocity models", default_velocity_models);
+      prm.get_shared_pointers<Features::SubductingPlateModels::Density::Interface>("density models", default_density_models);
 
       // get the default segments.
       default_segment_vector = prm.get_vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
       Features::SubductingPlateModels::Composition::Interface,
       Features::SubductingPlateModels::Grains::Interface,
-      Features::SubductingPlateModels::Velocity::Interface> >("segments", default_temperature_models, default_composition_models, default_grains_models,default_velocity_models);
+      Features::SubductingPlateModels::Velocity::Interface,
+      Features::SubductingPlateModels::Density::Interface> >("segments", default_temperature_models, default_composition_models, default_grains_models,default_velocity_models,default_density_models);
 
 
       // This vector stores segments to this coordinate/section.
@@ -223,6 +229,7 @@ namespace WorldBuilder
                 std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface>  > local_default_composition_models;
                 std::vector<std::shared_ptr<Features::SubductingPlateModels::Grains::Interface>  > local_default_grains_models;
                 std::vector<std::shared_ptr<Features::SubductingPlateModels::Velocity::Interface>  > local_default_velocity_models;
+                std::vector<std::shared_ptr<Features::SubductingPlateModels::Density::Interface>  > local_default_density_models;
 
                 if (!prm.get_shared_pointers<Features::SubductingPlateModels::Temperature::Interface>("temperature models", local_default_temperature_models))
                   {
@@ -248,10 +255,17 @@ namespace WorldBuilder
                     local_default_velocity_models = default_velocity_models;
                   }
 
+                if (!prm.get_shared_pointers<Features::SubductingPlateModels::Density::Interface>("density models", local_default_density_models))
+                  {
+                    // no local composition model, use global default
+                    local_default_density_models = default_density_models;
+                  }
+
                 segment_vector[change_coord_number] = prm.get_vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
                                                       Features::SubductingPlateModels::Composition::Interface,
                                                       Features::SubductingPlateModels::Grains::Interface,
-                                                      Features::SubductingPlateModels::Velocity::Interface> >("segments", local_default_temperature_models, local_default_composition_models, local_default_grains_models, local_default_velocity_models);
+                                                      Features::SubductingPlateModels::Velocity::Interface,
+                                                      Features::SubductingPlateModels::Density::Interface> >("segments", local_default_temperature_models, local_default_composition_models, local_default_grains_models, local_default_velocity_models,local_default_density_models);
 
 
                 WBAssertThrow(segment_vector[change_coord_number].size() == default_segment_vector.size(),
@@ -312,6 +326,19 @@ namespace WorldBuilder
                               prm.enter_subsection(std::to_string(j));
                               {
                                 segment_vector[change_coord_number][i].velocity_systems[j]->parse_entries(prm);
+                              }
+                              prm.leave_subsection();
+                            }
+                        }
+                        prm.leave_subsection();
+
+                        prm.enter_subsection("density models");
+                        {
+                          for (unsigned int j = 0; j < segment_vector[change_coord_number][i].density_systems.size(); ++j)
+                            {
+                              prm.enter_subsection(std::to_string(j));
+                              {
+                                segment_vector[change_coord_number][i].density_systems[j]->parse_entries(prm);
                               }
                               prm.leave_subsection();
                             }
@@ -385,6 +412,19 @@ namespace WorldBuilder
                     prm.enter_subsection(std::to_string(j));
                     {
                       default_segment_vector[i].velocity_systems[j]->parse_entries(prm);
+                    }
+                    prm.leave_subsection();
+                  }
+              }
+              prm.leave_subsection();
+
+              prm.enter_subsection("density models");
+              {
+                for (unsigned int j = 0; j < default_segment_vector[i].density_systems.size(); ++j)
+                  {
+                    prm.enter_subsection(std::to_string(j));
+                    {
+                      default_segment_vector[i].density_systems[j]->parse_entries(prm);
                     }
                     prm.leave_subsection();
                   }

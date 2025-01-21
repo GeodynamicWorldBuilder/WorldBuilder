@@ -25,6 +25,7 @@
 #include "world_builder/features/fault_models/grains/interface.h"
 #include "world_builder/features/fault_models/temperature/interface.h"
 #include "world_builder/features/fault_models/velocity/interface.h"
+#include "world_builder/features/fault_models/density/interface.h"
 #include "world_builder/objects/segment.h"
 #include "world_builder/bounding_box.h"
 #include "world_builder/objects/distance_from_surface.h"
@@ -55,6 +56,11 @@ namespace WorldBuilder
       {
         class Interface;
       }  // namespace Temperature
+
+      namespace Density
+      {
+        class Interface;
+      }  // namespace Density
     }  // namespace FaultModels
 
     /**
@@ -155,16 +161,19 @@ namespace WorldBuilder
         std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface>  > default_composition_models;
         std::vector<std::shared_ptr<Features::FaultModels::Grains::Interface>  > default_grains_models;
         std::vector<std::shared_ptr<Features::FaultModels::Velocity::Interface>  > default_velocity_models;
+        std::vector<std::shared_ptr<Features::FaultModels::Density::Interface>  > default_density_models;
 
         std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
             Features::FaultModels::Composition::Interface,
             Features::FaultModels::Grains::Interface,
-            Features::FaultModels::Velocity::Interface> > default_segment_vector;
+            Features::FaultModels::Velocity::Interface,
+            Features::FaultModels::Density::Interface> > default_segment_vector;
 
         std::vector< std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
             Features::FaultModels::Composition::Interface,
             Features::FaultModels::Grains::Interface,
-            Features::FaultModels::Velocity::Interface> > > sections_segment_vector;
+            Features::FaultModels::Velocity::Interface,
+            Features::FaultModels::Density::Interface> > > sections_segment_vector;
 
         // This vector stores segments to this coordinate/section.
         //First used (raw) pointers to the segment relevant to this coordinate/section,
@@ -172,7 +181,8 @@ namespace WorldBuilder
         std::vector<std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
             Features::FaultModels::Composition::Interface,
             Features::FaultModels::Grains::Interface,
-            Features::FaultModels::Velocity::Interface> > > segment_vector;
+            Features::FaultModels::Velocity::Interface,
+            Features::FaultModels::Density::Interface> > > segment_vector;
 
         // todo: the memory of this can be greatly improved by
         // or using a plugin system for the submodules, or
