@@ -22,6 +22,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Fixed
 - Fixed index for 2D compositional fields in gwb-grid. \[Derek Neuharth; 2025-01-21; [#788](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/788)\]
+- Fixed the tag and velocity outputs while using --by-tag --filtered options in gwb-grid. \[Arushi Saxena; 2025-01-21; [#802](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/802)\]
 
 ## [1.0.0]
 ### Added
