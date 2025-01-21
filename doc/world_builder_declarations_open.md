@@ -284,6 +284,16 @@
 - **enum**:[continental plate]
 ::::::::::::::::::::
 
+::::::::::::::::::::{dropdown} /features/items/oneOf/1/geometry type
+:open:
+:name: open_features_items_oneOf_1_geometry-type
+
+- **default value**:coordinates
+- **type**:string
+- **description**:The model geometry type
+- **enum**:[coordinates]
+::::::::::::::::::::
+
 ::::::::::::::::::::{dropdown} /features/items/oneOf/1/name
 :open:
 :name: open_features_items_oneOf_1_name
@@ -2977,6 +2987,16 @@
 - **type**:string
 - **description**:The model name of the feature determining its type.
 - **enum**:[fault]
+::::::::::::::::::::
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/2/geometry type
+:open:
+:name: open_features_items_oneOf_2_geometry-type
+
+- **default value**:coordinates
+- **type**:string
+- **description**:The model geometry type
+- **enum**:[coordinates, coordinates]
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/2/name
@@ -7473,6 +7493,16 @@
 - **enum**:[mantle layer]
 ::::::::::::::::::::
 
+::::::::::::::::::::{dropdown} /features/items/oneOf/3/geometry type
+:open:
+:name: open_features_items_oneOf_3_geometry-type
+
+- **default value**:coordinates
+- **type**:string
+- **description**:The model geometry type
+- **enum**:[coordinates, coordinates]
+::::::::::::::::::::
+
 ::::::::::::::::::::{dropdown} /features/items/oneOf/3/name
 :open:
 :name: open_features_items_oneOf_3_name
@@ -9899,6 +9929,16 @@
 - **type**:string
 - **description**:The model name of the feature determining its type.
 - **enum**:[oceanic plate]
+::::::::::::::::::::
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/4/geometry type
+:open:
+:name: open_features_items_oneOf_4_geometry-type
+
+- **default value**:coordinates
+- **type**:string
+- **description**:The model geometry type
+- **enum**:[coordinates, coordinates]
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/4/name
@@ -13514,7 +13554,7 @@
 :name: open_features_items_oneOf_5
 
 - **type**:object
-- **description**:Plume object. Requires properties `model` and `coordinates`.
+- **description**:PlumeCoordinates object. Requires properties `model` and `coordinates`.
 - **additionalProperties**:false
 - **required**:[model]
 
@@ -13526,6 +13566,16 @@
 - **type**:string
 - **description**:The model name of the feature determining its type.
 - **enum**:[plume]
+::::::::::::::::::::
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/5/geometry type
+:open:
+:name: open_features_items_oneOf_5_geometry-type
+
+- **default value**:coordinates
+- **type**:string
+- **description**:The model geometry type
+- **enum**:[coordinates, coordinates]
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/5/name
@@ -14465,6 +14515,16 @@
 - **type**:string
 - **description**:The model name of the feature determining its type.
 - **enum**:[subducting plate]
+::::::::::::::::::::
+
+::::::::::::::::::::{dropdown} /features/items/oneOf/6/geometry type
+:open:
+:name: open_features_items_oneOf_6_geometry-type
+
+- **default value**:coordinates
+- **type**:string
+- **description**:The model geometry type
+- **enum**:[coordinates, coordinates]
 ::::::::::::::::::::
 
 ::::::::::::::::::::{dropdown} /features/items/oneOf/6/name

@@ -17,7 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "world_builder/features/subducting_plate.h"
+#include "world_builder/features/subducting_plate_coordinates.h"
 
 
 #include "glm/glm.h"
@@ -39,7 +39,7 @@ namespace WorldBuilder
 
   namespace Features
   {
-    SubductingPlate::SubductingPlate(WorldBuilder::World *world_)
+    SubductingPlateCoordinates::SubductingPlateCoordinates(WorldBuilder::World *world_)
       :
       reference_point(0,0,cartesian)
     {
@@ -47,12 +47,12 @@ namespace WorldBuilder
       this->name = "subducting plate";
     }
 
-    SubductingPlate::~SubductingPlate()
+    SubductingPlateCoordinates::~SubductingPlateCoordinates()
       = default;
 
 
 
-    void SubductingPlate::make_snippet(Parameters &prm)
+    void SubductingPlateCoordinates::make_snippet(Parameters &prm)
     {
       using namespace rapidjson;
       Document &declarations = prm.declarations;
@@ -84,9 +84,9 @@ namespace WorldBuilder
 
 
     void
-    SubductingPlate::declare_entries(Parameters &prm,
-                                     const std::string &parent_name,
-                                     const std::vector<std::string> &required_entries)
+    SubductingPlateCoordinates::declare_entries(Parameters &prm,
+                                                const std::string &parent_name,
+                                                const std::vector<std::string> &required_entries)
     {
       // This statement is needed because of the recursion associated with
       // the sections entry.
@@ -97,6 +97,8 @@ namespace WorldBuilder
       else
         {
           prm.declare_entry("", Types::Object(required_entries), "Subducting slab object. Requires properties `model` and `coordinates`.");
+          prm.declare_entry("geometry type", Types::String("coordinates","coordinates"),
+                            "The model geometry type");
         }
 
 
@@ -135,7 +137,7 @@ namespace WorldBuilder
       if (parent_name != "items")
         {
           // This only happens if we are not in sections
-          prm.declare_entry("sections", Types::Array(Types::PluginSystem("",Features::SubductingPlate::declare_entries, {"coordinate"}, false)),"A list of feature properties for a coordinate.");
+          prm.declare_entry("sections", Types::Array(Types::PluginSystem("",Features::SubductingPlateCoordinates::declare_entries, {"coordinate"}, false)),"A list of feature properties for a coordinate.");
         }
       else
         {
@@ -149,7 +151,7 @@ namespace WorldBuilder
     }
 
     void
-    SubductingPlate::parse_entries(Parameters &prm)
+    SubductingPlateCoordinates::parse_entries(Parameters &prm)
     {
       const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 
@@ -202,7 +204,7 @@ namespace WorldBuilder
 
 
       // now search whether a section is present, if so, replace the default segments.
-      std::vector<std::unique_ptr<Features::SubductingPlate> > sections_vector;
+      std::vector<std::unique_ptr<Features::SubductingPlateCoordinates> > sections_vector;
       prm.get_unique_pointers("sections", sections_vector);
 
       prm.enter_subsection("sections");
@@ -488,20 +490,20 @@ namespace WorldBuilder
 
 
     const BoundingBox<2> &
-    SubductingPlate::get_surface_bounding_box () const
+    SubductingPlateCoordinates::get_surface_bounding_box () const
     {
       return surface_bounding_box;
     }
 
 
     void
-    SubductingPlate::properties(const Point<3> &position_in_cartesian_coordinates,
-                                const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                                const double depth,
-                                const std::vector<std::array<unsigned int,3>> &properties,
-                                const double gravity_norm,
-                                const std::vector<size_t> &entry_in_output,
-                                std::vector<double> &output) const
+    SubductingPlateCoordinates::properties(const Point<3> &position_in_cartesian_coordinates,
+                                           const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                                           const double depth,
+                                           const std::vector<std::array<unsigned int,3>> &properties,
+                                           const double gravity_norm,
+                                           const std::vector<size_t> &entry_in_output,
+                                           std::vector<double> &output) const
     {
       // The depth variable is the distance from the surface to the position, the depth
       // coordinate is the distance from the bottom of the model to the position and
@@ -813,9 +815,9 @@ namespace WorldBuilder
     }
 
     Objects::PlaneDistances
-    SubductingPlate::distance_to_feature_plane(const Point<3> &position_in_cartesian_coordinates,
-                                               const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                                               const double depth) const
+    SubductingPlateCoordinates::distance_to_feature_plane(const Point<3> &position_in_cartesian_coordinates,
+                                                          const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                                                          const double depth) const
     {
       // The depth variable is the distance from the surface to the position, the depth
       // coordinate is the distance from the bottom of the model to the position and
@@ -848,7 +850,7 @@ namespace WorldBuilder
     /**
      * Register plugin
      */
-    WB_REGISTER_FEATURE(SubductingPlate, subducting plate)
+    WB_REGISTER_FEATURE(SubductingPlateCoordinates, subducting plate coordinates)
   } // namespace Features
 } // namespace WorldBuilder
 

@@ -17,14 +17,15 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "world_builder/features/mantle_layer.h"
+#include "world_builder/features/continental_plate_coordinates.h"
 
 
-#include "world_builder/features/mantle_layer_models/composition/interface.h"
-#include "world_builder/features/mantle_layer_models/grains/interface.h"
-#include "world_builder/features/mantle_layer_models/temperature/interface.h"
-#include "world_builder/features/mantle_layer_models/velocity/interface.h"
+#include "world_builder/features/continental_plate_models/composition/interface.h"
+#include "world_builder/features/continental_plate_models/grains/interface.h"
+#include "world_builder/features/continental_plate_models/temperature/interface.h"
+#include "world_builder/features/continental_plate_models/velocity/interface.h"
 #include "world_builder/features/feature_utilities.h"
+#include "world_builder/nan.h"
 #include "world_builder/types/array.h"
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
@@ -33,6 +34,9 @@
 #include "world_builder/types/value_at_points.h"
 #include "world_builder/world.h"
 
+#include <array>
+#include <iostream>
+
 
 namespace WorldBuilder
 {
@@ -40,18 +44,19 @@ namespace WorldBuilder
 
   namespace Features
   {
-    MantleLayer::MantleLayer(WorldBuilder::World *world_)
+    ContinentalPlateCoordinates::ContinentalPlateCoordinates(WorldBuilder::World *world_)
+      :
+      min_depth(NaN::DSNAN),
+      max_depth(NaN::DSNAN)
     {
       this->world = world_;
-      this->name = "mantle layer";
+      this->name = "continental plate coordinates";
     }
 
-    MantleLayer::~MantleLayer()
+    ContinentalPlateCoordinates::~ContinentalPlateCoordinates()
       = default;
 
-
-
-    void MantleLayer::make_snippet(Parameters &prm)
+    void ContinentalPlateCoordinates::make_snippet(Parameters &prm)
     {
       using namespace rapidjson;
       Document &declarations = prm.declarations;
@@ -59,42 +64,43 @@ namespace WorldBuilder
       const std::string path = prm.get_full_json_path();
 
       Pointer((path + "/body").c_str()).Set(declarations,"object");
-      Pointer((path + "/body/model").c_str()).Set(declarations,"mantle layer");
-      Pointer((path + "/body/name").c_str()).Set(declarations,"${1:My Mantle Layer}");
+      Pointer((path + "/body/model").c_str()).Set(declarations,"continental plate");
+      Pointer((path + "/body/name").c_str()).Set(declarations,"${1:My Plate}");
       Pointer((path + "/body/coordinates").c_str()).Create(declarations).SetArray();
-      Pointer((path + "/body/temperature models").c_str()).Create(declarations).SetArray();
-      Pointer((path + "/body/composition models").c_str()).Create(declarations).SetArray();
     }
 
 
 
     void
-    MantleLayer::declare_entries(Parameters &prm,
-                                 const std::string &/*parent_name*/,
-                                 const std::vector<std::string> &required_entries)
+    ContinentalPlateCoordinates::declare_entries(Parameters &prm,
+                                                 const std::string & /*unused*/,
+                                                 const std::vector<std::string> &required_entries)
     {
-      prm.declare_entry("", Types::Object(required_entries), "Mantle layer object. Requires properties `model` and `coordinates`.");
+
+
+
+      prm.declare_entry("", Types::Object(required_entries), "Continental plate object. Requires properties `model` and `coordinates`.");
 
       prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0., 2.))),
                         "The depth from which this feature is present");
       prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(), 2.))),
                         "The depth to which this feature is present");
       prm.declare_entry("temperature models",
-                        Types::PluginSystem("", Features::MantleLayerModels::Temperature::Interface::declare_entries, {"model"}),
+                        Types::PluginSystem("", Features::ContinentalPlateModels::Temperature::Interface::declare_entries, {"model"}),
                         "A list of temperature models.");
+      prm.declare_entry("velocity models",
+                        Types::PluginSystem("", Features::ContinentalPlateModels::Velocity::Interface::declare_entries, {"model"}),
+                        "A list of velocity models.");
       prm.declare_entry("composition models",
-                        Types::PluginSystem("", Features::MantleLayerModels::Composition::Interface::declare_entries, {"model"}),
+                        Types::PluginSystem("", Features::ContinentalPlateModels::Composition::Interface::declare_entries, {"model"}),
                         "A list of composition models.");
       prm.declare_entry("grains models",
-                        Types::PluginSystem("", Features::MantleLayerModels::Grains::Interface::declare_entries, {"model"}),
+                        Types::PluginSystem("", Features::ContinentalPlateModels::Grains::Interface::declare_entries, {"model"}),
                         "A list of grains models.");
-      prm.declare_entry("velocity models",
-                        Types::PluginSystem("", Features::MantleLayerModels::Velocity::Interface::declare_entries, {"model"}),
-                        "A list of velocity models.");
     }
 
     void
-    MantleLayer::parse_entries(Parameters &prm)
+    ContinentalPlateCoordinates::parse_entries(Parameters &prm)
     {
       const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 
@@ -103,7 +109,7 @@ namespace WorldBuilder
       std::string tag = prm.get<std::string>("tag");
       if (tag == "")
         {
-          tag = "mantle layer";
+          tag = "continental plate";
         }
       this->tag_index = FeatureUtilities::add_vector_unique(this->world->feature_tags,tag);
 
@@ -116,7 +122,7 @@ namespace WorldBuilder
       max_depth = max_depth_surface.maximum;
 
 
-      prm.get_unique_pointers<Features::MantleLayerModels::Temperature::Interface>("temperature models", temperature_models);
+      prm.get_unique_pointers<Features::ContinentalPlateModels::Temperature::Interface>("temperature models", temperature_models);
 
       prm.enter_subsection("temperature models");
       {
@@ -132,15 +138,15 @@ namespace WorldBuilder
       prm.leave_subsection();
 
 
-      prm.get_unique_pointers<Features::MantleLayerModels::Composition::Interface>("composition models", composition_models);
+      prm.get_unique_pointers<Features::ContinentalPlateModels::Velocity::Interface>("velocity models", velocity_models);
 
-      prm.enter_subsection("composition models");
+      prm.enter_subsection("velocity models");
       {
-        for (unsigned int i = 0; i < composition_models.size(); ++i)
+        for (unsigned int i = 0; i < velocity_models.size(); ++i)
           {
             prm.enter_subsection(std::to_string(i));
             {
-              composition_models[i]->parse_entries(prm,coordinates);
+              velocity_models[i]->parse_entries(prm,coordinates);
             }
             prm.leave_subsection();
           }
@@ -148,7 +154,23 @@ namespace WorldBuilder
       prm.leave_subsection();
 
 
-      prm.get_unique_pointers<Features::MantleLayerModels::Grains::Interface>("grains models", grains_models);
+      prm.get_unique_pointers<Features::ContinentalPlateModels::Composition::Interface>("composition models", composition_models);
+
+      prm.enter_subsection("composition models");
+      {
+        for (unsigned int i = 0; i < composition_models.size(); ++i)
+          {
+            prm.enter_subsection(std::to_string(i));
+            {
+              composition_models[i]->parse_entries(prm, coordinates);
+            }
+            prm.leave_subsection();
+          }
+      }
+      prm.leave_subsection();
+
+
+      prm.get_unique_pointers<Features::ContinentalPlateModels::Grains::Interface>("grains models", grains_models);
 
       prm.enter_subsection("grains models");
       {
@@ -163,31 +185,18 @@ namespace WorldBuilder
       }
       prm.leave_subsection();
 
-      prm.get_unique_pointers<Features::MantleLayerModels::Velocity::Interface>("velocity models", velocity_models);
-
-      prm.enter_subsection("velocity models");
-      {
-        for (unsigned int i = 0; i < velocity_models.size(); ++i)
-          {
-            prm.enter_subsection(std::to_string(i));
-            {
-              velocity_models[i]->parse_entries(prm,coordinates);
-            }
-            prm.leave_subsection();
-          }
-      }
-      prm.leave_subsection();
     }
 
 
+
     void
-    MantleLayer::properties(const Point<3> &position_in_cartesian_coordinates,
-                            const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                            const double depth,
-                            const std::vector<std::array<unsigned int,3>> &properties,
-                            const double gravity_norm,
-                            const std::vector<size_t> &entry_in_output,
-                            std::vector<double> &output) const
+    ContinentalPlateCoordinates::properties(const Point<3> &position_in_cartesian_coordinates,
+                                            const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                                            const double depth,
+                                            const std::vector<std::array<unsigned int,3>> &properties,
+                                            const double gravity_norm,
+                                            const std::vector<size_t> &entry_in_output,
+                                            std::vector<double> &output) const
     {
       if (depth <= max_depth && depth >= min_depth &&
           WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
@@ -220,28 +229,27 @@ namespace WorldBuilder
 
                           }
                         break;
-                      }
-                      case 2: // composition
-                      {
-                        for (const auto &composition_model: composition_models)
-                          {
-                            output[entry_in_output[i_property]] = composition_model->get_composition(position_in_cartesian_coordinates,
-                                                                                                     position_in_natural_coordinates,
-                                                                                                     depth,
-                                                                                                     properties[i_property][1],
-                                                                                                     output[entry_in_output[i_property]],
-                                                                                                     min_depth_local,
-                                                                                                     max_depth_local);
+                        case 2: // composition
 
-                            WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Composition is not a number: " << output[entry_in_output[i_property]]
-                                     << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
-                            WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Composition is not a finite: " << output[entry_in_output[i_property]]
-                                     << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
+                          for (const auto &composition_model: composition_models)
+                            {
+                              output[entry_in_output[i_property]] = composition_model->get_composition(position_in_cartesian_coordinates,
+                                                                                                       position_in_natural_coordinates,
+                                                                                                       depth,
+                                                                                                       properties[i_property][1],
+                                                                                                       output[entry_in_output[i_property]],
+                                                                                                       min_depth_local,
+                                                                                                       max_depth_local);
 
-                          }
+                              WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Composition is not a number: " << output[entry_in_output[i_property]]
+                                       << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
+                              WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Composition is not a finite: " << output[entry_in_output[i_property]]
+                                       << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
 
-                        break;
-                      }
+                            }
+
+                          break;
+                        }
                       case 3: // grains
                       {
                         WorldBuilder::grains  grains(output,properties[i_property][2],entry_in_output[i_property]);
@@ -264,9 +272,10 @@ namespace WorldBuilder
                         output[entry_in_output[i_property]] = static_cast<double>(tag_index);
                         break;
                       }
-                      case 5:  // velocity
+                      case 5: // velocity
                       {
                         std::array<double, 3> velocity = {{0,0,0}};
+                        //std::cout << "velocity_models.size() = " << velocity_models.size() << std::endl;
                         for (const auto &velocity_model: velocity_models)
                           {
                             velocity = velocity_model->get_velocity(position_in_cartesian_coordinates,
@@ -276,24 +285,21 @@ namespace WorldBuilder
                                                                     velocity,
                                                                     min_depth_local,
                                                                     max_depth_local);
+                            //std::cout << "l vel = " << velocity[0] << ":" << velocity[1] << ":" << velocity[2] << std::endl;
 
-                            //WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Velocity is not a number: " << output[entry_in_output[i_property]]
-                            //         << ", based on a velocity model with the name " << velocity_model->get_name() << ", in feature " << this->name);
-                            //WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Velocity is not a finite: " << output[entry_in_output[i_property]]
-                            //         << ", based on a velocity model with the name " << velocity_model->get_name() << ", in feature " << this->name);
                           }
-
+                        //std::cout << "o vel = " << velocity[0] << ":" << velocity[1] << ":" << velocity[2] << std::endl;
                         output[entry_in_output[i_property]] = velocity[0];
                         output[entry_in_output[i_property]+1] = velocity[1];
                         output[entry_in_output[i_property]+2] = velocity[2];
+                        //std::cout << "vel=" << output[entry_in_output[i_property]] << ":" << output[entry_in_output[i_property]+1] << ":" << output[entry_in_output[i_property]+2] << std::endl;
                         break;
                       }
-                      break;
                       default:
                       {
                         WBAssertThrow(false,
                                       "Internal error: Unimplemented property provided. " <<
-                                      "Only temperature (1), composition (2), grains (3) or tag (4) are allowed. "
+                                      "Only temperature (1), composition (2), grains (3), tag (4) or velocity (5) are allowed. "
                                       "Provided property number was: " << properties[i_property][0]);
                       }
                     }
@@ -302,7 +308,7 @@ namespace WorldBuilder
         }
     }
 
-    WB_REGISTER_FEATURE(MantleLayer, mantle layer)
+    WB_REGISTER_FEATURE(ContinentalPlateCoordinates, continental plate coordinates)
 
   } // namespace Features
 } // namespace WorldBuilder

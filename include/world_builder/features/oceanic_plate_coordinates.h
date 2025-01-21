@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef WORLD_BUILDER_FEATURES_OCEANIC_PLATE_H
-#define WORLD_BUILDER_FEATURES_OCEANIC_PLATE_H
+#ifndef WORLD_BUILDER_FEATURES_OCEANIC_PLATE_COORDINATES_H
+#define WORLD_BUILDER_FEATURES_OCEANIC_PLATE_COORDINATES_H
 
 
 #include "world_builder/features/interface.h"
@@ -58,18 +58,18 @@ namespace WorldBuilder
      * the returned temperature or composition of the temperature and composition
      * functions of this class will be.
      */
-    class OceanicPlate final: public Interface
+    class OceanicPlateCoordinates final: public Interface
     {
       public:
         /**
          * constructor
          */
-        OceanicPlate(WorldBuilder::World *world);
+        OceanicPlateCoordinates(WorldBuilder::World *world);
 
         /**
          * Destructor
          */
-        ~OceanicPlate() override final;
+        ~OceanicPlateCoordinates() override final;
 
         /**
          * declare and read in the world builder file into the parameters class

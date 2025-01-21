@@ -17,7 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "world_builder/features/plume.h"
+#include "world_builder/features/plume_coordinates.h"
 
 
 #include "world_builder/features/plume_models/composition/interface.h"
@@ -44,7 +44,7 @@ namespace WorldBuilder
 
   namespace Features
   {
-    Plume::Plume(WorldBuilder::World *world_)
+    PlumeCoordinates::PlumeCoordinates(WorldBuilder::World *world_)
       :
       min_depth(NaN::DSNAN),
       max_depth(NaN::DSNAN)
@@ -53,12 +53,12 @@ namespace WorldBuilder
       this->name = "plume";
     }
 
-    Plume::~Plume()
+    PlumeCoordinates::~PlumeCoordinates()
       = default;
 
 
 
-    void Plume::make_snippet(Parameters &prm)
+    void PlumeCoordinates::make_snippet(Parameters &prm)
     {
       using namespace rapidjson;
       Document &declarations = prm.declarations;
@@ -67,7 +67,7 @@ namespace WorldBuilder
 
       Pointer((path + "/body").c_str()).Set(declarations,"object");
       Pointer((path + "/body/model").c_str()).Set(declarations,"plume");
-      Pointer((path + "/body/name").c_str()).Set(declarations,"${1:My Plume}");
+      Pointer((path + "/body/name").c_str()).Set(declarations,"${1:My PlumeCoordinates}");
       Pointer((path + "/body/coordinates").c_str()).Create(declarations).SetArray();
       Pointer((path + "/body/temperature models").c_str()).Create(declarations).SetArray();
       Pointer((path + "/body/composition models").c_str()).Create(declarations).SetArray();
@@ -76,12 +76,14 @@ namespace WorldBuilder
 
 
     void
-    Plume::declare_entries(Parameters &prm,
-                           const std::string & /*unused*/,
-                           const std::vector<std::string> &required_entries)
+    PlumeCoordinates::declare_entries(Parameters &prm,
+                                      const std::string & /*unused*/,
+                                      const std::vector<std::string> &required_entries)
     {
-      prm.declare_entry("", Types::Object(required_entries), "Plume object. Requires properties `model` and `coordinates`.");
+      prm.declare_entry("", Types::Object(required_entries), "PlumeCoordinates object. Requires properties `model` and `coordinates`.");
 
+      prm.declare_entry("geometry type", Types::String("coordinates","coordinates"),
+                        "The model geometry type");
       prm.declare_entry("min depth", Types::Double(0),
                         "The depth from which this feature is present, in other words, the "
                         "depth of the tip of the plume. If the first entry in the cross "
@@ -118,7 +120,7 @@ namespace WorldBuilder
     }
 
     void
-    Plume::parse_entries(Parameters &prm)
+    PlumeCoordinates::parse_entries(Parameters &prm)
     {
       const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 
@@ -251,13 +253,13 @@ namespace WorldBuilder
 
 
     void
-    Plume::properties(const Point<3> &position_in_cartesian_coordinates,
-                      const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                      const double depth,
-                      const std::vector<std::array<unsigned int,3>> &properties,
-                      const double gravity_norm,
-                      const std::vector<size_t> &entry_in_output,
-                      std::vector<double> &output) const
+    PlumeCoordinates::properties(const Point<3> &position_in_cartesian_coordinates,
+                                 const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                                 const double depth,
+                                 const std::vector<std::array<unsigned int,3>> &properties,
+                                 const double gravity_norm,
+                                 const std::vector<size_t> &entry_in_output,
+                                 std::vector<double> &output) const
     {
       // Figure out if the point is within the plume
       auto upper = std::upper_bound(depths.begin(), depths.end(), depth);
@@ -440,7 +442,7 @@ namespace WorldBuilder
         }
     }
 
-    WB_REGISTER_FEATURE(Plume, plume)
+    WB_REGISTER_FEATURE(PlumeCoordinates, plume coordinates)
 
   } // namespace Features
 } // namespace WorldBuilder

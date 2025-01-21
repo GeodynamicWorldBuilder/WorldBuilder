@@ -28,7 +28,7 @@
 #include "world_builder/coordinate_systems/cartesian.h"
 #include "world_builder/coordinate_systems/interface.h"
 #include "world_builder/coordinate_systems/invalid.h"
-#include "world_builder/features/continental_plate.h"
+#include "world_builder/features/continental_plate_coordinates.h"
 #include "world_builder/features/interface.h"
 #include "world_builder/grains.h"
 #include "world_builder/objects/natural_coordinate.h"
@@ -1155,7 +1155,7 @@ TEST_CASE("WorldBuilder Features: Interface")
                     Contains("Internal error: Plugin with name '!not_implemented_feature!' is not found. "
                              "The size of factories is "));
 
-  const std::unique_ptr<Features::Interface> interface = Features::Interface::create("continental plate", &world);
+  const std::unique_ptr<Features::Interface> interface = Features::Interface::create("continental plate coordinates", &world);
 
 }
 
@@ -1167,7 +1167,7 @@ TEST_CASE("WorldBuilder Features: Distance to Feature Plane")
   const std::string file_name = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/subducting_plate_constant_angles_cartesian.wb";
   WorldBuilder::World world1(file_name);
   {
-    std::unique_ptr<Features::Interface> subducting_plate = Features::Interface::create("Subducting Plate", &world1);
+    std::unique_ptr<Features::Interface> subducting_plate = Features::Interface::create("Subducting Plate coordinates", &world1);
 
     world1.parameters.enter_subsection("features");
     world1.parameters.enter_subsection("2");
@@ -1196,7 +1196,7 @@ TEST_CASE("WorldBuilder Features: Distance to Feature Plane")
   const std::string file_name2 = WorldBuilder::Data::WORLD_BUILDER_SOURCE_DIR + "/tests/data/fault_constant_angles_cartesian.wb";
   WorldBuilder::World world2(file_name2);
   {
-    std::unique_ptr<Features::Interface> fault = Features::Interface::create("Fault", &world2);
+    std::unique_ptr<Features::Interface> fault = Features::Interface::create("Fault coordinates", &world2);
 
     world2.parameters.enter_subsection("features");
     world2.parameters.enter_subsection("2");
@@ -1234,7 +1234,7 @@ TEST_CASE("WorldBuilder Features: Continental Plate")
 
   // Check continental plate directly
   {
-    std::unique_ptr<Features::Interface> continental_plate = Features::Interface::create("continental plate", &world1);
+    std::unique_ptr<Features::Interface> continental_plate = Features::Interface::create("continental plate coordinates", &world1);
 
     world1.parameters.enter_subsection("features");
     world1.parameters.enter_subsection("2");
@@ -1481,7 +1481,7 @@ TEST_CASE("WorldBuilder Features: Mantle layer")
 
   // Check mantle layer directly
   {
-    std::unique_ptr<Features::Interface> mantle_layer = Features::Interface::create("mantle layer", &world1);
+    std::unique_ptr<Features::Interface> mantle_layer = Features::Interface::create("mantle layer coordinates", &world1);
 
     world1.parameters.enter_subsection("features");
     world1.parameters.enter_subsection("2");
@@ -1728,7 +1728,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
 
   // Check continental plate directly
   {
-    std::unique_ptr<Features::Interface> oceanic_plate = Features::Interface::create("oceanic plate", &world1);
+    std::unique_ptr<Features::Interface> oceanic_plate = Features::Interface::create("oceanic plate coordinates", &world1);
 
     world1.parameters.enter_subsection("features");
     world1.parameters.enter_subsection("2");
@@ -1937,7 +1937,7 @@ TEST_CASE("WorldBuilder Features: Oceanic Plate")
   WorldBuilder::World world2(file_name);
 
   // Check continental plate directly
-  const std::unique_ptr<Features::Interface> oceanic_plate = Features::Interface::create("oceanic plate", &world2);
+  const std::unique_ptr<Features::Interface> oceanic_plate = Features::Interface::create("oceanic plate coordinates", &world2);
 
   // Check continental plate through the world
   const double dtr = Consts::PI / 180.0;
@@ -2115,7 +2115,7 @@ TEST_CASE("WorldBuilder Features: Subducting Plate")
 
   // Check continental plate directly (upper case should automatically turn into lower case).
   {
-    std::unique_ptr<Features::Interface> subducting_plate = Features::Interface::create("Subducting Plate", &world1);
+    std::unique_ptr<Features::Interface> subducting_plate = Features::Interface::create("Subducting Plate Coordinates", &world1);
 
     world1.parameters.enter_subsection("features");
     world1.parameters.enter_subsection("2");
@@ -2615,7 +2615,7 @@ TEST_CASE("WorldBuilder Features: Fault")
 
   // Check continental plate directly (upper case should automatically turn into lower case).
   {
-    std::unique_ptr<Features::Interface> fault = Features::Interface::create("Fault", &world1);
+    std::unique_ptr<Features::Interface> fault = Features::Interface::create("Fault Coordinates", &world1);
 
     world1.parameters.enter_subsection("features");
     world1.parameters.enter_subsection("2");
@@ -2884,7 +2884,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   WorldBuilder::World world3(file_name);
 
   // Check fault directly (upper case should automatically turn into lower case).
-  const std::unique_ptr<Features::Interface> continental_plate = Features::Interface::create("Fault", &world3);
+  const std::unique_ptr<Features::Interface> continental_plate = Features::Interface::create("Fault Coordinates", &world3);
 
   // Check fault through the world
   position = {{0,0,800e3}};
@@ -3563,7 +3563,7 @@ TEST_CASE("WorldBuilder Types: Coordinate System")
 TEST_CASE("WorldBuilder Types: PluginSystem")
 {
 #define TYPE PluginSystem
-  Types::TYPE type("test", Features::ContinentalPlate::declare_entries, std::vector<std::string> {{"test required"}}, false);
+  Types::TYPE type("test", Features::ContinentalPlateCoordinates::declare_entries, std::vector<std::string> {{"test required"}}, false);
   CHECK(type.default_value == "test");
   CHECK(type.required_entries[0] == "test required");
   CHECK(type.allow_multiple == false);

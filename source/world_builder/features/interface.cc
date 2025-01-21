@@ -103,8 +103,26 @@ namespace WorldBuilder
               {
                 prm.declare_entry("", Types::Object(required_entries), "feature object");
 
-                prm.declare_entry("model", Types::String("",it.first),
+                std::string model_name = it.first;
+                std::vector<std::string> geometry_types = {" coordinates"};
+
+                for (auto &geometry_type : geometry_types)
+                  {
+                    // TODO: now just remove all, maybe only find last position of coordinates and remove it.
+                    size_t pos = 0;
+                    while ((pos = model_name.find(geometry_type, pos)) != std::string::npos)
+                      {
+                        model_name.replace(pos, geometry_type.length(), "");
+                        pos += 0;
+                      }
+                  }
+
+
+                prm.declare_entry("model", Types::String("",model_name),
                                   "The model name of the feature determining its type.");
+
+                prm.declare_entry("geometry type", Types::String("coordinates","coordinates"),
+                                  "The model geometry type");
                 prm.declare_entry("name", Types::String(""),
                                   "The name which the user has given to the feature. "
                                   "This is mostly used for documentation purposes, and should in most cases be unique, "

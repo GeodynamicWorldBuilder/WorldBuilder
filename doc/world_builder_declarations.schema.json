@@ -170,7 +170,7 @@
             "items": {
                 "defaultSnippets": [
                     {
-                        "label": "add a 'continental plate'",
+                        "label": "add a 'continental plate coordinates'",
                         "body": {
                             "model": "continental plate",
                             "name": "${1:My Plate}",
@@ -178,7 +178,7 @@
                         }
                     },
                     {
-                        "label": "add a 'fault'",
+                        "label": "add a 'fault coordinates'",
                         "body": {
                             "model": "fault",
                             "name": "${1:My Fault}",
@@ -188,7 +188,7 @@
                         }
                     },
                     {
-                        "label": "add a 'mantle layer'",
+                        "label": "add a 'mantle layer coordinates'",
                         "body": {
                             "model": "mantle layer",
                             "name": "${1:My Mantle Layer}",
@@ -198,7 +198,7 @@
                         }
                     },
                     {
-                        "label": "add a 'oceanic plate'",
+                        "label": "add a 'oceanic plate coordinates'",
                         "body": {
                             "model": "oceanic plate",
                             "name": "${1:My Oceanic Plate}",
@@ -208,17 +208,17 @@
                         }
                     },
                     {
-                        "label": "add a 'plume'",
+                        "label": "add a 'plume coordinates'",
                         "body": {
                             "model": "plume",
-                            "name": "${1:My Plume}",
+                            "name": "${1:My PlumeCoordinates}",
                             "coordinates": [],
                             "temperature models": [],
                             "composition models": []
                         }
                     },
                     {
-                        "label": "add a 'subducting plate'",
+                        "label": "add a 'subducting plate coordinates'",
                         "body": {
                             "model": "subducting plate",
                             "name": "${1:My Subducting Plate}",
@@ -243,6 +243,14 @@
                                 "description": "The model name of the feature determining its type.",
                                 "enum": [
                                     "continental plate"
+                                ]
+                            },
+                            "geometry type": {
+                                "default value": "coordinates",
+                                "type": "string",
+                                "description": "The model geometry type",
+                                "enum": [
+                                    "coordinates"
                                 ]
                             },
                             "name": {
@@ -1785,6 +1793,15 @@
                                 "description": "The model name of the feature determining its type.",
                                 "enum": [
                                     "fault"
+                                ]
+                            },
+                            "geometry type": {
+                                "default value": "coordinates",
+                                "type": "string",
+                                "description": "The model geometry type",
+                                "enum": [
+                                    "coordinates",
+                                    "coordinates"
                                 ]
                             },
                             "name": {
@@ -4713,6 +4730,15 @@
                                     "mantle layer"
                                 ]
                             },
+                            "geometry type": {
+                                "default value": "coordinates",
+                                "type": "string",
+                                "description": "The model geometry type",
+                                "enum": [
+                                    "coordinates",
+                                    "coordinates"
+                                ]
+                            },
                             "name": {
                                 "default value": "",
                                 "type": "string",
@@ -6096,6 +6122,15 @@
                                 "description": "The model name of the feature determining its type.",
                                 "enum": [
                                     "oceanic plate"
+                                ]
+                            },
+                            "geometry type": {
+                                "default value": "coordinates",
+                                "type": "string",
+                                "description": "The model geometry type",
+                                "enum": [
+                                    "coordinates",
+                                    "coordinates"
                                 ]
                             },
                             "name": {
@@ -8151,7 +8186,7 @@
                     },
                     {
                         "type": "object",
-                        "description": "Plume object. Requires properties `model` and `coordinates`.",
+                        "description": "PlumeCoordinates object. Requires properties `model` and `coordinates`.",
                         "additionalProperties": false,
                         "required": [
                             "model"
@@ -8163,6 +8198,15 @@
                                 "description": "The model name of the feature determining its type.",
                                 "enum": [
                                     "plume"
+                                ]
+                            },
+                            "geometry type": {
+                                "default value": "coordinates",
+                                "type": "string",
+                                "description": "The model geometry type",
+                                "enum": [
+                                    "coordinates",
+                                    "coordinates"
                                 ]
                             },
                             "name": {
@@ -8768,6 +8812,15 @@
                                 "description": "The model name of the feature determining its type.",
                                 "enum": [
                                     "subducting plate"
+                                ]
+                            },
+                            "geometry type": {
+                                "default value": "coordinates",
+                                "type": "string",
+                                "description": "The model geometry type",
+                                "enum": [
+                                    "coordinates",
+                                    "coordinates"
                                 ]
                             },
                             "name": {

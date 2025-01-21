@@ -17,7 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "world_builder/features/oceanic_plate.h"
+#include "world_builder/features/oceanic_plate_coordinates.h"
 
 #include "world_builder/features/oceanic_plate_models/composition/interface.h"
 #include "world_builder/features/oceanic_plate_models/grains/interface.h"
@@ -40,7 +40,7 @@ namespace WorldBuilder
 
   namespace Features
   {
-    OceanicPlate::OceanicPlate(WorldBuilder::World *world_)
+    OceanicPlateCoordinates::OceanicPlateCoordinates(WorldBuilder::World *world_)
       :
       min_depth(NaN::DSNAN),
       max_depth(NaN::DSNAN)
@@ -49,12 +49,12 @@ namespace WorldBuilder
       this->name = "oceanic plate";
     }
 
-    OceanicPlate::~OceanicPlate()
+    OceanicPlateCoordinates::~OceanicPlateCoordinates()
       = default;
 
 
 
-    void OceanicPlate::make_snippet(Parameters &prm)
+    void OceanicPlateCoordinates::make_snippet(Parameters &prm)
     {
       using namespace rapidjson;
       Document &declarations = prm.declarations;
@@ -86,12 +86,14 @@ namespace WorldBuilder
 
 
     void
-    OceanicPlate::declare_entries(Parameters &prm,
-                                  const std::string & /*unused*/,
-                                  const std::vector<std::string> &required_entries)
+    OceanicPlateCoordinates::declare_entries(Parameters &prm,
+                                             const std::string & /*unused*/,
+                                             const std::vector<std::string> &required_entries)
     {
       prm.declare_entry("", Types::Object(required_entries), "Oceanic plate object. Requires properties `model` and `coordinates`.");
 
+      prm.declare_entry("geometry type", Types::String("coordinates","coordinates"),
+                        "The model geometry type");
       prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0., 2.))),
                         "The depth from which this feature is present");
       prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(), 2.))),
@@ -111,7 +113,7 @@ namespace WorldBuilder
     }
 
     void
-    OceanicPlate::parse_entries(Parameters &prm)
+    OceanicPlateCoordinates::parse_entries(Parameters &prm)
     {
 
       const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
@@ -199,13 +201,13 @@ namespace WorldBuilder
 
 
     void
-    OceanicPlate::properties(const Point<3> &position_in_cartesian_coordinates,
-                             const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                             const double depth,
-                             const std::vector<std::array<unsigned int,3>> &properties,
-                             const double gravity_norm,
-                             const std::vector<size_t> &entry_in_output,
-                             std::vector<double> &output) const
+    OceanicPlateCoordinates::properties(const Point<3> &position_in_cartesian_coordinates,
+                                        const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                                        const double depth,
+                                        const std::vector<std::array<unsigned int,3>> &properties,
+                                        const double gravity_norm,
+                                        const std::vector<size_t> &entry_in_output,
+                                        std::vector<double> &output) const
     {
       if (depth <= max_depth && depth >= min_depth &&
           WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
@@ -323,7 +325,7 @@ namespace WorldBuilder
     /**
      * Register plugin
      */
-    WB_REGISTER_FEATURE(OceanicPlate, oceanic plate)
+    WB_REGISTER_FEATURE(OceanicPlateCoordinates, oceanic plate coordinates)
   } // namespace Features
 } // namespace WorldBuilder
 

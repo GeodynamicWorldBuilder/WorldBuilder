@@ -17,7 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "world_builder/features/fault.h"
+#include "world_builder/features/fault_coordinates.h"
 
 
 #include "glm/glm.h"
@@ -39,7 +39,7 @@ namespace WorldBuilder
 
   namespace Features
   {
-    Fault::Fault(WorldBuilder::World *world_)
+    FaultCoordinates::FaultCoordinates(WorldBuilder::World *world_)
       :
       reference_point(0,0,cartesian)
     {
@@ -47,12 +47,12 @@ namespace WorldBuilder
       this->name = "fault";
     }
 
-    Fault::~Fault()
+    FaultCoordinates::~FaultCoordinates()
       = default;
 
 
 
-    void Fault::make_snippet(Parameters &prm)
+    void FaultCoordinates::make_snippet(Parameters &prm)
     {
       using namespace rapidjson;
       Document &declarations = prm.declarations;
@@ -70,9 +70,9 @@ namespace WorldBuilder
 
 
     void
-    Fault::declare_entries(Parameters &prm,
-                           const std::string &parent_name,
-                           const std::vector<std::string> &required_entries)
+    FaultCoordinates::declare_entries(Parameters &prm,
+                                      const std::string &parent_name,
+                                      const std::vector<std::string> &required_entries)
     {
 
       // This statement is needed because of the recursion associated with
@@ -84,6 +84,8 @@ namespace WorldBuilder
       else
         {
           prm.declare_entry("", Types::Object(required_entries), "Fault object. Requires properties `model` and `coordinates`.");
+          prm.declare_entry("geometry type", Types::String("coordinates","coordinates"),
+                            "The model geometry type");
         }
       prm.declare_entry("min depth", Types::Double(0),
                         "The depth to which this feature is present");
@@ -115,7 +117,7 @@ namespace WorldBuilder
       if (parent_name != "items")
         {
           // This only happens if we are not in sections
-          prm.declare_entry("sections", Types::Array(Types::PluginSystem("",Features::Fault::declare_entries, {"coordinate"}, false)),"A list of feature properties for a coordinate.");
+          prm.declare_entry("sections", Types::Array(Types::PluginSystem("",Features::FaultCoordinates::declare_entries, {"coordinate"}, false)),"A list of feature properties for a coordinate.");
         }
       else
         {
@@ -129,7 +131,7 @@ namespace WorldBuilder
     }
 
     void
-    Fault::parse_entries(Parameters &prm)
+    FaultCoordinates::parse_entries(Parameters &prm)
     {
       const CoordinateSystem coordinate_system = prm.coordinate_system->natural_coordinate_system();
 
@@ -182,7 +184,7 @@ namespace WorldBuilder
 
 
       // now search whether a section is present, if so, replace the default segments.
-      std::vector<std::unique_ptr<Features::Fault> > sections_vector;
+      std::vector<std::unique_ptr<Features::FaultCoordinates> > sections_vector;
       prm.get_unique_pointers("sections", sections_vector);
 
       prm.enter_subsection("sections");
@@ -462,20 +464,20 @@ namespace WorldBuilder
 
 
     const BoundingBox<2> &
-    Fault::get_surface_bounding_box () const
+    FaultCoordinates::get_surface_bounding_box () const
     {
       return surface_bounding_box;
     }
 
 
     void
-    Fault::properties(const Point<3> &position_in_cartesian_coordinates,
-                      const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                      const double depth,
-                      const std::vector<std::array<unsigned int,3>> &properties,
-                      const double gravity_norm,
-                      const std::vector<size_t> &entry_in_output,
-                      std::vector<double> &output) const
+    FaultCoordinates::properties(const Point<3> &position_in_cartesian_coordinates,
+                                 const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                                 const double depth,
+                                 const std::vector<std::array<unsigned int,3>> &properties,
+                                 const double gravity_norm,
+                                 const std::vector<size_t> &entry_in_output,
+                                 std::vector<double> &output) const
     {
       // The 'depth coordinate' is the z-coordinate in Cartesian coordinates, and radius in spherical coordinates.
       // The depth input parameter is the distance from the surface to the position,
@@ -780,9 +782,9 @@ namespace WorldBuilder
     }
 
     Objects::PlaneDistances
-    Fault::distance_to_feature_plane(const Point<3> &position_in_cartesian_coordinates,
-                                     const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                                     const double depth) const
+    FaultCoordinates::distance_to_feature_plane(const Point<3> &position_in_cartesian_coordinates,
+                                                const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                                                const double depth) const
     {
       // The depth variable is the distance from the surface to the position, the depth
       // coordinate is the distance from the bottom of the model to the position and
@@ -815,7 +817,7 @@ namespace WorldBuilder
     /**
      * Register plugin
      */
-    WB_REGISTER_FEATURE(Fault, fault)
+    WB_REGISTER_FEATURE(FaultCoordinates, fault coordinates)
   } // namespace Features
 } // namespace WorldBuilder
 
