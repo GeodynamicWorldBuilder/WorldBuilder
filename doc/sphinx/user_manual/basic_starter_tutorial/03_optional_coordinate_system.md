@@ -73,7 +73,7 @@ lineno-start: 1
 ```
 
 ````{note}
-If you want to have a spherical model, please see {ref}`part:user_manual:chap:concepts:sec:const_angle_spherical` first. An input file for a spherical model would like something like this:
+If you want to have a spherical model, please see {ref}`part:user_manual:chap:concepts:sec:const_angle_spherical` first. An input file for a spherical model would be something like this:
 
 ```{code-block} json
 ---
