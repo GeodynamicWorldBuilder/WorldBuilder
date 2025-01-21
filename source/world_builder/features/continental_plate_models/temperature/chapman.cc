@@ -61,6 +61,9 @@ namespace WorldBuilder
         Chapman::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
           // Declare entries of this plugin
+          prm.declare_entry("", Types::Object(),
+                            "Continental geotherm using the steady-state 1-D heat conduction equation from Chapman (1986).");
+
           prm.declare_entry("top temperature", Types::Double(293.15),
                             "The temperature at the top surface in K of this feature."
                             "If the value is below zero, then an adiabatic temperature is used.");
@@ -70,12 +73,12 @@ namespace WorldBuilder
                             "The default value is 0.055.");
 
           prm.declare_entry("thermal conductivity", Types::Double(2.5),
-          "The thermal conductivity in W m^(-1) K^(-1) of this feature."
-          "The default value is 2.5.");
+                            "The thermal conductivity in W m^(-1) K^(-1) of this feature."
+                            "The default value is 2.5.");
 
           prm.declare_entry("heat generation per unit volume", Types::Double(1.e-6),
-          "The heat generation per unit volume in W m^(-3) of this feature."
-          "The default value is 1e-6.");
+                            "The heat generation per unit volume in W m^(-3) of this feature."
+                            "The default value is 1e-6.");
 
           prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0., 2.))),
                             "The depth in m from which the composition of this feature is present.");
@@ -129,7 +132,7 @@ namespace WorldBuilder
                                                std::exp(((this->world->thermal_expansion_coefficient * gravity_norm) /
                                                          this->world->specific_heat) * min_depth_local_local);
                     }
-                 
+
                   // calculate the temperature at depth z using steady-state 1-D heat conduction equation:
                   // T(z) = t_top + (q_top / k) * (Δz) - (A / (2 * k)) * (Δz)^2
                   const double new_temperature = top_temperature + (top_heat_flux / thermal_conductivity) * (depth-min_depth_local_local) - heat_production_per_unit_volume / (2. * thermal_conductivity) * (depth-min_depth_local_local)*(depth-min_depth_local_local);
@@ -138,10 +141,10 @@ namespace WorldBuilder
                            << ", based on a temperature model with the name " << this->name);
                   WBAssert(std::isfinite(new_temperature), "Temperature is not a finite: " << new_temperature
                            << ", based on a temperature model with the name " << this->name
-                           << ", top_temperature_local = " << top_temperature_local 
-                           << ", depth = " << depth 
+                           << ", top_temperature_local = " << top_temperature_local
+                           << ", depth = " << depth
                            << ", min_depth_local = " << min_depth_local
-                           << ", top_heat_flux = " << top_heat_flux 
+                           << ", top_heat_flux = " << top_heat_flux
                            << ", thermal_conductivity=" << thermal_conductivity
                            << ", min_depth_local_local =" << min_depth_local_local);
 
