@@ -21,6 +21,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Only link to MPI libraries if the cmake variable USE_MPI has been set. No longer automatically link to MPI if MPI is found. \[Rene Gassmoeller; 2025-01-20; [#792](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/792)\]
 
 ### Fixed
+- Fixed index for 2D compositional fields in gwb-grid. \[Derek Neuharth; 2025-01-21; [#788](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/788)\]
 
 ## [1.0.0]
 ### Added
