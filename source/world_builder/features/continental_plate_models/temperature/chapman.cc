@@ -65,15 +65,15 @@ namespace WorldBuilder
                             "The temperature at the top surface in K of this feature."
                             "If the value is below zero, then an adiabatic temperature is used.");
 
-          prm.declare_entry("top heat flux", Types::Double(0.055)),
+          prm.declare_entry("top heat flux", Types::Double(0.055),
                             "The heat flux at the top surface in W m^(-2) of this feature."
                             "The default value is 0.055.");
 
-          prm.declare_entry("thermal conductivity", Types::Double(2.5)),
+          prm.declare_entry("thermal conductivity", Types::Double(2.5),
           "The thermal conductivity in W m^(-1) K^(-1) of this feature."
           "The default value is 2.5.");
 
-          prm.declare_entry("heat generation per unit volume", Types::Double(1.e-6)),
+          prm.declare_entry("heat generation per unit volume", Types::Double(1.e-6),
           "The heat generation per unit volume in W m^(-3) of this feature."
           "The default value is 1e-6.");
 
@@ -151,7 +151,7 @@ namespace WorldBuilder
           return temperature_;
         }
 
-        WB_REGISTER_FEATURE_CONTINENTAL_PLATE_TEMPERATURE_MODEL(Chapman, Chapman)
+        WB_REGISTER_FEATURE_CONTINENTAL_PLATE_TEMPERATURE_MODEL(Chapman, chapman)
       } // namespace Temperature
     } // namespace ContinentalPlateModels
   } // namespace Features
