@@ -38,6 +38,7 @@
 #include "world_builder/features/plume_models/grains/interface.h"
 #include "world_builder/features/plume_models/temperature/interface.h"
 #include "world_builder/features/plume_models/velocity/interface.h"
+#include "world_builder/features/plume_models/density/interface.h"
 #include "world_builder/features/subducting_plate.h"
 #include "world_builder/features/subducting_plate_models/velocity/interface.h"
 #include "world_builder/gravity_model/interface.h"
@@ -2176,6 +2177,13 @@ namespace WorldBuilder
   Parameters::get_unique_pointers<Features::PlumeModels::Velocity::Interface>(const std::string &name,
                                                                               std::vector<std::unique_ptr<Features::PlumeModels::Velocity::Interface> > &vector);
 
+  /**
+  * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
+  * Note that the variable with this name has to be loaded before this function is called.
+  */
+  template bool
+  Parameters::get_unique_pointers<Features::PlumeModels::Density::Interface>(const std::string &name,
+                                                                              std::vector<std::unique_ptr<Features::PlumeModels::Density::Interface> > &vector);
 
 
   /**
