@@ -94,13 +94,14 @@ void filter_vtu_mesh(int dim,
 
   const std::size_t n_cells = input_mesh.types().size();
   std::uint64_t dst_cellid = 0;
+  unsigned int tag_index   = 3;
   for (std::size_t cellidx = 0; cellidx <n_cells; ++cellidx)
     {
       int highest_tag = -1;
       for (size_t idx=cellidx*n_vert_per_cell; idx<(cellidx+1)*n_vert_per_cell; ++idx)
         {
           const std::size_t src_vid = static_cast<size_t>(input_mesh.connectivity()[idx]);
-          highest_tag = std::max(highest_tag,static_cast<int>(input_data[2][src_vid]));
+          highest_tag = std::max(highest_tag,static_cast<int>(input_data[tag_index][src_vid]));
         }
       if (highest_tag < 0 || include_tag[static_cast<size_t>(highest_tag)]==false)
         continue;
@@ -121,7 +122,15 @@ void filter_vtu_mesh(int dim,
                 output_mesh.points().emplace_back(input_mesh.points()[src_vid*3+i]);
 
               for (unsigned int d=0; d<input_data.size(); ++d)
-                output_data[d].push_back(input_data[d][src_vid]);
+                if (d == 2)
+                  {
+                    for (unsigned int i=0; i<3; ++i)
+                      output_data[d].push_back(input_data[d][src_vid*3+i]);
+                  }
+                else
+                  {
+                    output_data[d].push_back(input_data[d][src_vid]);
+                  }
             }
 
           output_mesh.connectivity().push_back(dst_vid);
@@ -1597,7 +1606,7 @@ int main(int argc, char **argv)
             data_set[2][3*i] = output[1];
             data_set[2][3*i+1] = output[2];
             data_set[2][3*i+2] = output[3];
-            data_set[3][i] = output[3];
+            data_set[3][i] = output[4];
             for (size_t c = 0; c < compositions; ++c)
               {
                 data_set[4+c][i] = output[5+c];
