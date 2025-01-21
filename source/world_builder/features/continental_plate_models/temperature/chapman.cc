@@ -110,7 +110,7 @@ namespace WorldBuilder
                                  const double gravity_norm,
                                  double temperature_,
                                  const double feature_min_depth,
-                                 const double feature_max_depth) const
+                                 const double /*feature_max_depth*/) const
         {
           if (depth <= max_depth && depth >= min_depth)
             {
@@ -119,7 +119,6 @@ namespace WorldBuilder
               if (depth <= max_depth_local && depth >= min_depth_local)
                 {
                   const double min_depth_local_local = std::max(feature_min_depth, min_depth_local);
-                  const double max_depth_local_local = std::min(feature_max_depth, max_depth_local);
 
                   double top_temperature_local = top_temperature;
 
@@ -130,7 +129,8 @@ namespace WorldBuilder
                                                std::exp(((this->world->thermal_expansion_coefficient * gravity_norm) /
                                                          this->world->specific_heat) * min_depth_local_local);
                     }
-
+                 
+                  // calculate the temperature at depth z using steady-state 1-D heat conduction equation:
                   // T(z) = t_top + (q_top / k) * (Δz) - (A / (2 * k)) * (Δz)^2
                   const double new_temperature = top_temperature + (top_heat_flux / thermal_conductivity) * (depth-min_depth_local_local) - heat_production_per_unit_volume / (2. * thermal_conductivity) * (depth-min_depth_local_local)*(depth-min_depth_local_local);
 
@@ -138,10 +138,12 @@ namespace WorldBuilder
                            << ", based on a temperature model with the name " << this->name);
                   WBAssert(std::isfinite(new_temperature), "Temperature is not a finite: " << new_temperature
                            << ", based on a temperature model with the name " << this->name
-                           << ", top_temperature_local = " << top_temperature_local << ", depth = " << depth << ", min_depth_local = " << min_depth_local
-                           << ", top_heat_flux = " << top_heat_flux << ", thermal_conductivity=" << thermal_conductivity
-                           << ",max_depth_local_local=" << max_depth_local_local << ", min_depth_local_local =" << min_depth_local_local
-                           << ", feature_max_depth = " << feature_max_depth << ", feature_max_depth = " << feature_max_depth);
+                           << ", top_temperature_local = " << top_temperature_local 
+                           << ", depth = " << depth 
+                           << ", min_depth_local = " << min_depth_local
+                           << ", top_heat_flux = " << top_heat_flux 
+                           << ", thermal_conductivity=" << thermal_conductivity
+                           << ", min_depth_local_local =" << min_depth_local_local);
 
                   return apply_operation(operation,temperature_,new_temperature);
                 }
