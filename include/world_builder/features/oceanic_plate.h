@@ -50,6 +50,10 @@ namespace WorldBuilder
       {
         class Interface;
       }  // namespace Velocity
+      namespace Density
+      {
+        class Interface;
+      }  // namespace Density
     }  // namespace OceanicPlateModels
 
     /**

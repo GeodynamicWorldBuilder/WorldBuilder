@@ -208,7 +208,7 @@ namespace WorldBuilder
           {
             prm.enter_subsection(std::to_string(i));
             {
-              density_models[i]->parse_entries(prm, coordinates);
+              density_models[i]->parse_entries(prm,coordinates);
             }
             prm.leave_subsection();
           }
