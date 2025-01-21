@@ -122,6 +122,9 @@ void filter_vtu_mesh(int dim,
                 output_mesh.points().emplace_back(input_mesh.points()[src_vid*3+i]);
 
               for (unsigned int d=0; d<input_data.size(); ++d)
+                // The following line checks if we are accessing the velocity data, which is
+                // currently stored as the third property after depth and temperature, and if so,
+                // we need to copy all 3 components.
                 if (d == 2)
                   {
                     for (unsigned int i=0; i<3; ++i)
