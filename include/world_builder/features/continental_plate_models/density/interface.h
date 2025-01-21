@@ -78,13 +78,12 @@ namespace WorldBuilder
              */
             virtual
             double get_density(const Point<3> &position,
-                                   const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                                   const double depth,
-                                   const double gravity,
-                                   double density,
-                                   const unsigned int composition_number,
-                                   const double feature_min_depth,
-                                   const double feature_max_depth) const = 0;
+                               const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                               const double depth,
+                               const double gravity,
+                               double density,
+                               const double feature_min_depth,
+                               const double feature_max_depth) const = 0;
             /**
              * A function to register a new type. This is part of the automatic
              * registration of the object factory.
@@ -149,7 +148,7 @@ namespace WorldBuilder
          * register it. Because this is a library, we need some extra measures
          * to ensure that the static variable is actually initialized.
          */
-#define WB_REGISTER_FEATURE_CONTINENTAL_PLATE_TEMPERATURE_MODEL(klass,name) \
+#define WB_REGISTER_FEATURE_CONTINENTAL_PLATE_DENSITY_MODEL(klass,name) \
   class klass##Factory : public ObjectFactory { \
     public: \
       klass##Factory() \

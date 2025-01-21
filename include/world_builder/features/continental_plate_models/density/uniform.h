@@ -72,13 +72,12 @@ namespace WorldBuilder
              * gravity and current temperature.
              */
             double get_density(const Point<3> &position,
-                                   const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                                   const double depth,
-                                   const double gravity,
-                                   double density,
-                                   const unsigned int composition_number,
-                                   const double feature_min_depth,
-                                   const double feature_max_depth) const override final;
+                               const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                               const double depth,
+                               const double gravity,
+                               double density,
+                               const double feature_min_depth,
+                               const double feature_max_depth) const override final;
 
 
           private:
@@ -87,13 +86,12 @@ namespace WorldBuilder
             Objects::Surface min_depth_surface;
             double max_depth;
             Objects::Surface max_depth_surface;
-            double density;
             std::vector<double> densities;
             Operations operation;
-            unsigned int n_comps;
+            std::vector<unsigned int> compositions;
 
         };
-      } // namespace density
+      } // namespace Density
     } // namespace ContinentalPlateModels
   } // namespace Features
 } // namespace WorldBuilder

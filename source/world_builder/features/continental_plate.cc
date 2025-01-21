@@ -315,22 +315,21 @@ namespace WorldBuilder
                       }
                       case 6: // density
                       {
-                          for (const auto &density_model: density_models)
-                            {
-                              output[entry_in_output[i_property]] = density_model->get_density(position_in_cartesian_coordinates,
-                                                                                                     position_in_natural_coordinates,
-                                                                                                     depth,
-                                                                                                     gravity_norm,
-                                                                                                     output[entry_in_output[i_property]],
-                                                                                                     properties[2][1],
-                                                                                                     min_depth_local,
-                                                                                                     max_depth_local);
+                        for (const auto &density_model: density_models)
+                          {
+                            output[entry_in_output[i_property]] = density_model->get_density(position_in_cartesian_coordinates,
+                                                                                             position_in_natural_coordinates,
+                                                                                             depth,
+                                                                                             gravity_norm,
+                                                                                             output[entry_in_output[i_property]],
+                                                                                             min_depth_local,
+                                                                                             max_depth_local);
 
 
-                            }
+                          }
 
-                          break;
-                        }
+                        break;
+                      }
                       default:
                       {
                         WBAssertThrow(false,
