@@ -94,16 +94,19 @@ else()
   message(STATUS "SWIG was not found, disabling python wrapper compilation.")
 endif()
 
+# Check if MPI is requested
+set(USE_MPI OFF CACHE BOOL "Whether or not to enable MPI when compiling the world builder. MPI is optional.")
 
-# Find MPI if available.
-find_package(MPI)
+if(USE_MPI)
+  # Find MPI if available.
+  find_package(MPI)
 
-if(MPI_FOUND AND ${CMAKE_VERSION} VERSION_GREATER "3.9.0" )
-  message(STATUS "MPI found.")
-  set(USE_MPI ON CACHE BOOL "Whether or not to enable MPI when compiling the world builder.")
-else()
-  message(STATUS "MPI not found or cmake version lower than 3.9.0.")
-  set(USE_MPI OFF CACHE BOOL "Whether or not to enable MPI when compiling the world builder." FORCE)
+  if(MPI_FOUND AND ${CMAKE_VERSION} VERSION_GREATER "3.9.0" )
+    message(STATUS "MPI found.")
+  else()
+    message(STATUS "MPI not found or cmake version lower than 3.9.0.")
+    set(USE_MPI OFF CACHE BOOL "Whether or not to enable MPI when compiling the world builder. MPI is optional." FORCE)
+  endif()
 endif()
 
 if(USE_MPI)
