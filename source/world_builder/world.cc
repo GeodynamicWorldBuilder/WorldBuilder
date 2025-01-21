@@ -299,6 +299,11 @@ namespace WorldBuilder
               n_output_entries += 3;
               break;
             }
+            case 6: // density (1 entries)
+            {
+              n_output_entries += 1;
+              break;
+            }
             default:
               WBAssertThrow(false,
                             "Internal error: Unimplemented property provided. " <<
@@ -383,6 +388,11 @@ namespace WorldBuilder
               results[counter+1] = results[counter+2];
               results[counter+2] = 0;
               counter += 3;
+              break;
+            }
+            case 6:   // density
+            {
+              counter += 1;
               break;
             }
             default:
@@ -471,6 +481,13 @@ namespace WorldBuilder
               properties_local.emplace_back(properties[i_property]);
               break;
             }
+            case 6: // density
+            {
+              entry_in_output.emplace_back(output.size());
+              output.emplace_back(0.);
+              properties_local.emplace_back(properties[i_property]);
+              break;
+            }
             default:
               WBAssertThrow(false,
                             "Internal error: Unimplemented property provided. " <<
@@ -530,6 +547,21 @@ namespace WorldBuilder
                      const unsigned int composition_number) const
   {
     return properties(point, depth, {{{2,composition_number,0}}})[0];
+  }
+
+
+  double
+  World::density(const std::array<double,2> &point,
+                 const double depth) const
+  {
+    return properties(point, depth, {{{6,0,0}}})[0];
+  }
+
+  double
+  World::density(const std::array<double,3> &point,
+                 const double depth) const
+  {
+    return properties(point, depth, {{{6,0,0}}})[0];
   }
 
 

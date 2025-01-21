@@ -1,0 +1,22 @@
+{
+  "version":"1.1",
+  "coordinate system":{"model":"cartesian"},
+  "cross section":[[0,10e3],[100e3,10e3]],
+  "features":
+  [
+    {"model":"continental plate", "name":"continental plate", "coordinates":[[-100e3,-100e3],[50e3,-100e3],[50e3,200e3],[-100e3,200e3]],
+     "temperature models":[{"model":"linear", "max depth":30e3, "bottom temperature":1600}],
+     "composition models":[{"model":"uniform", "compositions":[0], "max depth":15e3},
+                           {"model":"uniform", "compositions":[1], "min depth":15e3, "max depth":30e3}],
+      "density models":[{"model":"uniform", "compositions":[0,1],  "densities":[3000,4500]}]
+     },
+    {"model":"continental plate", "name":"continental plate2", "coordinates":[[50e3,-100e3],[201e3,-100e3],[201e3,200e3],[50e3,200e3]],
+     "temperature models":[{"model":"linear", "max depth":50e3, "bottom temperature":1600}],
+     "composition models":[{"model":"uniform", "compositions":[2], "max depth":20e3},
+                           {"model":"uniform", "compositions":[3], "fractions":[0.5], "min depth":20e3, "max depth":50e3}],
+      "density models":[{"model":"uniform", "compositions":[2,3],  "densities":[6000,20000]}]
+     }
+  ]
+}
+
+

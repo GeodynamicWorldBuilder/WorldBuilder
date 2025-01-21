@@ -24,6 +24,7 @@
 #include "world_builder/features/continental_plate_models/grains/interface.h"
 #include "world_builder/features/continental_plate_models/temperature/interface.h"
 #include "world_builder/features/continental_plate_models/velocity/interface.h"
+#include "world_builder/features/continental_plate_models/density/interface.h"
 #include "world_builder/features/feature_utilities.h"
 #include "world_builder/nan.h"
 #include "world_builder/types/array.h"
@@ -97,6 +98,9 @@ namespace WorldBuilder
       prm.declare_entry("grains models",
                         Types::PluginSystem("", Features::ContinentalPlateModels::Grains::Interface::declare_entries, {"model"}),
                         "A list of grains models.");
+      prm.declare_entry("density models",
+                        Types::PluginSystem("", Features::ContinentalPlateModels::Density::Interface::declare_entries, {"model"}),
+                        "A list of density models.");
     }
 
     void
@@ -169,6 +173,21 @@ namespace WorldBuilder
       }
       prm.leave_subsection();
 
+      prm.get_unique_pointers<Features::ContinentalPlateModels::Density::Interface>("density models", density_models);
+
+      prm.enter_subsection("density models");
+      {
+        for (unsigned int i = 0; i < density_models.size(); ++i)
+          {
+            prm.enter_subsection(std::to_string(i));
+            {
+              density_models[i]->parse_entries(prm, coordinates);
+            }
+            prm.leave_subsection();
+          }
+      }
+      prm.leave_subsection();
+
 
       prm.get_unique_pointers<Features::ContinentalPlateModels::Grains::Interface>("grains models", grains_models);
 
@@ -230,7 +249,6 @@ namespace WorldBuilder
                           }
                         break;
                         case 2: // composition
-
                           for (const auto &composition_model: composition_models)
                             {
                               output[entry_in_output[i_property]] = composition_model->get_composition(position_in_cartesian_coordinates,
@@ -293,6 +311,23 @@ namespace WorldBuilder
                         output[entry_in_output[i_property]+1] = velocity[1];
                         output[entry_in_output[i_property]+2] = velocity[2];
                         //std::cout << "vel=" << output[entry_in_output[i_property]] << ":" << output[entry_in_output[i_property]+1] << ":" << output[entry_in_output[i_property]+2] << std::endl;
+                        break;
+                      }
+                      case 6: // density
+                      {
+                        for (const auto &density_model: density_models)
+                          {
+                            output[entry_in_output[i_property]] = density_model->get_density(position_in_cartesian_coordinates,
+                                                                                             position_in_natural_coordinates,
+                                                                                             depth,
+                                                                                             gravity_norm,
+                                                                                             output[entry_in_output[i_property]],
+                                                                                             min_depth_local,
+                                                                                             max_depth_local);
+
+
+                          }
+
                         break;
                       }
                       default:
