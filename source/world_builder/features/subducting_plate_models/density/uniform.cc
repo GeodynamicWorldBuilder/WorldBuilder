@@ -17,7 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "world_builder/features/fault_models/density/uniform.h"
+#include "world_builder/features/subducting_plate_models/density/uniform.h"
 
 
 #include "world_builder/nan.h"
@@ -35,7 +35,7 @@ namespace WorldBuilder
 
   namespace Features
   {
-    namespace FaultModels
+    namespace SubductingPlateModels
     {
       namespace Density
       {
@@ -101,9 +101,9 @@ namespace WorldBuilder
           return apply_operation(operation,density_,compositional_density);
         }
 
-        WB_REGISTER_FEATURE_FAULT_DENSITY_MODEL(Uniform, uniform)
+        WB_REGISTER_FEATURE_SUBDUCTING_PLATE_DENSITY_MODEL(Uniform, uniform)
       } // namespace Density
-    } // namespace FaultModels
+    } // namespace SubductingPlateModels
   } // namespace Features
 } // namespace WorldBuilder
 

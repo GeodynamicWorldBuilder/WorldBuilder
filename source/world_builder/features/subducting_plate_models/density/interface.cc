@@ -17,7 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "world_builder/features/fault_models/density/interface.h"
+#include "world_builder/features/subducting_plate_models/density/interface.h"
 
 #include <algorithm>
 
@@ -27,7 +27,7 @@ namespace WorldBuilder
 {
   namespace Features
   {
-    namespace FaultModels
+    namespace SubductingPlateModels
     {
       namespace Density
       {
@@ -42,7 +42,7 @@ namespace WorldBuilder
                                    const std::string &parent_name,
                                    const std::vector<std::string> &required_entries)
         {
-          prm.declare_model_entries("density",parent_name, get_declare_map(),required_entries);
+          prm.declare_model_entries("composition",parent_name, get_declare_map(),required_entries);
         }
 
 

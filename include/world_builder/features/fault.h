@@ -56,11 +56,10 @@ namespace WorldBuilder
       {
         class Interface;
       }  // namespace Temperature
-
       namespace Density
       {
         class Interface;
-      }  // namespace Density
+      }  // namespace Temperature
     }  // namespace FaultModels
 
     /**

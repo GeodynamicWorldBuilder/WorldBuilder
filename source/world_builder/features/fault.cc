@@ -112,6 +112,9 @@ namespace WorldBuilder
       prm.declare_entry("velocity models",
                         Types::PluginSystem("", Features::FaultModels::Velocity::Interface::declare_entries, {"model"}),
                         "A list of velocity models.");
+      prm.declare_entry("density models",
+                        Types::PluginSystem("", Features::FaultModels::Density::Interface::declare_entries, {"model"}),
+                        "A list of density models.");
 
       if (parent_name != "items")
         {
@@ -235,7 +238,7 @@ namespace WorldBuilder
 
                 if (!prm.get_shared_pointers<Features::FaultModels::Density::Interface>("density models", local_default_density_models))
                   {
-                    // no local composition model, use global default
+                    // no local velocity model, use global default
                     local_default_density_models = default_density_models;
                   }
 
@@ -309,8 +312,6 @@ namespace WorldBuilder
                             }
                         }
                         prm.leave_subsection();
-                      }
-                      prm.leave_subsection();
 
                         prm.enter_subsection("density models");
                         {
@@ -324,6 +325,8 @@ namespace WorldBuilder
                             }
                         }
                         prm.leave_subsection();
+                      }
+                      prm.leave_subsection();
                     }
                 }
                 prm.leave_subsection();
@@ -776,44 +779,22 @@ namespace WorldBuilder
                                 //         << ", based on a velocity model with the name " << velocity_model->get_name() << ", in feature " << this->name);
 
                               }
-                          case 2: // composition
-                          {
-                            double composition_current_section = output[entry_in_output[i_property]];
-                            double composition_next_section = output[entry_in_output[i_property]];
 
-                            for (const auto &composition_model: segment_vector[current_section][current_segment].composition_systems)
+                            for (const auto &velocity_model: segment_vector[next_section][current_segment].velocity_systems)
                               {
-                                composition_current_section = composition_model->get_composition(position_in_cartesian_coordinates,
-                                                                                                 depth,
-                                                                                                 properties[i_property][1],
-                                                                                                 composition_current_section,
-                                                                                                 starting_depth,
-                                                                                                 maximum_depth,
-                                                                                                 distance_from_planes,
-                                                                                                 additional_parameters);
+                                velocity_next_section = velocity_model->get_velocity(position_in_cartesian_coordinates,
+                                                                                     depth,
+                                                                                     gravity_norm,
+                                                                                     velocity_next_section,
+                                                                                     starting_depth,
+                                                                                     maximum_depth,
+                                                                                     distance_from_planes,
+                                                                                     additional_parameters);
 
-                                WBAssert(!std::isnan(composition_current_section), "Composition_current_section is not a number: " << composition_current_section
-                                         << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
-                                WBAssert(std::isfinite(composition_current_section), "Composition_current_section is not finite: " << composition_current_section
-                                         << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
-
-                              }
-
-                            for (const auto &composition_model: segment_vector[next_section][current_segment].composition_systems)
-                              {
-                                composition_next_section = composition_model->get_composition(position_in_cartesian_coordinates,
-                                                                                              depth,
-                                                                                              properties[i_property][1],
-                                                                                              composition_next_section,
-                                                                                              starting_depth,
-                                                                                              maximum_depth,
-                                                                                              distance_from_planes,
-                                                                                              additional_parameters);
-
-                                WBAssert(!std::isnan(composition_next_section), "Composition_next_section is not a number: " << composition_next_section
-                                         << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
-                                WBAssert(std::isfinite(composition_next_section), "Composition_next_section is not finite: " << composition_next_section
-                                         << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
+                                //WBAssert(!std::isnan(velocity_next_section), "Velocity is not a number: " << velocity_next_section
+                                //         << ", based on a velocity model with the name " << velocity_model->get_name() << ", in feature " << this->name);
+                                //WBAssert(std::isfinite(velocity_next_section), "Velocity is not a finite: " << velocity_next_section
+                                //         << ", based on a velocity model with the name " << velocity_model->get_name() << ", in feature " << this->name);
 
                               }
 
@@ -823,6 +804,51 @@ namespace WorldBuilder
                             output[entry_in_output[i_property]+2] = velocity_current_section[2] + section_fraction * (velocity_next_section[2] - velocity_current_section[2]);
                             break;
                           }
+                          case 6: //density
+                          {
+                            double density_current_section = output[entry_in_output[i_property]];
+                            double density_next_section = output[entry_in_output[i_property]];
+
+                            for (const auto &density_model: segment_vector[current_section][current_segment].density_systems)
+                              {
+                                density_current_section = density_model->get_density(position_in_cartesian_coordinates,
+                                                                                                 depth,
+                                                                                                 properties[i_property][1],
+                                                                                                 density_current_section,
+                                                                                                 starting_depth,
+                                                                                                 maximum_depth,
+                                                                                                 distance_from_planes,
+                                                                                                 additional_parameters);
+
+                                WBAssert(!std::isnan(density_current_section), "Composition_current_section is not a number: " << density_current_section
+                                         << ", based on a composition model with the name " << density_model->get_name() << ", in feature " << this->name);
+                                WBAssert(std::isfinite(density_current_section), "Composition_current_section is not finite: " << density_current_section
+                                         << ", based on a composition model with the name " << density_model->get_name() << ", in feature " << this->name);
+
+                              }
+
+                            for (const auto &density_model: segment_vector[next_section][current_segment].density_systems)
+                              {
+                                density_next_section = density_model->get_density(position_in_cartesian_coordinates,
+                                                                                              depth,
+                                                                                              properties[i_property][1],
+                                                                                              density_next_section,
+                                                                                              starting_depth,
+                                                                                              maximum_depth,
+                                                                                              distance_from_planes,
+                                                                                              additional_parameters);
+
+                                WBAssert(!std::isnan(density_next_section), "Composition_next_section is not a number: " << density_next_section
+                                         << ", based on a composition model with the name " << density_model->get_name() << ", in feature " << this->name);
+                                WBAssert(std::isfinite(density_next_section), "Composition_next_section is not finite: " << density_next_section
+                                         << ", based on a composition model with the name " << density_model->get_name() << ", in feature " << this->name);
+
+                              }
+
+                            // linear interpolation between current and next section temperatures
+                            output[entry_in_output[i_property]] = density_current_section + section_fraction * (density_next_section - density_current_section);
+                            break;
+                          }           
                           default:
                           {
                             WBAssertThrow(false,
@@ -878,4 +904,3 @@ namespace WorldBuilder
     WB_REGISTER_FEATURE(Fault, fault)
   } // namespace Features
 } // namespace WorldBuilder
-

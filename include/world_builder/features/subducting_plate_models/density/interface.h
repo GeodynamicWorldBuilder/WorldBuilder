@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef WORLD_BUILDER_FEATURES_FAULT_MODELS_DENSITY_INTERFACE_H
-#define WORLD_BUILDER_FEATURES_FAULT_MODELS_DENSITY_INTERFACE_H
+#ifndef WORLD_BUILDER_FEATURES_SUBDUCTING_PLATE_MODELS_DENSITY_INTERFACE_H
+#define WORLD_BUILDER_FEATURES_SUBDUCTING_PLATE_MODELS_DENSITY_INTERFACE_H
 
 #include "world_builder/grains.h"
 #include "world_builder/parameters.h"
@@ -42,7 +42,7 @@ namespace WorldBuilder
   {
     using namespace FeatureUtilities;
 
-    namespace FaultModels
+    namespace SubductingPlateModels
     {
       namespace Density
       {
@@ -152,7 +152,7 @@ namespace WorldBuilder
          * register it. Because this is a library, we need some extra measures
          * to ensure that the static variable is actually initialized.
          */
-#define WB_REGISTER_FEATURE_FAULT_DENSITY_MODEL(klass,name) \
+#define WB_REGISTER_FEATURE_SUBDUCTING_PLATE_DENSITY_MODEL(klass,name) \
   class klass##Factory : public ObjectFactory { \
     public: \
       klass##Factory() \

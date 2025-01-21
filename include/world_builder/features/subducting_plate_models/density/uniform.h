@@ -17,11 +17,11 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef WORLD_BUILDER_FEATURES_FAULT_MODELS_DENSITY_UNIFORM_H
-#define WORLD_BUILDER_FEATURES_FAULT_MODELS_DENSITY_UNIFORM_H
+#ifndef WORLD_BUILDER_FEATURES_SUBDUCTING_PLATE_MODELS_DENSITY_UNIFORM_H
+#define WORLD_BUILDER_FEATURES_SUBDUCTING_PLATE_MODELS_DENSITY_UNIFORM_H
 
 
-#include "world_builder/features/fault_models/density/interface.h"
+#include "world_builder/features/subducting_plate_models/density/interface.h"
 
 
 namespace WorldBuilder
@@ -29,7 +29,7 @@ namespace WorldBuilder
 
   namespace Features
   {
-    namespace FaultModels
+    namespace SubductingPlateModels
     {
       namespace Density
       {
@@ -88,7 +88,7 @@ namespace WorldBuilder
 
         };
       } // namespace Density
-    } // namespace FaultModels
+    } // namespace SubductingPlateModels
   } // namespace Features
 } // namespace WorldBuilder
 
