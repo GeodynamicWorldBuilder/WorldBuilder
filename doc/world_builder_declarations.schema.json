@@ -507,6 +507,144 @@
                                         },
                                         {
                                             "type": "object",
+                                            "description": "Continental geotherm using the steady-state 1-D heat conduction equation from Chapman (1986).",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the temperature model.",
+                                                    "enum": [
+                                                        "chapman"
+                                                    ]
+                                                },
+                                                "operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "enum": [
+                                                        "replace",
+                                                        "add",
+                                                        "subtract"
+                                                    ]
+                                                },
+                                                "top temperature": {
+                                                    "default value": 293.15,
+                                                    "type": "number",
+                                                    "description": "The temperature at the top surface in K of this feature.If the value is below zero, then an adiabatic temperature is used."
+                                                },
+                                                "top heat flux": {
+                                                    "default value": 0.055,
+                                                    "type": "number",
+                                                    "description": "The heat flux at the top surface in W m^(-2) of this feature.The default value is 0.055."
+                                                },
+                                                "thermal conductivity": {
+                                                    "default value": 2.5,
+                                                    "type": "number",
+                                                    "description": "The thermal conductivity in W m^(-1) K^(-1) of this feature.The default value is 2.5."
+                                                },
+                                                "heat generation per unit volume": {
+                                                    "default value": 0.000001,
+                                                    "type": "number",
+                                                    "description": "The heat generation per unit volume in W m^(-3) of this feature.The default value is 1e-6."
+                                                },
+                                                "min depth": {
+                                                    "description": "The depth in m from which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 0.0,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 0.0
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                "max depth": {
+                                                    "description": "The depth in m to which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 1.7976931348623157e308,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 1.7976931348623157e308
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
                                             "description": "Linear temperature model. Can be set to use an adiabatic temperature at the boundaries.",
                                             "additionalProperties": false,
                                             "required": [
