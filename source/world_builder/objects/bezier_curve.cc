@@ -44,9 +44,11 @@ namespace WorldBuilder
       lengths.resize(n_points-1,NaN::DSNAN);
       angles.resize(n_points,NaN::DSNAN);
       std::vector<double> angle_constraints = angle_constraints_input;
+      bool colinear_points = false;
       angle_constraints.resize(n_points,NaN::DQNAN);
 
       const unsigned int max_arclength_discretization = 10;
+      const double epsilon = 1e-9;
 
 
       // if no angle is provided, compute the angle as the average angle between the previous and next point.
@@ -73,6 +75,12 @@ namespace WorldBuilder
               const Point<2> P1P2 = points[p_i-1]-points[p_i];
               // Calculate the line between the current point and the following point
               const Point<2> P3P2 = points[p_i+1]-points[p_i];
+
+              // Check if the points are colinear, as this is a special case of the bezier curve.
+              if ( std::abs(points[p_i-1][0] * (points[p_i][1] - points[p_i+1][1]) +
+                            points[p_i][0] * (points[p_i+1][1] - points[p_i-1][1]) +
+                            points[p_i+1][0] * (points[p_i-1][1] - points[p_i][1])) < epsilon)
+                colinear_points = true;
 
               // Calculate the angles of the two lines determined above
               const double angle_p1p2 = atan2(P1P2[1],P1P2[0]);
@@ -127,17 +135,31 @@ namespace WorldBuilder
                                            - (p1[1] - p2[1]) * (p3[0] - p1[0])
                                            < 0;
 
-              // Check to see if the angles are different. If the angles are the same, points p1, and p2
-              // are colinear, and therefore the control points will also be colinear with p1 and p2. This
-              // makes determining which 'side' the control points lie meaningless.
-              if ( (std::abs(std::abs(angles[0]) - std::abs(angles[1]))) > 1e-10)
+              // The points are colinear, so we need to check if the control points are within the line p1p2
+              if (colinear_points)
                 {
-                  if (side_of_line_1 == side_of_line_2)
+                  const bool cp_1_within_p1p2 = (std::min(p1[0], p2[0]) - epsilon <= control_points[0][0][0] && control_points[0][0][0] <= std::max(p1[0], p2[0]) + epsilon) &&
+                                                (std::min(p1[1], p2[1]) - epsilon <= control_points[0][0][1] && control_points[0][0][1] <= std::max(p1[1], p2[1]) + epsilon);
+                  const bool cp_2_within_p1p2 = (std::min(p1[0], p2[0]) - epsilon <= control_points[0][1][0] && control_points[0][1][0] <= std::max(p1[0], p2[0]) + epsilon) &&
+                                                (std::min(p1[1], p2[1]) - epsilon <= control_points[0][1][1] && control_points[0][1][1] <= std::max(p1[1], p2[1]) + epsilon);
+                  // If the control points are not within the line p1p2, we need to move them within the line p1p2
+                  if (!cp_1_within_p1p2)
                     {
-                      // use a 180 degree rotated angle to create this control_point
-                      control_points[0][1][0] = cos(angles[1]+Consts::PI)*length*fraction_of_length+p2[0];
-                      control_points[0][1][1] = sin(angles[1]+Consts::PI)*length*fraction_of_length+p2[1];
+                      control_points[0][0][0] = cos(angles[0]+Consts::PI)*length*fraction_of_length+p1[0];
+                      control_points[0][0][1] = sin(angles[0]+Consts::PI)*length*fraction_of_length+p1[1];
                     }
+                  if (!cp_2_within_p1p2)
+                    {
+                      control_points[0][1][0] = cos(angles[0]+Consts::PI)*length*fraction_of_length+p1[0];
+                      control_points[0][1][1] = sin(angles[0]+Consts::PI)*length*fraction_of_length+p1[1];
+                    }
+                }
+
+              else if (side_of_line_1 == side_of_line_2)
+                {
+                  // use a 180 degree rotated angle to create this control_point
+                  control_points[0][1][0] = cos(angles[1]+Consts::PI)*length*fraction_of_length+p2[0];
+                  control_points[0][1][1] = sin(angles[1]+Consts::PI)*length*fraction_of_length+p2[1];
                 }
 
               // There is no closed-form analytic way to express the arc-length of a cubic bezier curve. We approximate
@@ -168,10 +190,29 @@ namespace WorldBuilder
                                              - (p1[1] - p2[1]) * (control_points[p_i][0][0] - p1[0])
                                              < 0;
 
+                // The points are colinear, so we need to check if the control points are within the line p1p2
+                if (colinear_points)
+                  {
+                    const bool cp_1_within_p1p2 = (std::min(p1[0], p2[0]) <= control_points[p_i][0][0] && control_points[p_i][0][0] <= std::max(p1[0], p2[0])) &&
+                                                  (std::min(p1[1], p2[1]) <= control_points[p_i][0][1] && control_points[p_i][0][1] <= std::max(p1[1], p2[1]));
+                    const bool cp_2_within_p1p2 = (std::min(p1[0], p2[0]) <= control_points[p_i][1][0] && control_points[p_i][1][0] <= std::max(p1[0], p2[0])) &&
+                                                  (std::min(p1[1], p2[1]) <= control_points[p_i][1][1] && control_points[p_i][1][1] <= std::max(p1[1], p2[1]));
+                    // If the control points are not within the line p1p2, we need to move them within the line p1p2
+                    if (!cp_1_within_p1p2)
+                      {
+                        control_points[p_i][0][0] = cos(angles[p_i]+Consts::PI)*length*fraction_of_length+p1[0];
+                        control_points[p_i][0][1] = sin(angles[p_i]+Consts::PI)*length*fraction_of_length+p1[1];
+                      }
+                    if (!cp_2_within_p1p2)
+                      {
+                        control_points[p_i][1][0] = cos(angles[p_i]+Consts::PI)*length*fraction_of_length+p1[0];
+                        control_points[p_i][1][1] = sin(angles[p_i]+Consts::PI)*length*fraction_of_length+p1[1];
+                      }
+                  }
                 // Check to see if the angles are different. If the angles are the same, points p1, p2, and p3
                 // are colinear, and therefore the control points will also be colinear with p1, p2 and p3. This
                 // makes determining which 'side' the control points lie meaningless.
-                if (side_of_line_1 == side_of_line_2)
+                else if (side_of_line_1 == side_of_line_2)
                   {
                     // use a 180 degree rotated angle to create this control_point
                     control_points[p_i][0][0] = cos(angles[p_i]+Consts::PI)*length*fraction_of_length+p1[0];
@@ -179,8 +220,11 @@ namespace WorldBuilder
                   }
               }
 
-              control_points[p_i][1][0] = cos(angles[p_i+1])*length*fraction_of_length+p2[0];
-              control_points[p_i][1][1] = sin(angles[p_i+1])*length*fraction_of_length+p2[1];
+              if (!colinear_points)
+                {
+                  control_points[p_i][1][0] = cos(angles[p_i+1])*length*fraction_of_length+p2[0];
+                  control_points[p_i][1][1] = sin(angles[p_i+1])*length*fraction_of_length+p2[1];
+                }
 
               if (p_i+1 < n_points-1)
                 {
@@ -191,17 +235,34 @@ namespace WorldBuilder
                   const bool side_of_line_2 =  (p1[0] - p2[0]) * (p3[1] - p1[1])
                                                - (p1[1] - p2[1]) * (p3[0] - p1[0])
                                                < 0;
-
+                  // The points are colinear, so we need to check if the control points are within the line p1p2
+                  if (colinear_points)
+                    {
+                      const bool cp_1_within_p1p2 = (std::min(p1[0], p2[0]) <= control_points[p_i][0][0] && control_points[p_i][0][0] <= std::max(p1[0], p2[0])) &&
+                                                    (std::min(p1[1], p2[1]) <= control_points[p_i][0][1] && control_points[p_i][0][1] <= std::max(p1[1], p2[1]));
+                      const bool cp_2_within_p1p2 = (std::min(p1[0], p2[0]) <= control_points[p_i][1][0] && control_points[p_i][1][0] <= std::max(p1[0], p2[0])) &&
+                                                    (std::min(p1[1], p2[1]) <= control_points[p_i][1][1] && control_points[p_i][1][1] <= std::max(p1[1], p2[1]));
+                      // If the control points are not within the line p1p2, we need to move them within the line p1p2
+                      if (!cp_1_within_p1p2)
+                        {
+                          control_points[p_i][0][0] = cos(angles[p_i+1]+Consts::PI)*length*fraction_of_length+p1[0];
+                          control_points[p_i][0][1] = sin(angles[p_i+1]+Consts::PI)*length*fraction_of_length+p1[1];
+                        }
+                      if (!cp_2_within_p1p2)
+                        {
+                          control_points[p_i][1][0] = cos(angles[p_i+1]+Consts::PI)*length*fraction_of_length+p1[0];
+                          control_points[p_i][1][1] = sin(angles[p_i+1]+Consts::PI)*length*fraction_of_length+p1[1];
+                        }
+                    }
                   // Check to see if the angles are different. If the angles are the same, points p1, p2, and p3
                   // are colinear, and therefore the control points will also be colinear with p1, p2 and p3. This
                   // makes determining which 'side' the control points lie meaningless.
-                  if (std::abs(std::abs(angles[p_i]) - std::abs(angles[p_i + 1])) > 1e-10)
-                    if (side_of_line_1 == side_of_line_2)
-                      {
-                        // use a 180 degree rotated angle to create this control_point
-                        control_points[p_i][1][0] = cos(angles[p_i+1]+Consts::PI)*length*fraction_of_length+p2[0];
-                        control_points[p_i][1][1] = sin(angles[p_i+1]+Consts::PI)*length*fraction_of_length+p2[1];
-                      }
+                  else if (side_of_line_1 == side_of_line_2)
+                    {
+                      // use a 180 degree rotated angle to create this control_point
+                      control_points[p_i][1][0] = cos(angles[p_i+1]+Consts::PI)*length*fraction_of_length+p2[0];
+                      control_points[p_i][1][1] = sin(angles[p_i+1]+Consts::PI)*length*fraction_of_length+p2[1];
+                    }
                 }
 
               // There is no closed-form analytic way to express the arc-length of a cubic bezier curve. We approximate
