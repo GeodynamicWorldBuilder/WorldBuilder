@@ -7,10 +7,7 @@
 [![Matrix space](https://img.shields.io/badge/Chat-matrix.org-brightgreen?logo=matrix&logoColor=eeeeee)](https://app.element.io/#/room/#gwb:matrix.org)
 [![Mastodon Follow](https://img.shields.io/badge/News-%40world__builder-brightgreen?logo=mastodon&logoColor=eeeeee)](https://social.mfraters.net/@world_builder)
 
-<p align="center">
-<img src="doc/sphinx/_static/images/world_builder_logo_v4_b_text.png" width="30%" alt="The Geodynamic World Builder logo"/> &nbsp;&nbsp;&nbsp;&nbsp; 
-<img src="doc/sphinx/_static/images/user_manual/basic_starter_tutorial/BST_17.png" width="65%" alt="The resulting model from the first tutorial"/>
-</p>
+![Geodynamic World Builder Logo](doc/sphinx/_static/images/world_builder_logo_with_example.png)
 
 # The Geodynamic World Builder (GWB)
 
