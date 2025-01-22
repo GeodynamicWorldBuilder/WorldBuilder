@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Added
+- Added a cookbook which demonstrates how to use the tian 2019 composition model to create a subducting plate with hydrated lithologies. \[Daniel Douglas; 2025-01-22; [#812](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/812)\]
 - Added documentation for the subducting plate feature in the parameter documentation section of the manual. \[Daniel Douglas; 2024-11-19; [#768](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/768)\]
 - Added a velocities system where each feature can define a velocity field and the gwb can return the resulting velocity field. \[Menno Fraters; 2024-10-20; [#761](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/761)\]
 - There is now a CMake variable to automatically update the reference files for failed tests (gdb-dat and gwb-grid tests) \[Menno Fraters; 2024-10-20; [#761](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/761)\]
