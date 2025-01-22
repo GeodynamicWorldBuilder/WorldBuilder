@@ -452,12 +452,12 @@ namespace WorldBuilder
                     for (const auto &density_model: density_models)
                       {
                         output[entry_in_output[i_property]] = density_model->get_density(position_in_cartesian_coordinates,
-                                                                                          position_in_natural_coordinates,
-                                                                                          depth,
-                                                                                          gravity_norm,
-                                                                                          output[entry_in_output[i_property]],
-                                                                                          min_depth,
-                                                                                          max_depth);
+                                                                                         position_in_natural_coordinates,
+                                                                                         depth,
+                                                                                         gravity_norm,
+                                                                                         output[entry_in_output[i_property]],
+                                                                                         min_depth,
+                                                                                         max_depth);
 
 
                       }

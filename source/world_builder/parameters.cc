@@ -2258,7 +2258,7 @@ namespace WorldBuilder
   */
   template bool
   Parameters::get_unique_pointers<Features::PlumeModels::Density::Interface>(const std::string &name,
-                                                                              std::vector<std::unique_ptr<Features::PlumeModels::Density::Interface> > &vector);
+                                                                             std::vector<std::unique_ptr<Features::PlumeModels::Density::Interface> > &vector);
 
 
   /**
@@ -2423,7 +2423,7 @@ namespace WorldBuilder
   */
   template bool
   Parameters::get_unique_pointers<Features::FaultModels::Density::Interface>(const std::string &name,
-                                                                              std::vector<std::unique_ptr<Features::FaultModels::Density::Interface> > &vector);
+                                                                             std::vector<std::unique_ptr<Features::FaultModels::Density::Interface> > &vector);
 
 
 
@@ -2504,7 +2504,7 @@ namespace WorldBuilder
   */
   template bool
   Parameters::get_shared_pointers<Features::FaultModels::Density::Interface>(const std::string &name,
-                                                                              std::vector<std::shared_ptr<Features::FaultModels::Density::Interface> > &vector);
+                                                                             std::vector<std::shared_ptr<Features::FaultModels::Density::Interface> > &vector);
 
 
 

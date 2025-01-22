@@ -80,14 +80,14 @@ namespace WorldBuilder
     // todo update function
     template<class A, class B, class C, class D, class E>
     Segment<A,B,C,D,E>::Segment(const double default_length_,
-                              const WorldBuilder::Point<2> &default_thickness_,
-                              const WorldBuilder::Point<2> &default_top_truncation_,
-                              const WorldBuilder::Point<2> &default_angle_,
-                              const std::vector<std::shared_ptr<A> > temperature_systems_,
-                              const std::vector<std::shared_ptr<B> > composition_systems_,
-                              const std::vector<std::shared_ptr<C> > grains_systems_,
-                              const std::vector<std::shared_ptr<D> > velocity_systems_,
-                              const std::vector<std::shared_ptr<E> > density_systems_)
+                                const WorldBuilder::Point<2> &default_thickness_,
+                                const WorldBuilder::Point<2> &default_top_truncation_,
+                                const WorldBuilder::Point<2> &default_angle_,
+                                const std::vector<std::shared_ptr<A> > temperature_systems_,
+                                const std::vector<std::shared_ptr<B> > composition_systems_,
+                                const std::vector<std::shared_ptr<C> > grains_systems_,
+                                const std::vector<std::shared_ptr<D> > velocity_systems_,
+                                const std::vector<std::shared_ptr<E> > density_systems_)
       :
       value_length(default_length_),
       default_length(default_length_),

@@ -82,16 +82,16 @@ namespace WorldBuilder
 
 
         double
-        Uniform::get_density(const Point<3> & position_in_cartesian_coordinates,
-                                 const double depth,
-                                 const unsigned int composition_number,
-                                 double density_,
-                                 const double  /*feature_min_depth*/,
-                                 const double  /*feature_max_depth*/,
-                                 const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_plane,
-                                 const AdditionalParameters & /*additional_parameters*/) const
+        Uniform::get_density(const Point<3> &position_in_cartesian_coordinates,
+                             const double depth,
+                             const unsigned int composition_number,
+                             double density_,
+                             const double  /*feature_min_depth*/,
+                             const double  /*feature_max_depth*/,
+                             const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_plane,
+                             const AdditionalParameters & /*additional_parameters*/) const
         {
-         // If the composition is greater than 0, average it into the density.
+          // If the composition is greater than 0, average it into the density.
           // By callign the world property for composition, fractions will be included.
           double compositional_density = 0.;
           for (unsigned int i = 0; i < compositions.size(); ++i)

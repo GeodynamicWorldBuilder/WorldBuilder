@@ -845,13 +845,13 @@ namespace WorldBuilder
                             for (const auto &density_model: segment_vector[current_section][current_segment].density_systems)
                               {
                                 density_current_section = density_model->get_density(position_in_cartesian_coordinates,
-                                                                                                 depth,
-                                                                                                 properties[i_property][1],
-                                                                                                 density_current_section,
-                                                                                                 starting_depth,
-                                                                                                 maximum_depth,
-                                                                                                 distance_from_planes,
-                                                                                                 additional_parameters);
+                                                                                     depth,
+                                                                                     properties[i_property][1],
+                                                                                     density_current_section,
+                                                                                     starting_depth,
+                                                                                     maximum_depth,
+                                                                                     distance_from_planes,
+                                                                                     additional_parameters);
 
                                 WBAssert(!std::isnan(density_current_section), "Composition_current_section is not a number: " << density_current_section
                                          << ", based on a composition model with the name " << density_model->get_name() << ", in feature " << this->name);
@@ -863,13 +863,13 @@ namespace WorldBuilder
                             for (const auto &density_model: segment_vector[next_section][current_segment].density_systems)
                               {
                                 density_next_section = density_model->get_density(position_in_cartesian_coordinates,
-                                                                                              depth,
-                                                                                              properties[i_property][1],
-                                                                                              density_next_section,
-                                                                                              starting_depth,
-                                                                                              maximum_depth,
-                                                                                              distance_from_planes,
-                                                                                              additional_parameters);
+                                                                                  depth,
+                                                                                  properties[i_property][1],
+                                                                                  density_next_section,
+                                                                                  starting_depth,
+                                                                                  maximum_depth,
+                                                                                  distance_from_planes,
+                                                                                  additional_parameters);
 
                                 WBAssert(!std::isnan(density_next_section), "Composition_next_section is not a number: " << density_next_section
                                          << ", based on a composition model with the name " << density_model->get_name() << ", in feature " << this->name);
@@ -881,7 +881,7 @@ namespace WorldBuilder
                             // linear interpolation between current and next section temperatures
                             output[entry_in_output[i_property]] = density_current_section + section_fraction * (density_next_section - density_current_section);
                             break;
-                          }                      
+                          }
                           default:
                           {
                             WBAssertThrow(false,

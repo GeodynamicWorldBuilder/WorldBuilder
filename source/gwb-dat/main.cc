@@ -197,7 +197,7 @@ int main(int argc, char **argv)
         }
 
       // set properties, order these are pushed affects
-      // the output index needed to write thme. 
+      // the output index needed to write thme.
       std::vector<std::array<unsigned ,3>> properties;
       properties.push_back({{1,0,0}}); // temperature  output[0]
 
@@ -212,7 +212,7 @@ int main(int argc, char **argv)
       for (size_t gc = 0; gc < grain_compositions; ++gc)
         properties.push_back({{3,static_cast<unsigned int>(gc),static_cast<unsigned int>(n_grains)}}); // grains gc
 
-      properties.push_back({{4,0,0}}); // tag 
+      properties.push_back({{4,0,0}}); // tag
 
 
       switch (dim)

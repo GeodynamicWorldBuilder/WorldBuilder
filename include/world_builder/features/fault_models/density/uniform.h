@@ -69,17 +69,17 @@ namespace WorldBuilder
              * gravity and current composition.
              */
             double get_density(const Point<3> &position,
-                                   const double depth,
-                                   const unsigned int composition_number,
-                                   double density_,
-                                   const double feature_min_depth,
-                                   const double feature_max_depth,
-                                   const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
-                                   const AdditionalParameters &additional_parameters) const override final;
+                               const double depth,
+                               const unsigned int composition_number,
+                               double density_,
+                               const double feature_min_depth,
+                               const double feature_max_depth,
+                               const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
+                               const AdditionalParameters &additional_parameters) const override final;
 
 
           private:
-       // uniform temperature submodule parameters
+            // uniform temperature submodule parameters
             double min_depth;
             double max_depth;
             std::vector<double> densities;

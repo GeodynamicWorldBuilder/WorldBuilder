@@ -182,7 +182,7 @@ namespace WorldBuilder
       }
       prm.leave_subsection();
 
-prm.get_unique_pointers<Features::MantleLayerModels::Density::Interface>("density models", density_models);
+      prm.get_unique_pointers<Features::MantleLayerModels::Density::Interface>("density models", density_models);
 
       prm.enter_subsection("density models");
       {

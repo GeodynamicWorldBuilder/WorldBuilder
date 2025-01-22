@@ -93,7 +93,7 @@ namespace WorldBuilder
           double compositional_density = 0.;
           for (unsigned int i = 0; i < compositions.size(); ++i)
             if (world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] > 0.0)
-              compositional_density += world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] * densities[i];
+          compositional_density += world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] * densities[i];
 
           return apply_operation(operation,density_,compositional_density);
         }
