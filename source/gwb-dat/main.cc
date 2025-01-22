@@ -196,20 +196,23 @@ int main(int argc, char **argv)
             convert_spherical = true;
         }
 
-      // set properties
+      // set properties, order these are pushed affects
+      // the output index needed to write thme. 
       std::vector<std::array<unsigned ,3>> properties;
-      properties.push_back({{1,0,0}}); // temperature
+      properties.push_back({{1,0,0}}); // temperature  output[0]
 
-      properties.push_back({{5,0,0}}); // velocity x
+      properties.push_back({{6,0,0}}); // density      output[1]
+
+      properties.push_back({{5,0,0}}); // velocity x   output[2],output[3],output[4]
 
       for (size_t c = 0; c < compositions; ++c)
-        properties.push_back({{2,static_cast<unsigned int>(c),0}}); // composition c
+        properties.push_back({{2,static_cast<unsigned int>(c),0}}); // composition c output[5+c]
 
 
       for (size_t gc = 0; gc < grain_compositions; ++gc)
         properties.push_back({{3,static_cast<unsigned int>(gc),static_cast<unsigned int>(n_grains)}}); // grains gc
 
-      properties.push_back({{4,0,0}}); // tag
+      properties.push_back({{4,0,0}}); // tag 
 
 
       switch (dim)
@@ -217,7 +220,7 @@ int main(int argc, char **argv)
           case 2:
             WBAssertThrow(!convert_spherical, "Converting to spherical values is only available in 3D.");
             // set the header
-            std::cout << "# x z d T vx vz ";
+            std::cout << "# x z d T rho vx vz ";
 
             for (unsigned int c = 0; c < compositions; ++c)
               std::cout << 'c' << c << ' ';
@@ -246,15 +249,20 @@ int main(int argc, char **argv)
                   };
                   std::cout << data[i][0] << ' ' << data[i][1] << ' ' << data[i][2] << ' ';
                   std::vector<double> output = world->properties(coords, string_to_double(data[i][2]),properties);
-                  std::cout << output[0]  << ' ';
+                  std::cout << output[0]  << ' '; // temperature
+                  std::cout << output[1]  << ' '; // density
 
-                  std::cout << output[1] << ' ' << output[2] << ' ';
+                  // Velocities
+                  std::cout << output[2] << ' ' << output[3] << ' ';
 
+                  // Compositions. This needs to start as 5 because in 2D
+                  // velocity still has a third component.
                   for (unsigned int c = 0; c < compositions; ++c)
                     {
-                      std::cout << output[3+c]  << ' ';
+                      std::cout << output[5+c]  << ' ';
                     }
 
+                  // Grains
                   for (unsigned int gc = 0; gc < grain_compositions; ++gc)
                     {
                       const size_t start = 3+compositions+gc*n_grains*10;
@@ -273,7 +281,7 @@ int main(int argc, char **argv)
             break;
           case 3:
             // set the header
-            std::cout << "# x y z d g T vx vy vz ";
+            std::cout << "# x y z d g T rho vx vy vz ";
 
             for (unsigned int c = 0; c < compositions; ++c)
               std::cout << 'c' << c << ' ';
@@ -308,13 +316,16 @@ int main(int argc, char **argv)
 
                   std::cout << data[i][0] << ' ' << data[i][1] << ' ' << data[i][2] << ' ' << data[i][3] << ' ';
                   std::vector<double> output = world->properties(coords, string_to_double(data[i][3]),properties);
-                  std::cout << output[0]  << ' ';
+                  std::cout << output[0]  << ' '; // Temperature
 
-                  std::cout << output[1] << ' ' << output[2] << ' ' << output[3] << ' ';
+                  std::cout << output[1]  << ' '; // Density
 
+                  std::cout << output[2] << ' ' << output[3] << ' ' << output[4] << ' '; // Velocities
+
+                  // Compositions
                   for (unsigned int c = 0; c < compositions; ++c)
                     {
-                      std::cout << output[4+c]  << ' ';
+                      std::cout << output[5+c]  << ' ';
                     }
 
                   for (unsigned int gc = 0; gc < grain_compositions; ++gc)
