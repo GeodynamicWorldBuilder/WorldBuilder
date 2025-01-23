@@ -76,17 +76,21 @@ namespace WorldBuilder
          */
         Point<2> operator()(const size_t i, const double x) const;
 
-        double get_bezier_arclength() const
+        /**
+         * @brief Returns the total arc length of the bezier curve from the first user-provided coordinate to the last
+         *        user-provided coordinate.
+        */
+        double get_total_arclength() const
         {
           return total_arclength;
         }
 
       private:
         std::vector<Point<2> > points;
-        std::vector<std::array<Point<2>,2 > > control_points; // [  { {1,2}, {2,3} Point } array  ] vector
+        std::vector<std::array<Point<2>,2 > > control_points;
         std::vector<double> lengths;
         std::vector<double> angles;
-        double total_arclength; // The arc length of the bezier curve from the first coordinate to the last coordinate
+        double total_arclength; // The total arc length of the bezier curve
     };
   }
 
