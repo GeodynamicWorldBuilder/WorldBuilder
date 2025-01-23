@@ -44,9 +44,12 @@ namespace WorldBuilder
       lengths.resize(n_points-1,NaN::DSNAN);
       angles.resize(n_points,NaN::DSNAN);
       std::vector<double> angle_constraints = angle_constraints_input;
-      bool colinear_points = false;
       angle_constraints.resize(n_points,NaN::DQNAN);
 
+      // Whether points on the line are colinear. If they are, this is a special case for the bezier curve.
+      // We determine if the points are colinear by calculating the area of the triangle formed by the points.
+      // If the area is less than epsilon, the points are colinear.
+      bool points_are_colinear = false;
       const unsigned int max_arclength_discretization = 10;
       const double epsilon = 1e-9;
 
@@ -76,11 +79,12 @@ namespace WorldBuilder
               // Calculate the line between the current point and the following point
               const Point<2> P3P2 = points[p_i+1]-points[p_i];
 
-              // Check if the points are colinear, as this is a special case of the bezier curve.
+              // Check if the points are colinear by determining the area of the triangle
+              // formed by the 3 points. This is a special case of the bezier curve.
               if ( std::abs(points[p_i-1][0] * (points[p_i][1] - points[p_i+1][1]) +
                             points[p_i][0] * (points[p_i+1][1] - points[p_i-1][1]) +
                             points[p_i+1][0] * (points[p_i-1][1] - points[p_i][1])) < epsilon)
-                colinear_points = true;
+                points_are_colinear = true;
 
               // Calculate the angles of the two lines determined above
               const double angle_p1p2 = atan2(P1P2[1],P1P2[0]);
@@ -126,6 +130,7 @@ namespace WorldBuilder
             control_points[0][0][1] = sin(angles[0])*length*fraction_of_length+p1[1];
             control_points[0][1][0] = cos(angles[1])*length*fraction_of_length+p2[0];
             control_points[0][1][1] = sin(angles[1])*length*fraction_of_length+p2[1];
+
             {
               // Determine which side of the line the control points lie on
               const bool side_of_line_1 =  (p1[0] - p2[0]) * (control_points[0][1][1] - p1[1])
@@ -136,7 +141,7 @@ namespace WorldBuilder
                                            < 0;
 
               // The points are colinear, so we need to check if the control points are within the line p1p2
-              if (colinear_points)
+              if (points_are_colinear)
                 {
                   const bool cp_1_within_p1p2 = (std::min(p1[0], p2[0]) - epsilon <= control_points[0][0][0] && control_points[0][0][0] <= std::max(p1[0], p2[0]) + epsilon) &&
                                                 (std::min(p1[1], p2[1]) - epsilon <= control_points[0][0][1] && control_points[0][0][1] <= std::max(p1[1], p2[1]) + epsilon);
@@ -163,7 +168,7 @@ namespace WorldBuilder
                 }
 
               // There is no closed-form analytic way to express the arc-length of a cubic bezier curve. We approximate
-              // the arc-length by dividing the curve into 20 points piecewise linearly connect them. We also store the
+              // the arc-length by dividing the curve into 10 points and piecewise linearly connect them. We also store the
               // length of the bezier curve within each of these intervals. We calculate the points that lie on the bezier
               // curve using the operator function below.
               for (unsigned int t_value = 1; t_value <= max_arclength_discretization; ++t_value)
@@ -191,7 +196,7 @@ namespace WorldBuilder
                                              < 0;
 
                 // The points are colinear, so we need to check if the control points are within the line p1p2
-                if (colinear_points)
+                if (points_are_colinear)
                   {
                     const bool cp_1_within_p1p2 = (std::min(p1[0], p2[0]) <= control_points[p_i][0][0] && control_points[p_i][0][0] <= std::max(p1[0], p2[0])) &&
                                                   (std::min(p1[1], p2[1]) <= control_points[p_i][0][1] && control_points[p_i][0][1] <= std::max(p1[1], p2[1]));
@@ -209,6 +214,7 @@ namespace WorldBuilder
                         control_points[p_i][1][1] = sin(angles[p_i]+Consts::PI)*length*fraction_of_length+p1[1];
                       }
                   }
+
                 // Check to see if the angles are different. If the angles are the same, points p1, p2, and p3
                 // are colinear, and therefore the control points will also be colinear with p1, p2 and p3. This
                 // makes determining which 'side' the control points lie meaningless.
@@ -220,7 +226,7 @@ namespace WorldBuilder
                   }
               }
 
-              if (!colinear_points)
+              if (!points_are_colinear)
                 {
                   control_points[p_i][1][0] = cos(angles[p_i+1])*length*fraction_of_length+p2[0];
                   control_points[p_i][1][1] = sin(angles[p_i+1])*length*fraction_of_length+p2[1];
@@ -236,7 +242,7 @@ namespace WorldBuilder
                                                - (p1[1] - p2[1]) * (p3[0] - p1[0])
                                                < 0;
                   // The points are colinear, so we need to check if the control points are within the line p1p2
-                  if (colinear_points)
+                  if (points_are_colinear)
                     {
                       const bool cp_1_within_p1p2 = (std::min(p1[0], p2[0]) <= control_points[p_i][0][0] && control_points[p_i][0][0] <= std::max(p1[0], p2[0])) &&
                                                     (std::min(p1[1], p2[1]) <= control_points[p_i][0][1] && control_points[p_i][0][1] <= std::max(p1[1], p2[1]));
@@ -254,6 +260,7 @@ namespace WorldBuilder
                           control_points[p_i][1][1] = sin(angles[p_i+1]+Consts::PI)*length*fraction_of_length+p1[1];
                         }
                     }
+
                   // Check to see if the angles are different. If the angles are the same, points p1, p2, and p3
                   // are colinear, and therefore the control points will also be colinear with p1, p2 and p3. This
                   // makes determining which 'side' the control points lie meaningless.
@@ -266,7 +273,7 @@ namespace WorldBuilder
                 }
 
               // There is no closed-form analytic way to express the arc-length of a cubic bezier curve. We approximate
-              // the arc-length by dividing the curve into 20 points piecewise linearly connect them. We also store the
+              // the arc-length by dividing the curve into 10 points and piecewise linearly connect them. We also store the
               // length of the bezier curve within each of these intervals. We calculate the points that lie on the bezier
               // curve using the operator function below.
               for (unsigned int t_value = 1; t_value <= max_arclength_discretization; ++t_value)
