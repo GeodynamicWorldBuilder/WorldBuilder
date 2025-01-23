@@ -2,7 +2,8 @@
 FORTRAN interface
 ===========
 
-### General explanation
+Explanation of wrapper subroutines
+-----------
 
 The interface functions are defined in the Fortran wrapper module (`source/world_builder/wrapper_fortran.f90`). Here we provide short explanations for each function (subroutines in Fortran).
 
@@ -50,7 +51,8 @@ Output:
 
 - value (of temperature or composition) at the position specified with x, (y,) z, depth
 
-### Example (CHIC)
+Example (CHIC)
+-----------
 
 To illustrate how the World Builder interface can be used, the following section outlines what is done in CHIC:
 
