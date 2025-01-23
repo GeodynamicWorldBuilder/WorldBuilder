@@ -23,6 +23,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - The tian2019 composition model now returns a mass fraction instead of a mass percentage. \[Daniel Douglas; 2024-11-12; [#767](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/767)\]
 - Only link to MPI libraries if the cmake variable USE_MPI has been set. No longer automatically link to MPI if MPI is found. \[Rene Gassmoeller; 2025-01-20; [#792](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/792)\]
 - Change the Doxygen documentation design using the Doxygen Awesome theme. Also fix the main README logo so it appears in the doxygen start page. \[Rene Gassmoeller; 2025-01-21; [#807](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/807)\]
+- The approval unit tests now have the option to add a label to each of them to increase readability and findablitliy of individual tests. \[Menno Fraters and Rene Gassmoeller; 2025-01-23; [809](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/809)\]
 
 ### Fixed
 - Fixed index for 2D compositional fields in gwb-grid. \[Derek Neuharth; 2025-01-21; [#788](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/788)\]
