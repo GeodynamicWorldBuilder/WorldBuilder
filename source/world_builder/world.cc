@@ -23,6 +23,7 @@
 #include "world_builder/config.h"
 #include "world_builder/features/subducting_plate.h"
 #include "world_builder/gravity_model/interface.h"
+#include "world_builder/topography/interface.h"
 #include "world_builder/nan.h"
 #include "world_builder/point.h"
 #include "world_builder/types/array.h"
@@ -143,6 +144,8 @@ namespace WorldBuilder
 
       prm.declare_entry("gravity model", Types::PluginSystem("uniform", GravityModel::Interface::declare_entries, {"model"}, false),"A gravity model for the world.");
 
+      prm.declare_entry("topography", Types::PluginSystem("uniform", Topography::Interface::declare_entries, {"model"}, false),"A topography model for the world.");
+
       prm.declare_entry("features", Types::PluginSystem("",Features::Interface::declare_entries, {"model"}),"A list of features.");
 
       prm.declare_entry("random number seed", Types::Int(-1),
@@ -191,6 +194,17 @@ namespace WorldBuilder
     prm.enter_subsection("gravity model");
     {
       prm.gravity_model->parse_entries(prm);
+    }
+    prm.leave_subsection();
+
+    /**
+     * Fourth load the topography parameters.
+     */
+    prm.topography_model = prm.get_unique_pointer<Topography::Interface>("topography");
+
+    prm.enter_subsection("topography");
+    {
+      prm.topography_model->parse_entries(prm);
     }
     prm.leave_subsection();
 
@@ -531,8 +545,6 @@ namespace WorldBuilder
   {
     return properties(point, depth, {{{2,composition_number,0}}})[0];
   }
-
-
 
   WorldBuilder::grains
   World::grains(const std::array<double,2> &point,
