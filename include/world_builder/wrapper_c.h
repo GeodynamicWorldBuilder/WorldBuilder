@@ -22,6 +22,16 @@
 
 #include <stdbool.h>
 
+/** @file
+ * This file contains the C API of the WorldBuilder library.
+ *
+ * The C API is used to make the WorldBuilder library available to programs written
+ * in C. The C API is a set of functions that can be called from C code. The
+ * functions in the C API call the corresponding C++ functions in the WorldBuilder
+ * library. Check the content of this file for a list of the available functions and
+ * their documentation.
+ */
+
 #ifdef __cplusplus
 extern "C" {
 #endif
