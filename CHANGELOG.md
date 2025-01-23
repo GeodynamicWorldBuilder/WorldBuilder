@@ -23,6 +23,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Added a Euler pole velocity field (in spherical coordinates) for the continental plate, oceanic plate and mantel layer. \[Menno Fraters; 2025-08-25; [#850](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/850)\]
 
 ### Changed
+- Modify the implementation of the Bezier curve to account for the special case of colinear points. Also added functionality for determining the arclength of the bezier curve. \[Daniel Douglas; 2025-01-23; [#799](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/799)\]
 - The tian2019 composition model now returns a mass fraction instead of a mass percentage. \[Daniel Douglas; 2024-11-12; [#767](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/767)\]
 - Only link to MPI libraries if the cmake variable USE_MPI has been set. No longer automatically link to MPI if MPI is found. \[Rene Gassmoeller; 2025-01-20; [#792](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/792)\]
 - Change the Doxygen documentation design using the Doxygen Awesome theme. Also fix the main README logo so it appears in the doxygen start page. \[Rene Gassmoeller; 2025-01-21; [#807](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/807)\]
