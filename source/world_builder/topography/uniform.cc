@@ -54,9 +54,9 @@ namespace WorldBuilder
      * we assume there is no topography.
      */
     double
-    Uniform::get_topography(const Point<3> &position,
-                            const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                            const double depth) const
+    Uniform::get_topography(const Point<3> &/*position*/,
+                            const Objects::NaturalCoordinate &/*position_in_natural_coordinates*/,
+                            const double /*depth*/) const
     {
       return 0;
     }
