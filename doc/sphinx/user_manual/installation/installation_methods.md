@@ -156,7 +156,8 @@ The Geodynamic World Builder is integrated into the convection code CHIC (Noack 
 As an additional input file, the user has to provide a file in the `.wb` format, the specifics of which are outlined in {ref}`part:user_manual:chap:basic_starter_tutorial:sec:index`. The resulting temperature and compositonal fields are read-in and used as initial fields for a CHIC simulation run.
 ```
 
-(In the future, you will be able to find more information on CHIC here https://www.geo.fu-berlin.de/en/geol/fachrichtungen/planet/projects_noack/Convection-Code/index.html)
+(In the future, you will be able to find more information on CHIC [here](https://www.geo.fu-berlin.de/en/geol/fachrichtungen/planet/projects_noack/Convection-Code/index.html))
+
 
 :::::
 ::::::
