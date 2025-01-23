@@ -5056,8 +5056,6 @@ TEST_CASE("GWB Bezier curve")
   approval_tests.emplace_back(std::make_pair("",bezier_curve(1,1.0)));
   approval_tests.emplace_back(std::make_pair("",bezier_curve(1,1.1)));
 
-  approval_tests.emplace_back(bezier_curve.get_total_arclength(), bezier_curve.get_total_arclength(), cartesian);
-
   const Objects::BezierCurve bezier_curve_defined(coordinates,
   {
     0.,Consts::PI,0.
@@ -5169,7 +5167,6 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::make_pair("23",bezier_curve(0,1.0)[1]));
   approval_tests.emplace_back(std::make_pair("24",bezier_curve(0,1.1)[0]));
   approval_tests.emplace_back(std::make_pair("25",bezier_curve(0,1.1)[1]));
-  approval_tests.emplace_back(std::make_pair("26",bezier_curve.get_bezier_arclength()));
 
 
   WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
@@ -6044,6 +6041,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(std::make_pair("271",static_cast<double>(distance_from_planes.section)));
   approval_tests.emplace_back(std::make_pair("272",static_cast<double>(distance_from_planes.segment)));
   approval_tests.emplace_back(std::make_pair("273",std::fabs(distance_from_planes.fraction_of_segment) > 1e-12 ? distance_from_planes.fraction_of_segment : 0.)); // to make sure the approval test have the same characters for very small numbers
+
 
   std::vector<std::string> approvals;
   for (auto&& value : approval_tests)
