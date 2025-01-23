@@ -4934,6 +4934,7 @@ TEST_CASE("GWB Bezier curve")
   approval_tests.emplace_back(bezier_curve(1,1.0));
   approval_tests.emplace_back(bezier_curve(1,1.1));
 
+  approval_tests.emplace_back(bezier_curve.get_total_arclength(), bezier_curve.get_total_arclength(), cartesian);
 
   const Objects::BezierCurve bezier_curve_defined(coordinates,
   {
@@ -5038,6 +5039,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes ca
   approval_tests.emplace_back(bezier_curve(0,1.0)[1]);
   approval_tests.emplace_back(bezier_curve(0,1.1)[0]);
   approval_tests.emplace_back(bezier_curve(0,1.1)[1]);
+  approval_tests.emplace_back(bezier_curve.get_total_arclength());
 
 
   WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
