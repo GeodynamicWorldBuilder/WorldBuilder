@@ -63,7 +63,7 @@ jobs:
         path: cbdr
 
     - name: retrieve cache cbdr
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: |
           ~/.cargo/bin/
@@ -78,7 +78,7 @@ jobs:
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
     - name: retrieve cache main
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: |
           ${{github.workspace}}/main/
@@ -86,7 +86,7 @@ jobs:
 
 
     - name: retrieve cache feature
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: |
           ${{github.workspace}}/feature/
