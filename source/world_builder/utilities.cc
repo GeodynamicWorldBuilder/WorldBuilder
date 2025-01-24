@@ -1506,11 +1506,6 @@ namespace WorldBuilder
 
     }
 
-    // I need to write a function which takes an arbitrary 3D point and determines the distance to a plane. This requires
-    // that the plane is parameterzied. I need this function so that I may iterate over all planes that comprise the slab
-    // surface and determine which plane has the minimum distance to that point. As inputs for this function, I must
-    // provide a set of 3 points, determine the plane that those points lie on, and then determine the distance of the
-    // point to this plane.
     double
     calculate_distance_from_point_to_rectilinear_plane(const Point<3> p1,
                                                        const Point<3> p2,
@@ -1518,12 +1513,12 @@ namespace WorldBuilder
                                                        const Point<3> check_point)
     {
       // First Determine the Plane formed by p1, p2, p3
-      // Point<3> P1P2 = p1 - p2;
-      Point<3> P1P2 = p2 - p1;
+      Point<3> P2P1 = p2 - p1;
       Point<3> P3P1 = p3 - p1;
-      Point<3> normal_vector = cross_product(P1P2, P3P1);
+      Point<3> normal_vector = cross_product(P2P1, P3P1);
       Point<3> normal_vector_unit = normal_vector / normal_vector.norm();
 
+      // Determine the equation of the plane using the Normal vector and point p1
       const double A = normal_vector_unit[0];
       const double B = normal_vector_unit[1];
       const double C = normal_vector_unit[2];
@@ -1535,11 +1530,6 @@ namespace WorldBuilder
       // Calculate the signed distance from the point to the plane
       const double distance = (A * check_point[0] + B * check_point[1] + C * check_point[2] + D) / denominator;
 
-      Point<3> closest_point_on_plane = check_point - distance * normal_vector;
-
-      const double sign = (closest_point_on_plane - check_point) * normal_vector > 0 ? 1 : -1;
-
-      // return sign * (closest_point_on_plane - check_point).norm();
       return distance;
     }
 

@@ -33,7 +33,7 @@
 #include <array>
 
 /*
-The general for of the contours geometry type will probably look like this.
+The general form of the contours geometry type will probably look like this.
 
 {
   "model": "subducting plate",
@@ -162,17 +162,6 @@ namespace WorldBuilder
         }
       this->tag_index = FeatureUtilities::add_vector_unique(this->world->feature_tags,tag);
 
-      // this->get_coordinates("coordinates", prm, coordinate_system);
-
-      // Divide the bezier_curve into intervals, and use the operator function to generate the points on the curve.
-      // I need to check the length of each bezier curve and compare it with the interval distance that I calculate.
-      // This will then tell me what the index of the pair of points is that I need to deal with, and then I can
-      // compute the t value that I need to use to get the point on the bezier curve.
-
-      // This line will need to be adjusted so that it reads in the size of the vector "depth value"
-      // std::vector<double> depths_of_contours = {0, 100e3}; // prm.get_vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface;
-
-      // const unsigned int number_of_intervals = 5;
       regularized_points.resize(depths_of_contours.size());
       slab_segment_lengths.resize(depths_of_contours.size());
       slab_segment_thickness.resize(depths_of_contours.size());
@@ -191,12 +180,6 @@ namespace WorldBuilder
       const double total_arclength = 5000e3;
 
 
-// So I want to take the total arclength for the case that I KNOW! This is with three points that form a straight line
-// and the distance between them is 5000 km. This will result in 2 Bezier curves, one connecting the first two points,
-// and one connecting the last two points. I want to divide the ENTIRE arclength into 100 intervals, and I need to
-// track what distance I am along the total arclength, and also the length of the current Bezier curve. Once I exceed
-// the length of the current Bezier curve, I need to make sure that I switch to the NEXT bezier curve, and repeat this
-// process until I reach the end of the feature (the total arclength).
       std::vector<Point<2>> coordinates_1 = {Point<2>(1500e3, 0.0, cartesian), Point<2>(1500e3, 2500e3, cartesian), Point<2>(1500e3, 5000e3, cartesian)};
       // std::vector<Point<2>> coordinates_2 = {Point<2>(500e3, 0.0, cartesian), Point<2>(500e3, 2500e3, cartesian), Point<2>(500e3, 5000e3, cartesian)};
       std::vector<Point<2>> coordinates_2 = {Point<2>(1200e3, 0.0, cartesian), Point<2>(1200e3, 2500e3, cartesian), Point<2>(1200e3, 5000e3, cartesian)};
@@ -294,14 +277,6 @@ namespace WorldBuilder
         }
 
 
-
-// Hypothetically I have calculate the angles, filled the thicknesses, the top truncation values, and the lengths.
-// Maybe the next step is just to check if this actually creates a slab that is a ramp connecting from 0 depth to 100
-// km depth.
-
-
-
-
       if (coordinate_system == spherical)
         {
           // When spherical, input is in degrees, so change to radians for internal use.
@@ -316,36 +291,6 @@ namespace WorldBuilder
       prm.get_shared_pointers<Features::SubductingPlateModels::Composition::Interface>("composition models", default_composition_models);
       prm.get_shared_pointers<Features::SubductingPlateModels::Grains::Interface>("grains models", default_grains_models);
       prm.get_shared_pointers<Features::SubductingPlateModels::Velocity::Interface>("velocity models", default_velocity_models);
-
-      // Here, we compute the spherical bounding box using the two extreme points of the box containing all the surface
-      // coordinates and an additional buffer zone that accounts for the slab thickness and length. The first and second
-      // points correspond to the lower left and the upper right corners of the bounding box, respectively (see the
-      // documentation in include/bounding_box.h).
-      // For the spherical system, the buffer zone along the longitudal direction is calculated using the
-      // corresponding latitude points.
-
-      // Find minimal and maximal coordinates. Do this by finding the
-      // leftmost/rightmost point with regard to either the [0] or [1]
-      // coordinate, and then takes its [0] or [1] element.
-      // auto compare_x_coordinate = [](auto p1, auto p2)
-      // {
-      //   return p1[0]<p2[0];
-      // };
-
-      // min_along_x = (*std::min_element(coordinates.begin(), coordinates.end(), compare_x_coordinate)) [0];
-      // max_along_x = (*std::max_element(coordinates.begin(), coordinates.end(), compare_x_coordinate)) [0];
-
-
-      // auto compare_y_coordinate = [](auto p1, auto p2)
-      // {
-      //   return p1[1]<p2[1];
-      // };
-
-      // min_along_y = (*std::min_element(coordinates.begin(), coordinates.end(), compare_y_coordinate)) [1];
-      // max_along_y = (*std::max_element(coordinates.begin(), coordinates.end(), compare_y_coordinate)) [1];
-
-      // min_lat_cos_inv = 1. / std::cos(min_along_y);
-      // max_lat_cos_inv = 1. / std::cos(max_along_y);
     }
 
 
@@ -395,45 +340,12 @@ namespace WorldBuilder
       const unsigned int minIndex = std::distance(absolute_distances_from_planes_to_check_point.begin(), minIt);
       const double min_distance_to_plane = signed_distances_from_planes_to_check_point[minIndex];
 
-      // if (depth >= min_depth_local && depth <= max_depth_local && std::abs(min_distance_to_plane) <= slab_segment_thickness[0][0])
       if (min_distance_to_plane >= -slab_segment_thickness[0][0] &&
           min_distance_to_plane <= 0 &&
           depth <= depths_of_contours[depths_of_contours.size() - 1])
         {
           output[entry_in_output[0]] = 10.0;
         }
-
-      // Objects::PlaneDistances
-      // SubductingPlateContours::distance_to_feature_plane(const Point<3> &position_in_cartesian_coordinates,
-      //                                            const Objects::NaturalCoordinate &position_in_natural_coordinates,
-      //                                            const double depth) const
-      // {
-      //   // The depth variable is the distance from the surface to the position, the depth
-      //   // coordinate is the distance from the bottom of the model to the position and
-      //   // the starting radius is the distance from the bottom of the model to the surface.
-      //   const double starting_radius = position_in_natural_coordinates.get_depth_coordinate() + depth - starting_depth;
-
-      //   WBAssert(std::abs(starting_radius) > std::numeric_limits<double>::epsilon(), "World Builder error: starting_radius can not be zero. "
-      //            << "Position = " << position_in_cartesian_coordinates[0] << ':' << position_in_cartesian_coordinates[1] << ':' << position_in_cartesian_coordinates[2]
-      //            << ", natural_coordinate.get_depth_coordinate() = " << position_in_natural_coordinates.get_depth_coordinate()
-      //            << ", depth = " << depth
-      //            << ", starting_depth " << starting_depth
-      //           );
-
-      //   const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
-      //     WorldBuilder::Utilities::distance_point_from_curved_planes(position_in_cartesian_coordinates,
-      //                                                                position_in_natural_coordinates,
-      //                                                                reference_point,
-      //                                                                coordinates,
-      //                                                                slab_segment_lengths,
-      //                                                                slab_segment_angles,
-      //                                                                starting_radius,
-      //                                                                this->world->parameters.coordinate_system,
-      //                                                                false,
-      //                                                                this->bezier_curve);
-
-      //   Objects::PlaneDistances plane_distances(distance_from_planes.distance_from_plane, distance_from_planes.distance_along_plane);
-      //   return plane_distances;
     }
     /**
      * Register plugin
