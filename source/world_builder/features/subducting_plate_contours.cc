@@ -49,7 +49,7 @@ The general for of the contours geometry type will probably look like this.
                .
                }], "thickness": 10e3
 
-  OR 
+  OR
 
   "contours": [{"coordinate":[0, 0], "thickness": 10e3},
                {"coordinate":[1, 1], "thickness": 20e3},
@@ -64,13 +64,13 @@ The general for of the contours geometry type will probably look like this.
   "composition models":[{"model":"uniform", "compositions": [0], "fractions":[1.0]}]
 }
 
-This should result in a slab that has a temperature of 600.0 and a composition of 0.0 at all depths. 
+This should result in a slab that has a temperature of 600.0 and a composition of 0.0 at all depths.
 This can then be extended to have variable temperature and composition models at different depths and
 different along strike points.
 
 The workflow will be to first fit the contour with a bezier curve, determine the arc-length of the curve,
 and then divide the arc-length into even intervals. All contours will be divided into the same number of
-intervals. Then the corresponding indices of the contours will be used to connect the contour and create 
+intervals. Then the corresponding indices of the contours will be used to connect the contour and create
 a 3D surface.
 */
 
@@ -128,8 +128,8 @@ namespace WorldBuilder
 
     void
     SubductingPlateContours::declare_entries(Parameters &prm,
-                                     const std::string &parent_name,
-                                     const std::vector<std::string> &required_entries)
+                                             const std::string &parent_name,
+                                             const std::vector<std::string> &required_entries)
     {
       prm.declare_entry("geometry type", Types::String("contours"),
                         "The model geometry type");
@@ -170,48 +170,96 @@ namespace WorldBuilder
       // compute the t value that I need to use to get the point on the bezier curve.
 
       // This line will need to be adjusted so that it reads in the size of the vector "depth value"
-      std::vector<double> depths_of_contours = {0, 100e3}; // prm.get_vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface;
+      // std::vector<double> depths_of_contours = {0, 100e3}; // prm.get_vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface;
 
-      const unsigned int number_of_intervals = 100;
-      std::vector<std::vector<Point<2>>> regularized_points;
+      // const unsigned int number_of_intervals = 5;
       regularized_points.resize(depths_of_contours.size());
       slab_segment_lengths.resize(depths_of_contours.size());
       slab_segment_thickness.resize(depths_of_contours.size());
       slab_segment_top_truncation.resize(depths_of_contours.size());
       slab_segment_angles.resize(depths_of_contours.size());
+
+      // In reality, the variable below should be calculated like this:
+      // std::vector<double> bezier_sub_lengths = this->bezier_curve.get_bezier_segment_lengths();
+      // This is a VECTOR equal to N-1, where N is the number of coordinates which defines the feature.
+      // This is because for N points, you need N-1 bezier curves, and each bezier curve can be a different
+      // length.
+      const double bezier_sublengths = 2500e3;
+
+      // In reality, the variable below should be calculated like this:
+      // const double total_arclength = this->bezier_curve.get_bezier_arclength();
       const double total_arclength = 5000e3;
 
 
-
-
+// So I want to take the total arclength for the case that I KNOW! This is with three points that form a straight line
+// and the distance between them is 5000 km. This will result in 2 Bezier curves, one connecting the first two points,
+// and one connecting the last two points. I want to divide the ENTIRE arclength into 100 intervals, and I need to
+// track what distance I am along the total arclength, and also the length of the current Bezier curve. Once I exceed
+// the length of the current Bezier curve, I need to make sure that I switch to the NEXT bezier curve, and repeat this
+// process until I reach the end of the feature (the total arclength).
+      std::vector<Point<2>> coordinates_1 = {Point<2>(1500e3, 0.0, cartesian), Point<2>(1500e3, 2500e3, cartesian), Point<2>(1500e3, 5000e3, cartesian)};
+      // std::vector<Point<2>> coordinates_2 = {Point<2>(500e3, 0.0, cartesian), Point<2>(500e3, 2500e3, cartesian), Point<2>(500e3, 5000e3, cartesian)};
+      std::vector<Point<2>> coordinates_2 = {Point<2>(1200e3, 0.0, cartesian), Point<2>(1200e3, 2500e3, cartesian), Point<2>(1200e3, 5000e3, cartesian)};
+      std::vector<Point<2>> coordinates_3 = {Point<2>(1200e3, 0.0, cartesian), Point<2>(1200e3, 2500e3, cartesian), Point<2>(1200e3, 5000e3, cartesian)};
+      // std::vector<Point<2>> coordinates_3 = {Point<2>(1000e3, 0.0, cartesian), Point<2>(1000e3, 2500e3, cartesian), Point<2>(1000e3, 5000e3, cartesian)};
+      Objects::BezierCurve bezier_curve;
       for (unsigned int i = 0; i < depths_of_contours.size(); ++i)
         {
-          // Somehow here I need to specify which coordinates I am using. This should be possible by using the 
+          // Somehow here I need to specify which coordinates I am using. This should be possible by using the
           // index i which corresponds to the index of the depth value within the array of depth points.
-          this->get_coordinates("contours", prm, coordinate_system);
-          const double contour_arc_length = this->bezier_curve.get_bezier_arclength(); // not implemented in this branch
-          std::vector<double> bezier_sub_lengths = this->bezier_curve.get_bezier_segment_lengths();
-
-          for (unsigned int t = 0; t < number_of_intervals; ++t)
+          if (i == 0)
             {
-              // The distance along the current bezier curve
-              const double distance_along_contour = t * contour_arc_length / static_cast<double>(number_of_intervals);
-              double sum_of_bezier_curves = 0; // The sum of all the previous bezier curves
-              unsigned int q = 0; // The index of the bezier curve. This is supposed to start from 0 and
-              // then increase until the sum of the bezier curves is greater than the distance along the contour.
-              // however, in this case there is only one bezier curve, so this will always be 0.
-              while (sum_of_bezier_curves < total_arclength)
-                {
-                  sum_of_bezier_curves += distance_along_contour;
-                  ++q;
-                }
-              const double remaining_distance = distance_along_contour - sum_of_bezier_curves;
-              const double t_value = remaining_distance / bezier_sub_lengths[q];
-              regularized_points[i].emplace_back(this->bezier_curve(q, t_value));
+              // The first bezier curve
+              bezier_curve = Objects::BezierCurve(coordinates_1);
             }
-          }
 
-      for (unsigned int i = 0; i < depths_of_contours.size() - 1; ++i)
+          if (i == 1)
+            {
+              // The second bezier curve
+              bezier_curve = Objects::BezierCurve(coordinates_2);
+            }
+
+          if (i == 2)
+            {
+              // The second bezier curve
+              bezier_curve = Objects::BezierCurve(coordinates_3);
+            }
+          // The sum of all the previous bezier curves WITHIN the current contour
+          double distance_along_contour = 0;
+          double distance_along_current_bezier_curve = 0;
+
+          // The index of the bezier curve. Currently this doesnt do too much, but this will be used
+          // to index the length of the bezier curve as well.
+          unsigned int which_bezier_curve = 0;
+
+          for (unsigned int current_interval = 0; current_interval < number_of_intervals; ++current_interval)
+            {
+              // The increment in distance along the current bezier curve
+              const double distance_increment = total_arclength / static_cast<double>(number_of_intervals);
+              distance_along_current_bezier_curve += distance_increment;
+
+              if (distance_along_current_bezier_curve <= bezier_sublengths)
+                {
+                  const double t_value = distance_along_current_bezier_curve / bezier_sublengths;
+                  regularized_points[i].emplace_back(bezier_curve(which_bezier_curve, t_value));
+                  distance_along_contour += distance_increment;
+                }
+
+              else
+                {
+                  ++which_bezier_curve;
+                  const double remaining_distance = distance_along_current_bezier_curve -
+                                                    bezier_sublengths;
+
+                  const double t_value = remaining_distance / bezier_sublengths;
+                  regularized_points[i].emplace_back(bezier_curve(which_bezier_curve, t_value));
+                  distance_along_contour += distance_increment;
+                  distance_along_current_bezier_curve = remaining_distance;
+                }
+            }
+        }
+
+      for (unsigned int i = 0; i < depths_of_contours.size(); ++i)
         {
           slab_segment_lengths[i].resize(number_of_intervals);
           slab_segment_thickness[i].resize(number_of_intervals);
@@ -220,14 +268,27 @@ namespace WorldBuilder
           for (unsigned int t = 0; t < number_of_intervals; ++t)
             {
               std::array<double, 3> P1 = {regularized_points[i][t][0], regularized_points[i][t][1], depths_of_contours[i]};
-              std::array<double, 3> P2 = {regularized_points[i + 1][t][0], regularized_points[i + 1][t][1], depths_of_contours[i + 1]};
+              std::array<double, 3> P2;
+              if (i == depths_of_contours.size() - 1)
+                {
+                  P2 = {regularized_points[i][t][0], regularized_points[i][t][1], depths_of_contours[i]};
+                }
+              else
+                {
+                  P2 = {regularized_points[i + 1][t][0], regularized_points[i + 1][t][1], depths_of_contours[i + 1]};
+                }
+              // std::array<double, 3> P2 = {regularized_points[i + 1][t][0], regularized_points[i + 1][t][1], depths_of_contours[i + 1]};
               std::array<double, 3> P1P2 = {P2[0] - P1[0], P2[1] - P1[1], P2[2] - P1[2]};
 
               slab_segment_lengths[i][t] = std::sqrt(P1P2[0] * P1P2[0] + P1P2[1] * P1P2[1] + P1P2[2] * P1P2[2]);
               slab_segment_thickness[i][t] = slab_thickness;
 
-              // Angle with the Z-axis
-              slab_segment_angles[i][t][0] = std::acos(P1P2[2] / slab_segment_lengths[i][t]);
+              slab_segment_angles[i][t][0] = std::sin(P1P2[2] / slab_segment_lengths[i][t]);
+
+              if (i == depths_of_contours.size() - 1)
+                // Angle with the Z-axis
+                slab_segment_angles[i][t][0] = slab_segment_angles[0][t][0];
+
               slab_segment_top_truncation[i][t] = top_truncation;
             }
         }
@@ -266,52 +327,25 @@ namespace WorldBuilder
       // Find minimal and maximal coordinates. Do this by finding the
       // leftmost/rightmost point with regard to either the [0] or [1]
       // coordinate, and then takes its [0] or [1] element.
-      auto compare_x_coordinate = [](auto p1, auto p2)
-      {
-        return p1[0]<p2[0];
-      };
+      // auto compare_x_coordinate = [](auto p1, auto p2)
+      // {
+      //   return p1[0]<p2[0];
+      // };
 
-      min_along_x = (*std::min_element(coordinates.begin(), coordinates.end(), compare_x_coordinate)) [0];
-      max_along_x = (*std::max_element(coordinates.begin(), coordinates.end(), compare_x_coordinate)) [0];
+      // min_along_x = (*std::min_element(coordinates.begin(), coordinates.end(), compare_x_coordinate)) [0];
+      // max_along_x = (*std::max_element(coordinates.begin(), coordinates.end(), compare_x_coordinate)) [0];
 
 
-      auto compare_y_coordinate = [](auto p1, auto p2)
-      {
-        return p1[1]<p2[1];
-      };
+      // auto compare_y_coordinate = [](auto p1, auto p2)
+      // {
+      //   return p1[1]<p2[1];
+      // };
 
-      min_along_y = (*std::min_element(coordinates.begin(), coordinates.end(), compare_y_coordinate)) [1];
-      max_along_y = (*std::max_element(coordinates.begin(), coordinates.end(), compare_y_coordinate)) [1];
+      // min_along_y = (*std::min_element(coordinates.begin(), coordinates.end(), compare_y_coordinate)) [1];
+      // max_along_y = (*std::max_element(coordinates.begin(), coordinates.end(), compare_y_coordinate)) [1];
 
-      min_lat_cos_inv = 1. / std::cos(min_along_y);
-      max_lat_cos_inv = 1. / std::cos(max_along_y);
-
-      buffer_around_slab_cartesian = (maximum_slab_thickness + maximum_total_slab_length);
-
-      // Compute the surface bounding box
-      buffer_around_slab_cartesian = (maximum_slab_thickness + maximum_total_slab_length);
-      if (world->parameters.coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical)
-        {
-          const double starting_radius_inv = 1 / (world->parameters.coordinate_system->max_model_depth());
-          std::pair<Point<2>, Point<2> > &spherical_bounding_box = surface_bounding_box.get_boundary_points();
-
-          const double buffer_around_slab_spherical = 2 * Consts::PI * buffer_around_slab_cartesian * starting_radius_inv;
-
-          spherical_bounding_box.first = {(min_along_x - buffer_around_slab_spherical * min_lat_cos_inv) ,
-                                          (min_along_y - buffer_around_slab_spherical), spherical
-                                         } ;
-
-          spherical_bounding_box.second = {(max_along_x + buffer_around_slab_spherical * max_lat_cos_inv) ,
-                                           (max_along_y + buffer_around_slab_spherical), spherical
-                                          };
-        }
-      else if (world->parameters.coordinate_system->natural_coordinate_system() == CoordinateSystem::cartesian)
-        {
-          std::pair<Point<2>, Point<2> > &bounding_box = surface_bounding_box.get_boundary_points();
-          bounding_box.first = {min_along_x, min_along_y, cartesian};
-          bounding_box.second = {max_along_x, max_along_y, cartesian};
-          surface_bounding_box.extend(buffer_around_slab_cartesian);
-        }
+      // min_lat_cos_inv = 1. / std::cos(min_along_y);
+      // max_lat_cos_inv = 1. / std::cos(max_along_y);
     }
 
 
@@ -325,274 +359,82 @@ namespace WorldBuilder
 
     void
     SubductingPlateContours::properties(const Point<3> &position_in_cartesian_coordinates,
-                                const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                                const double depth,
-                                const std::vector<std::array<unsigned int,3>> &properties,
-                                const double gravity_norm,
-                                const std::vector<size_t> &entry_in_output,
-                                std::vector<double> &output) const
+                                        const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                                        const double depth,
+                                        const std::vector<std::array<unsigned int,3>> &properties,
+                                        const double gravity_norm,
+                                        const std::vector<size_t> &entry_in_output,
+                                        std::vector<double> &output) const
     {
-      // The depth variable is the distance from the surface to the position, the depth
-      // coordinate is the distance from the bottom of the model to the position and
-      // the starting radius is the distance from the bottom of the model to the surface.
-      const double starting_radius = position_in_natural_coordinates.get_depth_coordinate() + depth - starting_depth;
-
-      WBAssert(std::abs(starting_radius) > std::numeric_limits<double>::epsilon(), "World Builder error: starting_radius can not be zero. "
-               << "Position = " << position_in_cartesian_coordinates[0] << ':' << position_in_cartesian_coordinates[1] << ':' << position_in_cartesian_coordinates[2]
-               << ", position_in_natural_coordinates.get_depth_coordinate() = " << position_in_natural_coordinates.get_depth_coordinate()
-               << ", depth = " << depth
-               << ", starting_depth " << starting_depth
-              );
-
-      // todo: explain and check -starting_depth
-      if (depth <= maximum_depth && depth >= starting_depth && depth <= maximum_total_slab_length + maximum_slab_thickness &&
-          get_surface_bounding_box().point_inside(Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
-                                                           world->parameters.coordinate_system->natural_coordinate_system())))
+      // std::vector<double> depths_of_contours = {0, 100e3};
+      std::vector<double> absolute_distances_from_planes_to_check_point;
+      std::vector<double> signed_distances_from_planes_to_check_point;
+      for (unsigned int i = 0; i < depths_of_contours.size() - 1; ++i)
         {
-          const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
-            WorldBuilder::Utilities::distance_point_from_curved_planes(position_in_cartesian_coordinates,
-                                                                       position_in_natural_coordinates,
-                                                                       reference_point,
-                                                                       coordinates,
-                                                                       slab_segment_lengths,
-                                                                       slab_segment_angles,
-                                                                       starting_radius,
-                                                                       this->world->parameters.coordinate_system,
-                                                                       false,
-                                                                       this->bezier_curve);
-
-          const double distance_from_plane = distance_from_planes.distance_from_plane;
-          const double distance_along_plane = distance_from_planes.distance_along_plane;
-          const double section_fraction = distance_from_planes.fraction_of_section;
-          const size_t current_section = distance_from_planes.section;
-          const size_t next_section = current_section + 1;
-          const size_t current_segment = distance_from_planes.segment; // the original value was a unsigned in, converting it back.
-          //const size_t next_segment = current_segment + 1;
-          const double segment_fraction = distance_from_planes.fraction_of_segment;
-
-          if (abs(distance_from_plane) < std::numeric_limits<double>::infinity() || (distance_along_plane) < std::numeric_limits<double>::infinity())
+          std::vector<Point<2>> contour_i = regularized_points[i];
+          std::vector<Point<2>> contour_i_plus_1 = regularized_points[i + 1];
+          for (unsigned int j = 0; j < number_of_intervals - 1; ++j)
             {
-              // We want to do both section (horizontal) and segment (vertical) interpolation.
-              // first for thickness
-              const double thickness_up = slab_thickness;
-              const double thickness_down = slab_thickness;
-              const double thickness_local = slab_thickness;
-
-              // if the thickness is zero, we don't need to compute anything, so return.
-              if (std::fabs(thickness_local) < 2.0 * std::numeric_limits<double>::epsilon())
-                return;
-
-              // secondly for top truncation
-              const double top_truncation_up = top_truncation;
-              const double top_truncation_down = top_truncation;
-              const double top_truncation_local = top_truncation;
-
-              // if the thickness is smaller than what is truncated off at the top, we don't need to compute anything, so return.
-              if (thickness_local < top_truncation_local)
-                return;
-
-              const double max_slab_length = total_slab_length[current_section] +
-                                             section_fraction *
-                                             (total_slab_length[next_section] - total_slab_length[current_section]);
-
-              if (distance_from_plane >= top_truncation_local &&
-                  distance_from_plane <= thickness_local &&
-                  distance_along_plane >= 0 &&
-                  distance_along_plane <= max_slab_length)
-                {
-                  // Inside the slab!
-                  const Features::AdditionalParameters additional_parameters = {max_slab_length,thickness_local};
-                  for (unsigned int i_property = 0; i_property < properties.size(); ++i_property)
-                    {
-                      switch (properties[i_property][0])
-                        {
-                          case 1: // temperature
-                          {
-
-                            for (const auto &temperature_model: segment_vector[current_section][current_segment].temperature_systems)
-                              {
-                                double temp_1 = 1;
-                              }
-
-                            for (const auto &temperature_model: segment_vector[next_section][current_segment].temperature_systems)
-                              {
-                                double temp_2 = 1;
-                              }
-
-                            // linear interpolation between current and next section temperatures
-                            break;
-                          }
-                          case 2: // composition
-                          {
-                            for (const auto &composition_model: segment_vector[current_section][current_segment].composition_systems)
-                              {
-                                double test_2 = 1;
-                              }
-
-                            for (const auto &composition_model: segment_vector[next_section][current_segment].composition_systems)
-                              {
-                                double test_1 = 1;
-                              }
-
-                            // linear interpolation between current and next section temperatures
-                            break;
-                          }
-                          case 3: // grains
-                          {
-                            WorldBuilder::grains grains(output,properties[i_property][2],entry_in_output[i_property]);
-                            WorldBuilder::grains  grains_current_section = grains;
-                            WorldBuilder::grains  grains_next_section = grains;
-
-                            for (const auto &grains_model: segment_vector[current_section][current_segment].grains_systems)
-                              {
-                                grains_current_section = grains_model->get_grains(position_in_cartesian_coordinates,
-                                                                                  depth,
-                                                                                  properties[i_property][1],
-                                                                                  grains_current_section,
-                                                                                  starting_depth,
-                                                                                  maximum_depth,
-                                                                                  distance_from_planes,
-                                                                                  additional_parameters);
-
-                              }
-
-                            for (const auto &grains_model: segment_vector[next_section][current_segment].grains_systems)
-                              {
-                                grains_next_section = grains_model->get_grains(position_in_cartesian_coordinates,
-                                                                               depth,
-                                                                               properties[i_property][1],
-                                                                               grains_next_section,
-                                                                               starting_depth,
-                                                                               maximum_depth,
-                                                                               distance_from_planes,
-                                                                               additional_parameters);
-
-                              }
-
-                            // linear interpolation between current and next section temperatures
-                            for (size_t i = 0; i < grains.sizes.size(); i++)
-                              {
-                                grains.sizes[i] = grains_current_section.sizes[i] + section_fraction * (grains_next_section.sizes[i] - grains_current_section.sizes[i]);
-                              }
-
-                            // average two rotations matrices through quaternions.
-                            for (size_t i = 0; i < grains_current_section.rotation_matrices.size(); i++)
-                              {
-                                const glm::quaternion::quat quat_current = glm::quaternion::quat_cast(grains_current_section.rotation_matrices[i]);
-                                const glm::quaternion::quat quat_next = glm::quaternion::quat_cast(grains_next_section.rotation_matrices[i]);
-
-                                const glm::quaternion::quat quat_average = glm::quaternion::slerp(quat_current,quat_next,section_fraction);
-
-                                grains.rotation_matrices[i] = glm::quaternion::mat3_cast(quat_average);
-                              }
-
-                            grains.unroll_into(output,entry_in_output[i_property]);
-                            break;
-                          }
-                          case 4:
-                          {
-                            output[entry_in_output[i_property]] = static_cast<double>(tag_index);
-                            break;
-                          }
-                          case 5: // velocity
-                          {
-                            std::array<double,3> velocity_current_section;// = Point<3>(cartesian);
-                            velocity_current_section[0] = output[entry_in_output[i_property]];
-                            velocity_current_section[1] = output[entry_in_output[i_property]+1];
-                            velocity_current_section[2] = output[entry_in_output[i_property]]+2;
-                            std::array<double,3> velocity_next_section = velocity_current_section;// output[entry_in_output[i_property]];
-
-                            for (const auto &velocity_model: segment_vector[current_section][current_segment].velocity_systems)
-                              {
-                                velocity_current_section = velocity_model->get_velocity(position_in_cartesian_coordinates,
-                                                                                        depth,
-                                                                                        gravity_norm,
-                                                                                        velocity_current_section,
-                                                                                        starting_depth,
-                                                                                        maximum_depth,
-                                                                                        distance_from_planes,
-                                                                                        additional_parameters);
-
-                                //WBAssert(!std::isnan(velocity_current_section), "Velocity is not a number: " << velocity_current_section
-                                //         << ", based on a velocity model with the name " << velocity_model->get_name() << ", in feature " << this->name);
-                                //WBAssert(std::isfinite(velocity_current_section), "Velocity is not a finite: " << velocity_current_section
-                                //         << ", based on a velocity model with the name " << velocity_model->get_name() << ", in feature " << this->name);
-
-                              }
-
-                            for (const auto &velocity_model: segment_vector[next_section][current_segment].velocity_systems)
-                              {
-                                velocity_next_section = velocity_model->get_velocity(position_in_cartesian_coordinates,
-                                                                                     depth,
-                                                                                     gravity_norm,
-                                                                                     velocity_next_section,
-                                                                                     starting_depth,
-                                                                                     maximum_depth,
-                                                                                     distance_from_planes,
-                                                                                     additional_parameters);
-
-                                //WBAssert(!std::isnan(velocity_next_section), "Velocity is not a number: " << velocity_next_section
-                                //         << ", based on a velocity model with the name " << velocity_model->get_name() << ", in feature " << this->name);
-                                //WBAssert(std::isfinite(velocity_next_section), "Velocity is not a finite: " << velocity_next_section
-                                //         << ", based on a velocity model with the name " << velocity_model->get_name() << ", in feature " << this->name);
-
-                              }
-
-                            // linear interpolation between current and next section velocitys
-                            output[entry_in_output[i_property]] = velocity_current_section[0] + section_fraction * (velocity_next_section[0] - velocity_current_section[0]);
-                            output[entry_in_output[i_property]+1] = velocity_current_section[1] + section_fraction * (velocity_next_section[1] - velocity_current_section[1]);
-                            output[entry_in_output[i_property]+2] = velocity_current_section[2] + section_fraction * (velocity_next_section[2] - velocity_current_section[2]);
-                            break;
-                          }
-                          default:
-                          {
-                            WBAssertThrow(false,
-                                          "Internal error: Unimplemented property provided. " <<
-                                          "Only temperature (1), composition (2), grains (3), tag (4) or velocity (5) are allowed. "
-                                          "Provided property number was: " << properties[i_property][0]);
-                          }
-                        }
-                    }
-
-                }
+              const Point<3> p1 = Point<3>(contour_i[j][0], contour_i[j][1], 500e3 - depths_of_contours[i], cartesian);
+              const Point<3> p2 = Point<3>(contour_i[j + 1][0], contour_i[j + 1][1], 500e3 - depths_of_contours[i], cartesian);
+              const Point<3> p3 = Point<3>(contour_i_plus_1[j][0], contour_i_plus_1[j][1], 500e3 - depths_of_contours[i + 1], cartesian);
+              const Point<3> p4 = Point<3>(contour_i_plus_1[j + 1][0], contour_i_plus_1[j + 1][1], 500e3 - depths_of_contours[i + 1], cartesian);
+              const double distance_1 = WorldBuilder::Utilities::calculate_distance_from_point_to_rectilinear_plane(p1, p2, p3, position_in_cartesian_coordinates);
+              const double distance_2 = WorldBuilder::Utilities::calculate_distance_from_point_to_rectilinear_plane(p4, p3, p2, position_in_cartesian_coordinates);
+              absolute_distances_from_planes_to_check_point.emplace_back(std::abs(distance_1));
+              absolute_distances_from_planes_to_check_point.emplace_back(std::abs(distance_2));
+              signed_distances_from_planes_to_check_point.emplace_back(distance_1);
+              signed_distances_from_planes_to_check_point.emplace_back(distance_2);
             }
         }
 
+      // Find the iterator to the minimum element
+      auto minIt = std::min_element(absolute_distances_from_planes_to_check_point.begin(), absolute_distances_from_planes_to_check_point.end());
+
+      // Calculate the index
+      const unsigned int minIndex = std::distance(absolute_distances_from_planes_to_check_point.begin(), minIt);
+      const double min_distance_to_plane = signed_distances_from_planes_to_check_point[minIndex];
+
+      // if (depth >= min_depth_local && depth <= max_depth_local && std::abs(min_distance_to_plane) <= slab_segment_thickness[0][0])
+      if (min_distance_to_plane >= -slab_segment_thickness[0][0] &&
+          min_distance_to_plane <= 0 &&
+          depth <= depths_of_contours[depths_of_contours.size() - 1])
+        {
+          output[entry_in_output[0]] = 10.0;
+        }
+
+      // Objects::PlaneDistances
+      // SubductingPlateContours::distance_to_feature_plane(const Point<3> &position_in_cartesian_coordinates,
+      //                                            const Objects::NaturalCoordinate &position_in_natural_coordinates,
+      //                                            const double depth) const
+      // {
+      //   // The depth variable is the distance from the surface to the position, the depth
+      //   // coordinate is the distance from the bottom of the model to the position and
+      //   // the starting radius is the distance from the bottom of the model to the surface.
+      //   const double starting_radius = position_in_natural_coordinates.get_depth_coordinate() + depth - starting_depth;
+
+      //   WBAssert(std::abs(starting_radius) > std::numeric_limits<double>::epsilon(), "World Builder error: starting_radius can not be zero. "
+      //            << "Position = " << position_in_cartesian_coordinates[0] << ':' << position_in_cartesian_coordinates[1] << ':' << position_in_cartesian_coordinates[2]
+      //            << ", natural_coordinate.get_depth_coordinate() = " << position_in_natural_coordinates.get_depth_coordinate()
+      //            << ", depth = " << depth
+      //            << ", starting_depth " << starting_depth
+      //           );
+
+      //   const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
+      //     WorldBuilder::Utilities::distance_point_from_curved_planes(position_in_cartesian_coordinates,
+      //                                                                position_in_natural_coordinates,
+      //                                                                reference_point,
+      //                                                                coordinates,
+      //                                                                slab_segment_lengths,
+      //                                                                slab_segment_angles,
+      //                                                                starting_radius,
+      //                                                                this->world->parameters.coordinate_system,
+      //                                                                false,
+      //                                                                this->bezier_curve);
+
+      //   Objects::PlaneDistances plane_distances(distance_from_planes.distance_from_plane, distance_from_planes.distance_along_plane);
+      //   return plane_distances;
     }
-
-    Objects::PlaneDistances
-    SubductingPlateContours::distance_to_feature_plane(const Point<3> &position_in_cartesian_coordinates,
-                                               const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                                               const double depth) const
-    {
-      // The depth variable is the distance from the surface to the position, the depth
-      // coordinate is the distance from the bottom of the model to the position and
-      // the starting radius is the distance from the bottom of the model to the surface.
-      const double starting_radius = position_in_natural_coordinates.get_depth_coordinate() + depth - starting_depth;
-
-      WBAssert(std::abs(starting_radius) > std::numeric_limits<double>::epsilon(), "World Builder error: starting_radius can not be zero. "
-               << "Position = " << position_in_cartesian_coordinates[0] << ':' << position_in_cartesian_coordinates[1] << ':' << position_in_cartesian_coordinates[2]
-               << ", natural_coordinate.get_depth_coordinate() = " << position_in_natural_coordinates.get_depth_coordinate()
-               << ", depth = " << depth
-               << ", starting_depth " << starting_depth
-              );
-
-      const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes distance_from_planes =
-        WorldBuilder::Utilities::distance_point_from_curved_planes(position_in_cartesian_coordinates,
-                                                                   position_in_natural_coordinates,
-                                                                   reference_point,
-                                                                   coordinates,
-                                                                   slab_segment_lengths,
-                                                                   slab_segment_angles,
-                                                                   starting_radius,
-                                                                   this->world->parameters.coordinate_system,
-                                                                   false,
-                                                                   this->bezier_curve);
-
-      Objects::PlaneDistances plane_distances(distance_from_planes.distance_from_plane, distance_from_planes.distance_along_plane);
-      return plane_distances;
-    }
-
     /**
      * Register plugin
      */

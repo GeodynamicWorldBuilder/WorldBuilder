@@ -146,10 +146,10 @@ namespace WorldBuilder
         * Returns a PlaneDistances object that has the distance from and along a subducting plate plane,
         * calculated from the coordinates and the depth of the point.
         */
-        Objects::PlaneDistances
-        distance_to_feature_plane(const Point<3> &position_in_cartesian_coordinates,
-                                  const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                                  const double depth) const override;
+        // Objects::PlaneDistances
+        // distance_to_feature_plane(const Point<3> &position_in_cartesian_coordinates,
+        //                           const Objects::NaturalCoordinate &position_in_natural_coordinates,
+        //                           const double depth) const override;
 
 
       private:
@@ -232,7 +232,15 @@ namespace WorldBuilder
         double max_along_y;
         double min_lat_cos_inv;
         double max_lat_cos_inv;
+
+        double min_depth_local = 0;
+        double max_depth_local = 100e3;
+
+        std::vector<std::vector<Point<2>>> regularized_points;
         double buffer_around_slab_cartesian;
+        std::vector<double> depths_of_contours = {0, 400e3};
+
+        unsigned int number_of_intervals = 5;
     };
   } // namespace Features
 } // namespace WorldBuilder
