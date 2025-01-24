@@ -1,0 +1,16 @@
+# Test for reading values from ascii
+# data file. Plate velocity is 1 cm/yr
+# so x [m] = age [yrs] * 0.01 [m/yr].
+# Now define parameters:
+# dim = 2
+# compositions = 0
+# x z d T
+0 0 0
+5e5 0 0
+1e6 0 0
+0 0 250e3
+1e6 0 125e3
+1e6 0 250e3
+1.5e6 0 375e3
+2e6 0 4e5
+2e6 0 4.999999999999e5

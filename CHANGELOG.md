@@ -17,6 +17,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - There is now a properties_output_size function, which returns the size of the output vector/array returned by the properties functions for a given properties input vector \[Menno Fraters; 2024-10-27; [#765](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/765)\]
 - Added 2d and 3d versions of the properties function to the C wrapper \[Menno Fraters; 2024-10-27; [#765](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/765)\]
 - Added continental geotherm from Chapman (1986) for the Temperature Model in Continental Plate \[Alan Yu; 2025-01-21; [#778](https://github.com/GeodynamicWorldBuilder/WorldBuilder/issues/778), [#797](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/797)\]
+- Added the ability to read the thermal structure of oceanic plates from an ascii data file \[Juliane Dannberg; 2025-01-24; [#830](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/830)
 
 ### Changed
 - The tian2019 composition model now returns a mass fraction instead of a mass percentage. \[Daniel Douglas; 2024-11-12; [#767](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/767)\]
