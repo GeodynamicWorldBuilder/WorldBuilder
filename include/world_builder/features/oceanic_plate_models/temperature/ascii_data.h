@@ -108,17 +108,17 @@ namespace WorldBuilder
              * the temperature distribution in dependence of age and depth
              * and returns it as TableData.
              */
-            bool readDataFromFile(const std::string &filename,
-                                  TableData &data) const;
+            bool read_data_from_file(const std::string &filename,
+                                     TableData &data) const;
 
             /**
              * A function that extracts the temperature from the table structure
              * by linearly interpolating between the closest entries for depth
              * and age.
              */
-            double interpolateTemperature(const TableData &table,
-                                          const double age,
-                                          const double depth) const;
+            double interpolate_temperature(const TableData &table,
+                                           const double age,
+                                           const double depth) const;
 
 
         };

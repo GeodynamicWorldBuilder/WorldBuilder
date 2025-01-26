@@ -7,6 +7,6 @@
   "features":
   [
     {"model":"oceanic plate", "name":"oceanic plate", "coordinates":[[-1e3,-1e3],[2100e3,-1e3],[2100e3,1e3],[-1e3,1e3]],
-     "temperature models":[{"model":"ascii data", "max depth":500e3, "spreading velocity":0.01, "ridge coordinates":[[[0,-1e3],[0,1e3]]], "data file name":"test_data.txt", "data directory":"../data/"}]}
+     "temperature models":[{"model":"ascii data", "max depth":500e3, "spreading velocity":0.01, "ridge coordinates":[[[0,-1e3],[0,1e3]]], "data file name":"test_data.txt", "data directory":"data/"}]}
   ]
 }

@@ -133,7 +133,7 @@ namespace WorldBuilder
             }
 
           // Read in the data table
-          if (!readDataFromFile(data_directory + data_file_name, age_depth_table))
+          if (!read_data_from_file(data_directory + data_file_name, age_depth_table))
             WBAssertThrow(false,
                           "Could not read depth-age data file.");
 
@@ -181,7 +181,7 @@ namespace WorldBuilder
                   const double age = ridge_parameters[1] / (ridge_parameters[0] * seconds_in_year);
 
                   // Get temperature from ascii data file.
-                  double temperature = interpolateTemperature (age_depth_table, age, depth);
+                  double temperature = interpolate_temperature (age_depth_table, age, depth);
 
                   // Apply adiabatic temperature gradient.
                   temperature += adiabatic_temperature - this->world->potential_mantle_temperature;
@@ -203,8 +203,8 @@ namespace WorldBuilder
 
 
         bool
-        AsciiData::readDataFromFile(const std::string &filename,
-                                    TableData &data) const
+        AsciiData::read_data_from_file(const std::string &filename,
+                                       TableData &data) const
         {
           std::ifstream infile(filename);
 
@@ -319,9 +319,9 @@ namespace WorldBuilder
 
 
         double
-        AsciiData::interpolateTemperature(const TableData &table,
-                                          const double age,
-                                          const double depth) const
+        AsciiData::interpolate_temperature(const TableData &table,
+                                           const double age,
+                                           const double depth) const
         {
           // 1) Find i such that table.times[i] <= age < table.times[i+1]
           const auto &times = table.times;
