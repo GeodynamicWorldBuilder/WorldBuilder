@@ -57,6 +57,12 @@ When done with the World Builder, the `release_world` subroutine has to be calle
 A short explanation of how the World Builder is integrated into the Mantle Convection code CHIC can be found on the next page {ref}`part:API_manual:chap:API_FFI:sec:Fortran_interface:subsec:CHIC_integration`
 ```
 
+```{toctree}
+:hidden:
+
+CHIC_integration
+```
+
 <!-- With the sphinx Fortran extension, the following syntax would be possible
 PARAMETERS
 .. f:subroutine:: temperature_2d(cworld, x, z, depth, temperature)
