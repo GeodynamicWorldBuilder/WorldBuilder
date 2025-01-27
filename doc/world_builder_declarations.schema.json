@@ -399,10 +399,10 @@
                                                     ]
                                                 },
                                                 "min depth": {
-                                                    "description": "The depth in meters from which the composition of this feature is present.",
+                                                    "description": "The depth in m from which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
-                                                            "default value": 0.0,
+                                                            "default value": -1.7976931348623157e308,
                                                             "type": "number",
                                                             "description": ""
                                                         },
@@ -422,7 +422,7 @@
                                                                     "anyOf": [
                                                                         {
                                                                             "type": "number",
-                                                                            "default value": 0.0
+                                                                            "default value": -1.7976931348623157e308
                                                                         },
                                                                         {
                                                                             "type": "array",
@@ -444,7 +444,7 @@
                                                     ]
                                                 },
                                                 "max depth": {
-                                                    "description": "The depth in meters to which the composition of this feature is present.",
+                                                    "description": "The depth in m to which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
                                                             "default value": 1.7976931348623157e308,
@@ -555,7 +555,7 @@
                                                     "description": "The depth in m from which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
-                                                            "default value": 0.0,
+                                                            "default value": -1.7976931348623157e308,
                                                             "type": "number",
                                                             "description": ""
                                                         },
@@ -575,7 +575,7 @@
                                                                     "anyOf": [
                                                                         {
                                                                             "type": "number",
-                                                                            "default value": 0.0
+                                                                            "default value": -1.7976931348623157e308
                                                                         },
                                                                         {
                                                                             "type": "array",
@@ -671,10 +671,10 @@
                                                     ]
                                                 },
                                                 "min depth": {
-                                                    "description": "The depth in meters from which the composition of this feature is present.",
+                                                    "description": "The depth in m from which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
-                                                            "default value": 0.0,
+                                                            "default value": -1.7976931348623157e308,
                                                             "type": "number",
                                                             "description": ""
                                                         },
@@ -694,7 +694,7 @@
                                                                     "anyOf": [
                                                                         {
                                                                             "type": "number",
-                                                                            "default value": 0.0
+                                                                            "default value": -1.7976931348623157e308
                                                                         },
                                                                         {
                                                                             "type": "array",
@@ -716,7 +716,7 @@
                                                     ]
                                                 },
                                                 "max depth": {
-                                                    "description": "The depth in meters to which the composition of this feature is present.",
+                                                    "description": "The depth in m to which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
                                                             "default value": 1.7976931348623157e308,
@@ -763,12 +763,12 @@
                                                 "top temperature": {
                                                     "default value": 293.15,
                                                     "type": "number",
-                                                    "description": "The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used."
+                                                    "description": "The temperature in K at the top of this feature.If the value is below zero, the an adiabatic temperature is used."
                                                 },
                                                 "bottom temperature": {
                                                     "default value": -1.0,
                                                     "type": "number",
-                                                    "description": "The temperature at the top in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used."
+                                                    "description": "The temperature in K at the top of this feature. If the value is below zero, an adiabatic temperature is used."
                                                 }
                                             }
                                         },
@@ -800,10 +800,10 @@
                                                     ]
                                                 },
                                                 "min depth": {
-                                                    "description": "The depth in meters from which the composition of this feature is present.",
+                                                    "description": "The depth in m from which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
-                                                            "default value": 0.0,
+                                                            "default value": -1.7976931348623157e308,
                                                             "type": "number",
                                                             "description": ""
                                                         },
@@ -823,7 +823,7 @@
                                                                     "anyOf": [
                                                                         {
                                                                             "type": "number",
-                                                                            "default value": 0.0
+                                                                            "default value": -1.7976931348623157e308
                                                                         },
                                                                         {
                                                                             "type": "array",
@@ -845,7 +845,7 @@
                                                     ]
                                                 },
                                                 "max depth": {
-                                                    "description": "The depth in meters to which the composition of this feature is present.",
+                                                    "description": "The depth in m to which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
                                                             "default value": 1.7976931348623157e308,
@@ -892,7 +892,7 @@
                                                 "temperature": {
                                                     "default value": 293.15,
                                                     "type": "number",
-                                                    "description": "The temperature in degree Kelvin which this feature should have"
+                                                    "description": "The temperature in K which the entire feature should have"
                                                 }
                                             }
                                         }
@@ -936,7 +936,7 @@
                                                     "description": "The depth in meters from which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
-                                                            "default value": 0.0,
+                                                            "default value": -1.7976931348623157e308,
                                                             "type": "number",
                                                             "description": ""
                                                         },
@@ -956,7 +956,7 @@
                                                                     "anyOf": [
                                                                         {
                                                                             "type": "number",
-                                                                            "default value": 0.0
+                                                                            "default value": -1.7976931348623157e308
                                                                         },
                                                                         {
                                                                             "type": "array",
@@ -1066,7 +1066,7 @@
                                                     "description": "The depth in meters from which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
-                                                            "default value": 0.0,
+                                                            "default value": -1.7976931348623157e308,
                                                             "type": "number",
                                                             "description": ""
                                                         },
@@ -1086,7 +1086,7 @@
                                                                     "anyOf": [
                                                                         {
                                                                             "type": "number",
-                                                                            "default value": 0.0
+                                                                            "default value": -1.7976931348623157e308
                                                                         },
                                                                         {
                                                                             "type": "array",
@@ -1222,7 +1222,7 @@
                                                     "description": "The depth in meters from which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
-                                                            "default value": 0.0,
+                                                            "default value": -1.7976931348623157e308,
                                                             "type": "number",
                                                             "description": ""
                                                         },
@@ -1242,7 +1242,7 @@
                                                                     "anyOf": [
                                                                         {
                                                                             "type": "number",
-                                                                            "default value": 0.0
+                                                                            "default value": -1.7976931348623157e308
                                                                         },
                                                                         {
                                                                             "type": "array",
@@ -1375,7 +1375,7 @@
                                                     "description": "The depth in meters from which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
-                                                            "default value": 0.0,
+                                                            "default value": -1.7976931348623157e308,
                                                             "type": "number",
                                                             "description": ""
                                                         },
@@ -1395,7 +1395,7 @@
                                                                     "anyOf": [
                                                                         {
                                                                             "type": "number",
-                                                                            "default value": 0.0
+                                                                            "default value": -1.7976931348623157e308
                                                                         },
                                                                         {
                                                                             "type": "array",
@@ -1525,10 +1525,10 @@
                                                     ]
                                                 },
                                                 "min depth": {
-                                                    "description": "The depth in meters from which the composition of this feature is present.",
+                                                    "description": "The depth in m from which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
-                                                            "default value": 0.0,
+                                                            "default value": -1.7976931348623157e308,
                                                             "type": "number",
                                                             "description": ""
                                                         },
@@ -1548,7 +1548,7 @@
                                                                     "anyOf": [
                                                                         {
                                                                             "type": "number",
-                                                                            "default value": 0.0
+                                                                            "default value": -1.7976931348623157e308
                                                                         },
                                                                         {
                                                                             "type": "array",
@@ -1570,7 +1570,7 @@
                                                     ]
                                                 },
                                                 "max depth": {
-                                                    "description": "The depth in meters to which the composition of this feature is present.",
+                                                    "description": "The depth in m to which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
                                                             "default value": 1.7976931348623157e308,
@@ -1738,7 +1738,7 @@
                                                     "description": "The depth in meters from which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
-                                                            "default value": 0.0,
+                                                            "default value": -1.7976931348623157e308,
                                                             "type": "number",
                                                             "description": ""
                                                         },
@@ -1758,7 +1758,7 @@
                                                                     "anyOf": [
                                                                         {
                                                                             "type": "number",
-                                                                            "default value": 0.0
+                                                                            "default value": -1.7976931348623157e308
                                                                         },
                                                                         {
                                                                             "type": "array",

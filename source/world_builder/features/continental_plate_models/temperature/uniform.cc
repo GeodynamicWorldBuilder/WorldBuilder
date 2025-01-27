@@ -40,8 +40,8 @@ namespace WorldBuilder
       {
         Uniform::Uniform(WorldBuilder::World *world_)
           :
-          min_depth(NaN::DSNAN),
-          max_depth(NaN::DSNAN),
+          min_depth_entry(NaN::DSNAN),
+          max_depth_entry(NaN::DSNAN),
           temperature(NaN::DSNAN),
           operation(Operations::REPLACE)
         {
@@ -61,25 +61,23 @@ namespace WorldBuilder
                             "Uniform temperature model. Set the temperature to a constant value.");
 
           // Declare entries of this plugin
-          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0., 2.))),
-                            "The depth in meters from which the composition of this feature is present.");
+          prm.declare_entry("min depth", Types::OneOf(Types::Double(-std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(-std::numeric_limits<double>::max(), 2.))),
+                            "The depth in m from which the composition of this feature is present.");
 
           prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(), 2.))),
-                            "The depth in meters to which the composition of this feature is present.");
+                            "The depth in m to which the composition of this feature is present.");
 
           prm.declare_entry("temperature", Types::Double(293.15),
-                            "The temperature in degree Kelvin which this feature should have");
-
+                            "The temperature in K which the entire feature should have");
         }
 
         void
         Uniform::parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates)
         {
-
-          min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
-          min_depth = min_depth_surface.minimum;
-          max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
-          max_depth = max_depth_surface.maximum;
+          min_depth_surface_entry = Objects::Surface(prm.get("min depth",coordinates));
+          min_depth_entry = min_depth_surface_entry.minimum;
+          max_depth_surface_entry = Objects::Surface(prm.get("max depth",coordinates));
+          max_depth_entry = max_depth_surface_entry.maximum;
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
           temperature = prm.get<double>("temperature");
         }
@@ -91,14 +89,21 @@ namespace WorldBuilder
                                  const double depth,
                                  const double  /*gravity*/,
                                  double temperature_,
-                                 const double /*feature_min_depth*/,
-                                 const double /*feature_max_depth*/) const
+                                 const double min_depth_feature,
+                                 const double max_depth_feature) const
         {
-          const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
-          const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
-          if (depth <= max_depth_local &&  depth >= min_depth_local)
+          if (depth <= max_depth_entry && depth >= min_depth_entry && depth <= max_depth_feature && depth >= min_depth_feature)
             {
-              if (depth <= max_depth && depth >= min_depth)
+              // check if the user defined min_depth and max_depth are constant values
+              // use those values if that is the case, find the surface point if not
+              double min_depth_point = min_depth_surface_entry.constant_value ? min_depth_entry : min_depth_surface_entry.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
+              double max_depth_point = max_depth_surface_entry.constant_value ? max_depth_entry : max_depth_surface_entry.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
+
+              // constrain the depth to the feature min and max depth
+              double min_depth_local = std::max(min_depth_feature, min_depth_point);
+              double max_depth_local = std::min(max_depth_feature, max_depth_point);
+
+              if (depth <= max_depth_local && depth >= min_depth_local)
                 {
                   return apply_operation(operation,temperature_,temperature);
                 }
