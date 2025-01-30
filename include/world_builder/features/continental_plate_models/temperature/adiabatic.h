@@ -82,26 +82,13 @@ namespace WorldBuilder
 
           private:
             // adiabatic temperature submodule parameters
-            double min_depth;
-            Objects::Surface min_depth_surface;
-            double max_depth;
-            Objects::Surface max_depth_surface;
-            /**
-             * Todo
-             */
+            double min_depth_entry;
+            Objects::Surface min_depth_surface_entry;
+            double max_depth_entry;
+            Objects::Surface max_depth_surface_entry;
             double potential_mantle_temperature;
-
-
-            /**
-             * Todo
-             */
             double thermal_expansion_coefficient;
-
-            /**
-             * Todo
-             */
             double specific_heat;
-
             Operations operation;
 
         };

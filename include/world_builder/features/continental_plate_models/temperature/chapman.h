@@ -82,19 +82,19 @@ namespace WorldBuilder
                                    const double depth,
                                    const double gravity,
                                    double temperature,
-                                   const double feature_min_depth,
-                                   const double feature_max_depth) const override final;
+                                   const double min_depth_feature,
+                                   const double max_depth_feature) const override final;
 
 
           private:
-            double top_temperature;
+            double top_temperature_entry;
             double top_heat_flux;
             double thermal_conductivity;
             double heat_production_per_unit_volume;
-            double min_depth;
-            Objects::Surface min_depth_surface;
-            double max_depth;
-            Objects::Surface max_depth_surface;
+            double min_depth_entry;
+            Objects::Surface min_depth_surface_entry;
+            double max_depth_entry;
+            Objects::Surface max_depth_surface_entry;
             Operations operation;
 
         };

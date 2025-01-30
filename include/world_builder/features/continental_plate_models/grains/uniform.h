@@ -95,10 +95,10 @@ namespace WorldBuilder
 
           private:
             // uniform grains submodule parameters
-            double min_depth;
-            Objects::Surface min_depth_surface;
-            double max_depth;
-            Objects::Surface max_depth_surface;
+            double min_depth_entry;
+            Objects::Surface min_depth_surface_entry;
+            double max_depth_entry;
+            Objects::Surface max_depth_surface_entry;
             std::vector<unsigned int> grains;
             std::vector<unsigned int> compositions;
             std::string operation;

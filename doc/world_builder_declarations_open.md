@@ -561,7 +561,7 @@
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_1_min-depth
 
-- **description**:The depth in meters from which the composition of this feature is present.
+- **description**:The depth in m from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/1/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_1_min-depth_oneOf
@@ -570,7 +570,7 @@
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_1_min-depth_oneOf_1
 
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 - **type**:number
 - **description**:
 ::::::::::::::
@@ -606,7 +606,7 @@
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_1
 
 - **type**:number
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 ::::::::::
 
 ::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2
@@ -648,7 +648,7 @@
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_1_max-depth
 
-- **description**:The depth in meters to which the composition of this feature is present.
+- **description**:The depth in m to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/1/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_1_max-depth_oneOf
@@ -840,7 +840,7 @@
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_min-depth_oneOf_1
 
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 - **type**:number
 - **description**:
 ::::::::::::::
@@ -876,7 +876,7 @@
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_1
 
 - **type**:number
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 ::::::::::
 
 ::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/2
@@ -1038,7 +1038,7 @@
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_3_min-depth
 
-- **description**:The depth in meters from which the composition of this feature is present.
+- **description**:The depth in m from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/3/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_3_min-depth_oneOf
@@ -1047,7 +1047,7 @@
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_3_min-depth_oneOf_1
 
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 - **type**:number
 - **description**:
 ::::::::::::::
@@ -1083,7 +1083,7 @@
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf_1
 
 - **type**:number
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 ::::::::::
 
 ::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/3/min depth/oneOf/2/items/items/anyOf/2
@@ -1125,7 +1125,7 @@
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_3_max-depth
 
-- **description**:The depth in meters to which the composition of this feature is present.
+- **description**:The depth in m to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/3/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_3_max-depth_oneOf
@@ -1214,7 +1214,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **description**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
+- **description**:The temperature in K at the top of this feature.If the value is below zero, the an adiabatic temperature is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/3/bottom temperature
@@ -1223,7 +1223,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **description**:The temperature at the top in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
+- **description**:The temperature in K at the top of this feature. If the value is below zero, an adiabatic temperature is used.
 ::::::::::::::::
 
 
@@ -1263,7 +1263,7 @@
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_4_min-depth
 
-- **description**:The depth in meters from which the composition of this feature is present.
+- **description**:The depth in m from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/4/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_4_min-depth_oneOf
@@ -1272,7 +1272,7 @@
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_4_min-depth_oneOf_1
 
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 - **type**:number
 - **description**:
 ::::::::::::::
@@ -1308,7 +1308,7 @@
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_4_min-depth_oneOf_2_items_items_anyOf_1
 
 - **type**:number
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 ::::::::::
 
 ::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/4/min depth/oneOf/2/items/items/anyOf/2
@@ -1350,7 +1350,7 @@
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_4_max-depth
 
-- **description**:The depth in meters to which the composition of this feature is present.
+- **description**:The depth in m to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/4/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_4_max-depth_oneOf
@@ -1439,7 +1439,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **description**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in K which the entire feature should have
 ::::::::::::::::
 
 
@@ -1508,7 +1508,7 @@
 :open:
 :name: open_features_items_oneOf_1_velocity-models_items_oneOf_1_min-depth_oneOf_1
 
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 - **type**:number
 - **description**:
 ::::::::::::::
@@ -1544,7 +1544,7 @@
 :name: open_features_items_oneOf_1_velocity-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_1
 
 - **type**:number
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 ::::::::::
 
 ::::::::::{dropdown} /features/items/oneOf/1/velocity models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2
@@ -1745,7 +1745,7 @@
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_1_min-depth_oneOf_1
 
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 - **type**:number
 - **description**:
 ::::::::::::::
@@ -1781,7 +1781,7 @@
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_1
 
 - **type**:number
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 ::::::::::
 
 ::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2
@@ -2012,7 +2012,7 @@
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_2_min-depth_oneOf_1
 
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 - **type**:number
 - **description**:
 ::::::::::::::
@@ -2048,7 +2048,7 @@
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_1
 
 - **type**:number
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 ::::::::::
 
 ::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/2
@@ -2279,7 +2279,7 @@
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_1_min-depth_oneOf_1
 
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 - **type**:number
 - **description**:
 ::::::::::::::
@@ -2315,7 +2315,7 @@
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_1
 
 - **type**:number
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 ::::::::::
 
 ::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2
@@ -2537,7 +2537,7 @@
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_min-depth
 
-- **description**:The depth in meters from which the composition of this feature is present.
+- **description**:The depth in m from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_min-depth_oneOf
@@ -2546,7 +2546,7 @@
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_min-depth_oneOf_1
 
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 - **type**:number
 - **description**:
 ::::::::::::::
@@ -2582,7 +2582,7 @@
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_1
 
 - **type**:number
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 ::::::::::
 
 ::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/2
@@ -2624,7 +2624,7 @@
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_max-depth
 
-- **description**:The depth in meters to which the composition of this feature is present.
+- **description**:The depth in m to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_2_max-depth_oneOf
@@ -2906,7 +2906,7 @@
 :open:
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_3_min-depth_oneOf_1
 
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 - **type**:number
 - **description**:
 ::::::::::::::
@@ -2942,7 +2942,7 @@
 :name: open_features_items_oneOf_1_grains-models_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf_1
 
 - **type**:number
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 ::::::::::
 
 ::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/3/min depth/oneOf/2/items/items/anyOf/2
@@ -10421,7 +10421,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_min-depth
 
-- **description**:The depth in meters from which the temperature of this feature is present.
+- **description**:The depth in m from which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/1/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_min-depth_oneOf
@@ -10430,7 +10430,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_min-depth_oneOf_1
 
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 - **type**:number
 - **description**:
 ::::::::::::::
@@ -10466,7 +10466,7 @@
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_min-depth_oneOf_2_items_items_anyOf_1
 
 - **type**:number
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 ::::::::::
 
 ::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/1/min depth/oneOf/2/items/items/anyOf/2
@@ -10508,7 +10508,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_max-depth
 
-- **description**:The depth in meters to which the temperature of this feature is present.
+- **description**:The depth in m to which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/1/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_max-depth_oneOf
@@ -10597,7 +10597,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **description**:The potential temperature of the mantle at the surface in Kelvin. If the value is lower then zero, the global value is used.
+- **description**:The potential temperature in K of the mantle at the surface. If the value is lower then zero, the global value is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/1/thermal expansion coefficient
@@ -10664,7 +10664,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_min-depth_oneOf_1
 
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 - **type**:number
 - **description**:
 ::::::::::::::
@@ -10700,7 +10700,7 @@
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_min-depth_oneOf_2_items_items_anyOf_1
 
 - **type**:number
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 ::::::::::
 
 ::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/min depth/oneOf/2/items/items/anyOf/2
@@ -11006,7 +11006,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_min-depth
 
-- **description**:The depth in meters from which the temperature of this feature is present.
+- **description**:The depth in m from which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/3/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_min-depth_oneOf
@@ -11015,7 +11015,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_min-depth_oneOf_1
 
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 - **type**:number
 - **description**:
 ::::::::::::::
@@ -11051,7 +11051,7 @@
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_min-depth_oneOf_2_items_items_anyOf_1
 
 - **type**:number
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 ::::::::::
 
 ::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/3/min depth/oneOf/2/items/items/anyOf/2
@@ -11093,7 +11093,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_max-depth
 
-- **description**:The depth in meters to which the temperature of this feature is present.
+- **description**:The depth in m to which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/3/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_max-depth_oneOf
@@ -11182,7 +11182,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **description**:The temperature at the top in degree Kelvin of this feature.If the value is below zero, the an adiabatic temperature is used.
+- **description**:The temperature in K at the top of this feature.If the value is below zero, the an adiabatic temperature is used.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/3/bottom temperature
@@ -11191,7 +11191,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **description**:The temperature at the top in degree Kelvin of this feature. If the value is below zero, an adiabatic temperature is used.
+- **description**:The temperature in K at the bottom of this feature. If the value is below zero, an adiabatic temperature is used.
 ::::::::::::::::
 
 
@@ -11231,7 +11231,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_min-depth
 
-- **description**:The depth in meters from which the temperature of this feature is present.
+- **description**:The depth in m from which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_min-depth_oneOf
@@ -11240,7 +11240,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_min-depth_oneOf_1
 
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 - **type**:number
 - **description**:
 ::::::::::::::
@@ -11276,7 +11276,7 @@
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_min-depth_oneOf_2_items_items_anyOf_1
 
 - **type**:number
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 ::::::::::
 
 ::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/min depth/oneOf/2/items/items/anyOf/2
@@ -11318,7 +11318,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_max-depth
 
-- **description**:The depth in meters to which the temperature of this feature is present.
+- **description**:The depth in m to which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_max-depth_oneOf
@@ -11407,7 +11407,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **description**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in K from which this feature should have
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/bottom temperature
@@ -11416,7 +11416,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **description**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in K to which this feature should have
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/spreading velocity
@@ -11582,7 +11582,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_min-depth
 
-- **description**:The depth in meters from which the temperature of this feature is present.
+- **description**:The depth in m from which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_min-depth_oneOf
@@ -11591,7 +11591,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_min-depth_oneOf_1
 
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 - **type**:number
 - **description**:
 ::::::::::::::
@@ -11627,7 +11627,7 @@
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_min-depth_oneOf_2_items_items_anyOf_1
 
 - **type**:number
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 ::::::::::
 
 ::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/min depth/oneOf/2/items/items/anyOf/2
@@ -11669,7 +11669,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_max-depth
 
-- **description**:The depth in meters to which the temperature of this feature is present.
+- **description**:The depth in m to which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_max-depth_oneOf
@@ -11758,7 +11758,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **description**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in K at the top surface of this feature.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/bottom temperature
@@ -11767,7 +11767,7 @@
 
 - **default value**:-1.0
 - **type**:number
-- **description**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in K at the bottom surface of this feature.
 ::::::::::::::::
 
 ::::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/plate age
@@ -11816,7 +11816,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_min-depth
 
-- **description**:The depth in meters from which the temperature of this feature is present.
+- **description**:The depth in m from which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/6/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_min-depth_oneOf
@@ -11825,7 +11825,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_min-depth_oneOf_1
 
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 - **type**:number
 - **description**:
 ::::::::::::::
@@ -11861,7 +11861,7 @@
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_min-depth_oneOf_2_items_items_anyOf_1
 
 - **type**:number
-- **default value**:0.0
+- **default value**:-1.7976931348623157e308
 ::::::::::
 
 ::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/6/min depth/oneOf/2/items/items/anyOf/2
@@ -11903,7 +11903,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_max-depth
 
-- **description**:The depth in meters to which the temperature of this feature is present.
+- **description**:The depth in m to which the temperature of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/6/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_max-depth_oneOf
@@ -11992,7 +11992,7 @@
 
 - **default value**:293.15
 - **type**:number
-- **description**:The temperature in degree Kelvin which this feature should have
+- **description**:The temperature in K which this feature should have
 ::::::::::::::::
 
 

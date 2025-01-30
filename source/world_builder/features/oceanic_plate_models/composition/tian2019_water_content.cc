@@ -44,8 +44,8 @@ namespace WorldBuilder
       {
         TianWaterContent::TianWaterContent(WorldBuilder::World *world_)
           :
-          min_depth(NaN::DSNAN),
-          max_depth(NaN::DSNAN),
+          min_depth_entry(NaN::DSNAN),
+          max_depth_entry(NaN::DSNAN),
           density(NaN::DSNAN)
         {
           this->world = world_;
@@ -99,10 +99,10 @@ namespace WorldBuilder
         void
         TianWaterContent::parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates)
         {
-          min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
-          min_depth = min_depth_surface.minimum;
-          max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
-          max_depth = max_depth_surface.maximum;
+          min_depth_surface_entry = Objects::Surface(prm.get("min depth",coordinates));
+          min_depth_entry = min_depth_surface_entry.minimum;
+          max_depth_surface_entry = Objects::Surface(prm.get("max depth",coordinates));
+          max_depth_entry = max_depth_surface_entry.maximum;
           density = prm.get<double>("density");
           compositions = prm.get_vector<unsigned int>("compositions");
           max_water_content = prm.get<double>("initial water content");
@@ -163,13 +163,20 @@ namespace WorldBuilder
                                           const double depth,
                                           const unsigned int composition_number,
                                           double composition,
-                                          const double  /*feature_min_depth*/,
-                                          const double  /*feature_max_depth*/) const
+                                          const double min_depth_feature,
+                                          const double max_depth_feature) const
         {
-          if (depth <= max_depth && depth >= min_depth)
+          if (depth <= max_depth_entry && depth >= min_depth_entry && depth <= max_depth_feature && depth >= min_depth_feature)
             {
-              const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
-              const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
+              // check if the user defined min_depth and max_depth are constant values
+              // use those values if that is the case, find the surface point if not
+              double min_depth_point = min_depth_surface_entry.constant_value ? min_depth_entry : min_depth_surface_entry.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
+              double max_depth_point = max_depth_surface_entry.constant_value ? max_depth_entry : max_depth_surface_entry.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
+
+              // constrain the depth to the feature min and max depth
+              double min_depth_local = std::max(min_depth_feature, min_depth_point);
+              double max_depth_local = std::min(max_depth_feature, max_depth_point);
+
               if (depth <= max_depth_local &&  depth >= min_depth_local)
                 {
                   // The polynomials break down for pressures less than 0.5 GPa, and for pressures above a user defined cutoff pressure
