@@ -354,7 +354,7 @@ int main(int argc, char **argv)
       if (find_command_line_option(argv, argv+argc, "-h") || find_command_line_option(argv, argv+argc, "--help"))
         {
           std::cout << "World Builder Grid Visualization tool.\n"
-                    <<  "This program loads a world builder file and generates a visualization on a structured grid "
+                    <<  "This program loads a World Builder file and generates a visualization on a structured grid "
                     << "based on information specified in a separate .grid configuration file.\n\n"
                     << "Usage:\n"
                     << argv[0] << " [-j N] [--filtered] [--by-tag] example.wb example.grid\n\n"
@@ -442,7 +442,7 @@ int main(int argc, char **argv)
       /**
        * Try to start the world builder
        */
-      std::cout << "[2/6] Starting the world builder with " << number_of_threads << " threads...                         \r";
+      std::cout << "[2/6] Starting the World Builder with " << number_of_threads << " threads...                         \r";
       std::cout.flush();
 
       std::unique_ptr<WorldBuilder::World> world;
@@ -452,7 +452,7 @@ int main(int argc, char **argv)
         }
       catch (std::exception &e)
         {
-          std::cerr << "Could not start the World builder from file '" << wb_file << "', error: " << e.what() << "\n";
+          std::cerr << "Could not start the World Builder from file '" << wb_file << "', error: " << e.what() << "\n";
 
 #ifdef WB_WITH_MPI
           MPI_Finalize();
