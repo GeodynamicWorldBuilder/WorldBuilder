@@ -165,15 +165,15 @@ namespace WorldBuilder
      */
 
     WBAssertThrow((prm.get<std::string>("version") == Version::MAJOR + "." + Version::MINOR),
-                  "The major and minor version combination for which is input file was written "
+                  "The major and minor version combination for which this input file was written "
                   "is not the same as the version of the World Builder you are running. This means "
-                  "That there may have been incompatible changes made between the versions. \n\n"
+                  "that there may have been incompatible changes made between the versions. \n\n"
                   "Verify those changes and whether they affect your model. If this is not "
                   "the case, adjust the version number in the input file. \n\nThe provided version "
-                  "number is \"" << prm.get<std::string>("version") << "\", while the used world builder "
+                  "number is \"" << prm.get<std::string>("version") << "\", while the used World Builder "
                   "has  (major.minor) version \"" << Version::MAJOR << "." << Version::MINOR << "\". "
                   "If you created this file from scratch, fill set the version number to \"" <<
-                  Version::MAJOR << "." << Version::MINOR << "\" to continue. If you got the world builder "
+                  Version::MAJOR << "." << Version::MINOR << "\" to continue. If you got the World Builder "
                   "file from somewhere, make sure that the output is what you expect it to be, because "
                   "backwards incompatible changes may have been made to the code.");
 
