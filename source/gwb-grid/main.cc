@@ -566,12 +566,12 @@ int main(int argc, char **argv)
       WBAssertThrow(!std::isnan(z_max), "z_max is not a number:" << z_max << ". This value has probably not been provided in the grid file.");
 
 
-      WBAssertThrow(n_cell_x != 0, "n_cell_z may not be equal to zero: " << n_cell_x << '.');
+      WBAssertThrow(n_cell_x != 0, "n_cell_x may not be equal to zero: " << n_cell_x << '.');
       // int's cannot generally be nan's (see https://stackoverflow.com/questions/3949457/can-an-integer-be-nan-in-c),
       // but visual studio is giving problems over this, so it is taken out for now.
-      //WBAssertThrow(!std::isnan(n_cell_x), "n_cell_z is not a number:" << n_cell_x << '.');
+      //WBAssertThrow(!std::isnan(n_cell_x), "n_cell_x is not a number:" << n_cell_x << '.');
 
-      WBAssertThrow(dim == 3 || n_cell_z != 0, "In 3d n_cell_z may not be equal to zero: " << n_cell_y << '.');
+      WBAssertThrow(dim == 2 || n_cell_y != 0, "In 3d n_cell_y may not be equal to zero: " << n_cell_y << '.');
       // int's cannot generally be nan's (see https://stackoverflow.com/questions/3949457/can-an-integer-be-nan-in-c),
       // but visual studio is giving problems over this, so it is taken out for now.
       //WBAssertThrow(!std::isnan(n_cell_z), "n_cell_z is not a number:" << n_cell_y << '.');
