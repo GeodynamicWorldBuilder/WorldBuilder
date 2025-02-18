@@ -54,7 +54,7 @@ String(REGEX REPLACE "[:/a-zA-Z\\/0-9_\\.-]*gwb-grid[.exe]*" "(..path..)bin/gwb-
 String(REGEX REPLACE "  -j N                  Specify the number of threads the visualizer is allowed to use. Default: [0-9]*." "  -j N                  Specify the number of threads the visualizer is allowed to use. Default: --." TEST_OUTPUT_PROCESSED "${TEST_OUTPUT_PROCESSED}")
 String(REGEX REPLACE "GWB Version: [0-9.a-zA-Z]*" "GWB Version: -.-.-.-" TEST_OUTPUT_PROCESSED "${TEST_OUTPUT_PROCESSED}")
 String(REGEX REPLACE "git hash: [0-9.a-zA-Z-]* branch: [-0-9.a-zA-Z_]*" "git hash: (..git hash..) branch: (..git branch..)" TEST_OUTPUT_PROCESSED "${TEST_OUTPUT_PROCESSED}")
-String(REGEX REPLACE "Starting the world builder with ([0-9]*) threads..." "Starting the world builder with -- threads..." TEST_OUTPUT_PROCESSED "${TEST_OUTPUT_PROCESSED}")
+String(REGEX REPLACE "Starting the World Builder with ([0-9]*) threads..." "Starting the World Builder with -- threads..." TEST_OUTPUT_PROCESSED "${TEST_OUTPUT_PROCESSED}")
 file(WRITE ${TEST_OUTPUT} ${TEST_OUTPUT_PROCESSED})
 
 if( TEST_RESULT_VAR )

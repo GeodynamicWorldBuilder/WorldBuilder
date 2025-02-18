@@ -354,7 +354,7 @@ int main(int argc, char **argv)
       if (find_command_line_option(argv, argv+argc, "-h") || find_command_line_option(argv, argv+argc, "--help"))
         {
           std::cout << "World Builder Grid Visualization tool.\n"
-                    <<  "This program loads a world builder file and generates a visualization on a structured grid "
+                    <<  "This program loads a World Builder file and generates a visualization on a structured grid "
                     << "based on information specified in a separate .grid configuration file.\n\n"
                     << "Usage:\n"
                     << argv[0] << " [-j N] [--filtered] [--by-tag] example.wb example.grid\n\n"
@@ -442,7 +442,7 @@ int main(int argc, char **argv)
       /**
        * Try to start the world builder
        */
-      std::cout << "[2/6] Starting the world builder with " << number_of_threads << " threads...                         \r";
+      std::cout << "[2/6] Starting the World Builder with " << number_of_threads << " threads...                         \r";
       std::cout.flush();
 
       std::unique_ptr<WorldBuilder::World> world;
@@ -452,7 +452,7 @@ int main(int argc, char **argv)
         }
       catch (std::exception &e)
         {
-          std::cerr << "Could not start the World builder from file '" << wb_file << "', error: " << e.what() << "\n";
+          std::cerr << "Could not start the World Builder from file '" << wb_file << "', error: " << e.what() << "\n";
 
 #ifdef WB_WITH_MPI
           MPI_Finalize();
@@ -566,12 +566,12 @@ int main(int argc, char **argv)
       WBAssertThrow(!std::isnan(z_max), "z_max is not a number:" << z_max << ". This value has probably not been provided in the grid file.");
 
 
-      WBAssertThrow(n_cell_x != 0, "n_cell_z may not be equal to zero: " << n_cell_x << '.');
+      WBAssertThrow(n_cell_x != 0, "n_cell_x may not be equal to zero: " << n_cell_x << '.');
       // int's cannot generally be nan's (see https://stackoverflow.com/questions/3949457/can-an-integer-be-nan-in-c),
       // but visual studio is giving problems over this, so it is taken out for now.
-      //WBAssertThrow(!std::isnan(n_cell_x), "n_cell_z is not a number:" << n_cell_x << '.');
+      //WBAssertThrow(!std::isnan(n_cell_x), "n_cell_x is not a number:" << n_cell_x << '.');
 
-      WBAssertThrow(dim == 3 || n_cell_z != 0, "In 3d n_cell_z may not be equal to zero: " << n_cell_y << '.');
+      WBAssertThrow(dim == 2 || n_cell_y != 0, "In 3d n_cell_y may not be equal to zero: " << n_cell_y << '.');
       // int's cannot generally be nan's (see https://stackoverflow.com/questions/3949457/can-an-integer-be-nan-in-c),
       // but visual studio is giving problems over this, so it is taken out for now.
       //WBAssertThrow(!std::isnan(n_cell_z), "n_cell_z is not a number:" << n_cell_y << '.');
