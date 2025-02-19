@@ -314,7 +314,7 @@ jobs:
         run: |
               ctest -VV -C Coverage;
 
-      - name: post-pocess tests
+      - name: post-process tests
         if: always()
         working-directory: ${{github.workspace}}/build
         shell: bash
