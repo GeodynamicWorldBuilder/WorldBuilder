@@ -295,7 +295,7 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{github.workspace}}/build
-        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Coverage
+        run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Coverage -DREPLACE_FAILING_TEST_RESULTS=ON
 
       - name: Build gwb
         working-directory: ${{github.workspace}}/build
@@ -313,7 +313,20 @@ jobs:
         shell: bash
         run: |
               ctest -VV -C Coverage;
+
+      - name: post-process tests
+        if: always()
+        working-directory: ${{github.workspace}}/build
+        shell: bash
+        run: |
               ls;
+              git diff ../tests > changes-test-results.diff
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: changes-test-results.diff
+          path: build/changes-test-results.diff
 
       - name: Codecov
         run: bash <(curl -s https://codecov.io/bash);
