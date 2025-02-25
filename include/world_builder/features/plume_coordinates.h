@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef WORLD_BUILDER_FEATURES_MANTLE_LAYER_H
-#define WORLD_BUILDER_FEATURES_MANTLE_LAYER_H
+#ifndef WORLD_BUILDER_FEATURES_PLUME_COORDINATES_H
+#define WORLD_BUILDER_FEATURES_PLUME_COORDINATES_H
 
 
 #include "world_builder/features/interface.h"
@@ -32,7 +32,7 @@ namespace WorldBuilder
 
   namespace Features
   {
-    namespace MantleLayerModels
+    namespace PlumeModels
     {
       namespace Composition
       {
@@ -50,26 +50,26 @@ namespace WorldBuilder
       {
         class Interface;
       }  // namespace Velocity
-    }  // namespace MantleLayerModels
+    }  // namespace PlumeModels
 
     /**
-     * This class represents a mantle layer and can implement submodules
+     * This class represents a plume and can implement submodules
      * for temperature and composition. These submodules determine what
      * the returned temperature or composition of the temperature and composition
      * functions of this class will be.
      */
-    class MantleLayer final: public Interface
+    class PlumeCoordinates final: public Interface
     {
       public:
         /**
          * constructor
          */
-        MantleLayer(WorldBuilder::World *world);
+        PlumeCoordinates(WorldBuilder::World *world);
 
         /**
          * Destructor
          */
-        ~MantleLayer() override final;
+        ~PlumeCoordinates() override final;
 
         /**
          * declare and read in the world builder file into the parameters class
@@ -106,7 +106,7 @@ namespace WorldBuilder
          * Composition is identified by 2. This produces one
          * value in the output. The second entry  identifies the composition number and the third
          * number is not used. So a commposition query asking about composition 1 looks like this:
-         * {2,1,0}. A composition query prodoces one entry in the output vector.
+         * {2,1,0}. A composition query produces one entry in the output vector.
          *
          * Grains are identified by 2. The second entry is the grain composition number and the third
          * entry is the number of grains. A query about the grains, where it asks about composition 1
@@ -133,7 +133,7 @@ namespace WorldBuilder
          * unique pointers are used.
          * @see Features
          */
-        std::vector<std::unique_ptr<Features::MantleLayerModels::Temperature::Interface> > temperature_models;
+        std::vector<std::unique_ptr<Features::PlumeModels::Temperature::Interface> > temperature_models;
 
         /**
          * A vector containing all the pointers to the composition models. This vector is
@@ -141,7 +141,7 @@ namespace WorldBuilder
          * unique pointers are used.
          * @see Features
          */
-        std::vector<std::unique_ptr<Features::MantleLayerModels::Composition::Interface> > composition_models;
+        std::vector<std::unique_ptr<Features::PlumeModels::Composition::Interface> > composition_models;
 
         /**
          * A vector containing all the pointers to the grains models. This vector is
@@ -149,7 +149,7 @@ namespace WorldBuilder
          * unique pointers are used.
          * @see Features
          */
-        std::vector<std::unique_ptr<Features::MantleLayerModels::Grains::Interface> > grains_models;
+        std::vector<std::unique_ptr<Features::PlumeModels::Velocity::Interface> > velocity_models;
 
         /**
          * A vector containing all the pointers to the grains models. This vector is
@@ -157,13 +157,16 @@ namespace WorldBuilder
          * unique pointers are used.
          * @see Features
          */
-        std::vector<std::unique_ptr<Features::MantleLayerModels::Velocity::Interface> > velocity_models;
+        std::vector<std::unique_ptr<Features::PlumeModels::Grains::Interface> > grains_models;
+
 
         double min_depth;
-        Objects::Surface min_depth_surface;
         double max_depth;
-        Objects::Surface max_depth_surface;
 
+        std::vector<double> depths;
+        std::vector<double> semi_major_axis_lengths;
+        std::vector<double> eccentricities;
+        std::vector<double> rotation_angles;
     };
 
 

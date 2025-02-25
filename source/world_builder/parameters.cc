@@ -18,11 +18,13 @@
 */
 
 
+#include "world_builder/features/continental_plate_coordinates.h"
 #include "world_builder/features/continental_plate_models/composition/interface.h"
 #include "world_builder/features/continental_plate_models/velocity/interface.h"
 #include "world_builder/features/continental_plate_models/grains/interface.h"
 #include "world_builder/features/continental_plate_models/temperature/interface.h"
-#include "world_builder/features/fault.h"
+#include "world_builder/features/fault_coordinates.h"
+#include "world_builder/features/interface.h"
 #include "world_builder/features/mantle_layer_models/composition/interface.h"
 #include "world_builder/features/mantle_layer_models/grains/interface.h"
 #include "world_builder/features/mantle_layer_models/temperature/interface.h"
@@ -35,7 +37,7 @@
 #include "world_builder/features/plume_models/grains/interface.h"
 #include "world_builder/features/plume_models/temperature/interface.h"
 #include "world_builder/features/plume_models/velocity/interface.h"
-#include "world_builder/features/subducting_plate.h"
+#include "world_builder/features/subducting_plate_coordinates.h"
 #include "world_builder/features/subducting_plate_models/velocity/interface.h"
 #include "world_builder/gravity_model/interface.h"
 #include "world_builder/types/object.h"
@@ -47,6 +49,7 @@
 #include "rapidjson/mystwriter.h"
 #include "rapidjson/prettywriter.h"
 
+#include <cstddef>
 #include <fstream>
 #include <memory>
 
@@ -1779,9 +1782,52 @@ namespace WorldBuilder
           {
             const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
 
-            const std::string value = Pointer((base + "/model").c_str()).Get(parameters)->GetString();
+            std::string value_model = Pointer((base + "/model").c_str()).Get(parameters)->GetString();
 
-            vector.push_back(std::move(T::create(value, &world)));
+            vector.push_back(std::move(T::create(value_model, &world)));
+          }
+      }
+    else
+      {
+        return false;
+      }
+
+    return true;
+  }
+
+
+
+  template<>
+  bool
+  Parameters::get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<Features::Interface> > &vector)
+  {
+    vector.resize(0);
+    const std::string strict_base = this->get_full_json_path();
+    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr)
+      {
+        Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+        for (size_t i = 0; i < array->Size(); ++i )
+          {
+            const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
+
+            std::string value_model = Pointer((base + "/model").c_str()).Get(parameters)->GetString();
+
+            const Value *value_geometry_type_pointer = Pointer((base + "/geometry type").c_str()).Get(parameters);
+
+            // The declarations are note yet declared, so I can't use default values.
+            // If no geometry type is declared, assume the geometry type is coordinates
+            if (value_geometry_type_pointer != nullptr)
+              {
+                value_model += " ";
+                value_model  += value_geometry_type_pointer->GetString();
+              }
+            else
+              {
+                value_model += " coordinates";
+              }
+
+            vector.push_back(std::move(Features::Interface::create(value_model, &world)));
           }
       }
     else
@@ -1794,7 +1840,7 @@ namespace WorldBuilder
 
   template<>
   bool
-  Parameters::get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<Features::SubductingPlate> > &vector)
+  Parameters::get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<Features::SubductingPlateCoordinates> > &vector)
   {
     vector.resize(0);
     const std::string strict_base = this->get_full_json_path();
@@ -1804,7 +1850,7 @@ namespace WorldBuilder
 
         for (size_t i = 0; i < array->Size(); ++i )
           {
-            vector.push_back(std::make_unique<Features::SubductingPlate>(&world));
+            vector.push_back(std::make_unique<Features::SubductingPlateCoordinates>(&world));
           }
       }
     else
@@ -1817,7 +1863,7 @@ namespace WorldBuilder
 
   template<>
   bool
-  Parameters::get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<Features::Fault> > &vector)
+  Parameters::get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<Features::FaultCoordinates> > &vector)
   {
     vector.resize(0);
     const std::string strict_base = this->get_full_json_path();
@@ -1827,7 +1873,7 @@ namespace WorldBuilder
 
         for (size_t i = 0; i < array->Size(); ++i )
           {
-            vector.push_back(std::make_unique<Features::Fault>(&world));
+            vector.push_back(std::make_unique<Features::FaultCoordinates>(&world));
           }
       }
     else
@@ -2088,16 +2134,6 @@ namespace WorldBuilder
    * Note that the variable with this name has to be loaded before this function is called.
    */
   template std::unique_ptr<GravityModel::Interface> Parameters::get_unique_pointer<GravityModel::Interface>(const std::string &name);
-
-
-
-  /**
-   * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
-   * Note that the variable with this name has to be loaded before this function is called.
-   */
-  template bool
-  Parameters::get_unique_pointers<Features::Interface>(const std::string &name,
-                                                       std::vector<std::unique_ptr<Features::Interface> > &vector);
 
 
   /**

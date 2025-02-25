@@ -17,14 +17,14 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef WORLD_BUILDER_FEATURES_SUBDUCTING_PLATE_H
-#define WORLD_BUILDER_FEATURES_SUBDUCTING_PLATE_H
+#ifndef WORLD_BUILDER_FEATURES_FAULT_COORDINATES_H
+#define WORLD_BUILDER_FEATURES_FAULT_COORDINATES_H
 
 
-#include "world_builder/features/subducting_plate_models/composition/interface.h"
-#include "world_builder/features/subducting_plate_models/grains/interface.h"
-#include "world_builder/features/subducting_plate_models/temperature/interface.h"
-#include "world_builder/features/subducting_plate_models/velocity/interface.h"
+#include "world_builder/features/fault_models/composition/interface.h"
+#include "world_builder/features/fault_models/grains/interface.h"
+#include "world_builder/features/fault_models/temperature/interface.h"
+#include "world_builder/features/fault_models/velocity/interface.h"
 #include "world_builder/objects/segment.h"
 #include "world_builder/bounding_box.h"
 #include "world_builder/objects/distance_from_surface.h"
@@ -37,8 +37,7 @@ namespace WorldBuilder
 
   namespace Features
   {
-    using namespace FeatureUtilities;
-    namespace SubductingPlateModels
+    namespace FaultModels
     {
       namespace Composition
       {
@@ -55,27 +54,27 @@ namespace WorldBuilder
       namespace Velocity
       {
         class Interface;
-      }  // namespace Velocity
-    }  // namespace SubductingPlateModels
+      }  // namespace Temperature
+    }  // namespace FaultModels
 
     /**
-     * This class represents a subducting plate and can implement submodules
+     * This class represents a fault and can implement submodules
      * for temperature and composition. These submodules determine what
      * the returned temperature or composition of the temperature and composition
      * functions of this class will be.
      */
-    class SubductingPlate final: public Interface
+    class FaultCoordinates final: public Interface
     {
       public:
         /**
          * constructor
          */
-        SubductingPlate(WorldBuilder::World *world);
+        FaultCoordinates(WorldBuilder::World *world);
 
         /**
          * Destructor
          */
-        ~SubductingPlate() override final;
+        ~FaultCoordinates() override final;
 
         /**
          * declare and read in the world builder file into the parameters class
@@ -98,7 +97,7 @@ namespace WorldBuilder
 
 
         /**
-         * Returns the bounding points for a BoundingBox object using two extreme points in all the surface
+         * Computes the bounding points for a BoundingBox object using two extreme points in all the surface
          * coordinates and an additional buffer zone that accounts for the fault thickness and length. The first and second
          * points correspond to the lower left and the upper right corners of the bounding box, respectively (see the
          * documentation in include/bounding_box.h).
@@ -143,7 +142,7 @@ namespace WorldBuilder
                    std::vector<double> &output) const override final;
 
         /**
-        * Returns a PlaneDistances object that has the distance from and along a subducting plate plane,
+        * Returns a PlaneDistances object that has the distance from and along a fault plane,
         * calculated from the coordinates and the depth of the point.
         */
         Objects::PlaneDistances
@@ -151,50 +150,49 @@ namespace WorldBuilder
                                   const Objects::NaturalCoordinate &position_in_natural_coordinates,
                                   const double depth) const override;
 
-
       private:
-        std::vector<std::shared_ptr<Features::SubductingPlateModels::Temperature::Interface> > default_temperature_models;
-        std::vector<std::shared_ptr<Features::SubductingPlateModels::Composition::Interface>  > default_composition_models;
-        std::vector<std::shared_ptr<Features::SubductingPlateModels::Grains::Interface>  > default_grains_models;
-        std::vector<std::shared_ptr<Features::SubductingPlateModels::Velocity::Interface>  > default_velocity_models;
+        std::vector<std::shared_ptr<Features::FaultModels::Temperature::Interface> > default_temperature_models;
+        std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface>  > default_composition_models;
+        std::vector<std::shared_ptr<Features::FaultModels::Grains::Interface>  > default_grains_models;
+        std::vector<std::shared_ptr<Features::FaultModels::Velocity::Interface>  > default_velocity_models;
 
-        std::vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
-            Features::SubductingPlateModels::Composition::Interface,
-            Features::SubductingPlateModels::Grains::Interface,
-            Features::SubductingPlateModels::Velocity::Interface> > default_segment_vector;
+        std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
+            Features::FaultModels::Composition::Interface,
+            Features::FaultModels::Grains::Interface,
+            Features::FaultModels::Velocity::Interface> > default_segment_vector;
 
-        std::vector< std::vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
-            Features::SubductingPlateModels::Composition::Interface,
-            Features::SubductingPlateModels::Grains::Interface,
-            Features::SubductingPlateModels::Velocity::Interface> > > sections_segment_vector;
+        std::vector< std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
+            Features::FaultModels::Composition::Interface,
+            Features::FaultModels::Grains::Interface,
+            Features::FaultModels::Velocity::Interface> > > sections_segment_vector;
 
         // This vector stores segments to this coordinate/section.
         //First used (raw) pointers to the segment relevant to this coordinate/section,
         // but I do not trust it won't fail when memory is moved. So storing the all the data now.
-        std::vector<std::vector<Objects::Segment<Features::SubductingPlateModels::Temperature::Interface,
-            Features::SubductingPlateModels::Composition::Interface,
-            Features::SubductingPlateModels::Grains::Interface,
-            Features::SubductingPlateModels::Velocity::Interface> > > segment_vector;
+        std::vector<std::vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
+            Features::FaultModels::Composition::Interface,
+            Features::FaultModels::Grains::Interface,
+            Features::FaultModels::Velocity::Interface> > > segment_vector;
 
         // todo: the memory of this can be greatly improved by
         // or using a plugin system for the submodules, or
         // putting the variables in a union. Although the memory
         // used by this program is in real cases expected to be
-        // Insignificant compared to what a calling program may
+        // insignificant compared to what a calling program may
         // use, a smaller amount of memory used in here, could
         // theoretically speed up the computation, because more
         // relevant data could be stored in the cache. But this
         // not a urgent problem, and would require testing.
 
         /**
-         * This variable stores the depth at which the subducting
-         * plate starts. It makes this depth effectively the surface
-         * of the model for the slab.
+         * This variable stores the depth at which the fault
+         * starts. It makes this depth effectively the surface
+         * of the model for the fault.
          */
         double starting_depth;
 
         /**
-         * The depth which below the subducting plate may no longer
+         * The depth which below the fault may no longer
          * be present. This can not only help setting up models with
          * less effort, but can also improve performance, because
          * the algorithm doesn't have to search in locations below
@@ -203,7 +201,7 @@ namespace WorldBuilder
         double maximum_depth;
 
         /**
-         * Stores the bounding points for a BoundingBox object using two extreme points in all the surface
+         * Computee bounding points for a BoundingBox object using two extreme points in all the surface
          * coordinates and an additional buffer zone that accounts for the fault thickness and length. The first and second
          * points correspond to the lower left and the upper right corners of the bounding box, respectively (see the
          * documentation in include/bounding_box.h).
@@ -213,17 +211,17 @@ namespace WorldBuilder
         BoundingBox<2> surface_bounding_box;
 
         /**
-         * A point on the surface to which the subducting plates subduct.
+         * A point on the surface to which the fault dips.
          */
-        Point<2> reference_point;
+        WorldBuilder::Point<2> reference_point;
 
-        std::vector<std::vector<double> > slab_segment_lengths;
-        std::vector<std::vector<Point<2> > > slab_segment_thickness;
-        std::vector<std::vector<Point<2> > > slab_segment_top_truncation;
-        std::vector<std::vector<Point<2> > > slab_segment_angles;
-        std::vector<double> total_slab_length;
-        double maximum_total_slab_length;
-        double maximum_slab_thickness;
+        std::vector<std::vector<double> > fault_segment_lengths;
+        std::vector<std::vector<Point<2> > > fault_segment_thickness;
+        std::vector<std::vector<Point<2> > > fault_segment_top_truncation;
+        std::vector<std::vector<Point<2> > > fault_segment_angles;
+        std::vector<double> total_fault_length;
+        double maximum_total_fault_length;
+        double maximum_fault_thickness;
 
         double min_along_x;
         double max_along_x;
@@ -231,7 +229,8 @@ namespace WorldBuilder
         double max_along_y;
         double min_lat_cos_inv;
         double max_lat_cos_inv;
-        double buffer_around_slab_cartesian;
+        double buffer_around_fault_cartesian;
+
     };
   } // namespace Features
 } // namespace WorldBuilder
