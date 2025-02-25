@@ -38,6 +38,7 @@
 #include "world_builder/features/subducting_plate.h"
 #include "world_builder/features/subducting_plate_models/velocity/interface.h"
 #include "world_builder/gravity_model/interface.h"
+#include "world_builder/topography/interface.h"
 #include "world_builder/types/object.h"
 #include "world_builder/utilities.h"
 
@@ -2089,7 +2090,11 @@ namespace WorldBuilder
    */
   template std::unique_ptr<GravityModel::Interface> Parameters::get_unique_pointer<GravityModel::Interface>(const std::string &name);
 
-
+  /**
+   * Returns a vector of pointers to the Topography Model based on the provided name.
+   * Note that the variable with this name has to be loaded before this function is called.
+   */
+  template std::unique_ptr<Topography::Interface> Parameters::get_unique_pointer<Topography::Interface>(const std::string &name);
 
   /**
    * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
