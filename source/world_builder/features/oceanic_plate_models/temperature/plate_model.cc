@@ -42,8 +42,8 @@ namespace WorldBuilder
       {
         PlateModel::PlateModel(WorldBuilder::World *world_)
           :
-          min_depth(NaN::DSNAN),
-          max_depth(NaN::DSNAN),
+          min_depth_entry(NaN::DSNAN),
+          max_depth_entry(NaN::DSNAN),
           top_temperature(NaN::DSNAN),
           bottom_temperature(NaN::DSNAN),
           operation(Operations::REPLACE)
@@ -64,17 +64,17 @@ namespace WorldBuilder
                             "Plate model.");
 
           // Declare entries of this plugin
-          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0., 2.))),
-                            "The depth in meters from which the temperature of this feature is present.");
+          prm.declare_entry("min depth", Types::OneOf(Types::Double(-std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(-std::numeric_limits<double>::max(), 2.))),
+                            "The depth in m from which the temperature of this feature is present.");
 
           prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(), 2.))),
-                            "The depth in meters to which the temperature of this feature is present.");
+                            "The depth in m to which the temperature of this feature is present.");
 
           prm.declare_entry("top temperature", Types::Double(293.15),
-                            "The temperature in degree Kelvin which this feature should have");
+                            "The temperature in K from which this feature should have");
 
           prm.declare_entry("bottom temperature", Types::Double(-1),
-                            "The temperature in degree Kelvin which this feature should have");
+                            "The temperature in K to which this feature should have");
 
           prm.declare_entry("spreading velocity", Types::OneOf(Types::Double(0.05),Types::Array(Types::ValueAtPoints(0.05, std::numeric_limits<uint64_t>::max()))),
                             "The spreading velocity of the plate in meter per year. "
@@ -92,10 +92,10 @@ namespace WorldBuilder
         PlateModel::parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates)
         {
 
-          min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
-          min_depth = min_depth_surface.minimum;
-          max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
-          max_depth = max_depth_surface.maximum;
+          min_depth_surface_entry = Objects::Surface(prm.get("min depth",coordinates));
+          min_depth_entry = min_depth_surface_entry.minimum;
+          max_depth_surface_entry = Objects::Surface(prm.get("max depth",coordinates));
+          max_depth_entry = max_depth_surface_entry.maximum;
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
           top_temperature = prm.get<double>("top temperature");
           bottom_temperature = prm.get<double>("bottom temperature");
@@ -136,21 +136,30 @@ namespace WorldBuilder
                                     const double depth,
                                     const double gravity_norm,
                                     double temperature_,
-                                    const double /*feature_min_depth*/,
-                                    const double /*feature_max_depth*/) const
+                                    const double min_depth_feature,
+                                    const double max_depth_feature) const
         {
-          if (depth <= max_depth && depth >= min_depth)
+          if (depth <= max_depth_entry && depth >= min_depth_entry && depth <= max_depth_feature && depth >= min_depth_feature)
             {
-              const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
-              const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
+              // check if the user defined min_depth and max_depth are constant values
+              // use those values if that is the case, find the surface point if not
+              double min_depth_point = min_depth_surface_entry.constant_value ? min_depth_entry : min_depth_surface_entry.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
+              double max_depth_point = max_depth_surface_entry.constant_value ? max_depth_entry : max_depth_surface_entry.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
+
+              // constrain the depth to the feature min and max depth
+              double min_depth_local = std::max(min_depth_feature, min_depth_point);
+              double max_depth_local = std::min(max_depth_feature, max_depth_point);
+
               if (depth <= max_depth_local &&  depth >= min_depth_local)
                 {
                   Objects::NaturalCoordinate position_in_natural_coordinates_at_min_depth = Objects::NaturalCoordinate(position,
                                                                                             *(world->parameters.coordinate_system));
-                  position_in_natural_coordinates_at_min_depth.get_ref_depth_coordinate() += depth-min_depth;
+                  position_in_natural_coordinates_at_min_depth.get_ref_depth_coordinate() += depth-min_depth_local;
                   std::vector<std::vector<double>> subducting_plate_velocities = {{0}};
                   std::vector<double> ridge_migration_times = {0.0};
+
                   double bottom_temperature_local = bottom_temperature;
+                  double top_temperature_local = top_temperature;
 
                   if (bottom_temperature_local < 0)
                     {
@@ -170,36 +179,38 @@ namespace WorldBuilder
 
                   const double thermal_diffusivity = this->world->thermal_diffusivity;
                   const double age = ridge_parameters[1] / ridge_parameters[0];
-                  double temperature = top_temperature + (bottom_temperature_local - top_temperature) * (depth / max_depth);
+                  double temperature_calculated = top_temperature_local + (bottom_temperature_local - top_temperature_local) * (depth / max_depth_local);
 
                   // This formula addresses the horizontal heat transfer by having the spreading velocity and distance to the ridge in it.
                   // (Chapter 7 Heat, Fowler M. The solid earth: an introduction to global geophysics[M]. Cambridge University Press, 1990)
                   for (int i = 1; i<summation_number+1; ++i)
                     {
-                      temperature = temperature + (bottom_temperature_local - top_temperature) *
-                                    ((2 / (double(i) * Consts::PI)) * std::sin((double(i) * Consts::PI * depth) / max_depth) *
-                                     std::exp((((ridge_parameters[0] * max_depth)/(2 * thermal_diffusivity)) -
-                                               std::sqrt(((ridge_parameters[0]*ridge_parameters[0]*max_depth*max_depth) /
-                                                          (4*thermal_diffusivity*thermal_diffusivity)) + double(i) * double(i) * Consts::PI * Consts::PI)) *
-                                              ((ridge_parameters[0] * age) / max_depth)));
+                      temperature_calculated = temperature_calculated + (bottom_temperature_local - top_temperature_local) *
+                                               ((2 / (double(i) * Consts::PI)) * std::sin((double(i) * Consts::PI * depth) / max_depth_local) *
+                                                std::exp((((ridge_parameters[0] * max_depth_local)/(2 * thermal_diffusivity)) -
+                                                          std::sqrt(((ridge_parameters[0]*ridge_parameters[0]*max_depth_local*max_depth_local) /
+                                                                     (4*thermal_diffusivity*thermal_diffusivity)) + double(i) * double(i) * Consts::PI * Consts::PI)) *
+                                                         ((ridge_parameters[0] * age) / max_depth_local)));
 
                     }
 
-                  WBAssert(!std::isnan(temperature), "Temperature inside plate model is not a number: " << temperature
-                           << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
-                           << ", top_temperature = " << top_temperature
-                           << ", max_depth = " << max_depth
-                           << ", spreading_velocity = " << ridge_parameters[0]
-                           << ", thermal_diffusivity = " << thermal_diffusivity
-                           << ", age = " << age << '.');
-                  WBAssert(std::isfinite(temperature), "Temperature inside plate model is not a finite: " << temperature                           << ". Relevant variables: bottom_temperature_local = " << bottom_temperature_local
-                           << ", top_temperature = " << top_temperature
+                  WBAssert(!std::isnan(temperature_calculated), "Temperature is not a number: " << temperature_calculated
+                           << ", based on a temperature model with the name " << this->name);
+
+                  WBAssert(std::isfinite(temperature_calculated), "Temperature is not a finite: " << temperature_calculated
+                           << ", based on a temperature model with the name " << this->name
+                           << ", depth = " << depth
+                           << ", min_depth_local = " << min_depth_local
+                           << ", max_depth_local = " << max_depth_local
+                           << ", min_depth_feature = " << min_depth_feature
+                           << ", max_depth_feature = " << max_depth_feature
+                           << ", top_temperature_local=" << top_temperature_local
+                           << ", bottom_temperature_local= " << bottom_temperature_local
                            << ", spreading_velocity = " << ridge_parameters[0]
                            << ", thermal_diffusivity = " << thermal_diffusivity
                            << ", age = " << age << '.');
 
-
-                  return apply_operation(operation,temperature_,temperature);
+                  return apply_operation(operation,temperature_,temperature_calculated);
 
                 }
             }

@@ -87,10 +87,10 @@ namespace WorldBuilder
 
           private:
             // plate model constant age temperature submodule parameters
-            double min_depth;
-            Objects::Surface min_depth_surface;
-            double max_depth;
-            Objects::Surface max_depth_surface;
+            double min_depth_entry;
+            Objects::Surface min_depth_surface_entry;
+            double max_depth_entry;
+            Objects::Surface max_depth_surface_entry;
             double top_temperature;
             double bottom_temperature;
             double plate_age;

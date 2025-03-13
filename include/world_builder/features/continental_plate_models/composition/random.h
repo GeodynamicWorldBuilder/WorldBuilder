@@ -75,22 +75,21 @@ namespace WorldBuilder
                                    const double depth,
                                    const unsigned int composition_number,
                                    double composition,
-                                   const double feature_min_depth,
-                                   const double feature_max_depth) const override final;
+                                   const double min_depth_feature,
+                                   const double max_depth_feature) const override final;
 
 
           private:
             // Random composition submodule parameters
 
-            double min_depth;
-            Objects::Surface min_depth_surface;
-            double max_depth;
-            Objects::Surface max_depth_surface;
+            double min_depth_entry;
+            Objects::Surface min_depth_surface_entry;
+            double max_depth_entry;
+            Objects::Surface max_depth_surface_entry;
             std::vector<unsigned int> compositions;
             std::vector<double> min_value;
             std::vector<double> max_value;
             Operations operation;
-
         };
       } // namespace Composition
     } // namespace ContinentalPlateModels
