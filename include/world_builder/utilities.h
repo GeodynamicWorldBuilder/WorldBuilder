@@ -386,7 +386,7 @@ namespace WorldBuilder
      * when determining the location with respect to the curved plane.
      * \param spline_x the spline representing the x coordinate.
      * \param spline_y the spline representing the y coordinate.
-     * \param global_x_list This is a list of one dimensional coorindates, with zero or the
+     * \param global_x_list This is a list of one dimensional coordindates, with zero or the
      * amount of coordinates entries, used for interpolation. An empty list is interpreted
      * as a list filled with {0,1,2,...,number of coordinates}. Filling this list with other
      * values changes the returned section fraction. It allows for, for example, adding

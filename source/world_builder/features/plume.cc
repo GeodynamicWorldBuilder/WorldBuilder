@@ -318,7 +318,7 @@ namespace WorldBuilder
                                                               rotation_angle,
                                                               surface_point);
 
-      // If we are in the tip, we have to compute the difference diffently:
+      // If we are in the tip, we have to compute the difference differently:
       if (depth >= min_depth && depth < depths.front())
         {
           const double a = semi_major_axis_lengths.front();

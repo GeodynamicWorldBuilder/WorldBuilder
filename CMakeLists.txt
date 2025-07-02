@@ -371,7 +371,7 @@ if (NOT MSVC AND NOT APPLE)
    #TODO: if other compiles need to be threaded, see https://computing.llnl.gov/tutorials/pthreads/#Compiling to add the correct cases.
    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER MATCHES "AppleClang")
       # Preventing issues with older cmake compilers (<3.7) which do not support VERSION_GREATER_EQUAL
-      # cmake vesrion 3.12.0 introduces COMPILE_LANGUAGE:FORTRAN, otherwise this would be >=2.8.12
+      # cmake version 3.12.0 introduces COMPILE_LANGUAGE:FORTRAN, otherwise this would be >=2.8.12
       if(NOT ${CMAKE_VERSION} VERSION_LESS "3.9.0")
         SET(WB_COMPILER_OPTIONS_PRIVATE -pedantic -Wall -Wextra
         $<$<COMPILE_LANGUAGE:CXX>:-Wmost  -Wunreachable-code -Wuninitialized -Wmissing-braces -Wunused-parameter -Wold-style-cast -Wshadow -Wfloat-equal -Wpointer-arith -Wwrite-strings
