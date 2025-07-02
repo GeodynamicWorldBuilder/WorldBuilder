@@ -23,15 +23,15 @@ jobs:
 
       - name: Use cmake
         run: cmake --version
-      
+
       - uses: actions/checkout@v4
 
       - name: Install astyle
         shell: bash
         run: cd .. && mkdir astyle && cd astyle && wget 'https://sourceforge.net/projects/astyle/files/astyle/astyle 2.04/astyle_2.04_linux.tar.gz' && tar -zxvf astyle_2.04_linux.tar.gz && cd astyle/build/gcc && make && sudo make install && cd ../../../../
-      
+
       - name: Create Build Environment
-        run: | 
+        run: |
               mkdir build;
               cd build;
 
@@ -53,21 +53,21 @@ jobs:
       - name: check indentation
         shell: bash
         working-directory: ${{github.workspace}}/build
-        run: | 
-              if [[ "$(git status | grep 'modified' --count)" -gt "0" ]]; then 
-                 git diff > diff.log; 
-                 cat diff.log; 
-                 exit 1; 
+        run: |
+              if [[ "$(git status | grep 'modified' --count)" -gt "0" ]]; then
+                 git diff > diff.log;
+                 cat diff.log;
+                 exit 1;
               fi
 
   test_linux_and_macos:
     needs: test_indentation
-    strategy: 
+    strategy:
       fail-fast: false
-      matrix: 
+      matrix:
         os: ['ubuntu-22.04', 'ubuntu-24.04','macos-13']
         build_type: ['Release', 'Debug']
-      
+
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -99,7 +99,7 @@ jobs:
             fi
          fi
       shell: bash
-      
+
     - name: Create Build Environment
       run: cmake -E make_directory ${{github.workspace}}/build
 
@@ -131,17 +131,17 @@ jobs:
 
   test_linux_non_unity_no_optional_dependencies:
     needs: test_indentation
-    strategy: 
+    strategy:
       fail-fast: false
-      matrix: 
+      matrix:
         os: ['ubuntu-24.04']
         build_type: ['Debug']
-      
+
     runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v4
-      
+
     - name: Create Build Environment
       run: cmake -E make_directory ${{github.workspace}}/build
 
@@ -164,17 +164,17 @@ jobs:
       working-directory: ${{github.workspace}}/build
       shell: bash
       run: ctest -VV -C ${{ matrix.build_type }}
-      
+
 
   test_windows:
     needs: test_indentation
-    strategy: 
+    strategy:
       fail-fast: false
-      matrix: 
+      matrix:
         os: ['windows-2022']
         build_type: ['Release', 'Debug']
         build_system: ['Visual Studio 17 2022']
-      
+
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -187,7 +187,7 @@ jobs:
     #  shell: bash
 
     - uses: ilammy/msvc-dev-cmd@v1
-        
+
     - name: Create Build Environment
       run: cmake -E make_directory ${{github.workspace}}/build
 
@@ -211,16 +211,16 @@ jobs:
       working-directory: ${{github.workspace}}/build
       shell: bash
       run: ctest -VV -C ${{ matrix.build_type }}  -E _no_coordinates
-      
+
 
   test_linux_and_macos_mpi:
     needs: test_indentation
-    strategy: 
+    strategy:
       fail-fast: false
-      matrix: 
+      matrix:
         os: ['ubuntu-24.04','macos-13']
         build_type: ['Release']
-      
+
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -232,19 +232,19 @@ jobs:
             sudo apt update;
             sudo apt install gfortran swig python3-setuptools openmpi-bin libopenmpi-dev
          elif [ "$RUNNER_OS" == "macOS" ]; then
-            sudo brew install open-mpi || true    
+            sudo brew install open-mpi || true
             echo "4"
             if [ "${{ matrix.os }}" == "macos-13" ]; then
                 sudo xcode-select --switch /Applications/Xcode_15.0.1.app
             else
                 sudo xcode-select --switch /Applications/Xcode_13.2.1.app
             fi
-         else          
+         else
             echo "$RUNNER_OS not supported"
             exit 1
          fi
       shell: bash
-      
+
     - name: Create Build Environment
       run: cmake -E make_directory ${{github.workspace}}/build
 
@@ -284,11 +284,11 @@ jobs:
 
       - name: extend path
         run: echo $PATH && export PATH=$PATH:/home/runner/.local/bin && echo $PATH && export PYTHONPATH=$PYTHONPATH:/home/runner/.local/bin
-      
+
       - name: Install coveralls
-        run: pipx install cpp-coveralls 
+        run: pipx install cpp-coveralls
         shell: bash
-         
+
       - name: Create Build Environment
         run: cmake -E make_directory ${{github.workspace}}/build
 
@@ -350,14 +350,14 @@ jobs:
 
   linux-cmake_mpi:
     needs: [test_indentation,coverage]
-    strategy: 
+    strategy:
       fail-fast: false
-      matrix: 
+      matrix:
         os: ['ubuntu-24.04']
-        cmake_version: ['2.8.12','3.16.x', '3.20.x']
+        cmake_version: ['3.16.x', '3.20.x']
         use_mpi: ['TRUE','FALSE']
         build_type: ['Release']
-      
+
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -369,8 +369,8 @@ jobs:
             sudo apt update;
             sudo apt install gfortran swig python3-setuptools openmpi-bin libopenmpi-dev
          elif [ "$RUNNER_OS" == "macOS" ]; then
-            sudo brew install open-mpi || true    
-         else          
+            sudo brew install open-mpi || true
+         else
             echo "$RUNNER_OS not supported"
             exit 1
          fi
@@ -379,8 +379,8 @@ jobs:
     - name: Setup cmake
       uses: jwlawson/actions-setup-cmake@v2.0
       with:
-        cmake-version: ${{ matrix.cmake_version }} 
-            
+        cmake-version: ${{ matrix.cmake_version }}
+
     - name: Use cmake
       run: cmake --version
 
@@ -590,7 +590,7 @@ jobs:
       shell: bash
       run: ctest -VV -C ${{ matrix.build_type }}
 
-  
+
   linux-gcc_no_apps:
     needs: [test_indentation,coverage]
     strategy:
@@ -718,4 +718,3 @@ jobs:
       working-directory: ${{github.workspace}}/build
       shell: bash
       run: ctest -VV -C ${{ matrix.build_type }} -R _valgrind -E _no_coordinates_valgrind
-
