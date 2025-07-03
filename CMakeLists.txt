@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.5)
 
 project(WorldBuilder C CXX)
 
@@ -118,9 +118,9 @@ endif()
 
 
 #find python libs
-SET(WB_ENABLE_PYTHON ON CACHE BOOL "Whether or not to enable Python when compiling the world builder.") 
+SET(WB_ENABLE_PYTHON ON CACHE BOOL "Whether or not to enable Python when compiling the world builder.")
 if(${WB_ENABLE_PYTHON})
-  if(${CMAKE_VERSION} VERSION_LESS "3.12.0") 
+  if(${CMAKE_VERSION} VERSION_LESS "3.12.0")
     FIND_PACKAGE(PythonLibs 3.0)
     FIND_PACKAGE(PythonInterp 3.0)
 
@@ -299,7 +299,7 @@ if(MAKE_PYTHON_WRAPPER)
 
   # Add swig module
   SET_SOURCE_FILES_PROPERTIES(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/source/world_builder/wrapper_cpp.i PROPERTIES CPLUSPLUS ON)
-  if(${CMAKE_VERSION} VERSION_LESS "3.8.0") 
+  if(${CMAKE_VERSION} VERSION_LESS "3.8.0")
     swig_add_module(gwb python ${CMAKE_CURRENT_SOURCE_DIR}/source/world_builder/wrapper_cpp.i)
   else()
     swig_add_library(gwb LANGUAGE python SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/source/world_builder/wrapper_cpp.i)
@@ -307,7 +307,7 @@ if(MAKE_PYTHON_WRAPPER)
 
 endif()
 
-# Find if we are using make or ninja. 
+# Find if we are using make or ninja.
 IF(CMAKE_GENERATOR MATCHES "Ninja")
   SET(_make_command "ninja")
 ELSE()
@@ -371,11 +371,11 @@ if (NOT MSVC AND NOT APPLE)
    #TODO: if other compiles need to be threaded, see https://computing.llnl.gov/tutorials/pthreads/#Compiling to add the correct cases.
    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER MATCHES "AppleClang")
       # Preventing issues with older cmake compilers (<3.7) which do not support VERSION_GREATER_EQUAL
-      # cmake vesrion 3.12.0 introduces COMPILE_LANGUAGE:FORTRAN, otherwise this would be >=2.8.12
+      # cmake version 3.12.0 introduces COMPILE_LANGUAGE:FORTRAN, otherwise this would be >=2.8.12
       if(NOT ${CMAKE_VERSION} VERSION_LESS "3.9.0")
-        SET(WB_COMPILER_OPTIONS_PRIVATE -pedantic -Wall -Wextra  
+        SET(WB_COMPILER_OPTIONS_PRIVATE -pedantic -Wall -Wextra
         $<$<COMPILE_LANGUAGE:CXX>:-Wmost  -Wunreachable-code -Wuninitialized -Wmissing-braces -Wunused-parameter -Wold-style-cast -Wshadow -Wfloat-equal -Wpointer-arith -Wwrite-strings
-        -Wsynth -Wsign-compare -Woverloaded-virtual -Wliteral-range -Wparentheses -Wunused-local-typedefs -Wcast-qual -fstrict-aliasing -Werror=uninitialized -Wundef 
+        -Wsynth -Wsign-compare -Woverloaded-virtual -Wliteral-range -Wparentheses -Wunused-local-typedefs -Wcast-qual -fstrict-aliasing -Werror=uninitialized -Wundef
         -Wcast-align -Wmissing-declarations -Wredundant-decls -Wdiv-by-zero -Wdisabled-optimization -Wswitch-default -Wunused>)
 
         if (${FORCE_COLORED_OUTPUT})
@@ -392,7 +392,7 @@ if (NOT MSVC AND NOT APPLE)
       endif()
 
    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Intel")
-     SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-pthread -pedantic -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsign-compare 
+     SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-pthread -pedantic -Wall -Wextra -Wpointer-arith -Wwrite-strings -Wsign-compare
      -Woverloaded-virtual -Wno-parentheses -Wcast-qual -fstrict-aliasing -Wmaybe-uninitialized -Werror=maybe-uninitialized>)
    else()
       # gcc linux
@@ -466,7 +466,7 @@ else()
   endif()
 endif()
 
-if(${CMAKE_VERSION} VERSION_LESS "3.13.0") 
+if(${CMAKE_VERSION} VERSION_LESS "3.13.0")
     SET(CMAKE_EXE_LINKER_FLAGS "${WB_LINKER_OPTIONS} ${WB_VISU_LINKER_OPTIONS} ${WB_COMPILER_OPTIONS_PRIVATE_COVERAGE_OLD}")
 else()
     target_link_options(${WB_TARGET} INTERFACE ${WB_LINKER_OPTIONS})
@@ -549,7 +549,7 @@ if(MAKE_PYTHON_WRAPPER)
       swig_link_libraries(gwb ${GWB_LIBRARY_WHOLE} ${Python_LIBRARIES})
     endif()
   endif()
-  
+
   set_target_properties(${TARGET} PROPERTIES PREFIX "_" OUTPUT_NAME "gwb")
 
 
