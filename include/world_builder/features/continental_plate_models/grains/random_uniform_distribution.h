@@ -92,15 +92,15 @@ namespace WorldBuilder
                        const double depth,
                        const unsigned int composition_number,
                        WorldBuilder::grains grains,
-                       const double feature_min_depth,
-                       const double feature_max_depth) const override final;
+                       const double min_depth_feature,
+                       const double max_depth_feature) const override final;
 
           private:
             // uniform grains submodule parameters
-            double min_depth;
-            Objects::Surface min_depth_surface;
-            double max_depth;
-            Objects::Surface max_depth_surface;
+            double min_depth_entry;
+            Objects::Surface min_depth_surface_entry;
+            double max_depth_entry;
+            Objects::Surface max_depth_surface_entry;
             std::vector<unsigned int> grains;
             std::vector<unsigned int> compositions;
             std::string operation;

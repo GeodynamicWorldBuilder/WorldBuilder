@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2018-2024 by the authors of the World Builder code.
+  Copyright (C) 2018-2025 by the authors of the World Builder code.
 
   This file is part of the World Builder.
 
@@ -42,12 +42,12 @@ namespace WorldBuilder
       {
         Chapman::Chapman(WorldBuilder::World *world_)
           :
-          top_temperature(NaN::DSNAN),
+          top_temperature_entry(NaN::DSNAN),
           top_heat_flux(NaN::DSNAN),
           thermal_conductivity(NaN::DSNAN),
           heat_production_per_unit_volume(NaN::DSNAN),
-          min_depth(NaN::DSNAN),
-          max_depth(NaN::DSNAN),
+          min_depth_entry(NaN::DSNAN),
+          max_depth_entry(NaN::DSNAN),
           operation(Operations::REPLACE)
         {
           this->world = world_;
@@ -80,7 +80,7 @@ namespace WorldBuilder
                             "The heat generation per unit volume in W m^(-3) of this feature."
                             "The default value is 1e-6.");
 
-          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0., 2.))),
+          prm.declare_entry("min depth", Types::OneOf(Types::Double(-std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(-std::numeric_limits<double>::max(), 2.))),
                             "The depth in m from which the composition of this feature is present.");
 
           prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(), 2.))),
@@ -91,18 +91,20 @@ namespace WorldBuilder
         void
         Chapman::parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates)
         {
-          min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
-          min_depth = min_depth_surface.minimum;
-          max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
-          max_depth = max_depth_surface.maximum;
-          WBAssert(max_depth >= min_depth, "max depth needs to be larger or equal to min depth.");
-          operation = string_operations_to_enum(prm.get<std::string>("operation"));
+          min_depth_surface_entry = Objects::Surface(prm.get("min depth",coordinates));
+          min_depth_entry = min_depth_surface_entry.minimum;
+          max_depth_surface_entry = Objects::Surface(prm.get("max depth",coordinates));
+          max_depth_entry = max_depth_surface_entry.maximum;
+          WBAssert(max_depth_entry >= min_depth_entry, "max depth needs to be larger or equal to min depth.");
+
           thermal_conductivity = prm.get<double>("thermal conductivity");
           heat_production_per_unit_volume = prm.get<double>("heat generation per unit volume");
           top_heat_flux = prm.get<double>("top heat flux");
-          top_temperature = prm.get<double>("top temperature");
-          WBAssert(!std::isnan(top_temperature), "Top surface temperature is not a number: " << top_temperature
+          top_temperature_entry = prm.get<double>("top temperature");
+          WBAssert(!std::isnan(top_temperature_entry), "Top surface temperature is not a number: " << top_temperature_entry
                    << ", based on a temperature model with the name " << this->name);
+
+          operation = string_operations_to_enum(prm.get<std::string>("operation"));
         }
 
 
@@ -112,43 +114,51 @@ namespace WorldBuilder
                                  const double depth,
                                  const double gravity_norm,
                                  double temperature_,
-                                 const double feature_min_depth,
-                                 const double /*feature_max_depth*/) const
+                                 const double min_depth_feature,
+                                 const double max_depth_feature) const
         {
-          if (depth <= max_depth && depth >= min_depth)
+          if (depth <= max_depth_entry && depth >= min_depth_entry && depth <= max_depth_feature && depth >= min_depth_feature)
             {
-              const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
-              const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
+              // check if the user defined min_depth and max_depth are constant values
+              // use those values if that is the case, find the surface point if not
+              double min_depth_point = min_depth_surface_entry.constant_value ? min_depth_entry : min_depth_surface_entry.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
+              double max_depth_point = max_depth_surface_entry.constant_value ? max_depth_entry : max_depth_surface_entry.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
+
+              // constrain the depth to the feature min and max depth
+              double min_depth_local = std::max(min_depth_feature, min_depth_point);
+              double max_depth_local = std::min(max_depth_feature, max_depth_point);
+
               if (depth <= max_depth_local && depth >= min_depth_local)
                 {
-                  const double min_depth_local_local = std::max(feature_min_depth, min_depth_local);
-
-                  double top_temperature_local = top_temperature;
+                  double top_temperature_local = top_temperature_entry;
 
                   // use adiabatic temperature if top temperature is below zero
                   if (top_temperature_local < 0)
                     {
                       top_temperature_local =  this->world->potential_mantle_temperature *
                                                std::exp(((this->world->thermal_expansion_coefficient * gravity_norm) /
-                                                         this->world->specific_heat) * min_depth_local_local);
+                                                         this->world->specific_heat) * min_depth_local);
                     }
 
                   // calculate the temperature at depth z using steady-state 1-D heat conduction equation:
                   // T(z) = t_top + (q_top / k) * (Δz) - (A / (2 * k)) * (Δz)^2
-                  const double new_temperature = top_temperature + (top_heat_flux / thermal_conductivity) * (depth-min_depth_local_local) - heat_production_per_unit_volume / (2. * thermal_conductivity) * (depth-min_depth_local_local)*(depth-min_depth_local_local);
+                  const double temperature_calculated = top_temperature_local + (top_heat_flux / thermal_conductivity) * (depth-min_depth_local) - heat_production_per_unit_volume / (2. * thermal_conductivity) * (depth-min_depth_local)*(depth-min_depth_local);
 
-                  WBAssert(!std::isnan(new_temperature), "Temperature is not a number: " << new_temperature
+                  WBAssert(!std::isnan(temperature_calculated), "Temperature is not a number: " << temperature_calculated
                            << ", based on a temperature model with the name " << this->name);
-                  WBAssert(std::isfinite(new_temperature), "Temperature is not a finite: " << new_temperature
+
+                  WBAssert(std::isfinite(temperature_calculated), "Temperature is not a finite: " << temperature_calculated
                            << ", based on a temperature model with the name " << this->name
                            << ", top_temperature_local = " << top_temperature_local
                            << ", depth = " << depth
                            << ", min_depth_local = " << min_depth_local
+                           << ", max_depth_local = " << max_depth_local
+                           << ", min_depth_feature = " << min_depth_feature
+                           << ", max_depth_feature = " << max_depth_feature
                            << ", top_heat_flux = " << top_heat_flux
-                           << ", thermal_conductivity=" << thermal_conductivity
-                           << ", min_depth_local_local =" << min_depth_local_local);
+                           << ", thermal_conductivity=" << thermal_conductivity);
 
-                  return apply_operation(operation,temperature_,new_temperature);
+                  return apply_operation(operation,temperature_,temperature_calculated);
                 }
             }
 
@@ -161,4 +171,3 @@ namespace WorldBuilder
     } // namespace ContinentalPlateModels
   } // namespace Features
 } // namespace WorldBuilder
-

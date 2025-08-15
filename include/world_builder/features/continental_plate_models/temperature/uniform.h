@@ -76,16 +76,16 @@ namespace WorldBuilder
                                    const double depth,
                                    const double gravity,
                                    double temperature,
-                                   const double feature_min_depth,
-                                   const double feature_max_depth) const override final;
+                                   const double min_depth_feature,
+                                   const double max_depth_feature) const override final;
 
 
           private:
             // uniform temperature submodule parameters
-            double min_depth;
-            Objects::Surface min_depth_surface;
-            double max_depth;
-            Objects::Surface max_depth_surface;
+            double min_depth_entry;
+            Objects::Surface min_depth_surface_entry;
+            double max_depth_entry;
+            Objects::Surface max_depth_surface_entry;
             double temperature;
             Operations operation;
 
