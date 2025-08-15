@@ -1,0 +1,42 @@
+{
+  "version":"1.1",
+  "surface temperature":293,
+  "potential mantle temperature":1623,
+  "thermal expansion coefficient":3e-5,
+  "specific heat":1200,
+  "gravity model":{"model":"uniform", "magnitude":10},
+  "thermal diffusivity":1.06060606e-6,
+  "cross section":[[0,0],[100,0]],
+  "features":
+  [
+    {"model":"mantle layer", "name":"upper mantle", "min depth":95e3, "max depth":660e3, "coordinates":[[-1e3,-1e3],[2001e3,-1e3],[2001e3,1e3],[-1e3,1e3]],
+     "temperature models":[{"model":"adiabatic", "min depth":95e3, "max depth":660e3}],
+     "composition models":[{"model":"uniform", "compositions":[4]}]},
+
+    {"model":"oceanic plate", "name":"oceanic plate", "coordinates":[[-1e3,-1e3],[1150e3,-1e3],[1150e3,1e3],[-1e3,1e3]],
+     "temperature models":[{"model":"ascii data", "data directory":"2d_cartesian_plate_ascii/", "max depth":300e3, "spreading velocity":0.01, "ridge coordinates":[[[100e3,-1e3],[100e3,1e3]]]}],
+     "composition models":[{"model":"uniform", "compositions":[0], "max depth":10e3},
+                           {"model":"uniform", "compositions":[1], "min depth":10e3, "max depth":95e3}]},
+
+    {"model":"continental plate", "name":"continental plate", "coordinates":[[1150e3,-1e3],[2001e3,-1e3],[2001e3,1e3],[1150e3,1e3]],
+     "temperature models":[{"model":"linear", "max depth":95e3, "bottom temperature":1685.018071264}],
+     "composition models":[{"model":"uniform", "compositions":[2], "max depth":30e3},
+                           {"model":"uniform", "compositions":[3], "min depth":30e3, "max depth":95e3}]},
+
+    {"model":"subducting plate", "name":"Subducting plate", "coordinates":[[1150e3,-1e3],[1150e3,1e3]], "dip point":[2000e3,0],
+     "segments":[{"length":200e3, "thickness":[300e3], "angle":[0,45]}, {"length":200e3, "thickness":[300e3], "angle":[45]},
+                 {"length":200e3, "thickness":[300e3], "angle":[45,0]}, {"length":100e3, "thickness":[300e3], "angle":[0]}],
+     "temperature models":[
+                {"model":"mass conserving",
+                "density":3300, "thermal conductivity":4,"adiabatic heating":true,
+                "spreading velocity":0.0135,
+                "subducting velocity":0.0135,
+                "ridge coordinates":[[[100e3,-1e3],[100e3,1e3]]],
+                "coupling depth":80e3,
+                "forearc cooling factor":20.0,
+                "taper distance":100e3,
+                "min distance slab top":-300e3, "max distance slab top":300e3}],
+     "composition models":[{"model":"uniform", "compositions":[0], "max distance slab top":10e3},
+                           {"model":"uniform", "compositions":[1], "min distance slab top":10e3, "max distance slab top":95e3 }]}
+  ]
+}
