@@ -488,6 +488,19 @@ namespace WorldBuilder
     calculate_effective_trench_and_plate_ages(std::vector<double> ridge_parameters, double distance_along_plane);
 
     /*
+     *
+     * @brief Calculate the distance of a point to a the closest point on a rectilinear plane
+     * @param p1 The first point defining the plane
+     * @param p2 The second point defining the plane
+     * @param p3 The third point defining the plane
+     * @param check_point The point to calculate the distance to
+     */
+    double
+    calculate_distance_from_point_to_rectilinear_plane(const Point<3> p1,
+                                                       const Point<3> p2,
+                                                       const Point<3> p3,
+                                                       const Point<3> check_point);
+    /*
      * Returns the result of the multiplication of two 3*3 matrix,
      * used in applying the random uniform distribution rotation matrix
      * to a given orientation (rotation matrix)
