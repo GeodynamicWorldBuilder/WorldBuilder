@@ -64,10 +64,16 @@ namespace WorldBuilder
                             "to a single value or to a random distribution.");
 
           // Declare entries of this plugin
-          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0., 2.))),
+          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),
+                                                      Types::Array(Types::ValueAtPoints(0., 2.)),
+                                                      Types::String("")),
                             "The depth in meters from which the composition of this feature is present.");
-          prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(), 2.))),
+
+          prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),
+                                                      Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(), 2.)),
+                                                      Types::String("")),
                             "The depth in meters to which the composition of this feature is present.");
+
 
           prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
                             "A list with the integer labels of the composition which are present there.");

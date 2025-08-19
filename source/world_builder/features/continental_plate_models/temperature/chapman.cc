@@ -64,6 +64,16 @@ namespace WorldBuilder
           prm.declare_entry("", Types::Object(),
                             "Continental geotherm using the steady-state 1-D heat conduction equation from Chapman (1986).");
 
+          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),
+                                                      Types::Array(Types::ValueAtPoints(0., 2.)),
+                                                      Types::String("")),
+                            "The depth in meters from which the composition of this feature is present.");
+
+          prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),
+                                                      Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(), 2.)),
+                                                      Types::String("")),
+                            "The depth in meters to which the composition of this feature is present.");
+
           prm.declare_entry("top temperature", Types::Double(293.15),
                             "The temperature at the top surface in K of this feature."
                             "If the value is below zero, then an adiabatic temperature is used.");
@@ -79,12 +89,6 @@ namespace WorldBuilder
           prm.declare_entry("heat generation per unit volume", Types::Double(1.e-6),
                             "The heat generation per unit volume in W m^(-3) of this feature."
                             "The default value is 1e-6.");
-
-          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0., 2.))),
-                            "The depth in m from which the composition of this feature is present.");
-
-          prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(), 2.))),
-                            "The depth in m to which the composition of this feature is present.");
 
         }
 

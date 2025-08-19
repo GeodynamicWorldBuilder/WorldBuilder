@@ -440,6 +440,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -485,6 +490,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -531,28 +541,8 @@
                                                         "subtract"
                                                     ]
                                                 },
-                                                "top temperature": {
-                                                    "default value": 293.15,
-                                                    "type": "number",
-                                                    "description": "The temperature at the top surface in K of this feature.If the value is below zero, then an adiabatic temperature is used."
-                                                },
-                                                "top heat flux": {
-                                                    "default value": 0.055,
-                                                    "type": "number",
-                                                    "description": "The heat flux at the top surface in W m^(-2) of this feature.The default value is 0.055."
-                                                },
-                                                "thermal conductivity": {
-                                                    "default value": 2.5,
-                                                    "type": "number",
-                                                    "description": "The thermal conductivity in W m^(-1) K^(-1) of this feature.The default value is 2.5."
-                                                },
-                                                "heat generation per unit volume": {
-                                                    "default value": 0.000001,
-                                                    "type": "number",
-                                                    "description": "The heat generation per unit volume in W m^(-3) of this feature.The default value is 1e-6."
-                                                },
                                                 "min depth": {
-                                                    "description": "The depth in m from which the composition of this feature is present.",
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
                                                             "default value": 0.0,
@@ -593,11 +583,16 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
                                                 "max depth": {
-                                                    "description": "The depth in m to which the composition of this feature is present.",
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
                                                             "default value": 1.7976931348623157e308,
@@ -638,8 +633,33 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
+                                                },
+                                                "top temperature": {
+                                                    "default value": 293.15,
+                                                    "type": "number",
+                                                    "description": "The temperature at the top surface in K of this feature.If the value is below zero, then an adiabatic temperature is used."
+                                                },
+                                                "top heat flux": {
+                                                    "default value": 0.055,
+                                                    "type": "number",
+                                                    "description": "The heat flux at the top surface in W m^(-2) of this feature.The default value is 0.055."
+                                                },
+                                                "thermal conductivity": {
+                                                    "default value": 2.5,
+                                                    "type": "number",
+                                                    "description": "The thermal conductivity in W m^(-1) K^(-1) of this feature.The default value is 2.5."
+                                                },
+                                                "heat generation per unit volume": {
+                                                    "default value": 0.000001,
+                                                    "type": "number",
+                                                    "description": "The heat generation per unit volume in W m^(-3) of this feature.The default value is 1e-6."
                                                 }
                                             }
                                         },
@@ -712,6 +732,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -757,6 +782,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -841,6 +871,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -886,6 +921,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -974,6 +1014,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -1019,6 +1064,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -1104,6 +1154,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -1149,6 +1204,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -1260,6 +1320,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -1305,6 +1370,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -1413,6 +1483,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -1458,6 +1533,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -1566,6 +1646,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -1611,6 +1696,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -1776,6 +1866,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -1821,6 +1916,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -6390,7 +6490,7 @@
                                                     ]
                                                 },
                                                 "min depth": {
-                                                    "description": "The depth in meters from which the temperature of this feature is present.",
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
                                                             "default value": 0.0,
@@ -6431,11 +6531,16 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
                                                 "max depth": {
-                                                    "description": "The depth in meters to which the temperature of this feature is present.",
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
                                                             "default value": 1.7976931348623157e308,
@@ -6476,6 +6581,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -6526,7 +6636,7 @@
                                                     ]
                                                 },
                                                 "min depth": {
-                                                    "description": "The depth in meters from which the temperature of this feature is present.",
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
                                                             "default value": 0.0,
@@ -6567,11 +6677,16 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
                                                 "max depth": {
-                                                    "description": "The depth in meters to which the temperature of this feature is present.Because half-space reaches background temperature asymptotically, this value should be ~2 times the nominal plate thickness of 100 km",
+                                                    "description": "The depth in meters to which the composition of this feature is present.Because half-space reaches background temperature asymptotically, this value should be ~2 times the nominal plate thickness of 100 km",
                                                     "oneOf": [
                                                         {
                                                             "default value": 1.7976931348623157e308,
@@ -6612,6 +6727,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -6723,7 +6843,7 @@
                                                     ]
                                                 },
                                                 "min depth": {
-                                                    "description": "The depth in meters from which the temperature of this feature is present.",
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
                                                             "default value": 0.0,
@@ -6764,11 +6884,16 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
                                                 "max depth": {
-                                                    "description": "The depth in meters to which the temperature of this feature is present.",
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
                                                             "default value": 1.7976931348623157e308,
@@ -6809,6 +6934,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -6852,7 +6982,7 @@
                                                     ]
                                                 },
                                                 "min depth": {
-                                                    "description": "The depth in meters from which the temperature of this feature is present.",
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
                                                             "default value": 0.0,
@@ -6893,11 +7023,16 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
                                                 "max depth": {
-                                                    "description": "The depth in meters to which the temperature of this feature is present.",
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
                                                             "default value": 1.7976931348623157e308,
@@ -6938,6 +7073,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -7049,7 +7189,7 @@
                                                     ]
                                                 },
                                                 "min depth": {
-                                                    "description": "The depth in meters from which the temperature of this feature is present.",
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
                                                             "default value": 0.0,
@@ -7090,11 +7230,16 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
                                                 "max depth": {
-                                                    "description": "The depth in meters to which the temperature of this feature is present.",
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
                                                             "default value": 1.7976931348623157e308,
@@ -7135,6 +7280,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -7183,7 +7333,7 @@
                                                     ]
                                                 },
                                                 "min depth": {
-                                                    "description": "The depth in meters from which the temperature of this feature is present.",
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
                                                             "default value": 0.0,
@@ -7224,11 +7374,16 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
                                                 "max depth": {
-                                                    "description": "The depth in meters to which the temperature of this feature is present.",
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
                                                             "default value": 1.7976931348623157e308,
@@ -7269,6 +7424,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -7347,6 +7507,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -7392,6 +7557,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -7499,6 +7669,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -7544,6 +7719,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -7652,6 +7832,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -7697,6 +7882,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -7805,6 +7995,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -7850,6 +8045,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -8015,6 +8215,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -8060,6 +8265,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
@@ -8179,7 +8389,7 @@
                                                     ]
                                                 },
                                                 "min depth": {
-                                                    "description": "The depth in meters from which the velocity of this feature is present.",
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
                                                             "default value": 0.0,
@@ -8220,11 +8430,16 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },
                                                 "max depth": {
-                                                    "description": "The depth in meters to which the velocity of this feature is present.",
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
                                                     "oneOf": [
                                                         {
                                                             "default value": 1.7976931348623157e308,
@@ -8265,6 +8480,11 @@
                                                                     ]
                                                                 }
                                                             }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
                                                         }
                                                     ]
                                                 },

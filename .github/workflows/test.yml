@@ -194,7 +194,7 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{github.workspace}}/build
-      run: cmake -G"${{ matrix.build_system }}" $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DWB_ENABLE_PYTHON=OFF -DWB_MAKE_FORTRAN_WRAPPER=OFF
+      run: cmake -G"${{ matrix.build_system }}" $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DWB_ENABLE_PYTHON=OFF -DWB_UNITY_BUILD=OFF -DWB_RUN_TESTS_WITH_GDB=OFF -DWB_RUN_TESTS_WITH_VALGRIND=OFF  -DWB_MAKE_FORTRAN_WRAPPER=OFF
 
     - name: Build gwb
       working-directory: ${{github.workspace}}/build
