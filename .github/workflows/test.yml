@@ -415,7 +415,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ['ubuntu-20.04']
+        os: ['ubuntu-24.04']
         build_type: ['Debug']
 
     runs-on: ${{ matrix.os }}
@@ -596,7 +596,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ['ubuntu-20.04']
+        os: ['ubuntu-24.04']
         build_type: ['Debug']
 
     runs-on: ${{ matrix.os }}
