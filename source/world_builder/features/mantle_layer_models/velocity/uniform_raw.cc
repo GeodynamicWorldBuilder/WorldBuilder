@@ -62,10 +62,10 @@ namespace WorldBuilder
                             "Uniform velocity model. Set the velocity to a constant value.");
 
           // Declare entries of this plugin
-          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0., 2.))),
+          prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0.,2))),
                             "The depth in meters from which the velocity of this feature is present.");
 
-          prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(), 2.))),
+          prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(),2))),
                             "The depth in meters to which the velocity of this feature is present.");
 
           prm.declare_entry("velocity", Types::Array(Types::Double(0.0),3,3),
