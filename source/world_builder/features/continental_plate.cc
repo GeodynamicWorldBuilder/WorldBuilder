@@ -229,27 +229,28 @@ namespace WorldBuilder
 
                           }
                         break;
-                        case 2: // composition
+                      }
+                      case 2: // composition
+                      {
+                        for (const auto &composition_model: composition_models)
+                          {
+                            output[entry_in_output[i_property]] = composition_model->get_composition(position_in_cartesian_coordinates,
+                                                                                                     position_in_natural_coordinates,
+                                                                                                     depth,
+                                                                                                     properties[i_property][1],
+                                                                                                     output[entry_in_output[i_property]],
+                                                                                                     min_depth_local,
+                                                                                                     max_depth_local);
 
-                          for (const auto &composition_model: composition_models)
-                            {
-                              output[entry_in_output[i_property]] = composition_model->get_composition(position_in_cartesian_coordinates,
-                                                                                                       position_in_natural_coordinates,
-                                                                                                       depth,
-                                                                                                       properties[i_property][1],
-                                                                                                       output[entry_in_output[i_property]],
-                                                                                                       min_depth_local,
-                                                                                                       max_depth_local);
+                            WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Composition is not a number: " << output[entry_in_output[i_property]]
+                                     << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
+                            WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Composition is not a finite: " << output[entry_in_output[i_property]]
+                                     << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
 
-                              WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Composition is not a number: " << output[entry_in_output[i_property]]
-                                       << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
-                              WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Composition is not a finite: " << output[entry_in_output[i_property]]
-                                       << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
+                          }
 
-                            }
-
-                          break;
-                        }
+                        break;
+                      }
                       case 3: // grains
                       {
                         WorldBuilder::grains  grains(output,properties[i_property][2],entry_in_output[i_property]);
