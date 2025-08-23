@@ -289,6 +289,8 @@ namespace WorldBuilder
                         break;
                       }
                       break;
+                      case 6: // topography: not implemented
+                        break;
                       default:
                       {
                         WBAssertThrow(false,

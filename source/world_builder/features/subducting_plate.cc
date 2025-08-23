@@ -796,6 +796,8 @@ namespace WorldBuilder
                             output[entry_in_output[i_property]+2] = velocity_current_section[2] + section_fraction * (velocity_next_section[2] - velocity_current_section[2]);
                             break;
                           }
+                          case 6: // topography: not implemented
+                            break;
                           default:
                           {
                             WBAssertThrow(false,

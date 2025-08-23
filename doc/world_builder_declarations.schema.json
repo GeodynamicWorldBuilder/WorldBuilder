@@ -2152,6 +2152,149 @@
                                         }
                                     ]
                                 }
+                            },
+                            "topography models": {
+                                "description": "A list of topography models.",
+                                "default value": "",
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Uniform topography model. Set the topography to a constant value.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "topography"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the topography model.",
+                                                    "enum": [
+                                                        "uniform"
+                                                    ]
+                                                },
+                                                "operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "enum": [
+                                                        "replace",
+                                                        "add",
+                                                        "subtract"
+                                                    ]
+                                                },
+                                                "min depth": {
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 0.0,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 0.0
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
+                                                        }
+                                                    ]
+                                                },
+                                                "max depth": {
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 1.7976931348623157e308,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 1.7976931348623157e308
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
+                                                        }
+                                                    ]
+                                                },
+                                                "topography": {
+                                                    "default value": 0.0,
+                                                    "type": "number",
+                                                    "description": "The topography in meters."
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
                             }
                         }
                     },
@@ -8937,6 +9080,149 @@
                                                         "type": "number",
                                                         "description": ""
                                                     }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "topography models": {
+                                "description": "A list of topography models.",
+                                "default value": "",
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Uniform topography model. Set the topography to a constant value.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "topography"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the topography model.",
+                                                    "enum": [
+                                                        "uniform"
+                                                    ]
+                                                },
+                                                "operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace), add the value to the previously define value (add) or subtract the value to the previously define value (subtract).",
+                                                    "enum": [
+                                                        "replace",
+                                                        "add",
+                                                        "subtract"
+                                                    ]
+                                                },
+                                                "min depth": {
+                                                    "description": "The depth in meters from which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 0.0,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 0.0
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
+                                                        }
+                                                    ]
+                                                },
+                                                "max depth": {
+                                                    "description": "The depth in meters to which the composition of this feature is present.",
+                                                    "oneOf": [
+                                                        {
+                                                            "default value": 1.7976931348623157e308,
+                                                            "type": "number",
+                                                            "description": ""
+                                                        },
+                                                        {
+                                                            "type": "array",
+                                                            "minItems": 0,
+                                                            "maxItems": 4294967295,
+                                                            "uniqueItems": false,
+                                                            "description": "",
+                                                            "items": {
+                                                                "type": "array",
+                                                                "additionalProperties": false,
+                                                                "minItems": 1,
+                                                                "maxItems": 2,
+                                                                "description": "",
+                                                                "items": {
+                                                                    "anyOf": [
+                                                                        {
+                                                                            "type": "number",
+                                                                            "default value": 1.7976931348623157e308
+                                                                        },
+                                                                        {
+                                                                            "type": "array",
+                                                                            "minItems": 1,
+                                                                            "maxItems": 4294967295,
+                                                                            "items": {
+                                                                                "type": "array",
+                                                                                "minItems": 1,
+                                                                                "maxItems": 2,
+                                                                                "items": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "default value": "",
+                                                            "type": "string",
+                                                            "description": ""
+                                                        }
+                                                    ]
+                                                },
+                                                "topography": {
+                                                    "default value": 0.0,
+                                                    "type": "number",
+                                                    "description": "The topography in meters."
                                                 }
                                             }
                                         }
