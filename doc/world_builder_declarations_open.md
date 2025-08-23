@@ -641,6 +641,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/1/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_1_temperature-models_items_oneOf_1_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -728,6 +737,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/1/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_1_temperature-models_items_oneOf_1_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -791,47 +809,11 @@
 - **enum**:[replace, add, subtract]
 ::::::::::::::::
 
-::::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/top temperature
-:open:
-:name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_top-temperature
-
-- **default value**:293.15
-- **type**:number
-- **description**:The temperature at the top surface in K of this feature.If the value is below zero, then an adiabatic temperature is used.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/top heat flux
-:open:
-:name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_top-heat-flux
-
-- **default value**:0.055
-- **type**:number
-- **description**:The heat flux at the top surface in W m^(-2) of this feature.The default value is 0.055.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/thermal conductivity
-:open:
-:name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_thermal-conductivity
-
-- **default value**:2.5
-- **type**:number
-- **description**:The thermal conductivity in W m^(-1) K^(-1) of this feature.The default value is 2.5.
-::::::::::::::::
-
-::::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/heat generation per unit volume
-:open:
-:name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_heat-generation-per-unit-volume
-
-- **default value**:0.000001
-- **type**:number
-- **description**:The heat generation per unit volume in W m^(-3) of this feature.The default value is 1e-6.
-::::::::::::::::
-
 ::::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/min depth
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_min-depth
 
-- **description**:The depth in m from which the composition of this feature is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_min-depth_oneOf
@@ -911,6 +893,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -918,7 +909,7 @@
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_max-depth
 
-- **description**:The depth in m to which the composition of this feature is present.
+- **description**:The depth in meters to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_max-depth_oneOf
@@ -998,7 +989,52 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_max-depth_oneOf_3
 
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
+
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/top temperature
+:open:
+:name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_top-temperature
+
+- **default value**:293.15
+- **type**:number
+- **description**:The temperature at the top surface in K of this feature.If the value is below zero, then an adiabatic temperature is used.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/top heat flux
+:open:
+:name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_top-heat-flux
+
+- **default value**:0.055
+- **type**:number
+- **description**:The heat flux at the top surface in W m^(-2) of this feature.The default value is 0.055.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/thermal conductivity
+:open:
+:name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_thermal-conductivity
+
+- **default value**:2.5
+- **type**:number
+- **description**:The thermal conductivity in W m^(-1) K^(-1) of this feature.The default value is 2.5.
+::::::::::::::::
+
+::::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/2/heat generation per unit volume
+:open:
+:name: open_features_items_oneOf_1_temperature-models_items_oneOf_2_heat-generation-per-unit-volume
+
+- **default value**:0.000001
+- **type**:number
+- **description**:The heat generation per unit volume in W m^(-3) of this feature.The default value is 1e-6.
 ::::::::::::::::
 
 
@@ -1118,6 +1154,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/3/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_1_temperature-models_items_oneOf_3_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -1203,6 +1248,15 @@
 
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/3/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_1_temperature-models_items_oneOf_3_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
 ::::::::::::::
 
 
@@ -1343,6 +1397,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/4/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_1_temperature-models_items_oneOf_4_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -1428,6 +1491,15 @@
 
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/1/temperature models/items/oneOf/4/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_1_temperature-models_items_oneOf_4_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
 ::::::::::::::
 
 
@@ -1579,6 +1651,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/1/velocity models/items/oneOf/1/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_1_velocity-models_items_oneOf_1_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -1664,6 +1745,15 @@
 
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/1/velocity models/items/oneOf/1/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_1_velocity-models_items_oneOf_1_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
 ::::::::::::::
 
 
@@ -1816,6 +1906,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_1_composition-models_items_oneOf_1_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -1901,6 +2000,15 @@
 
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/1/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_1_composition-models_items_oneOf_1_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
 ::::::::::::::
 
 
@@ -2083,6 +2191,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_1_composition-models_items_oneOf_2_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -2168,6 +2285,15 @@
 
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_1_composition-models_items_oneOf_2_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
 ::::::::::::::
 
 
@@ -2350,6 +2476,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/1/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_1_grains-models_items_oneOf_1_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -2435,6 +2570,15 @@
 
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/1/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_1_grains-models_items_oneOf_1_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
 ::::::::::::::
 
 
@@ -2617,6 +2761,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_1_grains-models_items_oneOf_2_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -2702,6 +2855,15 @@
 
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/2/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_1_grains-models_items_oneOf_2_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
 ::::::::::::::
 
 
@@ -2977,6 +3139,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/3/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_1_grains-models_items_oneOf_3_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -3062,6 +3233,15 @@
 
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/1/grains models/items/oneOf/3/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_1_grains-models_items_oneOf_3_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
 ::::::::::::::
 
 
@@ -10421,7 +10601,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_min-depth
 
-- **description**:The depth in meters from which the temperature of this feature is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/1/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_min-depth_oneOf
@@ -10501,6 +10681,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/1/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -10508,7 +10697,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_max-depth
 
-- **description**:The depth in meters to which the temperature of this feature is present.
+- **description**:The depth in meters to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/1/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_max-depth_oneOf
@@ -10588,6 +10777,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/1/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_temperature-models_items_oneOf_1_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -10655,7 +10853,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_min-depth
 
-- **description**:The depth in meters from which the temperature of this feature is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_min-depth_oneOf
@@ -10735,6 +10933,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -10742,7 +10949,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_max-depth
 
-- **description**:The depth in meters to which the temperature of this feature is present.Because half-space reaches background temperature asymptotically, this value should be ~2 times the nominal plate thickness of 100 km
+- **description**:The depth in meters to which the composition of this feature is present.Because half-space reaches background temperature asymptotically, this value should be ~2 times the nominal plate thickness of 100 km
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_max-depth_oneOf
@@ -10820,6 +11027,15 @@
 
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/2/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_temperature-models_items_oneOf_2_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
 ::::::::::::::
 
 
@@ -11006,7 +11222,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_min-depth
 
-- **description**:The depth in meters from which the temperature of this feature is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/3/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_min-depth_oneOf
@@ -11086,6 +11302,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/3/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -11093,7 +11318,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_max-depth
 
-- **description**:The depth in meters to which the temperature of this feature is present.
+- **description**:The depth in meters to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/3/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_max-depth_oneOf
@@ -11173,6 +11398,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/3/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_temperature-models_items_oneOf_3_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -11231,7 +11465,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_min-depth
 
-- **description**:The depth in meters from which the temperature of this feature is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_min-depth_oneOf
@@ -11311,6 +11545,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -11318,7 +11561,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_max-depth
 
-- **description**:The depth in meters to which the temperature of this feature is present.
+- **description**:The depth in meters to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_max-depth_oneOf
@@ -11396,6 +11639,15 @@
 
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/4/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_temperature-models_items_oneOf_4_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
 ::::::::::::::
 
 
@@ -11582,7 +11834,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_min-depth
 
-- **description**:The depth in meters from which the temperature of this feature is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_min-depth_oneOf
@@ -11662,6 +11914,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -11669,7 +11930,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_max-depth
 
-- **description**:The depth in meters to which the temperature of this feature is present.
+- **description**:The depth in meters to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_max-depth_oneOf
@@ -11749,6 +12010,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/5/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_temperature-models_items_oneOf_5_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -11816,7 +12086,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_min-depth
 
-- **description**:The depth in meters from which the temperature of this feature is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/6/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_min-depth_oneOf
@@ -11896,6 +12166,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/6/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -11903,7 +12182,7 @@
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_max-depth
 
-- **description**:The depth in meters to which the temperature of this feature is present.
+- **description**:The depth in meters to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/6/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_max-depth_oneOf
@@ -11981,6 +12260,15 @@
 
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/temperature models/items/oneOf/6/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_temperature-models_items_oneOf_6_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
 ::::::::::::::
 
 
@@ -12122,6 +12410,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/1/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_composition-models_items_oneOf_1_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -12207,6 +12504,15 @@
 
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/1/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_composition-models_items_oneOf_1_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
 ::::::::::::::
 
 
@@ -12385,6 +12691,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/2/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_composition-models_items_oneOf_2_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -12470,6 +12785,15 @@
 
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/composition models/items/oneOf/2/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_composition-models_items_oneOf_2_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
 ::::::::::::::
 
 
@@ -12652,6 +12976,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/1/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_grains-models_items_oneOf_1_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -12737,6 +13070,15 @@
 
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/1/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_grains-models_items_oneOf_1_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
 ::::::::::::::
 
 
@@ -12919,6 +13261,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/2/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_grains-models_items_oneOf_2_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -13004,6 +13355,15 @@
 
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/2/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_grains-models_items_oneOf_2_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
 ::::::::::::::
 
 
@@ -13279,6 +13639,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/3/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_grains-models_items_oneOf_3_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -13364,6 +13733,15 @@
 
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/grains models/items/oneOf/3/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_grains-models_items_oneOf_3_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
 ::::::::::::::
 
 
@@ -13549,7 +13927,7 @@
 :open:
 :name: open_features_items_oneOf_4_velocity-models_items_oneOf_1_min-depth
 
-- **description**:The depth in meters from which the velocity of this feature is present.
+- **description**:The depth in meters from which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/velocity models/items/oneOf/1/min depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_velocity-models_items_oneOf_1_min-depth_oneOf
@@ -13629,6 +14007,15 @@
 
 ::::::::::::::
 
+::::::::::::::{dropdown} /features/items/oneOf/4/velocity models/items/oneOf/1/min depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_velocity-models_items_oneOf_1_min-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
+::::::::::::::
+
 
 ::::::::::::::::
 
@@ -13636,7 +14023,7 @@
 :open:
 :name: open_features_items_oneOf_4_velocity-models_items_oneOf_1_max-depth
 
-- **description**:The depth in meters to which the velocity of this feature is present.
+- **description**:The depth in meters to which the composition of this feature is present.
 :::::::::::::::{dropdown} /features/items/oneOf/4/velocity models/items/oneOf/1/max depth/oneOf
 :open:
 :name: open_features_items_oneOf_4_velocity-models_items_oneOf_1_max-depth_oneOf
@@ -13714,6 +14101,15 @@
 
 :::::::::::::
 
+::::::::::::::
+
+::::::::::::::{dropdown} /features/items/oneOf/4/velocity models/items/oneOf/1/max depth/oneOf/3
+:open:
+:name: open_features_items_oneOf_4_velocity-models_items_oneOf_1_max-depth_oneOf_3
+
+- **default value**:
+- **type**:string
+- **description**:
 ::::::::::::::
 
 

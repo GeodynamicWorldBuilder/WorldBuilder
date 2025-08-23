@@ -18,6 +18,8 @@
 */
 
 
+#include "world_builder/assert.h"
+#include "world_builder/coordinate_system.h"
 #include "world_builder/features/continental_plate_models/composition/interface.h"
 #include "world_builder/features/continental_plate_models/velocity/interface.h"
 #include "world_builder/features/continental_plate_models/grains/interface.h"
@@ -40,6 +42,8 @@
 #include "world_builder/gravity_model/interface.h"
 #include "world_builder/types/object.h"
 #include "world_builder/utilities.h"
+#include "data/LITHO1.0/litho_coord_data.h"
+#include "data/LITHO1.0/litho_depth_data.h"
 
 #include "rapidjson/error/en.h"
 #include "rapidjson/istreamwrapper.h"
@@ -517,6 +521,7 @@ namespace WorldBuilder
     // 2. One double provided: use the default value everywhere. Return first with one value and second with size 0.
     // 3. One value in a double array and no points provided: use that value everywhere. Return first with one value and second with size 0.
     // 4. Other: fill the vectors with the default value and addition points and then add new point.
+    // 5. A string provided: for example litho1 sediment 3, and a path provided?
     //    If a value without points is encountered, the additional points are used.
     std::pair<std::vector<double>,std::vector<double>> result;
 
@@ -525,9 +530,11 @@ namespace WorldBuilder
     // start with adding the additional points with the default value
     // to do this we need the default value
     double default_value = 0;
-    bool is_array = true;
+    enum InputTypes {DOUBLE_TYPE,ARRAY_TYPE,STRING_TYPE,MAX_INPUT_TYPES};
+    InputTypes input_type = InputTypes::MAX_INPUT_TYPES;
     if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr && Pointer((strict_base + "/" + name).c_str()).Get(parameters)->IsArray())
       {
+        input_type = InputTypes::ARRAY_TYPE;
         const std::string value_def_path = get_full_json_schema_path() + "/" + name + "/oneOf/1/items/items/anyOf/0/default value";
         Value *value_def = Pointer(value_def_path.c_str()).Get(declarations);
         WBAssertThrow(value_def != nullptr,
@@ -538,9 +545,15 @@ namespace WorldBuilder
         // So no try/catch needed.
         default_value = value_def->GetDouble();
       }
+    else if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr && Pointer((strict_base + "/" + name).c_str()).Get(parameters)->IsString())
+      {
+        input_type = InputTypes::STRING_TYPE;
+        // I don't know if a default value makes sense here
+
+      }
     else
       {
-        is_array = false;
+        input_type = InputTypes::DOUBLE_TYPE;
         Value *value_def = Pointer((get_full_json_schema_path() + "/" + name + "/oneOf/0/default value").c_str()).Get(declarations);
         WBAssertThrow(value_def != nullptr,
                       "internal error: could not retrieve the default value at: "
@@ -556,8 +569,8 @@ namespace WorldBuilder
     // check if there is a user defined value
     if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr)
       {
-        // there is a user defined value, so either case 2, 3 or 4.
-        if (is_array)
+        // there is a user defined value, so either case 2, 3 4, or 5.
+        if (input_type == InputTypes::ARRAY_TYPE)
           {
             Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
 
@@ -690,6 +703,107 @@ namespace WorldBuilder
                   }
               }
           }
+        else if (input_type == InputTypes::STRING_TYPE)
+          {
+            // case 5: a string. Get the string and decode it
+            std::string value = "";
+
+            try
+              {
+                value = Pointer((strict_base + "/" + name).c_str()).Get(parameters)->GetString();
+              }
+            catch (...)
+              {
+                WBAssertThrow(false, "Could not convert values of " << strict_base << "/" << name << " into a String. "
+                              << "The provided value was \"" <<  Pointer((strict_base + "/" + name).c_str()).Get(parameters)->GetString() << "\".");
+              }
+            if (value.substr(0,8) == "Litho1.0")
+              {
+                WBAssertThrow(coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical,"The Litho1.0 data set is only available in spherical coordinates.");
+                constexpr int n_nodes = 40962;
+                constexpr int n_layers = 9;
+                enum LayerType
+                {
+                  // ASTHENOSPHERE,
+                  LITHOSPHERE,
+                  CRUST3,
+                  CRUST2,
+                  CRUST1,
+                  SEDIMENT3,
+                  SEDIMENT2,
+                  SEDIMENT1,
+                  ICE,
+                  WATER,
+                  MAX_LAYERTYPE
+                };
+                size_t colon_location = value.find(':');
+                WBAssertThrow(colon_location!= std::string::npos,"when choosing Litho1.0 you need to specify a subunit with the colon (:)." );
+                std::string rest_of_string = value.substr(colon_location); // TODO: improve and make more robust, look at gwb-dat example
+                while ((!rest_of_string.empty()) && (rest_of_string[0] == ' '))
+                  rest_of_string.erase(rest_of_string.begin());
+                while ((!rest_of_string.empty()) && (rest_of_string[0] == ':'))
+                  rest_of_string.erase(rest_of_string.begin());
+                while ((!rest_of_string.empty()) && (rest_of_string[0] == ' '))
+                  rest_of_string.erase(rest_of_string.begin());
+                while ((!rest_of_string.empty()) && (rest_of_string[rest_of_string.size() - 1] == ' '))
+                  rest_of_string.erase(rest_of_string.end() - 1);
+                LayerType layer_type = LayerType::MAX_LAYERTYPE;
+                if (rest_of_string == "lithosphere")
+                  {
+                    layer_type = LayerType::LITHOSPHERE;
+                  }
+                else if (rest_of_string == "crust 3")
+                  {
+                    layer_type = LayerType::CRUST3;
+                  }
+                else if (rest_of_string == "crust 2")
+                  {
+                    layer_type = LayerType::CRUST2;
+                  }
+                else if (rest_of_string == "crust 1")
+                  {
+                    layer_type = LayerType::CRUST1;
+                  }
+                else if (rest_of_string == "sediment 3")
+                  {
+                    layer_type = LayerType::SEDIMENT3;
+                  }
+                else if (rest_of_string == "sediment 2")
+                  {
+                    layer_type = LayerType::SEDIMENT2;
+                  }
+                else if (rest_of_string == "sediment 1")
+                  {
+                    layer_type = LayerType::SEDIMENT1;
+                  }
+                else if (rest_of_string == "ice")
+                  {
+                    layer_type = LayerType::ICE;
+                  }
+                else if (rest_of_string == "water")
+                  {
+                    layer_type = LayerType::WATER;
+                  }
+                WBAssertThrow(layer_type != LayerType::MAX_LAYERTYPE, "Could not find litho1.0 layer type " << rest_of_string);
+                for (size_t index = 0; index < n_nodes; ++index )
+                  {
+                    // only add the point if it is actually in the feature
+                    if (Utilities::polygon_contains_point(addition_points, Point<2>(Datasets::LITHO1_0::coordinates_lat_long[index*2+1],Datasets::LITHO1_0::coordinates_lat_long[index*2],CoordinateSystem::spherical)))
+                      {
+                        const size_t global_index = index*n_layers+static_cast<size_t> (layer_type);
+                        result.first.emplace_back(Datasets::LITHO1_0::depths[global_index]);
+                        result.second.emplace_back(Datasets::LITHO1_0::coordinates_lat_long[index*2+1]);
+                        result.second.emplace_back(Datasets::LITHO1_0::coordinates_lat_long[index*2]);
+                      }
+                  }
+
+              }
+            else
+              {
+                WBAssertThrow(false,"Could not find \"" << value << "\" in \"" << strict_base << "/" << name << "\". ");
+              }
+            WBAssertThrow(result.first.size() > 0,"Internal error: program should not get here.");
+          }
         else
           {
             // case 2: there one value, not an array
@@ -711,7 +825,7 @@ namespace WorldBuilder
         // there is no user defined value. Case one: return the default value and no points
         result.first.emplace_back(default_value);
       }
-
+    WBAssertThrow(result.first.size() > 0, "Internal error: no entries returned when fetching value at points.");
     return result;
   }
 

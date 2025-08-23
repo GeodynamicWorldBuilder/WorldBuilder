@@ -34,7 +34,7 @@ fi
 # collect all header and source files and process them in batches of 50 files
 # with up to 10 in parallel
 
-find include source tests/unit_tests \( -name '*.cc' -o -name '*.h' \) -print0 | xargs -0 -n 50 -P 10 astyle --options=doc/astyle-2.04.rc
+find include/world_builder include/visualization include/app source tests/unit_tests \( -name '*.cc' -o -name '*.h' \) -print0 | xargs -0 -n 50 -P 10 astyle --options=doc/astyle-2.04.rc
 # remove execute permission on source files:
 find include source tests/unit_tests \( -name '*.cc' -o -name '*.h' -o -name '*.prm' \) -print0 | xargs -0 -n 50 -P 10 chmod -x
 

@@ -4151,7 +4151,7 @@ TEST_CASE("WorldBuilder Parameters")
 
 
   CHECK_THROWS_WITH(prm.get("one value at points one value string",additional_points),
-                    Contains("Could not convert values of /one value at points one value string into a double. The provided value was \"test1\"."));
+                    Contains("Could not find"));
   CHECK_THROWS_WITH(prm.get("array value at points one value string",additional_points),
                     Contains("Could not convert values of /array value at points one value string/0/0 into a double. The provided value was \"test2\"."));
   CHECK_THROWS_WITH(prm.get("value at points set ap val string",additional_points),

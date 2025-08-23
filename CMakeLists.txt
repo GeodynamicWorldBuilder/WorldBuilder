@@ -450,7 +450,7 @@ elseif(APPLE)
     SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-Wpointer-arith -Wwrite-strings -Wsynth -Wsign-compare -Woverloaded-virtual -Wno-literal-range -Wno-parentheses -Wno-unused-local-typedefs -Wcast-qual -fstrict-aliasing -Wuninitialized -Werror=uninitialized -Wdangling-else>)
 else()
     #MSVS
-    SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:CXX>:/W3 /EHsc>)
+    SET(WB_COMPILER_OPTIONS_PRIVATE $<$<COMPILE_LANGUAGE:CXX>:/W3 /EHsc /bigobj>)
     SET(WB_LINKER_OPTIONS  /WHOLEARCHIVE:${CMAKE_CURRENT_BINARY_DIR}/lib/WorldBuilder.lib)
 endif()
 

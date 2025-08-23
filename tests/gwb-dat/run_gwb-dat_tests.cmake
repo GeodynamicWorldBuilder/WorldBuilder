@@ -58,7 +58,8 @@ String(REGEX REPLACE "Starting the World Builder with ([0-9]*) threads..." "Star
 file(WRITE ${TEST_OUTPUT} ${TEST_OUTPUT_PROCESSED})
 
 if( TEST_RESULT_VAR )
-  String(REGEX REPLACE "(.*)AssertThrow `(.*)` failed in (.*)/source/([^ )(]*) at line ([01234567890]*): (.*)" "AssertThrow `(..error type..)` failed in (..path..)/source/\\4 at line (..line..): \\6" TEST_ERROR_VAR_PROCESSED "${TEST_ERROR_VAR}")
+  String(REGEX REPLACE "(.*)AssertThrow `(.*)` failed in (.*)source([^ )(]*) at line ([01234567890]*): (.*)" "AssertThrow `(..error type..)` failed in (..path..)/source\\4 at line (..line..): \\6" TEST_ERROR_VAR_PROCESSED "${TEST_ERROR_VAR}")
+  string(REPLACE "\\" "/" TEST_ERROR_VAR_PROCESSED ${TEST_ERROR_VAR_PROCESSED})
   string(FIND "${TEST_ERROR_VAR_PROCESSED}" "AssertThrow" FIRST_BRACKET)
   string(FIND "${TEST_ERROR_VAR_PROCESSED}" "Error not recoverable, aborting program." LAST_BRACKET REVERSE)
   MATH(EXPR LAST_BRACKET ${LAST_BRACKET})
