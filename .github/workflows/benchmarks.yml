@@ -56,7 +56,7 @@ jobs:
       run: cmake --version
 
     - name: Checkout cbdr
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: MFraters/cbdr
         ref: github_actions_fix
@@ -93,7 +93,7 @@ jobs:
         key: ${{ runner.os }}-gwb-feature-${{ github.event.number }}-v3}}
 
     - name: Checkout cbdr
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: MFraters/cbdr
         ref: github_actions_fix
@@ -102,13 +102,13 @@ jobs:
 
 
     - name: Checkout feature
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         path: feature/source
         clean: false
 
     - name: Checkout main
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         ref: main
         path: main/source
