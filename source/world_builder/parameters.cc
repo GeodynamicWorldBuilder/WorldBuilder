@@ -723,19 +723,20 @@ namespace WorldBuilder
               {
                 WBAssertThrow(coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical,"The Litho1.0 data set is only available in spherical coordinates.");
                 constexpr int n_nodes = 40962;
-                constexpr int n_layers = 9;
+                constexpr int n_layers = 11;
                 enum LayerType
                 {
-                  // ASTHENOSPHERE,
-                  LITHOSPHERE,
-                  CRUST3,
-                  CRUST2,
-                  CRUST1,
-                  SEDIMENT3,
-                  SEDIMENT2,
-                  SEDIMENT1,
-                  ICE,
-                  WATER,
+                  ASTHENOSPHERE_BOTTOM,
+                  ASTHENOSPHERE_TOP,
+                  LITHOSPHERE_TOP,
+                  CRUST3_TOP,
+                  CRUST2_TOP,
+                  CRUST1_TOP,
+                  SEDIMENT3_TOP,
+                  SEDIMENT2_TOP,
+                  SEDIMENT1_TOP,
+                  ICE_TOP,
+                  WATER_TOP,
                   MAX_LAYERTYPE
                 };
                 size_t colon_location = value.find(':');
@@ -750,47 +751,55 @@ namespace WorldBuilder
                 while ((!rest_of_string.empty()) && (rest_of_string[rest_of_string.size() - 1] == ' '))
                   rest_of_string.erase(rest_of_string.end() - 1);
                 LayerType layer_type = LayerType::MAX_LAYERTYPE;
-                if (rest_of_string == "lithosphere")
+                if (rest_of_string == "asthenosphere bottom")
                   {
-                    layer_type = LayerType::LITHOSPHERE;
+                    layer_type = LayerType::ASTHENOSPHERE_BOTTOM;
                   }
-                else if (rest_of_string == "crust 3")
+                else if (rest_of_string == "astenosphere top" || rest_of_string == "lithosphere bottom" )
                   {
-                    layer_type = LayerType::CRUST3;
+                    layer_type = LayerType::ASTHENOSPHERE_TOP;
                   }
-                else if (rest_of_string == "crust 2")
+                else if (rest_of_string == "lithosphere top" || rest_of_string == "crust 3 bottom" )
                   {
-                    layer_type = LayerType::CRUST2;
+                    layer_type = LayerType::LITHOSPHERE_TOP;
                   }
-                else if (rest_of_string == "crust 1")
+                else if (rest_of_string == "crust 3 top" || rest_of_string == "crust 2 bottom")
                   {
-                    layer_type = LayerType::CRUST1;
+                    layer_type = LayerType::CRUST3_TOP;
                   }
-                else if (rest_of_string == "sediment 3")
+                else if (rest_of_string == "crust 2 top" || rest_of_string == "crust 1 bottom")
                   {
-                    layer_type = LayerType::SEDIMENT3;
+                    layer_type = LayerType::CRUST2_TOP;
                   }
-                else if (rest_of_string == "sediment 2")
+                else if (rest_of_string == "crust 1 top" || rest_of_string == "sediment 3 bottom")
                   {
-                    layer_type = LayerType::SEDIMENT2;
+                    layer_type = LayerType::CRUST1_TOP;
                   }
-                else if (rest_of_string == "sediment 1")
+                else if (rest_of_string == "sediment 3 top" || rest_of_string == "sediment 2 bottom")
                   {
-                    layer_type = LayerType::SEDIMENT1;
+                    layer_type = LayerType::SEDIMENT3_TOP;
                   }
-                else if (rest_of_string == "ice")
+                else if (rest_of_string == "sediment 2 top" || rest_of_string == "sediment 1 bottom")
                   {
-                    layer_type = LayerType::ICE;
+                    layer_type = LayerType::SEDIMENT2_TOP;
                   }
-                else if (rest_of_string == "water")
+                else if (rest_of_string == "sediment 1 top" || rest_of_string == "water bottom")
                   {
-                    layer_type = LayerType::WATER;
+                    layer_type = LayerType::SEDIMENT1_TOP;
+                  }
+                else if (rest_of_string == "water top" || rest_of_string == "ice bottom")
+                  {
+                    layer_type = LayerType::WATER_TOP;
+                  }
+                else if (rest_of_string == "ice top")
+                  {
+                    layer_type = LayerType::ICE_TOP;
                   }
                 WBAssertThrow(layer_type != LayerType::MAX_LAYERTYPE, "Could not find litho1.0 layer type " << rest_of_string);
                 for (size_t index = 0; index < n_nodes; ++index )
                   {
                     // only add the point if it is actually in the feature
-                    if (Utilities::polygon_contains_point(addition_points, Point<2>(Datasets::LITHO1_0::coordinates_lat_long[index*2+1],Datasets::LITHO1_0::coordinates_lat_long[index*2],CoordinateSystem::spherical)))
+                    if (Utilities::polygon_contains_point(Utilities::get_scaled_polygon(addition_points,1.5), Point<2>(Datasets::LITHO1_0::coordinates_lat_long[index*2+1],Datasets::LITHO1_0::coordinates_lat_long[index*2],CoordinateSystem::spherical)))
                       {
                         const size_t global_index = index*n_layers+static_cast<size_t> (layer_type);
                         result.first.emplace_back(Datasets::LITHO1_0::depths[global_index]);
