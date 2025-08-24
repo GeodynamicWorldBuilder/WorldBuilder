@@ -70,6 +70,17 @@ namespace WorldBuilder
     polygon_contains_point_implementation(const std::vector<Point<2> > &point_list,
                                           const Point<2> &point);
 
+    /**
+     * computes Bary center of a poygon.
+     */
+    Point<2> polygon_bary_center(const std::vector<Point<2> > &point_list);
+
+    /**
+     * return a vector with a polygon where the points have been scaled according to
+     * the provided scaling factor.
+     */
+    std::vector<Point<2>> get_scaled_polygon(const std::vector<Point<2>> &polygon, double scaling_factor);
+
 
     /**
      * Given a 2d point, a semi-major axis, and an eccentricity, computes where
