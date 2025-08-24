@@ -250,6 +250,32 @@ namespace WorldBuilder
       return *std::min_element(distances.begin(),distances.end()) * sign;
     }
 
+    Point<2> polygon_bary_center(const std::vector<Point<2> > &point_list)
+    {
+      Point<2> bary_center(0,0,point_list[0].get_coordinate_system());
+      for (auto point : point_list)
+        {
+          bary_center[0] += point[0];
+          bary_center[1] += point[1];
+        }
+      bary_center[0] /= static_cast<double>(point_list.size());
+      bary_center[1] /= static_cast<double>(point_list.size());
+      return bary_center;
+    }
+
+    std::vector<Point<2>> get_scaled_polygon(const std::vector<Point<2>> &polygon, double scaling_factor)
+    {
+      Point<2> bary_center = polygon_bary_center(polygon);
+      std::vector<Point<2>> scaled_polygon(polygon.size(),Point<2>(0.,0.,polygon[0].get_coordinate_system()));
+      for (size_t index = 0; index < polygon.size(); ++index)
+        {
+          scaled_polygon[index][0] = bary_center[0] + scaling_factor * (polygon[index][0] - bary_center[0]);
+          scaled_polygon[index][1] = bary_center[1] + scaling_factor * (polygon[index][1] - bary_center[1]);
+        }
+      return scaled_polygon;
+
+    }
+
 
     std::array<double,3>
     cartesian_to_spherical_coordinates(const Point<3> &position)
