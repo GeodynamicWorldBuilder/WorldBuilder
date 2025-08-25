@@ -24,6 +24,7 @@
 #include "world_builder/features/continental_plate_models/grains/interface.h"
 #include "world_builder/features/continental_plate_models/temperature/interface.h"
 #include "world_builder/features/continental_plate_models/velocity/interface.h"
+#include "world_builder/features/continental_plate_models/topography/interface.h"
 #include "world_builder/features/feature_utilities.h"
 #include "world_builder/nan.h"
 #include "world_builder/types/array.h"
@@ -97,6 +98,9 @@ namespace WorldBuilder
       prm.declare_entry("grains models",
                         Types::PluginSystem("", Features::ContinentalPlateModels::Grains::Interface::declare_entries, {"model"}),
                         "A list of grains models.");
+      prm.declare_entry("topography models",
+                        Types::PluginSystem("", Features::ContinentalPlateModels::Topography::Interface::declare_entries, {"model"}),
+                        "A list of topography models.");
     }
 
     void
@@ -185,6 +189,23 @@ namespace WorldBuilder
       }
       prm.leave_subsection();
 
+
+      prm.get_unique_pointers<Features::ContinentalPlateModels::Topography::Interface>("topography models", topography_models);
+
+      prm.enter_subsection("topography models");
+      {
+        for (unsigned int i = 0; i < topography_models.size(); ++i)
+          {
+            prm.enter_subsection(std::to_string(i));
+            {
+              topography_models[i]->parse_entries(prm,coordinates);
+            }
+            prm.leave_subsection();
+          }
+      }
+      prm.leave_subsection();
+
+
     }
 
 
@@ -198,111 +219,133 @@ namespace WorldBuilder
                                  const std::vector<size_t> &entry_in_output,
                                  std::vector<double> &output) const
     {
-      if (depth <= max_depth && depth >= min_depth &&
-          WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
-                                                                                world->parameters.coordinate_system->natural_coordinate_system())))
+      //std::cout << "Flag continental 1: depth = " << depth << ", min:max depth = " << min_depth << ":" << max_depth << ", coords = " << coordinates[1][0] << ":" << coordinates[1][1] << ", checkcoords = " << position_in_natural_coordinates.get_surface_coordinates()[0] <<":" << position_in_natural_coordinates.get_surface_coordinates()[1]  << std::endl;
+      for (unsigned int i_property = 0; i_property < properties.size(); ++i_property)
         {
-          const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
-          const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
-          if (depth <= max_depth_local &&  depth >= min_depth_local)
+          if (properties[i_property][0] != 6)
             {
-              for (unsigned int i_property = 0; i_property < properties.size(); ++i_property)
+              if (depth <= max_depth && depth >= min_depth &&
+                  WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
+                                                                                        world->parameters.coordinate_system->natural_coordinate_system())))
                 {
-                  switch (properties[i_property][0])
+                  const double min_depth_local = min_depth_surface.constant_value ? min_depth : min_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
+                  const double max_depth_local = max_depth_surface.constant_value ? max_depth : max_depth_surface.local_value(position_in_natural_coordinates.get_surface_point()).interpolated_value;
+                  if (depth <= max_depth_local &&  depth >= min_depth_local)
                     {
-                      case 1:  // temperature
                       {
-                        for (const auto &temperature_model: temperature_models)
+                        switch (properties[i_property][0])
                           {
-                            output[entry_in_output[i_property]] = temperature_model->get_temperature(position_in_cartesian_coordinates,
-                                                                                                     position_in_natural_coordinates,
-                                                                                                     depth,
-                                                                                                     gravity_norm,
-                                                                                                     output[entry_in_output[i_property]],
-                                                                                                     min_depth_local,
-                                                                                                     max_depth_local);
+                            case 1:  // temperature
+                            {
+                              for (const auto &temperature_model: temperature_models)
+                                {
+                                  output[entry_in_output[i_property]] = temperature_model->get_temperature(position_in_cartesian_coordinates,
+                                                                                                           position_in_natural_coordinates,
+                                                                                                           depth,
+                                                                                                           gravity_norm,
+                                                                                                           output[entry_in_output[i_property]],
+                                                                                                           min_depth_local,
+                                                                                                           max_depth_local);
 
-                            WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Temperature is not a number: " << output[entry_in_output[i_property]]
-                                     << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
-                            WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Temperature is not a finite: " << output[entry_in_output[i_property]]
-                                     << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
+                                  WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Temperature is not a number: " << output[entry_in_output[i_property]]
+                                           << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
+                                  WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Temperature is not a finite: " << output[entry_in_output[i_property]]
+                                           << ", based on a temperature model with the name " << temperature_model->get_name() << ", in feature " << this->name);
 
-                          }
-                        break;
-                      }
-                      case 2: // composition
-                      {
-                        for (const auto &composition_model: composition_models)
-                          {
-                            output[entry_in_output[i_property]] = composition_model->get_composition(position_in_cartesian_coordinates,
-                                                                                                     position_in_natural_coordinates,
-                                                                                                     depth,
-                                                                                                     properties[i_property][1],
-                                                                                                     output[entry_in_output[i_property]],
-                                                                                                     min_depth_local,
-                                                                                                     max_depth_local);
+                                }
+                              break;
+                            }
+                            case 2: // composition
+                            {
+                              for (const auto &composition_model: composition_models)
+                                {
+                                  output[entry_in_output[i_property]] = composition_model->get_composition(position_in_cartesian_coordinates,
+                                                                                                           position_in_natural_coordinates,
+                                                                                                           depth,
+                                                                                                           properties[i_property][1],
+                                                                                                           output[entry_in_output[i_property]],
+                                                                                                           min_depth_local,
+                                                                                                           max_depth_local);
 
-                            WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Composition is not a number: " << output[entry_in_output[i_property]]
-                                     << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
-                            WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Composition is not a finite: " << output[entry_in_output[i_property]]
-                                     << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
+                                  WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Composition is not a number: " << output[entry_in_output[i_property]]
+                                           << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
+                                  WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Composition is not a finite: " << output[entry_in_output[i_property]]
+                                           << ", based on a composition model with the name " << composition_model->get_name() << ", in feature " << this->name);
 
-                          }
+                                }
 
-                        break;
-                      }
-                      case 3: // grains
-                      {
-                        WorldBuilder::grains  grains(output,properties[i_property][2],entry_in_output[i_property]);
-                        for (const auto &grains_model: grains_models)
-                          {
-                            grains = grains_model->get_grains(position_in_cartesian_coordinates,
-                                                              position_in_natural_coordinates,
-                                                              depth,
-                                                              properties[i_property][1],
-                                                              grains,
-                                                              min_depth_local,
-                                                              max_depth_local);
-
-                          }
-                        grains.unroll_into(output,entry_in_output[i_property]);
-                        break;
-                      }
-                      case 4:
-                      {
-                        output[entry_in_output[i_property]] = static_cast<double>(tag_index);
-                        break;
-                      }
-                      case 5: // velocity
-                      {
-                        std::array<double, 3> velocity = {{0,0,0}};
-                        //std::cout << "velocity_models.size() = " << velocity_models.size() << std::endl;
-                        for (const auto &velocity_model: velocity_models)
-                          {
-                            velocity = velocity_model->get_velocity(position_in_cartesian_coordinates,
+                              break;
+                            }
+                            case 3: // grains
+                            {
+                              WorldBuilder::grains  grains(output,properties[i_property][2],entry_in_output[i_property]);
+                              for (const auto &grains_model: grains_models)
+                                {
+                                  grains = grains_model->get_grains(position_in_cartesian_coordinates,
                                                                     position_in_natural_coordinates,
                                                                     depth,
-                                                                    gravity_norm,
-                                                                    velocity,
+                                                                    properties[i_property][1],
+                                                                    grains,
                                                                     min_depth_local,
                                                                     max_depth_local);
-                            //std::cout << "l vel = " << velocity[0] << ":" << velocity[1] << ":" << velocity[2] << std::endl;
 
+                                }
+                              grains.unroll_into(output,entry_in_output[i_property]);
+                              break;
+                            }
+                            case 4:
+                            {
+                              output[entry_in_output[i_property]] = static_cast<double>(tag_index);
+                              break;
+                            }
+                            case 5: // velocity
+                            {
+                              std::array<double, 3> velocity = {{0,0,0}};
+                              for (const auto &velocity_model: velocity_models)
+                                {
+                                  velocity = velocity_model->get_velocity(position_in_cartesian_coordinates,
+                                                                          position_in_natural_coordinates,
+                                                                          depth,
+                                                                          gravity_norm,
+                                                                          velocity,
+                                                                          min_depth_local,
+                                                                          max_depth_local);
+                                }
+                              output[entry_in_output[i_property]] = velocity[0];
+                              output[entry_in_output[i_property]+1] = velocity[1];
+                              output[entry_in_output[i_property]+2] = velocity[2];
+                              break;
+                            }
+                            case 6:  // topography: handled outside, so just fall through to the default error if it gets to here
+                            default:
+                            {
+                              WBAssertThrow(false,
+                                            "Internal error: Unimplemented property provided. " <<
+                                            "Only temperature (1), composition (2), grains (3), tag (4), velocity (5) or topography (6) are allowed. "
+                                            "Provided property number was: " << properties[i_property][0]);
+                            }
                           }
-                        //std::cout << "o vel = " << velocity[0] << ":" << velocity[1] << ":" << velocity[2] << std::endl;
-                        output[entry_in_output[i_property]] = velocity[0];
-                        output[entry_in_output[i_property]+1] = velocity[1];
-                        output[entry_in_output[i_property]+2] = velocity[2];
-                        //std::cout << "vel=" << output[entry_in_output[i_property]] << ":" << output[entry_in_output[i_property]+1] << ":" << output[entry_in_output[i_property]+2] << std::endl;
-                        break;
                       }
-                      default:
-                      {
-                        WBAssertThrow(false,
-                                      "Internal error: Unimplemented property provided. " <<
-                                      "Only temperature (1), composition (2), grains (3), tag (4) or velocity (5) are allowed. "
-                                      "Provided property number was: " << properties[i_property][0]);
-                      }
+                    }
+                }
+            }
+          else
+            {
+              if (WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
+                                                                                        world->parameters.coordinate_system->natural_coordinate_system())))
+                {
+                  for (const auto &topography_model: topography_models)
+                    {
+                      // find the feature which has the highest topography
+                      output[entry_in_output[i_property]] = topography_model->get_topography(position_in_cartesian_coordinates,
+                                                                                             position_in_natural_coordinates,
+                                                                                             output[entry_in_output[i_property]]);
+
+                      WBAssert(!std::isnan(output[entry_in_output[i_property]]), "Topogaphy is not a number: " << output[entry_in_output[i_property]]
+                               << ", based on a topography model with the name " << topography_model->get_name() << ", in feature " << this->name);
+                      WBAssert(std::isfinite(output[entry_in_output[i_property]]), "Topography is not a finite: " << output[entry_in_output[i_property]]
+                               << ", based on a topopgraphy model with the name " << topography_model->get_name() << ", in feature " << this->name);
+
                     }
                 }
             }
