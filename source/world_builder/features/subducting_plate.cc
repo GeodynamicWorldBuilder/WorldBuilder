@@ -751,7 +751,7 @@ namespace WorldBuilder
                             std::array<double,3> velocity_current_section;// = Point<3>(cartesian);
                             velocity_current_section[0] = output[entry_in_output[i_property]];
                             velocity_current_section[1] = output[entry_in_output[i_property]+1];
-                            velocity_current_section[2] = output[entry_in_output[i_property]]+2;
+                            velocity_current_section[2] = output[entry_in_output[i_property]+2];
                             std::array<double,3> velocity_next_section = velocity_current_section;// output[entry_in_output[i_property]];
 
                             for (const auto &velocity_model: segment_vector[current_section][current_segment].velocity_systems)
