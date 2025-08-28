@@ -59,6 +59,11 @@ namespace WorldBuilder
     class Interface;
   } // namespace GravityModel
 
+  namespace Topography
+  {
+    class Interface;
+  } // namespace GravityModel
+
   class World;
 
   /**
@@ -274,6 +279,14 @@ namespace WorldBuilder
        * @see CoordinateSystem
        */
       std::unique_ptr<WorldBuilder::GravityModel::Interface> gravity_model;
+
+      /**
+       * A pointers to the topography model. This variable is responsible for
+       * the topography model and has ownership over it. Therefore a unique
+       * pointer are used.
+       * @see CoordinateSystem
+       */
+      std::unique_ptr<WorldBuilder::Topography::Interface> topography_model;
 
       /**
        * This function return the current path as stored in the path variable
