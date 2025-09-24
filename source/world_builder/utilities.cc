@@ -1506,6 +1506,33 @@ namespace WorldBuilder
 
     }
 
+    double
+    calculate_distance_from_point_to_rectilinear_plane(const Point<3> p1,
+                                                       const Point<3> p2,
+                                                       const Point<3> p3,
+                                                       const Point<3> check_point)
+    {
+      // First Determine the Plane formed by p1, p2, p3
+      Point<3> P2P1 = p2 - p1;
+      Point<3> P3P1 = p3 - p1;
+      Point<3> normal_vector = cross_product(P2P1, P3P1);
+      Point<3> normal_vector_unit = normal_vector / normal_vector.norm();
+
+      // Determine the equation of the plane using the Normal vector and point p1
+      const double A = normal_vector_unit[0];
+      const double B = normal_vector_unit[1];
+      const double C = normal_vector_unit[2];
+      const double D = -A*p1[0] - B*p1[1] - C*p1[2];
+
+      // Calculate the denominator (squared magnitude of the normal vector)
+      const double denominator = A * A + B * B + C * C;
+
+      // Calculate the signed distance from the point to the plane
+      const double distance = (A * check_point[0] + B * check_point[1] + C * check_point[2] + D) / denominator;
+
+      return distance;
+    }
+
     std::array<std::array<double,3>,3>
     multiply_3x3_matrices(const std::array<std::array<double,3>,3> mat1, const std::array<std::array<double,3>,3> mat2)
     {

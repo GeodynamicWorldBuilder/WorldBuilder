@@ -38,6 +38,7 @@
 #include "world_builder/features/plume_models/temperature/interface.h"
 #include "world_builder/features/plume_models/velocity/interface.h"
 #include "world_builder/features/subducting_plate.h"
+#include "world_builder/features/subducting_plate_contours.h"
 #include "world_builder/features/subducting_plate_models/velocity/interface.h"
 #include "world_builder/gravity_model/interface.h"
 #include "world_builder/types/object.h"
@@ -1919,6 +1920,29 @@ namespace WorldBuilder
         for (size_t i = 0; i < array->Size(); ++i )
           {
             vector.push_back(std::make_unique<Features::SubductingPlate>(&world));
+          }
+      }
+    else
+      {
+        return false;
+      }
+
+    return true;
+  }
+
+  template<>
+  bool
+  Parameters::get_unique_pointers(const std::string &name, std::vector<std::unique_ptr<Features::SubductingPlateContours> > &vector)
+  {
+    vector.resize(0);
+    const std::string strict_base = this->get_full_json_path();
+    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr)
+      {
+        Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+        for (size_t i = 0; i < array->Size(); ++i )
+          {
+            vector.push_back(std::make_unique<Features::SubductingPlateContours>(&world));
           }
       }
     else

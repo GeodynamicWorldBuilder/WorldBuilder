@@ -22,6 +22,7 @@
 
 #include "world_builder/config.h"
 #include "world_builder/features/subducting_plate.h"
+#include "world_builder/features/subducting_plate_contours.h"
 #include "world_builder/gravity_model/interface.h"
 #include "world_builder/nan.h"
 #include "world_builder/point.h"
