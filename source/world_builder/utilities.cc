@@ -388,6 +388,7 @@ namespace WorldBuilder
                                       const bool only_positive,
                                       const Objects::BezierCurve &bezier_curve)
     {
+      // Initialize variables that this function will return
       double distance = std::numeric_limits<double>::infinity();
       double new_distance = std::numeric_limits<double>::infinity();
       double along_plane_distance = std::numeric_limits<double>::infinity();
@@ -425,12 +426,7 @@ namespace WorldBuilder
       size_t i_section_min_distance = 0;
       double fraction_CPL_P1P2 = std::numeric_limits<double>::infinity();
 
-      // get an estimate for the closest point between P1 and P2.
-      //constexpr double parts = 1;
-      //constexpr double one_div_parts = 1./parts;
-      //double minimum_distance_to_reference_point = std::numeric_limits<double>::infinity();
-      //const size_t number_of_points = point_list.size();
-
+      // Get the closest point on the curve (the trench or the fault trace) to the check point.
       const Objects::ClosestPointOnCurve closest_point_on_curve = bezier_curve.closest_point_on_curve_segment(check_point_surface_2d);
       Point<2> closest_point_on_line_2d = closest_point_on_curve.point;
 
@@ -489,7 +485,7 @@ namespace WorldBuilder
           // just nudge it into a direction, which seems to work very well.
           if (std::fabs((check_point_surface - closest_point_on_line_surface).norm()) < 2e-14)
             {
-              // If the point to check is on the line, we don't need to search any further, because we know the distance is zero.
+              // The surface coordinates are very close to the line, but the depth coordinate is not. The point is beneath the line.
               if (std::fabs((check_point - closest_point_on_line_cartesian).norm()) > 2e-14)
                 {
                   const Point<2> &P1(point_list[i_section_min_distance]);
@@ -574,6 +570,8 @@ namespace WorldBuilder
                            "Internal error: The x_axis variable is not a number: " << x_axis[2]);
                 }
               else
+
+                // The point to check is on the line, we don't need to search any further, because we know the distance is zero.
                 {
                   total_average_angle = plane_segment_angles[original_current_section][0][0]
                                         + fraction_CPL_P1P2 * (plane_segment_angles[original_next_section][0][0]
@@ -592,6 +590,8 @@ namespace WorldBuilder
                   return return_values;
                 }
             }
+
+          // The point is not on or beneath the line.
           else
             {
               WBAssert(std::abs(y_axis.norm()) > std::numeric_limits<double>::epsilon(),
@@ -696,6 +696,8 @@ namespace WorldBuilder
           double add_angle = 0.0;
           double add_angle_correction = 0.0;
           double average_angle = 0.0;
+
+          // We know which section is closest to the point, now iterate through the segments within that section.
           for (size_t i_segment = 0; i_segment < plane_segment_lengths[original_current_section].size(); i_segment++)
             {
               const size_t current_segment = i_segment;
