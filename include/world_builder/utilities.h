@@ -410,6 +410,7 @@ namespace WorldBuilder
                                                                     const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                                                     const bool only_positive,
                                                                     const Objects::BezierCurve &bezier_curve);
+    // const Point<2> &obliquity_vector);
 
 
 
