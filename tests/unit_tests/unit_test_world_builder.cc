@@ -7582,7 +7582,7 @@ TEST_CASE("WorldBuilder Utilities function: distance_point_from_curved_planes sp
    * I can't figure out why these are not working in the new structure, although I know it has to do with the different computation of the
    * x-axis. In this new computation of the x-axis, the direction is no longer computed as perpendicual to the line P1-P2, but instead as
    * the line from the closest point on the line to the check point. This is more accurate for the continuous case and seems to visually
-   * work well for the non-contiuous case, with only minor changes and of which some are clear improvements and for the rest it is not clear
+   * work well for the non-continuous case, with only minor changes and of which some are clear improvements and for the rest it is not clear
    * if is not clear whether it is an improvement or not. Since the new code seems to be an improvement, I don't have the original drawings
    * at hand, don't have the time to redo them or spend much more time on these 18 checks, I will disable the failing parts of them for now.
    */
