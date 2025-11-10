@@ -386,8 +386,8 @@ namespace WorldBuilder
                                       const double start_radius,
                                       const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                       const bool only_positive,
-                                      const Objects::BezierCurve &bezier_curve)
-    // const Point<2> &obliquity_vector)
+                                      const Objects::BezierCurve &bezier_curve,
+                                      Point<2> obliquity_vector)
     {
       // Initialize variables that this function will return
       double distance = std::numeric_limits<double>::infinity();
@@ -438,7 +438,7 @@ namespace WorldBuilder
       Point<2> closest_point_on_line_2d = closest_point_on_curve.point;
 
       // Hard-coded obliquity vector for testing purposes, this will be replaced later by an input parameter.
-      const Point<2> obliquity_vector(1.0, 0.0, natural_coordinate_system);
+      // const Point<2> obliquity_vector(1.0, 0.0, natural_coordinate_system);
 
       // If the obliquity_vector is not a NAN, this means that the user has specified an obliquity vector.
       // This will require a potential modification of the `closest_point_on_line_2d` variable.
@@ -448,6 +448,7 @@ namespace WorldBuilder
           // If so, we need to check whether this point is on the correct side of the curve, given the reference point.
           // If the bezier_curve has not found a point on the curve that is closest to the checkpoint, check to see if the point will still
           // intersect the trench given the obliquity_vector.
+          obliquity_vector = obliquity_vector / obliquity_vector.norm();
           if (!std::isnan(closest_point_on_line_2d[0]))
             {
               Point<2> check_point_surface_2d_temp_ob = check_point_surface_2d;
