@@ -268,7 +268,7 @@ namespace WorldBuilder
                         grains.unroll_into(output,entry_in_output[i_property]);
                         break;
                       }
-                      case 4:
+                      case 4: // tag
                       {
                         output[entry_in_output[i_property]] = static_cast<double>(tag_index);
                         break;
@@ -296,6 +296,20 @@ namespace WorldBuilder
                         //std::cout << "vel=" << output[entry_in_output[i_property]] << ":" << output[entry_in_output[i_property]+1] << ":" << output[entry_in_output[i_property]+2] << std::endl;
                         break;
                       }
+                      case 7: // elevation
+                      {
+                        if(std::isnan(output[entry_in_output[i_property]])){
+                          // for the first time, set the output to local min depth
+                          output[entry_in_output[i_property]] = min_depth_local
+                        } else {
+                          // compare subsequent local min depths and set the output to the minimum
+                          if (min_depth_local < output[entry_in_output[i_property]]) {
+                            output[entry_in_output[i_property]] = min_depth_local
+                          }
+                        }
+                        break;
+                      }
+                      break;
                       default:
                       {
                         WBAssertThrow(false,
