@@ -174,7 +174,7 @@ namespace WorldBuilder
 
       reference_point = prm.get<Point<2> >("dip point");
 
-      obliquity_vector = prm.get<Point<2> >("obliquity vector");
+      obliquity_vector = prm.get<Point<2>>("obliquity vector");
 
       if (coordinate_system == spherical)
         {
@@ -183,6 +183,7 @@ namespace WorldBuilder
           obliquity_vector *= (Consts::PI/180.);
         }
 
+      
       default_temperature_models.resize(0);
       default_composition_models.resize(0);
       default_grains_models.resize(0);
@@ -845,7 +846,8 @@ namespace WorldBuilder
                                                                    starting_radius,
                                                                    this->world->parameters.coordinate_system,
                                                                    false,
-                                                                   this->bezier_curve);
+                                                                   this->bezier_curve,
+                                                                   obliquity_vector);
 
       Objects::PlaneDistances plane_distances(distance_from_planes.distance_from_plane, distance_from_planes.distance_along_plane);
       return plane_distances;

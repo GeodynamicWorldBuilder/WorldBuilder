@@ -407,12 +407,6 @@ namespace WorldBuilder
       const Point<2> check_point_surface_2d(natural_coordinate.get_surface_coordinates(),
                                             natural_coordinate_system);
 
-
-
-
-
-
-
       // The section which is checked.
       size_t section = 0;
 
@@ -437,11 +431,11 @@ namespace WorldBuilder
       Objects::ClosestPointOnCurve closest_point_on_curve = bezier_curve.closest_point_on_curve_segment(check_point_surface_2d);
       Point<2> closest_point_on_line_2d = closest_point_on_curve.point;
 
-      // Hard-coded obliquity vector for testing purposes, this will be replaced later by an input parameter.
-      // const Point<2> obliquity_vector(1.0, 0.0, natural_coordinate_system);
-
       // If the obliquity_vector is not a NAN, this means that the user has specified an obliquity vector.
-      // This will require a potential modification of the `closest_point_on_line_2d` variable.
+      // This will require a potential modification of the `closest_point_on_line_2d` variable. We will take
+      // the check point and use it with the obliquity vector to parameterize a line and see where this line
+      // intersects the Bezier curve. If it does intersect the Bezier curve, then this intersection point will
+      // become the new `closest_point_on_line_2d`, otherwise it will be set to NaN.
       if (!std::isnan(obliquity_vector[0]))
         {
           // Check if the bezier_curve has found a point on the curve that is closest to the checkpoint (without considering the obliquity vector).
@@ -471,7 +465,7 @@ namespace WorldBuilder
                 }
 
               const Point<2> AB_normal_ob = closest_point_on_curve.normal*closest_point_on_line_2d.distance(reference_point);//*AB.norm();
-              const Point<2> local_reference_point_ob = AB_normal_ob*1.+closest_point_on_line_2d;
+              const Point<2> local_reference_point_ob = AB_normal_ob + closest_point_on_line_2d;
               const bool reference_normal_on_side_of_line_ob =  (closest_point_on_line_2d-local_reference_point_ob).norm_square() < (check_point_surface_2d_temp_ob-local_reference_point_ob).norm_square();
               const bool reference_point_on_side_of_line_ob =  (point_list[point_list.size()-1][0] - point_list[0][0])*(reference_point[1] - point_list[0][1]) - (reference_point[0] - point_list[0][0])*(point_list[point_list.size()-1][1] - point_list[0][1]) < 0.;
 
@@ -502,7 +496,7 @@ namespace WorldBuilder
                                                   iterable_check_point_surface_2d[1] + line_factor * old_dist * obliquity_vector[1],
                                                   natural_coordinate_system);
 
-                      // Check where the closest point on the bezier curve is to the new check point (after moving along the
+                      // Check where the closest point on the Bezier curve is relative to the new check point (after moving along the
                       // obliquity vector).
                       iterable_closest_point_on_curve = bezier_curve.closest_point_on_curve_segment(parameterized_line);
                       iterable_check_point_surface_2d = parameterized_line;
@@ -544,6 +538,44 @@ namespace WorldBuilder
               // that the point should be neglected since the slab can be oblique to the trench.
               // Determine the min/max x and y coordinates of the trench, and then use the obliquity
               // vector to see if the check point will intersect the trench at all.
+              double closest_distance_to_trench = std::numeric_limits<double>::infinity();
+              unsigned int closest_point_idx;
+              for (unsigned int point_idx = 0; point_idx < point_list.size(); ++point_idx)
+                {
+                  const double current_distance = check_point_surface_2d.distance(point_list[point_idx]);
+                  if (current_distance < closest_distance_to_trench)
+                    {
+                      closest_distance_to_trench = current_distance;
+                      closest_point_idx = point_idx;
+                    }
+                }
+              const Point<2> closest_point = point_list[closest_point_idx];
+
+
+              unsigned int second_closest_point_idx;
+              if (closest_point_idx == 0)
+                second_closest_point_idx = 1;
+              else if (closest_point_idx == point_list.size() - 1)
+                second_closest_point_idx = point_list.size() - 2;
+              else
+                {
+                  const double dist_prev = check_point_surface_2d.distance(point_list[closest_point_idx - 1]);
+                  const double dist_next = check_point_surface_2d.distance(point_list[closest_point_idx + 1]);
+                  second_closest_point_idx = dist_prev < dist_next ? closest_point_idx - 1 : closest_point_idx + 1;
+                }
+
+              // const Point<2> second_closest_point = point_list[second_closest_point_idx];
+              // std::vector<Point<2> > closest_points;
+              // closest_points.push_back(closest_point);
+              // closest_points.push_back(second_closest_point);
+
+              // WorldBuilder::Objects::BezierCurve testier_curve = Objects::BezierCurve(closest_points);
+
+
+
+
+
+
               auto compare_x_coordinate = [](auto p1, auto p2)
               {
                 return p1[0]<p2[0];
@@ -802,7 +834,7 @@ namespace WorldBuilder
 
               // check whether the check point and the reference point are on the same side, if not, change the side.
               const Point<2> AB_normal = closest_point_on_curve.normal*closest_point_on_line_2d.distance(reference_point);//*AB.norm();
-              const Point<2> local_reference_point = AB_normal*1.+closest_point_on_line_2d;
+              const Point<2> local_reference_point = AB_normal + closest_point_on_line_2d;
               const bool reference_normal_on_side_of_line =  (closest_point_on_line_2d-local_reference_point).norm_square() < (check_point_surface_2d_temp-local_reference_point).norm_square();
               const bool reference_point_on_side_of_line =  (point_list[point_list.size()-1][0] - point_list[0][0])*(reference_point[1] - point_list[0][1]) - (reference_point[0] - point_list[0][0])*(point_list[point_list.size()-1][1] - point_list[0][1]) < 0.;
               const double reference_on_side_of_line =  reference_normal_on_side_of_line == reference_point_on_side_of_line ? 1 : -1;
