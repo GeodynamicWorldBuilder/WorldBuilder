@@ -387,7 +387,7 @@ namespace WorldBuilder
                                       const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                       const bool only_positive,
                                       const Objects::BezierCurve &bezier_curve,
-                                      Point<2> obliquity_vector)
+                                      std::vector<double> obliquity_vector)
     {
       // Initialize variables that this function will return
       double distance = std::numeric_limits<double>::infinity();
@@ -431,18 +431,22 @@ namespace WorldBuilder
       Objects::ClosestPointOnCurve closest_point_on_curve = bezier_curve.closest_point_on_curve_segment(check_point_surface_2d);
       Point<2> closest_point_on_line_2d = closest_point_on_curve.point;
 
-      // If the obliquity_vector is not a NAN, this means that the user has specified an obliquity vector.
+      // If the obliquity_vector is not infinite, this means that the user has specified an obliquity vector.
       // This will require a potential modification of the `closest_point_on_line_2d` variable. We will take
       // the check point and use it with the obliquity vector to parameterize a line and see where this line
       // intersects the Bezier curve. If it does intersect the Bezier curve, then this intersection point will
       // become the new `closest_point_on_line_2d`, otherwise it will be set to NaN.
-      if (!std::isnan(obliquity_vector[0]))
+      // if (obliquity_vector_point.norm() > std::numeric_limits<double>::min())
+      if (std::isfinite(obliquity_vector[0]))
         {
+          Point<2> obliquity_vector_point(obliquity_vector[0], obliquity_vector[1], natural_coordinate_system);
+          // Normalize the vector
+          obliquity_vector_point = obliquity_vector_point / obliquity_vector_point.norm();
+
           // Check if the bezier_curve has found a point on the curve that is closest to the checkpoint (without considering the obliquity vector).
           // If so, we need to check whether this point is on the correct side of the curve, given the reference point.
           // If the bezier_curve has not found a point on the curve that is closest to the checkpoint, check to see if the point will still
           // intersect the trench given the obliquity_vector.
-          obliquity_vector = obliquity_vector / obliquity_vector.norm();
           if (!std::isnan(closest_point_on_line_2d[0]))
             {
               Point<2> check_point_surface_2d_temp_ob = check_point_surface_2d;
@@ -489,11 +493,11 @@ namespace WorldBuilder
                       // If the sign of the dot product of the obliquity vector and the normal vector of the closest point on
                       // the curve is positive, then we want to move along the obliquity vector in the negative direction,
                       // otherwise in the positive direction.
-                      line_factor = obliquity_vector * iterable_closest_point_on_curve.normal > 0 ? -1.0 : 1.0;
+                      line_factor = obliquity_vector_point * iterable_closest_point_on_curve.normal > 0 ? -1.0 : 1.0;
 
                       // Parameterize a line through the checkpoint along the obliquity vector.
-                      Point<2> parameterized_line(iterable_check_point_surface_2d[0] + line_factor * old_dist * obliquity_vector[0],
-                                                  iterable_check_point_surface_2d[1] + line_factor * old_dist * obliquity_vector[1],
+                      Point<2> parameterized_line(iterable_check_point_surface_2d[0] + line_factor * old_dist * obliquity_vector_point[0],
+                                                  iterable_check_point_surface_2d[1] + line_factor * old_dist * obliquity_vector_point[1],
                                                   natural_coordinate_system);
 
                       // Check where the closest point on the Bezier curve is relative to the new check point (after moving along the
@@ -564,7 +568,7 @@ namespace WorldBuilder
                   second_closest_point_idx = dist_prev < dist_next ? closest_point_idx - 1 : closest_point_idx + 1;
                 }
 
-              // const Point<2> second_closest_point = point_list[second_closest_point_idx];
+              const Point<2> second_closest_point = point_list[second_closest_point_idx];
               // std::vector<Point<2> > closest_points;
               // closest_points.push_back(closest_point);
               // closest_points.push_back(second_closest_point);
@@ -601,15 +605,15 @@ namespace WorldBuilder
               // If both lines are parameterized with l_i = x_i + t_i * v_i, then since we know the points x_i and the
               // vectors v_i, we can solve for t_1 and t_2 when l_1 = l_2. This works out to be:
               const double numerator = trench_uv[0] * (trench_point1[1] - check_point_surface_2d[1]) + trench_uv[1] * (check_point_surface_2d[0] - trench_point1[0]);
-              const double denominator = obliquity_vector[1] * trench_uv[0] - obliquity_vector[0] * trench_uv[1];
+              const double denominator = obliquity_vector_point[1] * trench_uv[0] - obliquity_vector_point[0] * trench_uv[1];
               const double t_val = numerator / denominator;
 
               // If the two lines are parallel, t_val will be infinite. Check to see that this is not the case.
               if (std::isfinite(t_val))
                 {
                   // t_val is finite, now determine where the intersection point is, and see if this lies within the trench extents.
-                  const Point<2> intersection_point(check_point_surface_2d[0] + t_val * obliquity_vector[0],
-                                                    check_point_surface_2d[1] + t_val * obliquity_vector[1],
+                  const Point<2> intersection_point(check_point_surface_2d[0] + t_val * obliquity_vector_point[0],
+                                                    check_point_surface_2d[1] + t_val * obliquity_vector_point[1],
                                                     natural_coordinate_system);
 
                   if (intersection_point[0] >= min_along_x && intersection_point[0] <= max_along_x

@@ -410,7 +410,7 @@ namespace WorldBuilder
                                                                     const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                                                     const bool only_positive,
                                                                     const Objects::BezierCurve &bezier_curve,
-                                                                    Point<2> obliquity_vector = Point<2>(NaN::DSNAN, NaN::DSNAN, CoordinateSystem::cartesian));
+                                                                    std::vector<double> obliquity_vector = {std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity()});
 
 
 

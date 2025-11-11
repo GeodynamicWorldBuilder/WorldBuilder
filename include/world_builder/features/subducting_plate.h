@@ -221,7 +221,8 @@ namespace WorldBuilder
          * A vector on the surface that indicates the direction of convergence
          * of the subducting plate relative to the trench.
          */
-        Point<2> obliquity_vector;
+        // Point<2> obliquity_vector;
+        std::vector<double> obliquity_vector;
 
         std::vector<std::vector<double> > slab_segment_lengths;
         std::vector<std::vector<Point<2> > > slab_segment_thickness;
