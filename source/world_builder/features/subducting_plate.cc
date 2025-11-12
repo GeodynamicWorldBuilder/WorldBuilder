@@ -183,7 +183,7 @@ namespace WorldBuilder
             value *= (Consts::PI/180.);
         }
 
-      
+
       default_temperature_models.resize(0);
       default_composition_models.resize(0);
       default_grains_models.resize(0);

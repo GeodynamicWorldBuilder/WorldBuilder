@@ -443,13 +443,59 @@ namespace WorldBuilder
           // Normalize the vector
           obliquity_vector_point = obliquity_vector_point / obliquity_vector_point.norm();
 
+          // If the check point is near the ends of the Bezier curve, there is a chance that the Bezier curve will not
+          // find a closest point. Check for this case by seeing if the line created by the checkpoint and the obliquity
+          // vector intersects the end segments of the Bezier curve.
+          Point<2> iterable_check_point_surface_2d = check_point_surface_2d;
+          Objects::ClosestPointOnCurve iterable_closest_point_on_curve = bezier_curve.closest_point_on_curve_segment(iterable_check_point_surface_2d);
+
+          if (std::isnan(closest_point_on_line_2d[0]))
+            {
+              const Point<2> p1 = point_list[0];
+              const Point<2> p2 = point_list[point_list.size()-1];
+              const double dist_p1 = check_point_surface_2d.distance(p1);
+              const double dist_p2 = check_point_surface_2d.distance(p2);
+              const Point<2> closest_terminal_point = dist_p1 < dist_p2 ? p1 : p2;
+              double closest_distance_to_trench = dist_p1 < dist_p2 ? dist_p1 : dist_p2;
+
+              const Point<2> second_closest_terminal_point = dist_p1 < dist_p2 ? point_list[1] : point_list[point_list.size()-2];
+              for (unsigned int i = 0; i < 100; ++i)
+                {
+                  const Point<2> vector_closest_point_to_checkpoint = closest_terminal_point - iterable_check_point_surface_2d;
+                  const double line_factor = obliquity_vector_point * vector_closest_point_to_checkpoint < 0 ? -1.0 : 1.0;
+
+                  // Parameterize a line through the checkpoint along the obliquity vector.
+                  Point<2> parameterized_line(iterable_check_point_surface_2d[0] + line_factor * closest_distance_to_trench * obliquity_vector_point[0],
+                                              iterable_check_point_surface_2d[1] + line_factor * closest_distance_to_trench * obliquity_vector_point[1],
+                                              natural_coordinate_system);
+                  const double new_distance1 = parameterized_line.distance(closest_terminal_point);
+                  const double new_distance2 = parameterized_line.distance(second_closest_terminal_point);
+                  const double new_distance_search = std::min(new_distance1, new_distance2);
+
+                  if (new_distance_search < closest_distance_to_trench)
+                    {
+                      // We are getting closer to the trench, so continue the search.
+                      iterable_check_point_surface_2d = parameterized_line;
+                      closest_distance_to_trench = new_distance_search;
+
+                      if (!std::isnan(bezier_curve.closest_point_on_curve_segment(iterable_check_point_surface_2d).point[0]))
+                        {
+                          closest_point_on_curve = bezier_curve.closest_point_on_curve_segment(iterable_check_point_surface_2d);
+                          closest_point_on_line_2d = bezier_curve.closest_point_on_curve_segment(iterable_check_point_surface_2d).point;
+                          iterable_closest_point_on_curve = closest_point_on_curve;
+                          break;
+                        }
+
+                    }
+                }
+            }
           // Check if the bezier_curve has found a point on the curve that is closest to the checkpoint (without considering the obliquity vector).
           // If so, we need to check whether this point is on the correct side of the curve, given the reference point.
           // If the bezier_curve has not found a point on the curve that is closest to the checkpoint, check to see if the point will still
           // intersect the trench given the obliquity_vector.
           if (!std::isnan(closest_point_on_line_2d[0]))
             {
-              Point<2> check_point_surface_2d_temp_ob = check_point_surface_2d;
+              Point<2> check_point_surface_2d_temp_ob = iterable_check_point_surface_2d;
 
               if (!bool_cartesian)
                 {
@@ -473,11 +519,8 @@ namespace WorldBuilder
               const bool reference_normal_on_side_of_line_ob =  (closest_point_on_line_2d-local_reference_point_ob).norm_square() < (check_point_surface_2d_temp_ob-local_reference_point_ob).norm_square();
               const bool reference_point_on_side_of_line_ob =  (point_list[point_list.size()-1][0] - point_list[0][0])*(reference_point[1] - point_list[0][1]) - (reference_point[0] - point_list[0][0])*(point_list[point_list.size()-1][1] - point_list[0][1]) < 0.;
 
-              double line_factor;
               double old_dist;
               double new_dist;
-              Point<2> iterable_check_point_surface_2d = check_point_surface_2d;
-              Objects::ClosestPointOnCurve iterable_closest_point_on_curve = bezier_curve.closest_point_on_curve_segment(iterable_check_point_surface_2d);
               bool converged = false;
 
               if (reference_normal_on_side_of_line_ob != reference_point_on_side_of_line_ob)
@@ -490,10 +533,11 @@ namespace WorldBuilder
                       // traveled along the parameterized line.
                       old_dist = iterable_closest_point_on_curve.distance / 1.1;
 
-                      // If the sign of the dot product of the obliquity vector and the normal vector of the closest point on
-                      // the curve is positive, then we want to move along the obliquity vector in the negative direction,
+                      // If the sign of the dot product of the obliquity vector and the vector connecting the closest point on
+                      // the curve to the check point is positive, then we want to move along the obliquity vector in the negative direction,
                       // otherwise in the positive direction.
-                      line_factor = obliquity_vector_point * iterable_closest_point_on_curve.normal > 0 ? -1.0 : 1.0;
+                      const Point<2> vector_closest_point_to_checkpoint = iterable_check_point_surface_2d - iterable_closest_point_on_curve.point;
+                      const double line_factor = obliquity_vector_point * vector_closest_point_to_checkpoint < 0 ? -1.0 : 1.0;
 
                       // Parameterize a line through the checkpoint along the obliquity vector.
                       Point<2> parameterized_line(iterable_check_point_surface_2d[0] + line_factor * old_dist * obliquity_vector_point[0],
@@ -514,8 +558,8 @@ namespace WorldBuilder
                       // bezier curve, you will never get closer to it. But I'm not sure this is fully general.
                       if (std::abs(old_dist - new_dist) >= std::abs(old_dist))
                         {
-                          closest_point_on_line_2d[0] = std::numeric_limits<double>::quiet_NaN();
-                          closest_point_on_line_2d[1] = std::numeric_limits<double>::quiet_NaN();
+                          closest_point_on_line_2d[0] = NaN::DQNAN;
+                          closest_point_on_line_2d[1] = NaN::DQNAN;
                           break;
                         }
 
@@ -534,99 +578,6 @@ namespace WorldBuilder
                   closest_point_on_curve = bezier_curve.closest_point_on_curve_segment(iterable_check_point_surface_2d);
                   closest_point_on_line_2d = closest_point_on_curve.point;
                 }
-            }
-
-          else
-            {
-              // The point is outside of the bezier curves range, but in this case this does NOT mean
-              // that the point should be neglected since the slab can be oblique to the trench.
-              // Determine the min/max x and y coordinates of the trench, and then use the obliquity
-              // vector to see if the check point will intersect the trench at all.
-              double closest_distance_to_trench = std::numeric_limits<double>::infinity();
-              unsigned int closest_point_idx;
-              for (unsigned int point_idx = 0; point_idx < point_list.size(); ++point_idx)
-                {
-                  const double current_distance = check_point_surface_2d.distance(point_list[point_idx]);
-                  if (current_distance < closest_distance_to_trench)
-                    {
-                      closest_distance_to_trench = current_distance;
-                      closest_point_idx = point_idx;
-                    }
-                }
-              const Point<2> closest_point = point_list[closest_point_idx];
-
-
-              unsigned int second_closest_point_idx;
-              if (closest_point_idx == 0)
-                second_closest_point_idx = 1;
-              else if (closest_point_idx == point_list.size() - 1)
-                second_closest_point_idx = point_list.size() - 2;
-              else
-                {
-                  const double dist_prev = check_point_surface_2d.distance(point_list[closest_point_idx - 1]);
-                  const double dist_next = check_point_surface_2d.distance(point_list[closest_point_idx + 1]);
-                  second_closest_point_idx = dist_prev < dist_next ? closest_point_idx - 1 : closest_point_idx + 1;
-                }
-
-              const Point<2> second_closest_point = point_list[second_closest_point_idx];
-              // std::vector<Point<2> > closest_points;
-              // closest_points.push_back(closest_point);
-              // closest_points.push_back(second_closest_point);
-
-              // WorldBuilder::Objects::BezierCurve testier_curve = Objects::BezierCurve(closest_points);
-
-
-
-
-
-
-              auto compare_x_coordinate = [](auto p1, auto p2)
-              {
-                return p1[0]<p2[0];
-              };
-              const double max_along_x = (*std::max_element(point_list.begin(), point_list.end(), compare_x_coordinate))[0];
-              const double min_along_x = (*std::min_element(point_list.begin(), point_list.end(), compare_x_coordinate))[0];
-
-              auto compare_y_coordinate = [](auto p1, auto p2)
-              {
-                return p1[1]<p2[1];
-              };
-
-              const double min_along_y = (*std::min_element(point_list.begin(), point_list.end(), compare_y_coordinate)) [1];
-              const double max_along_y = (*std::max_element(point_list.begin(), point_list.end(), compare_y_coordinate)) [1];
-
-              // First parameterize the trench points:
-              const Point<2> trench_point2(min_along_x, max_along_y, natural_coordinate_system);
-              const Point<2> trench_point1(max_along_x, min_along_y, natural_coordinate_system);
-
-              // The unit vector that connects the two extremes of the trench points
-              const Point<2> trench_uv = (trench_point2 - trench_point1) / (trench_point2 - trench_point1).norm();
-
-              // If both lines are parameterized with l_i = x_i + t_i * v_i, then since we know the points x_i and the
-              // vectors v_i, we can solve for t_1 and t_2 when l_1 = l_2. This works out to be:
-              const double numerator = trench_uv[0] * (trench_point1[1] - check_point_surface_2d[1]) + trench_uv[1] * (check_point_surface_2d[0] - trench_point1[0]);
-              const double denominator = obliquity_vector_point[1] * trench_uv[0] - obliquity_vector_point[0] * trench_uv[1];
-              const double t_val = numerator / denominator;
-
-              // If the two lines are parallel, t_val will be infinite. Check to see that this is not the case.
-              if (std::isfinite(t_val))
-                {
-                  // t_val is finite, now determine where the intersection point is, and see if this lies within the trench extents.
-                  const Point<2> intersection_point(check_point_surface_2d[0] + t_val * obliquity_vector_point[0],
-                                                    check_point_surface_2d[1] + t_val * obliquity_vector_point[1],
-                                                    natural_coordinate_system);
-
-                  if (intersection_point[0] >= min_along_x && intersection_point[0] <= max_along_x
-                      &&
-                      intersection_point[1] >= min_along_y && intersection_point[1] <= max_along_y)
-                    {
-                      // The intersection point is within the trench extents, so we need to find the closest point on the curve
-                      // from this intersection point.
-                      closest_point_on_curve = bezier_curve.closest_point_on_curve_segment(intersection_point);
-                      closest_point_on_line_2d = closest_point_on_curve.point;
-                    }
-                }
-
             }
         }
 
