@@ -409,7 +409,8 @@ namespace WorldBuilder
                                                                     const double start_radius,
                                                                     const std::unique_ptr<CoordinateSystems::Interface> &coordinate_system,
                                                                     const bool only_positive,
-                                                                    const Objects::BezierCurve &bezier_curve);
+                                                                    const Objects::BezierCurve &bezier_curve,
+                                                                    std::vector<double> obliquity_vector = {std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity()});
 
 
 

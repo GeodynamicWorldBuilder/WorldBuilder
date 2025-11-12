@@ -106,7 +106,8 @@ namespace WorldBuilder
                         "The depth to which this feature is present");
       prm.declare_entry("dip point", Types::Point<2>(),
                         "The depth to which this feature is present");
-
+      prm.declare_entry("obliquity vector", Types::Array(Types::Double(std::numeric_limits<double>::infinity()),2),
+                        "A vector on the surface that indicates the direction of convergence of the subducting plate relative to the trench.");
       /*prm.declare_entry("segments", Types::Array(Types::Segment(0,Point<2>(0,0,invalid),Point<2>(0,0,invalid),Point<2>(0,0,invalid),
                                                                 Types::PluginSystem("", Features::SubductingPlateModels::Temperature::Interface::declare_entries, {"model"}),
                                                                 Types::PluginSystem("", Features::SubductingPlateModels::Composition::Interface::declare_entries, {"model"}),
@@ -172,11 +173,16 @@ namespace WorldBuilder
 
       reference_point = prm.get<Point<2> >("dip point");
 
+      obliquity_vector = prm.get_vector<double>("obliquity vector");
+
       if (coordinate_system == spherical)
         {
           // When spherical, input is in degrees, so change to radians for internal use.
           reference_point *= (Consts::PI/180.);
+          for (double &value : obliquity_vector)
+            value *= (Consts::PI/180.);
         }
+
 
       default_temperature_models.resize(0);
       default_composition_models.resize(0);
@@ -540,7 +546,8 @@ namespace WorldBuilder
                                                                        starting_radius,
                                                                        this->world->parameters.coordinate_system,
                                                                        false,
-                                                                       this->bezier_curve);
+                                                                       this->bezier_curve,
+                                                                       obliquity_vector);
 
           const double distance_from_plane = distance_from_planes.distance_from_plane;
           const double distance_along_plane = distance_from_planes.distance_along_plane;
@@ -839,7 +846,8 @@ namespace WorldBuilder
                                                                    starting_radius,
                                                                    this->world->parameters.coordinate_system,
                                                                    false,
-                                                                   this->bezier_curve);
+                                                                   this->bezier_curve,
+                                                                   obliquity_vector);
 
       Objects::PlaneDistances plane_distances(distance_from_planes.distance_from_plane, distance_from_planes.distance_along_plane);
       return plane_distances;
