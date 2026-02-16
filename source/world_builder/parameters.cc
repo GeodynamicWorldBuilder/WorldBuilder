@@ -530,7 +530,10 @@ namespace WorldBuilder
     // start with adding the additional points with the default value
     // to do this we need the default value
     double default_value = 0;
-    enum InputTypes {DOUBLE_TYPE,ARRAY_TYPE,STRING_TYPE,MAX_INPUT_TYPES};
+    enum class InputTypes : uint8_t
+    {
+      DOUBLE_TYPE,ARRAY_TYPE,STRING_TYPE,MAX_INPUT_TYPES
+    };
     InputTypes input_type = InputTypes::MAX_INPUT_TYPES;
     if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr && Pointer((strict_base + "/" + name).c_str()).Get(parameters)->IsArray())
       {
@@ -722,7 +725,7 @@ namespace WorldBuilder
                 WBAssertThrow(coordinate_system->natural_coordinate_system() == CoordinateSystem::spherical,"The Litho1.0 data set is only available in spherical coordinates.");
                 constexpr int n_nodes = 40962;
                 constexpr int n_layers = 9;
-                enum LayerType
+                enum class LayerType : uint8_t
                 {
                   // ASTHENOSPHERE,
                   LITHOSPHERE,
@@ -2006,7 +2009,7 @@ namespace WorldBuilder
     unsigned int counter = 0;
     for (const auto &it : declare_map)
       {
-        typedef std::tuple<std::string,const WorldBuilder::Types::Interface &, std::string> DeclareEntry;
+        using DeclareEntry = std::tuple<std::string,const WorldBuilder::Types::Interface &, std::string>;
         // prevent infinite recursion
         if (it.first != parent_name)
           {
