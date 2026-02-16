@@ -65,7 +65,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ['ubuntu-22.04', 'ubuntu-24.04','macos-13']
+        os: ['ubuntu-22.04', 'ubuntu-24.04','macos-15-intel']
         build_type: ['Release', 'Debug']
 
     runs-on: ${{ matrix.os }}
@@ -94,6 +94,8 @@ jobs:
             echo "4"
             if [ "${{ matrix.os }}" == "macos-13" ]; then
                 sudo xcode-select --switch /Applications/Xcode_15.0.1.app
+            elif [ "${{ matrix.os }}" == "macos-15-intel" ]; then
+                sudo xcode-select --switch /Applications/Xcode_16.4.app
             else
                 sudo xcode-select --switch /Applications/Xcode_13.2.1.app
             fi
@@ -218,7 +220,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ['ubuntu-24.04','macos-13']
+        os: ['ubuntu-24.04','macos-15-intel']
         build_type: ['Release']
 
     runs-on: ${{ matrix.os }}
@@ -236,6 +238,8 @@ jobs:
             echo "4"
             if [ "${{ matrix.os }}" == "macos-13" ]; then
                 sudo xcode-select --switch /Applications/Xcode_15.0.1.app
+            elif [ "${{ matrix.os }}" == "macos-15-intel" ]; then
+                sudo xcode-select --switch /Applications/Xcode_16.4.app
             else
                 sudo xcode-select --switch /Applications/Xcode_13.2.1.app
             fi
