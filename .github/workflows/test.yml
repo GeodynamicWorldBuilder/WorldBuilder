@@ -24,7 +24,7 @@ jobs:
       - name: Use cmake
         run: cmake --version
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install astyle
         shell: bash
@@ -71,7 +71,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name:  Install optional dependencies
       run:   |
@@ -142,7 +142,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{github.workspace}}/build
@@ -180,7 +180,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     # python in combination with cmake seems to be broken on github actions windows
     # todo: fix it
@@ -226,7 +226,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name:  Install optional dependencies
       run:   |
@@ -280,7 +280,7 @@ jobs:
   coverage:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name:  Install optional dependencies
         run: sudo apt install gfortran swig python3-setuptools openmpi-bin libopenmpi-dev
@@ -365,7 +365,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name:  Install optional dependencies
       run:   |
@@ -425,7 +425,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name:  Install optional dependencies
       run:   |
@@ -484,7 +484,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name:  Install optional dependencies
       run:   |
@@ -545,7 +545,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name:  Install optional dependencies
       run:   |
@@ -606,7 +606,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name:  Install optional dependencies
       run:   |
@@ -664,7 +664,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name:  Install optional dependencies
       run:   |
@@ -721,7 +721,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name:  Install optional dependencies
       run:   |
