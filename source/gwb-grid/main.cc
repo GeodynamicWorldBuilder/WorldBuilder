@@ -95,7 +95,7 @@ void filter_vtu_mesh(int dim,
 
   const std::size_t n_cells = input_mesh.types().size();
   std::uint64_t dst_cellid = 0;
-  unsigned int tag_index   = 4;
+  unsigned int tag_index   = 5;
   for (std::size_t cellidx = 0; cellidx <n_cells; ++cellidx)
     {
       int highest_tag = -1;
@@ -1693,13 +1693,14 @@ int main(int argc, char **argv)
         vtu11::writeVtu( file_without_extension + ".vtu", mesh, dataSetInfo, data_set, vtu_output_format );
 
         if (output_filtered)
-          {
+          {std::cout << "flag 1" <<std::endl;
             std::vector<bool> include_tag(world->feature_tags.size(), true);
             for (unsigned int idx = 0; idx<include_tag.size(); ++idx)
-              {
+              {std::cout << "flag 2: " << idx << std::endl;
                 if (world->feature_tags[idx]=="mantle layer")
                   include_tag[idx] = false;
               }
+              std::cout << "flag 4:" << include_tag[0] << "," << include_tag[1]  << "," << true <<std::endl;
             std::vector<double> filtered_points;
             std::vector<vtu11::VtkIndexType> filtered_connectivity;
             std::vector<vtu11::VtkIndexType> filtered_offsets;
@@ -1707,8 +1708,9 @@ int main(int argc, char **argv)
 
             vtu11::Vtu11UnstructuredMesh filtered_mesh {filtered_points, filtered_connectivity, filtered_offsets, filtered_types};
             std::vector<vtu11::DataSetData> filtered_data_set;
-
+            std::cout << "flag 6: filtered_mesh.points.size() = " << filtered_mesh.points_.size() <<std::endl;
             filter_vtu_mesh(static_cast<int>(dim), include_tag, mesh, data_set, filtered_mesh, filtered_data_set);
+            std::cout << "flag 7: filtered_mesh.points.size() = " << filtered_mesh.points_.size() <<std::endl;
             vtu11::writeVtu( file_without_extension + ".filtered.vtu", filtered_mesh, dataSetInfo, filtered_data_set, vtu_output_format );
           }
 
