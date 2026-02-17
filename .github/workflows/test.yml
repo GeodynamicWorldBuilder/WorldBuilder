@@ -326,7 +326,7 @@ jobs:
               ls;
               git diff ../tests > changes-test-results.diff
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: always()
         with:
           name: changes-test-results.diff
