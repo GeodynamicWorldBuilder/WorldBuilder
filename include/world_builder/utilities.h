@@ -71,7 +71,7 @@ namespace WorldBuilder
                                           const Point<2> &point);
 
     /**
-     * computes Bary center of a poygon.
+     * computes Bary center of a polygon.
      */
     Point<2> polygon_bary_center(const std::vector<Point<2> > &point_list);
 
