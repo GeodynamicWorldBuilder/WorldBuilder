@@ -17,6 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <limits>
 #define DOCTEST_CONFIG_SUPER_FAST_ASSERTS
 
 #include "ApprovalTests/ApprovalTests.hpp"
@@ -1023,6 +1024,10 @@ TEST_CASE("WorldBuilder interface")
 
   properties = {{{{1,0,0}},{{2,0,0}},{{2,1,0}},{{3,0,15}},{{3,1,15}},{{4,0,0}},{{5,0,0}}}};
   CHECK(world.properties_output_size(properties) == world.properties({{1,2,3}},1., properties).size());
+
+  properties = {{{{6,0,0}}}};
+  CHECK(world.properties_output_size(properties) == world.properties({{1,2,3}},1., properties).size());
+  CHECK(std::fabs(world.properties({{1,2,3}},1., properties)[0]) < std::numeric_limits<double>::epsilon());
 
   approval_tests_grains.emplace_back("",world.grains(std::array<double,3> {{750e3,250e3,100e3}},10e3,0,3));
   approval_tests_grains.emplace_back("",world.grains(std::array<double,2> {{750e3,100e3}},10e3,0,3));
