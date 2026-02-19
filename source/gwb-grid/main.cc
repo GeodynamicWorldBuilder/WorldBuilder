@@ -673,7 +673,6 @@ int main(int argc, char **argv)
                       grid_z[counter] = z_min + static_cast<double>(j) * dz;
                       grid_depth_wrt_surface[counter] = (surface - z_min) - static_cast<double>(j) * dz;
 
-
                       const double topography = world->properties(std::array<double,2>({{grid_x[counter],grid_z[counter]}}), grid_depth_wrt_surface[counter], {{{6,0,0}}})[0];
                       const double domain_height = z_max - z_min + topography;
                       const double cell_height = domain_height / static_cast<double>(n_cell_z);
@@ -698,7 +697,6 @@ int main(int argc, char **argv)
                               grid_y[counter] = y_min + static_cast<double>(j) * dy;
                               grid_z[counter] = z_min + static_cast<double>(k) * dz;
                               grid_depth_wrt_surface[counter] = (surface - z_min) - static_cast<double>(k) * dz;
-
 
                               const double topography = world->properties(std::array<double,3>({{grid_x[counter],grid_y[counter], grid_z[counter]}}), grid_depth_wrt_surface[counter], {{{6,0,0}}})[0];
                               const double domain_height = z_max - z_min + topography;
@@ -913,23 +911,20 @@ int main(int argc, char **argv)
            */
           WBAssertThrow(dim == 2, "The annulus only works in 2d.");
 
+          // z_min is the inner radius and z_max is the outer radius of the annulus
 
-          const double inner_radius = z_min;
-          const double outer_radius = z_max;
+          const double outer_circumference = 2.0 * Consts::PI * z_max;
 
-          const double l_outer = 2.0 * Consts::PI * outer_radius;
+          const double cell_height = (z_max - z_min) / static_cast<double>(n_cell_z);
 
-          const double lr = outer_radius - inner_radius;
-          const double dr = lr / static_cast<double>(n_cell_z);
-
-          const size_t n_cell_t = static_cast<size_t>((2.0 * Consts::PI * outer_radius)/dr);
+          const size_t n_cell_circumference = static_cast<size_t>(outer_circumference/cell_height);
 
           // compute the amount of cells
-          n_cell = n_cell_t *n_cell_z;
-          n_p = n_cell_t *(n_cell_z + 1);  // one less then cartesian because two cells overlap.
+          n_cell = n_cell_circumference *n_cell_z;
+          n_p = n_cell_circumference *(n_cell_z + 1);  // one less then cartesian because two cells overlap.
 
-          const double sx = l_outer / static_cast<double>(n_cell_t);
-          const double sz = dr;
+
+          const double cell_width = outer_circumference / static_cast<double>(n_cell_circumference);
 
           grid_x.resize(n_p);
           grid_z.resize(n_p);
@@ -937,28 +932,32 @@ int main(int argc, char **argv)
           grid_depth_wrt_reference.resize(n_p);
 
           size_t counter = 0;
-          for (size_t j = 0; j <= n_cell_z; ++j)
+          for (size_t vertical_i = 0; vertical_i <= n_cell_z; ++vertical_i)
             {
-              for (size_t i = 1; i <= n_cell_t; ++i)
+              for (size_t horizontal_i = 1; horizontal_i <= n_cell_circumference; ++horizontal_i)
                 {
-                  grid_x[counter] = (static_cast<double>(i) - 1.0) * sx;
-                  grid_z[counter] = static_cast<double>(j) * sz;
-                  counter++;
-                }
-            }
+                  const double grid_x_cart = (static_cast<double>(horizontal_i) - 1.0) * cell_width;
+                  const double grid_z_cart = static_cast<double>(vertical_i) * cell_height;
+                  const double theta = grid_x_cart / outer_circumference * 2.0 * Consts::PI;
+                  const double grid_x_rad = FT::cos(theta) * (z_min + grid_z_cart);
+                  const double grid_z_rad = FT::sin(theta) * (z_min + grid_z_cart);
+                  const double grid_depth_wrt_surface_local = z_max - std::sqrt(grid_x_rad * grid_x_rad + grid_z_rad * grid_z_rad);
 
-          counter = 0;
-          for (size_t j = 1; j <= n_cell_z+1; ++j)
-            {
-              for (size_t i = 1; i <= n_cell_t; ++i)
-                {
-                  const double xi = grid_x[counter];
-                  const double zi = grid_z[counter];
-                  const double theta = xi / l_outer * 2.0 * Consts::PI;
-                  grid_x[counter] = FT::cos(theta) * (inner_radius + zi);
-                  grid_z[counter] = FT::sin(theta) * (inner_radius + zi);
-                  grid_depth_wrt_surface[counter] = outer_radius - std::sqrt(grid_x[counter] * grid_x[counter] + grid_z[counter] * grid_z [counter]);
-                  grid_depth_wrt_surface[counter] = (std::fabs(grid_depth_wrt_surface[counter]) < 1e-8 ? 0 : grid_depth_wrt_surface[counter]);
+                  const double topography = world->properties(std::array<double,2>({{grid_x_rad,grid_z_rad}}), grid_depth_wrt_surface_local, {{{6,0,0}}})[0];
+
+                  const double outer_circumference_local = 2.0 * Consts::PI * (z_max+topography);
+                  const double cell_height_local = (z_max - z_min + topography) / static_cast<double>(n_cell_z);
+                  const double cell_width_local = outer_circumference_local / static_cast<double>(n_cell_circumference);
+
+                  const double grid_x_topo_cart = (static_cast<double>(horizontal_i) - 1.0) * cell_width_local;
+                  const double grid_z_topo_cart = static_cast<double>(vertical_i) * cell_height_local;
+                  const double theta_topo = grid_x_topo_cart / outer_circumference_local * 2.0 * Consts::PI;
+
+                  grid_x[counter] = FT::cos(theta_topo) * (z_min + grid_z_topo_cart);
+                  grid_z[counter] = FT::sin(theta_topo) * (z_min + grid_z_topo_cart);
+                  grid_depth_wrt_surface[counter] = z_max + topography - std::sqrt(grid_x[counter] * grid_x[counter] + grid_z[counter] * grid_z[counter]);
+                  grid_depth_wrt_reference[counter] = grid_depth_wrt_surface[counter] - topography;
+
                   counter++;
                 }
             }
@@ -967,17 +966,17 @@ int main(int argc, char **argv)
           counter = 0;
           for (size_t j = 1; j <= n_cell_z; ++j)
             {
-              for (size_t i = 1; i <= n_cell_t; ++i)
+              for (size_t i = 1; i <= n_cell_circumference; ++i)
                 {
                   std::vector<size_t> cell_connectivity(4);
                   cell_connectivity[0] = counter + 1;
                   cell_connectivity[1] = counter + 1 + 1;
-                  cell_connectivity[2] = i + j * n_cell_t + 1;
-                  cell_connectivity[3] = i + j * n_cell_t;
-                  if (i == n_cell_t)
+                  cell_connectivity[2] = i + j * n_cell_circumference + 1;
+                  cell_connectivity[3] = i + j * n_cell_circumference;
+                  if (i == n_cell_circumference)
                     {
-                      cell_connectivity[1] = cell_connectivity[1] - n_cell_t;
-                      cell_connectivity[2] = cell_connectivity[2] - n_cell_t;
+                      cell_connectivity[1] = cell_connectivity[1] - n_cell_circumference;
+                      cell_connectivity[2] = cell_connectivity[2] - n_cell_circumference;
                     }
                   grid_connectivity[counter][0] = cell_connectivity[1] - 1;
                   grid_connectivity[counter][1] = cell_connectivity[0] - 1;

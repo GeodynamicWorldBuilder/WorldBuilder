@@ -758,7 +758,7 @@ namespace WorldBuilder
                   {
                     layer_type = LayerType::ASTHENOSPHERE_BOTTOM;
                   }
-                else if (rest_of_string == "astenosphere top" || rest_of_string == "lithosphere bottom" )
+                else if (rest_of_string == "asthenosphere top" || rest_of_string == "lithosphere bottom" )
                   {
                     layer_type = LayerType::ASTHENOSPHERE_TOP;
                   }
