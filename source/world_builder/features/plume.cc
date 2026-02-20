@@ -259,6 +259,10 @@ namespace WorldBuilder
                       const std::vector<size_t> &entry_in_output,
                       std::vector<double> &output) const
     {
+      // if we only ask for topography (which is common operation), then we return directly, since the plume doesn't currently support it.
+      if (properties.size() == 1 && properties[0][0] == 6)
+        return;
+
       // Figure out if the point is within the plume
       auto upper = std::upper_bound(depths.begin(), depths.end(), depth);
 

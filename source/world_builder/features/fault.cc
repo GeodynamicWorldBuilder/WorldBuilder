@@ -477,6 +477,10 @@ namespace WorldBuilder
                       const std::vector<size_t> &entry_in_output,
                       std::vector<double> &output) const
     {
+      // if we only ask for topography (which is common operation), then we return directly, since the slab doesn't currently support it.
+      if (properties.size() == 1 && properties[0][0] == 6)
+        return;
+
       // The 'depth coordinate' is the z-coordinate in Cartesian coordinates, and radius in spherical coordinates.
       // The depth input parameter is the distance from the surface to the position,
       // the starting radius is the distance from the bottom of the model to the surface.

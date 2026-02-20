@@ -189,6 +189,10 @@ namespace WorldBuilder
                             const std::vector<size_t> &entry_in_output,
                             std::vector<double> &output) const
     {
+      // if we only ask for topography (which is common operation), then we return directly, since the mantle doesn't currently support it.
+      if (properties.size() == 1 && properties[0][0] == 6)
+        return;
+
       if (depth <= max_depth && depth >= min_depth &&
           WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
                                                                                 world->parameters.coordinate_system->natural_coordinate_system())))
