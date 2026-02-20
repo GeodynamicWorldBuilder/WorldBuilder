@@ -1034,7 +1034,9 @@ int main(int argc, char **argv)
                   for (size_t j = 1; j <= n_cell_z + 1; ++j)
                     {
                       grid_x[counter] = longitude;
-                      const double radius = grid_z[counter];
+                      const double domain_height_local = outer_radius - inner_radius;
+                      const double cell_height_local = domain_height_local / static_cast<double>(n_cell_z);
+                      const double radius = inner_radius + (static_cast<double>(j) - 1.0) * cell_height_local;
 
                       const double x = radius * cos_long;
                       const double z = radius * sin_long;
