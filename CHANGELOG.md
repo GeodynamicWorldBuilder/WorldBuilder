@@ -21,12 +21,15 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Min and max depth parameters now have an the option to accept a string which can be used select a model. \[Menno Fraters; 2025-08-23; [#842](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/842)\]
 - You can now add LITHO1.0 layers as the min depth or max depth in the continental plate, oceanic plate and mantle models. \[Menno Fraters; 2025-08-23; [#842](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/842)\]
 - Added a Euler pole velocity field (in spherical coordinates) for the continental plate, oceanic plate and mantel layer. \[Menno Fraters; 2025-08-25; [#850](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/850)\]
+- Added an experimental (initial) topography infrastructure. This can also make use of the surface plugins, which includes the Litho1.0 dataset. \[Menno Fraters; 2026-02-21; [#780](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/780), [#848](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/848)\]
 
 ### Changed
 - The tian2019 composition model now returns a mass fraction instead of a mass percentage. \[Daniel Douglas; 2024-11-12; [#767](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/767)\]
 - Only link to MPI libraries if the cmake variable USE_MPI has been set. No longer automatically link to MPI if MPI is found. \[Rene Gassmoeller; 2025-01-20; [#792](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/792)\]
 - Change the Doxygen documentation design using the Doxygen Awesome theme. Also fix the main README logo so it appears in the doxygen start page. \[Rene Gassmoeller; 2025-01-21; [#807](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/807)\]
 - The approval unit tests now have the option to add a label to each of them to increase readability and findablitliy of individual tests. \[Menno Fraters and Rene Gassmoeller; 2025-01-23; [809](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/809)\]
+- gwb-grid now exclusively uses the FT versions of cos and sin, since that seems to improve compatibility between the different operating systems. Also included compiler flags to make the results more deterministic. \[Menno Fraters; 2026-02-21; [#848](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/848)\]
+- The Litho1.0 dataset now contains all the different available layers. \[Menno Fraters; 2026-02-21; [#848](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/848)\]
 
 ### Fixed
 - Fixed index for 2D compositional fields in gwb-grid. \[Derek Neuharth; 2025-01-21; [#788](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/788)\]
