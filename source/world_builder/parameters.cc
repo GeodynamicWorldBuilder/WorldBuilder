@@ -803,6 +803,11 @@ namespace WorldBuilder
                 for (size_t index = 0; index < n_nodes; ++index )
                   {
                     // only add the point if it is actually in the feature
+                    // TODO?: The performance of models with features which have many Litho1.0 layers (no matter the type), could be theoretically significantly
+                    //        improved by somehow getting this polygon contains point outside the current function and on the composition plugin level or even at
+                    //        the feature level. This is because whether a coordinate is inside or outside a feature doesn't change, so we would only need to do
+                    //        this once per feature. The only problem is that the feature would need to know that litho1.0 is asked for, because otherwise it would
+                    //        be significantly more expensive for model which do not want to use litho1.0.
                     if (Utilities::polygon_contains_point(scaled_polygon, Point<2>(Datasets::LITHO1_0::coordinates_lat_long[index*2+1],Datasets::LITHO1_0::coordinates_lat_long[index*2],CoordinateSystem::spherical)))
                       {
                         const size_t global_index = index*n_layers+static_cast<size_t> (layer_type);
