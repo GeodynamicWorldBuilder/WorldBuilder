@@ -799,10 +799,11 @@ namespace WorldBuilder
                     layer_type = LayerType::ICE_TOP;
                   }
                 WBAssertThrow(layer_type != LayerType::MAX_LAYERTYPE, "Could not find litho1.0 layer type " << rest_of_string);
+                const std::vector<Point<2>> scaled_polygon = Utilities::get_scaled_polygon(addition_points,1.5);
                 for (size_t index = 0; index < n_nodes; ++index )
                   {
                     // only add the point if it is actually in the feature
-                    if (Utilities::polygon_contains_point(Utilities::get_scaled_polygon(addition_points,1.5), Point<2>(Datasets::LITHO1_0::coordinates_lat_long[index*2+1],Datasets::LITHO1_0::coordinates_lat_long[index*2],CoordinateSystem::spherical)))
+                    if (Utilities::polygon_contains_point(scaled_polygon, Point<2>(Datasets::LITHO1_0::coordinates_lat_long[index*2+1],Datasets::LITHO1_0::coordinates_lat_long[index*2],CoordinateSystem::spherical)))
                       {
                         const size_t global_index = index*n_layers+static_cast<size_t> (layer_type);
                         result.first.emplace_back(Datasets::LITHO1_0::depths[global_index]);
