@@ -503,6 +503,10 @@ namespace WorldBuilder
                                 const std::vector<size_t> &entry_in_output,
                                 std::vector<double> &output) const
     {
+      // if we only ask for topography (which is common operation), then we return directly, since the slab doesn't currently support it.
+      if (properties.size() == 1 && properties[0][0] == 6)
+        return;
+
       // The depth variable is the distance from the surface to the position, the depth
       // coordinate is the distance from the bottom of the model to the position and
       // the starting radius is the distance from the bottom of the model to the surface.
@@ -796,6 +800,8 @@ namespace WorldBuilder
                             output[entry_in_output[i_property]+2] = velocity_current_section[2] + section_fraction * (velocity_next_section[2] - velocity_current_section[2]);
                             break;
                           }
+                          case 6: // topography: not implemented
+                            break;
                           default:
                           {
                             WBAssertThrow(false,
