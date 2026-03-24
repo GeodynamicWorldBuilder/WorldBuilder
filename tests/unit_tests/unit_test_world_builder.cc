@@ -3003,7 +3003,7 @@ TEST_CASE("WorldBuilder Features: Fault")
   approval_tests.emplace_back("",world3.composition(position, 0, 6));
 
   position = {{250e3,500e3,800e3}};
-  //adibatic temperature
+  //adiabatic temperature
   approval_tests.emplace_back("",world3.temperature(position, 0));
   approval_tests.emplace_back("",world3.temperature(position, 1));
   approval_tests.emplace_back("",world3.temperature(position, 5000));
