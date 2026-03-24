@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v2.1
+        uses: jwlawson/actions-setup-cmake@v2.2
         with:
           cmake-version: '3.16.x'
 
@@ -381,7 +381,7 @@ jobs:
       shell: bash
 
     - name: Setup cmake
-      uses: jwlawson/actions-setup-cmake@v2.1
+      uses: jwlawson/actions-setup-cmake@v2.2
       with:
         cmake-version: ${{ matrix.cmake_version }}
 
