@@ -4,9 +4,9 @@ USE, INTRINSIC :: ISO_C_BINDING, ONLY: C_LONG
 IMPLICIT NONE
 
   ! Declare the types which will be needed.
-  REAL*8 :: temperature,x=120e3,y=500e3,z=0,depth=0,gravity = 10
+  REAL*8 :: temperature,x=120e3,y=500e3,z=0,depth=0
   INTEGER :: composition_number = 3
-  INTEGER(C_LONG) :: random_number_seed = 1
+  INTEGER(C_LONG) :: random_number_seed = 1.0 !! use a random number seed larger than zero
   REAL*8 :: composition
   !character(len=256) :: path
   INTEGER*4 :: k = 1

@@ -9,6 +9,14 @@ Add new entries a the bottom of the current list in the subheading. Item format:
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+
+### Changed
+
+### Fixed
+
+
 ## [1.1.0]
 ### Added
 - Added a Python script in the contrib folder showing how to import tectonic features from GPlates or directly from GPlately. \[Michael Pons; 2025-01-22; [#810](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/810)\]
