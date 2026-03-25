@@ -4,11 +4,12 @@ use WorldBuilder
 IMPLICIT NONE
 
   ! Declare the types which will be needed.
-  REAL*8 :: temperature,x=120e3,y=500e3,z=0,depth=0,gravity = 10
+  REAL*8 :: temperature,x=120e3,y=500e3,z=0,depth=0
   INTEGER :: composition_number = 3
-  INTEGER(C_LONG) :: random_number_seed = 1
+  INTEGER(C_LONG) :: random_number_seed = 1.0 !! use a random number seed larger than zero
   REAL*8 :: composition
   character(len=256) :: file_name = "../../tests/data/continental_plate.wb"//C_NULL_CHAR
+  logical(1) :: has_output_dir = .false.
   character(len=256) :: output_dir = "../../doc/"//C_NULL_CHAR
  
   
