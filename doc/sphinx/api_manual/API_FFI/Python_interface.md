@@ -2,6 +2,15 @@
 Python interface
 ===========
 
-```{todo}
-Explain how to use the Python interface in your program. Point to or show the example in the example directory.
-```
+Before you can use the Python Interface, make sure your installation of the Worldbuilder includes SWIG and Python. See {ref}`part:user_manual:chap:installation:sec:installing_prerequisites`
+for details.
+
+The Python wrapper can be installed by running `python3 setup.py install --user` in the `lib` folder inside your build directory. It is helpful to install this into a virtual environment.
+
+Afterwards, you should be able to `from gwb import WorldBuilderWrapper` inside a Python script.
+
+See https://github.com/GeodynamicWorldBuilder/WorldBuilder/blob/main/examples/python/python_example.py for an example:
+
+:::{literalinclude} ../../../../examples/python/python_example.py
+:language: Python
+:::
