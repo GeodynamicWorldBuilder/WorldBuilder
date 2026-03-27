@@ -2,33 +2,31 @@
 Oceanic plate
 ==========
 
-An oceanic plate in the Geodynamic World Builder (GWB) represents a piece of rigid lithosphere that is created at mid-ocean ridges through seafloor spreading where the upwelling mantle material partially melts and builds new oceanic crust. This plate moves laterally away from the ridge over time as new crust is produced. This motion is driven by plate tectonics and mantle convection. The plate cools and thickens with age as it moves away from the ridge axis, forming a thermal boundary layer. Older oceanic plates are colder, denser, and mechanically stronger than younger ones. With aging, it ultimately recycles at subduction zones, where the colder hence denser oceanic plate sinks back into the mantle. This full life cycle — birth, movement, cooling, and eventual destruction — defines the dynamic nature of oceanic plates in Earth’s tectonic system {cite:p}`Crameri_etal_2019`. 
-
-The oceanic plate feature in GWB allows for the definition of a tectonic plate where the thermal structure is determined by the age of the lithosphere. This feature is an {ref}`part:user_manual:chap:concepts:sec:area_features`, meaning it is defined by a 2D surface polygon that is projected downwards between a `min depth` and `max depth`.
+The oceanic plate feature in GWB allows for the definition of a tectonic plate which is a area feature {ref}`part:user_manual:chap:concepts:sec:area_features`, defined between a `min depth` and `max depth`.
 
 ## Geometry
-The surface extent of the oceanic plate is defined by the `coordinates` parameter, which takes a list of 2D points (Cartesian x-y or spherical latitude-longitude) to form a closed polygon. The feature is active for any point in the model that falls within this polygon and lies between the specified depth limits.
+The surface extent of the oceanic plate is defined by the `coordinates` parameter, which takes a list of 2D points (Cartesian x-y or spherical latitude-longitude) to form a closed polygon. 
 
 ## Temperature 
-The primary purpose of the oceanic plate feature is to assign temperatures based on lithospheric cooling models using `temperature models` parameter. The temperature is calculated based on the age of the plate at any given location. If the age varies across the plate, it can be calculated dynamically by providing `ridge coordinates` and a `spreading velocity`. In this case, the age at any point within the polygon is determined by its distance from the specified ridge axis and the rate of plate motion.
+This model assigns temperature based on lithospheric cooling models using the `temperature models` parameter. The temperature is calculated either based on the age of the plate or linearly with depth or as a uniformity at any given location. 
 
-With the age determined, the temperature profile $T(z, t)$ is now calculated using one of the following models:
+The following models are available:
 
 * **Adiabatic**: Defines a temperature profile that follows an adiabatic gradient with depth, representing mantle temperature increase due to compressional heating {cite:p}`Turcotte_Schubert_book_2014`.
 
-* **Half-space cooling model**: Based on an analytical solution for a cooling semi-infinite half-space, where the oceanic lithosphere cools conductively with age as a semi-infinite medium away from a mid-ocean ridge {cite:p}`Turcotte_Schubert_book_2014`.
+* **Half-space cooling model**: Based on an analytical solution for a cooling semi-infinite half-space, where the oceanic lithosphere cools conductively with age as a semi-infinite medium away from a mid-ocean ridge {cite:p}`Turcotte_Schubert_book_2014`. It can be calculated dynamically by providing `ridge coordinates` and a `spreading velocity`. In this case, the age at any point within the polygon is determined by its distance from the specified ridge axis and the rate of plate motion.
 
-* **Linear model**: Applies a simple linear temperature gradient between a specified surface temperature and a basal or adiabatic temperature at depth.
+* **Linear model**: Applies a simple linear temperature gradient between a specified surface temperature and a basal temperature at depth.
 
-* **Plate model**: This model assumes a constant temperature at a fixed basal depth, preventing the lithosphere from thickening indefinitely as it ages {cite:p}`Turcotte_Schubert_book_2014`.
+* **Plate model**: This model assumes a constant temperature at a fixed basal depth, preventing the lithosphere from thickening indefinitely as it ages.
 
-* **Plate Model with Constant Age**: Same as the plate model, but with a fixed plate age, resulting in a time-independent thermal structure {cite:p}`Fowler_2005`
+* **Plate Model with Constant Age**: Same as the plate model, but with a fixed plate age, resulting in a time-independent thermal structure.
 
 * **Uniform**: Assigns a constant temperature throughout the entire feature, independent of depth or age, mainly for simplified setups.
 
 
 ## Composition
-Compositional layers (such as oceanic crust or depleted lithospheric mantle) can be added to the plate using the `composition models` parameter. These layers are defined relative to the top of the feature. The following model variations are supported:
+Compositional layers (such as oceanic crust or its depleted lithospheric mantle) can be added to the plate using the `composition models` parameter. These layers are defined relative to the top of the feature. The following model variations are supported:
 
 * **Uniform**: A common model, where for example, an uniform layer of oceanic crust can be defined from the `min depth` and `max depth` down to a specific thickness, followed by a layer of lithospheric mantle. The fraction of each composition is defined by `fractions`.
 
@@ -66,6 +64,3 @@ Topography models enable adding topographical features to the original compositi
 * **Uniform**: A user-defined constant `topography` in meters is added to the composition.
 
 * **Depth surface**: The `topography` in meters is added on the coordinates where the depth of surface is defined.
-
-
-
