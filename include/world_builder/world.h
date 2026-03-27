@@ -100,7 +100,7 @@ namespace WorldBuilder
        * vector.
        *
        * Composition is identified by 2. This produces one
-       * value in the output. The second entry  identifies the composition number and the third
+       * value in the output. The second entry identifies the composition number and the third
        * number is not used. So a composition query asking about composition 1 looks like this:
        * {2,1,0}. A composition query prodoces one entry in the output vector.
        *
@@ -111,14 +111,18 @@ namespace WorldBuilder
        * entries are the sizes of all the grains, and the other 9 entries are sets of rotation
        * matrices. The rotation matrix entries are ordered [0][0],[0][1],[0][2],[1][0],[1][1],etc.
        *
-       * The tag is identified by 4 and no extra information is needed. So the tag
+       * Tag is identified by 4 and no extra information is needed. The tag
        * input usually looks like {4,0,0}. A tag query produces one entry in the output
        * vector, representing the index of the tag of the last/dominant feature.
        *
-       * The velocity is identified by 5 and no extra information is needed. So the tag
-       * input usually looks like {5,0,0}. A tag query produces three entry in the output
-       * vector, representing the x, y and z velocity, even in 2D. In 2D the velocies are
-       * projected on the 2D plane, and the 3rd velocity element will be zero.
+       * Velocity is identified by 5 and no extra information is needed. The velocity
+       * input usually looks like {5,0,0}. A velocity query produces three entries in the output
+       * vector, representing the x, y and z velocities, even in 2d. In 2d, the velocies are
+       * projected on the 2D plane, and the 3rd velocity component will be zero.
+       * 
+       * Topography is identified by 6 and no extra information is needed. The topography 
+       * input usually looks like {6,0,0}. A topography query produces one entry in the output
+       * vector, representing the highest surface of the feature.
        */
       std::vector<double> properties(const std::array<double, 2> &point,
                                      const double depth,
@@ -137,7 +141,7 @@ namespace WorldBuilder
        * vector.
        *
        * Composition is identified by 2. This produces one
-       * value in the output. The second entry  identifies the composition number and the third
+       * value in the output. The second entry identifies the composition number and the third
        * number is not used. So a composition query asking about composition 1 looks like this:
        * {2,1,0}. A composition query prodoces one entry in the output vector.
        *
@@ -147,15 +151,19 @@ namespace WorldBuilder
        * A composition query prodoces n_grains*10 entries in the output vector. The first n_grains
        * entries are the sizes of all the grains, and the other 9 entries are sets of rotation
        * matrices. The rotation matrix entries are ordered [0][0],[0][1],[0][2],[1][0],[1][1],etc.
-       *
-       * The tag is identified by 4 and no extra information is needed. So the tag
+       * 
+       * Tag is identified by 4 and no extra information is needed. The tag
        * input usually looks like {4,0,0}. A tag query produces one entry in the output
        * vector, representing the index of the tag of the last/dominant feature.
        *
-       * The velocity is identified by 5 and no extra information is needed. So the tag
-       * input usually looks like {5,0,0}. A tag query produces three entry in the output
-       * vector, representing the x, y and z velocity, even in 2D. In 2D the velocies are
-       * projected on the 2D plane, and the 3rd velocity element will be zero.
+       * Velocity is identified by 5 and no extra information is needed. The velocity
+       * input usually looks like {5,0,0}. A velocity query produces three entries in the output
+       * vector, representing the x, y and z velocities, even in 2d. In 2d, the velocies are
+       * projected on the 2D plane, and the 3rd velocity component will be zero.
+       * 
+       * Topography is identified by 6 and no extra information is needed. The topography 
+       * input usually looks like {6,0,0}. A topography query produces one entry in the output
+       * vector, representing the highest surface of the feature.
        */
       std::vector<double> properties(const std::array<double, 3> &point,
                                      const double depth,
