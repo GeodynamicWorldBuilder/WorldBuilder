@@ -42,7 +42,14 @@ bibtex_default_style = 'plain'
 
 bibtex_bibfiles = ['bibliography.bib']
 
-myst_enable_extensions = ["colon_fence"]
+myst_enable_extensions = [    
+    "colon_fence",
+    "deflist",
+    "fieldlist",
+    "substitution",
+    "dollarmath",
+    "amsmath",
+]
 
 # Breathe Configuration
 breathe_default_project = "GWB"
