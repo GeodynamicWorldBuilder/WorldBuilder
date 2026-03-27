@@ -149,6 +149,9 @@ namespace WorldBuilder
                         "This allows the input of a preferred random number seed to generate random numbers."
                         " If no input is given, this value is -1 and triggers the use of default seed = 1.");
 
+      prm.declare_entry("background density", Types::Double(3300),
+                        "Density for the background material without any compositions.");
+
     }
     prm.leave_subsection();
 
@@ -235,6 +238,11 @@ namespace WorldBuilder
     thermal_expansion_coefficient = prm.get<double>("thermal expansion coefficient");
     specific_heat = prm.get<double>("specific heat");
     thermal_diffusivity = prm.get<double>("thermal diffusivity");
+
+    /**
+     * Density parameters.
+     */
+    background_density = prm.get<double>("background density");
 
     /**
      * Model discretization parameters
@@ -499,7 +507,7 @@ namespace WorldBuilder
             case 7: // density
             {
               entry_in_output.emplace_back(output.size());
-              output.emplace_back(0.);
+              output.emplace_back(background_density);
               properties_local.emplace_back(properties[i_property]);
               break;
             }
@@ -563,23 +571,6 @@ namespace WorldBuilder
   {
     return properties(point, depth, {{{2,composition_number,0}}})[0];
   }
-
-
-  double
-  World::density(const std::array<double,2> &point,
-                 const double depth) const
-  {
-    return properties(point, depth, {{{6,0,0}}})[0];
-  }
-
-  double
-  World::density(const std::array<double,3> &point,
-                 const double depth) const
-  {
-    return properties(point, depth, {{{6,0,0}}})[0];
-  }
-
-
 
   WorldBuilder::grains
   World::grains(const std::array<double,2> &point,

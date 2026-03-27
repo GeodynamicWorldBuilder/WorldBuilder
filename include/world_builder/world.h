@@ -210,18 +210,6 @@ namespace WorldBuilder
       double composition(const std::array<double, 3> &point, const double depth, const unsigned int composition_number) const;
 
       /**
-      * Returns the composition value based on a 2d Cartesian point, the depth in
-      * the model at that point and the gravity norm at that point.
-      */
-      double density(const std::array<double, 2> &point, const double depth) const;
-
-      /**
-       * Returns the composition value based on a 3d Cartesian point, the depth in
-       * the model at that point and the gravity norm at that point.
-       */
-      double density(const std::array<double, 3> &point, const double depth) const;
-
-      /**
        * Returns the grain orientations and sizes based on a 2d Cartesian point, the depth in
        * the model at that point and the gravity norm at that point.
        */
@@ -317,6 +305,11 @@ namespace WorldBuilder
        * Todo
        */
       double maximum_distance_between_coordinates;
+
+      /**
+       * Todo
+       */
+      double background_density;
 
       /**
        * Todo

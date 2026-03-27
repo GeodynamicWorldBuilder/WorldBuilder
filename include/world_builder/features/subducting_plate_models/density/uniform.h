@@ -79,9 +79,7 @@ namespace WorldBuilder
 
 
           private:
-            // uniform temperature submodule parameters
-            double min_depth;
-            double max_depth;
+            // uniform density submodule parameters
             std::vector<double> densities;
             Operations operation;
             std::vector<unsigned int> compositions;
