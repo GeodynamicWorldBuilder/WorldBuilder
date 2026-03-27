@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2018-2024 by the authors of the World Builder code.
+  Copyright (C) 2018-2026 by the authors of the World Builder code.
 
   This file is part of the World Builder.
 
@@ -259,6 +259,10 @@ namespace WorldBuilder
                       const std::vector<size_t> &entry_in_output,
                       std::vector<double> &output) const
     {
+      // if we only ask for topography (which is common operation), then we return directly, since the plume doesn't currently support it.
+      if (properties.size() == 1 && properties[0][0] == 6)
+        return;
+
       // Figure out if the point is within the plume
       auto upper = std::upper_bound(depths.begin(), depths.end(), depth);
 
@@ -318,7 +322,7 @@ namespace WorldBuilder
                                                               rotation_angle,
                                                               surface_point);
 
-      // If we are in the tip, we have to compute the difference diffently:
+      // If we are in the tip, we have to compute the difference differently:
       if (depth >= min_depth && depth < depths.front())
         {
           const double a = semi_major_axis_lengths.front();
@@ -428,6 +432,8 @@ namespace WorldBuilder
                     output[entry_in_output[i_property]+2] = velocity[2];
                     break;
                   }
+                  case 6: // topography: not implemented
+                    break;
                   default:
                   {
                     WBAssertThrow(false,

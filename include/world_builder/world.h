@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2018-2024 by the authors of the World Builder code.
+  Copyright (C) 2018-2026 by the authors of the World Builder code.
 
   This file is part of the World Builder.
 
@@ -256,6 +256,7 @@ namespace WorldBuilder
        * Todo
        */
       std::vector<Point<2> > cross_section;
+
 
       /**
        * Todo

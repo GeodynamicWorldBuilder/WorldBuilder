@@ -4,7 +4,7 @@ Installing the prerequisites
 
 When installing the World Builder on a system, make sure CMake is installed.
 If you want a Fortran wrapper, then also make sure a Fortran compiler is installed (GFortran is the preferred option, but other Fortran compilers should work as well).
-If you want a Python interface, make sure you have Python 3 installed.
+If you want a Python interface, make sure you have Python 3 installed. Some World Builder apps can make use of MPI parallelization, although the main library generally makes no use of it. If you want to use MPI parallelization in the apps make sure that a MPI library *including its development header files* is installed on your system.
 
 There are many ways to install the prerequisites of the World Builder per operating system.
 For each system, we show some options which we know work.
@@ -17,6 +17,7 @@ If it doesn't work for your system, please let us know through GitHub issues (<h
 3. Set the environment variables using `export CC=gcc; export CXX=g++;`.
 4. (Optional) For a Fortran wrapper, run `sudo apt install gFortran`.
 5. (Optional) For a Python wrapper, run `sudo apt install swig python3-setuptools`.
+6. (Optional) For MPI parallelization, run `sudo apt install libopenmpi-dev`.
 
 :::::
 

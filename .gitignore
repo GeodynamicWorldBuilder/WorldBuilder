@@ -5,6 +5,7 @@ build*/
 .project
 .vscode/
 .compile_commands.json
+/**/.DS_Store
 Makefile
 CTestTestfile.cmake
 CMakeFiles
@@ -23,3 +24,6 @@ Testing/
 doc/doxygen/
 *.xcf
 tests/unit_tests/approval_tests/received/*
+contrib/gplates/data
+contrib/gplates/plate-model-repo
+contrib/pmm.log

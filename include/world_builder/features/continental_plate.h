@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2018-2024 by the authors of the World Builder code.
+  Copyright (C) 2018-2026 by the authors of the World Builder code.
 
   This file is part of the World Builder.
 
@@ -49,7 +49,11 @@ namespace WorldBuilder
       namespace Velocity
       {
         class Interface;
-      }  // namespace Temperature
+      }  // namespace Velocity
+      namespace Topography
+      {
+        class Interface;
+      }  // namespace Topography
     }  // namespace ContinentalPlateModels
 
     /**
@@ -159,6 +163,13 @@ namespace WorldBuilder
          */
         std::vector<std::unique_ptr<Features::ContinentalPlateModels::Velocity::Interface> > velocity_models;
 
+        /**
+         * A vector containing all the pointers to the topography models. This vector is
+         * responsible for the features and has ownership over them. Therefore
+         * unique pointers are used.
+         * @see Features
+         */
+        std::vector<std::unique_ptr<Features::ContinentalPlateModels::Topography::Interface> > topography_models;
 
         double min_depth;
         Objects::Surface min_depth_surface;

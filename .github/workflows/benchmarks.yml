@@ -42,7 +42,7 @@ jobs:
 
     steps:
     - name: Setup cmake
-      uses: jwlawson/actions-setup-cmake@v1.9
+      uses: jwlawson/actions-setup-cmake@v2.2
       with:
         cmake-version: '3.16.x'
 
@@ -56,14 +56,14 @@ jobs:
       run: cmake --version
 
     - name: Checkout cbdr
-      uses: actions/checkout@v2
+      uses: actions/checkout@v6
       with:
         repository: MFraters/cbdr
         ref: github_actions_fix
         path: cbdr
 
     - name: retrieve cache cbdr
-      uses: actions/cache@v2
+      uses: actions/cache@v5
       with:
         path: |
           ~/.cargo/bin/
@@ -78,7 +78,7 @@ jobs:
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
     - name: retrieve cache main
-      uses: actions/cache@v2
+      uses: actions/cache@v5
       with:
         path: |
           ${{github.workspace}}/main/
@@ -86,14 +86,14 @@ jobs:
 
 
     - name: retrieve cache feature
-      uses: actions/cache@v2
+      uses: actions/cache@v5
       with:
         path: |
           ${{github.workspace}}/feature/
         key: ${{ runner.os }}-gwb-feature-${{ github.event.number }}-v3}}
 
     - name: Checkout cbdr
-      uses: actions/checkout@v2
+      uses: actions/checkout@v6
       with:
         repository: MFraters/cbdr
         ref: github_actions_fix
@@ -102,13 +102,13 @@ jobs:
 
 
     - name: Checkout feature
-      uses: actions/checkout@v2
+      uses: actions/checkout@v6
       with:
         path: feature/source
         clean: false
 
     - name: Checkout main
-      uses: actions/checkout@v2
+      uses: actions/checkout@v6
       with:
         ref: main
         path: main/source
@@ -181,7 +181,7 @@ jobs:
             cat ${{github.workspace}}/result_${{matrix.benchmark_number}}.csv | cargo run --release analyze --disable-dynamic-printing > ${{github.workspace}}/benchmark_${{matrix.benchmark_number}}_results/analyze_${{matrix.benchmark_number}}.log ||:;
             cat ${{github.workspace}}/benchmark_${{matrix.benchmark_number}}_results/analyze_${{matrix.benchmark_number}}.log
     
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v7
       with:
         name: benchmark_${{matrix.benchmark_number}}_results
         path: benchmark_${{matrix.benchmark_number}}_results/

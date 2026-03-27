@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2018-2024 by the authors of the World Builder code.
+  Copyright (C) 2018-2026 by the authors of the World Builder code.
 
   This file is part of the World Builder.
 
@@ -75,9 +75,9 @@ namespace WorldBuilder
     {
       prm.declare_entry("", Types::Object(required_entries), "Mantle layer object. Requires properties `model` and `coordinates`.");
 
-      prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0., 2.))),
+      prm.declare_entry("min depth", Types::OneOf(Types::Double(0),Types::Array(Types::ValueAtPoints(0.,2))),
                         "The depth from which this feature is present");
-      prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(), 2.))),
+      prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(),2))),
                         "The depth to which this feature is present");
       prm.declare_entry("temperature models",
                         Types::PluginSystem("", Features::MantleLayerModels::Temperature::Interface::declare_entries, {"model"}),
@@ -189,6 +189,10 @@ namespace WorldBuilder
                             const std::vector<size_t> &entry_in_output,
                             std::vector<double> &output) const
     {
+      // if we only ask for topography (which is common operation), then we return directly, since the mantle doesn't currently support it.
+      if (properties.size() == 1 && properties[0][0] == 6)
+        return;
+
       if (depth <= max_depth && depth >= min_depth &&
           WorldBuilder::Utilities::polygon_contains_point(coordinates, Point<2>(position_in_natural_coordinates.get_surface_coordinates(),
                                                                                 world->parameters.coordinate_system->natural_coordinate_system())))
@@ -289,6 +293,8 @@ namespace WorldBuilder
                         break;
                       }
                       break;
+                      case 6: // topography: not implemented
+                        break;
                       default:
                       {
                         WBAssertThrow(false,

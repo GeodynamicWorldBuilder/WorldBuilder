@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2018-2024 by the authors of the World Builder code.
+  Copyright (C) 2018-2026 by the authors of the World Builder code.
 
   This file is part of the World Builder.
 
@@ -165,15 +165,15 @@ namespace WorldBuilder
      */
 
     WBAssertThrow((prm.get<std::string>("version") == Version::MAJOR + "." + Version::MINOR),
-                  "The major and minor version combination for which is input file was written "
+                  "The major and minor version combination for which this input file was written "
                   "is not the same as the version of the World Builder you are running. This means "
-                  "That there may have been incompatible changes made between the versions. \n\n"
+                  "that there may have been incompatible changes made between the versions. \n\n"
                   "Verify those changes and whether they affect your model. If this is not "
                   "the case, adjust the version number in the input file. \n\nThe provided version "
-                  "number is \"" << prm.get<std::string>("version") << "\", while the used world builder "
+                  "number is \"" << prm.get<std::string>("version") << "\", while the used World Builder "
                   "has  (major.minor) version \"" << Version::MAJOR << "." << Version::MINOR << "\". "
                   "If you created this file from scratch, fill set the version number to \"" <<
-                  Version::MAJOR << "." << Version::MINOR << "\" to continue. If you got the world builder "
+                  Version::MAJOR << "." << Version::MINOR << "\" to continue. If you got the World Builder "
                   "file from somewhere, make sure that the output is what you expect it to be, because "
                   "backwards incompatible changes may have been made to the code.");
 
@@ -299,10 +299,15 @@ namespace WorldBuilder
               n_output_entries += 3;
               break;
             }
+            case 6: // topography
+            {
+              n_output_entries += 1;
+              break;
+            }
             default:
               WBAssertThrow(false,
                             "Internal error: Unimplemented property provided. " <<
-                            "Only temperature (1), composition (2), grains (3), tag (4) or velocity (5) are allowed. "
+                            "Only temperature (1), composition (2), grains (3), tag (4), velocity (5) or topography (6) are allowed. "
                             "Provided property number was: " << property[0]);
           }
       }
@@ -385,13 +390,16 @@ namespace WorldBuilder
               counter += 3;
               break;
             }
-            default:
+            case 6: // topography
             {
-              WBAssert(false,
-                       "Internal error: Unimplemented property provided by internal process. " <<
-                       "Only temperature (1), composition (2), grains (3), tag (4) or velocity (5) are allowed. "
-                       "Provided property number was: " << property[0]);
+              counter += 1;
+              break;
             }
+            default:
+              WBAssertThrow(false,
+                            "Internal error: Unimplemented property provided. " <<
+                            "Only temperature (1), composition (2), grains (3), tag (4), velocity (5) or topography (6) are allowed. "
+                            "Provided property number was: " << property[0]);
           }
 
       }
@@ -471,10 +479,17 @@ namespace WorldBuilder
               properties_local.emplace_back(properties[i_property]);
               break;
             }
+            case 6: // topography
+            {
+              entry_in_output.emplace_back(output.size());
+              output.emplace_back(0);
+              properties_local.emplace_back(properties[i_property]);
+              break;
+            }
             default:
               WBAssertThrow(false,
                             "Internal error: Unimplemented property provided. " <<
-                            "Only temperature (1), composition (2), grains (3), tag (4) or velocity (5) are allowed. "
+                            "Only temperature (1), composition (2), grains (3), tag (4), velocity (5) and topography (6) are allowed. "
                             "Provided property number was: " << properties[i_property][0]);
           }
       }

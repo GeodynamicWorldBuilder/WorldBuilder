@@ -18,10 +18,10 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Geodynamic World Builder'
-copyright = '2024, The authors of the Geodynamic World Builder'
+copyright = '2026, The authors of the Geodynamic World Builder'
 # The full version, including alpha/beta/rc tags
-release = '1.1.0-pre'
-html_title = "Manual GWB 1.1.0-pre"
+release = '1.2.0-pre'
+html_title = "Manual GWB 1.2.0-pre"
 
 
 # -- General configuration ---------------------------------------------------
