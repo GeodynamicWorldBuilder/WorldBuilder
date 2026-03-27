@@ -86,7 +86,7 @@ namespace WorldBuilder
             Operations operation;
 
         };
-      } // namespace topography
+      } // namespace Topography
     } // namespace ContinentalPlateModels
   } // namespace Features
 } // namespace WorldBuilder
