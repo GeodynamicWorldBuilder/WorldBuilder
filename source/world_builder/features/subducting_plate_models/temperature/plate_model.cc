@@ -137,6 +137,7 @@ namespace WorldBuilder
                                     const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
                                     const AdditionalParameters &additional_parameters) const
         {
+          const double seconds_in_year = 60.0 * 60.0 * 24.0 * 365.25;  // sec/y
           const double thickness_local = std::min(additional_parameters.local_thickness, max_depth);
           const double distance_from_plane = distance_from_planes.distance_from_plane;
           const double distance_along_plane = distance_from_planes.distance_along_plane;
@@ -151,7 +152,7 @@ namespace WorldBuilder
                * of the point, we directly use the depth.
                */
               const double R = (density * specific_heat
-                                * (plate_velocity /(365.25 * 24.0 * 60.0 * 60.0))
+                                * (plate_velocity /seconds_in_year)
                                 * thickness_local) / (2.0 * thermal_conductivity);
 
               WBAssert(!std::isnan(R), "Internal error: R is not a number: " << R << '.');
