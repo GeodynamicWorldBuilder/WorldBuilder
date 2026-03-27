@@ -2,7 +2,7 @@
 Oceanic plate
 ==========
 
-The oceanic plate feature in GWB allows for the definition of a tectonic plate which is a area feature {ref}`part:user_manual:chap:concepts:sec:area_features`, defined between a `min depth` and `max depth`.
+The oceanic plate feature in GWB allows for the definition of a tectonic plate which is an area feature {ref}`part:user_manual:chap:concepts:sec:area_features`, defined between a `min depth` and `max depth`.
 
 ## Geometry
 The surface extent of the oceanic plate is defined by the `coordinates` parameter, which takes a list of 2D points (Cartesian x-y or spherical latitude-longitude) to form a closed polygon. 
@@ -10,7 +10,7 @@ The surface extent of the oceanic plate is defined by the `coordinates` paramete
 ## Temperature 
 This model assigns temperature based on lithospheric cooling models using the `temperature models` parameter. The temperature is calculated either based on the age of the plate or linearly with depth or as a uniformity at any given location. 
 
-The following models are available:
+The following temperature models are available:
 
 * **Adiabatic**: Defines a temperature profile that follows an adiabatic gradient with depth, representing mantle temperature increase due to compressional heating {cite:p}`Turcotte_Schubert_book_2014`.
 
@@ -18,7 +18,7 @@ The following models are available:
 
 * **Linear model**: Applies a simple linear temperature gradient between a specified surface temperature and a basal temperature at depth.
 
-* **Plate model**: This model assumes a constant temperature at a fixed basal depth, preventing the lithosphere from thickening indefinitely as it ages.
+* **Plate model**: This model assumes a constant temperature at a fixed basal depth, preventing the lithosphere from thickening indefinitely as it ages. {cite:p}`McKenzie_1970`
 
 * **Plate Model with Constant Age**: Same as the plate model, but with a fixed plate age, resulting in a time-independent thermal structure.
 
@@ -28,7 +28,7 @@ The following models are available:
 ## Composition
 Compositional layers (such as oceanic crust or its depleted lithospheric mantle) can be added to the plate using the `composition models` parameter. These layers are defined relative to the top of the feature. The following model variations are supported:
 
-* **Uniform**: A common model, where for example, an uniform layer of oceanic crust can be defined from the `min depth` and `max depth` down to a specific thickness, followed by a layer of lithospheric mantle. The fraction of each composition is defined by `fractions`.
+* **Uniform**: A common model, where for example, a uniform layer of oceanic crust can be defined from the `min depth` and `max depth` down to a specific thickness, followed by a layer of lithospheric mantle. The fraction of each composition is defined by `fractions`.
 
 * **TianWaterContent Model**: Sets bound water content as a compositional field. The returned water content is computed from the local temperature and pressure at a given point in the model domain using `max depth`, `min depth`. Bound water content is parameterized for four lithologies: sediment, mid-ocean ridge basalt (MORB), gabbro, and peridotite, using phase diagram parameterizations {cite:p}`Tian2019` set using `initial water content` and `lithology` type. Pressure is assumed to be lithostatic and is calculated using a constant, user-defined density. To prevent invalid results where the parameterization breaks down at high pressures, the pressure is limited by a user-defined cutoff value `cutoff pressure` (in GPa) for each lithology. Recommended cutoff pressures are 10 GPa for peridotite, 26 GPa for gabbro, 16 GPa for MORB, and 1 GPa for sediment.
  
@@ -59,7 +59,7 @@ The composition of the model can be initiated with a velocity defined in this mo
 
 
 ## Topography
-Topography models enable adding topographical features to the original composition. These serve the need when you want a predefined topography for your geodynamic or landscape evolution model runs. Likewise other models, depth in meters to which the composition of this feature is present can be given as `min depth` and `max depth`. The following `topography models` are supported:
+Topography models enable adding topographical features to the original composition. These serve the need when you want a predefined topography for your geodynamic or landscape evolution model runs. The depth in meters to which the composition of this feature is present can be given as `min depth` and `max depth`. The following `topography models` are supported:
 
 * **Uniform**: A user-defined constant `topography` in meters is added to the composition.
 
