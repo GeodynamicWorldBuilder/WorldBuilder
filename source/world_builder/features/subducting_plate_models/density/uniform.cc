@@ -26,6 +26,7 @@
 #include "world_builder/types/object.h"
 #include "world_builder/types/unsigned_int.h"
 #include "world_builder/utilities.h"
+#include "world_builder/world.h"
 
 
 namespace WorldBuilder
@@ -41,8 +42,8 @@ namespace WorldBuilder
       {
         Uniform::Uniform(WorldBuilder::World *world_)
           :
-          min_depth(NaN::DSNAN),
-          max_depth(NaN::DSNAN)
+          densities(NaN::DSNAN),
+          operation(Operations::REPLACE)
         {
           this->world = world_;
           this->name = "uniform";
@@ -60,7 +61,7 @@ namespace WorldBuilder
                             "Uniform density model. Set the density to a constant value.");
 
           prm.declare_entry("densities", Types::Array(Types::Double(3300)),
-                            "list of compositionalk densities");
+                            "list of compositional densities");
 
           prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
                             "A list with the labels of the composition which are present there.");
@@ -84,19 +85,28 @@ namespace WorldBuilder
         double
         Uniform::get_density(const Point<3> &position_in_cartesian_coordinates,
                              const double depth,
-                             const unsigned int composition_number,
+                             const unsigned int /*composition_number*/,
                              double density_,
                              const double  /*feature_min_depth*/,
                              const double  /*feature_max_depth*/,
-                             const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_plane,
+                             const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes & /*distance_from_plane*/,
                              const AdditionalParameters & /*additional_parameters*/) const
         {
           // If the composition is greater than 0, average it into the density.
-          // By callign the world property for composition, fractions will be included.
-          double compositional_density = 0.;
+          // By calling the world property for composition, fractions will be included.
+          double compositional_density = 0.0;
+          double sum_compositions = 0.0;
           for (unsigned int i = 0; i < compositions.size(); ++i)
-            if (world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] > 0.0)
-          compositional_density += world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] * densities[i];
+            {
+              if (world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] > 0.0)
+              {
+                compositional_density += world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] * densities[i];
+                sum_compositions += world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0];
+              }
+            }
+
+          // Add in the background_density component.
+          compositional_density += this->world->background_density* (1 - sum_compositions);
 
           return apply_operation(operation,density_,compositional_density);
         }

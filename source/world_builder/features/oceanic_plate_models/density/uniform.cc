@@ -25,6 +25,7 @@
 #include "world_builder/types/object.h"
 #include "world_builder/types/one_of.h"
 #include "world_builder/types/value_at_points.h"
+#include "world_builder/world.h"
 
 namespace WorldBuilder
 {
@@ -39,7 +40,7 @@ namespace WorldBuilder
       {
         Uniform::Uniform(WorldBuilder::World *world_)
           :
-          //densities(NaN::DSNAN),  Program hangs when setting like this. How to set for vector?
+          densities(NaN::DSNAN),
           operation(Operations::REPLACE)
         {
           this->world = world_;
@@ -71,7 +72,7 @@ namespace WorldBuilder
         }
 
         void
-        Uniform::parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates)
+        Uniform::parse_entries(Parameters &prm, const std::vector<Point<2>> & /*coordinates*/)
         {
 
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
@@ -81,7 +82,7 @@ namespace WorldBuilder
 
         double
         Uniform::get_density(const Point<3> &position_in_cartesian_coordinates,
-                             const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                             const Objects::NaturalCoordinate & /*position_in_natural_coordinates*/,
                              const double depth,
                              const double  /*gravity*/,
                              double density_,
@@ -89,11 +90,20 @@ namespace WorldBuilder
                              const double /*feature_max_depth*/) const
         {
           // If the composition is greater than 0, average it into the density.
-          // By callign the world property for composition, fractions will be included.
-          double compositional_density = 0.;
+          // By calling the world property for composition, fractions will be included.
+          double compositional_density = 0.0;
+          double sum_compositions = 0.0;
           for (unsigned int i = 0; i < compositions.size(); ++i)
-            if (world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] > 0.0)
-          compositional_density += world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] * densities[i];
+            {
+              if (world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] > 0.0)
+              {
+                compositional_density += world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0] * densities[i];
+                sum_compositions += world->properties(position_in_cartesian_coordinates.get_array(), depth, {{{2, compositions[i], 0}}})[0];
+              }
+            }
+
+          // Add in the background_density component.
+          compositional_density += this->world->background_density* (1 - sum_compositions);
 
           return apply_operation(operation,density_,compositional_density);
         }

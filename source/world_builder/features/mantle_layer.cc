@@ -311,6 +311,8 @@ namespace WorldBuilder
                         output[entry_in_output[i_property]+2] = velocity[2];
                         break;
                       }
+                      case 6: // topography: not implemented
+                        break;
                       case 7: // density
                       {
                         for (const auto &density_model: density_models)
@@ -327,9 +329,7 @@ namespace WorldBuilder
                           }
                         break;
                       }
-                      break;
-                      case 6: // topography: not implemented
-                        break;
+
                       default:
                       {
                         WBAssertThrow(false,

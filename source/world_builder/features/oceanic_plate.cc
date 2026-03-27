@@ -219,7 +219,7 @@ namespace WorldBuilder
       }
       prm.leave_subsection();
 
-       prm.get_unique_pointers<Features::OceanicPlateModels::Density::Interface>("density models", density_models);
+      prm.get_unique_pointers<Features::OceanicPlateModels::Density::Interface>("density models", density_models);
 
       prm.enter_subsection("density models");
       {
@@ -232,7 +232,7 @@ namespace WorldBuilder
             prm.leave_subsection();
           }
       }
-      prm.leave_subsection();     
+      prm.leave_subsection();
     }
 
 
@@ -351,21 +351,19 @@ namespace WorldBuilder
                             for (const auto &density_model: density_models)
                               {
                                 output[entry_in_output[i_property]] = density_model->get_density(position_in_cartesian_coordinates,
-                                                                                                position_in_natural_coordinates,
-                                                                                                depth,
-                                                                                                gravity_norm,
-                                                                                                output[entry_in_output[i_property]],
-                                                                                                min_depth_local,
-                                                                                                max_depth_local);
+                                                                                                 position_in_natural_coordinates,
+                                                                                                 depth,
+                                                                                                 gravity_norm,
+                                                                                                 output[entry_in_output[i_property]],
+                                                                                                 min_depth_local,
+                                                                                                 max_depth_local);
 
 
                               }
 
                             break;
                           }
-                          break;
                           case 6:  // topography: handled outside, so just fall through to the default error if it gets to here
-                          break;
                           default:
                           {
                             WBAssertThrow(false,

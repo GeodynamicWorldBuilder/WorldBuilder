@@ -2443,7 +2443,7 @@ namespace WorldBuilder
   Parameters::get_unique_pointers<Features::OceanicPlateModels::Topography::Interface>(const std::string &name,
       std::vector<std::unique_ptr<Features::OceanicPlateModels::Topography::Interface> > &vector);
 
-  /** 
+  /**
    * Todo: Returns a vector of pointers to the Point<3> Type based on the provided name.
    * Note that the variable with this name has to be loaded before this function is called.
    */

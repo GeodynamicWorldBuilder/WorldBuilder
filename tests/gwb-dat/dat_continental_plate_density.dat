@@ -1,0 +1,13 @@
+# This is a comment in the data
+# file. 
+# Now define parameters:
+# dim = 2
+# compositions = 3
+# output density = true
+# x z d T c1 c2 c3 c4 c5
+0e3 0 0e3
+0e3 0 15e3
+0e3 0e3 100e3
+75e3 0e3 0e3
+75e3 0e3 50e3
+75e3 0e3 100e3
