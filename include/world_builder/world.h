@@ -119,8 +119,8 @@ namespace WorldBuilder
        * input usually looks like {5,0,0}. A velocity query produces three entries in the output
        * vector, representing the x, y and z velocities, even in 2d. In 2d, the velocies are
        * projected on the 2D plane, and the 3rd velocity component will be zero.
-       * 
-       * Topography is identified by 6 and no extra information is needed. The topography 
+       *
+       * Topography is identified by 6 and no extra information is needed. The topography
        * input usually looks like {6,0,0}. A topography query produces one entry in the output
        * vector, representing the highest surface of the feature.
        */
@@ -151,7 +151,7 @@ namespace WorldBuilder
        * A composition query prodoces n_grains*10 entries in the output vector. The first n_grains
        * entries are the sizes of all the grains, and the other 9 entries are sets of rotation
        * matrices. The rotation matrix entries are ordered [0][0],[0][1],[0][2],[1][0],[1][1],etc.
-       * 
+       *
        * Tag is identified by 4 and no extra information is needed. The tag
        * input usually looks like {4,0,0}. A tag query produces one entry in the output
        * vector, representing the index of the tag of the last/dominant feature.
@@ -160,8 +160,8 @@ namespace WorldBuilder
        * input usually looks like {5,0,0}. A velocity query produces three entries in the output
        * vector, representing the x, y and z velocities, even in 2d. In 2d, the velocies are
        * projected on the 2D plane, and the 3rd velocity component will be zero.
-       * 
-       * Topography is identified by 6 and no extra information is needed. The topography 
+       *
+       * Topography is identified by 6 and no extra information is needed. The topography
        * input usually looks like {6,0,0}. A topography query produces one entry in the output
        * vector, representing the highest surface of the feature.
        */
