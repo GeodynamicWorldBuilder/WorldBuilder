@@ -96,7 +96,8 @@ namespace WorldBuilder
                                                                 Types::PluginSystem("", Features::FaultModels::Temperature::Interface::declare_entries, {"model"}),
                                                                 Types::PluginSystem("", Features::FaultModels::Composition::Interface::declare_entries, {"model"}),
                                                                 Types::PluginSystem("", Features::FaultModels::Grains::Interface::declare_entries, {"model"}),
-                                                                Types::PluginSystem("", Features::FaultModels::Velocity::Interface::declare_entries, {"model"}))),
+                                                                Types::PluginSystem("", Features::FaultModels::Velocity::Interface::declare_entries, {"model"}),
+                                                                Types::PluginSystem("", Features::FaultModels::Density::Interface::declare_entries, {"model"}))),
                         "The depth to which this feature is present");
 
       prm.declare_entry("temperature models",
@@ -111,6 +112,9 @@ namespace WorldBuilder
       prm.declare_entry("velocity models",
                         Types::PluginSystem("", Features::FaultModels::Velocity::Interface::declare_entries, {"model"}),
                         "A list of velocity models.");
+      prm.declare_entry("density models",
+                        Types::PluginSystem("", Features::FaultModels::Density::Interface::declare_entries, {"model"}),
+                        "A list of density models.");
 
       if (parent_name != "items")
         {
@@ -162,16 +166,19 @@ namespace WorldBuilder
       default_composition_models.resize(0);
       default_grains_models.resize(0);
       default_velocity_models.resize(0);
+      default_density_models.resize(0);
       prm.get_shared_pointers<Features::FaultModels::Temperature::Interface>("temperature models", default_temperature_models);
       prm.get_shared_pointers<Features::FaultModels::Composition::Interface>("composition models", default_composition_models);
       prm.get_shared_pointers<Features::FaultModels::Grains::Interface>("grains models", default_grains_models);
       prm.get_shared_pointers<Features::FaultModels::Velocity::Interface>("velocity models", default_velocity_models);
+      prm.get_shared_pointers<Features::FaultModels::Density::Interface>("density models", default_density_models);
 
       // get the default segments.
       default_segment_vector = prm.get_vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
       Features::FaultModels::Composition::Interface,
       Features::FaultModels::Grains::Interface,
-      Features::FaultModels::Velocity::Interface> >("segments", default_temperature_models, default_composition_models,default_grains_models, default_velocity_models);
+      Features::FaultModels::Velocity::Interface,
+      Features::FaultModels::Density::Interface> >("segments", default_temperature_models, default_composition_models,default_grains_models, default_velocity_models, default_density_models);
 
 
       // This vector stores segments to this coordinate/section.
@@ -203,6 +210,7 @@ namespace WorldBuilder
                 std::vector<std::shared_ptr<Features::FaultModels::Composition::Interface>  > local_default_composition_models;
                 std::vector<std::shared_ptr<Features::FaultModels::Grains::Interface>  > local_default_grains_models;
                 std::vector<std::shared_ptr<Features::FaultModels::Velocity::Interface>  > local_default_velocity_models;
+                std::vector<std::shared_ptr<Features::FaultModels::Density::Interface>  > local_default_density_models;
 
                 if (!prm.get_shared_pointers<Features::FaultModels::Temperature::Interface>("temperature models", local_default_temperature_models))
                   {
@@ -228,10 +236,17 @@ namespace WorldBuilder
                     local_default_velocity_models = default_velocity_models;
                   }
 
+                if (!prm.get_shared_pointers<Features::FaultModels::Density::Interface>("density models", local_default_density_models))
+                  {
+                    // no local velocity model, use global default
+                    local_default_density_models = default_density_models;
+                  }
+
                 segment_vector[change_coord_number] = prm.get_vector<Objects::Segment<Features::FaultModels::Temperature::Interface,
                                                       Features::FaultModels::Composition::Interface,
                                                       Features::FaultModels::Grains::Interface,
-                                                      Features::FaultModels::Velocity::Interface> >("segments", local_default_temperature_models, local_default_composition_models, local_default_grains_models, local_default_velocity_models);
+                                                      Features::FaultModels::Velocity::Interface,
+                                                      Features::FaultModels::Density::Interface> >("segments", local_default_temperature_models, local_default_composition_models, local_default_grains_models, local_default_velocity_models, local_default_density_models);
 
                 WBAssertThrow(segment_vector[change_coord_number].size() == default_segment_vector.size(),
                               "Error: There are not the same amount of segments in section with coordinate " << change_coord_number
@@ -292,6 +307,19 @@ namespace WorldBuilder
                               prm.enter_subsection(std::to_string(j));
                               {
                                 segment_vector[change_coord_number][i].velocity_systems[j]->parse_entries(prm);
+                              }
+                              prm.leave_subsection();
+                            }
+                        }
+                        prm.leave_subsection();
+
+                        prm.enter_subsection("density models");
+                        {
+                          for (unsigned int j = 0; j < segment_vector[change_coord_number][i].density_systems.size(); ++j)
+                            {
+                              prm.enter_subsection(std::to_string(j));
+                              {
+                                segment_vector[change_coord_number][i].density_systems[j]->parse_entries(prm);
                               }
                               prm.leave_subsection();
                             }
@@ -365,6 +393,19 @@ namespace WorldBuilder
                     prm.enter_subsection(std::to_string(j));
                     {
                       default_segment_vector[i].velocity_systems[j]->parse_entries(prm);
+                    }
+                    prm.leave_subsection();
+                  }
+              }
+              prm.leave_subsection();
+
+              prm.enter_subsection("density models");
+              {
+                for (unsigned int j = 0; j < default_segment_vector[i].density_systems.size(); ++j)
+                  {
+                    prm.enter_subsection(std::to_string(j));
+                    {
+                      default_segment_vector[i].density_systems[j]->parse_entries(prm);
                     }
                     prm.leave_subsection();
                   }
@@ -769,6 +810,51 @@ namespace WorldBuilder
                           }
                           case 6: // topography: not implemented
                             break;
+                          case 7: //density
+                          {
+                            double density_current_section = output[entry_in_output[i_property]];
+                            double density_next_section = output[entry_in_output[i_property]];
+
+                            for (const auto &density_model: segment_vector[current_section][current_segment].density_systems)
+                              {
+                                density_current_section = density_model->get_density(position_in_cartesian_coordinates,
+                                                                                     depth,
+                                                                                     properties[i_property][1],
+                                                                                     density_current_section,
+                                                                                     starting_depth,
+                                                                                     maximum_depth,
+                                                                                     distance_from_planes,
+                                                                                     additional_parameters);
+
+                                WBAssert(!std::isnan(density_current_section), "Composition_current_section is not a number: " << density_current_section
+                                         << ", based on a composition model with the name " << density_model->get_name() << ", in feature " << this->name);
+                                WBAssert(std::isfinite(density_current_section), "Composition_current_section is not finite: " << density_current_section
+                                         << ", based on a composition model with the name " << density_model->get_name() << ", in feature " << this->name);
+
+                              }
+
+                            for (const auto &density_model: segment_vector[next_section][current_segment].density_systems)
+                              {
+                                density_next_section = density_model->get_density(position_in_cartesian_coordinates,
+                                                                                  depth,
+                                                                                  properties[i_property][1],
+                                                                                  density_next_section,
+                                                                                  starting_depth,
+                                                                                  maximum_depth,
+                                                                                  distance_from_planes,
+                                                                                  additional_parameters);
+
+                                WBAssert(!std::isnan(density_next_section), "Composition_next_section is not a number: " << density_next_section
+                                         << ", based on a composition model with the name " << density_model->get_name() << ", in feature " << this->name);
+                                WBAssert(std::isfinite(density_next_section), "Composition_next_section is not finite: " << density_next_section
+                                         << ", based on a composition model with the name " << density_model->get_name() << ", in feature " << this->name);
+
+                              }
+
+                            // linear interpolation between current and next section temperatures
+                            output[entry_in_output[i_property]] = density_current_section + section_fraction * (density_next_section - density_current_section);
+                            break;
+                          }
                           default:
                           {
                             WBAssertThrow(false,
@@ -824,4 +910,3 @@ namespace WorldBuilder
     WB_REGISTER_FEATURE(Fault, fault)
   } // namespace Features
 } // namespace WorldBuilder
-

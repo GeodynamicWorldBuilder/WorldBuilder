@@ -50,6 +50,10 @@ namespace WorldBuilder
       {
         class Interface;
       }  // namespace Velocity
+      namespace Density
+      {
+        class Interface;
+      }  // namespace Density
     }  // namespace PlumeModels
 
     /**
@@ -158,6 +162,14 @@ namespace WorldBuilder
          * @see Features
          */
         std::vector<std::unique_ptr<Features::PlumeModels::Grains::Interface> > grains_models;
+
+        /**
+         * A vector containing all the pointers to the grains models. This vector is
+         * responsible for the features and has ownership over them. Therefore
+         * unique pointers are used.
+         * @see Features
+         */
+        std::vector<std::unique_ptr<Features::PlumeModels::Density::Interface> > density_models;
 
 
         double min_depth;
