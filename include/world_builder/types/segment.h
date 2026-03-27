@@ -47,7 +47,8 @@ namespace WorldBuilder
                 const Types::Interface &temperature_plugin_system,
                 const Types::Interface &composition_plugin_system,
                 const Types::Interface &grains_plugin_system_,
-                const Types::Interface &gvelocity_plugin_system_);
+                const Types::Interface &gvelocity_plugin_system_,
+                const Types::Interface &density_plugin_system_);
 
         /**
          * A constructor for the load_entry function
@@ -87,6 +88,7 @@ namespace WorldBuilder
         std::unique_ptr<Types::Interface> composition_plugin_system;
         std::unique_ptr<Types::Interface> grains_plugin_system;
         std::unique_ptr<Types::Interface> velocity_plugin_system;
+        std::unique_ptr<Types::Interface> density_plugin_system;
 
       protected:
         Segment *clone_impl() const override final

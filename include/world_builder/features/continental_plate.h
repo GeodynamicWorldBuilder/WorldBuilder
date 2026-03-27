@@ -54,6 +54,10 @@ namespace WorldBuilder
       {
         class Interface;
       }  // namespace Topography
+      namespace Density
+      {
+        class Interface;
+      }  // namespace Density
     }  // namespace ContinentalPlateModels
 
     /**
@@ -170,6 +174,14 @@ namespace WorldBuilder
          * @see Features
          */
         std::vector<std::unique_ptr<Features::ContinentalPlateModels::Topography::Interface> > topography_models;
+
+        /**
+         * A vector containing all the pointers to the density models. This vector is
+         * responsible for the features and has ownership over them. Therefore
+         * unique pointers are used.
+         * @see Features
+         */
+        std::vector<std::unique_ptr<Features::ContinentalPlateModels::Density::Interface> > density_models;
 
         double min_depth;
         Objects::Surface min_depth_surface;

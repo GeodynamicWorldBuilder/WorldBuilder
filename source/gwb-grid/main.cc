@@ -1832,6 +1832,7 @@ int main(int argc, char **argv)
         { "Temperature", vtu11::DataSetType::PointData, 1 },
         { "velocity", vtu11::DataSetType::PointData, 3 },
         { "Tag", vtu11::DataSetType::PointData, 1 },
+        { "Density", vtu11::DataSetType::PointData, 1 },
       };
       for (size_t c = 0; c < compositions; ++c)
         {
@@ -1849,12 +1850,14 @@ int main(int argc, char **argv)
 
       properties.push_back({{4,0,0}}); // tag
 
+      properties.push_back({{7,0,0}}); // density
+
       for (unsigned int c = 0; c < compositions; ++c)
         properties.push_back({{2,c,0}}); // composition c
 
 
       // compute temperature
-      std::vector<vtu11::DataSetData> data_set(6+compositions);
+      std::vector<vtu11::DataSetData> data_set(7+compositions);
       data_set[0] = grid_depth_wrt_surface;
       data_set[1] = grid_depth_wrt_reference;
 
@@ -1862,8 +1865,9 @@ int main(int argc, char **argv)
       data_set[3].resize(n_p);
       data_set[4].resize(n_p*3);
       data_set[5].resize(n_p);
+      data_set[6].resize(n_p);
       for (size_t c = 0; c < compositions; ++c)
-        data_set[6+c].resize(n_p);
+        data_set[7+c].resize(n_p);
 
       if (dim == 2)
         {
@@ -1877,9 +1881,10 @@ int main(int argc, char **argv)
             data_set[4][3*i+1] = output[3];
             data_set[4][3*i+2] = output[4];
             data_set[5][i] = output[5];
+            data_set[6][i] = output[6];
             for (size_t c = 0; c < compositions; ++c)
               {
-                data_set[6+c][i] = output[6+c];
+                data_set[7+c][i] = output[7+c];
               }
           });
         }
@@ -1895,9 +1900,10 @@ int main(int argc, char **argv)
             data_set[4][3*i+1] = output[3];
             data_set[4][3*i+2] = output[4];
             data_set[5][i] = output[5];
+            data_set[6][i] = output[6];
             for (size_t c = 0; c < compositions; ++c)
               {
-                data_set[6+c][i] = output[6+c];
+                data_set[7+c][i] = output[7+c];
               }
           });
         }
