@@ -149,6 +149,9 @@ namespace WorldBuilder
                         "This allows the input of a preferred random number seed to generate random numbers."
                         " If no input is given, this value is -1 and triggers the use of default seed = 1.");
 
+      prm.declare_entry("background density", Types::Double(3300),
+                        "Density for the background material without any compositions.");
+
     }
     prm.leave_subsection();
 
@@ -237,6 +240,11 @@ namespace WorldBuilder
     thermal_diffusivity = prm.get<double>("thermal diffusivity");
 
     /**
+     * Density parameters.
+     */
+    background_density = prm.get<double>("background density");
+
+    /**
      * Model discretization parameters
      */
     maximum_distance_between_coordinates = prm.get<double>("maximum distance between coordinates");
@@ -300,6 +308,11 @@ namespace WorldBuilder
               break;
             }
             case 6: // topography
+            {
+              n_output_entries += 1;
+              break;
+            }
+            case 7: // density
             {
               n_output_entries += 1;
               break;
@@ -395,6 +408,11 @@ namespace WorldBuilder
               counter += 1;
               break;
             }
+            case 7: // density
+            {
+              counter += 1;
+              break;
+            }
             default:
               WBAssertThrow(false,
                             "Internal error: Unimplemented property provided. " <<
@@ -486,6 +504,13 @@ namespace WorldBuilder
               properties_local.emplace_back(properties[i_property]);
               break;
             }
+            case 7: // density
+            {
+              entry_in_output.emplace_back(output.size());
+              output.emplace_back(background_density);
+              properties_local.emplace_back(properties[i_property]);
+              break;
+            }
             default:
               WBAssertThrow(false,
                             "Internal error: Unimplemented property provided. " <<
@@ -546,8 +571,6 @@ namespace WorldBuilder
   {
     return properties(point, depth, {{{2,composition_number,0}}})[0];
   }
-
-
 
   WorldBuilder::grains
   World::grains(const std::array<double,2> &point,

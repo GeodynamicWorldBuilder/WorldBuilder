@@ -508,6 +508,7 @@ int main(int argc, char **argv)
         }
 
       std::string vtu_output_format = "ASCII";//"RawBinaryCompressed";
+      bool output_densities = false;
       // Read config from data if present
       for (auto &line_i : data)
         {
@@ -555,6 +556,10 @@ int main(int argc, char **argv)
           if (line_i[0] == "n_cell_z" && line_i[1] == "=")
             n_cell_z = std::min(string_to_unsigned_int(line_i[2]),max_resolution);
 
+          if (line_i[0] == "output_density" && line_i[1] == "="  && line_i[2] == "true")
+            {
+              output_densities = true;
+            }
         }
 
       WBAssertThrow(dim == 2 || dim == 3, "dim should be set in the grid file and can only be 2 or 3.");
@@ -1833,6 +1838,10 @@ int main(int argc, char **argv)
         { "velocity", vtu11::DataSetType::PointData, 3 },
         { "Tag", vtu11::DataSetType::PointData, 1 },
       };
+
+      if (output_densities)
+        dataSetInfo.emplace_back("Density", vtu11::DataSetType::PointData, 1);
+
       for (size_t c = 0; c < compositions; ++c)
         {
           dataSetInfo.emplace_back( "Composition "+std::to_string(c), vtu11::DataSetType::PointData, 1 );
@@ -1849,12 +1858,15 @@ int main(int argc, char **argv)
 
       properties.push_back({{4,0,0}}); // tag
 
+      if (output_densities)
+        properties.push_back({{7,0,0}}); // density
+
       for (unsigned int c = 0; c < compositions; ++c)
         properties.push_back({{2,c,0}}); // composition c
 
 
       // compute temperature
-      std::vector<vtu11::DataSetData> data_set(6+compositions);
+      std::vector<vtu11::DataSetData> data_set(6+output_densities+compositions);
       data_set[0] = grid_depth_wrt_surface;
       data_set[1] = grid_depth_wrt_reference;
 
@@ -1862,8 +1874,12 @@ int main(int argc, char **argv)
       data_set[3].resize(n_p);
       data_set[4].resize(n_p*3);
       data_set[5].resize(n_p);
+
+      if (output_densities)
+        data_set[6].resize(n_p);
+
       for (size_t c = 0; c < compositions; ++c)
-        data_set[6+c].resize(n_p);
+        data_set[6+c+output_densities].resize(n_p);
 
       if (dim == 2)
         {
@@ -1877,9 +1893,13 @@ int main(int argc, char **argv)
             data_set[4][3*i+1] = output[3];
             data_set[4][3*i+2] = output[4];
             data_set[5][i] = output[5];
+
+            if (output_densities)
+              data_set[6][i] = output[6];
+
             for (size_t c = 0; c < compositions; ++c)
               {
-                data_set[6+c][i] = output[6+c];
+                data_set[6+c+output_densities][i] = output[6+c+output_densities];
               }
           });
         }
@@ -1895,9 +1915,13 @@ int main(int argc, char **argv)
             data_set[4][3*i+1] = output[3];
             data_set[4][3*i+2] = output[4];
             data_set[5][i] = output[5];
+
+            if (output_densities)
+              data_set[6][i] = output[6];
+
             for (size_t c = 0; c < compositions; ++c)
               {
-                data_set[6+c][i] = output[6+c];
+                data_set[6+c+output_densities][i] = output[6+c+output_densities];
               }
           });
         }

@@ -78,6 +78,7 @@ int main(int argc, char **argv)
   bool convert_spherical = false;
   bool limit_debug_consistency_checks = false;
   bool output_json_files = false;
+  bool output_densities = false;
 
   if (find_command_line_option(argv, argv+argc, "-h") || find_command_line_option(argv, argv+argc, "--help"))
     {
@@ -194,16 +195,22 @@ int main(int argc, char **argv)
 
           if (!line_i.empty() && line_i[0] == "#" && line_i[1] == "convert" && line_i[2] == "spherical" && line_i[3] == "=" && line_i[4] == "true")
             convert_spherical = true;
+
+          if (!line_i.empty() && line_i[0] == "#" && line_i[1] == "output" && line_i[2] == "density" && line_i[3] == "=" && line_i[4] == "true")
+            output_densities = true;
         }
 
-      // set properties
+      // set properties, order these are pushed affects
+      // the output index needed to write.
       std::vector<std::array<unsigned ,3>> properties;
-      properties.push_back({{1,0,0}}); // temperature
+      properties.push_back({{1,0,0}}); // temperature  output[0]
 
-      properties.push_back({{5,0,0}}); // velocity x
+      properties.push_back({{7,0,0}}); // density      output[1]
+
+      properties.push_back({{5,0,0}}); // velocity x   output[2],output[3],output[4]
 
       for (size_t c = 0; c < compositions; ++c)
-        properties.push_back({{2,static_cast<unsigned int>(c),0}}); // composition c
+        properties.push_back({{2,static_cast<unsigned int>(c),0}}); // composition c output[5+c]
 
 
       for (size_t gc = 0; gc < grain_compositions; ++gc)
@@ -217,7 +224,9 @@ int main(int argc, char **argv)
           case 2:
             WBAssertThrow(!convert_spherical, "Converting to spherical values is only available in 3D.");
             // set the header
-            std::cout << "# x z d T vx vz ";
+            std::cout << "# x z d T "
+                      << (output_densities ? "rho " : "")
+                      << "vx vz ";
 
             for (unsigned int c = 0; c < compositions; ++c)
               std::cout << 'c' << c << ' ';
@@ -246,18 +255,23 @@ int main(int argc, char **argv)
                   };
                   std::cout << data[i][0] << ' ' << data[i][1] << ' ' << data[i][2] << ' ';
                   std::vector<double> output = world->properties(coords, string_to_double(data[i][2]),properties);
-                  std::cout << output[0]  << ' ';
+                  std::cout << output[0]  << ' '; // temperature
 
-                  std::cout << output[1] << ' ' << output[2] << ' ';
+                  if (output_densities)
+                    std::cout << output[1]  << ' '; // density
+
+                  // Velocities
+                  std::cout << output[2] << ' ' << output[3] << ' ';
 
                   for (unsigned int c = 0; c < compositions; ++c)
                     {
-                      std::cout << output[3+c]  << ' ';
+                      std::cout << output[4+c]  << ' ';
                     }
 
+                  // Grains
                   for (unsigned int gc = 0; gc < grain_compositions; ++gc)
                     {
-                      const size_t start = 3+compositions+gc*n_grains*10;
+                      const size_t start = 4+compositions+gc*n_grains*10;
                       for (unsigned int g = 0; g < n_grains; ++g)
                         {
                           std::cout << output[start+g]  << ' '
@@ -273,7 +287,11 @@ int main(int argc, char **argv)
             break;
           case 3:
             // set the header
-            std::cout << "# x y z d g T vx vy vz ";
+            //std::cout << "# x y z d g T rho vx vy vz ";
+            // set the header
+            std::cout << "# x y z d g T "
+                      << (output_densities ? "rho " : "")
+                      << "vx vy vz ";
 
             for (unsigned int c = 0; c < compositions; ++c)
               std::cout << 'c' << c << ' ';
@@ -308,18 +326,22 @@ int main(int argc, char **argv)
 
                   std::cout << data[i][0] << ' ' << data[i][1] << ' ' << data[i][2] << ' ' << data[i][3] << ' ';
                   std::vector<double> output = world->properties(coords, string_to_double(data[i][3]),properties);
-                  std::cout << output[0]  << ' ';
+                  std::cout << output[0]  << ' '; // Temperature
 
-                  std::cout << output[1] << ' ' << output[2] << ' ' << output[3] << ' ';
+                  if (output_densities)
+                    std::cout << output[1]  << ' '; // Density
 
+                  std::cout << output[2] << ' ' << output[3] << ' ' << output[4] << ' '; // Velocities
+
+                  // Compositions
                   for (unsigned int c = 0; c < compositions; ++c)
                     {
-                      std::cout << output[4+c]  << ' ';
+                      std::cout << output[5+c]  << ' ';
                     }
 
                   for (unsigned int gc = 0; gc < grain_compositions; ++gc)
                     {
-                      const size_t start = 4+compositions+gc*n_grains*10;
+                      const size_t start = 5+compositions+gc*n_grains*10;
                       for (unsigned int g = 0; g < n_grains; ++g)
                         {
                           std::cout << output[start+g]  << ' '

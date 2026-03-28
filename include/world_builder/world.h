@@ -309,6 +309,11 @@ namespace WorldBuilder
       /**
        * Todo
        */
+      double background_density;
+
+      /**
+       * Todo
+       */
       std::string interpolation;
 
       /**

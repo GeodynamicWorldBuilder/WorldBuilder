@@ -2474,6 +2474,72 @@
                                         }
                                     ]
                                 }
+                            },
+                            "density models": {
+                                "description": "A list of density models.",
+                                "default value": "",
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Uniform density model. Set the density to a constant value.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "densities"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the density model.",
+                                                    "enum": [
+                                                        "uniform"
+                                                    ]
+                                                },
+                                                "operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
+                                                    "enum": [
+                                                        "replace",
+                                                        "add",
+                                                        "subtract",
+                                                        "replace",
+                                                        "replace defined only",
+                                                        "add",
+                                                        "subtract"
+                                                    ]
+                                                },
+                                                "densities": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "list of compositional densities",
+                                                    "items": {
+                                                        "default value": 3300.0,
+                                                        "type": "number",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "compositions": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "items": {
+                                                        "default value": 0,
+                                                        "type": "integer",
+                                                        "description": ""
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
                             }
                         }
                     },
@@ -3267,6 +3333,69 @@
                                                     }
                                                 ]
                                             }
+                                        },
+                                        "density models": {
+                                            "description": "",
+                                            "default value": "",
+                                            "type": "array",
+                                            "items": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "object",
+                                                        "description": "Uniform density model. Set the density to a constant value.",
+                                                        "additionalProperties": false,
+                                                        "required": [
+                                                            "model",
+                                                            "densities"
+                                                        ],
+                                                        "properties": {
+                                                            "model": {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": "The name of the density model.",
+                                                                "enum": [
+                                                                    "uniform"
+                                                                ]
+                                                            },
+                                                            "densities": {
+                                                                "type": "array",
+                                                                "minItems": 0,
+                                                                "maxItems": 4294967295,
+                                                                "uniqueItems": false,
+                                                                "description": "list of compositional densities",
+                                                                "items": {
+                                                                    "default value": 3300.0,
+                                                                    "type": "number",
+                                                                    "description": ""
+                                                                }
+                                                            },
+                                                            "compositions": {
+                                                                "type": "array",
+                                                                "minItems": 0,
+                                                                "maxItems": 4294967295,
+                                                                "uniqueItems": false,
+                                                                "description": "A list with the labels of the composition which are present there.",
+                                                                "items": {
+                                                                    "default value": 0,
+                                                                    "type": "integer",
+                                                                    "description": ""
+                                                                }
+                                                            },
+                                                            "operation": {
+                                                                "default value": "replace",
+                                                                "type": "string",
+                                                                "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
+                                                                "enum": [
+                                                                    "replace",
+                                                                    "replace defined only",
+                                                                    "add",
+                                                                    "subtract"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            }
                                         }
                                     }
                                 }
@@ -3947,6 +4076,69 @@
                                                         "type": "number",
                                                         "description": ""
                                                     }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "density models": {
+                                "description": "A list of density models.",
+                                "default value": "",
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Uniform density model. Set the density to a constant value.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "densities"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the density model.",
+                                                    "enum": [
+                                                        "uniform"
+                                                    ]
+                                                },
+                                                "densities": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "list of compositional densities",
+                                                    "items": {
+                                                        "default value": 3300.0,
+                                                        "type": "number",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "compositions": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "items": {
+                                                        "default value": 0,
+                                                        "type": "integer",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
+                                                    "enum": [
+                                                        "replace",
+                                                        "replace defined only",
+                                                        "add",
+                                                        "subtract"
+                                                    ]
                                                 }
                                             }
                                         }
@@ -4707,6 +4899,69 @@
                                                                 }
                                                             ]
                                                         }
+                                                    },
+                                                    "density models": {
+                                                        "description": "",
+                                                        "default value": "",
+                                                        "type": "array",
+                                                        "items": {
+                                                            "oneOf": [
+                                                                {
+                                                                    "type": "object",
+                                                                    "description": "Uniform density model. Set the density to a constant value.",
+                                                                    "additionalProperties": false,
+                                                                    "required": [
+                                                                        "model",
+                                                                        "densities"
+                                                                    ],
+                                                                    "properties": {
+                                                                        "model": {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": "The name of the density model.",
+                                                                            "enum": [
+                                                                                "uniform"
+                                                                            ]
+                                                                        },
+                                                                        "densities": {
+                                                                            "type": "array",
+                                                                            "minItems": 0,
+                                                                            "maxItems": 4294967295,
+                                                                            "uniqueItems": false,
+                                                                            "description": "list of compositional densities",
+                                                                            "items": {
+                                                                                "default value": 3300.0,
+                                                                                "type": "number",
+                                                                                "description": ""
+                                                                            }
+                                                                        },
+                                                                        "compositions": {
+                                                                            "type": "array",
+                                                                            "minItems": 0,
+                                                                            "maxItems": 4294967295,
+                                                                            "uniqueItems": false,
+                                                                            "description": "A list with the labels of the composition which are present there.",
+                                                                            "items": {
+                                                                                "default value": 0,
+                                                                                "type": "integer",
+                                                                                "description": ""
+                                                                            }
+                                                                        },
+                                                                        "operation": {
+                                                                            "default value": "replace",
+                                                                            "type": "string",
+                                                                            "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
+                                                                            "enum": [
+                                                                                "replace",
+                                                                                "replace defined only",
+                                                                                "add",
+                                                                                "subtract"
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
                                                     }
                                                 }
                                             }
@@ -5387,6 +5642,69 @@
                                                                     "type": "number",
                                                                     "description": ""
                                                                 }
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "density models": {
+                                            "description": "A list of density models.",
+                                            "default value": "",
+                                            "type": "array",
+                                            "items": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "object",
+                                                        "description": "Uniform density model. Set the density to a constant value.",
+                                                        "additionalProperties": false,
+                                                        "required": [
+                                                            "model",
+                                                            "densities"
+                                                        ],
+                                                        "properties": {
+                                                            "model": {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": "The name of the density model.",
+                                                                "enum": [
+                                                                    "uniform"
+                                                                ]
+                                                            },
+                                                            "densities": {
+                                                                "type": "array",
+                                                                "minItems": 0,
+                                                                "maxItems": 4294967295,
+                                                                "uniqueItems": false,
+                                                                "description": "list of compositional densities",
+                                                                "items": {
+                                                                    "default value": 3300.0,
+                                                                    "type": "number",
+                                                                    "description": ""
+                                                                }
+                                                            },
+                                                            "compositions": {
+                                                                "type": "array",
+                                                                "minItems": 0,
+                                                                "maxItems": 4294967295,
+                                                                "uniqueItems": false,
+                                                                "description": "A list with the labels of the composition which are present there.",
+                                                                "items": {
+                                                                    "default value": 0,
+                                                                    "type": "integer",
+                                                                    "description": ""
+                                                                }
+                                                            },
+                                                            "operation": {
+                                                                "default value": "replace",
+                                                                "type": "string",
+                                                                "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
+                                                                "enum": [
+                                                                    "replace",
+                                                                    "replace defined only",
+                                                                    "add",
+                                                                    "subtract"
+                                                                ]
                                                             }
                                                         }
                                                     }
@@ -6924,6 +7242,72 @@
                                                     "items": {
                                                         "default value": 0.0,
                                                         "type": "number",
+                                                        "description": ""
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "density models": {
+                                "description": "A list of density models.",
+                                "default value": "",
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Uniform density model. Set the density to a constant value.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "densities"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the density model.",
+                                                    "enum": [
+                                                        "uniform"
+                                                    ]
+                                                },
+                                                "operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
+                                                    "enum": [
+                                                        "replace",
+                                                        "add",
+                                                        "subtract",
+                                                        "replace",
+                                                        "replace defined only",
+                                                        "add",
+                                                        "subtract"
+                                                    ]
+                                                },
+                                                "densities": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "list of compositional densities",
+                                                    "items": {
+                                                        "default value": 3300.0,
+                                                        "type": "number",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "compositions": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "items": {
+                                                        "default value": 0,
+                                                        "type": "integer",
                                                         "description": ""
                                                     }
                                                 }
@@ -9586,6 +9970,72 @@
                                         }
                                     ]
                                 }
+                            },
+                            "density models": {
+                                "description": "A list of density models.",
+                                "default value": "",
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Uniform density model. Set the density to a constant value.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "densities"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the density model.",
+                                                    "enum": [
+                                                        "uniform"
+                                                    ]
+                                                },
+                                                "operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
+                                                    "enum": [
+                                                        "replace",
+                                                        "add",
+                                                        "subtract",
+                                                        "replace",
+                                                        "replace defined only",
+                                                        "add",
+                                                        "subtract"
+                                                    ]
+                                                },
+                                                "densities": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "list of compositionalk densities",
+                                                    "items": {
+                                                        "default value": 3300.0,
+                                                        "type": "number",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "compositions": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "items": {
+                                                        "default value": 0,
+                                                        "type": "integer",
+                                                        "description": ""
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
                             }
                         }
                     },
@@ -10184,6 +10634,72 @@
                                                     "items": {
                                                         "default value": 0.0,
                                                         "type": "number",
+                                                        "description": ""
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "density models": {
+                                "description": "A list of density models.",
+                                "default value": "",
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Uniform density model. Set the density to a constant value.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "densities"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the density model.",
+                                                    "enum": [
+                                                        "uniform"
+                                                    ]
+                                                },
+                                                "operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
+                                                    "enum": [
+                                                        "replace",
+                                                        "add",
+                                                        "subtract",
+                                                        "replace",
+                                                        "replace defined only",
+                                                        "add",
+                                                        "subtract"
+                                                    ]
+                                                },
+                                                "densities": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "list of compositional densities",
+                                                    "items": {
+                                                        "default value": 3300.0,
+                                                        "type": "number",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "compositions": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "items": {
+                                                        "default value": 0,
+                                                        "type": "integer",
                                                         "description": ""
                                                     }
                                                 }
@@ -11332,6 +11848,69 @@
                                                     }
                                                 ]
                                             }
+                                        },
+                                        "density models": {
+                                            "description": "",
+                                            "default value": "",
+                                            "type": "array",
+                                            "items": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "object",
+                                                        "description": "Uniform density model. Set the density to a constant value.",
+                                                        "additionalProperties": false,
+                                                        "required": [
+                                                            "model",
+                                                            "densities"
+                                                        ],
+                                                        "properties": {
+                                                            "model": {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": "The name of the composition model.",
+                                                                "enum": [
+                                                                    "uniform"
+                                                                ]
+                                                            },
+                                                            "densities": {
+                                                                "type": "array",
+                                                                "minItems": 0,
+                                                                "maxItems": 4294967295,
+                                                                "uniqueItems": false,
+                                                                "description": "list of compositional densities",
+                                                                "items": {
+                                                                    "default value": 3300.0,
+                                                                    "type": "number",
+                                                                    "description": ""
+                                                                }
+                                                            },
+                                                            "compositions": {
+                                                                "type": "array",
+                                                                "minItems": 0,
+                                                                "maxItems": 4294967295,
+                                                                "uniqueItems": false,
+                                                                "description": "A list with the labels of the composition which are present there.",
+                                                                "items": {
+                                                                    "default value": 0,
+                                                                    "type": "integer",
+                                                                    "description": ""
+                                                                }
+                                                            },
+                                                            "operation": {
+                                                                "default value": "replace",
+                                                                "type": "string",
+                                                                "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
+                                                                "enum": [
+                                                                    "replace",
+                                                                    "replace defined only",
+                                                                    "add",
+                                                                    "subtract"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            }
                                         }
                                     }
                                 }
@@ -12360,6 +12939,69 @@
                                                         "type": "number",
                                                         "description": ""
                                                     }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "density models": {
+                                "description": "A list of density models.",
+                                "default value": "",
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "description": "Uniform density model. Set the density to a constant value.",
+                                            "additionalProperties": false,
+                                            "required": [
+                                                "model",
+                                                "densities"
+                                            ],
+                                            "properties": {
+                                                "model": {
+                                                    "default value": "",
+                                                    "type": "string",
+                                                    "description": "The name of the composition model.",
+                                                    "enum": [
+                                                        "uniform"
+                                                    ]
+                                                },
+                                                "densities": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "list of compositional densities",
+                                                    "items": {
+                                                        "default value": 3300.0,
+                                                        "type": "number",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "compositions": {
+                                                    "type": "array",
+                                                    "minItems": 0,
+                                                    "maxItems": 4294967295,
+                                                    "uniqueItems": false,
+                                                    "description": "A list with the labels of the composition which are present there.",
+                                                    "items": {
+                                                        "default value": 0,
+                                                        "type": "integer",
+                                                        "description": ""
+                                                    }
+                                                },
+                                                "operation": {
+                                                    "default value": "replace",
+                                                    "type": "string",
+                                                    "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
+                                                    "enum": [
+                                                        "replace",
+                                                        "replace defined only",
+                                                        "add",
+                                                        "subtract"
+                                                    ]
                                                 }
                                             }
                                         }
@@ -13468,6 +14110,69 @@
                                                                 }
                                                             ]
                                                         }
+                                                    },
+                                                    "density models": {
+                                                        "description": "",
+                                                        "default value": "",
+                                                        "type": "array",
+                                                        "items": {
+                                                            "oneOf": [
+                                                                {
+                                                                    "type": "object",
+                                                                    "description": "Uniform density model. Set the density to a constant value.",
+                                                                    "additionalProperties": false,
+                                                                    "required": [
+                                                                        "model",
+                                                                        "densities"
+                                                                    ],
+                                                                    "properties": {
+                                                                        "model": {
+                                                                            "default value": "",
+                                                                            "type": "string",
+                                                                            "description": "The name of the composition model.",
+                                                                            "enum": [
+                                                                                "uniform"
+                                                                            ]
+                                                                        },
+                                                                        "densities": {
+                                                                            "type": "array",
+                                                                            "minItems": 0,
+                                                                            "maxItems": 4294967295,
+                                                                            "uniqueItems": false,
+                                                                            "description": "list of compositional densities",
+                                                                            "items": {
+                                                                                "default value": 3300.0,
+                                                                                "type": "number",
+                                                                                "description": ""
+                                                                            }
+                                                                        },
+                                                                        "compositions": {
+                                                                            "type": "array",
+                                                                            "minItems": 0,
+                                                                            "maxItems": 4294967295,
+                                                                            "uniqueItems": false,
+                                                                            "description": "A list with the labels of the composition which are present there.",
+                                                                            "items": {
+                                                                                "default value": 0,
+                                                                                "type": "integer",
+                                                                                "description": ""
+                                                                            }
+                                                                        },
+                                                                        "operation": {
+                                                                            "default value": "replace",
+                                                                            "type": "string",
+                                                                            "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
+                                                                            "enum": [
+                                                                                "replace",
+                                                                                "replace defined only",
+                                                                                "add",
+                                                                                "subtract"
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
                                                     }
                                                 }
                                             }
@@ -14502,6 +15207,69 @@
                                                 ]
                                             }
                                         },
+                                        "density models": {
+                                            "description": "A list of density models.",
+                                            "default value": "",
+                                            "type": "array",
+                                            "items": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "object",
+                                                        "description": "Uniform density model. Set the density to a constant value.",
+                                                        "additionalProperties": false,
+                                                        "required": [
+                                                            "model",
+                                                            "densities"
+                                                        ],
+                                                        "properties": {
+                                                            "model": {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": "The name of the composition model.",
+                                                                "enum": [
+                                                                    "uniform"
+                                                                ]
+                                                            },
+                                                            "densities": {
+                                                                "type": "array",
+                                                                "minItems": 0,
+                                                                "maxItems": 4294967295,
+                                                                "uniqueItems": false,
+                                                                "description": "list of compositional densities",
+                                                                "items": {
+                                                                    "default value": 3300.0,
+                                                                    "type": "number",
+                                                                    "description": ""
+                                                                }
+                                                            },
+                                                            "compositions": {
+                                                                "type": "array",
+                                                                "minItems": 0,
+                                                                "maxItems": 4294967295,
+                                                                "uniqueItems": false,
+                                                                "description": "A list with the labels of the composition which are present there.",
+                                                                "items": {
+                                                                    "default value": 0,
+                                                                    "type": "integer",
+                                                                    "description": ""
+                                                                }
+                                                            },
+                                                            "operation": {
+                                                                "default value": "replace",
+                                                                "type": "string",
+                                                                "description": "Whether the value should replace any value previously defined at this location (replace) or add the value to the previously define value. Replacing implies that all compositions not explicitly defined are set to zero. To only replace the defined compositions use the replace only defined option.",
+                                                                "enum": [
+                                                                    "replace",
+                                                                    "replace defined only",
+                                                                    "add",
+                                                                    "subtract"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        },
                                         "coordinate": {
                                             "default value": 0,
                                             "type": "integer",
@@ -14519,6 +15287,11 @@
             "default value": -1,
             "type": "integer",
             "description": "This allows the input of a preferred random number seed to generate random numbers. If no input is given, this value is -1 and triggers the use of default seed = 1."
+        },
+        "background density": {
+            "default value": 3300.0,
+            "type": "number",
+            "description": "Density for the background material without any compositions."
         }
     }
 }
