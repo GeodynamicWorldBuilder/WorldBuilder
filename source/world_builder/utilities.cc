@@ -575,69 +575,6 @@ namespace WorldBuilder
               const Point<2> vector_checkpoint_to_curve = closest_point_on_line_2d - check_point_surface_2d_temp_ob;
               const double line_factor = (obliquity_vector_point * vector_checkpoint_to_curve) >= 0.0 ? 1.0 : -1.0;
 
-              // When trying to uniquely determine which way we should iterate along the obliquity vector (i.e. parallel to it or
-              // anti-parallel to it), which can be seen in the comments above,I was unable to generalize it enough to work for all
-              // cases. Therefore, loop over both cases and quickly see whether one pushes the checkpoint in the wrong directions.
-              const Point<2> initial_iterable_check_point_surface_2d = iterable_check_point_surface_2d;
-              const Objects::ClosestPointOnCurve initial_iterable_closest_point_on_curve = iterable_closest_point_on_curve;
-              // const std::array<double,2> trial_line_factors = {{-1.0, 1.0}};
-              const std::array<double,2> trial_line_factors = {{line_factor}};
-
-
-
-              // bool converged = false;
-              // // Loop over both the parallel and anti-parallel direction of the obliquity vector.
-              // for (const double trial_line_factor : trial_line_factors)
-              //   {
-              //     Point<2> trial_iterable_check_point_surface_2d = initial_iterable_check_point_surface_2d;
-              //     Objects::ClosestPointOnCurve trial_iterable_closest_point_on_curve = initial_iterable_closest_point_on_curve;
-
-              //     // Move the checkpoint along the obliquity vector and search for a converged
-              //     // intersection with the curve.
-              //     for (unsigned int i = 0; i < 100; ++i)
-              //       {
-              //         const double old_dist = std::abs(trial_iterable_closest_point_on_curve.distance);
-
-              //         Point<2> parameterized_line(trial_iterable_check_point_surface_2d[0] + trial_line_factor * old_dist * obliquity_vector_point[0],
-              //                                     trial_iterable_check_point_surface_2d[1] + trial_line_factor * old_dist * obliquity_vector_point[1],
-              //                                     natural_coordinate_system);
-
-              //         trial_iterable_closest_point_on_curve = bezier_curve.closest_point_on_curve_segment(parameterized_line);
-              //         trial_iterable_check_point_surface_2d = parameterized_line;
-              //         const double new_dist = std::abs(trial_iterable_closest_point_on_curve.distance);
-
-              //         const double convergence_tol = bool_cartesian ? 1.0 : 1e-6;
-
-              //         // We are getting farther away, break the loop.
-              //         if (new_dist > old_dist)
-              //           break;
-
-              //         // We converged to a point on the curve, break the loop, break the loop and update the check point.
-              //         if (new_dist < convergence_tol)
-              //           {
-              //             iterable_check_point_surface_2d = trial_iterable_check_point_surface_2d;
-              //             converged = true;
-              //             break;
-              //           }
-              //       }
-
-              //     // If we converged, update the closest point on the bezier curve.
-              //     if (converged)
-              //       {
-              //         closest_point_on_curve   = bezier_curve.closest_point_on_curve_segment(iterable_check_point_surface_2d);
-              //         closest_point_on_line_2d = closest_point_on_curve.point;
-              //         break;
-              //       }
-
-              //     // If we did not converge, assign the closest point as NaN.
-              //     else
-              //       {
-              //         closest_point_on_line_2d[0] = NaN::DQNAN;
-              //         closest_point_on_line_2d[1] = NaN::DQNAN;
-              //       }
-
-              //   }
-
               bool converged = false;
               // Move the checkpoint along the obliquity vector and search for a converged
               // intersection with the curve.
