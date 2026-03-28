@@ -585,57 +585,111 @@ namespace WorldBuilder
 
 
 
+              // bool converged = false;
+              // // Loop over both the parallel and anti-parallel direction of the obliquity vector.
+              // for (const double trial_line_factor : trial_line_factors)
+              //   {
+              //     Point<2> trial_iterable_check_point_surface_2d = initial_iterable_check_point_surface_2d;
+              //     Objects::ClosestPointOnCurve trial_iterable_closest_point_on_curve = initial_iterable_closest_point_on_curve;
+
+              //     // Move the checkpoint along the obliquity vector and search for a converged
+              //     // intersection with the curve.
+              //     for (unsigned int i = 0; i < 100; ++i)
+              //       {
+              //         const double old_dist = std::abs(trial_iterable_closest_point_on_curve.distance);
+
+              //         Point<2> parameterized_line(trial_iterable_check_point_surface_2d[0] + trial_line_factor * old_dist * obliquity_vector_point[0],
+              //                                     trial_iterable_check_point_surface_2d[1] + trial_line_factor * old_dist * obliquity_vector_point[1],
+              //                                     natural_coordinate_system);
+
+              //         trial_iterable_closest_point_on_curve = bezier_curve.closest_point_on_curve_segment(parameterized_line);
+              //         trial_iterable_check_point_surface_2d = parameterized_line;
+              //         const double new_dist = std::abs(trial_iterable_closest_point_on_curve.distance);
+
+              //         const double convergence_tol = bool_cartesian ? 1.0 : 1e-6;
+
+              //         // We are getting farther away, break the loop.
+              //         if (new_dist > old_dist)
+              //           break;
+
+              //         // We converged to a point on the curve, break the loop, break the loop and update the check point.
+              //         if (new_dist < convergence_tol)
+              //           {
+              //             iterable_check_point_surface_2d = trial_iterable_check_point_surface_2d;
+              //             converged = true;
+              //             break;
+              //           }
+              //       }
+
+              //     // If we converged, update the closest point on the bezier curve.
+              //     if (converged)
+              //       {
+              //         closest_point_on_curve   = bezier_curve.closest_point_on_curve_segment(iterable_check_point_surface_2d);
+              //         closest_point_on_line_2d = closest_point_on_curve.point;
+              //         break;
+              //       }
+
+              //     // If we did not converge, assign the closest point as NaN.
+              //     else
+              //       {
+              //         closest_point_on_line_2d[0] = NaN::DQNAN;
+              //         closest_point_on_line_2d[1] = NaN::DQNAN;
+              //       }
+
+              //   }
+
               bool converged = false;
-              // Loop over both the parallel and anti-parallel direction of the obliquity vector.
-              for (const double trial_line_factor : trial_line_factors)
+              // Move the checkpoint along the obliquity vector and search for a converged
+              // intersection with the curve.
+              for (unsigned int i = 0; i < 100; ++i)
                 {
-                  Point<2> trial_iterable_check_point_surface_2d = initial_iterable_check_point_surface_2d;
-                  Objects::ClosestPointOnCurve trial_iterable_closest_point_on_curve = initial_iterable_closest_point_on_curve;
+                  const double old_dist = std::abs(iterable_closest_point_on_curve.distance);
 
-                  // Move the checkpoint along the obliquity vector and search for a converged
-                  // intersection with the curve.
-                  for (unsigned int i = 0; i < 100; ++i)
+                  Point<2> parameterized_line(iterable_check_point_surface_2d[0] + line_factor * old_dist * obliquity_vector_point[0],
+                                              iterable_check_point_surface_2d[1] + line_factor * old_dist * obliquity_vector_point[1],
+                                              natural_coordinate_system);
+
+                  iterable_closest_point_on_curve = bezier_curve.closest_point_on_curve_segment(parameterized_line);
+                  iterable_check_point_surface_2d = parameterized_line;
+                  const double new_dist = std::abs(iterable_closest_point_on_curve.distance);
+
+                  const double convergence_tol = bool_cartesian ? 1.0 : 1e-6;
+
+                  // We are getting farther away, break the loop.
+                  if (new_dist > old_dist)
+                    break;
+
+                  // We converged to a point on the curve, break the loop, break the loop and update the check point.
+                  if (new_dist < convergence_tol)
                     {
-                      const double old_dist = std::abs(trial_iterable_closest_point_on_curve.distance);
-
-                      Point<2> parameterized_line(trial_iterable_check_point_surface_2d[0] + trial_line_factor * old_dist * obliquity_vector_point[0],
-                                                  trial_iterable_check_point_surface_2d[1] + trial_line_factor * old_dist * obliquity_vector_point[1],
-                                                  natural_coordinate_system);
-
-                      trial_iterable_closest_point_on_curve = bezier_curve.closest_point_on_curve_segment(parameterized_line);
-                      trial_iterable_check_point_surface_2d = parameterized_line;
-                      const double new_dist = std::abs(trial_iterable_closest_point_on_curve.distance);
-
-                      const double convergence_tol = bool_cartesian ? 1.0 : 1e-6;
-                      // We are getting farther away, break the loop.
-                      if (new_dist > old_dist)
-                        break;
-
-                      // We converged to a point on the curve, break the loop, break the loop and update the check point.
-                      if (new_dist < convergence_tol)
-                        {
-                          iterable_check_point_surface_2d = trial_iterable_check_point_surface_2d;
-                          converged = true;
-                          break;
-                        }
-                    }
-
-                  // If we converged, update the closest point on the bezier curve.
-                  if (converged)
-                    {
-                      closest_point_on_curve   = bezier_curve.closest_point_on_curve_segment(iterable_check_point_surface_2d);
-                      closest_point_on_line_2d = closest_point_on_curve.point;
+                      converged = true;
                       break;
                     }
-
-                  // If we did not converge, assign the closest point as NaN.
-                  else
-                    {
-                      closest_point_on_line_2d[0] = NaN::DQNAN;
-                      closest_point_on_line_2d[1] = NaN::DQNAN;
-                    }
-
                 }
+
+              // If we converged, update the closest point on the bezier curve.
+              if (converged)
+                {
+                  closest_point_on_curve   = bezier_curve.closest_point_on_curve_segment(iterable_check_point_surface_2d);
+                  closest_point_on_line_2d = closest_point_on_curve.point;
+                }
+
+              // If we did not converge, assign the closest point as NaN.
+              else
+                {
+                  closest_point_on_line_2d[0] = NaN::DQNAN;
+                  closest_point_on_line_2d[1] = NaN::DQNAN;
+                }
+
+
+
+
+
+
+
+
+
+
             }
         }
 
