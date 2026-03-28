@@ -114,6 +114,8 @@ namespace WorldBuilder
 
       prm.declare_entry("cross section", Types::Array(Types::Point<2>(),2,2),"This is an array of two points along where the cross section is taken");
 
+      prm.declare_entry("composition properties", Types::Object({"index"}),
+                        "Composition indices mapped to its properties. If provided, each composition entry must define \"index\"; \"name\" and \"reference density\" are optional.");
       prm.declare_entry("potential mantle temperature", Types::Double(1600),
                         "The potential temperature of the mantle at the surface in Kelvin.");
       prm.declare_entry("surface temperature", Types::Double(293.15),
@@ -249,6 +251,17 @@ namespace WorldBuilder
 
     if (local_seed>=0)
       random_number_engine.seed(static_cast<unsigned int>(local_seed+MPI_RANK));
+
+    /**
+     * Mapping of composition properties as a struct
+     * Composition indices (required) mapped to composition properties (optional).
+     */
+    const auto parsed_composition_properties = prm.get_composition_properties("composition properties");
+
+    for (const auto &composition_entry : parsed_composition_properties)
+      {
+        composition_properties.emplace(composition_entry.index, composition_entry);
+      }
 
     /**
      * Now load the features. Some features use for example temperature values,

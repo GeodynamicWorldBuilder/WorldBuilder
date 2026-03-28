@@ -181,6 +181,22 @@ namespace WorldBuilder
       bool
       check_entry(const std::string &name) const;
 
+      struct composition_properties
+      {
+        unsigned int index;
+        std::string name;
+        double reference_density;
+      };
+
+      /**
+       * Parse composition properties.
+       * The index is required, while name and reference density are optional.
+       * If the entry is absent, the vector is empty.
+       * \param name The name of the entry to be declared
+       */
+      std::vector<composition_properties>
+      get_composition_properties(const std::string &name) const;
+
       /**
        * Declares the existence an entry in the parameters class.
        * Default values are supplied by the type.
