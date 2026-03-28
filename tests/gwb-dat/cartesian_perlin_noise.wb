@@ -1,48 +1,111 @@
 {
-  "version": "1.2",
+  "version":"1.2",
   "coordinate system":{"model":"cartesian"},
+  "random number seed":1000,
   "features":
   [
     {
-       "model":"mantle layer", "name":"upper mantle", "max depth":660e3,
-       "coordinates":[[-1000e3,0],[-1000e3,1000e3],[0,1000e3],[0,0]],
-       "composition models":[{"model":"uniform", "compositions":[2]}],
-       "temperature models":
-         [
-           {"model":"adiabatic", "max depth":660e3},
-           {"model":"perlin_noise",
-            "max depth":660e3,
-            "min temperature": -150.0,
-            "max temperature": 150.0,
-            "frequency": 0.00001,
-            "octaves": 8,
-            "operation": "add"}
-         ]
+      "model":"mantle layer", "name":"Mantle", "min depth":40e3, "max depth":660e3,
+      "coordinates":[[0,0],[0,1000e3],[1000e3,1000e3],[1000e3,0]],
+      "temperature models":[
+        {"model":"uniform", "temperature":1573.15},
+        {"model":"perlin_noise", "min depth":40e3, "max depth":660e3,
+         "min temperature":1450.0, "max temperature":1750.0,
+         "frequency":2.0e-5, "octaves":5, "persistence":0.5, "lacunarity":2.0}
+      ],
+      "composition models":[
+        {"model":"uniform", "compositions":[0]},
+        {"model":"perlin_noise", "compositions":[0], "min depth":40e3, "max depth":660e3,
+         "min value":[0.0], "max value":[1.0],
+         "frequency":2.0e-5, "octaves":5, "persistence":0.5, "lacunarity":2.0, "operation":"add"}
+      ]
     },
+
     {
-       "model":"continental plate", "name":"Passive margin", "max depth":[[200e3]],
-       "coordinates":[[-1000e3,0],[-1000e3,1000e3],[0,1000e3],[0,0]],
-       "temperature models":
-         [
-           {"model":"linear", "max depth":[[100e3],[200e3,[[-250e3,0],[-750e3,1000e3]]]]},
-           {"model":"perlin_noise",
-            "max depth":[[100e3],[200e3,[[-250e3,0],[-750e3,1000e3]]]],
-            "min temperature": -50.0,
-            "max temperature": 50.0,
-            "frequency": 0.00001,
-            "octaves": 8,
-            "operation": "add"}
-         ],
-       "composition models":
-         [
-           {"model":"perlin_noise", "compositions":[1],
-            "max depth":[[100e3],[200e3,[[-250e3,0],[-750e3,1000e3]]]],
-            "frequency": 0.00001,
-            "octaves": 8,
-            "operation": "add"},
-           {"model":"uniform", "compositions":[0],
-            "min depth":[[100e3],[200e3,[[-250e3,0],[-750e3,1000e3]]]]}
-         ]
+      "model":"continental plate", "name":"CP", "min depth":0, "max depth":120e3,
+      "coordinates":[[0,0],[0,1000e3],[500e3,1000e3],[500e3,0]],
+      "temperature models":[
+        {"model":"uniform", "temperature":973.15},
+        {"model":"perlin_noise", "min depth":0, "max depth":120e3,
+         "min temperature":273.15, "max temperature":1273.15,
+         "frequency":3.0e-5, "octaves":5, "persistence":0.5, "lacunarity":2.0}
+      ],
+      "composition models":[
+        {"model":"uniform", "compositions":[1]},
+        {"model":"perlin_noise", "compositions":[1], "min depth":0, "max depth":120e3,
+         "min value":[0.0], "max value":[1.0],
+         "frequency":3.0e-5, "octaves":5, "persistence":0.5, "lacunarity":2.0, "operation":"add"}
+      ]
+    },
+
+    {
+      "model":"oceanic plate", "name":"OP", "min depth":0, "max depth":120e3,
+      "coordinates":[[500e3,0],[500e3,1000e3],[1000e3,1000e3],[1000e3,0]],
+      "temperature models":[
+        {"model":"uniform", "temperature":1073.15},
+        {"model":"perlin_noise", "min depth":0, "max depth":120e3,
+         "min temperature":273.15, "max temperature":1373.15,
+         "frequency":3.0e-5, "octaves":5, "persistence":0.5, "lacunarity":2.0}
+      ],
+      "composition models":[
+        {"model":"uniform", "compositions":[2]},
+        {"model":"perlin_noise", "compositions":[2], "min depth":0, "max depth":120e3,
+         "min value":[0.0], "max value":[1.0],
+         "frequency":3.0e-5, "octaves":5, "persistence":0.5, "lacunarity":2.0, "operation":"add"}
+      ]
+    },
+
+    {
+      "model":"fault", "name":"Fault", "min depth":0, "max depth":120e3,
+      "coordinates":[[0,300e3],[1000e3,300e3]], "dip point":[0,0],
+      "segments":[{"length":1000e3, "thickness":[20e3], "angle":[45]}],
+      "temperature models":[
+        {"model":"uniform", "temperature":1173.15},
+        {"model":"perlin_noise", "min distance fault center":0, "max distance fault center":20e3,
+         "min temperature":873.15, "max temperature":1373.15,
+         "frequency":4.0e-5, "octaves":5, "persistence":0.5, "lacunarity":2.0}
+      ],
+      "composition models":[
+        {"model":"uniform", "compositions":[3]},
+        {"model":"perlin_noise", "compositions":[3], "min distance fault center":0, "max distance fault center":20e3,
+         "min value":[0.0], "max value":[1.0],
+         "frequency":4.0e-5, "octaves":5, "persistence":0.5, "lacunarity":2.0, "operation":"add"}
+      ]
+    },
+
+    {
+      "model":"plume",
+      "name":"Plume",
+      "coordinates":[[300e3,0],[370e3,0],[550e3,0],[450e3,0],[400e3,0]],
+      "cross section depths":[80e3,150e3,250e3,400e3,600e3],
+      "semi-major axis":[120e3,100e3,80e3,70e3,60e3],
+      "eccentricity":[0,0,0,0,0],
+      "rotation angles":[0,0,0,0,0],
+      "temperature models":[
+        {"model":"uniform", "min depth":80e3, "max depth":600e3, "temperature":1850.0},
+        {"model":"perlin_noise", "min depth":80e3, "max depth":600e3,
+         "min temperature":1650.0, "max temperature":2000.0,
+         "frequency":2.0e-5, "octaves":5, "persistence":0.5, "lacunarity":2.0}
+      ]
+    },
+
+    {
+      "model":"subducting plate", "name":"SP", "min depth":0, "max depth":120e3,
+      "coordinates":[[100e3,650e3],[900e3,650e3]], "dip point":[0,0],
+      "segments":[{"length":600e3, "thickness":[80e3], "angle":[45]}],
+      "temperature models":[
+        {"model":"uniform", "temperature":873.15},
+        {"model":"perlin_noise", "min distance slab top":0, "max distance slab top":120e3,
+         "min temperature":500.0, "max temperature":1300.0,
+         "frequency":2.5e-5, "octaves":5, "persistence":0.5, "lacunarity":2.0}
+      ],
+      "composition models":[
+        {"model":"uniform", "compositions":[5]},
+        {"model":"perlin_noise", "compositions":[5], "min distance slab top":0, "max distance slab top":120e3,
+         "min value":[0.0], "max value":[1.0],
+         "frequency":2.5e-5, "octaves":5, "persistence":0.5, "lacunarity":2.0, "operation":"add"}
+      ]
     }
+
   ]
 }
