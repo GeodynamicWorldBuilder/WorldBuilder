@@ -100,8 +100,6 @@ namespace WorldBuilder
 
           prm.declare_entry("lacunarity", Types::Double(2.0), "Frequency multiplier between octaves.");
 
-          prm.declare_entry("seed", Types::UnsignedInt(0), "Seed for the random number generator. If 0, a random seed is used.");
-
           prm.declare_entry("operation", Types::String("add", std::vector<std::string> {"replace", "replace defined only", "add", "subtract"}),
                             "Whether the value should replace any value previously defined at this location (replace) or "
                             "add the value to the previously define value. Replacing implies that all compositions not "
@@ -124,16 +122,7 @@ namespace WorldBuilder
           octaves = prm.get<unsigned int>("octaves");
           persistence = prm.get<double>("persistence");
           lacunarity = prm.get<double>("lacunarity");
-          const unsigned int seed = prm.get<unsigned int>("seed");
-          if (seed != 0)
-            {
-              std::mt19937 engine(seed);
-              std::shuffle(p.begin(), p.end(), engine);
-            }
-          else
-            {
-              std::shuffle(p.begin(), p.end(), world->get_random_number_engine());
-            }
+          std::shuffle(p.begin(), p.end(), world->get_random_number_engine());
           operation    = string_operations_to_enum(prm.get<std::string>("operation"));
         }
 

@@ -99,9 +99,6 @@ namespace WorldBuilder
           prm.declare_entry("persistence", Types::Double(0.5), "Amplitude multiplier between octaves.");
 
           prm.declare_entry("lacunarity", Types::Double(2.0), "Frequency multiplier between octaves.");
-
-          prm.declare_entry("seed", Types::UnsignedInt(0),
-                            "Seed for the random number generator. If 0, a random seed is used.");
         }
 
         void
@@ -121,16 +118,7 @@ namespace WorldBuilder
           octaves = prm.get<unsigned int>("octaves");
           persistence = prm.get<double>("persistence");
           lacunarity = prm.get<double>("lacunarity");
-          const unsigned int seed = prm.get<unsigned int>("seed");
-          if (seed != 0)
-            {
-              std::mt19937 engine(seed);
-              std::shuffle(p.begin(), p.end(), engine);
-            }
-          else
-            {
-              std::shuffle(p.begin(), p.end(), world->get_random_number_engine());
-            }
+          std::shuffle(p.begin(), p.end(), world->get_random_number_engine());
 
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
         }
