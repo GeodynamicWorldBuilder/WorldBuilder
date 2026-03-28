@@ -108,7 +108,27 @@ namespace WorldBuilder
           octaves = prm.get<unsigned int>("octaves");
           persistence = prm.get<double>("persistence");
           lacunarity = prm.get<double>("lacunarity");
-          std::shuffle(p.begin(), p.end(), world->get_random_number_engine());
+          {
+            auto deterministic_bounded_draw = [](std::mt19937 &engine, const unsigned int upper_inclusive) -> unsigned int
+            {
+              const unsigned long long range = static_cast<unsigned long long>(upper_inclusive) + 1ULL;
+              const unsigned long long limit = (4294967296ULL / range) * range;
+
+              unsigned long long value = 0ULL;
+              do
+                value = static_cast<unsigned long long>(engine());
+              while (value >= limit);
+
+              return static_cast<unsigned int>(value % range);
+            };
+
+            std::mt19937 &engine = world->get_random_number_engine();
+            for (unsigned int i = 255; i > 0; --i)
+              {
+                const unsigned int j = deterministic_bounded_draw(engine, i);
+                std::swap(p[i], p[j]);
+              }
+          }
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
         }
 
