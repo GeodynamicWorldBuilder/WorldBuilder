@@ -103,8 +103,10 @@ namespace WorldBuilder
         AsciiFile::load_file()
         {
           std::string full_path = directory + "/" + filename;
-          std::ifstream in(full_path.c_str());
-          WBAssertThrow(in, "Could not open ASCII file: " << full_path);
+          std::string file_content = Utilities::read_and_distribute_file_content(full_path);
+          WBAssertThrow(!file_content.empty(),
+                        "ASCII file is empty or could not be read: " << full_path);
+          std::stringstream in(file_content);
 
           std::string line;
           std::getline(in, line); // skip header
@@ -116,31 +118,31 @@ namespace WorldBuilder
               std::istringstream iss(line);
 
               unsigned int id;
+              iss >> id;
+              WBAssertThrow(iss, "Malformed line in ASCII file: " << line);
+
+              // Helper lambda to read one mineral's data
+              auto read_mineral = [&](std::map<unsigned int, std::vector<std::array<double,3>>> &angles_map,
+                                      std::map<unsigned int, std::vector<double>> &fraction_map)
+              {
+                double volume_fraction, phi, theta, z;
+                iss >> volume_fraction >> phi >> theta >> z;
+                WBAssertThrow(iss, "Malformed mineral data in ASCII file: " << line);
+
+                angles_map[id].push_back(std::array<double,3> {{phi, theta, z}});
+                fraction_map[id].push_back(volume_fraction);
+              };
+
+              // We expect only 1 composition (Olivine) or 2 compositions (Olivine and Enstatite) in the file, and we read them accordingly.
+              // If there are more than 2 compositions, we throw an error.
               if (compositions.size() == 1)
                 {
-                  double mineral_0_volume_fraction, mineral_0_phi, mineral_0_theta, mineral_0_z;
-
-                  iss >> id >> mineral_0_volume_fraction >> mineral_0_phi >> mineral_0_theta >> mineral_0_z;
-
-                  mineral_0_euler_angles_map[id].push_back({{mineral_0_phi, mineral_0_theta, mineral_0_z}});
-                  mineral_0_volume_fraction_map[id].push_back(mineral_0_volume_fraction);
-
-                  unique_ids.insert(id);
+                  read_mineral(mineral_0_euler_angles_map, mineral_0_volume_fraction_map);
                 }
               else if (compositions.size() == 2)
                 {
-                  double mineral_0_volume_fraction, mineral_0_phi, mineral_0_theta, mineral_0_z;
-                  double mineral_1_volume_fraction, mineral_1_phi, mineral_1_theta, mineral_1_z;
-
-                  iss >> id >> mineral_0_volume_fraction >> mineral_0_phi >> mineral_0_theta >> mineral_0_z >> mineral_1_volume_fraction >> mineral_1_phi >> mineral_1_theta >> mineral_1_z;
-
-                  mineral_0_euler_angles_map[id].push_back({{mineral_0_phi, mineral_0_theta, mineral_0_z}});
-                  mineral_0_volume_fraction_map[id].push_back(mineral_0_volume_fraction);
-
-                  mineral_1_euler_angles_map[id].push_back({{mineral_1_phi, mineral_1_theta, mineral_1_z}});
-                  mineral_1_volume_fraction_map[id].push_back(mineral_1_volume_fraction);
-
-                  unique_ids.insert(id);
+                  read_mineral(mineral_0_euler_angles_map, mineral_0_volume_fraction_map);
+                  read_mineral(mineral_1_euler_angles_map, mineral_1_volume_fraction_map);
                 }
               else
                 {
@@ -148,9 +150,10 @@ namespace WorldBuilder
                                 "Currently only 1 or 2 compositions (Olivine and Enstatite) are supported for the ASCII file grains model.");
                 }
 
-            }
+              // Record the particle id
+              unique_ids.insert(id);
 
-          in.close();
+            }
 
           n_particles = static_cast<unsigned int>(unique_ids.size());
           WBAssertThrow(n_particles > 0,
@@ -203,88 +206,58 @@ namespace WorldBuilder
                 {
                   if (compositions[i] == composition_number)
                     {
+                      auto fill_grains = [&](unsigned int &current_particle_index,
+                                             const std::map<unsigned int, std::vector<std::array<double,3>>> &euler_map,
+                                             const std::map<unsigned int, std::vector<double>> &volume_map,
+                                             const unsigned int n_grains)
+                      {
+                        const unsigned int particle_id = current_particle_index++;
+                        auto it = euler_map.find(particle_id);
+                        WBAssertThrow(it != euler_map.end(),
+                                      "Particle id " << particle_id << " not found in ASCII file.");
+
+                        const auto &angles = it->second;
+                        const auto &fractions = volume_map.at(particle_id);
+
+                        WBAssertThrow(grains_local.rotation_matrices.size() == n_grains,
+                                      "Mismatch: ASPECT grains ("
+                                      << grains_local.rotation_matrices.size()
+                                      << ") vs World Builder input file grains (" << n_grains << ").");
+
+                        for (size_t g = 0; g < n_grains; ++g)
+                          {
+                            grains_local.rotation_matrices[g] =
+                              Utilities::euler_angles_to_rotation_matrix(
+                                angles[g][0], angles[g][1], angles[g][2]);
+                            grains_local.sizes[g] = fractions[g];
+                          }
+
+                        // normalize
+                        double total = 0.0;
+                        for (const auto &s : grains_local.sizes)
+                          total += s;
+
+                        WBAssertThrow(total > 0,
+                                      "Total grain volume fraction is zero for particle " << particle_id);
+
+                        const double inv_total = 1.0 / total;
+                        for (auto &s : grains_local.sizes)
+                          s *= inv_total;
+
+                        return grains_local;
+                      };
+
+                      // If the composition_number is 0 or 1, we fill the grains with Olivine and Enstatite respectively.
+                      // If not, we throw an error.
                       if (composition_number == 0)
-                        {
-                          const unsigned int particle_id = mineral_0_current_particle_index++;
-                          auto it = mineral_0_euler_angles_map.find(particle_id);
-                          WBAssertThrow(it != mineral_0_euler_angles_map.end(),
-                                        "Particle id " << particle_id << " not found in ASCII file.");
-
-                          const auto &angles = it->second;
-                          const auto &fractions = mineral_0_volume_fraction_map.at(particle_id);
-
-                          WBAssertThrow(grains_local.rotation_matrices.size() == mineral_0_n_grains,
-                                        "Mismatch: ASPECT grains ("
-                                        << grains_local.rotation_matrices.size()
-                                        << ") vs World Builder input file grains (" << mineral_0_n_grains << ").");
-
-                          for (size_t g = 0; g < mineral_0_n_grains; ++g)
-                            {
-                              grains_local.rotation_matrices[g] =
-                                Utilities::euler_angles_to_rotation_matrix(
-                                  angles[g][0], angles[g][1], angles[g][2]);
-
-                              grains_local.sizes[g] = fractions[g];
-                            }
-
-                          // --- normalize ---
-                          double total = 0.0;
-                          for (const auto &s : grains_local.sizes)
-                            total += s;
-
-                          WBAssertThrow(total > 0,
-                                        "Total grain volume fraction is zero for particle "
-                                        << particle_id);
-
-                          const double inv_total = 1.0 / total;
-                          for (auto &s : grains_local.sizes)
-                            s *= inv_total;
-
-                          return grains_local;
-                        }
+                        return fill_grains(mineral_0_current_particle_index, mineral_0_euler_angles_map,
+                                           mineral_0_volume_fraction_map, mineral_0_n_grains);
                       else if (composition_number == 1)
-                        {
-                          const unsigned int particle_id = mineral_1_current_particle_index++;
-                          auto it = mineral_1_euler_angles_map.find(particle_id);
-                          WBAssertThrow(mineral_1_euler_angles_map.find(particle_id) != mineral_1_euler_angles_map.end(),
-                                        "Particle id " << particle_id << " not found in ASCII file.");
-
-                          const auto &angles = it->second;
-                          const auto &fractions = mineral_1_volume_fraction_map.at(particle_id);
-
-                          WBAssertThrow(grains_local.rotation_matrices.size() == mineral_1_n_grains,
-                                        "Mismatch: ASPECT grains ("
-                                        << grains_local.rotation_matrices.size()
-                                        << ") vs World Builder input file grains (" << mineral_1_n_grains << ").");
-
-                          for (size_t g = 0; g < mineral_1_n_grains; ++g)
-                            {
-                              grains_local.rotation_matrices[g] =
-                                Utilities::euler_angles_to_rotation_matrix(
-                                  angles[g][0], angles[g][1], angles[g][2]);
-
-                              grains_local.sizes[g] = fractions[g];
-                            }
-
-                          double total = 0.0;
-                          for (const auto &s : grains_local.sizes)
-                            total += s;
-
-                          WBAssertThrow(total > 0,
-                                        "Total grain volume fraction is zero for particle "
-                                        << particle_id);
-
-                          const double inv_total = 1.0 / total;
-                          for (auto &s : grains_local.sizes)
-                            s *= inv_total;
-
-                          return grains_local;
-                        }
+                        return fill_grains(mineral_1_current_particle_index, mineral_1_euler_angles_map,
+                                           mineral_1_volume_fraction_map, mineral_1_n_grains);
                       else
-                        {
-                          WBAssertThrow(false,
-                                        "Currently only 2 compositions (Olivine=0 and Enstatite=1) are supported for the ASCII file grains model.");
-                        }
+                        WBAssertThrow(false,
+                                      "Currently only 2 compositions (Olivine=0 and Enstatite=1) are supported for the ASCII file grains model.");
                     }
                 }
             }

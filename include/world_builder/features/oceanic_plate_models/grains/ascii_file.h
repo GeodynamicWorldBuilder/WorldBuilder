@@ -35,8 +35,8 @@ namespace WorldBuilder
       {
         /**
          * This class represents a oceanic plate and can implement
-         * submodules for temperature and grains. These submodules determine
-         * what the returned temperature or grains of the temperature and grains
+         * submodules for grains. These submodules determine
+         * what the returned grains of the grains
          * functions of this class will be.
          */
         class AsciiFile final: public Interface
@@ -83,7 +83,7 @@ namespace WorldBuilder
 
             /**
              * Returns a grains based on the given position, composition (e.g.
-             * olivine and/or enstatite)depth in the model, gravity and current grains.
+             * olivine and/or enstatite) depth in the model and current grains.
              */
             WorldBuilder::grains
             get_grains(const Point<3> &position,
@@ -97,7 +97,6 @@ namespace WorldBuilder
           private:
 
 
-            // particle_id -> list of Euler angles
             std::map<unsigned int, std::vector<std::array<double,3>>> mineral_0_euler_angles_map;
             std::map<unsigned int, std::vector<std::array<double,3>>> mineral_1_euler_angles_map;
             std::map<unsigned int, std::vector<double>> mineral_0_volume_fraction_map;
