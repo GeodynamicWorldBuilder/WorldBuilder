@@ -1,0 +1,51 @@
+{
+  "version": "1.2",
+  "coordinate system":{"model":"cartesian"},
+  "features":
+  [
+    {
+       "model":"mantle layer", "name":"upper mantle", "max depth":660e3,
+       "coordinates":[[-1000e3,0],[-1000e3,1000e3],[0,1000e3],[0,0]],
+       "composition models":[{"model":"uniform", "compositions":[2]}],
+       "temperature models":
+         [
+           {"model":"adiabatic", "max depth":660e3},
+           {"model":"perlin_noise",
+            "max depth":660e3,
+            "min temperature": -150.0,
+            "max temperature": 150.0,
+            "frequency": 0.00001,
+            "octaves": 8,
+            "seed": 42069,
+            "operation": "add"}
+         ]
+    },
+    {
+       "model":"continental plate", "name":"Passive margin", "max depth":[[200e3]],
+       "coordinates":[[-1000e3,0],[-1000e3,1000e3],[0,1000e3],[0,0]],
+       "temperature models":
+         [
+           {"model":"linear", "max depth":[[100e3],[200e3,[[-250e3,0],[-750e3,1000e3]]]]},
+           {"model":"perlin_noise",
+            "max depth":[[100e3],[200e3,[[-250e3,0],[-750e3,1000e3]]]],
+            "min temperature": -50.0,
+            "max temperature": 50.0,
+            "frequency": 0.00001,
+            "octaves": 8,
+            "seed": 420,
+            "operation": "add"}
+         ],
+       "composition models":
+         [
+           {"model":"perlin_noise", "compositions":[1],
+            "max depth":[[100e3],[200e3,[[-250e3,0],[-750e3,1000e3]]]],
+            "frequency": 0.00001,
+            "octaves": 8,
+            "seed": 42069,
+            "operation": "add"},
+           {"model":"uniform", "compositions":[0],
+            "min depth":[[100e3],[200e3,[[-250e3,0],[-750e3,1000e3]]]]}
+         ]
+    }
+  ]
+}

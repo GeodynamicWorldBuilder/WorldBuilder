@@ -197,7 +197,7 @@ namespace WorldBuilder
         double
         PerlinNoise::noise(double x, double y, double z) const
         {
-            int X = static_cast<int>(std::floor(x)) & 255,
+          int X = static_cast<int>(std::floor(x)) & 255,
               Y = static_cast<int>(std::floor(y)) & 255,
               Z = static_cast<int>(std::floor(z)) & 255;
           x -= floor(x);
