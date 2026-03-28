@@ -30,6 +30,7 @@
 #include "world_builder/types/double.h"
 #include "world_builder/types/object.h"
 #include "world_builder/types/plugin_system.h"
+#include "world_builder/types/composition_property.h"
 #include "world_builder/types/point.h"
 #include "world_builder/types/int.h"
 
@@ -114,8 +115,8 @@ namespace WorldBuilder
 
       prm.declare_entry("cross section", Types::Array(Types::Point<2>(),2,2),"This is an array of two points along where the cross section is taken");
 
-      prm.declare_entry("composition properties", Types::Object({"index"}),
-                        "Composition indices mapped to its properties. If provided, each composition entry must define \"index\"; \"name\" and \"reference density\" are optional.");
+      prm.declare_entry("composition properties", Types::Array(Types::CompositionProperty()),
+                        "The material properties of the composition. This stores the user-defined index (required), linked to composition properties (optional) including name and reference density.");
       prm.declare_entry("potential mantle temperature", Types::Double(1600),
                         "The potential temperature of the mantle at the surface in Kelvin.");
       prm.declare_entry("surface temperature", Types::Double(293.15),
@@ -262,7 +263,9 @@ namespace WorldBuilder
 
     /**
      * Mapping of composition properties as a struct
-     * Composition indices (required) mapped to composition properties (optional).
+     * Composition indices (required) mapped to their properties (optional).
+     * Parsing is handled in parameters.cc
+     * Struct with default values is defined in types/composition_property
      */
     const auto parsed_composition_properties = prm.get_composition_properties("composition properties");
 
@@ -272,9 +275,9 @@ namespace WorldBuilder
       }
 
     /**
-     * Now load the features. Some features use for example temperature values,
-     * so it is important that this is parsed the last.
-     */
+    * Now load the features. Some features use for example temperature values,
+    * so it is important that this is parsed the last.
+    */
     prm.enter_subsection("features");
     {
       for (unsigned int i = 0; i < prm.features.size(); ++i)
