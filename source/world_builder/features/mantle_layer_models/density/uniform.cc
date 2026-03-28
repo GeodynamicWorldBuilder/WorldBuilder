@@ -40,7 +40,7 @@ namespace WorldBuilder
       {
         Uniform::Uniform(WorldBuilder::World *world_)
           :
-          densities(NaN::DSNAN),
+          densities(0,NaN::DSNAN),
           operation(Operations::REPLACE)
         {
           this->world = world_;
