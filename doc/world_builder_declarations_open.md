@@ -53,6 +53,57 @@
 
 ::::::::::::::::::::::::
 
+::::::::::::::::::::::::{dropdown} /composition properties
+:open:
+:name: open_composition-properties
+
+- **type**:array
+- **minItems**:0
+- **maxItems**:4294967295
+- **uniqueItems**:false
+- **description**:The material properties of the composition. This stores the user-defined index (required), linked to composition properties (optional) including name and reference density.
+:::::::::::::::::::::::{dropdown} /composition properties/items
+:open:
+:name: open_composition-properties_items
+
+- **type**:object
+- **description**:
+- **additionalProperties**:false
+- **required**:[index]
+
+::::::::::::::::::::::{dropdown} /composition properties/items/index
+:open:
+:name: open_composition-properties_items_index
+
+- **type**:integer
+- **minimum**:0
+- **description**:The composition index used in composition lookups.
+::::::::::::::::::::::
+
+::::::::::::::::::::::{dropdown} /composition properties/items/name
+:open:
+:name: open_composition-properties_items_name
+
+- **type**:string
+- **default value**:
+- **description**:Optional composition name. Defaults to <index>.
+::::::::::::::::::::::
+
+::::::::::::::::::::::{dropdown} /composition properties/items/reference density
+:open:
+:name: open_composition-properties_items_reference-density
+
+- **type**:number
+- **default value**:3300.0
+- **description**:Optional reference density in kg/m^3. Defaults to 3300.
+::::::::::::::::::::::
+
+
+
+:::::::::::::::::::::::
+
+::::::::::::::::::::::::
+
 ::::::::::::::::::::::::{dropdown} /potential mantle temperature
 :open:
 :name: open_potential-mantle-temperature

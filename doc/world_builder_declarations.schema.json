@@ -33,6 +33,38 @@
                 }
             }
         },
+        "composition properties": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 4294967295,
+            "uniqueItems": false,
+            "description": "The material properties of the composition. This stores the user-defined index (required), linked to composition properties (optional) including name and reference density.",
+            "items": {
+                "type": "object",
+                "description": "",
+                "additionalProperties": false,
+                "required": [
+                    "index"
+                ],
+                "properties": {
+                    "index": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "description": "The composition index used in composition lookups."
+                    },
+                    "name": {
+                        "type": "string",
+                        "default value": "",
+                        "description": "Optional composition name. Defaults to <index>."
+                    },
+                    "reference density": {
+                        "type": "number",
+                        "default value": 3300.0,
+                        "description": "Optional reference density in kg/m^3. Defaults to 3300."
+                    }
+                }
+            }
+        },
         "potential mantle temperature": {
             "default value": 1600.0,
             "type": "number",
