@@ -481,8 +481,8 @@ namespace WorldBuilder
               // and see which is closer to the checkpoint.
               const Point<2> p1 = point_list[0];
               const Point<2> p2 = point_list[point_list.size()-1];
-              const double dist_p1 = check_point_surface_2d.distance(p1);
-              const double dist_p2 = check_point_surface_2d.distance(p2);
+              const double dist_p1 = std::abs(check_point_surface_2d.distance(p1));
+              const double dist_p2 = std::abs(check_point_surface_2d.distance(p2));
               const Point<2> closest_terminal_point = dist_p1 < dist_p2 ? p1 : p2;
               double closest_distance_to_trench = dist_p1 < dist_p2 ? dist_p1 : dist_p2;
 
@@ -520,8 +520,8 @@ namespace WorldBuilder
                                               iterable_check_point_surface_2d[1] + line_factor * closest_distance_to_trench * obliquity_vector_point[1],
                                               natural_coordinate_system);
 
-                  const double new_distance1 = parameterized_line.distance(closest_terminal_point);
-                  const double new_distance2 = parameterized_line.distance(second_closest_terminal_point);
+                  const double new_distance1 = std::abs(parameterized_line.distance(closest_terminal_point));
+                  const double new_distance2 = std::abs(parameterized_line.distance(second_closest_terminal_point));
                   const double new_distance_search = std::min(new_distance1, new_distance2);
 
                   if (new_distance_search < closest_distance_to_trench)
@@ -572,15 +572,17 @@ namespace WorldBuilder
                 }
 
               // Check whether the obliquity vector points toward the curve from the current check point.
-              // const Point<2> vector_checkpoint_to_curve = closest_point_on_line_2d - check_point_surface_2d_temp_ob;
-              // const double line_factor = (obliquity_vector_point * vector_checkpoint_to_curve) >= 0.0 ? 1.0 : -1.0;
+              const Point<2> vector_checkpoint_to_curve = closest_point_on_line_2d - check_point_surface_2d_temp_ob;
+              const double line_factor = (obliquity_vector_point * vector_checkpoint_to_curve) >= 0.0 ? 1.0 : -1.0;
 
               // When trying to uniquely determine which way we should iterate along the obliquity vector (i.e. parallel to it or
               // anti-parallel to it), which can be seen in the comments above,I was unable to generalize it enough to work for all
               // cases. Therefore, loop over both cases and quickly see whether one pushes the checkpoint in the wrong directions.
               const Point<2> initial_iterable_check_point_surface_2d = iterable_check_point_surface_2d;
               const Objects::ClosestPointOnCurve initial_iterable_closest_point_on_curve = iterable_closest_point_on_curve;
-              const std::array<double,2> trial_line_factors = {{-1.0, 1.0}};
+              // const std::array<double,2> trial_line_factors = {{-1.0, 1.0}};
+              const std::array<double,2> trial_line_factors = {{line_factor}};
+
 
 
               bool converged = false;
@@ -594,7 +596,7 @@ namespace WorldBuilder
                   // intersection with the curve.
                   for (unsigned int i = 0; i < 100; ++i)
                     {
-                      const double old_dist = trial_iterable_closest_point_on_curve.distance / 1.1;
+                      const double old_dist = std::abs(trial_iterable_closest_point_on_curve.distance);
 
                       Point<2> parameterized_line(trial_iterable_check_point_surface_2d[0] + trial_line_factor * old_dist * obliquity_vector_point[0],
                                                   trial_iterable_check_point_surface_2d[1] + trial_line_factor * old_dist * obliquity_vector_point[1],
@@ -602,14 +604,15 @@ namespace WorldBuilder
 
                       trial_iterable_closest_point_on_curve = bezier_curve.closest_point_on_curve_segment(parameterized_line);
                       trial_iterable_check_point_surface_2d = parameterized_line;
-                      const double new_dist = trial_iterable_closest_point_on_curve.distance;
+                      const double new_dist = std::abs(trial_iterable_closest_point_on_curve.distance);
 
+                      const double convergence_tol = bool_cartesian ? 1.0 : 1e-6;
                       // We are getting farther away, break the loop.
-                      if (std::abs(old_dist - new_dist) >= std::abs(old_dist))
+                      if (new_dist > old_dist)
                         break;
 
                       // We converged to a point on the curve, break the loop, break the loop and update the check point.
-                      if (std::abs(new_dist - old_dist) < 1)
+                      if (new_dist < convergence_tol)
                         {
                           iterable_check_point_surface_2d = trial_iterable_check_point_surface_2d;
                           converged = true;
