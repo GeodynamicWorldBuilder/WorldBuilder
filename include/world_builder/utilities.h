@@ -308,6 +308,7 @@ namespace WorldBuilder
         fraction_of_segment(NaN::DSNAN),
         section(NaN::ISNAN),
         segment(NaN::ISNAN),
+        angle(NaN::DSNAN),
         average_angle(NaN::DSNAN),
         depth_reference_surface(NaN::DSNAN),
         closest_trench_point(Point<3>(coordinate_system))
@@ -345,6 +346,13 @@ namespace WorldBuilder
        * The number of the segment that is closest to the point.
        */
       size_t segment;
+
+      // todo_velo
+      /**
+       * The dip angle of the plane at the location where the
+       * point is projected onto the plane.
+       */
+      double angle;
 
       /**
        * The average dip angle of the plane at the location where the

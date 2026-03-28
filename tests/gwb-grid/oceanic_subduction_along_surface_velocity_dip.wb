@@ -1,0 +1,32 @@
+{
+  "version":"1.2",
+  "coordinate system":{"model":"cartesian"},
+  "cross section":[[0,450e3],[10e3,450e3]],
+  "features":
+  [
+   { 
+     "model":"subducting plate", "name":"Slab", "dip point":[0,0],
+     "coordinates":[[1500e3,1000e3],[1600e3,350e3],[1500e3,0]],
+     "segments":
+       [
+         {"length":300e3, "thickness":[300e3], "top truncation":[-100e3], "angle":[0,60],
+          "composition models":[
+            {"model":"uniform", "compositions":[3], "max distance slab top":50e3},
+            {"model":"uniform", "compositions":[2], "min distance slab top":50e3, "max distance slab top":100e3}]},
+         {"length":1000e3, "thickness":[300e3], "top truncation":[-100e3], "angle":[60]}
+       ],
+     "sections":
+       [
+         {"coordinate":0,
+          "segments":[{"length":300e3, "thickness":[300e3], "top truncation":[-100e3], "angle":[0,60]},
+                      {"length":400e3, "thickness":[300e3], "top truncation":[-100e3], "angle":[60]}],
+                       "composition models":[{"model":"uniform", "compositions":[1],"max distance slab top":100e3}]}
+       ],
+     "temperature models":[{"model":"mass conserving", "density":3300, "spreading velocity":0.02, "subducting velocity":0.02,
+                            "ridge coordinates":[[[5e6,-1],[5e6,2000e3]]],"coupling depth":50e3,
+                            "min distance slab top":-200e3, "max distance slab top":300e3}],
+     "composition models":[{"model":"uniform", "compositions":[2], "max distance slab top":100e3}],
+      "velocity models": [{"model":"along surface", "velocity magnitude": 1.0}]
+   }
+  ]
+}
