@@ -217,6 +217,78 @@ namespace WorldBuilder
     return Pointer((this->get_full_json_path() + "/" + name).c_str()).Get(parameters) != nullptr;
   }
 
+  std::vector<Parameters::composition_properties>
+  Parameters::get_composition_properties(const std::string &name) const
+  {
+    // parse entries as indices linked to names and reference densities
+    // struct data type allows easy extension for more properties in the future
+    std::vector<Parameters::composition_properties> composition_properties_output;
+
+    const std::string strict_base = this->get_full_json_path();
+    const Value *composition_properties_entries = Pointer((strict_base + "/" + name).c_str()).Get(parameters);
+
+    if (composition_properties_entries == nullptr)
+      return composition_properties_output;
+
+    WBAssertThrow(composition_properties_entries->IsArray(),
+                  "Invalid entry \"" << name << "\": expected an array of objects with required key \"index\" and optional keys \"name\" and \"reference density\".");
+
+    std::map<unsigned int, bool> seen_indexes;
+    composition_properties_output.reserve(composition_properties_entries->Size());
+
+    for (SizeType i = 0; i < composition_properties_entries->Size(); ++i)
+      {
+        // entry error checking
+        const Value &entry = (*composition_properties_entries)[i];
+
+        // index is required
+        WBAssertThrow(entry.IsObject(),
+                      "Invalid entry in \"" << name << "\" at index " << i
+                      << ": each entry must be an object with required key \"index\" and optional keys \"name\" and \"reference density\".");
+        WBAssertThrow(entry.HasMember("index"),
+                      "Invalid entry in \"" << name << "\" at index " << i
+                      << ": missing \"index\".");
+        WBAssertThrow(entry["index"].IsUint(),
+                      "Invalid \"index\" type in \"" << name << "\" at index " << i
+                      << ": expected unsigned integer.");
+
+        // name and reference density are optional
+        if (entry.HasMember("name"))
+          {
+            WBAssertThrow(entry["name"].IsString(),
+                          "Invalid \"name\" type in \"" << name << "\" at index " << i
+                          << ": expected string.");
+          }
+
+        if (entry.HasMember("reference density"))
+          {
+            WBAssertThrow(entry["reference density"].IsNumber(),
+                          "Invalid \"reference density\" type in \"" << name << "\" at index " << i
+                          << ": expected number.");
+          }
+
+        for (Value::ConstMemberIterator member = entry.MemberBegin(); member != entry.MemberEnd(); ++member)
+          {
+            const std::string member_name = member->name.GetString();
+            WBAssertThrow(member_name == "index" || member_name == "name" || member_name == "reference density",
+                          "Invalid entry in \"" << name << "\" at index " << i
+                          << ": unsupported key \"" << member_name
+                          << "\". Allowed keys are \"index\", \"name\", and \"reference density\".");
+          }
+
+        const unsigned int composition_index = entry["index"].GetUint();
+        WBAssertThrow(seen_indexes.find(composition_index) == seen_indexes.end(),
+                      "Duplicate composition index " << composition_index << " in \"" << name << "\".");
+        seen_indexes[composition_index] = true;
+
+        const std::string composition_name = entry.HasMember("name") ? entry["name"].GetString() : "composition_" + std::to_string(composition_index); // default name as "composition_[index]"
+        const double reference_density = entry.HasMember("reference density") ? entry["reference density"].GetDouble() : 3300.0; // default reference density from mantle olivine
+        composition_properties_output.push_back(Parameters::composition_properties {composition_index, composition_name, reference_density});
+      }
+
+    return composition_properties_output;
+  }
+
 
   template<>
   std::string
