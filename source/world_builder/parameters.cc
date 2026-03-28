@@ -42,6 +42,7 @@
 #include "world_builder/features/subducting_plate.h"
 #include "world_builder/features/subducting_plate_models/velocity/interface.h"
 #include "world_builder/gravity_model/interface.h"
+#include "world_builder/types/composition_property.h"
 #include "world_builder/types/object.h"
 #include "world_builder/utilities.h"
 #include "data/LITHO1.0/litho_coord_data.h"
@@ -234,52 +235,24 @@ namespace WorldBuilder
 
     for (SizeType i = 0; i < composition_properties_entries->Size(); ++i)
       {
-        // entry error checking
         const Value &entry = (*composition_properties_entries)[i];
 
-        // index is required
-        WBAssertThrow(entry.IsObject(),
-                      "Invalid entry in \"" << name << "\" at index " << i
-                      << ": each entry must be an object with required key \"index\" and optional keys \"name\" and \"reference density\".");
-        WBAssertThrow(entry.HasMember("index"),
-                      "Invalid entry in \"" << name << "\" at index " << i
-                      << ": missing \"index\".");
-        WBAssertThrow(entry["index"].IsUint(),
-                      "Invalid \"index\" type in \"" << name << "\" at index " << i
-                      << ": expected unsigned integer.");
-
-        // name and reference density are optional
-        if (entry.HasMember("name"))
-          {
-            WBAssertThrow(entry["name"].IsString(),
-                          "Invalid \"name\" type in \"" << name << "\" at index " << i
-                          << ": expected string.");
-          }
-
-        if (entry.HasMember("reference density"))
-          {
-            WBAssertThrow(entry["reference density"].IsNumber(),
-                          "Invalid \"reference density\" type in \"" << name << "\" at index " << i
-                          << ": expected number.");
-          }
-
-        for (Value::ConstMemberIterator member = entry.MemberBegin(); member != entry.MemberEnd(); ++member)
-          {
-            const std::string member_name = member->name.GetString();
-            WBAssertThrow(member_name == "index" || member_name == "name" || member_name == "reference density",
-                          "Invalid entry in \"" << name << "\" at index " << i
-                          << ": unsupported key \"" << member_name
-                          << "\". Allowed keys are \"index\", \"name\", and \"reference density\".");
-          }
-
+        // index must be unique
         const unsigned int composition_index = entry["index"].GetUint();
         WBAssertThrow(seen_indexes.find(composition_index) == seen_indexes.end(),
                       "Duplicate composition index " << composition_index << " in \"" << name << "\".");
         seen_indexes[composition_index] = true;
 
-        const std::string composition_name = entry.HasMember("name") ? entry["name"].GetString() : "composition_" + std::to_string(composition_index); // default name as "composition_[index]"
-        const double reference_density = entry.HasMember("reference density") ? entry["reference density"].GetDouble() : 3300.0; // default reference density from mantle olivine
-        composition_properties_output.push_back(Parameters::composition_properties {composition_index, composition_name, reference_density});
+        // name defaults to index (as string) unless user defined
+        const std::string composition_name = entry.HasMember("name") ? entry["name"].GetString() : std::to_string(composition_index);
+
+        // reference density defaults to value in CompositionProperty unless user defined
+        const double reference_density = entry.HasMember("reference density") ? entry["reference density"].GetDouble() : Types::CompositionProperty::get_default_reference_density();
+
+        composition_properties_output.emplace_back(Parameters::composition_properties {composition_index,
+                                                                                       composition_name,
+                                                                                       reference_density
+                                                                                      });
       }
 
     return composition_properties_output;
