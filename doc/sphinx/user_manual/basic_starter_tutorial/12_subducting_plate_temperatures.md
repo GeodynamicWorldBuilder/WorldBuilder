@@ -6,15 +6,15 @@ Before exploring the segments in more details, let's briefly discuss temperature
 
 A commonly used model to compute the temperature structure of subducting plates is based on McKenzie (1970) {cite:p}`McKenzie_1970`. In the World Builder, the McKenzie temperature model is implemented for the subducting plate feature as the `plate model` ({cite:t}`turcotte_schubert_2014`). 
 
-In the McKenzie model, the slab temperature is derived by computing the non-dimensional thermal Reynold number $R_{\mathrm{T}}$ [$\mathrm{/}$] (see Eq. 27 in McKenzie 1970):
+In the McKenzie model, the slab temperature is derived by computing the non-dimensional thermal Reynold number $R_{\mathrm{T}}$ (see Eq. 27 in McKenzie 1970):
 
 $$
 R_T = \frac{\rho \, Cp \, v_{dip} \, Z_{slab}}{2 \, \Lambda}
 $$
 
-Where $\rho$ [$\mathrm{kg\,m^{-3}}$] is the density; $Cp$ [$\mathrm{J\,kg^{-1}\,K^{-1}}$] the specific heat capacity; $v_{\mathrm{dip}}$ [$\mathrm{m\,s^{-1}}$] the subducting slab velocity along dip; $Z_{\mathrm{slab}}$ [$\mathrm{m}$] the slab thickness; and $\Lambda$ [$\mathrm{W\,m^{-1}\,K^{-1}}$] the thermal conductivity. Note that all units cancel out [$\mathrm{/}$], making $R_{\mathrm{T}}$ a dimensionless quantity [$\mathrm{/}$]. 
+Where $\rho$ $\mathrm{kg\,m^{-3}}$ is the density; $Cp$ $\mathrm{J\,kg^{-1}\,K^{-1}}$ the specific heat capacity; $v_{\mathrm{dip}}$ $\mathrm{m\,s^{-1}}$ the subducting slab velocity along dip; $Z_{\mathrm{slab}}$ $\mathrm{m}$ the slab thickness; and $\Lambda$ $\mathrm{W\,m^{-1}\,K^{-1}}$ the thermal conductivity. Note that all units cancel out, making $R_{\mathrm{T}}$ a dimensionless quantity. 
 
-In the World Builder, the input variable "plate velocity" is given in [$\mathrm{m\,year^{-1}}$] rather than [$\mathrm{m\,s^{-1}}$] as in McKenzie equation. Therefore, the plate velocity is converted using $t_{\mathrm{year}} = 60 \cdot 60 \cdot 24 \cdot 365.25 = 3.1536 \times 10^{7}$ [$\mathrm{s\,year^{-1}}$]. The equation for $R_{\mathrm{T}}$ than becomes:
+In the World Builder, the input variable "plate velocity" is given in $\mathrm{m\,year^{-1}}$ rather than $\mathrm{m\,s^{-1}}$ as in McKenzie equation. Therefore, the plate velocity is converted using $t_{\mathrm{year}} = 60 \cdot 60 \cdot 24 \cdot 365.25 = 3.1536 \times 10^{7}$ $\mathrm{s\,year^{-1}}$. The equation for $R_{\mathrm{T}}$ than becomes:
 
 $$
 R_T = \frac{\rho \, C_p \, \left(\frac{v_{\mathrm{dip}}}{t_{\mathrm{year}}}\right) \, Z_{\mathrm{slab}}(x,y)}{2 \, \Lambda}
