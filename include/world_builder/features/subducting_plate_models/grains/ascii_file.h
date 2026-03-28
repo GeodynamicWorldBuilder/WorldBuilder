@@ -39,7 +39,7 @@ namespace WorldBuilder
          * what the returned temperature or grains of the temperature and grains
          * functions of this class will be.
          */
-        class AsciiFile : public Interface
+        class AsciiFile final: public Interface
         {
           public:
             /**
