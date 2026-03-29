@@ -23,6 +23,9 @@
 
 #include "world_builder/types/interface.h"
 
+#include <string>
+#include <vector>
+
 
 namespace WorldBuilder
 {
