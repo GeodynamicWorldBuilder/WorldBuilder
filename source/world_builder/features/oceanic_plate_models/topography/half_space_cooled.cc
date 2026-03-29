@@ -20,6 +20,7 @@
 #include "world_builder/features/oceanic_plate_models/topography/half_space_cooled.h"
 #include "world_builder/features/oceanic_plate_models/temperature/half_space_model.h"
 
+#include <world_builder/world.h>
 #include "world_builder/features/oceanic_plate_models/topography/interface.h"
 #include "world_builder/nan.h"
 #include "world_builder/types/array.h"
@@ -40,14 +41,13 @@ namespace WorldBuilder
       namespace Topography
       {
         Half_space_cooled::Half_space_cooled(WorldBuilder::World *world_):
-          topography(NaN::DSNAN),
           min_depth(NaN::DSNAN),
           max_depth(NaN::DSNAN),
+          topography(NaN::DSNAN),
+          operation(Operations::REPLACE),
           top_temperature(NaN::DSNAN),
           bottom_temperature(NaN::DSNAN),
-          bottom_density(NaN::DSNAN),
-          //initial_depth(NaN::DSNAN),
-          operation(Operations::REPLACE)
+          bottom_density(NaN::DSNAN)
         {
           this->world = world_;
           this->name = "half space cooled";
@@ -62,12 +62,8 @@ namespace WorldBuilder
           // Document plugin and require entries if needed.
           // Add `topography` and half space model params to the required parameters.
 
-          // Simran: params from half space model of temperature plugin.
-          prm.declare_entry("", Types::Object({"ridge coordinates", "spreading velocity", "max depth", 
-          "topography", "bottom density"}), "Half space cooled topography");
-
-          // Declare entries of this plugin
-          prm.declare_entry("topography", Types::Double(0), "The topography in meters.");
+          prm.declare_entry("", Types::Object({"ridge coordinates", "spreading velocity", 
+            "max depth", "topography", "bottom density"}), "Half space cooled topography");
 
           prm.declare_entry("min depth", Types::OneOf(Types::Double(0),
                                                       Types::Array(Types::ValueAtPoints(0.,2)),
@@ -77,10 +73,10 @@ namespace WorldBuilder
           prm.declare_entry("max depth", Types::OneOf(Types::Double(std::numeric_limits<double>::max()),
                                                       Types::Array(Types::ValueAtPoints(std::numeric_limits<double>::max(),2)),
                                                       Types::String("")),
-                            "The depth in meters to which the composition of this feature is present."
-                            "Because half-space reaches background temperature asymptotically, "
-                            "this value should be ~2 times the nominal plate thickness of 100 km" );
+                            "The depth in meters to which the composition of this feature is present.");
 
+          prm.declare_entry("topography", Types::Double(0), "The topography in meters.");
+        
           prm.declare_entry("top temperature", Types::Double(293.15),
                             "The actual surface temperature in degree Kelvin for this feature.");
 
@@ -90,10 +86,7 @@ namespace WorldBuilder
                             "this should be the mantle potential temperature, and T = Tad + Thalf. ");
 
           prm.declare_entry("bottom density", Types::Double(0.0), 
-          "The density of the bottom of the ridge in kg/m3");
-
-          //prm.declare_entry("initial depth", Types::Double(0.0), 
-          //"The height of the ridge that is added to the computed half space cooled height");
+                            "The density of the bottom of the ridge in kg/m3");
 
           prm.declare_entry("spreading velocity", Types::OneOf(Types::Double(0.05),Types::Array(Types::ValueAtPoints(0.05, std::numeric_limits<uint64_t>::max()))),
                             "The spreading velocity of the plate in meter per year. "
@@ -107,27 +100,21 @@ namespace WorldBuilder
         }
 
         void
-        Half_space_cooled::parse_entries(Parameters &prm, const std::vector<Point<2>> &coordinates)
+        Half_space_cooled::parse_entries(Parameters &prm, 
+                                        const std::vector<Point<2>> &coordinates)
         {
-
           min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
           min_depth = min_depth_surface.minimum;
           max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
           max_depth = max_depth_surface.maximum;
-          //WBAssertThrow(max_depth < min_depth, "Max depth should be greater than min depth");
 
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
           topography = prm.get<double>("topography");
-
           top_temperature = prm.get<double>("top temperature");
           bottom_temperature = prm.get<double>("bottom temperature");
-          //WBAssertThrow(bottom_temperature > 0.0,
-          //  "Invalid bottom temperature. The bottom temperature needs to be larger than 0, and it has the value: " 
-          //  << bottom_temperature);
-
-          bottom_density = prm.get<double>("bottom density");
-          //initial_depth = prm.get<double>("initial depth");
           
+          bottom_density = prm.get<double>("bottom density");
+
           spreading_velocities = prm.get_value_at_array("spreading velocity");
 
           mid_oceanic_ridges = prm.get_vector<std::vector<Point<2>>>("ridge coordinates");
@@ -161,15 +148,16 @@ namespace WorldBuilder
         double
         Half_space_cooled::get_topography(const Point<3> &position_in_cartesian_coordinates,
                                 const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                                double /*topography*/) const
+                                double /*topo*/) 
+                                const
         {
-          
+          (void) position_in_natural_coordinates;
           Objects::NaturalCoordinate position_in_natural_coordinates_at_min_depth = Objects::NaturalCoordinate(position_in_cartesian_coordinates,
                                                                                         *(this->world->parameters.coordinate_system));
           std::vector<std::vector<double>> subducting_plate_velocities = {{0}};
           std::vector<double> ridge_migration_times = {0.0};
 
-          // compute age from ridge coordinates and spreading velocity
+          // compute ridge params like spreading velocity and distance from ridge 
           std::vector<double> ridge_parameters = Utilities::calculate_ridge_distance_and_spreading(
                                         mid_oceanic_ridges,
                                         spreading_velocities_at_each_ridge_point,
@@ -178,14 +166,7 @@ namespace WorldBuilder
                                         subducting_plate_velocities,
                                         ridge_migration_times);
         
-          //WBAssertThrow(ridge_parameters[0] <= 0.0,
-          //"Ridge spreading velocity is 0 and this leads to Zero division error during age computation" 
-          //<< ridge_parameters[0]);
-
           double age = ridge_parameters[1] / ridge_parameters[0]; // in sec 
-          // std::cout << ridge_parameters[1] << " ";
-          //age = age / (3600*24*365.25); // age in years
-         // std::cout << age << " ";
 
           const double thermal_diffusivity = this->world->thermal_diffusivity;
           const double alpha = this->world->thermal_expansion_coefficient;
@@ -196,7 +177,6 @@ namespace WorldBuilder
           half_space_cooled_height = (2 * bottom_density * alpha * (bottom_temperature-top_temperature)) 
           /(top_density - bottom_density) * sqrt(thermal_diffusivity * age / M_PI);
         
-          //std::cout << half_space_cooled_height << "   "; 
           return half_space_cooled_height + topography;
           
         }

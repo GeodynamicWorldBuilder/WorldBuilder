@@ -8,15 +8,11 @@
      "composition models":[{"model":"uniform", "compositions":[0], "max depth":10e3},
                            {"model":"uniform", "compositions":[1], "min depth":10e3, "max depth":95e3}],
      "topography models": [{"model": "half space cooled", "max depth": 95e3, 
-                          "top temperature": 273.15,
-                          "bottom temperature": 600.0,
-                          "topography":50e3,
-                          "bottom density": 660.0,
-                          "spreading velocity":0.05, 
-                          "ridge coordinates":[[[100e3,-1e3],[100e3,1e3]]]
-                          }]                      
+                          "top temperature": 273.15, "bottom temperature": 600.0,
+                          "topography":50e3, "bottom density": 660.0, "spreading velocity":0.05, 
+                          "ridge coordinates":[[[100e3,-1e3],[100e3,1e3]]]}]                      
     },
-
+    
     {"model":"continental plate", "name":"continental plate", "coordinates":[[1150e3,-1e3],[2001e3,-1e3],[2001e3,1e3],[1150e3,1e3]],
      "temperature models":[{"model":"linear", "max depth":95e3, "bottom temperature":1600}],
      "composition models":[{"model":"uniform", "compositions":[2], "max depth":30e3},

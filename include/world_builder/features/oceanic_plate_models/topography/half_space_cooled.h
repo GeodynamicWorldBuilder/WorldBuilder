@@ -72,7 +72,7 @@ namespace WorldBuilder
              */
             double get_topography(const Point<3> &position_in_cartesian_coordinates,
                                   const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                                  const double topography) const override final;
+                                  const double /*topography*/) const override;
 
           private:
             // uniform topography submodule parameters
@@ -86,7 +86,6 @@ namespace WorldBuilder
             double top_temperature;
             double bottom_temperature;
             double bottom_density;
-            //double initial_depth;
             std::pair<std::vector<double>,std::vector<double>> spreading_velocities;
             std::vector<std::vector<Point<2> > > mid_oceanic_ridges;
             std::vector<std::vector<double>> spreading_velocities_at_each_ridge_point;
