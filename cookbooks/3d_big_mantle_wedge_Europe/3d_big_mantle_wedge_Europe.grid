@@ -1,0 +1,17 @@
+# output variables
+grid_type = cartesian       # cartesian box (x,y,z)
+dim = 3                     # 3 dimensions (x,y,z)
+compositions = 5            # 2 different phases (e.g., oceanic lithosphere, basaltic crust ...)
+
+# domain of the grid
+x_min = 0                   # minimum length
+x_max = 4000e3 		        # maximum length
+y_min = 0e3 			    # minimum width
+y_max = 3000e3 		        # maximum length
+z_min = 0 				    # minimum depth
+z_max = 660e3 			    # maximum depth
+
+# low res grid properties
+n_cell_x = 160              # number of cells in the x-direction
+n_cell_y = 120			    # number of cells in the y-direction
+n_cell_z = 40 			    # number of cells in the z-direction
