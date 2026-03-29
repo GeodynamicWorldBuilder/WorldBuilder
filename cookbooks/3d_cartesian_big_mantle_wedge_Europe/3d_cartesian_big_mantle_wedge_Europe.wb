@@ -230,10 +230,10 @@
                        [1563505,1319050]],
         "segments":[
                     {"length":100e3, "thickness":[100e3], "angle":[0,90]},
-                    {"length":300e3, "thickness":[100e3], "angle":[90,60]},
-                    {"length":300e3, "thickness":[100e3], "angle":[60,30]},
-                    {"length":300e3, "thickness":[100e3], "angle":[30,0]},
-                    {"length":100e3, "thickness":[100e3], "angle":[0]}
+                    {"length":260e3, "thickness":[100e3], "angle":[90,60]},
+                    {"length":250e3, "thickness":[100e3], "angle":[60]},
+                    {"length":50e3, "thickness":[100e3], "angle":[60,0]},
+                    {"length":400e3, "thickness":[100e3], "angle":[0]}
                    ],
         "temperature models":[{"model":"uniform", "temperature":400 }],
         "composition models":[{"model":"uniform", "compositions":[4]}]
