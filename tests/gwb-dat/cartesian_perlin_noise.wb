@@ -86,6 +86,12 @@
         {"model":"perlin_noise", "min depth":80e3, "max depth":600e3,
          "min temperature":1650.0, "max temperature":2000.0,
          "frequency":2.0e-5, "octaves":5, "persistence":0.5, "lacunarity":2.0}
+      ],
+      "composition models":[
+        {"model":"uniform", "compositions":[4]},
+        {"model":"perlin_noise", "compositions":[4], "min depth":80e3, "max depth":600e3,
+         "min value":[0.0], "max value":[1.0],
+         "frequency":2.0e-5, "octaves":5, "persistence":0.5, "lacunarity":2.0, "operation":"add"}
       ]
     },
 
