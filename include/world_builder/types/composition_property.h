@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef WORLD_BUILDER_TYPES_COMPOSITIONPROPERTY_H
-#define WORLD_BUILDER_TYPES_COMPOSITIONPROPERTY_H
+#ifndef WORLD_BUILDER_TYPES_COMPOSITION_PROPERTY_H
+#define WORLD_BUILDER_TYPES_COMPOSITION_PROPERTY_H
 
 
 #include "world_builder/types/interface.h"
@@ -48,7 +48,7 @@ namespace WorldBuilder
 
         CompositionProperty(const CompositionProperty &) = default;
 
-        ~CompositionProperty() override final;
+        ~CompositionProperty() override final = default;
 
         void write_schema(Parameters &prm,
                           const std::string &name,

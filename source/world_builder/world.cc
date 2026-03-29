@@ -116,7 +116,7 @@ namespace WorldBuilder
       prm.declare_entry("cross section", Types::Array(Types::Point<2>(),2,2),"This is an array of two points along where the cross section is taken");
 
       prm.declare_entry("composition properties", Types::Array(Types::CompositionProperty()),
-                        "The material properties of the composition. This stores the user-defined index (required), linked to composition properties (optional) including name and reference density.");
+                        "The material properties of the composition. This stores user-defined indices (required), linked to composition properties (optional) including name and reference density.");
       prm.declare_entry("potential mantle temperature", Types::Double(1600),
                         "The potential temperature of the mantle at the surface in Kelvin.");
       prm.declare_entry("surface temperature", Types::Double(293.15),
