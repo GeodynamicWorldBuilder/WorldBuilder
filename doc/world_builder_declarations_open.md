@@ -61,7 +61,7 @@
 - **minItems**:0
 - **maxItems**:4294967295
 - **uniqueItems**:false
-- **description**:The material properties of the composition. This stores the user-defined index (required), linked to composition properties (optional) including name and reference density.
+- **description**:The material properties of the composition. This stores user-defined indices (required), linked to composition properties (optional) including name and reference density.
 :::::::::::::::::::::::{dropdown} /composition properties/items
 :open:
 :name: open_composition-properties_items
@@ -24949,6 +24949,41 @@
 - **default value**:3300.0
 - **type**:number
 - **description**:Density for the background material without any compositions.
+::::::::::::::::::::::::
+
+::::::::::::::::::::::::{dropdown} /compensation depth
+:open:
+:name: open_compensation-depth
+
+- **default value**:250000.0
+- **type**:number
+- **description**:Compensation depth for isostatic topography.
+::::::::::::::::::::::::
+
+::::::::::::::::::::::::{dropdown} /number of integration points
+:open:
+:name: open_number-of-integration-points
+
+- **default value**:100
+- **type**:integer
+- **description**:Number of integration points for calculating the compensation pressure.
+::::::::::::::::::::::::
+
+::::::::::::::::::::::::{dropdown} /Reference profile point
+:open:
+:name: open_Reference-profile-point
+
+- **type**:array
+- **minItems**:2
+- **maxItems**:2
+- **description**:This is an array of two points along where the cross section is taken
+:::::::::::::::::::::::{dropdown} /Reference profile point/items
+:open:
+:name: open_Reference-profile-point_items
+
+- **type**:number
+:::::::::::::::::::::::
+
 ::::::::::::::::::::::::
 
 

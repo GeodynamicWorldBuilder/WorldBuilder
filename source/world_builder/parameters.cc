@@ -520,6 +520,11 @@ namespace WorldBuilder
           }
         return Point<2>(value1,value2,this->coordinate_system->natural_coordinate_system());
       }
+    else
+      {
+        return Point<2>(std::numeric_limits<double>::quiet_NaN(),std::numeric_limits<double>::quiet_NaN(),this->coordinate_system->natural_coordinate_system());
+      }
+
     WBAssertThrow(false, "default values not implemented in get<Point<2> >. Looked in: " + strict_base + "/" << name);
 
     return {invalid};;
