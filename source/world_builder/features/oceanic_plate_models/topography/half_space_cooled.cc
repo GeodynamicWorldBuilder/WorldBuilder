@@ -43,7 +43,7 @@ namespace WorldBuilder
         Half_space_cooled::Half_space_cooled(WorldBuilder::World *world_):
           min_depth(NaN::DSNAN),
           max_depth(NaN::DSNAN),
-          topography(NaN::DSNAN),
+          min_ocean_depth(NaN::DSNAN),
           operation(Operations::REPLACE),
           top_temperature(NaN::DSNAN),
           bottom_temperature(NaN::DSNAN),
@@ -63,7 +63,7 @@ namespace WorldBuilder
           // Add `topography` and half space model params to the required parameters.
 
           prm.declare_entry("", Types::Object({"ridge coordinates", "spreading velocity", 
-            "max depth", "topography", "bottom density"}), "Half space cooled topography");
+            "max depth", "min ocean depth", "bottom density"}), "Half space cooled topography");
 
           prm.declare_entry("min depth", Types::OneOf(Types::Double(0),
                                                       Types::Array(Types::ValueAtPoints(0.,2)),
@@ -75,7 +75,8 @@ namespace WorldBuilder
                                                       Types::String("")),
                             "The depth in meters to which the composition of this feature is present.");
 
-          prm.declare_entry("topography", Types::Double(0), "The topography in meters.");
+          prm.declare_entry("min ocean depth", Types::Double(0), "The minimum depth of the ocean or depth"
+          "of the ridge below the ocean surface in meters.");
         
           prm.declare_entry("top temperature", Types::Double(293.15),
                             "The actual surface temperature in degree Kelvin for this feature.");
@@ -109,7 +110,7 @@ namespace WorldBuilder
           max_depth = max_depth_surface.maximum;
 
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
-          topography = prm.get<double>("topography");
+          min_ocean_depth = prm.get<double>("min ocean depth");
           top_temperature = prm.get<double>("top temperature");
           bottom_temperature = prm.get<double>("bottom temperature");
           
@@ -177,7 +178,7 @@ namespace WorldBuilder
           half_space_cooled_height = (2 * bottom_density * alpha * (bottom_temperature-top_temperature)) 
           /(top_density - bottom_density) * sqrt(thermal_diffusivity * age / M_PI);
         
-          return half_space_cooled_height + topography;
+          return -(half_space_cooled_height + min_ocean_depth);
           
         }
           

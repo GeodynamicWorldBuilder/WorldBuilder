@@ -80,7 +80,7 @@ namespace WorldBuilder
             Objects::Surface min_depth_surface;
             double max_depth;
             Objects::Surface max_depth_surface;
-            double topography;
+            double min_ocean_depth;
             Operations operation;
 
             double top_temperature;
