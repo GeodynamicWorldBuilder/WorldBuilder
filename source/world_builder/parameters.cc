@@ -46,6 +46,7 @@
 #include "world_builder/features/subducting_plate.h"
 #include "world_builder/features/subducting_plate_models/velocity/interface.h"
 #include "world_builder/gravity_model/interface.h"
+#include "world_builder/types/composition_property.h"
 #include "world_builder/types/object.h"
 #include "world_builder/utilities.h"
 #include "data/LITHO1.0/litho_coord_data.h"
@@ -215,6 +216,50 @@ namespace WorldBuilder
   Parameters::check_entry(const std::string &name) const
   {
     return Pointer((this->get_full_json_path() + "/" + name).c_str()).Get(parameters) != nullptr;
+  }
+
+  std::vector<Parameters::composition_properties>
+  Parameters::get_composition_properties(const std::string &name) const
+  {
+    // parse entries as indices linked to names and reference densities
+    // struct data type allows easy extension for more properties in the future
+    std::vector<Parameters::composition_properties> composition_properties_output;
+
+    const std::string strict_base = this->get_full_json_path();
+    const Value *composition_properties_entries = Pointer((strict_base + "/" + name).c_str()).Get(parameters);
+
+    if (composition_properties_entries == nullptr)
+      return composition_properties_output;
+
+    WBAssertThrow(composition_properties_entries->IsArray(),
+                  "Invalid entry \"" << name << "\": expected an array of objects with required key \"index\" and optional keys \"name\" and \"reference density\".");
+
+    std::map<unsigned int, bool> seen_indexes;
+    composition_properties_output.reserve(composition_properties_entries->Size());
+
+    for (SizeType i = 0; i < composition_properties_entries->Size(); ++i)
+      {
+        const Value &entry = (*composition_properties_entries)[i];
+
+        // index must be unique
+        const unsigned int composition_index = entry["index"].GetUint();
+        WBAssertThrow(seen_indexes.find(composition_index) == seen_indexes.end(),
+                      "Duplicate composition index " << composition_index << " in \"" << name << "\".");
+        seen_indexes[composition_index] = true;
+
+        // name defaults to index (as string) unless user defined
+        const std::string composition_name = entry.HasMember("name") ? entry["name"].GetString() : std::to_string(composition_index);
+
+        // reference density defaults to value in CompositionProperty unless user defined
+        const double reference_density = entry.HasMember("reference density") ? entry["reference density"].GetDouble() : Types::CompositionProperty::get_default_reference_density();
+
+        composition_properties_output.emplace_back(Parameters::composition_properties {composition_index,
+                                                                                       composition_name,
+                                                                                       reference_density
+                                                                                      });
+      }
+
+    return composition_properties_output;
   }
 
 
