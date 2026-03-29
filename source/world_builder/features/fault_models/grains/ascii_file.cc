@@ -45,6 +45,7 @@ namespace WorldBuilder
       {
         AsciiFile::AsciiFile(WorldBuilder::World *world_)
           :
+          file_loaded(false),
           min_depth(NaN::DSNAN),
           max_depth(NaN::DSNAN),
           mineral_0_current_particle_index(0),
@@ -95,7 +96,17 @@ namespace WorldBuilder
           directory   = prm.get<std::string>("file directory");
           filename    = prm.get<std::string>("filename");
 
-          load_file();
+          if (!filename.empty())
+            {
+              load_file();
+              file_loaded = true;
+            }
+          else
+            {
+              file_loaded = false;
+              WBAssertThrow(!filename.empty(),
+                            "AsciiFile grains model: 'filename' is empty, cannot load file.");
+            }
 
         }
 
@@ -199,6 +210,10 @@ namespace WorldBuilder
                               const WorldBuilder::Utilities::PointDistanceFromCurvedPlanes &distance_from_planes,
                               const AdditionalParameters & /*additional_parameters*/) const
         {
+          WBAssertThrow(file_loaded,
+                        "AsciiFile grains model: get_grains() called but no file was loaded. "
+                        "Check that 'filename' is set correctly in the input file.");
+
           WorldBuilder::grains  grains_local = grains_;
           if (std::fabs(distance_from_planes.distance_from_plane) <= max_depth && std::fabs(distance_from_planes.distance_from_plane) >= min_depth)
             {

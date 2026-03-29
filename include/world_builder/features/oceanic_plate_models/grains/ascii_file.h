@@ -97,6 +97,7 @@ namespace WorldBuilder
           private:
 
 
+            bool file_loaded;
             std::map<unsigned int, std::vector<std::array<double,3>>> mineral_0_euler_angles_map;
             std::map<unsigned int, std::vector<std::array<double,3>>> mineral_1_euler_angles_map;
             std::map<unsigned int, std::vector<double>> mineral_0_volume_fraction_map;
