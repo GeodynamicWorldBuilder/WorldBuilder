@@ -33,11 +33,6 @@ namespace WorldBuilder
       this->type_name = Types::type::Object;
     }
 
-    // destructor
-    CompositionProperty::~CompositionProperty()
-    {
-    }
-
     void
     CompositionProperty::write_schema(Parameters &prm,
                                       const std::string &name,
