@@ -15324,6 +15324,25 @@
             "default value": 3300.0,
             "type": "number",
             "description": "Density for the background material without any compositions."
+        },
+        "compensation depth": {
+            "default value": 250000.0,
+            "type": "number",
+            "description": "Compensation depth for isostatic topography."
+        },
+        "number of integration points": {
+            "default value": 100,
+            "type": "integer",
+            "description": "Number of integration points for calculating the compensation pressure."
+        },
+        "Reference profile point": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "description": "This is an array of two points along where the cross section is taken",
+            "items": {
+                "type": "number"
+            }
         }
     }
 }
