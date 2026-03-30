@@ -1,7 +1,7 @@
 # output variables
 grid_type = cartesian       # cartesian box (x,y,z)
 dim = 3                     # 3 dimensions (x,y,z)
-compositions = 5            # 2 different phases (e.g., oceanic lithosphere, basaltic crust ...)
+compositions = 6            # 2 different phases (e.g., oceanic lithosphere, basaltic crust ...)
 
 # domain of the grid
 x_min = 0                   # minimum length
