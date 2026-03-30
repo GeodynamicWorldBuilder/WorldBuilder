@@ -17,8 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef WORLD_BUILDER_FEATURES_OCEANIC_PLATE_MODELS_TOPOGRAPHY_HALF_SPACE_COOLED
-#define WORLD_BUILDER_FEATURES_OCEANIC_PLATE_MODELS_TOPOGRAPHY_HALF_SPACE_COOLED
+#ifndef WORLD_BUILDER_FEATURES_OCEANIC_PLATE_MODELS_TOPOGRAPHY_HALF_SPACE_COOLING
+#define WORLD_BUILDER_FEATURES_OCEANIC_PLATE_MODELS_TOPOGRAPHY_HALF_SPACE_COOLING
 
 
 #include "world_builder/features/oceanic_plate_models/topography/interface.h"
@@ -41,18 +41,18 @@ namespace WorldBuilder
          * the returned topography or composition of the topography and composition
          * functions of this class will be.
          */
-        class Half_space_cooled final: public Interface
+        class Half_space_cooling final: public Interface
         {
           public:
             /**
              * constructor
              */
-            Half_space_cooled(WorldBuilder::World *world);
+            Half_space_cooling(WorldBuilder::World *world);
 
             /**
              * Destructor
              */
-            ~Half_space_cooled() override final;
+            ~Half_space_cooling() override final;
 
             /**
              * declare and read in the world builder file into the parameters class
@@ -85,6 +85,7 @@ namespace WorldBuilder
 
             double top_temperature;
             double bottom_temperature;
+            double top_density;
             double bottom_density;
             std::pair<std::vector<double>,std::vector<double>> spreading_velocities;
             std::vector<std::vector<Point<2> > > mid_oceanic_ridges;

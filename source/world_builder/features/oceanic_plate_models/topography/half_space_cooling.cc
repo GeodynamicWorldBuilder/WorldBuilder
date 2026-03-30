@@ -17,8 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "world_builder/features/oceanic_plate_models/topography/half_space_cooled.h"
-#include "world_builder/features/oceanic_plate_models/temperature/half_space_model.h"
+#include "world_builder/features/oceanic_plate_models/topography/half_space_cooling.h"
 
 #include <world_builder/world.h>
 #include "world_builder/features/oceanic_plate_models/topography/interface.h"
@@ -40,30 +39,32 @@ namespace WorldBuilder
     {
       namespace Topography
       {
-        Half_space_cooled::Half_space_cooled(WorldBuilder::World *world_):
+        Half_space_cooling::Half_space_cooling(WorldBuilder::World *world_):
           min_depth(NaN::DSNAN),
           max_depth(NaN::DSNAN),
           min_ocean_depth(NaN::DSNAN),
           operation(Operations::REPLACE),
           top_temperature(NaN::DSNAN),
           bottom_temperature(NaN::DSNAN),
+          top_density(NaN::DSNAN),
           bottom_density(NaN::DSNAN)
         {
           this->world = world_;
-          this->name = "half space cooled";
+          this->name = "half space cooling";
         }
 
-        Half_space_cooled::~Half_space_cooled()
+        Half_space_cooling::~Half_space_cooling()
           = default;
 
         void
-        Half_space_cooled::declare_entries(Parameters &prm, const std::string & /*unused*/)
+        Half_space_cooling::declare_entries(Parameters &prm, const std::string & /*unused*/)
         {
           // Document plugin and require entries if needed.
           // Add `topography` and half space model params to the required parameters.
 
-          prm.declare_entry("", Types::Object({"ridge coordinates", "spreading velocity", 
-            "max depth", "min ocean depth", "bottom density"}), "Half space cooled topography");
+          prm.declare_entry("", Types::Object({"ridge coordinates", "spreading velocity",
+                                               "max depth", "min ocean depth", "bottom density"
+                                              }), "Half space cooled topography");
 
           prm.declare_entry("min depth", Types::OneOf(Types::Double(0),
                                                       Types::Array(Types::ValueAtPoints(0.,2)),
@@ -76,8 +77,8 @@ namespace WorldBuilder
                             "The depth in meters to which the composition of this feature is present.");
 
           prm.declare_entry("min ocean depth", Types::Double(0), "The minimum depth of the ocean or depth"
-          "of the ridge below the ocean surface in meters.");
-        
+                            "of the ridge below the ocean surface in meters.");
+
           prm.declare_entry("top temperature", Types::Double(293.15),
                             "The actual surface temperature in degree Kelvin for this feature.");
 
@@ -86,7 +87,10 @@ namespace WorldBuilder
                             "in degree Kelvin for this feature. If the model has an adiabatic gradient"
                             "this should be the mantle potential temperature, and T = Tad + Thalf. ");
 
-          prm.declare_entry("bottom density", Types::Double(0.0), 
+          prm.declare_entry("top density", Types::Double(0.0),
+                            "The density of the top or surface of the ridge in kg/m3");
+
+          prm.declare_entry("bottom density", Types::Double(0.0),
                             "The density of the bottom of the ridge in kg/m3");
 
           prm.declare_entry("spreading velocity", Types::OneOf(Types::Double(0.05),Types::Array(Types::ValueAtPoints(0.05, std::numeric_limits<uint64_t>::max()))),
@@ -101,8 +105,8 @@ namespace WorldBuilder
         }
 
         void
-        Half_space_cooled::parse_entries(Parameters &prm, 
-                                        const std::vector<Point<2>> &coordinates)
+        Half_space_cooling::parse_entries(Parameters &prm,
+                                          const std::vector<Point<2>> &coordinates)
         {
           min_depth_surface = Objects::Surface(prm.get("min depth",coordinates));
           min_depth = min_depth_surface.minimum;
@@ -113,7 +117,8 @@ namespace WorldBuilder
           min_ocean_depth = prm.get<double>("min ocean depth");
           top_temperature = prm.get<double>("top temperature");
           bottom_temperature = prm.get<double>("bottom temperature");
-          
+
+          top_density = prm.get<double>("top density");
           bottom_density = prm.get<double>("bottom density");
 
           spreading_velocities = prm.get_value_at_array("spreading velocity");
@@ -147,42 +152,40 @@ namespace WorldBuilder
         }
 
         double
-        Half_space_cooled::get_topography(const Point<3> &position_in_cartesian_coordinates,
-                                const Objects::NaturalCoordinate &position_in_natural_coordinates,
-                                double /*topo*/) 
-                                const
+        Half_space_cooling::get_topography(const Point<3> &position_in_cartesian_coordinates,
+                                           const Objects::NaturalCoordinate &position_in_natural_coordinates,
+                                           double /*topo*/)
+        const
         {
           (void) position_in_natural_coordinates;
           Objects::NaturalCoordinate position_in_natural_coordinates_at_min_depth = Objects::NaturalCoordinate(position_in_cartesian_coordinates,
-                                                                                        *(this->world->parameters.coordinate_system));
+                                                                                    *(this->world->parameters.coordinate_system));
           std::vector<std::vector<double>> subducting_plate_velocities = {{0}};
           std::vector<double> ridge_migration_times = {0.0};
 
-          // compute ridge params like spreading velocity and distance from ridge 
+          // compute ridge params like spreading velocity and distance from ridge
           std::vector<double> ridge_parameters = Utilities::calculate_ridge_distance_and_spreading(
-                                        mid_oceanic_ridges,
-                                        spreading_velocities_at_each_ridge_point,
-                                        this->world->parameters.coordinate_system,
-                                        position_in_natural_coordinates_at_min_depth,
-                                        subducting_plate_velocities,
-                                        ridge_migration_times);
-        
-          double age = ridge_parameters[1] / ridge_parameters[0]; // in sec 
+                                                   mid_oceanic_ridges,
+                                                   spreading_velocities_at_each_ridge_point,
+                                                   this->world->parameters.coordinate_system,
+                                                   position_in_natural_coordinates_at_min_depth,
+                                                   subducting_plate_velocities,
+                                                   ridge_migration_times);
+
+          double age = ridge_parameters[1] / ridge_parameters[0]; // in sec
 
           const double thermal_diffusivity = this->world->thermal_diffusivity;
           const double alpha = this->world->thermal_expansion_coefficient;
-          const double top_density = 1000.0; // top or surface is ocean water
 
-          // age of half space cooling model is used to compute the heights and added with initial depth and topo  
-          double 
-          half_space_cooled_height = (2 * bottom_density * alpha * (bottom_temperature-top_temperature)) 
-          /(top_density - bottom_density) * sqrt(thermal_diffusivity * age / M_PI);
-        
-          return -(half_space_cooled_height + min_ocean_depth);
-          
+          // age of half space cooling model is used to compute the heights and added with initial depth and topo
+          double height = (2 * bottom_density * alpha * (bottom_temperature-top_temperature))
+                          /(top_density - bottom_density) * sqrt(thermal_diffusivity * age / Consts::PI);
+
+          return -(height + min_ocean_depth);
+
         }
-          
-        WB_REGISTER_FEATURE_OCEANIC_PLATE_TOPOGRAPHY_MODEL(Half_space_cooled, half space cooled)
+
+        WB_REGISTER_FEATURE_OCEANIC_PLATE_TOPOGRAPHY_MODEL(Half_space_cooling, half space cooling)
       } // namespace Topography
     } // namespace OceanicPlateModels
   } // namespace Features
