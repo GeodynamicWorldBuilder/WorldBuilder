@@ -14,7 +14,7 @@ The Big Mantle Wedge hypothesis was originally proposed to explain the intra-con
 
 This cookbook can be used to set up the initial conditions of a regional-scale mantle convection model to investigate the Big Mantle Wedge hypothesis or to visualize its geometry in 3D.
 
-The region is 4000 x 3000 x 660 km Cartesian box (x,y,z) representing continental Europe and the underlying upper mantle and transition zone. In total there are 15 features, divided as:
+The region is 4000 x 3000 x 660 km Cartesian box (x,y,z) representing continental Europe and the underlying upper mantle and transition zone (Figure 1-3). In total there are 15 features, divided as:
 
 1. Mantle Layer: uniform composition [0]; no distinction between upper mantle and MTZ
 
