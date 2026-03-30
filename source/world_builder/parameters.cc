@@ -218,28 +218,28 @@ namespace WorldBuilder
     return Pointer((this->get_full_json_path() + "/" + name).c_str()).Get(parameters) != nullptr;
   }
 
-  std::vector<Parameters::composition_properties>
+  std::vector<Parameters::composition_property>
   Parameters::get_composition_properties(const std::string &name) const
   {
     // parse entries as indices linked to names and reference densities
     // struct data type allows easy extension for more properties in the future
-    std::vector<Parameters::composition_properties> composition_properties_output;
+    std::vector<Parameters::composition_property> parsed_composition_entries;
 
     const std::string strict_base = this->get_full_json_path();
-    const Value *composition_properties_entries = Pointer((strict_base + "/" + name).c_str()).Get(parameters);
+    const Value *entries = Pointer((strict_base + "/" + name).c_str()).Get(parameters);
 
-    if (composition_properties_entries == nullptr)
-      return composition_properties_output;
+    if (entries == nullptr)
+      return parsed_composition_entries;
 
-    WBAssertThrow(composition_properties_entries->IsArray(),
+    WBAssertThrow(entries->IsArray(),
                   "Invalid entry \"" << name << "\": expected an array of objects with required key \"index\" and optional keys \"name\" and \"reference density\".");
 
     std::map<unsigned int, bool> seen_indexes;
-    composition_properties_output.reserve(composition_properties_entries->Size());
+    parsed_composition_entries.reserve(entries->Size());
 
-    for (SizeType i = 0; i < composition_properties_entries->Size(); ++i)
+    for (SizeType i = 0; i < entries->Size(); ++i)
       {
-        const Value &entry = (*composition_properties_entries)[i];
+        const Value &entry = (*entries)[i];
 
         // index must be unique
         const unsigned int composition_index = entry["index"].GetUint();
@@ -253,13 +253,13 @@ namespace WorldBuilder
         // reference density defaults to value in CompositionProperty unless user defined
         const double reference_density = entry.HasMember("reference density") ? entry["reference density"].GetDouble() : Types::CompositionProperty::get_default_reference_density();
 
-        composition_properties_output.emplace_back(Parameters::composition_properties {composition_index,
-                                                                                       composition_name,
-                                                                                       reference_density
-                                                                                      });
+        parsed_composition_entries.emplace_back(Parameters::composition_property {composition_index,
+                                                                                     composition_name,
+                                                                                     reference_density
+                                                                                    });
       }
 
-    return composition_properties_output;
+    return parsed_composition_entries;
   }
 
 
@@ -1972,8 +1972,82 @@ namespace WorldBuilder
         for (size_t i = 0; i < array->Size(); ++i )
           {
             const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
+            Value *entry = Pointer(base.c_str()).Get(parameters);
 
-            vector.push_back(Pointer(base.c_str()).Get(parameters)->GetUint());
+            // if users only use composition indices
+            vector.push_back(entry->GetUint());
+          }
+      }
+    else
+      {
+        const Value *value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/minItems").c_str()).Get(declarations);
+        WBAssertThrow(value != nullptr,
+                      "internal error: could not retrieve the minItems value at: "
+                      << this->get_full_json_schema_path() + "/" + name + "/minItems value");
+
+        const size_t min_size = value->GetUint();
+
+        const unsigned int default_value = Pointer((this->get_full_json_schema_path()  + "/" + name + "/items/default value").c_str()).Get(declarations)->GetUint();
+
+        // set to min size
+        for (size_t i = 0; i < min_size; ++i)
+          {
+            vector.push_back(default_value);
+          }
+      }
+    return vector;
+  }
+
+  template<>
+  std::vector<unsigned int>
+  Parameters::get_vector(const std::string &name,
+                         const std::vector<Parameters::composition_property> &composition_properties)
+  {
+    std::vector<unsigned int> vector;
+    const std::string strict_base = this->get_full_json_path();
+    if (Pointer((strict_base + "/" + name).c_str()).Get(parameters) != nullptr)
+      {
+        Value *array = Pointer((strict_base  + "/" + name).c_str()).Get(parameters);
+
+        for (size_t i = 0; i < array->Size(); ++i )
+          {
+            const std::string base = (strict_base + "/").append(name).append("/").append(std::to_string(i));
+            Value *entry = Pointer(base.c_str()).Get(parameters);
+
+            // user can define either an index (usigned int)
+            // or a compositon name (string)
+            // if latter, assign the corresponding index in the composition properties
+            if (entry->IsUint())
+              {
+                vector.push_back(entry->GetUint());
+              }
+            else if (entry->IsString())
+              {
+                const std::string feature_composition_name = entry->GetString();
+                bool isFoundInCompositionProperties = false;
+
+                for (const Parameters::composition_property &global_composition : composition_properties)
+                  {
+                    // compare globally defined composition name
+                    // with feature-defined composition name
+                    // and assign the corresponding index if found
+                    if (global_composition.name == feature_composition_name)
+                      {
+                        vector.push_back(global_composition.index);
+                        isFoundInCompositionProperties = true;
+                        break;
+                      }
+                  }
+                WBAssertThrow(isFoundInCompositionProperties,
+                              "internal error: could not find the value \"" << feature_composition_name << "\" in the composition properties at: "
+                              << this->get_full_json_schema_path() + "/" + name + "/items/enum");
+              }
+            else
+              {
+                WBAssertThrow(false,
+                              "internal error: expected an unsigned int or a string for the value at: "
+                              << base);
+              }
           }
       }
     else

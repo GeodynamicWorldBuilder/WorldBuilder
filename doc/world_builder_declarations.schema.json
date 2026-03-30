@@ -1919,9 +1919,19 @@
                                                     "uniqueItems": false,
                                                     "description": "A list with the labels of the composition which are present there.",
                                                     "items": {
-                                                        "default value": 0,
-                                                        "type": "integer",
-                                                        "description": ""
+                                                        "description": "",
+                                                        "oneOf": [
+                                                            {
+                                                                "default value": 0,
+                                                                "type": "integer",
+                                                                "description": ""
+                                                            },
+                                                            {
+                                                                "default value": "",
+                                                                "type": "string",
+                                                                "description": ""
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "fractions": {
@@ -1929,7 +1939,7 @@
                                                     "minItems": 1,
                                                     "maxItems": 4294967295,
                                                     "uniqueItems": false,
-                                                    "description": "TA list of compositional fractions corresponding to the compositions list.",
+                                                    "description": "A list of compositional fractions corresponding to the compositions list.",
                                                     "items": {
                                                         "default value": 1.0,
                                                         "type": "number",

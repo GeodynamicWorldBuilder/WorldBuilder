@@ -72,11 +72,11 @@ namespace WorldBuilder
                                                       Types::String("")),
                             "The depth in meters to which the composition of this feature is present.");
 
-          prm.declare_entry("compositions", Types::Array(Types::UnsignedInt(),0),
+          prm.declare_entry("compositions", Types::Array(Types::OneOf(Types::UnsignedInt(), Types::String("")),0),
                             "A list with the labels of the composition which are present there.");
 
           prm.declare_entry("fractions", Types::Array(Types::Double(1.0),1),
-                            "TA list of compositional fractions corresponding to the compositions list.");
+                            "A list of compositional fractions corresponding to the compositions list.");
 
           prm.declare_entry("operation", Types::String("replace", std::vector<std::string> {"replace", "replace defined only", "add", "subtract"}),
                             "Whether the value should replace any value previously defined at this location (replace) or "
@@ -93,7 +93,7 @@ namespace WorldBuilder
           max_depth_surface = Objects::Surface(prm.get("max depth",coordinates));
           max_depth = max_depth_surface.maximum;
 
-          compositions = prm.get_vector<unsigned int>("compositions");
+          compositions = prm.get_vector<unsigned int>("compositions", this->world->composition_properties);
           fractions = prm.get_vector<double>("fractions");
           operation = string_operations_to_enum(prm.get<std::string>("operation"));
 

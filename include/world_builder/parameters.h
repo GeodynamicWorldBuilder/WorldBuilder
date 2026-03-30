@@ -89,6 +89,13 @@ namespace WorldBuilder
        */
       ~Parameters();
 
+      struct composition_property
+      {
+        unsigned int index;
+        std::string name;
+        double reference_density;
+      };
+
       /**
        * Initializes the parameter file
        * \param filename A string with the path to the world builder file
@@ -110,10 +117,20 @@ namespace WorldBuilder
 
       /**
        * A specialized version of get which can return vectors/arrays.
+        *
+        * Note: The specialization get_vector<unsigned int>() also supports
+        * mixed input of unsigned-int indices and string composition names for
+        * entries that allow it (e.g. composition identifier arrays). String
+        * names are resolved to indices using the global composition properties
+        * table.
        * \param name The name of the entry to retrieved
        */
       template<class T>
       std::vector<T> get_vector(const std::string &name);
+
+      template<class T>
+      std::vector<T> get_vector(const std::string &name,
+                                const std::vector<Parameters::composition_property> &global_composition_properties);
 
       std::vector<std::vector<double>> get_vector_or_double(const std::string &name);
 
@@ -181,20 +198,13 @@ namespace WorldBuilder
       bool
       check_entry(const std::string &name) const;
 
-      struct composition_properties
-      {
-        unsigned int index;
-        std::string name;
-        double reference_density;
-      };
-
       /**
        * Parse composition properties.
        * The index is required, while name and reference density are optional.
        * If the entry is absent, the vector is empty.
        * \param name The name of the entry to be declared
        */
-      std::vector<composition_properties>
+      std::vector<composition_property>
       get_composition_properties(const std::string &name) const;
 
       /**

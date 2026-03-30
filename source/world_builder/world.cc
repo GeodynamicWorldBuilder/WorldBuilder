@@ -323,11 +323,10 @@ namespace WorldBuilder
      * Parsing is handled in parameters.cc
      * Struct with default values is defined in types/composition_property
      */
-    const auto parsed_composition_properties = prm.get_composition_properties("composition properties");
 
-    for (const auto &composition_entry : parsed_composition_properties)
+    for (const Parameters::composition_property &parsed_property : prm.get_composition_properties("composition properties"))
       {
-        composition_properties.emplace(composition_entry.index, composition_entry);
+        composition_properties.emplace_back(parsed_property);
       }
 
     /**

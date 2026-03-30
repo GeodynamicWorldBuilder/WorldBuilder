@@ -2950,9 +2950,30 @@
 :open:
 :name: open_features_items_oneOf_1_composition-models_items_oneOf_2_compositions_items
 
+- **description**:
+::::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/compositions/items/oneOf
+:open:
+:name: open_features_items_oneOf_1_composition-models_items_oneOf_2_compositions_items_oneOf
+
+:::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/compositions/items/oneOf/1
+:open:
+:name: open_features_items_oneOf_1_composition-models_items_oneOf_2_compositions_items_oneOf_1
+
 - **default value**:0
 - **type**:integer
 - **description**:
+:::::::::::::
+
+:::::::::::::{dropdown} /features/items/oneOf/1/composition models/items/oneOf/2/compositions/items/oneOf/2
+:open:
+:name: open_features_items_oneOf_1_composition-models_items_oneOf_2_compositions_items_oneOf_2
+
+- **default value**:
+- **type**:string
+- **description**:
+:::::::::::::
+
+
 :::::::::::::::
 
 ::::::::::::::::

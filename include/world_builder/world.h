@@ -258,7 +258,7 @@ namespace WorldBuilder
       * Return all composition properties from its index.
       * If the index is unknown, returns fallback properties with a generated name.
       */
-      Parameters::composition_properties get_composition_properties(const unsigned int composition_index) const;
+      Parameters::composition_property get_composition_properties(const unsigned int composition_index) const;
 
       /**
        * This is the parameter class, which stores all the values loaded in
@@ -350,7 +350,7 @@ namespace WorldBuilder
       /**
        * A map from composition index to its properties for quick lookups.
        */
-      std::map<unsigned int, Parameters::composition_properties> composition_properties;
+      std::vector<Parameters::composition_property> composition_properties;
 
     private:
       /**
