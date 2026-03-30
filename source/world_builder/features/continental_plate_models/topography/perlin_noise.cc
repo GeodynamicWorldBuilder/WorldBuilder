@@ -131,7 +131,7 @@ namespace WorldBuilder
         }
 
         double
-        PerlinNoise::get_topography(const Point<3> &position,
+        PerlinNoise::get_topography(const Point<3> & /*position_in_cartesian_coordinates*/,
                                     const Objects::NaturalCoordinate &position_in_natural_coordinates,
                                     double topography) const
         {
