@@ -13,6 +13,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Added
 - Added a new cookbook to reproduce the Big Mantle Wedge setting beneath Europe 
 \[Enrico Marzotto; 2026-03-31; [#911](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/911)\]
+- Added an option to read initial textures on grains from a ASCII file with has the format of a particle_cpo CPO.dat output from ASPECT. \[Yijun Wang; 2026-03-29; [#918](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/918)\]
+
 - Added Perlin noise models for composition and temperature across features, and gwb-dat coverage tests for Cartesian Perlin noise inputs. \[Tilman May; 2026-03-29; [#906](https://github.com/GeodynamicWorldBuilder/WorldBuilder/pull/906)\]
 
 ### Changed

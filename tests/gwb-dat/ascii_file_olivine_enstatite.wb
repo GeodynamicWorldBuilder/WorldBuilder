@@ -1,0 +1,18 @@
+{
+  "version":"1.2",
+  "coordinate system":{"model":"cartesian"},
+  "random number seed":1,
+  "features":
+  [
+    {
+      "model":"mantle layer", "name":"Mantle", "min depth":0,  "max depth": 10,
+      "coordinates":[[0,0],[0,10],[10,10],[10,0]],
+      "temperature models":[{"model":"uniform", "temperature":293}],
+      "composition models":[{"model":"uniform", "compositions":[0]}],
+      "grains models": [{"model":"ascii file", "compositions":[0,1], 
+                         "file directory":"../../../tests/gwb-dat", 
+                         "filename":"ascii_file_olivine_enstatite_texture.dat"}]
+    }
+     
+  ]
+}
